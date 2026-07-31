@@ -1951,7 +1951,7 @@ void* func_0018eb40(KwlnTask* task)
             sprintf(path, (const char*)D_005E4620);
             break;
         case 9:
-            if (datGetScenarioMode() == 0)
+            if (datGetScenarioMode() != 0)
             {
                 sprintf(path, (const char*)D_005E4660);
             }
@@ -1975,20 +1975,38 @@ void* func_0018eb40(KwlnTask* task)
         dimensions.valueS[2] = 0xb;
         switch (GS_U32(work, 4))
         {
+        case 2:
+            dimensions.valueS[3] = 0;
+            break;
+        case 3:
+            dimensions.valueS[3] = 1;
+            break;
+        case 4:
+            dimensions.valueS[3] = 2;
+            break;
+        case 5:
+            dimensions.valueS[3] = 3;
+            break;
         case 0:
         case 1:
-        case 2:
         case 6:
             dimensions.valueS[3] = 0;
             break;
-        case 3: dimensions.valueS[3] = 1; break;
-        case 4: dimensions.valueS[3] = 2; break;
-        case 5: dimensions.valueS[3] = 3; break;
-        case 7: dimensions.valueS[3] = 4; break;
-        case 8: dimensions.valueS[3] = 5; break;
-        case 9: dimensions.valueS[3] = datGetScenarioMode() == 0 ? 8 : 6; break;
-        case 10: dimensions.valueS[3] = 7; break;
-        default: dimensions.valueS[3] = 0; break;
+        case 7:
+            dimensions.valueS[3] = 4;
+            break;
+        case 8:
+            dimensions.valueS[3] = 5;
+            break;
+        case 9:
+            dimensions.valueS[3] = datGetScenarioMode() != 0 ? 6 : 8;
+            break;
+        case 10:
+            dimensions.valueS[3] = 7;
+            break;
+        default:
+            dimensions.valueS[3] = 0;
+            break;
         }
         loader = func_00111150(task, dimensions.value);
         GS_TASK(work, 8) = loader;

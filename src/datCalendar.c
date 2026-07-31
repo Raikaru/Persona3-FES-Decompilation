@@ -4241,19 +4241,26 @@ KwlnTask* func_00185880(KwlnTask* parent,
 // FUN_00185980 NONMATCHING
 void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 {
-    void* unused;
-    union
-    {
-        u64 bits;
-        f32 coords[2];
-    } packed;
     f32 y;
     f32 x;
     f32 xFirst;
     f32 yFirst;
     f32 x2;
+    f32 ySecond;
+    f32 yThird;
+    s32 signedMonth;
+    u64 positionCopy;
+    union
+    {
+        u64 bits;
+        f32 coords[2];
+    } packed;
+    void* unused;
 
-    packed.bits = position;
+    positionCopy = position;
+    packed.bits = positionCopy;
+    /* Keep the packed argument spill before the callee-saved argument copies as in retail. */
+    asm ("" : "+m"(packed.bits));
     y = packed.coords[1];
     /* Keep the packed y load ahead of the x load as in retail. */
     asm ("" : "+m"(y));
@@ -4277,10 +4284,17 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
                       alpha & 0xff, xFirst, yFirst, 50.0f);
     }
     x2 = packed.coords[0] + 251.0f;
-    func_001159f0(unused, resource, month - 1,
-                  alpha & 0xff, x2, y + 131.0f, 50.0f);
-    func_001159f0(unused, resource, month + 0xb,
-                  alpha & 0xff, x2, y + 163.0f, 50.0f);
+    ySecond = y + 131.0f;
+    /* Keep the second y offset before the month setup as in retail. */
+    asm ("" : "+m"(ySecond));
+    signedMonth = month;
+    func_001159f0(unused, resource, signedMonth - 1,
+                  alpha & 0xff, x2, ySecond, 50.0f);
+    yThird = y + 163.0f;
+    /* Keep the third y offset after the second draw as in retail. */
+    asm ("" : "+m"(yThird));
+    func_001159f0(unused, resource, signedMonth + 0xb,
+                  alpha & 0xff, x2, yThird, 50.0f);
 }
 #pragma pop
 

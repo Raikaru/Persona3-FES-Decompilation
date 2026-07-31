@@ -17,6 +17,10 @@
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
 extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
+#pragma alias FUN_00318770_k_event_typed FUN_00318770
+extern void FUN_00318770_k_event_typed(u32 model, u32 slot, f32 frame);
+#pragma alias memset_k_event_typed memset
+extern void* memset_k_event_typed(void* dst, s32 value, u32 size);
 extern f32 acosf(f32 x);
 #pragma alias sDegreesPerRadian D_007CAFA0
 extern f32 sDegreesPerRadian;
@@ -675,7 +679,7 @@ void func_001c7830(void* output, void* script)
 
     list = func_001d8d80(script);
     out = (u32*)output;
-    FldEvent_ClearBytes(out, 0x34);
+    memset_k_event_typed(out, 0, 0x34);
     out[1] = (u32)gFldUnitsPc[0].genusBase;
     out[5] = *(u32*)((u8*)script + 0x48);
     count = 1;
@@ -1935,7 +1939,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_003182d0(*(u32*)D_008717F0_abs, 0, 4, 0, 0x20);
                 EVENT_WORD(0x3b) = FUN_00308c60(PTR_U32((void*)*(u32*)D_008717E8_abs, 4)) & 0xff;
                 EVENT_WORD(0x40) = DAT_007ce294 + EVENT_WORD(0x3b) * 0x18;
-                FUN_00318770((f32)PTR_S16((void*)EVENT_WORD(0x40), 0), *(u32*)D_008717F0_abs, 0);
+                FUN_00318770_k_event_typed(*(u32*)D_008717F0_abs, 0,
+                                           (f32)PTR_S16((void*)EVENT_WORD(0x40), 0));
                 switch (EVENT_WORD(0x3b))
                 {
                     case 0: FUN_0010a4e0(1, 8, 1, 0x44); break;

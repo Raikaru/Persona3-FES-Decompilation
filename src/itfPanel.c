@@ -1732,24 +1732,13 @@ void FUN_003aa720(int param_1)
   short sVar2;
   u32 uVar3;
   int iVar4;
-  u64 uVar5;
+  u32 uVar5;
   int iVar6;
   short *psVar7;
   short *psVar8;
-  char cVar9;
-  short asStack_20 [5];
-  short sStack_16;
-  short sStack_14;
-  short sStack_12;
-  short sStack_10;
-  short sStack_e;
-  short sStack_c;
-  short sStack_a;
-  short sStack_8;
-  short sStack_6;
-  short sStack_4;
-  short sStack_2;
+  u32 cVar9;
   u8 mask;
+  short asStack_20 [16];
 
   
 
@@ -1822,7 +1811,7 @@ void FUN_003aa720(int param_1)
 
   *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[4];
 
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_16);
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[5]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
@@ -1836,8 +1825,8 @@ void FUN_003aa720(int param_1)
 
   iVar4 = (int)uVar5;
 
-  *(float *)(iVar4 + 0x10) = (float)(int)sStack_14;
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_12);
+  *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[6];
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[7]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
@@ -1851,8 +1840,8 @@ void FUN_003aa720(int param_1)
 
   iVar4 = (int)uVar5;
 
-  *(float *)(iVar4 + 0x10) = (float)(int)sStack_10;
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_e);
+  *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[8];
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[9]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
@@ -1866,8 +1855,8 @@ void FUN_003aa720(int param_1)
 
   iVar4 = (int)uVar5;
 
-  *(float *)(iVar4 + 0x10) = (float)(int)sStack_c;
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_a);
+  *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[10];
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[11]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
@@ -1881,8 +1870,8 @@ void FUN_003aa720(int param_1)
 
   iVar4 = (int)uVar5;
 
-  *(float *)(iVar4 + 0x10) = (float)(int)sStack_8;
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_6);
+  *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[12];
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[13]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
@@ -1896,8 +1885,8 @@ void FUN_003aa720(int param_1)
 
   iVar4 = (int)uVar5;
 
-  *(float *)(iVar4 + 0x10) = (float)(int)sStack_4;
-  *(float *)(iVar4 + 0x14) = (float)(iVar6 + sStack_2);
+  *(float *)(iVar4 + 0x10) = (float)(int)asStack_20[14];
+  *(float *)(iVar4 + 0x14) = (float)(iVar6 + asStack_20[15]);
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 

@@ -9,6 +9,8 @@ extern u64 FUN_003c9290(int *,u64,u64);
 extern s8 FUN_003c9340(int *);
 extern void FUN_003c9390(int *);
 extern u32 FUN_003c9460(int *);
+#pragma alias fclMisc9fe0Call FUN_003c9fe0
+extern void fclMisc9fe0Call(int *);
 #pragma alias fclMisc9240Call FUN_003c9240
 extern void fclMisc9240Call(int *);
 #pragma alias fclMisc9290Call FUN_003c9290
@@ -1797,6 +1799,7 @@ u64 FUN_003ca230(void)
     }
     status = FUN_001016b0(*(u32 *)(context + 0xc8));
     if (status != 0) {
+      fclMisc9fe0Call((int *)context);
       *(u32 *)(context + 4) = 4;
       *(u32 *)(context + 8) = *(u32 *)(context + 8) | 0x20;
       FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x747);
@@ -4563,10 +4566,10 @@ LAB_003cf7a4:
 u32 FUN_003cf960(int param_1,short param_2)
 {
   u32 uVar3;
+  int iVar6;
   short *puVar4;
   short sVar2;
   short sVar5;
-  int iVar6;
 
   puVar4 = (short *)(*(int *)(DAT_007ce680 + 0x24) + 4);
   for (iVar6 = 0; iVar6 < 3; iVar6++) {

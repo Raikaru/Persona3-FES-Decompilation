@@ -5439,30 +5439,31 @@ u32 FUN_0039e6f0(void)
 void FUN_0039e700(u8 *param_1)
 {
   extern u8 DAT_006a1800[];
-  int iVar1;
+  MtEvtCustomData *iVar1;
   int iVar2;
   int iVar3;
   int iVar4;
   u32 uVar5;
-  int iVar6;
+  MtEvtCustomEntry *entry;
+  MtEvtCustomEntry *entries;
   int iVar7;
+  int outputAddress;
 
   *(u32 *)(param_1 + 0x78c) = 0;
-  iVar1 = *(int *)(param_1 + 8);
-
-  for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
-    iVar6 = *(int *)(iVar1 + 0x34);
-    iVar6 = iVar6 + iVar7 * 0x20;
-    if (*(int *)(iVar6 + 0x18) == 1) {
+  iVar1 = *(MtEvtCustomData **)(param_1 + 8);
+  for (iVar7 = 0, entries = iVar1->entries; iVar7 < iVar1->entryCount; iVar7 = iVar7 + 1) {
+    entry = &entries[iVar7];
+    if (entry->type == 1) {
       iVar2 = *(int *)(param_1 + 0x78c);
       if (9 < iVar2) break;
-      iVar3 = *(int *)(iVar1 + 0x10);
-      iVar4 = *(int *)(iVar6 + 0x10);
-      uVar5 = *(u32 *)(iVar6 + 0x14);
+      iVar3 = iVar1->unk_10;
+      iVar4 = entry->unk_10;
+      iVar3 = iVar3 + iVar4;
+      uVar5 = entry->unk_14;
       *(short *)(param_1 + iVar2 * 2 + 0x7b8) = iVar2 + 30000;
-      iVar6 = (int)param_1 + iVar2 * 4;
-      *(int *)(iVar6 + 0x790) = iVar3 + iVar4;
-      *(u32 *)(iVar6 + 0x7cc) = uVar5;
+      outputAddress = (int)param_1 + iVar2 * 4;
+      *(int *)(outputAddress + 0x790) = iVar3;
+      *(u32 *)(outputAddress + 0x7cc) = uVar5;
       *(int *)(param_1 + 0x78c) = *(int *)(param_1 + 0x78c) + 1;
     }
   }
@@ -5668,15 +5669,13 @@ void FUN_0039eaa0(int param_1)
   MtEvtCustomEntry *entry;
   MtEvtCustomEntry *entries;
   int *output;
-  int entryType;
 
   output = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(output,0,0x38);
   base = *(MtEvtCustomData **)(param_1 + 8);
-  for (index = 0, entries = base->entries, entryType = 2; index < base->entryCount; index = index + 1) {
-    entries = *(MtEvtCustomEntry **)((u8 *)(uintptr_t)base + 0x34);
+  for (index = 0, entries = base->entries; index < base->entryCount; index = index + 1) {
     entry = &entries[index];
-    if (entry->type == entryType) {
+    if (entry->type == 2) {
       count = *output;
       if (4 < count) break;
       baseValue = base->unk_10;
