@@ -4273,7 +4273,6 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
   u32 uVar1;
   float fVar2;
   u8 rgba[4];
-
   uVar1 = FUN_001a6400(param_2,(u32)DAT_0069baf0);
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;

@@ -2740,24 +2740,24 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
             if (index == work->highlightedSlot) {
                 u8* drawBuffer;
                 y = 21.0f;
-                drawBuffer = work->drawBuffer;
+                end.x = y;
                 x = (f32)(index * 0x1d) + 61.0f;
+                end.y = x;
+                drawBuffer = work->drawBuffer;
                 selectedStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
                 selectedStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
-                end.x = y;
-                end.y = x;
                 func_0018bc10(103.0f,
                               drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&selectedStart, *(u64*)&end, 0, 0, 0, 2);
             } else if (index == hoverSlot) {
                 u8* drawBuffer;
                 y = 0.0f;
-                drawBuffer = work->drawBuffer;
+                end.x = y;
                 x = (f32)(index * 0x1d) + 61.0f;
+                end.y = x;
+                drawBuffer = work->drawBuffer;
                 hoverStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
                 hoverStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
-                end.x = y;
-                end.y = x;
                 func_0018bc10(103.0f,
                               drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&hoverStart, *(u64*)&end, 0, 0, 0, 2);

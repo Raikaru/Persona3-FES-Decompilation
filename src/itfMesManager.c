@@ -9407,7 +9407,7 @@ u32 FUN_003ad030(u64 param_1,int param_2)
   u32 packed2;
   u8 *data;
 
-  data = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  data = (u8 *)(*(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10));
   low = data[0] - 1;
   high = data[1];
   if (high == 0xff) {
@@ -9418,7 +9418,7 @@ u32 FUN_003ad030(u64 param_1,int param_2)
   }
   packed1 = value << 8 | low;
 
-  data = (u8 *)(*(volatile int *)(param_2 + 0x10) + *(volatile int *)(param_2 + 0x18));
+  data = (u8 *)(*(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10));
   low = data[2] - 1;
   high = data[3];
   if (high == 0xff) {

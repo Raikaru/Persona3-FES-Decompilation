@@ -10805,25 +10805,25 @@ void FUN_00329ed0(float *param_1)
 
     if (fVar5 == 0.0f) {
 
-      afStack_10[uVar4] = 1.0f;
+      ((volatile float *)afStack_10)[uVar4] = 1.0f;
 
-      afStack_10[uVar1] = 0.0f;
+      ((volatile float *)afStack_10)[uVar1] = 0.0f;
 
-      afStack_10[uVar2] = 0.0f;
+      ((volatile float *)afStack_10)[uVar2] = 0.0f;
 
-      afStack_10[3] = 0.0f;
+      ((volatile float *)afStack_10)[3] = 0.0f;
 
     }
 
     else {
 
-      afStack_10[uVar4] = fVar5 / 4.0f;
+      ((volatile float *)afStack_10)[uVar4] = fVar5 / 4.0f;
 
-      afStack_10[uVar1] = (row4[uVar1] + row1[uVar4]) / fVar5;
+      ((volatile float *)afStack_10)[uVar1] = (row4[uVar1] + row1[uVar4]) / fVar5;
 
-      afStack_10[uVar2] = (row4[uVar2] + row2[uVar4]) / fVar5;
+      ((volatile float *)afStack_10)[uVar2] = (row4[uVar2] + row2[uVar4]) / fVar5;
 
-      afStack_10[3] = -((row1[uVar2] - row2[uVar1]) / fVar5);
+      ((volatile float *)afStack_10)[3] = -((row1[uVar2] - row2[uVar1]) / fVar5);
 
     }
 
@@ -21267,13 +21267,14 @@ void FUN_00335180(int param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          u8 red = stack.output.chan.r;
-          u8 green = stack.output.chan.g;
-          u8 blue = stack.output.chan.b;
+          u8 red = ((volatile u8 *)&stack.output.chan)[0];
+          u8 green = ((volatile u8 *)&stack.output.chan)[1];
+          u8 blue = ((volatile u8 *)&stack.output.chan)[2];
+          u8 outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
-          *(u8 *)(dst + 7) = stack.output.chan.a;
+          *(u8 *)(dst + 7) = outputAlpha;
         } else {
           int dst;
           u8 red;
@@ -21282,10 +21283,10 @@ void FUN_00335180(int param_1)
           u8 outputAlpha;
           stack.output.chan.a = 0xfe;
           dst = *(int *)(entry + 10);
-          red = stack.output.chan.r;
-          green = stack.output.chan.g;
-          blue = stack.output.chan.b;
-          outputAlpha = stack.output.chan.a;
+          red = ((volatile u8 *)&stack.output.chan)[0];
+          green = ((volatile u8 *)&stack.output.chan)[1];
+          blue = ((volatile u8 *)&stack.output.chan)[2];
+          outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
@@ -22330,6 +22331,9 @@ void FUN_00336630(int param_1)
   int count;
   int alpha;
   int modelAlpha;
+  int limit;
+
+  int nodeValue;
   f32 inv255;
   int index;
   u16 *entry;
@@ -22351,7 +22355,11 @@ void FUN_00336630(int param_1)
   entryHolder = *(u32 **)(param_1 + 0x30);
   node = *(int *)(param_1 + 0x34);
   entries = (u32 *)*entryHolder;
-  if ((*(int *)(param_1 + 0x28) <= *(int *)(node + 0x34)) || (*(int *)(node + 0x34) == 0)) {
+  limit = *(volatile int *)(param_1 + 0x28);
+
+  nodeValue = *(volatile int *)(node + 0x34);
+
+  if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
@@ -22425,13 +22433,13 @@ void FUN_00336630(int param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          u8 red = stack.output.chan.r;
-          u8 green = stack.output.chan.g;
-          u8 blue = stack.output.chan.b;
+          u8 red = ((volatile u8 *)&stack.output.chan)[0];
+          u8 green = ((volatile u8 *)&stack.output.chan)[1];
+          u8 blue = ((volatile u8 *)&stack.output.chan)[2];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
-          *(u8 *)(dst + 7) = stack.output.chan.a;
+          *(u8 *)(dst + 7) = ((volatile u8 *)&stack.output.chan)[3];
         } else {
           int dst;
           u8 red;
@@ -22440,10 +22448,10 @@ void FUN_00336630(int param_1)
           u8 outputAlpha;
           stack.output.chan.a = 0xfe;
           dst = *(int *)(entry + 10);
-          red = stack.output.chan.r;
-          green = stack.output.chan.g;
-          blue = stack.output.chan.b;
-          outputAlpha = stack.output.chan.a;
+          red = ((volatile u8 *)&stack.output.chan)[0];
+          green = ((volatile u8 *)&stack.output.chan)[1];
+          blue = ((volatile u8 *)&stack.output.chan)[2];
+          outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
@@ -23231,6 +23239,9 @@ void FUN_003377f0(u32 param_1)
   int count;
   int alpha;
   int modelAlpha;
+  int limit;
+
+  int nodeValue;
   f32 inv255;
   int index;
   u16 *entry;
@@ -23252,13 +23263,16 @@ void FUN_003377f0(u32 param_1)
   entryHolder = *(u32 **)(param_1 + 0x30);
   node = *(int *)(param_1 + 0x34);
   entries = (u32 *)*entryHolder;
-  if ((*(int *)(param_1 + 0x28) <= *(int *)(node + 0x34)) || (*(int *)(node + 0x34) == 0)) {
+  limit = *(volatile int *)(param_1 + 0x28);
+
+  nodeValue = *(volatile int *)(node + 0x34);
+
+  if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
     inv255 = DAT_007cae4c;
     __asm__ volatile (
-        ".set noreorder                      \n"
         "sw %1, 0xd8($sp)                   \n"
         "addiu $v0, $sp, 0xd8               \n"
         "lw $v0, 0($v0)                     \n"
@@ -23326,13 +23340,13 @@ void FUN_003377f0(u32 param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          u8 red = stack.output.chan.r;
-          u8 green = stack.output.chan.g;
-          u8 blue = stack.output.chan.b;
+          u8 red = ((volatile u8 *)&stack.output.chan)[0];
+          u8 green = ((volatile u8 *)&stack.output.chan)[1];
+          u8 blue = ((volatile u8 *)&stack.output.chan)[2];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
-          *(u8 *)(dst + 7) = stack.output.chan.a;
+          *(u8 *)(dst + 7) = ((volatile u8 *)&stack.output.chan)[3];
         } else {
           int dst;
           u8 red;
@@ -23341,10 +23355,10 @@ void FUN_003377f0(u32 param_1)
           u8 outputAlpha;
           stack.output.chan.a = 0xfe;
           dst = *(int *)(entry + 10);
-          red = stack.output.chan.r;
-          green = stack.output.chan.g;
-          blue = stack.output.chan.b;
-          outputAlpha = stack.output.chan.a;
+          red = ((volatile u8 *)&stack.output.chan)[0];
+          green = ((volatile u8 *)&stack.output.chan)[1];
+          blue = ((volatile u8 *)&stack.output.chan)[2];
+          outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
