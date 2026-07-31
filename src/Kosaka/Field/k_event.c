@@ -18,7 +18,7 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
 extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
 #pragma alias FUN_00318770_k_event_typed FUN_00318770
-extern void FUN_00318770_k_event_typed(void* model, u16 slot, f32 frame);
+extern void FUN_00318770_k_event_typed(u32 model, u32 slot, f32 frame);
 #pragma alias memset_k_event_typed memset
 extern void* memset_k_event_typed(void* dst, s32 value, u32 size);
 extern f32 acosf(f32 x);

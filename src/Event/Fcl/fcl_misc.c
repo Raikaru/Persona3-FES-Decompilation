@@ -1001,6 +1001,8 @@ void FUN_003c8fa0(void)
 #undef FUN_003c9000
 #pragma push
 #pragma opt_rebuildconditionals off
+// Conditional-rebuild pragma measured normalized_diff 76 -> 14; remaining
+// residuals are commutative mul.s operand order and result-register coloring.
 // FUN_003C9000 NONMATCHING
 
 
@@ -1953,6 +1955,8 @@ void FUN_003ca6b0(void)
 
 #define FUN_003ca6b0(...) ((void (*)(...))FUN_003ca6b0)(__VA_ARGS__)
 #undef FUN_003ca780
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_003CA780 NONMATCHING
 
 
@@ -1977,26 +1981,28 @@ FUN_003ca780(int param_1,int param_2,float param_3,float param_4,float param_5,
   *(u16 *)(iVar1 + 0x24) = param_9;
   *(u16 *)(iVar1 + 0x26) = param_10;
   *(float *)(iVar1 + 0x20) = param_4;
-  param_5 = param_5 * 4096.0f;
-  if (param_5 < 2.1474836e+09f) {
-    uVar3 = (u16)(int)param_5;
-  }
-  else {
-    uVar3 = (u16)(int)(param_5 - 2.1474836e+09f);
-  }
+  param_5 = 4096.0f * param_5;
+  if (2147483648.0f <= param_5) goto scale_x_high_ca780;
+  uVar3 = (u16)(int)param_5;
+  goto scale_x_done_ca780;
+scale_x_high_ca780:
+  uVar3 = (u16)(0x80000000 | (u32)(int)(param_5 - 2147483648.0f));
+scale_x_done_ca780:
   *(u16 *)(iVar1 + 0x28) = uVar3;
-  param_6 = param_6 * 4096.0f;
-  if (param_6 < 2.1474836e+09f) {
-    uVar3 = (u16)(int)param_6;
-  }
-  else {
-    uVar3 = (u16)(int)(param_6 - 2.1474836e+09f);
-  }
+
+  param_6 = 4096.0f * param_6;
+  if (2147483648.0f <= param_6) goto scale_y_high_ca780;
+  uVar3 = (u16)(int)param_6;
+  goto scale_y_done_ca780;
+scale_y_high_ca780:
+  uVar3 = (u16)(0x80000000 | (u32)(int)(param_6 - 2147483648.0f));
+scale_y_done_ca780:
   *(u16 *)(iVar1 + 0x2a) = uVar3;
   FUN_001127d0(uVar2,1);
   FUN_00115980(uVar2);
   return 0;
 }
+#pragma pop
 #define FUN_003ca780(...) fclMiscCa780Call(__VA_ARGS__)
 #undef FUN_003ca960
 // FUN_003CA960 NONMATCHING
