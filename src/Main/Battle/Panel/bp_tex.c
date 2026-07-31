@@ -1812,19 +1812,21 @@ u32* bpTexGetCurrentNode(void)
 u32* bpTexFindNodeById(u32 id)
 {
     u32* node;
+    u32* result;
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
          node != NULL;
          node = (u32*)node[0x3f1])
     {
+        result = node;
         if ((node[0] & 2) == 0 && node[4] == id)
         {
             break;
         }
     }
     K_ASSERT(node != NULL, 0x47a);
-    return node;
+    return result;
 }
 // FUN_002561E0
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
@@ -2115,7 +2117,7 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
     *count = childCount;
 }
 
-// FUN_00256FA0
+// FUN_00256FA0 NONMATCHING
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
     struct BpTexCollectScratch

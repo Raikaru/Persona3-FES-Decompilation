@@ -4387,71 +4387,6 @@ void FUN_001FF410(void)
     func_0027bae0();
 }
 
-// FUN_001FF430
-u32 FUN_001FF430(u32 id)
-{
-    s32 i;
-    u8* base;
-    u8* node;
-
-    base = DAT_007ce3ec;
-    K_ASSERT(base != NULL, 0x2f);
-    for (i = 0; i < 4; i++)
-    {
-        node = *(u8**)(base + 0x150 + i * 8);
-        while (node != NULL)
-        {
-            if ((~*(u32*)(node + 0x9c) & 8) == 0 &&
-                *(u32*)(node + 0xa8) == id)
-            {
-                return (u32)node;
-            }
-            node = *(u8**)(node + 0xa34);
-        }
-    }
-    K_ASSERT(0, 0x3d);
-    return 0;
-}
-
-// FUN_001FF630
-u32 FUN_001FF630(u32 index)
-{
-    u8* base;
-    u8* scan;
-    u8* node;
-    s32 count;
-
-    base = DAT_007ce3ec;
-    K_ASSERT(base != NULL, 0x88);
-    scan = DAT_007ce3ec;
-    K_ASSERT(scan != NULL, 0x5d);
-    count = 0;
-    node = *(u8**)(scan + 0x150);
-    while (node != NULL)
-    {
-        if ((~*(u32*)(node + 0x9c) & 8) == 0)
-        {
-            count++;
-        }
-        node = *(u8**)(node + 0xa34);
-    }
-    count--;
-    node = *(u8**)(base + 0x150);
-    while (node != NULL)
-    {
-        if ((~*(u32*)(node + 0x9c) & 8) == 0)
-        {
-            if (count == index)
-            {
-                return *(u16*)(node + 0xa4);
-            }
-            count--;
-        }
-        node = *(u8**)(node + 0xa34);
-    }
-    K_ASSERT(0, 0x99);
-    return 0;
-}
 
 void* func_0021c5d0(void);
 void* func_0021c640(void);
@@ -4468,7 +4403,6 @@ void bpRushRequestHide(void);
 void bpRushClearHideRequest(void);
 void func_002083d0(void);
 
-// W112BpRoot reconstruction: retail request-mask logging and state-transition paths recovered.
 // FUN_001FF890 NONMATCHING
 void FUN_001ff890(void)
 {

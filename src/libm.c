@@ -385,17 +385,23 @@ u64 FUN_0052eac8(u64 param_1)
   return (u64)(uVar1 | uVar2);
 }
 #pragma optimization_level 2
+#pragma opt_loop_invariants on
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
+#pragma opt_dead_assignments off
 // FUN_0052EB60 NONMATCHING
-void FUN_0052eb60(u64 param_1)
+void FUN_0052eb60(u32 param_1)
 
 {
   u64 uVar1;
   u64 uVar2;
   
-  if (((u64)-0x800 >> 0xa < (u64)param_1 + ((u64)-0x800 >> 0xb)) && ((param_1 & 0x7ff) != 0)) {
+  if ((0x3ffffffffffffe < param_1 + 0x1fffffffffffff) && ((param_1 & 0x7ff) != 0)) {
     param_1 = param_1 | 0x800;
   }
-  uVar1 = FUN_00531720_u64(param_1 >> 0x20);
+  uVar1 = FUN_00531720_u64((long)param_1 >> 0x20);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
   uVar2 = FUN_00531720_u64((int)param_1);
@@ -406,6 +412,12 @@ void FUN_0052eb60(u64 param_1)
   FUN_005318a0_void(uVar1);
   return;
 }
+#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 #pragma optimization_level 3
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)

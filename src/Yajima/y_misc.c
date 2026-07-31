@@ -43,11 +43,6 @@ typedef struct YPositionWork {
     u8 pad_0f0[4];
     s16 counter1;
 } YPositionWork;
-#ifndef RWPLCORE_H
-typedef struct RwV2d { f32 x; f32 y; } RwV2d;
-typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
-typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
-#endif
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -364,6 +359,11 @@ u8 *PTR_DAT_007cd540;
 #include "sce/eeregs.h"
 
 // FUN_004241d0
+#ifndef RWPLCORE_H
+typedef struct RwV2d { f32 x; f32 y; } RwV2d;
+typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
+typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
+#endif
 u32 Y_Misc_GetT0Count()
 {
     return DGET_T0_COUNT();
