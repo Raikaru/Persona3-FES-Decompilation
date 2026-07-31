@@ -2306,10 +2306,12 @@ void func_001d1fa0(void)
     {
         case 0:
         case 1:
+            break;
         case 2:
+            count = 10;
+            break;
         case 3:
         case 4:
-            count = 10;
             break;
     }
     if (count == 0)
