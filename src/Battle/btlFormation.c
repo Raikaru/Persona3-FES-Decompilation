@@ -4947,8 +4947,9 @@ void func_002bf9b0(void)
           else {
             alpha = 0;
           }
+          firstZero = zero;
           callColor = alpha | 0xb4736400;
-          func_002bce10(zero, zero, (u8*)entry, callColor,
+          func_002bce10(firstZero, zero, (u8*)entry, callColor,
                         (float *)((u8 *)(uintptr_t)entry + 0xa04));
         }
       }

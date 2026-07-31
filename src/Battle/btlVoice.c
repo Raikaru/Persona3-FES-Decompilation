@@ -3116,7 +3116,7 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
       hpDelta = param_3->hpDelta;
       if (hpDelta < 0) {
         if (*(int *)(DAT_007ce3ec + 0xb48) == 1) {
-          if (-hpDelta < *(int *)(DAT_007ce3ec + 0xb4c)) {
+          if (*(int *)(DAT_007ce3ec + 0xb4c) > -hpDelta) {
             *(int *)(DAT_007ce3ec + 0xb4c) = *(int *)(DAT_007ce3ec + 0xb4c) + hpDelta;
           }
           else {

@@ -77,6 +77,8 @@ void K_Assert();
 
 
 extern char DAT_006A6020[];
+#pragma alias DAT_006A6020_abs DAT_006A6020
+extern u8 DAT_006A6020_abs[];
 typedef unsigned char byte;
 
 typedef struct FclList FclList;
@@ -1924,7 +1926,7 @@ s32 fclCombineList003de160(FclSelection* selection)
     return 0;
 }
 
-// FUN_003de290 NONMATCHING
+// FUN_003de290
 FclList* fclCombineList003de290(void* input, s32 state)
 {
     FclOwner* task;
@@ -1942,7 +1944,7 @@ FclList* fclCombineList003de290(void* input, s32 state)
         capacity = 6;
         break;
     default:
-        K_Assert(DAT_006A6020, 0x966);
+        K_Assert(DAT_006A6020_abs, 0x966);
         break;
     }
     task = FUN_003c58f0(0, capacity * 4 + 0x1b0, 0xc, 0x18);
