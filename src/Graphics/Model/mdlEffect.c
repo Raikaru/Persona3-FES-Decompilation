@@ -957,7 +957,7 @@ int FUN_003261c0(int param_1,int param_2);
 int FUN_00326200(int param_1,int param_2);
 int FUN_00326240(int param_1,int param_2);
 void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16]);
-void FUN_003263b0(u8 *param_1,u8 *param_2,u8 (*param_3) [16]);
+void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16]);
 u32 FUN_00326490(u32 param_1);
 u32 FUN_00326510(u32 param_1);
 void FUN_00326740(int param_1);
@@ -6263,7 +6263,7 @@ void FUN_003252a0(u64 param_1)
 
     savedTransform = *(u_long128 *)pauVar7[5];
 
-    FUN_003263b0((u8 *)(u32)param_1,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+    FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
     FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
@@ -6354,7 +6354,7 @@ void FUN_003252a0(u64 param_1)
 
       if ((*(u32 *)(iVar3 + 0x68) & 0x60) != 0) {
 
-        FUN_003263b0((u8 *)(u32)iVar3,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+        FUN_003263b0((int)(iVar3),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
         uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
@@ -6441,7 +6441,7 @@ void FUN_00325500(u64 param_1)
 
       savedTransform = *(u_long128 *)pauVar8[5];
 
-      FUN_003263b0((u8 *)(u32)param_1,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+      FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
       FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
@@ -6526,7 +6526,7 @@ void FUN_00325500(u64 param_1)
 
           if ((*(u32 *)(iVar4 + 0x68) & 0x60) != 0) {
 
-            FUN_003263b0((u8 *)(u32)iVar4,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+            FUN_003263b0((int)(iVar4),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
             uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
@@ -7425,7 +7425,7 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 // FUN_003263B0 NONMATCHING
-void FUN_003263b0(u8 *param_1,u8 *param_2,u8 (*param_3) [16])
+void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 
