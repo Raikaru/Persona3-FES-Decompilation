@@ -6106,7 +6106,6 @@ void h_campStatusDrawViewport(void* texture, CampVec2 position, f32 x,
 #pragma pop
 
 #pragma opt_common_subs off
-#pragma opt_lifetimes on
 // FUN_001269A0 NONMATCHING
 void* h_campStatusUpdatePartsTask(KwlnTask* task)
 {
@@ -6320,7 +6319,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 
 #pragma opt_loop_invariants on
 #pragma opt_common_subs reset
-#pragma opt_lifetimes reset
+#pragma opt_common_subs off
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 {
@@ -6409,6 +6408,7 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 #pragma opt_loop_invariants reset
 
 #pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 // FUN_00127A40
 void h_campStatusDestroyPartsTask(KwlnTask* task)
 {
