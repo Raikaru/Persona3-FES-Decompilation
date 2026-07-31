@@ -17985,7 +17985,8 @@ void FUN_00331650(int param_1)
 
             uStack_2c = (u32)((u32)*(u64 *)*pauVar14 >> 0x20);
 
-            ((code)FUN_0032a770)(pauVar14,pauVar4,*(u32 *)pauVar14[1]);
+            FUN_0032a770_u32(pauVar14,(int)(pauVar4),*(u32 *)pauVar14[1],
+                             (u8 (*)[16])(&uStack_30));
 
             *(float *)(pauVar14[1] + 8) = *(float *)(pauVar14[1] + 8) * pfVar13[0xd];
 
