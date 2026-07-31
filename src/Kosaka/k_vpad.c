@@ -30,6 +30,188 @@ typedef struct FieldArchiveRequest FieldArchiveRequest;
 #include "h_cdvd.h"
 #include "Kosaka/Field/k_fieldRuntime.h"
 
+typedef struct RuntimeTask RuntimeTask;
+typedef struct RuntimeWork RuntimeWork;
+typedef struct RuntimeListNode RuntimeListNode;
+typedef struct RuntimeVec3
+{
+    f32 x;
+    f32 y;
+    f32 z;
+} RuntimeVec3;
+typedef struct RuntimeRenderCollection
+{
+    u32 flags;
+    u8* input;
+    u8* entries;
+    void** renderObjects;
+    u8* commands;
+    RuntimeVec3* worldPositions;
+} RuntimeRenderCollection;
+struct RuntimeTask
+{
+    u8 reserved[0x3c];
+    RuntimeWork* workData;
+};
+struct RuntimeWork
+{
+    u32 flags;
+    u32 requestFlags;
+    u32 completedFlags;
+    u32 state;
+    u32 phase;
+    u32 selection;
+    u32 currentIndex;
+    u32 count;
+    void* owner;
+    void* resource;
+    void* renderData;
+    void* childTask;
+    RuntimeListNode* previous;
+    RuntimeListNode* next;
+    RuntimeVec3* positions;
+    RuntimeVec3* normals;
+    u32 slots[1024];
+};
+typedef struct RuntimeTransitionWork
+{
+    u32 state;
+    void* windowTask;
+    u32 flags;
+    u32 reserved0c;
+    u16 resourceId;
+    u8 reserved12[2];
+    void* positionTask;
+} RuntimeTransitionWork;
+typedef struct RuntimeFieldEditorWork
+{
+    u32 state;
+    void* controllerTask;
+    void* noticeTask;
+    void* menuTask;
+    void* choiceTask;
+    s32 selection;
+} RuntimeFieldEditorWork;
+typedef struct RuntimeControllerWork RuntimeControllerWork;
+struct RuntimeControllerWork
+{
+    u32 state;
+    void* windowTask;
+    void* secondaryTask;
+    u32 count;
+    u16 majorId;
+    u16 minorId;
+    u16 resourceId;
+    u8 type;
+    u8 flags;
+    f32 angle;
+    u32 value;
+    u8 sourceType;
+    u8 sourceFlags;
+    u8 reserved22[2];
+    f32 scale;
+    void* model;
+    void* controller;
+};
+struct RuntimeListNode
+{
+    u32 flags;
+    RuntimeWork* work;
+    void* vertices;
+    void* renderObjects;
+    u8 reserved[8];
+    RuntimeListNode* previous;
+    RuntimeListNode* next;
+};
+typedef struct RuntimeMatrix
+{
+    f32 values[16];
+} RuntimeMatrix;
+typedef struct RuntimeTransitionAngles
+{
+    u8 reserved[0x24];
+    RuntimeVec3 value;
+} RuntimeTransitionAngles;
+typedef struct RuntimeResetWork
+{
+    u32 flags;
+    u32 value;
+    u32 completedFlags;
+    u32 reserved;
+    void* work;
+} RuntimeResetWork;
+typedef struct RuntimePathWork
+{
+    u32 flags;
+    RuntimeVec3* firstVectors;
+    RuntimeVec3* secondVectors;
+    RuntimeVec3* thirdVectors;
+    RuntimeMatrix* matrix;
+    u32 rowCount;
+    u32 columnCount;
+    u32 reserved;
+    u8 color[4];
+} RuntimePathWork;
+typedef struct RuntimeDistanceWork
+{
+    void** config;
+    u8 reserved04[4];
+    s32 count;
+    u8 reserved0c[4];
+    RuntimeVec3* firstVectors;
+    RuntimeVec3* secondVectors;
+} RuntimeDistanceWork;
+typedef struct RuntimeCommandWork
+{
+    u32 flags;
+    u16* cursor;
+    u8 reserved08[8];
+    RuntimeWork* target;
+    u32 elapsed;
+    u16 delay;
+    u16 reserved1a;
+    u32 duration;
+} RuntimeCommandWork;
+typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
+typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
+typedef struct FieldArchiveRequest FieldArchiveRequest;
+struct FieldRuntimeResourceNode
+{
+    void* resource;
+    u16 areaId;
+    u16 roomId;
+    u16 resourceId;
+    u8 type;
+    u8 flags;
+    f32 angle;
+    u32 value;
+    u8 reserved14[0x0c];
+    RuntimeMatrix matrix;
+    u8 state;
+    u8 sourceType;
+    u8 reserved62[2];
+    f32 scale;
+    FieldRuntimeResourceNode* previous;
+    FieldRuntimeResourceNode* next;
+};
+struct FieldRuntimeTaskNode
+{
+    void* task;
+    u8 reserved04[0x0c];
+    RuntimeMatrix matrix;
+    u16 resourceId;
+    u8 reserved52[2];
+    FieldRuntimeTaskNode* previous;
+    FieldRuntimeTaskNode* next;
+    u8 reserved5c[4];
+};
+struct FieldArchiveRequest
+{
+    u8 reserved0[0x110];
+    void* data;
+    u8 reserved1[4];
+    u32 size;
+};
 typedef struct Model Model;
 extern Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode);
 extern Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode);
@@ -335,188 +517,6 @@ extern char D_00684560[];
 extern RuntimeWork* D_007CE2D8;
 extern u32 D_007CDF0C;
 
-typedef struct RuntimeTask RuntimeTask;
-typedef struct RuntimeWork RuntimeWork;
-typedef struct RuntimeListNode RuntimeListNode;
-typedef struct RuntimeVec3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-} RuntimeVec3;
-typedef struct RuntimeRenderCollection
-{
-    u32 flags;
-    u8* input;
-    u8* entries;
-    void** renderObjects;
-    u8* commands;
-    RuntimeVec3* worldPositions;
-} RuntimeRenderCollection;
-struct RuntimeTask
-{
-    u8 reserved[0x3c];
-    RuntimeWork* workData;
-};
-struct RuntimeWork
-{
-    u32 flags;
-    u32 requestFlags;
-    u32 completedFlags;
-    u32 state;
-    u32 phase;
-    u32 selection;
-    u32 currentIndex;
-    u32 count;
-    void* owner;
-    void* resource;
-    void* renderData;
-    void* childTask;
-    RuntimeListNode* previous;
-    RuntimeListNode* next;
-    RuntimeVec3* positions;
-    RuntimeVec3* normals;
-    u32 slots[1024];
-};
-typedef struct RuntimeTransitionWork
-{
-    u32 state;
-    void* windowTask;
-    u32 flags;
-    u32 reserved0c;
-    u16 resourceId;
-    u8 reserved12[2];
-    void* positionTask;
-} RuntimeTransitionWork;
-typedef struct RuntimeFieldEditorWork
-{
-    u32 state;
-    void* controllerTask;
-    void* noticeTask;
-    void* menuTask;
-    void* choiceTask;
-    s32 selection;
-} RuntimeFieldEditorWork;
-typedef struct RuntimeControllerWork RuntimeControllerWork;
-struct RuntimeControllerWork
-{
-    u32 state;
-    void* windowTask;
-    void* secondaryTask;
-    u32 count;
-    u16 majorId;
-    u16 minorId;
-    u16 resourceId;
-    u8 type;
-    u8 flags;
-    f32 angle;
-    u32 value;
-    u8 sourceType;
-    u8 sourceFlags;
-    u8 reserved22[2];
-    f32 scale;
-    void* model;
-    void* controller;
-};
-struct RuntimeListNode
-{
-    u32 flags;
-    RuntimeWork* work;
-    void* vertices;
-    void* renderObjects;
-    u8 reserved[8];
-    RuntimeListNode* previous;
-    RuntimeListNode* next;
-};
-typedef struct RuntimeMatrix
-{
-    f32 values[16];
-} RuntimeMatrix;
-typedef struct RuntimeTransitionAngles
-{
-    u8 reserved[0x24];
-    RuntimeVec3 value;
-} RuntimeTransitionAngles;
-typedef struct RuntimeResetWork
-{
-    u32 flags;
-    u32 value;
-    u32 completedFlags;
-    u32 reserved;
-    void* work;
-} RuntimeResetWork;
-typedef struct RuntimePathWork
-{
-    u32 flags;
-    RuntimeVec3* firstVectors;
-    RuntimeVec3* secondVectors;
-    RuntimeVec3* thirdVectors;
-    RuntimeMatrix* matrix;
-    u32 rowCount;
-    u32 columnCount;
-    u32 reserved;
-    u8 color[4];
-} RuntimePathWork;
-typedef struct RuntimeDistanceWork
-{
-    void** config;
-    u8 reserved04[4];
-    s32 count;
-    u8 reserved0c[4];
-    RuntimeVec3* firstVectors;
-    RuntimeVec3* secondVectors;
-} RuntimeDistanceWork;
-typedef struct RuntimeCommandWork
-{
-    u32 flags;
-    u16* cursor;
-    u8 reserved08[8];
-    RuntimeWork* target;
-    u32 elapsed;
-    u16 delay;
-    u16 reserved1a;
-    u32 duration;
-} RuntimeCommandWork;
-typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
-typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
-typedef struct FieldArchiveRequest FieldArchiveRequest;
-struct FieldRuntimeResourceNode
-{
-    void* resource;
-    u16 areaId;
-    u16 roomId;
-    u16 resourceId;
-    u8 type;
-    u8 flags;
-    f32 angle;
-    u32 value;
-    u8 reserved14[0x0c];
-    RuntimeMatrix matrix;
-    u8 state;
-    u8 sourceType;
-    u8 reserved62[2];
-    f32 scale;
-    FieldRuntimeResourceNode* previous;
-    FieldRuntimeResourceNode* next;
-};
-struct FieldRuntimeTaskNode
-{
-    void* task;
-    u8 reserved04[0x0c];
-    RuntimeMatrix matrix;
-    u16 resourceId;
-    u8 reserved52[2];
-    FieldRuntimeTaskNode* previous;
-    FieldRuntimeTaskNode* next;
-    u8 reserved5c[4];
-};
-struct FieldArchiveRequest
-{
-    u8 reserved0[0x110];
-    void* data;
-    u8 reserved1[4];
-    u32 size;
-};
 extern void* func_00316b40(s32 majorId, s32 minorId, const char* path,
                            s32 mode);
 extern void func_001ed0f0(f32 amount, const RuntimeWork* work, s32 channel,

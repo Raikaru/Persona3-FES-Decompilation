@@ -1,5 +1,6 @@
 #include "Yajima/y_misc.h"
 #include "Yajima/y_runtime.h"
+#include "temporary.h"
 typedef struct YajimaVec2 {
     f32 x;
     f32 y;
@@ -43,6 +44,7 @@ typedef struct YPositionWork {
     u8 pad_0f0[4];
     s16 counter1;
 } YPositionWork;
+#ifndef RWPLCORE_H
 #ifndef Y_MISC_RW_TYPES
 #define Y_MISC_RW_TYPES
 typedef struct RwV2d { f32 x; f32 y; } RwV2d;
@@ -60,6 +62,7 @@ typedef struct RwMatrixTag {
 } RwMatrix;
 typedef struct RwCamera RwCamera;
 typedef struct RwFrame RwFrame;
+#endif
 #endif
 #pragma alias RwCameraBeginUpdate_u32 RwCameraBeginUpdate
 extern int RwCameraBeginUpdate_u32(u32 camera);
