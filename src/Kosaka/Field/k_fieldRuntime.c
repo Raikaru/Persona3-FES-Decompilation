@@ -1360,7 +1360,8 @@ HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant)
  * build model arrays, resolve both supplemental descriptor tables, and place
  * every field record. */
 // FUN_001E2E50 NONMATCHING
-u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId, s16 variant)
+u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
+                  u16 majorId, u16 minorId, s16 variant)
 {
     typedef struct RuntimeSupplementalEntry
     {
@@ -6672,10 +6673,10 @@ void func_001edbe0(RuntimeRenderCollection* work)
     void* material;
     RuntimeVec3 first;
     RuntimeVec3 second;
+    f32 delta;
     RuntimeColor color;
     u32 commandResult;
     u32 frameValue;
-    f32 delta;
     s32 index;
     s32 active;
 
@@ -6757,12 +6758,12 @@ void func_001edbe0(RuntimeRenderCollection* work)
         }
 
         {
-            u8* tailEntry;
-        tailEntry = work->entries + index * 0x4c;
+            u32 tailOffset;
+            tailOffset = index * 0x4c;
         func_001ed0d0(
-            (RuntimeWork*)tailEntry, &delta);
+            (RuntimeWork*)(work->entries + tailOffset), &delta);
         frameValue = *(u32*)((u8*)work->renderObjects[index * 2] + 0x18);
-        func_001e9af0((RuntimeWork*)tailEntry, &frameValue);
+        func_001e9af0((RuntimeWork*)(work->entries + tailOffset), &frameValue);
         }
     }
 }

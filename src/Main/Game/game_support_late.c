@@ -1975,7 +1975,10 @@ void* func_0018eb40(KwlnTask* task)
         dimensions.valueS[2] = 0xb;
         switch (GS_U32(work, 4))
         {
+        case 0:
+        case 1:
         case 2:
+        case 6:
             dimensions.valueS[3] = 0;
             break;
         case 3:
@@ -1986,11 +1989,6 @@ void* func_0018eb40(KwlnTask* task)
             break;
         case 5:
             dimensions.valueS[3] = 3;
-            break;
-        case 0:
-        case 1:
-        case 6:
-            dimensions.valueS[3] = 0;
             break;
         case 7:
             dimensions.valueS[3] = 4;

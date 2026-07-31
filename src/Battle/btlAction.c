@@ -6537,11 +6537,9 @@ void btlActionInitStateEscapeMes(BtlAction* action)
     action->unk_488 = 0;
     ACTION_U16(action, 0x48c) = 0xc;
 }
-#pragma opt_lifetimes off
 // FUN_00296660 NONMATCHING
 void btlActionUpdateStateEscapeMes(BtlAction* action)
 {
-    BtlPacket* packet;
 
     if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) != NULL)
     {
@@ -6570,6 +6568,7 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
         *(s16*)action->unkData4 == -1 &&
         FUN_001ff2b0())
     {
+        BtlPacket* packet;
         FUN_001ff2f0();
         packet = FUN_002e41d0();
         packet->actionUID = action->uid;
@@ -6593,7 +6592,6 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
         btlActionSetState(action, action->target.commandId);
     }
 }
-#pragma opt_lifetimes on
 
 BtlPacket* func_002bfb50(void);
 BtlPacket* func_002bfae0(void);

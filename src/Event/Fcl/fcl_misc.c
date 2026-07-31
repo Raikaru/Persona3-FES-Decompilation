@@ -398,10 +398,10 @@ u32 FUN_003c8400(u32 param_1,int param_2)
   int iVar6;
 
   if (param_1 == 0) {
-    FUN_0019d3f0("fclMisc.c",0x396);
+    FUN_0019d3f0(DAT_006a3e18_abs,0x396);
   }
   if ((param_2 < 0) || (0xb < param_2)) {
-    FUN_0019d3f0("fclMisc.c",0x397);
+    FUN_0019d3f0(DAT_006a3e18_abs,0x397);
   }
   iVar6 = (int)param_1;
   puVar5 = (u32 *)(iVar6 + param_2 * 0xc + 0x1c);
@@ -999,6 +999,8 @@ void FUN_003c8fa0(void)
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_003C9000 NONMATCHING
 
 
@@ -1014,7 +1016,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   int iVar2;
 
   u32 offset;
-  u32 uVar3;
+  u16 uVar3;
 
   
 
@@ -1035,11 +1037,23 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    uVar3 = (u32)(f32)(4096.0f * param_2);
-    *(u16 *)(iVar2 + 0x28) = (u16)uVar3;
+    param_2 = 4096.0f * param_2;
+    if (2147483648.0f <= param_2) goto scale_x_high_9000;
+    uVar3 = (u16)(int)param_2;
+    goto scale_x_done_9000;
+scale_x_high_9000:
+    uVar3 = (u16)(0x80000000 | (u32)(int)(param_2 - 2147483648.0f));
+scale_x_done_9000:
+    *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    uVar3 = (u32)(f32)(4096.0f * param_3);
-    *(u16 *)(iVar2 + 0x2a) = (u16)uVar3;
+    param_3 = 4096.0f * param_3;
+    if (2147483648.0f <= param_3) goto scale_y_high_9000;
+    uVar3 = (u16)(int)param_3;
+    goto scale_y_done_9000;
+scale_y_high_9000:
+    uVar3 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
+scale_y_done_9000:
+    *(u16 *)(iVar2 + 0x2a) = uVar3;
 
     FUN_001127d0(uVar1,1);
 
@@ -1050,6 +1064,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   return;
 
 }
+#pragma pop
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #undef FUN_003c91b0
 // FUN_003C91B0

@@ -511,17 +511,11 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         val %= 100;
         dx += 15.0f;
     }
-    if (val >= 10) {
+    if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
         val %= 10;
-        dx += 15.0f;
-    }
-    else if (hundreds != 0) {
-        font = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, font, 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha);
         dx += 15.0f;
     }
     font = campStatusGetFont(2);
@@ -539,17 +533,11 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         val %= 100;
         dx += 15.0f;
     }
-    if (val >= 10) {
+    if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
                                      (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 10;
-        dx += 15.0f;
-    }
-    else if (hundreds != 0) {
-        font = campStatusGetFont(2);
-        campStatusDrawSpriteFadeCall(parent, font, 0xb,
-                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         dx += 15.0f;
     }
     font = campStatusGetFont(2);

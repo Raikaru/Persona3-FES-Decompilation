@@ -6517,13 +6517,14 @@ int FUN_0030c0c0(void)
   outer = 0;
   current = (u16)currentValue;
   for (; outer < 0x20; outer = (outer + 1) & 0xffff) {
+    entry = (u8 *)DAT_007ce3fc;
     offset = outer * 6;
-    entry = (u8*)(DAT_007ce3fc + offset);
+    entry += offset;
     if (current == *(u16 *)(entry + 2)) {
       target = *(u16 *)(entry + 4);
     }
     else if (current == *(u16 *)(entry + 4)) {
-      target = *(u16 *)(entry + 4);
+      target = *(u16 *)(entry + 2);
     }
     else {
       continue;

@@ -951,8 +951,8 @@ void FUN_0012e3b0(CampEquipWork* work, s32 index, u8* record)
 
     for (i = 0; i < 4; i++) {
         s16 equipment;
-        u16 id;
-        u8 effect;
+        s16 id;
+        s16 effect;
 
         equipment = datGetEquipmentIdx(work->pcId,
                                        (s16)i);
