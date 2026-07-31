@@ -2109,6 +2109,8 @@ int FUN_00361f20(int param_1)
 }
 
 
+/* W367 pragma probe: opt_loop_invariants on nd 61 -> 36; off nd 61; object 116/128. */
+#pragma opt_loop_invariants on
 // FUN_00361F60 NONMATCHING
 
 
@@ -2132,6 +2134,7 @@ int FUN_00361f60(int param_1,int param_2)
 // Two honest branch-layout attempts were measured and reverted: an early return
 // from the search loop regressed nd108 -> nd173/size260 -> 264; inverting the
 // call test plus an early post-loop return regressed to nd118/size272.
+#pragma opt_loop_invariants reset
 // FUN_00361FE0 NONMATCHING
 
 
@@ -2651,6 +2654,8 @@ void FUN_003625e0(void)
 }
 
 
+/* W367 pragma probe: opt_propagation off nd 1120 -> 1076; on nd 1120; object 1504/1584. */
+#pragma opt_propagation off
 // FUN_003628F0 NONMATCHING
 
 
@@ -2954,6 +2959,7 @@ void FUN_003628f0(void)
 }
 
 
+#pragma opt_propagation reset
 // FUN_00362F20
 
 
@@ -3027,6 +3033,8 @@ void FUN_00362ff0(int param_1)
 }
 
 
+/* W367 pragma probe: opt_dead_assignments off nd 1471 -> 1426; on nd 1471; object 2220/2224. Stacked loop invariants exceeded the window (nd 1465, object 2228/2224). */
+#pragma opt_dead_assignments off
 // FUN_00363030 NONMATCHING
 
 
@@ -3499,6 +3507,9 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 }
 
 
+#pragma opt_dead_assignments reset
+/* W367 pragma probe: opt_lifetimes on nd 1957 -> 1953; off nd 1957; object 2828/2960. */
+#pragma opt_lifetimes on
 // FUN_003638E0 NONMATCHING
 
 
@@ -4366,6 +4377,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 // b210 floor: the only residual is call-argument setup order. At +0xc8/+0xcc,
 // retail loads a2 before a0; at +0xec..+0x100, retail loads v0/addiu/andi,
 // a3/t0 before a0, while b210 emits the independent a0 load first.
+#pragma opt_lifetimes reset
 // FUN_00364470
 
 u16 * FUN_00364470(u32 param_1,int param_2)
@@ -4455,6 +4467,8 @@ u16 * FUN_003645c0(u32 param_1,int param_2)
 }
 
 
+/* W367 pragma probe: opt_common_subs off nd 296 -> 280; on nd 296; object 512/528. */
+#pragma opt_common_subs off
 // FUN_003646D0 NONMATCHING
 
 
@@ -4589,6 +4603,7 @@ u16 * FUN_003646d0(u32 param_1,int param_2)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_003648E0
 
 
@@ -5011,6 +5026,8 @@ void FUN_00364e40(u32 param_1,int param_2,int param_3)
 
 // The first divergence suggests a 0x000ffc00 mask, but that informed spelling
 // regressed nd219 -> nd224 and size392 -> 396, so it was reverted.
+/* W367 pragma probe: opt_common_subs off nd 239 -> 170; on nd 239; object 400/400. */
+#pragma opt_common_subs off
 // FUN_003650C0 NONMATCHING
 
 
@@ -5101,6 +5118,7 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
 // Corrected the case-0 byte contract to u8 (retail lbu). The seven remaining
 // differing words are b210 call-argument setup order at +0x8c/+0x90 and
 // +0xc8/+0xcc: retail materializes a1 before the independent a0 load.
+#pragma opt_common_subs reset
 // FUN_00365250
 
 
@@ -5924,6 +5942,8 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 }
 
 
+/* W367 pragma probe: opt_loop_invariants on nd 103 -> 91; off nd 103; object 288/288. */
+#pragma opt_loop_invariants on
 // FUN_00366210 NONMATCHING
 
 
@@ -5972,6 +5992,7 @@ void FUN_00366210(u32 param_1,int param_2)
 }
 
 
+#pragma opt_loop_invariants reset
 // FUN_00366330
 
 
@@ -6106,6 +6127,8 @@ next:
 }
 
 
+/* W367 pragma probe: opt_lifetimes on nd 404 -> 301; off nd 404; object 780/784. */
+#pragma opt_lifetimes on
 // FUN_00366660 NONMATCHING
 
 
@@ -6297,6 +6320,9 @@ LAB_00366928:;
 }
 
 
+#pragma opt_lifetimes reset
+/* W367 pragma probe: opt_lifetimes on nd 135 -> 125; off nd 135; object 300/336. */
+#pragma opt_lifetimes on
 // FUN_00366970 NONMATCHING
 
 
@@ -6345,6 +6371,10 @@ void FUN_00366970(u32 param_1,u32 param_2)
 }
 
 
+#pragma opt_lifetimes reset
+/* W367 stacked probe: opt_loop_invariants + opt_lifetimes nd 451 -> 431; singles 447/436; object 984/992. */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00366AC0 NONMATCHING
 
 
@@ -6548,6 +6578,8 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 }
 
 
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 // FUN_00366EA0
 u32 FUN_00366ea0(void)
 {
@@ -6624,6 +6656,8 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
 // Removed an invented cast-only base local so the function uses param_3 directly.
 // This improves nd245 -> nd244 at unchanged size348/352; the remaining first
 // divergence is saved-register coloring and load/branch scheduling.
+/* W367 pragma probe: opt_common_subs off nd 244 -> 212; on nd 244; object 348/352. */
+#pragma opt_common_subs off
 // FUN_00366F90 NONMATCHING
 
 
@@ -6718,6 +6752,7 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_003670F0
 
 u32 FUN_003670f0(int param_1,int param_2,int param_3)
@@ -7023,6 +7058,8 @@ u32 FUN_00367440(int param_1,int param_2,int param_3)
 }
 
 
+/* W367 pragma probe: opt_common_subs off nd 836 -> 766; on nd 836; object 1388/1392. */
+#pragma opt_common_subs off
 // FUN_003674B0 NONMATCHING
 
 
@@ -7349,6 +7386,7 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_00367A20
 
 
@@ -9044,6 +9082,8 @@ u32 FUN_00368d70(u64 param_1,u64 param_2,int param_3)
 }
 
 
+/* W367 pragma probe: opt_loop_invariants on nd 296 -> 275; off nd 296; object 996/1024. */
+#pragma opt_loop_invariants on
 // FUN_00368F20 NONMATCHING
 
 
@@ -9271,6 +9311,9 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 }
 
 
+#pragma opt_loop_invariants reset
+/* W367 pragma probe: opt_loop_invariants on nd 886 -> 879; off nd 886; object 1396/1408. */
+#pragma opt_loop_invariants on
 // FUN_00369320 NONMATCHING
 
 
@@ -9591,6 +9634,7 @@ u64 FUN_00369320(u64 param_1,int param_2,u64 param_3)
 
 // Removing the decompiler's apparent t0 call-output assignment regressed
 // nd224 -> nd234 at unchanged size376/384, so the assignment was restored.
+#pragma opt_loop_invariants reset
 // FUN_003698A0 NONMATCHING
 
 
@@ -12653,6 +12697,8 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 }
 
 
+/* W367 pragma probe: opt_common_subs off nd 72 -> 61; on nd 72; object 744/752. */
+#pragma opt_common_subs off
 // FUN_0036D030 NONMATCHING
 
 
@@ -12785,6 +12831,7 @@ void FUN_0036d030(int param_1)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0036D320
 
 
@@ -13251,6 +13298,8 @@ u32 FUN_0036da10(int param_1)
 }
 
 
+/* W367 pragma probe: opt_common_subs off nd 977 -> 927; on nd 977; object 1564/1568. */
+#pragma opt_common_subs off
 // FUN_0036DB20 NONMATCHING
 
 
@@ -13626,6 +13675,7 @@ switchD_0036db68_caseD_10:
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0036E140
 
 
@@ -13957,6 +14007,8 @@ u32 FUN_0036e2f0(int param_1)
 }
 
 
+/* W367 pragma probe: opt_propagation off nd 1100 -> 1093; on nd 1100; object 1688/1696. */
+#pragma opt_propagation off
 // FUN_0036E690 NONMATCHING
 
 
@@ -14349,6 +14401,7 @@ code * FUN_0036e690(int param_1)
 }
 
 
+#pragma opt_propagation reset
 // FUN_0036ED30
 
 

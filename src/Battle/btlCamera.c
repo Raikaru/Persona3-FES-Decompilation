@@ -3919,8 +3919,6 @@ void btlCameraNoOp(void)
 
 #pragma opt_dead_assignments off
 #pragma opt_propagation reset
-/* W367 measured: opt_dead_assignments off nd1096 -> 946, object 1536/1552; baseline object 1540/1552. */
-#pragma opt_dead_assignments off
 // FUN_002b1060 NONMATCHING
 
 void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
@@ -4448,10 +4446,8 @@ void FUN_002b2060(int param_1)
 
 #pragma push
 #pragma opt_common_subs on
-#pragma opt_dead_assignments reset
-/* W367 measured: opt_lifetimes on + opt_propagation off nd3478 -> 3394, object 4308/4624; baseline object 4464/4624. */
-#pragma opt_lifetimes on
-#pragma opt_propagation off
+/* W367 measured: opt_dead_assignments off nd1096 -> 946, object 1536/1552; baseline object 1540/1552. */
+#pragma opt_dead_assignments off
 // FUN_002b21f0 NONMATCHING
 
 void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
@@ -4675,10 +4671,7 @@ void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
 #undef pointB
 #undef pointA
 }
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
-/* W367 measured: opt_lifetimes on nd639 -> 635, object 1484/1484; baseline object 1484/1484. */
-#pragma opt_lifetimes on
+#pragma opt_dead_assignments reset
 #pragma opt_common_subs on
 #pragma pop
 
@@ -6996,9 +6989,8 @@ done:
 #pragma opt_loop_invariants off
 
 
-#pragma opt_lifetimes reset
-/* W367 measured: opt_propagation off nd2117 -> 2094, object 3236/3248; baseline object 3248/3248. */
-#pragma opt_propagation off
+/* W367 measured: opt_lifetimes on nd639 -> 635, object 1484/1484; baseline object 1484/1484. */
+#pragma opt_lifetimes on
 // FUN_002b71e0 NONMATCHING
 
 void FUN_002b71e0(void)
@@ -7305,9 +7297,8 @@ void FUN_002b7bd0(u32 param_1,u32 param_2,float param_3,u16 param_4)
   *(u16 *)(work + 3) = param_4;
 }
 
-#pragma opt_propagation reset
-/* W367 measured: opt_lifetimes on + opt_propagation off nd3478 -> 3394, object 4308/4624; baseline object 4464/4624. */
-#pragma opt_lifetimes on
+#pragma opt_lifetimes reset
+/* W367 measured: opt_propagation off nd2117 -> 2094, object 3236/3248; baseline object 3248/3248. */
 #pragma opt_propagation off
 // FUN_002b7c50 NONMATCHING
 
@@ -7702,6 +7693,7 @@ void LAB_002b8970(u32 *work)
   (*(u16 *)(unit + 0xa0))++;
 }
 
+#pragma opt_propagation reset
 // FUN_002b8990 NONMATCHING
 
 undefined4 FUN_002b8990(undefined4 *param_1)
@@ -8225,9 +8217,8 @@ void func_002ab2a0(BtlCamera* camera)
   return;
 }
 
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
-/* W367 measured: opt_propagation off nd1247 -> 1240, object 1632/1648; baseline object 1648/1648. */
+/* W367 measured: opt_lifetimes on + opt_propagation off nd3478 -> 3394, object 4308/4624; baseline object 4464/4624. */
+#pragma opt_lifetimes on
 #pragma opt_propagation off
 // FUN_002AB330 NONMATCHING
 
@@ -8817,7 +8808,8 @@ extern void FUN_002a2290_c920(BtlCamera* camera, const RwV3d* start,
 extern void FUN_002a3110_c920(BtlCamera* camera, f32 step);
 
 #pragma opt_propagation reset
-/* W367 measured: opt_propagation off nd797 -> 635, object 1044/1088; baseline object 1068/1088. */
+#pragma opt_lifetimes reset
+/* W367 measured: opt_propagation off nd1247 -> 1240, object 1632/1648; baseline object 1648/1648. */
 #pragma opt_propagation off
 // FUN_002AC920 NONMATCHING
 
@@ -9012,6 +9004,7 @@ void func_002ac920(BtlCamera* camera, long unused)
 
 /* W331: removing the immediately overwritten local store and disabling dead-assignment folding measured 1780B/nd889 baseline; 1772B/nd965 without the pragma; 1768B/nd551 with it (window 1776B). */
 #pragma opt_dead_assignments off
+#pragma opt_propagation reset
 // FUN_002ACF90 NONMATCHING
 
 void func_002acf90(BtlCamera* camera, long unused)
@@ -9400,6 +9393,8 @@ void func_002ADD00(void)
   return;
 }
 
+/* W367 measured: opt_propagation off nd797 -> 635, object 1044/1088; baseline object 1068/1088. */
+#pragma opt_propagation off
 // FUN_002ADD10 NONMATCHING
 
 u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4)
@@ -9539,6 +9534,7 @@ u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4
     }
     return param_2;
 }
+#pragma opt_propagation reset
 
 // FUN_002AE150
 
@@ -9702,7 +9698,6 @@ void func_002ae730(void)
 {
 }
 
-#pragma opt_propagation reset
 /* W367 measured: opt_lifetimes on nd849 -> 848, object 2108/2112; baseline object 2108/2112. */
 #pragma opt_lifetimes on
 // FUN_002AE740 NONMATCHING
@@ -10224,6 +10219,8 @@ void func_002aef80(BtlCamera* camera, int param_2)
 #undef iVar2
 #undef iVar3
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 
 extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
 extern u16 FUN_002c09f0(int target);
@@ -10303,8 +10300,6 @@ update:
 
 
 #pragma opt_propagation reset
-#pragma opt_lifetimes reset
-/* W367 measured: opt_dead_assignments off nd1549 -> 1530, object 2164/2224; baseline object 2168/2224. */
 #pragma opt_dead_assignments off
 // FUN_002AF960 NONMATCHING
 
@@ -10580,6 +10575,7 @@ void func_002af960(BtlCamera* camera)
     #undef clampRadius
     #undef interpolationMode
 }
+#pragma opt_dead_assignments reset
 
 /* Recovered battle-misc harvest: 0x002A3A80-0x002A4C20 */
 // FUN_002A3A80
@@ -11001,7 +10997,6 @@ u32 FUN_002a3850(int param_1)
   return 0;
 }
 
-#pragma opt_dead_assignments reset
 /* W367 measured: opt_loop_invariants on nd279 -> 211, object 1052/1056; baseline object 1052/1056. */
 #pragma opt_loop_invariants on
 // FUN_002A3E80 NONMATCHING
