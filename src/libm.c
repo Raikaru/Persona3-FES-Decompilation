@@ -150,6 +150,7 @@ float atanf(float x)
 
 
 #pragma optimization_level 3
+#pragma opt_common_subs off
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
@@ -179,6 +180,7 @@ float cosf(float x)
 #pragma optimization_level 2
 
 #pragma intrinsic fabsf
+#pragma opt_common_subs reset
 // FUN_0052e788 NONMATCHING
 float fabsf(register float x)
 {
