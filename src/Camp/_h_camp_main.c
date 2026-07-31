@@ -1862,12 +1862,14 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
+    u64 savedPosition;
     CampCarouselPackedPosition p;
     CampCardSprite* sprite;
     f32 x;
     f32 y;
 
-    p.packed = position;
+    savedPosition = position;
+    p.packed = savedPosition;
     y = p.value.y;
     sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40[0], 1);
     sprite->spriteScale = alpha;

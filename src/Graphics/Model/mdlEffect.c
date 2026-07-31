@@ -1682,7 +1682,7 @@ extern u64 FUN_0027f7c0();
 extern u64 FUN_0027ffb0();
 extern u64 FUN_00282d40();
 #pragma alias FUN_00282d40_anim FUN_00282d40
-extern void FUN_00282d40_anim(u32 param_1,s16 param_2,u16 param_3,float param_4,s8 param_5);
+extern void FUN_00282d40_anim(u32 param_1,int param_2,u16 param_3,float param_4,u16 param_5);
 extern u64 FUN_002831c0();
 extern u64 FUN_00287b20();
 extern u64 FUN_00287cf0();
@@ -4740,10 +4740,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 {
 
   u16 *puVar1;
-
   u32 uVar2;
-
-
   u32 uVar4;
   u8 *model;
 
@@ -7146,11 +7143,13 @@ void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
       ".set noreorder                   \n"
       "lqc2        $vf10, 0(%0)          \n"
       "sqc2        $vf10, 0x50(%1)       \n"
-      "sqc2        $vf10, 0(%2)          \n"
       ".set reorder"
       :
-      : "r"(param_2), "r"(param_1), "r"(saved)
+      : "r"(param_2), "r"(param_1)
       : "vf10", "memory");
+  __asm__ volatile (
+      "sqc2        $vf10, 0(%0)"
+      : : "r"(saved) : "memory");
   FUN_00357e30();
   __asm__ volatile (
       ".set noreorder                        \n"
@@ -7163,7 +7162,6 @@ void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
       :
       : "r"(param_1)
       : "vf10", "ACC", "memory");
-  for (iVar3 = *(int *)(param_1[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
     __asm__ volatile (
         ".set noreorder                   \n"
         "lqc2        $vf10, 0x50(%0)       \n"

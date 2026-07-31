@@ -839,7 +839,7 @@ void func_00111500(KwlnTask* task)
     MaestroStreamWork* work;
     work = (MaestroStreamWork*)task->workData;
     {
-        u32 value;
+        s32 value;
         value = 1;
         work->stopAtFrame = value;
     }

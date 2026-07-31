@@ -7401,6 +7401,7 @@ void FUN_003a9e20(int param_1,u64 param_2)
 #define FUN_003a9e20(...) ((void (*)(...))FUN_003a9e20)(__VA_ARGS__)
 #undef FUN_003a9ed0
 
+// W383 residual: saved-register s2/s3/s4 3-cycle (param1/param2/index); declaration permutation was neutral, first-use index hoist worse, ABI/full-prototype probes neutral or worse.
 // FUN_003A9ED0 NONMATCHING
 
 
@@ -7420,6 +7421,7 @@ void FUN_003a9ed0(int param_1,u64 param_2)
     *(u32 *)(iVar4 + 0xc) = uVar1;
   }
   iVar2 = *(u8 **)(param_1 + 8);
+  iVar3 = iVar2 + 0x140;
   for (index = 0; index < 3; index = index + 1) {
     FUN_003b4eb0(iVar2,iVar3,DAT_006a1f00_abs + index * 8,
                  DAT_006a1f20_abs + index * 8,8,
@@ -7435,6 +7437,7 @@ void FUN_003a9ed0(int param_1,u64 param_2)
 #define FUN_003a9ed0(...) ((void (*)(...))FUN_003a9ed0)(__VA_ARGS__)
 #undef FUN_003aa000
 
+// W383 residual: saved-register s2/s3/s4 3-cycle (param1/param2/index); declaration permutation was neutral, first-use index hoist worse, ABI/full-prototype probes neutral or worse.
 // FUN_003AA000 NONMATCHING
 
 
@@ -7660,6 +7663,7 @@ void FUN_003aa370(int param_1,u64 param_2)
 #pragma opt_dead_assignments reset
 #undef FUN_003aa720
 
+// W383 residual: a0/a3 pointer/counter color cycle; declaration-init was neutral, counter-before-pointer was worse, and full sprite ABI aliases were neutral.
 // FUN_003AA720 NONMATCHING
 
 
@@ -8645,6 +8649,7 @@ void FUN_003ac230(void)
 
 #undef FUN_003ac240
 
+// W383 residual: s0/s1 upper/lower color swap; declaration permutation was neutral, lower-before-upper first-use was worse, and ABI/full-prototype probes were neutral or worse.
 // FUN_003AC240 NONMATCHING
 
 
@@ -10004,6 +10009,7 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 #define FUN_003ad930(...) ((u64 (*)(...))FUN_003ad930)(__VA_ARGS__)
 #undef FUN_003ada00
 
+// W383 residual: s1/s2 byte/index color cycle; declaration permutation was neutral, loading bVar6 before bVar1 was worse, and ABI/full-prototype probes were neutral or worse.
 // FUN_003ADA00 NONMATCHING
 
 
@@ -10280,6 +10286,7 @@ u64 FUN_003ade60(u64 param_1,int param_2)
 }
 #undef FUN_003ade70
 
+// W383 residual: commutative addu operand order at off92; declaration, first-use, ABI-alias, and full-prototype levers left this instruction-order floor unchanged.
 // FUN_003ADE70 NONMATCHING
 u32 FUN_003ade70(int param_1,int param_2)
 {
@@ -10470,6 +10477,7 @@ u64 FUN_003ae150(u64 param_1,int param_2)
 }
 #undef FUN_003ae160
 
+// W383 residual: a2/a3/v1 three-role color cycle (first index/second index/counter); declaration permutation was neutral, counter-before-pointer was worse, and the full 2-int prototype was neutral.
 // FUN_003AE160 NONMATCHING
 
 
@@ -10575,6 +10583,7 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 #define FUN_003ae160(...) ((u64 (*)(...))FUN_003ae160)(__VA_ARGS__)
 #undef FUN_003ae260
 
+// W383 residual: a2/a3/v1 three-role color cycle (first index/second index/counter); declaration permutation was neutral, counter-before-pointer was worse, and the full 2-int prototype was neutral.
 // FUN_003AE260 NONMATCHING
 
 
