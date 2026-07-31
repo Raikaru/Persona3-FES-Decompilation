@@ -5350,15 +5350,15 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
   u32 uVar8;
 
-  u32 uVar9;
+  f32 fVar9;
 
   float fVar10;
 
-  u32 uVar11;
+  f32 fVar11;
 
-  u32 uVar12;
+  f32 fVar12;
 
-  u32 uVar13;
+  f32 fVar13;
 
   u16 *puStack_8;
 
@@ -5412,17 +5412,17 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
     iVar1 = *(int *)(puStack_4 + 0x24);
 
-    uVar13 = *(u32 *)(puStack_4 + 8);
+    fVar13 = *(f32 *)(puStack_4 + 8);
 
-    uVar12 = *(u32 *)(puStack_4 + 10);
+    fVar12 = *(f32 *)(puStack_4 + 10);
 
     iVar6 = *(int *)(puStack_4 + 2);
 
     if (puStack_8 != (u16 *)0x0) {
 
-      uVar11 = *(u32 *)(puStack_8 + 8);
+      fVar11 = *(f32 *)(puStack_8 + 8);
 
-      uVar9 = *(u32 *)(puStack_8 + 10);
+      fVar9 = *(f32 *)(puStack_8 + 10);
 
       if ((iVar1 == 0) && (*(int *)(puStack_8 + 0x24) == 0)) {
 
@@ -5474,9 +5474,9 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
         }
 
-        *param_5 = uVar13;
+        *(f32 *)param_5 = fVar13;
 
-        *param_6 = uVar12;
+        *(f32 *)param_6 = fVar12;
 
       }
 
@@ -5484,11 +5484,9 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
         FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_8 + 0x24),param_4);
 
-        *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,*(f32 *)(puStack_4 + 8),
-                                                *(f32 *)(puStack_4 + 10),iVar6);
+        *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
 
-        *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,*(f32 *)(puStack_8 + 8),
-                                                *(f32 *)(puStack_8 + 10),iVar6);
+        *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
 
       }
 

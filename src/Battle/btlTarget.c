@@ -4515,7 +4515,7 @@ void FUN_002d7560(BtlAction *action)
                     found = 0;
                     i = 0;
                     rewards = DAT_007ce3ec;
-                    for (; i < 3; i++)
+                    for (; (u32)i < 3; i++)
                     {
                         if (*(u16 *)(rewards + i * 8 + 0xbe0) == personaId)
                         {
@@ -4526,9 +4526,8 @@ void FUN_002d7560(BtlAction *action)
                     }
                     if (found == 0)
                     {
-                        i = 0;
                         rewards = DAT_007ce3ec;
-                        for (; i < 3; i++)
+                        for (i = 0; i < 3; i++)
                         {
                             if (*(u16 *)(rewards + i * 8 + 0xbe0) == 0)
                             {

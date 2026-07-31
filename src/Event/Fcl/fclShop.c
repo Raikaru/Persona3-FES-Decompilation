@@ -45,6 +45,9 @@ void FUN_0040e3f0(float param_1, float param_2, float param_3, float param_4, s3
 extern void FUN_0040e3f0_i2f1i3f3(s32 param_5, s32 param_6, f32 param_1, u8 param_7,
                                   s32 param_8, s32 param_9, s32 param_10, s32 param_11,
                                   f32 param_2, f32 param_3, f32 param_4);
+#pragma alias FUN_0040eb50_i FUN_0040eb50
+extern s32 FUN_0040eb50_i(s32 x, s32 y, f32 scale, u8 color, s16 font,
+                           const void* text, s32 maxWidth);
 void FUN_003e6130(int param_1);
 void FUN_003e6400(u32 param_1,u8* param_2);
 u64 FUN_003e6d40(void);
@@ -6457,10 +6460,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 != 0) {
-    return (u8 *)&LAB_003c5170;
-  }
-  switch(*(u32 *)(iVar4 + 8)) {
+  if (lVar5 == 0) {
+
+    switch(*(u32 *)(iVar4 + 8)) {
 
     case 0:
 
@@ -6832,6 +6834,8 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
     }
   return (u8 *)0x0;
+  }
+  return (u8 *)&LAB_003c5170;
 
 
 }
@@ -7383,7 +7387,7 @@ u64 FUN_003ee670(u64 unused, u64 handle)
     return 0;
 }
 
-// FUN_003EE920 NONMATCHING
+// FUN_003EE920
 
 
 u64 FUN_003ee920(u64 unused, u64 handle)
@@ -7448,7 +7452,7 @@ u64 FUN_003ee920(u64 unused, u64 handle)
     FUN_0040eb50(0.0f, textX, 0x1c, 0xff, 0, text, 9);
     sprintf(text, (const char*)&gp0xffffaad8, *(u32*)(work + 0x14));
     textX = x + 0x26d;
-    FUN_0040eb50(0.0f, textX, 0x31, 0xff, 0, text, 9);
+    FUN_0040eb50_i(textX, 0x31, 0.0f, 0xff, 0, text, 9);
 
     return 0;
 }

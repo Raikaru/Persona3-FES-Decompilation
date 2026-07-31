@@ -2396,7 +2396,6 @@ u32 FUN_0029f760(float *param_1)
   u32 uVar5;
   float fVar15;
   float fVar16;
-  f32 product;
 
   
 
@@ -2429,17 +2428,13 @@ u32 FUN_0029f760(float *param_1)
 
       fVar16 = 1.0f - fVar15;
 
-      product = param_1[0] * fVar16;
-      color.r = product +
+      color.r = param_1[0] * fVar16 +
                 *(float *)(DAT_007ce3ec + 0x194) * fVar15;
-      product = param_1[1] * fVar16;
-      color.g = product +
+      color.g = param_1[1] * fVar16 +
                 *(float *)(DAT_007ce3ec + 0x198) * fVar15;
-      product = param_1[2] * fVar16;
-      color.b = product +
+      color.b = param_1[2] * fVar16 +
                 *(float *)(DAT_007ce3ec + 0x19c) * fVar15;
-      product = param_1[3] * fVar16;
-      color.a = product +
+      color.a = param_1[3] * fVar16 +
                 *(float *)(DAT_007ce3ec + 0x1a0) * fVar15;
       colorPtr = (RwRGBAReal *)FUN_0019fd40();
       *colorPtr = color;
@@ -4220,8 +4215,8 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
   u8* iVar1;
-  u16 uVar3;
-  u16 uVar2;
+  u32 uVar3;
+  u32 uVar2;
   float fVar4;
   float fVar5;
   float fVar6;

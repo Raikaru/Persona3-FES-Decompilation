@@ -1375,24 +1375,22 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
 void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style)
 {
-    FclTextResourceNode* resource_node;
     FclTextResourceData* resource_data;
     s32 available_count;
     s32 i;
 
     available_count = (s32)(FUN_00175410() & 0xffff);
-    resource_node = source_link->payload->data.text_node;
-    resource_data = resource_node->meta->data;
+    resource_data = (FclTextResourceData*)source_link->payload->data.text_node;
 
-    if (owner->container->work->mode == 3) {
+    if (*(s32*)((byte*)owner->container->work + 0xc) == 3) {
         for (i = 0; i < 0xc; i++) {
             if (i < available_count) {
-                if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
-                                   0x2b, selected_style);
-                } else {
+                if ((resource_data->selection_mask & (1 << i)) != 0) {
                     FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
                                    0x2a, selected_style);
+                } else {
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2b, selected_style);
                 }
             } else {
                 FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
@@ -1400,21 +1398,20 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             }
         }
     } else {
-        i = 0;
-        do {
+        for (i = 0; i < 0xc; i++) {
             if (i < available_count) {
-                if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
-                                   0x2b, selected_style);
-                } else {
+                if ((resource_data->selection_mask & (1 << i)) != 0) {
                     FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
                                    0x2a, selected_style);
+                } else {
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2b, selected_style);
                 }
             } else {
                 FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
                                0x2d, 0);
             }
-        } while (++i < 0xc);
+        }
     }
 }
 
