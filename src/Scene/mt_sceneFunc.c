@@ -3427,8 +3427,6 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
 #undef FUN_003bb7a0
 // FUN_003BB7A0
-#pragma push
-#pragma opt_rebuildconditionals off
 
 
 void FUN_003bb7a0(Resrc* param_1)
@@ -3550,7 +3548,6 @@ void FUN_003bb7a0(Resrc* param_1)
   return;
 
 }
-#pragma pop
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
 #undef FUN_003bb9b0
 #pragma push
@@ -3609,6 +3606,7 @@ void FUN_003bba70(int param_1)
 #define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
 #undef FUN_003bbaa0
 #pragma push
+/* opt_loop_invariants on: measured off nd 95, object 236/240; on nd 0, object 228/240 (MATCH); retain on. */
 #pragma opt_loop_invariants on
 // FUN_003BBAA0
 
@@ -5148,6 +5146,7 @@ u32 * FUN_003bd8a0(void)
 #define FUN_003bd8a0(...) ((u32 * (*)(...))FUN_003bd8a0)(__VA_ARGS__)
 #undef FUN_003bd8b0
 #pragma push
+/* opt_loop_invariants on: measured off nd 43, object 236/240; on nd 0, object 236/240 (MATCH); retain on. */
 #pragma opt_loop_invariants on
 // FUN_003BD8B0
 

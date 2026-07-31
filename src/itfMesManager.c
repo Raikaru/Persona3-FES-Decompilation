@@ -6231,6 +6231,8 @@ void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 
 #undef FUN_003a87d0
 
+/* opt_loop_invariants on: measured off nd 319, object 832/816 (over window); on nd 50, object 816/816 (retained). */
+#pragma opt_loop_invariants on
 // FUN_003A87D0 NONMATCHING
 void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5,u32 param_6,
                   long param_7)
