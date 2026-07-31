@@ -488,13 +488,14 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
-    s32 fade8;
-    s32 hundreds;
+    s32 id;
     s32 val;
+    s32 hundreds;
     u32 parent;
     void* font;
     f32 y;
     f32 x;
+    s32 fade8;
 
     if (barOffset != 0) {
         campStatusDrawGaugeCall(alpha - 1.0f,
@@ -510,7 +511,8 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     campStatusDrawSpriteCallXY(parent, *(void**)DAT_00833B90_abs, 5,
                                x, (87.0f + y) - 12.0f, fade8, alpha);
     /* Draw current SP digits */
-    val = datGetSp((s32)(s16)pcId);
+    id = (s32)(s16)pcId;
+    val = datGetSp(id);
     hundreds = 0;
     if (val >= 100) {
         hundreds = 1;

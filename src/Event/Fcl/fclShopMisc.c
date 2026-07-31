@@ -1276,7 +1276,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
       }
     }
     if ((*(u32 *)puVar4 & 1) != 0) {
-      if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
+      if (FUN_003f03e0_u32(FUN_003e6dc0()) == 0) {
         continue;
       }
     }
@@ -6976,7 +6976,7 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
   int iVar2;
 
-  int sVar3;
+  short sVar3;
 
   u32 uVar4;
 

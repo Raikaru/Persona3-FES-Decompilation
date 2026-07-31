@@ -6229,7 +6229,6 @@ void FUN_0042cd80(int param_1)
   u8 *work;
   YajimaPackedRow *row;
   u8 *entry;
-  volatile u8 *countEntry;
   s8 *counter;
   s8 *delay;
   s16 *offsetX;
@@ -6256,9 +6255,8 @@ void FUN_0042cd80(int param_1)
                      *(s8 *)offsetX, *(s8 *)offsetY, *counter);
         delay = (s8 *)(entry + 0x8e7);
         if (*delay < 1) {
-          countEntry = entry;
-          count = *(s8 *)(countEntry + 0x8d8) + 1;
-          *(s8 *)(countEntry + 0x8d8) = count;
+          count = *counter + 1;
+          *counter = count;
           if (count > 20) {
             random = RpRandom();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));
