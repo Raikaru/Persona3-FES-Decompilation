@@ -8121,7 +8121,6 @@ void func_0031b470(void)
 /* W323 measured func_0031b4a0 opt_loop_invariants on: nd293 -> nd266; object 472/480. */
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants on
 // FUN_0031B4A0 NONMATCHING
 
 
@@ -8224,7 +8223,6 @@ LAB_0031b594:
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_0031B680 NONMATCHING
 
 

@@ -911,7 +911,6 @@ void func_001115e0(KwlnTask* task)
     }
 }
 
-#pragma opt_loop_invariants on
 // FUN_00111610 NONMATCHING
 void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
 {
@@ -1073,7 +1072,6 @@ restore_stop:
     return KWLNTASK_STOP;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00111c50
 void H_Maestro_00111c50(KwlnTask* hmaestroTask)
 {
@@ -2150,6 +2148,7 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+#pragma opt_loop_invariants on
 // FUN_001140D0 NONMATCHING
 void func_001140d0(f32 depth,
                    f32 x,
@@ -2232,6 +2231,7 @@ void func_001140d0(f32 depth,
 
 /* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants reset
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
                    f32 x,

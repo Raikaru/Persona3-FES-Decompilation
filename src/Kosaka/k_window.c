@@ -883,7 +883,6 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     }
 }
 
-#pragma opt_common_subs off
 // FUN_001A2720 NONMATCHING
 void func_001a2720(KwlnTask* task)
 {
@@ -972,7 +971,6 @@ void func_001a2720(KwlnTask* task)
     }
 }
 
-#pragma opt_common_subs reset
 // FUN_001A2A80 NONMATCHING
 void* func_001a2a80(KwlnTask* task)
 {
@@ -1541,6 +1539,8 @@ KWindowEntry* func_001a4330(KwlnTask* task, s32 id)
     return entry;
 }
 
+// opt_common_subs off: func_001a4380 normalized_diff 165 -> 145; object 288/288 (retained winner).
+#pragma opt_common_subs off
 // FUN_001A4380 NONMATCHING
 void func_001a4380(KwlnTask* task, s32 id)
 {
@@ -1586,6 +1586,7 @@ void func_001a4380(KwlnTask* task, s32 id)
     }
     func_001a3c30(task);
 }
+#pragma opt_common_subs reset
 
 // FUN_001A44A0
 void func_001a44a0(KwlnTask* task)
