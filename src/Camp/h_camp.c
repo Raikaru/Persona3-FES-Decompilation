@@ -6319,7 +6319,6 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 
 #pragma opt_loop_invariants on
 #pragma opt_common_subs reset
-#pragma opt_common_subs off
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 {
@@ -6408,7 +6407,6 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 #pragma opt_loop_invariants reset
 
 #pragma opt_loop_invariants reset
-#pragma opt_common_subs reset
 // FUN_00127A40
 void h_campStatusDestroyPartsTask(KwlnTask* task)
 {
@@ -6821,6 +6819,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 1);
 }
 
+#pragma opt_dead_assignments off
 // FUN_00129160 NONMATCHING
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)
@@ -6856,6 +6855,7 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
     }
 }
 
+#pragma opt_dead_assignments reset
 // FUN_001293B0 NONMATCHING
 #pragma push
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
