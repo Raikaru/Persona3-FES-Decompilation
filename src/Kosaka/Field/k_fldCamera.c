@@ -15,7 +15,6 @@
 #include "temporary.h"
 
 #pragma alias memset_y2 memset
-#pragma alias PTR_DAT_007cd540_y2 PTR_DAT_007cd540_y2
 
 
 #define CAMERA_DATA_U32(address) (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32*)(uintptr_t)(address))
@@ -841,7 +840,6 @@ extern u8* DAT_007ce4b0;
 extern u8* DAT_007ce4b4;
 extern u8* DAT_007ce4b8;
 extern u32 iGpffffb418;
-extern s32* PTR_DAT_007cd540_y2;
 extern RwMatrix* func_004c38c0(void);
 extern void func_004c3880(RwMatrix* matrix);
 extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
