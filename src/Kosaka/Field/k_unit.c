@@ -82,9 +82,6 @@ extern s32 func_00318ed0(void* model, s32 index, RwV3d* position);
 extern u64 func_00318b70(void* model);
 extern void func_00318a30(void* dst, void* src, u32 count);
 extern void func_00318a50(void* src, void* dst, void* value, u32 count);
-#pragma alias func_00318a50_reordered func_00318a50
-extern void func_00318a50_reordered(void* model, const RwV3d* axis,
-                                    f32 angle, s32 mode);
 extern void func_00318a90(void* model, void* value, u32 count);
 extern void func_00319230(void* model, u32 value);
 extern void func_00318ad0(void* model, void* value);
@@ -304,6 +301,7 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 // The remaining register coloring/layout differences are intentionally NONMATCHING.
 // Measured opt_loop_invariants on: nd2603 -> 2599, object 3784/3808; retained (under window).
 #pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
@@ -633,6 +631,7 @@ static inline void FldUnit_SetPcDungeonPosition(s32 index,
     }
 }
 
+#pragma opt_propagation reset
 // FUN_001CE880 NONMATCHING
 void func_001ce880(void)
 {
@@ -2278,15 +2277,12 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
     *(u16*)(dst + 8) = modelId;
     modelResource = (u8*)func_003b5d10(modelId);
     func_00319230((void*)*(u32*)(modelResource + 0x104), 3);
-    func_00318a50_reordered(
-        *(void**)(dst + 0x10c), (const RwV3d*)&DAT_00683960,
-        *(f32*)(src + 0x10c), 2);
+    func_00318a50(*(void**)(dst + 0x10c), *(void**)(modelResource + 0x104),
+                   (void*)&DAT_00683960, 2);
     func_00318a30(*(void**)(modelResource + 0x104), (void*)(src + 0x100), 2);
     table = func_00317450(uGpffffb52c);
     *(u32*)(modelResource + 0x12c) = (u32)table;
-    func_00318a50_reordered(
-        *(void**)(dst + 0x10c), (const RwV3d*)&DAT_00683960,
-        *(f32*)(src + 0x10c), 2);
+    func_00318a50(*(void**)(dst + 0x10c), table, (void*)&DAT_00683960, 2);
     func_00318a90(table, (void*)&DAT_00683970, 2);
     func_00318a30(table, (void*)(src + 0x100), 2);
     *(u32*)(dst + 0x134) = (u32)table;

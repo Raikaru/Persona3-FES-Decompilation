@@ -399,6 +399,7 @@ void btlCameraUpdate(BtlCamera* camera)
     FUN_002a2ed0(g + 0x20, g + 0xbc, g + 0xc8);
 }
 
+#pragma opt_common_subs off
 // FUN_002a38f0 NONMATCHING
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
@@ -457,6 +458,7 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_002a3b00
 u32 btlCameraUpdateSetStatePacket(void* work)
 {
@@ -9902,7 +9904,6 @@ typedef struct BtlCameraFramingWork {
   f32 auStack_8;
   f32 fStack_4;
 } BtlCameraFramingWork;
-#pragma opt_loop_invariants on
 // FUN_002AEF80 NONMATCHING
 
 void func_002aef80(BtlCamera* camera, int param_2)
@@ -10186,7 +10187,6 @@ void func_002aef80(BtlCamera* camera, int param_2)
 extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
 extern u16 FUN_002c09f0(int target);
 
-#pragma opt_loop_invariants reset
 // FUN_002AF7F0
 
 void func_002af7f0(BtlCamera* camera)

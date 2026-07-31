@@ -1540,7 +1540,7 @@ KWindowEntry* func_001a4330(KwlnTask* task, s32 id)
 }
 
 // opt_common_subs off: func_001a4380 normalized_diff 165 -> 145; object 288/288 (retained winner).
-#pragma opt_common_subs reset
+#pragma opt_common_subs off
 // FUN_001A4380 NONMATCHING
 void func_001a4380(KwlnTask* task, s32 id)
 {
@@ -1548,18 +1548,8 @@ void func_001a4380(KwlnTask* task, s32 id)
     KWindowEntry* entry;
     s32 oldCount;
     manager = KWindow_GetManager(task);
-    entry = manager->entries;
-    if (id == -1)
-    {
-        entry = NULL;
-        goto check_entry;
-    }
-    while (entry->id != id)
-    {
-        entry = entry->next;
-    }
-check_entry:
-    if (entry == NULL)
+    entry = func_001a4330(task, id);
+    if (manager == NULL || entry == NULL)
     {
         return;
     }

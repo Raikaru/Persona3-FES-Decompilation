@@ -43,6 +43,7 @@ extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and wo
 
 static f32 sVPadMoveSpeed;
 
+#pragma opt_strength_reduction off
 // FUN_001e05b0 NONMATCHING
 void* K_VPad_UpdateTask(KwlnTask* task)
 {
@@ -362,6 +363,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 
 }
+#pragma opt_strength_reduction reset
 // FUN_001e1200
 void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {
