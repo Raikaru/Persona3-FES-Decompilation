@@ -3290,11 +3290,11 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
 
 {
-  int *piVar2;
-
   int *piVar1;
 
   void* uVar3;
+
+  int *piVar2;
 
 
   uVar3 = func_001158b0(0);

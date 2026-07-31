@@ -943,7 +943,7 @@ extern u8* iGpffffb720;
 #pragma alias FUN_001706c0_u16 FUN_001706c0
 extern u16 FUN_001706c0_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170710_void FUN_00170710
-extern void FUN_00170710_void(s16 pcId, s16 index, u16 value);
+extern void FUN_00170710_void(s16 pcId, s16 index, s32 value);
 #pragma alias FUN_00170760_u16 FUN_00170760
 extern u16 FUN_00170760_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170860_void FUN_00170860
@@ -1070,9 +1070,9 @@ u32 FUN_002d8110(BtlAction **param_1)
         u32 amount = FUN_003083f0((u32)(uintptr_t)unit->datUnit, personaId);
         if (amount != 0)
         {
-            u8 *table = DAT_007ce3f8;
             u32 tableIndex = (u32)personaId & 0xffff;
             u8 effect = *(u8 *)(DAT_007ce3f8 + tableIndex * 44 + 3);
+            switch (effect)
             {
             case 1:
                 FUN_00300410_void(unit->datUnit, -(s32)amount);
@@ -1113,7 +1113,7 @@ u32 FUN_002d8110(BtlAction **param_1)
                 }
                 value = FUN_001706c0_u16((s16)unit->datUnit->id, (s16)i);
                 FUN_00170710_void((s16)unit->datUnit->id, (s16)i,
-                                  (u16)(value - 1));
+                                  (s32)value - 1);
         }
         }
         break;
@@ -4503,6 +4503,7 @@ void FUN_002d7560(BtlAction *action)
                 value = (f32)rawValue;
                 amount = (u32)(value * timeScale);
                 BTLT_B32(0xbfc) += amount;
+                personaId = FUN_0030bde0(unit->datUnit, &outFlag);
 
                 if (personaId != 0)
                 {
