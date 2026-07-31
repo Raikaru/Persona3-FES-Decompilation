@@ -2406,7 +2406,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
   int iVar1;
 
-  short sVar2;
+  s32 sVar2;
 
   float fVar3;
 

@@ -1144,7 +1144,7 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     return unit;
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
 {
@@ -1214,7 +1214,7 @@ u32 func_001cfdd0(u32 index)
     return true;
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 // FUN_001D00B0
 u32 func_001d00b0(void)
 {

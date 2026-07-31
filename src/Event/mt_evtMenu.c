@@ -1948,7 +1948,6 @@ u32 FUN_00370230(int param_1,int param_2,int param_3)
 
 /* opt_common_subs off: default nd919/1840B -> nd274/1836B; retained. */
 #pragma opt_common_subs off
-#pragma opt_dead_assignments off
 // FUN_003702A0 NONMATCHING
 
 
@@ -2229,7 +2228,7 @@ void FUN_003702a0(int param_1,int param_2,int param_3,int param_4)
 
 /* opt_loop_invariants on: default nd1738/2420B -> nd1719/2424B; retained. */
 #pragma opt_loop_invariants on
-#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants on
 // FUN_003709D0 NONMATCHING
 
 
@@ -2952,6 +2951,7 @@ u64 FUN_003709d0(int param_1,int param_2,u8 *param_3)
 #pragma opt_loop_invariants reset
 
 
+#pragma opt_loop_invariants reset
 // FUN_00371350 NONMATCHING
 
 

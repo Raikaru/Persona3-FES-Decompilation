@@ -3794,7 +3794,7 @@ void FUN_00431630(int param_1)
   return;
 }
 
-#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_00431670 NONMATCHING
 
 u32 FUN_00431670(int param_1,char param_2,u32 param_3)
@@ -3862,7 +3862,7 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
   return uVar3;
 }
 
-#pragma opt_common_subs reset
+#pragma opt_lifetimes reset
 // FUN_00431880
 
 

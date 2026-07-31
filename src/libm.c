@@ -188,7 +188,6 @@ float fabsf(register float x)
 #pragma optimization_level 2
 
 #pragma optimization_level 3
-#pragma opt_strength_reduction off
 // FUN_0052e7a0 NONMATCHING
 float floorf(register float x)
 {
@@ -241,7 +240,7 @@ float floorf(register float x)
 }
 
 #pragma optimization_level 3
-#pragma opt_strength_reduction reset
+#pragma opt_loop_invariants on
 // FUN_0052e878 NONMATCHING
 float sinf(float x)
 {
@@ -273,6 +272,7 @@ large_argument:
 }
 #pragma optimization_level 3
 
+#pragma opt_loop_invariants reset
 // FUN_0052e930 NONMATCHING
 float tanf(float x)
 {

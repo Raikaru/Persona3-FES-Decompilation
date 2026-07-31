@@ -2216,7 +2216,7 @@ typedef struct BtlCameraTargetingWork
 } BtlCameraTargetingWork;
 
 
-#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
@@ -2411,7 +2411,7 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     FUN_002a3110((u16*)camera, 10.0f);
 }
 
-#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 // FUN_002a8150 NONMATCHING
 void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
                                  u32 useCurrentTarget)
