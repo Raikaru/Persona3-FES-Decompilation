@@ -786,26 +786,26 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
 {
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
-        HsndSlotWork* slot = &sSlotWork[(s16)slotIndex];
-        slot->param2 = 0x3E7;
+        s16 index = (s16)slotIndex;
+        sSlotWork[index].param2 = 0x3E7;
         return;
     }
 
-    if (sSlotWork[slotIndex].state == HSND_CHANNEL_RELEASING)
+    if (sSlotWork[(s16)slotIndex].state == HSND_CHANNEL_RELEASING)
     {
         K_Assert(__FILE__, 0x32C);
     }
-    sSlotWork[slotIndex].callbackMode = true;
-    sSlotWork[slotIndex].completed = false;
-    sSlotWork[slotIndex].param1 = slotIndex;
-    sSlotWork[slotIndex].param2 = 0x3E7;
-    ((HsndSlotWork *)sSlotWork_alt)[slotIndex].state = 2;
-    sSlotWork[slotIndex].data0 = data0;
-    sSlotWork[slotIndex].data1 = data1;
-    sSlotWork[slotIndex].data2 = data2;
-    sSlotWork[slotIndex].data3 = data0Size;
-    sSlotWork[slotIndex].data4 = data1Size;
-    sSlotWork[slotIndex].data5 = data2Size;
+    sSlotWork[(s16)slotIndex].callbackMode = true;
+    sSlotWork[(s16)slotIndex].completed = false;
+    sSlotWork[(s16)slotIndex].param1 = slotIndex;
+    sSlotWork[(s16)slotIndex].param2 = 0x3E7;
+    ((HsndSlotWork *)sSlotWork_alt)[(s16)slotIndex].state = 2;
+    sSlotWork[(s16)slotIndex].data0 = data0;
+    sSlotWork[(s16)slotIndex].data1 = data1;
+    sSlotWork[(s16)slotIndex].data2 = data2;
+    sSlotWork[(s16)slotIndex].data3 = data0Size;
+    sSlotWork[(s16)slotIndex].data4 = data1Size;
+    sSlotWork[(s16)slotIndex].data5 = data2Size;
 }
 // FUN_00109CA0
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)

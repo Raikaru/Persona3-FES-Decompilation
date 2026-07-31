@@ -26,7 +26,7 @@ extern void* sflResGetTutorialFileUnchecked();
 #define BR_TASK_WORK(t) ((u8 *)((t)->workData))
 #define BR_ROOT_TASK_WORK(t) BR_TASK_WORK(t)
 #define BR_SET_STATE(p, s) (BR_U32((p), 0x0c) = (u32)(s))
-#define BR_ALLOC2(n, f) (*(void *(*)(u32, u32))jtbl_00960178)((n), (f))
+#define BR_ALLOC2(n, f) (*(void *(**)(u32, u32))jtbl_00960178_abs)((n), (f))
 #define BR_FREE(p) (*(void (**)(void *))jtbl_0096017C)((p))
 
 static u8 *sBrRoot;       /* GP-relative -0x4a18 */
@@ -34,6 +34,8 @@ static u8 *sBrCard;       /* GP-relative -0x4a14 */
 static u8 *sBrReward;     /* GP-relative -0x4a10 */
 
 extern u32 jtbl_00960178[];
+#pragma alias jtbl_00960178_abs jtbl_00960178
+extern u8 jtbl_00960178_abs[];
 extern u32 jtbl_0096017C[];
 
 /* Result-resource and data helpers not yet described by public headers. */
@@ -387,6 +389,10 @@ void func_001f7030(void);
 void func_001f70d0(void);
 void func_001f7170(void);
 void func_001f7210(void);
+#pragma alias func_001f2300_update func_001f2300
+extern void *func_001f2300_update(KwlnTask *);
+#pragma alias func_001f2fd0_destroy func_001f2fd0
+extern void func_001f2fd0_destroy(KwlnTask *);
 void *func_001f2f50(KwlnTask *);
 void *func_001f2f80(KwlnTask *);
 void func_001f2fd0(KwlnTask *);
@@ -1105,15 +1111,14 @@ u32 func_001f1f40(void)
 KwlnTask *func_001f2080(const u8 *params)
 {
     u8 *work = (u8 *)BR_ALLOC2(0x2a220, 0x40000);
-    u32 *work32 = (u32 *)work;
     KwlnTask *task;
     KwlnTask *child;
     RwV2d viewWindow;
     sBrCard = work;
-    work32[1] = 0;
+    BR_U32(work, 4) = 0;
     BR_U32(work, 0x14) = 0;
     task = kwlnTaskCreateWithAutoPriority(NULL, 10, "battle result card",
-                                          func_001f2300, func_001f2fd0, work);
+                                          func_001f2300_update, func_001f2fd0_destroy, work);
     child = kwlnTaskInitEx("battle result ground", 0x106f, 1, 2,
                            func_001f2f50, NULL, work);
     BR_U32(work, 0x0c) = (u32)child;
@@ -1125,7 +1130,7 @@ KwlnTask *func_001f2080(const u8 *params)
     viewWindow.x = 1.0f;
     viewWindow.y = 0.5f;
     RwCameraSetViewWindow((RwCamera *)kwlnGetMainCamera(), &viewWindow);
-    work32[1] |= 3;
+    BR_U32(work, 4) |= 3;
     func_00219c90(work + 0x95c0);
     sflResInit((SflResourceManager *)(work + 0x60));
     func_00239170(work + 0xf0);
