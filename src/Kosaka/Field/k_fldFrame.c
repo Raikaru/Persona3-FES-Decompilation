@@ -10,10 +10,17 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "libm.h"
+
+#pragma alias func_004912b0_y2 func_004912b0_y2
+
 /* RenderWare's retail globals place memFuncs at absolute offset 0x178. */
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 typedef void* (*KFldFrameRwCallocFunc)(u32 elemCount, u32 elemSize, u32 hint);
+#pragma alias memcpy_k_fldFrame_typed memcpy
+extern void* memcpy_k_fldFrame_typed(void* dst, const void* src, u32 size);
+#pragma alias memset_k_fldFrame_typed memset
+extern void* memset_k_fldFrame_typed(void* dst, s32 value, u32 size);
 
 
 #define COLLISCTL_SUBSTEPS 3
@@ -36,7 +43,6 @@ extern RwV3d D_00683780[];
 extern const char D_00678CE0[];
 #pragma alias D_00678CE0_typed D_00678CE0
 extern const char D_00678CE0_typed[];
-extern u32 K_Clump_MatUsrDataHasData(const void* material, const char* name);
 #pragma alias K_Clump_MatUsrDataHasData_typed K_Clump_MatUsrDataHasData
 extern u32 K_Clump_MatUsrDataHasData_typed(const void* material, const char* name);
 extern RwSphere* func_004912b0(void* atomic);
@@ -930,7 +936,7 @@ u32 func_001ae480(KwlnTask* task)
             kwlnTaskDestroyWithHierarchy(work->points[0].drawTask);
             work->points[0].drawTask = NULL;
         }
-        memset(&work->points[0], 0, sizeof(FldFrameMovePoint));
+        memset_k_fldFrame_typed(&work->points[0], 0, sizeof(FldFrameMovePoint));
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
@@ -1597,11 +1603,11 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
         }
         if (K_FldFrame_Raycast(line, &resolved) != false)
         {
-            memcpy((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, &resolved, sizeof(RwV3d));
+            memcpy_k_fldFrame_typed((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, &resolved, sizeof(RwV3d));
         }
         else
         {
-            memcpy((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, position, sizeof(RwV3d));
+            memcpy_k_fldFrame_typed((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, position, sizeof(RwV3d));
         }
         *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
         work->pendingPointCount++;
@@ -1741,7 +1747,7 @@ void func_001b00c0(KwlnTask* task)
     model = *(Model**)((u8*)work->resource + 0x128);
     mdlLookAtDisableTarget(model);
 reset:
-    memset(work->points, 0, sizeof(work->points));
+    memset_k_fldFrame_typed(work->points, 0, sizeof(work->points));
     work->pointCount = 0;
     work->pendingPointCount = 0;
     work->state = 1;
@@ -2198,8 +2204,8 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
         : "$v0", "memory");
     for (i = 0; i < 64; i++)
     {
-        memset(&collector.points[i], 0, sizeof(RwV3d));
-        memset(&collector.normals[i], 0, sizeof(RwV3d));
+        memset_k_fldFrame_typed(&collector.points[i], 0, sizeof(RwV3d));
+        memset_k_fldFrame_typed(&collector.normals[i], 0, sizeof(RwV3d));
         collector.distances[i] = 1.0e30f;
     }
     collector.count = 0;
@@ -2408,7 +2414,8 @@ extern u8 DAT_008717f0[];
 extern void* func_00318b80(u32 id);
 extern void* func_00318b60(u32 id);
 extern void* func_004353f0(void* arg);
-extern void* func_002ff790(void* object);
+#pragma alias func_002ff790_k_fldFrame_void func_002ff790
+extern void* func_002ff790_k_fldFrame_void(void* object);
 extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
 extern u32 func_001afd40(KwlnTask* task, const RwV3d* position, f32 duration);
 
@@ -2446,8 +2453,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     collector.owner = NULL;
     for (i = 0; i < 64; i++)
     {
-        memset(&collector.points[i], 0, sizeof(RwV3d));
-        memset(&collector.normals[i], 0, sizeof(RwV3d));
+        memset_k_fldFrame_typed(&collector.points[i], 0, sizeof(RwV3d));
+        memset_k_fldFrame_typed(&collector.normals[i], 0, sizeof(RwV3d));
         collector.distances[i] = 1.0e30f;
         *(u32*)((u8*)&collector + 0xa00 + i * 4) = 0;
     }
@@ -2460,7 +2467,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     }
 
     func_004c69f0((RwV3d*)((u8*)&collector + 0xb0c), translation);
-    memset((u8*)&collector + 0xb38, 0, 0xc);
+    memset_k_fldFrame_typed((u8*)&collector + 0xb38, 0, 0xc);
 
     if (collisionWorld == NULL)
         return 0;
@@ -2544,7 +2551,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
                 dist = func_004c69f0(&diff, &diff);
                 if (dist >= 97.0f) continue;
-                if (func_002ff790(*(void**)((u8*)gridEntry + 0x48)) != NULL)
+                if (func_002ff790_k_fldFrame_void(*(void**)((u8*)gridEntry + 0x48)) != NULL)
                     continue;
 
                 moveCount = func_001b0220(*(void**)((u8*)gridEntry + 0x170));
@@ -2905,7 +2912,7 @@ void func_001ad050(void* collisionWorld, const RwV4d* position,
     u32 x, y;
     s32 i;
 
-    memset(&resources, 0, sizeof(resources));
+    memset_k_fldFrame_typed(&resources, 0, sizeof(resources));
     resources.directionMode = 1;
     src = (void*)direction;
     dst = (void*)resources.direction;
@@ -2986,7 +2993,7 @@ void func_001ad220(void* object, const RwV3d* point, void* result)
     s32 i;
     RwSphere* sphere;
 
-    memset(&query, 0, sizeof(query));
+    memset_k_fldFrame_typed(&query, 0, sizeof(query));
     *(u32*)(query.intersection + 0x18) = 1;
     src = (u32*)point;
     dst = (u32*)query.intersection;
@@ -3153,4 +3160,1111 @@ f32 func_001b02c0(s32 inputIndex, s32 usePad)
         return angle;
     }
     return 0.0f;
+}
+
+#include "Kosaka/k_clump.h"
+#include "Kosaka/Field/k_dungeon.h"
+#include "Main/g_data.h"
+#include "h_cdvd.h"
+#include "h_snd.h"
+#include "rw/rpusrdat.h"
+#include "rw/rpworld.h"
+#include "temporary.h"
+
+typedef void* (*KClumpCallback)(void* object, void* data);
+
+typedef struct KClumpMaterialNode
+{
+    void* object;       // 0x00
+    u32 enabled;         // 0x04
+    u32 flags;           // 0x08
+    f32 colorScale[4];   // 0x0c
+    u32 kind;            // 0x1c
+    u8 reserved[8];      // 0x20
+    struct KClumpMaterialNode* next; // 0x28
+} KClumpMaterialNode;
+typedef struct KClumpContainer
+{
+    u8 reserved[0x18];
+    void* resources;     // 0x18
+} KClumpContainer;
+typedef struct KClumpResourceList
+{
+    u8 reserved[0x20];
+    void** materials;     // 0x20
+    u32 count;            // 0x24
+} KClumpResourceList;
+typedef struct KClumpStreamWork
+{
+    u32 state;
+    u8 pad04[0x0c];
+    u32 mode;
+    void* stream;
+    u32 current;
+    u16 currentStatus;
+    u16 pad1e;
+    u32 count;
+    void* queuedStreams[8];
+    u32 queuedValues[8];
+    u16 queuedStatus[8];
+} KClumpStreamWork;
+typedef struct KClumpUserDataContext
+{
+    char name[0x40];
+    u32 count;
+} KClumpUserDataContext;
+
+
+/* The retail code uses these engine entry points through the split executable. */
+extern void* func_004916d0(void* object, KClumpCallback callback, void* data);
+extern void* func_004932c0(void* object, KClumpCallback callback, void* data);
+extern void* func_004cb6e0(void* object, KClumpCallback callback, void* data);
+extern void* func_0048ee30(void* object, s32 index);
+extern s32 func_0048ede0(void* object);
+extern s32 func_0048ef30(void* object);
+extern s32 func_0048a2c0(void* object);
+extern s32 func_0048a480(void* object);
+extern void func_0048a3f0(void* object, u32 mode);
+extern void func_0048a2a0(void* object, void* data);
+extern void func_00466640(void* data);
+extern void func_001b5a30(void* material);
+extern RwSphere* func_004912b0_y2(void* object);
+extern void* func_0034fcd0(void* data);
+extern void* func_0034fd10(void* data);
+extern void* func_0034fd30(void* data);
+extern void* func_0034fd50(void* data);
+extern void* func_0034fd70(void* data, u16 value);
+extern void* func_0034fcf0(void* data);
+extern void* func_0034fdf0(void* data, void* value);
+extern void* func_0034fe80(void* data, void* value);
+extern void* func_001021c0(void* path, u8* mode);
+extern u32 func_001c7130(f32 value, u32 state);
+extern void FUN_001099d0(u32 value, ...);
+extern void FUN_00108fd0(u32 value, ...);
+extern u8 FUN_0016ef30(void);
+extern u32 FUN_0016f190(u32 flag);
+extern u32 FUN_0017e480(u32 a, u32 b, u32 c, u32 d);
+extern void K_Assert(const char* message, s32 line);
+extern void (*D_00960090)(u32 state, ...);
+extern u32 D_007CE204;
+extern u32 D_007CC1E4;
+extern u32 D_007CC1F4;
+extern u32 D_007CC1F8;
+extern u32 D_007CC1C0;
+extern u32 D_007CE158;
+extern u32 D_008668F0[];
+extern void (*jtbl_0096017C)(void* memory);
+extern void* D_007D2D60;
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_007D2D60_abs D_007D2D60
+extern u8 D_007D2D60_abs[];
+extern u32 D_00960184[];
+extern char D_00678C78;
+#pragma alias D_00678C78_abs D_00678C78
+extern char D_00678C78_abs[];
+extern u32 D_00678C00[];
+extern const char D_00678C28[];
+extern const char D_00678C38[];
+extern const char D_00678C48[];
+extern const char D_00678C60[];
+extern f32 D_007CE154;
+extern const char D_00678BD8[];
+extern const char D_00678BE8[];
+extern const char D_00678C88[];
+extern const char D_00678CA0[];
+extern const char D_00678CB8[];
+extern u8 D_0067F080[];
+extern u8 D_0067F100[];
+extern u8 D_0067F140[];
+extern u8 D_0067F180[];
+extern u8 D_0067F200[];
+extern u8 D_0067F240[];
+extern u8 D_0067F2C0[];
+extern u8 D_0067F300[];
+extern u8 D_0067F340[];
+extern u8 D_0067F380[];
+
+extern void* func_001a65c0(void* geometry, const char** name);
+extern void* func_001a6860(void* object, u32* context);
+extern void* func_001a6d20(void* object, u32* context);
+extern void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags);
+extern void* func_001a7370(void* material, u32* state);
+extern void* func_001a74e0(void* object, u32* state);
+extern void func_001a7710(u32* state);
+extern void func_001a7910(void* object, f32* scale);
+extern void func_001a8920(u32* entries, const u32* source);
+extern s32 func_001a8db0(KwlnTask* task);
+extern s32 func_001a91b0(KwlnTask* task, void* data);
+static u32 kclump_word(const void* object, u32 offset)
+{
+    return *(const u32*)((const u8*)object + offset);
+}
+
+static void kclump_set_word(void* object, u32 offset, u32 value)
+{
+    *(u32*)((u8*)object + offset) = value;
+}
+
+static f32 kclump_float(const void* object, u32 offset)
+{
+    return *(const f32*)((const u8*)object + offset);
+}
+
+static void kclump_set_float(void* object, u32 offset, f32 value)
+{
+    *(f32*)((u8*)object + offset) = value;
+}
+
+static inline void* kclump_alloc(u32 count, u32 size, u32 flags)
+{
+    return (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags);
+}
+
+static void kclump_free(void* memory)
+{
+    if (memory != NULL)
+    {
+        jtbl_0096017C(memory);
+    }
+}
+
+static void kclump_call_resource(void* resource)
+{
+    void (*render)(void);
+
+    render = *(void (**)(void))((u8*)resource + 0x48);
+    if (render != NULL)
+    {
+        render();
+    }
+}
+
+static u32 kclump_render_item(KClumpMaterialNode* item, u32 callbackFlag)
+{
+    RwSphere* sphere;
+
+    sphere = func_004912b0_y2(item->object);
+    if (sphere == NULL || RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) == rwSPHEREOUTSIDE)
+    {
+        return 0;
+    }
+
+    if (item->enabled == 1)
+    {
+        D_00960090(0xe, 0);
+    }
+    if (*(u32*)callbackFlag == 1)
+    {
+        kclump_call_resource(item->object);
+    }
+    if (item->enabled == 1)
+    {
+        D_00960090(0xe, 1);
+    }
+    return 1;
+}
+
+static u32 kclump_scale_color(u32 component, f32 scale)
+{
+    f32 value;
+
+    value = (f32)component * scale;
+    if (value > 255.0f)
+    {
+        return 0xff;
+    }
+    if (value < 0.0f)
+    {
+        return 0;
+    }
+    return (u32)value;
+}
+
+
+static void kclump_render_list(void* list, u32 callbackFlag)
+{
+    KClumpMaterialNode* item;
+
+    item = list != NULL ? *(KClumpMaterialNode**)list : NULL;
+    while (item != NULL)
+    {
+        kclump_render_item(item, callbackFlag);
+        item = item->next;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// MWCC floor: retail holds D_00678C00 in $v1 while b210 assigns the equivalent
+// pointer lifetime to $a0; direct indexing regresses nd5 to nd34.
+
+
+
+
+
+// The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
+// The nine volatile list traversals and final state release are otherwise instruction-identical.
+
+
+
+
+
+
+
+
+// FUN_001a8920
+void func_001a8920(u32* entries, const u32* source)
+{
+    u32* destination;
+    s32 i;
+    u32 value;
+
+    if ((s32)entries[0] >= 0x80)
+    {
+        K_Assert(D_00678C78_abs, 0x3eb);
+    }
+    destination = (u32*)(entries[0] * 11 * 4);
+    destination = (u32*)((u8*)destination + (u32)entries);
+    destination++;
+    i = 11;
+    do
+    {
+        value = *source++;
+        i--;
+        *destination = value;
+        destination++;
+    } while (i > 0);
+    entries[0]++;
+}
+
+// FUN_001a89c0
+s32 func_001a89c0(const u32* left, const u32* right)
+{
+    RwCamera* camera;
+    RwMatrix* cameraMatrix;
+    RwV3d leftDelta;
+    RwV3d rightDelta;
+    RwV3d cameraPosition;
+    f32 leftDistance;
+    f32 rightDistance;
+
+    camera = kwlnGetMainCamera();
+    cameraMatrix = func_004cb2f0(*(void**)((u8*)camera + 4));
+    cameraPosition = cameraMatrix->pos;
+    leftDelta.x = func_004cb2f0(*(void**)(*left + 4))->pos.x - cameraPosition.x;
+    leftDelta.y = func_004cb2f0(*(void**)(*left + 4))->pos.y - cameraPosition.y;
+    leftDelta.z = func_004cb2f0(*(void**)(*left + 4))->pos.z - cameraPosition.z;
+    rightDelta.x = func_004cb2f0(*(void**)(*right + 4))->pos.x - cameraPosition.x;
+    rightDelta.y = func_004cb2f0(*(void**)(*right + 4))->pos.y - cameraPosition.y;
+    rightDelta.z = func_004cb2f0(*(void**)(*right + 4))->pos.z - cameraPosition.z;
+    leftDistance = RwV3dLength(&leftDelta);
+    rightDistance = RwV3dLength(&rightDelta);
+    return (s32)(leftDistance - rightDistance);
+}
+
+// FUN_001a8b10
+void func_001a8b10(u32* entries)
+{
+    s32 i;
+    KClumpMaterialNode* item;
+    RwSphere* sphere;
+
+    {
+        s32 count = (s32)entries[0];
+        qsort(entries + 1, count, 0x2c,
+              (int (*)(const void*, const void*))func_001a89c0);
+    }
+    for (i = (s32)entries[0] - 1; i >= 0; i--)
+    {
+        item = (KClumpMaterialNode*)((u8*)entries + 4 + i * 0x2c);
+        sphere = func_004912b0_y2(item->object);
+        if (RwCameraFrustumTestSphere(
+                (RwCamera*)*(void**)D_007D2D60_abs, sphere) != rwSPHEREOUTSIDE)
+        {
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))D_00960090_abs)(0xe, 0);
+            }
+            func_001a7910(item->object, (f32*)((u8*)item + 0x0c));
+            if (item->colorScale[3] < 1.0f && item->colorScale[3] > 0.0f)
+            {
+                void (**renderState)(u32, ...);
+                renderState = (void (**)(u32, ...))D_00960090_abs;
+                (*renderState)(6, 1);
+                (*renderState)(8, 1);
+                RpSkyRenderStateSet(2, (void*)0x44);
+                RpSkyRenderStateSet(3, (void*)0x72001);
+                if (item->kind == 2)
+                {
+                    (*(void (**)(void*))((u8*)item->object + 0x48))(
+                        item->object);
+                }
+                renderState = (void (**)(u32, ...))D_00960090_abs;
+                (*renderState)(6, 1);
+                (*renderState)(8, 0);
+                switch (item->kind)
+                {
+                case 2:
+                {
+                    RpSkyRenderStateSet(2, (void*)0x44);
+                    RpSkyRenderStateSet(3, (void*)0x717fb);
+                }
+                    break;
+                case 4:
+                {
+                    RpSkyRenderStateSet(2, (void*)0x42);
+                    RpSkyRenderStateSet(3, (void*)0x71801);
+                }
+                    break;
+                case 3:
+                {
+                    RpSkyRenderStateSet(2, (void*)0x48);
+                    RpSkyRenderStateSet(3, (void*)0x71801);
+                }
+                    break;
+                }
+                (*(void (**)(void*))((u8*)item->object + 0x48))(item->object);
+            }
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))D_00960090_abs)(0xe, 1);
+            }
+        }
+    }
+}
+
+/* One commutative address add remains. */
+// FUN_001a8db0 NONMATCHING
+s32 func_001a8db0(KwlnTask* task)
+{
+    u32* work;
+    s32 i;
+    u32 mode;
+
+    work = (u32*)task->workData;
+    switch (work[0])
+    {
+    case 0:
+    {
+        if (work[3] == 0)
+        {
+            if (H_Cdvd_IsFileLoaded((HCdvd*)work[1]) == 0)
+            {
+                break;
+            }
+            if (work[1] != 0)
+            {
+                work[5] = (u32)func_0034fcd0(*(void**)((u8*)work[1] + 0x110));
+                H_Cdvd_Destroy((HCdvd*)work[1]);
+                work[1] = 0;
+            }
+        }
+        else
+        {
+            work[5] = (u32)func_0034fcd0(func_001021c0(work + 0x1d, (u8*)&mode));
+        }
+        work[0]++;
+    }
+        break;
+    case 1:
+        break;
+    case 2:
+    {
+        if (work[4] == 0 && work[8] == 0)
+        {
+            work[0] = 1;
+        }
+        else
+        {
+            if (work[4] == 1)
+            {
+                if (work[6] < work[2])
+                {
+                    func_0034fd30((void*)work[5]);
+                    func_0034fd70(
+                        (void*)*(volatile u32*)&work[5],
+                        (u16)work[7]);
+                    work[6]++;
+                }
+                else
+                {
+                    work[4] = 0;
+                }
+            }
+            for (i = 0; i < 8; i++)
+            {
+                if (work[9 + i] != 0)
+                {
+                    if (work[0x11 + i] < work[2])
+                    {
+                        func_0034fd30((void*)work[9 + i]);
+                        func_0034fd70((void*)work[9 + i], *(u16*)((u8*)work + 100 + i * 2));
+                        work[0x11 + i]++;
+                    }
+                    else
+                    {
+                        func_0034fcf0((void*)work[9 + i]);
+                        work[9 + i] = 0;
+                        work[8]--;
+                    }
+                }
+            }
+        }
+    }
+        break;
+    case 3:
+    {
+        return -1;
+    }
+    }
+    return 0;
+}
+
+// FUN_001a8fe0
+void func_001a8fe0(KwlnTask* task)
+{
+    u32* work;
+    s32 i;
+    KwlnTask* parent;
+
+    parent = task;
+    work = (u32*)parent->workData;
+    for (i = 0; i < 8; i++)
+    {
+        if (*(u32*)((u8*)work + (i * 4) + 36) != 0)
+        {
+            func_0034fcf0((void*)*(u32*)((u8*)work + (i * 4) + 36));
+        }
+    }
+    if (work[5] != 0)
+    {
+        func_0034fcf0((void*)work[5]);
+    }
+    (*(void (**)(void*))jtbl_0096017C_abs)(parent->workData);
+}
+
+// FUN_001a9080
+KwlnTask* func_001a9080(KwlnTask* parent, const char* path, u32 state, HCdvd* cdvd)
+{
+    KwlnTask* task;
+    u32* work;
+
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0xb4, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, D_00678C88, 0x14,
+                          (KwlnTaskUpdateFunc)func_001a8db0,
+                          (KwlnTaskDestroyFunc)func_001a8fe0, work);
+    if (cdvd == NULL)
+    {
+        work[1] = (u32)H_Cdvd_Request(path, 0);
+    }
+    else
+    {
+        work[1] = (u32)cdvd;
+        work[3] = 1;
+    }
+    work[2] = state;
+    strcpy((char*)&work[0x1d], path);
+    return task;
+}
+
+// FUN_001a9180
+u32 func_001a9180(const KwlnTask* task)
+{
+    if (task == NULL)
+    {
+        return true;
+    }
+    return *(s32*)task->workData >= 1;
+}
+
+// FUN_001a91b0
+s32 func_001a91b0(KwlnTask* task, void* data)
+{
+    KClumpStreamWork* work;
+    KClumpStreamWork* indexedWork;
+    s32 index;
+    void* stream;
+    u32 indexOffset;
+    void** streamSlot;
+
+    work = (KClumpStreamWork*)task->workData;
+    index = -1;
+    if (work->mode == 1)
+    {
+        index = 0;
+        while (index < 8)
+        {
+            indexedWork = work;
+            indexedWork = (KClumpStreamWork*)((s32)indexedWork + index * 4);
+            if (indexedWork->queuedStreams[0] == NULL)
+            {
+                break;
+            }
+            index++;
+        }
+        indexOffset = index * 4;
+        indexedWork = work;
+        indexedWork = (KClumpStreamWork*)(indexOffset + (s32)indexedWork);
+        streamSlot = &indexedWork->queuedStreams[0];
+        *streamSlot = func_0034fd50(work->stream);
+        stream = *streamSlot;
+        func_0034fdf0(stream, data);
+        *(u32*)((u8*)work->queuedValues + indexOffset) = 0;
+        work->queuedStatus[index] = 2;
+        work->count++;
+    }
+    else
+    {
+        func_0034fd10(work->stream);
+        func_0034fdf0(work->stream, data);
+        work->current = 0;
+        work->mode = 1;
+        work->currentStatus = 2;
+    }
+    work->state = 2;
+    return index;
+}
+
+// FUN_001a92d0
+void func_001a92d0(KwlnTask* task, s32 index, void* data)
+{
+    u32* work = (u32*)task->workData;
+    void* stream;
+
+    if (index >= 0)
+    {
+        stream = (void*)work[9 + index];
+        if (stream != NULL)
+        {
+            func_0034fdf0(stream, data);
+        }
+    }
+    else
+    {
+        func_0034fdf0((void*)work[5], data);
+    }
+}
+
+// FUN_001a9330
+void func_001a9330(KwlnTask* task, s32 index, void* data)
+{
+    u32* work = (u32*)task->workData;
+    void* stream;
+
+    if (index >= 0)
+    {
+        stream = (void*)work[9 + index];
+        if (stream != NULL)
+        {
+            func_0034fe80(stream, data);
+        }
+    }
+    else
+    {
+        func_0034fe80((void*)work[5], data);
+    }
+}
+
+// FUN_001a9390
+void func_001a9390(KwlnTask* task, s32 index, u16 value)
+{
+    u32* work = (u32*)task->workData;
+
+    if (index >= 0)
+    {
+        if (work[9 + index] != 0)
+        {
+            *((u16*)((u8*)work + 0x64) + index) = value;
+        }
+    }
+    else
+    {
+        *(u16*)((u8*)work + 0x1c) = value;
+    }
+}
+
+// FUN_001a93d0
+u32 func_001a93d0(const KwlnTask* task, s32 index)
+{
+    u32* work = (u32*)task->workData;
+    if (index >= 0)
+    {
+        return work[0x11 + index];
+    }
+    return work[6];
+}
+
+// FUN_001a9400
+void func_001a9400(KwlnTask* task, s32 index)
+{
+    u32* work = (u32*)task->workData;
+    if (index >= 0)
+    {
+        if (work[9 + index] != 0)
+        {
+            func_0034fcf0((void*)work[9 + index]);
+            work[9 + index] = 0;
+            work[8]--;
+        }
+    }
+    else
+    {
+        work[4] = 0;
+    }
+}
+
+// FUN_001a9470
+void func_001a9470(KwlnTask* task)
+{
+    u32* work;
+    s32 i;
+
+    if (task == NULL)
+    {
+        return;
+    }
+    work = (u32*)task->workData;
+    for (i = 0; i < 8; i++)
+    {
+        if (*(u32*)((u8*)work + i * 4 + 0x24) != 0)
+        {
+            func_0034fcf0((void*)*(u32*)((u8*)work + i * 4 + 0x24));
+            *(u32*)((u8*)work + i * 4 + 0x24) = 0;
+        }
+    }
+    work[8] = 0;
+    if (work[5] != 0)
+    {
+        work[4] = 0;
+    }
+}
+
+// FUN_001a9500
+s32 func_001a9500(KwlnTask* task)
+{
+    typedef struct KClumpSoundUpdateWork
+    {
+        s32 state;
+        s32 delay;
+        s32 timer;
+        s32 count;
+        u32 values[8];
+        RwV3d positions[8];
+        u32 sounds[8];
+        u32 flags[8];
+    } KClumpSoundUpdateWork;
+    KClumpSoundUpdateWork* work;
+    s32 i;
+    s32 fieldIndex;
+    u8* fieldBase;
+
+    work = (KClumpSoundUpdateWork*)task->workData;
+    switch (work->state)
+    {
+    case 0:
+        work->state++;
+    case 1:
+        if (work->count > 0)
+        {
+            fieldBase = (u8*)K_Field_Get();
+            fieldIndex = (s32)work->values[0];
+            func_001a91b0(
+                *(KwlnTask**)(fieldBase + fieldIndex * 4 + 0x11f4),
+                &work->positions[0]);
+            if (((s32)work->sounds[0] <= -1) != 0)
+            {
+            }
+            else
+            {
+                func_0010a4e0(1, 8, (s16)work->sounds[0], (s16)work->flags[0]);
+            }
+            work->count--;
+            for (i = 1; i < 8; i++)
+            {
+                *((u32*)work + 4 + i - 1) = *((u32*)work + 4 + i);
+                ((RwV3d*)work)[4 + i - 1] = ((RwV3d*)work)[4 + i];
+                work->sounds[i - 1] = work->sounds[i];
+                work->flags[i - 1] = work->flags[i];
+            }
+            work->timer = 0;
+            work->state++;
+        }
+        break;
+    case 2:
+        if (work->timer < work->delay)
+        {
+            work->timer++;
+        }
+        else
+        {
+            work->state = 1;
+        }
+        break;
+    case 3:
+        return -1;
+    }
+    return 0;
+}
+
+// FUN_001a9690
+void func_001a9690(KwlnTask* task)
+{
+    (*(void (**)(void*))((u8*)0x00960000 + 0x17c))(task->workData);
+}
+
+// FUN_001a96c0
+KwlnTask* func_001a96c0(KwlnTask* parent)
+{
+    u32* work;
+    KwlnTask* task;
+
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, D_00678CA0,
+                                          (KwlnTaskUpdateFunc)func_001a9500,
+                                          (KwlnTaskDestroyFunc)func_001a9690, work);
+    work[1] = 0x14;
+    return task;
+}
+
+// FUN_001a9760
+void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, u32 flags)
+{
+    typedef struct KClumpSoundWork
+    {
+        s32 header[3];
+        s32 count;
+        u32 values[8];
+        RwV3d positions[8];
+        u32 sounds[8];
+        u32 flags[8];
+    } KClumpSoundWork;
+    KClumpSoundWork* work;
+
+    if (task == NULL)
+    {
+        return;
+    }
+    work = (KClumpSoundWork*)task->workData;
+    if (work->count >= 8)
+    {
+        K_Assert(&D_00678C78, 0x260);
+    }
+    work->values[work->count] = value;
+    work->positions[work->count] = *position;
+    work->sounds[work->count] = sound;
+    work->flags[work->count] = flags;
+    work->count++;
+}
+
+// FUN_001a9850 NONMATCHING
+void func_001a9850(void)
+{
+    s32 floor;
+    u32 scenario;
+
+    if (D_007CE204 == 1)
+    {
+        return;
+    }
+    floor = (s32)K_FldDungeon_GetCurrentFloor();
+    if (floor > 0)
+    {
+        if (floor >= 2 && (s32)FUN_0016f380(1) > 0)
+        {
+            H_Snd_PlayBgm((s16)FUN_0016f380(1), 1);
+            return;
+        }
+        scenario = datGetScenarioMode();
+        if (scenario == 0)
+        {
+            if (floor >= 0x191) H_Snd_PlayBgm(0x46, 1);
+            else if (floor >= 0x190) H_Snd_PlayBgm(1, 1);
+            else if (floor >= 0x122) H_Snd_PlayBgm(1, 1);
+            else if (floor >= 0xff) H_Snd_PlayBgm(0x4b, 1);
+            else if (floor >= 0xd7) H_Snd_PlayBgm(0x4a, 1);
+            else if (floor >= 0xa5) H_Snd_PlayBgm(0x49, 1);
+            else if (floor >= 0x73) H_Snd_PlayBgm(0x48, 1);
+            else if (floor >= 0x41) H_Snd_PlayBgm(0x51, 1);
+            else if (floor >= 0x11) H_Snd_PlayBgm(0x46, 1);
+            else if (floor >= 2) H_Snd_PlayBgm(1, 1);
+            else if (floor > 0) H_Snd_PlayBgm(0x47, 1);
+        }
+        else
+        {
+            if (floor >= 0xa1) H_Snd_PlayBgm(100, 1);
+            else if (floor >= 0x83) H_Snd_PlayBgm(99, 1);
+            else if (floor >= 0x65) H_Snd_PlayBgm(98, 1);
+            else if (floor >= 0x47) H_Snd_PlayBgm(97, 1);
+            else if (floor >= 0x29) H_Snd_PlayBgm(96, 1);
+            else if (floor >= 0x15) H_Snd_PlayBgm(95, 1);
+            else if (floor >= 2) H_Snd_PlayBgm(0x5e, 1);
+            else if (floor == 1) H_Snd_PlayBgm(0x65, 1);
+        }
+    }
+    else
+    {
+    if ((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 6) ||
+        (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 1) ||
+        (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1))
+    {
+        if ((u8)FUN_0016ef30() == 8)
+        {
+            FUN_001099d0(0x47, 1);
+            return;
+        }
+    }
+    if (datGetFlag(0xe00) == 1)
+    {
+        FUN_001099d0(0x13);
+        return;
+    }
+    if (datGetFlag(0xe60) == 1)
+    {
+        FUN_00108fd0(0x14);
+        return;
+    }
+    if (gMtScene->fldMajorId == 0x1f)
+    {
+        FUN_001099d0(0x14);
+        return;
+    }
+    if (datGetFlag(0xeef) == 1)
+    {
+        FUN_001099d0(0x14);
+        return;
+    }
+    if (gMtScene->fldMajorId == 0x21) FUN_00108fd0(0x14);
+    else if (gMtScene->fldMajorId == 0x22) FUN_001099d0(0x16);
+    else if (gMtScene->fldMajorId == 0x23) FUN_001099d0(0x15);
+    else if (gMtScene->fldMajorId == 0x25) FUN_001099d0(0x47);
+    else if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 5) FUN_00108fd0(0x14);
+    else if (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 5 && gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 9) FUN_00108fd0(0x14);
+    else if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1)
+    {
+        if ((u8)FUN_0016ef30() < 2 || (u8)FUN_0016ef30() > 6)
+            FUN_00108fd0(0x14);
+    }
+    else if (gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
+             gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
+             (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9))
+    {
+        if (FUN_0017e480(4, 5, 0xc, 0x1f) == 1 ||
+            FUN_0017e480(3, 1, 3, 5) == 1)
+            FUN_001099d0(0x57, 1);
+        else if (FUN_0017e480(1, 1, 2, 0x1c) == 1)
+            FUN_001099d0(0x50);
+    }
+    else if (gMtScene->fldMajorId == 5 && gMtScene->fldMinorId == 1) FUN_001099d0(0x19);
+    else if (gMtScene->fldMajorId == 0x0e) FUN_001099d0(0x20, 1);
+    else if (gMtScene->fldMajorId == 6)
+    {
+        if (FUN_0017e480(4, 5, 8, 0x1f) == 1 ||
+            FUN_0017e480(3, 1, 3, 5) == 1) FUN_001099d0(0x32, 1);
+        else if (FUN_0017e480(9, 1, 0xc, 0x1f) == 1) FUN_001099d0(0x33);
+        else if (FUN_0017e480(1, 1, 2, 0x1c) == 1) FUN_001099d0(0x34);
+    }
+    else if (gMtScene->fldMajorId == 7)
+    {
+        if (FUN_0017e480(4, 5, 0xc, 0x1f) == 1) FUN_001099d0(0x35);
+        else if (FUN_0017e480(1, 1, 2, 0x1c) == 1) FUN_001099d0(0x4d);
+        else if (FUN_0017e480(3, 1, 3, 5) == 1) FUN_001099d0(0x5c);
+    }
+    else if (gMtScene->fldMajorId == 4) FUN_001099d0(0x4d, 1);
+    else if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 1) FUN_001099d0(0x65);
+    }
+}
+
+// Retail offsets 0x000-0x730: scene/time/date dispatch and 13 audio-table branches; 0x734-0x73f is tail padding.
+// FUN_001aa1b0
+void func_001aa1b0(void)
+{
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 1) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 3) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 4) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 7) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0xb) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x14)) &&
+        (FUN_0016ef30() == 1 || FUN_0016ef30() == 3 || FUN_0016ef30() == 5))
+    {
+        func_0010a410(4, (const char*)D_0067F080);
+        return;
+    }
+
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 5) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x10)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 3) &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 &&
+        (FUN_0016ef30() == 4 || FUN_0016ef30() == 5 || FUN_0016ef30() == 6 || FUN_0016ef30() == 7) &&
+        FUN_0017e480(9, 0x12, 9, 0x12) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F200);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 &&
+        FUN_0016ef30() == 4 &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 && FUN_0016ef30() == 7)
+    {
+        func_0010a410(4, (const char*)D_0067F240);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 && FUN_0016ef30() == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F180);
+        return;
+    }
+
+    if (((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 7) ||
+         (gMtScene->fldMajorId == 0xc && gMtScene->fldMinorId == 1)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 4) &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
+    }
+
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x10) ||
+         (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9) ||
+         (gMtScene->fldMajorId == 0xc && gMtScene->fldMinorId == 1)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 4 || FUN_0016ef30() == 6 || FUN_0016ef30() == 7) &&
+        FUN_0017e480(0xa, 0x10, 0xb, 0x19) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F140);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 6 && FUN_0016f190(0xe60) == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F240);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F340);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 5)
+    {
+        func_0010a410(4, (const char*)D_0067F300);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 0x21 && gMtScene->fldMinorId == 1)
+    {
+        func_0010a410(4, (const char*)D_0067F2C0);
+        return;
+    }
+
+    if (gMtScene->fldMajorId == 0x21)
+    {
+        func_0010a410(4, (const char*)D_0067F380);
+        return;
+    }
+
+    func_00109f60(4, 0);
+}
+
+// FUN_001aa8f0
+void* func_001aa8f0(KwlnTask* task)
+{
+    u32* work = (u32*)task->workData;
+    if (work[1] == 1)
+    {
+        if (work[2] > 0x96)
+        {
+            func_0010a4e0(0, 5, 1, 0x22);
+            work[2] = 0;
+        }
+    }
+    else if (func_001c7130(2600, work[0]) == 1)
+    {
+        if (work[2] > 0x96)
+        {
+            func_0010a4e0(0, 5, 1, 0x21);
+            work[2] = 0;
+        }
+    }
+    else if (work[2] > 0xb4)
+    {
+        func_0010a4e0(0, 5, 1, 0x20);
+        work[2] = 0;
+    }
+    work[2]++;
+    return NULL;
+}
+
+// FUN_001aa9f0
+void func_001aa9f0(KwlnTask* task)
+{
+    (*(void (**)(void*))((u8*)0x00960000 + 0x17c))(task->workData);
+}
+
+// FUN_001aaa20
+KwlnTask* func_001aaa20(KwlnTask* parent, u32 value)
+{
+    u32* work;
+    KwlnTask* task;
+
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0x0c, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, D_00678CB8,
+                                          (KwlnTaskUpdateFunc)func_001aa8f0,
+                                          (KwlnTaskDestroyFunc)func_001aa9f0, work);
+    work[0] = value;
+    return task;
+}
+
+// FUN_001aaac0
+void func_001aaac0(KwlnTask* task, u32 value)
+{
+    *(u32*)((u8*)task->workData + 4) = value;
 }

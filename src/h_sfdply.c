@@ -1627,6 +1627,7 @@ void func_0010cac0(void)
     sSfdDecodeSlots[4].intermediate = (u8*)FUN_0051d6f8(0x19000);
     sSfdDecodeSlots[5].intermediate = (u8*)FUN_0051d6f8(0x19000);
 }
+#pragma opt_loop_invariants reset
 
 
 /* W318 measured: opt_loop_invariants on changes cdd0 nd1487->1332; object2032/window2336. */
