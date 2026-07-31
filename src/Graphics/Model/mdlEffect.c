@@ -7467,43 +7467,41 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
     *(u32 *)(*param_3 + 0xc) = uVar3;
 
+    return;
+
+  }
+
+  FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
+
+  if ((*(u32 *)(param_1 + 0x68) & 0x40) == 0) {
+
+    fVar4 = FUN_0052e9e8_f32(-v[1]);
+
+    fVar4 = -fVar4;
+
   }
 
   else {
 
-    FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
-
-    if ((*(u32 *)(param_1 + 0x68) & 0x40) == 0) {
-
-      fVar4 = FUN_0052e9e8_f32(-v[1]);
-
-      fVar4 = -fVar4;
-
-    }
-
-    else {
-
-      fVar4 = 0.0f;
-
-    }
-
-    fVar6 = FUN_0052ea18_2f(v[0],v[2]);
-
-    FUN_00357ea0(fVar4,fVar6,0.0f);
-
-    if ((*(u32 *)(param_1 + 0x68) & 0x40) != 0) {
-
-      __asm__ volatile ("vmove.xyzw $vf11, $vf10" : : : "memory");
-
-      __asm__ volatile ("lqc2 $vf10, 0x50(%0)" : : "r"(param_1) : "memory");
-
-      FUN_00357dd0();
-
-    }
-
-    __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(param_3) : "memory");
+    fVar4 = 0.0f;
 
   }
+
+  fVar6 = FUN_0052ea18_2f(v[0],v[2]);
+
+  FUN_00357ea0(fVar4,fVar6,0.0f);
+
+  if ((*(u32 *)(param_1 + 0x68) & 0x40) != 0) {
+
+    __asm__ volatile ("vmove.xyzw $vf11, $vf10" : : : "memory");
+
+    __asm__ volatile ("lqc2 $vf10, 0x50(%0)" : : "r"(param_1) : "memory");
+
+    FUN_00357dd0();
+
+  }
+
+  __asm__ volatile ("sqc2 $vf10, 0(%0)" : : : "r"(param_3) : "memory");
 
   return;
 

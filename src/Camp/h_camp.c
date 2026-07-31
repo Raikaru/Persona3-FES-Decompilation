@@ -193,7 +193,6 @@ typedef struct CampUiRecord
 // Reconstructed the retail Camp task state machine and all screen transition paths.
 // Remaining differences are compiler control-flow/register scheduling and relocation layout;
 // the implementation covers states 0-20, task readiness, menu commands, and teardown.
-#pragma opt_lifetimes on
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
 {
@@ -396,7 +395,6 @@ void* h_campUpdateTask(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-#pragma opt_lifetimes reset
 // FUN_0011a710
 void h_campDestroyTask(KwlnTask* task)
 {
@@ -541,6 +539,7 @@ void h_campDestroySpriteSetupTask(KwlnTask* task)
 }
 #pragma pop
 
+#pragma opt_lifetimes on
 // FUN_0011abd0 NONMATCHING
 u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* selectedEntry)
 {
@@ -675,6 +674,7 @@ u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* 
     return changed;
 }
 
+#pragma opt_lifetimes reset
 // FUN_0011b0b0
 void* h_campUpdatePersonaTextureControlTask(KwlnTask* task)
 {
