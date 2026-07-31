@@ -235,7 +235,7 @@ s32 func_0018f2c0(void)
             {
                 if (cardError == 0)
                 {
-                    switch (cardCode)
+                    switch (*(volatile u32*)&cardCode)
                     {
                         case 0x9003:
                             return -3;

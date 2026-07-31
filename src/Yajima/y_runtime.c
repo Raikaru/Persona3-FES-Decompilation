@@ -4831,6 +4831,7 @@ u32 FUN_00433810(char param_1,char param_2)
   return uVar6;
 }
 
+#pragma opt_common_subs off
 // FUN_004339D0 NONMATCHING
 
 u32 FUN_004339d0(int param_1)
@@ -4969,6 +4970,7 @@ typedef struct {
   u32 openNodes[256];
 } YRuntimePathWork;
 
+#pragma opt_common_subs reset
 // FUN_00433DE0 NONMATCHING
 
 u32 FUN_00433de0(int param_1)
@@ -5508,6 +5510,7 @@ void FUN_00435060(u8 param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
 // FUN_004350E0 NONMATCHING
 
 void FUN_004350e0(char param_1,char param_2)
@@ -5545,6 +5548,7 @@ void FUN_004350e0(char param_1,char param_2)
 }
 #pragma pop
 
+#pragma opt_loop_invariants reset
 // FUN_00435260
 
 u32 FUN_00435260(char param_1)
@@ -11839,6 +11843,7 @@ u32 FUN_0043ca30(int param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_00447AD0 NONMATCHING
 
 void FUN_00447ad0(int param_1)
@@ -11960,6 +11965,7 @@ void FUN_00447ad0(int param_1)
 }
 
 #pragma pop
+#pragma opt_common_subs reset
 // FUN_00447E70
 
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
@@ -12235,7 +12241,6 @@ void FUN_00448060(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_00448CF0 NONMATCHING
 
 void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
@@ -12461,7 +12466,6 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
 }
 #pragma pop
 
-#pragma opt_common_subs reset
 // FUN_00449C90
 
 char FUN_00449c90(u64 param_1,char param_2)

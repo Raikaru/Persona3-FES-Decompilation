@@ -1261,6 +1261,7 @@ void FUN_00301540(int param_1,u32 param_2)
   s32 uVar2;
   u16 iVar1;
   
+  iVar1 = 0;
   uVar2 = param_2 & 0xff;
   if (!(uVar2 < 0x15)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x499);

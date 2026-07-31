@@ -204,6 +204,8 @@ extern u32 DAT_00958970;
  extern u8 DAT_009589c8_abs[];
  #pragma alias DAT_009589cc_abs DAT_009589cc
  extern u8 DAT_009589cc_abs[];
+ #pragma alias DAT_009589d0_abs DAT_009589d0
+ extern u8 DAT_009589d0_abs[];
  extern u8 DAT_00958970_abs[];
 extern u32 DAT_00958978;
 #pragma alias DAT_00958978_abs DAT_00958978
@@ -2454,7 +2456,7 @@ void FUN_00389b50(int *param_1)
 {
 
   int iVar9;
-  u32 *puVar1;
+  u32 *base;
 
 
   u32 uVar2;
@@ -2463,7 +2465,7 @@ void FUN_00389b50(int *param_1)
 
   u32 *puVar4;
 
-  u32 *base;
+  u32 *puVar1;
 
   u32 *puVar7;
 
@@ -2483,14 +2485,13 @@ void FUN_00389b50(int *param_1)
 
     if (iVar6 != 0) {
 
-      if (DAT_009589cc != 0) {
+      if (*(u32 *)DAT_009589cc_abs != 0) {
 
         FUN_00389f40();
 
       }
 
       base = (u32 *)(*DAT_00960184)(1,iVar6 * 0x54,0x40000);
-
       if (base == (u32 *)0x0) {
 
         FUN_0019d3f0("mt_evtMisc.c",0x3b);
@@ -2500,19 +2501,18 @@ void FUN_00389b50(int *param_1)
       FUN_00386c40(1,iVar6 * 0x54);
 
 
-      DAT_009589d0 = *param_1;
+      *(u32 *)DAT_009589d0_abs = *param_1;
 
       iVar9 = 0;
 
-      DAT_009589c8 = iVar6;
+      *(u32 *)DAT_009589c8_abs = iVar6;
 
-      DAT_009589cc = (int)base;
+      *(u32 *)DAT_009589cc_abs = (u32)base;
 
       for (puVar1 = (u32 *)param_1[0x1b]; puVar1 != (u32 *)0x0;
 
           puVar1 = (u32 *)puVar1[0x13]) {
         puVar7 = base + iVar9 * 0x15;
-
         iVar6 = 0x15;
 
         puVar4 = puVar1;
@@ -2543,7 +2543,6 @@ void FUN_00389b50(int *param_1)
 
           FUN_00386c40(10,0x130);
           *(u32 **)(base + iVar9 * 0x15 + 0x10) = puVar4;
-
           puVar7 = (u32 *)puVar1[0x10];
 
           iVar6 = 0x26;
