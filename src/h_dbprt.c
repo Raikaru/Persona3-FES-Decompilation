@@ -42,7 +42,8 @@ static void H_Dbprt_DrawLog(void);
 static void H_Dbprt_AppendText3D(HDbText3D* text);
 static inline char H_Dbprt_ReadGlyph(s32 index, char* buffer)
 {
-    return *(char*)((u8*)(uintptr_t)index + (uintptr_t)buffer);
+    return *(volatile char*)((u8*)(uintptr_t)index +
+                             (uintptr_t)(volatile char*)buffer);
 }
 
 // FUN_001042E0
@@ -351,8 +352,9 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
             break;
         }
 
+        __asm__ volatile ("" : : "r"(buffer));
         glyph = *(char*)((u8*)(uintptr_t)character +
-                         (s32)(uintptr_t)buffer);
+                         (uintptr_t)buffer);
         if (glyph == '\0')
         {
             break;

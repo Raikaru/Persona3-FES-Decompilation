@@ -1240,16 +1240,9 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
     f32 y;
 
     {
-        u32* copyDst;
-        const u32* copySrc;
         s32 copy;
-        copyDst = (u32*)transformed;
-        copySrc = (const u32*)D_0068E7C0;
-        for (copy = 8; copy > 0; copy--) {
-            copyDst[0] = copySrc[0];
-            copyDst[1] = copySrc[1];
-            copyDst += 2;
-            copySrc += 2;
+        for (copy = 0; copy < 8; copy++) {
+            transformed[copy] = D_0068E7C0[copy];
         }
     }
 

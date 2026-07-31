@@ -796,7 +796,7 @@ u32 DAT_006af5e0;
 u32 DAT_006af600;
 u32 DAT_006af620;
 u32 DAT_006af930;
-float DAT_007cad74;
+extern float DAT_007cad74;
 float DAT_007cad78;
 float DAT_007cad80;
 float DAT_007cad94;
@@ -10032,7 +10032,7 @@ u64 FUN_003fdf80(u32 *param_1)
 
 }
 
-// FUN_003FE020 NONMATCHING
+// FUN_003FE020
 
 
 u32 FUN_003fe020(int param_1,u64 param_2)
@@ -10085,10 +10085,7 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   callbackData.callbacks[1].vector = PTR_FUN_007cd970.vector;
   callbackData.callbacks[0].vector = PTR_FUN_007cd978.vector;
-  callbackData.data.vector.x = DAT_006af170.vector.x;
-  callbackData.data.vector.y = DAT_006af170.vector.y;
-  callbackData.data.vector.z = DAT_006af170.vector.z;
-  callbackData.data.vector.w = DAT_006af170.vector.w;
+  callbackData.data.vector = *(FclShopFloatQuad *)&DAT_006af170;
 
   FUN_003c5e20(uVar4,callbackData.callbacks[1].value[param_1]);
   FUN_003c5ee0(uVar4,callbackData.callbacks[0].value[param_1]);
@@ -16718,7 +16715,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   drawX = iVar5 + 0x60;
   drawY = iVar4 + 1;
-  FUN_0040e3c0_f32(0.0f,drawX,drawY,param_3,0xf,weekDay);
+  FUN_0040e3c0_i(drawX,drawY,0.0f,param_3,0xf,weekDay);
 
   return;
 
@@ -17084,11 +17081,13 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        if ((entry[2] << 2) < 10000000) {
-          entry[2] = 1;
-        }
-        else {
+        switch ((entry[2] << 2) < 10000000) {
+        default:
           entry[2] = 9999999;
+          break;
+        case 1:
+          entry[2] = 1;
+          break;
         }
       }
       entry[3] = FUN_003dfeb0(0);
