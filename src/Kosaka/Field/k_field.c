@@ -840,7 +840,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
 
 
 
-// FUN_001ba3d0 NONMATCHING
+// FUN_001ba3d0 MATCHING
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
     FldRootWork* work;
@@ -900,7 +900,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     (*(void (**)(void*))jtbl_0096017C_abs)(fldRootTask->workData);
 }
 
-// FUN_001ba5f0 NONMATCHING
+// FUN_001ba5f0 MATCHING
 KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
                         u16 param4, u16 param5, u16 param6, u32 flags,
                         u8 param8, u8 param9, s16 param10, s32 param11,
@@ -946,10 +946,13 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
         D_00869FA3[0] = param9;
         *(u16*)D_00869FA4 = (u16)param10;
         K_Fldrc_RequestFldPac((s16)majorId, (s16)minorId);
-        if (majorId > 0x1d && majorId < 0x28 &&
-            K_FldDungeon_GetCurrentFloor() == 0)
+        if (majorId >= 0x1e)
         {
-            K_FldDungeon_FUN_001c03f0();
+            if (majorId < 0x28 &&
+                K_FldDungeon_GetCurrentFloor() == 0)
+            {
+                K_FldDungeon_FUN_001c03f0();
+            }
         }
         ROOT_U32(workData, 0) = 1;
     }

@@ -44486,10 +44486,10 @@ void FUN_0034cc00(u32 *param_1)
 
   float scaleStack [3];
 
-  int iStack_8;
+  u32 uStack_c;
 
   int iStack_4;
-  u32 uStack_c;
+  int iStack_8;
 
 
   
