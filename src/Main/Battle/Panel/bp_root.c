@@ -4387,6 +4387,31 @@ void FUN_001FF410(void)
     func_0027bae0();
 }
 
+// FUN_001FF430
+u32 FUN_001FF430(u32 id)
+{
+    s32 i;
+    u8* base;
+    u8* node;
+
+    base = DAT_007ce3ec;
+    K_ASSERT(base != NULL, 0x2f);
+    for (i = 0; i < 4; i++)
+    {
+        node = *(u8**)(base + 0x150 + i * 8);
+        while (node != NULL)
+        {
+            if ((~*(u32*)(node + 0x9c) & 8) == 0 &&
+                *(u32*)(node + 0xa8) == id)
+            {
+                return (u32)node;
+            }
+            node = *(u8**)(node + 0xa34);
+        }
+    }
+    K_ASSERT(0, 0x3d);
+    return 0;
+}
 
 // FUN_001FF630
 u32 FUN_001FF630(u32 index)
