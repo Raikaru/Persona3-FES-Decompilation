@@ -210,6 +210,8 @@ extern u32 FUN_0017bf70();
 extern u32 FUN_0017bfa0();
 extern u32 FUN_0017d800();
 extern u32 FUN_0017d830();
+/* W373 pragma sweep: default nd1024/object1356/1424; dead_assignments off nd1023/object1356/1424. Retained dead_assignments off. */
+#pragma opt_dead_assignments off
 // FUN_001482F0 NONMATCHING
 void h_campDrawStatusOverview(int param_1)
 {
@@ -298,6 +300,7 @@ void h_campDrawStatusOverview(int param_1)
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 0, 2, 2,
                   tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
 }
+#pragma opt_dead_assignments reset
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
@@ -386,6 +389,8 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
 
 /* Retail offsets 0x148c10-0x1496dc: comparison draws retain one packed
  * start coordinate per call and recompute the -100.0f x shift in place. */
+/* W373 pragma sweep: default nd2111/object2708/2784; common_subs off nd2059/object2740/2784; propagation off nd1906/object2424/2784. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_00148C10 NONMATCHING
 void h_campDrawStatusComparison(int param_1)
 {
@@ -574,6 +579,7 @@ void h_campDrawStatusComparison(int param_1)
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c),
                   0, 2, 1, spe8.u, *(u64*)&pair, 0, 0, 0, 10);
 }
+#pragma opt_propagation reset
 
 /* Reconstructed retail aggregate temporaries and per-entry coordinate updates.
  * The original decompiler output passed packed constants directly, losing the
@@ -583,6 +589,8 @@ void h_campDrawStatusComparison(int param_1)
  * MATCH count unchanged), so plain locals are used here.
  * The resulting instruction layout remains NONMATCHING, but retains the
  * recovered second-loop entry update rather than silently omitting it. */
+/* W373 pragma sweep: default nd2626/object3276/3488; propagation off nd2567/object3104/3488; dead_assignments off nd2513/object3260/3488; propagation+dead_assignments nd2567/object3104/3488. Retained dead_assignments off. */
+#pragma opt_dead_assignments off
 // FUN_001496F0 NONMATCHING
 void h_campDrawPersonaOverview(int param_1)
 {
@@ -703,6 +711,7 @@ void h_campDrawPersonaOverview(int param_1)
   CAMP_DRAW_CALC_FIRST_AT(spe8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
                        461.0f, 415.0f, 100.0f);
 }
+#pragma opt_dead_assignments reset
 
 /* Reconstructed the retail transition aggregates and full equipment-entry
  * dispatch, including per-entry packed-coordinate updates and inactive-slot
@@ -797,6 +806,8 @@ void h_campDrawPersonaEquipment(int param_1)
   CAMP_DRAW_CALC_FIRST_AT_TILE(sp108, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 1, 561.0f, 415.0f, -100.0f, 10);
 }
 
+/* W373 pragma sweep: default nd2051/object2752/2768; propagation off nd2032/object2540/2768. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_0014B210 NONMATCHING
 void h_campDrawPersonaList(int param_1)
 {
@@ -865,6 +876,7 @@ CAMP_DRAW_CALC_FIRST_AT(u8, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x7f8), 2,
 CAMP_DRAW_CALC_FIRST_AT(u9, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
                              561.0f, 415.0f, 100.0f);
 }
+#pragma opt_propagation reset
 
 #define campDrawTransition(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
     campDrawTransitionBuffirst((transition), (depth), (drawMode), (positionMode), \
@@ -1010,6 +1022,8 @@ void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
 
 /* Removing this worsens FUN_0014c5c0 (nd6343 -> nd6433) - measured W161. */
 #pragma opt_loop_invariants on
+/* W373 pragma sweep: default nd6343/object9700/10080; dead_assignments off nd6331/object9700/10080. Retained dead_assignments off alongside the existing loop_invariants on. */
+#pragma opt_dead_assignments off
 // FUN_0014C5C0 NONMATCHING
 u32 h_campUpdateNewItemTask(int param_1)
 
@@ -1990,6 +2004,7 @@ u32 h_campUpdateNewItemTask(int param_1)
   }
   return 0;
 }
+#pragma opt_dead_assignments reset
 
 #pragma opt_loop_invariants reset
 // FUN_0014EE80
@@ -2013,6 +2028,8 @@ KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
     return task;
 }
 
+/* W373 pragma sweep: default nd588/object924/960; common_subs off nd370/object944/960. Retained common_subs off. */
+#pragma opt_common_subs off
 // FUN_0014EF60 NONMATCHING
 void h_campDrawItemFrame(int param_1)
 {
@@ -2078,6 +2095,7 @@ void h_campDrawItemFrame(int param_1)
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 1,
                   local.pair.u, local.pair.u, 0, 0, 0, 10);
 }
+#pragma opt_common_subs reset
 
 // FUN_0014F320 NONMATCHING
 void h_campDrawItemFrameSelected(int param_1)
@@ -2179,6 +2197,8 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
     return 0;
 }
 
+/* W373 pragma sweep: default nd15152/object19752/20384; propagation off nd14933/object19144/20384; dead_assignments off nd15142/object19748/20384; propagation+dead_assignments nd14933/object19144/20384. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_0014F7D0 NONMATCHING
 u32 h_campUpdateSystemMenuTask(int param_1)
 
@@ -3289,3 +3309,4 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   }
   return 0;
 }
+#pragma opt_propagation reset
