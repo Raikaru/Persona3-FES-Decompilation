@@ -157,8 +157,8 @@ extern u32 func_00319770(Model* model, u16 slot);
 extern u32 func_001c0040(void);
 extern void func_001a0dc0(u16 resourceId, u32 value);
 extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
-#pragma alias func_001d3c40_reordered func_001d3c40
-extern KwlnTask* func_001d3c40_reordered(u32 parent, u32 model);
+#pragma alias func_001d3c40_ptr func_001d3c40
+extern KwlnTask* func_001d3c40_ptr(KwlnTask* parent, Model* model);
 extern KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit);
 extern u32 func_0016c970(s16 pcId);
 extern u16 func_0016c4f0(s16 pcId);
@@ -1916,7 +1916,7 @@ u32 func_001d12d0(void)
 
 /* Removing this worsens FUN_001d1360 (nd448 -> nd516) - measured W161. */
 #pragma opt_loop_invariants on
-// FUN_001d1360 NONMATCHING
+// FUN_001d1360
 void func_001d1360(void)
 {
     s32 i;
@@ -1958,8 +1958,8 @@ void func_001d1360(void)
                 taskSlot = &unit->unk_178;
                 if (unit->unk_178 == NULL)
                 {
-                    *taskSlot = (KwlnTask*)func_001d3c40_reordered(
-                        0, (u32)(*resource)->mdl);
+                    *taskSlot = (KwlnTask*)func_001d3c40_ptr(
+                        NULL, (*resource)->mdl);
                 }
             }
             if (func_001c65e0(unit) == 0)

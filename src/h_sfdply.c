@@ -1601,7 +1601,7 @@ void func_0010cac0(void)
     FUN_0051db00(3, 0x80, 0x7F, 0x7F);
 
     i = 0;
-    slots = sSfdDecodeSlots_abs + i;
+    slots = sSfdDecodeSlots_abs;
     for (; i < HSFD_DECODE_SLOTS; i++)
     {
         slots[i].state = 0;

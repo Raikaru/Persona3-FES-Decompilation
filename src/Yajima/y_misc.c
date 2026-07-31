@@ -28,6 +28,12 @@ typedef struct YajimaPackedRow {
     u8 pad[0x8c0];
     YajimaVec2 value;
 } __attribute__((packed)) YajimaPackedRow;
+typedef struct YajimaPackedEntry {
+    u8 pad[0x8d8];
+    s8 counter;
+    u8 pad_8d9[0xe];
+    s8 delay;
+} __attribute__((packed)) YajimaPackedEntry;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -6228,13 +6234,13 @@ void FUN_0042cd80(int param_1)
 {
   u8 *work;
   YajimaPackedRow *row;
-  u8 *entry;
+  YajimaPackedEntry *entry;
   s8 *counter;
   s8 *delay;
   s16 *offsetX;
   s16 *offsetY;
   u32 random;
-  s8 count;
+  s32 count;
   s32 outer;
   s32 inner;
   s32 end;
@@ -6247,16 +6253,16 @@ void FUN_0042cd80(int param_1)
       row = (YajimaPackedRow *)(work + outer * 8);
       end = (outer + 1) * 5;
       for (; inner < end; inner++) {
-        entry = work + inner;
-        counter = (s8 *)(entry + 0x8d8);
+        entry = (YajimaPackedEntry *)(work + inner);
+        counter = &entry->counter;
         offsetY = (s16 *)(work + inner * 2 + 0x914);
         offsetX = (s16 *)(work + inner * 2 + 0x8f6);
         FUN_00430780(8.0f, row->value,
-                     *(s8 *)offsetX, *(s8 *)offsetY, *counter);
-        delay = (s8 *)(entry + 0x8e7);
-        if (*delay < 1) {
-          count = *(s8 *)(entry + 0x8d8) + 1;
-          *(s8 *)(entry + 0x8d8) = count;
+                     *(s8 *)offsetX, *(s8 *)offsetY, entry->counter);
+        delay = &entry->delay;
+        if (entry->delay < 1) {
+          count = entry->counter + 1;
+          entry->counter = count;
           if (count > 20) {
             random = FUN_00488f30();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));
@@ -6269,10 +6275,10 @@ void FUN_0042cd80(int param_1)
         else {
           (*delay)--;
         }
+        }
       }
     }
   }
-}
 
 // FUN_0042CFC0 NONMATCHING
 

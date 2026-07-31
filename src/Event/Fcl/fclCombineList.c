@@ -768,7 +768,7 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
         }
         if (i == -1) {
             scratch[param_1->used] = (s32)data->selection_detail;
-            FUN_003d6ae0((s32)&data->fusion, param_1->mode, (s32)scratch);
+            FUN_003d6ae0((s32)&data->fusion, mode, (s32)scratch);
             scratch[param_1->used] = 0;
         } else {
             memset(&data->fusion, 0, 0x54);
