@@ -6569,7 +6569,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
 #pragma opt_loop_invariants on
 /* W357 measured func_002c4c80: opt_propagation off stacked with existing opt_loop_invariants on, nd19/460B -> nd10/460B; window 464B. */
 #pragma opt_propagation off
-// FUN_002c4c80 NONMATCHING
+// FUN_002c4c80
 
 u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
 
@@ -6590,10 +6590,11 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   uVar4 = func_002ffdf0(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
+  uVar7 = 0;
   mode = param_5;
   mode &= 0xffff;
   count = param_4 & 0xffff;
-  for (uVar7 = 0; uVar7 < count; uVar7++) {
+  for (; uVar7 < count; uVar7++) {
     uVar2 = param_3[uVar7];
     if (uVar2 != 0 && uVar2 < 0x1d0) {
       cVar1 = *(u8 *)(DAT_007ce3f8 + ((u32)uVar2 * 44) + 8);

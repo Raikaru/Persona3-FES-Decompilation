@@ -2166,6 +2166,7 @@ void func_0010dee0(HSfdImage* image, const u8* source)
 
 /* W318 measured: opt_loop_invariants on changes df60 nd69->14; object stays 168/176. */
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_0010DF60 NONMATCHING
 void func_0010df60(HSfdImage* image, const u8* source)
 {
@@ -2195,6 +2196,7 @@ void func_0010df60(HSfdImage* image, const u8* source)
         }
     }
 }
+#pragma opt_common_subs reset
 #pragma opt_loop_invariants off
 
 // FUN_0010E010

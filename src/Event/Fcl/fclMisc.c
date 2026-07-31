@@ -1044,7 +1044,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     uVar3 = (u16)(int)param_2;
     goto scale_x_done_9000;
 scale_x_high_9000:
-    uVar3 = (u16)(0x80000000 | (u32)(int)(param_2 - 2147483648.0f));
+    uVar3 = (u16)((u32)(int)(param_2 - 2147483648.0f) | 0x80000000);
 scale_x_done_9000:
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
@@ -1053,7 +1053,7 @@ scale_x_done_9000:
     uVar3 = (u16)(int)param_3;
     goto scale_y_done_9000;
 scale_y_high_9000:
-    uVar3 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
+    uVar3 = (u16)((u32)(int)(param_3 - 2147483648.0f) | 0x80000000);
 scale_y_done_9000:
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 

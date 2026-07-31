@@ -5214,7 +5214,7 @@ KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue)
     return task;
 }
 
-// FUN_00186A40 NONMATCHING
+// FUN_00186A40
 void func_00186a40(void* resource, CalendarPackedPosition position, u32 alpha, s16 selection)
 {
     void* unused;
@@ -5234,15 +5234,15 @@ void func_00186a40(void* resource, CalendarPackedPosition position, u32 alpha, s
     {
         switch (selection)
         {
-            case 0: tile = 0; break;
-            case 1: tile = 1; break;
-            case 2: tile = 2; break;
-            case 3: tile = 3; break;
-            case 4: tile = 4; break;
-            case 5: tile = 5; break;
-            case 6: tile = 6; break;
-            case 7: tile = 8; break;
-            case 8: break;
+            case 1: tile = 0; break;
+            case 2: tile = 1; break;
+            case 3: tile = 2; break;
+            case 4: tile = 3; break;
+            case 5: tile = 4; break;
+            case 6: tile = 5; break;
+            case 0:
+            case 7: tile = 6; break;
+            case 8: tile = 8; break;
             default: break;
         }
     }
@@ -7464,7 +7464,7 @@ void* func_0018db20(KwlnTask* task)
                     pcId = 11;
                 }
             }
-            atlas = &object->atlases[pcId];
+            atlas = (void**)((pcId * 4) + (u8*)object + 0x3c);
             {
                 f32 x;
                 f32 y;

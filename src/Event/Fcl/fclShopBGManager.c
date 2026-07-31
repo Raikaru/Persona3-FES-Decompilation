@@ -4958,8 +4958,8 @@ int iVar5;
 u8 ***pppuVar6;
 
 u32 *puVar7;
-
 u8 **appuStack_50 [6];
+
 
 u8 **ppuStack_38;
 
@@ -5322,20 +5322,22 @@ void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 {
 
   int iVar1;
+  u8 *puVar1;
 
   u64 uVar2;
 
   
 
   iVar1 = *(int *)(param_2 + 0xc);
+  puVar1 = (u8 *)(iVar1 + 0x50);
 
   FUN_0040e3c0((float)param_5,param_3 + 0x38,param_4 + 0x2b,param_6 & 0xff,0xa4,0);
 
   FUN_0040e3c0((float)param_5,param_3 + 0x38,param_4 + 0x2b,param_6 & 0xff,0xa5,0);
 
-  FUN_0040e3c0(0,param_3 + 0x43,param_4 + 0x3d,param_6 & 0xff,0,(u32)*(u8 *)(iVar1 + 0x54) << 1);
+  FUN_0040e3c0(0,param_3 + 0x43,param_4 + 0x3d,param_6 & 0xff,0,(u32)puVar1[4] << 1);
 
-  uVar2 = func_00171110(*(u16 *)(iVar1 + 0x50),*(u8 *)(iVar1 + 0x58));
+  uVar2 = func_00171110(*(u16 *)puVar1,*(u8 *)(puVar1 + 8));
 
   FUN_003b2cb0(0,param_3 + 99,param_4 + 0x3f,param_6 | 0xffffffffffffff00,5,1,uVar2,0,0);
 
@@ -5598,6 +5600,7 @@ void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 {
 
   int iVar1;
+  u8 *puVar1;
 
   float fVar2;
 
@@ -5606,6 +5609,7 @@ void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
   
 
   iVar1 = *(int *)(param_2 + 0xc);
+  puVar1 = (u8 *)(iVar1 + 0xa0);
 
   fVar3 = DAT_007caef0 * (float)(int)param_6;
 
@@ -5627,7 +5631,7 @@ void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
                0xf9,0);
 
   FUN_003c7e20(0,param_3 + 0x148,param_4 + 0xf9,param_6 | 0xffffffffffffff00,1,5,1,
-               (u32)CONCAT12(*(u8 *)(iVar1 + 0xa9),*(u16 *)(iVar1 + 0xa0)));
+               (u32)CONCAT12(puVar1[9],*(u16 *)puVar1));
 
   return;
 

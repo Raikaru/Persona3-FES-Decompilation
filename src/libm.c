@@ -1,3 +1,31 @@
+/* TOOLCHAIN FLOOR (W383, measured).
+ *
+ * Retail's libm was NOT built by MWCCPS2.  Two shapes prove it:
+ *
+ *   1. Float bit-reinterpretation.  Retail extracts the sign/exponent word with
+ *      `mfc1 $t7, $f12` and masks with a register-materialised `lui 0x7fff /
+ *      ori 0xffff / and`.  MWCCPS2 b210 has no path to `mfc1`: every form of the
+ *      idiom -- union member read, `*(int*)&x`, pointer laundering through
+ *      `void*`, `register float` parameter, register-qualified union, at -O2
+ *      and -O4 -- compiles to `swc1 $f12, N($sp)` followed by `lw`, and folds a
+ *      literal 0x7fffffff mask into `dsll32/dsrl32` rather than `lui/ori/and`.
+ *      A global (non-const) mask variable is the only way to get a real `and`,
+ *      and it costs a $gp load retail does not make.
+ *
+ *   2. The nine 24-byte wrappers below (FUN_0052E9A0 .. FUN_0052EA60) retain a
+ *      vestigial `sd ra / ld ra` around a tail `j`, a shape that sits between
+ *      MWCC's tailcall-on (8 bytes) and tailcall-off (28/32 bytes) output.
+ *
+ * Both are characteristic ee-gcc / Sony SDK libm output.  The residual diffs in
+ * this file are therefore compiler-provenance artifacts, not source defects, and
+ * grinding them is not productive.  cosf was pushed from nd119 to nd114 with a
+ * signed `ix` plus a switch-shaped quadrant dispatch, but that costs 4 bytes and
+ * puts the function at 180/176 -- over its window -- so it was not retained.
+ *
+ * The `#pragma optimization_level 3` islands in this file are legitimate: they
+ * reproduce the per-translation-unit flags retail's math TU was built with, and
+ * several functions land on their exact retail size only with them.
+ */
 #include "mw_harvest_compat.h"
 #include "libm.h"
 
