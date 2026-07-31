@@ -174,6 +174,23 @@ typedef struct GsEb40WorkView
     u32 release;
 } GsEb40WorkView;
 
+typedef struct GsDb20WorkView
+{
+    u8 reserved00[0xc];
+    s32 state;
+    u8 reserved10[4];
+    s16 pcId;
+    u8 reserved16[0xe];
+    s32 visible;
+    u8 reserved28[4];
+    void* sprite2c;
+    u8 reserved30[4];
+    void* sprite34;
+    u8 reserved38[4];
+    void* atlases[13];
+    void* transition;
+} GsDb20WorkView;
+
 
 
 
@@ -1486,18 +1503,18 @@ void func_0018d320(KwlnTask* task)
 // FUN_0018DB20 NONMATCHING
 void* func_0018db20(KwlnTask* task)
 {
-    u8* object = (u8*)task;
-    if (func_0018b700(GS_PTR(object, 0x70)) != 0 && GS_S32(object, 0x24) != 0)
+    GsDb20WorkView* object = (GsDb20WorkView*)task;
+    if (func_0018b700(object->transition) != 0 && object->visible != 0)
     {
-        switch (GS_S32(object, 0xc))
+        switch (object->state)
         {
         case 0:
             func_0018c150(task);
             break;
         case 1:
             {
-                void* transition = GS_PTR(object, 0x70);
-                s16 pcId = GS_S16(object, 0x14);
+                GsTransition* transition = (GsTransition*)object->transition;
+                s16 pcId = object->pcId;
                 void* atlas;
 
                 if (datGetScenarioMode() != 0)
@@ -1515,30 +1532,27 @@ void* func_0018db20(KwlnTask* task)
                         pcId = 11;
                     }
                 }
-                atlas = GS_PTR(object, 0x3c + (pcId * 4));
-                gsDrawSprite(atlas, 3, GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) + 20.0f,
-                             GS_F32(transition, 0x3c) + 18.0f,
-                             GS_F32(transition, 0x24));
-                gsDrawSprite(atlas, 1, GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) + 20.0f,
-                             GS_F32(transition, 0x3c) + 18.0f,
-                             GS_F32(transition, 0x24));
-                gsDrawSprite(GS_PTR(object, 0x2c), 0,
-                             GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) + 44.0f,
-                             GS_F32(transition, 0x3c) + 39.0f,
-                             GS_F32(transition, 0x24));
-                gsDrawSprite(GS_PTR(object, 0x2c), 3,
-                             GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) + 50.0f,
-                             GS_F32(transition, 0x3c) + 51.0f,
-                             GS_F32(transition, 0x24));
-                gsDrawSprite(GS_PTR(object, 0x34), 0,
-                             GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) + 27.0f,
-                             GS_F32(transition, 0x3c) + 22.0f,
-                             GS_F32(transition, 0x24));
+                atlas = object->atlases[pcId];
+                gsDrawSprite(atlas, 3, transition->alpha,
+                             transition->position.valueF[0] + 20.0f,
+                             transition->position.valueF[1] + 18.0f,
+                             transition->depth);
+                gsDrawSprite(atlas, 1, transition->alpha,
+                             transition->position.valueF[0] + 20.0f,
+                             transition->position.valueF[1] + 18.0f,
+                             transition->depth);
+                gsDrawSprite(object->sprite2c, 0, transition->alpha,
+                             transition->position.valueF[0] + 44.0f,
+                             transition->position.valueF[1] + 39.0f,
+                             transition->depth);
+                gsDrawSprite(object->sprite2c, 3, transition->alpha,
+                             transition->position.valueF[0] + 50.0f,
+                             transition->position.valueF[1] + 51.0f,
+                             transition->depth);
+                gsDrawSprite(object->sprite34, 0, transition->alpha,
+                             transition->position.valueF[0] + 27.0f,
+                             transition->position.valueF[1] + 22.0f,
+                             transition->depth);
                 break;
             }
         case 2:

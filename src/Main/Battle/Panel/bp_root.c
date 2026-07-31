@@ -1320,7 +1320,7 @@ void FUN_00202010(void)
         out++;
     }
     K_ASSERT(out != 0, 0x7e3);
-    K_ASSERT(10 > out, 0x7e4);
+    K_ASSERT(out <= 9, 0x7e4);
     *(u32*)(p + 0x74) = out;
     *(u32*)(p + 0x70) = out;
     if (out > 4)
@@ -1334,7 +1334,7 @@ void FUN_00202010(void)
     func_00208570(p + 0x7658);
     if (datGetFlag(0x186))
     {
-        selectedSkill = (u16)FUN_0016F380(0x31);
+        selectedSkill = FUN_0016F380(0x31);
         if (selectedSkill == 0)
         {
             *(u32*)(p + 0x7664) = 0;
@@ -1342,15 +1342,16 @@ void FUN_00202010(void)
         }
         else
         {
+            u32 selectedId;
             s32 selectedIndex;
             s32 skillCount;
 
+            selectedId = (u16)selectedSkill;
             selectedIndex = 0;
             skillCount = *(s32*)(p + 0x74);
             for (; selectedIndex < skillCount; selectedIndex++)
             {
-                if (*(u16*)(p + 0x2c + selectedIndex * 8) ==
-                    (u16)selectedSkill)
+                if (*(u16*)(p + 0x2c + selectedIndex * 8) == selectedId)
                 {
                     break;
                 }
@@ -1386,7 +1387,7 @@ void FUN_00202010(void)
     }
     FUN_002024B0();
     visible = *(s32*)(p + 0x74);
-    if (visible >= 5)
+    if (visible > 4)
     {
         visible = 4;
     }

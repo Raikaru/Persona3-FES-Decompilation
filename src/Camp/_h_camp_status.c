@@ -496,7 +496,8 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                                 0xffffff00, barOffset, 10);
     }
     /* Separator */
-    campStatusDrawSpriteCall(parent, DAT_00833B90, 4, (u32)(u8)fade,
+    campStatusDrawSpriteCall(parent, *(void**)DAT_00833B90_abs,
+                             4, (u32)(u8)fade,
                              position.x + 195.0f,
                              (87.0f + position.y) - 12.0f, alpha);
     /* Draw current SP digits */

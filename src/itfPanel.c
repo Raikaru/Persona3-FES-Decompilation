@@ -166,6 +166,8 @@ void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5
 #pragma alias FUN_003a87d0_typed FUN_003a87d0
 extern void FUN_003a87d0_typed(int param_2,int param_3,float param_1,void* param_4,
                                u32 param_5,u32 param_6,long param_7);
+#pragma alias FUN_003b4e90_typed FUN_003b4e90
+extern void FUN_003b4e90_typed(void *a0,void *a1,void *a2,u32 a3,u32 a4,u32 a5,u32 a6);
 void FUN_003a8dc0(int param_1,int param_2,int param_3,int param_4,  int param_5,int param_6);
 void FUN_003a8d60(int param_1);
 void FUN_003a8ea0(u8 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
@@ -1730,7 +1732,6 @@ void FUN_003aa720(int param_1)
   int iVar6;
   short *psVar8;
   short *psVar7;
-  u32 *panelPtr;
   int iVar4;
   short sVar1;
   short sVar2;
@@ -1742,7 +1743,7 @@ void FUN_003aa720(int param_1)
 
   
 
-  panelPtr = *(u32 **)(param_1 + 8);
+  iVar4 = *(int *)(param_1 + 8);
   psVar8 = DAT_006a2060;
   psVar7 = asStack_20;
   iVar6 = 8;
@@ -1766,8 +1767,8 @@ void FUN_003aa720(int param_1)
 
   } while (0 < iVar6);
 
-  uVar3 = panelPtr[3];
-  iVar6 = panelPtr[1] + -5;
+  uVar3 = *(u32 *)(iVar4 + 0xc);
+  iVar6 = *(int *)(iVar4 + 4) + -5;
 
   uVar5 = FUN_001158b0(0,uGpffffb964,0);
 
@@ -2710,8 +2711,9 @@ void FUN_003ac240(int param_1,u64 param_2)
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = upper;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4e90(bounds,DAT_006a20e0_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
-               *panel,0,param_2);
+  FUN_003b4e90_typed(bounds,DAT_006a20e0_abs,
+                      (void *)((u8 *)(uintptr_t)param_1 + 0x2c),
+                      *(u32 *)(param_1 + 0xc),*panel,0,(u32)param_2);
 
   bounds[0] = upper;
   bounds[1] = *(u32 *)(param_1 + 0x14);

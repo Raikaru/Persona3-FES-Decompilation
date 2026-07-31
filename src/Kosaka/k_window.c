@@ -303,8 +303,7 @@ void* func_001a1550(KwlnTask* task)
             if (work->colorB.a < (u8)work->alphaStep)
             {
                 alpha = work->colorB.a;
-                alphaValue = (f32)(u32)alpha;
-                work->colorB.a = (u8)(alphaValue + work->alphaStep / 8.0f);
+                alphaValue = (f32)alpha;
             }
             else
             {

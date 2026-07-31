@@ -2327,7 +2327,6 @@ u32 func_002bad60(u32 *param_1)
   u16 functionIndex;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
-  u32 flags;
   
   if (func_002b9350_u32(*param_1) == 0)
     return 0;
@@ -2344,8 +2343,7 @@ u32 func_002bad60(u32 *param_1)
           return 0;
         }
         if ((param_1[6] == 0) &&
-            (((flags = *(volatile u32 *)((u8 *)(uintptr_t)param_1 + 0x1c)) &
-              0xc00) != 0xc00)) {
+            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:
@@ -4954,7 +4952,7 @@ void func_002bf9b0(void)
           }
           firstZero = zero;
           callColor = alpha | 0xb4736400;
-          func_002bce10(firstZero, zero, (u8*)entry, callColor,
+          func_002bce10(firstZero, zero, entry, callColor,
                         (float *)((u8 *)(uintptr_t)entry + 0xa04));
         }
       }
