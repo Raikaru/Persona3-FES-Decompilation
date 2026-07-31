@@ -18488,7 +18488,6 @@ void FUN_00458bb0(void)
   }
 }
 
-#pragma opt_lifetimes on
 // FUN_00458CB0 NONMATCHING
 
 u32 FUN_00458cb0(u64 param_1,char param_2,char param_3)
@@ -18773,7 +18772,6 @@ u32 FUN_00458cb0(u64 param_1,char param_2,char param_3)
   return 0;
 }
 
-#pragma opt_lifetimes reset
 // FUN_00459790 NONMATCHING
 
 u32 FUN_00459790(u64 param_1,char param_2)
@@ -19033,6 +19031,7 @@ u32 FUN_00459f60(u64 param_1,u16 param_2,char param_3)
   return uVar2;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0045A020 NONMATCHING
 
 u32 FUN_0045a020(int param_1)
@@ -19103,6 +19102,7 @@ u32 FUN_0045a020(int param_1)
   return 0;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_0045A220
 
 void FUN_0045a220(int param_1)
