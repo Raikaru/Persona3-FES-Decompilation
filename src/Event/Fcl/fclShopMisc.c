@@ -14907,6 +14907,8 @@ state_done:;
   return iVar6;
 }
 
+#pragma push
+#pragma schedule off
 // FUN_00403740
 
 
@@ -14916,6 +14918,7 @@ s16 FUN_00403740(short param_1)
   __asm__ volatile ("" : "+r"(base));
   return *(s16 *)(base + param_1 * 0x40 + 0x3a);
 }
+#pragma pop
 
 // FUN_00403760
 

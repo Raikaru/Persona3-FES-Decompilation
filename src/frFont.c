@@ -2949,7 +2949,6 @@ void FUN_003b2020(int param_1,int param_2)
 }
 #define FUN_003b2020(...) ((void (*)(...))FUN_003b2020)(__VA_ARGS__)
 #undef FUN_003b22a0
-#pragma opt_propagation off
 // FUN_003B22A0 NONMATCHING
 
 
@@ -3051,7 +3050,6 @@ void FUN_003b22a0(u32 *param_1)
 }
 #define FUN_003b22a0(...) ((void (*)(...))FUN_003b22a0)(__VA_ARGS__)
 #undef FUN_003b2400
-#pragma opt_propagation reset
 // FUN_003B2400
 
 void FUN_003b2400(FrFontState *state)
@@ -3062,6 +3060,7 @@ void FUN_003b2400(FrFontState *state)
 }
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #undef FUN_003b2430
+#pragma opt_lifetimes on
 // FUN_003B2430 NONMATCHING
 
 
@@ -3374,6 +3373,7 @@ LAB_003b28b8:
 }
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #undef FUN_003b2900
+#pragma opt_lifetimes reset
 // FUN_003B2900
 
 

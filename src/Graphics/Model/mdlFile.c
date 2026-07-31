@@ -4416,9 +4416,6 @@ void FUN_0031fde0(float param_1,u8 *param_2)
 
 {
 
-  u8 bVar1;
-
-  u8 bVar2;
 
   int iVar3;
 
@@ -4426,17 +4423,14 @@ void FUN_0031fde0(float param_1,u8 *param_2)
 
   iVar3 = (int)FUN_0031fbd0_noargs();
 
-  bVar1 = param_2[1];
-
-  bVar2 = param_2[2];
 
   *(float *)(iVar3 + 4) =
        param_1 * ((float)*param_2 / 255.0f - *(float *)(iVar3 + 4)) +
        *(float *)(iVar3 + 4) + 0.0f;
   *(float *)(iVar3 + 8) =
-       param_1 * ((float)bVar1 / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
+       param_1 * ((float)param_2[1] / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
   *(float *)(iVar3 + 0xc) =
-       param_1 * ((float)bVar2 / 255.0f - *(float *)(iVar3 + 0xc)) +
+       param_1 * ((float)param_2[2] / 255.0f - *(float *)(iVar3 + 0xc)) +
        *(float *)(iVar3 + 0xc) + 0.0f;
 
   return;

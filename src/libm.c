@@ -353,7 +353,6 @@ float FUN_0052ea48(float param_1, float param_2)
   return FUN_0052b800(param_1, param_2);
 }
 #pragma tailcall off
-#pragma opt_lifetimes on
 // FUN_0052EA60 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea60(float param_1)
@@ -362,7 +361,7 @@ float FUN_0052ea60(float param_1)
 }
 #pragma tailcall off
 #pragma optimization_level 2
-#pragma opt_lifetimes reset
+#pragma opt_common_subs off
 // FUN_0052EA78 NONMATCHING
 u64 FUN_0052ea78(long param_1, long param_2)
 {
@@ -370,6 +369,7 @@ u64 FUN_0052ea78(long param_1, long param_2)
 }
 #pragma optimization_level 2
 #pragma optimization_level 3
+#pragma opt_common_subs reset
 // FUN_0052EAC8 NONMATCHING
 u64 FUN_0052eac8(u64 param_1)
 {

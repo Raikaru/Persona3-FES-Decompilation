@@ -2120,8 +2120,8 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
     u32* leaves[6];
     u32* nested[8];
     u32* stack[8];
-    s32 nestedCount;
     s32 stackCount;
+    s32 nestedCount;
     s32 leafCount;
     s32 i;
     s32 initialCount;
