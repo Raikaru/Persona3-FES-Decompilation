@@ -2560,6 +2560,7 @@ void FUN_001432f0(CampEquipmentPanelWork* work)
 
 
 
+/* W389 aggregate-load idiom probes: hoverStart = *(CampPair*)... nd924/object1176/1248 -> nd927; end-before-start nd929; combined aggregate/order nd932; all reverted. */
 #pragma push
 /* opt_loop_invariants on + opt_dead_assignments off: baseline nd936/object1172/1248 -> nd924/object1176/1248; retained W389. */
 #pragma opt_loop_invariants on

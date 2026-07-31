@@ -1384,8 +1384,6 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
 }
 
-#pragma opt_strength_reduction off
-#pragma opt_dead_assignments off
 // FUN_003D6C90 NONMATCHING
 
 
@@ -1464,8 +1462,6 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
-#pragma opt_dead_assignments reset
-#pragma opt_strength_reduction reset
 // FUN_003D6E60
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {
@@ -1670,6 +1666,8 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
+#pragma opt_strength_reduction off
+#pragma opt_dead_assignments off
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 
@@ -1758,6 +1756,8 @@ LAB_003d7430:
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd796/obj1344 -> nd788/obj1344 (window 1344). */
 #pragma opt_lifetimes on
+#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction reset
 // FUN_003D74F0 NONMATCHING
 
 
