@@ -2184,11 +2184,11 @@ void* FUN_00166c70(KwlnTask* task)
                 selectedId = work->characterIds[0];
                 personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
-                    personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
                         h_campPersonaDestroyKaniControlTask, personaWork);
                     if (DAT_007cdf58 != NULL) {
+                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                         *(s16*)((u8*)personaWork + 0x18) = selectedId;
                     } else {
                         RwFree(personaWork);
@@ -2300,11 +2300,11 @@ void* FUN_00166c70(KwlnTask* task)
                 selectedId = work->characterIds[work->selected];
                 personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
-                    personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
                         h_campPersonaDestroyKaniControlTask, personaWork);
                     if (DAT_007cdf58 != NULL) {
+                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                         *(s16*)((u8*)personaWork + 0x18) = selectedId;
                     } else {
                         RwFree(personaWork);

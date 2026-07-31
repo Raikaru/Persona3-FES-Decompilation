@@ -1047,6 +1047,8 @@ KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
 
 
 
+/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
+#pragma opt_loop_invariants on
 // FUN_00168810 NONMATCHING
 u32 FUN_00168810(u32 param_1)
 {
@@ -1253,6 +1255,7 @@ u32 FUN_00168810(u32 param_1)
     return 0;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00169040
 void FUN_00169040(int param_1)
 {

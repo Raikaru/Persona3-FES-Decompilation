@@ -1668,6 +1668,7 @@ void btlActionInitStateTarget(BtlAction* action)
         btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(scratch.selected->unit, 0), BTLPACKET_TYPE_1);
     }
 }
+#pragma opt_common_subs off
 // FUN_0028c590 NONMATCHING
 void btlActionUpdateStateTarget(BtlAction* action)
 {
@@ -1767,6 +1768,7 @@ void btlActionUpdateStateTarget(BtlAction* action)
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_0028c9f0
 void btlActionInitStateAnalyze(BtlAction* action)
 {
