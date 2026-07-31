@@ -4644,36 +4644,19 @@ void FUN_00320380(float param_1,int *param_2)
   
 
   for (iVar6 = *param_2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x54)) {
-
     u32 *piVar2 = *(u32 **)(iVar6 + 0x50);
-
-
-
     uVar1 = *(u16 *)(piVar2 + 1);
-
     for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
       int *puVar6 = (int *)(PTR_LAB_0069bb10_abs + uVar4 * 0x10);
-
-
-
-
-
       if ((puVar6[3] != 0) &&
-
          (*(int *)(iVar6 + uVar4 * 0x10 + 0xc) != 0)) {
-
         uVar3 = ((u32 (*)(float))puVar6[0])(param_1);
-
         for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
           uVar6 = uVar5 << 2;
-
           ((code)puVar6[3])(uVar3,*(u32 *)(*piVar2 + uVar6));
         }
-
       }
-
     }
-
   }
 
   return;
@@ -5268,6 +5251,8 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 // FUN_00320DE0 NONMATCHING
 
 
+#pragma push
+#pragma opt_common_subs off
 u32 FUN_00320de0(u32 param_1,u32 *param_2)
 {
   s32 materialCount;
@@ -5312,6 +5297,7 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
   }
   return param_1;
 }
+#pragma pop
 
 
 

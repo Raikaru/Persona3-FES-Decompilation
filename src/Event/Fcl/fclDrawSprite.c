@@ -313,7 +313,7 @@ FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, 
 
   char *pcVar3;
 
-  u32 uVar4;
+  u16 uVar4;
 
   
 
@@ -387,7 +387,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
 
   char *pcVar3;
 
-  u32 uVar4;
+  u16 uVar4;
 
   
 

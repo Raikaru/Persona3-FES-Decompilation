@@ -4717,6 +4717,18 @@ void FUN_002b2880(int param_1)
   return;
 }
 
+/* W383 floor, measured.  The whole nd12 residual is three adjacent lwc1 pairs at
+ * +284/+300/+316: retail loads the SUBTRAHEND (scratch.targetCenter, sp+0xF0) before
+ * the minuend (scratch.sourceCenter, sp+0xE0) in each component; we emit them the
+ * other way round.  Registers and every other word are identical, so this is the
+ * classic reordered-adjacent-loads case.  The volatile-cast technique needs a staging
+ * temporary to express the order, and that temporary costs 12 bytes: both variants
+ * (subtrahend-only volatile, and both-operands volatile) measured 1384/1376 nd653 --
+ * OVER the 1376-byte window.  Plain non-volatile temporaries are byte-neutral (the
+ * load sinks back to its use), a whole-vector temp gives 1408/1376 nd782, and all of
+ * scheduling on/off, optimize_for_size and the six opt_* knobs are neutral or worse
+ * (common_subs off 1616/nd1145, propagation off and dead_assignments off both nd796).
+ * Window-blocked: there is no room to buy the ordering.  Keep 1372/1376 nd12. */
 // FUN_002b2940 NONMATCHING
 
 void FUN_002b2940(void *arg0)
