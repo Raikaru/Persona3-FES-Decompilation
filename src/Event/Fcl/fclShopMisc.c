@@ -14912,7 +14912,9 @@ state_done:;
 
 s16 FUN_00403740(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x3a);
+  int base = iGpffffac00;
+  __asm__ volatile ("" : "+r"(base));
+  return *(s16 *)(base + param_1 * 0x40 + 0x3a);
 }
 
 // FUN_00403760
@@ -14920,7 +14922,7 @@ s16 FUN_00403740(short param_1)
 
 s16 FUN_00403760(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x30);
+  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x30);
 }
 
 // FUN_00403780
@@ -14928,7 +14930,7 @@ s16 FUN_00403760(short param_1)
 
 s16 FUN_00403780(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x32);
+  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x32);
 }
 
 // FUN_004037A0
@@ -14936,7 +14938,7 @@ s16 FUN_00403780(short param_1)
 
 s16 FUN_004037a0(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x36);
+  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x36);
 }
 
 // FUN_004037C0
@@ -14944,7 +14946,7 @@ s16 FUN_004037a0(short param_1)
 
 s16 FUN_004037c0(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x34);
+  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x34);
 }
 
 // FUN_004037E0
@@ -15030,7 +15032,7 @@ u32 FUN_004038a0(short param_1)
 
 u32 FUN_004038e0(short param_1)
 {
-  return *(u32 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x2c);
+  return *(u32 *)(iGpffffac00 + param_1 * 0x40 + 0x2c);
 }
 
 // FUN_00403900
@@ -15038,7 +15040,7 @@ u32 FUN_004038e0(short param_1)
 
 s16 FUN_00403900(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x3c);
+  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x3c);
 }
 
 // FUN_00403920

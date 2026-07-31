@@ -26,7 +26,6 @@ void FUN_002891e0(void);
 BtlAction* FUN_00289650(u16 param_1, u16 param_2, void* param_3);
 void btlAction00299e30(BtlAction* action);
 extern f32 DAT_007cad78;
-extern f32 DAT_007cae4c;
 extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
 extern void func_0029ee20(BtlUnit* unit);
@@ -3250,55 +3249,6 @@ void btlUnitInit00285d30Packet(void* work)
 
     packet->unit->packetCount++;
 }
-static __inline u32 btlUnitVuInterpolateColor(u32 start, u32 target, f32 factor)
-{
-    u32 result;
-    f32 inv255 = DAT_007cae4c;
-
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "pextlb      %0, $zero, %2       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf11           \n"
-        "vitof0.xyzw $vf11, $vf11        \n"
-        "mfc1        %0, %3              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
-        "pextlb      %0, $zero, %1       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "lui         %0, 0x3f80          \n"
-        "mtc1        %0, $f0             \n"
-        "sub.s       $f0, $f0, %4        \n"
-        "mfc1        %0, $f0             \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "mfc1        %0, %4              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
-        "vadd.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         %0, 0x437f          \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       %0, $vf10           \n"
-        "ppach       %0, $zero, %0       \n"
-        "ppacb       %0, $zero, %0       \n"
-        ".set reorder"
-        : "=&r"(result)
-        : "r"(start), "r"(target), "f"(inv255), "f"(factor)
-        : "vf2", "vf10", "vf11", "memory");
-
-    return result;
-}
 
 // FUN_00285880 NONMATCHING
 #pragma optimization_level 3
@@ -3382,10 +3332,13 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-
             color = (color & 0xff000000) |
-                    (btlUnitVuInterpolateColor(color, packet->targetCol, factor) &
-                     0x00ffffff);
+                    ((u32)(s32)((1.0f - factor) * (u8)color +
+                               factor * (u8)packet->targetCol)) |
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 8) +
+                               factor * (u8)(packet->targetCol >> 8)) << 8) |
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 16) +
+                               factor * (u8)(packet->targetCol >> 16)) << 16);
         }
 
         if (counter >= alphaStart)
@@ -3398,10 +3351,9 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-
             color = (color & 0x00ffffff) |
-                    (btlUnitVuInterpolateColor(color, packet->targetCol, factor) &
-                     0xff000000);
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 24) +
+                               factor * (u8)(packet->targetCol >> 24)) << 24);
         }
 
         unit->cols[BTLUNIT_COL_MAIN] = *(RwRGBA*)&color;

@@ -114,6 +114,7 @@ u32 FUN_00427670(u32 param_3,u32 param_4, char param_5,u8 param_6, float param_1
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
 u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
                   float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
+extern u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5, float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
 u32 FUN_00427a10(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
                   float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
 u32 FUN_00427bf0(u32 param_6, u32 param_7, YajimaVec2 param_8, u32 param_9,

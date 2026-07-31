@@ -2113,12 +2113,11 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
     *count = childCount;
 }
 
-#pragma optimization_level 3
 // FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
     u32* node;
-    u32* leaves[8];
+    u32* leaves[6];
     u32* nested[8];
     u32* stack[8];
     s32 nestedCount;
@@ -2137,6 +2136,7 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 
     func_00259190(node, stack, &stackCount);
     initialCount = stackCount;
+    leafCount = 0;
     while (stackCount > 0)
     {
         u32* child;
@@ -2147,11 +2147,9 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         }
         else
         {
+            s32 nestedCount;
             func_00259190(child, nested, &nestedCount);
-            for (i = 0; i < nestedCount; i++)
-            {
-                stack[stackCount++] = nested[i];
-            }
+            stack[stackCount++] = nested[0];
         }
     }
     K_ASSERT(initialCount == leafCount, 0x702);
@@ -2161,7 +2159,6 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
     }
     *count = ((*node & 0x10) == 0) ? 1 : leafCount;
 }
-#pragma optimization_level 2
 
 /*
  * Retail offsets 0x9ec-0xbc4 count unowned roots, locate each by index, and redraw leaves.

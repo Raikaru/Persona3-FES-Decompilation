@@ -642,9 +642,9 @@ asm void FUN_00780ae0(void)
 {
   .set noreorder
   lui $sp,0x8
-  jalr $v1
+  jalr $ra,$v1
   addiu $sp,$sp,0x1fc0
   addiu $v1,$zero,-8
-  syscall
+  .word 0x0000000c
   .set reorder
 }

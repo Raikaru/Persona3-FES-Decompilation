@@ -152,17 +152,6 @@ int FUN_003a9670();
 int FUN_003a96b0();
 void FUN_003ab2a0();
 
-#define FUN_003a8b00(...) ((int (*)(...))FUN_003a8b00)(__VA_ARGS__)
-#define FUN_003a8dc0(...) ((void (*)(...))FUN_003a8dc0)(__VA_ARGS__)
-#define FUN_003a8ea0(...) ((void (*)(...))FUN_003a8ea0)(__VA_ARGS__)
-#define FUN_003a8fb0(...) ((void (*)(...))FUN_003a8fb0)(__VA_ARGS__)
-#define FUN_003a9080(...) ((void (*)(...))FUN_003a9080)(__VA_ARGS__)
-#define FUN_003a95f0(...) ((int (*)(...))FUN_003a95f0)(__VA_ARGS__)
-#define FUN_003a9630(...) ((int (*)(...))FUN_003a9630)(__VA_ARGS__)
-#define FUN_003a9670(...) ((int (*)(...))FUN_003a9670)(__VA_ARGS__)
-#define FUN_003a96b0(...) ((int (*)(...))FUN_003a96b0)(__VA_ARGS__)
-#define FUN_003ab2a0(...) ((void (*)(...))FUN_003ab2a0)(__VA_ARGS__)
-
 
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
@@ -5897,18 +5886,7 @@ u64 FUN_003a8710(int param_2,int param_3,float param_1,int param_4,int param_5)
 }
 #define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
 
-#undef FUN_003a8b00
-#undef FUN_003a8dc0
-#undef FUN_003a8ea0
-#undef FUN_003a8fb0
-#undef FUN_003a9080
-#undef FUN_003a95f0
-#undef FUN_003a9630
-#undef FUN_003a9670
-#undef FUN_003a96b0
-#undef FUN_003ab2a0
-
-u32 FUN_003a8b00();
+u32 FUN_003a8b00(int param_1,int param_2);
 typedef struct {
   f32 x;
   f32 y;
@@ -6159,7 +6137,6 @@ u64 FUN_003aca40(u64 param_1,u64 param_2);
 u64 FUN_003ad130(u32 param_1,int param_2);
 u64 FUN_003ade60(u64 param_1,int param_2);
 void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
-
 
 /* Region call-cast macros */
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
