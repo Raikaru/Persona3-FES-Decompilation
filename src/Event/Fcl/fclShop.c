@@ -7892,8 +7892,6 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   FUN_0040e3c0_i(x, y, scale, color, type, value)
 
 
-  int iVar7;
-
   u8 cVar1;
   s16 uVar2;
   s16 uVar3;
@@ -7903,6 +7901,8 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   int iVar5;
 
   int iVar6;
+
+  int iVar7;
 
   s16 *puVar10;
 

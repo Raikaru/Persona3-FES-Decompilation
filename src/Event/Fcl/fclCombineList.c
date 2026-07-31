@@ -1262,7 +1262,7 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         sprintf(formatted_text, DAT_007cd798.format_string, record->format_value);
 
         if (alternate_layout == 0) {
-            FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x25,
+            FUN_0040e3c0_i(base_x, base_y, 0.0f, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + selected_style);
             FUN_003b32d0(0.0f, base_x + 0x76, base_y + 0x7e,
                           ((u32)(byte)alpha) | 0xffffff00,
@@ -1271,7 +1271,7 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             FUN_0040eb50(0.0f, base_x + 0x145, base_y + 0x7f, (byte)alpha,
                           (s16)string_styles[selected_style], formatted_text, 1);
         } else {
-            FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x25,
+            FUN_0040e3c0_i(base_x, base_y, 0.0f, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
             if (selected_style == 0) {
                 scaled_alpha = (u8)(DAT_007cadd0 * (float)alpha);
@@ -1292,22 +1292,22 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             }
         }
     } else {
-        FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x26, 0);
+        FUN_0040e3c0_i(base_x, base_y, 0.0f, (byte)alpha, 0x26, 0);
         for (i = 0; i < 8; i++) {
-            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
+            FUN_0040e3c0_i(base_x + i * 0x15, base_y, 0.0f, (byte)alpha,
                           0x27, selected_style);
         }
         for (i = 0; i < 2; i++) {
-            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
+            FUN_0040e3c0_i(base_x + i * 0x15, base_y, 0.0f, (byte)alpha,
                           0x28, selected_style);
         }
     }
 
     if (alternate_layout == 0 && selected_style == 0) {
-        FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x24,
+        FUN_0040e3c0_i(base_x, base_y, 0.0f, (byte)alpha, 0x24,
                       (resource_node->display_index - 1) * 2);
     } else {
-        FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x24,
+        FUN_0040e3c0_i(base_x, base_y, 0.0f, (byte)alpha, 0x24,
                       (resource_node->display_index - 1) * 2 + 1);
     }
 
@@ -1346,24 +1346,24 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         if (record == 0) {
             fallback_text_id = resource_data->fallback->fallback_text_ids[i];
             definition = DAT_007ce420[fallback_text_id];
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
+            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24, i * 2 + 1);
+            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x24, i * 2 + 1);
         } else {
             definition = DAT_007ce420[record->text_id];
             FUN_00523ac8(&formatted_text, &DAT_007cd798.layout_template,
                           record->format_value);
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
+            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + selected_style);
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, normal_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[record->text_id], 0x10, 0x6e);
             FUN_0040eb50(0.0f, base_x + 0x145, row_y + 0x7f, (byte)alpha,
                           (s16)text_styles[selected_style], &formatted_text, 1);
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24,
+            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x24,
                           i * 2 + selected_style);
         }
     }

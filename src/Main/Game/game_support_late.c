@@ -1504,10 +1504,16 @@ void func_0018d320(KwlnTask* task)
 void* func_0018db20(KwlnTask* task)
 {
     GsDb20WorkView* object = (GsDb20WorkView*)task;
-    if (func_0018b700(object->transition) != 0 && object->visible != 0)
+    if (func_0018b700(object->transition) == 0)
     {
-        switch (object->state)
-        {
+        goto done;
+    }
+    if (object->visible == 0)
+    {
+        goto done;
+    }
+    switch (object->state)
+    {
         case 0:
             func_0018c150(task);
             break;
@@ -1606,7 +1612,7 @@ void* func_0018db20(KwlnTask* task)
         default:
             break;
         }
-    }
+done:
     return KWLNTASK_CONTINUE;
 }
 

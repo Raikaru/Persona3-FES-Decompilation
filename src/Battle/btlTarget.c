@@ -4517,12 +4517,12 @@ void FUN_002d7560(BtlAction *action)
                     rewards = DAT_007ce3ec;
                     for (; i <= (u16)2; i++)
                     {
-                        if (personaId == *(u16 *)(rewards + i * 8 + 0xbe0))
-                        {
-                            (*(u32 *)(rewards + i * 8 + 0xbe4))++;
-                            found = 1;
-                            break;
-                        }
+                        u16 rewardId = *(u16 *)(rewards + ((u32)i % 65536u) * 8 + 0xbe0);
+                        if (rewardId != personaId)
+                            continue;
+                        (*(u32 *)(rewards + ((u32)i % 65536u) * 8 + 0xbe4))++;
+                        found = 1;
+                        break;
                     }
                     if (found == 0)
                     {

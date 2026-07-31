@@ -1621,6 +1621,8 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 // FUN_003D71D0 NONMATCHING
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3)
 {
   u16 sVar2;
@@ -1633,18 +1635,20 @@ u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3)
   memset(param_1,0,0x54);
   cVar1 = datGetLevel(1);
   sVar2 = FUN_003d7da0(1,cVar1 + 3,param_3);
+  uVar3 = 0;
   if (sVar2 != 0) {
     if (FUN_001749a0(sVar2) == 0) {
       if (*(u16 *)(param_2 + 6) != sVar2) {
         FUN_00176680(param_1 + 1,sVar2);
         FUN_003d6e60((int)param_1,(int)param_2);
         FUN_00176c80(param_1 + 1,param_2 + 4);
-        return 1;
+        uVar3 = 1;
       }
     }
   }
-  return 0;
+  return uVar3;
 }
+#pragma pop
 
 // FUN_003D72F0 NONMATCHING
 
