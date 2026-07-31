@@ -47,7 +47,7 @@ u32 FUN_002a1710(int *param_1);
 void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3);
 u32 FUN_002a1b70(u32 *param_1);
 void FUN_002a1db0(s32 param_1);
-void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4);
+void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1);
 extern void FUN_002a1e00_typed(f32* out, f32* first, f32* second, f32 weight);
 u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
 void FUN_002a2170(u16 *param_1,f32 *param_2);
@@ -3459,7 +3459,7 @@ void FUN_002a1db0(s32 param_1)
 // FUN_002A1E00 NONMATCHING
 
 
-void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4)
+void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
 {
   float fVar1;
   float fVar2;
@@ -3498,7 +3498,7 @@ void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4)
       param_1 = fVar1 * param_1 *
                 (fVar1 * (fVar1 * (fVar1 * (fVar1 * (fGpffff8044 * fVar1 + fGpffff8048 + 0.0f) +
                                            fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) +
-                         fGpffff8054 + 0.0f) + param_1 + 0.0f;
+                         fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + param_1 + 0.0f;
     }
     param_2[3] = interpolation.values[0] * fVar5;
     param_2[4] = interpolation.values[1] * fVar5;

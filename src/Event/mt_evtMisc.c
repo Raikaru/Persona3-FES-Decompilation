@@ -2508,7 +2508,7 @@ void FUN_00389b50(int *param_1)
       for (puVar1 = (u32 *)param_1[0x1b]; puVar1 != (u32 *)0x0;
 
           puVar1 = (u32 *)puVar1[0x13]) {
-        puVar7 = (u32 *)((u8 *)iVar8 + iVar9 * 0x54);
+        puVar7 = (u32 *)(iVar8 + iVar9 * 0x54);
 
         iVar6 = 0x15;
 

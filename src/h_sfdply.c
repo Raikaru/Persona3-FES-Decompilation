@@ -1261,7 +1261,9 @@ void func_0010c050(void)
     uGpffffb230 = 1;
 }
 
-// FUN_0010C1A0 NONMATCHING
+/* W318 measured: opt_loop_invariants on changes c1a0 nd25->0. */
+#pragma opt_loop_invariants on
+// FUN_0010C1A0
 HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
                                s32 requestFlags, void* source, void* buffer,
                                s32 byteCount, const char* cacheName,
@@ -1334,6 +1336,7 @@ link_next:
     link = &(*link)->next;
     goto link_check;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0010C3A0 NONMATCHING
 void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)

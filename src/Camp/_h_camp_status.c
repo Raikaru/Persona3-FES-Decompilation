@@ -495,7 +495,6 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     f32 y;
     f32 x;
     s32 fade8;
-    f32 alphaValue;
 
     if (barOffset != 0) {
         campStatusDrawGaugeCall(alpha - 1.0f,
@@ -507,10 +506,9 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     y = position.y;
     x = position.x + 195.0f;
     fade8 = (u8)fade;
-    alphaValue = alpha;
     /* Separator */
     campStatusDrawSpriteCallXY(parent, *(void**)DAT_00833B90_abs, 5,
-                               x, (87.0f + y) - 12.0f, fade8, alphaValue);
+                               x, (87.0f + y) - 12.0f, fade8, alpha);
     /* Draw current SP digits */
     val = datGetSp((s32)(s16)pcId);
     hundreds = 0;
@@ -519,20 +517,20 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         font = campStatusGetFont(2);
         campStatusDrawSpriteCallXY(parent, font, val / 100 + 0xb,
                                    position.x + 79.0f,
-                                   (85.0f + y) - 12.0f, (u8)fade, alphaValue);
+                                   (85.0f + y) - 12.0f, (u8)fade, alpha);
         val %= 100;
     }
     if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteCallXY(parent, font, val / 10 + 0xb,
                                    (position.x + 79.0f) + 15.0f,
-                                   (85.0f + y) - 12.0f, (u8)fade, alphaValue);
+                                   (85.0f + y) - 12.0f, (u8)fade, alpha);
         val %= 10;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteCallXY(parent, font, val + 0xb,
                                (position.x + 79.0f) + 30.0f,
-                               (85.0f + y) - 12.0f, (u8)fade, alphaValue);
+                               (85.0f + y) - 12.0f, (u8)fade, alpha);
     /* Draw max SP digits */
     val = func_0016c670((s32)(s16)pcId);
     hundreds = 0;
@@ -541,20 +539,20 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeXYCall(
             parent, font, val / 100 + 0xb, position.x + 138.0f, y,
-            (u8)fade, alphaValue, 0x66);
+            (u8)fade, alpha, 0x66);
         val %= 100;
     }
     if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeXYCall(
             parent, font, val / 10 + 0xb,
-            (position.x + 138.0f) + 15.0f, y, (u8)fade, alphaValue, 0x66);
+            (position.x + 138.0f) + 15.0f, y, (u8)fade, alpha, 0x66);
         val %= 10;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteFadeXYCall(
         parent, font, val + 0xb, (position.x + 138.0f) + 30.0f, y,
-        (u8)fade, alphaValue, 0x66);
+        (u8)fade, alpha, 0x66);
 }
 
 // FUN_00123F80
@@ -1596,7 +1594,7 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
 
 // FUN_00126710 NONMATCHING
 #pragma push
-#pragma opt_loop_invariants on
+#pragma opt_loop_invariants off
 void h_campStatusDrawViewport(void* texture, CampVec2 position, f32 x,
                               s32 alpha)
 {

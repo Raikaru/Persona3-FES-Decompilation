@@ -547,9 +547,11 @@ s32 FUN_003d9cc0(s32);
 void FUN_003d9ea0(FclList*);
 void FUN_003c9b00(FclListUi*, FclFusionDetail*, FclFusionOutput*);
 void FUN_0040e3c0(float, s32, s32, byte, s32, s32);
+/* ABI reorder retained: 003dc2d0 nd574->534, 003dd260 nd911->901, 003dca10 MATCH. */
 #pragma alias FUN_0040e3c0_i FUN_0040e3c0
 void FUN_0040e3c0_i(s32, s32, float, byte, s32, s32);
 void FUN_0040e3f0(float, float, float, float, s32, s32, byte, s32, s32, s32, s32);
+/* ABI reorder retained: 003dfae0 alias-only nd501->462. */
  #pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
  extern void FUN_0040e3f0_i2f1i3f3(s32 param_5, s32 param_6, float param_1,
                                    byte param_7, s32 param_8, s32 param_9,
@@ -703,7 +705,9 @@ static inline s32 fclCombineListGetValue(FclList* param_1, s32 param_2)
     s32 p;
     K_ASSERT(param_1 != 0, 0x411);
     if (param_1->capacity <= param_2) return 0;
-    p = (s32)param_1->values[param_2];
+    p = (s32)(void *)param_1->values;
+    p += param_2 << 2;
+    p = *(s32 *)p;
     if (p != 0) return p;
     return 0;
 }
