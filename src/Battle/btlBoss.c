@@ -873,7 +873,7 @@ case_1a4_done:
     }
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_002f8a40
 u32 func_002f8a40(BtlUnit* unit)
 {
@@ -1833,7 +1833,7 @@ void func_002faab0()
         break;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 extern void func_0029a690(s32 value);
 extern void func_0029a470(void* value);
