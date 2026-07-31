@@ -11275,6 +11275,59 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
 #include "Utils.h"
 #include "rw/rwcore.h"
 
+#pragma alias DAT_007cdf54_y2 DAT_007cdf54_y2
+#pragma alias DAT_007cdf58_y2 DAT_007cdf58_y2
+#pragma alias DAT_007e094e_y2 DAT_007e094e_y2
+#pragma alias DAT_007e0958_y2 DAT_007e0958_y2
+#pragma alias iGpffffb258_y2 iGpffffb258_y2
+#pragma alias gp0xffff897c_y2 gp0xffff897c_y2
+#pragma alias FUN_00100d80_y2 FUN_00100d80_y2
+#pragma alias FUN_001016b0_y2 FUN_001016b0_y2
+#pragma alias FUN_0010a4e0_y2 FUN_0010a4e0_y2
+#pragma alias FUN_00111f30_y2 FUN_00111f30_y2
+#pragma alias FUN_001124b0_y2 FUN_001124b0_y2
+#pragma alias FUN_00113a30_y2 FUN_00113a30_y2
+#pragma alias FUN_00114450_y2 FUN_00114450_y2
+#pragma alias FUN_001159f0_y2 FUN_001159f0_y2
+#pragma alias FUN_00122710_y2 FUN_00122710_y2
+#pragma alias FUN_0013c240_y2 FUN_0013c240_y2
+#pragma alias FUN_0013d1a0_y2 FUN_0013d1a0_y2
+#pragma alias FUN_0013fca0_y2 FUN_0013fca0_y2
+#pragma alias FUN_00174800_y2 FUN_00174800_y2
+#pragma alias FUN_003b2cb0_y2 FUN_003b2cb0_y2
+#pragma alias FUN_003c7d80_y2 FUN_003c7d80_y2
+#pragma alias FUN_003c7e20_y2 FUN_003c7e20_y2
+#pragma alias FUN_0040eb50_y2 FUN_0040eb50_y2
+#pragma alias FUN_00523ac8_y2 FUN_00523ac8_y2
+
+
+#pragma alias FUN_004d0f00_y2 FUN_004d0f00_y2
+#pragma alias H_Cdvd_Destroy_y2 H_Cdvd_Destroy_y2
+#pragma alias iGpffffb258_y2 iGpffffb258_y2
+#pragma alias uGpffffb260_y2 uGpffffb260_y2
+#pragma alias FUN_0010c3a0_y2 FUN_0010c3a0_y2
+#pragma alias FUN_0016f190_y2 FUN_0016f190_y2
+#pragma alias FUN_0017B860_y2 FUN_0017B860_y2
+#pragma alias FUN_0017BC20_y2 FUN_0017BC20_y2
+#pragma alias FUN_00173660_y2 FUN_00173660_y2
+#pragma alias FUN_001159F0_y2 FUN_001159F0_y2
+#pragma alias FUN_00115BC0_y2 FUN_00115BC0_y2
+#pragma alias FUN_00523AC8_y2 FUN_00523AC8_y2
+#pragma alias FUN_003c7e20_y2 FUN_003c7e20_y2
+#pragma alias FUN_001158B0_y2 FUN_001158B0_y2
+#pragma alias FUN_001127D0_y2 FUN_001127D0_y2
+#pragma alias FUN_00115980_y2 FUN_00115980_y2
+#pragma alias FUN_00122710_y2 FUN_00122710_y2
+#pragma alias FUN_0011E380_y2 FUN_0011E380_y2
+#pragma alias FUN_00177790_y2 FUN_00177790_y2
+#pragma alias DAT_00833BA0_y2 DAT_00833BA0_y2
+
+
+#pragma alias datPersonaGetHeroPersona_y2 datPersonaGetHeroPersona_y2
+#pragma alias FUN_00177790_y2 FUN_00177790_y2
+#pragma alias FUN_001159f0_y2 FUN_001159f0_y2
+
+
 /* The six routines below are the Camp carousel renderer and its input/state
  * helpers.  Their retail call graph is intentionally kept explicit: the
  * renderer is shared by the normal and alternate carousel paths, while the
@@ -12076,3 +12129,8373 @@ s32 FUN_0013BE50(u8* param_1, s32 param_2)
 #undef entries
 }
 #pragma opt_common_subs reset
+
+
+
+#pragma alias func_00170e90_subb func_00170e90
+extern void* func_00170e90_subb(s16 id);
+#pragma alias campDrawSprite_subb FUN_001159f0_y2
+#pragma alias FUN_003b2cb0_subb FUN_003b2cb0
+#pragma alias func_0018bc10_buffirst_subb func_0018bc10
+/*
+ * Camp equipment records are 0x24 bytes.  The work object keeps 0x15 category
+ * counters at +0x0c, records at +0x64, and its list cursor at the tail.
+ * Keeping these offsets in one layout makes the rendering code auditable.
+ */
+typedef struct CampEquipmentEntry
+{
+    u32 itemId;                 /* +0x00 */
+    s32 sourceIndex;            /* +0x04 */
+    u8 reserved08[4];           /* +0x08 */
+    u32 ownedFlag;              /* +0x0c */
+    u32 availableFlag;          /* +0x10 */
+    u32 categoryMask;           /* +0x14 */
+    u8 effect;                  /* +0x18 */
+    u8 slotType;                /* +0x19 */
+    u8 equipmentClass;          /* +0x1a */
+    u8 reserved1b;              /* +0x1b */
+    u16 valueA;                 /* +0x1c */
+    u16 valueB;                 /* +0x1e */
+    u16 valueC;                 /* +0x20 */
+    u16 valueD;                 /* +0x22 */
+} CampEquipmentEntry;
+typedef struct CampEquipmentTargetEntry
+{
+    u32 itemId;
+    s32 sourceIndex;
+    u8 reserved08[4];
+    u32 ownedFlag;
+    u32 availableFlag;
+    u32 categoryMask;
+    u8 effect;
+    u8 slotType;
+    u8 equipmentClass;
+    u8 reserved1b;
+    u16 valueA;
+    u16 valueB;
+    u16 valueC;
+    u16 valueD;
+} CampEquipmentTargetEntry;
+
+typedef struct CampEquipmentSlotAtBase
+{
+    u8 reserved00[0x64];
+    CampEquipmentTargetEntry entry;
+} CampEquipmentSlotAtBase;
+
+
+typedef struct CampEquipmentRecord24
+{
+    u8 reserved00[0x68];
+    s32 sourceIndex;
+} CampEquipmentRecord24;
+
+typedef struct CampEquipmentWork
+{
+    u8 reserved00[0x0c];
+    u32 categoryCounts[0x15];   /* +0x0c */
+    u32 reserved60;             /* +0x60 */
+    CampEquipmentEntry entries[0x15]; /* +0x64 */
+    u8 reservedTail[0x2d64 - 0x64 - 0x24 * 0x15];
+    s32 entryCount;             /* +0x2d64 */
+    s32 selectedEntry;          /* +0x2d68 */
+    s32 firstVisibleEntry;      /* +0x2d6c */
+} CampEquipmentWork;
+
+typedef struct CampEquipmentWork24View
+{
+    u8 reserved00[0x2d64];
+    s32 entryCount;
+    s32 selectedEntry;
+    s32 firstVisibleEntry;
+} CampEquipmentWork24View;
+
+typedef struct CampEquipmentPanelWork
+{
+    u8 reserved00[0x1c];
+    s32 visibleCount;           /* +0x1c */
+    u8 reserved20[0x30];
+    s32 listCount;              /* +0x50 */
+    s32 selectedSlot;           /* +0x54 */
+    s32 highlightedSlot;        /* +0x58 */
+    u8 reserved5c[0x48];
+    CampEquipmentWork* equipmentList;       /* +0xa4 */
+    CampEquipmentWork* equipmentListAlt;    /* +0xa8 */
+    CampEquipmentWork* equipmentListDetail; /* +0xac */
+    u8 reservedB0[0x0c];
+    u8* drawBuffer;             /* +0xbc */
+    u8* statusBuffer;           /* +0xc0 */
+} CampEquipmentPanelWork;
+
+typedef struct CampEquipmentDetailEntry
+{
+    u32 itemId;                 /* +0x00 */
+    s32 value;                  /* +0x04 */
+} CampEquipmentDetailEntry;
+
+typedef struct CampEquipmentDetailWork
+{
+    u8 reserved00[0x0c];
+    CampEquipmentDetailEntry entries[0x12c];
+    s32 entryCount;             /* +0x96c */
+    s32 selectedEntry;          /* +0x970 */
+    s32 firstVisibleEntry;      /* +0x974 */
+} CampEquipmentDetailWork;
+
+typedef struct CampEquipmentMenuWork
+{
+    u8 reserved00[0x0c];
+    u32 categoryValues[4];       /* +0x0c */
+    u8 reserved1c[0x38];
+    s32 selectedSlot;            /* +0x54 */
+    s32 highlightedSlot;         /* +0x58 */
+    u8 reserved5c[0x48];
+    CampEquipmentDetailWork* detailList; /* +0xa4 */
+    CampEquipmentWork* equipmentList;    /* +0xa8 */
+    CampEquipmentWork* equipmentListAlt; /* +0xac */
+} CampEquipmentMenuWork;
+
+static inline CampEquipmentDetailEntry* campDetailEntry(CampEquipmentDetailWork* work, s32 index)
+{
+    return &work->entries[index];
+}
+static s16 campMenuCategoryValue(const CampEquipmentMenuWork* menu, s32 index)
+{
+    return *(const s16*)((const u8*)menu + 0x0c + index * 4);
+}
+
+typedef struct CampEquipmentDrawItem
+{
+    u8 reserved00[0x24];
+    void* texture;                /* +0x24 */
+    u8 reserved28[0x10];
+    f32 x;                        /* +0x38 */
+    f32 y;                        /* +0x3c */
+    u32 alpha;                    /* +0x40 */
+} CampEquipmentDrawItem;
+
+static inline CampEquipmentEntry* campEquipmentEntry(CampEquipmentWork* work, s32 index)
+{
+    return &work->entries[index];
+}
+static u32 campEquipmentEffectAndId(const CampEquipmentEntry* entry)
+{
+    return ((u32)entry->effect << 16) | (entry->itemId & 0xffff);
+}
+
+typedef struct CampPair
+{
+    f32 x;
+    f32 y;
+} CampPair;
+typedef union CampBits
+{
+    u64 u;
+    f32 f[2];
+} CampBits;
+
+typedef struct CampEquipmentResourceRecord
+{
+    u8 reserved00[8];
+    u16 itemId;                  /* +0x08 */
+} CampEquipmentResourceRecord;
+
+static u16 campEquipmentResourceItem(const void* resource)
+{
+    return ((const CampEquipmentResourceRecord*)resource)->itemId;
+}
+
+#define campTextureAsFloat(item) (*(f32*)&(item)->texture)
+
+static f32 campPackedX_subb(u64 position)
+{
+    return (f32)(u32)position;
+}
+
+static f32 campPackedY_subb(u64 position)
+{
+    return (f32)(u32)(position >> 32);
+}
+
+static inline u32 campSubbFloatBits(f32 value)
+{
+    union
+    {
+        f32 value;
+        u32 bits;
+    } converted;
+    converted.value = value;
+    return converted.bits;
+}
+
+#define CAMP_SUBB_PAIR_FLOAT_HIGH(high, low) \
+    (((u64)campSubbFloatBits(high) << 32) | (u32)(low))
+#define CAMP_SUBB_PAIR_FLOATS(high, low) \
+    (((u64)campSubbFloatBits(high) << 32) | campSubbFloatBits(low))
+
+/* Canonical APIs recovered in Main/g_data.c and datPersona.c. */
+extern void* func_00170e90_subb(s16 id);
+extern DatPersonaWork* datPersonaGetHeroPersona_y2(s16 index);
+extern void* func_00170ed0(s16 id, s32* category);
+extern const char* func_00171110(s16 id, s16 field);
+extern u32 func_00171250(s16 id);
+extern u16 func_001712d0(s16 id);
+extern DatPersonaWork* FUN_00174a90(s16 id);
+extern const char* FUN_00177790_y2(s16 id);
+extern u32 FUN_0016c470(u16 id);
+extern u32 FUN_0016c4f0(u16 id);
+extern u32 FUN_0016c570(u16 id);
+extern u32 FUN_0016c5f0(u16 id);
+
+extern s16 FUN_0016c920(u16 id);
+extern u32 FUN_0016c970(u16 id);
+extern const char* FUN_0017b100(u16 id);
+extern s32 FUN_0017bf70(u16 id);
+extern s8 FUN_0017bfa0(u16 id, u8 field);
+#pragma alias campDrawSprite_subb FUN_001159f0_y2
+extern void campDrawSprite_subb(void* parent, void* resource, s32 frame,
+                           u8 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteX FUN_001159f0_y2
+extern void campDrawSpriteX(void* parent, void* resource, s32 frame,
+                            f32 x, u8 alpha, f32 y, f32 scale);
+#pragma alias campDrawSpriteXY FUN_001159f0_y2
+extern void campDrawSpriteXY(void* parent, void* resource, s32 frame,
+                             f32 x, f32 y, u8 alpha, f32 scale);
+#pragma alias campDrawSpriteDirect FUN_001159f0_y2
+extern void campDrawSpriteDirect(f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteDetail FUN_001159f0_y2
+extern void campDrawSpriteDetail(f32 x, f32 y, void* texture);
+#pragma alias campDrawSpriteDetailAlt FUN_00115bc0
+extern void campDrawSpriteDetailAlt(f32 x, f32 y, void* texture);
+#pragma alias campDrawSpriteDigit FUN_00115ad0
+extern void campDrawSpriteDigit(void* parent, void* resource, s32 frame,
+                                u8 alpha, f32 x, f32 y, f32 scale);
+extern void campDrawGauge(f32 scale, f32 x, f32 y, u32 color,
+                          s32 width, s32 height);
+#pragma alias campDrawGauge FUN_00113a30
+#pragma alias campDrawTextAlt FUN_003b32d0
+extern void campDrawTextAlt(s32 x, s32 y, u32 color, f32 scale,
+                            u32 font, u32 alignment, const char* text,
+                            u32 maxWidth, u32 shadow);
+#pragma alias campDrawTextAltScale FUN_003b32d0
+extern void campDrawTextAltScale(f32 scale, s32 x, s32 y, u32 color,
+                                 u32 font, u32 alignment, const char* text,
+                                 u32 maxWidth, u32 shadow);
+#pragma alias campDrawTextAltXScale FUN_003b32d0
+extern void campDrawTextAltXScale(s32 x, f32 scale, s32 y, u32 color,
+                                  u32 font, u32 alignment,
+                                  const char* text, u32 maxWidth,
+                                  u32 shadow);
+#pragma alias campDrawSpriteAlt FUN_00115bc0
+extern void campDrawSpriteAlt(void* parent, void* resource, s32 frame,
+                              u8 alpha, s32 red, s32 green, s32 blue,
+                              f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteAltX FUN_00115bc0
+extern void campDrawSpriteAltX(void* parent, void* resource, s32 frame,
+                               u8 alpha, f32 x, s32 red, s32 green,
+                               s32 blue, f32 y, f32 scale);
+#pragma alias campDrawText FUN_003b2cb0_subb
+extern void campDrawText(f32 scale, s32 x, s32 y, s32 color, u32 font,
+                         u32 alignment, const char* text, u32 maxWidth,
+                         u32 shadow);
+#pragma alias campDrawValue FUN_003c7e20
+extern void campDrawValue(f32 scale, s32 x, s32 y, u32 color, u32 font,
+                          u32 alignment, u32 style, u32 value);
+#pragma alias campDrawValueXY FUN_003c7e20
+extern void campDrawValueXY(s32 x, s32 y, f32 scale, u32 color, u32 font,
+                            u32 alignment, u32 style, u32 value);
+extern s32 FUN_0012df50(u32 mask);
+extern void* DAT_00833B70;
+#pragma alias DAT_00833B70_abs DAT_00833B70
+extern u8 DAT_00833B70_abs[];
+#pragma alias campDetailFormat DAT_007cb66c
+extern char campDetailFormat;
+extern void FUN_003c7e20(void* texture, s32 x, s32 y, u32 color, u32 font,
+                         u32 alignment, u32 style, u32 value);
+extern void FUN_003b2cb0_subb(void* texture, s32 x, s32 y, s32 color, u32 font,
+                         u32 alignment, const char* text, u32 maxWidth,
+                         u32 shadow);
+#pragma alias campDrawEquipmentDetailList FUN_001406d0
+extern void campDrawEquipmentDetailList(CampPair position, f32 texture,
+                                        CampEquipmentDetailWork* detail,
+                                        s32 alpha);
+#pragma alias campDrawEquipmentDetailListAlt FUN_00140e30
+extern void campDrawEquipmentDetailListAlt(CampPair position, f32 texture,
+                                           CampEquipmentDetailWork* detail,
+                                           s32 alpha);
+extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
+                          s32 positionMode, s32 alphaMode,
+                          u64 start, u64 end, s32 param0, s32 tile,
+                          s32 startFrame, s32 endFrame);
+/* Reordered ABI alias; W310 measured FUN_00141660 nd274 -> nd0 and FUN_00145350 nd339 -> nd335 (canonical prototype nd274). */
+extern void func_0018bc10_buffirst_subb(void* transition, f32 depth,
+                                   s32 drawMode, s32 positionMode,
+                                   s32 alphaMode, u64 start, u64 end,
+                                   s32 param0, s32 tile, s32 startFrame,
+                                   s32 endFrame);
+extern void qsort(void* base, u32 count, u32 width,
+                  int (*compare)(const void*, const void*));
+static inline void campEquipmentDrawFixed(f32 scale, u32 alpha, s32 frame,
+                                   f32 x, f32 y)
+{
+    campDrawSprite_subb((void*)(u32)scale, DAT_00833A50[0], frame, alpha,
+                   x, y, scale);
+}
+
+static void campEquipmentDrawAtlas(f32 scale, u32 alpha, s32 frame,
+                                   f32 x, f32 y)
+{
+    campDrawSprite_subb((void*)(u32)scale, DAT_00833B70, frame, alpha,
+                   x, y, scale);
+}
+
+static void campEquipmentDrawAlt(f32 scale, u32 alpha, s32 frame,
+                                 f32 x, f32 y)
+{
+    campDrawSpriteAlt((void*)(u32)scale, DAT_00833B70, frame, alpha,
+                      0x20, 0x43, 0x78, x, y, scale);
+}
+
+static inline void campEquipmentDrawDigit(f32 scale, u32 alpha, s32 font,
+                                   s32 frame, f32 x, f32 y)
+{
+    campDrawSprite_subb((void*)(u32)scale, H_Maestro_001120a0(font), frame, alpha,
+                   x, y, scale);
+}
+extern char DAT_007cb66c[];
+extern u16 DAT_007cdf94;
+
+static int campCompareEquipmentIndex(const void* left, const void* right)
+{
+    u16 leftIndex = *(const u16*)left;
+    u16 rightIndex = *(const u16*)right;
+    u16 leftId = datGetEquipmentId(1, leftIndex);
+    u16 rightId = datGetEquipmentId(1, rightIndex);
+
+    if (leftId < rightId) {
+        return -1;
+    }
+    if (leftId > rightId) {
+        return 1;
+    }
+    return 0;
+}
+
+
+static u32 campFirstSetBit(u32 mask)
+{
+    u32 bit;
+
+    for (bit = 0; bit < 32; bit++) {
+        if ((mask & (1u << bit)) != 0) {
+            return bit;
+        }
+    }
+    return 0;
+}
+
+static u32 campEquipmentFirstCategory(s16 equipmentId)
+{
+    s32 category;
+    u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    u32 categoryMask;
+
+    if (category == 3) {
+        categoryMask = values[0];
+    } else if (category == 2 || category == 1 || category == 0) {
+        categoryMask = values[1];
+    } else {
+        return 0;
+    }
+    return campFirstSetBit(categoryMask);
+}
+
+
+static void campEquipmentSetStats(CampEquipmentEntry* entry, s16 pcId, s32 equipmentIndex)
+{
+    switch (entry->equipmentClass) {
+    case 0:
+        entry->valueA = func_0016f9f0(pcId, equipmentIndex);
+        entry->valueB = func_0016fae0(pcId, equipmentIndex);
+        break;
+    case 1:
+        entry->valueC = func_0016fbd0(pcId, equipmentIndex);
+        break;
+    case 2:
+        entry->valueD = func_0016fcc0(pcId, equipmentIndex);
+        break;
+    default:
+        break;
+    }
+}
+
+static void campEquipmentPopulate(CampEquipmentEntry* entry, s16 pcId,
+                                   s32 equipmentIndex)
+{
+    entry->itemId = datGetEquipmentId(pcId, equipmentIndex);
+    entry->categoryMask = func_0016f720(pcId, equipmentIndex);
+    entry->equipmentClass = (u8)func_00171250((s16)entry->itemId);
+    entry->effect = datGetEquipmentEffect(pcId, equipmentIndex);
+    entry->slotType = func_0016f810(pcId, equipmentIndex);
+    entry->sourceIndex = equipmentIndex;
+    campEquipmentSetStats(entry, pcId, equipmentIndex);
+}
+
+static void campEquipmentPopulateWithCategory(CampEquipmentEntry* entry, s16 pcId,
+                                              s32 equipmentIndex, u32 category)
+{
+    campEquipmentPopulate(entry, pcId, equipmentIndex);
+    entry->categoryMask = category;
+}
+
+static void campEquipmentClearCategoryCounts(CampEquipmentWork* work)
+{
+    s32 category;
+    for (category = 0; category < 0x15; category++) {
+        work->categoryCounts[category] = 0;
+    }
+}
+
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd376/object1100/1120, no lowering under the window. Residual is large control/data divergence. */
+// FUN_0013c240 NONMATCHING
+void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
+{
+    u16 indices[304];
+    s32 count = 0;
+    s32 scan = 0;
+    s32 outCount;
+    s32 index;
+    s32 selected;
+    u32 categoryBit;
+    s32 expectedType;
+    s32 category;
+
+    while (scan < 300) {
+        if (datGetEquipmentId(1, scan) != 0) {
+            indices[count] = (u16)scan;
+            count++;
+        }
+        scan++;
+    }
+    if (count >= 2) {
+        qsort(indices, count, 2, campCompareEquipmentIndex);
+    }
+
+    outCount = 0;
+    categoryBit = 0x20u << (pcId - 1);
+    selected = datGetEquipmentIdx(pcId, equipmentType);
+    work->entries[0].itemId = datGetEquipmentId(pcId, selected);
+    work->entries[0].categoryMask = func_0016f720(pcId, selected);
+    work->entries[0].equipmentClass =
+        (u8)func_00171250((s16)work->entries[0].itemId);
+    work->entries[0].effect = datGetEquipmentEffect(pcId, selected);
+    work->entries[0].slotType = func_0016f810(pcId, selected);
+    work->entries[0].sourceIndex = selected;
+    switch (work->entries[0].equipmentClass) {
+    case 0:
+        work->entries[0].valueA = func_0016f9f0(pcId, selected);
+        work->entries[0].valueB = func_0016fae0(pcId, selected);
+        break;
+    case 1:
+        work->entries[0].valueC = func_0016fbd0(pcId, selected);
+        break;
+    case 2:
+        work->entries[0].valueD = func_0016fcc0(pcId, selected);
+        break;
+    case 3:
+        break;
+    }
+    outCount++;
+
+    index = 0;
+    expectedType = equipmentType;
+    while (index < count) {
+        u32 categoryMask;
+        CampEquipmentEntry* entry;
+
+        if (datGetEquipmentId(1, indices[index]) != 0) {
+            categoryMask = func_001712d0((s16)datGetEquipmentId(1, indices[index]));
+            if ((categoryMask & categoryBit) != 0 &&
+                (s16)func_00171250((s16)datGetEquipmentId(1, indices[index])) == expectedType &&
+                indices[index] != datGetEquipmentIdx(1, equipmentType)) {
+                entry = &work->entries[outCount];
+                entry->itemId = datGetEquipmentId(1, indices[index]);
+                entry->categoryMask = func_0016f720(1, indices[index]);
+                entry->equipmentClass = (u8)func_00171250((s16)entry->itemId);
+                entry->effect = datGetEquipmentEffect(1, indices[index]);
+                entry->slotType = func_0016f810(1, indices[index]);
+                entry->sourceIndex = indices[index];
+                switch (entry->equipmentClass) {
+                case 0:
+                    entry->valueA = func_0016f9f0(1, indices[index]);
+                    entry->valueB = func_0016fae0(1, indices[index]);
+                    break;
+                case 1:
+                    entry->valueC = func_0016fbd0(1, indices[index]);
+                    break;
+                case 2:
+                    entry->valueD = func_0016fcc0(1, indices[index]);
+                    break;
+                case 3:
+                    break;
+                }
+                outCount++;
+            }
+        }
+        index++;
+    }
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
+    work->entryCount = outCount;
+}
+
+#pragma push
+/* opt_loop_invariants on: baseline nd15/object212/224 -> nd0/object212/224; retained W389. */
+#pragma opt_loop_invariants on
+// FUN_0013c6a0
+u32 FUN_0013c6a0(s16 equipmentId)
+{
+    s32 category;
+    u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    u32 categoryMask;
+    s32 bit;
+    s32 one;
+    if (category == 3) {
+        goto category3;
+    }
+    if (category == 2) {
+        goto category2;
+    }
+    if (category == 1) {
+        goto category1;
+    }
+    switch (category) {
+    case 0:
+        goto category0;
+    default:
+        goto invalid;
+    }
+
+category0:
+    categoryMask = values[1];
+    goto found;
+category1:
+    categoryMask = values[1];
+    goto found;
+category2:
+    categoryMask = values[1];
+    goto found;
+category3:
+    categoryMask = values[0];
+    goto found;
+invalid:
+    return 0;
+found:
+    one = 1;
+    bit = 0;
+    for (; bit < 32; bit++) {
+        if ((categoryMask & (one << bit)) != 0) {
+            return bit;
+        }
+    }
+    return 0;
+}
+#pragma opt_loop_invariants reset
+#pragma pop
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd481/object1248/1296 -> nd476/object1248/1296; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_0013c780 NONMATCHING
+void FUN_0013c780(CampEquipmentWork* work)
+{
+    u16 candidateIndices[304];
+    s32 candidateCount = 0;
+    s32 scanIndex = 0;
+    s32 recordCount;
+    s32 index;
+    s32 category;
+    CampEquipmentSlotAtBase* slot;
+    CampEquipmentTargetEntry* entry;
+    u8* equipmentClass;
+
+    while (scanIndex < 300) {
+        if (datGetEquipmentId(1, scanIndex) != 0) {
+            candidateIndices[candidateCount] = (u16)scanIndex;
+            candidateCount++;
+        }
+        scanIndex++;
+    }
+    if (candidateCount >= 2) {
+        qsort(candidateIndices, candidateCount, 2, campCompareEquipmentIndex);
+    }
+    recordCount = 0;
+
+    scanIndex = 0;
+    while (scanIndex < 0x14) {
+        if (datGetEquipmentId(-1, scanIndex) != 0) {
+            slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                              (u8*)work);
+            entry = &slot->entry;
+            entry->itemId = datGetEquipmentId(-1, scanIndex);
+            slot->entry.categoryMask = FUN_0013c6a0((s16)entry->itemId);
+            equipmentClass = &slot->entry.equipmentClass;
+            *equipmentClass = (u8)func_00171250((s16)entry->itemId);
+            slot->entry.effect = datGetEquipmentEffect(-1, scanIndex);
+            slot->entry.slotType = func_0016f810(-1, scanIndex);
+            slot->entry.sourceIndex = scanIndex + 0x1000;
+            slot->entry.ownedFlag = 1;
+            slot->entry.availableFlag = 1;
+            switch (*equipmentClass) {
+            case 0:
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                    func_0016f9f0(-1, scanIndex);
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                    func_0016fae0(-1, scanIndex);
+                break;
+            case 1:
+                slot->entry.valueC = func_0016fbd0(-1, scanIndex);
+                break;
+            case 2:
+                slot->entry.valueD = func_0016fcc0(-1, scanIndex);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+            }
+            recordCount++;
+        }
+        scanIndex++;
+    }
+
+    work->categoryCounts[0] = recordCount;
+    index = 0;
+    while (index < candidateCount) {
+        if (datGetEquipmentId(1, candidateIndices[index]) != 0) {
+            slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                              (u8*)work);
+            entry = &slot->entry;
+            entry->itemId = datGetEquipmentId(1, candidateIndices[index]);
+            category = 0;
+            while (category < 0x15) {
+                if ((func_0016f720(1, candidateIndices[index]) &
+                     (1u << category)) != 0) {
+                    slot->entry.categoryMask = category;
+                    break;
+                }
+                category++;
+            }
+            equipmentClass = &slot->entry.equipmentClass;
+            *equipmentClass = (u8)func_00171250((s16)entry->itemId);
+            slot->entry.effect =
+                datGetEquipmentEffect(1, candidateIndices[index]);
+            slot->entry.slotType =
+                func_0016f810(1, candidateIndices[index]);
+            slot->entry.sourceIndex = candidateIndices[index];
+            slot->entry.ownedFlag = 0;
+            if (candidateIndices[index] == datGetEquipmentIdx(1, 0) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 1) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 2) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 3)) {
+                slot->entry.availableFlag = 0;
+            } else {
+                slot->entry.availableFlag = 1;
+            }
+            switch (*equipmentClass) {
+            case 0:
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                    func_0016f9f0(1, candidateIndices[index]);
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                    func_0016fae0(1, candidateIndices[index]);
+                break;
+            case 1:
+                slot->entry.valueC =
+                    func_0016fbd0(1, candidateIndices[index]);
+                break;
+            case 2:
+                slot->entry.valueD =
+                    func_0016fcc0(1, candidateIndices[index]);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+            }
+            recordCount++;
+        }
+        index++;
+    }
+
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
+    work->entryCount = recordCount;
+}
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
+
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd320/object748/752 -> nd314/object748/752; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_0013cc90 NONMATCHING
+void FUN_0013cc90(CampEquipmentWork* work)
+{
+    u16 indices[300];
+    s32 count = 0;
+    s32 scan = 0;
+    s32 recordCount = 0;
+    s32 index;
+    s32 category;
+    s16 candidate;
+    u32 mask;
+
+    while (scan < 300) {
+        if (datGetEquipmentId(1, scan) != 0) {
+            indices[count] = (u16)scan;
+            count++;
+        }
+        scan++;
+    }
+    if (count >= 2) {
+        qsort(indices, count, 2, campCompareEquipmentIndex);
+    }
+
+    index = 0;
+    while (index < count) {
+        candidate = (s16)indices[index];
+        if (datGetEquipmentId(1, candidate) != 0) {
+            work->entries[recordCount].itemId =
+                datGetEquipmentId(1, candidate);
+            category = 0;
+            mask = func_0016f720(1, candidate);
+            while (category < 0x15) {
+                if ((mask & (1u << category)) != 0) {
+                    work->entries[recordCount].categoryMask = category;
+                    break;
+                }
+                category++;
+            }
+            work->entries[recordCount].equipmentClass =
+                (u8)func_00171250((s16)work->entries[recordCount].itemId);
+            work->entries[recordCount].effect =
+                datGetEquipmentEffect(1, candidate);
+            work->entries[recordCount].slotType =
+                func_0016f810(1, candidate);
+            work->entries[recordCount].sourceIndex = candidate;
+            switch (work->entries[recordCount].equipmentClass) {
+            case 0:
+                work->entries[recordCount].valueA =
+                    func_0016f9f0(1, candidate);
+                work->entries[recordCount].valueB =
+                    func_0016fae0(1, candidate);
+                break;
+            case 1:
+                work->entries[recordCount].valueC =
+                    func_0016fbd0(1, candidate);
+                break;
+            case 2:
+                work->entries[recordCount].valueD =
+                    func_0016fcc0(1, candidate);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+            }
+            recordCount++;
+        }
+        index++;
+    }
+
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
+    work->entryCount = recordCount;
+}
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
+
+// FUN_0013cf80
+void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
+{
+    s32 equipmentType;
+    s32 recordCount = 0;
+    s32 category;
+    u32 categoryBit;
+    CampEquipmentSlotAtBase* slot;
+    CampEquipmentTargetEntry* entry;
+    u8* classPtr;
+
+    for (category = 0; category < 0x15; category++) {
+        *(u32*)(category * 4 + (u8*)work + 0x0c) = recordCount;
+        categoryBit = 1u << category;
+        for (equipmentType = 0; equipmentType < 4; equipmentType++) {
+            if ((func_0016f720(pcId, equipmentType) & categoryBit) != 0) {
+                slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                                  (u8*)work);
+                entry = &slot->entry;
+                entry->itemId = datGetEquipmentId(pcId, equipmentType);
+                slot->entry.categoryMask = category;
+                classPtr = &slot->entry.equipmentClass;
+                *classPtr = (u8)func_00171250((s16)entry->itemId);
+                slot->entry.effect = datGetEquipmentEffect(pcId, equipmentType);
+                slot->entry.slotType = func_0016f810(pcId, equipmentType);
+                slot->entry.sourceIndex = equipmentType;
+                switch (*classPtr) {
+                case 0:
+                    *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                        func_0016f9f0(pcId, equipmentType);
+                    *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                        func_0016fae0(pcId, equipmentType);
+                    break;
+                case 1:
+                    slot->entry.valueC = func_0016fbd0(pcId, equipmentType);
+                    break;
+                case 2:
+                    slot->entry.valueD = func_0016fcc0(pcId, equipmentType);
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+                }
+                recordCount++;
+            }
+        }
+    }
+    work->entryCount = recordCount;
+}
+ 
+// Inline macro overrides: expand helpers to direct campDrawSprite_subb calls.
+#undef campEquipmentDrawFixed
+#define campEquipmentDrawFixed(scale,alpha,frame,x,y) \
+    campDrawSprite_subb(parent,DAT_00833A50[0],(frame),(u32)(alpha),(x),(y),(scale))
+#undef campEquipmentDrawAtlas
+#define campEquipmentDrawAtlas(scale,alpha,frame,x,y) \
+    campDrawSprite_subb(parent,DAT_00833B70,(frame),(u32)(alpha),(x),(y),(scale))
+#undef campEquipmentDrawAlt
+#define campEquipmentDrawAlt(scale,alpha,frame,x,y) \
+    campDrawSpriteAlt(parent,DAT_00833B70,(frame),(u32)(alpha),0x20,0x43,0x78,(x),(y),(scale))
+#undef campEquipmentDrawDigit
+#define campEquipmentDrawDigit(scale,alpha,font,frame,x,y) \
+    campDrawSprite_subb(parent,H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
+#define campEquipmentEntry(work,index) (&(work)->entries[(index)])
+ 
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3969/object5348/5488 -> nd3552/object5076/5488; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
+// FUN_0013d1a0 NONMATCHING
+
+void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 alpha)
+
+{
+  void* parent;
+  u8 category;
+  s32 value;
+  u32 color;
+  u32 categoryMask;
+  s32 style;
+  const char* textValue;
+  int rowIndex;
+  s32 entryIndex;
+  int textureIndex;
+  float xBase;
+  float xMarker;
+  float yBase;
+  float xValue;
+  float yValue;
+  float xIcon;
+  float xRow;
+  float yValue2;
+  float yValue3;
+  float xSecondaryIcon;
+  float xSecondaryHundreds;
+  float xSecondaryTens;
+  float xSecondaryOnes;
+  s32 valueX;
+  s32 valueY;
+  float originX;
+  float originY;
+  CampBits packedPosition;
+  char textBuffer[272];
+  packedPosition = position;
+  originX = packedPosition.f[0];
+  originY = packedPosition.f[1];
+  if (work->entryCount != 0) {
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
+                           originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x18, originX + 496.0f,
+                           originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
+  }
+  xBase = originY + 6.0f;
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x1a, originX + 511.0f, xBase);
+  rowIndex = work->entryCount + -5;
+  if (rowIndex < 1) {
+    rowIndex = 0;
+  }
+  else {
+    rowIndex = (work->firstVisibleEntry * 0x59) / rowIndex;
+  }
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x20, originX + 511.0f,
+                           xBase + (f32)rowIndex + 4.0f);
+  rowIndex = 0;
+  xRow = originX + 15.0f;
+  color = 0xffU - alpha | 0xffffff00;
+  yValue = originY + 9.0f;
+  xIcon = originX + 288.0f;
+  yBase = originY + 16.0f;
+  xValue = originX + 325.0f;
+  xBase = originX + 341.0f;
+  xMarker = originX + 357.0f;
+  xSecondaryIcon = originX + 404.0f;
+  xSecondaryHundreds = originX + 441.0f;
+  xSecondaryTens = originX + 457.0f;
+  xSecondaryOnes = originX + 473.0f;
+  valueX = (s32)(originX + 10.0f);
+  valueY = (s32)(originY + 200.0f);
+  do {
+    if ((4 < rowIndex) ||
+       (entryIndex = rowIndex + work->firstVisibleEntry, work->entryCount <= entryIndex)) {
+      return;
+    }
+    if (rowIndex == work->selectedEntry) {
+      textureIndex = rowIndex * 0x1a;
+      categoryMask = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0: style = 0; break;
+      case 1: style = 1; break;
+      case 2: style = 2; break;
+      case 3: style = 3; break;
+      case 4: style = 4; break;
+      case 5: style = 5; break;
+      case 6: style = 6; break;
+      case 7: style = 7; break;
+      case 8: style = 0; break;
+      case 9: style = 1; break;
+      case 10: style = 2; break;
+      case 11: style = 3; break;
+      case 12: style = 4; break;
+      case 13: style = 5; break;
+      case 14: style = 6; break;
+      case 15: style = 7; break;
+      case 16: style = 9; break;
+      case 17: style = 10; break;
+      case 18: style = 11; break;
+      case 19: style = 13; break;
+      case 20: style = 14; break;
+      default: break;
+      }
+      campEquipmentDrawAtlas(texture, (u32)alpha,
+                             style * 2 + 1,
+                             xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
+      ;
+      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)(s8)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
+      sprintf(textBuffer,DAT_007cb66c,textValue);
+      campDrawText(texture,(int)((float)(int)originX + 55.0f),
+                   (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f + 1.0f),color,6,1,
+                   textBuffer,0x10,0);
+      category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
+      if (category != '\x03') {
+        if (category != '\x02') {
+          if (category != '\x01') {
+            if (category != '\0') goto LAB_0013ddc4;
+            yValue3 = yValue + (float)textureIndex;
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x2f, xIcon, yValue3);
+            value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueA;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                     xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013d8a8:
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                     xBase, (yBase + (f32)textureIndex) - 3.0f);
+            }
+            else {
+              if (9 < value) goto LAB_0013d8a8;
+            }
+            yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                   xMarker, yValue2);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x35, xSecondaryIcon, yValue3);
+            value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                     xSecondaryHundreds, yValue2);
+LAB_0013da24:
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                     xSecondaryTens, yValue2);
+            }
+            else {
+              if (9 < value) goto LAB_0013da24;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                   xSecondaryOnes, yValue2);
+            goto LAB_0013ddc4;
+          }
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x31, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueC;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013db80:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013db80;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013dd14:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013dd14;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+      }
+LAB_0013ddc4:
+      ;
+      campDrawValue(texture,valueX,valueY,color,1,10,1,
+                   ((u32)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->effect << 16) |
+                   (campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId & 0xffff));
+    }
+    else {
+      textureIndex = rowIndex * 0x1a;
+      categoryMask = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0: style = 0; break;
+      case 1: style = 1; break;
+      case 2: style = 2; break;
+      case 3: style = 3; break;
+      case 4: style = 4; break;
+      case 5: style = 5; break;
+      case 6: style = 6; break;
+      case 7: style = 7; break;
+      case 8: style = 0; break;
+      case 9: style = 1; break;
+      case 10: style = 2; break;
+      case 11: style = 3; break;
+      case 12: style = 4; break;
+      case 13: style = 5; break;
+      case 14: style = 6; break;
+      case 15: style = 7; break;
+      case 16: style = 9; break;
+      case 17: style = 10; break;
+      case 18: style = 11; break;
+      case 19: style = 13; break;
+      case 20: style = 13; break;
+      default: break;
+      }
+      campEquipmentDrawAlt(texture, (u32)alpha,
+                           style * 2,
+                           xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
+      ;
+      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)(s8)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
+      sprintf(textBuffer,DAT_007cb66c,textValue);
+      campDrawText(texture,(int)((float)(int)originX + 55.0f),
+                   (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f),color,10,1,textBuffer,
+                   0x10,0);
+      category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
+      if (category != '\x03') {
+        if (category != '\x02') {
+          if (category != '\x01') {
+            if (category != '\0') goto LAB_0013e694;
+            yValue3 = yValue + (float)textureIndex;
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x2e, xIcon, yValue3);
+            value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueA;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                     xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013e178:
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                     xBase, (yBase + (f32)textureIndex) - 3.0f);
+            }
+            else {
+              if (9 < value) goto LAB_0013e178;
+            }
+            yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                   xMarker, yValue2);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x34, xSecondaryIcon, yValue3);
+            value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                     xSecondaryHundreds, yValue2);
+LAB_0013e2f4:
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                     xSecondaryTens, yValue2);
+            }
+            else {
+              if (9 < value) goto LAB_0013e2f4;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                   xSecondaryOnes, yValue2);
+            goto LAB_0013e694;
+          }
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x30, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueC;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013e450:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013e450;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013e5e4:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013e5e4;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+      }
+    }
+LAB_0013e694:
+    rowIndex = rowIndex + 1;
+  } while( true );
+}
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
+#undef campEquipmentDrawFixed
+#undef campEquipmentDrawAtlas
+#undef campEquipmentDrawAlt
+#undef campEquipmentDrawDigit
+#undef campEquipmentEntry
+ 
+#define campEquipmentDrawFixed(texture,alpha,frame,x,y) \
+  campDrawSprite_subb(parent,DAT_00833A50[0],(frame),(alpha),(x),(y),(texture))
+#define campEquipmentDrawAtlas(texture,alpha,frame,x,y) \
+  campDrawSprite_subb(parent,DAT_00833B70,(frame),(alpha),(x),(y),(texture))
+#define campEquipmentDrawAlt(texture,alpha,frame,x,y) \
+  campDrawSpriteAlt(parent,DAT_00833B70,(frame),(alpha),0x20,0x43,0x78,(x),(y),(texture))
+#define campEquipmentDrawDigit(texture,alpha,font,frame,x,y) \
+  campDrawSprite_subb(parent,H_Maestro_001120a0(font),(frame),(alpha),(x),(y),(texture))
+
+
+
+// Reconstructed the retail equipment-row sprite dispatch and float-pair ABI.
+// Each sprite, atlas, alternate-color, and digit call now carries its full
+// resource, frame, alpha, position, and scale argument sequence.
+// Retail retains an implicit parent pointer in a callee-saved register that
+// is not represented by the current source signature; the remaining mismatch
+// is therefore retained while preserving the recovered branch and frame logic.
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3872/object5304/5520 -> nd3579/object5080/5520; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
+// FUN_0013e710 NONMATCHING
+
+void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alpha)
+
+{
+  void* parent;
+  CampPair origin;
+  char textBuffer[272];
+  u8 category;
+  s32 value;
+  u32 colorBase;
+  u32 color;
+  u32 categoryMask;
+  s32 style;
+  const char* textValue;
+  int rowIndex;
+  s32 entryIndex;
+  int textureIndex;
+  s32 valueX;
+  s32 valueY;
+  float xBase;
+  float xMarker;
+  float yBase;
+  float xValue;
+  float yValue;
+  float xIcon;
+  float xRow;
+  float yValue2;
+  float xSecondaryIcon;
+  float xSecondaryHundreds;
+  float xSecondaryTens;
+  float xSecondaryOnes;
+  float digitY;
+  float yValue3;
+  float originX;
+  float originY;
+  origin = position;
+  originX = origin.x;
+  originY = origin.y;
+  colorBase = 0xffU - alpha;
+  if (work->entryCount != 0) {
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
+                           originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
+    campEquipmentDrawFixed(texture, (u32)alpha, 0x18, originX + 496.0f,
+                           originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
+  }
+  xBase = originY + 6.0f;
+  campEquipmentDrawFixed(texture, (u32)alpha, 0x1a, originX + 511.0f, xBase);
+  rowIndex = work->entryCount + -5;
+  if (rowIndex >= 1) {
+    rowIndex = (work->firstVisibleEntry * 0x59) / rowIndex;
+  }
+  else {
+    rowIndex = 0;
+  }
+  campEquipmentDrawFixed(texture, (u32)alpha, 0x20, originX + 511.0f,
+                         xBase + (f32)rowIndex + 4.0f);
+  rowIndex = 0;
+  xRow = originX + 15.0f;
+  color = colorBase | 0xffffff00;
+  yValue = originY + 9.0f;
+  xIcon = originX + 288.0f;
+  yBase = originY + 16.0f;
+  xValue = originX + 325.0f;
+  xBase = originX + 341.0f;
+  xMarker = originX + 357.0f;
+  xSecondaryIcon = originX + 404.0f;
+  xSecondaryHundreds = originX + 441.0f;
+  xSecondaryTens = originX + 457.0f;
+  xSecondaryOnes = originX + 473.0f;
+  valueX = (s32)(originX + 10.0f + 14.0f);
+  valueY = (s32)((originY + 200.0f) - 40.0f);
+  do {
+    if ((4 < rowIndex) ||
+       (entryIndex = rowIndex + work->firstVisibleEntry, work->entryCount <= entryIndex)) {
+      return;
+    }
+    if (rowIndex == work->selectedEntry) {
+      textureIndex = rowIndex * 0x1a;
+      categoryMask = work->entries[work->firstVisibleEntry + rowIndex].categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0:
+        style = 0;
+        break;
+      case 1:
+        style = 1;
+        break;
+      case 2:
+        style = 2;
+        break;
+      case 3:
+        style = 3;
+        break;
+      case 4:
+        style = 4;
+        break;
+      case 5:
+        style = 5;
+        break;
+      case 6:
+        style = 6;
+        break;
+      case 7:
+        style = 7;
+        break;
+      case 8:
+        style = 0;
+        break;
+      case 9:
+        style = 1;
+        break;
+      case 10:
+        style = 2;
+        break;
+      case 11:
+        style = 3;
+        break;
+      case 12:
+        style = 4;
+        break;
+      case 13:
+        style = 5;
+        break;
+      case 14:
+        style = 6;
+        break;
+      case 15:
+        style = 7;
+        break;
+      case 16:
+        style = 9;
+        break;
+      case 17:
+        style = 10;
+        break;
+      case 18:
+        style = 11;
+        break;
+      case 19:
+        style = 13;
+        break;
+      case 20:
+        style = 14;
+        break;
+      default:
+        break;
+      }
+      campEquipmentDrawAtlas(texture, (u32)alpha, style * 2 + 1,
+                             xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
+      textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
+                                 (s16)(s8)work->entries[work->firstVisibleEntry + rowIndex].slotType);
+      sprintf(textBuffer,DAT_007cb66c,textValue);
+      campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
+                   (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f + 1.0f),color,6,1,
+                   textBuffer,0x10,0x78);
+      category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;
+      if (category != '\x03') {
+        if (category != '\x02') {
+          if (category != '\x01') {
+            if (category != '\0') goto LAB_0013f350;
+            yValue3 = yValue + (float)textureIndex;
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x2f, xIcon, yValue3);
+            digitY = (yBase + (f32)textureIndex) - 3.0f;
+            value = work->entries[work->firstVisibleEntry + rowIndex].valueA;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                     xValue, digitY);
+LAB_0013ee34:
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                     xBase, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013ee34;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                   xMarker, digitY);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x35, xSecondaryIcon, yValue3);
+            value = work->entries[work->firstVisibleEntry + rowIndex].valueB;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                     xSecondaryHundreds, digitY);
+LAB_0013efb0:
+              campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                     xSecondaryTens, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013efb0;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                   xSecondaryOnes, digitY);
+            goto LAB_0013f350;
+          }
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x31, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueC;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013f10c:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f10c;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x33, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013f2a0:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f2a0;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+      }
+LAB_0013f350:
+      ;
+      campDrawValue(texture,valueX,valueY,color,
+                    1,10,1,(u32)(((u32)work->entries[work->firstVisibleEntry + rowIndex].effect << 16) |
+                                 (work->entries[work->firstVisibleEntry + rowIndex].itemId & 0xffff)));
+    }
+    else {
+      textureIndex = rowIndex * 0x1a;
+      categoryMask = work->entries[work->firstVisibleEntry + rowIndex].categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0:
+        style = 0;
+        break;
+      case 1:
+        style = 1;
+        break;
+      case 2:
+        style = 2;
+        break;
+      case 3:
+        style = 3;
+        break;
+      case 4:
+        style = 4;
+        break;
+      case 5:
+        style = 5;
+        break;
+      case 6:
+        style = 6;
+        break;
+      case 7:
+        style = 7;
+        break;
+      case 8:
+        style = 0;
+        break;
+      case 9:
+        style = 1;
+        break;
+      case 10:
+        style = 2;
+        break;
+      case 11:
+        style = 3;
+        break;
+      case 12:
+        style = 4;
+        break;
+      case 13:
+        style = 5;
+        break;
+      case 14:
+        style = 6;
+        break;
+      case 15:
+        style = 7;
+        break;
+      case 16:
+        style = 9;
+        break;
+      case 17:
+        style = 10;
+        break;
+      case 18:
+        style = 11;
+        break;
+      case 19:
+        style = 13;
+        break;
+      case 20:
+        style = 13;
+        break;
+      default:
+        break;
+      }
+      campEquipmentDrawAlt(texture, (u32)alpha, style * 2,
+                           xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
+      ;
+      textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
+                                (s16)(s8)work->entries[work->firstVisibleEntry + rowIndex].slotType);
+      sprintf(textBuffer,DAT_007cb66c,textValue);
+      campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
+                   (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f),color,10,1,textBuffer,
+                   0x10,0x78);
+      category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;
+      if (category != '\x03') {
+        if (category != '\x02') {
+          if (category != '\x01') {
+            if (category != '\0') goto LAB_0013fc20;
+            yValue3 = yValue + (float)textureIndex;
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x2e, xIcon, yValue3);
+            digitY = (yBase + (f32)textureIndex) - 3.0f;
+            value = work->entries[work->firstVisibleEntry + rowIndex].valueA;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                     xValue, digitY);
+LAB_0013f704:
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                     xBase, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013f704;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                   xMarker, digitY);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x34, xSecondaryIcon, yValue3);
+            value = work->entries[work->firstVisibleEntry + rowIndex].valueB;
+            if (value >= 100) {
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                     xSecondaryHundreds, digitY);
+LAB_0013f880:
+              campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                     xSecondaryTens, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013f880;
+            }
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                   xSecondaryOnes, digitY);
+            goto LAB_0013fc20;
+          }
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x30, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueC;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013f9dc:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f9dc;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x32, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013fb70:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013fb70;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+      }
+    }
+LAB_0013fc20:
+    rowIndex = rowIndex + 1;
+  } while( true );
+}
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
+#undef campEquipmentDrawFixed
+#undef campEquipmentDrawAtlas
+#undef campEquipmentDrawAlt
+#undef campEquipmentDrawDigit
+
+
+
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd1847/object2588/2608 -> nd1824/object2540/2608; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_0013fca0 NONMATCHING
+
+void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
+{
+    void* parent;
+    const char* textValue;
+    u32 categoryMask;
+    u32 color;
+    s32 value;
+    s32 frame;
+    s32 hadHundreds;
+    s32 selectedEntry;
+    u8 category;
+    f32 originX;
+    f32 originY;
+    char textBuffer[256];
+    CampBits packedPosition;
+
+    selectedEntry = work->selectedEntry;
+    categoryMask = work->entries[work->firstVisibleEntry + selectedEntry].categoryMask;
+    frame = 9;
+    switch (categoryMask) {
+    case 0:
+        frame = 0;
+        break;
+    case 1:
+        frame = 2;
+        break;
+    case 2:
+        frame = 4;
+        break;
+    case 3:
+        frame = 6;
+        break;
+    case 4:
+        frame = 8;
+        break;
+    case 5:
+        frame = 10;
+        break;
+    case 6:
+        frame = 12;
+        break;
+    case 7:
+        frame = 14;
+        break;
+    case 8:
+        frame = 0;
+        break;
+    case 9:
+        frame = 2;
+        break;
+    case 10:
+        frame = 4;
+        break;
+    case 11:
+        frame = 6;
+        break;
+    case 12:
+        frame = 8;
+        break;
+    case 13:
+        frame = 10;
+        break;
+    case 14:
+        frame = 12;
+        break;
+    case 15:
+        frame = 14;
+        break;
+    case 16:
+        frame = 18;
+        break;
+    case 17:
+        frame = 20;
+        break;
+    case 18:
+        frame = 22;
+        break;
+    case 19:
+        frame = 26;
+        break;
+    case 20:
+        frame = 26;
+        break;
+    default:
+        break;
+    }
+
+    packedPosition.u = position;
+    originX = packedPosition.f[0];
+    originY = packedPosition.f[1];
+    campDrawSprite_subb(parent, DAT_00833B70, frame + 1, (u32)alpha,
+                   originX + 15.0f, (originY + 2.0f) - 1.0f, texture);
+    textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + selectedEntry].itemId,
+                               (s16)(s8)work->entries[work->firstVisibleEntry + selectedEntry].slotType);
+    sprintf(textBuffer, DAT_007cb66c, textValue);
+    color = (0xffU - alpha) | 0xffffff00;
+    campDrawText(texture, (s32)((f32)(s32)originX + 55.0f),
+                 (s32)((f32)(s32)originY + 11.0f + 1.0f),
+                 color, 10, 1, textBuffer, 0x10, 0);
+
+    category = work->entries[work->firstVisibleEntry + selectedEntry].equipmentClass;
+    switch (category) {
+    case 0:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueA;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
+        }
+        campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x34, (u32)alpha,
+                       originX + 404.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueB;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 441.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 457.0f, (originY + 16.0f) - 3.0f, texture);
+        }
+        campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 473.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 1:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x30, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueC;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
+        }
+        campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 2:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x32, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueD;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
+        }
+        campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 3:
+    default:
+        break;
+    }
+}
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
+
+
+
+// FUN_001406d0
+
+void FUN_001406d0(CampPair position, f32 texture,
+                  CampEquipmentDetailWork* detail, s32 alpha)
+{
+  void* parent;
+  u32 packedValue;
+  u32 inverseAlpha;
+  const char* textValue;
+  void* digitResource;
+  s32 value;
+  int entryIndex;
+  int variant;
+  int textX;
+  int valueY;
+  int valueX;
+  float rowBaseY;
+  float panelBase;
+  float textBaseY;
+  float panelY;
+  float tensX;
+  float panelX;
+  float originY;
+  float digitY;
+  char textBuffer[256];
+
+  inverseAlpha = 0xffU - alpha;
+  if (detail->entryCount != 0) {
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x17,
+                    position.x + 2.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x16,
+                    position.x + 317.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
+  }
+  campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a,
+                   position.x + 331.0f, position.y + 6.0f,
+                   (u8)alpha, texture);
+  entryIndex = detail->entryCount + -5;
+  if (entryIndex > 0) {
+    entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
+  }
+  else {
+    entryIndex = 0;
+  }
+  campDrawSprite_subb(parent, DAT_00833A50[0], 0x20, (u32)alpha,
+                 position.x + 331.0f,
+                 position.y + 10.0f + (float)entryIndex, texture);
+  entryIndex = 0;
+  originY = position.y;
+  rowBaseY = originY + 2.0f;
+  panelBase = position.x + 15.0f;
+  packedValue = inverseAlpha | 0xffffff00;
+  textBaseY = (float)(int)originY + 11.0f;
+  textX = (int)((float)(int)position.x + 55.0f);
+  panelY = originY + 16.0f;
+  tensX = position.x + 277.0f;
+  panelX = position.x + 293.0f;
+  valueY = (int)((originY + 200.0f) - 40.0f);
+  valueX = (int)(position.x + 10.0f + 14.0f);
+  for (; entryIndex < 5; entryIndex = entryIndex + 1) {
+    if (detail->entryCount <= entryIndex + detail->firstVisibleEntry) {
+      break;
+    }
+    if (entryIndex == detail->selectedEntry) {
+      variant = entryIndex * 0x1a;
+      campDrawSprite_subb(parent, *(void**)DAT_00833B70_abs, 0x1b, (u8)alpha,
+                     panelBase, (rowBaseY + (float)variant) - 1.0f,
+                     texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 6, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(1);
+        campDrawSprite_subb(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
+      }
+      digitResource = H_Maestro_001120a0(1);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite_subb(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
+      campDrawValueXY(
+          valueX, valueY, texture, packedValue, 1, 10, 0,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->itemId);
+    }
+    else {
+      variant = entryIndex * 0x1a;
+      campDrawSpriteAltX(
+          parent, *(void**)DAT_00833B70_abs, 0x1a, (u8)alpha,
+          panelBase, 0x20, 0x43, 0x78,
+          (rowBaseY + (float)variant) - 1.0f, texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 10, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(2);
+        campDrawSprite_subb(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
+      }
+      digitResource = H_Maestro_001120a0(2);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite_subb(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
+    }
+  }
+}
+
+
+
+// FUN_00140e30
+
+void FUN_00140e30(CampPair position, f32 texture,
+                  CampEquipmentDetailWork* detail, s32 alpha)
+{
+  void* parent;
+  u32 packedValue;
+  u32 inverseAlpha;
+  const char* textValue;
+  void* digitResource;
+  s32 value;
+  int entryIndex;
+  int variant;
+  int textX;
+  int valueY;
+  int valueX;
+  float rowBaseY;
+  float panelBase;
+  float textBaseY;
+  float panelY;
+  float tensX;
+  float panelX;
+  float originY;
+  float digitY;
+  char textBuffer[256];
+
+  inverseAlpha = 0xffU - alpha;
+  if (detail->entryCount != 0) {
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x17,
+                    position.x + 2.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x16,
+                    position.x + 317.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
+  }
+  campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a,
+                   position.x + 331.0f, position.y + 6.0f,
+                   (u8)alpha, texture);
+  entryIndex = detail->entryCount + -5;
+  if (entryIndex > 0) {
+    entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
+  }
+  else {
+    entryIndex = 0;
+  }
+  campDrawSprite_subb(parent, DAT_00833A50[0], 0x20, (u32)alpha,
+                 position.x + 331.0f,
+                 position.y + 10.0f + (float)entryIndex, texture);
+  entryIndex = 0;
+  originY = position.y;
+  rowBaseY = originY + 2.0f;
+  panelBase = position.x + 15.0f;
+  packedValue = inverseAlpha | 0xffffff00;
+  textBaseY = (float)(int)originY + 11.0f;
+  textX = (int)((float)(int)position.x + 55.0f);
+  panelY = originY + 16.0f;
+  tensX = position.x + 277.0f;
+  panelX = position.x + 293.0f;
+  valueY = (int)((originY + 200.0f) - 40.0f);
+  valueX = (int)(position.x + 10.0f + 14.0f);
+  for (; entryIndex < 5; entryIndex = entryIndex + 1) {
+    if (detail->entryCount <= entryIndex + detail->firstVisibleEntry) {
+      break;
+    }
+    if (entryIndex == detail->selectedEntry) {
+      variant = entryIndex * 0x1a;
+      campDrawSprite_subb(parent, *(void**)DAT_00833B70_abs, 0x1d, (u8)alpha,
+                     panelBase, (rowBaseY + (float)variant) - 1.0f,
+                     texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 6, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(1);
+        campDrawSprite_subb(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
+      }
+      digitResource = H_Maestro_001120a0(1);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite_subb(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
+      campDrawValueXY(
+          valueX, valueY, texture, packedValue, 1, 10, 0,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->itemId);
+    }
+    else {
+      variant = entryIndex * 0x1a;
+      campDrawSpriteAltX(
+          parent, *(void**)DAT_00833B70_abs, 0x1c, (u8)alpha,
+          panelBase, 0x20, 0x43, 0x78,
+          (rowBaseY + (float)variant) - 1.0f, texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 10, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(2);
+        campDrawSprite_subb(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
+      }
+      digitResource = H_Maestro_001120a0(2);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite_subb(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
+    }
+  }
+}
+
+
+
+static inline uintptr_t add_offset_first(uintptr_t offset, uintptr_t base)
+{
+    return offset + base;
+}
+
+// FUN_00141590
+
+void FUN_00141590(CampEquipmentWork* work)
+{
+    CampEquipmentWork24View* view = (CampEquipmentWork24View*)work;
+    u8* recordAddress;
+    s32 firstVisibleEntry;
+    s32 selectedEntry;
+    s32 lastEntry;
+    s32 lastVisibleEntry;
+
+    firstVisibleEntry = view->firstVisibleEntry;
+    selectedEntry = view->selectedEntry;
+    recordAddress = (u8 *)add_offset_first((firstVisibleEntry + selectedEntry) * 0x24, (uintptr_t)work);
+    func_0016fea0(1,
+                  ((CampEquipmentRecord24*)recordAddress)->sourceIndex,
+                  0);
+    FUN_0013cc90(work);
+    if (view->entryCount < 5) {
+        view->firstVisibleEntry = 0;
+        lastEntry = view->entryCount - 1;
+        if (lastEntry < selectedEntry) {
+            view->selectedEntry = lastEntry;
+        } else {
+            view->selectedEntry = selectedEntry;
+        }
+    } else {
+        lastVisibleEntry = view->entryCount - 5;
+        if (lastVisibleEntry < firstVisibleEntry) {
+            view->firstVisibleEntry = lastVisibleEntry;
+            view->selectedEntry = selectedEntry;
+        }
+    }
+}
+
+
+
+#define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
+  func_0018bc10_buffirst_subb((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
+// FUN_00141660
+
+void FUN_00141660(CampEquipmentPanelWork* work)
+{
+  CampPair pairE8;
+  CampPair pair;
+  CampPair pairD8;
+  CampPair pairD0;
+  CampPair pairC8;
+  CampPair pairC0;
+  CampPair pairB8;
+  CampPair pairB0;
+  CampPair pairA8;
+  CampPair pairA0;
+  CampPair pair98;
+  CampPair pair90;
+  CampPair pair88;
+  CampPair pair80;
+  CampPair pair78;
+  CampPair pair70;
+  CampPair pair68;
+  s32 index;
+  s32 row;
+  f32 slotX;
+
+  pair.x = 40.0f;
+  pair.y = 12.0f;
+  pairE8 = pair;
+  pairE8.x += 50.0f;
+  func_0018bc10(100.0f, (void*)work->drawBuffer, 0, 2, 1, *(u64*)&pairE8, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 219.0f;
+  pair.y = 27.0f;
+  pair68 = pair;
+  pair68.x += 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, *(u64*)&pair68, *(u64*)&pair, 0, 0, 6, 13);
+  pair.x = 318.0f;
+  pair.y = 27.0f;
+  pair70 = pair;
+  pair70.x += 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, *(u64*)&pair70, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 341.0f;
+  pair.y = 27.0f;
+  pair78 = pair;
+  pair78.x += 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, *(u64*)&pair78, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 484.0f;
+  pair.y = 27.0f;
+  pair80 = pair;
+  pair80.x += 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, *(u64*)&pair80, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 507.0f;
+  pair.y = 27.0f;
+  pair88 = pair;
+  pair88.x += 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, *(u64*)&pair88, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 227.0f;
+  pair.y = 61.0f;
+  pair90 = pair;
+  pair90.x -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, *(u64*)&pair90, *(u64*)&pair, 0, 0, 8, 13);
+
+  pair.x = 247.0f;
+  pair.y = 219.0f;
+  pair98 = pair;
+  pair98.x -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, *(u64*)&pair98, *(u64*)&pair, 0, 0, 8, 13);
+
+  pair.x = 558.0f;
+  pair.y = 67.0f;
+  pairA0 = pair;
+  pairA0.x -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, *(u64*)&pairA0, *(u64*)&pair, 0, 0, 8, 13);
+
+  for (row = 0; row < 4; row = row + 1) {
+    if (row < work->visibleCount) {
+      slotX = (f32)(row * 0x55) + 62.0f;
+
+      pair.x = 65.0f;
+      pair.y = slotX + 8.0f;
+      pairA8 = pair;
+      pairA8.x -= 50.0f;
+      index = row * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 1, *(u64*)&pairA8, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 31.0f;
+      pairB0 = pair;
+      pairB0.x -= 50.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 1, *(u64*)&pairB0, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 45.0f;
+      pairB8 = pair;
+      pairB8.x -= 50.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 1, *(u64*)&pairB8, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 64.0f;
+      pairC0 = pair;
+      pairC0.x -= 50.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 1, *(u64*)&pairC0, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 14.0f;
+      pair.y = slotX + 2.0f;
+      pairC8 = pair;
+      pairC8.x -= 50.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 1, *(u64*)&pairC8, *(u64*)&pair, 0, 0, 3, 10);
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
+    } else {
+      index = row * 0x2a8;
+      *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x994) = 0;
+    }
+  }
+
+  pair.x = 62.0f;
+  pair.y = (f32)0x19f;
+  pairD0 = pair;
+  pairD0.x -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, *(u64*)&pairD0, *(u64*)&pair, 0, 0, 8, 13);
+  *(u32 *)(work->drawBuffer + 0x12e0) = 0;
+
+  pair.x = 239.0f;
+  pair.y = (f32)0x19f;
+  pairD8 = pair;
+  pairD8.x -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, *(u64*)&pairD8, *(u64*)&pair, 0, 0, 8, 13);
+}
+#undef func_0018bc10
+
+
+
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd1800/object2420/2432, no lowering under the window. Residual is large draw-sequence divergence. */
+// FUN_00141fb0 NONMATCHING
+
+void FUN_00141fb0(CampEquipmentPanelWork* work)
+
+{
+  int index;
+  int row;
+  float slotX;
+  float slotY;
+  CampBits pair0;
+  CampBits pair1;
+  pair0.f[0] = 40.0f;
+  pair0.f[1] = 12.0f;
+  pair1.f[0] = 110.0f;
+  pair1.f[1] = 12.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 219.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 219.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 219.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 531.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 1, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 318.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 318.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 341.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 341.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 484.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 484.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 507.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 507.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 227.0f;
+  pair0.f[1] = 61.0f;
+  pair1.f[0] = 297.0f;
+  pair1.f[1] = 61.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 247.0f;
+  pair0.f[1] = 219.0f;
+  pair1.f[0] = 297.0f;
+  pair1.f[1] = 219.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 559.0f;
+  pair0.f[1] = 67.0f;
+  pair1.f[0] = 708.0f;
+  pair1.f[1] = 67.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, pair0.u, pair1.u, 0, 0, 0, 0);
+  for (row = 0; row < 4; row = row + 1) {
+    if (row < work->visibleCount) {
+      slotX = (float)(row * 0x55) + 62.0f;
+      if ((row == work->selectedSlot) || (work->selectedSlot == -2)) {
+        slotY = 48.0f;
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 1, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x42780000), 0, 0, 0, 0);
+      }
+      else {
+        slotY = 27.0f;
+        *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
+      }
+      index = row * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), CAMP_SUBB_PAIR_FLOATS(slotX + 8.0f, slotY + 65.0f), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), CAMP_SUBB_PAIR_FLOATS(slotX + 31.0f, slotY + 65.0f), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), CAMP_SUBB_PAIR_FLOATS(slotX + 45.0f, slotY + 65.0f), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), CAMP_SUBB_PAIR_FLOATS(slotX + 64.0f, slotY + 65.0f), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), CAMP_SUBB_PAIR_FLOATS(slotX + 2.0f, slotY + 14.0f), 0, 0, 0, 0);
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
+    }
+    else {
+      index = row * 0x2a8;
+      *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x994) = 0;
+    }
+  }
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 2, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x12dc), 0, 2, 1, 0x43cf800042be0000, 0x43cf800042be0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 2, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 1, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 0);
+  return;
+}
+
+
+
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd1829/object2472/2496, no lowering under the window. Residual is large draw-sequence divergence. */
+// FUN_00142930 NONMATCHING
+
+void FUN_00142930(CampEquipmentPanelWork* work)
+
+{
+  int index;
+  int row;
+  float slotX;
+  float slotY;
+  u64 spriteTopLeft;
+  CampBits pair0;
+  CampBits pair1;
+  pair0.f[0] = 40.0f;
+  pair0.f[1] = 12.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 110.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 10);
+  pair0.f[0] = 219.0f;
+  pair0.f[1] = 27.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 531.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 531.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 318.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 341.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 484.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 507.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 227.0f;
+  pair0.f[1] = 61.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 297.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 247.0f;
+  pair0.f[1] = 219.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 297.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 559.0f;
+  pair0.f[1] = 67.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 708.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
+  for (row = 0; row < 4; row = row + 1) {
+    if (row < work->visibleCount) {
+      slotX = (float)(row * 0x55) + 62.0f;
+      if ((row == work->selectedSlot) || (work->selectedSlot == -2)) {
+        slotY = 48.0f;
+        spriteTopLeft = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x42780000);
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 2, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 5);
+      }
+      else {
+        slotY = 27.0f;
+        *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
+      }
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 8.0f, slotY + 65.0f);
+      index = row * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 5);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 31.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 5);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 45.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 5);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 64.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 5);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 2.0f, slotY + 14.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 5);
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
+    }
+    else {
+      index = row * 0x2a8;
+      *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x994) = 0;
+    }
+  }
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x12dc), 0, 2, 2, 0x43cf800042be0000, 0x43cf800042be0000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 2, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 5);
+  return;
+}
+
+
+
+#pragma push
+/* opt_propagation off + opt_strength_reduction off: baseline nd1410/object1804/1808 -> nd1366/object1768/1808; retained W389. */
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
+// FUN_001432f0 NONMATCHING
+
+void FUN_001432f0(CampEquipmentPanelWork* work)
+
+{
+  u64 packedValue;
+  int row;
+  int entryIndex;
+  float slotY;
+  CampBits pair0;
+  CampBits pair1;
+  
+  pair0.f[0] = 40.0f;
+  pair0.f[1] = 12.0f;
+  pair1.f[0] = 40.0f;
+  pair1.f[1] = 12.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 219.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 219.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 318.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 318.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 341.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 341.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 484.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 484.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 507.0f;
+  pair0.f[1] = 27.0f;
+  pair1.f[0] = 507.0f;
+  pair1.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 227.0f;
+  pair0.f[1] = 61.0f;
+  pair1.f[0] = 227.0f;
+  pair1.f[1] = 61.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 247.0f;
+  pair0.f[1] = 219.0f;
+  pair1.f[0] = 247.0f;
+  pair1.f[1] = 219.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  pair0.f[0] = 559.0f;
+  pair0.f[1] = 67.0f;
+  pair1.f[0] = 559.0f;
+  pair1.f[1] = 67.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
+  for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
+    if (entryIndex < work->visibleCount) {
+      slotY = (float)(entryIndex * 0x55) + 62.0f;
+      row = entryIndex * 10;
+      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 8.0f, 0x42820000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 31.0f, 0x42820000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 45.0f, 0x42820000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 64.0f, 0x42820000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 2.0f, 0x41600000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
+    }
+    else {
+      row = entryIndex * 0x2a8;
+      *(u32 *)(work->drawBuffer + row + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x994) = 0;
+    }
+  }
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 2, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 0);
+  *(u32 *)(work->drawBuffer + 0x12e0) = 0;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 2, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
+  return;
+}
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma pop
+
+
+
+/* W389 aggregate-load idiom probes: hoverStart = *(CampPair*)... nd924/object1176/1248 -> nd927; end-before-start nd929; combined aggregate/order nd932; all reverted. */
+#pragma push
+/* opt_loop_invariants on + opt_dead_assignments off: baseline nd936/object1172/1248 -> nd924/object1176/1248; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
+// FUN_00143a00 NONMATCHING
+
+void FUN_00143a00(CampEquipmentPanelWork* work,s32 targetSlot)
+
+{
+  int index;
+  int row;
+  int entryIndex;
+  float slotY;
+  float panelX;
+  CampPair selectedStart;
+  CampPair selectedEnd;
+  CampPair hoverStart;
+  CampPair hoverEnd;
+  
+  entryIndex = 0;
+  do {
+    if (3 < entryIndex) {
+      return;
+    }
+    if (entryIndex < work->visibleCount) {
+      panelX = (float)(entryIndex * 0x55) + 62.0f;
+      if (entryIndex == work->selectedSlot) {
+        slotY = 48.0f;
+        selectedEnd.x = 14.0f;
+        selectedEnd.y = panelX + 2.0f;
+        selectedStart = selectedEnd;
+        selectedStart.x += 27.0f;
+        selectedEnd.x += slotY;
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 1, *(u64*)&selectedStart, *(u64*)&selectedEnd, 0, 0, 0, 2);
+      }
+      else {
+        if (entryIndex != targetSlot) goto LAB_00143e94;
+        slotY = 27.0f;
+        hoverStart.x = *(f32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x9c8);
+        hoverStart.y = *(f32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x9cc);
+        hoverEnd.x = 14.0f;
+        hoverEnd.y = panelX + 2.0f;
+        hoverEnd.x += slotY;
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 2, *(u64*)&hoverStart, *(u64*)&hoverEnd, 0, 0, 0, 2);
+      }
+      row = entryIndex * 0x2a8;
+      index = entryIndex * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x830), CAMP_SUBB_PAIR_FLOATS(panelX + 8.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x874), CAMP_SUBB_PAIR_FLOATS(panelX + 31.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8b8), CAMP_SUBB_PAIR_FLOATS(panelX + 45.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8fc), CAMP_SUBB_PAIR_FLOATS(panelX + 64.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x940), CAMP_SUBB_PAIR_FLOATS(panelX + 2.0f, slotY + 14.0f), 0, 0, 0, 2);
+    }
+LAB_00143e94:
+    entryIndex = entryIndex + 1;
+  } while( true );
+}
+#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants reset
+#pragma pop
+
+
+
+#pragma push
+/* opt_propagation off + opt_strength_reduction off: baseline nd2088/object2576/2608 -> nd2018/object2528/2608; retained W389. */
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
+// FUN_00143ee0 NONMATCHING
+
+void FUN_00143ee0(CampEquipmentPanelWork* work)
+
+{
+  int index;
+  int row;
+  float slotX;
+  u64 spriteTopLeft7;
+  u32 labelY;
+  u32 labelX;
+  
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042200000, 0x4140000042dc0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 2, 0x41d80000435b0000, 0x41d80000435b0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 1, 0x41d80000435b0000, 0x41d800004404c000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 2, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 2, 0x41d8000043aa8000, 0x41d8000043aa8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 2, 0x41d8000043f20000, 0x41d8000043f20000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 2, 0x41d8000043fd8000, 0x41d8000043fd8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, 0x4274000043630000, 0x4274000043948000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, 0x435b000043770000, 0x435b000043948000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, 0x42860000440b8000, 0x4286000044310000, 0, 0, 0, 0);
+  for (row = 0; row < 4; row = row + 1) {
+    if (row < work->visibleCount) {
+      slotX = (float)(row * 0x55) + 62.0f;
+      index = row * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0xc20c0000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0xc20c0000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0xc20c0000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0xc20c0000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0xc2ac0000), 0, 0, 0, 0);
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
+    }
+    else {
+      index = row * 0x2a8;
+      *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x994) = 0;
+    }
+  }
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 2, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1320), 0, 2, 1, 0x43cf800041d00000, 0x43cf800041d00000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 2, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 1, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 0);
+  for (row = 0; row < 0xc; row = row + 1) {
+    if (row < work->listCount) {
+      if (row == work->highlightedSlot) {
+        labelY = 21.0f;
+      }
+      else {
+        labelY = 0.0f;
+      }
+      labelX = (float)(row * 0x1d) + 61.0f;
+      spriteTopLeft7 = CAMP_SUBB_PAIR_FLOATS(labelX, labelY - 100.0f);
+      func_0018bc10(103.0f, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 1, spriteTopLeft7, CAMP_SUBB_PAIR_FLOATS(labelX, labelY), 0, 0, 0, 0);
+    }
+    else {
+      *(u32 *)(work->drawBuffer + row * 0x44 + 0x2ac) = 0;
+    }
+  }
+  return;
+}
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma pop
+
+
+
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd2032/object2620/2624, no lowering under the window. Residual is large draw-sequence divergence. */
+// FUN_00144910 NONMATCHING
+
+void FUN_00144910(CampEquipmentPanelWork* work)
+
+{
+  int index;
+  int row;
+  float slotX;
+  CampPair panelStart;
+  CampPair panelEnd;
+  u64 spriteTopLeft2;
+  u64 spriteTopLeft3;
+  u64 spriteTopLeft4;
+  u64 spriteTopLeft5;
+  u64 spriteTopLeft6;
+  u32 labelY;
+  u32 labelX;
+  
+  panelEnd.x = 40.0f;
+  panelEnd.y = 12.0f;
+  panelStart = panelEnd;
+  panelStart.x = 110.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0,
+                *(u64*)&panelStart, *(u64*)&panelEnd, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043aa8000, 0x41d8000043aa8000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000043f20000, 0x41d8000043f20000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d8000043fd8000, 0x41d8000043fd8000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x214), 0x4274000043630000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, *(u64 *)(work->drawBuffer + 600), 0x435b000043770000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x830), 0x42860000440b8000, 0, 0, 0, 10);
+  for (row = 0; row < 4; row = row + 1) {
+    if (row < work->visibleCount) {
+      slotX = (float)(row * 0x55) + 62.0f;
+      spriteTopLeft2 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0xc20c0000);
+      index = row * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 1, spriteTopLeft2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft3 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0xc20c0000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 1, spriteTopLeft3, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft4 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0xc20c0000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 1, spriteTopLeft4, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft5 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0xc20c0000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 1, spriteTopLeft5, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft6 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0xc2ac0000);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 1, spriteTopLeft6, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+      *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
+    }
+    else {
+      index = row * 0x2a8;
+      *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + index + 0x994) = 0;
+    }
+  }
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1320), 0, 2, 2, 0x43cf800041d00000, 0x43cf800041d00000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 2, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 0);
+  for (row = 0; row < 0xc; row = row + 1) {
+    if (row < work->listCount) {
+      if (row == work->highlightedSlot) {
+        labelY = 21.0f;
+      }
+      else {
+        labelY = 0.0f;
+      }
+      labelX = (float)(row * 0x1d) + 61.0f;
+      func_0018bc10(103.0f, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOATS(labelX, labelY), CAMP_SUBB_PAIR_FLOATS(labelX, labelY - 100.0f), 0, 0, 0, 0);
+    }
+    else {
+      *(u32 *)(work->drawBuffer + row * 0x44 + 0x2ac) = 0;
+    }
+  }
+  return;
+}
+
+
+
+/* Schedule-off + typed buffer locals; W310 with pragma on: nd338/416B, off: nd110/452B; the retained 28B over the alias-only 424B baseline are retail-aligned instructions (fndiff, no padding). */
+#pragma schedule off
+#define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
+  func_0018bc10_buffirst_subb((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
+
+// FUN_00145350
+
+void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
+{
+    s32 index;
+    f32 x;
+    f32 y;
+    CampPair selectedStart;
+    CampPair end;
+    CampPair hoverStart;
+
+    for (index = 0; index < 0xc; index++) {
+        if (index < work->listCount) {
+            if (index == work->highlightedSlot) {
+                u8* drawBuffer;
+                y = 21.0f;
+                end.x = y;
+                x = (f32)(index * 0x1d) + 61.0f;
+                end.y = x;
+                drawBuffer = work->drawBuffer;
+                selectedStart = *(CampPair*)(drawBuffer + index * 0x44 + 0x2e0);
+                func_0018bc10(103.0f,
+                              drawBuffer + (index + 0xa) * 0x44,
+                              0, 2, 0, *(u64*)&selectedStart, *(u64*)&end, 0, 0, 0, 2);
+            } else if (index == hoverSlot) {
+                u8* drawBuffer;
+                y = 0.0f;
+                end.x = y;
+                x = (f32)(index * 0x1d) + 61.0f;
+                end.y = x;
+                drawBuffer = work->drawBuffer;
+                hoverStart = *(CampPair*)(drawBuffer + index * 0x44 + 0x2e0);
+                func_0018bc10(103.0f,
+                              drawBuffer + (index + 0xa) * 0x44,
+                              0, 2, 0, *(u64*)&hoverStart, *(u64*)&end, 0, 0, 0, 2);
+            }
+        }
+    }
+}
+#undef func_0018bc10
+#pragma schedule off
+
+
+
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3081/object4360/4592 -> nd3057/object4240/4592; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
+// FUN_00145520 NONMATCHING
+
+void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
+{
+    void* parent;
+    DatPersonaWork* persona;
+    CampEquipmentMenuWork* menu = (CampEquipmentMenuWork*)workData;
+    void* resourceRecord;
+    const char* resourceText;
+    u16 resourceItemId;
+    u32 textColor;
+    u32 value;
+    u32 denominator;
+    s16 statValue;
+    s32 statIndex;
+    s32 gaugeWidth;
+    s32 selected;
+    s32 hasAvailableBonus;
+    s32 index;
+    s32 rank;
+    s16 statType;
+    s32 icon;
+    char textBuffer[264];
+    CampBits drawPair;
+    f32 depth = campTextureAsFloat(item);
+
+    switch (menuCode) {
+    case 0:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x2b, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 1:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x27, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 2:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x21, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 3:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x24, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 4:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x22, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 5:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x24, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 6:
+        campDrawSprite_subb(parent, DAT_00833A50[0], 0x23, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 7:
+        campDrawEquipmentDetailList(*(CampPair*)&item->x,
+                                    depth,
+                                    menu->detailList, item->alpha);
+        break;
+    case 0x1e:
+    case 0x28:
+    case 0x32:
+    case 0x3c:
+        statIndex = (menuCode - 0x1e) / 10;
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
+        resourceText = FUN_00177790_y2(statValue);
+        textColor = (0xffU - item->alpha) | 0xffffff00;
+        sprintf(textBuffer, DAT_007cb66c, resourceText);
+        campDrawTextAlt((s32)item->x, (s32)item->y + 3, textColor,
+                        depth, 10, 1, textBuffer, 0x10,
+                        0x78);
+        break;
+    case 0x1f:
+    case 0x29:
+    case 0x33:
+    case 0x3d:
+        statIndex = (menuCode - 0x1f) / 10;
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
+        value = FUN_0016c4f0(statValue) & 0xffff;
+        rank = value > 99;
+        if (rank != 0) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, item->alpha,
+                                item->x, item->y, depth);
+            value %= 100;
+        }
+        if (value > 9 || rank != 0) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, item->alpha,
+                                item->x + 16.0f, item->y,
+                                depth);
+        }
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, item->alpha,
+                            item->x + 32.0f, item->y,
+                            depth);
+        value = FUN_0016c4f0(statValue) & 0xffff;
+        denominator = FUN_0016c5f0(statValue) & 0xffff;
+        gaugeWidth = 0x4c - (value * 0x4c) / denominator;
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xd, item->alpha,
+                       item->x + 50.0f, item->y + 2.0f,
+                       depth);
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       depth);
+        if (gaugeWidth != 0) {
+            campDrawGauge(depth - 1.0f,
+                          item->x + 56.0f + ((f32)0x4c - (f32)gaugeWidth),
+                          item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
+        }
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       depth);
+        break;
+    case 0x20:
+    case 0x2a:
+    case 0x34:
+    case 0x3e:
+        statIndex = (menuCode - 0x20) / 10;
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
+        value = FUN_0016c570(statValue) & 0xffff;
+        rank = value > 99;
+        if (rank != 0) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, item->alpha,
+                                item->x, item->y, depth);
+            value %= 100;
+        }
+        if (value > 9 || rank != 0) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, item->alpha,
+                                item->x + 16.0f, item->y,
+                                depth);
+        }
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, item->alpha,
+                            item->x + 32.0f, item->y,
+                            depth);
+        value = FUN_0016c570(statValue) & 0xffff;
+        denominator = func_0016c670(statValue) & 0xffff;
+        gaugeWidth = 0x4c - (value * 0x4c) / denominator;
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xd, item->alpha,
+                       item->x + 50.0f, item->y + 2.0f,
+                       depth);
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       depth);
+        if (gaugeWidth != 0) {
+            campDrawGauge(depth - 1.0f,
+                          item->x + 56.0f + ((f32)0x4c - (f32)gaugeWidth),
+                          item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
+        }
+        campDrawSprite_subb(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       depth);
+        break;
+    case 0x21:
+    case 0x2b:
+    case 0x35:
+    case 0x3f:
+        statIndex = (menuCode - 0x20) / 10;
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
+        rank = FUN_0016c470(statValue);
+        if (rank > 9) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                rank / 10 + 0xb, item->alpha,
+                                item->x, item->y, depth);
+        }
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            rank % 10 + 0xb, item->alpha,
+                            item->x + 16.0f, item->y,
+                            depth);
+        if ((FUN_0016c970(statValue) & 0x80000) != 0) {
+            icon = 0xe;
+        } else if ((FUN_0016c970(statValue) & 0x80) != 0) {
+            icon = 0xf;
+        } else {
+            statType = FUN_0016c920(statValue);
+            if (statType == 5) {
+                icon = 1;
+            } else if (statType == 4) {
+                icon = 0;
+            } else if (statType == 3) {
+                icon = 2;
+            } else {
+                icon = -1;
+            }
+        }
+        if (icon != -1) {
+            campDrawSprite_subb(parent, DAT_00833A50[1], icon, item->alpha,
+                           item->x + 44.0f, item->y - 6.0f,
+                           depth);
+        }
+        break;
+    case 0x22:
+    case 0x2c:
+    case 0x36:
+    case 0x40:
+        campDrawSprite_subb(parent, DAT_00833A50[1], 3, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 0x23:
+    case 0x2d:
+    case 0x37:
+    case 0x41:
+        campDrawSprite_subb(parent, DAT_00833A50[1], 3, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 0x24:
+    case 0x2e:
+    case 0x38:
+    case 0x42:
+        campDrawSprite_subb(parent, DAT_00833A50[1], 4, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 10:
+    case 0xb:
+    case 0xc:
+    case 0xd:
+    case 0xe:
+    case 0xf:
+    case 0x10:
+    case 0x11:
+    case 0x12:
+    case 0x13:
+    case 0x14:
+    case 0x15:
+        persona = FUN_00174a90((s16)(menuCode - 10));
+        drawPair.f[0] = item->x;
+        drawPair.f[1] = item->y;
+        if (selected != 0) {
+            campDrawSprite_subb(parent, DAT_00833A50[1], 8, item->alpha,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
+                           depth);
+        } else {
+            campDrawSprite_subb(parent, DAT_00833A50[1], 7, item->alpha,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
+                           depth);
+        }
+        resourceRecord = func_00170e90_subb(DAT_007cdf94);
+        resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
+        hasAvailableBonus = 0;
+        if (FUN_0017bf70(resourceItemId) != 0) {
+            for (index = 0; index < 5; index++) {
+                resourceRecord = func_00170e90_subb(DAT_007cdf94);
+                resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
+                if (FUN_0017bfa0(resourceItemId, (u8)index) != 0 &&
+                    datPersonaGetTotalStat(persona, (u16)index) != 99) {
+                    hasAvailableBonus = 1;
+                }
+            }
+        }
+        if (hasAvailableBonus != 0) {
+            if (selected != 0) {
+                campDrawSprite_subb(parent, DAT_00833A50[0], 0x26, item->alpha,
+                               item->x + 9.0f, item->y + 9.0f,
+                               depth);
+            } else {
+                campDrawSprite_subb(parent, DAT_00833A50[0], 0x25, item->alpha,
+                               item->x + 8.0f, item->y + 8.0f,
+                               depth);
+            }
+        }
+        if (selected != 0 && persona->level > 9) {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(1),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+            campDrawSprite_subb(parent, H_Maestro_001120a0(1),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+        } else {
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+            campDrawSprite_subb(parent, H_Maestro_001120a0(2),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+        }
+        resourceText = FUN_00173220(persona->id);
+        textColor = (0xffU - item->alpha) | 0xffffff00;
+        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
+                     (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
+                     0x10, 0);
+        break;
+    case 0x46:
+        campDrawSprite_subb(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x - 16.0f, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[2], 1, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 0x47:
+        campDrawSprite_subb(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x - 16.0f, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[2], 2, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 0x48:
+        campDrawSprite_subb(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[2], 3, item->alpha,
+                       item->x + 16.0f, item->y, depth);
+        break;
+    case 0x49:
+        campDrawSprite_subb(parent, DAT_00833A50[0x55], 0, item->alpha,
+                       item->x + 246.0f, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[0x55], 3, item->alpha,
+                       item->x + 322.0f, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[0x55], 5, item->alpha,
+                       item->x, item->y, depth);
+        break;
+    case 0x4a:
+        campDrawSprite_subb(parent, DAT_00833A50[0x55], 0, item->alpha,
+                       item->x + 32.0f, item->y, depth);
+        campDrawSprite_subb(parent, DAT_00833A50[0x55], 3, item->alpha,
+                       item->x + 108.0f, item->y, depth);
+        break;
+    default:
+        break;
+    }
+}
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
+
+
+
+/* Retail reconstruction from FUN_00146710 offsets +0x1c..+0xddc; pairSlots maps the measured draw/status temporaries at +0x68..+0x128. */
+#pragma push
+/* opt_lifetimes on: baseline nd1347/object3520/3552 -> nd1346/object3520/3552; retained W389. */
+#pragma opt_lifetimes on
+// FUN_00146710 NONMATCHING
+
+void FUN_00146710(CampEquipmentPanelWork* work)
+{
+  u64 pair0;
+  CampPair base;
+  u64 pair25;
+  u64 pair24;
+  u64 pair23;
+  u64 pair22;
+  u64 pair21;
+  u64 pair20;
+  u64 pair19;
+  u64 pair18;
+  u64 pair17;
+  u64 pair16;
+  u64 pair15;
+  u64 pair14;
+  u64 pair13;
+  u64 pair12;
+  u64 pair11;
+  u64 pair10;
+  u64 pair9;
+  u64 pair8;
+  u64 pair7;
+  u64 pair6;
+  u64 pair5;
+  u64 pair4;
+  u64 pair3;
+  u64 pair2;
+  u64 pair1;
+  f32 tempFloat;
+  s32 row;
+  s32 entryIndex;
+  f32 slotY;
+  struct {
+    u64 draw[16];
+    u64 status[10];
+  } pairSlots;
+#define pair0 pairSlots.draw[0]
+#define pair1 pairSlots.draw[1]
+#define pair2 pairSlots.draw[2]
+#define pair3 pairSlots.draw[3]
+#define pair4 pairSlots.draw[4]
+#define pair5 pairSlots.draw[5]
+#define pair6 pairSlots.draw[6]
+#define pair7 pairSlots.draw[7]
+#define pair8 pairSlots.draw[8]
+#define pair9 pairSlots.draw[9]
+#define pair10 pairSlots.draw[10]
+#define pair11 pairSlots.draw[11]
+#define pair12 pairSlots.draw[12]
+#define pair13 pairSlots.draw[13]
+#define pair14 pairSlots.draw[14]
+#define pair15 pairSlots.draw[15]
+#define pair16 pairSlots.status[0]
+#define pair17 pairSlots.status[1]
+#define pair18 pairSlots.status[2]
+#define pair19 pairSlots.status[3]
+#define pair20 pairSlots.status[4]
+#define pair21 pairSlots.status[5]
+#define pair22 pairSlots.status[6]
+#define pair23 pairSlots.status[7]
+#define pair24 pairSlots.status[8]
+#define pair25 pairSlots.status[9]
+
+
+  base.x = 40.0f;
+  base.y = 12.0f;
+  pair0 = *(u64*)&base;
+  *(f32*)&pair0 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 2,
+                 pair0, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 219.0f;
+  base.y = 27.0f;
+  pair1 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 2,
+                 pair1, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 318.0f;
+  base.y = 27.0f;
+  pair2 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 2,
+                 pair2, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 341.0f;
+  base.y = 27.0f;
+  pair3 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 2,
+                 pair3, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 484.0f;
+  base.y = 27.0f;
+  pair4 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 2,
+                 pair4, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 507.0f;
+  base.y = 27.0f;
+  pair5 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 2,
+                 pair5, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 227.0f;
+  base.y = 61.0f;
+  pair6 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 2,
+                 pair6, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 247.0f;
+  base.y = 219.0f;
+  pair7 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 2,
+                 pair7, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 558.0f;
+  base.y = 67.0f;
+  pair8 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 2,
+                 pair8, *(u64*)&base, 0, 0, 0, 10);
+
+  for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
+    if (entryIndex < work->visibleCount) {
+      slotY = (f32)(entryIndex * 0x55) + 62.0f;
+      base.x = 65.0f;
+      base.y = 8.0f + slotY;
+      pair9 = *(u64*)&base;
+      base.x += -100.0f;
+      row = entryIndex * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44),
+                     0, 2, 2, pair9, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 31.0f + slotY;
+      pair10 = *(u64*)&base;
+      base.x += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44),
+                     0, 2, 2, pair10, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 45.0f + slotY;
+      pair11 = *(u64*)&base;
+      base.x += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44),
+                     0, 2, 2, pair11, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 64.0f + slotY;
+      pair12 = *(u64*)&base;
+      base.x += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44),
+                     0, 2, 2, pair12, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 14.0f;
+      base.y = 2.0f + slotY;
+      pair13 = *(u64*)&base;
+      base.x += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44),
+                     0, 2, 2, pair13, *(u64*)&base, 0, 0, 0, 10);
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
+    } else {
+      row = entryIndex * 0x2a8;
+      *(u32 *)(work->drawBuffer + row + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x994) = 0;
+    }
+  }
+
+  base.x = 62.0f;
+  base.y = (f32)0x19f;
+  pair14 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 2,
+                 pair14, *(u64*)&base, 0, 0, 0, 10);
+  *(u32 *)(work->drawBuffer + 0x12e0) = 0;
+  base.x = 239.0f;
+  base.y = (f32)0x19f;
+  pair15 = *(u64*)&base;
+  base.x += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 2,
+                 pair15, *(u64*)&base, 0, 0, 0, 10);
+
+  tempFloat = (f32)0x17b;
+  base.x = tempFloat;
+  base.y = 12.0f;
+  pair16 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)work->statusBuffer), 0, 2, 1,
+                 *(u64*)&base, pair16, 0, 0, 0, 10);
+  base.x = 13.0f;
+  base.y = 27.0f;
+  pair17 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x44)), 0, 2, 1,
+                 *(u64*)&base, pair17, 0, 0, 0, 10);
+  base.x = 112.0f;
+  base.y = 27.0f;
+  pair18 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x88)), 0, 2, 1,
+                 *(u64*)&base, pair18, 0, 0, 0, 10);
+  base.x = 135.0f;
+  base.y = 27.0f;
+  pair19 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0xcc)), 0, 2, 1,
+                 *(u64*)&base, pair19, 0, 0, 0, 10);
+  base.x = 278.0f;
+  base.y = 27.0f;
+  pair20 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x110)), 0, 2, 1,
+                 *(u64*)&base, pair20, 0, 0, 0, 10);
+  tempFloat = (f32)0x12d;
+  base.x = tempFloat;
+  base.y = 27.0f;
+  pair21 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x154)), 0, 2, 1,
+                 *(u64*)&base, pair21, 0, 0, 0, 10);
+
+  for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
+    if (work->visibleCount + -1 < entryIndex) {
+      *(u32 *)(work->statusBuffer + entryIndex * 0x44 + 0x2ac) = 0;
+    } else {
+      base.x = 30.0f;
+      base.y = (f32)(entryIndex * 0x55) + 64.0f;
+      func_0018bc10(100.0f,
+                    (void*)(work->statusBuffer + (entryIndex + 10) * 0x44),
+                    0, 2, 1, *(u64*)&base, *(u64*)&base, 0, 0, 0, 10);
+    }
+  }
+
+  base.x = 104.0f;
+  base.y = 61.0f;
+  pair22 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x550)),
+                 0, 2, 1, *(u64*)&base, pair22, 0, 0, 0, 10);
+  base.x = 124.0f;
+  base.y = 219.0f;
+  pair23 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x594)),
+                 0, 2, 1, *(u64*)&base, pair23, 0, 0, 0, 10);
+  base.x = 226.0f;
+  base.y = (f32)0x19f;
+  pair24 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x83c)),
+                 0, 2, 1, *(u64*)&base, pair24, 0, 0, 0, 10);
+  tempFloat = (f32)0x1b7;
+  base.x = tempFloat;
+  base.y = (f32)0x19f;
+  pair25 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)),
+                 0, 2, 1, *(u64*)&base, pair25, 0, 0, 0, 10);
+  return;
+}
+#pragma opt_lifetimes reset
+#pragma pop
+
+
+
+#undef pair25
+#undef pair24
+#undef pair23
+#undef pair22
+#undef pair21
+#undef pair20
+#undef pair19
+#undef pair18
+#undef pair17
+#undef pair16
+#undef pair15
+#undef pair14
+#undef pair13
+#undef pair12
+#undef pair11
+#undef pair10
+#undef pair9
+#undef pair8
+#undef pair7
+#undef pair6
+#undef pair5
+#undef pair4
+#undef pair3
+#undef pair2
+#undef pair1
+#undef pair0
+
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd2853/object3532/3584 -> nd2685/object3216/3584; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_001474f0 NONMATCHING
+
+void FUN_001474f0(CampEquipmentPanelWork* work)
+
+{
+  u64 pair0;
+  CampPair base;
+  u64 pair25;
+  u64 pair24;
+  u64 pair23;
+  u64 pair22;
+  u64 pair21;
+  u64 pair20;
+  u64 pair19;
+  u64 pair18;
+  u64 pair17;
+  u64 pair16;
+  u64 pair15;
+  u64 pair14;
+  u64 pair13;
+  u64 pair12;
+  u64 pair11;
+  u64 pair10;
+  u64 pair9;
+  u64 pair8;
+  u64 pair7;
+  u64 pair6;
+  u64 pair5;
+  u64 pair4;
+  u64 pair3;
+  u64 pair2;
+  u64 pair1;
+  f32 tempFloat;
+  s32 row;
+  s32 entryIndex;
+  f32 slotY;
+
+  base.x = 40.0f;
+  base.y = 12.0f;
+  pair0 = *(u64*)&base;
+  *(f32*)&pair0 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, pair0, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 219.0f;
+  base.y = 27.0f;
+  pair1 = *(u64*)&base;
+  *(f32*)&pair1 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 318.0f;
+  base.y = 27.0f;
+  pair2 = *(u64*)&base;
+  *(f32*)&pair2 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair2, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x155;
+  base.y = 27.0f;
+  pair3 = *(u64*)&base;
+  *(f32*)&pair3 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair3, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 484.0f;
+  base.y = 27.0f;
+  pair4 = *(u64*)&base;
+  *(f32*)&pair4 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair4, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x1fb;
+  base.y = 27.0f;
+  pair5 = *(u64*)&base;
+  *(f32*)&pair5 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair5, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 227.0f;
+  base.y = 61.0f;
+  pair6 = *(u64*)&base;
+  *(f32*)&pair6 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, pair6, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 247.0f;
+  base.y = 219.0f;
+  pair7 = *(u64*)&base;
+  *(f32*)&pair7 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, pair7, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x22e;
+  base.y = 67.0f;
+  pair8 = *(u64*)&base;
+  *(f32*)&pair8 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, pair8, *(u64*)&base, 0, 0, 0, 10);
+
+  for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
+    if (entryIndex < work->visibleCount) {
+      slotY = (f32)(entryIndex * 0x55) + 62.0f;
+      base.x = 65.0f;
+      base.y = 8.0f + slotY;
+      pair9 = *(u64*)&base;
+      *(f32*)&pair9 += -100.0f;
+      row = entryIndex * 10;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, pair9, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 31.0f + slotY;
+      pair10 = *(u64*)&base;
+      *(f32*)&pair10 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, pair10, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 45.0f + slotY;
+      pair11 = *(u64*)&base;
+      *(f32*)&pair11 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, pair11, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 64.0f + slotY;
+      pair12 = *(u64*)&base;
+      *(f32*)&pair12 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, pair12, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 14.0f;
+      base.y = 2.0f + slotY;
+      pair13 = *(u64*)&base;
+      *(f32*)&pair13 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, pair13, *(u64*)&base, 0, 0, 0, 10);
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
+    } else {
+      row = entryIndex * 0x2a8;
+      *(u32 *)(work->drawBuffer + row + 0x7fc) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x840) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x884) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x8c8) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x90c) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x950) = 0;
+      *(u32 *)(work->drawBuffer + row + 0x994) = 0;
+    }
+  }
+
+  base.x = 62.0f;
+  base.y = (f32)0x19f;
+  pair14 = *(u64*)&base;
+  *(f32*)&pair14 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, pair14, *(u64*)&base, 0, 0, 0, 10);
+  *(u32 *)(work->drawBuffer + 0x12e0) = 0;
+  base.x = 239.0f;
+  base.y = (f32)0x19f;
+  pair15 = *(u64*)&base;
+  *(f32*)&pair15 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, pair15, *(u64*)&base, 0, 0, 0, 10);
+
+  tempFloat = (f32)0x17b;
+  base.x = tempFloat;
+  base.y = 12.0f;
+  pair16 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)work->statusBuffer), 0, 2, 2, *(u64*)&pair16, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 13.0f;
+  base.y = 27.0f;
+  pair17 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x44)), 0, 2, 2, *(u64*)&pair17, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 112.0f;
+  base.y = 27.0f;
+  pair18 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x88)), 0, 2, 2, *(u64*)&pair18, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 135.0f;
+  base.y = 27.0f;
+  pair19 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0xcc)), 0, 2, 2, *(u64*)&pair19, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 278.0f;
+  base.y = 27.0f;
+  pair20 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x110)), 0, 2, 2, *(u64*)&pair20, *(u64*)&base, 0, 0, 0, 10);
+  tempFloat = (f32)0x12d;
+  base.x = tempFloat;
+  base.y = 27.0f;
+  pair21 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x154)), 0, 2, 2, *(u64*)&pair21, *(u64*)&base, 0, 0, 0, 10);
+
+  for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
+    if (work->visibleCount + -1 < entryIndex) {
+      *(u32 *)(work->statusBuffer + entryIndex * 0x44 + 0x2ac) = 0;
+    } else {
+      base.x = 30.0f;
+      base.y = 64.0f + (f32)(entryIndex * 0x55);
+      func_0018bc10(100.0f, (void*)(work->statusBuffer + (entryIndex + 10) * 0x44), 0, 2, 2, *(u64*)&base, *(u64*)&base, 0, 0, 0, 10);
+    }
+  }
+
+  base.x = 104.0f;
+  base.y = 61.0f;
+  pair22 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x550)), 0, 2, 2, *(u64*)&pair22, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 124.0f;
+  base.y = 219.0f;
+  pair23 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x594)), 0, 2, 2, *(u64*)&pair23, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 226.0f;
+  base.y = (f32)0x19f;
+  pair24 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x83c)), 0, 2, 2, *(u64*)&pair24, *(u64*)&base, 0, 0, 0, 10);
+  tempFloat = (f32)0x1b7;
+  base.x = tempFloat;
+  base.y = (f32)0x19f;
+  pair25 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)), 0, 2, 2, *(u64*)&pair25, *(u64*)&base, 0, 0, 0, 10);
+  return;
+}
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
+
+
+
+
+#pragma alias FUN_004d0f00_sys FUN_004d0f00
+#pragma alias H_Cdvd_Destroy_sys H_Cdvd_Destroy
+#pragma alias FUN_0017d800_sys FUN_0017d800
+#pragma alias FUN_00194B20_sys FUN_00194B20
+#pragma alias iGpffffb258_sys iGpffffb258
+#pragma alias iGpffffb270_sys iGpffffb270
+#pragma alias uGpffffb260_sys uGpffffb260
+#pragma alias FUN_0010c3a0_sys FUN_0010c3a0
+#pragma alias FUN_00102100_sys FUN_00102100
+#pragma alias FUN_00112420_sys FUN_00112420
+#pragma alias FUN_003c7d80_sys FUN_003c7d80
+#pragma alias FUN_00113a30_sys FUN_00113a30
+#pragma alias FUN_0016f190_sys FUN_0016f190
+#pragma alias FUN_0010a4e0_sys FUN_0010a4e0
+#pragma alias FUN_00175200_sys FUN_00175200
+#pragma alias FUN_0017B860_sys FUN_0017B860
+#pragma alias FUN_0016DD60_sys FUN_0016DD60
+#pragma alias FUN_001C7CE0_sys FUN_001C7CE0
+#pragma alias FUN_0017BC20_sys FUN_0017BC20
+#pragma alias FUN_00173660_sys FUN_00173660
+#pragma alias FUN_001159F0_sys FUN_001159F0
+#pragma alias FUN_00115BC0_sys FUN_00115BC0
+#pragma alias FUN_00115AD0_sys FUN_00115AD0
+#pragma alias FUN_00523AC8_sys FUN_00523AC8
+#pragma alias FUN_001120A0_sys FUN_001120A0
+#pragma alias FUN_003c7e20_sys FUN_003c7e20
+#pragma alias FUN_001158B0_sys FUN_001158B0
+#pragma alias FUN_001127D0_sys FUN_001127D0
+#pragma alias FUN_00115980_sys FUN_00115980
+#pragma alias FUN_00122710_sys FUN_00122710
+#pragma alias FUN_0011E380_sys FUN_0011E380
+#pragma alias FUN_0011ABD0_sys FUN_0011ABD0
+#pragma alias FUN_00177790_sys FUN_00177790
+#pragma alias DAT_00833BA0_sys DAT_00833BA0
+#pragma alias FUN_0010c1a0_sys FUN_0010c1a0
+#pragma alias FUN_00114450_sys FUN_00114450
+typedef int bool;
+#ifndef UINT32_C
+#define UINT32_C(x) x##u
+#endif
+#ifndef UINT64_C
+#define UINT64_C(x) x##ull
+#endif
+extern void *memcpy(void *dst, const void *src, u32 size);
+void FUN_004d0f00_sys();
+void H_Cdvd_Destroy_sys();
+void FUN_003c7dd0();
+extern void* (*DAT_00960184_abs[])(...);
+extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
+extern const char D_005DBD00[];
+extern const char D_005E3E70[];
+extern void* h_campUpdateSystemMenuTask(KwlnTask* task);
+extern u32 FUN_0017d800_sys(void);
+extern KwlnTask *FUN_00194B20_sys(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
+// FUN_00154770. Destroy callback of the "H_CampSystemMenuDraw" task
+void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
+{
+    int* workData;
+    int i;
+
+    workData = (int*)task->workData;
+    if (workData[8] != 0) {
+        FUN_004d0f00_sys(workData[8]);
+    }
+    if (workData[5] != 0) {
+        FUN_001124b0(workData[5]);
+    }
+    workData[5] = 0;
+    if (workData[6] != 0) {
+        FUN_001124b0(workData[6]);
+    }
+    workData[6] = 0;
+    if (workData[3] != 0) {
+        RwFree((void*)workData[3]);
+    }
+    workData[3] = 0;
+    if (workData[4] != 0) {
+        RwFree((void*)workData[4]);
+    }
+    workData[4] = 0;
+    FUN_003c7dd0(8);
+    FUN_003c7dd0(0xc);
+    for (i = 0; i < 3; i++) {
+        if (*(int*)((int)workData + i * 4 + 0x24) != 0) {
+            H_Cdvd_Destroy_sys(*(int*)((int)workData + i * 4 + 0x24));
+        }
+        *(int*)((int)workData + i * 4 + 0x24) = 0;
+    }
+    RwFree(workData);
+}
+
+// FUN_001548A0
+KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
+{
+    KwlnTask *task;
+    void *work;
+
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+
+    task = FUN_00194B20_sys(parent, D_005DBD00, priority,
+                        h_campUpdateSystemMenuTask,
+                        h_campSystemDestroyMenuDrawTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+
+    if (FUN_0017d800_sys() != 0) {
+        *(u32 *)((u8 *)work + 4) = 4;
+    }
+
+    return task;
+}
+
+
+/* Camp system menu work (FUN_0015B330/FUN_0015B430), 0x17c bytes. */
+typedef struct CampMenuEntry
+{
+    u32 state;
+    u32 enabled;
+    u32 drawMode;
+    u8 unknown0c[0x0c];
+    u32 progress;
+    u32 progressLimit;
+    u32 progressTarget;
+    u32 color;
+    u8 unknown28[0x10];
+    f32 x;
+    f32 y;
+    u32 alpha;
+} CampMenuEntry;
+typedef union CampMenuAnimPair
+{
+    u64 q;
+    f32 f[2];
+} CampMenuAnimPair;
+typedef struct CampMenuScratch
+{
+    u32 words[0x1e];
+    CampMenuAnimPair shifted;
+    CampMenuAnimPair pair;
+    u32 tail[2];
+} CampMenuScratch;
+typedef struct CampSystemMenuWork
+{
+    u32 state;
+    u32 unknown04;
+    u32 unknown08;
+    u32 allocation10;
+    u32 entriesAddress;
+    u32 archiveBlob0;
+    u32 archiveBlob1;
+    u32 request;
+    u32 requestResult;
+    u32 cdvdMain;
+    u32 cdvdStatus;
+    u32 cdvdSystem;
+    u32 entriesReady;
+    u8 unknown34[0x120];
+    u32 selectedPanel;
+    u32 panelFlags[7];
+    s32 fadeStep;
+    u32 unknown178;
+} CampSystemMenuWork;
+typedef char CampMenuEntrySizeCheck[(sizeof(CampMenuEntry) == 0x44) ? 1 : -1];
+typedef char CampMenuWorkSizeCheck[(sizeof(CampSystemMenuWork) == 0x17c) ? 1 : -1];
+#define CAMP_MENU_ENTRY_COUNT 100
+#define CAMP_MENU_ENTRY_SIZE 0x44
+#define CAMP_MENU_PTR32(address) ((void *)(uintptr_t)(address))
+#define CAMP_MENU_CONST_PTR(address) ((const char *)(uintptr_t)(address))
+static inline CampSystemMenuWork *camp_menu_work(KwlnTask *task)
+{
+    return (CampSystemMenuWork *)task->workData;
+}
+static inline CampMenuEntry *camp_menu_entry(CampSystemMenuWork *work, s32 index)
+{
+    return (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) +
+                             index * CAMP_MENU_ENTRY_SIZE);
+}
+static inline void *camp_menu_record(CampSystemMenuWork *work, u32 offset)
+{
+    return (u8 *)CAMP_MENU_PTR32(work->entriesAddress) + offset;
+}
+static inline u32 camp_menu_address(const void *pointer)
+{
+    return (u32)(uintptr_t)pointer;
+}
+
+/* Item-list work used by FUN_0015C520/FUN_0015C840/FUN_0015CE50. */
+static inline uintptr_t camp_list_base_address(u32 base)
+{
+    return (uintptr_t)(u32)base;
+}
+static inline u32 camp_list_load_u32(uintptr_t base, size_t offset)
+{
+    return *(const u32 *)(base + offset);
+}
+static inline s32 camp_list_load_s32(uintptr_t base, size_t offset)
+{
+    return *(const s32 *)(base + offset);
+}
+static inline u16 camp_list_load_u16(uintptr_t base, size_t offset)
+{
+    return *(const u16 *)(base + offset);
+}
+static inline void camp_list_store_u32(uintptr_t base, size_t offset, u32 value)
+{
+    *(u32 *)(base + offset) = value;
+}
+static inline f32 camp_list_bits_to_float(u32 bits)
+{
+    union { u32 bits; f32 value; } converter; converter.bits = bits; return converter.value;
+}
+static inline u32 camp_list_float_to_bits(f32 value)
+{
+    union { u32 bits; f32 value; } converter; converter.value = value; return converter.bits;
+}
+static inline u64 camp_list_pack_f32(f32 high, f32 low)
+{
+    return ((u64)camp_list_float_to_bits(high) << 32) | camp_list_float_to_bits(low);
+}
+static f32 camp_list_packed_low_f32(u64 packed)
+{
+    return camp_list_bits_to_float((u32)packed);
+}
+static f32 camp_list_packed_high_f32(u64 packed)
+{
+    return camp_list_bits_to_float((u32)(packed >> 32));
+}
+#define CAMP_LIST_CONST_PTR(address) ((const char *)(uintptr_t)(address))
+typedef struct CampC520ListEntry
+{
+    u8 unknown00[0x0c];
+    u32 itemId;
+    u32 unknown10;
+    s16 mode;
+    u8 unknown16[2];
+    s32 spCost;
+    s32 hpCost;
+} CampC520ListEntry;
+#pragma alias campC520PartyId FUN_0016DD60_sys
+extern u64 campC520PartyId(s32 index);
+#pragma alias campC520NearHero FUN_001C7CE0_sys
+extern s32 campC520NearHero(s32 owner);
+
+/* Camp draw/animation work used by FUN_0015E150..FUN_00160800. */
+typedef struct CampSystemPosition
+{
+    f32 x;
+    f32 y;
+} CampSystemPosition;
+typedef struct CampDrawRecord
+{
+    u32 unknown00;
+    u32 active;
+    u32 unknown08;
+    u32 unknown0c;
+    u32 unknown10;
+    u32 unknown14;
+    s32 progress;
+    s32 unknown1c;
+    s32 target;
+    u32 owner;
+    u32 unknown28;
+    u32 unknown2c;
+    u32 unknown30;
+    u32 unknown34;
+    f32 x;
+    f32 y;
+    u32 alpha;
+} CampDrawRecord;
+typedef struct CampSystemDrawWork
+{
+    s32 state;
+    s32 unknown04;
+    s32 unknown08;
+    s32 frame;
+    s32 unknown10;
+    s32 unknown14;
+    s32 cursor;
+    u32 archive0;
+    u32 archive1;
+    u32 archive2;
+    u32 entryPool;
+    s16 selectedKind;
+    u16 selectedKindPad;
+    u32 imageArchive;
+    u32 unknown34;
+    u32 records;
+    s32 partyIds[4];
+    s32 partyCount;
+    u8 unknown050[0x104];
+    s32 transitionFlag;
+    u32 partyAnimations[7];
+    s32 alpha;
+} CampSystemDrawWork;
+typedef struct CampDrawSprite { u8 bytes[0x30]; } CampDrawSprite;
+typedef char CampDrawRecordSizeCheck[(sizeof(CampDrawRecord) == 0x44) ? 1 : -1];
+typedef char CampDrawWorkSizeCheck[(sizeof(CampSystemDrawWork) == 0x178) ? 1 : -1];
+static inline u32 camp_draw_load_u32(const void *base, size_t offset)
+{
+    return *(const u32 *)((const u8 *)base + offset);
+}
+static inline u64 camp_draw_load_u64(const void *base, size_t offset)
+{
+    return *(const u64 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u32(void *base, size_t offset, u32 value)
+{
+    *(u32 *)((u8 *)base + offset) = value;
+}
+static inline u16 camp_draw_load_u16(const void *base, size_t offset)
+{
+    return *(const u16 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u16(void *base, size_t offset, u16 value)
+{
+    *(u16 *)((u8 *)base + offset) = value;
+}
+static inline u8 camp_draw_load_u8(const void *base, size_t offset)
+{
+    return *((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u8(void *base, size_t offset, u8 value)
+{
+    *((u8 *)base + offset) = value;
+}
+static inline f32 camp_draw_load_f32(const void *base, size_t offset)
+{
+    return *(const f32 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_f32(void *base, size_t offset, f32 value)
+{
+    *(f32 *)((u8 *)base + offset) = value;
+}
+static inline u32 camp_draw_f32_bits(f32 value)
+{
+    union {
+        f32 value;
+        u32 bits;
+    } converter;
+    converter.value = value;
+    return converter.bits;
+}
+static inline u64 camp_draw_concat44_words(u32 high, u32 low)
+{
+    return ((u64)high << 32) | low;
+}
+static inline u64 camp_draw_concat44_f32(f32 high, f32 low)
+{
+    return camp_draw_concat44_words(camp_draw_f32_bits(high), camp_draw_f32_bits(low));
+}
+static inline u64 camp_draw_record_xy(const CampDrawRecord *record)
+{
+    return camp_draw_concat44_f32(record->y, record->x);
+}
+static inline void *camp_draw_ptr_add(void *base, size_t offset)
+{
+    return (void *)((u8 *)base + offset);
+}
+static inline void *camp_draw_ptr32(u32 address)
+{
+    return (void *)(uintptr_t)address;
+}
+static inline u32 camp_draw_addr32(const void *address)
+{
+    return (u32)(uintptr_t)address;
+}
+static inline CampSystemDrawWork *camp_draw_task_work(KwlnTask *task)
+{
+    return task == NULL ? NULL : (CampSystemDrawWork *)task->workData;
+}
+static inline CampDrawRecord *camp_draw_state_records(CampSystemDrawWork *work)
+{
+    return (CampDrawRecord *)camp_draw_ptr32(work->records);
+}
+
+/* Retail globals shared by these translated slices. */
+#pragma alias campC520PreviousMode DAT_00836ba8
+extern s16 campC520PreviousMode;
+#pragma alias campC520SetMode FUN_00175200_sys
+extern void campC520SetMode(s16 mode);
+#pragma alias campC520GetHp FUN_0016C4F0
+extern s32 campC520GetHp(s32 arg0);
+#pragma alias campC520GetSp FUN_0016C570
+extern s32 campC520GetSp(s32 arg0);
+extern u32 uGpffffb29c;
+extern u32 uGpffffb288;
+extern KwlnTask *iGpffffb258_sys;
+extern KwlnTask *iGpffffb270_sys;
+extern KwlnTask *iGpffffb26c;
+extern void *uGpffffb260_sys;
+extern void *uGpffffb264;
+extern void *uGpffffb268;
+extern u32 DAT_00833b78;
+#pragma alias DAT_00833b70_abs DAT_00833b70
+extern u8 DAT_00833b70_abs[];
+#pragma alias DAT_00833a50_abs DAT_00833a50
+extern u8 DAT_00833a50_abs[];
+#pragma alias DAT_00833a54_abs DAT_00833a54
+extern u8 DAT_00833a54_abs[];
+#pragma alias DAT_00833a58_abs DAT_00833a58
+extern u8 DAT_00833a58_abs[];
+#pragma alias DAT_00833b78_abs DAT_00833b78
+extern u8 DAT_00833b78_abs[];
+extern void *DAT_00833a50;
+extern void *DAT_00833b70;
+extern void *DAT_00833a54;
+extern void *DAT_00833a58;
+extern u16 DAT_00836ba8;
+extern s32 DAT_007cdf8c;
+extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
+extern const char D_005DBD20[];
+extern const char D_005DBC80[];
+
+extern void FUN_0018bc10(f32 first, void *animation, s32 start,
+                         s32 end, s32 mode, u64 startValues,
+                         u64 endValues, u32 param8, u32 param9);
+#pragma alias campListAnimate FUN_0018bc10
+extern void campListAnimate(f32 first, void *animation, s32 start,
+                            s32 end, s32 mode, u64 startValues,
+                            u64 endValues, u32 param8, u32 param9,
+                            u32 param10, u32 param11);
+/* Explicit unresolved retail API declarations. */
+extern void *FUN_0010c1a0_sys(u32 mode, const char *path, u32 arg2, u32 arg3,
+                          u32 arg4, u32 arg5, u32 arg6, u32 arg7,
+                          u32 arg8, u32 arg9, const char *source, u32 line);
+extern s32 FUN_0010c3a0_sys(void *request, u32 *loaded, u64 arg3);
+extern void *FUN_00100d80(const char *path, u32 mode);
+extern void *FUN_00100d80(const char *path, u32 mode);
+extern s32 FUN_001016b0(void *cdvd);
+extern void *FUN_00102100_sys(void *cdvd, s32 fileIndex, u32 *fileSize);
+extern void *FUN_00112420_sys(void *source);
+extern s32 FUN_00111f30(void *maestroBlob);
+extern void FUN_003c7d80_sys(s32 slot, u64 textureId);
+typedef struct CampD8Object
+{
+    u8 unknown00[0x10];
+    f32 x;
+    f32 y;
+    u8 alpha;
+    u8 unknown19[0x13];
+    f32 drawContext;
+} CampD8Object;
+#pragma alias campD8MakeSprite FUN_001158B0_sys
+extern CampD8Object *campD8MakeSprite(u32 parent, void *resource, u32 frame);
+#pragma alias campD8SetSprite FUN_001127D0_sys
+extern void campD8SetSprite(CampD8Object *object, s32 mode);
+#pragma alias campD8SubmitSprite FUN_00115980_sys
+extern void campD8SubmitSprite(CampD8Object *object);
+extern void FUN_00113a30_sys(f32 x, f32 y, f32 z, u32 color, s32 width, s32 height);
+extern void FUN_00155830(void *record, void *blobPair, s32 index, u32 selectedPanel, const u32 *panelFlags);
+extern void FUN_001599f0(void *record, void *blobPair, s32 category, u32 selectedPage, u32 subPage);
+extern u32 FUN_0016f190_sys(s32 flag);
+extern void FUN_0010a4e0_sys(s32 arg0, s32 arg1, s32 arg2, ...);
+extern void FUN_00103c30(u16 arg0, u16 arg1, u16 arg2, u16 arg3);
+extern void FUN_0016f1f0(s32 flag, u8 enabled);
+extern void FUN_00103cb0(void);
+extern u32 FUN_0017d800_sys(void);
+extern KwlnTask *FUN_00194B20_sys(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
+extern u32 FUN_00119F10(KwlnTask *task, u32 arg1);
+extern void FUN_00175200_sys(u16 mode);
+extern void *FUN_0017B660(u32 mode, u32 itemId);
+extern void FUN_0017B860_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
+extern s16 FUN_0016DD60_sys(s32 arg0);
+extern void *FUN_001C7CE0_sys(u64 owner);
+extern void *FUN_0017BC20_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
+extern s16 FUN_0016C4F0(s32 arg0);
+extern void FUN_0016CF40(s32 arg0, s16 value);
+extern s16 FUN_0016C570(s32 arg0);
+extern void FUN_0016CF90(s32 arg0, s16 value);
+extern void *FUN_00174960(u16 arg0);
+extern void *FUN_00174A90(u16 arg0);
+extern u8 FUN_00173660_sys(uintptr_t arg0, s32 arg1);
+extern s16 FUN_0017B480(u16 arg0);
+extern s16 FUN_0017B500(u32 arg0, u16 arg1);
+extern u32 FUN_0017B5B0(u32 arg0, u16 arg1);
+extern s32 FUN_0017B4E0(u32 itemId);
+extern s16 FUN_0017BB40(u32 value);
+extern void FUN_001159F0_sys(f32 x, f32 y, u32 drawContext);
+extern void FUN_00115BC0_sys(f32 x, f32 y, u32 drawContext);
+extern void FUN_00115AD0_sys(f32 x, f32 y, u32 drawContext);
+extern s32 FUN_0017D2E0(u16 arg0);
+extern u32 FUN_0030BB40(u16 arg0);
+extern u32 FUN_00523AC8_sys(void *dst, u32 stringId, u32 arg2);
+#pragma alias campCE50FormatText FUN_00523AC8_sys
+extern void campCE50FormatText(void *dst, const char *format, u32 arg);
+extern void FUN_003B32D0(u32 drawContext, s32 x, s32 y, u32 color, s32 font, s32 flags, void *text, s32 width, s32 height);
+#pragma alias campCE50DrawSprite FUN_001159F0_sys
+#pragma alias campSystemDrawSprite FUN_001159F0_sys
+extern void campSystemDrawSprite(void *parent, void *resource, s32 frame,
+                                 u8 alpha, f32 x, f32 y, f32 scale);
+extern void campCE50DrawSprite(u64 parent, void *resource, s32 frame,
+                               u32 alpha, f32 x, f32 y, f32 scale);
+/* FUN_00115AD0_sys's value-glyph entry point uses the integer style and alpha
+ * arguments after the first three integer parameters. */
+#pragma alias campCE50DrawValueGlyph FUN_00115AD0_sys
+extern void campCE50DrawValueGlyph(void *parent, void *resource, s32 frame,
+                                   f32 x, f32 y, u8 style, u8 alpha,
+                                   f32 scale);
+#pragma alias campCE50DrawSpriteAlt FUN_00115BC0_sys
+extern void campCE50DrawSpriteAlt(u64 parent, void *resource, s32 frame,
+                                  u32 alpha, s32 red, s32 green, s32 blue,
+                                  f32 x, f32 y, f32 scale);
+#pragma alias campCE50DrawText FUN_003b32d0
+extern void campCE50DrawText(s32 x, s32 y, u32 color, f32 scale,
+                             u32 font, u32 alignment, const char *text,
+                             u32 maxWidth, u32 shadow);
+#pragma alias campCE50Font FUN_001120A0_sys
+extern void *campCE50Font(s32 font);
+#pragma alias campCE50DrawValue FUN_003c7e20_sys
+extern void campCE50DrawValue(f32 scale, s32 x, s32 y, u32 color,
+                              u32 font, u32 alignment, u32 style,
+                              u32 value);
+extern void FUN_001120A0_sys(s32 arg0);
+extern void FUN_003c7e20_sys(u32 drawContext, s32 x, s32 y, u32 color, s32 arg4, s32 arg5, s32 arg6);
+extern u64 FUN_001158B0_sys(u32 arg0, void *archive, u32 size);
+extern void FUN_001127D0_sys(u64 object, s32 arg1);
+extern void FUN_00115980_sys(u64 object);
+extern void FUN_0011DA80(u32 arg0, void *object);
+extern void FUN_00121DE0(void *object, u32 arg1);
+extern void FUN_00122710_sys(void *object, u32 arg1);
+extern s32 FUN_0011E380_sys(void *object, u32 arg1);
+extern void FUN_0011BBA0(f32 arg0, f32 arg1, f32 arg2, s32 arg3, s32 arg4);
+extern void FUN_00114450_sys(f32 arg0, f32 arg1, f32 arg2, s32 arg3,
+                         u32 arg4, u32 arg5, u32 arg6);
+extern void FUN_0011ABD0_sys(u32 count, u32 visible, void *first, void *selected);
+extern u8 FUN_0016C470(u16 arg0);
+extern u64 FUN_0016C970(u16 arg0);
+extern s16 FUN_0016C920(u16 arg0);
+extern u32 FUN_0016C670(u16 arg0);
+extern u32 FUN_0016C5F0(u16 arg0);
+extern u32 FUN_00177790_sys(u16 arg0);
+
+void *FUN_0015B430(KwlnTask *task);
+void FUN_0015C520(void *list, s32 ownerMode);
+void FUN_0015C840(void *list);
+void FUN_0015CE50(u64 packedPosition, void *list, s32 alpha,
+                  f32 drawContext);
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha);
+void FUN_0015DA70(void *work);
+void FUN_0015E150(CampSystemDrawWork *work);
+void FUN_0015E6E0(CampSystemDrawWork *work);
+void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex);
+void FUN_0015F320(CampSystemDrawWork *work);
+void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work);
+
+
+// FUN_0015B330
+u32 FUN_0015B330(void *entries, void *blobPair,
+                 u32 category, u32 selectedPage)
+{
+    s32 index;
+    u32 allReady = 1;
+
+    for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+        CampMenuEntry *entry = (CampMenuEntry *)((u8 *)entries +
+                                                       index * CAMP_MENU_ENTRY_SIZE);
+        if (entry->enabled != 0) {
+            if (func_0018b700(entry) != 0) {
+                FUN_001599f0(entry, blobPair, index, category, selectedPage);
+            }
+            if (((CampMenuEntry *)((u8 *)entries +
+                                  index * CAMP_MENU_ENTRY_SIZE))->progress !=
+                ((CampMenuEntry *)((u8 *)entries +
+                                  index * CAMP_MENU_ENTRY_SIZE))->progressTarget) {
+                allReady = 0;
+            }
+        }
+    }
+    return allReady;
+}
+
+/*
+ * Retail stores each animation endpoint as adjacent float pairs on the stack.
+ * The state 6 and state 9 setup paths now preserve those copies and offsets.
+ * This restores the missing add/subtract float operations and all panel calls.
+ * The reconstructed object is larger and has a higher normalized diff for now.
+ * Keep this marker NONMATCHING until register layout and dispatch scheduling converge.
+ */
+// FUN_0015B430 NONMATCHING
+void *FUN_0015B430(KwlnTask *task)
+{
+    CampSystemMenuWork *work = camp_menu_work(task);
+    s32 systemReady;
+    s32 index;
+    u32 selected;
+    u32 allReady;
+    bool inputHeld;
+    CampMenuScratch scratch;
+    void *fileData;
+
+    /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
+    FUN_00113a30_sys(100.0f, 0.0f, 20.0f,
+                 ((work->fadeStep * 0xff) / 10) | 0x72b5ff00u,
+                 0x280, 0x19a);
+
+    switch (work->state) {
+    case 0:
+        if (iGpffffb258_sys == NULL) {
+            systemReady = -1;
+        } else {
+            /* Preserve retail's branch-fed scalar assignment. */
+            systemReady = 0;
+            if (camp_menu_work(iGpffffb258_sys)->state != 3) {
+            } else {
+                systemReady = 1;
+            }
+        }
+        if (systemReady != 1) {
+            return 0;
+        }
+
+        if (FUN_0017d800_sys() != 0) {
+            work->request = camp_menu_address(FUN_0010c1a0_sys(
+                0, D_005DB050, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xef9));
+        } else {
+            work->request = camp_menu_address(FUN_0010c1a0_sys(
+                0, D_005DB0A0, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xefb));
+        }
+        work->allocation10 = camp_menu_address(func_0018b6d0(10));
+        work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));
+        work->cdvdMain = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bca0), 0));
+        work->cdvdStatus = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bcc0), 0));
+        work->cdvdSystem = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bce0), 1));
+        work->state = 1;
+        break;
+
+    case 1:
+        if (work->requestResult == 0) {
+            scratch.words[0] = 0;
+            work->requestResult = (u32)FUN_0010c3a0_sys(
+                CAMP_MENU_PTR32(work->request), &scratch.words[0], 0);
+            if (scratch.words[0] == 0) {
+                work->requestResult = 0;
+                return 0;
+            }
+        }
+        if (FUN_001016b0(CAMP_MENU_PTR32(work->cdvdMain)) != 0 &&
+            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdStatus)) != 0 &&
+            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdSystem)) != 0) {
+            FUN_003c7d80_sys(0x0c,
+                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdMain) + 0x110));
+            FUN_003c7d80_sys(0x08,
+                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
+            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 0,
+                                    &scratch.tail[0]);
+            work->archiveBlob0 = camp_menu_address(FUN_00112420_sys(fileData));
+            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 1,
+                                    &scratch.tail[0]);
+            work->archiveBlob1 = camp_menu_address(FUN_00112420_sys(fileData));
+            work->state = 2;
+        }
+        break;
+
+    case 2:
+        if (FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob0)) != 0 &&
+            FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob1)) != 0) {
+            work->state = 6;
+        }
+        break;
+
+    case 6:
+        work->selectedPanel = 0;
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 200.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        for (index = 0; index < 7; index++) {
+            work->panelFlags[index] = FUN_0016f190_sys(index + 0x183);
+        }
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        work->entriesReady = 0;
+        work->state = 7;
+        break;
+
+    case 7:
+        work->state = 8;
+        selected = work->selectedPanel;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
+                FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                              work->panelFlags);
+            }
+        }
+        break;
+
+    case 8:
+        work->fadeStep = work->fadeStep + 1;
+        if (work->fadeStep > 10) {
+            work->fadeStep = 10;
+        }
+
+        if (work->entriesReady != 0) {
+            if ((DAT_007e094e & 0x40) == 0) {
+                if ((DAT_007e094e & 0x20) == 0) {
+                    inputHeld = ((DAT_007e0952 & 0x1000) != 0) ||
+                                ((DAT_007e095a & 0x1000) != 0);
+                    if (inputHeld) {
+                        if (work->selectedPanel == 0) {
+                            if ((DAT_007e094e & 0x1000) != 0 ||
+                                (DAT_007e0958 & 0x1000) != 0) {
+                                FUN_0010a4e0_sys(0, 0, 0, 0);
+                                work->selectedPanel = 7;
+                            }
+                        } else {
+                            FUN_0010a4e0_sys(0, 0, 0, 0);
+                            work->selectedPanel = work->selectedPanel - 1;
+                        }
+                    } else if ((DAT_007e0952 & 0x4000) == 0 &&
+                               (DAT_007e095a & 0x4000) == 0) {
+                        if ((DAT_007e094e & 0x2000) == 0 &&
+                            (DAT_007e0958 & 0x2000) == 0) {
+                            if (((DAT_007e094e & 0x8000) != 0 ||
+                                 (DAT_007e0958 & 0x8000) != 0) &&
+                                work->selectedPanel != 7) {
+                                if (work->panelFlags[work->selectedPanel] == 0) {
+                                    FUN_0010a4e0_sys(0, 0, 0, 5);
+                                }
+                                if (work->selectedPanel == 0 &&
+                                    work->panelFlags[0] == 0) {
+                                    FUN_00103c30(10, 0x96, 10, 0);
+                                }
+                                work->panelFlags[work->selectedPanel] = 1;
+                            }
+                        } else if (work->selectedPanel != 7 &&
+                                   work->panelFlags[work->selectedPanel] != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0, 5);
+                            work->panelFlags[work->selectedPanel] = 0;
+                        }
+                    } else if (work->selectedPanel == 7) {
+                        if ((DAT_007e094e & 0x4000) != 0 ||
+                            (DAT_007e0958 & 0x4000) != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0, 0);
+                            work->selectedPanel = 0;
+                        }
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0, 0);
+                        work->selectedPanel = work->selectedPanel + 1;
+                    }
+                } else {
+                    FUN_0010a4e0_sys(0, 0, 0, 2);
+                    work->state = 9;
+                }
+            } else if (work->selectedPanel == 7) {
+                FUN_0010a4e0_sys(0, 0, 0, 1);
+                for (index = 0; index < 7; index++) {
+                    if (index == 2) {
+                        if (work->panelFlags[1] == 0) {
+                            FUN_0016f1f0(0x185, 0);
+                        } else {
+                            FUN_0016f1f0(0x185, (u8)work->panelFlags[2]);
+                        }
+                    } else {
+                        FUN_0016f1f0(index + 0x183, (u8)work->panelFlags[index]);
+                    }
+                }
+                if (FUN_0016f190_sys(0x183) == 0) {
+                    FUN_00103cb0();
+                }
+                uGpffffb288 = 1;
+                work->state = 9;
+            }
+        }
+
+        selected = work->selectedPanel;
+        allReady = 1;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0) {
+                if (func_0018b700(entry) != 0) {
+                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                                  work->panelFlags);
+                }
+                if (entry->progress != entry->progressTarget) {
+                    allReady = 0;
+                }
+            }
+        }
+        work->entriesReady = allReady;
+        break;
+
+    case 9:
+        selected = work->selectedPanel;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
+                FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                              work->panelFlags);
+            }
+        }
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        work->state = 10;
+        break;
+
+    case 10:
+        if (work->fadeStep == 0) {
+            work->fadeStep = 0;
+        } else {
+            work->fadeStep = work->fadeStep - 1;
+        }
+        selected = work->selectedPanel;
+        allReady = 1;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0) {
+                if (func_0018b700(entry) != 0) {
+                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                                  work->panelFlags);
+                }
+                if (entry->progress != entry->progressTarget) {
+                    allReady = 0;
+                }
+            }
+        }
+        if (allReady != 0) {
+            return (void *)(uintptr_t)0xffffffffu;
+        }
+        break;
+    }
+
+    return 0;
+}
+
+// FUN_0015C460
+KwlnTask *FUN_0015C460(KwlnTask *param_1)
+{
+    KwlnTask *task;
+    void *work;
+    u32 value;
+    task = param_1;
+
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
+    if (work == NULL) {
+        return 0;
+    }
+
+    task = FUN_00194B20_sys(param_1, D_005DBD20, 0x18be,
+                        (KwlnTaskUpdateFunc)FUN_0015B430,
+                        (KwlnTaskDestroyFunc)h_campSystemDestroyMenuDrawTask,
+                        work);
+    if (task == NULL) {
+        return 0;
+    }
+
+    value = FUN_00119F10(task, 1);
+    *(u32 *)((u8 *)work + 8) = value;
+    return task;
+}
+
+// FUN_0015C520 NONMATCHING
+void FUN_0015C520(void *param_1, s32 param_2)
+{
+    CampC520ListEntry *entry;
+    s32 owner_mode;
+    s32 entry_index;
+    u32 item_id;
+    s16 previous_mode;
+    s32 i;
+    s32 found_count;
+    s16 relation;
+    void *result;
+    u64 owner;
+    s32 hp;
+    s32 sp;
+
+    owner_mode = param_2;
+    entry_index = *(s32 *)((u8 *)param_1 + 0x7e0) +
+                  *(s32 *)((u8 *)param_1 + 0x7e4);
+    entry = (CampC520ListEntry *)((u8 *)param_1 + entry_index * 0x14);
+    item_id = entry->itemId;
+    previous_mode = campC520PreviousMode;
+    campC520SetMode(entry->mode);
+
+    result = FUN_0017B660(1, item_id & 0xffffU);
+    if (result == NULL) {
+        if (owner_mode == -2) {
+            FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
+                if (relation != 0) {
+                    owner = campC520PartyId(i);
+                    if (campC520NearHero((s32)(s16)owner) != 0) {
+                        owner = campC520PartyId(i);
+                        result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
+                        if (result == NULL) {
+                            owner = campC520PartyId(i);
+                            FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+        else if (owner_mode == 0) {
+            result = (void *)campC520NearHero(1);
+            if ((result != NULL) &&
+                (FUN_0017BC20_sys(1, 1, item_id & 0xffffU, 0) == 0)) {
+                FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
+            }
+        }
+        else {
+            found_count = 0;
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
+                if (relation != 0) {
+                    found_count++;
+                    if (owner_mode == found_count) {
+                        owner = campC520PartyId(i);
+                        if (campC520NearHero((s32)(s16)owner) != 0) {
+                            owner = campC520PartyId(i);
+                            result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
+                            if (result == NULL) {
+                                owner = campC520PartyId(i);
+                                FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
+                            }
+                        }
+                        break;
+                    }
+                }
+                i++;
+            }
+        }
+
+        entry_index *= 0x14;
+        hp = campC520GetHp(1);
+        FUN_0016CF40(1, (s16)((hp & 0xffff) -
+                             *(s32 *)((u8 *)param_1 + entry_index + 0x1c)));
+        sp = campC520GetSp(1);
+        FUN_0016CF90(1, (s16)((sp & 0xffff) -
+                             *(s32 *)((u8 *)param_1 + entry_index + 0x18)));
+    }
+
+    campC520SetMode(previous_mode);
+}
+
+// FUN_0015C840 NONMATCHING
+void FUN_0015C840(void *param_1)
+{
+    const uintptr_t list = (uintptr_t)param_1;
+    s16 previous_mode = DAT_00836ba8;
+    typedef struct CampC840Entry {
+        u32 words[5];
+    } CampC840Entry;
+    CampC840Entry saved_entry;
+    CampC840Entry candidate_entry;
+    CampC840Entry swap_entry;
+    s32 entry_count = 0;
+    s32 item_index = 0;
+    s32 i;
+    s32 j;
+
+    for (;;) {
+        if (item_index > 0x0b) {
+            camp_list_store_u32(list, 0x7dc, (u32)entry_count);
+
+            /* Stable insertion-like ordering by item id.  IDs in 0xc0..0xff
+             * sort after all IDs outside that range, matching the branch tree
+             * in the retail routine. */
+            for (i = 0; i < entry_count; ++i) {
+                uintptr_t current = list + (size_t)i * 0x14 + 0x0c;
+                saved_entry = *(CampC840Entry *)current;
+
+                for (j = i + 1; j < entry_count; ++j) {
+                    uintptr_t candidate = list + (size_t)j * 0x14 + 0x0c;
+                    bool candidate_is_special;
+                    bool saved_is_special;
+
+                    candidate_entry = *(CampC840Entry *)candidate;
+                    candidate_is_special =
+                        candidate_entry.words[0] >= 0xc0U &&
+                        candidate_entry.words[0] <= 0xffU;
+                    saved_is_special =
+                        saved_entry.words[0] >= 0xc0U &&
+                        saved_entry.words[0] <= 0xffU;
+
+                    if (!candidate_is_special) {
+                        if (!saved_is_special &&
+                            candidate_entry.words[0] < saved_entry.words[0]) {
+                            swap_entry = saved_entry;
+                            *(CampC840Entry *)current = candidate_entry;
+                            *(CampC840Entry *)candidate = swap_entry;
+                            saved_entry = candidate_entry;
+                        }
+                    }
+                    else if (!saved_is_special) {
+                        swap_entry = saved_entry;
+                        *(CampC840Entry *)current = candidate_entry;
+                        *(CampC840Entry *)candidate = swap_entry;
+                        saved_entry = candidate_entry;
+                    }
+                    else if (candidate_entry.words[0] < saved_entry.words[0]) {
+                        swap_entry = saved_entry;
+                        *(CampC840Entry *)current = candidate_entry;
+                        *(CampC840Entry *)candidate = swap_entry;
+                        saved_entry = candidate_entry;
+                    }
+                }
+            }
+
+            FUN_00175200_sys(previous_mode);
+            return;
+        }
+
+        {
+            u16 item = (u16)item_index;
+            uintptr_t item_data;
+
+            if (FUN_00174960(item) != (uintptr_t)0) {
+                s32 slot;
+
+                item_data = (uintptr_t)FUN_00174A90(item);
+                FUN_00175200_sys(item);
+                for (slot = 0; slot < 8; ++slot) {
+                    uintptr_t slot_address = item_data + (size_t)slot * 2 + 0x0c;
+                    u16 item_id = camp_list_load_u16(slot_address, 0);
+                    bool found = false;
+
+                    if (item_id != 0) {
+                        for (j = 0; j < entry_count; ++j) {
+                            uintptr_t entry = list + (size_t)j * 0x14;
+                            if (camp_list_load_u32(entry, 0x0c) == (u32)item_id) {
+                                uintptr_t old_data;
+                                u32 *entryItemIndex;
+                                u8 new_quality;
+                                u8 old_quality;
+
+                                entryItemIndex = (u32 *)(entry + 0x14);
+                                old_data = (uintptr_t)FUN_00174A90(
+                                    *(u16 *)entryItemIndex);
+                                new_quality = FUN_00173660_sys(item_data, 1);
+                                old_quality = FUN_00173660_sys(old_data, 1);
+                                if (old_quality < new_quality) {
+                                    s16 kind;
+                                    camp_list_store_u32(entry, 0x0c, (u32)item_id);
+                                    *entryItemIndex = (u32)item_index;
+                                    camp_list_store_u32(entry, 0x10,
+                                                   (u32)camp_list_load_u16(item_data, 2));
+
+                                    kind = FUN_0017B480(item_id);
+                                    if (kind != 2) {
+                                        kind = FUN_0017B500(1, item_id);
+                                        if (kind == 2) {
+                                            camp_list_store_u32(entry, 0x18,
+                                                   FUN_0017B5B0(1, item_id));
+                                            camp_list_store_u32(entry, 0x1c, 0);
+                                        }
+                                        else if (kind == 1) {
+                                            camp_list_store_u32(entry, 0x18, 0);
+                                            camp_list_store_u32(entry, 0x1c,
+                                                     FUN_0017B5B0(1, item_id));
+                                        }
+                                    }
+                                    else {
+                                        camp_list_store_u32(entry, 0x18, 0);
+                                        camp_list_store_u32(entry, 0x1c, 0);
+                                    }
+                                }
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            uintptr_t entry = list + (size_t)entry_count * 0x14;
+                            s16 kind;
+
+                            camp_list_store_u32(entry, 0x0c, (u32)item_id);
+                            camp_list_store_u32(entry, 0x14, (u32)item_index);
+                            camp_list_store_u32(entry, 0x10,
+                                           (u32)camp_list_load_u16(item_data, 2));
+                            kind = FUN_0017B480(item_id);
+                            if (kind != 2) {
+                                kind = FUN_0017B500(1, item_id);
+                                if (kind == 2) {
+                                    camp_list_store_u32(entry, 0x18,
+                                                   FUN_0017B5B0(1, item_id));
+                                    camp_list_store_u32(entry, 0x1c, 0);
+                                }
+                                else if (kind == 1) {
+                                    camp_list_store_u32(entry, 0x18, 0);
+                                    camp_list_store_u32(entry, 0x1c,
+                                                     FUN_0017B5B0(1, item_id));
+                                }
+                            }
+                            else {
+                                camp_list_store_u32(entry, 0x18, 0);
+                                camp_list_store_u32(entry, 0x1c, 0);
+                            }
+                            ++entry_count;
+                        }
+                    }
+                }
+            }
+        }
+        ++item_index;
+    }
+}
+
+// FUN_0015CE50 NONMATCHING
+void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
+                  f32 drawContext)
+{
+    union {
+        u64 packed;
+        f32 value[2];
+    } position;
+    bool has_three_digits;
+    u32 color;
+    s32 i;
+    s32 record_index;
+    uintptr_t list;
+    u32 text_handle;
+    f32 x;
+    f32 y;
+    f32 row_x;
+    f32 value_x;
+    f32 value_y;
+    f32 value_tens_x;
+    f32 value_units_x;
+    f32 value_suffix_x;
+    u8 text_buffer[240];
+
+    position.packed = packedPosition;
+    list = camp_list_base_address((u32)(uintptr_t)listPointer);
+    x = position.value[0];
+    y = position.value[1];
+    if (camp_list_load_s32(list, 0x7dc) != 0) {
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 6, (u32)alpha,
+                           x + 2.0f,
+                           y + 6.0f +
+                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
+                           drawContext);
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 7, (u32)alpha,
+                           x + 317.0f,
+                           y + 6.0f +
+                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
+                           drawContext);
+    }
+
+    row_x = x + 15.0f;
+    color = (0xffU - (u32)alpha) | 0xffffff00U;
+    value_x = y + 19.0f;
+    value_y = y + 16.0f;
+    value_tens_x = x + 256.0f;
+    value_units_x = y + 17.0f;
+    value_suffix_x = x + 288.0f;
+
+    for (i = 0; i < 5; ++i) {
+        record_index = i + camp_list_load_s32(list, 0x7e4);
+        if (record_index >= camp_list_load_s32(list, 0x7dc)) {
+            break;
+        }
+
+        {
+            s32 row_offset = i * 0x1a;
+            uintptr_t entry = list + (size_t)record_index * 0x14;
+            u16 item_id = camp_list_load_u16(entry, 0x0c);
+            s32 value;
+
+            if (i == camp_list_load_s32(list, 0x7e0)) {
+                campCE50DrawSprite(packedPosition, *(void **)DAT_00833b70_abs,
+                                   FUN_0017D2E0(item_id) + 0x20,
+                                   (u32)alpha, row_x,
+                                   y + 2.0f + (f32)row_offset, drawContext);
+                text_handle = FUN_0030BB40(item_id);
+                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
+                campCE50DrawText(
+                    (s32)((f32)(s32)x + 55.0f),
+                    (s32)((f32)(s32)y + 1.0f +
+                          (f32)row_offset + 14.0f),
+                    color, drawContext, 6, 1, (const char *)text_buffer,
+                    0x10, 0x78);
+
+                value = camp_list_load_s32(entry, 0x18);
+                if (value == 0) {
+                    value = camp_list_load_s32(entry, 0x1c);
+                }
+                if (value == 0) {
+                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x11,
+                                       (u32)alpha, x + 249.0f,
+                                       value_x + (f32)row_offset,
+                                       drawContext);
+                } else {
+                    has_three_digits = value > 99;
+                    if (has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(1),
+                            (value / 100) + 0x0b, (u32)alpha,
+                            x + 240.0f, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 100;
+                    }
+                    if ((value > 9) || has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(1),
+                            (value / 10) + 0x0b, (u32)alpha,
+                            value_tens_x, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 10;
+                    }
+                    campCE50DrawSprite(
+                        packedPosition, campCE50Font(1), value + 0x0b,
+                        (u32)alpha, x + 272.0f,
+                        value_y + (f32)row_offset, drawContext);
+
+                    if (camp_list_load_s32(entry, 0x18) == 0) {
+                        if (camp_list_load_s32(entry, 0x1c) != 0) {
+                            campCE50DrawSprite(
+                                packedPosition, *(void **)DAT_00833a50_abs, 2,
+                                (u32)alpha, value_suffix_x,
+                                value_units_x + (f32)row_offset,
+                                drawContext);
+                        }
+                    } else {
+                        campCE50DrawSprite(
+                            packedPosition, *(void **)DAT_00833a50_abs, 4, (u32)alpha,
+                            value_suffix_x,
+                            value_units_x + (f32)row_offset, drawContext);
+                    }
+                }
+            } else {
+                campCE50DrawSpriteAlt(
+                    packedPosition, *(void **)DAT_00833b70_abs,
+                    FUN_0017D2E0(item_id) + 0x2f, (u32)alpha,
+                    0x20, 0x43, 0x78, row_x,
+                    y + 2.0f + (f32)row_offset, drawContext);
+                text_handle = FUN_0030BB40(item_id);
+                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
+                campCE50DrawText(
+                    (s32)((f32)(s32)x + 55.0f),
+                    (s32)((f32)(s32)y + 1.0f +
+                          (f32)row_offset + 14.0f),
+                    color, drawContext, 10, 1, (const char *)text_buffer,
+                    0x10, 0x78);
+
+                value = camp_list_load_s32(entry, 0x18);
+                if (value == 0) {
+                    value = camp_list_load_s32(entry, 0x1c);
+                }
+                if (value == 0) {
+                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x10,
+                                       (u32)alpha, x + 249.0f,
+                                       value_x + (f32)row_offset,
+                                       drawContext);
+                } else {
+                    has_three_digits = value > 99;
+                    if (has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(2),
+                            (value / 100) + 0x0b, (u32)alpha,
+                            x + 240.0f, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 100;
+                    }
+                    if ((value > 9) || has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(2),
+                            (value / 10) + 0x0b, (u32)alpha,
+                            value_tens_x, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 10;
+                    }
+                    campCE50DrawSprite(
+                        packedPosition, campCE50Font(2), value + 0x0b,
+                        (u32)alpha, x + 272.0f,
+                        value_y + (f32)row_offset, drawContext);
+
+                    if (camp_list_load_s32(entry, 0x18) == 0) {
+                        if (camp_list_load_s32(entry, 0x1c) != 0) {
+                            campCE50DrawSprite(
+                                packedPosition, *(void **)DAT_00833a50_abs, 3,
+                                (u32)alpha, value_suffix_x,
+                                value_units_x + (f32)row_offset,
+                                drawContext);
+                        }
+                    } else {
+                        campCE50DrawSprite(
+                            packedPosition, *(void **)DAT_00833a50_abs, 5, (u32)alpha,
+                            value_suffix_x,
+                            value_units_x + (f32)row_offset, drawContext);
+                    }
+                }
+            }
+        }
+    }
+
+    record_index = camp_list_load_s32(list, 0x7e4) +
+                   camp_list_load_s32(list, 0x7e0);
+    if (camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c) != 0) {
+        campCE50DrawValue(
+            drawContext, (s32)(x + 54.0f),
+            (s32)(((y + 210.0f) - 30.0f) - 20.0f),
+            UINT32_C(0xffffffff), 1, 10, 3,
+            camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c));
+    }
+
+    if (camp_list_load_s32(list, 0x7dc) != 0) {
+        s32 scrollbar_offset;
+        f32 scrollbar_x = (x + 588.0f) - 247.0f;
+
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 8,
+                           (u32)alpha, scrollbar_x,
+                           (y + 30.0f) - 24.0f, drawContext);
+        scrollbar_offset = camp_list_load_s32(list, 0x7dc) - 5;
+        if (scrollbar_offset < 1) {
+            scrollbar_offset = 0;
+        } else {
+            scrollbar_offset =
+                (camp_list_load_s32(list, 0x7e4) * 0x59) / scrollbar_offset;
+        }
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x0d,
+                           (u32)alpha, scrollbar_x,
+                           (y + 34.0f + (f32)scrollbar_offset) - 24.0f,
+                           drawContext);
+    }
+}
+
+// FUN_0015D8E0
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
+{
+    CampD8Object *object;
+    f32 x;
+    f32 y;
+    f32 yBase;
+
+    yBase = position.y;
+    object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
+    object->drawContext = drawContext;
+    x = 218.0f + position.x;
+    object->x = x + (f32)DAT_007cdf8c;
+    y = 382.0f;
+    y = y + yBase;
+    object->y = y;
+    object->alpha = alpha;
+    campD8SetSprite(object, 1);
+    campD8SubmitSprite(object);
+
+    if (DAT_007cdf8c < -200) {
+        object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
+        object->drawContext = drawContext;
+        object->x = x + (f32)DAT_007cdf8c + 640.0f;
+        object->y = y;
+        object->alpha = alpha;
+        campD8SetSprite(object, 1);
+        campD8SubmitSprite(object);
+    }
+
+    DAT_007cdf8c = DAT_007cdf8c - 1;
+    if ((f32)DAT_007cdf8c < -640.0f) {
+        DAT_007cdf8c += 640.0f;
+    }
+}
+// FUN_0015DA70 NONMATCHING
+void FUN_0015DA70(void *param_1)
+{
+    uintptr_t work_address = (uintptr_t)(u32)(uintptr_t)param_1;
+    CampMenuAnimPair pair;
+    CampMenuAnimPair shifted;
+    f32 row;
+    s32 i;
+    s32 item_offset;
+
+    pair.f[0] = 29.0f;
+    pair.f[1] = 22.0f;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 0.0f;
+    pair.f[1] = 0.0f;
+    campListAnimate(100.0f,
+                    (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    0, 2, 1, pair.q, pair.q, 0, 0, 6, 0x0d);
+    camp_list_store_u32(
+        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0x8c, 0);
+
+    pair.f[0] = (f32)0x1bf;
+    pair.f[1] = (f32)0x19b;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 247.0f;
+    pair.f[1] = 24.0f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < camp_list_load_s32(work_address, 0x4c)) {
+            row = (f32)(i * 0x55) + 42.0f;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 8.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(i + 1) * 0x2a8),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            item_offset = i * 10;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 31.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0b) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 45.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0c) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 64.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0d) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 14.0f;
+            pair.f[1] = row + 2.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0e) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 3, 10);
+
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x400, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x444, 0);
+        } else {
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2ac, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2f0, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x334, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x378, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x3bc, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x400, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x444, 0);
+        }
+    }
+
+    pair.f[0] = 15.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+    camp_list_store_u32(
+        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0xd90, 0);
+
+    pair.f[0] = 488.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+}
+
+// FUN_0015E150 NONMATCHING
+void FUN_0015E150(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 x;
+    f32 y;
+    u64 pair;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    y -= 50.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
+                 pair, pair, 0, 0);
+    FUN_0018bc10(100.0f, draw, 0, 2, 2, 0, 0, 0, 0);
+    camp_draw_store_u32(draw, 0x8c, 0);
+    x = 411.0f;
+    y = 447.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 2,
+                 pair, pair, 0, 0);
+    x = 24.0f;
+    y = 247.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 2,
+                 pair, pair, 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            x = (f32)(i * 0x55) + 42.0f;
+            pair = camp_draw_concat44_f32(x + 8.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 2, pair, pair, 0, 0);
+            base = i * 10;
+            pair = camp_draw_concat44_f32(x + 31.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 45.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 64.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 2.0f, 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    x = 415.0f;
+    y = 17.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
+                 pair, pair, 0, 0);
+    camp_draw_store_u32(draw, 0xd90, 0);
+    x = 415.0f;
+    y = 488.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    x = 415.0f;
+    y = 537.0f;
+    {
+        u64 endPair = camp_draw_concat44_f32(x, y);
+        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 2,
+                     pair, endPair, 0, 0);
+    }
+}
+
+// FUN_0015E6E0 NONMATCHING
+void FUN_0015E6E0(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 tailHeight;
+    f32 x;
+    f32 y;
+    u64 first;
+    u64 second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 29.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y += 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
+                 first, second, 0, 0);
+    x = 22.0f;
+    y = 27.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y += 55.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 1,
+                 first, second, 0, 0);
+    x = 447.0f;
+    y = 410.0f;
+    first = camp_draw_concat44_f32(x, y);
+    x += 57.0f;
+    y -= 8.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
+                 first, second, 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
+                 UINT64_C(0x41c0000043770000), UINT64_C(0x41c00000438c0000), 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            if (i == work->cursor || work->cursor == -2) {
+                tailHeight = 48.0f;
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
+                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 1, first, second, 0, 0);
+            } else {
+                tailHeight = 27.0f;
+                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+            }
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first, second, 0, 0);
+            base = i * 10;
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 1,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
+                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
+}
+
+// FUN_0015EE40 NONMATCHING
+void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex)
+{
+    void *draw;
+    f32 x;
+    f32 tailHeight;
+    CampMenuAnimPair first;
+    CampMenuAnimPair second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            x = (f32)(i * 0x55) + 42.0f;
+            if (i == work->cursor) {
+                tailHeight = 48.0f;
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                first = second;
+                first.f[0] += 27.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 1, first.q, second.q, 0, 0);
+            } else {
+                if (i != changedIndex) {
+                    continue;
+                }
+                tailHeight = 27.0f;
+                first.q = camp_draw_load_u64(
+                    draw, (size_t)i * 0x2a8 + 0x478);
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 2, first.q, second.q, 0, 0);
+            }
+
+            base = i * 0x2a8;
+            first.q = camp_draw_load_u64(draw, (size_t)base + 0x2e0);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 8.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            base = i * 10;
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x324);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 31.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x368);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 45.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3ac);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 64.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3f0);
+            second.f[0] = 14.0f;
+            second.f[1] = x + 2.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+        }
+    }
+}
+
+// FUN_0015F320 NONMATCHING
+void FUN_0015F320(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 tailHeight;
+    f32 x;
+    f32 y;
+    u64 first;
+    u64 second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 1,
+                 first, second, 0, 0);
+    x = 22.0f;
+    y = 77.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 2,
+                 first, second, 0, 0);
+    x = 402.0f;
+    y = 504.0f;
+    first = camp_draw_concat44_f32(x, y);
+    x += 9.0f;
+    y -= 57.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
+                 first, second, 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
+                 UINT64_C(0x41c00000438c0000), UINT64_C(0x41c0000043770000), 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            if (i == work->cursor || work->cursor == -2) {
+                tailHeight = 48.0f;
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 2, first, second, 0, 0);
+            } else {
+                tailHeight = 27.0f;
+                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+            }
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first, second, 0, 0);
+            base = i * 10;
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 1,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 2,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
+                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
+}
+
+// FUN_0015FA90 NONMATCHING
+void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work)
+{
+    u8 textBuffer[256];
+    s32 digitCount;
+    s32 value;
+    s32 maximum;
+    s32 hasHundreds;
+    s32 group;
+    s32 barWidth;
+    s32 iconKind;
+    s16 itemId;
+    s16 itemWord;
+    s16 category;
+    u8 alpha;
+    u32 spriteHandle;
+    CampD8Object *sprite;
+    u8 *groupBase;
+
+    switch (recordIndex) {
+    case 1:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 2:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 1,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 3:
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0e);
+        sprite->drawContext = camp_draw_load_f32(record, 0x24);
+        sprite->x = record->x;
+        sprite->y = record->y;
+        sprite->alpha = (u8)record->alpha;
+        camp_draw_store_u32(sprite, 0x20, 0xc2340000);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
+        break;
+    case 4:
+        groupBase = (u8 *)work;
+        FUN_0015CE50(camp_draw_load_u64(record, 0x38),
+                     (void *)(uintptr_t)camp_draw_load_u32(groupBase, 0x28),
+                     record->alpha, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0:
+        FUN_0015D8E0(*(CampSystemPosition *)&record->x,
+                     camp_draw_load_f32(record, 0x24), record->alpha);
+        break;
+    case 0x0a:
+    case 0x14:
+    case 0x1e:
+    case 0x28:
+        group = (recordIndex - 0x0a) / 10;
+        groupBase = (u8 *)work + group * 4;
+        alpha = (u8)record->alpha;
+        spriteHandle = FUN_00177790_sys(
+            *(const s16 *)((const u8 *)groupBase + 0x3c));
+        campCE50FormatText(textBuffer, DAT_007cb66c, spriteHandle);
+        campCE50DrawText(
+            (s32)record->x, (s32)((f32)(s32)record->y + 3.0f),
+            ((u32)(0xffU - alpha) | 0xffffff00U),
+            camp_draw_load_f32(record, 0x24), 10, 1,
+            (const char *)textBuffer, 0x10, 0x78);
+        break;
+    case 0x0b:
+    case 0x15:
+    case 0x1f:
+    case 0x29:
+        group = (recordIndex - 0x0b) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
+        }
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemWord) & 0xffff;
+        maximum = FUN_0016C5F0(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0b,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30_sys(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 9,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0c:
+    case 0x16:
+    case 0x20:
+    case 0x2a:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
+        }
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemWord) & 0xffff;
+        maximum = FUN_0016C670(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0c,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30_sys(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0a,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0d:
+    case 0x17:
+    case 0x21:
+    case 0x2b:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        digitCount = FUN_0016C470(itemId) & 0xff;
+        alpha = (u8)record->alpha;
+        if (digitCount >= 0x0a) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (digitCount / 10) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            digitCount %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (digitCount % 10) + 0x0b,
+            record->x + 16.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        if (((u32)FUN_0016C970(itemId) & 0x80000U) != 0) {
+            iconKind = 0x0e;
+        } else if (((u32)FUN_0016C970(itemId) & 0x80U) != 0) {
+            iconKind = 0x0f;
+        } else {
+            category = FUN_0016C920(itemId) & 0xffff;
+            if (category == 5) {
+                iconKind = 1;
+            } else if (category == 4) {
+                iconKind = 0;
+            } else if (category == 3) {
+                iconKind = 2;
+            } else {
+                iconKind = -1;
+            }
+        }
+        if (iconKind != -1) {
+            campSystemDrawSprite(
+                record, *(void **)DAT_00833a54_abs, iconKind,
+                alpha, record->x + 44.0f, record->y - 6.0f,
+                camp_draw_load_f32(record, 0x24));
+        }
+        break;
+    case 0x0e:
+    case 0x18:
+    case 0x22:
+    case 0x2c:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0f:
+    case 0x19:
+    case 0x23:
+    case 0x2d:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x10:
+    case 0x1a:
+    case 0x24:
+    case 0x2e:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 4,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x32:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 1,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x33:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 2,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x34:
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 1,
+                             (u8)record->alpha, record->x + 73.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    }
+}
+
+// FUN_00160800 NONMATCHING
+void *FUN_00160800(KwlnTask *task)
+{
+    CampSystemDrawWork *work;
+    CampDrawRecord *record;
+    KwlnTask *otherTask;
+    void *entryPool;
+    void *entry;
+    CampD8Object *sprite;
+    void *ready;
+    u32 temp;
+    u16 inputLatch;
+    u16 itemId;
+    s16 itemResult;
+    s32 i;
+    s32 j;
+    s32 oldCursor;
+    s32 allDone;
+    s32 hasInput;
+    s32 itemCount;
+    s32 itemIndex;
+    s32 itemBase;
+    u32 value;
+    u32 value2;
+    u32 fadedAlpha;
+    f32 verticalOffset;
+    f32 displacement;
+
+    work = (CampSystemDrawWork *)camp_draw_ptr32((u32)(uintptr_t)task->workData);
+    switch (work->state) {
+    case 0:
+        uGpffffb29c = 0;
+        if (iGpffffb270_sys == NULL) {
+            ready = NULL;
+        } else {
+            ready = iGpffffb270_sys->workData;
+            if (*(u32 *)ready != 3) {
+                ready = NULL;
+            } else {
+                ready = *(void **)((u8 *)ready + 0x0c);
+            }
+        }
+        if (ready != NULL) {
+            FUN_00114450_sys(102.0f, 0.0f, -87.0f, -1,
+                         0x4fa4ff19, 0x280, 0x280);
+        }
+        FUN_0011BBA0(0.0f, 0.0f, 102.0f, 0, 0);
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
+        camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
+        camp_draw_store_u32(sprite, 0x10, 0x43d60000);
+        camp_draw_store_u32(sprite, 0x14, 0x41d80000);
+        camp_draw_store_u8(sprite, 0x18, 0);
+        camp_draw_store_u16(sprite, 0x28, 0);
+        camp_draw_store_u16(sprite, 0x2a, 0);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
+        work->records = (u32)(uintptr_t)func_0018b6d0(0x3c);
+        work->state = 1;
+        work->partyIds[0] = 1;
+        work->partyCount = 1;
+        for (i = 0; i < 3 && FUN_0016DD60_sys(i) != 0; ++i) {
+            work->partyIds[work->partyCount] = FUN_0016DD60_sys(i);
+            ++work->partyCount;
+        }
+        work->frame = 0;
+        break;
+
+    case 1:
+        i = work->frame;
+        if (i == 10) {
+            work->state = 2;
+        } else {
+            if (i < 9) {
+                s16 fade = 0;
+                if (i >= 3) {
+                    displacement = (f32)(((i - 3) * 400) / 5);
+                    verticalOffset = 0.0f;
+                    fade = (s16)(((i - 3) * 0xff) / 5);
+                } else {
+                    verticalOffset = 0.0f;
+                    displacement = verticalOffset;
+                }
+                if (iGpffffb270_sys == NULL) {
+                    ready = NULL;
+                } else {
+                    ready = iGpffffb270_sys->workData;
+                    if (*(u32 *)ready != 3) {
+                        ready = NULL;
+                    } else {
+                        ready = *(void **)((u8 *)ready + 0x0c);
+                    }
+                }
+                if (ready != NULL) {
+                    fadedAlpha = 0xffU - (s32)fade;
+                    value2 = fadedAlpha;
+                    if (fadedAlpha > 0x18) {
+                        value2 = 0x19;
+                    }
+                    FUN_00114450_sys(102.0f, displacement, verticalOffset - 87.0f,
+                                 fadedAlpha | 0xffffff00U,
+                                 value2 | 0x4fa4ff00U, 0x280, 0x280);
+                }
+                FUN_0011BBA0(0.0f, 0.0f, 102.0f, fade, 0);
+                sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
+                camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
+                camp_draw_store_f32(sprite, 0x10, displacement + 428.0f);
+                camp_draw_store_f32(sprite, 0x14, verticalOffset + 27.0f);
+                camp_draw_store_u8(sprite, 0x18, (u8)fade);
+                camp_draw_store_u16(sprite, 0x28, 0);
+                camp_draw_store_u16(sprite, 0x2a, 0);
+                campD8SetSprite(sprite, 1);
+                campD8SubmitSprite(sprite);
+                if (i == 0) {
+                    otherTask = iGpffffb26c;
+                    entry = camp_draw_ptr32((u32)(uintptr_t)otherTask->workData);
+                    FUN_0011DA80(0x42c80000, entry);
+                    camp_draw_store_u32(entry, 0, 9);
+                    camp_draw_store_u32(entry, 4, 0);
+                }
+                if (i == 4) {
+                    FUN_00121DE0(uGpffffb264, 0x0d);
+                    FUN_00122710_sys(uGpffffb268, 0x0d);
+                }
+            }
+            work->frame = i + 1;
+        }
+        break;
+
+    case 2:
+        if (FUN_001016b0(camp_draw_ptr32(work->imageArchive)) != 0) {
+            work->archive0 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 0, &temp));
+            work->archive1 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 1, &temp));
+            work->archive2 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 2, &temp));
+            entryPool = (*DAT_00960184_abs)(1, 0x7f0, 0x40000);
+            for (i = 0; i < 100; ++i) {
+                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x0c, 0);
+                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x10, 0);
+            }
+            work->entryPool = camp_draw_addr32(entryPool);
+            FUN_0015C840(entryPool);
+            *(void **)DAT_00833a50_abs = camp_draw_ptr32(work->archive0);
+            *(void **)DAT_00833a54_abs = camp_draw_ptr32(work->archive1);
+            *(void **)DAT_00833a58_abs = camp_draw_ptr32(work->archive2);
+            work->state = 3;
+        }
+        break;
+
+    case 3:
+        if (FUN_00111f30(camp_draw_ptr32(work->archive0)) != 0 &&
+            FUN_00111f30(camp_draw_ptr32(work->archive1)) != 0 &&
+            FUN_00111f30(camp_draw_ptr32(work->archive2)) != 0) {
+            work->state = 4;
+        }
+        break;
+
+    case 4:
+        if (FUN_0011e380(uGpffffb260_sys, 0x0d) != 0) {
+            FUN_0015DA70(work);
+            work->state = 5;
+        }
+        break;
+
+    case 5:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0) {
+            work->state = 6;
+        }
+        break;
+
+    case 6:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0 && (DAT_007e094e & 0x20) == 0) {
+            if ((DAT_007e094e & 0x40) == 0) {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                FUN_0011ABD0_sys(camp_draw_load_u32(entryPool, 0x7dc), 5,
+                             (u8 *)entryPool + 0x7e4, (u8 *)entryPool + 0x7e0);
+            } else {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
+                itemCount = (s32)camp_draw_load_u32(entryPool, 0x7dc);
+                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
+                if (itemIndex < itemCount) {
+                    entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
+                    value = camp_draw_load_u32(entry, 0x0c);
+                    inputLatch = DAT_00836ba8;
+                    FUN_00175200_sys(camp_draw_load_u16(entry, 0x14));
+                    itemResult = FUN_0017B480((u16)value);
+                    if (itemResult == 2 || FUN_0017B660(1, (u16)value) != 0 ||
+                        FUN_0017B4E0((u16)value) != 1) {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0);
+                        work->selectedKind = (s16)FUN_0017BB40((u16)value);
+                        if (work->selectedKind != 3) {
+                            if (work->selectedKind == 0) {
+                                work->cursor = 0;
+                            } else {
+                                work->cursor = -2;
+                            }
+                            work->state = 8;
+                        }
+                    }
+                    FUN_00175200_sys(inputLatch);
+                }
+            }
+        } else if (allDone != 0 && (DAT_007e094e & 0x20) != 0) {
+            FUN_0010a4e0_sys(0, 0, 0, 2);
+            FUN_0015E150(work);
+            work->state = 7;
+        }
+        break;
+
+    case 7:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0) {
+            return (void*)0xffffffff;
+        }
+        break;
+
+    case 8:
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0 && func_0018b700(record) != 0) {
+                FUN_0015FA90(record, i, work);
+            }
+        }
+        if (FUN_0011e380(uGpffffb260_sys, 0x0e) != 0) {
+            FUN_0015E6E0(work);
+            work->state = 9;
+        }
+        break;
+
+    case 9:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone == 0) {
+            break;
+        }
+        oldCursor = work->cursor;
+        if ((DAT_007e094e & 0x20) == 0) {
+            if ((DAT_007e094e & 0x40) == 0) {
+                hasInput = ((DAT_007e0952 & 0x1000) != 0) ||
+                           ((DAT_007e095a & 0x1000) != 0);
+                if (hasInput) {
+                    if (work->cursor != -2) {
+                        if (work->cursor == 0) {
+                            if ((DAT_007e094e & 0x1000) != 0 ||
+                                (DAT_007e0958 & 0x1000) != 0) {
+                                FUN_0010a4e0_sys(0, 0, 0);
+                                work->cursor = work->partyCount - 1;
+                            }
+                        } else {
+                            FUN_0010a4e0_sys(0, 0, 0);
+                            --work->cursor;
+                        }
+                    }
+                } else if (((DAT_007e0952 & 0x4000) != 0 ||
+                            (DAT_007e095a & 0x4000) != 0) &&
+                           work->cursor != -2) {
+                    if (work->cursor == work->partyCount - 1) {
+                        if ((DAT_007e094e & 0x4000) != 0 ||
+                            (DAT_007e0958 & 0x4000) != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0);
+                            work->cursor = 0;
+                        }
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0);
+                        ++work->cursor;
+                    }
+                }
+            } else {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
+                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
+                entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
+                itemId = (u16)(camp_draw_load_u32(entry, 0x0c) & 0xffff);
+                if (work->selectedKind == 0) {
+                    value = (u32)work->partyIds[work->cursor];
+                    if (campC520NearHero(value) == 0 ||
+                        FUN_0017BC20_sys(1, (s16)value, itemId, 0) != 0) {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    } else {
+                        FUN_0010a4e0_sys(1, 0, 3, 1);
+                        FUN_0015C520(entryPool, work->cursor);
+                        work->state = 10;
+                    }
+                } else {
+                    hasInput = 0;
+                    for (j = 0; j < work->partyCount; ++j) {
+                        value = (u32)work->partyIds[j];
+                        if (campC520NearHero(value) != 0 &&
+                            FUN_0017BC20_sys(1, (s16)value, itemId, 0) == 0) {
+                            hasInput = 1;
+                        }
+                    }
+                    if (hasInput != 0) {
+                        FUN_0010a4e0_sys(1, 0, 3, 1);
+                        FUN_0015C520(entryPool, -2);
+                        work->state = 10;
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    }
+                }
+            }
+        } else {
+            FUN_0010a4e0_sys(0, 0, 0, 2);
+            work->state = 10;
+        }
+        if (oldCursor != work->cursor) {
+            FUN_0015EE40(work, oldCursor);
+        }
+        break;
+
+    case 10:
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0 && func_0018b700(record) != 0) {
+                FUN_0015FA90(record, i, work);
+            }
+        }
+        if (FUN_0011e380(uGpffffb260_sys, 0x0d) != 0) {
+            FUN_0015F320(work);
+            work->state = 6;
+        }
+        break;
+    }
+    return 0;
+}
+
+
+
+#pragma alias DAT_007cdf54_data DAT_007cdf54
+#pragma alias DAT_007cdf58_data DAT_007cdf58
+#pragma alias DAT_007e094e_data DAT_007e094e
+#pragma alias DAT_007e0958_data DAT_007e0958
+#pragma alias DAT_00833a50_data DAT_00833a50
+#pragma alias iGpffffb258_data iGpffffb258
+#pragma alias gp0xffff897c_data gp0xffff897c
+#pragma alias FUN_00100d80_data FUN_00100d80
+#pragma alias FUN_00100ec0_data FUN_00100ec0
+#pragma alias FUN_001016b0_data FUN_001016b0
+#pragma alias FUN_00102100_data FUN_00102100
+#pragma alias FUN_0010a4e0_data FUN_0010a4e0
+#pragma alias FUN_00111f30_data FUN_00111f30
+#pragma alias FUN_00112420_data FUN_00112420
+#pragma alias FUN_001124b0_data FUN_001124b0
+#pragma alias FUN_00113a30_data FUN_00113a30
+#pragma alias FUN_00114450_data FUN_00114450
+#pragma alias FUN_001159f0_data FUN_001159f0
+#pragma alias FUN_00115bc0_data FUN_00115bc0
+#pragma alias FUN_00122710_data FUN_00122710
+#pragma alias FUN_0012a560_data FUN_0012a560
+#pragma alias FUN_0012ac60_data FUN_0012ac60
+#pragma alias FUN_00129b30_data FUN_00129b30
+#pragma alias FUN_0013c240_data FUN_0013c240
+#pragma alias FUN_0013c780_data FUN_0013c780
+#pragma alias FUN_0013cf80_data FUN_0013cf80
+#pragma alias FUN_0013d1a0_data FUN_0013d1a0
+#pragma alias FUN_0013fca0_data FUN_0013fca0
+#pragma alias FUN_00174800_data FUN_00174800
+#pragma alias FUN_00194b20_data FUN_00194b20
+#pragma alias FUN_00195290_data FUN_00195290
+#pragma alias FUN_003b2cb0_data FUN_003b2cb0
+#pragma alias FUN_003c7d80_data FUN_003c7d80
+#pragma alias FUN_003c7e20_data FUN_003c7e20
+#pragma alias FUN_0040eb50_data FUN_0040eb50
+#pragma alias FUN_00523ac8_data FUN_00523ac8
+/* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
+#include "h_snd.h"
+#include "Script/scrTraceCode.h"
+
+typedef u8 undefined1;
+typedef u16 undefined2;
+typedef u32 undefined4;
+typedef u64 undefined8;
+typedef int bool;
+typedef unsigned long ulong;
+typedef struct CampFloatPair
+{
+    f32 x;
+    f32 y;
+} CampFloatPair;
+typedef struct CampHelpPaths
+{
+    const char* paths[8];
+} CampHelpPaths;
+#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
+
+/* Retail globals shared by the Camp bridge state machines. */
+extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
+extern void* (*DAT_00960184_abs[])(...);
+#pragma alias scrGetIntPara_u64 scrGetIntPara
+extern u64 scrGetIntPara_u64(s32);
+extern void* (*DAT_00960184)();
+extern void* (*DAT_00960178)();
+#pragma alias DAT_00960178_abs DAT_00960178
+extern void* (*DAT_00960178_abs[])(...);
+extern void* DAT_007cdf48;
+extern void* DAT_007cdf54_data;
+extern void* DAT_007cdf58_data;
+extern void* DAT_007cdf84;
+extern void* DAT_007cdf88;
+extern s32 DAT_007e094e_data;
+extern s32 DAT_007e0958_data;
+/* Retail accesses these flag words by absolute address. */
+extern u32 DAT_00833a50_data[];
+extern s32 iGpffffb258_data;
+extern s32 uGpffffb290;
+extern s32 uGpffffb28c;
+extern s32 iGpffffb28c;
+
+/* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
+typedef struct CampDataBridgeRoot CampDataBridgeRoot;
+extern CampDataBridgeRoot* iGpffffb2c0;
+#define DAT_007cdfb0 iGpffffb2c0
+extern s32* DAT_007cdfb4;
+extern s32* DAT_007cdfb8;
+extern s32* DAT_007cdfbc;
+extern s32* DAT_007cdfc0;
+extern s32* DAT_007cdfc4;
+extern s32* DAT_007cdfc8;
+extern s32* DAT_007cdfcc;
+extern s32* DAT_007cdfd0;
+extern s32* DAT_007cdfd4;
+extern s32* DAT_007cdfd8;
+extern s32* DAT_007cdfdc;
+extern u8* DAT_007cdfe0;
+extern u8* DAT_007cdfe4;
+extern void* DAT_007cdfe8;
+extern u32 DAT_0083bb30[];
+extern u8 DAT_0083bb40;
+extern u32 DAT_0083aaa0[0x23];
+extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
+extern char DAT_005dc020[];
+extern char DAT_005dbc60[];
+extern const void* gp0xffff897c_data;
+extern const void* gp0xffff8998;
+
+/* Unresolved retail helpers. Old-style declarations preserve the mixed-width
+ * call ABI recovered from the stripped executable. */
+extern u32 FUN_00100d80_data();
+extern u32 FUN_00100ec0_data();
+extern u32 FUN_001016b0_data();
+extern u64 FUN_00102100_data();
+extern u32 FUN_001021c0();
+extern u32 FUN_001023a0();
+extern u32 FUN_0010a4e0_data();
+extern u32 FUN_00111cb0();
+extern u32 FUN_00111d50();
+extern u32 FUN_00111dd0();
+extern u32 FUN_00111ec0();
+extern u32 FUN_00111ee0();
+extern u32 FUN_00111f20();
+extern u32 FUN_00111f30_data();
+extern u32 FUN_00112420_data();
+extern u32 FUN_001124b0_data();
+extern void FUN_00113a30_data(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
+#pragma alias FUN_00113a30_camp_reordered FUN_00113a30_data
+extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
+                                        f32 y, s32 width, s32 height);
+extern u32 FUN_00114450_data();
+#pragma alias campDataDrawPersonaSprite FUN_00114450_data
+extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
+                                      s32 mode, u32 color, u32 width,
+                                      u32 height, void* resource);
+extern void FUN_001159f0_data(f32 x, f32 y, ...);
+#pragma alias FUN_001159f0_typed FUN_001159f0_data
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                f32 x, f32 y, f32 depth);
+extern u32 FUN_00115bc0_data();
+#pragma alias FUN_00115bc0_typed FUN_00115bc0_data
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
+#pragma alias campDataDrawSpriteDirect FUN_001159f0_data
+extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0_data
+extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawDigitsDirect FUN_00115de0
+extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteFade FUN_001159f0_data
+extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
+                                   void* atlas, s32 tile, s32 alpha);
+#pragma alias campDataDrawSpriteAltFade FUN_00115bc0_data
+extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
+                                      void* atlas, s32 tile, s32 alpha,
+                                      s32 red, s32 green, s32 blue, s32 flags);
+extern u32 FUN_00115de0();
+extern u32 FUN_00119f10();
+#pragma alias campDataCreateTask FUN_00119f10
+extern void* campDataCreateTask(void* task, s32 mode);
+extern u32 FUN_0011abd0();
+extern u32 FUN_00122710_data();
+extern u32 FUN_0012a560_data(f32, RwV2d, void*, s32);
+extern u32 FUN_0012ac60_data(f32, RwV2d, void*, s32);
+extern u32 FUN_00129b30_data(f32, RwV2d, void*, s32);
+extern u32 FUN_0013c240_data();
+extern u32 FUN_0013c780_data();
+extern u32 FUN_0013cf80_data();
+extern u32 FUN_0013d1a0_data();
+extern u32 FUN_0013fca0_data();
+#pragma alias campDataDrawEquipment FUN_0013d1a0_data
+extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
+                                  void* work, s32 alpha);
+#pragma alias campDataDrawEquipmentAlt FUN_0013fca0_data
+extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
+                                     void* work, s32 alpha);
+extern u32 FUN_0016f630();
+extern u32 FUN_0016f720();
+extern u32 FUN_0016f810();
+extern u32 FUN_0016f900();
+extern u32 FUN_0016f9f0();
+extern u32 FUN_0016fae0();
+extern u32 FUN_0016fbd0();
+extern u32 FUN_0016fcc0();
+extern u32 FUN_0016fea0();
+extern u32 FUN_0016ff90();
+extern u32 FUN_00170080();
+extern u32 FUN_00170170();
+extern u32 FUN_00170260();
+extern u32 FUN_00170350();
+extern u32 FUN_00170440();
+extern u32 FUN_00170530();
+extern u32 FUN_00170a40();
+extern u32 FUN_00170ab0();
+extern u32 FUN_00170b20();
+extern u32 FUN_00170b90();
+extern u32 FUN_00174800_data();
+extern u32 FUN_00177c10();
+extern u32 FUN_001830c0();
+extern u32 FUN_00194b20_data();
+extern u32 FUN_00195290_data();
+extern void FUN_0019d3f0(const char*, s32);
+extern f32 FUN_0021ea00(s32);
+extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
+extern u32 FUN_0025f570();
+extern u32 FUN_0035ed20();
+extern u32 FUN_003b2cb0_data();
+#pragma alias campDataDrawTextRaw FUN_003b2cb0_data
+extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
+                               s32 font, s32 alignment, const char* text,
+                               s32 maxWidth, s32 shadow);
+extern u32 FUN_003c7d80_data();
+extern u32 FUN_003c7e20_data();
+#pragma alias campDataDrawDigits FUN_003c7e20_data
+extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
+                               s32 style, s32 font, s32 alignment, u32 value);
+extern u32 FUN_0040eb50_data();
+#pragma alias campDataDrawText FUN_0040eb50_data
+extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
+                            const char* text, s32 maxWidth);
+extern u32 FUN_00521250();
+extern u32 FUN_00523ac8_data();
+
+extern void* func_001618a0(KwlnTask* task);
+extern void func_00161d60(KwlnTask* task);
+extern void* func_00166c70(KwlnTask* task);
+extern const char D_005DAC70[];
+extern const char D_005DAC90[];
+extern const char D_005DBD80[];
+extern const char D_005DBED0[];
+extern const char D_005DBEE8[];
+extern const char D_005DBF00[];
+extern const char D_005DBF20[];
+extern const char D_005DBF40[];
+extern const char D_005DBF70[];
+extern const char D_005DBFA0[];
+extern const char D_005DBFD0[];
+/* These task archive names are addressed absolutely by retail. */
+#pragma alias D_005DBF20_abs D_005DBF20
+extern u8 D_005DBF20_abs[];
+#pragma alias D_005DBF40_abs D_005DBF40
+extern u8 D_005DBF40_abs[];
+#pragma alias D_005DBF70_abs D_005DBF70
+extern u8 D_005DBF70_abs[];
+#pragma alias D_005DBFA0_abs D_005DBFA0
+extern u8 D_005DBFA0_abs[];
+#pragma alias D_005DBFD0_abs D_005DBFD0
+extern u8 D_005DBFD0_abs[];
+extern const char D_005DC000[];
+extern const char D_005E3098[];
+extern const char D_005E30B0[];
+extern const char D_005E31F0[];
+extern const char D_005E3200[];
+
+/* Target entry prototypes keep all callbacks visible before their first use. */
+void FUN_001675b0(KwlnTask*);
+void* FUN_001675e0(KwlnTask*);
+void FUN_001678e0(KwlnTask*);
+void* FUN_00167930(KwlnTask*);
+void FUN_00167ec0(KwlnTask*);
+void FUN_00167ef0(KwlnTask*);
+void FUN_00167f10(KwlnTask*);
+u32 FUN_00167f30(KwlnTask*);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
+u32 FUN_00168040(void);
+u32 FUN_00168100(void);
+bool FUN_001681d0(void);
+void* FUN_00168220(KwlnTask*);
+bool FUN_001685b0(KwlnTask*);
+u32 FUN_001685d0(KwlnTask*);
+void FUN_001685e0(KwlnTask*, s32);
+void FUN_00168720(KwlnTask*);
+KwlnTask* FUN_00168770(KwlnTask*, u32);
+u32 FUN_00168810(u32);
+void FUN_00169040(int);
+void FUN_00169110(u16, CampFloatPair, void*, s32);
+void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
+undefined4 FUN_00169330(void);
+bool FUN_00169420(void);
+undefined4 FUN_00169470(KwlnTask*);
+void FUN_00169AE0(int);
+void FUN_00169B90(void* resources, undefined8 coordinates,
+                  void* list, s32 alpha, undefined8 stackArg);
+undefined4 FUN_0016A030(void);
+undefined4 FUN_0016A6A0(void);
+f32 FUN_0016ba00(u32, u32);
+f32 FUN_0016ba80(u32, u32);
+f32 FUN_0016bb00(u32, u32);
+f32 FUN_0016bb80(u32, u32);
+f32 FUN_0016bc00(u32, u32);
+void FUN_0016bc80(u32, u32, f32*);
+void FUN_0016bdb0(u32, u32, f32*);
+void FUN_0016bee0(u32, u32, void*);
+void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
+void FUN_0016c010(void) __attribute__((aligned(16)));
+void FUN_0016c1d0(void);
+void FUN_0016c2f0(void);
+void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+#pragma alias campDataDrawListA FUN_0016A700
+extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+#pragma alias campDataDrawListB FUN_0016AF90
+extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+
+
+typedef struct CampBridgeScreenWork
+{
+    u32 state;          /* 0x00 */
+    u32 timer;          /* 0x04 */
+    u32 personaId;      /* 0x08 */
+    u32 opacity;        /* 0x0c (low halfword used by the fade) */
+    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
+    u32 command;        /* 0x14 */
+    u32 active;         /* 0x18 */
+    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
+    u32 reserved20;     /* 0x20 */
+    u32 reserved24;     /* 0x24 */
+    u32 childTask;      /* 0x28 */
+} CampBridgeScreenWork;
+
+/* Work area for the 0x14-byte state task (the first five words overlap the
+ * screen work above but carry different meanings). */
+typedef struct CampBridgeStateWork
+{
+    u32 state;          /* 0x00 */
+    u32 mode;           /* 0x04 */
+    u32 setupTask;      /* 0x08 */
+    u32 activeTask;     /* 0x0c */
+    u32 screenMode;     /* 0x10 */
+} CampBridgeStateWork;
+
+/* Work area allocated by FUN_00167930 for the persona display child. */
+typedef struct CampBridgePersonaDispWork
+{
+    u32 state;          /* 0x00 */
+    u32 personaId;      /* 0x04 */
+    u32 reserved08;     /* 0x08 */
+    u32 mode;           /* 0x0c */
+    f32 alpha;          /* 0x10 */
+    f32 slideStep;      /* 0x14 */
+    f32 slidePosition;  /* 0x18 */
+    f32 depth;          /* 0x1c */
+    void* parseRequest; /* 0x20 */
+    HCdvd* cdvd;        /* 0x24 */
+    void* resource;     /* 0x28 */
+} CampBridgePersonaDispWork;
+
+/* Work area allocated by FUN_00168770 (0x1c bytes). */
+typedef struct CampBridgeBlendWork
+{
+    u32 state;       /* 0x00 */
+    s32 timer;       /* 0x04 */
+    u32 reserved08;  /* 0x08 */
+    u32 mode;        /* 0x0c */
+    u32 archive;     /* 0x10 */
+    u32 sourceTask;  /* 0x14 */
+    u32 targetTask;  /* 0x18 */
+} CampBridgeBlendWork;
+
+
+/* Work area used by FUN_00168810/FUN_00169040. */
+typedef struct CampTargetLoadWork
+{
+    u32 state;                 /* +0x00 */
+    u32 reserved04;            /* +0x04 */
+    s32 frame;                 /* +0x08 */
+    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
+    void* archive;             /* +0x10 */
+    void* resources[2];        /* +0x14 */
+    CampTargetList* listA;     /* +0x1c */
+    CampTargetList* listB;     /* +0x20 */
+    void* childTask;           /* +0x24 */
+} CampTargetLoadWork;
+
+/* Work area used by FUN_00169470/FUN_00169AE0. */
+typedef struct CampTargetMenuWork
+{
+    u32 state;                 /* +0x00 */
+    s32 frame;                 /* +0x04 */
+    u32 reserved08;            /* +0x08 */
+    void* archive;             /* +0x0c */
+    void* resources[2];        /* +0x10 */
+    CampTargetList* list;      /* +0x18 */
+    void* childTask;           /* +0x1c */
+    u32 result;                /* +0x20 */
+} CampTargetMenuWork;
+
+typedef struct CampDataBridgeRecord
+{
+    s16 axis0;                 /* +0x00 */
+    s16 axis1;                 /* +0x02 */
+    s16 axis2;                 /* +0x04 */
+    s16 axis3;                 /* +0x06 */
+    f32 value;                 /* +0x08 */
+    u32 reserved0c;            /* +0x0c */
+    u16 reserved10;            /* +0x10 */
+    s16 helpIndex;             /* +0x12 */
+    u32 color0;                /* +0x14 */
+    u32 color1;                /* +0x18 */
+    u32 reserved1c;            /* +0x1c */
+} CampDataBridgeRecord;
+
+typedef struct CampDataBridgeGroup
+{
+    s32 recordCount;           /* +0x00 */
+    s32 auxiliaryCount;        /* +0x04 */
+    CampDataBridgeRecord* records; /* +0x08 */
+    u8* auxiliaryData;         /* +0x0c */
+} CampDataBridgeGroup;
+
+typedef struct CampDataBridgeRoot
+{
+    CampDataBridgeGroup groups[2];
+} CampDataBridgeRoot;
+
+// FUN_001675b0
+void FUN_001675b0(KwlnTask* task)
+{
+    (*DAT_0096017c_abs)(task->workData);
+}
+
+// FUN_001675e0 MATCHING
+void* FUN_001675e0(KwlnTask* task)
+{
+    CampBridgeStateWork* work;
+    s32 ready;
+    work = (CampBridgeStateWork*)task->workData;
+    switch (work->state) {
+    case 0: {
+        KwlnTask* child;
+        datSetFlag(0x1407, 1);
+        if (DAT_007cdf48 != 0) {
+            child = 0;
+        }
+        else {
+            void* allocated;
+
+            allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+            if (allocated == 0) {
+                child = 0;
+            }
+            else {
+                child = kwlnTaskCreate(task, D_005DAC70, 0x18bf,
+                                     h_campUpdateSpriteSetupTask,
+                                     h_campDestroySpriteSetupTask,
+                                     allocated);
+                if (child == 0) {
+                    child = 0;
+                }
+                else {
+                    DAT_007cdf48 = (void*)child;
+                    *(u32*)((u8*)allocated + 0x3c) =
+                        (u32)H_Cdvd_Request(D_005DAC90, 1);
+                }
+            }
+        }
+        work->setupTask = (u32)child;
+        work->activeTask = (u32)FUN_00168770(task, 0x18bf);
+        DAT_007cdf88 = (void*)work->activeTask;
+        work->state = 1;
+        break;
+    }
+    case 1: {
+        s16 screenMode;
+        void* allocated;
+
+        ready = 1;
+        if (DAT_007cdf48 == 0) {
+            ready = -1;
+        }
+        else if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData == 3) {
+            ready = 1;
+        }
+        else {
+            ready = 0;
+        }
+        if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
+            if (work->mode == 0) {
+                s16 screenMode0;
+                void* allocated0;
+                KwlnTask* nextTask0;
+                screenMode0 = (s16)work->screenMode;
+                allocated0 = (*DAT_00960184_abs)(1, 0x30, 0x40000);
+                if (allocated0 == 0) {
+                    nextTask0 = 0;
+                }
+                else {
+                    nextTask0 = (KwlnTask*)kwlnTaskCreate(
+                        task, D_005DBD80, 0x18be,
+                        func_001618a0,
+                        func_00161d60,
+                        allocated0);
+                    if (nextTask0 == 0) {
+                        nextTask0 = 0;
+                    }
+                    else {
+                        *(u32*)((u8*)allocated0 + 0x0c) =
+                            (u32)screenMode0;
+                    }
+                }
+                work->activeTask = (u32)nextTask0;
+            }
+            else {
+                KwlnTask* nextTask1;
+                screenMode = (s16)work->screenMode;
+                allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+                if (allocated == 0) {
+                    nextTask1 = 0;
+                }
+                else {
+                    nextTask1 = (KwlnTask*)kwlnTaskCreate(
+                        task, D_005DBED0, 0x18be,
+                        func_00166c70,
+                        FUN_001675b0,
+                        allocated);
+                    if (nextTask1 == 0) {
+                        nextTask1 = 0;
+                    }
+                    else {
+                        *(u32*)((u8*)allocated + 0x0c) =
+                            (u32)screenMode;
+                    }
+                }
+                work->activeTask = (u32)nextTask1;
+            }
+            work->state = 2;
+        }
+        break;
+    }
+    case 2:
+        if (kwlnTaskGetState((KwlnTask*)work->activeTask) == 3) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    default:
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001678e0
+void FUN_001678e0(KwlnTask* task)
+{
+    void* work;
+
+    work = task->workData;
+    DAT_007cdf88 = 0;
+    datSetFlag(0x1407, 0);
+    (*DAT_0096017c_abs)(work);
+}
+
+// FUN_00167930 NONMATCHING
+void* FUN_00167930(KwlnTask* task)
+{
+    CampBridgeScreenWork* work;
+    CampBridgePersonaDispWork* personaWork;
+    bool complete;
+    s16 value;
+    s16 opacity;
+    s16 screenMode;
+    s16 transitionKind;
+    s16 timer;
+    u32 personaId;
+    KwlnTask* child;
+    s16 fadeValue;
+    void* persona;
+    RwV2d coordinates = {0.0f, 0.0f};
+
+    work = (CampBridgeScreenWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        FUN_001685e0((KwlnTask*)DAT_007cdf88, 2);
+        personaId = datGetPersonaId(*(s16*)((u8*)work + 0x0e));
+        child = 0;
+        personaWork = (CampBridgePersonaDispWork*)
+            (*DAT_00960184)(1, 300, 0x40000);
+        if (personaWork != 0) {
+            child = kwlnTaskCreate(
+                task, D_005DB190, 0x18bf,
+                func_00133780,
+                h_campPersonaDestroyDispCtlDrawTask,
+                personaWork);
+            if (child != 0) {
+                personaWork->personaId = personaId;
+                personaWork->mode = 0xffffffff;
+                personaWork->alpha = 100.0f;
+            }
+        }
+        work->childTask = (u32)child;
+        work->state = 1;
+        break;
+    case 1:
+        *(s16*)((u8*)work + 0x10) = 0;
+        h_campRequestMenuTransition((KwlnTask*)DAT_007cdf54_data, 3);
+        FUN_00122710_data((KwlnTask*)DAT_007cdf58_data, 3);
+        work->state = 2;
+        break;
+    case 2:
+        complete = false;
+        personaWork = (CampBridgePersonaDispWork*)
+            ((KwlnTask*)work->childTask)->workData;
+        if ((personaWork->state == 3) && (personaWork->personaId != 0)) {
+            if (personaWork->slidePosition != 60.0f) {
+                personaWork->slidePosition -= personaWork->slideStep;
+                personaWork->slideStep += 5.0f;
+                if (personaWork->slidePosition < 60.0f) {
+                    personaWork->slidePosition = 60.0f;
+                }
+            }
+            campDataDrawPersonaSprite(personaWork->alpha, personaWork->slidePosition,
+                         personaWork->depth, personaWork->mode,
+                         0x4fa4ff19, 0x280, 0x280, personaWork->resource);
+        }
+        screenMode = *(s16*)((u8*)work + 0x12);
+        transitionKind = *(s16*)((u8*)work + 0x1c);
+        if (screenMode != 0) {
+            opacity = *(s16*)((u8*)work + 0x0c);
+            if (opacity != 0xff) {
+                opacity += 10;
+                *(s16*)((u8*)work + 0x0c) = opacity;
+                if (opacity > 0xff) {
+                    *(s16*)((u8*)work + 0x0c) = 0xff;
+                }
+            }
+            else {
+                complete = true;
+            }
+            opacity = *(s16*)((u8*)work + 0x0c);
+            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+            FUN_00129b30_data(100.0f, coordinates, persona, 0xff - opacity);
+        }
+        else {
+            timer = *(s16*)((u8*)work + 0x04);
+            complete = timer == 0x14;
+            if (!complete) {
+                timer++;
+                *(s16*)((u8*)work + 0x04) = timer;
+            }
+            value = *(s16*)((u8*)work + 0x04);
+            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+            FUN_0012ac60_data(100.0f, coordinates, persona, value);
+        }
+        if (complete) {
+            if (transitionKind == 0) {
+                if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                    if (((*(u16*)DAT_007e094e_abs & 0x8000) != 0) ||
+                        ((*(u16*)DAT_007e0958_abs & 0x8000) != 0)) {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->command = 1;
+                    }
+                }
+                else {
+                    func_0010a4e0(0, 0, 0, 2);
+                    work->command = 0xffffffff;
+                }
+            }
+            else if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                if (((*(u16*)DAT_007e094e_abs & 0x8000) == 0) &&
+                    ((*(u16*)DAT_007e0958_abs & 0x8000) == 0)) {
+                    if ((*(u16*)DAT_007e094e_abs & 8) == 0) {
+                        if ((*(u16*)DAT_007e094e_abs & 4) != 0) {
+                            func_0010a4e0(0, 0, 0, 0);
+                            work->command = 3;
+                        }
+                    }
+                    else {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->command = 2;
+                    }
+                }
+                else {
+                    func_0010a4e0(0, 0, 0, 0);
+                    work->command = 1;
+                }
+            }
+            else {
+                func_0010a4e0(0, 0, 0, 2);
+                work->command = 0xffffffff;
+            }
+        }
+        break;
+    case 3:
+        opacity = *(s16*)((u8*)work + 0x0c) - 0x19;
+        *(s16*)((u8*)work + 0x0c) = opacity;
+        if (opacity < 0) {
+            return KWLNTASK_STOP;
+        }
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        FUN_0012ac60_data(100.0f, coordinates, persona, 0xff - opacity);
+        /* Retail intentionally falls through into case 4. */
+    case 4:
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        FUN_0012ac60_data(100.0f, coordinates, persona, 0);
+        *(s16*)((u8*)work + 0x10) = 0;
+        work->state = 5;
+        break;
+    case 5:
+        timer = *(s16*)((u8*)work + 0x10);
+        if (timer == 10) {
+            return KWLNTASK_STOP;
+        }
+        timer++;
+        *(s16*)((u8*)work + 0x10) = timer;
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        fadeValue = timer;
+        FUN_0012a560_data(100.0f, coordinates, persona, fadeValue);
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00167ec0
+void FUN_00167ec0(KwlnTask* task)
+{
+    (*DAT_0096017c_abs)(task->workData);
+}
+
+// FUN_00167EF0
+void FUN_00167ef0(KwlnTask* task)
+{
+    u32* work;
+
+    work = (u32*)task->workData;
+    *(u16*)((u8*)work + 0x0c) = 0xff;
+    work[0] = 3;
+}
+
+// FUN_00167F10
+void FUN_00167f10(KwlnTask* task)
+{
+    u32* work;
+
+    work = (u32*)task->workData;
+    *(u16*)((u8*)work + 0x10) = 0;
+    work[0] = 4;
+}
+
+// FUN_00167F30
+u32 FUN_00167f30(KwlnTask* task)
+{
+    return ((u32*)task->workData)[5];
+}
+
+// FUN_00167f40
+KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue,
+                       u16 param4, u16 param5, u16 param6)
+{
+    CampBridgeScreenWork* work;
+    KwlnTask* taskValue;
+
+    work = (CampBridgeScreenWork*)(*DAT_00960184_abs)(1, 0x2c, 0x40000);
+    if (work == 0) {
+        return 0;
+    }
+    taskValue = kwlnTaskCreate(parent, D_005DBF00, priority,
+                             FUN_00167930,
+                             FUN_00167ec0,
+                             work);
+    if (taskValue == 0) {
+        return 0;
+    }
+    *(CampFloatPair*)((u8*)work + 4) = packedValue;
+    work->active = 1;
+    *(u16*)((u8*)work + 0x0e) = param4;
+    *(u16*)((u8*)work + 0x12) = param5;
+    *(u16*)((u8*)work + 0x1c) = param6;
+    return (KwlnTask*)taskValue;
+}
+
+// FUN_00168040
+u32 FUN_00168040(void)
+{
+    s16 value;
+    void* allocated;
+    KwlnTask* taskValue;
+
+    value = scrGetIntPara_u64(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
+    if (allocated == 0) {
+        taskValue = 0;
+    }
+    else {
+        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
+                                 FUN_001675e0,
+                                 FUN_001678e0,
+                                 allocated);
+        if (taskValue == 0) {
+            taskValue = 0;
+        }
+        else {
+            *(u16*)((u8*)allocated + 0x10) = value;
+            *(u32*)((u8*)allocated + 4) = 0;
+        }
+    }
+    DAT_007cdf84 = (void*)taskValue;
+    return 1;
+}
+
+// FUN_00168100
+u32 FUN_00168100(void)
+{
+    s16 value;
+    void* allocated;
+    KwlnTask* taskValue;
+
+    value = (s16)scrGetIntPara(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
+    if (allocated == 0) {
+        taskValue = 0;
+    }
+    else {
+        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
+                                 FUN_001675e0,
+                                 FUN_001678e0,
+                                 allocated);
+        if (taskValue == 0) {
+            taskValue = 0;
+        }
+        else {
+            *(u16*)((u8*)allocated + 0x10) = value;
+            *(u32*)((u8*)allocated + 4) = 1;
+        }
+    }
+    DAT_007cdf84 = (void*)taskValue;
+    return 1;
+}
+
+// FUN_001681d0
+bool FUN_001681d0(void)
+{
+    u32 state;
+
+    state = kwlnTaskGetState((KwlnTask*)DAT_007cdf84);
+    if (state == 3) {
+        DAT_007cdf84 = 0;
+        return 1;
+    }
+    return 0;
+}
+
+// FUN_00168220
+void* FUN_00168220(KwlnTask* task)
+{
+    CampBridgeBlendWork* work;
+    u32 child;
+    s32 frame;
+
+    work = (CampBridgeBlendWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        work->archive = (u32)H_Cdvd_Request((const char*)D_005DBF20_abs, 1);
+        work->state = 1;
+        break;
+    case 1:
+        if (H_Cdvd_IsFileLoaded((HCdvd*)work->archive) != 0) {
+            work->state = 2;
+        }
+        break;
+    case 3:
+        switch (work->mode) {
+        case 0:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFD0_abs);
+            work->targetTask = child;
+            break;
+        case 1:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFA0_abs);
+            work->targetTask = child;
+            break;
+        case 2:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF70_abs);
+            work->targetTask = child;
+            break;
+        case 3:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF40_abs);
+            work->targetTask = child;
+            break;
+        }
+        work->timer = 0;
+        work->state = 4;
+        break;
+    case 4:
+        if (H_Maestro_FinishedInit((KwlnTask*)work->targetTask) == 1) {
+            func_0010a4e0(0, 0, 0, 5);
+            H_Maestro_RequestDraw((KwlnTask*)work->targetTask);
+            H_Maestro_00111f20((KwlnTask*)work->targetTask, 1);
+            work->state = 5;
+        }
+        break;
+    case 5:
+        if (work->mode == 3) {
+            if (work->timer != 10) {
+                work->timer++;
+            }
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         1.0f - (f32)(s32)work->timer / 10.0f);
+        }
+        if (H_Maestro_00111cb0((KwlnTask*)work->targetTask) != 0) {
+            if (work->mode != 3) {
+                if (work->sourceTask != 0) {
+                    kwlnTaskDestroyWithHierarchy((KwlnTask*)work->sourceTask);
+                }
+                work->sourceTask = work->targetTask;
+                work->targetTask = 0;
+            }
+            else {
+                H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 0.0f);
+            }
+            work->state = 2;
+        }
+        break;
+    case 6:
+        frame = (s32)work->timer - 1;
+        work->timer = (u32)frame;
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         (f32)frame / 10.0f);
+        }
+        else {
+            return KWLNTASK_STOP;
+        }
+        break;
+    case 7:
+        frame = (s32)work->timer - 1;
+        work->timer = (u32)frame;
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->targetTask,
+                         (f32)frame / 10.0f);
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         1.0f - (f32)frame / 10.0f);
+        }
+        else {
+            if (work->targetTask != 0) {
+                kwlnTaskDestroyWithHierarchy((KwlnTask*)work->targetTask);
+            }
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 1.0f);
+            work->targetTask = 0;
+            work->state = 2;
+        }
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001685B0
+bool FUN_001685b0(KwlnTask* task)
+{
+    return *(u32*)task->workData == 2;
+}
+
+// FUN_001685D0
+u32 FUN_001685d0(KwlnTask* task)
+{
+    return ((u32*)task->workData)[2];
+}
+
+// FUN_001685e0
+void FUN_001685e0(KwlnTask* task, s32 command)
+{
+    u32* work;
+    s32 state;
+
+    work = (u32*)task->workData;
+    state = (s32)work[2];
+    switch (state) {
+    case 0:
+        if (command == 1) {
+            work[3] = 0;
+            work[0] = 3;
+            work[2] = (u32)command;
+        }
+        break;
+    case 1:
+        switch (command) {
+        case 1:
+            break;
+        case 2:
+            work[3] = 1;
+            work[0] = 3;
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
+        case 4:
+            work[3] = 3;
+            work[0] = 3;
+            break;
+        }
+        work[2] = (u32)command;
+        break;
+    case 2:
+        switch (command) {
+        case 1:
+            work[3] = 2;
+            work[0] = 3;
+            break;
+        case 2:
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
+        }
+        work[2] = (u32)command;
+        break;
+    case 4:
+        work[1] = 10;
+        work[0] = 7;
+        work[2] = (u32)command;
+        break;
+    default:
+        break;
+    }
+}
+
+// FUN_00168720
+void FUN_00168720(KwlnTask* task)
+{
+    u32* work;
+
+    work = (u32*)task->workData;
+    if (work[4] != 0) {
+        H_Cdvd_Destroy((HCdvd*)work[4]);
+    }
+    work[4] = 0;
+    (*DAT_0096017c_abs)(work);
+}
+
+// FUN_00168770
+KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
+{
+    void* work;
+    KwlnTask* taskValue;
+
+    work = (*DAT_00960184_abs)(1, 0x1c, 0x40000);
+    if (work == 0) {
+        return 0;
+    }
+    taskValue = kwlnTaskCreate(parent, D_005DC000, priority,
+                             FUN_00168220,
+                             FUN_00168720,
+                             work);
+    if (taskValue == 0) {
+        return 0;
+    }
+    return (KwlnTask*)taskValue;
+}
+
+
+
+
+/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
+#pragma opt_loop_invariants on
+// FUN_00168810 NONMATCHING
+u32 FUN_00168810(u32 param_1)
+{
+    KwlnTask* task;
+    CampTargetLoadWork* work;
+    u8 readyScratch[4];
+    CampFloatPair drawPosition;
+    s32 i;
+    s32 entry;
+    s32 nextFrame;
+    s32 phase;
+    bool ready;
+    u32 resource;
+
+    task = (KwlnTask*)(uintptr_t)param_1;
+    work = (CampTargetLoadWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        if (FUN_001016b0_data(work->archive) != 0) {
+            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 0, readyScratch));
+            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 1, readyScratch));
+            work->childTask = (void*)(uintptr_t)FUN_00119f10(param_1, 1);
+            DAT_00833a50_data[0] = (u32)(uintptr_t)work->resources[0];
+            DAT_00833a50_data[1] = (u32)(uintptr_t)work->resources[1];
+            work->state = 1;
+        }
+        break;
+
+    case 1:
+        ready = true;
+        for (i = 0; i < 2; i++) {
+            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
+                ready = false;
+            }
+        }
+        if (iGpffffb258_data == 0) {
+            phase = -1;
+        } else if (*(s32*)(*(u32*)((u8*)(uintptr_t)iGpffffb258_data + 0x3c)) == 3) {
+            phase = 1;
+        } else {
+            phase = 0;
+        }
+        if (phase == 1 && ready) {
+            work->frame = 0;
+            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)resource + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            work->listA = (CampTargetList*)(uintptr_t)resource;
+            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)resource + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            work->listB = (CampTargetList*)(uintptr_t)resource;
+            FUN_0013cf80_data(work->drawIdWord, work->listA);
+            work->state = 2;
+        }
+        break;
+
+    case 2:
+        nextFrame = work->frame + 1;
+        work->frame = nextFrame;
+        if (nextFrame > 9) {
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
+        break;
+
+    case 3:
+        if ((DAT_007e094e_data & 0x20) == 0) {
+            if ((DAT_007e094e_data & 0x40) == 0) {
+                CampTargetList* list = work->listA;
+                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
+            } else {
+                FUN_0010a4e0_data(0, 0, 0, 1);
+                FUN_0013c240_data(work->listB, (u16)work->drawIdWord,
+                             work->listA->cursor);
+                if (work->listB->count == 0) {
+                    FUN_003c7430(4);
+                    work->state = 5;
+                } else {
+                    work->state = 4;
+                }
+            }
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 2);
+            work->state = 6;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA, 0);
+        break;
+
+    case 4:
+        if ((DAT_007e094e_data & 0x20) == 0) {
+            if ((DAT_007e094e_data & 0x40) == 0) {
+                CampTargetList* list = work->listB;
+                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
+            } else {
+                u32 sourceId;
+                u32 destinationId;
+                u16 sourceValue6;
+                u32 sourceValue7;
+                u8 sourceValue8;
+                u8 sourceValue9;
+                u16 sourceValueA;
+                u16 sourceValueB;
+                u16 sourceValueC;
+                u16 sourceValueD;
+                u32 destinationValue;
+
+                FUN_0010a4e0_data(0, 0, 0, 1);
+                sourceId = (u32)work->listA->records[work->listA->cursor].secondaryValue;
+                destinationId = (u32)work->listB->records[
+                    work->listB->cursor + work->listB->selected].secondaryValue;
+                sourceValue6 = FUN_0016f630((u16)work->drawIdWord, sourceId);
+                sourceValue7 = FUN_0016f720((u16)work->drawIdWord, sourceId);
+                sourceValue8 = FUN_0016f810((u16)work->drawIdWord, sourceId);
+                sourceValue9 = FUN_0016f900((u16)work->drawIdWord, sourceId);
+                sourceValueA = FUN_0016f9f0((u16)work->drawIdWord, sourceId);
+                sourceValueB = FUN_0016fae0((u16)work->drawIdWord, sourceId);
+                sourceValueC = FUN_0016fbd0((u16)work->drawIdWord, sourceId);
+                sourceValueD = FUN_0016fcc0((u16)work->drawIdWord, sourceId);
+                destinationValue = FUN_0016f630(1, destinationId);
+                FUN_0016fea0((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f720(1, destinationId);
+                FUN_0016ff90((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f810(1, destinationId);
+                FUN_00170080((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f900(1, destinationId);
+                FUN_00170170((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fae0(1, destinationId);
+                FUN_00170350((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fbd0(1, destinationId);
+                FUN_00170440((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fcc0(1, destinationId);
+                FUN_00170530((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f9f0(1, destinationId);
+                FUN_00170260((u16)work->drawIdWord, sourceId, destinationValue);
+                FUN_0016fea0(1, destinationId, sourceValue6);
+                FUN_0016ff90(1, destinationId, sourceValue7);
+                FUN_00170080(1, destinationId, sourceValue8);
+                FUN_00170170(1, destinationId, sourceValue9);
+                FUN_00170350(1, destinationId, sourceValueB);
+                FUN_00170440(1, destinationId, sourceValueC);
+                FUN_00170530(1, destinationId, sourceValueD);
+                FUN_00170260(1, destinationId, sourceValueA);
+                FUN_00177c10(work->drawIdWord, sourceId);
+                FUN_0013cf80_data(work->drawIdWord, work->listA);
+                work->state = 3;
+            }
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 2);
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_001691F0((u16)work->drawIdWord, drawPosition,
+                     work->listA, work->listB, 0);
+        break;
+
+    case 5:
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA, 0);
+        break;
+
+    case 6:
+        nextFrame = work->frame - 1;
+        work->frame = nextFrame;
+        if (nextFrame < 1) {
+            work->state = 7;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
+        break;
+
+    case 7:
+        return 0xffffffff;
+    }
+    return 0;
+}
+
+#pragma opt_loop_invariants reset
+// FUN_00169040
+void FUN_00169040(int param_1)
+{
+    CampTargetLoadWork* work;
+    s32 i;
+
+    work = (CampTargetLoadWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
+    if (work->listA != NULL) {
+        (*(void (**)(...))0x0096017c)(work->listA);
+        work->listA = NULL;
+    }
+    if (work->listB != NULL) {
+        (*(void (**)(...))0x0096017c)(work->listB);
+        work->listB = NULL;
+    }
+    for (i = 0; i < 2; i++) {
+        if ((*(void**)((u8*)work + 0x14 + i * 4)) != NULL) {
+            FUN_001124b0_data(*(void**)((u8*)work + 0x14 + i * 4));
+        }
+        DAT_00833a50_data[i] = 0;
+    }
+    (*(void (**)(...))0x0096017c)(work);
+}
+
+// FUN_00169110 MATCHING
+void FUN_00169110(u16 param_1, CampFloatPair param_2,
+                  void* param_3, s32 param_4)
+{
+    f32 depth;
+    f32* depthBase;
+    u32 color;
+    CampFloatPair drawPosition;
+
+    color = 0xff - param_4;
+    color |= 0x20808000U;
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = param_2.y + 50.0f;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
+                          drawPosition, param_3, param_4);
+}
+// FUN_001691F0 MATCHING
+void FUN_001691F0(u16 param_1, CampFloatPair param_2,
+                  void* param_3, void* param_4, s32 param_5)
+{
+    f32 y;
+    f32 depth;
+    f32* depthBase;
+    u32 color;
+    CampFloatPair drawPosition;
+
+    y = param_2.y;
+    color = 0xff - param_5;
+    color |= 0x20808000U;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = y + 50.0f;
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipmentAlt(*depthBase - depth,
+                             drawPosition, param_3, param_5);
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = y + 80.0f;
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
+                          drawPosition, param_4, param_5);
+}
+
+// FUN_00169330
+undefined4 FUN_00169330(void)
+{
+    void* task;
+    void* allocation;
+    s16 language;
+
+    language = (s16)FUN_0035ed20(0);
+    allocation = (*DAT_00960184_abs)(1, 0x28, 0x40000);
+    if (allocation == NULL) {
+        task = NULL;
+    } else {
+        task = (void*)FUN_00194b20_data(0, DAT_005dc020, 0x18bf,
+                                   FUN_00168810, FUN_00169040, allocation);
+        if (task == NULL) {
+            task = NULL;
+        } else {
+            *(s32*)((u8*)allocation + 0x0c) = language;
+            *(u32*)((u8*)allocation + 0x10) = FUN_00100d80_data(DAT_005dbc60, 1);
+        }
+    }
+    uGpffffb290 = (s32)(uintptr_t)task;
+    return 1;
+}
+
+// FUN_00169420
+bool FUN_00169420(void)
+{
+    s32 state;
+
+    state = FUN_00195290_data(uGpffffb290);
+    if (state == 3) {
+        uGpffffb290 = 0;
+        return 1;
+    }
+    return 0;
+}
+
+/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
+// FUN_00169470 NONMATCHING
+undefined4 FUN_00169470(KwlnTask* param_1)
+{
+    KwlnTask* task;
+    CampTargetMenuWork* work;
+    u8 readyScratch[4];
+    bool ready;
+    s32 i;
+    s32 entry;
+    s32 nextFrame;
+    s16 itemId;
+    CampTargetItemRecord itemRecord;
+
+    task = (KwlnTask*)(uintptr_t)param_1;
+    work = (CampTargetMenuWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        if (FUN_001016b0_data(work->archive) != 0) {
+            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 0, readyScratch));
+            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 1, readyScratch));
+            work->childTask = (void*)(uintptr_t)FUN_00119f10((undefined8)param_1, 1);
+            work->state = 1;
+        }
+        break;
+    case 1:
+        ready = true;
+        for (i = 0; i < 2; i++) {
+            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
+                ready = false;
+            }
+        }
+        if (ready) {
+            work->frame = 0;
+            work->list = (CampTargetList*)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)(uintptr_t)work->list + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            FUN_0013c780_data(work->list);
+            work->state = 2;
+            work->result = (u32)(uintptr_t)FUN_0025f370(
+                task, work->resources[1]);
+        }
+        break;
+    case 2:
+        nextFrame = work->frame + 1;
+        work->frame = nextFrame;
+        if (nextFrame > 0x13) {
+            work->state = 3;
+        }
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 0x14),
+                     (undefined8)0);
+        break;
+    case 3:
+        if ((DAT_007e094e_data & 0x40) == 0) {
+            s32 selected = work->list->selected;
+            s32 cursor = work->list->cursor;
+            FUN_0011abd0(work->list->count, 6, &selected, &cursor);
+            work->list->selected = selected;
+            work->list->cursor = cursor;
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 1);
+            if (work->list->records[
+                    work->list->cursor + work->list->selected].availability == 0) {
+                FUN_003c7430(6);
+                work->state = 5;
+            } else {
+                FUN_003c7430(5);
+                FUN_003c74e0(0);
+                FUN_003c7560(0);
+                work->state = 4;
+            }
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 4:
+        if (FUN_003c7850() == 0) {
+            s32 waitState = FUN_003c7610();
+            if (waitState != 1 && waitState == 0) {
+                s32 current = work->list->records[
+                    work->list->cursor + work->list->selected].secondaryValue;
+                s32 selected = work->list->selected;
+                s32 cursor = work->list->cursor;
+
+                if (current < 0x1000) {
+                    FUN_0016fea0(1, current, 0);
+                } else {
+                    FUN_0016fea0(0xffffffffffffffffULL, current - 0x1000, 0);
+                }
+                FUN_0013c780_data();
+                if (work->list->count < 6) {
+                    work->list->selected = 0;
+                    current = work->list->count - 1;
+                    if (current < cursor) {
+                        work->list->cursor = current;
+                    } else {
+                        work->list->cursor = cursor;
+                    }
+                } else {
+                    current = work->list->count - 6;
+                    if (current < selected) {
+                        work->list->selected = current;
+                        work->list->cursor = cursor;
+                    }
+                }
+            }
+            FUN_003c7700();
+            if (work->list->count < 0x12d) {
+                for (i = 0; i < 0x14; i++) {
+                    itemId = (s16)FUN_0016f630(0xffffffffffffffffULL, i);
+                    if (itemId != 0) {
+                        itemRecord.itemId = (u16)FUN_0016f630(0xffffffffffffffffULL, i);
+                        itemRecord.quantity = FUN_0016f720(0xffffffffffffffffULL, i);
+                        itemRecord.byte08 = (u8)FUN_0016f810(0xffffffffffffffffULL, i);
+                        itemRecord.byte09 = (u8)FUN_0016f900(0xffffffffffffffffULL, i);
+                        itemRecord.value0a = (u16)FUN_0016f9f0(0xffffffffffffffffULL, i);
+                        itemRecord.value0c = (u16)FUN_0016fae0(0xffffffffffffffffULL, i);
+                        itemRecord.value0e = (u16)FUN_0016fbd0(0xffffffffffffffffULL, i);
+                        itemRecord.value10 = (u16)FUN_0016fcc0(0xffffffffffffffffULL, i);
+                        FUN_0016fea0(0xffffffffffffffffULL, i, 0);
+                        FUN_001830c0(&itemRecord);
+                    }
+                }
+                FUN_0025f570();
+                work->frame = 10;
+                work->state = 6;
+            } else {
+                work->state = 3;
+            }
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 5:
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            work->state = 3;
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 6:
+        nextFrame = work->frame - 1;
+        work->frame = nextFrame;
+        if (nextFrame < 1) {
+            work->state = 7;
+        }
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 10),
+                     (undefined8)0);
+        break;
+    case 7:
+        return 0xffffffff;
+    }
+    return 0;
+}
+
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+// FUN_00169AE0
+void FUN_00169AE0(int param_1)
+{
+    CampTargetMenuWork* work;
+    s32 i;
+
+    work = (CampTargetMenuWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
+    if (work->list != NULL) {
+        (*DAT_0096017c_abs)(work->list);
+        work->list = NULL;
+    }
+    for (i = 0; i < 2; i++) {
+        if (*(void**)((u8*)work + 0x10 + i * 4) != NULL) {
+            FUN_001124b0_data(*(void**)((u8*)work + 0x10 + i * 4));
+        }
+    }
+    if (*(void**)((u8*)work + 0x0c) != NULL) {
+        FUN_00100ec0_data(*(void**)((u8*)work + 0x0c));
+    }
+    work->archive = NULL;
+    (*DAT_0096017c_abs)(work);
+}
+/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
+
+/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_00169B90 NONMATCHING
+void FUN_00169B90(void* param_1, undefined8 param_2,
+                  void* param_3, s32 param_4, undefined8 param_5)
+{
+    RwV2d position;
+    f32 x;
+    f32 y;
+    f32 depth;
+    f32 drawY;
+
+    position = *(RwV2d*)&param_2;
+    y = position.y;
+    x = position.x;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    drawY = y + 18.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 416.0f, drawY, DAT_00960088 - depth);
+    drawY = x + 468.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(drawY, y + 408.0f, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
+    {
+        s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
+        if (count >= 100) {
+            depth = (f32)FUN_0021ea00(0x28);
+            campDataDrawSpriteAltDirect(drawY, y + 384.0f, DAT_00960088 - depth);
+        }
+        if (count >= 10) {
+            depth = (f32)FUN_0021ea00(0x28);
+            campDataDrawSpriteAltDirect(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
+        }
+    }
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteAltDirect(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
+    y += 404.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 565.0f, y, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 584.0f, y, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
+}
+
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
+#pragma opt_lifetimes on
+// FUN_0016A030 NONMATCHING
+undefined4 FUN_0016A030(void)
+{
+    u16 itemId;
+    u16 source;
+    s16 category;
+    u32 amount;
+    u32 secondaryAmount;
+    u32 resource;
+    s32 mode;
+    u32 packed;
+    u16 item;
+    u16 itemIndex;
+    u16 slot;
+    s32 i;
+    s32 sourceCount;
+    s32 generatedCount;
+    s32 lastMode;
+    CampTargetItemRecord itemRecord;
+
+    mode = FUN_0035ed20(0);
+    if (mode == 1) {
+        lastMode = -1;
+        source = 0xffff;
+        for (i = 0; i < 300; i++) {
+            category = (s16)i;
+            itemId = (u16)func_00170760(0xffff, category + 4000);
+            if (itemId != 0) {
+                amount = func_00170760(0xffff, category + 4000);
+                secondaryAmount = func_00170760(1, category + 4000);
+                amount = (amount & 0xffff) + (secondaryAmount & 0xffff);
+                if (amount > 99) {
+                    amount = 99;
+                }
+                func_00170860(1, category + 4000, amount & 0xffff);
+                func_00170860(0xffff, category + 4000, 0);
+            }
+        }
+    } else {
+        lastMode = mode + 0x100;
+        source = (u16)lastMode;
+        for (i = 0; i < 0x14; i++) {
+            item = (u16)mode;
+            slot = (u16)i;
+            itemIndex = (u16)FUN_00170a40(item, slot);
+            if (itemIndex != 0 && FUN_00170ab0(item, slot) != 0) {
+                itemIndex = (u16)FUN_00170a40(item, slot);
+                category = (s16)FUN_00170ab0(item, slot);
+                amount = func_00170760(1, itemIndex);
+                amount = (u32)category + (amount & 0xffff);
+                if ((s32)amount > 99) {
+                    amount = 99;
+                }
+                func_00170860(1, itemIndex, amount & 0xffff);
+                FUN_00170b20((u16)mode, (u16)i, 0);
+                FUN_00170b90((u16)mode, (u16)i, 0);
+            }
+        }
+    }
+
+    sourceCount = 0;
+    for (i = 0; i < 0x14; i++) {
+        if ((u16)FUN_0016f630(source, i) != 0) {
+            sourceCount++;
+        }
+    }
+    generatedCount = 0;
+    for (i = 0; i < 300; i++) {
+        if ((u16)FUN_0016f630(1, i) != 0) {
+            generatedCount++;
+        }
+    }
+    if (sourceCount + generatedCount < 0x12d) {
+        for (lastMode = 0; lastMode < 0x14; lastMode++) {
+            itemId = (u16)FUN_0016f630(source, lastMode);
+            if (itemId != 0) {
+                itemRecord.itemId = (u16)FUN_0016f630(source, lastMode);
+                itemRecord.quantity = FUN_0016f720(source, lastMode);
+                itemRecord.byte08 = (u8)FUN_0016f810(source, lastMode);
+                itemRecord.byte09 = (u8)FUN_0016f900(source, lastMode);
+                itemRecord.value0a = (u16)FUN_0016f9f0(source, lastMode);
+                itemRecord.value0c = (u16)FUN_0016fae0(source, lastMode);
+                itemRecord.value0e = (u16)FUN_0016fbd0(source, lastMode);
+                itemRecord.value10 = (u16)FUN_0016fcc0(source, lastMode);
+                FUN_0016fea0(source, lastMode, 0);
+                FUN_001830c0(&itemRecord);
+            }
+        }
+        uGpffffb28c = 0;
+    } else {
+        if (lastMode != -1) {
+            for (lastMode = 0; lastMode < 0x14; lastMode++) {
+                itemId = (u16)FUN_0016f630(source, lastMode);
+                if (itemId != 0) {
+                    packed = FUN_0016f630(source, lastMode);
+                    FUN_0016fea0(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f720(source, lastMode);
+                    FUN_0016ff90(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f810(source, lastMode);
+                    FUN_00170080(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f900(source, lastMode);
+                    FUN_00170170(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f9f0(source, lastMode);
+                    FUN_00170260(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fae0(source, lastMode);
+                    FUN_00170350(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fbd0(source, lastMode);
+                    FUN_00170440(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fcc0(source, lastMode);
+                    FUN_00170530(0xffffffffffffffffULL, lastMode, packed);
+                    FUN_0016fea0(source, lastMode, 0);
+                }
+            }
+        }
+        resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x24, 0x40000);
+        if (resource == 0) {
+            uGpffffb28c = 0;
+        } else {
+            uGpffffb28c = (s32)(uintptr_t)FUN_00194b20_data(
+                0, 0x5dc020, 0x18bf, FUN_00169470, FUN_00169AE0,
+                (void*)(uintptr_t)resource);
+            if (uGpffffb28c != 0) {
+                *(u32*)(resource + 0x0c) = FUN_00100d80_data(0x5dc030, 1);
+            }
+        }
+    }
+    return 1;
+}
+#pragma opt_lifetimes reset
+
+// FUN_0016A6A0
+undefined4 FUN_0016A6A0(void)
+{
+    s32 state;
+
+    if (iGpffffb28c == 0) {
+        return 1;
+    }
+    state = FUN_00195290_data(iGpffffb28c);
+    if (state == 3) {
+        iGpffffb28c = 0;
+        return 1;
+    }
+    return 0;
+}
+
+
+/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
+#pragma opt_lifetimes on
+// FUN_0016A700 NONMATCHING
+void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
+{
+    f32 x;
+    f32 y;
+    s32 i;
+    s32 row;
+    s32 visibleCount;
+    s32 totalCount;
+    s32 selected;
+    u32 type;
+    u32 spriteCode;
+    u32 textAlpha;
+    u32 textId;
+    u32* drawData;
+    undefined1 text[0x100];
+
+    x = *(f32*)((u8*)&param_3 + 4);
+    y = *(f32*)&param_3;
+    drawData = (u32*)param_2;
+    textAlpha = 0xffU - (u32)param_5;
+
+    /* The six-argument form preserves the texture/sprite selectors carried
+     * in the otherwise untyped retail calls. */
+    campDataDrawSpriteFade(x + 541.0f, y + 38.0f, param_1, (void*)(uintptr_t)drawData[1], 0x44, param_5);
+    campDataDrawSpriteFade(x + 541.0f, y + 235.0f, param_1, (void*)(uintptr_t)drawData[1], 0x45, param_5);
+
+    visibleCount = *(s32*)((u8*)param_4 + 0x2d64) - 6;
+    if (visibleCount < 1) {
+        visibleCount = 0;
+    } else {
+        visibleCount = (*(s32*)((u8*)param_4 + 0x2d6c) * 0x97) / visibleCount;
+    }
+    campDataDrawSpriteFade(x + 541.0f, y + 43.0f + (f32)visibleCount,
+                 param_1, (void*)(uintptr_t)drawData[1], 0x46, param_5);
+
+    selected = *(s32*)((u8*)param_4 + 0x2d68);
+    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
+    row = *(s32*)((u8*)param_4 + 0x2d6c);
+
+    for (i = 0; i < 6; i++) {
+        s32 recordIndex;
+        s32 hasRecord;
+
+        recordIndex = row + i;
+        hasRecord = ((CampTargetList*)param_4)->records[recordIndex].flags;
+        if (selected == i) {
+            if (hasRecord != 0) {
+                campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
+                             param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
+            }
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x40, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x41, param_5);
+        } else if (hasRecord == 0) {
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3c, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3d, param_5);
+        } else {
+            campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
+                         param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3e, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3f, param_5);
+        }
+    }
+
+    for (i = 0; i < 6; i++) {
+        s32 recordIndex;
+        if (i + row >= totalCount) {
+            break;
+        }
+        recordIndex = row + i;
+        type = ((CampTargetList*)param_4)->records[recordIndex].type;
+
+        if (i == selected) {
+            /* jtbl_007B63A0: the cases are not empty; they select the
+             * selected-row digit/icon before the +1 adjustment. */
+            spriteCode = 9;
+            switch (type) {
+            case 0:  spriteCode = 0;    break;
+            case 1:  spriteCode = 2;    break;
+            case 2:  spriteCode = 4;    break;
+            case 3:  spriteCode = 6;    break;
+            case 4:  spriteCode = 8;    break;
+            case 5:  spriteCode = 0xa;  break;
+            case 6:  spriteCode = 0xc;  break;
+            case 7:  spriteCode = 0xe;  break;
+            case 8:  spriteCode = 0;    break;
+            case 9:  spriteCode = 2;    break;
+            case 10: spriteCode = 4;    break;
+            case 11: spriteCode = 6;    break;
+            case 12: spriteCode = 8;    break;
+            case 13: spriteCode = 0xa;  break;
+            case 14: spriteCode = 0xc;  break;
+            case 15: spriteCode = 0xe;  break;
+            case 16: spriteCode = 0x12; break;
+            case 17: spriteCode = 0x14; break;
+            case 18: spriteCode = 0x16; break;
+            case 19: spriteCode = 0x1a; break;
+            case 20: spriteCode = 0x1a; break;
+            default: break;
+            }
+            campDataDrawSpriteFade(x + 252.0f,
+                         y + 43.0f + (f32)(i * 0x21), param_1,
+                         (void*)(uintptr_t)drawData[0], spriteCode + 1, param_5);
+
+            {
+                u8* record = (u8*)param_4 + recordIndex * 0x24;
+                textId = (u32)func_00171110(*(undefined2*)(record + 100),
+                                      *(undefined1*)(record + 0x7d));
+                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
+            }
+            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
+                                (s32)((s32)y + 52.0f + (f32)(i * 0x21) + 1.0f),
+                                textAlpha | 0xffffff00U, 6, 1, (const char*)text, 0x10, 0);
+        } else {
+            /* jtbl_007B6340: this is the unselected-row table. */
+            spriteCode = 9;
+            switch (type) {
+            case 0:  spriteCode = 1;    break;
+            case 1:  spriteCode = 3;    break;
+            case 2:  spriteCode = 5;    break;
+            case 3:  spriteCode = 7;    break;
+            case 4:  spriteCode = 9;    break;
+            case 5:  spriteCode = 0xb;  break;
+            case 6:  spriteCode = 0xd;  break;
+            case 7:  spriteCode = 0xf;  break;
+            case 8:  spriteCode = 1;    break;
+            case 9:  spriteCode = 3;    break;
+            case 10: spriteCode = 5;    break;
+            case 11: spriteCode = 7;    break;
+            case 12: spriteCode = 9;    break;
+            case 13: spriteCode = 0xb;  break;
+            case 14: spriteCode = 0xd;  break;
+            case 15: spriteCode = 0xf;  break;
+            case 16: spriteCode = 0x13; break;
+            case 17: spriteCode = 0x15; break;
+            case 18: spriteCode = 0x17; break;
+            case 19: spriteCode = 0x1b; break;
+            case 20: spriteCode = 0x1b; break;
+            default: break;
+            }
+            campDataDrawSpriteAltFade(x + 252.0f,
+                                       y + 43.0f + (f32)(i * 0x21),
+                                       param_1, (void*)(uintptr_t)drawData[0],
+                                       spriteCode - 1, param_5, 0x20, 0x43,
+                                       0x78, 0);
+            {
+                u8* record = (u8*)param_4 + recordIndex * 0x24;
+                textId = (u32)func_00171110(*(undefined2*)(record + 100),
+                                      *(undefined1*)(record + 0x7d));
+                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
+            }
+            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
+                                (s32)((s32)y + 52.0f + (f32)(i * 0x21)),
+                                textAlpha | 0xffffff00U, 10, 1, (const char*)text, 0x10, 0);
+        }
+    }
+}
+#pragma opt_lifetimes reset
+
+/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
+#pragma opt_propagation off
+// FUN_0016AF90 NONMATCHING
+void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
+{
+    f32 x;
+    f32 y;
+    f32 xLeft;
+    f32 xRight;
+    f32 yTop;
+    f32 yBottom;
+    f32 rowY;
+    f32 barY;
+    s32 totalCount;
+    s32 row;
+    s32 selected;
+    s32 recordIndex;
+    u8* record;
+    s32 condition;
+    u32 type;
+    u32 mainSprite;
+    u32 textId;
+    u32* drawData;
+    undefined1 text[0x100];
+    x = *(f32*)&param_3;
+    y = *(f32*)((u8*)&param_3 + 4);
+    drawData = (u32*)param_2;
+
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
+                       (u8)param_5, x + 36.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x49,
+                       (u8)param_5, x + 348.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4a,
+                       (u8)param_5, x + 55.0f, y + 252.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4b,
+                       (u8)param_5, x + 55.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4c,
+                       (u8)param_5, x + 198.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4d,
+                       (u8)param_5, x + 55.0f, y + 313.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4e,
+                       (u8)param_5, x + 198.0f, y + 313.0f, param_1);
+
+    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
+    if (totalCount != 0) {
+        row = *(s32*)((u8*)param_4 + 0x2d6c);
+        selected = *(s32*)((u8*)param_4 + 0x2d68);
+        recordIndex = row + selected;
+        record = (u8*)param_4 + recordIndex * 0x24;
+        type = *(u32*)(record + 0x78);
+
+        /* jtbl_007B6400 selects the main selected-persona icon. */
+        mainSprite = 0x51;
+        switch (type) {
+        case 0:  mainSprite = 0x51; break;
+        case 1:  mainSprite = 0x52; break;
+        case 2:  mainSprite = 0x53; break;
+        case 3:  mainSprite = 0x54; break;
+        case 4:  mainSprite = 0x55; break;
+        case 5:  mainSprite = 0x56; break;
+        case 6:  mainSprite = 0x5b; break;
+        case 7:  mainSprite = 0x57; break;
+        case 8:  mainSprite = 0x51; break;
+        case 9:  mainSprite = 0x52; break;
+        case 10: mainSprite = 0x53; break;
+        case 11: mainSprite = 0x54; break;
+        case 12: mainSprite = 0x55; break;
+        case 13: mainSprite = 0x56; break;
+        case 14: mainSprite = 0x5b; break;
+        case 15: mainSprite = 0x57; break;
+        case 16: mainSprite = 0x58; break;
+        case 17: mainSprite = 0x59; break;
+        case 18: mainSprite = 0x5a; break;
+        case 19: mainSprite = 0x5a; break;
+        case 20: mainSprite = 0x5a; break;
+        default: break;
+        }
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], mainSprite,
+                           (u8)param_5, x + 127.0f, y + 253.0f, param_1);
+
+        condition = *(s8*)((u8*)record + 0x7e);
+        if (condition == 2) {
+            textId = *(undefined2*)((u8*)record + 0x86);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 1) {
+            textId = *(undefined2*)((u8*)record + 0x84);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 0) {
+            textId = *(undefined2*)((u8*)record + 0x80);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            textId = *(undefined2*)((u8*)record + 0x82);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else {
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        }
+
+        rowY = y + 356.0f;
+        barY = x + 55.0f;
+        campDataDrawDigits(param_1, (s32)barY, (s32)rowY,
+                           (0xffU - (u32)param_5) | 0xffffff00U, 1, 10, 1,
+                           (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
+                                 *(undefined2*)((u8*)record + 100)));
+    } else {
+        /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
+    }
+
+}
+#pragma opt_propagation reset
