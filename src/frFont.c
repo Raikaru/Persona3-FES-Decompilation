@@ -3009,10 +3009,12 @@ void FUN_003b22a0(u32 *param_1)
   int iVar6;
 
   int lVar7;
+  u32 *node;
 
   
+  node = (u32 *)param_1[5];
 
-  if ((param_1[5] != 0) && (*(int *)(param_1[5] + 0x1c) == 0)) {
+  if ((node != 0) && (*(int *)((u8 *)node + 0x1c) == 0)) {
 
     *(u8 *)(param_1 + 7) = 0;
 

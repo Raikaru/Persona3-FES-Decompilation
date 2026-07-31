@@ -3068,8 +3068,6 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 #pragma pop
 
 
-#pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_003715B0 NONMATCHING
 
 
@@ -3122,8 +3120,6 @@ u32 FUN_003715b0(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
-#pragma opt_loop_invariants reset
 // FUN_00371710
 
 
@@ -3279,6 +3275,8 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
 /* opt_propagation off: default nd701/1124B -> nd691/1124B; retained. */
 #pragma push
 #pragma opt_propagation off
+#pragma opt_lifetimes on
+#pragma opt_dead_assignments off
 // FUN_00371DD0 NONMATCHING
 
 
@@ -3515,6 +3513,8 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 #pragma pop
 
 
+#pragma opt_dead_assignments reset
+#pragma opt_lifetimes reset
 // FUN_00372260
 
 
