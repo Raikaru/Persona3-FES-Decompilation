@@ -1668,7 +1668,6 @@ void btlActionInitStateTarget(BtlAction* action)
         btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(scratch.selected->unit, 0), BTLPACKET_TYPE_1);
     }
 }
-#pragma opt_common_subs off
 // FUN_0028c590 NONMATCHING
 void btlActionUpdateStateTarget(BtlAction* action)
 {
@@ -1768,12 +1767,12 @@ void btlActionUpdateStateTarget(BtlAction* action)
     }
 }
 
-#pragma opt_common_subs reset
 // FUN_0028c9f0
 void btlActionInitStateAnalyze(BtlAction* action)
 {
     action->movedAwayFromHome = true;
 }
+#pragma opt_loop_invariants on
 // FUN_0028ca00 NONMATCHING
 void btlActionUpdateStateAnalyze(BtlAction* action)
 {
@@ -1885,6 +1884,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
     }
 }
 
+#pragma opt_loop_invariants reset
 // FUN_0028cda0
 void btlActionInitStateAI(BtlAction* action)
 {
