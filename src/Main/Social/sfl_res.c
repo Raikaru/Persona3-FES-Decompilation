@@ -99,90 +99,13 @@ static void sflResCopyFile(u32 request, s32 fileIndex, u32* destination)
     *destination = (u32)copy;
 }
 
-// FUN_0020d500
-void sflResDrawIndexedMesh(u32* work, const f32* vertices)
-{
-    RwV3d axis;
-    RwMatrix* matrix;
-    u32* destination;
-    s32 count;
-    const u32* source;
-    u32 x;
-    u32 y;
 
-    axis = DAT_0068e108;
-    if ((*work & 1) != 0) {
-        matrix = (RwMatrix*)func_004c38c0();
-        count = 8;
-        source = (const u32*)vertices;
-        destination = (u32*)matrix;
-        do {
-            x = source[0];
-            y = source[1];
-            source += 2;
-            count -= 1;
-            destination[0] = x;
-            destination[1] = y;
-            destination += 2;
-        } while (count > 0);
-        func_004c31b0(matrix, &axis, 180.0f, 1);
-    } else {
-        matrix = (RwMatrix*)vertices;
-    }
-    func_004f1ed0(work + 1, 0x44, matrix, 3);
-    (*DAT_00960090)(1, 0);
-    func_004f1fd0(3, D_00875A90, 0x138);
-    func_004f1f80();
-    if ((*work & 1) != 0) {
-        func_004c3880(matrix);
-    }
-}
 
-// FUN_0020D630
-void sflResSetSpriteScale(void* work, const f32* value)
-{
-    *(RwV3d*)((u8*)work + 0x2c) = *(const RwV3d*)value;
-}
 
-// FUN_0020D650
-void sflResSetSpritePosition(void* work, const f32* value)
-{
-    *(RwV3d*)((u8*)work + 0x20) = *(const RwV3d*)value;
-}
 
-// FUN_0020D670
-void sflResGetSpritePosition(const void* work, f32* value)
-{
-    *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
-}
 
-// FUN_0020d690
-void sflResSetSpriteRotation(void* work, const f32* value)
-{
-    *(RwV4d*)((u8*)work + 0x10) = *(const RwV4d*)value;
-}
 
-// FUN_0020d6c0
-void sflRes0020d6c0(void* work)
-{
-    K_ASSERT(*(u32*)((u8*)work + 4) == 0, 0x677);
-    *(u32*)((u8*)work + 0x170) |= 1;
-}
 
-// FUN_0020d710
-void sflRes0020d710(u32* work)
-{
-    K_ASSERT(work[1] == 0, 0x67e);
-    work[0x5c] |= 2;
-    work[0] |= 2;
-}
-
-// FUN_0020d770
-void sflRes0020d770(void* work, f32 value)
-{
-    K_ASSERT(*(u32*)((u8*)work + 4) == 1, 0x686);
-    *(f32*)((u8*)work + 0x328) = value;
-}
 
 // FUN_0020d7d0
 void sflResInit(SflResourceManager* work)

@@ -20,30 +20,18 @@ static BasWork* sBasWork; // puGpffffb63c
 
 void bpRootRequestAnalyze(u32 unitId); // bp_root.c
 
-
-
-// FUN_0024a6e0
-void basRequestAnalyze(u32 unitId)
+// FUN_0024a6c0
+void basInit(BasWork* work)
 {
-    BasWork* work;
-
-    K_ASSERT(sBasWork != NULL, 0x1d);
-    work = sBasWork;
-    bpRootRequestAnalyze(unitId);
-    work->unitId = unitId;
-    work->flags |= BAS_PENDING;
+    work->flags = 0;
+    sBasWork = work;
 }
 
-// FUN_0024a750
-u32 basIsAnalyzePending(void)
+// FUN_0024a6d0
+void basShutdown(void)
 {
-    K_ASSERT(sBasWork != NULL, 0x1d);
-    return sBasWork->flags & BAS_PENDING;
+    sBasWork = NULL;
 }
 
-// FUN_0024a7a0
-void basClearAnalyzePending(void)
-{
-    K_ASSERT(sBasWork != NULL, 0x1d);
-    sBasWork->flags &= ~BAS_PENDING;
-}
+
+
