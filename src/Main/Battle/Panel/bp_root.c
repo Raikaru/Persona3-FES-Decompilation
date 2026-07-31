@@ -1409,10 +1409,10 @@ void FUN_00202010(void)
         skill = (u16*)(p + i * 8 + 0x2c);
         switch (((u8*)((uintptr_t)DAT_007ce3f8 + *skill * 0x2c))[3])
         {
+        case 2:
         case 1:
             *(u32*)(row + 8) = 1;
             break;
-        case 2:
         default:
             *(u32*)(row + 8) = 0;
             break;

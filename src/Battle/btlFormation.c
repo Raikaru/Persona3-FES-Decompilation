@@ -612,7 +612,7 @@ extern void func_002baa20(int *param_1);
 extern u32 func_002baad0(int *param_1);
 extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
 extern void func_002bacb0(u32 *param_1);
-extern u32 func_002bad60(u32 *param_1);
+extern u32 func_002bad60(int *param_1);
 extern bool func_002baec0(u32 *param_1);
 extern void func_002baf30(u32 *param_1);
 extern void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u32 param_5);
@@ -2321,7 +2321,7 @@ void func_002bacb0(u32 *param_1)
 
 // FUN_002bad60 NONMATCHING
 
-u32 func_002bad60(u32 *param_1)
+u32 func_002bad60(int *param_1)
 
 {
   short sVar1;
@@ -2346,7 +2346,7 @@ u32 func_002bad60(u32 *param_1)
           return 0;
         }
         if ((param_1[6] == 0) &&
-            ((*(volatile u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
+            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:

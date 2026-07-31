@@ -684,8 +684,8 @@ void* FUN_0012c430(KwlnTask* task)
         break;
     case 1:
         if (FUN_001016b0(work[0]) != 0) {
+            u8 scratch[4];
             CampVec2 position;
-            u8 scratch[0x64];
 
             position.x = 0.0f;
             position.y = 382.0f;

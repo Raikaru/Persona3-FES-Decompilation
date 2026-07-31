@@ -1115,7 +1115,7 @@ KwlnTask *func_001f2080(const u8 *params)
     KwlnTask *child;
     RwV2d viewWindow;
     sBrCard = work;
-    ((u32 *)work)[1] = 0;
+    BR_U32(work, 4) = 0;
     BR_U32(work, 0x14) = 0;
     task = kwlnTaskCreateWithAutoPriority(NULL, 10, "battle result card",
                                           func_001f2300_update, func_001f2fd0_destroy, work);
@@ -1129,7 +1129,7 @@ KwlnTask *func_001f2080(const u8 *params)
     viewWindow.x = 1.0f;
     viewWindow.y = 0.5f;
     RwCameraSetViewWindow((RwCamera *)kwlnGetMainCamera(), &viewWindow);
-    ((u32 *)work)[1] |= 3;
+    BR_U32(work, 4) |= 3;
     func_00219c90(work + 0x95c0);
     sflResInit((SflResourceManager *)(work + 0x60));
     func_00239170(work + 0xf0);
@@ -1147,7 +1147,6 @@ KwlnTask *func_001f2080(const u8 *params)
     sflPersonaInit(work + 0x2a200);
     BR_U32(work, 0xe4) = 0;
     func_001f4650(task, params);
-    BR_U32(work, 8) = 0;
     func_001f3270(task);
     BR_U32(work, 0x2a210) = 0;
     return task;

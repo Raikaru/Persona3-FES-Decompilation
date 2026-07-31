@@ -6499,11 +6499,12 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 int FUN_0030c0c0(void)
 {
   u32 outer;
-  u16 count;
-  u16 current;
+  u16 currentValue;
   u16 inner;
   u16 raw;
   s32 target;
+  u16 current;
+  u16 count;
   u32 offset;
   u8* entry;
   u8* member;
