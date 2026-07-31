@@ -35,6 +35,11 @@ extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
 extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
 #pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
 extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
+static inline s32 findSkillOrdered(s32 base,u32 skill)
+{
+  u16 masked_skill = skill & 0xffff;
+  return datPersonaFindSkillIdx_003d6e60(base + 4,masked_skill);
+}
 #pragma alias fclCombineMisc003d7a30_u32 fclCombineMisc003d7a30
 extern s32 fclCombineMisc003d7a30_u32(u32 *param_1, int *param_2, u32 param_3);
 u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
@@ -3418,7 +3423,7 @@ void FUN_003d9cc0(int param_1)
 
 {
 
-  int iVar1;
+  int entry_base;
 
   int iVar2;
 
@@ -3426,17 +3431,17 @@ void FUN_003d9cc0(int param_1)
 
   u32 uVar4;
 
-  int iVar5;
-
-  int unaff_s1_lo;
+  int iVar1;
 
   int lVar6;
+
+  int unaff_s1_lo;
 
   int iVar7;
 
   int iVar8;
 
-  int entry_base;
+  int iVar5;
 
   
 

@@ -8534,8 +8534,8 @@ short FUN_0043c180(char param_1)
   int iVar10;
   short sVar9;
   u16 uVar8;
-  u8 *row;
   int player;
+  u8 *row;
 
   sVar9 = 0;
   uVar8 = 0;

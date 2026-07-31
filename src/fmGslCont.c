@@ -294,7 +294,6 @@ int * FUN_003b4520(void)
 #undef FUN_003b4580
 // FUN_003B4580 NONMATCHING
 
-
 void FUN_003b4580(int param_1)
 {
   typedef struct GslListNode {

@@ -6719,11 +6719,6 @@ void func_003196f0(Model* param_1, u16 param_2)
 void func_003197c0(Model* param_1, RwMatrix* param_2)
 {
     u16 uVar6;
-    u32* puVar5;
-    u32* puVar4;
-    s32 uVar8;
-    u32 uVar1;
-    u32 uVar2;
     int iVar3;
 
     uVar6 = 0;
@@ -6732,19 +6727,7 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
         iVar3 = (int)param_1->attachedWpns[uVar6].wpnMdl;
         if (iVar3 != 0)
         {
-            puVar4 = (u32*)(iVar3 + 0x90);
-            uVar8 = 8;
-            puVar5 = (u32*)param_2;
-            do
-            {
-                uVar1 = *puVar5;
-                uVar2 = puVar5[1];
-                puVar5 = puVar5 + 2;
-                uVar8 = uVar8 - 1;
-                *puVar4 = uVar1;
-                puVar4[1] = uVar2;
-                puVar4 = puVar4 + 2;
-            } while (uVar8 > 0);
+            *(RwMatrix *)(iVar3 + 0x90) = *param_2;
         }
     }
 }

@@ -769,7 +769,7 @@ void FUN_0038a590(int param_1,int param_2);
 void FUN_0038a620(int param_1,int param_2);
 void FUN_0038a6c0(int param_1);
 void FUN_0038a730(int param_1);
-void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2);
+void FUN_0038a7c0(u8 *param_1,u8 *param_2);
 int FUN_0038a920(int param_1,u16 *param_2,int param_3);
 void FUN_0038af70(u16 *param_1);
 void FUN_0038b140(int param_1);
@@ -3289,7 +3289,7 @@ void FUN_0038a730(int param_1)
 // FUN_0038A7C0 NONMATCHING
 
 
-void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
+void FUN_0038a7c0(u8 *param_1,u8 *param_2)
 {
   typedef struct {
     RwV3d vector0;
@@ -3303,6 +3303,10 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
   RwV3d input;
   RwV3d output1;
   RwV3d output2;
+  RwV3d *destination1;
+  RwV3d *destination2;
+  destination1 = (RwV3d *)param_1;
+  destination2 = (RwV3d *)param_2;
 
   camera = (u8 *)FUN_00198590();
 
@@ -3337,8 +3341,8 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
     input.y = 0;
     FUN_004c69f0(&output2,&input);
 
-    *param_1 = output1;
-    *param_2 = output2;
+    *destination1 = output1;
+    *destination2 = output2;
   }
 }
 
@@ -6575,8 +6579,8 @@ void FUN_0038d790(int param_1)
 void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
   int count;
-  int index;
   int reverseIndex;
+  int index;
   int selectedIndex;
   RwV3d *source;
   RwV3d *destination;
@@ -6584,8 +6588,8 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   if (*param_1 == 0) {
     count = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    selectedIndex = 1;
     index = 0;
+    selectedIndex = 1;
     reverseIndex = count - 1;
     for (; index < count; index++) {
       if (param_3 == selectedIndex) {

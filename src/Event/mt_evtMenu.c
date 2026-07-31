@@ -1172,6 +1172,8 @@ extern u32 FUN_00318620_evt_u32(u32 param_1,u16 param_2,s16 param_3);
 extern u32 FUN_00530da0_evt(f32 param_1);
 
 u32 FUN_00397870(int param_1,long param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6);
+#pragma alias FUN_00397870_i FUN_00397870
+extern u32 FUN_00397870_i(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6);
 void FUN_0038a590(int param_1,long param_2);
 void FUN_0038a620(int param_1,long param_2);
 void FUN_0038a6c0(int param_1);
@@ -9444,10 +9446,11 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
   }
   FUN_0036f680(0,param_3 + 0x118,*(u32 *)(param_3 + 0x11c),
                *(u32 *)(param_3 + 0x11c),0,0x4000,0x1000);
-  FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
+  int one = 1;
+  FUN_0036f680(0,0,one,one,0,0x2000,0x8000);
   buttons = *(u16 *)DAT_007e094e_abs;
   if ((buttons & 0x40) != 0) {
-    return 1;
+    return one;
   }
   if ((buttons & 0x20) != 0) {
     return -1;
@@ -12212,7 +12215,7 @@ u32 FUN_0037e3f0(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037E460 NONMATCHING
+// FUN_0037E460
 void FUN_0037e460(u32 param_1,u32 param_2,u32 param_3,u8 *param_4)
 {
   RwV2d local0;
@@ -12319,7 +12322,7 @@ void FUN_0037e460(u32 param_1,u32 param_2,u32 param_3,u8 *param_4)
       evtMenuDrawText((param_1 + 0xa) * 0xc, scaledY, fVar1, iVar3, (const char *)&gp0xffffa588);
     }
     else {
-      if (FUN_00397870((int)param_4,*(int *)(param_4 + 0x1b4),&local1_3,&local1_2,&local1_1,&local1_0) == 1) {
+      if (FUN_00397870_i((int)param_4,*(int *)(param_4 + 0x1b4),&local1_3,&local1_2,&local1_1,&local1_0) == 1) {
         fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
         evtMenuDrawText((param_1 + 0xa) * 0xc, scaledY, fVar1, iVar3, (const char *)DAT_0069fbf0, *(u32 *)(param_4 + 0x1b4), local1_3, local1_2, local1_1, local1_0);
       }
