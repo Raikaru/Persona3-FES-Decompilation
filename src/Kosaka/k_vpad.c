@@ -58,7 +58,6 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     s32 animation;
     s32 rotated;
     s32 forceAnimation;
-    s32 cameraInput;
     work = (VPadWork*)task->workData;
     kwlnGetMainCamera();
     axis = D_00683D78;
@@ -81,6 +80,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         RwV3d right = {0};
         s32 value;
         f32 valueF;
+        u16 padButtons;
 
         if (work->controlMode == 1)
         {
@@ -94,11 +94,12 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         value = *(u8*)(gPads_abs + 0x1f);
         valueF = (f32)(u32)value;
         move.z = valueF - 128.0f;
-        if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_UP) != 0)
+        padButtons = *(u16*)(gPads_abs + 0xc);
+        if ((padButtons & HPAD_BTN_UP) != 0)
         {
             move.z = -128.0f;
         }
-        else if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_DOWN) != 0)
+        else if ((padButtons & HPAD_BTN_DOWN) != 0)
         {
             move.z = 128.0f;
         }
@@ -106,11 +107,11 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         value = *(u8*)(gPads_abs + 0x1e);
         valueF = (f32)(u32)value;
         move.x = valueF - 128.0f;
-        if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_LEFT) != 0)
+        if ((padButtons & HPAD_BTN_LEFT) != 0)
         {
             move.x = -128.0f;
         }
-        else if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_RIGHT) != 0)
+        else if ((padButtons & HPAD_BTN_RIGHT) != 0)
         {
             move.x = 128.0f;
         }
@@ -121,12 +122,10 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         value = *(u8*)(gPads_abs + 0x20);
         valueF = (f32)(u32)value;
         right.x = valueF - 128.0f;
-        cameraInput = 0;
 
-        if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 ||
+        if ((padButtons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 ||
             right.x > 48.0f)
         {
-            cameraInput = 1;
             if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
             {
                 if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 &&
@@ -157,7 +156,6 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         else if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 ||
                  right.x < -48.0f)
         {
-            cameraInput = 1;
             if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
             {
                 if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 &&
@@ -186,9 +184,9 @@ void* K_VPad_UpdateTask(KwlnTask* task)
             }
         }
 
-        if (cameraInput == 0 && (*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
-            (*(u16*)(gPads_abs + 0xe) & HPAD_BTN_CIRCLE) != 0 &&
-            K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
+        else if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
+                 (*(u16*)(gPads_abs + 0xe) & HPAD_BTN_CIRCLE) != 0 &&
+                 K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
         {
             work->cameraTask = func_001d6270(task, 10, -1);
             return KWLNTASK_CONTINUE;

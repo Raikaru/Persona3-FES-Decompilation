@@ -2078,6 +2078,7 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     u32 value;
     s32 i;
     SflPselStateCallback* state;
+    /* Retail rematerializes the state callback after mode dispatch (nd 717 -> 688; obj 1512 -> 1520). */
     SflPselStateCallback* stateTexture;
     SflPselDrawCallback* draw;
 

@@ -4436,6 +4436,7 @@ void FUN_002b2060(int param_1)
 
 #pragma push
 #pragma opt_common_subs on
+#pragma opt_common_subs off
 // FUN_002b21f0 NONMATCHING
 
 void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
@@ -4662,6 +4663,7 @@ void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
 #pragma opt_common_subs on
 #pragma pop
 
+#pragma opt_common_subs reset
 // FUN_002b2800
 void FUN_002b2800(BtlCamera *camera)
 {

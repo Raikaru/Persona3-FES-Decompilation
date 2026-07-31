@@ -6376,61 +6376,28 @@ process_75d70:
 
         iVar2 = 0;
 
-        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
-          iVar2 = -1;
-        }
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) == 0) goto set_75d70_dir1;
+        iVar2 = -1;
+        goto done_75d70_dir1;
+set_75d70_dir1:
+        if ((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) goto done_75d70_dir1;
+        iVar2 = 1;
+done_75d70_dir1:
+        if ((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) goto set_75d70_dir2;
+        iVar2 = -10;
+        goto done_75d70_dir2;
+set_75d70_dir2:
+        if ((*(u16 *)DAT_007e0952_abs & 0x4000) == 0) goto done_75d70_dir2;
+        iVar2 = 10;
+done_75d70_dir2:
+        if ((*(u16 *)DAT_007e0952_abs & 4) == 0) goto set_75d70_dir3;
+        iVar2 = -100;
+        goto done_75d70_dir3;
+set_75d70_dir3:
+        if ((*(u16 *)DAT_007e0952_abs & 8) == 0) goto done_75d70_dir3;
+        iVar2 = 100;
+done_75d70_dir3:
 
-        if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
-          iVar2 = 1;
-        }
-SWAP 6395.=6409:
-        if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
-          iVar2 = -10;
-        }
-
-        if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
-          iVar2 = 10;
-        }
-SWAP 6411.=6425:
-        if ((*(u16 *)DAT_007e0952_abs & 4) != 0) {
-          iVar2 = -100;
-        }
-
-        if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
-          iVar2 = 100;
-        }
-
-        if ((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) {
-
-          if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
-
-            iVar2 = 10;
-
-          }
-
-        }
-
-        else {
-
-          iVar2 = -10;
-
-        }
-
-        if ((*(u16 *)DAT_007e0952_abs & 4) == 0) {
-
-          if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
-
-            iVar2 = 100;
-
-          }
-
-        }
-
-        else {
-
-          iVar2 = -100;
-
-        }
 
         if ((*(u16 *)DAT_007e094e_abs & 0x80) != 0) {
 
