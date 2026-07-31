@@ -6472,7 +6472,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   iVar2 = *(int *)(*(int *)(iVar1 + 0x24) + 0x44);
 
   lVar5 = FUN_0040a490(iVar1);
-  uVar7 = (u32)&LAB_003c5170;
 
 
   if (lVar5 == 0) {
@@ -6848,7 +6847,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   return (u8 *)0x0;
   }
-  return (u8 *)uVar7;
+  return (u8 *)&LAB_003c5170;
 }
 
 // FUN_003EDD80

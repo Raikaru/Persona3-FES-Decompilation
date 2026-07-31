@@ -2077,9 +2077,9 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     u32 frame;
     u32 value;
     s32 i;
-    SflPselDrawCallback* draw;
     SflPselStateCallback* state;
     SflPselStateCallback* stateTexture;
+    SflPselDrawCallback* draw;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     texture = sflResGetPersonaChangeSprite();

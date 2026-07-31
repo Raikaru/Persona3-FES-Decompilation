@@ -26505,7 +26505,6 @@ void FUN_00337f80(int param_1)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_00337FD0 NONMATCHING
 
 
@@ -26701,7 +26700,6 @@ void FUN_00337fd0(int param_1)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00338360
 
 
@@ -27147,6 +27145,7 @@ void FUN_003387c0(int param_1)
 
 
 
+#pragma opt_common_subs off
 // FUN_00338AC0 NONMATCHING
 
 
@@ -27325,6 +27324,7 @@ void FUN_00338ac0(u64 param_1)
 /* The volatile qualifier batch below is the same one banked on the MATCHED twin
    FUN_00337E10 (W170): without it b210 CSEs the bGpffffb857 test load and
    forwards the 0xfe store, losing two lbu (size 124 -> 116) - measured W295. */
+#pragma opt_common_subs reset
 // FUN_00338CE0
 void FUN_00338ce0(int param_1)
 {
