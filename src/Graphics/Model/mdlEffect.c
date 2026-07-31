@@ -3672,7 +3672,6 @@ void FUN_00322660(int param_1)
 
 
 
-#pragma opt_common_subs off
 // FUN_003226B0 NONMATCHING
 
 
@@ -3721,12 +3720,11 @@ void FUN_003226b0(int *param_1,int param_2)
       iVar5 = *piVar1;
 
       iVar2 = *piVar3;
-      iVar5 = iVar5 + iVar2;
 
       for (uVar4 = 0; uVar4 < (u32)piVar3[3]; uVar4 = uVar4 + 1) {
         iVar9 = param_1[4] + uVar4 * 0x14;
 
-        psVar8 = (short *)(iVar5 + uVar4 * 0x18);
+        psVar8 = (short *)(iVar5 + iVar2 + uVar4 * 0x18);
 
         piVar7 = (int *)(piVar1[1] + *psVar8 * 0x14);
 
@@ -3740,7 +3738,7 @@ void FUN_003226b0(int *param_1,int param_2)
 
         *(int *)(iVar9 + 0x10) = iVar6;
 
-        *(int *)(iVar9 + 4) = -(int)psVar8[1];
+        *(int *)(param_1[4] + uVar4 * 0x14 + 4) = -(int)psVar8[1];
 
       }
 
@@ -3823,7 +3821,6 @@ void FUN_003226b0(int *param_1,int param_2)
 
 
 
-#pragma opt_common_subs reset
 // FUN_00322880 NONMATCHING
 
 
