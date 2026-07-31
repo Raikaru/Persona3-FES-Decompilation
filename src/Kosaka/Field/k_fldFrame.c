@@ -934,7 +934,7 @@ u32 func_001ae480(KwlnTask* task)
     return false;
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 static void fldFrameMoveSetAnimation(FldFrameMoveWork* work,
                                      s16 animation,
                                      u16 blendFrames)

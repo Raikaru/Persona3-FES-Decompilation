@@ -1027,7 +1027,7 @@ otherTest:
     func_00109f60(3, 0);
     func_00109f60(4, 0);
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_001baa50
 void func_001baa50(KwlnTask* fldRootTask, u32 enabled)

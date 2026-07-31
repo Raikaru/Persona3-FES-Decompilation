@@ -330,7 +330,7 @@ void H_Chrdsp_Init(void)
         }
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_001058A0
 void H_Chrdsp_Main(void)
 {
@@ -672,7 +672,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         break;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_00106730
 void func_00106730(s16 index)

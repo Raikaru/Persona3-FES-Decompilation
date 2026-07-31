@@ -133,7 +133,7 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 
     return table;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 void FUN_0048a2a0(void);
 

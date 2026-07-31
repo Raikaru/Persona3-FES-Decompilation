@@ -976,7 +976,7 @@ u32 func_0019ab80(f32 alpha,
     return true;
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_0019beb0 NONMATCHING
 KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
 {
@@ -1292,6 +1292,7 @@ static void K_FldShadow_RenderRing(FldShadowRenderTex* shadow)
     RwCameraEndUpdate(camera);
 }
 
+#pragma opt_dead_assignments off
 // FUN_0019b2b0 NONMATCHING
 void* func_0019b2b0(KwlnTask* renderTexTask)
 {
@@ -1544,6 +1545,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_dead_assignments reset
 // FUN_0019bcf0
 void func_0019bcf0(KwlnTask* renderTexTask)
 {

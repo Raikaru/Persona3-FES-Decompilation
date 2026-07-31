@@ -2431,7 +2431,7 @@ int FUN_003b1a90(int param_1)
 
 }
 #define FUN_003b1a90(...) ((int (*)(...))FUN_003b1a90)(__VA_ARGS__)
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 #undef FUN_003b1b00
 // FUN_003B1B00
 
@@ -2544,7 +2544,7 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 
 }
 #define FUN_003b1bc0(...) ((void (*)(...))FUN_003b1bc0)(__VA_ARGS__)
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 #undef FUN_003b1c40
 // FUN_003B1C40
 

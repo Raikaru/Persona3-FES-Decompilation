@@ -11842,7 +11842,6 @@ u32 FUN_0043ca30(int param_1)
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
-#pragma opt_propagation off
 // FUN_00447AD0 NONMATCHING
 
 void FUN_00447ad0(int param_1)
@@ -11949,7 +11948,6 @@ void FUN_00447ad0(int param_1)
 
 #pragma pop
 #pragma opt_common_subs reset
-#pragma opt_propagation reset
 // FUN_00447E70
 
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
@@ -14129,6 +14127,7 @@ void FUN_0044e530(int param_1,u8 param_2)
   return;
 }
 
+#pragma opt_strength_reduction off
 // FUN_0044E560 NONMATCHING
 
 
@@ -14380,6 +14379,7 @@ u32 FUN_0044e560(int param_1)
   return uVar7;
 }
 
+#pragma opt_strength_reduction reset
 // FUN_0044F060
 
 u32 FUN_0044f060(float param_1,int param_2,float *param_3)

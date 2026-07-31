@@ -6520,8 +6520,6 @@ void FUN_003210c0(void)
 
 
 
-/* Removing this loses FUN_0033cb20 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-#pragma opt_loop_invariants on
 
 
 

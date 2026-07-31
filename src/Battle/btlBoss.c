@@ -1633,6 +1633,7 @@ u32 func_002fa240(void)
     }
 }
 
+#pragma opt_lifetimes on
 // FUN_002fa510 NONMATCHING
 void func_002fa510(BtlAction* action, s32 mode)
 {
@@ -1746,6 +1747,7 @@ void func_002fa510(BtlAction* action, s32 mode)
 }
 
 
+#pragma opt_lifetimes reset
 // FUN_002faa50
 void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result)
 {
