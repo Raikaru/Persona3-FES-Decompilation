@@ -1007,6 +1007,8 @@ void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
 #pragma alias FUN_00325d60_ptr FUN_00325d60
 extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
+#pragma alias FUN_00325e40_reordered FUN_00325e40
+extern void FUN_00325e40_reordered(u8 (*param_1) [16],float param_2);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
 u_long128 FUN_00326170(int param_1,u32 *param_2);
@@ -1629,6 +1631,8 @@ extern u64 FUN_003189f0();
 extern u64 FUN_003189f0_f32(float param_1,u32 param_2,u32 param_3);
 #pragma alias FUN_003189f0_typed FUN_003189f0
 extern u64 FUN_003189f0_typed(void *param_1,u16 param_2,float param_3);
+#pragma alias FUN_003189f0_reordered FUN_003189f0
+extern u64 FUN_003189f0_reordered(u32 param_1,u32 param_2,float param_3);
 #pragma alias FUN_00318ad0_u32 FUN_00318ad0
 extern u64 FUN_00318ad0_u32(u32 param_1,u32 *param_2);
 #pragma alias FUN_00318a70_u32 FUN_00318a70
@@ -44519,7 +44523,7 @@ void FUN_0034cc00(u32 *param_1)
 
     FUN_00318a30(param_1[0x28],(u32 *)scaleStack,2);
 
-    FUN_003189f0_f32(*(float *)(param_1 + 0x25),param_1[0x28],0);
+    FUN_003189f0_reordered(param_1[0x28],0,*(float *)(param_1 + 0x25));
 
     FUN_00317730(param_1[0x28]);
 
@@ -44590,7 +44594,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325d60(*puVar7,(u8 (*)[16])auStack_40);
 
-          FUN_00325e40((float)(fVar8),(u8 (*) [16])(*puVar7));
+          FUN_00325e40_reordered((u8 (*) [16])(*puVar7),(float)(fVar8));
 
           FUN_00326030(*puVar7,uStack_c);
 

@@ -6,11 +6,6 @@ extern u8 rwGlobals_abs[];
 #pragma alias DAT_00960088_abs DAT_00960088
 extern u8 DAT_00960088_abs[];
 extern f32 DAT_00960088;
-typedef struct HCursorGlobalsOverlay
-{
-    u8 unk[0x88];
-    f32 value;
-} HCursorGlobalsOverlay;
 
 // FUN_00100230 NONMATCHING
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
@@ -21,7 +16,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     RwIm2DVertex* vertex;
     f32 recipZ;
     s16 i;
-    HCursorGlobalsOverlay* globals;
+    f32* globals;
 
     work = (HCursorWork*)hcursorTask->workData;
 
@@ -47,12 +42,12 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
+            globals = (f32*)DAT_00960088_abs;
             for (; i < 4; i++)
             {
-                globals = (HCursorGlobalsOverlay*)rwGlobals_abs;
                 vertex = &work->vertices[i];
 
-                vertex->u.els.scrVertex.z = globals->value - work->zOffset;
+                vertex->u.els.scrVertex.z = *globals - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
                 indexedWork = (HCursorWork*)((RwRGBA*)work + i);
                 vertex->u.els.color.r = (f32)indexedWork->colors[0].r;

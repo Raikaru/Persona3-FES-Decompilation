@@ -6983,7 +6983,6 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
   long lVar5;
   int iVar7;
-
   int iVar6;
 
 
@@ -16624,7 +16623,7 @@ void FUN_004064e0(int param_1,int param_2,int param_3,int param_4)
 
 // Addressing-signal audit: retail really uses the same two $gp-relative format-string
 // addresses and the same $gp-relative float load. Only +440/+444/+448 call setup differs.
-// FUN_00406AA0 NONMATCHING
+// FUN_00406AA0
 
 
 void FUN_00406aa0(int param_1,int param_2,u32 param_3)
@@ -17089,7 +17088,7 @@ u32 FUN_00409c80(u32 param_1)
           entry[2] = 1;
           break;
         }
-      }
+        }
       entry[3] = FUN_003dfeb0(0);
     }
   }

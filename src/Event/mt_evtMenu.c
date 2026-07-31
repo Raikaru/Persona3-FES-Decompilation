@@ -1504,11 +1504,13 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   FUN_00385990_f32(param_7,(int)param_1 * 0xc,param_2 * 0xc,param_3 * 0xc,
                    param_4 * 0xc,(float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0)) + 1.0f);
 
-  if (param_8 != 0) {
-    iVar2 = ((code)param_8)(param_1,param_2,param_7);
-    param_2 = param_2 + iVar2;
-    iVar1 = iVar1 + iVar2;
-  }
+  do {
+    if (param_8 != 0) {
+      iVar2 = ((code)param_8)(param_1,param_2,param_7);
+      param_2 = param_2 + iVar2;
+      iVar1 = iVar1 + iVar2;
+    }
+  } while (0);
 
   for (; iVar1 < param_4; iVar1 = iVar1 + 1) {
     if (param_9 != (code *)0x0) {
@@ -9667,7 +9669,6 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
 u32 FUN_0037abd0(int param_1,int param_2,int param_3)
 {
-  u32 extraout_a3;
   FUN_0036f900(param_1,param_2,0x16,0x11,0,0x11,param_3,0,(code *)FUN_0037a790);
 
   if (*(int *)((int)param_3 + 0xd4) != 1) {

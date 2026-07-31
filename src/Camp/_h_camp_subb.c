@@ -297,7 +297,7 @@ extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
                           u64 start, u64 end, s32 param0, s32 tile,
                           s32 startFrame, s32 endFrame);
-/* Reordered ABI alias; W310 measured FUN_00141660 nd274 -> nd0 (canonical prototype nd274). */
+/* Reordered ABI alias; W310 measured FUN_00141660 nd274 -> nd0 and FUN_00145350 nd339 -> nd335 (canonical prototype nd274). */
 #pragma alias func_0018bc10_buffirst FUN_0018bc10
 extern void func_0018bc10_buffirst(void* transition, f32 depth,
                                    s32 drawMode, s32 positionMode,
@@ -2077,7 +2077,7 @@ void FUN_00141590(CampEquipmentWork* work)
 
 #define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
   func_0018bc10_buffirst((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
-// FUN_00141660 NONMATCHING
+// FUN_00141660
 
 void FUN_00141660(CampEquipmentPanelWork* work)
 {
@@ -2719,8 +2719,8 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 
 
 
-/* Removing this worsens FUN_00145350 (nd291 -> nd292) - measured W161. */
-#pragma schedule on
+/* Schedule-off + typed buffer locals; W310 with pragma on: nd338/416B, off: nd110/452B; the retained 28B over the alias-only 424B baseline are retail-aligned instructions (fndiff, no padding). */
+#pragma schedule off
 #define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
   func_0018bc10_buffirst((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
 
@@ -2732,30 +2732,34 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
     f32 x;
     f32 y;
     CampPair selectedStart;
-    CampPair hoverStart;
     CampPair end;
+    CampPair hoverStart;
 
     for (index = 0; index < 0xc; index++) {
         if (index < work->listCount) {
             if (index == work->highlightedSlot) {
+                u8* drawBuffer;
                 y = 21.0f;
+                drawBuffer = work->drawBuffer;
                 x = (f32)(index * 0x1d) + 61.0f;
-                selectedStart.x = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e0);
-                selectedStart.y = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e4);
+                selectedStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
+                selectedStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
                 end.x = y;
                 end.y = x;
                 func_0018bc10(103.0f,
-                              work->drawBuffer + (index + 0xa) * 0x44,
+                              drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&selectedStart, *(u64*)&end, 0, 0, 0, 2);
             } else if (index == hoverSlot) {
+                u8* drawBuffer;
                 y = 0.0f;
+                drawBuffer = work->drawBuffer;
                 x = (f32)(index * 0x1d) + 61.0f;
-                hoverStart.x = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e0);
-                hoverStart.y = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e4);
+                hoverStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
+                hoverStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
                 end.x = y;
                 end.y = x;
                 func_0018bc10(103.0f,
-                              work->drawBuffer + (index + 0xa) * 0x44,
+                              drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&hoverStart, *(u64*)&end, 0, 0, 0, 2);
             }
         }

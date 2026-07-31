@@ -1197,11 +1197,11 @@ void func_00101c70(void)
 {
     static u64 key0;
     static u64 key2;
+    void (**buildKey)(void*, const char*);
+    void (**buildHddKey)(void*, const char*);
     void* context1;
     void* context2;
     void* context3;
-    void (**buildKey)(void*, const char*);
-    void (**buildHddKey)(void*, const char*);
 
     func_004bfbb0(-1);
     buildKey = (void (**)(void*, const char*))D_0096013C;

@@ -701,7 +701,7 @@ void FUN_00395550(int param_1,u32 param_2,u32 param_3)
 }
 #define FUN_00395550(...) ((void (*)(...))FUN_00395550)(__VA_ARGS__)
 #undef FUN_00395570
-// FUN_00395570 NONMATCHING
+// FUN_00395570
 
 
 void FUN_00395570(int param_1)
@@ -1705,14 +1705,12 @@ u32 FUN_003965f0(int *param_1)
 
 
   int iVar3;
-  int *entryResult;
 
   int lVar4;
 
   u8 auStack_4 [4];
 
   
-
 
   switch (*param_1) {
   case 1:
@@ -1759,15 +1757,16 @@ u32 FUN_003965f0(int *param_1)
         }
 
         else {
-          entryResult = param_1 + iVar1 * 0xb + 0xe;
+          typedef int EntryRow[11];
+          EntryRow *entry;
+          entry = (EntryRow *)param_1 + iVar1;
 
-          iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);
-          *entryResult = iVar3;
+          iVar3 = (int)FUN_00100d80((const char *)((*entry) + 5),0);
+          (*entry)[14] = iVar3;
 
           param_1[3] = iVar3;
 
         }
-
       }
 
 

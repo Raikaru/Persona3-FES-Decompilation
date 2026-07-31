@@ -844,7 +844,6 @@ void* func_001b9480(KwlnTask* fldRootTask)
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
     FldRootWork* work;
-    u16 majorId;
 
     work = (FldRootWork*)fldRootTask->workData;
     if (ROOT_U32(work, 0x44) != 0)
@@ -884,8 +883,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
         MT_Scene_Destroy();
         DUNGEON_SEQUENCE_FLAG = 0;
     }
-    majorId = work->majorId;
-    if (majorId > 0x1d && majorId < 0x28 &&
+    if (work->majorId > 0x1d && work->majorId < 0x28 &&
         K_FldDungeon_GetCurrentFloor() == 0)
     {
         func_001c07f0();
@@ -970,6 +968,7 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
     return fldRootTask;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001ba8d0 NONMATCHING
 void func_001ba8d0(void)
 {
@@ -992,10 +991,14 @@ void func_001ba8d0(void)
         resource = resource->next;
     }
     otherFlags = ~2u;
-    while (other != NULL)
+    goto otherTest;
+otherLoop:
+    other->flags &= otherFlags;
+    other = other->next;
+otherTest:
+    if (other != NULL)
     {
-        other->flags &= otherFlags;
-        other = other->next;
+        goto otherLoop;
     }
     func_0019fec0(NULL);
     kwlnSetClearColor(0, 0, 0, 0);
@@ -1015,6 +1018,7 @@ void func_001ba8d0(void)
     func_00109f60(3, 0);
     func_00109f60(4, 0);
 }
+#pragma opt_loop_invariants off
 
 // FUN_001baa50
 void func_001baa50(KwlnTask* fldRootTask, u32 enabled)
@@ -2614,7 +2618,7 @@ void func_001bf220(RwV3d* dst, u32 x, u32 y)
     *dst = result;
 }
 
-// FUN_001bf340 NONMATCHING
+// FUN_001bf340 MATCHING
 u32 func_001bf340(const FldDungeonFloorData* floorData)
 {
     s32 chance;
@@ -2635,48 +2639,59 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
     if (chance - 1 < 0)
     {
         FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-        return 0;
+        goto done_reset;
     }
     if (floorData->minorId != 0)
     {
-        return 0;
+        goto done_reset;
     }
-    if (chance - 1 != 0)
+    if (chance - 1 == 0)
     {
-        FUN_0016F3E0(0x3b, chance - 1);
-        return 0;
-    }
-    random = (s32)(RpRandom() % 100);
-    lower = (s32)FUN_0016F380(0x3c);
-    if (random >= lower)
-    {
-        return 0;
-    }
-    lower = (s32)FUN_0016F380(0x3d);
-    upper = (s32)FUN_0016F380(0x3e);
-    total = (s32)FUN_0016F380(0x37);
-    i = (s32)FUN_0016F380(0x36);
-    total += lower + upper;
-    choice = (s32)(RpRandom() % (total + i));
-    FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-    if (choice < lower)
-    {
-        return 1;
-    }
-    if (choice < lower + upper)
-    {
-        return 2;
-    }
-    if (choice < total)
-    {
-        return 3;
-    }
-    for (i = 0; i < 3; i++)
-    {
-        if (FUN_0016DD60(i) >= 1)
+        random = (s32)(RpRandom() % 100);
+        lower = (s32)FUN_0016F380(0x3c);
+        if (random >= lower)
+        {
+            goto done_reset;
+        }
+        lower = (s32)FUN_0016F380(0x3d);
+        upper = (s32)FUN_0016F380(0x3e);
+        total = (s32)FUN_0016F380(0x37);
+        i = (s32)FUN_0016F380(0x36);
+        total += lower + upper;
+        choice = (s32)(RpRandom() % (i + total));
+        FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
+        if (choice < lower)
+        {
+            return 1;
+        }
+        if (choice >= lower && choice < lower + upper)
+        {
+            return 2;
+        }
+        if (choice >= lower + upper && choice < total)
+        {
+            return 3;
+        }
+        for (i = 0; i < 3; i++)
+        {
+            if (FUN_0016DD60(i) >= 1)
+            {
+                break;
+            }
+        }
+        if (i < 3)
         {
             return 4;
         }
     }
+    else
+    {
+        goto reset;
+    }
+done_loop:
+    return 0;
+reset:
+    FUN_0016F3E0(0x3b, chance - 1);
+done_reset:
     return 0;
 }

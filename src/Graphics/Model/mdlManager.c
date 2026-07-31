@@ -5593,16 +5593,16 @@ void func_003164f0(int param_1,int param_2)
   int iVar2;
   int iVar3;
   u16 uVar4;
-  float in_f1;
   float fVar5;
   float in_f5;
+  float in_f1;
 
   
 
   for (uVar1 = 0; uVar1 < 0x10; uVar1 = uVar1 + 1) {
 
-    iVar3 = param_2 + uVar1 * 2;
 
+    iVar3 = param_2 + uVar1 * 2;
     if (0 < (int)*(u16 *)(iVar3 + 0x198)) {
 
       if (uVar1 == 0) {
@@ -8528,8 +8528,8 @@ u32 func_0031be80(u32 param_1)
   int iVar7;
   short *psVar9;
   short *psVar10;
-  u16 sVar3;
-  short asStack_20[12];
+  int sVar3;
+  u16 asStack_20[12];
   int iStack_8;
   int iStack_4;
 
@@ -8553,8 +8553,8 @@ u32 func_0031be80(u32 param_1)
       bVar4 = 0;
     } else {
       for (iVar8 = 0; iVar8 < 0x14; iVar8 = iVar8 + 1) {
-        if (sVar3 == (u16)asStack_20[iVar8]) {
-          if ((u16)asStack_20[iVar8] != 0x3e6) {
+        if (sVar3 == asStack_20[iVar8]) {
+          if (asStack_20[iVar8] != 0x3e6) {
             iStack_8 = iVar8 + 1;
           } else {
             iStack_8 = 9;
