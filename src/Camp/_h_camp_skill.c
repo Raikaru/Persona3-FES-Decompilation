@@ -423,6 +423,13 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
                         record->y);
 }
 
+/* Retail: 9-case jump table (@542 = 0x7b6210); case bodies laid out 2,3,4,5,0,7,8
+   with 1 and 6 empty. Reconstructed W297: object 4560B -> 5520B of a 5536B window.
+   Residual (nd597) is one register-coloring artifact: MWCC coalesces the four
+   per-case `id` locals into a single web that then wins $s0, rotating work/record
+   from retail's $s0/$s1 to $s1/$s2 and cascading through every record-relative row.
+   Retail keeps them separate ($s6 in cases 2/3, $s4 in cases 4/5), which per-case
+   scoping alone does not reproduce. */
 // FUN_00161D90 NONMATCHING
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
 {
@@ -494,8 +501,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             equipment = datGetEquipmentIdx(work->pcId, 0);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
             fx = record->x;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, record->y, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -565,8 +571,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             equipment = datGetEquipmentIdx(work->pcId, 1);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
             fx = record->x;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, record->y, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -628,8 +633,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             equipment = datGetEquipmentIdx(work->pcId, 2);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
             fx = record->x;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, record->y, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -680,8 +684,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             equipment = datGetEquipmentIdx(work->pcId, 3);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
             fx = record->x;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, record->y, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -709,30 +712,23 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     }
     case 7:
         fx = record->x;
-        fy = record->y;
-        FUN_001159f0_typed(owner, work->resource0, 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, work->resource0, 1, record->alpha, fx, record->y, record->depth);
         break;
     case 8:
         if (work->commandFlags != 0) {
             fx = record->x + 182.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 8, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 8, record->alpha, fx, record->y, record->depth);
             fx = record->x + 342.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, record->y, record->depth);
             fx = record->x + 561.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, record->y, record->depth);
         } else {
             fx = record->x + 232.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, record->y, record->depth);
             fx = record->x + 451.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 2, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 2, record->alpha, fx, record->y, record->depth);
             fx = record->x + 561.0f;
-        fy = record->y;
-        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, fy, record->depth);
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, record->y, record->depth);
         }
         break;
     case 1:
