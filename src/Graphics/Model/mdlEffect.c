@@ -3672,6 +3672,7 @@ void FUN_00322660(int param_1)
 
 
 
+#pragma opt_common_subs off
 // FUN_003226B0 NONMATCHING
 
 
@@ -3822,6 +3823,7 @@ void FUN_003226b0(int *param_1,int param_2)
 
 
 
+#pragma opt_common_subs reset
 // FUN_00322880 NONMATCHING
 
 
@@ -12731,15 +12733,7 @@ void FUN_0032c340(int param_1)
 
         }
 
-        fVar23 = *(float *)(iVar15 + 0x14);
-
-        if (fVar23 < 0.0f) {
-
-          fVar23 = -fVar23;
-
-        }
-
-        iVar18 = (int)fVar23;
+        iVar18 = (int)fabsf(*(float *)(iVar15 + 0x14));
 
         *(float *)(iVar15 + 0x14) = *(float *)(iVar15 + 0x14) - (float)iVar18;
 
@@ -13341,7 +13335,7 @@ void FUN_0032ce10(int param_1)
 
         }
 
-        iVar18 = (int)fabsf(*(float *)(iVar15 + 0x14));
+        iVar18 = (int)ABS_f32(*(float *)(iVar15 + 0x14));
 
         *(float *)(iVar15 + 0x14) = *(float *)(iVar15 + 0x14) - (float)iVar18;
 
@@ -18017,7 +18011,7 @@ void FUN_00331650(int param_1)
 
                          ((u32)((int)pauVar14 - *(int *)(iVar9 + 0x18)) >> 5) * iVar15) * 0x20;
 
-                FUN_0032a890(param_1,(u64)(pauVar14));
+                FUN_00521250(iVar15,pauVar14,0x20);
 
                 *(u32 *)(iVar15 + 0x10) = 0xffffffff;
 

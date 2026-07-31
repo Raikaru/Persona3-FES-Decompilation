@@ -4480,7 +4480,6 @@ short * FUN_003a6c10(int param_1,short *param_2)
 #pragma pop
 #define FUN_003a6c10(...) ((short * (*)(...))FUN_003a6c10)(__VA_ARGS__)
 #undef FUN_003a6ca0
-#pragma opt_common_subs off
 // FUN_003A6CA0 NONMATCHING
 
 
@@ -4625,7 +4624,6 @@ void FUN_003a6ca0(int param_1,int param_2,int param_3)
 }
 #define FUN_003a6ca0(...) ((void (*)(...))FUN_003a6ca0)(__VA_ARGS__)
 #undef FUN_003a6e30
-#pragma opt_common_subs reset
 // FUN_003A6E30
 
 
@@ -7022,6 +7020,7 @@ void FUN_003a9780(int *param_1,int param_2,int param_3,int param_4,int param_5)
 #define FUN_003a9780(...) ((void (*)(...))FUN_003a9780)(__VA_ARGS__)
 #undef FUN_003a9930
 
+#pragma opt_strength_reduction off
 // FUN_003A9930 NONMATCHING
 
 
@@ -7117,6 +7116,7 @@ void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5)
 #define FUN_003a9930(...) ((void (*)(...))FUN_003a9930)(__VA_ARGS__)
 
 // Retail 0x003a9ac0-0x003a9ae4
+#pragma opt_strength_reduction reset
 // FUN_003A9AC0
 void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5)
 {

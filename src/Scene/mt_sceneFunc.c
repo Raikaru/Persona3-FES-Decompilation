@@ -3961,7 +3961,6 @@ float FUN_003bc0e0(char *param_1)
 }
 #define FUN_003bc0e0(...) ((float (*)(...))FUN_003bc0e0)(__VA_ARGS__)
 #undef FUN_003bc220
-#pragma opt_loop_invariants on
 // FUN_003BC220 NONMATCHING
 
 
@@ -4199,7 +4198,6 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 }
 #define FUN_003bc220(...) ((float (*)(...))FUN_003bc220)(__VA_ARGS__)
 #undef FUN_003bc730
-#pragma opt_loop_invariants reset
 // FUN_003BC730
 
 

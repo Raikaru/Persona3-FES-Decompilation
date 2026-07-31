@@ -15796,6 +15796,8 @@ u32 FUN_00452a70(char param_1,char param_2)
   return uVar9;
 }
 
+/* probe: opt_loop_invariants on produced obj 880/frame 0xd0; testing off */
+#pragma opt_loop_invariants off
 // FUN_00452F70 NONMATCHING
 
 void FUN_00452f70(u32 *param_1,int param_2)
@@ -15834,11 +15836,10 @@ void FUN_00452f70(u32 *param_1,int param_2)
     }
   }
 LAB_00453278:
-  for (uVar5 = uVar8; (int)uVar5 < (int)(uVar8 + 2); uVar5 = uVar5 + 1) {
-    uVar6 = uVar7;
-    iVar3 = uVar5 * 0x100;
-    for (; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
-      columnOffset = uVar6 * 0x10;
+  for (uVar6 = uVar7; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
+    columnOffset = uVar6 * 0x10;
+    for (uVar5 = uVar8; (int)uVar5 < (int)(uVar8 + 2); uVar5 = uVar5 + 1) {
+      iVar3 = uVar5 * 0x100;
       iVar2 = FUN_001b9120_u32();
       iVar2 = columnOffset + iVar2;
       iVar2 = iVar2 + iVar3;
@@ -15885,6 +15886,7 @@ LAB_00453278:
   return;
 }
 
+#pragma opt_loop_invariants reset
 #pragma push
 #pragma opt_loop_invariants on
 // FUN_004532D0

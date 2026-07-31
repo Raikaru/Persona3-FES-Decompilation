@@ -1587,7 +1587,6 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
     return false;
 }
 
-#pragma opt_common_subs off
 // FUN_0017e680 NONMATCHING
 void* clndUpdateTask(KwlnTask* clndTask)
 {
@@ -2102,7 +2101,6 @@ void* clndUpdateTask(KwlnTask* clndTask)
     return KWLNTASK_CONTINUE;
 }
 
-#pragma opt_common_subs reset
 // FUN_0017fa10
 void clndReqSkip()
 {
@@ -3408,6 +3406,7 @@ void func_00183f60(void* resource,
 /* W212: first divergence is the prologue (ours 0xa0-byte frame, retail 0x90);
  * this is an excess live-range/frame defect before the displaced draw tail, not
  * a tail defect.  func_00187ec0 does not share this draw/phase loop structure. */
+#pragma opt_strength_reduction off
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,
@@ -3522,6 +3521,7 @@ void func_001842c0(KwlnTask* task,
 
 extern void* DAT_007cdff0;
 
+#pragma opt_strength_reduction reset
 // FUN_00184890
 void func_00184890(KwlnTask* task)
 {
