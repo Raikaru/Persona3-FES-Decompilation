@@ -2182,21 +2182,6 @@ u32 FUN_0029f150(float *param_1)
 
   float *pfVar2;
 
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fVar9;
-
-  float fVar10;
 
   float fVar11;
 
@@ -2253,30 +2238,22 @@ u32 FUN_0029f150(float *param_1)
       fVar12 = 1.0f - fVar11;
 
       color.r = param_1[0x10] * fVar12 + param_1[8] * fVar11;
-
       color.g = param_1[0x11] * fVar12 + param_1[9] * fVar11;
-
       color.b = param_1[0x12] * fVar12 + param_1[10] * fVar11;
-
       color.a = param_1[0x13] * fVar12 + param_1[0xb] * fVar11;
 
       pfVar2 = (float *)FUN_0019fd40();
       *(RwRGBAReal *)pfVar2 = color;
 
       color.r = param_1[0x14] * fVar12 + param_1[0xc] * fVar11;
-
       color.g = param_1[0x15] * fVar12 + param_1[0xd] * fVar11;
-
       color.b = param_1[0x16] * fVar12 + param_1[0xe] * fVar11;
-
       color.a = param_1[0x17] * fVar12 + param_1[0xf] * fVar11;
 
       pfVar2 = (float *)FUN_0019fd70();
       *(RwRGBAReal *)pfVar2 = color;
 
-      *(u32 *)(param_1 + 0x19) = *(u32 *)(param_1 + 0x19) + 1;
-
-      uVar1 = 0;
+      goto counter_update;
 
     }
 
@@ -2289,10 +2266,15 @@ u32 FUN_0029f150(float *param_1)
       *(RwRGBAReal *)pfVar2 = *(RwRGBAReal *)(param_1 + 0xc);
 
       uVar1 = 1;
+      goto done;
 
     }
 
   }
+counter_update:
+  *(u32 *)(param_1 + 0x19) = *(u32 *)(param_1 + 0x19) + 1;
+  uVar1 = 0;
+done:
 
   return uVar1;
 

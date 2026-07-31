@@ -6229,7 +6229,7 @@ void FUN_0042cd80(int param_1)
   u8 *work;
   YajimaPackedRow *row;
   u8 *entry;
-  u8 *countEntry;
+  volatile u8 *countEntry;
   s8 *counter;
   s8 *delay;
   s16 *offsetX;

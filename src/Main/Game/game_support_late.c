@@ -2010,7 +2010,7 @@ void func_0018eb30(KwlnTask* task, u32 visible)
     GS_U32((u8*)task->workData, 0x20c) = visible;
 }
 
-// FUN_0018EB40 NONMATCHING
+// FUN_0018EB40
 void* func_0018eb40(KwlnTask* task)
 {
     u8* work = (u8*)task->workData;
@@ -2034,10 +2034,7 @@ void* func_0018eb40(KwlnTask* task)
     case 0:
         switch (GS_U32(work, 4))
         {
-        case 0:
-        case 1:
         case 2:
-        case 6:
             sprintf(path, (const char*)D_005E4580);
             break;
         case 3:
@@ -2068,6 +2065,9 @@ void* func_0018eb40(KwlnTask* task)
         case 10:
             sprintf(path, (const char*)D_005E4680);
             break;
+        case 0:
+        case 1:
+        case 6:
         default:
             sprintf(path, (const char*)D_005E4580);
             break;
@@ -2080,10 +2080,7 @@ void* func_0018eb40(KwlnTask* task)
         dimensions.valueS[2] = 0xb;
         switch (GS_U32(work, 4))
         {
-        case 0:
-        case 1:
         case 2:
-        case 6:
             dimensions.valueS[3] = 0;
             break;
         case 3:
@@ -2114,6 +2111,9 @@ void* func_0018eb40(KwlnTask* task)
         case 10:
             dimensions.valueS[3] = 7;
             break;
+        case 0:
+        case 1:
+        case 6:
         default:
             dimensions.valueS[3] = 0;
             break;

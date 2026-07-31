@@ -286,8 +286,6 @@ u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
  void FUN_0019d3f0_fcl(const char *param_1,int param_2);
 #pragma alias fclShopNmlistFind FUN_003c4bf0
 extern int fclShopNmlistFind(int *list,int *head,int id);
-#pragma alias fclShopNmlistFind_reordered FUN_003c4bf0
-extern int fclShopNmlistFind_reordered(u32 id,u32 list,u32 head);
 #pragma alias fclShopNmlistRemove FUN_003c49e0
 extern int fclShopNmlistRemove(int *list,int *head,int node);
 u64 FUN_003f33d0(int param_1,u32 param_2);
@@ -1278,7 +1276,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
       }
     }
     if ((*(u32 *)puVar4 & 1) != 0) {
-      if (FUN_003f03e0_u32(FUN_003e6dc0()) == 0) {
+      if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
         continue;
       }
     }
@@ -6983,7 +6981,9 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
   u32 uVar4;
 
   long lVar5;
+
   int iVar7;
+
   int iVar6;
 
 
@@ -10937,8 +10937,7 @@ void FUN_003ff460(int param_1,u32 param_2)
 
     puVar1 = *(u32 **)(*(int *)(iVar6 + 0x14) + 0x1c);
 
-    lVar5 = fclShopNmlistFind_reordered(puVar1[1],(u32)param_2,
-                                        (u32)(param_2 + 4));
+    lVar5 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
 
     if (lVar5 != 0) {
 

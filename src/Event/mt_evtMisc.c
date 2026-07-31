@@ -13,8 +13,12 @@ extern void evtMenuVFormatText(u8 *text,const char *format,va_list args);
 extern u32 FUN_00530da0(float);
 #pragma alias FUN_00394040_evt_misc FUN_00394040
 extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,int param_4);
+#pragma alias FUN_00394040_evt_misc_reordered FUN_00394040
+extern f32 FUN_00394040_evt_misc_reordered(int param_1,f32 param_2,f32 param_3,f32 param_4);
 #pragma alias FUN_00394070_evt_misc FUN_00394070
 extern void FUN_00394070_evt_misc(f32 param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
+#pragma alias FUN_00394070_evt_misc_reordered FUN_00394070
+extern void FUN_00394070_evt_misc_reordered(u32 param_1,f32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 #pragma alias FUN_001050e0_typed FUN_001050e0
 extern void FUN_001050e0_typed(u64 param_1,float param_2,u32 param_3,u8 *param_4);
 #pragma alias FUN_004cb2f0_evt_misc FUN_004cb2f0
@@ -5326,7 +5330,7 @@ void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4)
 }
 
 
-// FUN_0038C540 NONMATCHING
+// FUN_0038C540
 
 
 void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
@@ -5563,11 +5567,11 @@ C540_copy_second:
   goto C540_done;
 
 C540_calls:
-  FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)iVar7,param_4);
+  FUN_00394070_evt_misc_reordered(iVar6,fVar10,(u32 *)iVar1,(u32 *)iVar7,param_4);
 
-  *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
+  *(f32 *)param_5 = FUN_00394040_evt_misc_reordered(iVar6,fVar10,fVar13,fVar11);
 
-  *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
+  *(f32 *)param_6 = FUN_00394040_evt_misc_reordered(iVar6,fVar10,fVar12,fVar9);
 
 C540_done:
   ;
@@ -5726,18 +5730,19 @@ void FUN_0038ca80(int param_1)
       nodes[listIndex++] = listNode12;
     }
 
-      for (listIndex = 0; listIndex < totalCount; listIndex++) {
-        nodeSlot = (int **)((int)nodes + listIndex * 4);
-        currentNode = (u16 *)*nodeSlot;
-        currentValue = *currentNode;
+    for (listIndex = 0; listIndex < totalCount; listIndex++) {
+      nodeSlot = (int **)((int)nodes + listIndex * 4);
+      currentNode = (u16 *)*nodeSlot;
+      currentValue = *currentNode;
       matchCount = *(int *)(param_1 + 0x97c);
       searchIndex = 0;
       while (searchIndex < matchCount) {
         matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);
-        if (*matchedNode == currentValue) {
+        if (*matchedNode != currentValue) {
+          searchIndex++;
+        } else {
           goto matched;
         }
-        searchIndex++;
       }
       matchedNode = NULL;
 matched:
