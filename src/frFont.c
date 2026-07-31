@@ -2136,8 +2136,6 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
 #pragma opt_common_subs reset
 #undef FUN_003b1710
-#pragma opt_loop_invariants on
-#pragma opt_propagation off
 // FUN_003B1710 NONMATCHING
 
 
@@ -2260,8 +2258,6 @@ int FUN_003b1710(long param_1)
 }
 #define FUN_003b1710(...) ((int (*)(...))FUN_003b1710)(__VA_ARGS__)
 #undef FUN_003b18c0
-#pragma opt_propagation reset
-#pragma opt_loop_invariants reset
 // FUN_003B18C0
 
 
@@ -2583,6 +2579,8 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 }
 #define FUN_003b1c40(...) ((void (*)(...))FUN_003b1c40)(__VA_ARGS__)
 #undef FUN_003b1c90
+#pragma opt_common_subs off
+#pragma opt_dead_assignments off
 // FUN_003B1C90 NONMATCHING
 
 
@@ -2644,6 +2642,8 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 #pragma opt_common_subs off
 /* W340 loop probe: opt_lifetimes on; without nd=377/object=656, with nd=376/object=656; window=656. */
 #pragma opt_lifetimes on
+#pragma opt_dead_assignments reset
+#pragma opt_common_subs reset
 // FUN_003B1D90 NONMATCHING
 
 
