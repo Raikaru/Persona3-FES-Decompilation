@@ -3159,7 +3159,6 @@ void FUN_002fd820(void)
 // FUN_002FD8A0 NONMATCHING
 void FUN_002fd8a0(int param_1)
 {
-    u8* data;
 
     switch (*(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8))
     {
@@ -3306,7 +3305,7 @@ void FUN_002fd8a0(int param_1)
                 }
             }
         }
-        break;
+    }
     default:
         break;
     }

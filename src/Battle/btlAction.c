@@ -706,7 +706,9 @@ u32 FUN_0028a200(BtlAction* action)
     return ACTION_U16(gBtl, 0xb98) >= 1;
 }
 
-// FUN_0028a3e0 NONMATCHING
+/* W306: opt_loop_invariants on is required for FUN_0028a3e0 (with nd66, without nd66 -> nd0); measured against the fresh W306 baseline. */
+#pragma opt_loop_invariants on
+// FUN_0028a3e0
 u32 FUN_0028a3e0(BtlAction* action)
 {
     switch (action->unit->genus)
@@ -718,15 +720,14 @@ u32 FUN_0028a3e0(BtlAction* action)
         u16 i;
         u16 j;
         s32 count;
-        u32 badStatus;
 
-        for (i = 0, targetedCount = action->target.targetedCount, badStatus = 0x100000; i < targetedCount; i++)
+        for (i = 0, targetedCount = action->target.targetedCount; i < targetedCount; i++)
         {
             target = action->target.targetedActions[i];
             count = ACTION_U8(target, 0xc8);
             for (j = 0; j < count; j++)
             {
-                if (((BtlActionTargetView*)target)->entries[j].statusFlags & badStatus)
+                if (((BtlActionTargetView*)target)->entries[j].statusFlags & 0x100000)
                 {
                     return true;
                 }
@@ -764,6 +765,7 @@ u32 FUN_0028a3e0(BtlAction* action)
 
     return false;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0028a540
 void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4)
@@ -6552,23 +6554,25 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
     }
     if (action->movedAwayFromHome == 1)
     {
-        if (*(s16*)action->unkData4 >= 0)
+        if (*(s16*)action->unkData4 == 0)
         {
-            if (*(s16*)action->unkData4 == 0)
-            {
-                FUN_001ff160(action->unit->charId);
-                *(s16*)action->unkData4 = -1;
-            }
-            else
-            {
-                *(s16*)action->unkData4 -= 1;
-            }
+            FUN_001ff160(action->unit->charId);
+            *(s16*)action->unkData4 = -1;
+        }
+        else if (*(s16*)action->unkData4 > 0)
+        {
+            *(s16*)action->unkData4 -= 1;
         }
     }
-    if (action->unk_488 == 0 && FUN_001ff2b0())
+    if (action->unk_488 == 0 &&
+        *(s16*)action->unkData4 == -1 &&
+        FUN_001ff2b0())
     {
+        BtlPacket* packet;
         FUN_001ff2f0();
-        btlPacketRegister(FUN_002e41d0(), BTLPACKET_TYPE_1);
+        packet = FUN_002e41d0();
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         if (FUN_002d1a70() == 1)
         {
             gBtl->flags |= 0x4000;

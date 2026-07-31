@@ -163,8 +163,10 @@ RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask)
 }
 
 // Reconstructed frame-position capture, axis setup, frame update, and camera look-at.
-// Residual MWCC scheduling differs in axis materialization and final branch placement.
-// FUN_001d5e30 NONMATCHING
+// Keep the axis address materialized before the absolute global loads; retail stores directly to the stack object.
+// Measured: direct stores are nd26 without this pragma and nd0 with it; pointer stores remain nd4.
+#pragma opt_propagation off
+// FUN_001d5e30
 void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
 {
     FldCamera* fldCamera;
@@ -172,7 +174,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwFrame* cameraFrame;
     RwV3d cameraPosition;
     RwV3d target;
-    volatile RwV3d axis;
+    RwV3d axis;
     RwV3d* axisPtr;
     u64 axisXY;
     f32 axisZ;
@@ -202,13 +204,15 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     axisPtr = (RwV3d*)((u8*)&axis + 0);
     axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = D_00683AA0;
-    *(u64*)axisPtr = axisXY;
-    axisPtr->z = axisZ;
+    *(u64*)&axis = axisXY;
+    axis.z = axisZ;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
 
+}
+#pragma opt_propagation on
 // FUN_001d5f30
 void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId)
 {

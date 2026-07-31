@@ -537,7 +537,9 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
         if (model == ((void*)0))
         {
             packet = FUN_00285690(unit, charId, 0x36);
-            btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, modelPacketUID);
+            packet->unk_00 = 4;
+            packet->parentUID = modelPacketUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
             modelPacketUID = packet->uid;
         }
         else
@@ -1400,9 +1402,8 @@ void btlMainInitStateCondition(BtlStateWork* work)
                             newCondition = 5;
                         }
                     }
-                    break;
                 case 4:
-                    if (FUN_002ffbc0(100) < (u16)(FUN_0017b170() + 10) && unitId != 3)
+                    if ((u16)(FUN_0017b170() + 10) > FUN_002ffbc0(100) && unitId != 3)
                     {
                         newCondition = 5;
                     }
@@ -1466,7 +1467,9 @@ void btlMainInitStateCondition(BtlStateWork* work)
     lastPacketUID = packet->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_002db740(action, conditionPacket, 0, 0, 1);
-    btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, lastPacketUID);
+    packet->unk_00 = 4;
+    packet->parentUID = lastPacketUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
 }
 // FUN_0029d6e0
 u32 btlMainUpdateStateCondition(BtlStateWork* work)

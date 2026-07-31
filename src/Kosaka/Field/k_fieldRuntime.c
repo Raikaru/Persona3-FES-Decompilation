@@ -17,6 +17,15 @@ typedef struct RuntimeVec3
     f32 y;
     f32 z;
 } RuntimeVec3;
+    typedef struct RuntimeRenderCollection
+    {
+        u32 flags;
+        u8* input;
+        u8* entries;
+        void** renderObjects;
+        u8* commands;
+        RuntimeVec3* worldPositions;
+    } RuntimeRenderCollection;
 
 struct RuntimeTask
 {
@@ -430,7 +439,7 @@ extern void func_001e2b10(s32 value);
 extern s32 func_001e2bd0();
 extern void func_001e9a90(void* work);
 extern s32 func_001ed9e0(void* work);
-extern void func_001edbe0(void* work);
+extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
 extern void func_001eba80(RuntimeCommandWork* work, u32* result);
@@ -6648,17 +6657,8 @@ void func_001eda90(RuntimeWork* work)
 }
 
 // FUN_001EDBE0 NONMATCHING
-void func_001edbe0(void* workData)
+void func_001edbe0(RuntimeRenderCollection* work)
 {
-    typedef struct RuntimeRenderCollection
-    {
-        u32 flags;
-        u8* input;
-        u8* entries;
-        void** renderObjects;
-        u8* commands;
-        RuntimeVec3* worldPositions;
-    } RuntimeRenderCollection;
     typedef struct RuntimeColor
     {
         u8 red;
@@ -6667,7 +6667,7 @@ void func_001edbe0(void* workData)
         u8 alpha;
     } RuntimeColor;
 
-    RuntimeRenderCollection* work;
+    s32 active;
     void* matrix;
     void* owner;
     void* material;
@@ -6677,21 +6677,24 @@ void func_001edbe0(void* workData)
     u32 commandResult;
     u32 frameValue;
     f32 delta;
-    s32 active;
     s32 index;
 
-    work = (RuntimeRenderCollection*)workData;
-    active = *(f32*)((u8*)*(void**)(work->input + 0x20) + 0xf4) != 0.0f;
+    active = 0;
+    if (*(f32*)((u8*)*(void**)(work->input + 0x20) + 0xf4) != 0.0f)
+    {
+        active = 1;
+    }
 
     for (index = 0; index < *(s16*)(work->input + 4); index++)
     {
+        u8* tailEntry;
 
         if (active != 0)
         {
     u8* command;
-    u8* entry;
+        u8* activeEntry;
         command = work->commands + index * 0x20;
-        entry = work->entries + index * 0x4c;
+        activeEntry = work->entries + index * 0x4c;
             func_001eba80((RuntimeCommandWork*)command, &commandResult);
             if ((~work->flags & 8) != 0 &&
                 (*(u32*)command & 2) != 0)
@@ -6699,7 +6702,7 @@ void func_001edbe0(void* workData)
                 if ((*(u32*)command & 8) != 0)
                 {
                     func_001eb920(
-                        entry,
+                        activeEntry,
                         &work->worldPositions[index * 2],
                         &work->worldPositions[index * 2 + 1]);
                 }
@@ -6722,7 +6725,7 @@ void func_001edbe0(void* workData)
                         &second,
                         &work->worldPositions[index * 2 + 1], matrix);
                     func_001eb920(
-                        entry,
+                        activeEntry,
                         &first, &second);
                     func_004c3880(matrix);
                 }
@@ -6752,10 +6755,11 @@ void func_001edbe0(void* workData)
             ((u8*)material)[7] = color.alpha;
         }
 
+        tailEntry = work->entries + index * 0x4c;
         func_001ed0d0(
-            (RuntimeWork*)entry, &delta);
+            (RuntimeWork*)tailEntry, &delta);
         frameValue = *(u32*)((u8*)work->renderObjects[index * 2] + 0x18);
-        func_001e9af0((RuntimeWork*)entry, &frameValue);
+        func_001e9af0((RuntimeWork*)tailEntry, &frameValue);
     }
 }
 
@@ -7484,11 +7488,11 @@ s32 func_001ef060(void)
     {
         if ((node->flags & 8) != 0)
         {
-            func_001edbe0(node);
+            func_001edbe0((RuntimeRenderCollection*)node);
         }
         else if ((node->flags & 2) != 0)
         {
-            func_001edbe0(node);
+            func_001edbe0((RuntimeRenderCollection*)node);
             node->flags &= ~2;
         }
     }

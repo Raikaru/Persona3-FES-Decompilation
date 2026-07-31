@@ -2523,6 +2523,7 @@ int FUN_002d2c10(float *param_1, float *param_2)
 {
     u8 *node;
     int i;
+
     if (*(u8 **)((u8 *)param_2 + 0x10) == (u8 *)param_1)
     {
         return 1;
