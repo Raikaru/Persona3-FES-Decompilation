@@ -4479,7 +4479,6 @@ void FUN_002d7560(BtlAction *action)
         u32 count;
     };
     BtlUnit *unit;
-    u16 i;
 
     if ((action->unk_1a & 1) != 0)
     {
@@ -4496,8 +4495,7 @@ void FUN_002d7560(BtlAction *action)
                 f32 value;
                 u32 amount;
                 u16 personaId;
-                int found;
-
+                u8 found;
                 action->unk_1a |= 0x20;
                 rawValue = FUN_0030bc50(unit->datUnit);
                 timeScale = FUN_001c0070();
@@ -4511,16 +4509,17 @@ void FUN_002d7560(BtlAction *action)
                     personaId = action->target.rewardPersonaId;
                 if (personaId != 0)
                 {
+                    u16 i;
                     u8 *rewards;
                     found = 0;
                     i = 0;
                     rewards = DAT_007ce3ec;
                     for (; i <= (u16)2; i++)
                     {
-                        u16 rewardId = *(u16 *)(rewards + ((u32)i % 65536u) * 8 + 0xbe0);
+                        u16 rewardId = *(u16 *)(rewards + (i << 3) + 0xbe0);
                         if (rewardId != personaId)
                             continue;
-                        (*(u32 *)(rewards + ((u32)i % 65536u) * 8 + 0xbe4))++;
+                        (*(u32 *)(rewards + (i << 3) + 0xbe4))++;
                         found = 1;
                         break;
                     }

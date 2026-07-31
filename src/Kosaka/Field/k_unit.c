@@ -3237,7 +3237,7 @@ void func_001d4180(void)
                 }
                 if (*taskSlot != NULL)
                 {
-                    func_00195020(*taskSlot);
+                    func_00195020(gFldUnitsPc[i].unk_180);
                     gFldUnitsPc[i].unk_180 = NULL;
                 }
             }

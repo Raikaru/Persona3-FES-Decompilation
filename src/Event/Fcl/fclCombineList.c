@@ -1346,24 +1346,24 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         if (record == 0) {
             fallback_text_id = resource_data->fallback->fallback_text_ids[i];
             definition = DAT_007ce420[fallback_text_id];
-            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x25,
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);
-            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x24, i * 2 + 1);
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24, i * 2 + 1);
         } else {
             definition = DAT_007ce420[record->text_id];
             FUN_00523ac8(&formatted_text, &DAT_007cd798.layout_template,
                           record->format_value);
-            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x25,
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + selected_style);
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, normal_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[record->text_id], 0x10, 0x6e);
             FUN_0040eb50(0.0f, base_x + 0x145, row_y + 0x7f, (byte)alpha,
                           (s16)text_styles[selected_style], &formatted_text, 1);
-            FUN_0040e3c0_i(base_x, row_y, 0.0f, (byte)alpha, 0x24,
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24,
                           i * 2 + selected_style);
         }
     }
@@ -1561,11 +1561,11 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
                                         selected, alternate);
             } else {
                 if (alternate != 0) {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x23, selected);
+                    FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x23, selected);
                 } else {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x22, selected);
+                    FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x22, selected);
                 }
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x29, 0);
+                FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x29, 0);
             }
             break;
 
@@ -1578,9 +1578,9 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
 
         case 2:
             if ((record->work->flags & 0x10000) != 0) {
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3d, 0);
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3e, 0);
+                FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x31, 0);
+                FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x3d, 0);
+                FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x3e, 0);
             }
             break;
 
@@ -1590,9 +1590,9 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
                     fclCombineList003dcc90(x, y, alpha, record->owner,
                                             record->candidate, selected);
                 } else {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x37, 0);
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x38, selected);
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3a, 0);
+                    FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x37, 0);
+                    FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x38, selected);
+                    FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x3a, 0);
                 }
             }
             break;
@@ -1602,9 +1602,9 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
                 fclCombineList003dcc90(x - 0x145, y, alpha, record->owner,
                                         record->candidate, selected);
             } else {
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x37, 0);
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x38, selected);
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x3a, 0);
+                FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x37, 0);
+                FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x38, selected);
+                FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x3a, 0);
             }
             break;
 
@@ -1613,14 +1613,14 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
                 if ((record->work->flags & 0x10000) == 0) {
                     for (i = 0; i < record->owner->container->work->capacity; i++) {
                         if (record->candidate_data->slot_values[i] == 0) {
-                            FUN_0040e3c0(0.0f, x + 0x128, result->y_offset + i * 0x18,
+                            FUN_0040e3c0_i(x + 0x128, result->y_offset + i * 0x18, 0.0f,
                                           (byte)alpha, 0x23, 0);
-                            FUN_0040e3c0(0.0f, x + 0x128, result->y_offset + i * 0x18,
+                            FUN_0040e3c0_i(x + 0x128, result->y_offset + i * 0x18, 0.0f,
                                           (byte)alpha, 0x29, 0);
                         } else {
-                            FUN_0040e3c0(0.0f, x + 0x128, result->y_offset + i * 0x18,
+                            FUN_0040e3c0_i(x + 0x128, result->y_offset + i * 0x18, 0.0f,
                                           (byte)alpha, 0x22, 0);
-                            FUN_0040e3c0(0.0f, x + 0x128, result->y_offset + i * 0x18,
+                            FUN_0040e3c0_i(x + 0x128, result->y_offset + i * 0x18, 0.0f,
                                           (byte)alpha, 0x29, 0);
                         }
                     }
@@ -2803,15 +2803,13 @@ int FUN_003dffc0(int *param_1,int param_2,s32 param_3)
 
   iVar1 = *param_1;
   iVar2 = *(int *)(iVar1 + 4);
-  if (iVar2 != 0) {
-    do {
-      iVar3 = *(int *)(iVar2 + 0x14);
-      if (*(int *)(iVar3 + 0x10) == param_2) {
-        break;
-      }
-      iVar2 = *(int *)(iVar2 + 0x10);
-    } while (iVar2 != 0);
-  }
+  do {
+    iVar3 = *(int *)(iVar2 + 0x14);
+    if (*(int *)(iVar3 + 0x10) == param_2) {
+      break;
+    }
+    iVar2 = *(int *)(iVar2 + 0x10);
+  } while (iVar2 != 0);
   if (iVar2 == 0) {
     iVar3 = 0;
   }
