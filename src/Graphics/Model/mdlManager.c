@@ -34,7 +34,8 @@ extern char DAT_007cca08[1];
 #pragma alias DAT_007cca08_abs DAT_007cca08
 extern char DAT_007cca08_abs[];
 extern const char DAT_0069b210[];
-extern const char DAT_007cca18[];
+extern char DAT_007cca18[1];
+extern char DAT_007cca10[1];
 #define MDL_PATH_FORMAT(addr) (DAT_0069b210 + ((addr) - 0x69b210))
 void* FUN_00491cc0(RpClump* clump);
 void FUN_00491ea0(RpClump* clump);
@@ -9088,7 +9089,7 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
       default:
 
-        sprintf(param_3, MDL_PATH_FORMAT(0x69b930), 0x7cca10);
+        sprintf(param_3, MDL_PATH_FORMAT(0x69b930), DAT_007cca10);
 
         break;
 
@@ -9096,37 +9097,37 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x41e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b450), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b450), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x462) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b430), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b430), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x45d) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b410), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b410), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x459) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3f0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3f0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x458) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3d0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3d0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x43a) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3b0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3b0), DAT_007cca10);
 
         }
 
@@ -9136,13 +9137,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b470), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b470), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b490), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b490), DAT_007cca10);
 
           }
 
@@ -9154,19 +9155,19 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x464) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4f0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4f0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x466) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4d0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4d0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x43d) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4b0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4b0), DAT_007cca10);
 
         }
 
@@ -9176,13 +9177,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b510), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b510), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b530), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b530), DAT_007cca10);
 
           }
 
@@ -9194,37 +9195,37 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x41e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5f0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5f0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x463) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5d0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5d0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x45e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5b0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5b0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x45b) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b590), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b590), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x45a) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b570), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b570), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x43c) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b550), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b550), DAT_007cca10);
 
         }
 
@@ -9234,13 +9235,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b610), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b610), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b630), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b630), DAT_007cca10);
 
           }
 
@@ -9252,31 +9253,31 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x40e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b6d0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6d0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x460) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b6b0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6b0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x455) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b690), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b690), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x454) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b670), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b670), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x440) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b650), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b650), DAT_007cca10);
 
         }
 
@@ -9286,13 +9287,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b6f0), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b6f0), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b710), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b710), DAT_007cca10);
 
           }
 
@@ -9304,31 +9305,31 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x40e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b7b0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b7b0), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x461) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b790), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b790), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x457) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b770), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b770), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x456) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b750), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b750), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x43b) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b730), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b730), DAT_007cca10);
 
         }
 
@@ -9338,13 +9339,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b7d0), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7d0), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b7f0), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7f0), DAT_007cca10);
 
           }
 
@@ -9356,25 +9357,25 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (sVar3 == 0x40e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b870), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b870), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x465) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b850), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b850), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x45c) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b830), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b830), DAT_007cca10);
 
         }
 
         else if (sVar3 == 0x43e) {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b810), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b810), DAT_007cca10);
 
         }
 
@@ -9384,13 +9385,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (lVar4 != 0) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b890), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b890), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b8b0), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8b0), DAT_007cca10);
 
           }
 
@@ -9406,13 +9407,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           if (sVar3 != 0x40e) {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b910), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b910), DAT_007cca10);
 
           }
 
           else {
 
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b8f0), 0x7cca10);
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8f0), DAT_007cca10);
 
           }
 
@@ -9420,7 +9421,7 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         else {
 
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b8d0), 0x7cca10);
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b8d0), DAT_007cca10);
 
         }
 
@@ -9432,13 +9433,13 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
   case 2:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b950), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b950), DAT_007cca10,param_2);
 
     break;
 
   case 3:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b970), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b970), DAT_007cca10,param_2);
 
     break;
 
@@ -9450,37 +9451,37 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
   case 7:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9b0), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9b0), DAT_007cca10,param_2);
 
     break;
 
   case 8:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9d0), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9d0), DAT_007cca10,param_2);
 
     break;
 
   case 9:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b210), 0x7cca10,(int)(u32)param_2 >> 8,param_2 & 0xff);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b210), DAT_007cca10,(int)(u32)param_2 >> 8,param_2 & 0xff);
 
     break;
 
   case 10:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b990), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b990), DAT_007cca10,param_2);
 
     break;
 
   case 0xb:
 
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9f0), 0x7cca10,param_2);
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9f0), DAT_007cca10,param_2);
 
     break;
 
   default:
 
-    sprintf(param_3, DAT_007cca18, 0x7cca10,
+    sprintf(param_3, DAT_007cca18, DAT_007cca10,
 
                  *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
 

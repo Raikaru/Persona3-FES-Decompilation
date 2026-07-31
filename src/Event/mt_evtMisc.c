@@ -2469,7 +2469,7 @@ void FUN_00389b50(int *param_1)
 
   u32 *puVar7;
 
-  int iVar8;
+  s32 (**alloc_ptr)(u32,u32,u32);
   int iVar6;
 
   
@@ -2477,7 +2477,8 @@ void FUN_00389b50(int *param_1)
   iVar6 = 0;
 
   if ((*param_1 == 0x30) || (*param_1 == 1)) {
-    for (iVar8 = param_1[0x1b]; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x4c)) {
+    for (puVar7 = (u32 *)param_1[0x1b]; puVar7 != (u32 *)0x0;
+         puVar7 = (u32 *)puVar7[0x13]) {
 
       iVar6 = iVar6 + 1;
     }
@@ -2490,7 +2491,8 @@ void FUN_00389b50(int *param_1)
 
       }
 
-      base = (u32 *)(*DAT_00960184)(1,iVar6 * 0x54,0x40000);
+      alloc_ptr = (s32 (**)(u32,u32,u32))DAT_00960184_abs;
+      base = (u32 *)(*alloc_ptr)(1,iVar6 * 0x54,0x40000);
       if (base == (u32 *)0x0) {
 
         FUN_0019d3f0("mt_evtMisc.c",0x3b);
@@ -2532,7 +2534,7 @@ void FUN_00389b50(int *param_1)
 
         if (puVar1[0x10] != 0) {
 
-          puVar4 = (u32 *)(*DAT_00960184)(1,0x130,0x40000);
+          puVar4 = (u32 *)(*alloc_ptr)(1,0x130,0x40000);
 
           if (puVar4 == (u32 *)0x0) {
 
@@ -3288,10 +3290,10 @@ void FUN_0038a730(int param_1)
 }
 
 
-// Typed vector-source reconstruction holds nd12/size320.
-// Call census is CLEAN with no data relocations.
-// Residual is a pure saved-register coloring cycle.
-// FUN_0038A7C0 NONMATCHING
+/* opt_lifetimes on: FUN_0038A7C0 nd12 -> nd0, object 320/320; measured W319. */
+ #pragma push
+ #pragma opt_lifetimes on
+// FUN_0038A7C0
 
 
 void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
@@ -3346,6 +3348,8 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
     *param_2 = output2;
   }
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 // FUN_0038A900
@@ -5768,7 +5772,6 @@ matched:
 }
 
 
-#pragma opt_propagation off
 // FUN_0038CC10 NONMATCHING
 
 
@@ -6451,7 +6454,6 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 }
 
 
-#pragma opt_propagation reset
 // FUN_0038D560
 
 
@@ -6615,10 +6617,11 @@ void FUN_0038d790(int param_1)
 }
 
 
-/* opt_loop_invariants on: FUN_0038D840 nd24 -> nd10, object 196/208; measured W319. */
+/* opt_loop_invariants on + opt_propagation off: FUN_0038D840 nd24 -> nd8 (loop-only nd10), object 196/208; measured W319. */
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_0038D840 NONMATCHING
+#pragma opt_propagation off
+// FUN_0038D840
 
 
 void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
@@ -6633,8 +6636,8 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   if (*param_1 == 0) {
     count = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    selectedIndex = 1;
     index = 0;
+    selectedIndex = 1;
     reverseIndex = count - 1;
     for (; index < count; index++) {
       if (param_3 == selectedIndex) {
@@ -6650,6 +6653,7 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   }
   return;
 }
+#pragma opt_propagation reset
 #pragma pop
 // FUN_0038D910
 

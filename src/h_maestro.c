@@ -307,6 +307,8 @@ u32 func_001104d0(KwlnTask* task)
     return false;
 }
 
+/* Scoped loop-invariant pragma measured W330: without nd113, with nd106 (obj 184/192). */
+#pragma opt_loop_invariants on
 // FUN_00110510 NONMATCHING
 u32 func_00110510(KwlnTask* task)
 {
@@ -335,6 +337,7 @@ u32 func_00110510(KwlnTask* task)
 
     return true;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001105D0
 void func_001105d0(KwlnTask* task, s32 index, void* resource)
@@ -2017,6 +2020,8 @@ static f32 Maestro_NearReciprocal(void)
 // Same reconstruction pattern as func_001140d0 below: retail inlines the
 // state-set calls and per-vertex doubled-alpha color loop rather than
 // delegating to Maestro_SetPrimitiveStates/DrawQuad/NearReciprocal.
+/* Scoped loop-invariant pragma measured W330: without nd438, with nd434 (obj 808/848). */
+#pragma opt_loop_invariants on
 // FUN_00113A30 NONMATCHING
 void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 {
@@ -2081,8 +2086,11 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
 // Same reconstruction pattern as func_001140d0 below.
+/* Scoped loop-invariant pragma measured W330: without nd438, with nd434 (obj 808/848). */
+#pragma opt_loop_invariants on
 // FUN_00113D80 NONMATCHING
 void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 {
@@ -2147,7 +2155,9 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
+/* Scoped loop-invariant pragma measured W330: without nd342, with nd22 (obj 884/896). */
 #pragma opt_loop_invariants on
 // FUN_001140D0 NONMATCHING
 void func_001140d0(f32 depth,
@@ -2228,10 +2238,10 @@ void func_001140d0(f32 depth,
 
     (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
 /* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants reset
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
                    f32 x,
@@ -2437,6 +2447,8 @@ void func_00114450(f32 depth,
 #pragma opt_loop_invariants off
 
 // Same reconstruction pattern as func_001140d0 above.
+/* Scoped loop-invariant pragma measured W330: without nd342, with nd22 (obj 884/896). */
+#pragma opt_loop_invariants on
 // FUN_00114AF0 NONMATCHING
 void func_00114af0(f32 depth,
                    f32 x,
@@ -2516,8 +2528,11 @@ void func_00114af0(f32 depth,
 
     (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
 // Retail reconstruction: camera/state setup (0x114e70-0x114fec), vertex/color loop (0x115030-0x115164), UV/orientation staging (0x115168-0x115294), and final draw (0x1152a0-0x115300).
+/* Scoped loop-invariant pragma measured W330: without nd741, with nd736 (obj 1196/1248). */
+#pragma opt_loop_invariants on
 // FUN_00114E70 NONMATCHING
 void func_00114e70(f32 depth,
                    f32 x,
@@ -2637,11 +2652,14 @@ void func_00114e70(f32 depth,
     (*setState)(1, 0);
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
 /* Retail 0x115350-0x1158a0 builds a four-vertex strip with inline state setup,
  * point staging, doubled-alpha channel conversion, and a final draw.  The
  * corresponding logic is reconstructed below; remaining differences are
  * compiler frame/register layout across the same retail ranges. */
+/* Scoped loop-invariant pragma measured W330: without nd944, with nd911 (obj 1212/1376). */
+#pragma opt_loop_invariants on
 // FUN_00115350 NONMATCHING
 void func_00115350(f32 depth,
                    u32 color,
@@ -2805,6 +2823,7 @@ void func_00115350(f32 depth,
     (*setState)(1, 0);
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 /* ------------------------------------------------------------------------- */
 /* Pre-Camp sprite/effect task slice (retail 0x117440-0x119F10). */
 
@@ -3346,6 +3365,8 @@ void func_00115de0(int unused0, int unused1, int unused2,
   return;
 
 }
+/* Scoped loop-invariant pragma measured W330: without nd1178, with nd1112 (obj 1708/1728). */
+#pragma opt_loop_invariants on
 // FUN_00115F00 NONMATCHING
 
 
@@ -3711,6 +3732,7 @@ u32 func_00115f00(KwlnTask* param_1)
   return 0;
 
 }
+#pragma opt_loop_invariants off
 // FUN_001165C0
 
 
@@ -5185,6 +5207,8 @@ static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
     work->state = 4;
 }
 
+/* Scoped loop-invariant pragma measured W330: without nd4402, with nd4399 (obj 6732/7296). */
+#pragma opt_loop_invariants on
 // FUN_00117540 NONMATCHING
 void* func_00117540(KwlnTask* task)
 {
@@ -5433,6 +5457,7 @@ void* func_00117540(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_loop_invariants off
 
 // Retail unrolls the state-0 resource-load loop (14 literal calls, not a
 // runtime loop) and dispatches via switch, not if/else-if. Rewritten from

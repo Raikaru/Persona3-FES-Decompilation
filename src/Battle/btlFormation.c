@@ -177,6 +177,10 @@ extern u64 func_001ff370();
 extern u64 func_001ff390();
 extern u64 func_001ff3b0();
 extern u64 func_0021c3f0();
+#pragma alias func_0021c3f0_u32 func_0021c3f0
+extern u32 func_0021c3f0_u32(u32 param_1);
+#pragma alias func_0021cca0_u32 func_0021cca0
+extern u32 func_0021cca0_u32(u32 param_1,u32 param_2);
 extern u64 func_0021cca0();
 extern u64 func_0021cce0();
 extern u64 func_0027e310();
