@@ -82,12 +82,6 @@ extern s32 func_00318ed0(void* model, s32 index, RwV3d* position);
 extern u64 func_00318b70(void* model);
 extern void func_00318a30(void* dst, void* src, u32 count);
 extern void func_00318a50(void* src, void* dst, void* value, u32 count);
-#pragma alias func_00318a50_reordered func_00318a50
-extern void func_00318a50_reordered(void* model, const RwV3d* axis,
-                                    f32 angle, s32 mode);
-#pragma alias func_00318a90_reordered func_00318a90
-extern void func_00318a90_reordered(void* model, const RwV3d* scale,
-                                    s32 mode);
 extern void func_00318a90(void* model, void* value, u32 count);
 extern void func_00319230(void* model, u32 value);
 extern void func_00318ad0(void* model, void* value);
