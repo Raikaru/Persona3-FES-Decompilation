@@ -385,26 +385,25 @@ u64 FUN_0052eac8(u64 param_1)
   return (u64)(uVar1 | uVar2);
 }
 #pragma optimization_level 2
-#pragma opt_lifetimes on
 // FUN_0052EB60 NONMATCHING
 float FUN_0052eb60(s64 u)
 {
   f64 f;
-  s64 rounded;
 
-  rounded = u;
   if (!(-((s64)1 << 0x35) < u && u < ((s64)1 << 0x35))) {
     if (((u64)u & 0x7ff) != 0) {
-      rounded = u | 0x800;
+      u |= 0x800;
     }
   }
-  f = (s32)(rounded >> 0x20);
+  f = (s32)(u >> 0x20);
   f *= 65536.0;
   f *= 65536.0;
-  f += (u32)rounded;
+  f += (s32)u;
+  if ((s32)u < 0) {
+    f += 4294967296.0;
+  }
   return (float)f;
 }
-#pragma opt_lifetimes reset
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)
 

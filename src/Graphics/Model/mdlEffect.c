@@ -30805,6 +30805,8 @@ void FUN_003402c0(int param_1)
 
 
 
+/* opt_loop_invariants on: FUN_003403b0 596B -> 580B, under its 592B window. */
+#pragma opt_loop_invariants on
 // FUN_003403B0 NONMATCHING
 
 
@@ -30930,6 +30932,7 @@ void FUN_003403b0(int param_1,int param_2)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
 
 
@@ -38080,6 +38083,8 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
 
 
+/* opt_loop_invariants on: FUN_00348760 504B -> 488B, under its 496B window. */
+#pragma opt_loop_invariants on
 // FUN_00348760 NONMATCHING
 void FUN_00348760(u8 *param_1,float *param_2)
 
@@ -38177,6 +38182,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
 
 
@@ -38335,6 +38341,8 @@ void FUN_00348950(u8 *param_1,float *param_2)
 
 
 
+/* opt_loop_invariants on: FUN_00348bd0 468B -> 452B, under its 464B window. */
+#pragma opt_loop_invariants on
 // FUN_00348BD0 NONMATCHING
 void FUN_00348bd0(u8 *param_1,float *param_2)
 
@@ -38417,6 +38425,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
 
 
