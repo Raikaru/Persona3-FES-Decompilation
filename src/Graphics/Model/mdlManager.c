@@ -313,6 +313,9 @@ Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u3
     return mdl;
 }
 
+/* W323 measured mdlCreateAndResolvePath opt_loop_invariants on: nd202 -> nd191; object 356/368. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00316e00 NONMATCHING
 Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 {
@@ -358,6 +361,7 @@ Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 
     return mdl;
 }
+#pragma pop
 
 // FUN_00316f70
 u32 mdlStreamRead(Model* mdl)
@@ -4600,6 +4604,9 @@ void* func_00315010(void* object, void* data)
 
 
 
+/* W323 measured func_00315090 opt_loop_invariants on: nd195 -> nd188; object 292/320. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00315090 NONMATCHING
 
 
@@ -4686,6 +4693,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
   return uVar3;
 
 }
+#pragma pop
 
 
 
@@ -5716,6 +5724,9 @@ done:
 
 
 
+/* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_00316970 NONMATCHING
 
 
@@ -5801,6 +5812,7 @@ void func_00316970(Model* param_1)
   return;
 
 }
+#pragma pop
 
 
 
@@ -6263,6 +6275,9 @@ u32 func_00318b90(u32 param_1)
 
 // Template probe: reversing the two top-level branches to match func_00318ed0
 // retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
+/* W323 measured func_00318d10 opt_loop_invariants on: nd268 -> nd266; object 420/448. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00318D10 NONMATCHING
 
 
@@ -6337,6 +6352,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
   }
   return uVar4;
 }
+#pragma pop
 
 
 
@@ -6738,6 +6754,9 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
 
 
 
+/* W323 measured func_00319970 opt_loop_invariants on: nd3132 -> nd3045; object 4304/4448. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00319970 NONMATCHING
 
 
@@ -7466,6 +7485,7 @@ u32 func_00319970(Model* param_1)
   return 1;
 
 }
+#pragma pop
 
 
 
@@ -8093,6 +8113,9 @@ void func_0031b470(void)
 
 
 
+/* W323 measured func_0031b4a0 opt_loop_invariants on: nd293 -> nd266; object 472/480. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0031B4A0 NONMATCHING
 
 
@@ -8190,11 +8213,11 @@ LAB_0031b594:
   } while( true );
 
 }
+#pragma pop
 
 
 
 
-#pragma opt_loop_invariants on
 // FUN_0031B680 NONMATCHING
 
 
@@ -8248,7 +8271,6 @@ u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_0031B820 NONMATCHING
 
 
@@ -8690,6 +8712,9 @@ void func_0031c000(char* param_1,u32 param_2)
 
 
 
+/* W323 measured func_0031c1d0 opt_common_subs off: nd1055 -> nd889; object 1544/1552. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_0031C1D0 NONMATCHING
 
 
@@ -8943,6 +8968,7 @@ u32 func_0031c1d0(int param_1)
 
   return 1;
 }
+#pragma pop
 
 
 

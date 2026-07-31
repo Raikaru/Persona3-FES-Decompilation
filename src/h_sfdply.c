@@ -1495,6 +1495,8 @@ queue_done:
     }
 }
 
+/* W318 measured: opt_common_subs off changes c7d0 nd406->385; object676/window752. */
+#pragma opt_common_subs off
 // FUN_0010C7D0 NONMATCHING
 void func_0010c7d0(HSfdQueueSlot* slot)
 {
@@ -1584,6 +1586,7 @@ void func_0010c7d0(HSfdQueueSlot* slot)
     }
 }
 
+#pragma opt_common_subs on
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {
@@ -1661,6 +1664,8 @@ s32 func_0010cce0(void* dst, const void* src, s32 size)
     return size;
 }
 
+/* W318 measured: opt_loop_invariants on changes cdd0 nd1487->1332; object2032/window2336. */
+#pragma opt_loop_invariants on
 // FUN_0010CDD0 NONMATCHING
 void func_0010cdd0(void)
 {
@@ -1910,6 +1915,7 @@ void func_0010cdd0(void)
     }
 }
 
+#pragma opt_loop_invariants off
 // FUN_0010D6F0
 void func_0010d6f0(s16 index, s16 fileIndex)
 {
@@ -2228,6 +2234,8 @@ void func_0010e010(HSfdImage* image, s32 bitDepth)
     }
 }
 
+/* W318 measured: opt_loop_invariants on changes e0d0 nd689->672; object1064/window1072. */
+#pragma opt_loop_invariants on
 // FUN_0010E0D0 NONMATCHING
 HSfdImage* func_0010e0d0(const u8* stream)
 {
@@ -2369,6 +2377,7 @@ HSfdImage* func_0010e0d0(const u8* stream)
     return image;
 }
 
+#pragma opt_loop_invariants off
 // FUN_0010E500
 HSfdImage* func_0010e500(void* stream)
 {
@@ -2400,6 +2409,8 @@ void* func_0010e5f0(void* stream, void* output)
     return stream;
 }
 
+/* W318 measured: opt_loop_invariants on changes e630 nd411->330; object524/window592. */
+#pragma opt_loop_invariants on
 // FUN_0010E630 NONMATCHING
 void func_0010e630(void* destination, const void* source, u32 size)
 {
@@ -2481,6 +2492,7 @@ void func_0010e630(void* destination, const void* source, u32 size)
     }
 }
 
+#pragma opt_loop_invariants off
 // Retail reconstruction covers TMX validation, raster setup, pixel decode, and palette upload from offsets 0x00-0x3C8; all non-padding retail logic is represented, with only register/relocation differences remaining.
 // FUN_0010E880
 void* func_0010e880(const u8* stream)

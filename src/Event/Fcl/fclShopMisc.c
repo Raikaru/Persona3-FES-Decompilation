@@ -5109,7 +5109,6 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
 
 }
 
-#pragma opt_common_subs off
 // FUN_003F67E0 NONMATCHING
 
 
@@ -5394,7 +5393,6 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 #undef sStack_a
 #undef acStack_8
 
-#pragma opt_common_subs reset
 // FUN_003F6F20 NONMATCHING
 
 
@@ -6588,6 +6586,7 @@ void FUN_003f8e10(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
 }
 
+#pragma opt_common_subs off
 // FUN_003F9220 NONMATCHING
 
 
@@ -6674,6 +6673,7 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
+#pragma opt_common_subs reset
 // FUN_003F9510 NONMATCHING
 
 
