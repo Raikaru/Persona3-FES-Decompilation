@@ -166,6 +166,14 @@ typedef struct GsArchiveTaskWork
     void* resources[0x12];
 } GsArchiveTaskWork;
 
+typedef struct GsEb40WorkView
+{
+    u8 reserved00[0x60];
+    s32 frame;
+    u32 reserved64;
+    u32 release;
+} GsEb40WorkView;
+
 
 
 
@@ -1479,33 +1487,72 @@ void func_0018d320(KwlnTask* task)
 void* func_0018db20(KwlnTask* task)
 {
     u8* object = (u8*)task;
-    void* transition = GS_PTR(object, 0x70);
-    if (func_0018b700(transition) != 0 && GS_S32(object, 0x24) != 0)
-    {
+    if (func_0018b700(GS_PTR(object, 0x70)) != 0 && GS_S32(object, 0x24) != 0)
     {
         switch (GS_S32(object, 0xc))
         {
-        case 4:
-            func_0018ce50(task);
+        case 0:
+            func_0018c150(task);
+            break;
+        case 1:
+            {
+                void* transition = GS_PTR(object, 0x70);
+                s16 pcId = GS_S16(object, 0x14);
+                void* atlas;
+
+                if (datGetScenarioMode() != 0)
+                {
+                    if (pcId == 1)
+                    {
+                        pcId = 11;
+                    }
+                    if (pcId == 9)
+                    {
+                        pcId = 12;
+                    }
+                    if (pcId == 3)
+                    {
+                        pcId = 11;
+                    }
+                }
+                atlas = GS_PTR(object, 0x3c + (pcId * 4));
+                gsDrawSprite(atlas, 3, GS_U8(transition, 0x40),
+                             GS_F32(transition, 0x38) + 20.0f,
+                             GS_F32(transition, 0x3c) + 18.0f,
+                             GS_F32(transition, 0x24));
+                gsDrawSprite(atlas, 1, GS_U8(transition, 0x40),
+                             GS_F32(transition, 0x38) + 20.0f,
+                             GS_F32(transition, 0x3c) + 18.0f,
+                             GS_F32(transition, 0x24));
+                gsDrawSprite(GS_PTR(object, 0x2c), 0,
+                             GS_U8(transition, 0x40),
+                             GS_F32(transition, 0x38) + 44.0f,
+                             GS_F32(transition, 0x3c) + 39.0f,
+                             GS_F32(transition, 0x24));
+                gsDrawSprite(GS_PTR(object, 0x2c), 3,
+                             GS_U8(transition, 0x40),
+                             GS_F32(transition, 0x38) + 50.0f,
+                             GS_F32(transition, 0x3c) + 51.0f,
+                             GS_F32(transition, 0x24));
+                gsDrawSprite(GS_PTR(object, 0x34), 0,
+                             GS_U8(transition, 0x40),
+                             GS_F32(transition, 0x38) + 27.0f,
+                             GS_F32(transition, 0x3c) + 22.0f,
+                             GS_F32(transition, 0x24));
+                break;
+            }
+        case 2:
+            func_0018d320(task);
             break;
         case 3:
             func_0018c780(task);
             break;
-        case 2:
-            func_0018d320(task);
-            break;
-        case 1:
-            gsDrawHeader(object, 3, 1, 0);
-            gsDrawSprite(GS_PTR(object, 0x2c), 3, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 51.0f, GS_F32(transition, 0x24));
-            gsDrawSprite(GS_PTR(object, 0x34), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 27.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24));
-            break;
-        case 0:
-            func_0018c150(task);
+        case 4:
+            func_0018ce50(task);
             break;
         default:
             break;
         }
-    }
     }
     return KWLNTASK_CONTINUE;
 }
@@ -1997,7 +2044,14 @@ void* func_0018eb40(KwlnTask* task)
             dimensions.valueS[3] = 5;
             break;
         case 9:
-            dimensions.valueS[3] = datGetScenarioMode() != 0 ? 6 : 8;
+            if (datGetScenarioMode() != 0)
+            {
+                dimensions.valueS[3] = 8;
+            }
+            else
+            {
+                dimensions.valueS[3] = 6;
+            }
             break;
         case 10:
             dimensions.valueS[3] = 7;
@@ -2024,13 +2078,13 @@ void* func_0018eb40(KwlnTask* task)
         GS_U32(work, 0) = 5;
         break;
     case 5:
-        if (GS_S32(work, 0x60) < 0x32)
+        if (((GsEb40WorkView*)work)->frame < 0x32)
         {
-            GS_S32(work, 0x60)++;
+            ((GsEb40WorkView*)work)->frame++;
         }
-        else if (GS_U32(work, 0x68) != 0)
+        else if (((GsEb40WorkView*)work)->release != 0)
         {
-            GS_S32(work, 0x60)++;
+            ((GsEb40WorkView*)work)->frame++;
             func_00111500(GS_TASK(work, 8));
         }
         if (kwlnTaskGetState(GS_TASK(work, 8)) == 3)

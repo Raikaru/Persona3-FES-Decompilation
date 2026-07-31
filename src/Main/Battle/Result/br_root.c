@@ -528,8 +528,10 @@ void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
     }
     work[0xb0 / 4] = params->entryCount;
     for (i = 0; i < (s32)params->entryCount; i++) {
-        BR_U16((u8 *)work + i * 8, 0x98) = params->entries[i].id;
-        BR_U32((u8 *)work + i * 8, 0x9c) = params->entries[i].value;
+        const u8 *entry = (const u8 *)params + i * 8;
+        u8 *dst = (u8 *)work + i * 8;
+        BR_U16(dst, 0x98) = BR_U16(entry, 4);
+        BR_U32(dst, 0x9c) = BR_U32(entry, 8);
     }
     work[0xb4 / 4] = params->field20;
     work[0x118 / 4] = params->partyCount;
@@ -1100,7 +1102,7 @@ u32 func_001f1f40(void)
 }
 
 // FUN_001f2080 NONMATCHING
-KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
+KwlnTask *func_001f2080(const u8 *params)
 {
     u8 *work = (u8 *)BR_ALLOC2(0x2a220, 0x40000);
     KwlnTask *task;
@@ -1109,7 +1111,7 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     sBrCard = work;
     BR_U32(work, 4) = 0;
     BR_U32(work, 0x14) = 0;
-    task = kwlnTaskCreateWithAutoPriority(parent, 10, "battle result card",
+    task = kwlnTaskCreateWithAutoPriority(NULL, 10, "battle result card",
                                           func_001f2300, func_001f2fd0, work);
     child = kwlnTaskInitEx("battle result ground", 0x106f, 1, 2,
                            func_001f2f50, NULL, work);

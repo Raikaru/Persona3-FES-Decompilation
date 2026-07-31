@@ -19,6 +19,7 @@ typedef struct PanelSkillRow
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce3ec;
 extern u32 D_00684F00[];
+extern u8 gp0xffff972c;
 
 static u8* panelWork(void)
 {
@@ -1319,10 +1320,10 @@ void FUN_00202010(void)
         out++;
     }
     K_ASSERT(out != 0, 0x7e3);
-    K_ASSERT(out < 10, 0x7e4);
+    K_ASSERT(10 > out, 0x7e4);
     *(u32*)(p + 0x74) = out;
     *(u32*)(p + 0x70) = out;
-    if (out >= 5)
+    if (out > 4)
     {
         *(u32*)(p + 0x70) = 4;
     }
@@ -3172,7 +3173,7 @@ void FUN_00206310(void)
 }
 
 #pragma opt_loop_invariants on
-// FUN_002063F0 NONMATCHING
+// FUN_002063F0
 void FUN_002063F0(void)
 {
     u8* work;
@@ -3182,6 +3183,7 @@ void FUN_002063F0(void)
     s32 i;
     u32 id;
     u32 type;
+    u32 idOffset;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -3189,7 +3191,7 @@ void FUN_002063F0(void)
     switch (id)
     {
     case 7:
-        FUN_005225a8("bcm_main.c");
+        FUN_005225a8((const char*)&gp0xffff972c);
         FUN_0021B670(0);
         FUN_002085E0();
         *(u32*)(work + 0x1c) = 1;
@@ -3209,6 +3211,8 @@ void FUN_002063F0(void)
                     switch (*(u32*)(row + 4))
                     {
                     case 1:
+                        idOffset = *(u32*)(work + 0x7734) * 4;
+                        id = *(u32*)(work + idOffset + 0x3b0);
                         *(u32*)(row + 0x10) = id;
                         *(u32*)row |= 1;
                         break;
@@ -3228,9 +3232,9 @@ void FUN_002063F0(void)
         default:
             break;
         }
+        FUN_00205D60();
         break;
     }
-    FUN_00205D60();
 }
 #pragma opt_loop_invariants off
 

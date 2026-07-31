@@ -6497,34 +6497,42 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 
 // FUN_0030c0c0 NONMATCHING
 int FUN_0030c0c0(void)
-
 {
-  short sVar1;
-  u16 uVar2;
-  int iVar3;
-  s32 lVar4;
-  short sVar5;
-  u16 uVar6;
-  u32 uVar7;
-  
-  lVar4 = FUN_0017d800();
-  if (lVar4 == 0) {
-    sVar1 = FUN_001752b0();
-    uVar2 = FUN_00175410();
-    for (uVar7 = 0; uVar7 < 0x20; uVar7 = uVar7 + 1 & 0xffff) {
-      iVar3 = DAT_007ce3fc + uVar7 * 6;
-      sVar5 = *(short *)(iVar3 + 2);
-      if (sVar1 == sVar5) {
-        sVar5 = *(short *)(iVar3 + 4);
-LAB_0030c164:
-        for (uVar6 = 0; uVar6 < uVar2; uVar6 = uVar6 + 1) {
-          lVar4 = FUN_00174960(uVar6);
-          if ((lVar4 != 0) && (iVar3 = FUN_00174a90(uVar6), *(short *)(iVar3 + 2) == sVar5)) {
-            return DAT_007ce3fc + uVar7 * 6;
-          }
+  u16 target;
+  u16 currentValue;
+  u16 current;
+  u16 count;
+  u16 inner;
+  u16 outer;
+  u32 offset;
+  u8* entry;
+  u8* member;
+  if (FUN_0017d800() != 0) {
+    return 0;
+  }
+  currentValue = FUN_001752b0();
+  count = FUN_00175410();
+  outer = 0;
+  current = (u16)currentValue;
+  for (; outer < 0x20; outer = (outer + 1) & 0xffff) {
+    offset = outer * 6;
+    entry = (u8*)(DAT_007ce3fc + offset);
+    if (current == *(u16 *)(entry + 2)) {
+      target = *(u16 *)(entry + 4);
+    }
+    else if (current == *(u16 *)(entry + 4)) {
+      target = *(u16 *)(entry + 4);
+    }
+    else {
+      continue;
+    }
+    for (inner = 0; inner < count; inner++) {
+      if (FUN_00174960((s16)inner) != 0) {
+        member = (u8*)FUN_00174a90((s16)inner);
+        if (*(u16 *)(member + 2) == target) {
+          return DAT_007ce3fc + offset;
         }
       }
-      else if (sVar1 == *(short *)(iVar3 + 4)) goto LAB_0030c164;
     }
   }
   return 0;

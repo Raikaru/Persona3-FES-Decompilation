@@ -786,16 +786,15 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
 {
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
-        sSlotWork[slotIndex].param2 = 0x3E7;
+        s16 index = (s16)slotIndex;
+        sSlotWork[index].param2 = 0x3E7;
         return;
     }
 
-    if (sSlotWork[slotIndex].state == HSND_CHANNEL_PLAYING &&
-        sSlotWork[slotIndex].param2 != 0x3E7)
+    if (sSlotWork[slotIndex].state == HSND_CHANNEL_RELEASING)
     {
         K_Assert(__FILE__, 0x32C);
     }
-
     sSlotWork[slotIndex].callbackMode = true;
     sSlotWork[slotIndex].completed = false;
     sSlotWork[slotIndex].param1 = slotIndex;

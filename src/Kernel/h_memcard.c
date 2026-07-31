@@ -489,7 +489,11 @@ state5_done:
 
         }
         case 6:
-            if (sMemcardAsync == 0)
+            if (sMemcardAsync != 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E48E0, sMemcardFile);
+            }
+            else
             {
                 if (FUN_0017d800() == 0)
                 {
@@ -513,10 +517,6 @@ state5_done:
                         FUN_00523ac8(D_00846DA0, D_005E4920, sMemcardFile);
                     }
                 }
-            }
-            else
-            {
-                FUN_00523ac8(D_00846DA0, D_005E48E0, sMemcardFile);
             }
             FUN_005225a8(D_005E4980, FUN_005140f8(sSocketNo, D_00846DA0));
             sMemcardSeqMode = 7;
@@ -544,27 +544,6 @@ state5_done:
             }
             break;
 
-        case 0xb:
-            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
-            {
-                if (cardError == 0)
-                {
-                    if (cardCode == 0x1c)
-                    {
-                        return -6;
-                    }
-                    if (cardCode != 0x11)
-                    {
-                        return -3;
-                    }
-                    sMemcardSeqMode = 0xc;
-                }
-                else
-                {
-                    sMemcardSeqMode = 0xc;
-                }
-            }
-            break;
 
         case 10:
             if (sMemcardMode == 2)
@@ -665,6 +644,27 @@ state5_done:
             }
             FUN_00513de8(sSocketNo, D_00846DA0);
             sMemcardSeqMode = 0xb;
+            break;
+        case 0xb:
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
+            {
+                if (cardError == 0)
+                {
+                    if (cardCode == 0x1c)
+                    {
+                        return -6;
+                    }
+                    if (cardCode != 0x11)
+                    {
+                        return -3;
+                    }
+                    sMemcardSeqMode = 0xc;
+                }
+                else
+                {
+                    sMemcardSeqMode = 0xc;
+                }
+            }
             break;
 
         case 0xc:
