@@ -31,7 +31,7 @@ extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
-extern u32 FUN_0052f7d0(long, long, long);
+extern u64 FUN_0052f7d0(u64, u64, u64 *);
 
 static const float sAtanHi[] = {
     0.463647603989f,
@@ -386,16 +386,16 @@ u64 FUN_0052eac8(u64 param_1)
 }
 #pragma optimization_level 2
 // FUN_0052EB60 NONMATCHING
-void FUN_0052eb60(u32 param_1)
+void FUN_0052eb60(u64 param_1)
 
 {
   u64 uVar1;
   u64 uVar2;
   
-  if ((0x3ffffffffffffe < param_1 + 0x1fffffffffffff) && ((param_1 & 0x7ff) != 0)) {
+  if (((u64)-0x800 >> 0xa < (u64)param_1 + ((u64)-0x800 >> 0xb)) && ((param_1 & 0x7ff) != 0)) {
     param_1 = param_1 | 0x800;
   }
-  uVar1 = FUN_00531720_u64((long)param_1 >> 0x20);
+  uVar1 = FUN_00531720_u64(param_1 >> 0x20);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
   uVar2 = FUN_00531720_u64((int)param_1);

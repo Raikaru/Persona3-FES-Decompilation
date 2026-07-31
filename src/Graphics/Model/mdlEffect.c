@@ -7766,7 +7766,6 @@ void FUN_00326740(int param_1)
 
 
 
-#pragma opt_lifetimes on
 // FUN_003268C0 NONMATCHING
 
 
@@ -7844,7 +7843,6 @@ u32 FUN_003268c0(u32 param_1)
 
 
 
-#pragma opt_lifetimes reset
 // FUN_003269E0 NONMATCHING
 
 
@@ -37670,29 +37668,15 @@ void FUN_00347d60(void)
 
 
 
+#pragma push
+#pragma schedule off
 // FUN_00347F80
-
-
 void FUN_00347f80(void)
-
-
-
 {
-  __asm__ (
-      ".set noreorder ;"
-      ".word 0x27bdfff0 ;"
-      ".word 0xffbf0000 ;"
-      ".word 0x8f84b870 ;"
-      ".word 0x3c050095 ;"
-      ".word 0x24a57a90 ;"
-      ".word 0x0000302d ;"
-      ".word 0x0c132dd4 ;"
-      ".word 0x00000000 ;"
-      ".word 0xa380b85c ;"
-      ".word 0xdfbf0000 ;"
-      ".word 0x27bd0010 ;"
-      ".set reorder");
+  FUN_004cb750(DAT_007ce560,DAT_00957a90_abs,0);
+  DAT_007ce54c = 0;
 }
+#pragma pop
 
 
 
