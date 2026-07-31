@@ -233,7 +233,8 @@ extern void* func_0010c1a0(void* param_1, const char* path, ...);
 extern void func_00102720(const char* path, const void* archive);
 extern void* func_0010c3a0(void* stream, u32* finished, u32 param_3);
 extern void func_0010a4e0(u32 param_1, u32 param_2, s8 param_3, s8 param_4);
-extern void* func_0010e880(const void* entry);
+#pragma alias func_0010e880_y2 func_0010e880
+extern void* func_0010e880_y2(const void* entry);
 extern void func_00133d30(void* stream, HCdvd* cdvd);
 extern u32 func_004a5540(void* resource);
 extern void func_004a6200(void* resource, const f32* uv0, const f32* uv1, const f32* uv2, const f32* uv3);
@@ -1326,7 +1327,7 @@ void func_00112110(void* param_1)
                 memcpy(record, node->source + node->sourceOffset, sizeof(record));
                 node->sourceOffset += sizeof(record);
                 *(void**)((u32)node + node->resourceIndex * 4 + 0x104) =
-                    func_0010e880(node->source + record[1]);
+                    func_0010e880_y2(node->source + record[1]);
                 node->resourceIndex++;
             } while (*((u16*)(node->header + 0x14)) != node->resourceIndex);
             node->state = 4;
@@ -5608,9 +5609,7 @@ extern u8 D_0077e4e0[];
 extern u8 D_00803640[];
 extern f32 D_00960088_abs_y2[];
 extern void (*D_00960094)(u32 state, void* value);
-extern void (*D_009600A0)(u32 primitive, void* vertices, s32 count);
 extern void* (*D_00960178)(u32 size, u32 flags);
-extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
 extern void (*D_0096017c)(void* memory);
 #pragma alias D_00960178_abs D_00960178
 extern void* (*D_00960178_abs[])(u32 size, u32 flags);
@@ -5682,8 +5681,9 @@ extern void* func_004ac570(void);
 extern void func_004ac5f0(void* image);
 extern void func_004ab1b0(void* image);
 extern void func_004a62e0(void* image, void* data);
-extern void func_004a6200(void* image, s32* out0, f32* out1,
-                          f32* out2, s32* out3);
+#pragma alias func_004a6200_y2 func_004a6200
+extern void func_004a6200_y2(void* image, s32* out0, f32* out1,
+                              f32* out2, s32* out3);
 extern void func_004ab6a0(void* image);
 extern void func_004ac710(void* image);
 extern void func_004ace70(void* image, void* quad);
@@ -7213,8 +7213,8 @@ void func_0010ec50(KwlnTask* task)
                     out5 = 0;
                     out6 = 0;
                     out7 = 0;
-                    func_004a6200(*(void**)(entry + 0x148),
-                                  &out0, &out2, &out4, &out6);
+                    func_004a6200_y2(*(void**)(entry + 0x148),
+                                     &out0, &out2, &out4, &out6);
                 }
 
                 frames = *(u8**)(entry + 8);
@@ -7586,8 +7586,8 @@ void* func_0010f6c0(KwlnTask* task)
                             out5 = 0;
                             out6 = 0;
                             out7 = 0;
-                            func_004a6200(*(void**)(entry + 0x148),
-                                          &out0, &out2, &out4, &out6);
+                            func_004a6200_y2(*(void**)(entry + 0x148),
+                                              &out0, &out2, &out4, &out6);
                         }
                         frames = *(u8**)(entry + 8);
                         record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
