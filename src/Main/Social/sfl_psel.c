@@ -1262,7 +1262,7 @@ u32 func_002168a0(void)
     return *sSflPsel & 0x20;
 }
 
-#pragma opt_lifetimes on
+#pragma opt_strength_reduction off
 // FUN_002168F0 NONMATCHING
 void func_002168f0(void)
 {
@@ -1367,7 +1367,7 @@ void func_002168f0(void)
     }
 }
 
-#pragma opt_lifetimes reset
+#pragma opt_strength_reduction reset
 // FUN_002170C0
 void func_002170c0(void)
 {

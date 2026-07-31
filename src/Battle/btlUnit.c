@@ -808,7 +808,7 @@ f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
     return offset;
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_002826D0 NONMATCHING
 void func_002826d0(BtlUnit* unit)
 {
@@ -937,7 +937,7 @@ void func_002826d0(BtlUnit* unit)
     unit->unk_9cc &= (u16)~8;
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 // FUN_00282BC0
 void func_00282bc0(BtlUnit* unit)
 {

@@ -1394,7 +1394,7 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
 
 
 // Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
-#pragma opt_common_subs off
+#pragma opt_propagation off
 // FUN_00311730 NONMATCHING
 
 
@@ -2749,7 +2749,7 @@ special_matrix_done:
 
 
 
-#pragma opt_common_subs reset
+#pragma opt_propagation reset
 // FUN_00312C70
 
 
