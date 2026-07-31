@@ -12716,8 +12716,7 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
 {
   char cVar1;
   short sVar2;
-  int iVar3;
-  int iVar4;
+  u8 *puVar2;
   short *psVar5;
   int iVar6;
   char bVar7;
@@ -12725,7 +12724,7 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
   float fVar9;
   u32 uVar10;
   
-  iVar3 = *(int *)(param_1 + 0x3c);
+  puVar2 = *(u8 **)(param_1 + 0x3c);
   bVar7 = 0;
   iVar8 = (int)param_2;
   iVar6 = iVar8 * 6;
@@ -12733,10 +12732,10 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
   uVar10 = (u32)fVar9;
   cVar1 = *(char *)(iGpffffb9fc + 0xa6 + iVar8);
   if (cVar1 == '\0') {
-    iVar4 = iVar8 * 8 + iVar3;
-    FUN_001140d0_f3(4.0f,*(float *)(iVar4 + 0x2cc) - 128.0f,
-                    *(float *)(iVar4 + 0x2d0) - 64.0f,
-                    uVar10 | 0xffffff00,0x100,0x80,*(u32 *)(iVar8 * 4 + iVar3 + 0x274));
+    FUN_001140d0_f3(4.0f,*(float *)(puVar2 + iVar8 * 8 + 0x2cc) - 128.0f,
+                    *(float *)(puVar2 + iVar8 * 8 + 0x2d0) - 64.0f,
+                    uVar10 | 0xffffff00,0x100,0x80,
+                    *(u32 *)(puVar2 + iVar8 * 4 + 0x274));
     psVar5 = (short *)(iGpffffb9fc + 0x7c + iVar6);
     sVar2 = *psVar5;
     if (sVar2 < (short)param_3) {
@@ -12751,9 +12750,10 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
       *psVar5 = sVar2 + 1;
       bVar7 = 1;
     }
-    iVar6 = iVar8 * 8 + iVar3;
-    FUN_001140d0_f3(4.0f,*(float *)(iVar6 + 0x2cc) - 128.0f,*(float *)(iVar6 + 0x2c8) - 64.0f,
-                 uVar10 | 0xffffff00,0x100,0x80,*(u32 *)(iVar8 * 4 + iVar3 + 0x3c4));
+    FUN_001140d0_f3(4.0f,*(float *)(puVar2 + iVar8 * 8 + 0x2cc) - 128.0f,
+                    *(float *)(puVar2 + iVar8 * 8 + 0x2c8) - 64.0f,
+                    uVar10 | 0xffffff00,0x100,0x80,
+                    *(u32 *)(puVar2 + iVar8 * 4 + 0x3c4));
   }
   return bVar7;
 }
@@ -16991,9 +16991,9 @@ void FUN_00455cf0(void)
   int valid;
   u8 *row;
 
-  base = DAT_008717a0_bytes;
   index = 1;
   for (; index < 4; index = index + 1) {
+    base = DAT_008717a0_bytes;
     valid = 0;
     checkRow = base + index * 0x1c0;
     if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {
@@ -17006,9 +17006,9 @@ void FUN_00455cf0(void)
       row[0x19c] = 0;
     }
   }
-  base = DAT_0086eda0_bytes;
   index = 0;
   for (; index < 0x18; index = index + 1) {
+    base = DAT_0086eda0_bytes;
     valid = 0;
     checkRow = base + index * 0x1c0;
     if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {
