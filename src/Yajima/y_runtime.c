@@ -5867,7 +5867,7 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
 #pragma push
 #pragma opt_loop_invariants on
 // Preserve every helper-facing vector as one aggregate; the remaining normalized diff is a stack/codegen floor.
-#pragma opt_lifetimes on
+#pragma opt_strength_reduction off
 // FUN_00435C00 NONMATCHING
 
 void FUN_00435c00(int param_1)
@@ -6787,7 +6787,7 @@ LAB_00437890:
 #undef afStack_10
 
 #pragma pop
-#pragma opt_lifetimes reset
+#pragma opt_strength_reduction reset
 // FUN_00437E00
 
 void FUN_00437e00(void)
