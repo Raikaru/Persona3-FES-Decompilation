@@ -395,6 +395,7 @@ extern u8 DAT_006a1070_abs[];
 #define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
 #define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
 #define FUN_00397870(...) ((u32 (*)(...))FUN_00397870)(__VA_ARGS__)
+#undef FUN_00396e30
 
 
 u32 FUN_00396e30(int param_1)

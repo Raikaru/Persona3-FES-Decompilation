@@ -1885,7 +1885,6 @@ void FUN_003b1330(void *param_1,u32 param_2)
 #define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
 #define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
 #undef FUN_003b1360
-#pragma opt_propagation off
 // FUN_003B1360 NONMATCHING
 
 
@@ -2112,7 +2111,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 }
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
 #undef FUN_003b1710
-#pragma opt_propagation reset
+#pragma opt_propagation off
 // FUN_003B1710 NONMATCHING
 
 
@@ -2235,6 +2234,7 @@ int FUN_003b1710(long param_1)
 }
 #define FUN_003b1710(...) ((int (*)(...))FUN_003b1710)(__VA_ARGS__)
 #undef FUN_003b18c0
+#pragma opt_propagation reset
 // FUN_003B18C0
 
 

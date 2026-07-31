@@ -5785,7 +5785,6 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 
 
-#pragma opt_dead_assignments off
 // FUN_00324B50 NONMATCHING
 
 void FUN_00324b50(u32 param_1)
@@ -5814,7 +5813,7 @@ void FUN_00324b50(u32 param_1)
 }
 
 
-#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction off
 // FUN_00324BD0 NONMATCHING
 
 
@@ -6218,6 +6217,7 @@ u32 FUN_00324bd0(u32 param_1)
 
 
 
+#pragma opt_strength_reduction reset
 // FUN_003252A0 NONMATCHING
 
 

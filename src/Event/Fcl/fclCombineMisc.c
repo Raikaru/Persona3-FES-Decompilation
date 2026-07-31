@@ -974,7 +974,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
-#pragma opt_common_subs off
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1110,7 +1109,7 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 /* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
 #pragma opt_common_subs off
-#pragma opt_common_subs reset
+#pragma opt_lifetimes on
 // FUN_003D6740 NONMATCHING
 
 
@@ -1210,6 +1209,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 #pragma opt_common_subs reset
 
 // W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
+#pragma opt_lifetimes reset
 // FUN_003D6910 NONMATCHING
 
 
