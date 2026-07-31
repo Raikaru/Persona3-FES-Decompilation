@@ -168,6 +168,7 @@ LAB_003d00e8:
   return 0;
 }
 #pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 #define FUN_003cfe50(...) ((u64 (*)(...))FUN_003cfe50)(__VA_ARGS__)
 
 
