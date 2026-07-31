@@ -580,6 +580,7 @@ found:
 /* opt_lifetimes on + opt_propagation off: baseline nd481/object1248/1296 -> nd476/object1248/1296; retained W389. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+#pragma opt_dead_assignments on
 // FUN_0013c780 NONMATCHING
 void FUN_0013c780(CampEquipmentWork* work)
 {
@@ -716,6 +717,7 @@ void FUN_0013c780(CampEquipmentWork* work)
 /* opt_lifetimes on + opt_propagation off: baseline nd320/object748/752 -> nd314/object748/752; retained W389. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+#pragma opt_dead_assignments reset
 // FUN_0013cc90 NONMATCHING
 void FUN_0013cc90(CampEquipmentWork* work)
 {

@@ -3370,8 +3370,6 @@ LAB_00305f20:
 #pragma opt_lifetimes reset
 /* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
 #pragma opt_lifetimes on
-#pragma opt_propagation off
-#pragma opt_strength_reduction off
 // FUN_00306020 NONMATCHING
 u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
@@ -3505,8 +3503,6 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
 
 
-#pragma opt_strength_reduction reset
-#pragma opt_propagation reset
 // FUN_00306510
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
@@ -5090,6 +5086,8 @@ u8 FUN_003093a0(u16 *param_1)
 
 
 
+#pragma opt_loop_invariants on
+#pragma opt_strength_reduction off
 // FUN_00309490 NONMATCHING
 u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4)
 
@@ -5756,6 +5754,8 @@ LAB_00309c04:
 
 
 
+#pragma opt_strength_reduction reset
+#pragma opt_loop_invariants reset
 // FUN_0030a740 NONMATCHING
 u32 FUN_0030a740(s32 param_1,u32 param_2,u32 param_3,short param_4)
 

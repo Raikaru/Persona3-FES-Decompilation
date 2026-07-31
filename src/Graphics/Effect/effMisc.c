@@ -246,6 +246,7 @@ void func_00358160(f32 angle)
     );
 }
 
+/* W389: baseline nd 14, obj 328/336; assignment split was neutral, while right.y temporary/operand probes worsened to nd118/25 and were reverted. Residual is prologue argument-save order plus FPU multiply/add scheduling. */
 // FUN_003581f0 NONMATCHING
 void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
 {
@@ -297,7 +298,7 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     z = normalizedAxis.z;
     xSquared = x * x;
     matrix_p->right.x = xSquared + (1.0f - xSquared) * cosine;
-    matrix_p->right.y = x * y * (1.0f - cosine) + z * sine;
+    matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
     xz = x * z;
     matrix_p->right.z = xz * (1.0f - cosine) - y * sine;
     matrix_p->flags = 0;

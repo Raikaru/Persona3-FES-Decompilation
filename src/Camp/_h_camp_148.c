@@ -1024,7 +1024,6 @@ void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
 #pragma opt_loop_invariants on
 /* W373 pragma sweep: default nd6343/object9700/10080; dead_assignments off nd6331/object9700/10080. Retained dead_assignments off alongside the existing loop_invariants on. */
 #pragma opt_dead_assignments off
-#pragma opt_propagation off
 // FUN_0014C5C0 NONMATCHING
 u32 h_campUpdateNewItemTask(int param_1)
 
@@ -2008,7 +2007,6 @@ u32 h_campUpdateNewItemTask(int param_1)
 #pragma opt_dead_assignments reset
 
 #pragma opt_loop_invariants reset
-#pragma opt_propagation reset
 // FUN_0014EE80
 KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
 {

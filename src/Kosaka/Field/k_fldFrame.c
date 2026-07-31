@@ -425,6 +425,7 @@ void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
     RwFree(collisCtlTask->workData);
 }
 
+/* W389: nd 10, obj 524/528 before and after; absolute rwGlobals+0x184 call fixed the retail load form, declaration swap was neutral. Remaining nd10 is loop register colouring (base/index a2/a3 swap) plus commutative addu. */
 // FUN_001ad660 NONMATCHING
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
 {
@@ -2700,6 +2701,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
     return returnVal;
 }
+/* W389 sweep: baseline nd 59, obj 240/240; all six knobs and 15 pairs stayed nd59/obj240, except opt_common_subs off (nd246, obj364/240). Retained no pragma; documented residual is scheduling of x/y vector loads versus multiplies. */
 // FUN_001ac950 NONMATCHING
 void* func_001ac950(const RwV3d* line, void* unused,
                     const void* triangle, FldFrameRaycast* raycast)
