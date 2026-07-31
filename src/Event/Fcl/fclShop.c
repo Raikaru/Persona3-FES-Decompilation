@@ -7888,6 +7888,8 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
 {
   extern void FUN_0040e3c0(float, s32, s32, u8, u32, s32);
+#define FUN_0040e3c0(scale, x, y, color, type, value) \
+  FUN_0040e3c0_i(x, y, scale, color, type, value)
 
 
   u8 cVar1;
@@ -8257,6 +8259,7 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   return 0;
 
 }
+#undef FUN_0040e3c0
 
 // FUN_003EF970
 

@@ -2802,12 +2802,19 @@ int FUN_003dffc0(int *param_1,int param_2,s32 param_3)
   int iVar3;
 
   iVar1 = *param_1;
-  for (iVar2 = *(int *)(iVar1 + 4); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x10)) {
-    iVar3 = *(int *)(iVar2 + 0x14);
-    if (*(int *)(iVar3 + 0x10) == param_2) goto LAB_003e0008;
+  iVar2 = *(int *)(iVar1 + 4);
+  if (iVar2 != 0) {
+    do {
+      iVar3 = *(int *)(iVar2 + 0x14);
+      if (*(int *)(iVar3 + 0x10) == param_2) {
+        break;
+      }
+      iVar2 = *(int *)(iVar2 + 0x10);
+    } while (iVar2 != 0);
   }
-  iVar3 = 0;
-LAB_003e0008:
+  if (iVar2 == 0) {
+    iVar3 = 0;
+  }
   if (iVar3 == 0) {
     iVar1 = (s32)FUN_003c4910((FclNodeList *)iVar1,*(u16 *)(iVar1 + 0x10) + 1,(FclNodeValueStorage *)((int)param_3 + 0x38));
     iVar3 = *(int *)(iVar1 + 0x14);

@@ -115,6 +115,8 @@ extern void* DAT_00833B94;
 extern void* DAT_00833B98;
 #pragma alias DAT_00833B90_abs DAT_00833B90
 extern u8 DAT_00833B90_abs[];
+#pragma alias DAT_00833B94_abs DAT_00833B94
+extern u8 DAT_00833B94_abs[];
 #pragma alias DAT_00833B98_abs DAT_00833B98
 extern u8 DAT_00833B98_abs[];
 #pragma alias DAT_00833B88_abs DAT_00833B88
@@ -1906,14 +1908,14 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     left = position.x + 21.0f;
     right = position.x + 127.0f;
     top = position.y + 49.0f;
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
-                             left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
-                             right, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
-                             left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
-                             right, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
+                             drawAlpha, left, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
+                             drawAlpha, right, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
+                             drawAlpha, left, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
+                             drawAlpha, right, top, 100.0f);
 
     count = (s16)FUN_00177280(FUN_0016c6f0(parent));
     campStatusDrawSpriteCall(drawParent, DAT_00833B94, count - 1, drawAlpha,
