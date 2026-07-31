@@ -6677,7 +6677,9 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
   
 
 
-  iVar1 = *(int *)(param_3 + 0x108) + *(int *)(param_3 + 0x110);
+  iVar4 = *(volatile int *)(param_3 + 0x110);
+  iVar1 = *(volatile int *)(param_3 + 0x108);
+  iVar1 += iVar4;
 
   if (iVar1 == 0) {
 

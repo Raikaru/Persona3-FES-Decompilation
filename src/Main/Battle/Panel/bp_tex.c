@@ -5483,7 +5483,7 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
     *count = childCount;
 }
 
-// FUN_00256FA0 NONMATCHING
+// FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
     struct BpTexCollectScratch
@@ -5523,8 +5523,9 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         {
             s32 stackIndex;
             func_00259190(child, scratch.nested, &scratch.nestedCount);
-            stackIndex = scratch.stackCount;
-            scratch.stack[stackIndex] = scratch.nested[0];
+            child = ((volatile struct BpTexCollectScratch*)&scratch)->nested[0];
+            stackIndex = ((volatile struct BpTexCollectScratch*)&scratch)->stackCount;
+            scratch.stack[stackIndex] = child;
             scratch.stackCount = stackIndex + 1;
         }
     }

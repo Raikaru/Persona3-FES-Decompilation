@@ -6014,7 +6014,7 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
     }
     work[1] = 6;
     FUN_003c7430(*(u32 *)
-                  (*(int *)(*(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c) + 4) + 0xc));
+                  (*(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c) + 4) + 0xc);
 
   case 6:
     lVar4 = FUN_003c7850();
