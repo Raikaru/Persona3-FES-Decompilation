@@ -46,7 +46,6 @@ extern u8 DAT_006a20e0[];
 #pragma alias DAT_006a20e0_abs DAT_006a20e0
 extern u8 DAT_006a20e0_abs[];
  
- 
 extern u8 DAT_006a20f0[];
 #pragma alias DAT_006a20f0_abs DAT_006a20f0
 extern u8 DAT_006a20f0_abs[];

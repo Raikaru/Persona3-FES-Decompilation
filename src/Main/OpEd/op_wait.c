@@ -270,9 +270,12 @@ void opWait0026e000(void)
     void* atlas;
     void* frame;
     void (**setState)(u32 state, u32 value);
-    void (**setQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    union
+    {
+        void (**setQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+        void* loopQuad;
+    } quadTemp;
     void (**loopSetQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
-    void* loopQuad;
     u32 frameId;
     s32 i;
 

@@ -1733,7 +1733,6 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
     BtlUnitPacketMoveToUnit* packet;
     BtlUnit* targetUnit;
     const BtlUnitAnimBounds* bounds;
-    RtQuat targetRot;
     RwV3d targetPos;
     RwV3d scaledCenterA;
     RwV3d rotatedCenterA;
@@ -5684,9 +5683,11 @@ void FUN_002891e0(void)
   u32 uStack_68;
   u32 uStack_64;
 
-  u32 savedTarget[4];
+  RwV4d savedTarget;
 
-  u32 savedSource[4];
+  RwV4d savedSource;
+
+  RwV4d savedFog;
 
   int aiStack_40 [15];
 
@@ -5724,23 +5725,23 @@ void FUN_002891e0(void)
 
     iVar6 = FUN_00198560();
 
-    savedSource[0] = *(u32 *)(iVar6 + 0x18);
+    savedSource.x = *(f32 *)(iVar6 + 0x18);
 
-    savedSource[1] = *(u32 *)(iVar6 + 0x1c);
+    savedSource.y = *(f32 *)(iVar6 + 0x1c);
 
-    savedSource[2] = *(u32 *)(iVar6 + 0x20);
+    savedSource.z = *(f32 *)(iVar6 + 0x20);
 
-    savedSource[3] = *(u32 *)(iVar6 + 0x24);
+    savedSource.w = *(f32 *)(iVar6 + 0x24);
 
     iVar6 = FUN_00198570();
 
-    savedTarget[0] = *(u32 *)(iVar6 + 0x18);
+    savedTarget.x = *(f32 *)(iVar6 + 0x18);
 
-    savedTarget[1] = *(u32 *)(iVar6 + 0x1c);
+    savedTarget.y = *(f32 *)(iVar6 + 0x1c);
 
-    savedTarget[2] = *(u32 *)(iVar6 + 0x20);
+    savedTarget.z = *(f32 *)(iVar6 + 0x20);
 
-    savedTarget[3] = *(u32 *)(iVar6 + 0x24);
+    savedTarget.w = *(f32 *)(iVar6 + 0x24);
 
     iVar6 = FUN_00198570();
 
@@ -5770,13 +5771,13 @@ void FUN_002891e0(void)
 
     iVar6 = FUN_00198580();
 
-    uStack_70 = *(u32 *)(iVar6 + 0x18);
+    savedFog.x = *(f32 *)(iVar6 + 0x18);
 
-    uStack_6c = *(u32 *)(iVar6 + 0x1c);
+    savedFog.y = *(f32 *)(iVar6 + 0x1c);
 
-    uStack_68 = *(u32 *)(iVar6 + 0x20);
+    savedFog.z = *(f32 *)(iVar6 + 0x20);
 
-    uStack_64 = *(u32 *)(iVar6 + 0x24);
+    savedFog.w = *(f32 *)(iVar6 + 0x24);
 
     iVar6 = FUN_00198580();
 
@@ -5892,7 +5893,7 @@ void FUN_002891e0(void)
 
     uVar8 = FUN_00198580();
 
-    FUN_004944b0(uVar8,&uStack_70);
+    FUN_004944b0(uVar8,&savedFog);
 
     uVar8 = FUN_00198570();
 

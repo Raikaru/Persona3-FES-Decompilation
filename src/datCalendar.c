@@ -4258,7 +4258,7 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 
     packed.bits = position;
     /* Keep the packed argument spill before the callee-saved argument copies as in retail. */
-    asm ("" : "+m"(packed.bits));
+    asm volatile ("" : "+m"(packed.bits));
     y = packed.coords[1];
     /* Keep the packed y load ahead of the x load as in retail. */
     asm ("" : "+m"(y));

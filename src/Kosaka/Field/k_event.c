@@ -80,17 +80,6 @@ extern u8 D_008717F4_abs[];
 extern u8 D_00871914_abs[];
 #pragma alias DAT_007e094e_abs DAT_007e094e
 extern u8 DAT_007e094e_abs[];
-static void FldEvent_ClearBytes(void* dst, u32 size)
-{
-    u8* bytes;
-    u32 i;
-
-    bytes = (u8*)dst;
-    for (i = 0; i < size; i++)
-    {
-        bytes[i] = 0;
-    }
-}
 
 extern u32 func_00523ac8(void* buffer, const char* format, ...);
 extern u32 func_00521250(void* dst, u32 src, u32 size);
@@ -581,7 +570,7 @@ FldUnit* func_001c6f50(const FldUnit* unit, f32 fov, f32 maxDist)
         FldUnit* candidate;
 
         candidate = &gFldUnitsPc[i];
-        if (candidate == unit || candidate->genusBase == NULL)
+        if (unit == candidate || candidate->genusBase == NULL)
         {
             continue;
         }
