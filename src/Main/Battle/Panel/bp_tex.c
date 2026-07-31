@@ -886,7 +886,7 @@ void func_0021dd60(void* destination, const u8* colors)
     BP_TEX_F32(destination, 0xec) = converted;
 }
 
-// FUN_0021e170 NONMATCHING
+// FUN_0021e170
 void func_0021e170(void* destination,
                    const f32* center,
                    const f32* direction,
@@ -902,6 +902,7 @@ void func_0021e170(void* destination,
     f32 y;
     f32 x;
     f32 rotatedX;
+    f32 rotatedY;
     f32 cx;
     f32 cy;
     s32 i;
@@ -930,8 +931,8 @@ void func_0021e170(void* destination,
         rotatedX = x * cosine - y * sine;
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
-        nextPoint[0] = x * sine + y * cosine;
-        point[0] = rotatedX;
+        rotatedY = x * sine + y * cosine;
+        nextPoint[0] = (point[0] = rotatedX, rotatedY);
     }
     j = 0;
     cx = center[0];

@@ -66,11 +66,11 @@ extern u32 func_001d7300(u32 major, u16 minor, u32 area);
 extern u16 func_001d75f0(u32 major, u16 minor, u32 area);
 extern u16 func_001d76e0(u32 major, u16 minor, u32 area);
 extern u16 func_001d77d0(u32 major, u16 minor, u16 area);
- #pragma alias func_001d77d0_u32 func_001d77d0
-extern u32 func_001d77d0_u32(u32 major, u16 minor, u16 area);
+#pragma alias func_001d77d0_u32 func_001d77d0
+extern u32 func_001d77d0_u32(u32 major, u32 minor, u16 area);
 #pragma alias func_001d1db0_u32 func_001d1db0
 extern void func_001d1db0_u32(void* work, const void* source, u32 resourceId);
-extern u16* func_001d78c0(u32 major, u16 minor, u16 area);
+extern u16* func_001d78c0(u32 major, u32 minor, u16 area);
 extern FldUnit* func_001cf940(u32 encounter, void* unit);
 extern u32 func_001cfdd0(u32 index);
 extern void* func_001cd9a0(u32 charId);
@@ -2286,7 +2286,7 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
     iGpffffb598++;
 }
 
-// FUN_001d1fa0 NONMATCHING
+// FUN_001d1fa0
 void func_001d1fa0(void)
 {
     u8* spawn;

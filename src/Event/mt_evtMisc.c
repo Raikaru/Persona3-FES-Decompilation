@@ -5707,7 +5707,6 @@ void FUN_0038ca80(int param_1)
     for (listIndex = 0; listIndex < totalCount; listIndex++) {
       currentNode = (u16 *)nodes[listIndex];
       matchCount = *(int *)(param_1 + 0x97c);
-      matchedNode = NULL;
       for (searchIndex = 0; searchIndex < matchCount; searchIndex++) {
         matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);
         if (*matchedNode == *currentNode) {
