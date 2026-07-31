@@ -2,6 +2,8 @@
 #include "libm.h"
 
 extern s32 func_0052c000(float x, float y[2]);
+#pragma alias func_0052c000_cosf func_0052c000
+extern s32 func_0052c000_cosf(float x, float dummy, float y[2]);
 extern float func_0052d2d8(float x, float y);
 extern float func_0052dc48(float x, float y, s32 iy);
 extern float func_0052dd40(float x, float y, s32 iy);
@@ -161,7 +163,7 @@ float cosf(float x)
     ix &= 0x7FFFFFFF;
     if (0x3F490FD8 < ix)
     {
-        n = func_0052c000(x, y);
+        n = func_0052c000_cosf(x, 0.0f, y);
         switch (n & 3)
         {
         case 0:

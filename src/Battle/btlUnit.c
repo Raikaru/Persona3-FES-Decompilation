@@ -3338,8 +3338,8 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             }
             for (i = 0; i < 3; i++)
             {
-                colorBytes[i] = (u8)(s32)((1.0f - factor) * colorBytes[i] +
-                                          factor * targetBytes[i]);
+                colorBytes[i] = (u8)(s32)((1.0f - factor) * (f32)colorBytes[i] +
+                                          factor * (f32)targetBytes[i]);
             }
         }
 
@@ -3353,8 +3353,8 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-            colorBytes[3] = (u8)(s32)((1.0f - factor) * colorBytes[3] +
-                                      factor * targetBytes[3]);
+            colorBytes[3] = (u8)(s32)((1.0f - factor) * (f32)colorBytes[3] +
+                                      factor * (f32)targetBytes[3]);
         }
 
         unit->cols[BTLUNIT_COL_MAIN] = color;
