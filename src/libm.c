@@ -379,8 +379,9 @@ f64 FUN_0052eac8(s64 u)
   f += (u32)u;
   return f;
 }
-// Scoped optimization: this function measures 200B at level 3 versus 224B at level 2.
-#pragma optimization_level 3
+#pragma optimization_level 2
+// Scheduler probe: level-2 target is 224B without scheduling and measured separately with schedule enabled.
+#pragma schedule on
 // FUN_0052EB60 NONMATCHING
 float FUN_0052eb60(s64 u)
 {
@@ -397,6 +398,7 @@ float FUN_0052eb60(s64 u)
   f += (u32)u;
   return (float)f;
 }
+#pragma schedule off
 #pragma optimization_level 2
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)

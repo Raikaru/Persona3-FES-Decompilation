@@ -3712,7 +3712,7 @@ void FUN_003226b0(int *param_1,int param_2)
 
     if ((piVar3[4] & 0x10000000U) != 0) {
 
-      param_1[1] = 0x10000000;
+      param_1[1] = piVar3[4] & 0x10000000U;
 
       param_1[2] = param_2;
 
@@ -11468,8 +11468,8 @@ void FUN_0032af30(int param_1)
   float *pfVar14;
 
   u8 (*pauVar15) [16];
-
   u32 uVar16;
+
 
   float fVar17;
 

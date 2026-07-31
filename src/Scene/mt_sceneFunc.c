@@ -3723,7 +3723,9 @@ void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
 }
 #define FUN_003bbc90(...) ((void (*)(...))FUN_003bbc90)(__VA_ARGS__)
 #undef FUN_003bbd40
-// FUN_003BBD40 NONMATCHING
+/* opt_lifetimes on: measured nd 62 -> 0, object 400/400 -> 400/400. */
+#pragma opt_lifetimes on
+// FUN_003BBD40
 
 
 void FUN_003bbd40(float param_1,char *param_2,float *param_3)
@@ -3813,6 +3815,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
 }
 #define FUN_003bbd40(...) ((void (*)(...))FUN_003bbd40)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003bbed0
 // FUN_003BBED0
 
@@ -3961,6 +3964,8 @@ float FUN_003bc0e0(char *param_1)
 }
 #define FUN_003bc0e0(...) ((float (*)(...))FUN_003bc0e0)(__VA_ARGS__)
 #undef FUN_003bc220
+/* opt_lifetimes on: measured nd 952 -> 949, object 1272/1296 -> 1272/1296. */
+#pragma opt_lifetimes on
 // FUN_003BC220 NONMATCHING
 
 
@@ -4197,6 +4202,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
 }
 #define FUN_003bc220(...) ((float (*)(...))FUN_003bc220)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003bc730
 // FUN_003BC730
 
@@ -4791,6 +4797,8 @@ u32 FUN_003bd230(void)
 #define DAT_0095b070 (*(short **)DAT_0095b070_abs)
 
 #undef FUN_003bd280
+/* opt_loop_invariants on: measured nd 725 -> 716, object 1520/1520 -> 1516/1520; opt_lifetimes on alone: nd 725 -> 721, object 1520/1520 -> 1520/1520; stacked: nd 717, object 1516/1520 (worse than loop alone; retained loop only). */
+#pragma opt_loop_invariants on
 // FUN_003BD280 NONMATCHING
 
 
@@ -4996,6 +5004,7 @@ void FUN_003bd280(void)
 
 }
 #define FUN_003bd280(...) ((void (*)(...))FUN_003bd280)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef DAT_0095b074
 #undef DAT_0095b1f8
 #undef DAT_0095b208
@@ -5741,6 +5750,9 @@ u32 FUN_003be1c0(u32 param_1,s32 param_2)
 #define FUN_003be1c0(...) ((u32 (*)(...))FUN_003be1c0)(__VA_ARGS__)
 #undef FUN_003be2a0
 
+/* opt_loop_invariants on: measured nd 928 -> 876, object 1588/1600 -> 1588/1600; opt_lifetimes on alone: nd 928 -> 926, object 1588/1600 -> 1584/1600; stacked: nd 874, object 1584/1600 (retained). */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_003BE2A0 NONMATCHING
 u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u8 *param_5)
 
@@ -6149,6 +6161,8 @@ LAB_003be5a0:
 
 }
 #define FUN_003be2a0(...) ((u32 (*)(...))FUN_003be2a0)(__VA_ARGS__)
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #undef FUN_003be8e0
 
 // FUN_003BE8E0
@@ -6378,6 +6392,8 @@ void FUN_003bec50(void)
 #define FUN_003bec50(...) ((void (*)(...))FUN_003bec50)(__VA_ARGS__)
 #undef FUN_003beca0
 
+/* opt_common_subs off: measured nd 279 -> 238, object 472/480 -> 472/480. */
+#pragma opt_common_subs off
 // FUN_003BECA0 NONMATCHING
 
 
@@ -6491,8 +6507,12 @@ int FUN_003beca0(int param_1)
 
 }
 #define FUN_003beca0(...) ((int (*)(...))FUN_003beca0)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003bee80
 
+/* opt_loop_invariants on: measured nd 441 -> 420, object 664/688 -> 664/688; opt_lifetimes on alone: nd 441 -> 438, object 664/688 -> 668/688; stacked: nd 419, object 664/688 (retained). */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_003BEE80 NONMATCHING
 
 
@@ -6634,6 +6654,8 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
 }
 #define FUN_003bee80(...) ((u8 * (*)(...))FUN_003bee80)(__VA_ARGS__)
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #undef FUN_003bf130
 
 // FUN_003BF130

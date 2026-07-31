@@ -218,6 +218,7 @@ static void bpTexWriteVertex(void* destination,
     BP_TEX_F32(destination, (baseOffset) + 0x08) = (depth); \
     BP_TEX_WRITE_COLOR_INLINE(destination, baseOffset, color); \
 } while (0)
+/* W357 measured bpTex0021c9f0: optimization_level 3 nd121/556B -> nd0/556B. */
 #pragma optimization_level 3
 #pragma push
 #pragma schedule off
@@ -1563,6 +1564,7 @@ void bcmPanel00222fa0(void)
 }
 
 // FUN_002230e0
+/* W357 measured FUN_002230e0: optimization_level 1 nd19/432B -> nd0/432B. */
 #pragma optimization_level 1
 void FUN_002230e0(void)
 {
@@ -1605,8 +1607,9 @@ void FUN_002230e0(void)
         i++;
     }
 }
-
 #pragma optimization_level 2
+
+#pragma opt_loop_invariants on
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
@@ -1892,6 +1895,7 @@ alpha_done:
 // counter on the other switch arm). nd 198->6 (obj 1292B/1296B); residual
 // is a 2-variable register-bank swap (slot0/setQuad), unfixable per the
 // usual declaration/statement-order floor.
+#pragma opt_loop_invariants reset
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -4683,10 +4687,7 @@ u32 bpTexIsReady(void)
     return BP_TEX_GLOBAL[0] & 0x200;
 }
 
-/* Retail requires O1 to rematerialize each state-address argument.
- * W310 measured normalized_diff 85 without this pragma (288B) versus
- * normalized_diff 0 with it (320B); retain for the exact match.
- */
+/* W310/W357 measured bpTexBeginRender: optimization_level 1 nd85/288B -> nd0/320B. */
 #pragma optimization_level 1
 // FUN_00254F70
 void bpTexBeginRender(void)
@@ -4798,6 +4799,7 @@ void bpTexQueueNodePair(u32 first, u32 second)
     typedWork->queue.actionCount++;
 }
 
+/* W357 measured bpTexFindFreeNode: optimization_level 3 nd18/168B -> nd0/168B. */
 #pragma optimization_level 3
 #pragma schedule off
 // FUN_00255390
@@ -5232,7 +5234,6 @@ u32 bpTexHasPendingNode(void)
     return false;
 }
 
-#pragma optimization_level 3
 // FUN_002564C0 NONMATCHING
 void bpTexUpdateNode(void* nodeData)
 {
@@ -5458,7 +5459,6 @@ void bpTexUpdateNode(void* nodeData)
         }
     }
 }
-#pragma optimization_level 2
 
 // FUN_00256F20
 void bpTexCollectLeafPos(void* node, void* values, s32* count)

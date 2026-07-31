@@ -3406,7 +3406,6 @@ void func_00183f60(void* resource,
 /* W212: first divergence is the prologue (ours 0xa0-byte frame, retail 0x90);
  * this is an excess live-range/frame defect before the displaced draw tail, not
  * a tail defect.  func_00187ec0 does not share this draw/phase loop structure. */
-#pragma opt_strength_reduction off
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,
@@ -3521,7 +3520,6 @@ void func_001842c0(KwlnTask* task,
 
 extern void* DAT_007cdff0;
 
-#pragma opt_strength_reduction reset
 // FUN_00184890
 void func_00184890(KwlnTask* task)
 {
@@ -4880,6 +4878,7 @@ void func_00185b40(void* resource,
 #pragma push
 /* Removing this worsens func_00186050 (nd29 -> nd37) - measured W161. */
 #pragma opt_common_subs off
+#pragma opt_loop_invariants on
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 {
@@ -4896,6 +4895,7 @@ void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 }
 #pragma pop
 
+#pragma opt_loop_invariants reset
 // FUN_00186100
 void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha)
 {
