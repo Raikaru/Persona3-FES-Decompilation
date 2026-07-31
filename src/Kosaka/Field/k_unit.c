@@ -1957,15 +1957,15 @@ void func_001d1360(void)
                 if (unit->unk_178 == NULL)
                 {
                     *taskSlot = (KwlnTask*)func_001d3c40(
-                        0, *(u32*)((u8*)(*resource)->mdl + 0x128));
+                        0, (u32)(*resource)->mdl);
                 }
             }
             if (func_001c65e0(unit) == 0)
             {
-                taskSlot = &gFldUnitsEc[i].unk_174;
-                *taskSlot = (KwlnTask*)func_001dd460(0, 5, 0x1058);
-                func_001dd5f0(*taskSlot, *model);
-                func_001dd5e0(*taskSlot, 1);
+                gFldUnitsEc[i].unk_174 =
+                    (KwlnTask*)func_001dd460(0, 5, 0x1058);
+                func_001dd5f0(gFldUnitsEc[i].unk_174, *model);
+                func_001dd5e0(gFldUnitsEc[i].unk_174, 1);
             }
         }
     }

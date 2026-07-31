@@ -3662,7 +3662,7 @@ bpTexSubAfter:
     sub = *(u32*)(work + 0x463c);
     if (sub == 2 ||
         (sub == 0 && *(u32*)(work + 0x4640) == 2 &&
-         *(u32*)(work + 0x4650) < 3))
+         *(s32*)(work + 0x4650) < 3))
     {
         switch (*(u32*)(work + 0x4644))
         {
@@ -3677,7 +3677,7 @@ bpTexSubAfter:
     }
     else if (sub == 1 ||
              (sub == 0 && *(u32*)(work + 0x4640) == 1 &&
-              *(u32*)(work + 0x4650) < 3))
+              *(s32*)(work + 0x4650) < 3))
     {
         switch (*(u32*)(work + 0x4644))
         {
@@ -3692,20 +3692,13 @@ bpTexSubAfter:
     }
     else if (sub == 4 ||
              (sub == 0 && *(u32*)(work + 0x4640) == 4 &&
-              *(u32*)(work + 0x4650) < 3))
+              *(s32*)(work + 0x4650) < 3))
     {
         func_00225040();
     }
 
     sub = *(u32*)(work + 0x463c);
-    if (sub == 3 ||
-        (sub == 0 && *(u32*)(work + 0x4640) == 3 &&
-         *(u32*)(work + 0x4650) < 3))
-    {
-        func_00224150();
-    }
-
-    if (*(u32*)(work + 0x463c) == 3)
+    if (sub == 3)
     {
         switch (*(u32*)(work + 0x4644))
         {

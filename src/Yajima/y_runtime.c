@@ -8533,7 +8533,7 @@ short FUN_0043c180(char param_1)
   int iVar10;
   short sVar9;
   u16 uVar8;
-  u8 player;
+  int player;
   u8 *row;
   sVar9 = 0;
   uVar8 = 0;
@@ -17789,10 +17789,10 @@ u32 FUN_004575e0(int param_1)
 
 {
   char *puVar1;
-  u32 uVar2;
+  int uVar5;
   u32 uVar3;
   u32 uVar4;
-  u32 uVar5;
+  u32 uVar2;
   u32 lVar6;
   int iVar7;
   
