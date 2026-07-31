@@ -1390,7 +1390,7 @@ outer_check:
         offset += fileSize;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 #pragma push
 /* Removing this loses FUN_00102030 (MATCH nd0 -> MISMATCH nd32) - measured W161. */

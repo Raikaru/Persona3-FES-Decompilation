@@ -212,7 +212,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
 
 }
-#pragma opt_propagation on
+#pragma opt_propagation reset
 // FUN_001d5f30
 void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId)
 {

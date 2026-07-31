@@ -1772,7 +1772,6 @@ void btlActionInitStateAnalyze(BtlAction* action)
 {
     action->movedAwayFromHome = true;
 }
-#pragma opt_loop_invariants on
 // FUN_0028ca00 NONMATCHING
 void btlActionUpdateStateAnalyze(BtlAction* action)
 {
@@ -1884,7 +1883,6 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
     }
 }
 
-#pragma opt_loop_invariants reset
 // FUN_0028cda0
 void btlActionInitStateAI(BtlAction* action)
 {

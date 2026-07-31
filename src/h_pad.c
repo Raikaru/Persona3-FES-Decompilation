@@ -94,8 +94,9 @@ void H_Pad_Init(void)
         ((HPad*)gWorkPads_abs)[i].requestedMainMode = 3;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
+#pragma opt_strength_reduction off
 // FUN_00103110 NONMATCHING
 void H_Pad_Poll(HPad* pad)
 {
@@ -269,6 +270,7 @@ void H_Pad_Poll(HPad* pad)
 
 }
 
+#pragma opt_strength_reduction reset
 // FUN_00103580
 void H_Pad_Update(void)
 {

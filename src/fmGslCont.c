@@ -225,7 +225,7 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
   DAT_007ce64c = '\x01';
   return uVar2;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 #define FUN_003b41a0(...) ((u32 (*)(...))FUN_003b41a0)(__VA_ARGS__)
 #undef FUN_003b44a0
 #pragma alias DAT_0095aebc_abs DAT_0095aebc

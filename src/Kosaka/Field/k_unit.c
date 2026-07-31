@@ -1149,8 +1149,8 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     sFldUnitsEcCount++;
     return unit;
 }
-#pragma opt_dead_assignments on
-#pragma opt_propagation on
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
@@ -1537,7 +1537,7 @@ void func_001d03f0(u16 charId)
     }
 }
 #pragma opt_loop_invariants off
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 typedef struct FldUnitNode
 {
@@ -2756,7 +2756,7 @@ void func_001d2a10(void)
     }
     (void)reaper;
 }
-#pragma opt_dead_assignments on
+#pragma opt_dead_assignments reset
 
 // Measured opt_lifetimes on: nd425 -> 424, object 1024/1056; stacked opt_loop_invariants on + opt_lifetimes on: nd425 -> 424, object 1024/1056; retained (under window).
 /* Removing this worsens FUN_001d32a0 (nd588 -> nd637) - measured W161. */
@@ -2879,8 +2879,8 @@ void* func_001d32a0(KwlnTask* task)
     (void)area;
     return NULL;
 }
-#pragma opt_lifetimes off
-#pragma opt_loop_invariants off
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 
 // FUN_001d36c0
 void func_001d36c0(KwlnTask* task)

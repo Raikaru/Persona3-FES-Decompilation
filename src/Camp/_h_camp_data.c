@@ -127,7 +127,9 @@ extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
 #pragma alias campDataDrawSpriteAltDirect FUN_00115bc0
 extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
 #pragma alias campDataDrawDigitsDirect FUN_00115de0
-extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
+extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth,
+                                     s32 color, s32 alpha, s32 width,
+                                     s32 tile, s32 flags);
 #pragma alias campDataDrawSpriteFade FUN_001159f0
 extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
                                    void* atlas, s32 tile, s32 alpha);
@@ -1566,48 +1568,74 @@ void FUN_00169B90(void* param_1, undefined8 param_2,
                   void* param_3, s32 param_4, undefined8 param_5)
 {
     RwV2d position;
+    void* owner;
+    f32* depthBase;
     f32 x;
     f32 y;
     f32 depth;
     f32 drawY;
-
+    s32 count;
+    s32 digit;
+    bool hasHundreds;
     position = *(RwV2d*)&param_2;
     y = position.y;
     x = position.x;
+    depthBase = (f32*)DAT_00960088_abs;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    campDataDrawListA(*depthBase - depth, param_1, position, param_3, param_4);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    campDataDrawListB(*depthBase - depth, param_1, position, param_3, param_4);
     drawY = y + 18.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x31,
+                       (u8)param_4, x + 240.0f, drawY,
+                       *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 416.0f, drawY, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x32,
+                       (u8)param_4, x + 416.0f, drawY,
+                       *depthBase - depth);
     drawY = x + 468.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(drawY, y + 408.0f, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x38,
+                       (u8)param_4, drawY, y + 408.0f,
+                       *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
-    {
-        s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
-        if (count >= 100) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(drawY, y + 384.0f, DAT_00960088 - depth);
-        }
-        if (count >= 10) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
-        }
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x33,
+                       (u8)param_4, x + 386.0f, y + 379.0f,
+                       *depthBase - depth);
+    count = ((CampTargetList*)(uintptr_t)param_3)->count;
+    hasHundreds = false;
+    if (count >= 100) {
+        hasHundreds = true;
+        digit = count / 100;
+        depth = (f32)FUN_0021ea00(0x28);
+        FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                           (u8)param_4, 0x62, 0xae, 0xff,
+                           drawY, y + 384.0f, *depthBase - depth);
+        count %= 100;
     }
+    if (hasHundreds || count >= 10) {
+        digit = count / 10;
+        depth = (f32)FUN_0021ea00(0x28);
+        FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                           (u8)param_4, 0x62, 0xae, 0xff,
+                           x + 495.0f, y + 384.0f, *depthBase - depth);
+    }
+    digit = count % 10;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteAltDirect(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
+    FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                       (u8)param_4, 0x62, 0xae, 0xff,
+                       x + 522.0f, y + 384.0f, *depthBase - depth);
     y += 404.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 565.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 565.0f, y, *depthBase - depth,
+                             0xbae, (u8)param_4, 4, 0x2a, 0x46);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 584.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 584.0f, y, *depthBase - depth,
+                             0xbae, (u8)param_4, 4, 0x2a, 0x46);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 603.0f, y, *depthBase - depth,
+                             0xbae, (u8)param_4, 4, 0x2a, 0x46);
 }
 
 #pragma opt_propagation reset
