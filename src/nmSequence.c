@@ -711,14 +711,8 @@ void FUN_003c5af0(u32 param_1)
   iVar1 = *(int *)(iVar4 + 0x24);
   iVar2 = FUN_003c4d20(param_1,iVar4 + 4);
   if (iVar2 != 0) {
-    if (!(*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) <
-          *(int *)(*(int *)(iVar2 + 0x14) + 0xc))) {
-      iVar2 = *(int *)(*(int *)(iVar1 + 0x2c) + 0xc);
-      if (iVar2 != 0) {
-        *(int *)(iVar1 + 0x2c) = iVar2;
-      }
-    }
-    else {
+    if (*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) <
+        *(int *)(*(int *)(iVar2 + 0x14) + 0xc)) {
       if (iVar2 == *(int *)(iVar4 + 8)) {
         iVar4 = *(int *)(iVar1 + 0x20);
         do {
@@ -727,6 +721,12 @@ void FUN_003c5af0(u32 param_1)
           iVar2 = iVar3;
           iVar4 = iVar4 + -1;
         } while (iVar4 > 0);
+        *(int *)(iVar1 + 0x2c) = iVar2;
+      }
+    }
+    else {
+      iVar2 = *(int *)(*(int *)(iVar1 + 0x2c) + 0xc);
+      if (iVar2 != 0) {
         *(int *)(iVar1 + 0x2c) = iVar2;
       }
     }

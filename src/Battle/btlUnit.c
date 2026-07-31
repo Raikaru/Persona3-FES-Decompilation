@@ -2336,7 +2336,7 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
 typedef struct BtlUnitPacket002843e0
 {
     BtlUnit* unit; // 0x00
-    s16 unk_4;     // 0x04
+    u16 unk_4;     // 0x04
     u8 unkData[0x02];
 } BtlUnitPacket002843e0;
 
@@ -2359,6 +2359,7 @@ u32 btlUnitUpdate002843e0Packet(void* work)
     s16 activeAnimation;
 
     packet = (BtlUnitPacket002843e0*)work;
+    frame = packet->unk_4;
     unit = packet->unit;
 
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
@@ -2372,7 +2373,6 @@ u32 btlUnitUpdate002843e0Packet(void* work)
 
     if (unit->unk_9e0 != activeAnimation)
     {
-        frame = packet->unk_4;
         btlUnitAnimate(unit, unit->unk_9e0, frame,
                        unit->unk_9e4, unit->unk_9e8);
     }
