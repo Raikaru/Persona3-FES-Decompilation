@@ -10,31 +10,30 @@ typedef void (*MdlVoidFnU32)(unsigned int);
 #include "temporary.h"
 
 #pragma alias DAT_007cca10_y2 DAT_007cca10
-#pragma alias FUN_004c2f30_y2 FUN_004c2f30_y2
-#pragma alias FUN_004c6be0_y2 FUN_004c6be0_y2
-#pragma alias FUN_00491cc0_y2 FUN_00491cc0_y2
-#pragma alias FUN_00491ea0_y2 FUN_00491ea0_y2
-#pragma alias FUN_004cb7f0_y2 FUN_004cb7f0_y2
-#pragma alias FUN_004916d0_y2 FUN_004916d0_y2
-#pragma alias DAT_0096017c_y2 DAT_0096017c_y2
-#pragma alias DAT_007cada0_y2 DAT_007cada0_y2
-#pragma alias DAT_00960090_y2 DAT_00960090_y2
-#pragma alias DAT_00960090_abs_y2 DAT_00960090_abs_y2
-#pragma alias DAT_00960094_y2 DAT_00960094_y2
-#pragma alias DAT_007caf08_y2 DAT_007caf08_y2
-#pragma alias RpMaterialGetUserDataArray_y2 RpMaterialGetUserDataArray_y2
-#pragma alias RpUserDataArrayGetName_y2 RpUserDataArrayGetName_y2
-#pragma alias RpUserDataArrayGetFormat_y2 RpUserDataArrayGetFormat_y2
-#pragma alias func_0031c820_y2 func_0031c820_y2
-#pragma alias FUN_0031e4d0_y2 FUN_0031e4d0_y2
-#pragma alias FUN_00320640_y2 FUN_00320640_y2
+#pragma alias FUN_004c2f30_y2 FUN_004c2f30
+#pragma alias FUN_004c6be0_y2 FUN_004c6be0
+#pragma alias FUN_00491cc0_y2 FUN_00491cc0
+#pragma alias FUN_00491ea0_y2 FUN_00491ea0
+#pragma alias FUN_004cb7f0_y2 FUN_004cb7f0
+#pragma alias FUN_004916d0_y2 FUN_004916d0
+#pragma alias DAT_0096017c_y2 DAT_0096017c
+#pragma alias DAT_007cada0_y2 DAT_007cada0
+#pragma alias DAT_00960090_y2 DAT_00960090
+#pragma alias DAT_00960090_abs_y2 DAT_00960090_abs
+#pragma alias DAT_00960094_y2 DAT_00960094
+#pragma alias DAT_007caf08_y2 DAT_007caf08
+#pragma alias RpMaterialGetUserDataArray_y2 RpMaterialGetUserDataArray
+#pragma alias RpUserDataArrayGetName_y2 RpUserDataArrayGetName
+#pragma alias RpUserDataArrayGetFormat_y2 RpUserDataArrayGetFormat
+#pragma alias FUN_0031e4d0_y2 FUN_0031e4d0
+#pragma alias FUN_00320640_y2 FUN_00320640
 
 
 extern f32 sqrtf(f32 value);
 extern f32 fabsf(f32 value);
 #pragma intrinsic fabsf
 #define MODEL_PATH "model/"
-void func_0031c820(u16 type, u16 id, char* dst);
+u32 func_0031c820(u16 type, u16 id, char* dst);
 u32 func_0031e420(u16 type, u16 id);
 extern const char D_0069BA08[];
 extern const char DAT_0069ba50[];
@@ -8468,7 +8467,7 @@ u32 func_0031be80(u32 param_1);
 void func_0031c000(char* param_1,u32 param_2);
 u32 func_0031c1d0(int param_1);
 u32 func_0031c7e0(int param_1);
-u32 func_0031c820_y2(u16 param_1,u16 param_2,char* param_3);
+u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
 void FUN_0031e4d0_y2(int *param_1,u16 param_2,u16 param_3);
 
 
@@ -9216,7 +9215,7 @@ u32 func_0031c7e0(int param_1)
 // FUN_0031C820 NONMATCHING
 
 
-u32 func_0031c820_y2(u16 param_1,u16 param_2,char* param_3)
+u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
 
 
