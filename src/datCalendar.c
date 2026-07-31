@@ -4236,6 +4236,8 @@ KwlnTask* func_00185880(KwlnTask* parent,
     return task;
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00185980 NONMATCHING
 void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 {
@@ -4245,23 +4247,42 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
         u64 bits;
         f32 coords[2];
     } packed;
-    f32 x;
     f32 y;
+    f32 x;
+    f32 xFirst;
+    f32 yFirst;
+    f32 x2;
 
     packed.bits = position;
-    x = packed.coords[0] + 289.0f;
-    /* Keep the x aggregate load ahead of the y load as in retail. */
-    asm ("" : "+m"(x));
-    y = packed.coords[1] + 112.0f;
-    /* Keep the y aggregate load ahead of the first draw call as in retail. */
+    y = packed.coords[1];
+    /* Keep the packed y load ahead of the x load as in retail. */
     asm ("" : "+m"(y));
-    func_001159f0(unused, resource, month < 4 ? 0x50 : 0x4f,
-                  alpha & 0xff, x, y, 50.0f);
+    x = packed.coords[0];
+    /* Keep the packed x load ahead of the first coordinate offsets as in retail. */
+    asm ("" : "+m"(x));
+    xFirst = x + 289.0f;
+    /* Keep the first x offset before the month dispatch as in retail. */
+    asm ("" : "+m"(xFirst));
+    yFirst = y + 112.0f;
+    /* Keep the first y offset before the month dispatch as in retail. */
+    asm ("" : "+m"(yFirst));
+    if (month < 4)
+    {
+        func_001159f0(unused, resource, 0x50,
+                      alpha & 0xff, xFirst, yFirst, 50.0f);
+    }
+    else
+    {
+        func_001159f0(unused, resource, 0x4f,
+                      alpha & 0xff, xFirst, yFirst, 50.0f);
+    }
+    x2 = packed.coords[0] + 251.0f;
     func_001159f0(unused, resource, month - 1,
-                  alpha & 0xff, x + 251.0f, y + 131.0f, 50.0f);
+                  alpha & 0xff, x2, y + 131.0f, 50.0f);
     func_001159f0(unused, resource, month + 0xb,
-                  alpha & 0xff, x + 251.0f, y + 163.0f, 50.0f);
+                  alpha & 0xff, x2, y + 163.0f, 50.0f);
 }
+#pragma pop
 
 // FUN_00185AE0
 void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
