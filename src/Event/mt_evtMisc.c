@@ -2456,7 +2456,7 @@ void FUN_00389b50(int *param_1)
 {
 
   int iVar9;
-  u32 *base;
+  int base;
 
 
   u32 uVar2;
@@ -2490,8 +2490,8 @@ void FUN_00389b50(int *param_1)
 
       }
 
-      base = (u32 *)(*DAT_00960184)(1,iVar6 * 0x54,0x40000);
-      if (base == (u32 *)0x0) {
+      base = (int)(*DAT_00960184)(1,iVar6 * 0x54,0x40000);
+      if (base == 0) {
 
         FUN_0019d3f0("mt_evtMisc.c",0x3b);
 
@@ -2511,7 +2511,7 @@ void FUN_00389b50(int *param_1)
       for (puVar1 = (u32 *)param_1[0x1b]; puVar1 != (u32 *)0x0;
 
           puVar1 = (u32 *)puVar1[0x13]) {
-        puVar7 = base + iVar9 * 0x15;
+        puVar7 = (u32 *)(base + iVar9 * 0x54);
         iVar6 = 0x15;
 
         puVar4 = puVar1;
@@ -2541,7 +2541,7 @@ void FUN_00389b50(int *param_1)
           }
 
           FUN_00386c40(10,0x130);
-          *(u32 **)(base + iVar9 * 0x15 + 0x10) = puVar4;
+          *(u32 **)(base + iVar9 * 0x54 + 0x40) = puVar4;
           puVar7 = (u32 *)puVar1[0x10];
 
           iVar6 = 0x26;
