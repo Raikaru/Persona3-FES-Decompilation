@@ -4480,6 +4480,7 @@ short * FUN_003a6c10(int param_1,short *param_2)
 #pragma pop
 #define FUN_003a6c10(...) ((short * (*)(...))FUN_003a6c10)(__VA_ARGS__)
 #undef FUN_003a6ca0
+#pragma opt_common_subs off
 // FUN_003A6CA0 NONMATCHING
 
 
@@ -4624,6 +4625,7 @@ void FUN_003a6ca0(int param_1,int param_2,int param_3)
 }
 #define FUN_003a6ca0(...) ((void (*)(...))FUN_003a6ca0)(__VA_ARGS__)
 #undef FUN_003a6e30
+#pragma opt_common_subs reset
 // FUN_003A6E30
 
 

@@ -1983,7 +1983,9 @@ typedef struct {
 } EvtEffectSlot;
 #undef FUN_00396a70
 
-// FUN_00396A70 NONMATCHING
+/* opt_loop_invariants on: measured nd 124 -> 0, object 292/304 -> 292/304. */
+#pragma opt_loop_invariants on
+// FUN_00396A70
 
 
 u64 FUN_00396a70(void)
@@ -2024,6 +2026,7 @@ u64 FUN_00396a70(void)
   return 0;
 }
 #define FUN_00396a70(...) ((u64 (*)(...))FUN_00396a70)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef FUN_00396ba0
 
 // FUN_00396BA0

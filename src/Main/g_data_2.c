@@ -1656,6 +1656,7 @@ void FUN_0017c960(const void* record)
     memcpy(DAT_00836200 + *(const u16*)(source + 2) * 0x34 + 0xc1c, source, 0x34);
 }
 
+#pragma opt_lifetimes on
 // FUN_0017ca10 NONMATCHING
 s32 FUN_0017ca10(const void* record)
 {
@@ -1712,6 +1713,7 @@ s32 FUN_0017ca10(const void* record)
     return 0;
 }
 
+#pragma opt_lifetimes reset
 // FUN_0017cd30
 void* FUN_0017cd30(void* record)
 {

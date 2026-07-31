@@ -995,6 +995,47 @@ void func_0021f0c0(void*);
 
 
 
+// FUN_00201780
+void FUN_00201780(void)
+{
+    u32* work;
+
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = (u32*)gBcmWork;
+    if (work[0] & 0x800000)
+    {
+        func_002083d0();
+    }
+    if (work[0] & 0x2000)
+    {
+        FUN_00206EB0();
+    }
+    if (work[0] & 0x1000)
+    {
+        FUN_00206310();
+    }
+    if (work[0] & 2)
+    {
+        FUN_00202BC0();
+    }
+    if (work[0] & 4)
+    {
+        bcm00203360();
+    }
+    if (work[0] & 8)
+    {
+        FUN_00203B70();
+    }
+    if (work[0] & 0x10)
+    {
+        FUN_00204BE0();
+    }
+    func_0021f140();
+    gBcmWork = NULL;
+}
+
+/* Removing this loses FUN_00201880 (MATCH nd0 -> MISMATCH nd307) - measured W161. */
+#pragma opt_loop_invariants on
 // FUN_00201880
 void FUN_00201880(void)
 {

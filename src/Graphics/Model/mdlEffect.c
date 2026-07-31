@@ -18017,7 +18017,7 @@ void FUN_00331650(int param_1)
 
                          ((u32)((int)pauVar14 - *(int *)(iVar9 + 0x18)) >> 5) * iVar15) * 0x20;
 
-                FUN_00521250(iVar15,pauVar14,0x20);
+                FUN_0032a890(param_1,(u64)(pauVar14));
 
                 *(u32 *)(iVar15 + 0x10) = 0xffffffff;
 
@@ -36295,17 +36295,25 @@ void FUN_00346530(int param_1)
 
   u16 uStack_8a;
 
-  struct {
-    float value[4];
-    u32 resource;
-  } curve;
-  struct {
-    float matrix[5];
-    u32 resource;
-    float corner[8];
-  } transform;
-
-  u32 fallbackSize[2];
+  float fStack_80;
+  float fStack_7c;
+  float fStack_78;
+  float fStack_74;
+  u32 uStack_70;
+  float fStack_60;
+  float fStack_5c;
+  float fStack_58;
+  float fStack_54;
+  float fStack_50;
+  u32 uStack_4c;
+  float fStack_48;
+  float fStack_44;
+  float fStack_40;
+  float fStack_3c;
+  float fStack_30;
+  float fStack_2c;
+  u32 uStack_20;
+  u32 uStack_1c;
 
   u32 uStack_10;
 
@@ -36404,139 +36412,139 @@ void FUN_00346530(int param_1)
 
       FUN_00322d40((int)(*(int *)(param_1 + 0xd0)),(int)(iVar12));
 
-      FUN_00322d10((int)(*(u32 *)(param_1 + 0xd0)),transform.matrix);
+      FUN_00322d10((int)(*(u32 *)(param_1 + 0xd0)),(float *)(&fStack_60));
 
-      transform.corner[0] = transform.corner[0] * transform.corner[6] * 16.0f;
+      fStack_48 = fStack_48 * fStack_30 * 16.0f;
 
-      if (transform.corner[0] < 2.1474836e+09f) {
+      if (fStack_48 < 2.1474836e+09f) {
 
-        uStack_98 = (u16)(int)transform.corner[0];
-
-      }
-
-      else {
-
-        uStack_98 = (u16)(int)(transform.corner[0] - 2.1474836e+09f);
-
-      }
-
-      transform.corner[1] = transform.corner[1] * transform.corner[7] * 16.0f;
-
-      if (transform.corner[1] < 2.1474836e+09f) {
-
-        uStack_96 = (u16)(int)transform.corner[1];
+        uStack_98 = (u16)(int)fStack_48;
 
       }
 
       else {
 
-        uStack_96 = (u16)(int)(transform.corner[1] - 2.1474836e+09f);
+        uStack_98 = (u16)(int)(fStack_48 - 2.1474836e+09f);
 
       }
 
-      transform.corner[2] = transform.corner[2] * transform.corner[6] * 16.0f;
+      fStack_44 = fStack_44 * fStack_2c * 16.0f;
 
-      if (transform.corner[2] < 2.1474836e+09f) {
+      if (fStack_44 < 2.1474836e+09f) {
 
-        uStack_94 = (u16)(int)transform.corner[2];
-
-      }
-
-      else {
-
-        uStack_94 = (u16)(int)(transform.corner[2] - 2.1474836e+09f);
-
-      }
-
-      if (transform.corner[1] < 2.1474836e+09f) {
-
-        uStack_92 = (u16)(int)transform.corner[1];
+        uStack_96 = (u16)(int)fStack_44;
 
       }
 
       else {
 
-        uStack_92 = (u16)(int)(transform.corner[1] - 2.1474836e+09f);
+        uStack_96 = (u16)(int)(fStack_44 - 2.1474836e+09f);
 
       }
 
-      if (transform.corner[2] < 2.1474836e+09f) {
+      fStack_40 = fStack_40 * fStack_30 * 16.0f;
 
-        uStack_90 = (u16)(int)transform.corner[2];
+      if (fStack_40 < 2.1474836e+09f) {
 
-      }
-
-      else {
-
-        uStack_90 = (u16)(int)(transform.corner[2] - 2.1474836e+09f);
-
-      }
-
-      transform.corner[3] = transform.corner[3] * transform.corner[7] * 16.0f;
-
-      if (transform.corner[3] < 2.1474836e+09f) {
-
-        uStack_8e = (u16)(int)transform.corner[3];
+        uStack_94 = (u16)(int)fStack_40;
 
       }
 
       else {
 
-        uStack_8e = (u16)(int)(transform.corner[3] - 2.1474836e+09f);
+        uStack_94 = (u16)(int)(fStack_40 - 2.1474836e+09f);
 
       }
 
-      if (transform.corner[0] < 2.1474836e+09f) {
+      if (fStack_44 < 2.1474836e+09f) {
 
-        uStack_8c = (u16)(int)transform.corner[0];
-
-      }
-
-      else {
-
-        uStack_8c = (u16)(int)(transform.corner[0] - 2.1474836e+09f);
-
-      }
-
-      if (transform.corner[3] < 2.1474836e+09f) {
-
-        uStack_8a = (u16)(int)transform.corner[3];
+        uStack_92 = (u16)(int)fStack_44;
 
       }
 
       else {
 
-        uStack_8a = (u16)(int)(transform.corner[3] - 2.1474836e+09f);
+        uStack_92 = (u16)(int)(fStack_44 - 2.1474836e+09f);
 
       }
 
-      fStack_b0 = transform.matrix[0];
+      if (fStack_40 < 2.1474836e+09f) {
 
-      fStack_ac = transform.matrix[1];
-
-      fStack_a8 = transform.matrix[2] / 16.0f;
-
-      fStack_a4 = transform.matrix[3] / 16.0f;
-
-      if (2.1474836e+09f <= transform.corner[6]) {
-
-        transform.corner[6] = transform.corner[6] - 2.1474836e+09f;
+        uStack_90 = (u16)(int)fStack_40;
 
       }
 
-      uStack_a0 = (u32)transform.corner[6];
+      else {
 
-      if (2.1474836e+09f <= transform.corner[7]) {
-
-        transform.corner[7] = transform.corner[7] - 2.1474836e+09f;
+        uStack_90 = (u16)(int)(fStack_40 - 2.1474836e+09f);
 
       }
 
-      uStack_9c = (u32)transform.corner[7];
+      fStack_3c = fStack_3c * fStack_2c * 16.0f;
 
-      fVar14 = fVar14 + transform.matrix[4];
+      if (fStack_3c < 2.1474836e+09f) {
 
-      FUN_00494d50(*(u32 *)(puVar2 + 10),transform.resource);
+        uStack_8e = (u16)(int)fStack_3c;
+
+      }
+
+      else {
+
+        uStack_8e = (u16)(int)(fStack_3c - 2.1474836e+09f);
+
+      }
+
+      if (fStack_48 < 2.1474836e+09f) {
+
+        uStack_8c = (u16)(int)fStack_48;
+
+      }
+
+      else {
+
+        uStack_8c = (u16)(int)(fStack_48 - 2.1474836e+09f);
+
+      }
+
+      if (fStack_3c < 2.1474836e+09f) {
+
+        uStack_8a = (u16)(int)fStack_3c;
+
+      }
+
+      else {
+
+        uStack_8a = (u16)(int)(fStack_3c - 2.1474836e+09f);
+
+      }
+
+      fStack_b0 = fStack_60;
+
+      fStack_ac = fStack_5c;
+
+      fStack_a8 = fStack_58 / 16.0f;
+
+      fStack_a4 = fStack_54 / 16.0f;
+
+      if (2.1474836e+09f <= fStack_30) {
+
+        fStack_30 = fStack_30 - 2.1474836e+09f;
+
+      }
+
+      uStack_a0 = (u32)fStack_30;
+
+      if (2.1474836e+09f <= fStack_2c) {
+
+        fStack_2c = fStack_2c - 2.1474836e+09f;
+
+      }
+
+      uStack_9c = (u32)fStack_2c;
+
+      fVar14 = fVar14 + fStack_50;
+
+      FUN_00494d50(*(u32 *)(puVar2 + 10),uStack_4c);
 
     }
 
@@ -36544,17 +36552,17 @@ void FUN_00346530(int param_1)
 
       if (*(int *)(param_1 + 0xcc) != 0) {
 
-        FUN_00322fd0((int)(*(int *)(param_1 + 0xcc)),(u32)(iVar12),curve.value);
+        FUN_00322fd0((int)(*(int *)(param_1 + 0xcc)),(u32)(iVar12),(float *)(&fStack_80));
 
         uStack_98 = 0;
 
         uStack_96 = 0;
 
-        uStack_94 = (u16)(int)(curve.value[2] * 16.0f);
+        uStack_94 = (u16)(int)(fStack_78 * 16.0f);
 
         uStack_92 = 0;
 
-        uStack_8e = (u16)(int)(curve.value[3] * 16.0f);
+        uStack_8e = (u16)(int)(fStack_74 * 16.0f);
 
         uStack_8c = 0;
 
@@ -36562,27 +36570,27 @@ void FUN_00346530(int param_1)
 
         fStack_ac = 0.0f;
 
-        fStack_a8 = (float)((int)((float)(int)(curve.value[2] * 16.0f) * curve.value[0]) >> 5) / 16.0f;
+        fStack_a8 = (float)((int)((float)(int)(fStack_78 * 16.0f) * fStack_80) >> 5) / 16.0f;
 
-        fStack_a4 = (float)((int)((float)(int)(curve.value[3] * 16.0f) * curve.value[1]) >> 5) / 16.0f;
+        fStack_a4 = (float)((int)((float)(int)(fStack_74 * 16.0f) * fStack_7c) >> 5) / 16.0f;
 
-        if (2.1474836e+09f <= curve.value[2]) {
+        if (2.1474836e+09f <= fStack_78) {
 
-          curve.value[2] = curve.value[2] - 2.1474836e+09f;
-
-        }
-
-        uStack_a0 = (u32)curve.value[2];
-
-        if (2.1474836e+09f <= curve.value[3]) {
-
-          curve.value[3] = curve.value[3] - 2.1474836e+09f;
+          fStack_78 = fStack_78 - 2.1474836e+09f;
 
         }
 
-        uStack_9c = (u32)curve.value[3];
+        uStack_a0 = (u32)fStack_78;
 
-        FUN_00494d50(*(u32 *)(puVar2 + 10),curve.resource);
+        if (2.1474836e+09f <= fStack_74) {
+
+          fStack_74 = fStack_74 - 2.1474836e+09f;
+
+        }
+
+        uStack_9c = (u32)fStack_74;
+
+        FUN_00494d50(*(u32 *)(puVar2 + 10),uStack_70);
 
         uStack_90 = uStack_94;
 
@@ -36591,32 +36599,30 @@ void FUN_00346530(int param_1)
       }
 
       else {
+        FUN_00323bf0((int)(puVar2),(u32 *)(&uStack_20));
 
-        FUN_00323bf0((int)(puVar2),fallbackSize);
 
         uStack_98 = 0;
 
-        uStack_96 = 0;
+        uStack_94 = (u16)(uStack_20 << 4);
 
-        uStack_94 = (u16)(fallbackSize[0] << 4);
 
-        uStack_92 = 0;
+        uStack_8e = (u16)(uStack_1c << 4);
 
-        uStack_8e = (u16)(fallbackSize[1] << 4);
 
         uStack_8c = 0;
 
         fStack_b0 = 0.0f;
-
         fStack_ac = 0.0f;
 
-        fStack_a8 = ((float)(int)(fallbackSize[0] << 4) / 32.0f) / 16.0f;
+        fStack_a8 = ((float)(int)(uStack_20 << 4) / 32.0f) / 16.0f;
 
-        fStack_a4 = ((float)(int)(fallbackSize[1] << 4) / 32.0f) / 16.0f;
+        fStack_a4 = ((float)(int)(uStack_1c << 4) / 32.0f) / 16.0f;
 
-        uStack_a0 = fallbackSize[0];
+        uStack_a0 = uStack_20;
 
-        uStack_9c = fallbackSize[1];
+        uStack_9c = uStack_1c;
+
 
         uStack_90 = uStack_94;
 
