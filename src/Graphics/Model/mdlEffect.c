@@ -6216,7 +6216,6 @@ u32 FUN_00324bd0(u32 param_1)
 
 
 
-#pragma opt_propagation off
 // FUN_003252A0 NONMATCHING
 
 
@@ -6387,7 +6386,7 @@ void FUN_003252a0(u64 param_1)
 
 
 
-#pragma opt_propagation reset
+#pragma opt_common_subs off
 // FUN_00325500 NONMATCHING
 
 
@@ -6564,6 +6563,7 @@ void FUN_00325500(u64 param_1)
 
 
 
+#pragma opt_common_subs reset
 // FUN_003257a0
 void FUN_003257a0(u64 param_1)
 

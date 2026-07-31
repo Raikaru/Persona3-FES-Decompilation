@@ -31,7 +31,7 @@ extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
-extern u32 FUN_0052f7d0(long, long, long);
+extern u64 FUN_0052f7d0(u64, u64, u64 *);
 
 static const float sAtanHi[] = {
     0.463647603989f,

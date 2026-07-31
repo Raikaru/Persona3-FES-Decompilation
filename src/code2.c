@@ -636,3 +636,15 @@ asm void FUN_00780a20(void)
   .word 0x03e00008
   .word 0x8f5d6c50
 }
+// Separate syscall trampoline at 0x00780AE0.
+// FUN_00780AE0 NONMATCHING
+asm void FUN_00780ae0(void)
+{
+  .set noreorder
+  lui $sp,0x8
+  jalr $v1
+  addiu $sp,$sp,0x1fc0
+  addiu $v1,$zero,-8
+  syscall
+  .set reorder
+}

@@ -332,7 +332,6 @@ float FUN_0052ea00(float param_1)
   return FUN_0052afe8(param_1);
 }
 #pragma tailcall off
-#pragma opt_propagation off
 // FUN_0052EA18 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea18(float param_1, float param_2)
@@ -340,7 +339,7 @@ float FUN_0052ea18(float param_1, float param_2)
   return FUN_0052b380(param_1, param_2);
 }
 #pragma tailcall off
-#pragma opt_propagation reset
+#pragma opt_common_subs off
 // FUN_0052EA30 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea30(float param_1)
@@ -348,6 +347,7 @@ float FUN_0052ea30(float param_1)
   return FUN_0052b548(param_1);
 }
 #pragma tailcall off
+#pragma opt_common_subs reset
 // FUN_0052EA48 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea48(float param_1, float param_2)

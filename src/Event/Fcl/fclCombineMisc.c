@@ -1208,7 +1208,6 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 #pragma opt_common_subs reset
 
 // W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
-#pragma opt_propagation off
 // FUN_003D6910 NONMATCHING
 
 
@@ -1262,7 +1261,6 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
   return cVar1;
 }
 
-#pragma opt_propagation reset
 // FUN_003D6AE0
 
 
@@ -1381,6 +1379,7 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
 }
 
+#pragma opt_common_subs off
 // FUN_003D6C90 NONMATCHING
 
 
@@ -1459,6 +1458,7 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
+#pragma opt_common_subs reset
 // FUN_003D6E60
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {

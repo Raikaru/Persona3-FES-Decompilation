@@ -2113,6 +2113,7 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
     *count = childCount;
 }
 
+#pragma optimization_level 3
 // FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
@@ -2160,6 +2161,7 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
     }
     *count = ((*node & 0x10) == 0) ? 1 : leafCount;
 }
+#pragma optimization_level 2
 
 /*
  * Retail offsets 0x9ec-0xbc4 count unowned roots, locate each by index, and redraw leaves.

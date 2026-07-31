@@ -5897,6 +5897,17 @@ u64 FUN_003a8710(int param_2,int param_3,float param_1,int param_4,int param_5)
 }
 #define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
 
+#undef FUN_003a8b00
+#undef FUN_003a8dc0
+#undef FUN_003a8ea0
+#undef FUN_003a8fb0
+#undef FUN_003a9080
+#undef FUN_003a95f0
+#undef FUN_003a9630
+#undef FUN_003a9670
+#undef FUN_003a96b0
+#undef FUN_003ab2a0
+
 u32 FUN_003a8b00();
 typedef struct {
   f32 x;
@@ -6149,6 +6160,7 @@ u64 FUN_003ad130(u32 param_1,int param_2);
 u64 FUN_003ade60(u64 param_1,int param_2);
 void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 
+
 /* Region call-cast macros */
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
 #define FUN_003a8b00(...) ((u64 (*)(...))FUN_003a8b00)(__VA_ARGS__)
@@ -6226,17 +6238,6 @@ void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 #define FUN_003ae160(...) ((u64 (*)(...))FUN_003ae160)(__VA_ARGS__)
 #define FUN_003ae260(...) ((u64 (*)(...))FUN_003ae260)(__VA_ARGS__)
 #define FUN_003ae360(...) ((u64 (*)(...))FUN_003ae360)(__VA_ARGS__)
-
-#undef FUN_003a8b00
-#undef FUN_003a8dc0
-#undef FUN_003a8ea0
-#undef FUN_003a8fb0
-#undef FUN_003a9080
-#undef FUN_003a95f0
-#undef FUN_003a9630
-#undef FUN_003a9670
-#undef FUN_003a96b0
-#undef FUN_003ab2a0
 
 #undef FUN_003a87d0
 #pragma opt_loop_invariants on
