@@ -338,6 +338,164 @@ static __inline void mdlVuModulateStacked90(u32 c2)
         : "r"(c2), "f"(inv255)
         : "$v0", "memory");
 }
+static __inline void mdlVuNormalize3(f32 *vec)
+{
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf10, 0(%0)        \n"
+        "vmul.xyz    $vf2, $vf10, $vf10  \n"
+        "vmulax.w    $ACC, $vf0, $vf2x   \n"
+        "vmadday.w   $ACC, $vf0, $vf2y   \n"
+        "vmaddz.w    $vf2, $vf0, $vf2z   \n"
+        "vrsqrt      $Q, $vf0w, $vf2w     \n"
+        "vwaitq                             \n"
+        "vmulq.xyz   $vf10, $vf10, $Q     \n"
+        "sqc2        $vf10, 0(%0)         \n"
+        ".set reorder"
+        :
+        : "r"(vec)
+        : "memory");
+}
+
+static __inline void mdlVuNormalizeScale(f32 *vec, f32 scale, f32 *out)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf10, 0(%1)        \n"
+        "vmul.xyz    $vf2, $vf10, $vf10  \n"
+        "vmulax.w    $ACC, $vf0, $vf2x   \n"
+        "vmadday.w   $ACC, $vf0, $vf2y   \n"
+        "vmaddz.w    $vf2, $vf0, $vf2z   \n"
+        "vrsqrt      $Q, $vf0w, $vf2w     \n"
+        "vwaitq                             \n"
+        "vmulq.xyz   $vf10, $vf10, $Q     \n"
+        "mfc1        %0, %2              \n"
+        "qmtc2       %0, $vf2             \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "sqc2        $vf10, 0(%3)         \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(vec), "f"(scale), "r"(out)
+        : "memory");
+}
+
+static __inline void mdlVuNormalizeScaleAdd(f32 *vec, f32 scale,
+                                             f32 *base, f32 *out)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf10, 0(%1)        \n"
+        "vmul.xyz    $vf2, $vf10, $vf10  \n"
+        "vmulax.w    $ACC, $vf0, $vf2x   \n"
+        "vmadday.w   $ACC, $vf0, $vf2y   \n"
+        "vmaddz.w    $vf2, $vf0, $vf2z   \n"
+        "vrsqrt      $Q, $vf0w, $vf2w     \n"
+        "vwaitq                             \n"
+        "vmulq.xyz   $vf10, $vf10, $Q     \n"
+        "mfc1        %0, %2              \n"
+        "qmtc2       %0, $vf2             \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "lqc2        $vf11, 0(%3)         \n"
+        "vadd.xyzw   $vf10, $vf10, $vf11 \n"
+        "sqc2        $vf10, 0(%4)         \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(vec), "f"(scale), "r"(base), "r"(out)
+        : "memory");
+}
+static __inline u32 mdlVuDistance(const f32 *random, const f32 *target,
+                                   f32 scale, const f32 *base,
+                                   f32 *newTarget, f32 *difference)
+{
+    u32 bits;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf12, 0(%1)        \n"
+        "lqc2        $vf11, 0(%2)        \n"
+        "vmove.xyzw  $vf10, $vf12        \n"
+        "mfc1        $v0, %3              \n"
+        "qmtc2       $v0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vadd.xyzw   $vf11, $vf11, $vf10 \n"
+        "lqc2        $vf10, 0(%4)         \n"
+        "vsub.xyzw   $vf10, $vf10, $vf11 \n"
+        "vmul.xyz    $vf2, $vf10, $vf10  \n"
+        "vaddy.x     $vf2, $vf2, $vf2y   \n"
+        "vaddz.x     $vf2, $vf2, $vf2z   \n"
+        "vsqrt       $Q, $vf2x            \n"
+        "vwaitq                             \n"
+        "cfc2        %0, $vi22            \n"
+        "sqc2        $vf11, 0(%5)         \n"
+        "sqc2        $vf10, 0(%6)         \n"
+        ".set reorder"
+        : "=&r"(bits)
+        : "r"(random), "r"(target), "f"(scale), "r"(base),
+          "r"(newTarget), "r"(difference)
+        : "$v0", "memory");
+    return bits;
+}
+
+static __inline u32 mdlVuNormalizeDot(f32 *difference, const f32 *random)
+{
+    u32 bits;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf10, 0(%1)        \n"
+        "vmul.xyz    $vf2, $vf10, $vf10  \n"
+        "vmulax.w    $ACC, $vf0, $vf2x   \n"
+        "vmadday.w   $ACC, $vf0, $vf2y   \n"
+        "vmaddz.w    $vf2, $vf0, $vf2z   \n"
+        "vrsqrt      $Q, $vf0w, $vf2w     \n"
+        "vwaitq                             \n"
+        "vmulq.xyz   $vf10, $vf10, $Q     \n"
+        "lqc2        $vf11, 0(%2)         \n"
+        "vmul.xyz    $vf2, $vf10, $vf11  \n"
+        "vaddy.x     $vf2, $vf2, $vf2y   \n"
+        "vaddz.x     $vf2, $vf2, $vf2z   \n"
+        "qmfc2       %0, $vf2             \n"
+        "sqc2        $vf10, 0(%1)         \n"
+        ".set reorder"
+        : "=&r"(bits)
+        : "r"(difference), "r"(random)
+        : "memory");
+    return bits;
+}
+
+static __inline void mdlVuResolve(f32 *normal, const f32 *random,
+                                   const f32 *updatedTarget, const f32 *target,
+                                   f32 factorA, f32 factorB, f32 factorC,
+                                   f32 *stateOut, f32 *targetOut)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2        $vf10, 0(%1)        \n"
+        "lqc2        $vf12, 0(%2)        \n"
+        "lqc2        $vf11, 0(%3)        \n"
+        "mfc1        %0, %5              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vsub.xyzw   $vf11, $vf11, $vf10 \n"
+        "sqc2        $vf11, 0(%8)         \n"
+        "lqc2        $vf10, 0(%4)        \n"
+        "mfc1        %0, %6              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf12, $vf12, $vf2x \n"
+        "vadd.xyzw   $vf10, $vf10, $vf12 \n"
+        "mfc1        %0, %7              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
+        "vadd.xyzw   $vf10, $vf10, $vf11 \n"
+        "sqc2        $vf10, 0(%9)         \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(normal), "r"(random), "r"(updatedTarget), "r"(target),
+          "f"(factorA), "f"(factorB), "f"(factorC), "r"(stateOut),
+          "r"(targetOut)
+        : "memory");
+}
 
 
 static __inline void mdlVuModulateStacked80V0(u32 c2)
@@ -16344,21 +16502,21 @@ void FUN_00330190(u64 param_1)
 
         bVar8 = false;
 
+
         if (0.0f < (float)puVar4[10]) {
 
           fVar19 = (float)FUN_00358030(0);
 
           *(float *)(iVar12 + 0x14) =
-
                (float)(u32)puVar4[9] * (DAT_007cadb0 - (float)puVar4[10]) * fVar19 +
-
                *(float *)(iVar12 + 0x14) + 0.0f;
 
         }
 
         else {
 
-          *(float *)(iVar12 + 0x14) = *(float *)(iVar12 + 0x14) + (float)(u32)puVar4[9];
+          *(float *)(iVar12 + 0x14) =
+              *(float *)(iVar12 + 0x14) + (float)(u32)puVar4[9];
 
         }
 
@@ -16443,8 +16601,6 @@ void FUN_00330190(u64 param_1)
             fVar20 = (float)FUN_00358030(0);
 
             (*((u32 *)((u8 *)&auStack_10 + 4))) = (fVar20 - fVar26) * 2.0f;
-
-            fVar20 = (float)FUN_00358030(0);
 
             fStack_8 = (fVar20 - fVar26) * 2.0f;
 
@@ -16534,8 +16690,6 @@ void FUN_00330190(u64 param_1)
             fVar20 = (float)FUN_00358030(0);
 
             (*((u32 *)((u8 *)&auStack_10 + 4))) = (fVar20 - fVar26) * 2.0f;
-
-            fVar20 = (float)FUN_00358030(0);
 
             fStack_8 = (fVar20 - fVar26) * 2.0f;
 
@@ -16793,9 +16947,9 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _vmulbc(auVar31,auVar29);
 
-            auVar29 = _vadd(auVar30,auVar29);
+            auVar30 = _vadd(auVar30,auVar29);
 
-            auVar29 = _sqc2(auVar29);
+            auVar29 = _sqc2(auVar30);
 
             *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
 
@@ -36303,11 +36457,14 @@ void FUN_00346530(int param_1)
   u16 uStack_8c;
 
   u16 uStack_8a;
-
   float fStack_80;
+
   float fStack_7c;
+
   float fStack_78;
+
   float fStack_74;
+
   u32 uStack_70;
   float fStack_60;
   float fStack_5c;
@@ -36426,7 +36583,6 @@ void FUN_00346530(int param_1)
       fStack_48 = fStack_48 * fStack_30 * 16.0f;
 
       if (fStack_48 < 2.1474836e+09f) {
-
         uStack_98 = (u16)(int)fStack_48;
 
       }
@@ -36440,7 +36596,6 @@ void FUN_00346530(int param_1)
       fStack_44 = fStack_44 * fStack_2c * 16.0f;
 
       if (fStack_44 < 2.1474836e+09f) {
-
         uStack_96 = (u16)(int)fStack_44;
 
       }
@@ -36454,7 +36609,6 @@ void FUN_00346530(int param_1)
       fStack_40 = fStack_40 * fStack_30 * 16.0f;
 
       if (fStack_40 < 2.1474836e+09f) {
-
         uStack_94 = (u16)(int)fStack_40;
 
       }
@@ -36492,7 +36646,6 @@ void FUN_00346530(int param_1)
       fStack_3c = fStack_3c * fStack_2c * 16.0f;
 
       if (fStack_3c < 2.1474836e+09f) {
-
         uStack_8e = (u16)(int)fStack_3c;
 
       }

@@ -5769,8 +5769,8 @@ do {
 
 } while (0 < iVar5);
 
-puStack_8 = (FclShopBgCallbackPair *)(auStack_20 + 6);
 
+puStack_8 = (FclShopBgCallbackPair *)(auStack_20 + 6);
 fVar1 = DAT_007cda64_f;
 
 fVar0 = *(float *)((u8 *)&DAT_007cda64_f + 4);

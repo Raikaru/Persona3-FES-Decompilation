@@ -10955,7 +10955,6 @@ void FUN_003ff460(int param_1,u32 param_2)
   for (iVar6 = *(int *)(param_1 + 4); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x10)) {
 
     puVar1 = *(u32 **)(*(int *)(iVar6 + 0x14) + 0x1c);
-
     lVar5 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
 
     if (lVar5 != 0) {
@@ -10963,33 +10962,22 @@ void FUN_003ff460(int param_1,u32 param_2)
       iVar2 = *(int *)(*(int *)((int)lVar5 + 0x14) + 0x1c);
 
       bVar3 = 0;
-
       if (*(short *)((int)puVar1 + 0x16) == *(short *)(iVar2 + 0x16)) {
-
         bVar3 = (short)puVar1[5] == *(short *)(iVar2 + 0x14);
-
       }
 
       bVar4 = 0;
-
       if (bVar3) {
-
         bVar4 = *(short *)((int)puVar1 + 0x1a) == *(short *)(iVar2 + 0x1a);
-
       }
 
       bVar3 = 0;
-
       if (bVar4) {
-
         bVar3 = (short)puVar1[6] == *(short *)(iVar2 + 0x18);
-
       }
 
       if (!bVar3) {
-
         *puVar1 = *puVar1 | 0x80;
-
       }
 
       FUN_003c49e0(param_2,(int)param_2 + 4);

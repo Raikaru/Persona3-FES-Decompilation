@@ -3218,7 +3218,7 @@ void func_002f5d80(u32 param_1)
 }
 
 /* Removing this loses func_002f6120 (MATCH nd0 -> MISMATCH nd12) - measured W296. */
-#pragma opt_loop_invariants on
+
 // FUN_002f6120
 void func_002f6120(void)
 {
