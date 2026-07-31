@@ -36249,7 +36249,6 @@ void FUN_00346530(int param_1)
   u32 c1s;
   u32 c2s;
 
-  __int128 auVar10;
 
 
   int iVar12;
@@ -36371,8 +36370,7 @@ void FUN_00346530(int param_1)
 
     FUN_00323880(*(u32 *)(param_1 + 0x20),puVar2,param_1,param_1 + 0x10);
 
-    iStack_c = FUN_0032a120((char *)(param_1 + 0x30),(u32 *)(param_1 + 0x54),(int)(iVar12),(long)(iVar1));
-
+    iStack_c = FUN_0032a120((char *)(param_1 + 0x30),(u32 *)(param_1 + 0x54),(int)(iVar12),iVar1);
     iStack_8 = *(int *)(param_1 + 0x24);
 
     c1s = (u32)(iStack_8);
@@ -36409,7 +36407,7 @@ void FUN_00346530(int param_1)
 
       *(u8 *)(iVar3 + 7) = 0xfe;
 
-      uStack_4 = 0xff000000 | (auVar10._0_4_ & 0x00ffffff);
+      uStack_4 = 0xff000000 | (uStack_10 & 0x00ffffff);
 
     }
 
