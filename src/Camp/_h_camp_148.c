@@ -1991,7 +1991,7 @@ u32 h_campUpdateNewItemTask(int param_1)
   return 0;
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_0014EE80
 KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
 {

@@ -1047,7 +1047,6 @@ KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
 
 
 
-#pragma opt_dead_assignments off
 // FUN_00168810 NONMATCHING
 u32 FUN_00168810(u32 param_1)
 {
@@ -1254,7 +1253,6 @@ u32 FUN_00168810(u32 param_1)
     return 0;
 }
 
-#pragma opt_dead_assignments reset
 // FUN_00169040
 void FUN_00169040(int param_1)
 {

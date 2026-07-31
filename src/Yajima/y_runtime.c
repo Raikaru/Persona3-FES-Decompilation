@@ -4969,7 +4969,6 @@ typedef struct {
   u32 openNodes[256];
 } YRuntimePathWork;
 
-#pragma opt_common_subs off
 // FUN_00433DE0 NONMATCHING
 
 u32 FUN_00433de0(int param_1)
@@ -5092,7 +5091,6 @@ u32 FUN_00433de0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_common_subs reset
 // FUN_004343D0
 
 void FUN_004343d0(int param_1)
@@ -5645,6 +5643,7 @@ s8 FUN_004353f0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00435440 NONMATCHING
 
 char FUN_00435440(char param_1)
@@ -5687,6 +5686,7 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes reset
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)

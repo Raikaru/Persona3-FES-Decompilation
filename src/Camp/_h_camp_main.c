@@ -398,6 +398,7 @@ static void campMainDrawPersonaRow(const CampMainDrawItem* item,
 /* Reconstructed all mode branches, scrolling, persona labels, highlights,
  * and level digits from the retail instruction sequence.
  * Remaining differences are MWCC register coloring and outlined helpers. */
+#pragma opt_dead_assignments off
 // FUN_00133E10 NONMATCHING
 void FUN_00133E10(CampMainDrawItem* item,
                   const void* resources, s32 mode,
@@ -524,6 +525,7 @@ void FUN_00133E10(CampMainDrawItem* item,
 }
 
 
+#pragma opt_dead_assignments reset
 // FUN_001344B0
 u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
                  const s16* personaIds, s16 selected)
@@ -898,7 +900,7 @@ void* FUN_00134a10(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_00134d80 NONMATCHING
 void FUN_00134d80(KwlnTask* task)
@@ -1000,7 +1002,6 @@ void FUN_00134d80(KwlnTask* task)
     RwFree(work);
 }
 
-#pragma opt_loop_invariants on
 // FUN_00135120 NONMATCHING
 void FUN_00135120(KwlnTask* task)
 {
@@ -1101,7 +1102,6 @@ done:
     ;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00135460
 void FUN_00135460(KwlnTask* task)
 {
