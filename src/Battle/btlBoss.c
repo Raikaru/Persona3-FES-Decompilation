@@ -1442,6 +1442,8 @@ extern s32 func_002e4250(void);
 extern void func_002d3fe0(BtlUnit* unit);
 extern void func_002831c0(BtlUnit* unit, s32 value);
 extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 value4);
+#pragma alias func_00282d40_reordered func_00282d40
+extern void func_00282d40_reordered(BtlUnit* unit, s16 value2, s32 value3, s8 value4, f32 value);
 extern void func_00287510(BtlUnit* unit);
 extern void func_0027f650(BtlUnit* unit, u32 value);
 extern void func_002eaa40(void);
@@ -1754,6 +1756,7 @@ void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result
             break;
     }
 }
+#pragma opt_loop_invariants on
 // FUN_002faab0 NONMATCHING
 void func_002faab0()
 {
@@ -1764,8 +1767,8 @@ void func_002faab0()
         break;
     case 0x1a5:
     {
-        BtlUnit* unit = btlBossGetEnemyHead();
         u16 expectedCharId = 0x107;
+        BtlUnit* unit = btlBossGetEnemyHead();
         while (unit != NULL)
         {
             switch (unit->charId)
@@ -1785,8 +1788,8 @@ void func_002faab0()
         break;
     case 0x1ac:
     {
-        BtlUnit* unit = btlBossGetEnemyHead();
         u16 expectedCharId = 0x111;
+        BtlUnit* unit = btlBossGetEnemyHead();
         while (unit != NULL)
         {
             switch (unit->charId)
@@ -1811,8 +1814,7 @@ void func_002faab0()
             case 0xf2:
                 func_002d3fe0(unit);
                 func_002831c0(unit, 0);
-                func_00282d40(unit->unk_9e4, unit, unit->unk_9e0, 0, unit->unk_9e8);
-                func_00287510(unit);
+                func_00282d40_reordered(unit, unit->unk_9e0, 0, unit->unk_9e8, unit->unk_9e4);
                 func_0027f650(unit, 0x957180);
                 break;
             }
@@ -1823,6 +1825,7 @@ void func_002faab0()
         break;
     }
 }
+#pragma opt_loop_invariants off
 
 extern void func_0029a690(s32 value);
 extern void func_0029a470(void* value);

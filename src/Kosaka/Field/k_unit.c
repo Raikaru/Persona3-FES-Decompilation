@@ -2291,11 +2291,12 @@ void func_001d1fa0(void)
     s32 index;
     u16* model;
     u8* record;
-    s32 slot;
+    u32 slot;
+    u8* base;
     u16 spawnId;
     typedef struct
     {
-        u8 data[0x110];
+        u32 data[0x44];
     } SpawnCopy;
 
     area = func_001bff20();
@@ -2326,13 +2327,17 @@ void func_001d1fa0(void)
         {
             K_Assert(D_00683940, 0x85c);
         }
-        for (slot = 0; slot < 0x20; slot++)
+        record = NULL;
+        slot = 0;
+        base = DAT_0086be80;
+        while (slot < 0x20)
         {
-            record = DAT_0086be80 + slot * 0x138;
+            record = base + slot * 0x138;
             if (*(u32*)record == 0)
             {
                 break;
             }
+            slot++;
         }
         *(u32*)record = 1;
         *(u32*)(record + 0x11c) = (u32)model;
