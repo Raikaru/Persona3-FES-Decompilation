@@ -84,11 +84,13 @@ extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
 #pragma alias D_00960090_abs D_00960090
 extern void (*D_00960090_abs[])(u32 state, u32 value);
-extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
+extern u32 D_00960184[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
 extern s32 DAT_007cc148;
 extern s32 DAT_007ce13c;
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
- #pragma alias jtbl_0096017C_abs jtbl_0096017C
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 extern void* memset(void* dest, s32 value, u32 size);
 extern s32 K_Scene_001a0250(void);
@@ -983,10 +985,10 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
     Resrc* source;
     RwV3d sourcePosition;
     s32 sourceIndex;
-    void* (*allocator)(u32 count, u32 size, u32 flags);
+    void* (**allocator)(u32 count, u32 size, u32 flags);
 
-    allocator = D_00960184;
-    shadow = (FldShadowRenderTex*)allocator(1, 0x8C, rwMEMHINTDUR_GLOBAL);
+    allocator = (void* (**)(u32, u32, u32))D_00960184_abs;
+    shadow = (FldShadowRenderTex*)(*allocator)(1, 0x8C, rwMEMHINTDUR_GLOBAL);
     if (shadow == NULL)
     {
         return NULL;
@@ -1078,11 +1080,11 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         }
         func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
         shadow->camera->frameBuffer = shadow->raster;
-        shadow->unk_48 = allocator(1, 0x54D0, rwMEMHINTDUR_GLOBAL);
+        shadow->unk_48 = (*allocator)(1, 0x54D0, rwMEMHINTDUR_GLOBAL);
     }
     else if (shadow->mode == 3 || shadow->mode == 4)
     {
-        shadow->radius = (f32*)allocator(1, 0x0C, rwMEMHINTDUR_GLOBAL);
+        shadow->radius = (f32*)(*allocator)(1, 0x0C, rwMEMHINTDUR_GLOBAL);
         shadow->radius[0] = 30.0f;
     }
 
@@ -1541,13 +1543,13 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019bcf0 NONMATCHING
+// FUN_0019bcf0
 void func_0019bcf0(KwlnTask* renderTexTask)
 {
     KwlnTask* task;
     FldShadowRenderTex* shadow;
-    RwFrame* frame;
     RwCamera* camera;
+    RwFrame* frame;
     RwRaster* raster;
 
     task = renderTexTask;
@@ -1608,6 +1610,7 @@ destroyRing:
             func_00491a80(((FldShadowRingWork*)shadow->radius)->renderObject);
         }
         (*(void (**)(void*))jtbl_0096017C_abs)(shadow->radius);
+    }
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 

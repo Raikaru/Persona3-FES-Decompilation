@@ -1,5 +1,10 @@
 #include "temporary.h"
 typedef int (*code)();
+typedef void (*FclShopBgCallback)(float, float, float, int, int, int, int, int, int, int, int);
+typedef struct {
+    u32 *callbacks;
+    int count;
+} FclShopBgCallbackPair;
 u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
 u32 H_Maestro_FinishedInit(u32 task);
 void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
@@ -5666,9 +5671,7 @@ int iVar8;
 
 u32 auStack_20 [6];
 
-u32 *puStack_8;
-
-int iStack_4;
+FclShopBgCallbackPair *puStack_8;
 
 
 
@@ -5698,25 +5701,25 @@ do {
 
 } while (0 < iVar5);
 
-iStack_4 = DAT_007cda64;
+puStack_8 = (FclShopBgCallbackPair *)(auStack_20 + 6);
 
-puStack_8 = auStack_20;
+puStack_8[0].count = DAT_007cda64;
+
+puStack_8[0].callbacks = auStack_20;
 
 iVar5 = *(int *)(iVar1 + 0x4c) >> 1;
 
-puVar6 = (&puStack_8)[iVar5 * 2];
+puVar6 = puStack_8[iVar5].callbacks;
 
-iVar5 = (&iStack_4)[iVar5 * 2];
+iVar5 = puStack_8[iVar5].count;
 
 for (iVar8 = 0; iVar8 < iVar5; iVar8 = iVar8 + 1) {
 
   puVar4 = (u16 *)(iVar1 + iVar8 * 0xc);
 
-  (*(code *)puVar6[iVar8])
-
-            (0,*(u32 *)(puVar4 + 4),*(u32 *)(puVar4 + 4),param_1,param_2,*puVar4,
-
-             puVar4[1],0,puVar4[2],0,0);
+    ((FclShopBgCallback)puVar6[iVar8])
+              (0,*(float *)(puVar4 + 4),*(float *)(puVar4 + 4),param_1,param_2,*puVar4,
+               puVar4[1],0,puVar4[2],0,0);
 
 }
 

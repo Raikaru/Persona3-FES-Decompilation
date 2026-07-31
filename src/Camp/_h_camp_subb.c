@@ -297,6 +297,13 @@ extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
                           u64 start, u64 end, s32 param0, s32 tile,
                           s32 startFrame, s32 endFrame);
+/* Reordered ABI alias; W310 measured FUN_00141660 nd274 -> nd0 (canonical prototype nd274). */
+#pragma alias func_0018bc10_buffirst FUN_0018bc10
+extern void func_0018bc10_buffirst(void* transition, f32 depth,
+                                   s32 drawMode, s32 positionMode,
+                                   s32 alphaMode, u64 start, u64 end,
+                                   s32 param0, s32 tile, s32 startFrame,
+                                   s32 endFrame);
 extern void qsort(void* base, u32 count, u32 width,
                   int (*compare)(const void*, const void*));
 static inline void campEquipmentDrawFixed(f32 scale, u32 alpha, s32 frame,
@@ -2068,6 +2075,8 @@ void FUN_00141590(CampEquipmentWork* work)
 
 
 
+#define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
+  func_0018bc10_buffirst((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
 // FUN_00141660 NONMATCHING
 
 void FUN_00141660(CampEquipmentPanelWork* work)
@@ -2104,7 +2113,6 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   pair68 = pair;
   pair68.x += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, *(u64*)&pair68, *(u64*)&pair, 0, 0, 6, 13);
-
   pair.x = 318.0f;
   pair.y = 27.0f;
   pair70 = pair;
@@ -2208,6 +2216,7 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   pairD8.x -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, *(u64*)&pairD8, *(u64*)&pair, 0, 0, 8, 13);
 }
+#undef func_0018bc10
 
 
 

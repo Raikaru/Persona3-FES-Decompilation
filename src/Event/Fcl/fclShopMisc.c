@@ -17084,13 +17084,11 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        switch ((entry[2] << 2) < 10000000) {
-        default:
+        if ((entry[2] << 2) < 10000000) {
+          entry[2] = 1;
+        }
+        else {
           entry[2] = 9999999;
-          break;
-        case 1:
-          entry[2] = entry[2] << 2;
-          break;
         }
       }
       entry[3] = FUN_003dfeb0(0);
