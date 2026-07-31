@@ -2386,7 +2386,6 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
         }
     }
 }
-#pragma opt_loop_invariants on
 // FUN_00128C40 NONMATCHING
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
@@ -2404,7 +2403,6 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 1);
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00129160 NONMATCHING
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)
@@ -2440,6 +2438,7 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
     }
 }
 
+#pragma opt_common_subs off
 // FUN_001293B0 NONMATCHING
 #pragma push
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
@@ -2613,6 +2612,7 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
 }
 
 #pragma pop
+#pragma opt_common_subs reset
 // FUN_00129B30 NONMATCHING
 void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                 void* persona, s32 frame)

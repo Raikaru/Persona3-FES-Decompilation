@@ -5742,6 +5742,7 @@ void func_00316970(Model* param_1)
   u32 uVar4;
 
   int iVar5;
+  u32 *pVar6;
 
   u32 uStack_4;
 
@@ -5761,16 +5762,17 @@ void func_00316970(Model* param_1)
   if (lVar2 != 0) {
 
     iVar5 = *(int *)(iVar3 + 0xdc);
+    pVar6 = (u32 *)(iVar5 + 4);
 
     uStack_4 = 0;
 
-    func_004cb6e0(*(u32 *)(iVar5 + 4),0x3115a0,&uStack_4);
+    func_004cb6e0(*pVar6,0x3115a0,&uStack_4);
 
     *(u32 *)(iVar3 + 0x10c) = uStack_4;
 
     func_004916d0(iVar5,0x311610);
 
-    func_004916d0(iVar5,0x312f90,*(u32 *)(iVar5 + 4));
+    func_004916d0(iVar5,0x312f90,*pVar6);
 
     func_001a7170(iVar5,*(u32 *)(iVar3 + 0x10c));
 

@@ -4698,7 +4698,6 @@ void FUN_00320380(float param_1,int *param_2)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_003204A0 NONMATCHING
 
 
@@ -4779,7 +4778,6 @@ void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00320640 NONMATCHING
 
 
@@ -4909,6 +4907,7 @@ void FUN_00320770(int *param_1)
 
 
 /* Removing this worsens FUN_00320810 (nd8 -> nd19) - measured W161. */
+#pragma opt_common_subs off
 // FUN_00320810 NONMATCHING
 #pragma optimization_level 1
 
@@ -4946,6 +4945,7 @@ void FUN_00320810(int *param_1)
 
 
 
+#pragma opt_common_subs reset
 // FUN_00320880 NONMATCHING
 
 

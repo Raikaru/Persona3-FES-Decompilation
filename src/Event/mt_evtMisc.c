@@ -2453,7 +2453,7 @@ void FUN_00389b50(int *param_1)
 
 {
 
-  int iVar6;
+  int iVar9;
   u32 *puVar1;
 
 
@@ -2468,8 +2468,7 @@ void FUN_00389b50(int *param_1)
   u32 *puVar7;
 
   int iVar8;
-
-  int iVar9;
+  int iVar6;
 
   
 
