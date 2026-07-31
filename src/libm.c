@@ -62,6 +62,7 @@ static const float sAtanTerms[] = {
 };
 
 #pragma optimization_level 3
+#pragma opt_common_subs off
 // FUN_0052e408 NONMATCHING
 float atanf(float x)
 {
@@ -150,6 +151,7 @@ float atanf(float x)
 
 
 #pragma optimization_level 3
+#pragma opt_common_subs reset
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
@@ -529,7 +531,6 @@ u64 FUN_0052eeb0(long param_1,long param_2)
 }
 #pragma optimization_level 3
 #pragma optimization_level 2
-#pragma opt_common_subs off
 // FUN_0052EFD8 NONMATCHING
 u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
 {
@@ -748,7 +749,6 @@ u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
 #pragma optimization_level 2
 // Reconstructed signed remainder wrapper; retail keeps a longer scheduled
 // 64-bit negate path that MWCCPS2 does not reproduce from equivalent C.
-#pragma opt_common_subs reset
 // FUN_0052F6A0 NONMATCHING
 u64 FUN_0052f6a0(long param_1,long param_2)
 {

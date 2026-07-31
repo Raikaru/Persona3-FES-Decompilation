@@ -39937,7 +39937,6 @@ void FUN_00347390(int param_1)
   *(u32 *)(param_1 + 0x10) = *(u32 *)(param_1 + 0x10) + 1;
 }
 
-#pragma opt_common_subs off
 // FUN_003473B0 NONMATCHING
 
 
@@ -40456,7 +40455,6 @@ void FUN_003473b0(u8 (*param_1) [16])
 
 
 
-#pragma opt_common_subs reset
 // FUN_00347CB0
 
 
@@ -41068,6 +41066,7 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_00348760 NONMATCHING
 void FUN_00348760(u8 *param_1,float *param_2)
 
@@ -41181,6 +41180,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_00348950 NONMATCHING
 void FUN_00348950(u8 *param_1,float *param_2)
 

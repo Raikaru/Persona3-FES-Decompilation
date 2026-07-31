@@ -317,6 +317,7 @@ Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u3
 /* W323 measured mdlCreateAndResolvePath opt_loop_invariants on: nd202 -> nd191; object 356/368. */
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
 // FUN_00316e00 NONMATCHING
 Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 {
@@ -364,6 +365,7 @@ Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 }
 #pragma pop
 
+#pragma opt_dead_assignments reset
 // FUN_00316f70
 u32 mdlStreamRead(Model* mdl)
 {

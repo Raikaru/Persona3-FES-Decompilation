@@ -1464,6 +1464,7 @@ void func_002b96e0(int param_1,u32 param_2)
   return;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002b96f0 NONMATCHING
 
 void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
@@ -1586,6 +1587,7 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
   *(u32 *)(out + 0xc) = 0;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002b99d0
 
 void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4)
@@ -2584,8 +2586,8 @@ void func_002bb3a0(void)
       }
     }
     if (((*puVar4 & 0x210) == 0x210) && ((uVar3 & 0xff000000) != 0)) {
+      uStack_4 = uVar3;
       if (*(int *)(puVar4 + 0xc) != 0) {
-        uStack_4 = uVar3;
         func_00318ad0(*(u32 *)(puVar4 + 0xc),&uStack_4);
         FUN_00317a20(*(u32 *)(puVar4 + 0xc));
       }

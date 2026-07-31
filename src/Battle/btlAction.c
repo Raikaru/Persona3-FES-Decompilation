@@ -6061,7 +6061,6 @@ void btlActionInitStateError(BtlAction* action)
 {
     (void)action;
 }
-#pragma opt_loop_invariants on
 // FUN_00295c00 NONMATCHING
 void btlActionUpdateStateError(BtlAction* action)
 {
@@ -6159,7 +6158,6 @@ void btlActionUpdateStateError(BtlAction* action)
     btlActionSetState(action, state);
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00295f00
 void btlActionInitStateEndure(BtlAction* action)
 {
@@ -7124,6 +7122,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     ACTION_U32(action, 0x48c) = 0;
     ACTION_U16(action, 0x490) = 0x12;
 }
+#pragma opt_common_subs off
 // FUN_00298060 NONMATCHING
 void btlActionUpdateStateRoundUpMes(BtlAction* action)
 {
@@ -7254,6 +7253,7 @@ set_state:
     btlActionSetState(action, BTLACTION_STATE_ROUNDUP);
 }
 
+#pragma opt_common_subs reset
 // FUN_002984e0
 void btlActionInitStateRoundUp(BtlAction* action)
 {

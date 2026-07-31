@@ -1512,7 +1512,7 @@ void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 }
 
 
-/* opt_loop_invariants on + opt_lifetimes on: FUN_00388DF0 default nd210 -> nd132 (loop-only nd154), object 500/512; measured W319. */
+/* opt_loop_invariants on + opt_lifetimes on: default nd210 -> nd132 (loop-only nd154); accumulator/index role swap further nd132 -> nd126, object 500/512; measured W319. */
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
@@ -1576,11 +1576,11 @@ int FUN_00388df0(int param_1,int param_2)
 
       iVar2 = iVar5 * 0xc;
 
-      *(int *)(entries + iVar2) = iVar4;
+      *(int *)(entries + iVar2) = iVar7;
 
-      iVar4 = iVar4 + iVar1;
+      iVar7 = iVar7 + iVar1;
 
-      *(int *)(entries + iVar2 + 4) = iVar4 + -1;
+      *(int *)(entries + iVar2 + 4) = iVar7 + -1;
 
       *(int *)(entries + iVar2 + 8) = iVar1;
 
@@ -1592,39 +1592,39 @@ int FUN_00388df0(int param_1,int param_2)
 
   FUN_005225a8(0x6a0a30,uVar3);
 
-  iVar4 = 0;
+  iVar7 = 0;
 
   while( true ) {
 
-    if (param_1 <= iVar4) {
+    if (param_1 <= iVar7) {
 
-      for (iVar4 = 0; iVar4 < param_1; iVar4 = iVar4 + 1) {
+      for (iVar7 = 0; iVar7 < param_1; iVar7 = iVar7 + 1) {
 
-        iVar5 = *(int *)(entries + iVar4 * 0xc + 8);
+        iVar5 = *(int *)(entries + iVar7 * 0xc + 8);
 
         if ((iVar5 != -1) && (iVar6 < iVar5)) {
           iVar6 = iVar5;
 
-          iVar7 = iVar4;
+          iVar4 = iVar7;
 
         }
 
       }
 
-      return iVar7;
+      return iVar4;
 
     }
 
-    if (((*(u32 *)(entries + iVar4 * 0xc) != 0xffffffff) &&
-        (*(u32 *)(entries + iVar4 * 0xc) <= uVar3)) &&
+    if (((*(u32 *)(entries + iVar7 * 0xc) != 0xffffffff) &&
+        (*(u32 *)(entries + iVar7 * 0xc) <= uVar3)) &&
 
-       (uVar3 <= *(u32 *)(entries + iVar4 * 0xc + 4))) break;
+       (uVar3 <= *(u32 *)(entries + iVar7 * 0xc + 4))) break;
 
-    iVar4 = iVar4 + 1;
+    iVar7 = iVar7 + 1;
 
   }
 
-  return iVar4;
+  return iVar7;
 
 }
 #pragma opt_lifetimes reset

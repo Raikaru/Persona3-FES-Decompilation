@@ -309,6 +309,7 @@ u32 func_001104d0(KwlnTask* task)
 
 /* Scoped loop-invariant pragma measured W330: without nd113, with nd106 (obj 184/192). */
 #pragma opt_loop_invariants on
+#pragma opt_strength_reduction off
 // FUN_00110510 NONMATCHING
 u32 func_00110510(KwlnTask* task)
 {
@@ -339,6 +340,7 @@ u32 func_00110510(KwlnTask* task)
 }
 #pragma opt_loop_invariants off
 
+#pragma opt_strength_reduction reset
 // FUN_001105D0
 void func_001105d0(KwlnTask* task, s32 index, void* resource)
 {
