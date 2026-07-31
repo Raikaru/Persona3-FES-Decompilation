@@ -169,6 +169,9 @@ extern char DAT_006a4ba0[];
 extern char DAT_006a4e10[];
 extern char DAT_006a5630[];
 extern char DAT_006a5f44[];
+extern u8 D_006A48D0[];
+extern u8 D_006A48D1[];
+extern s16 D_006A48F0[];
 extern u32 DAT_007ce420;
 
 // FUN_003d5850
@@ -1780,6 +1783,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
   int iVar15;
 
   int iVar16;
+  u8 *thresholds;
 
   
 
@@ -1829,7 +1833,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
           uVar4 = *(u16 *)(DAT_007ce420 + (u32)*(u16 *)((int)param_1 + 2) * 0xe + 10);
 
-          sVar2 = *(short *)((int)lVar10 * 2 + ((u32)uVar4 * 0x12 + (u32)uVar4) * 2 + 0x6a48f0);
+          sVar2 = D_006A48F0[(int)lVar10 + (u32)uVar4 * 0x13];
 
           lVar10 = datGetScenarioMode();
 
@@ -1882,12 +1886,13 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
   }
 
   else {
+    thresholds = D_006A48D0;
+
 
     for (iVar5 = 8; -1 < iVar5; iVar5 = iVar5 + -1) {
 
-      if (*(char *)(iVar5 * 2 + 0x6a48d0) <= lVar12) {
-
-        lVar10 = (int)*(char *)(iVar5 * 2 + 0x6a48d1);
+      if (thresholds[iVar5 * 2] <= lVar12) {
+        lVar10 = (int)thresholds[iVar5 * 2 + 1];
 
         goto LAB_003d7790;
 
@@ -1945,7 +1950,7 @@ LAB_003d79d4:
 
           uVar4 = *(u16 *)(DAT_007ce420 + (u32)*(u16 *)((int)param_1 + 2) * 0xe + 10);
 
-          sVar2 = *(short *)((int)lVar12 * 2 + ((u32)uVar4 * 0x12 + (u32)uVar4) * 2 + 0x6a48f0);
+          sVar2 = D_006A48F0[(int)lVar12 + (u32)uVar4 * 0x13];
 
           lVar12 = datGetScenarioMode();
 

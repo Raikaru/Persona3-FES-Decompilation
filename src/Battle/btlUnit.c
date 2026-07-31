@@ -3244,6 +3244,7 @@ BtlPacket* btlUnit002857f0(BtlUnit* unit)
     return packet;
 }
 
+
 // FUN_00285860
 void btlUnitInit00285d30Packet(void* work)
 {
@@ -3338,12 +3339,12 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             }
 
             color = (color & 0xff000000) |
-                    ((u32)(s32)((1.0f - factor) * (u8)color +
-                               factor * (u8)packet->targetCol)) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 8) +
-                               factor * (u8)(packet->targetCol >> 8)) << 8) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 16) +
-                               factor * (u8)(packet->targetCol >> 16)) << 16);
+                    ((u32)(s32)((1.0f - factor) * (f32)(u8)color +
+                               factor * (f32)(u8)packet->targetCol)) |
+                    ((u32)(s32)((1.0f - factor) * (f32)(u8)(color >> 8) +
+                               factor * (f32)(u8)(packet->targetCol >> 8)) << 8) |
+                    ((u32)(s32)((1.0f - factor) * (f32)(u8)(color >> 16) +
+                               factor * (f32)(u8)(packet->targetCol >> 16)) << 16);
         }
 
         if (counter >= alphaStart)
@@ -3358,8 +3359,8 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             }
 
             color = (color & 0x00ffffff) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 24) +
-                               factor * (u8)(packet->targetCol >> 24)) << 24);
+                    ((u32)(s32)((1.0f - factor) * (f32)(u8)(color >> 24) +
+                               factor * (f32)(u8)(packet->targetCol >> 24)) << 24);
         }
 
         unit->cols[BTLUNIT_COL_MAIN] = *(RwRGBA*)&color;
