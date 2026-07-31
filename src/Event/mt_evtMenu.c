@@ -1510,6 +1510,7 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
     iVar1 += iVar2;
   }
 
+L_loop:
   for (; iVar1 < param_4; iVar1++) {
     if (param_9 != (code *)0x0) {
       ((code)param_9)(param_1,param_2,param_5,param_7);

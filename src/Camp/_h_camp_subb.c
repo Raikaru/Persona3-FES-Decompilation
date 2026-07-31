@@ -2700,9 +2700,6 @@ void FUN_00143ee0(CampEquipmentPanelWork* work)
 
 
 /* W389 six-knob sweep: singles + all 15 pairs; baseline nd2032/object2620/2624, no lowering under the window. Residual is large draw-sequence divergence. */
-#pragma push
-#pragma opt_lifetimes off
-#pragma opt_propagation on
 // FUN_00144910 NONMATCHING
 
 void FUN_00144910(CampEquipmentPanelWork* work)
@@ -2792,9 +2789,6 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 #define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
   func_0018bc10_buffirst((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
 
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
-#pragma pop
 // FUN_00145350
 
 void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
