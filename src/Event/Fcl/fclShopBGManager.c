@@ -2787,7 +2787,6 @@ return 1; }
 
 #pragma opt_propagation off
 /* Measured normalized_diff 154 -> 153; object_size remains 400B. */
-#pragma opt_lifetimes on
 // FUN_00413010 NONMATCHING
 
 
@@ -2917,7 +2916,6 @@ u64 FUN_00413010(u64 param_1,int param_2)
 #pragma opt_propagation on
 /* W327 measured: opt_loop_invariants on normalized_diff 792 -> 780; object 1172/1248 -> 1164/1248 (without/with). */
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes reset
 // FUN_004131A0 NONMATCHING
 
 
@@ -3206,6 +3204,7 @@ else {
 return uVar4; }
 
 #pragma opt_loop_invariants reset
+#pragma opt_lifetimes on
 // FUN_00413680 NONMATCHING
 
 
@@ -3323,6 +3322,7 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
 }
 
+#pragma opt_lifetimes reset
 // FUN_004138E0 NONMATCHING
 
 
