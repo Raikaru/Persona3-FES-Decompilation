@@ -42,6 +42,7 @@
 #pragma alias func_00208010_y2 func_00208010_y2
 #pragma alias func_00208050_y2 func_00208050_y2
 #pragma alias func_00208130_y2 func_00208130_y2
+extern u32 datGetFlag_y2(u16 id);
 
 typedef struct PanelSkillRow
 {
