@@ -1206,6 +1206,15 @@ void FUN_00201D10(void)
     if (work[0] & 0x10) FUN_00204CC0();
 }
 
+static u32 panelSkillAccept(u16 id)
+{
+    return FUN_002055F0(id);
+}
+
+static PanelSkillRow* panelSkillRow(u32 index)
+{
+    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x2d0);
+}
 // FUN_00201E00
 void FUN_00201E00(void)
 {
@@ -1223,6 +1232,8 @@ void FUN_00201E00(void)
     if (work[0] & 8) FUN_00203C30();
     if (work[0] & 0x10) FUN_00204CC0();
 }
+
+
 
 // FUN_00201EF0
 void FUN_00201EF0(void)
@@ -1257,15 +1268,6 @@ void FUN_00201EF0(void)
     }
 }
 
-static u32 panelSkillAccept(u16 id)
-{
-    return FUN_002055F0(id);
-}
-
-static PanelSkillRow* panelSkillRow(u32 index)
-{
-    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x2d0);
-}
 
 // FUN_00202010
 void FUN_00202010(void)
@@ -1574,6 +1576,11 @@ void FUN_00202830(void)
                               (uintptr_t)work + 0x2c));
 }
 
+static PanelSkillRow* panelItemRow(u32 index)
+{
+    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x310);
+}
+
 // FUN_00202A10
 void FUN_00202A10(void)
 {
@@ -1635,11 +1642,6 @@ void FUN_00202BC0(void)
     }
     *(u32*)work &= ~2u;
 }
-static PanelSkillRow* panelItemRow(u32 index)
-{
-    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x310);
-}
-
 // FUN_00202C90
 void FUN_00202C90(void)
 {
@@ -3544,6 +3546,17 @@ void FUN_00206F70(void)
     func_00225670();
 }
 
+static void panelTargetEffect(u32 first, u32 second)
+{
+    func_003c7430(first);
+    func_003c74e0(second);
+}
+
+#pragma alias bpRoot_0021c720_ret func_0021c720
+u32 bpRoot_0021c720_ret(void);
+#pragma alias bpRoot_003c72d0_arg func_003c72d0
+u32 bpRoot_003c72d0_arg(u32);
+
 // FUN_00207010
 void FUN_00207010(void)
 {
@@ -3632,16 +3645,6 @@ void FUN_00207010(void)
     func_003b0e70(2);
 }
 
-static void panelTargetEffect(u32 first, u32 second)
-{
-    func_003c7430(first);
-    func_003c74e0(second);
-}
-
-#pragma alias bpRoot_0021c720_ret func_0021c720
-u32 bpRoot_0021c720_ret(void);
-#pragma alias bpRoot_003c72d0_arg func_003c72d0
-u32 bpRoot_003c72d0_arg(u32);
 // FUN_00207340 NONMATCHING
 void FUN_00207340(void)
 {

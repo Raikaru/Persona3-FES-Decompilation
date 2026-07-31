@@ -12688,8 +12688,8 @@ void FUN_0032c340(int param_1)
     motionVec[3] = 0.0f;
     vuVec[3] = 0.0f;
     scaleVec[3] = 0.0f;
-    memcpy(basePos, puVar4, 16);
-    memcpy(matrixVec, (u8 *)puVar4 + 16, 16);
+    *(u_long128 *)basePos = *(u_long128 *)puVar4;
+    *(u_long128 *)matrixVec = *(u_long128 *)((u8 *)puVar4 + 16);
 
     if ((iVar6 == 0) || (*(int *)(iVar15 + 0x10) < iVar6)) {
 
@@ -16463,7 +16463,7 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _vmulq(auVar30,uVar33);
 
-            memcpy(auStack_10, &auVar29, 8);
+            *(u64 *)auStack_10 = auVar29._0_8_;
 
             *(u32 *)*pauVar16 = (*((u32 *)((u8 *)&auStack_10 + 0)));
 
@@ -16576,7 +16576,7 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _sqc2(auVar29);
 
-            memcpy(*pauVar17, &auVar29, 16);
+            *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
 
             fVar27 = (float)puVar4[0x1b];
 
@@ -16692,7 +16692,7 @@ void FUN_00330190(u64 param_1)
 
           }
 
-          memcpy(auStack_10, *pauVar16, 8);
+          *(u64 *)auStack_10 = *(u64 *)*pauVar16;
 
           auVar32 = _lqc2(auStack_10);
 
@@ -16796,7 +16796,7 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _sqc2(auVar29);
 
-            memcpy(*pauVar17, &auVar29, 16);
+            *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
 
           }
 
@@ -16804,7 +16804,7 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _sqc2(auVar31);
 
-            memcpy(*pauVar17, &auVar29, 16);
+            *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
 
           }
 
@@ -21703,7 +21703,7 @@ void FUN_00335a70(int param_1)
 
           auVar43 = _vmaddbc(extraout_vf30,auVar43);
 
-          memcpy(auStack_90, &auVar43, 8);
+          *(u64 *)auStack_90 = auVar43._0_8_;
 
           puVar20[1] = (*((u32 *)((u8 *)&auStack_90 + 0)));
 
@@ -21791,7 +21791,8 @@ LAB_003365a0:
 
             fVar28 = FUN_0052e878_f32(fVar28);
 
-            auVar42 = mdlVecLoadN(auStack_50, 8);
+            auVar42._0_8_ = *(u64 *)auStack_50;
+            auVar42._8_8_ = 0;
 
             (*((u32 *)((u8 *)&uStack_88 + 0))) = fVar34 * fVar28;
 
@@ -21805,7 +21806,7 @@ LAB_003365a0:
 
             __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auVar43) : "memory");
 
-            memcpy(auStack_a0, &auVar44, 8);
+            *(u64 *)auStack_a0 = auVar44._0_8_;
 
             auVar41 = _vmul(auVar44,auVar44);
 
@@ -21851,7 +21852,7 @@ LAB_003365a0:
 
             auVar41 = _lqc2(auStack_60);
 
-            memcpy(auStack_50, &auVar42, 8);
+            *(u64 *)auStack_50 = auVar42._0_8_;
 
             _vopmula(auVar42,auVar41);
 
@@ -21949,7 +21950,9 @@ LAB_003365a0:
 
               pauVar16 = (u8 (*) [12])(puVar21 + iVar22 * 3);
 
-              memcpy(&_DAT_0069c4d0, *pauVar16, 12);
+              _DAT_0069c4d0._0_4_ = *(u32 *)*pauVar16;
+              _DAT_0069c4d0._4_4_ = *(u32 *)(*pauVar16 + 4);
+              _DAT_0069c4d0._8_4_ = *(u32 *)(*pauVar16 + 8);
 
               auVar42 = _lqc2(_DAT_0069c4d0);
 
@@ -22039,7 +22042,7 @@ LAB_003365a0:
 
               auVar42 = _vmaddbc(extraout_vf30_02,auVar42);
 
-              memcpy(auStack_50, &auVar42, 8);
+              *(u64 *)auStack_50 = auVar42._0_8_;
 
               auVar42 = _lqc2(auStack_a0);
 
@@ -22051,7 +22054,7 @@ LAB_003365a0:
 
               auVar42 = _vmaddbc(extraout_vf30_02,auVar42);
 
-              memcpy(auStack_a0, &auVar42, 8);
+              *(u64 *)auStack_a0 = auVar42._0_8_;
 
               auVar42 = _vsub(auVar42,auVar41);
 
@@ -22083,7 +22086,9 @@ LAB_003365a0:
 
                 puVar17 = puVar21 + iVar13 * 3;
 
-                memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar17 + -0xf), 12);
+                _DAT_0069c4d0._0_4_ = *(u32 *)((u8 *)(puVar17 - 0xf));
+                _DAT_0069c4d0._4_4_ = *(u32 *)((u8 *)(puVar17 - 0xf) + 4);
+                _DAT_0069c4d0._8_4_ = *(u32 *)((u8 *)(puVar17 - 0xf) + 8);
 
                 auVar41 = _lqc2(_DAT_0069c4d0);
 
@@ -36404,7 +36409,7 @@ void FUN_00346530(int param_1)
 
       *(u8 *)(iVar3 + 7) = 0xfe;
 
-      uStack_4 = CONCAT13(0xff,auVar10._0_3_);
+      uStack_4 = 0xff000000 | (auVar10._0_4_ & 0x00ffffff);
 
     }
 

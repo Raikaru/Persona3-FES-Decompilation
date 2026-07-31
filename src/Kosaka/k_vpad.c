@@ -1,3 +1,20 @@
+typedef struct RuntimeTask RuntimeTask;
+typedef struct RuntimeWork RuntimeWork;
+typedef struct RuntimeListNode RuntimeListNode;
+typedef struct RuntimeVec3 RuntimeVec3;
+typedef struct RuntimeRenderCollection RuntimeRenderCollection;
+typedef struct RuntimeTransitionWork RuntimeTransitionWork;
+typedef struct RuntimeFieldEditorWork RuntimeFieldEditorWork;
+typedef struct RuntimeControllerWork RuntimeControllerWork;
+typedef struct RuntimeMatrix RuntimeMatrix;
+typedef struct RuntimeTransitionAngles RuntimeTransitionAngles;
+typedef struct RuntimeResetWork RuntimeResetWork;
+typedef struct RuntimePathWork RuntimePathWork;
+typedef struct RuntimeDistanceWork RuntimeDistanceWork;
+typedef struct RuntimeCommandWork RuntimeCommandWork;
+typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
+typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
+typedef struct FieldArchiveRequest FieldArchiveRequest;
 #include "Kosaka/k_vpad.h"
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Kosaka/Field/k_field.h"
@@ -201,6 +218,8 @@ extern void* (*DAT_00960184_abs[])(...);
 
 /* Header declarations are canonical; suppress carrying the old-TU forms. */
 #if 0
+#define MDL_READASYNC 0
+#define MODEL_TYPE_FLD 4
 extern s32 datGetFlag(u32 flag);
 extern void* RwCalloc(u32 count, u32 size, u32 hint);
 extern void RwFree(void* memory);
