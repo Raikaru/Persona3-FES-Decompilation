@@ -288,6 +288,7 @@ u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
 extern int fclShopNmlistFind(int *list,int *head,int id);
 #pragma alias fclShopNmlistRemove FUN_003c49e0
 extern int fclShopNmlistRemove(int *list,int *head,int node);
+// Measured FUN_00400740: direct call nd8; alias alone nd8; typed byte-pointer a1 nd0 (object 432).
 #pragma alias FUN_003c49e0_ro FUN_003c49e0
 extern int FUN_003c49e0_ro(int *list,int *head,int node);
 u64 FUN_003f33d0(int param_1,u32 param_2);

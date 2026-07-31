@@ -1607,7 +1607,7 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 // fldFrameMoveResolvePosition, fldFrameMoveAppend/CreateDebugPoint all
 // inlined; retail does not jal any of them) - simpler single-path variant
 // with a fixed kind=3, no pathMode dispatch.
-// FUN_001AFD40 NONMATCHING
+// FUN_001AFD40
 u32 func_001afd40(KwlnTask* task, const RwV3d* position, f32 duration)
 {
     FldFrameMoveWork* work;
@@ -2547,8 +2547,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                     scaled.x += vecA->x;
                     scaled.y += vecA->y;
                     scaled.z += vecA->z;
-                    func_001afd40(50.0f, *(KwlnTask**)(*(u32*)((u8*)gridEntry + 0x170)),
-                                  &scaled);
+                    func_001afd40(*(KwlnTask**)(*(u32*)((u8*)gridEntry + 0x170)),
+                                  &scaled, 50.0f);
                 }
             }
         }

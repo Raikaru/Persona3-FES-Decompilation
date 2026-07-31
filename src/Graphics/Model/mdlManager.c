@@ -8208,39 +8208,67 @@ u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
   }
   else {
     iVar3 = (int)param_2;
-    if ((param_2 < 60000) || (0xeac3 < param_2)) {
-      if ((param_2 < 0xeac4) || (0xeb27 < param_2)) {
-        if ((param_2 < 0xeb28) || (0xeb8b < param_2)) {
-          if ((param_2 < 0xeb8c) || (0xebef < param_2)) {
-            uVar2 = 0;
-          }
-          else {
-            sVar1 = datGetPartyId(2);
-            *param_3 = (int)sVar1;
-            *param_4 = iVar3 % 100;
-            uVar2 = 1;
-          }
-        }
-        else {
-          sVar1 = datGetPartyId(1);
-          *param_3 = (int)sVar1;
-          *param_4 = iVar3 % 100;
-          uVar2 = 1;
-        }
-      }
-      else {
-        sVar1 = datGetPartyId(0);
-        *param_3 = (int)sVar1;
-        *param_4 = iVar3 % 100;
-        uVar2 = 1;
-      }
+
+    if (param_2 < 60000) {
+      goto case_eac4;
     }
-    else {
-      uVar2 = 1;
-      *param_3 = 1;
-      *param_4 = iVar3 % 100;
+    if (param_2 >= 0xeac4) {
+      goto case_eac4;
     }
+
+    sVar1 = datGetPartyId(2);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    uVar2 = 1;
+    goto done;
+
+case_eac4:
+    if (param_2 < 0xeac4) {
+      goto case_eb28;
+    }
+    if (param_2 >= 0xeb28) {
+      goto case_eb28;
+    }
+
+    sVar1 = datGetPartyId(0);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    uVar2 = 1;
+    goto done;
+
+case_eb28:
+    if (param_2 < 0xeb28) {
+      goto case_eb8c;
+    }
+    if (param_2 >= 0xeb8c) {
+      goto case_eb8c;
+    }
+
+    sVar1 = datGetPartyId(1);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    uVar2 = 1;
+    goto done;
+
+case_eb8c:
+    if (param_2 < 0xeb8c) {
+      goto invalid;
+    }
+    if (param_2 >= 0xebf0) {
+      goto invalid;
+    }
+
+    sVar1 = datGetPartyId(2);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    uVar2 = 1;
+    goto done;
+
+invalid:
+    uVar2 = 0;
   }
+
+done:
   return uVar2;
 }
 
