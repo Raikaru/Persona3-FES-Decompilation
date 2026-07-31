@@ -3880,7 +3880,6 @@ void* func_003140c0(void* param_1,u16 *param_2)
 
 
 
-#pragma opt_lifetimes on
 // FUN_00314170 NONMATCHING
 
 
@@ -3942,7 +3941,6 @@ void* func_00314170(void* param_1, void* param_2)
 
 
 
-#pragma opt_lifetimes reset
 // FUN_003142B0
 u32 func_003142b0(void* param_1)
 {
@@ -4192,6 +4190,7 @@ void func_00314730(u8* param_2,f32 param_1)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_00314850 NONMATCHING
 
 
@@ -4439,6 +4438,7 @@ LAB_0031494c:
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_00314D30 NONMATCHING
 
 

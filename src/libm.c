@@ -325,7 +325,7 @@ float FUN_0052e9e8(float param_1)
   return FUN_0052abd8(param_1);
 }
 #pragma tailcall off
-#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 // FUN_0052EA00 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea00(float param_1)
@@ -333,7 +333,7 @@ float FUN_0052ea00(float param_1)
   return FUN_0052afe8(param_1);
 }
 #pragma tailcall off
-#pragma opt_common_subs reset
+#pragma opt_strength_reduction reset
 // FUN_0052EA18 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea18(float param_1, float param_2)
