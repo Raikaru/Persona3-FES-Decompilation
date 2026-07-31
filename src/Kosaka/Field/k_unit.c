@@ -3238,10 +3238,7 @@ void func_001d4180(void)
                     scene = func_001b9120();
                     func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
                 }
-                if (*taskSlot == NULL)
-                {
-                }
-                else
+                if (*taskSlot != NULL)
                 {
                     func_00195020(gFldUnitsPc[i].unk_180);
                     gFldUnitsPc[i].unk_180 = NULL;

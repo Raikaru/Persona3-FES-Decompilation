@@ -6583,8 +6583,8 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   if (*param_1 == 0) {
     count = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    index = 0;
     selectedIndex = 1;
+    index = 0;
     reverseIndex = count - 1;
     for (; index < count; index++) {
       if (param_3 == selectedIndex) {

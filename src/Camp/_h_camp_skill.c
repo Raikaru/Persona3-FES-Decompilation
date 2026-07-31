@@ -1556,6 +1556,7 @@ void* FUN_001618a0(KwlnTask* task)
                 panelWork->unused_0c = 0;
                 panelWork->drawId = panelPcId;
         }
+        }
         personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
         if (personaWork != NULL) {
             personaWork[4] = FUN_00174800((u32)(u16)work->pcId);

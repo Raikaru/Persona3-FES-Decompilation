@@ -175,8 +175,6 @@ extern void FUN_003b0430_typed(int param_1,u32 param_2);
 u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 #pragma alias FUN_003b0970_typed FUN_003b0970
 extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,u32 param_5);
-#pragma alias FUN_003b0970_b22a0 FUN_003b0970
-extern long FUN_003b0970_b22a0(void *param_1,u8 param_2,s8 param_3,s8 param_4,u32 param_5);
 void FUN_003b05c0(u16 *param_1);
 int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 #pragma alias FUN_003b0620_typed FUN_003b0620
@@ -2973,8 +2971,6 @@ void FUN_003b22a0(u32 *param_1)
   int iVar6;
 
   int lVar7;
-  s8 cVar2;
-  s8 cVar3;
 
   
 
@@ -2987,10 +2983,9 @@ void FUN_003b22a0(u32 *param_1)
   if (*(char *)(param_1 + 7) != '\0') {
 
     iVar6 = param_1[5];
-    cVar2 = *(s8 *)((int)param_1 + 0xd);
-    cVar3 = *(s8 *)((int)param_1 + 0xe);
 
-    lVar7 = FUN_003b0970_b22a0(&gp0xffffa838,0,cVar2,cVar3,0);
+    lVar7 = FUN_003b0970_typed(&gp0xffffa838,0,*(s8 *)((int)param_1 + 0xd),
+                         *(s8 *)((int)param_1 + 0xe),0);
 
     if (lVar7 != 0) {
       iVar6 = FUN_003b1920_typed(iVar6,lVar7,1);
