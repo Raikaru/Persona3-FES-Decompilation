@@ -128,11 +128,6 @@ typedef struct BpTexTexture
     u32 frameCount;
 } BpTexTexture;
 
-typedef struct BpTexPoint
-{
-    f32 x;
-    f32 y;
-} BpTexPoint;
 
 
 
