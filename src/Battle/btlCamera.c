@@ -4775,9 +4775,9 @@ void FUN_002b2940(void *arg0)
     {
         scratch.targetCenter.y = 65.0f;
     }
-    scratch.direction.x = scratch.sourceCenter.x - scratch.targetCenter.x;
-    scratch.direction.y = scratch.sourceCenter.y - scratch.targetCenter.y;
-    scratch.direction.z = scratch.sourceCenter.z - scratch.targetCenter.z;
+    scratch.direction.x = (-scratch.targetCenter.x) + scratch.sourceCenter.x;
+    scratch.direction.y = (-scratch.targetCenter.y) + scratch.sourceCenter.y;
+    scratch.direction.z = (-scratch.targetCenter.z) + scratch.sourceCenter.z;
     scratch.direction.x = scratch.direction.x * fGpffff8088;
     scratch.direction.y = scratch.direction.y * fGpffff8088;
     scratch.direction.z = scratch.direction.z * fGpffff8088;
