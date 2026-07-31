@@ -993,42 +993,7 @@ void bcmPanel0022bf60(void);
 void FUN_00222d60(void);
 void func_0021f0c0(void*);
 
-// FUN_002016B0
-void FUN_002016B0(void)
-{
-    u32 state;
 
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    state = *(u32*)(gBcmWork + 0x10);
-    if (state == 11)
-    {
-        return;
-    }
-    if (state == 10)
-    {
-        return;
-    }
-    if (state == 9)
-    {
-        return;
-    }
-    func_0021f410();
-    func_00221b60();
-}
-
-// FUN_00201730
-void FUN_00201730(void* work)
-{
-    u8* p;
-
-    p = (u8*)work;
-    *(u32*)p = 0;
-    *(u32*)(p + 0x77a0) = 0;
-    *(u32*)(p + 8) = 0;
-    *(u32*)(p + 0x20) = bpMisc001ff740();
-    func_0021f0c0(p + 0x430);
-    gBcmWork = p;
-}
 
 // FUN_00201780
 void FUN_00201780(void)
@@ -3855,13 +3820,6 @@ void FUN_00207AB0(void)
     *(u32*)(gBcmWork + 0x77a0) |= 8;
 }
 
-// FUN_00207B00
-void FUN_00207B00(void)
-{
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    *(u32*)(gBcmWork + 0x77a0) |= 0x10;
-}
-
 void func_0021bcb0(void);
 void func_0024c110(void);
 u32 bpRushUpdate(void);
@@ -3913,6 +3871,13 @@ void func_002453d0(s32);
 void func_002441b0(s32);
 u32 func_00207f70(void);
 u32 func_00207fc0(void);
+// FUN_00207B00
+void FUN_00207B00(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) |= 0x10;
+}
+
 
 
 

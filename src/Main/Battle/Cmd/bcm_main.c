@@ -1150,50 +1150,45 @@ void FUN_001FFF40(void)
         work[0] &= ~0x40u;
 }
 
-/* Removing this loses FUN_00201880 (MATCH nd0 -> MISMATCH nd307) - measured W161. */
-
-#pragma opt_loop_invariants on
-#pragma opt_loop_invariants off
-
-static u32 panelSkillAccept(u16 id)
+// FUN_002016B0
+void FUN_002016B0(void)
 {
-    return FUN_002055F0(id);
+    u32 state;
+
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    state = *(u32*)(gBcmWork + 0x10);
+    if (state == 11)
+    {
+        return;
+    }
+    if (state == 10)
+    {
+        return;
+    }
+    if (state == 9)
+    {
+        return;
+    }
+    func_0021f410();
+    func_00221b60();
 }
 
-static PanelSkillRow* panelSkillRow(u32 index)
+// FUN_00201730
+void FUN_00201730(void* work)
 {
-    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x2d0);
+    u8* p;
+
+    p = (u8*)work;
+    *(u32*)p = 0;
+    *(u32*)(p + 0x77a0) = 0;
+    *(u32*)(p + 8) = 0;
+    *(u32*)(p + 0x20) = bpMisc001ff740();
+    func_0021f0c0(p + 0x430);
+    gBcmWork = p;
 }
 
-static PanelSkillRow* panelItemRow(u32 index)
-{
-    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x310);
-}
 
-/* Removing this loses FUN_00204480 (MATCH nd0 -> MISMATCH nd341) - measured W308. */
 
-#pragma opt_loop_invariants on
-#pragma opt_loop_invariants off
-
-/* Removing this loses FUN_002063F0 (MATCH nd0 -> MISMATCH nd128) - measured W308. */
-
-#pragma opt_loop_invariants on
-#pragma opt_loop_invariants off
-
-/* Removing this loses FUN_002065A0 (MATCH nd0 -> MISMATCH nd159) - measured W308. */
-
-#pragma opt_loop_invariants on
-#pragma opt_loop_invariants off
-static void panelTargetEffect(u32 first, u32 second)
-{
-    func_003c7430(first);
-    func_003c74e0(second);
-}
-
-#pragma alias bpRoot_0021c720_ret func_0021c720
-u32 bpRoot_0021c720_ret(void);
-#pragma alias bpRoot_003c72d0_arg func_003c72d0
-u32 bpRoot_003c72d0_arg(u32);
 
 // FUN_00207930
 u32 bcmIsItemUsable(u16 param_1)
@@ -1215,58 +1210,6 @@ void FUN_00207B50(void)
     *(u32*)(gBcmWork + 0x77a0) |= 0x20;
 }
 
-void func_0021bcb0(void);
-void func_0024c110(void);
-u32 bpRushUpdate(void);
-u32 bpRes0021bab0(void);
-void bpd00253410(void);
-void func_00210d90(void*);
-void func_002510d0(void);
-void func_00251a80(void);
-void bppMain0020edf0(void);
-u32 baiMainIsActive(void);
-void func_0021c7e0(void);
-void bpo00252060(void);
-void func_002492b0(void);
-u32 bpe00249600(void);
-void func_00248620(void);
-void func_00242cc0(void);
-void func_0025c220(void);
-void bpPersonaUpdate(void);
-void func_0027b610(void);
-u32 func_00249130(void);
-void func_00245e50(void);
-void func_00213e80(void*);
-void func_00252f30(void);
-void func_00209540(void);
-void func_0023f540(void);
-void func_0024cca0(void);
-void func_002095a0(void);
-void func_002532b0(void);
-void func_0020f260(void);
-void func_00243150(void);
-void func_00241910(void);
-void func_00248bb0(void);
-void func_002520f0(void);
-void func_0025c9c0(void);
-void func_0025d470(void);
-void func_0027b880(void);
-u32 func_00208720(void);
-void* btlUnitFindFromId(u16);
-u32 func_00242a60(void);
-void* func_00242260(void);
-void func_00242320(void*, u32);
-void func_00242a50(void*, u32);
-void func_00242600(void*, u32);
-void func_00242720(void*, u32);
-void func_00242a30(void*);
-void func_00242c20(void*, u32, u32);
-void func_00242540(void*);
-void func_002453d0(s32);
-void func_002441b0(s32);
-u32 func_00207f70(void);
-u32 func_00207fc0(void);
-
 
 // FUN_00207BA0
 void FUN_00207BA0(void)
@@ -1274,58 +1217,6 @@ void FUN_00207BA0(void)
     K_ASSERT(gBcmWork != NULL, 0x164);
     *(u32*)(gBcmWork + 0x77a0) |= 0x40;
 }
-
-void func_0021bcb0(void);
-void func_0024c110(void);
-u32 bpRushUpdate(void);
-u32 bpRes0021bab0(void);
-void bpd00253410(void);
-void func_00210d90(void*);
-void func_002510d0(void);
-void func_00251a80(void);
-void bppMain0020edf0(void);
-u32 baiMainIsActive(void);
-void func_0021c7e0(void);
-void bpo00252060(void);
-void func_002492b0(void);
-u32 bpe00249600(void);
-void func_00248620(void);
-void func_00242cc0(void);
-void func_0025c220(void);
-void bpPersonaUpdate(void);
-void func_0027b610(void);
-u32 func_00249130(void);
-void func_00245e50(void);
-void func_00213e80(void*);
-void func_00252f30(void);
-void func_00209540(void);
-void func_0023f540(void);
-void func_0024cca0(void);
-void func_002095a0(void);
-void func_002532b0(void);
-void func_0020f260(void);
-void func_00243150(void);
-void func_00241910(void);
-void func_00248bb0(void);
-void func_002520f0(void);
-void func_0025c9c0(void);
-void func_0025d470(void);
-void func_0027b880(void);
-u32 func_00208720(void);
-void* btlUnitFindFromId(u16);
-u32 func_00242a60(void);
-void* func_00242260(void);
-void func_00242320(void*, u32);
-void func_00242a50(void*, u32);
-void func_00242600(void*, u32);
-void func_00242720(void*, u32);
-void func_00242a30(void*);
-void func_00242c20(void*, u32, u32);
-void func_00242540(void*);
-void func_002453d0(s32);
-void func_002441b0(s32);
-u32 func_00207f70(void);
-u32 func_00207fc0(void);
 
 
 // FUN_00207bf0

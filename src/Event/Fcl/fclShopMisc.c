@@ -551,6 +551,7 @@ void FUN_0040a6d0(u32 param_1,int param_2);
  #pragma alias FUN_00174a90_fcl FUN_00174a90
  u32 FUN_00174a90_fcl(short param_1);
 void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3);
+void FUN_0040ec20(float scale,int x,int y,u32 color,int type,const void *text,int width,int shadow,code callback);
 void FUN_0040a7f0(u64 param_1,int param_2,int *param_3);
 void FUN_0040b3a0(u64 param_1,int param_2,int param_3);
 void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,int param_4);
@@ -17483,8 +17484,10 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 }
 
-#pragma opt_common_subs off
-#pragma opt_lifetimes off
+/* Measured: opt_common_subs on/off gives 3040B/3000B with schedule off; retained off. */
+#pragma opt_common_subs reset
+/* Measured on FUN_0040A7F0: schedule off 3000B, schedule on 2748B (window 2992B). */
+#pragma schedule on
 // FUN_0040A7F0 NONMATCHING
 
 #define FUN_0040e3f0 FUN_0040e3f0_f32
@@ -17500,7 +17503,6 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   int iVar2;
 
   u32 uVar3;
-
   int bVar4;
 
   int iVar5;
@@ -17598,14 +17600,14 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
                                  ) - 1) * 2 + uVar9);
 
-          FUN_003b32d0(0,iVar6 + 0xa3,iVar10 + 0x84,uVar11 | 0xffffff00,
+          FUN_003b32d0_f32(0,iVar6 + 0xa3,iVar10 + 0x84,uVar11 | 0xffffff00,
 
                        *(u8 *)(scratch.detailed.words + uVar9 + 4),1,
 
                        iGpffffb7f4 + (u32)*(u16 *)(*(int *)(iVar2 + 4) + 2) * 0x11,0x10,0x6e);
 
           sprintf((char *)scratch.detailed.text,&gp0xffffac10,*(u8 *)(*(int *)(iVar2 + 4) + 4));
-          FUN_0040eb50(0,iVar6 + 0x174,iVar10 + 0x85,uVar11 & 0xff,scratch.detailed.words[uVar9 + 2],scratch.detailed.text,
+          FUN_0040eb50_f32(0,iVar6 + 0x174,iVar10 + 0x85,uVar11 & 0xff,scratch.detailed.words[uVar9 + 2],scratch.detailed.text,
 
                        1);
 
@@ -17656,7 +17658,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
                        *(u32 *)(*(int *)(*(int *)(iVar7 + 0x14) + 0x1c) + 8));
 
-          FUN_0040eb50(0,iVar6 + 0x205,iVar10 + 0x85,uVar11 & 0xff,scratch.simple.words[iVar7 == iVar2],
+          FUN_0040eb50_f32(0,iVar6 + 0x205,iVar10 + 0x85,uVar11 & 0xff,scratch.simple.words[iVar7 == iVar2],
                        scratch.simple.text,9);
 
         }
@@ -17734,7 +17736,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
       uVar3 = FUN_0017cf00();
 
       sprintf((char *)scratch.wide_text,&gp0xffffac10,uVar3);
-      FUN_0040ec20(0,iVar6,iVar5,uVar11 & 0xff,0,scratch.wide_text,1,0x26,0x40a7c0);
+      FUN_0040ec20(0.0f,iVar6,iVar5,uVar11 & 0xff,0,scratch.wide_text,1,0x26,(code)0x40a7c0);
 
       break;
 
@@ -17881,7 +17883,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   return;
 
 }
-#pragma opt_lifetimes reset
+#pragma schedule off
 #pragma opt_common_subs reset
 #undef FUN_0040e3f0
 
