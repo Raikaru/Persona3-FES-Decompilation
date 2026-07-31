@@ -74,6 +74,12 @@ extern void func_0034fd30(void* resource);
 extern void func_0034fd70(void* resource, u32 layer);
 extern f32 DAT_007cad60;
 extern f32 DAT_007caf38;
+extern u64 D_0068EA30;
+#pragma alias D_0068EA30_abs D_0068EA30
+extern volatile u8 D_0068EA30_abs[];
+extern f32 D_0068EA38;
+#pragma alias D_0068EA38_abs D_0068EA38
+extern volatile u8 D_0068EA38_abs[];
 
 extern u32 jtbl_00960178[];
 extern void (*jtbl_0096017C)(void* memory);
@@ -1289,7 +1295,12 @@ u32 bpTexIsReady(void)
     return BP_TEX_GLOBAL[0] & 0x200;
 }
 
-// FUN_00254F70 NONMATCHING
+/* Retail requires O1 to rematerialize each state-address argument.
+ * W310 measured normalized_diff 85 without this pragma (288B) versus
+ * normalized_diff 0 with it (320B); retain for the exact match.
+ */
+#pragma optimization_level 1
+// FUN_00254F70
 void bpTexBeginRender(void)
 {
     u32* work;
@@ -1304,8 +1315,8 @@ void bpTexBeginRender(void)
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
-    xy = *(volatile u64*)0x0068ea30;
-    z = *(volatile f32*)0x0068ea38;
+    xy = *(volatile u64*)D_0068EA30_abs;
+    z = *(volatile f32*)D_0068EA38_abs;
     origin.xy = xy;
     origin.z = z;
     for (node = BP_TEX_PTR(work, 0x1265c);
@@ -1315,15 +1326,16 @@ void bpTexBeginRender(void)
         func_00258630(node);
     }
     BP_TEX_U32(work, 0x12680) = 0;
-    func_0024fda0((u8*)work + 0x127d4);
-    func_0024faf0((u8*)work + 0x127d4, &origin);
+    func_0024fda0((u32*)((u8*)work + 0x127d4));
+    func_0024faf0((f32*)((u8*)work + 0x127d4), &origin);
     func_0024da60((u8*)work + 0x127d4);
-    func_0024f090((u8*)work + 0x127d4);
-    func_0024fe00((u8*)work + 0x12800);
+    func_0024f090((void*)((u8*)work + 0x127d4));
+    func_0024fe00((u32*)((u8*)work + 0x12800));
     func_0024da60((u8*)work + 0x12800);
-    func_0024f090((u8*)work + 0x12800);
+    func_0024f090((void*)((u8*)work + 0x12800));
     *work |= 1;
 }
+#pragma optimization_level 2
 
 // FUN_002550B0
 void bpTexEndRender(void)

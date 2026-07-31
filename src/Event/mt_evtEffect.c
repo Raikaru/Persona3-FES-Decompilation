@@ -726,8 +726,6 @@ void FUN_00395570(int param_1)
     DAT_00958aa0 = (f32)iVar1;
     DAT_00958aa4 = (f32)iVar2;
     q0 = DAT_00960088_abs;
-    /* Removing this barrier worsens FUN_00395570 (nd103 -> nd117) - measured W164. */
-    asm ("" : "+m"(q0));
     DAT_00958aa8 = *(f32 *)q0;
     DAT_00958ac0 = 0x43480000;
     DAT_00958ac4 = 0x42a00000;
@@ -1712,6 +1710,7 @@ u32 FUN_003965f0(int *param_1)
 
 
   int iVar3;
+  int *entryResult;
 
   int lVar4;
 
@@ -1765,7 +1764,6 @@ u32 FUN_003965f0(int *param_1)
         }
 
         else {
-          int *entryResult;
           entryResult = param_1 + iVar1 * 0xb + 0xe;
 
           iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);

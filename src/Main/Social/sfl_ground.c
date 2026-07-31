@@ -1240,9 +1240,16 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
     f32 y;
 
     {
+        u32* copyDst;
+        const u32* copySrc;
         s32 copy;
-        for (copy = 0; copy < 8; copy++) {
-            transformed[copy] = D_0068E7C0[copy];
+        copyDst = (u32*)transformed;
+        copySrc = (const u32*)D_0068E7C0;
+        for (copy = 8; copy > 0; copy--) {
+            copyDst[0] = copySrc[0];
+            copyDst[1] = copySrc[1];
+            copyDst += 2;
+            copySrc += 2;
         }
     }
 
@@ -1539,7 +1546,7 @@ void sflGround0023d240(void)
     *(u32*)(base + 0xc) = 5;
 }
 
-// FUN_0023D2A0 NONMATCHING
+// FUN_0023D2A0
 void func_0023d2a0(void)
 {
     u32* work;
@@ -1566,7 +1573,8 @@ void func_0023d2a0(void)
     rect2 = 63.0f / width;
     rect3 = 81.0f / height;
     for (; i < 48; i++) {
-        particle = (u32*)GROUND_PTR(work, SFL_GROUND_PARTICLE_OFFSET + i * SFL_GROUND_PARTICLE_STRIDE);
+        particle = (u32*)GROUND_PTR(GROUND_PTR(work, i * SFL_GROUND_PARTICLE_STRIDE),
+                                    SFL_GROUND_PARTICLE_OFFSET);
         GROUND_U32(particle, 0) = 0;
         rect[0] = rect0;
         rect[1] = rect1;
@@ -1575,7 +1583,8 @@ void func_0023d2a0(void)
         func_0021eb80(GROUND_PTR(particle, 0x10), rect);
     }
     for (j = 0; j < 48; j++) {
-        particle = (u32*)GROUND_PTR(work, SFL_GROUND_PARTICLE_OFFSET + j * SFL_GROUND_PARTICLE_STRIDE);
+        particle = (u32*)GROUND_PTR(GROUND_PTR(work, j * SFL_GROUND_PARTICLE_STRIDE),
+                                    SFL_GROUND_PARTICLE_OFFSET);
         GROUND_U32(particle, 0) |= 1;
         particle[0x45] = 0x78 + RpRandom() % 0x3c;
         GROUND_U32(particle, 4) = RpRandom() % 3;

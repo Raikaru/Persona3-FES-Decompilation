@@ -1275,6 +1275,7 @@ static void H_Cdvd_CopyArchiveEntries(void* requestData, u8* archive,
 }
 
 // FUN_00101e30 NONMATCHING
+#pragma opt_loop_invariants on
 void func_00101e30(void* requestData)
 {
     struct
@@ -1288,9 +1289,9 @@ void func_00101e30(void* requestData)
     u32 entryOffset;
     s32 i;
     s32 scan;
-    s32 backslash;
-    char c;
     char* cursor;
+    char c;
+    s32 backslash = '\\';
     s32 slash;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
@@ -1306,33 +1307,36 @@ void func_00101e30(void* requestData)
         return;
     }
 
-    backslash = '\\';
-    for (i = 0; i < 0x100; i++)
+    i = 0;
+    goto outer_check;
+outer_body:
+    c = request->path[i];
+    if (c != '\0')
     {
-        c = request->path[i];
-        if (c != '\0')
-        {
-            work.entryPath[i] = c;
-        }
-        else
-        {
-            scan = i - 1;
-scan_separator:
-            cursor = &work.entryPath[scan];
-            if (cursor[-1] != backslash)
-            {
-                goto scan_previous;
-            }
-            *cursor = '\0';
-            goto scan_finished;
-scan_previous:
-            scan--;
-            goto scan_separator;
-scan_finished:
-            ;
-        }
+        work.entryPath[i] = c;
     }
-
+    else
+    {
+        scan = i - 1;
+scan_separator:
+        cursor = &work.entryPath[scan];
+        if (cursor[-1] != backslash)
+        {
+            goto scan_previous;
+        }
+        *cursor = '\0';
+        goto outer_continue;
+scan_previous:
+        scan--;
+        goto scan_separator;
+    }
+outer_continue:
+    i++;
+outer_check:
+    if (i < 0x100)
+    {
+        goto outer_body;
+    }
     request->archiveFileCount = 0;
     offset = 0;
     while (true)
@@ -1348,26 +1352,35 @@ scan_finished:
         memcpy(&fileSize, request->fileMemory + entryOffset, 4);
         offset += 0x100;
         strcat(work.directory, work.fileName);
-        i = 0;
-        backslash = '\\';
-        slash = '/';
-        while (i < 0xff)
         {
-            c = work.directory[i];
-            if (c >= 'a' && c <= 'z')
+            char d;
+            char* cursor2;
+            s32 backslash2;
+            s32 slash2;
+            s32 j;
+
+            j = 0;
+            backslash2 = '\\';
+            slash2 = '/';
+            while (j < 0xff)
             {
-                work.directory[i] = c - 0x20;
+                cursor2 = &work.directory[j];
+                d = *cursor2;
+                if (d >= 'a' && d <= 'z')
+                {
+                    *cursor2 = d - 0x20;
+                }
+                d = *cursor2;
+                if (d == '\0')
+                {
+                    break;
+                }
+                if (d == slash2)
+                {
+                    *cursor2 = backslash2;
+                }
+                j++;
             }
-            c = work.directory[i];
-            if (c == '\0')
-            {
-                break;
-            }
-            if (c == slash)
-            {
-                work.directory[i] = backslash;
-            }
-            i++;
         }
         func_00102030(requestData, request->fileMemory + offset,
                       fileSize, work.directory);
@@ -1375,6 +1388,7 @@ scan_finished:
         offset += fileSize;
     }
 }
+#pragma opt_loop_invariants off
 
 #pragma push
 /* Removing this loses FUN_00102030 (MATCH nd0 -> MISMATCH nd32) - measured W161. */

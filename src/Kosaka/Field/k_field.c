@@ -21,6 +21,7 @@ extern u32 uGpffffb53c;
 
 extern u8 D_0067F600[];
 extern const char D_0067F5E0[];
+extern const char D_0067F590[];
 extern u8 D_0067F720[];
 extern u8 D_0067FA26[];
 extern u8 D_00681560[];
@@ -70,6 +71,8 @@ extern KwlnTask* gDungeonTask;
 #include "temporary.h"
 extern u32 D_00960184[];
 extern void (*jtbl_0096017C)(void* memory);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 
 extern RwCamera* kwlnGetMainCamera(void);
 extern void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
@@ -101,6 +104,8 @@ extern void H_Fade_SetType(s16 type);
 extern void H_Snd_StopBgmFade(s16 fadeDuration);
 extern u8 func_00109f60(s16 channelIndex, s16 mappedChannelIndex);
 extern s8 adminiGetNextSeqId(void);
+#pragma alias adminiGetNextSeqId_u32 adminiGetNextSeqId
+extern u32 adminiGetNextSeqId_u32(void);
 extern void clnd00187ea0(void* task);
 extern void* func_001a96c0(KwlnTask* task);
 extern void func_001a0040(u32 visible, u32 updateField);
@@ -198,6 +203,7 @@ extern u32 FUN_001c0010(void);
 #define ROOT_U32(work, offset) (*(u32*)((u8*)(work) + (offset)))
 #define ROOT_S32(work, offset) (*(s32*)((u8*)(work) + (offset)))
 #define ROOT_F32(work, offset) (*(f32*)((u8*)(work) + (offset)))
+#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4))
 
 static void fldRootSetLoadSlot(u8* work)
 {
@@ -832,7 +838,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
     FldRootWork* work;
-    s32 nextSeq;
+    u16 majorId;
 
     work = (FldRootWork*)fldRootTask->workData;
     if (ROOT_U32(work, 0x44) != 0)
@@ -846,7 +852,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     func_00109170();
     func_00109e30(4, 0);
     if ((work->majorId == 4 && work->minorId == 10) ||
-        FIELD_U32(0x007ce26c) != 0)
+        DUNGEON_SEQUENCE_FLAG != 0)
     {
         func_001cd8e0();
     }
@@ -859,19 +865,21 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     }
     func_001e7410();
     K_Fldrc_DestroyFldPac();
-    nextSeq = adminiGetNextSeqId();
-    printf((const char*)0x0067f590, nextSeq);
-    if (nextSeq != 2 && nextSeq != 3 && nextSeq != 5)
+    printf(D_0067F590, adminiGetNextSeqId_u32());
+    if (adminiGetNextSeqId_u32() != 2 &&
+        adminiGetNextSeqId_u32() != 3 &&
+        adminiGetNextSeqId_u32() != 5)
     {
         MT_Scene_Destroy();
     }
     if ((work->majorId == 4 && work->minorId == 10) ||
-        FIELD_U32(0x007ce26c) != 0)
+        DUNGEON_SEQUENCE_FLAG != 0)
     {
         MT_Scene_Destroy();
-        FIELD_U32(0x007ce26c) = 0;
+        DUNGEON_SEQUENCE_FLAG = 0;
     }
-    if (work->majorId > 0x1d && work->majorId < 0x28 &&
+    majorId = work->majorId;
+    if (majorId > 0x1d && majorId < 0x28 &&
         K_FldDungeon_GetCurrentFloor() == 0)
     {
         func_001c07f0();
@@ -882,7 +890,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     func_00350080(5);
     func_004cb930(kwlnGetMainCamera()->object.object.parent);
     sField.rootTask = NULL;
-    (*jtbl_0096017C)(fldRootTask->workData);
+    (*(void (**)(void*))jtbl_0096017C_abs)(fldRootTask->workData);
 }
 
 // FUN_001ba5f0 NONMATCHING
@@ -963,6 +971,7 @@ void func_001ba8d0(void)
     Resrc* resource;
     Resrc* other;
     KwlnTask* rootTask;
+    u32 otherFlags;
 
     resource = MT_Scene_GetResListHead(3);
     other = MT_Scene_GetResListHead(0x0b);
@@ -977,9 +986,10 @@ void func_001ba8d0(void)
         }
         resource = resource->next;
     }
+    otherFlags = ~2u;
     while (other != NULL)
     {
-        other->flags &= ~2u;
+        other->flags &= otherFlags;
         other = other->next;
     }
     func_0019fec0(NULL);

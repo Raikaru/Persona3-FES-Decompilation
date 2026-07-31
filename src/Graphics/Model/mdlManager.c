@@ -5590,17 +5590,11 @@ void func_003164f0(int param_1,int param_2)
 {
 
   u16 uVar1;
-
   int iVar2;
-
   int iVar3;
-
   u16 uVar4;
-
   float in_f1;
-
   float fVar5;
-
   float in_f5;
 
   

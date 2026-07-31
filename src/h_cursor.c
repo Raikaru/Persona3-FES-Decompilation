@@ -4,7 +4,7 @@
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 #pragma alias DAT_00960088_abs DAT_00960088
-extern u8 DAT_00960088_abs[];
+extern f32 DAT_00960088_abs[];
 extern f32 DAT_00960088;
 
 // FUN_00100230 NONMATCHING

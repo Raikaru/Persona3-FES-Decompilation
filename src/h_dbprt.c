@@ -40,6 +40,10 @@ static void H_Dbprt_DrawText3D(void);
 static f32 H_Dbprt_CalculateScreenZ(f32 zOffset);
 static void H_Dbprt_DrawLog(void);
 static void H_Dbprt_AppendText3D(HDbText3D* text);
+static inline char H_Dbprt_ReadGlyph(s32 index, char* buffer)
+{
+    return *(char*)((u8*)(uintptr_t)index + (uintptr_t)buffer);
+}
 
 // FUN_001042E0
 void H_Dbprt_Init()
@@ -337,14 +341,23 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
 
     x = (s32)pos.x;
     y = (s32)posY;
+    character = 0;
     baseX = x;
-    for (character = 0;
-         character < HDBPRT_LOG_MAXCHAR &&
-             pos.x < HDBPRT_GRID_WIDTH && posY < HDBPRT_GRID_HEIGHT &&
-             x < HDBPRT_GRID_WIDTH && y < HDBPRT_GRID_HEIGHT &&
-             (glyph = buffer[character]) != '\0';
-         character++)
+    while (character < HDBPRT_LOG_MAXCHAR)
     {
+        if (pos.x >= HDBPRT_GRID_WIDTH || posY >= HDBPRT_GRID_HEIGHT ||
+            x >= HDBPRT_GRID_WIDTH || y >= HDBPRT_GRID_HEIGHT)
+        {
+            break;
+        }
+
+        glyph = *(char*)((u8*)(uintptr_t)character +
+                         (s32)(uintptr_t)buffer);
+        if (glyph == '\0')
+        {
+            break;
+        }
+
         if (glyph == '\n')
         {
             x = baseX;
@@ -362,6 +375,7 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
             }
             x++;
         }
+        character++;
     }
 }
 
