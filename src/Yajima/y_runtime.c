@@ -5643,7 +5643,6 @@ s8 FUN_004353f0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes on
 // FUN_00435440 NONMATCHING
 
 char FUN_00435440(char param_1)
@@ -5686,7 +5685,6 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes reset
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
@@ -5869,6 +5867,7 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
 #pragma push
 #pragma opt_loop_invariants on
 // Preserve every helper-facing vector as one aggregate; the remaining normalized diff is a stack/codegen floor.
+#pragma opt_lifetimes on
 // FUN_00435C00 NONMATCHING
 
 void FUN_00435c00(int param_1)
@@ -6788,6 +6787,7 @@ LAB_00437890:
 #undef afStack_10
 
 #pragma pop
+#pragma opt_lifetimes reset
 // FUN_00437E00
 
 void FUN_00437e00(void)

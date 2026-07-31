@@ -827,7 +827,7 @@ u64 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        result = 2 - 1;
+                        result = 1;
                         goto case_1a0_done;
                 }
                 unit = unit->next;

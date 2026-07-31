@@ -1886,7 +1886,7 @@ alpha_done:
         ;
     }
 }
-#pragma opt_propagation on
+#pragma opt_propagation reset
 
 // Previous body was a wrong-helper stub unrelated to retail (1296B window).
 // Rewritten from disasm: retail dispatches per-record state via a switch
@@ -5101,7 +5101,7 @@ void bpTexShuffleNodes(void)
     BP_TEX_U32(work, 0x49ee * 4) = 0;
     *work |= 0x10;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 // FUN_00255F30
 u32 bpTexIsShuffleActive(void)
@@ -5875,7 +5875,7 @@ void bpTexApplyActions(void)
     BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
     func_005225a8((u32)"speed: %d\n", BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 
 // FUN_00257D00 bpTexBuildPosition

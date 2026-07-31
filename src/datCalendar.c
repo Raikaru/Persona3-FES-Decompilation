@@ -7012,6 +7012,7 @@ void* func_0018bd90(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+/* W375 measured opt_loop_invariants off: without nd0/object192, with nd0/object192; window 192; retained. */
 #pragma opt_loop_invariants off
 // FUN_0018BEE0
 void func_0018bee0(KwlnTask* task, s32 pcId, s32 mode)
@@ -7037,7 +7038,6 @@ void func_0018bee0(KwlnTask* task, s32 pcId, s32 mode)
         }
     }
 }
-/* W375 measured opt_loop_invariants off for func_0018bee0: probe pending. */
 #pragma opt_loop_invariants reset
 
 // FUN_0018BFA0
@@ -7271,6 +7271,7 @@ void func_0018c780(KwlnTask* task)
 
 /* W357 measured opt_common_subs off: without nd815/object1152, with nd782/object1088; window 1232; retained. */
 #pragma opt_common_subs off
+/* W375 measured opt_propagation off: without nd782/object1088, with nd771/object1088; window 1232; retained. */
 #pragma opt_propagation off
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
@@ -7302,7 +7303,6 @@ void func_0018ce50(KwlnTask* task)
     func_001127d0(sprite, 1);
     func_00115980(sprite);
 }
-/* W375 measured opt_propagation off for func_0018ce50: probe pending. */
 #pragma opt_propagation reset
 
 #pragma opt_common_subs reset

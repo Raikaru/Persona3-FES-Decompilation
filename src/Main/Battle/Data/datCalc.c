@@ -6367,7 +6367,7 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
   }
   return uVar1;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 
 
@@ -6521,7 +6521,7 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
   }
   return sVar7;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 
 

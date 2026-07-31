@@ -758,8 +758,6 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 #pragma push
 /* opt_loop_invariants on: off nd4237/5300B -> on nd4230/5292B; retained. */
 #pragma opt_loop_invariants on
-#pragma opt_propagation off
-#pragma opt_dead_assignments off
 // FUN_00163330 NONMATCHING
 #pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
@@ -1523,8 +1521,6 @@ static void campSkillFinishChild(KwlnTask* child)
     }
 }
 
-#pragma opt_dead_assignments reset
-#pragma opt_propagation reset
 // FUN_001617D0
 KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
 {

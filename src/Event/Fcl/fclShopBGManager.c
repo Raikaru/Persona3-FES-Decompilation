@@ -2914,7 +2914,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 }
 
-#pragma opt_propagation on
+#pragma opt_propagation reset
 /* W327 measured: opt_loop_invariants on normalized_diff 792 -> 780; object 1172/1248 -> 1164/1248 (without/with). */
 #pragma opt_loop_invariants on
 // FUN_004131A0 NONMATCHING
@@ -4135,7 +4135,6 @@ void FUN_00414950(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 }
 
 #pragma push
-#pragma opt_common_subs off
 // FUN_004149F0
 
 

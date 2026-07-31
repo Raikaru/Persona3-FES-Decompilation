@@ -398,7 +398,6 @@ static void campMainDrawPersonaRow(const CampMainDrawItem* item,
 /* Reconstructed all mode branches, scrolling, persona labels, highlights,
  * and level digits from the retail instruction sequence.
  * Remaining differences are MWCC register coloring and outlined helpers. */
-#pragma opt_dead_assignments off
 // FUN_00133E10 NONMATCHING
 void FUN_00133E10(CampMainDrawItem* item,
                   const void* resources, s32 mode,
@@ -525,7 +524,6 @@ void FUN_00133E10(CampMainDrawItem* item,
 }
 
 
-#pragma opt_dead_assignments reset
 // FUN_001344B0
 u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
                  const s16* personaIds, s16 selected)
@@ -1797,6 +1795,7 @@ void FUN_001365b0(KwlnTask* task)
     fn = *(void (**)(void*))jtbl_0096017C_abs;
     fn(work);
 }
+#pragma opt_strength_reduction off
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
@@ -1817,6 +1816,7 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     return task;
 }
 
+#pragma opt_strength_reduction reset
 // FUN_00136820
 void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 mode, s32 frame, s32 extra)
