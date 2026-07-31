@@ -3729,12 +3729,11 @@ void FUN_0031eee0(int *param_1)
 void FUN_0031ef80(int *param_1,short param_2,short param_3)
 
 
-
 {
 
   u16 uVar1;
 
-  short sVar2;
+  int sVar2;
 
   u32 uVar3;
 

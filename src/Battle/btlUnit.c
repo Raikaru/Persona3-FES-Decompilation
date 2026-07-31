@@ -26,6 +26,7 @@ void FUN_002891e0(void);
 BtlAction* FUN_00289650(u16 param_1, u16 param_2, void* param_3);
 void btlAction00299e30(BtlAction* action);
 extern f32 DAT_007cad78;
+extern f32 DAT_007cae4c;
 extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
 extern void func_0029ee20(BtlUnit* unit);
