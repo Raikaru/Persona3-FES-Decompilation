@@ -651,6 +651,9 @@ static void H_Dbprt_DrawLog(void)
 #include "h_chrdsp.h"
 #include "Main/g_data.h"
 
+
+
+
 #define HCHRDP_WORK_COUNT 3
 #define HCHRDP_LAYER_COUNT 3
 #define HCHRDP_QUAD_COUNT  5
@@ -1538,4 +1541,267 @@ void func_00106fb0(s16 index, RwV2d position)
 u32 func_00106ff0(s16 index)
 {
     return D_007E2680[index].state == HCHRDP_STATE_UNAVAILABLE;
+}
+
+
+#include "h_pad.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/h_malloc.h"
+#include "Kosaka/k_assert.h"
+
+#define HPAD_PAD_STATE_FIND_CTP1 2
+#define HPAD_PAD_STATE_STABLE    6
+
+typedef struct HPadRwAllocation
+{
+    u32 size;
+    u32 alignment;
+    u32 serial;
+    u32 hint;
+} HPadRwAllocation;
+
+extern s32 scePadGetState(s32 port, s32 slot);
+extern s32 scePadSetMainMode(s32 port, s32 slot, s32 mode, s32 lock);
+extern s32 scePadInfoAct(s32 port, s32 slot, s32 actuator, s32 command);
+extern s32 scePadSetActAlign(s32 port, s32 slot, u8* align);
+extern s32 scePadGetReqState(s32 port, s32 slot);
+extern s32 scePadRead(s32 port, s32 slot, u8* data);
+extern s32 scePadSetActDirect(s32 port, s32 slot, u8* data);
+extern void* func_00520728(size_t size);
+extern void func_00520748(void* memory);
+extern const char D_005CEAE0[];
+#pragma alias D_005CEAE0_sda D_005CEAE0
+extern const char D_005CEAE0_sda[] __attribute__((section(".sdata")));
+extern const char D_005CEAF0[];
+extern const char D_005CEB10[];
+extern const char D_005CEB30[];
+
+HPad gWorkPads[HPAD_PORT_MAX]; // 007e09b0
+HPad gPads[HPAD_PORT_MAX];     // 007e0940
+
+static u_long128 sAddrPort1[scePadDmaBufferMax] __attribute__((aligned(64))); // 007e0840
+static u_long128 sAddrPort2[scePadDmaBufferMax] __attribute__((aligned(64))); // 007e0740
+static u8 sRDataPort2[32]; // 007e0720
+static u8 sRDataPort1[32]; // 007e0700
+#pragma alias gWorkPads_abs gWorkPads
+extern u8 gWorkPads_abs[];
+#pragma alias gPads_abs gPads
+extern u8 gPads_abs[];
+#pragma alias sAddrPort1_abs sAddrPort1
+extern u8 sAddrPort1_abs[];
+#pragma alias sAddrPort2_abs sAddrPort2
+extern u8 sAddrPort2_abs[];
+
+static s16 sRumbleState;
+static union
+{
+    u16 h;
+    u8 b;
+} sRumbleIntensity;
+static s16 sRumblePhase;
+static s16 sRumbleOffFrames;
+static s16 sRumbleOnFrames;
+static s16 sRumbleCadence;
+static s16 sRumbleDuration;
+
+static s32 sRwAllocatedBytes;
+static u32 sRwAllocationCount;
+static u32 sRwCallocCount;
+static u32 sRwReallocCount;
+static u32 sRwAllocationHint;
+static RwMemoryFunctions sRwMemoryFunctions;
+
+/* Removing this loses FUN_00103000 (MATCH nd0 -> MISMATCH nd48) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+// FUN_00103DA0
+void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
+{
+    HPadRwAllocation* allocation;
+    s32 intrState;
+
+    if (size == 0xAC)
+    {
+        printf(D_005CEAE0_sda);
+    }
+
+    sRwAllocatedBytes += size;
+    intrState = func_0050d3a0();
+    allocation = (HPadRwAllocation*)func_00520728(size + sizeof(HPadRwAllocation));
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
+
+    if (allocation == (HPadRwAllocation*)0x014CCBC8)
+    {
+        printf(D_005CEAE0);
+    }
+    if (allocation == NULL)
+    {
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEB10, size, sRwAllocatedBytes);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        if (datGetFlag(0x141A) != 0)
+        {
+            return NULL;
+        }
+
+        K_Assert(D_005CEB30, 671);
+        return NULL;
+    }
+
+    allocation->size = size;
+    sRwAllocationCount++;
+    allocation->serial = sRwAllocationCount;
+    allocation->hint = sRwAllocationHint;
+    return allocation + 1;
+}
+
+/* W389 residual: callee-saved register-coloring cycle (retail keeps intrState in $s1/copySize in $s0; candidate swaps them). Baseline nd=6/object=228/window=240; propagation off worsened nd=13, the other singles and all pairs were neutral; declaration and type swaps were neutral. */
+// FUN_00103F50 NONMATCHING
+void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
+{
+    void* reallocated;
+    size_t copySize;
+    s32 intrState;
+    RwUInt32 mallocHint;
+    mallocHint = hint;
+    intrState = func_0050d3a0();
+    if (memory == NULL)
+    {
+        reallocated = H_Pad_RwMalloc(newSize, mallocHint);
+    }
+    else
+    {
+        copySize = *(RwUInt32*)((u8*)memory - sizeof(void*));
+        if (newSize < copySize)
+        {
+            copySize = newSize;
+        }
+        reallocated = H_Pad_RwMalloc(newSize, mallocHint);
+        memcpy(reallocated, memory, copySize);
+        H_Pad_RwFree(memory);
+        sRwReallocCount++;
+    }
+
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
+    return reallocated;
+}
+#pragma optimization_level 2
+// FUN_00104040 MATCHING
+void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint)
+{
+    void* memory;
+    RwUInt32 size;
+    s32 intrState;
+
+    intrState = func_0050d3a0();
+    size = elementSize * elementCount;
+    if ((memory = H_Pad_RwMalloc(size, hint)) != NULL)
+    {
+        memset(memory, 0, size);
+        sRwCallocCount++;
+    }
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
+    return memory;
+}
+
+// FUN_001040F0
+RwMemoryFunctions* H_Pad_GetRwMemoryFunctions(void)
+{
+    sRwMemoryFunctions.RwMalloc = H_Pad_RwMalloc;
+    sRwMemoryFunctions.RwFree = H_Pad_RwFree;
+    sRwMemoryFunctions.RwRealloc = H_Pad_RwRealloc;
+    sRwMemoryFunctions.RwCalloc = H_Pad_RwCalloc;
+    return &sRwMemoryFunctions;
+}
+
+// Previous body omitted retail's debug-name checks (two kwlnTaskGetUpdating
+// + strcmp guards bracketing the allocation) and the interrupt-disable
+// pair around H_Pad_RwAllocateRaw. That callee was also missing its real
+// second parameter (hint) - added as an unused param (its body never
+// reads it) since the caller passes it in $a1 per retail. obj 88B->312B/
+// 320B; residual is a small OR-condition register-choice floor.
+// FUN_00104140
+void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
+{
+    HPadRwAllocation* allocation;
+    u8* alignmentBase;
+    u8* alignedMemory;
+    s32 intrState;
+
+    if (kwlnTaskGetUpdating() != NULL) {
+        if (strcmp("H_CutInDraw", (const char*)kwlnTaskGetUpdating()) == 0) {
+            if (size == 0x27d8) goto pr;
+            if (size == 0x1fe0) goto pr;
+            if (size == 0x27d8) {
+pr:
+                printf(D_005CEAE0_sda);
+            }
+        }
+    }
+
+    intrState = func_0050d3a0();
+    allocation = (HPadRwAllocation*)H_Pad_RwAllocateRaw(size + 0x14, hint);
+    if (allocation == NULL) {
+        if (intrState != 0) {
+            func_0050d3f0();
+        }
+        return NULL;
+    }
+
+    allocation[-1].alignment = 16;
+    alignmentBase = (u8*)allocation + 4;
+    alignedMemory = alignmentBase + (16 - ((uintptr_t)alignmentBase & 0xF));
+    *(void**)(alignedMemory - sizeof(void*)) = allocation;
+
+    if (intrState != 0) {
+        func_0050d3f0();
+    }
+
+    if (kwlnTaskGetUpdating() != NULL) {
+        if (size == 0x50) {
+            strcmp("\n", (const char*)kwlnTaskGetUpdating());
+        }
+    }
+
+    return alignedMemory;
+}
+
+// FUN_00104280
+void H_Pad_RwFree(void* memory)
+{
+    s32 intrState;
+
+    if (memory != NULL)
+    {
+        intrState = func_0050d3a0();
+        H_Pad_RwFreeRaw(*(void**)((u8*)memory - sizeof(void*)));
+        if (intrState != 0)
+        {
+            func_0050d3f0();
+        }
+    }
 }

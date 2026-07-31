@@ -1,4 +1,8 @@
 #include "temporary.h"
+
+#pragma alias FUN_00394e70_y2 FUN_00394e70
+
+
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -998,7 +1002,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
   if (param_1 != 0) {
 
-    FUN_00394e70(DAT_007cca68,DAT_007cca6c,auStack_c0,auStack_40,auStack_80);
+    FUN_00394e70_y2(DAT_007cca68,DAT_007cca6c,auStack_c0,auStack_40,auStack_80);
 
     lVar2 = FUN_004c0240(auStack_40,0x7cd450);
 
@@ -5602,3 +5606,199 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 }
 #define FUN_003912f0(...) ((u32 (*)(...))FUN_003912f0)(__VA_ARGS__)
 #pragma opt_loop_invariants reset
+
+
+typedef int (*code)(...);
+typedef u32 undefined3;
+typedef u32 int3;
+#define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
+
+typedef struct {
+
+  u32 a;
+
+  u32 b;
+
+  u8 *p;
+
+  u32 c;
+
+  u32 d;
+
+  u32 e;
+
+  u32 f;
+
+  u32 g;
+
+} PolyMovieData;
+typedef struct {
+
+  u32 words[21];
+
+} PolyMovieBlock;
+
+extern PolyMovieData DAT_006a0cd0;
+extern PolyMovieBlock DAT_006a0cf0;
+extern PolyMovieData DAT_006a0d50;
+extern u8 gp0xffffa768;
+extern u8 DAT_006a0d70[0x20];
+extern u8 DAT_006a0da0[0x20];
+extern u8 DAT_006a0dd0[0x20];
+extern u8 DAT_006a0e00[0x20];
+extern u8 DAT_006a0e20[0x20];
+extern u8 DAT_006a0e40[0x20];
+extern u8 DAT_006a0e60[0x20];
+
+
+#ifndef CONCAT44
+#define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
+#endif
+
+/* Region 0x390000-0x3CFFFF recovered prototypes */
+void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6);
+void FUN_00393f30(u8 *param_1,u32 param_2);
+float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
+void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param_5);
+int FUN_00394270(void);
+u8 *FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5);
+void FUN_00394c30(u32 param_1,u32 param_2);
+u32 FUN_00394ce0(u32 *param_1);
+u32 FUN_00394d60(u32 *param_1);
+u32 FUN_00394df0(u32 *param_1);
+void FUN_00394e70(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5);
+void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
+
+
+/* Region call-cast macros */
+#define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
+#define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
+#define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
+#define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
+#define FUN_003942f0(...) ((u64 (*)(...))FUN_003942f0)(__VA_ARGS__)
+#define FUN_00394c30(...) ((void (*)(...))FUN_00394c30)(__VA_ARGS__)
+#define FUN_00394ce0(...) ((u32 (*)(...))FUN_00394ce0)(__VA_ARGS__)
+#define FUN_00394d60(...) ((u32 (*)(...))FUN_00394d60)(__VA_ARGS__)
+#define FUN_00394df0(...) ((u32 (*)(...))FUN_00394df0)(__VA_ARGS__)
+#define FUN_00394e70(...) ((void (*)(...))FUN_00394e70)(__VA_ARGS__)
+#define FUN_00395000(...) ((void (*)(...))FUN_00395000)(__VA_ARGS__)
+
+#undef FUN_00393e30
+// FUN_00393E30
+
+
+void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6)
+{
+  u8 *pending;
+  *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 0x80;
+  FUN_00521408(param_1 + 0x960,0,0x1c);
+
+
+
+  if ((*(u32 *)(param_1 + 4) & 8) != 0) {
+    *(u32 *)(param_1 + 0x960) = 1;
+  }
+  else {
+    *(u32 *)(param_1 + 0x960) = 0;
+    pending = *(u8 **)(param_1 + 0x934);
+    if (pending != 0) {
+      FUN_00195020(pending);
+      *(u32 *)(param_1 + 0x934) = 0;
+    }
+  }
+
+
+  *(u32 *)(param_1 + 0x964) = param_5;
+  FUN_00386e20(param_1,param_2);
+  FUN_00386e40(param_1,param_3);
+  FUN_00397510(param_1,param_4);
+  *(u32 *)(param_1 + 0x978) = param_6;
+  return;
+
+
+}
+#define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
+#undef FUN_00393f30
+#pragma push
+/* Removing this loses FUN_00393f30 (MATCH nd0 -> MISMATCH nd25) - measured W161. */
+#pragma opt_loop_invariants on
+ 
+// FUN_00393F30
+
+
+void FUN_00393f30(u8 *param_1,u32 param_2)
+{
+  u32 values[3];
+  u8 *base;
+  int result;
+  u32 kind = 5;
+  u8 *entry;
+  int j;
+  int i;
+
+  base = param_1 + 0x8e0;
+  *(u32 *)(param_1 + 0x18) = *(u32 *)(param_1 + 0x10);
+  *(u32 *)(param_1 + 0x1c) = 0xffffffff;
+  *(u32 *)(base + 0) = 0;
+  *(u32 *)(param_1 + 0x918) = 0;
+  *(u32 *)(base + 4) = 0;
+  for (i = 0; i < 3; i = i + 1) {
+    values[i] = 0;
+  }
+  result = FUN_003977c0(param_1,values,values + 1,values + 2);
+  if (result == 1) {
+    *(u32 *)(base + 4) = 3;
+    for (j = 0; j < 3; j = j + 1) {
+      entry = base + j * 0xc;
+      *(u32 *)(entry + 8) = kind;
+      *(u32 *)(entry + 0xc) = values[j];
+    }
+  }
+  *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 0x10000;
+  *(u32 *)(base + 0x40) = param_2;
+}
+#pragma opt_loop_invariants off
+#pragma pop
+#define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
+#undef FUN_00394040
+// FUN_00394040 MATCHING
+
+
+float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
+
+
+
+{
+
+  if (param_4 != 0) {
+    param_2 = param_2 * (1.0f - param_1) + param_3 * param_1;
+  }
+  return param_2;
+
+}
+#define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#pragma push
+/* Removing this worsens FUN_00394070 (nd25 -> nd245) - measured W161. */
+#pragma opt_loop_invariants on
+#undef FUN_00394070
+#define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
+#undef FUN_00394270
+#define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
+#undef FUN_003942f0
+// Dispatch handlers are reconstructed; the final animation-state path still needs byte-level tuning.
+#define FUN_003942f0(...) ((u64 (*)(...))FUN_003942f0)(__VA_ARGS__)
+#undef FUN_00394c30
+#define FUN_00394c30(...) ((void (*)(...))FUN_00394c30)(__VA_ARGS__)
+#undef FUN_00394ce0
+#define FUN_00394ce0(...) ((u32 (*)(...))FUN_00394ce0)(__VA_ARGS__)
+#undef FUN_00394d60
+#define FUN_00394d60(...) ((u32 (*)(...))FUN_00394d60)(__VA_ARGS__)
+#undef FUN_00394df0
+#define FUN_00394df0(...) ((u32 (*)(...))FUN_00394df0)(__VA_ARGS__)
+#undef FUN_00394e70
+#define FUN_00394e70(...) ((void (*)(...))FUN_00394e70)(__VA_ARGS__)
+#undef FUN_00395000
+#define FUN_00395000(...) ((void (*)(...))FUN_00395000)(__VA_ARGS__)
+
+#pragma pop

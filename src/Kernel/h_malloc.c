@@ -191,23 +191,6 @@ void* H_Calloc(u32 count, size_t size)
     return memory;
 }
 
-// FUN_001919c0. Initialize the retail heap allocation table.
-void H_Malloc_Init(void* table, u32 size)
-{
-    u32 i;
-    HHeapAlloc* entries;
-
-    gHeapAllocs = (HHeapAlloc*)table;
-    gHeapEnd = (u32)table + size;
-    gHeapAllocCount = 500;
-    entries = (HHeapAlloc*)table;
-    for (i = 0; i < gHeapAllocCount; i++)
-    {
-        entries[i].memory = NULL;
-        entries[i].size = 0;
-    }
-    gHeapCursor = 0;
-}
 typedef void* (*HmallocAllocator)(u32, u32, u32);
 typedef void (*HmallocReleaser)(void*);
 typedef s32 (*HmallocStepCallback)(void);
