@@ -4268,6 +4268,7 @@ u32 FUN_00429d40(u32 param_1,u64 param_2)
   short sVar3;
 
   u8 *puVar4;
+  int iVar5;
 
 
   
@@ -4302,8 +4303,9 @@ u32 FUN_00429d40(u32 param_1,u64 param_2)
 
       puVar4[0x9ff] = 0;
 
-      puVar4[0xb28] = 7;
-      puVar4[0xb29] = 0x7e / 7;
+      iVar5 = 7;
+      puVar4[0xb28] = iVar5;
+      puVar4[0xb29] = 0x7e / iVar5;
 
       *(s16 *)(puVar4 + 0xb90) = -1;
 

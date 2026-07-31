@@ -2285,13 +2285,13 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
 // FUN_001d1fa0 NONMATCHING
 void func_001d1fa0(void)
 {
-    s32 index;
-    s32 slot;
-    u16 area;
-    u8* spawn;
-    u8* record;
-    u16* model;
+    u32 area;
     u32 count;
+    s32 index;
+    u16* model;
+    u8* record;
+    u8* spawn;
+    s32 slot;
     u16 spawnId;
     typedef struct
     {
