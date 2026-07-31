@@ -2802,7 +2802,6 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   s16 *puVar6;
 
-  s16 *puVar7;
 
 
   int iVar10;
@@ -2815,7 +2814,6 @@ u64 FUN_00413010(u64 param_1,int param_2)
   float fStack_4;
   float fStack_8;
   float fStack_c;
-
 
 
 
@@ -2886,7 +2884,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
     short *psVar9;
-    short *psVar8;
+    s16 *psVar8;
 
     psVar9 = (short *)(iVar4 + iVar11 * 0xc);
 
