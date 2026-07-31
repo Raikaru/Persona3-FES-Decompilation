@@ -2945,9 +2945,6 @@ u32 func_00312f90(u32 param_1)
 
 
 
-#pragma push
-#pragma opt_propagation off
-
 // FUN_00313090 NONMATCHING
 
 
@@ -2981,7 +2978,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
     if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
 
-        (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
+        (puVar2 = *(u8 **)&((u8 *)(*piVar1))[0x40 + sVar5 * 0x50],
 
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
 
@@ -3052,7 +3049,6 @@ LAB_003131f8:
   return param_1;
 
 }
-#pragma pop
 
 
 

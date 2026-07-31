@@ -174,7 +174,6 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwV3d cameraPosition;
     RwV3d target;
     RwV3d axis;
-    u8* axisPtr;
     u64 axisXY;
     f32 axisZ;
     u8* targetBytes;
@@ -200,12 +199,11 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
             i--;
         } while (i != 0);
     }
-    axisPtr = (u8*)&axis + 0;
     axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = *(f32*)D_00683AA0_abs;
-    *(u64*)axisPtr = axisXY;
-    *(f32*)(axisPtr + 8) = axisZ;
-    FUN_004cb890(cameraFrame, amount, (RwV3d*)axisPtr, 2);
+    *(u64*)&axis = axisXY;
+    axis.z = axisZ;
+    FUN_004cb890(cameraFrame, amount, (RwV3d*)((u8*)&axis + 0), 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
