@@ -268,6 +268,8 @@ typedef struct HSfdCueEntry
 static HSfdCueEntry sSfdCueTable[8];
 #pragma alias sSfdDecodeSlots_abs sSfdDecodeSlots
 extern HSfdDecodeSlot sSfdDecodeSlots_abs[];
+#pragma alias sSfdDecodeSlots_bytes_abs sSfdDecodeSlots
+extern u8 sSfdDecodeSlots_bytes_abs[];
 #pragma alias sSfdCueTable_abs sSfdCueTable
 extern HSfdCueEntry sSfdCueTable_abs[];
 static u8* sSfdScratch;
@@ -1585,8 +1587,8 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 void func_0010cac0(void)
 {
     s16 i;
-    s16 j;
     HSfdDecodeSlot* slots;
+    s16 j;
 
     FUN_00512868();
     FUN_0051da48(0);
@@ -1601,7 +1603,7 @@ void func_0010cac0(void)
     FUN_0051db00(3, 0x80, 0x7F, 0x7F);
 
     i = 0;
-    slots = sSfdDecodeSlots_abs;
+    slots = (HSfdDecodeSlot*)sSfdDecodeSlots_bytes_abs;
     for (; i < HSFD_DECODE_SLOTS; i++)
     {
         slots[i].state = 0;

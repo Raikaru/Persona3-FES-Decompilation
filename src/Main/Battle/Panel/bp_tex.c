@@ -1502,11 +1502,11 @@ s32 bpTexGetNodeCount(void)
 void bpTexQueueNodeRange(s32 start, s32 count)
 {
     u32* work;
+    u32* selected[7];
     u32* node;
     u32* action;
     s32 total;
     s32 i;
-    u32* selected[7];
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
@@ -3634,7 +3634,7 @@ void func_00221b60(void)
     case 3:
     case 4:
         func_00227800();
-        break;
+        goto bpTexAfterFirstDispatch;
     case 0:
         previousSub = *(u32*)(work + 0x4640);
         switch (previousSub)
@@ -3644,11 +3644,14 @@ void func_00221b60(void)
             if (*(u32*)(work + 0x4650) != 3)
             {
                 func_00227800();
+                goto bpTexAfterFirstDispatch;
             }
             break;
         }
         break;
     }
+
+bpTexAfterFirstDispatch:
 
     sub = *(u32*)(work + 0x463c);
     if (sub == 2 ||

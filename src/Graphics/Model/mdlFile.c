@@ -308,7 +308,7 @@ static __inline u32 mdlVuScalePackedColor(u32 color, const u8 (*scale)[16], u32 
 /* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
 static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
 {
-    volatile u32 tmp;
+    u32 tmp;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0(%1)          \n"
@@ -44486,8 +44486,8 @@ void FUN_0034cc00(u32 *param_1)
 
   float scaleStack [3];
 
+  volatile u32 resultStack;
   u32 uStack_c;
-  u32 resultStack;
 
   int iStack_4;
   int iStack_8;

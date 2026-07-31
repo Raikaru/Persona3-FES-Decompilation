@@ -5411,7 +5411,40 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   puVar7 = (f32 *)param_4;
 
-  if (puStack_8 != (u16 *)0x0) {
+  if (puStack_8 == (u16 *)0x0) {
+
+    fVar8 = DAT_007cadd0_f32;
+    *puVar7 = DAT_007cadd0_f32;
+
+    puVar7[1] = fVar8;
+
+    puVar7[2] = fVar8;
+
+    puVar7[3] = 0;
+
+    puVar7[4] = 0;
+
+    puVar7[5] = 0;
+
+    puVar7[6] = 0;
+
+    puVar7[7] = 0;
+
+    fVar8 = DAT_007cafec_f32;
+
+    puVar7[8] = DAT_007cafec_f32;
+
+    puVar7[9] = fVar8;
+
+    puVar7[0xb] = 0;
+
+    *param_5 = 0x40e00000;
+
+    *param_6 = 0;
+
+  }
+
+  else {
 
     iVar1 = *(int *)(puStack_8 + 0x24);
 
@@ -5515,39 +5548,6 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
       *(f32 *)param_6 = fVar12;
 
     }
-
-  }
-
-  else {
-
-    fVar8 = DAT_007cadd0_f32;
-    *puVar7 = DAT_007cadd0_f32;
-
-    puVar7[1] = fVar8;
-
-    puVar7[2] = fVar8;
-
-    puVar7[3] = 0;
-
-    puVar7[4] = 0;
-
-    puVar7[5] = 0;
-
-    puVar7[6] = 0;
-
-    puVar7[7] = 0;
-
-    fVar8 = DAT_007cafec_f32;
-
-    puVar7[8] = DAT_007cafec_f32;
-
-    puVar7[9] = fVar8;
-
-    puVar7[0xb] = 0;
-
-    *param_5 = 0x40e00000;
-
-    *param_6 = 0;
 
   }
 
@@ -5679,6 +5679,7 @@ void FUN_0038ca80(int param_1)
   int *listNode1;
   int *listNode12;
   u16 *currentNode;
+  u16 currentValue;
   u16 *matchedNode;
   int matchCount;
   int *nodes[52];
@@ -5705,16 +5706,17 @@ void FUN_0038ca80(int param_1)
 
     for (listIndex = 0; listIndex < totalCount; listIndex++) {
       currentNode = (u16 *)nodes[listIndex];
+      currentValue = *currentNode;
       matchCount = *(int *)(param_1 + 0x97c);
       for (searchIndex = 0; searchIndex < matchCount; searchIndex++) {
         matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);
-        if (*matchedNode == *currentNode) {
-          break;
+        if (*matchedNode != currentValue) {
+          continue;
         }
+        goto matched;
       }
-      if (searchIndex == matchCount) {
-        matchedNode = NULL;
-      }
+      matchedNode = NULL;
+matched:
       FUN_0038cc10(param_1,currentNode,(int)matchedNode);
     }
   }

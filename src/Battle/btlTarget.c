@@ -4495,7 +4495,7 @@ void FUN_002d7560(BtlAction *action)
                 f32 value;
                 u32 amount;
                 u16 personaId;
-                u8 found;
+                int found;
                 action->unk_1a |= 0x20;
                 rawValue = FUN_0030bc50(unit->datUnit);
                 timeScale = FUN_001c0070();
