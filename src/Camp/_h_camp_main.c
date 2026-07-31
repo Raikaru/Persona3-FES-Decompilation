@@ -1795,7 +1795,6 @@ void FUN_001365b0(KwlnTask* task)
     fn = *(void (**)(void*))jtbl_0096017C_abs;
     fn(work);
 }
-#pragma opt_strength_reduction off
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
@@ -1816,7 +1815,6 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     return task;
 }
 
-#pragma opt_strength_reduction reset
 // FUN_00136820
 void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 mode, s32 frame, s32 extra)
@@ -1838,6 +1836,7 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
 }
 
 
+#pragma opt_propagation off
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
@@ -1879,6 +1878,7 @@ extern u8 campMainSocialIconResourceAbs[];
 #define D_00833B44 (*(void**)campMainSocialFrameResourceAbs)
 #define D_00833B48 (*(void**)campMainSocialIconResourceAbs)
 
+#pragma opt_propagation reset
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
 {
