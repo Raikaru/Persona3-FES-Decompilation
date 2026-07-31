@@ -3266,7 +3266,7 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 
 
 
-/* W323 measured: opt_common_subs off nd423->40, object 696/704; default nd423, 684/704. */
+/* W323 measured: opt_common_subs off nd423->35, object 684/704; default nd423, 684/704. */
 #pragma opt_common_subs off
 // FUN_002A1400 NONMATCHING
 u8 FUN_002a1400(float *param_1)
@@ -4072,6 +4072,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   float fVar7;
   float fVar8;
   float fVar9;
+  f32 zero;
   float afStack_10 [4];
   fVar6 = 1.0f - param_1;
   fVar7 = fVar6 * fVar6;
@@ -4086,7 +4087,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   fVar9 = *(f32 *)DAT_00957188_abs;
   *param_3 = fVar4;
   param_3[1] = fVar5;
-  param_3[2] = fVar9;
+  zero = 0.0f;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
     fVar6 = *(float *)((u8 *)afStack_10 + (u32)uVar3 * 4 + 0);
     currentAddress = (u32)uVar2 * 0x1c;
@@ -4094,7 +4095,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
     fVar4 = *(float *)(currentAddress + 8) * fVar6;
     fVar5 = *(float *)(currentAddress + 0xc) * fVar6;
     fVar7 = *(float *)(currentAddress + 4);
-    *param_3 = *param_3 + fVar7 * fVar6 + 0.0f;
+    *param_3 = *param_3 + fVar7 * fVar6 + zero;
     param_3[1] = param_3[1] + fVar4;
     param_3[2] = param_3[2] + fVar5;
     uVar2 = uVar2 + 1 & 0xffff;

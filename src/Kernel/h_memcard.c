@@ -26,6 +26,9 @@ extern s32 FUN_005136f8();
 extern s32 FUN_005137b8();
 extern s32 FUN_00513968();
 extern s32 FUN_00513cc8();
+#pragma alias FUN_00513cc8_m0 FUN_00513cc8
+extern u32 FUN_00513cc8_m0(s32 socket, void* path, u32 size,
+                           u32 mode, void* buffer);
 extern s32 FUN_00513de8();
 extern s32 FUN_00513598();
 extern s64 FUN_005140f8();
@@ -722,7 +725,7 @@ state12_mode0:
                     }
                 }
             }
-            FUN_00513cc8(sSocketNo, D_00846EA0, sMemcardBufferSize, 0, sMemcardBuffer);
+            FUN_00513cc8_m0(sSocketNo, D_00846EA0, sMemcardBufferSize, 0, sMemcardBuffer);
             goto state12_done;
 
 state12_mode1:
@@ -832,20 +835,15 @@ state12_done:
                     sMemcardSeqMode = 10;
                     break;
                 }
-                if (cardCode != 0x1c)
+                switch (cardCode)
                 {
-                    if (cardCode == 0x11)
-                    {
+                    case 0x11:
                         sMemcardSeqMode = 0xc;
-                    }
-                    else
-                    {
+                        break;
+                    case 0x1c:
+                        return -6;
+                    default:
                         return -3;
-                    }
-                }
-                else
-                {
-                    return -6;
                 }
             }
             break;

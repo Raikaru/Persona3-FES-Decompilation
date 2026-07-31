@@ -227,6 +227,8 @@ u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
     return (unit->bad & badStatus) != 0;
 }
 
+/* W323 measured: opt_loop_invariants on nd116 -> 93, object 280/288; reset nd116, object 284/288. */
+#pragma opt_loop_invariants on
 // FUN_003005e0 NONMATCHING
 u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 {
@@ -267,6 +269,7 @@ u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 
     return 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00300870
 u16 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
@@ -1598,6 +1601,8 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
 
 
 
+/* W323 measured: opt_common_subs off nd1570 -> 1489, object 2252/2256; reset nd1570. */
+#pragma opt_common_subs off
 // FUN_00302380 NONMATCHING
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
 
@@ -1767,6 +1772,7 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
   }
   return;
 }
+#pragma opt_common_subs on
 
 
 
@@ -4767,8 +4773,10 @@ done:
 
 
 
+/* W323 measured: opt_common_subs off nd152 -> 147, object 236/288; reset nd152. */
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_00308a80 NONMATCHING
 u16 FUN_00308a80(u32 param_1)
 
@@ -4807,6 +4815,7 @@ u16 FUN_00308a80(u32 param_1)
   iVar4 = FUN_002ffbc0(uVar6);
   return auStack_20[iVar4];
 }
+#pragma opt_common_subs on
 #pragma pop
 
 
@@ -6302,6 +6311,8 @@ LAB_0030b740:
 
 
 
+/* W323 measured: opt_common_subs off nd166 -> 139, object 392/416; reset nd166. */
+#pragma opt_common_subs off
 // FUN_0030b9a0 NONMATCHING
 u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
 {
@@ -6348,6 +6359,7 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
   }
   return uVar1;
 }
+#pragma opt_common_subs on
 
 
 
@@ -6427,6 +6439,8 @@ u32 FUN_0030bc50(int param_1)
 
 
 #pragma alias FUN_0030bde0_narrow FUN_0030bde0
+/* W323 measured: opt_loop_invariants on nd407 -> 404, object 716/736; reset nd407. */
+#pragma opt_loop_invariants on
 // FUN_0030bde0 NONMATCHING
 short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 
@@ -6499,6 +6513,7 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
   }
   return sVar7;
 }
+#pragma opt_loop_invariants off
 
 
 

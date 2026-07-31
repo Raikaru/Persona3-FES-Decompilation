@@ -484,7 +484,6 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                                  (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
 
-#pragma opt_loop_invariants on
 // FUN_00123B70 NONMATCHING
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -556,7 +555,6 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         (u8)fade, alpha, 0x66);
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00123F80
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
@@ -2388,6 +2386,7 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
         }
     }
 }
+#pragma opt_loop_invariants on
 // FUN_00128C40 NONMATCHING
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
@@ -2405,6 +2404,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 1);
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00129160 NONMATCHING
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)

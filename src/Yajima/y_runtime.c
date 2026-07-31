@@ -5685,7 +5685,6 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
@@ -5739,7 +5738,6 @@ joined_r0x004357c4:
 }
 
 #pragma pop
-#pragma opt_common_subs reset
 // FUN_00435810 NONMATCHING
 
 u8 FUN_00435810(void)
@@ -7948,6 +7946,7 @@ void FUN_0043a960(int param_1)
 // Keeping the last two values as separate scalar locals changes the generated
 // stack layout and can eliminate their writes under MWCC alias analysis.
 // The signed result from FUN_0017b5b0 also preserves the retail sign path.
+#pragma opt_loop_invariants on
 // FUN_0043A9D0 NONMATCHING
 
 u32 FUN_0043a9d0(u64 param_1,u64 param_2,char param_3)
@@ -8295,6 +8294,7 @@ LAB_0043acec:
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants reset
 // FUN_0043B980 NONMATCHING
 
 short FUN_0043b980(char param_1,u64 param_2)

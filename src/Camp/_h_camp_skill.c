@@ -756,6 +756,8 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 
 // Retail row-coordinate recomputation is preserved at 0x163E34-0x1646D4.
 #pragma push
+/* opt_loop_invariants on: off nd4237/5300B -> on nd4230/5292B; retained. */
+#pragma opt_loop_invariants on
 // FUN_00163330 NONMATCHING
 #pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
@@ -1164,6 +1166,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         break;
     }
 }
+#pragma opt_loop_invariants reset
 #pragma pop
 
 
@@ -1539,6 +1542,8 @@ KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
     return task;
 }
 
+/* opt_common_subs off: default/on nd646/1188B -> off nd530/1212B; retained. */
+#pragma opt_common_subs off
 // FUN_001618A0 NONMATCHING
 void* FUN_001618a0(KwlnTask* task)
 {
@@ -1658,6 +1663,7 @@ void* FUN_001618a0(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_common_subs reset
 
 // FUN_00161D60
 void FUN_00161d60(KwlnTask* task)
@@ -1769,6 +1775,10 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
     FUN_00177c10(work->pcId, (s16)oldEquipment);
 }
 
+/* opt_loop_invariants on: off nd6040/7964B -> on nd5879/8024B; retained. */
+#pragma opt_loop_invariants on
+/* opt_common_subs off: default/on nd6040/7964B -> off nd5956/8180B; retained. */
+#pragma opt_common_subs off
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
 {
@@ -1972,6 +1982,8 @@ void* FUN_00164920(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 
 // FUN_001669B0
 void FUN_001669b0(KwlnTask* task)
