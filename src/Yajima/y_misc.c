@@ -164,8 +164,7 @@ void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
 extern u32 RpRandom(void);
-#pragma alias FUN_00430780_ymisc FUN_00430780
-extern void FUN_00430780_ymisc(f32, u64, s32, s32, s32);
+extern void FUN_00430780(f32, u64, s32, s32, s32);
 #pragma alias DAT_006b4470_abs DAT_006b4470
 extern char DAT_006b4470_abs[];
 /* FUSION_GLOBALS */
@@ -6252,8 +6251,8 @@ void FUN_0042cd80(int param_1)
         counter = (s8 *)(entry + 0x8d8);
         offsetY = (s16 *)(work + inner * 2 + 0x914);
         offsetX = (s16 *)(work + inner * 2 + 0x8f6);
-        FUN_00430780_ymisc(8.0f, row->value,
-                           *(s8 *)offsetX, *(s8 *)offsetY, *counter);
+        FUN_00430780(8.0f, row->value,
+                     *(s8 *)offsetX, *(s8 *)offsetY, *counter);
         delay = (s8 *)(entry + 0x8e7);
         if (*delay < 1) {
           count = *(s8 *)(entry + 0x8d8) + 1;

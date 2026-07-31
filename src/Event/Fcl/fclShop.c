@@ -7892,6 +7892,8 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   FUN_0040e3c0_i(x, y, scale, color, type, value)
 
 
+  int iVar7;
+
   u8 cVar1;
   s16 uVar2;
   s16 uVar3;
@@ -7901,8 +7903,6 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   int iVar5;
 
   int iVar6;
-
-  int iVar7;
 
   s16 *puVar10;
 
@@ -7920,21 +7920,21 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   short sVar14;
 
-  FclShopDrawGroup groups[9];
-
-  s16 auStack_d0 [16];
-
-  s16 auStack_b0 [16];
-
-  s16 auStack_90 [16];
-
-  s16 auStack_70 [16];
-
-  s16 auStack_50 [16];
+  s16 auStack_10 [8];
 
   s16 auStack_30 [16];
 
-  s16 auStack_10 [8];
+  s16 auStack_50 [16];
+
+  s16 auStack_70 [16];
+
+  s16 auStack_90 [16];
+
+  s16 auStack_b0 [16];
+
+  s16 auStack_d0 [16];
+
+  FclShopDrawGroup groups[9];
 
   
 
