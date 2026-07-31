@@ -566,19 +566,19 @@ void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
+    u8 *entry;
     u8 *work;
     s32 i;
-    u8 *entry;
     s32 j;
     work = task->workData;
-
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
         entry = work + i * 8 + 0x98;
         if (dat00171360(BR_U16(entry, 0)) != 0) {
             func_00171390(BR_U16(entry, 0));
         } else {
+            u8 *base = work + i * 8;
             s32 level = (s32)(func_00170760(1, BR_S16(entry, 0)) & 0xffff);
-            level += BR_S32(work + i * 8, 0x9c);
+            level += BR_S32(base, 0x9c);
             if (level >= 100) {
                 level = 99;
             }
