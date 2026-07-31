@@ -1921,9 +1921,7 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
                              right, position.y + 63.0f, 100.0f);
     campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
-                             position.x + 128.0f +
-                                 (f32)((count - 1) * 20),
-                             position.y + 63.0f, 100.0f);
+                             left, position.y + 97.0f, 100.0f);
     campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x17, drawAlpha,
                              left, position.y + 97.0f, 100.0f);
     campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1a, drawAlpha,
@@ -1954,10 +1952,6 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 161.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
-                             left, position.y + 197.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
-                             right, position.y + 197.0f, 100.0f);
 
     bottomPosition = position;
     footerAlpha = (s16)alpha;
