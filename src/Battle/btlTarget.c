@@ -18,6 +18,9 @@
 #include "libm.h"
 extern u32 func_002e4910();
 #include "temporary.h"
+
+#pragma alias func_00306e80_y2 func_00306e80_y2
+
 #define BTLT_A8(ptr, offset) (*(u8*)((u8*)(ptr) + (offset)))
 #define BTLT_A16(ptr, offset) (*(u16*)((u8*)(ptr) + (offset)))
 #define BTLT_AS16(ptr, offset) (*(s16*)((u8*)(ptr) + (offset)))
@@ -6253,4 +6256,2060 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
         list = *(u8**)(list + 0x4cc);
     } while (1);
     return result;
+}
+
+
+#include "Battle/btlFormation.h"
+#include "Battle/btlFade.h"
+
+extern u32 btlFormation002b8c00(void* work);
+extern u32 btlFormation002b8dc0(void* work);
+
+
+
+
+
+
+
+
+
+/* Retail formation reference recovery, retained NONMATCHING until codegen cleanup. */
+typedef u8 undefined1;
+typedef u8 bool;
+typedef u16 undefined2;
+typedef u32 undefined4;
+typedef u64 undefined8;
+typedef void undefined;
+typedef struct BtlFormationState {
+  u8 padding[0x630];
+  u16 flags;
+  u16 counter;
+  u32 value;
+} BtlFormationState;
+typedef struct FormationMenuState {
+  s16 x;
+  s16 y;
+  s16 firstEntry;
+  s16 selectedEntry;
+  s16 unk8;
+  s16 visibleEntries;
+  s16 entryCount;
+} FormationMenuState;
+typedef struct BtlFormationWork {
+  u32 state;
+  u32 list;
+  u32 argument5;
+  u8 padding0c[4];
+  s32 sentinel;
+  u8 random;
+  u8 padding15[3];
+  u32 argument3;
+  u32 argument4;
+  u8 padding20[0x34];
+  u16 count;
+  u16 padding56;
+  u32 items;
+} BtlFormationWork;
+
+
+#ifndef CONCAT44
+#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
+#endif
+extern u64 func_00100d80();
+#pragma alias func_00100d80_u32 func_00100d80
+extern u32 func_00100d80_u32(u32 param_1,u32 param_2);
+extern u64 func_00100ec0();
+extern u64 func_001016b0();
+#pragma alias func_001016b0_u32 func_001016b0
+extern u32 func_001016b0_u32(u32 param_1);
+extern u64 func_00102100();
+extern u64 func_001021c0();
+#pragma alias func_001021c0_u32 func_001021c0
+extern u32 func_001021c0_u32(u32 param_1,u8* output);
+extern u64 func_001023a0();
+extern u64 func_00108570();
+extern u64 func_00108670();
+extern u64 func_00108680();
+extern u64 func_001086a0();
+extern u64 func_0016f1f0();
+extern u64 func_00170670();
+extern u64 func_001706c0();
+extern const char* func_00171110(s16 id, s16 field);
+extern u64 func_00173220();
+extern u64 func_001778b0();
+extern u64 func_0017b220();
+extern u64 func_0017b260();
+extern u64 func_00194b20();
+extern u64 func_00195020();
+extern u64 func_00195340();
+extern char D_00696f50[];
+extern char D_006964D0[];
+extern char D_006964E8[];
+extern u64 func_00195460();
+extern u64 func_00195540();
+#pragma alias func_00195340_u32 func_00195340
+#pragma alias func_00195540_u32 func_00195540
+extern u32 func_00195340_u32();
+extern u32 func_00195540_u32();
+extern u64 func_00195550();
+extern u32 func_00198590();
+extern u64 func_0019d3f0();
+extern u64 func_001fdd60();
+extern u64 func_001fdda0();
+extern u64 func_001fddf0();
+extern u64 func_001fdec0();
+extern u64 func_001fdf10();
+typedef struct FormationUpdateResult {
+  u32 flags;
+  s32 state;
+  u16 value0;
+  u16 value1;
+  u16 value2;
+  u16 value3;
+  u32 value4;
+} FormationUpdateResult;
+#pragma alias func_001fdf10_btlFormation_result func_001fdf10
+extern void func_001fdf10_btlFormation_result(FormationUpdateResult *result);
+extern u64 func_001fe3b0();
+extern u64 func_001fe430();
+extern u64 func_001fe5f0();
+extern u64 func_001fe630();
+extern u64 func_001fe650();
+extern u64 func_001fe9b0();
+extern u64 func_001fea10();
+extern u64 func_001fea90();
+extern u64 func_001feab0();
+extern u64 func_001feb30();
+extern u64 func_001feb50();
+extern u64 func_001fece0();
+extern u64 func_001fed00();
+extern u64 func_001fed20();
+extern u64 func_001fed40();
+extern u64 func_001fed60();
+extern u64 func_001fed80();
+extern u64 func_001feda0();
+extern u64 func_001fedc0();
+extern u64 func_001fede0();
+extern u64 func_001fee00();
+extern u64 func_001fee40();
+extern u64 func_001fee80();
+extern u64 func_001fef10();
+extern u64 func_001ff350();
+extern u64 func_001ff370();
+extern u64 func_001ff390();
+extern u64 func_001ff3b0();
+extern u64 func_0021c3f0();
+#pragma alias func_0021c3f0_u32 func_0021c3f0
+extern u32 func_0021c3f0_u32(u32 param_1);
+#pragma alias func_0021cca0_u32 func_0021cca0
+extern u32 func_0021cca0_u32(u32 param_1,u32 param_2);
+extern u64 func_0021cca0();
+extern u64 func_0021cce0();
+extern u64 func_0027e310();
+extern u32 func_0027ec10();
+extern u64 func_0027ed20();
+extern u64 func_0027f650();
+extern u64 func_0027f7c0();
+extern u64 func_0027ffb0();
+extern u64 func_00280870();
+#pragma alias func_00280870_btlFormation_s32 func_00280870
+extern s32 func_00280870_btlFormation_s32(u32 mode, u32 enabled,
+                                          void *out, void *end, void *extra,
+                                          u32 include);
+#pragma alias func_00280870_btlFormation_f32 func_00280870
+extern f32 func_00280870_btlFormation_f32(u32 mode, u32 enabled,
+                                          void *out, void *end, void *extra,
+                                          u32 include);
+#pragma alias func_002b96f0_btlFormation_u64 func_002b96f0
+extern void func_002b96f0_btlFormation_u64(float param_1,float param_2,
+                                           float *param_3,u32 *param_4,
+                                           int param_5,u64 param_6);
+extern u64 func_00288f80();
+extern u64 func_00289030();
+extern u64 func_0028a780();
+extern u64 func_0029a1d0();
+extern u64 func_0029a210();
+#pragma alias func_0029a210_u32 func_0029a210
+extern u32 func_0029a210_u32(u32 param_1);
+extern u64 func_0029ad20();
+#pragma alias func_0029ad20_u32 func_0029ad20
+extern u32 func_0029ad20_u32(void);
+extern u64 func_0029ad60();
+extern u64 func_002a3b40();
+extern u64 func_002a3d70();
+extern u64 func_002b71e0();
+extern u64 func_002b8d60();
+extern u64 func_002d15a0();
+extern u64 func_002d1a10();
+extern u64 func_002d1a70();
+extern u64 func_002d1de0();
+extern u64 func_002d1fd0();
+#pragma alias func_002d1fd0_c0070 func_002d1fd0
+extern f32 func_002d1fd0_c0070();
+extern u32 func_002d4cf0();
+extern u32 func_002d4e10();
+extern u64 func_002d5550();
+extern u64 func_002db650();
+extern u64 func_002db800();
+extern u64 func_002db890();
+extern u64 func_002e3350();
+extern u64 func_002eab70();
+extern u64 func_002eabb0();
+extern u64 func_002ec560();
+extern u64 func_002ec590();
+extern u64 func_002ecb30();
+extern void func_002efc90(u32 param_1);
+extern void func_002efcd0(u32 param_1);
+extern u64 func_002efd10();
+extern void func_002f2450(u32 param_1);
+extern void func_002f2490(u32 param_1);
+extern u64 func_002f24d0();
+extern u64 func_002f2510();
+extern u64 func_002f5030();
+extern u64 func_002f5320();
+extern u64 func_002f6bf0();
+extern u64 func_002f6c20();
+extern u64 func_002fd820();
+extern u64 func_002ffbc0();
+#pragma alias func_002ffbc0_u16 func_002ffbc0
+extern u16 func_002ffbc0_u16(u32 max);
+#pragma alias func_002ffbc0_noarg func_002ffbc0
+extern u16 func_002ffbc0_noarg(void);
+#pragma alias func_002ffbc0_noarg_u32 func_002ffbc0
+extern u32 func_002ffbc0_noarg_u32(void);
+extern u64 func_002ffcc0();
+extern u16 func_002ffd70(u32 unit);
+extern u16 func_002ffd80(u32 unit);
+extern u16 func_002ffdf0(u32 unit);
+extern u16 func_00300100(u32 unit);
+extern u64 func_00300530();
+#pragma alias func_00300530_u32 func_00300530
+extern u32 func_00300530_u32(u32 unit);
+extern u64 func_00300550();
+#pragma alias func_00300550_u32 func_00300550
+extern u32 func_00300550_u32(u32 param_1);
+extern u64 func_00300580();
+#pragma alias func_00300580_u32 func_00300580
+extern u32 func_00300580_u32(u32 param_1,u32 param_2);
+extern u64 func_003005e0();
+#pragma alias func_003005e0_u32 func_003005e0
+extern u32 func_003005e0_u32(u32 param_1,u32 param_2);
+extern u64 func_00301540();
+extern u64 func_00301750();
+extern u64 func_00301870();
+extern u64 func_00301ca0();
+extern u64 func_00303130();
+#pragma alias func_00303130_s32 func_00303130
+extern s32 func_00303130_s32(s32,s32,s32,s32,s32,s32,s32,s32);
+extern u32 func_00306e80_y2();
+extern u64 func_003080c0();
+extern u64 func_003082f0();
+extern u64 func_003086f0();
+#pragma alias func_003086f0_u32 func_003086f0
+extern u32 func_003086f0_u32(u32 param_1,u32 param_2);
+extern u64 func_00308860();
+extern u64 func_00308930();
+extern u64 func_00308a80();
+extern u64 func_00308ba0();
+extern u64 func_00308bb0();
+#pragma alias func_00308ba0_u32 func_00308ba0
+#pragma alias func_00308bb0_u32 func_00308bb0
+#pragma alias func_00308860_u32 func_00308860
+extern u32 func_00308ba0_u32(u32 param_1);
+extern u32 func_00308bb0_u32(u32 param_1);
+extern u32 func_00308860_u32(void);
+#pragma alias func_0035f160_u32 func_0035f160
+#pragma alias func_0029ad60_u32 func_0029ad60
+#pragma alias func_0035f060_u32 func_0035f060
+extern u32 func_0035f160_u32(void);
+extern u32 func_0029ad60_u32(u16 param_1);
+extern void func_0035f060_u32(u32 param_1);
+#pragma alias func_0035ed20_u32 func_0035ed20
+extern u32 func_0035ed20_u32(u32 param_1);
+#pragma alias func_002a3d70_f32 func_002a3d70
+extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
+#pragma alias func_002a3d70_move func_002a3d70
+extern u32 func_002a3d70_move(u32 action,RwV3d *startPos,RwV3d *startTarget,RwV3d *endPos,RwV3d *endTarget,float duration);
+#pragma alias func_002b8d60_u32 func_002b8d60
+extern u32 func_002b8d60_u32(s32 param_1,u32 param_2);
+#pragma alias func_0035ee60_f32 func_0035ee60
+extern float func_0035ee60_f32(u32 param_1);
+extern u64 func_0030b4b0();
+#pragma alias func_0030b4b0_u32 func_0030b4b0
+extern u32 func_0030b4b0_u32(u32 param_1,u32 param_2);
+#pragma alias func_0030b5a0_u32 func_0030b5a0
+extern u32 func_0030b5a0_u32(u32,u32);
+extern u64 func_0030b5a0();
+extern u64 func_0030bc20();
+#pragma alias func_0030bc20_u32 func_0030bc20
+extern u32 func_0030bc20_u32(u16 param_1);
+extern u64 func_003174e0();
+extern u64 func_003176c0();
+extern u64 func_00317730();
+extern u64 FUN_00317a20();
+extern u64 func_00318ad0();
+extern u64 func_00318b90();
+extern u64 func_00318d10();
+extern u64 func_00318ed0();
+extern u64 func_00321120();
+extern u64 func_00321130();
+extern u64 func_00321320();
+extern u64 func_00324bd0();
+#pragma alias func_00324bd0_u32 func_00324bd0
+extern u32 func_00324bd0_u32(u32 param_1);
+extern u64 func_003252a0();
+extern u64 func_00325500();
+extern u64 func_003257e0();
+extern u64 func_00325920();
+#pragma alias func_00325920_u32 func_00325920
+extern u32 func_00325920_u32(u32 param_1);
+extern u64 func_00325c10();
+extern u64 func_00325d60();
+extern void func_00325e40(float param_1, int param_2);
+extern u64 func_00326030();
+extern void func_003297a0(float *position);
+extern u64 func_00329ed0();
+extern u64 func_00351bb0();
+extern u64 func_00352c30();
+extern u64 func_00352c50();
+extern u64 func_00357ea0();
+extern u64 func_0035ae10();
+extern u64 func_0035bb40();
+extern u64 func_0035c090();
+extern u64 func_0035ed20();
+extern u64 func_0035ee60();
+extern u64 func_0035f060();
+extern u64 func_0035f160();
+extern u64 func_003a4220();
+extern u64 func_003b2cb0();
+#pragma alias func_003b2cb0_typed func_003b2cb0
+extern void func_003b2cb0_typed(f32 scale, s32 x, s32 y, u32 color, u32 font,
+                                u32 align, const void *text, u32 width, u32 flags);
+extern u64 func_0045a430();
+extern u64 func_0045af40();
+extern u64 func_0045af70();
+extern void func_004bdde0(float angle, void *frame, const void *vector, u32 mode);
+extern void func_004be1e0(void *out, const void *in, s32 count, const void *matrix);
+extern u64 func_004c69f0();
+extern u64 func_004c6b20();
+extern u64 func_0051e0e0();
+extern u64 func_00521250();
+extern u64 func_00521408();
+extern u64 func_00523ac8();
+extern u32 func_00524270();
+extern u32 func_00524388();
+extern u32 func_0052ea18(float param_1, float param_2);
+extern u8 DAT_00696440;
+extern u8 DAT_00696460;
+extern u8 DAT_00696d70;
+#pragma alias DAT_00696d70_abs DAT_00696d70
+extern u8 DAT_00696d70_abs[];
+extern u8 DAT_00696e10;
+extern u32 DAT_00696e30;
+extern u32 DAT_00696e34;
+extern u8 DAT_00696fb0;
+#pragma alias DAT_00696fb0_abs DAT_00696fb0
+extern u8 DAT_00696fb0_abs[];
+extern u32 DAT_006971b0;
+extern code gFormationDispatchTable[];
+extern code gFormationActionTable[];
+extern u8 DAT_007cc740;
+extern u8 DAT_007cc970;
+extern u8 DAT_007cc971;
+extern u8 DAT_007cc972;
+extern u8 DAT_007cc973;
+extern u8* DAT_007ce41c;
+extern u8* DAT_007ce4cc;
+extern u8* DAT_007ce4d0;
+extern u8* DAT_007ce4e8;
+extern u8* DAT_007ce4ec;
+extern u32 DAT_007e0952;
+extern u32 DAT_007e095a;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0958_abs DAT_007e0958
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e0958_abs[];
+extern u8 DAT_007e095a_abs[];
+extern u32 DAT_00957100;
+extern u32 DAT_00957140;
+extern u32 DAT_00957144;
+extern u32 DAT_00957148;
+#pragma alias DAT_00957100_abs DAT_00957100
+#pragma alias DAT_00957140_abs DAT_00957140
+#pragma alias DAT_00957150_abs DAT_00957150
+#pragma alias DAT_00957160_abs DAT_00957160
+#pragma alias DAT_00957170_abs DAT_00957170
+extern u8 DAT_00957100_abs[];
+extern u8 DAT_00957140_abs[];
+extern u8 DAT_00957150_abs[];
+extern u8 DAT_00957160_abs[];
+extern u8 DAT_00957170_abs[];
+extern u32 DAT_00957150;
+extern u32 DAT_00957154;
+extern u32 DAT_00957158;
+extern u32 DAT_00957160;
+extern u32 DAT_00957164;
+extern u32 DAT_00957168;
+extern u32 DAT_00957170;
+extern u32 DAT_00957174;
+extern u32 DAT_00957178;
+extern float DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern float DAT_00960088_abs[];
+extern u64 (*DAT_00960090)();
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u64 (*DAT_00960090_abs)();
+#pragma alias DAT_009600a4_abs DAT_009600a4
+extern u64 (*DAT_009600a4_abs)();
+extern u64 (*DAT_00960178)();
+#pragma alias DAT_00960178_u32_abs DAT_00960178
+extern u32 (*DAT_00960178_u32_abs[])(...);
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
+extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
+extern u32* PTR_DAT_00696f30;
+#pragma alias PTR_DAT_00696f30_abs PTR_DAT_00696f30
+extern u32* PTR_DAT_00696f30_abs[];
+extern code pcRam006971bc;
+extern code pcRam006971c8;
+extern code pcRam006971d4;
+extern code pcRam006971e0;
+extern code pcRam006971ec;
+extern code pcRam006971f8;
+extern code pcRam00697204;
+extern code pcRam00697210;
+extern code pcRam00697228;
+extern code pcRam00697234;
+extern code pcRam00697240;
+extern code pcRam0069724c;
+extern code pcRam00697258;
+extern code pcRam00697264;
+extern code pcRam00697270;
+extern code pcRam0069727c;
+extern code pcRam00697288;
+extern code pcRam006972b8;
+extern code pcRam006972c4;
+extern code pcRam006972d0;
+extern code pcRam006972dc;
+extern code pcRam006972e8;
+extern code pcRam006972f4;
+extern code pcRam00697300;
+extern code pcRam0069730c;
+extern code pcRam00697318;
+extern code pcRam00697324;
+extern code pcRam00697330;
+extern code pcRam0069733c;
+extern code pcRam00697348;
+extern code pcRam00697354;
+extern code pcRam00697360;
+extern code pcRam0069736c;
+extern code pcRam00697378;
+extern code pcRam00697384;
+extern code pcRam006973b4;
+extern code pcRam006973c0;
+extern code pcRam006973e4;
+extern code pcRam006973f0;
+extern code pcRam006973fc;
+extern code pcRam00697408;
+extern code pcRam00697414;
+extern code pcRam00697420;
+extern code pcRam0069742c;
+extern code pcRam00697438;
+extern code pcRam00697450;
+extern code pcRam0069745c;
+extern code pcRam00697468;
+extern code pcRam00697474;
+extern code pcRam00697480;
+extern code pcRam0069748c;
+extern code pcRam00697498;
+extern code pcRam006974a4;
+extern code pcRam006974b0;
+extern code pcRam006974bc;
+extern code pcRam006974c8;
+extern code pcRam006974f8;
+extern code pcRam00697504;
+extern void LAB_002bd060(u32 **param_1);
+extern void LAB_002bd210(u32 **param_1);
+extern char* PTR_s_N_00646555_0x12_00696dcc[];
+extern char* PTR_s_battle_effect_ATC_D_BED_00696c80;
+#pragma alias PTR_s_battle_effect_ATC_D_BED_abs PTR_s_battle_effect_ATC_D_BED_00696c80
+extern char *PTR_s_battle_effect_ATC_D_BED_abs[];
+extern char* PTR_s_battle_effect_SHADOW_S_BED_007cc6f0;
+extern u32 _DAT_007ce4f4;
+extern u8 gp0xffff99f8;
+extern code PTR_FUN_00696490[];
+extern code PTR_FUN_006972a0[];
+extern code PTR_FUN_006972ac[];
+extern code PTR_FUN_00697390[];
+extern code PTR_FUN_0069739c[];
+extern code PTR_FUN_006973a8[];
+extern code PTR_FUN_006973d8[];
+extern code PTR_FUN_006974d4[];
+extern code PTR_FUN_006974e0[];
+extern code PTR_FUN_006974ec[];
+extern code PTR_FUN_006975e8[];
+extern code PTR_FUN_006975f0[];
+extern code PTR_FUN_006975f8[];
+extern code PTR_FUN_00697600[];
+extern code PTR_FUN_00697608[];
+extern code PTR_FUN_00697610[];
+extern code PTR_FUN_00697618[];
+extern code PTR_FUN_00697620[];
+extern code PTR_FUN_00697628[];
+extern code PTR_FUN_00697630[];
+extern code PTR_FUN_00697638[];
+extern code PTR_FUN_00697640[];
+extern code PTR_FUN_00697648[];
+extern code PTR_FUN_00697650[];
+extern code PTR_FUN_00697658[];
+extern code PTR_FUN_00697660[];
+extern code PTR_FUN_00697670[];
+extern code PTR_FUN_00697678[];
+extern code PTR_FUN_00697680[];
+extern code PTR_FUN_00697688[];
+extern code PTR_FUN_00697690[];
+extern code PTR_FUN_00697698[];
+extern code PTR_FUN_006976a0[];
+extern code PTR_FUN_006976a8[];
+extern code PTR_FUN_006976b0[];
+extern code PTR_FUN_006976b8[];
+extern code PTR_FUN_006976c0[];
+extern code PTR_FUN_006976e8[];
+extern code PTR_FUN_006976f0[];
+extern code PTR_FUN_006976f8[];
+extern code PTR_FUN_00697700[];
+extern float fGpffff8398;
+extern float fGpffff839c;
+extern u8* iGpffffb708;
+
+
+/* Target forward declarations. */
+extern u32 func_002b8dc0(u16 *param_1);
+extern u32 func_002b8f90(u16 param_1);
+extern void func_002b9030(u32 param_1);
+extern void func_002b90d0(int param_1,u32 param_2);
+extern void func_002b9220(int param_1);
+extern void func_002b9300(int param_1);
+extern bool func_002b9350(int param_1);
+#pragma alias func_002b9350_u32 func_002b9350
+extern u32 func_002b9350_u32(int param_1);
+extern u32 func_002b9370(int param_1,u16 param_2);
+extern u32 func_002b93c0(int param_1,u16 param_2);
+extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
+#pragma alias func_002b93e0_4arg func_002b93e0
+extern u32 func_002b93e0_4arg(u32 param_1,u16 param_2,u32 param_3,u32 param_4);
+extern void func_002b94f0(BtlFormationWork *param_1);
+extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
+                          u32 param_6);
+extern void func_002b9600(u32 *param_1);
+extern u32 func_002b9640(int param_1);
+extern void func_002b96e0(int param_1,u32 param_2);
+extern void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4);
+extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
+extern void func_002b9c00(int param_1,int param_2,int param_3,float *param_4);
+extern void func_002b9d40(int param_1,int param_2,int param_3,float *param_4);
+extern void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4);
+extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
+extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
+extern void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16]);
+extern void func_002ba3a0(int param_1);
+#pragma alias func_002ba3a0_void func_002ba3a0
+extern void func_002ba3a0_void(void);
+extern void func_002ba900(int param_1);
+extern void func_002baa20(int *param_1);
+extern u32 func_002baad0(int *param_1);
+extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
+extern void func_002bacb0(u32 *param_1);
+extern u32 func_002bad60(u32 *param_1);
+extern bool func_002baec0(u32 *param_1);
+extern void func_002baf30(u32 *param_1);
+extern void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u32 param_5);
+extern void func_002bb050(u32 *param_1);
+extern u32 func_002bb0b0(u32 *param_1);
+extern void func_002bb290(u32 *param_1);
+extern void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4, u16 param_5);
+extern void func_002bb3a0(void);
+extern void func_002bb580(u16 *param_1);
+extern void func_002bb610(u32 param_1);
+extern void func_002bb6f0(u16 param_1,u64 param_2);
+extern void func_002bb760(void);
+extern void func_002bb770(void);
+extern void *func_002bb7d0(void);
+extern void func_002bb8f0(u32 param_1);
+extern u16 * func_002bb9c0(int param_1);
+extern u32 func_002bbac0(int param_1,u16 *param_2);
+extern void func_002bbbc0(int param_1);
+extern void* func_002bbc00(void* owner);
+extern void func_002bbd00(u32 param_1);
+extern void func_002bbdc0(u8 *param_1,short param_2);
+extern short func_002bbdf0(int param_1);
+extern void func_002bbe00(u8 *param_1);
+extern void func_002bbf80(int param_1,u32 param_2);
+extern u32 func_002bbfa0(int param_1);
+extern void func_002bc0e0(int param_1,u8 *param_2);
+extern void func_002bc2f0(void);
+extern void func_002bc420(void);
+extern u32 func_002bc480(void);
+extern void func_002bc680(void);
+extern void func_002bc6d0(void);
+extern u32 func_002bc7b0(u16 *param_1);
+extern void func_002bc7e0(u16 param_1);
+extern u32 func_002bc830(u8 *param_1);
+extern void func_002bc890(u8 *param_1,u16 param_2);
+extern u32 func_002bc910(u32 *param_1);
+extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
+extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,int param_8);
+#pragma alias func_002bc9c0_long func_002bc9c0
+extern void func_002bc9c0_long(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
+extern void func_002bccd0(u32 param_1, u32 param_2);
+extern void func_002bcde0(u64 param_1,u32 *param_2);
+extern void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5);
+#pragma alias func_002bce10_reordered func_002bce10
+extern void func_002bce10_reordered(int param_3,float param_1,float param_2,
+                                    int param_4,float *param_5);
+extern u32 func_002bd080(int *param_1);
+extern void func_002bd230(u32 param_1,u8 param_2,u16 param_3);
+extern u32 func_002bd2e0(int *param_1);
+extern void func_002bd480(u32 param_1);
+extern u32 func_002bd4f0(int param_1);
+extern void func_002bd590(u32 param_1,u16 param_2);
+extern u32 func_002bd5f0(int param_1);
+extern void func_002bd690(u32 param_1,u16 param_2);
+extern u32 func_002bd6f0(int param_1);
+extern void func_002bd780(u32 param_1,u16 param_2);
+extern bool func_002bd7e0(u32 *param_1);
+extern void func_002bd850(u32 param_1,u32 param_2);
+extern u32 func_002bd8e0(int *param_1);
+extern int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u16 param_5,u16 param_6,u16 param_7,u64 param_8);
+extern u32 func_002bdcd0(u16 *param_1);
+extern void func_002bddd0(void);
+extern u16 func_002bde10(int param_1,u16 *param_2);
+static u32 func_002bdfb0(int param_1);
+extern u32 func_002be2f0(int param_1);
+extern void func_002be390(short *param_1,int param_2,int param_3);
+extern u32 func_002be580(u64 param_1,int param_2);
+extern u32 func_002BE5D0(u64 param_1,int param_2);
+extern u32 func_002BE5F0(u64 param_1,int param_2);
+extern void func_002BE610(int param_1);
+extern u64 func_002be620(int param_1,int param_2);
+extern void func_002be720(short *param_1,short param_2,short param_3,int param_4);
+extern u64 func_002be9e0(int param_1,int param_2);
+extern void func_002bea80(short *param_1,short param_2,short param_3);
+extern u16 func_002becc0(void);
+extern void func_002bed10(void);
+extern void func_002bedd0(int param_1);
+extern u64 func_002bef20(u64 param_1);
+extern u32 func_002bf2b0(u32 param_1);
+extern void func_002bf370(u64 param_1);
+extern u32 func_002bf3f0(int param_1);
+extern void func_002bf650(void);
+extern void func_002bf690(short param_1);
+extern void func_002bf850(void);
+extern void func_002bf880(void);
+extern void func_002bf8b0(void);
+extern void func_002bf8e0(void);
+extern void func_002bf910(void);
+extern void func_002bf940(void);
+extern void func_002bf970(void);
+extern void func_002bf980(void);
+extern void func_002bf990(void);
+extern void func_002bf9a0(void);
+extern void func_002bf9b0(void);
+extern u32 func_002bfab0(void);
+extern void func_002bfae0(void);
+extern u32 func_002bfb20(void);
+extern void func_002bfb50(void);
+extern u32 func_002bfb90(int *param_1);
+extern void func_002bfc00(void);
+extern void func_002bfc50(void);
+extern void func_002bfc70(void);
+extern void func_002bfc90(void);
+extern void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5);
+#pragma alias func_002bfcb0_ptr func_002bfcb0
+extern void func_002bfcb0_ptr(int param_1,void *param_2,u32 param_3,u32 param_4,long param_5);
+#pragma alias func_002bfcb0_u64call func_002bfcb0
+extern void func_002bfcb0_u64call(u64 param_1,u64 param_2,u32 param_3,u32 param_4,long param_5);
+extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
+// Typed alias for callers that consume the helper's full 16-bit result.
+#pragma alias func_002bff60_u16 func_002bff60
+extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
+extern void func_002c0070(int param_1,int param_2);
+extern u32 func_002c0880(int param_1);
+extern void func_002c08a0(int param_1,u64 *param_2);
+extern void func_002c08b0(int param_1,int param_2);
+extern long * func_002c08c0(int param_1);
+extern u32 func_002c0970(int param_1);
+extern u32 func_002c09f0(int param_1);
+extern void func_002c0a50(u32 param_1,u16 param_2);
+extern void func_002c0ac0(int param_1,int param_2);
+extern int func_002c0e30(short param_1,u32 param_2,u32 param_3);
+typedef u32 (*FormationPredicate)(int unit,u32 selector);
+extern u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
+                         u32 param_5,FormationPredicate param_6,int *param_7);
+#pragma alias func_002c0f40_call func_002c0f40
+extern u32 func_002c0f40_call(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
+                              long param_5,code *param_6,long param_7);
+extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
+extern bool func_002c12f0(int param_1,int param_2);
+extern bool func_002c22d0(int param_1,int param_2);
+extern bool func_002c28a0(int param_1,int param_2);
+extern u32 func_002c1360(int param_1,int param_2);
+extern bool func_002c13d0(int param_1,int param_2);
+extern void func_002c1440(int param_1,u32 param_2);
+extern void func_002c1490(int param_1,u32 param_2);
+extern void func_002c14f0(int param_1,u32 param_2);
+extern bool func_002c1550(int param_1,u32 param_2);
+extern bool func_002c1590(int param_1,u32 param_2);
+extern bool func_002c15e0(int param_1,u32 param_2);
+extern bool func_002c1650(int param_1,u32 param_2);
+extern bool func_002c16a0(int param_1,u32 param_2);
+extern void func_002c1710(int param_1);
+extern void func_002c1740(int param_1,u32 param_2);
+extern void func_002c17b0(int param_1,u32 param_2);
+extern bool func_002c1850(int param_1,u64 param_2);
+extern u32 func_002c1960(int param_1,u32 param_2);
+extern u32 func_002c1a30(int param_1,u32 param_2);
+extern u32 func_002c1b10(int param_1,u32 param_2);
+extern u32 func_002c1bf0(int param_1,u32 param_2);
+extern bool func_002c1ce0(int param_1,int param_2);
+extern u64 func_002c1d80(void);
+extern bool func_002c1d90(int param_1);
+extern bool func_002c1e10(int param_1,short param_2);
+extern bool func_002c1e50(int param_1,short param_2);
+extern bool func_002c1e90(int param_1,short param_2);
+extern bool func_002c1ed0(int param_1,short param_2);
+extern void func_002c1f10(int param_1,u32 param_2);
+extern void func_002c1f60(int param_1,u32 param_2);
+extern void func_002c1fc0(int param_1,u32 param_2);
+extern void func_002c2010(int param_1,u32 param_2);
+extern void func_002c2070(int param_1,u32 param_2);
+extern void func_002c20c0(int param_1,u32 param_2);
+extern void func_002c2120(int param_1,u32 param_2);
+extern void func_002c2170(int param_1,u32 param_2);
+extern bool func_002c21d0(int param_1,int param_2);
+extern void func_002c2220(int param_1,u32 param_2);
+extern void func_002c2270(int param_1,u32 param_2);
+extern void func_002c2310(int param_1,u32 param_2);
+extern void func_002c2360(int param_1,u32 param_2);
+extern u32 func_002c23c0(int param_1);
+extern void func_002c2420(int param_1,u32 param_2);
+extern void func_002c2470(int param_1,u32 param_2);
+extern u32 func_002c2510(int param_1);
+extern bool func_002c25d0(int param_1);
+extern void func_002c25e0(int param_1,u32 param_2);
+extern void func_002c2630(int param_1,u32 param_2);
+extern void func_002c2690(int param_1,u32 param_2);
+extern void func_002c26e0(int param_1,u32 param_2);
+extern void func_002c2740(int param_1,u32 param_2);
+extern void func_002c2790(int param_1,u32 param_2);
+extern void func_002c27f0(int param_1,u32 param_2);
+extern void func_002c2840(int param_1,u32 param_2);
+extern bool func_002c28c0(int param_1,int param_2);
+extern bool func_002c29e0(int param_1,int param_2);
+extern bool func_002c2b20(int param_1,u16 param_2);
+extern void func_002c2be0(int param_1,u32 param_2);
+extern void func_002c2c40(int param_1,u32 param_2);
+extern void func_002c2ca0(int param_1,u32 param_2);
+extern u32 func_002c2d00(int param_1,u32 param_2);
+extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
+extern void func_002c30f0(int param_1,u16 param_2);
+extern void func_002c3120(int param_1,u16 param_2);
+extern void func_002c3150(int param_1,u32 param_2);
+extern void func_002c31b0(int param_1,u32 param_2);
+extern void func_002c3210(int param_1,u32 param_2);
+extern bool func_002c3270(int param_1);
+extern u32 func_002c32c0(int param_1);
+extern u32 func_002c32e0(int param_1);
+extern u32 func_002c3300(int param_1,u32 param_2);
+extern bool func_002c3400(int param_1);
+extern u64 func_002c3430(u64 param_1,u64 param_2,u32 param_3,u16 param_4,int param_5,code *param_6);
+extern u32 func_002c3770(u32 param_1,u32 param_2);
+#pragma alias func_002c3770_u32 func_002c3770
+extern u32 func_002c3770_u32(u32 param_1,u32 param_2);
+extern u32 func_002c3be0(u32 param_1);
+extern u32 func_002c3ce0(u32 param_1);
+extern u64 func_002c3e10(void);
+extern void func_002c3e20(u64 param_1,u64 param_2);
+extern void func_002c3e60(u64 param_1,u64 param_2);
+extern void func_002c3ea0(u64 param_1,u64 param_2);
+extern u32 func_002c3ee0(int param_1);
+extern u32 func_002c3f00(int param_1);
+extern void func_002c4000(u64 param_1,u64 param_2);
+extern void func_002c4040(u64 param_1,u64 param_2);
+extern void func_002c4080(u64 param_1,u64 param_2);
+extern void func_002c40c0(u64 param_1,u64 param_2);
+extern void func_002c4100(u64 param_1,u64 param_2);
+extern void func_002c4140(u64 param_1,u64 param_2);
+extern void func_002c4180(u64 param_1,u64 param_2);
+extern void func_002c41c0(u64 param_1,u64 param_2);
+extern u32 func_002c4200(u32 param_1);
+extern u32 func_002c42c0(u32 param_1,u32 param_2);
+extern void func_002c43a0(u64 param_1);
+extern void func_002c43e0(u64 param_1);
+extern void func_002c4420(u64 param_1,u64 param_2);
+extern void func_002c4460(u64 param_1,u64 param_2);
+extern void func_002c44a0(u64 param_1,u64 param_2);
+extern void func_002c44e0(u64 param_1,u64 param_2);
+extern void func_002c4520(u64 param_1,u64 param_2);
+extern void func_002c4560(u64 param_1,u64 param_2);
+extern void func_002c45a0(u64 param_1,u64 param_2);
+extern void func_002c45e0(u64 param_1,u64 param_2);
+extern void func_002c4620(u64 param_1,u64 param_2);
+extern void func_002c4660(u64 param_1,u64 param_2);
+extern void func_002c46a0(u64 param_1,u64 param_2);
+extern void func_002c46e0(u64 param_1,u64 param_2);
+extern void func_002c4720(u64 param_1,u64 param_2);
+extern u32 func_002c4760(u32 param_1);
+extern void func_002c4820(u64 param_1,u64 param_2);
+extern void func_002c4860(u64 param_1,u64 param_2);
+extern u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5);
+extern u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5);
+extern u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5);
+extern u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5);
+extern s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4);
+extern u32 func_002c5380(int param_1,int param_2,u16 *param_3,int param_4);
+#pragma alias func_002c5380_noargs func_002c5380
+extern u32 func_002c5380_noargs();
+extern u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4);
+extern s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4);
+extern s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4);
+#pragma alias func_002c6300_s32 func_002c6300
+extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
+extern u32 func_002c65d0(int param_1);
+extern void func_002c6a00(int param_1,int param_2,u16 param_3);
+extern u16 func_002c6ba0(int param_1);
+extern undefined * func_002c6e30(int param_1,u32 param_2);
+extern u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4);
+// The caller passes two 32-bit resource identifiers.
+#pragma alias func_002c6f50_u32 func_002c6f50
+extern u32 func_002c6f50_u32(u32 param_1,int param_2,u32 param_3,u32 param_4);
+extern void func_002c70d0(int param_1,int param_2);
+extern bool func_002c7250(int param_1);
+extern u32 func_002c7280(int param_1);
+extern u32 func_002c7300(void);
+extern u32 func_002c7340(void);
+extern u32 func_002c73e0(void);
+extern u32 func_002c7460(void);
+extern u32 func_002c74a0(void);
+extern u32 func_002c74e0(void);
+extern u32 func_002c7540(void);
+extern u32 func_002c75d0(void);
+extern u32 func_002c7670(void);
+extern u32 func_002c76b0(void);
+extern u32 func_002c7760(void);
+extern u32 func_002c7810(void);
+extern u32 func_002c78c0(void);
+extern u32 func_002c7970(void);
+extern u32 func_002c7a20(void);
+extern u32 func_002c7ad0(void);
+extern u32 func_002c7b80(void);
+extern u32 func_002c7c30(void);
+extern u32 func_002c7ce0(void);
+extern u32 func_002c7d90(void);
+extern u32 func_002c7e40(void);
+extern u32 func_002c7ef0(void);
+extern u32 func_002c7fa0(void);
+extern u32 func_002c8050(void);
+extern u32 func_002c8100(void);
+extern u32 func_002c81b0(void);
+extern u32 func_002c8260(void);
+extern u32 func_002c8310(void);
+extern u32 func_002c8360(void);
+extern u32 func_002c83b0(void);
+extern u32 func_002c8400(void);
+extern u32 func_002c84b0(void);
+extern u32 func_002c8560(void);
+extern u32 func_002c8610(void);
+extern u32 func_002c86c0(void);
+extern u32 func_002c8770(void);
+extern u32 func_002c8820(void);
+extern u32 func_002c88d0(void);
+extern u32 func_002c8980(void);
+extern u32 func_002c8a30(void);
+extern u32 func_002c8ae0(void);
+extern u32 func_002c8b90(void);
+extern u32 func_002c8c40(void);
+extern u32 func_002c8cf0(void);
+extern u32 func_002c8da0(void);
+extern u32 func_002c8e50(void);
+extern u32 func_002c8f00(void);
+extern u32 func_002c8fb0(void);
+extern u32 func_002c9060(void);
+extern u32 func_002c90b0(void);
+extern u32 func_002c9100(void);
+extern u32 func_002c9150(void);
+extern u32 func_002c9200(void);
+extern u32 func_002c92b0(void);
+extern u32 func_002c9300(void);
+extern u32 func_002c9350(void);
+extern u32 func_002c9400(void);
+extern u32 func_002c94b0(void);
+extern u32 func_002c9560(void);
+extern u32 func_002c9610(void);
+extern u32 func_002c96c0(void);
+extern u32 func_002c9770(void);
+extern u32 func_002c9820(void);
+extern u32 func_002c98d0(void);
+extern u32 func_002c99c0(void);
+extern u32 func_002c9ab0(void);
+extern u32 func_002c9ba0(void);
+extern u32 func_002c9ce0(void);
+extern u32 func_002c9da0(void);
+extern u32 func_002c9e90(void);
+extern u32 func_002c9f80(void);
+extern u32 func_002ca070(void);
+extern u32 func_002ca160(void);
+extern u32 func_002ca250(void);
+extern u32 func_002ca340(void);
+extern u32 func_002ca3e0(void);
+extern u32 func_002ca480(void);
+extern u32 func_002ca590(void);
+extern u32 func_002ca6a0(void);
+extern u32 func_002ca7b0(void);
+extern u32 func_002ca900(void);
+extern u32 func_002ca9d0(void);
+extern u32 func_002caae0(void);
+extern u32 func_002cabf0(void);
+extern u32 func_002cad00(void);
+extern u32 func_002cae10(void);
+extern u32 func_002caf20(void);
+extern u32 func_002cb030(void);
+extern u32 func_002cb0e0(void);
+extern u32 func_002cb190(void);
+extern u32 func_002cb270(void);
+extern u32 func_002cb320(void);
+extern u32 func_002cb3d0(void);
+extern u32 func_002cb480(void);
+extern u32 func_002cb530(void);
+extern u32 func_002cb5e0(void);
+extern u32 func_002cb690(void);
+extern u32 func_002cb740(void);
+extern u32 func_002cb7f0(void);
+extern u32 func_002cb8a0(void);
+extern u32 func_002cb950(void);
+extern u32 func_002cba00(void);
+extern u32 func_002cba50(void);
+extern u32 func_002cbaa0(void);
+extern u32 func_002cbaf0(void);
+extern u32 func_002cbba0(void);
+extern u32 func_002cbcd0(void);
+extern u32 func_002cbd90(void);
+extern u32 func_002cbe50(void);
+extern u32 func_002cbf10(void);
+extern u32 func_002cbfd0(void);
+extern u32 func_002cc0a0(void);
+extern u32 func_002cc190(void);
+extern u32 func_002cc240(void);
+extern u32 func_002cc330(void);
+extern u32 func_002cc3e0(void);
+extern u32 func_002cc450(void);
+extern u32 func_002cc4c0(void);
+extern u32 func_002cc530(void);
+extern u32 func_002cc5a0(void);
+extern u32 func_002cc650(void);
+extern u32 func_002cc700(void);
+extern u32 func_002cc7b0(void);
+extern u32 func_002cc820(void);
+extern u32 func_002cc890(void);
+extern u32 func_002cc940(void);
+extern u32 func_002cc9f0(void);
+extern u32 func_002ccaa0(void);
+extern u32 func_002ccb50(void);
+extern u32 func_002ccc00(void);
+extern u32 func_002cccb0(void);
+extern u32 func_002ccd60(void);
+extern u32 func_002cce10(void);
+extern u32 func_002cce80(void);
+extern u32 func_002ccef0(void);
+extern u32 func_002ccf60(void);
+extern u32 func_002cd010(void);
+extern u32 func_002cd0c0(void);
+extern u32 func_002cd170(void);
+extern u32 func_002cd220(void);
+extern u32 func_002cd2d0(void);
+extern u32 func_002cd380(void);
+extern u32 func_002cd430(void);
+extern u32 func_002cd4e0(void);
+extern u32 func_002cd570(void);
+extern u32 func_002cd620(void);
+extern u32 func_002cd690(void);
+extern u32 func_002cd740(void);
+extern u32 func_002cd7f0(void);
+extern u32 func_002cd8c0(void);
+extern u32 func_002cd940(void);
+extern u32 func_002cd9c0(void);
+extern u32 func_002cda10(void);
+extern u32 func_002cda50(void);
+extern u32 func_002cdad0(void);
+extern u32 func_002cdb70(void);
+extern u32 func_002cdbe0(void);
+extern u32 func_002cdc50(void);
+extern u32 func_002cdcc0(void);
+extern u32 func_002cdd30(void);
+extern u32 func_002cdda0(void);
+extern u32 func_002cde10(void);
+extern u32 func_002cde60(void);
+extern u32 func_002cded0(void);
+extern u32 func_002cdf40(void);
+extern u32 func_002ce010(void);
+extern u32 func_002ce090(void);
+extern u32 func_002ce170(void);
+extern u32 func_002ce210(void);
+extern u32 func_002ce2b0(void);
+extern u32 func_002ce380(void);
+extern u32 func_002ce440(void);
+extern u32 func_002ce4e0(void);
+extern u32 func_002ce5c0(void);
+extern u32 func_002ce6c0(void);
+extern u32 func_002ce7a0(void);
+extern u32 func_002ce880(void);
+extern u32 func_002ce960(void);
+extern u32 func_002cea40(void);
+extern u32 func_002ceb20(void);
+extern u32 func_002cec30(void);
+extern u32 func_002ced60(void);
+extern u32 func_002cef10(void);
+extern u32 func_002cf070(void);
+extern u32 func_002cf1d0(void);
+extern u32 func_002cf340(void);
+extern u32 func_002cf450(void);
+extern u32 func_002cf580(void);
+extern u32 func_002cf6b0(void);
+extern u32 func_002cf7e0(void);
+extern u32 func_002cf890(void);
+extern u32 func_002cf940(void);
+extern u32 func_002cf9f0(void);
+extern u32 func_002cfa40(void);
+extern u32 func_002cfb20(void);
+extern u32 func_002cfc50(void);
+extern u32 func_002cfd80(void);
+extern u32 func_002cfeb0(void);
+extern u32 func_002cffc0(void);
+extern u32 func_002d0150(void);
+extern u32 func_002d0270(void);
+extern u32 func_002d03e0(void);
+extern u32 func_002d05c0(void);
+extern u32 func_002d06e0(void);
+extern u32 func_002d0720(void);
+extern u32 func_002d0760(void);
+extern u32 func_002d0860(void);
+extern u32 func_002d08e0(void);
+extern u32 func_002d0970(void);
+extern u32 func_002d09d0(void);
+extern u32 func_002d0a30(void);
+extern u32 func_002d0ac0(void);
+extern u32 func_002d0af0(void);
+extern u32 func_002d0b90(void);
+extern u32 func_002d0bd0(void);
+extern u32 func_002d0c10(void);
+extern u32 func_002d0c50(void);
+extern u32 func_002d0c80(void);
+extern u32 func_002d0cb0(void);
+extern u32 func_002d0d00(void);
+extern u32 func_002d0d70(void);
+extern u32 func_002d0de0(void);
+extern u32 func_002d0ef0(void);
+extern u32 func_002d0f90(void);
+extern u32 func_002d1030(void);
+extern u32 func_002d10f0(void);
+extern u32 func_002d1180(void);
+extern u32 func_002d11d0(void);
+extern u32 func_002d1210(void);
+extern u32 func_002d1260(void);
+extern u32 func_002d12a0(void);
+extern u32 func_002d12e0(void);
+extern u32 func_002d13c0(void);
+extern u32 func_002d1490(void);
+extern u32 func_002d14d0(void);
+extern u32 func_002d1510(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma alias func_0027ffb0_v3d func_0027ffb0
+extern void func_0027ffb0_v3d(int unit, RwV3d* out);
+#pragma alias func_00318ed0_v3d func_00318ed0
+extern s32 func_00318ed0_v3d(u32 model, u32 index, RwV3d* out);
+
+
+
+
+
+
+
+
+/* W322 probe: func_002ba0f0 with opt_common_subs off improved normalized_diff 389 -> 372 (object 680/688). */
+
+
+
+
+typedef struct FormationLoadWork {
+  BtlFormationState* state;
+  u32 request;
+  u32 source;
+  u16 flags;
+  u16 padding;
+} FormationLoadWork;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002bde10 (MATCH nd0 -> MISMATCH nd119) - measured W161. */
+
+/* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern u32 func_002c1ce0_u32(int param_1, int param_2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002bfcb0 with opt_loop_invariants on improved normalized_diff 479 -> 446 (object 688/688). */
+
+/* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
+
+
+
+
+
+/* Removing this loses func_002c0970 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
+/* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002c1490 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+/* Removing this loses FUN_002c14f0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c15e0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
+
+
+/* Removing this loses FUN_002c16a0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
+
+
+
+/* Removing this loses FUN_002c17b0 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
+/* Removing this loses FUN_002c1850 (MATCH nd0 -> MISMATCH nd153) - measured W161. */
+
+/* Removing this loses FUN_002c1a30 (MATCH nd0 -> MISMATCH nd124) - measured W161. */
+
+/* Removing this loses FUN_002c1bf0 (MATCH nd0 -> MISMATCH nd135) - measured W161. */
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002c1f60 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2010 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c20c0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2170 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2270 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2360 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2470 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+
+
+
+/* Removing this loses FUN_002c2630 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c26e0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2790 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2840 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c29e0 (MATCH nd0 -> MISMATCH nd175) - measured W161. */
+
+/* Removing this loses FUN_002c2be0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c2c40 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c2ca0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+
+
+/* W322 probe: func_002c2ed0 with opt_loop_invariants on improved normalized_diff 178 -> 158 (object 540/544). */
+
+
+/* Removing this loses FUN_002c3150 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c31b0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c3210 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+
+
+
+/* Removing this loses FUN_002c3300 (MATCH nd0 -> MISMATCH nd148) - measured W161. */
+
+
+
+/* W322 probe: func_002c3770 with opt_loop_invariants on improved normalized_diff 817 -> 808 (object 1056/1136). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002c48a0 with opt_loop_invariants on improved normalized_diff 206 -> 48 (object 484/496). */
+
+/* W322 probe: func_002c4a90 with opt_loop_invariants on improved normalized_diff 206 -> 56 (object 492/496). */
+
+/* W322 probe: func_002c4c80 with opt_loop_invariants on improved normalized_diff 239 -> 19 (object 460/464). */
+
+/* W322 probe: func_002c4e50 with opt_common_subs off improved normalized_diff 288 -> 210 (object 472/480). */
+
+/* W322 probe: func_002c5030 with opt_loop_invariants on improved normalized_diff 534 -> 533 (object 840/848). */
+
+
+
+
+/* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
+
+/* W322 rerun probe: func_002c65d0 with opt_loop_invariants on improved normalized_diff 191 -> 125 (object 1068/1072). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002ca480 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca590 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca6a0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca7b0 (MATCH nd0 -> MISMATCH nd202) - measured W161. */
+/* Removing this loses FUN_002ca900 (MATCH nd0 -> MISMATCH nd113) - measured W161. */
+/* Removing this loses FUN_002ca9d0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002caae0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cabf0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cad00 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cae10 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002caf20 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cb030 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
+/* Removing this loses FUN_002cb0e0 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002cdad0 (MATCH nd0 -> MISMATCH nd74) - measured W161. */
+
+
+
+
+
+
+
+/* Removing this loses FUN_002cde60 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002ced60 (MATCH nd0 -> MISMATCH nd263) - measured W161. */
+#pragma opt_rebuildconditionals off
+static inline u16 btlFormationGetOpposingGenus(u32 unit)
+{
+  u32 side;
+  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  side = 1;
+  goto done;
+nonzero:
+  side = 0;
+done:
+  return side;
+}
+#pragma opt_rebuildconditionals reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002d03e0 with opt_loop_invariants on improved normalized_diff 190 -> 188 (object 472/480). */
+
+
+
+
+
+
+
+
+
+
+// FUN_002d0a30
+
+u32 func_002d0a30(void)
+{
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern void func_0019d3f0(char *,u32);
+  extern char D_00697720[];
+  u8* unit;
+  u32 index = 0;
+  u8 flags;
+
+  unit = (u8*)func_0035f160();
+  index = func_0035ed20(0);
+  flags = iGpffffb708[index * 0x2c];
+  if ((flags & 2) == 0) {
+    func_0019d3f0(D_00697720,0x118b);
+  }
+  *(u16 *)(unit + 0x6c) = 1;
+  *(u16 *)(unit + 0x6e) = index;
+  return 1;
+}
+
+// FUN_002d0ac0
+
+u32 func_002d0ac0(void)
+
+{
+  long lVar1 = 0;
+  
+  lVar1 = func_002efd10();
+  func_0035f060(lVar1 != 0);
+  return 1;
+}
+
+// FUN_002d0af0
+
+u32 func_002d0af0(void)
+{
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern s32 func_002ecb30(u32,s16);
+  u32 unit;
+  s16 selector;
+  s32 result;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  result = func_002ecb30(unit,selector);
+  if (result != 0) {
+    *(u16 *)(unit + 0x6c) = 8;
+    result = (*(s32 (**)(u32,u32))PTR_FUN_00697620)(unit,0);
+    if (result == 0) {
+      (*(s32 (**)(u32,u32))PTR_FUN_006975e0)(unit,0);
+    }
+  }
+  return 1;
+}
+
+// FUN_002d0b90
+
+u32 func_002d0b90(void)
+
+{
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+  
+  uVar1 = func_0035f160();
+  *(u16 *)(uVar1 + 0x6c) = 8;
+  func_002f2450(uVar1);
+  return 1;
+}
+
+// FUN_002d0bd0
+
+u32 func_002d0bd0(void)
+
+{
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+  
+  uVar1 = func_0035f160();
+  *(u16 *)(uVar1 + 0x6c) = 8;
+  func_002f2490(uVar1);
+  return 1;
+}
+
+// FUN_002d0c10
+
+u32 func_002d0c10(void)
+
+{
+  u64 uVar1 = 0;
+  
+  uVar1 = func_0035f160();
+  uVar1 = func_002f2510(uVar1);
+  func_0035f060(uVar1);
+  return 1;
+}
+
+// FUN_002d0c50
+
+u32 func_002d0c50(void)
+
+{
+  long lVar1 = 0;
+  
+  lVar1 = func_002f24d0();
+  func_0035f060(lVar1 != 0);
+  return 1;
+}
+
+// FUN_002d0c80
+
+u32 func_002d0c80(void)
+
+{
+  func_002f39b0(gBtl->actionList.head);
+  return 1;
+}
+
+// FUN_002d0cb0
+
+u32 func_002d0cb0(void)
+
+{
+  func_0035f060((*(u32 *)(iGpffffb7b8 + (u32)*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) * 0x1c)
+               & 0x20) != 0);
+  return 1;
+}
+
+// FUN_002d0d00
+
+u32 func_002d0d00(void)
+
+{
+  u64 uVar1 = 0;
+  
+  func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
+  uVar1 = func_002b8d60(3,0xfff);
+  func_0027ed20(uVar1,0);
+  uVar1 = func_002a3b40(*(u32 *)(iGpffffb6fc + 0x148),0x1c);
+  func_0027ed20(uVar1,0);
+  return 1;
+}
+
+// FUN_002d0d70
+
+u32 func_002d0d70(void)
+
+{
+  u64 uVar1 = 0;
+  
+  func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
+  uVar1 = func_002b8d60(3,0xfff);
+  func_0027ed20(uVar1,0);
+  uVar1 = func_002a3b40(*(u32 *)(iGpffffb6fc + 0x148),0x25);
+  func_0027ed20(uVar1,0);
+  return 1;
+}
+
+// FUN_002d0de0
+
+u32 func_002d0de0(void)
+{
+  RwV3d start;
+  RwV3d startCopy;
+  RwV3d end;
+  RwV3d endCopy;
+  u32 packet;
+
+  func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
+  packet = func_002b8d60_u32(3,0xfff);
+  func_0027ed20(packet,0);
+
+  start.x = func_0035ee60_f32(0);
+  start.y = func_0035ee60_f32(1);
+  start.z = func_0035ee60_f32(2);
+  end.x = func_0035ee60_f32(3);
+  end.y = func_0035ee60_f32(4);
+  end.z = func_0035ee60_f32(5);
+  startCopy = start;
+  endCopy = end;
+  packet = func_002a3d70_move(*(u32 *)(iGpffffb6fc + 0x148),
+                              &start,&end,&startCopy,&endCopy,1.0f);
+  func_0027ed20(packet,0);
+  return 1;
+}
+
+// FUN_002d0ef0
+
+u32 func_002d0ef0(void)
+{
+  *(float *)(DAT_00957170_abs + 0) = func_0035ee60_f32(0);
+  *(float *)(DAT_00957170_abs + 4) = func_0035ee60_f32(1);
+  *(float *)(DAT_00957170_abs + 8) = func_0035ee60_f32(2);
+  *(float *)(DAT_00957150_abs + 0) = func_0035ee60_f32(3);
+  *(float *)(DAT_00957150_abs + 4) = func_0035ee60_f32(4);
+  *(float *)(DAT_00957150_abs + 8) = func_0035ee60_f32(5);
+  return 1;
+}
+
+// FUN_002d0f90
+
+u32 func_002d0f90(void)
+{
+  *(float *)(DAT_00957160_abs + 0) = func_0035ee60_f32(0);
+  *(float *)(DAT_00957160_abs + 4) = func_0035ee60_f32(1);
+  *(float *)(DAT_00957160_abs + 8) = func_0035ee60_f32(2);
+  *(float *)(DAT_00957140_abs + 0) = func_0035ee60_f32(3);
+  *(float *)(DAT_00957140_abs + 4) = func_0035ee60_f32(4);
+  *(float *)(DAT_00957140_abs + 8) = func_0035ee60_f32(5);
+  return 1;
+}
+
+// FUN_002d1030
+
+u32 func_002d1030(void)
+
+{
+  int iVar1 = 0;
+  u64 uVar2 = 0;
+  
+  func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
+  uVar2 = func_002b8d60(3,0xfff);
+  func_0027ed20(uVar2,0);
+  iVar1 = func_0035ed20_u32(0);
+  uVar2 = func_002a3d70_f32((float)iVar1 / 30.0f,*(u32 *)(iGpffffb6fc + 0x148),
+                           &DAT_00957170_abs,&DAT_00957150_abs,&DAT_00957160_abs,&DAT_00957140_abs);
+  func_0027ed20(uVar2,0);
+  return 1;
+}
+
+// FUN_002d10f0
+
+u32 func_002d10f0(void)
+{
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002db890(void);
+  extern u32 func_002db800(u32,u32);
+  u32 selector;
+  u32 value;
+  u32 effect;
+
+  selector = func_0035ed20(0);
+  value = func_0035ed20(1);
+  effect = func_002db890();
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
+  effect = func_002db800(0x20,selector);
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
+  return 1;
+}
+
+// FUN_002d1180
+
+u32 func_002d1180(void)
+{
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002db890(void);
+  u32 value;
+  u32 effect;
+
+  value = func_0035ed20(0);
+  effect = func_002db890();
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
+  return 1;
+}
+
+// FUN_002d11d0
+
+u32 func_002d11d0(void)
+
+{
+  long lVar1 = 0;
+  
+  lVar1 = func_002d1a70();
+  if (lVar1 == 1) {
+    *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x4000;
+  }
+  return 1;
+}
+
+// FUN_002d1210
+
+u32 func_002d1210(void)
+
+{
+  long lVar1 = 0;
+  
+  lVar1 = func_002d1a70();
+  if (lVar1 == 1) {
+    *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xffffbfff;
+    func_002d1a10();
+  }
+  return 1;
+}
+
+// FUN_002d1260
+
+u32 func_002d1260(void)
+
+{
+  long lVar1 = 0;
+  
+  func_001ff3b0();
+  lVar1 = func_002d1a70();
+  if (lVar1 == 1) {
+    func_001ff370();
+  }
+  return 1;
+}
+
+// FUN_002d12a0
+
+u32 func_002d12a0(void)
+
+{
+  long lVar1 = 0;
+  
+  func_001ff390();
+  lVar1 = func_002d1a70();
+  if (lVar1 == 1) {
+    func_001ff350();
+  }
+  return 1;
+}
+
+// FUN_002d12e0
+
+u32 func_002d12e0(void)
+{
+  extern u32 func_0029ad20(void);
+  extern u32 func_0035ed20(u32);
+  u32 unit;
+  u16 side;
+  u16 expectedId;
+  u32 valid;
+
+  unit = func_0029ad20();
+  side = func_0035ed20(0);
+  expectedId = func_0035ed20(1);
+  valid = 1;
+  switch (side) {
+  case 0:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0) {
+      valid = 0;
+    }
+    break;
+  case 1:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 1) {
+      valid = 0;
+    }
+    break;
+  }
+  if ((valid == 1) && (*(u16 *)(*(int *)(unit + 0x30) + 0xa4) != expectedId)) {
+    valid = 0;
+  }
+  func_0035f060(valid != 0);
+  return 1;
+}
+
+// FUN_002d13c0
+
+u32 func_002d13c0(void)
+{
+  extern u32 func_0035f160(void);
+  extern u16 func_002c6ba0(void *);
+  extern void *func_002c6e30(void *,u16);
+  extern void func_002c6a00(void *,void *,u16);
+  char *unit;
+  char *action;
+  u16 selector;
+  u32 actionWord;
+  s32 result;
+
+  unit = (char *)func_0035f160();
+  selector = func_002c6ba0(unit);
+  action = (char *)func_002c6e30(unit,selector);
+  func_002c6a00(unit,unit + 0x38,*(u16 *)(action + 2));
+  actionWord = *(u32 *)(action + 4);
+  result = (*(s32 (**)(void *,u32))
+      &PTR_FUN_006975e0[((actionWord & 0xff000000) >> 24) * 2])(unit,actionWord & 0xffffff);
+  if (result == 0) {
+    (*(s32 (**)(void *,u32))PTR_FUN_006975e0)(unit,0);
+  }
+  return 1;
+}
+
+// FUN_002d1490
+
+u32 func_002d1490(void)
+
+{
+  u64 uVar1 = 0;
+  
+  uVar1 = func_0035ed20(0);
+  uVar1 = func_002ffbc0(uVar1);
+  func_0035f060(uVar1);
+  return 1;
+}
+
+// FUN_002d14d0
+
+u32 func_002d14d0(void)
+{
+  extern u32 func_0035ed20(s32);
+  u32 index;
+  u32 base;
+
+  index = func_0035ed20(0);
+  base = (u32)*(u8* volatile /* Removing this qualifier loses func_002d14d0 (MATCH nd0 -> MISMATCH nd7, size 64 -> 64) - measured W170. */ *)&iGpffffb6fc;
+  index <<= 2;
+  func_0035f060(*(u32 *)(index + base + 0xd30));
+  return 1;
+}
+
+// FUN_002d1510
+
+u32 func_002d1510(void)
+
+{
+  extern u32 func_0035ed20(s32);
+  u32 iVar1 = 0;
+  u32 uVar2 = 0;
+  u32 base;
+  
+  iVar1 = func_0035ed20(0);
+  uVar2 = func_0035ed20(1);
+  base = (u32)*(u8* volatile /* Removing this qualifier loses func_002d1510 (MATCH nd0 -> MISMATCH nd7, size 80 -> 80) - measured W170. */ *)&iGpffffb6fc;
+  iVar1 <<= 2;
+  *(u32 *)(iVar1 + base + 0xd30) = uVar2;
+  return 1;
+}
+
+// FUN_002d1560
+u32 func_002d1560(void)
+{
+  return 1;
 }

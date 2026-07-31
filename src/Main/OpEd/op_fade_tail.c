@@ -130,286 +130,28 @@ typedef struct OpTailPosition {
 } OpTailPosition;
 void func_0027bae0(const OpTailPosition* value);
 
-// FUN_00279120
-void func_00279120(void)
-{
-    s32 i;
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    for (i = 0; i < (s32)work[0x3738 / 4]; i++) {
-        func_003b0170(*(u32*)((u8*)work + i * 0x110 + 0x110));
-    }
-    work[0x3738 / 4] = 0;
-}
-
-// FUN_002791b0
-void func_002791b0(u32 id)
-{
-    u32* root;
-    u32* work;
-    u32 handle;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    root = sOpTailA;
-    work = (u32*)((u8*)root + root[0x3738 / 4] * 0x110 + 0x10);
-    func_003b0e70(1);
-    func_003b0e90(2);
-    handle = func_003b0970(
-        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
-    func_003b0d70(handle, 0x640, 0x320);
-    frFontSetTextScale(handle, 0.0f);
-    work[0x100 / 4] = handle;
-    func_003b0e90(1);
-    func_003b0e70(2);
-    root[0x3738 / 4]++;
-}
-
-// FUN_002792c0
-void func_002792c0(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    if ((work[0] & 2) != 0) {
-        func_003b0170(work[0xe54]);
-    }
-    work[0] &= ~2u;
-}
-
-// FUN_00279330
-void func_00279330(u32 id)
-{
-    u32* work;
-    u32 handle;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    if ((~work[0] & 2) == 0) {
-        K_Assert("brp_param.c", 0x3e0);
-    }
-    func_003b0e70(1);
-    func_003b0e90(2);
-    handle = func_003b0970(
-        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
-    func_003b0d70(handle, 0x640, 0x320);
-    frFontSetTextScale(handle, 0.0f);
-    work[0xe54] = handle;
-    func_003b0e90(1);
-    func_003b0e70(2);
-    work[0] |= 2;
-}
 
 
-// FUN_00279510
-void func_00279510(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
 
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0x890) = value;
-}
 
-// FUN_00279580
-void func_00279580(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
 
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0xaa0) = value;
-}
 
-// FUN_002795f0
-void func_002795f0(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
 
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0xaa4) = value;
-}
 
-// FUN_00279660
-void func_00279660(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 8;
-}
 
-// FUN_002796b0
-void func_002796b0(void)
-{
-    u32* work;
 
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0xdcf] = 0;
-    work[0] |= 4;
-}
 
-// FUN_00279700
-u32 func_00279700(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    return sOpTailA[0] & 4;
-}
 
-// FUN_00279750
-void func_00279750(void)
-{
-    u32* work;
 
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0xdd1] = 0;
-    work[0] |= 0x10;
-}
 
-// FUN_002797a0
-u32 func_002797a0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    return sOpTailA[0] & 0x10;
-}
 
-// FUN_002797f0
-void func_002797f0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 0x20;
-}
 
-// FUN_00279840
-void func_00279840(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] &= ~0x20u;
-}
-
-// FUN_00279890
-void func_00279890(u32 a, u32 b)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0x3b60 / 4] = a;
-    work[0x3b64 / 4] = b;
-}
-
-// FUN_002798f0
-void func_002798f0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 0x40;
-}
 // W389 residual nd20 (object 372/384): six-knob singles and all 15 knob pairs, plus pointer-type, temporary, and declaration-order probes, were reverted as neutral; alignment-cursor register coloring remains a compiler floor.
-// FUN_00279940 NONMATCHING
-u32* func_00279940(const u32* header)
-{
-    u32 size;
-    u32* out;
-    u32* data;
-    u32 aligned;
-    u32 cursor;
-    u32 i;
-    u8* bytes;
 
-    size = 0x14;
-    size += header[3] * 4;
-    if ((size & 3) != 0) {
-        size += 4 - (size & 3);
-    }
-    size += header[6];
-    if ((size & 3) != 0) {
-        size += 4 - (size & 3);
-    }
-    size += header[2];
-    data = out = (u32*)(*DAT_00960178)(size, 0x40000);
-    data += 5;
-    out[2] = (u32)data;
-    aligned = (u32)data + header[3] * 4;
-    if ((aligned & 3) != 0) {
-        aligned += 4 - (aligned & 3);
-    }
-    out[3] = aligned;
-    aligned += header[6];
-    if ((aligned & 3) != 0) {
-        aligned += 4 - (aligned & 3);
-    }
-    out[4] = aligned;
-    out[1] = header[3];
-    out[0] = header[0];
-    func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);
-    func_00521250((void*)out[4], (const u8*)header + header[1], header[2]);
-    bytes = (u8*)header + header[4];
-    cursor = out[3];
-    for (i = 0; i < header[3]; i++, bytes++) {
-        ((u32*)out[2])[i] = cursor;
-        cursor += *bytes;
-    }
-    return out;
-}
 
-// FUN_00279ac0
-void func_00279ac0(u32 value)
-{
-    (*DAT_0096017c)((void*)(uintptr_t)value);
-}
 
-// FUN_00279AF0
-u32 func_00279af0(const u32* work, u32 index)
-{
-    return *(const u32 *)(index * sizeof(u32) + work[2]);
-}
 
-// FUN_00279b10
-u32 func_00279b10(const u32* work)
-{
-    return work[4];
-}
 
-// FUN_00279b20
-u32 func_00279b20(const u32* work)
-{
-    return work[1];
-}
-
-// FUN_00279b30
-void func_00279b30(u32* work)
-{
-    s32 i;
-    u32 dark;
-
-    work[0] = 0;
-    ((u8*)work)[0x122c] = 0xff;
-    ((u8*)work)[0x122d] = 0xff;
-    ((u8*)work)[0x122e] = 0xff;
-    ((u8*)work)[0x122f] = 0xff;
-    dark = func_0016f190(0xb8e);
-    if (dark != 0) {
-        func_001985b0(0xff, 0xff, 0xff, 0xff);
-    } else {
-        func_001985b0(0xf, 0x1f, 0x28, 0xff);
-    }
-    for (i = 0; i < 0x20; i++) {
-        *(u32*)((u8*)work + i * 0x90 + 4) = 0;
-    }
-    sOpTailB = work;
-}
 
 
 
