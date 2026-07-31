@@ -240,13 +240,14 @@ extern int datGetEquipmentId_int(s16 pcId, s32 equipmentIdx);
 #pragma alias FUN_001159f0_typed FUN_001159f0
 extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
-#pragma alias FUN_001159f0_reordered FUN_001159f0
-extern void FUN_001159f0_reordered(f32 x, void* owner, void* atlas,
-                                   s32 tile, u8 alpha, f32 y, f32 depth);
 #pragma alias FUN_00115bc0_typed FUN_00115bc0
 extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 u32 red, u32 green, u32 blue, f32 x, f32 y,
                                 f32 depth);
+#pragma alias FUN_00115bc0_reordered FUN_00115bc0
+extern void FUN_00115bc0_reordered(void* owner, void* atlas, s32 tile,
+                                    u8 alpha, f32 x, f32 y, u32 red,
+                                    u32 green, u32 blue, f32 depth);
 #pragma alias FUN_003b32d0_typed FUN_003b32d0
 extern void FUN_003b32d0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
                                 s32 alignment, const char* text, s32 maxWidth,
@@ -472,7 +473,9 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
             equipment = datGetEquipmentIdx(work->pcId, 0);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            FUN_00115bc0_reordered(owner, *(void**)DAT_00833B70_abs, style * 2,
+                                   record->alpha, record->x, record->y,
+                                   0x20, 0x43, 0x78, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -550,7 +553,9 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
             equipment = datGetEquipmentIdx(work->pcId, 1);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            FUN_00115bc0_reordered(owner, *(void**)DAT_00833B70_abs, style * 2,
+                                   record->alpha, record->x, record->y,
+                                   0x20, 0x43, 0x78, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -612,7 +617,9 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
             equipment = datGetEquipmentIdx(work->pcId, 2);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            FUN_00115bc0_reordered(owner, *(void**)DAT_00833B70_abs, style * 2,
+                                   record->alpha, record->x, record->y,
+                                   0x20, 0x43, 0x78, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -672,7 +679,9 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
             equipment = datGetEquipmentIdx(work->pcId, 3);
             style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            FUN_00115bc0_reordered(owner, *(void**)DAT_00833B70_abs, style * 2,
+                                   record->alpha, record->x, record->y,
+                                   0x20, 0x43, 0x78, record->depth);
             id = datGetEquipmentId_int(work->pcId, equipment);
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
@@ -1639,9 +1648,8 @@ void* FUN_001618a0(KwlnTask* task)
         FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
                            work->scrollX, work->scrollY, 100.0f);
         if (work->scrollX < 0.0f) {
-            FUN_001159f0_reordered(work->scrollX + 640.0f, owner,
-                                   DAT_00833B9C, 0, (u8)alpha,
-                                   work->scrollY, 100.0f);
+            FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
+                               work->scrollX + 640.0f, work->scrollY, 100.0f);
         }
         work->scrollX -= 1.0f;
         if (work->scrollX < -640.0f) {
