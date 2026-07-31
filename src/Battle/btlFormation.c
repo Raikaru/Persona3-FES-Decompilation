@@ -3490,7 +3490,7 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
     *(u16 *)(param_5 + 4) = 0;
   }
   sVar1 = *(short *)(param_5 + 4);
-  if ((-1 < sVar1) && (sVar1 < 0x1c)) {
+  if ((sVar1 >= 0) && (sVar1 < 0x1c)) {
     if (sVar1 >= 0x10) {
       param_5[1] = param_5[3];
     }

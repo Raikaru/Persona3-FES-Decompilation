@@ -43,7 +43,9 @@ extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and wo
 
 static f32 sVPadMoveSpeed;
 
-#pragma opt_strength_reduction off
+// opt_dead_assignments off: normalized_diff 1663 -> 1636; object 3120 -> 3116 (window 3152)
+#pragma opt_dead_assignments off
+#pragma opt_common_subs off
 // FUN_001e05b0 NONMATCHING
 void* K_VPad_UpdateTask(KwlnTask* task)
 {
@@ -59,6 +61,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     s32 animation;
     s32 rotated;
     s32 forceAnimation;
+    s32 cameraInput;
     work = (VPadWork*)task->workData;
     kwlnGetMainCamera();
     axis = D_00683D78;
@@ -124,9 +127,11 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         valueF = (f32)(u32)value;
         right.x = valueF - 128.0f;
 
+        cameraInput = 0;
         if ((padButtons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 ||
             right.x > 48.0f)
         {
+            cameraInput = 1;
             if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
             {
                 if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 &&
@@ -153,11 +158,11 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                     func_001d5e30(K_Field_Get()->cameraCtlTask, speed);
                 }
             }
-            goto camera_input_done;
         }
-        if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 ||
-                 right.x < -48.0f)
+        else if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 ||
+            right.x < -48.0f)
         {
+            cameraInput = 1;
             if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
             {
                 if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 &&
@@ -184,10 +189,10 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                     func_001d5e30(K_Field_Get()->cameraCtlTask, speed);
                 }
             }
-            goto camera_input_done;
         }
 
-        if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
+        if (cameraInput == 0 &&
+            (*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
             (*(u16*)(gPads_abs + 0xe) & HPAD_BTN_CIRCLE) != 0 &&
             K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
         {
@@ -195,7 +200,6 @@ void* K_VPad_UpdateTask(KwlnTask* task)
             return KWLNTASK_CONTINUE;
         }
 
-        camera_input_done:
         if (move.z < -48.0f || move.z > 48.0f ||
             move.x < -48.0f || move.x > 48.0f)
         {
@@ -363,8 +367,9 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 
 }
-#pragma opt_strength_reduction reset
 // FUN_001e1200
+#pragma opt_common_subs reset
+#pragma opt_dead_assignments reset
 void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {
     RwFree(rotatePcTask->workData);

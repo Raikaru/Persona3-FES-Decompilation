@@ -62,7 +62,6 @@ static const float sAtanTerms[] = {
 };
 
 #pragma optimization_level 3
-#pragma opt_common_subs off
 // FUN_0052e408 NONMATCHING
 float atanf(float x)
 {
@@ -151,7 +150,6 @@ float atanf(float x)
 
 
 #pragma optimization_level 3
-#pragma opt_common_subs reset
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
@@ -190,6 +188,7 @@ float fabsf(register float x)
 #pragma optimization_level 2
 
 #pragma optimization_level 3
+#pragma opt_strength_reduction off
 // FUN_0052e7a0 NONMATCHING
 float floorf(register float x)
 {
@@ -242,6 +241,7 @@ float floorf(register float x)
 }
 
 #pragma optimization_level 3
+#pragma opt_strength_reduction reset
 // FUN_0052e878 NONMATCHING
 float sinf(float x)
 {
