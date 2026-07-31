@@ -3291,7 +3291,6 @@ void FUN_0038a730(int param_1)
 // Typed vector-source reconstruction holds nd12/size320.
 // Call census is CLEAN with no data relocations.
 // Residual is a pure saved-register coloring cycle.
-#pragma opt_common_subs on
 // FUN_0038A7C0 NONMATCHING
 
 
@@ -3349,7 +3348,6 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
 }
 
 
-#pragma opt_common_subs reset
 // FUN_0038A900
 
 
@@ -4114,6 +4112,7 @@ void FUN_0038b140(int param_1)
 }
 
 
+#pragma opt_common_subs on
 // FUN_0038B2C0 NONMATCHING
 
 
@@ -4294,6 +4293,7 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0038B550
 
 

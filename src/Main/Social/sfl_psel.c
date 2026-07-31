@@ -829,11 +829,11 @@ void func_00215b00(void)
 {
     u8* work;
     DatPersonaWork* hero;
-    u32 heroCount;
-    u32 totalCount;
-    u32 count;
+    s32 heroCount;
+    s32 totalCount;
+    s32 count;
     u32 texture;
-    u32 i;
+    s32 i;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
