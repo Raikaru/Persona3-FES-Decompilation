@@ -4239,7 +4239,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   param_3[1] = fVar5;
   param_3[2] = fVar9;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
-    fVar6 = afStack_10[uVar3];
+    fVar6 = *(float *)((u8 *)afStack_10 + (u32)uVar3 * 4 + 0);
     iVar1 = param_2 + uVar2 * 0x1c;
     fVar4 = *(float *)(iVar1 + 8) * fVar6;
     fVar5 = *(float *)(iVar1 + 0xc) * fVar6;
@@ -4315,8 +4315,8 @@ void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1)
 void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
 {
   u8* iVar1;
-  u16 uVar2;
   u16 uVar3;
+  u16 uVar2;
   float fVar4;
   float fVar5;
   float fVar6;

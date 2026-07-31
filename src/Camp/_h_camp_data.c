@@ -105,6 +105,9 @@ extern u32 FUN_00111f30();
 extern u32 FUN_00112420();
 extern u32 FUN_001124b0();
 extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
+#pragma alias FUN_00113a30_camp_reordered FUN_00113a30
+extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
+                                        f32 y, s32 width, s32 height);
 extern u32 FUN_00114450();
 #pragma alias campDataDrawPersonaSprite FUN_00114450
 extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
@@ -203,8 +206,6 @@ extern u32 FUN_0040eb50();
 extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
                             const char* text, s32 maxWidth);
 extern u32 FUN_00521250();
-#pragma alias FUN_00521250_camp FUN_00521250
-extern void FUN_00521250_camp(void* destination, const void* source, u32 size);
 extern u32 FUN_00523ac8();
 
 extern void* func_00133780(KwlnTask* task);
@@ -461,10 +462,11 @@ void* FUN_001675e0(KwlnTask* task)
         if (DAT_007cdf48 == 0) {
             ready = -1;
         }
+        else if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData == 3) {
+            ready = 1;
+        }
         else {
-            if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData != 3) {
-                ready = 0;
-            }
+            ready = 0;
         }
         if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
             if (work->mode == 0) {
@@ -1265,7 +1267,7 @@ void FUN_00169040(int param_1)
     (*(void (**)(...))0x0096017c)(work);
 }
 
-// FUN_00169110 NONMATCHING
+// FUN_00169110 MATCHING
 void FUN_00169110(u16 param_1, CampFloatPair param_2,
                   void* param_3, s32 param_4)
 {
@@ -1279,14 +1281,14 @@ void FUN_00169110(u16 param_1, CampFloatPair param_2,
     drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = param_2.y + 50.0f;
     depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f, color,
-                 0x280, 0x1c0);
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
     depth = FUN_0021ea00(0x28);
     campDataDrawEquipment(*depthBase - depth,
                           drawPosition, param_3, param_4);
 }
-
-// FUN_001691F0 NONMATCHING
+// FUN_001691F0 MATCHING
 void FUN_001691F0(u16 param_1, CampFloatPair param_2,
                   void* param_3, void* param_4, s32 param_5)
 {
@@ -1300,8 +1302,9 @@ void FUN_001691F0(u16 param_1, CampFloatPair param_2,
     color = 0xff - param_5;
     color |= 0x20808000U;
     depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f, color,
-                 0x280, 0x1c0);
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
     drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = y + 50.0f;
     depth = FUN_0021ea00(0x28);
@@ -2214,7 +2217,7 @@ void FUN_0016c010(void)
     FUN_00100ec0(cdvd);
 }
 
-// FUN_0016C1D0 NONMATCHING
+// FUN_0016C1D0 MATCHING
 void FUN_0016c1d0(void)
 {
     CampHelpPaths helpPaths;
@@ -2222,6 +2225,7 @@ void FUN_0016c1d0(void)
     void* cdvd;
     void* resource;
     s32 i;
+    u32 copySize;
 
     helpPaths = *(CampHelpPaths*)PTR_s_help_datWeaponHelp_bmd_005e31d0;
     FUN_001023a0((void*)(uintptr_t)FUN_00100d80(D_005E31F0, 1));
@@ -2234,8 +2238,9 @@ void FUN_0016c1d0(void)
     FUN_001023a0(DAT_007cdfe8 =
         (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
     cdvd = DAT_007cdfe8;
-    FUN_00521250_camp(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110),
-                      *(u32*)((u8*)cdvd + 0x118));
+    copySize = *(volatile u32*)((u8*)cdvd + 0x118);
+    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110),
+                 copySize);
     FUN_00100ec0(DAT_007cdfe8);
     FUN_0016c2f0();
 }

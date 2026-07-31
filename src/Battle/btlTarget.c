@@ -4468,72 +4468,85 @@ void FUN_002d6620(BtlAction *action)
 // FUN_002d7560 NONMATCHING
 void FUN_002d7560(BtlAction *action)
 {
-    u32 i;
-    BtlUnit *unit = action->unit;
-    DatUnit *dat = unit->datUnit;
-    if (((action->unk_1a & 1) != 0) && (unit->genus == 1))
-    {
-        s32 outFlag;
-        if (unit->charId >= 0x150)
-            FUN_0019d3f0((const char *)DAT_00697880 + 0x60, 0x37e);
-        if ((action->unk_1a & 0x20) == 0)
-        {
-            u32 rawValue;
-            f32 timeScale;
-            f32 value;
-            f32 scaled;
-            u32 amount;
-            s16 personaId;
-            action->unk_1a |= 0x20;
-            rawValue = (u32)FUN_0030bc50(dat);
-            timeScale = (f32)FUN_001c0070();
-            value = ((s32)rawValue < 0) ? (f32)rawValue : (f32)(s32)rawValue;
-            scaled = value * timeScale;
-            if (scaled < 2147483648.0f)
-                amount = (u32)scaled;
-            else
-                amount = (u32)(scaled - 2147483648.0f) | 0x80000000;
-            BTLT_B32(0xbfc) += amount;
+    extern f32 FUN_001c0070(void);
+    extern u32 FUN_0030bc50(DatUnit *);
+    extern u16 FUN_0030bde0(DatUnit *, s32 *);
+    extern void FUN_0019d3f0(const char *, s32);
+    struct BtlRewardPersona {
+        u16 personaId;
+        u16 pad;
+        u32 count;
+    };
+    BtlUnit *unit;
+    u16 i;
 
-            personaId = (s16)FUN_0030bde0(dat, &outFlag);
-            if ((outFlag != 1) && (BTLT_AS16(action, 0x80) != 0) &&
-                ((u8)FUN_002ffbc0(100) < BTLT_A8(action, 0x82)))
-                personaId = BTLT_AS16(action, 0x80);
-            if (personaId != 0)
+    if ((action->unk_1a & 1) != 0)
+    {
+        unit = action->unit;
+        if (unit->genus == 1)
+        {
+            s32 outFlag;
+            if (unit->charId >= 0x150)
+                FUN_0019d3f0((const char *)DAT_00697880 + 0x60, 0x37e);
+            if ((action->unk_1a & 0x20) == 0)
             {
-                u8 found = 0;
-                for (i = 0; i < 3; i++)
+                u32 rawValue;
+                f32 timeScale;
+                f32 value;
+                u32 amount;
+                u16 personaId;
+                int found;
+
+                action->unk_1a |= 0x20;
+                rawValue = FUN_0030bc50(unit->datUnit);
+                timeScale = FUN_001c0070();
+                value = (f32)rawValue;
+                amount = (u32)(value * timeScale);
+                BTLT_B32(0xbfc) += amount;
+
+                personaId = FUN_0030bde0(unit->datUnit, &outFlag);
+                if ((outFlag != 1) && (action->target.rewardPersonaId != 0) &&
+                    ((u8)FUN_002ffbc0(100) < action->target.rewardPersonaChance))
+                    personaId = action->target.rewardPersonaId;
+                if (personaId != 0)
                 {
-                    if (BTLT_BS16(0xbe0 + i * 8) == personaId)
-                    {
-                        BTLT_B32(0xbe4 + i * 8)++;
-                        found = 1;
-                        break;
-                    }
-                }
-                if (found == 0)
-                {
+                    u8 *rewards;
+                    found = 0;
+                    rewards = DAT_007ce3ec;
                     for (i = 0; i < 3; i++)
                     {
-                        if (BTLT_BS16(0xbe0 + i * 8) == 0)
+                        if (*(u16 *)(rewards + i * 8 + 0xbe0) == personaId)
                         {
-                            BTLT_BS16(0xbe0 + i * 8) = personaId;
-                            BTLT_B32(0xbe4 + i * 8) = 1;
-                            BTLT_B32(0xbf8) = i + 1;
+                            (*(u32 *)(rewards + i * 8 + 0xbe4))++;
+                            found = 1;
                             break;
                         }
                     }
+                    if (found == 0)
+                    {
+                        rewards = DAT_007ce3ec;
+                        for (i = 0; i < 3; i++)
+                        {
+                            if (*(u16 *)(rewards + i * 8 + 0xbe0) == 0)
+                            {
+                                *(u16 *)(rewards + i * 8 + 0xbe0) = personaId;
+                                *(u32 *)(rewards + i * 8 + 0xbe4) = 1;
+                                BTLT_B32(0xbf8) = i + 1;
+                                break;
+                            }
+                        }
+                    }
                 }
-            }
-            if ((*(u16 *)(DAT_007ce410 + (u32)unit->charId * 0x3e) & 0x40) != 0)
-                BTLT_B32(0xbdc) |= 2;
-            switch (BTLT_D16(dat, 2))
-            {
-            case 0xc4: BTLT_B32(0xc20) |= 8; break;
-            case 0xc3: BTLT_B32(0xc20) |= 4; break;
-            case 0xc2: BTLT_B32(0xc20) |= 2; break;
-            case 0xc1: BTLT_B32(0xc20) |= 1; break;
-            default: break;
+                if ((((BtlEnemyData*)DAT_007ce410)[unit->charId].flags & 0x40) != 0)
+                    BTLT_B32(0xbdc) |= 2;
+                switch (BTLT_D16(unit->datUnit, 2))
+                {
+                case 0xc1: BTLT_B32(0xc20) |= 1; break;
+                case 0xc2: BTLT_B32(0xc20) |= 2; break;
+                case 0xc3: BTLT_B32(0xc20) |= 4; break;
+                case 0xc4: BTLT_B32(0xc20) |= 8; break;
+                default: break;
+                }
             }
         }
     }

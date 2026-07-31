@@ -642,8 +642,8 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 void fclCombineList003da2a0(FclList* param_1)
 {
     FclNodeData* data;
-    FclTaskLink* node;
     s32 i;
+    FclTaskLink* node;
 
     i = 0;
     node = param_1->list->links;

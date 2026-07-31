@@ -1531,9 +1531,9 @@ int FUN_00388df0(int param_1,int param_2)
 
   
 
-  iVar4 = 0;
-
   iVar7 = 0;
+
+  iVar4 = 0;
 
   iVar6 = 0;
 

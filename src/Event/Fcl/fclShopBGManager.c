@@ -2811,67 +2811,67 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   FclShopBgLocal stack;
 
+  float fStack_0;
+  float fStack_4;
+  float fStack_8;
+  float fStack_c;
+
+
+
 
 
   
 
   iVar4 = *(int *)(param_2 + 0xc);
 
-  puVar7 = (s16 *)DAT_006b0de0_abs;
+  {
+    s16 *src;
+    s16 *dst;
+    int count;
 
-  puVar6 = stack.table1;
+    src = (s16 *)DAT_006b0de0_abs;
+    dst = stack.table1;
+    count = 0x14;
 
-  iVar5 = 0x14;
+    do {
+      uVar1 = *src;
+      uVar2 = src[1];
+      src = src + 2;
+      count = count + -1;
+      *dst = uVar1;
+      dst[1] = uVar2;
+      dst = dst + 2;
+    } while (0 < count);
+  }
 
-  do {
+  {
+    s16 *src;
+    s16 *dst;
+    int count;
 
-    uVar1 = *puVar7;
+    src = (s16 *)DAT_006b0e30_abs;
+    dst = stack.table2;
+    count = 0xc;
 
-    uVar2 = puVar7[1];
+    do {
+      uVar1 = *src;
+      uVar2 = src[1];
+      src = src + 2;
+      count = count + -1;
+      *dst = uVar1;
+      dst[1] = uVar2;
+      dst = dst + 2;
+    } while (0 < count);
+  }
 
-    puVar7 = puVar7 + 2;
-
-    iVar5 = iVar5 + -1;
-
-    *puVar6 = uVar1;
-
-    puVar6[1] = uVar2;
-
-    puVar6 = puVar6 + 2;
-
-  } while (0 < iVar5);
-
-  puVar7 = (s16 *)DAT_006b0e30_abs;
-
-  puVar6 = stack.table2;
-
-  iVar5 = 0xc;
-
-  do {
-
-    uVar1 = *puVar7;
-
-    uVar2 = puVar7[1];
-
-    puVar7 = puVar7 + 2;
-
-    iVar5 = iVar5 + -1;
-
-    *puVar6 = uVar1;
-
-    puVar6[1] = uVar2;
-
-    puVar6 = puVar6 + 2;
-
-  } while (0 < iVar5);
-
-  *(float *)((u8 *)&stack + 0) = *(float *)((u8 *)DAT_006b0e64_abs - 4);
-
-  *(float *)((u8 *)&stack + 4) = *(float *)DAT_006b0e64_abs;
-
-  *(float *)((u8 *)&stack + 8) = *(float *)((u8 *)DAT_006b0e64_abs + 4);
-
-  *(float *)((u8 *)&stack + 0xc) = *(float *)((u8 *)DAT_006b0e64_abs + 8);
+  fStack_0 = *(float *)((u8 *)DAT_006b0e64_abs - 4);
+  fStack_4 = *(float *)DAT_006b0e64_abs;
+  fStack_8 = *(float *)((u8 *)DAT_006b0e64_abs + 4);
+  fStack_c = *(float *)((u8 *)DAT_006b0e64_abs + 8);
+  *(float *)((u8 *)&stack + 0) = fStack_0;
+  *(float *)((u8 *)&stack + 4) = fStack_4;
+  *(float *)((u8 *)&stack + 8) = fStack_8;
+  *(float *)((u8 *)&stack + 0xc) = fStack_c;
 
   *(u32 *)((u8 *)&stack + 0) = (u32)stack.table1;
 
@@ -2885,22 +2885,21 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
-    short *psVar9;
+    u8 *psVar9;
     short *psVar8;
+
+    psVar9 = (u8 *)(iVar4 + iVar11 * 0xc);
 
     psVar8 = (s16 *)(puVar6 + iVar11 * 4);
 
-    psVar9 = (short *)(iVar4 + iVar11 * 0xc);
-
     sVar3 = psVar8[2];
-
     iVar10 = (int)sVar3 >> 1;
 
     FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
 
-                 ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
+                 ((int)*(short *)psVar9 + (int)*psVar8) - (int)sVar3,
 
-                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(char)psVar9[2],psVar8[3],0,iVar10,
+                 ((int)((short *)psVar9)[1] + (int)psVar8[1]) - (int)sVar3,(char)((short *)psVar9)[2],psVar8[3],0,iVar10,
 
                  iVar10);
 
