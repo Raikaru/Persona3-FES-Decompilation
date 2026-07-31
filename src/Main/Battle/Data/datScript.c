@@ -1409,3 +1409,4 @@ u32 FUN_00311180(void)
 {
   return 1;
 }
+#pragma opt_common_subs reset

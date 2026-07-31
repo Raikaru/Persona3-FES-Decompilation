@@ -8115,3 +8115,4 @@ void FUN_0030faf0(void)
 
 
 
+#pragma opt_lifetimes reset
