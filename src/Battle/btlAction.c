@@ -5753,6 +5753,8 @@ void btlActionInitStateSummon(BtlAction* action)
 {
     (void)action;
 }
+#pragma opt_common_subs off
+#pragma opt_dead_assignments off
 // FUN_00295160 NONMATCHING
 void btlActionUpdateStateSummon(BtlAction* action)
 {
@@ -6010,6 +6012,8 @@ void btlActionUpdateStateSummon(BtlAction* action)
     btlActionSetState(action, state);
 }
 
+#pragma opt_dead_assignments reset
+#pragma opt_common_subs reset
 // FUN_00295a10
 void btlActionInitStateAssist(BtlAction* action)
 {

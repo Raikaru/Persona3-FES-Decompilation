@@ -782,6 +782,8 @@ void FUN_003b4a20(int *param_1,u32 *param_2)
 }
 #define FUN_003b4a20(...) ((void (*)(...))FUN_003b4a20)(__VA_ARGS__)
 #undef FUN_003b4a90
+/* W377 six-knob/pair probe: opt_loop_invariants on improved FUN_003b4a90 from nd139/object160 to nd8/object164; window=176. */
+#pragma opt_loop_invariants on
 // FUN_003B4A90 NONMATCHING
 
 
@@ -847,6 +849,7 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
 }
 #define FUN_003b4a90(...) ((void (*)(...))FUN_003b4a90)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef FUN_003b4b40
 // FUN_003B4B40 NONMATCHING
 
