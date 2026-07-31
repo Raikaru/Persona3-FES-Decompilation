@@ -104,6 +104,8 @@ extern u32 gp0xffffaa14;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern char DAT_006a3e18[];
+extern char DAT_006a4270[];
+extern char DAT_006a42f0[];
 #pragma alias DAT_006a3e18_abs DAT_006a3e18
 extern char DAT_006a3e18_abs[];
 #pragma alias fclMiscSizeTable DAT_006a3f70
@@ -4587,9 +4589,9 @@ LAB_003cf9d8:
     sVar2 = *(u8 *)(puVar4 + 2);
     puVar4[2] = sVar2;
     puVar4[2] = sVar2 | param_2 & 0xff00;
-    FUN_005225a8(&DAT_007cd728,0x6a4270,0x1b6);
-    FUN_005225a8(0x6a42f0,sVar5);
-    FUN_001052b0(0x6a42f0,sVar5);
+    FUN_005225a8(&DAT_007cd728,DAT_006a4270,0x1b6);
+    FUN_005225a8(DAT_006a42f0,sVar5);
+    FUN_001052b0(DAT_006a42f0,sVar5);
     return 0;
   }
 

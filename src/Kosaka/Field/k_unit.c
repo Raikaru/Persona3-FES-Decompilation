@@ -2291,6 +2291,7 @@ void func_001d1fa0(void)
     s32 index;
     u16* model;
     u8* record;
+    u8* candidate;
     u32 slot;
     u8* base;
     u16 spawnId;
@@ -2332,12 +2333,14 @@ void func_001d1fa0(void)
         base = DAT_0086be80;
         while (slot < 0x20)
         {
-            record = base + slot * 0x138;
-            if (*(u32*)record == 0)
+            candidate = base + slot * 0x138;
+            if (*(u32*)candidate != 0)
             {
-                break;
+                slot++;
+                continue;
             }
-            slot++;
+            record = candidate;
+            break;
         }
         *(u32*)record = 1;
         *(u32*)(record + 0x11c) = (u32)model;

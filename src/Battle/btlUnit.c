@@ -1732,7 +1732,6 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
 {
     BtlUnitPacketMoveToUnit* packet;
     BtlUnit* targetUnit;
-    BtlUnit* unit;
     const BtlUnitAnimBounds* bounds;
     RtQuat targetRot;
     RwV3d targetPos;
@@ -1744,19 +1743,18 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
     RwV3d rotatedCenterC;
     RwV3d scaledCenterD;
     RwV3d rotatedCenterD;
+    RtQuat targetRot;
     RwV3d offset;
-
     packet = (BtlUnitPacketMoveToUnit*)work;
     if (packet->move.timer == 0)
     {
         targetUnit = packet->targetUnit;
-        unit = packet->move.unit;
 
         if (!(targetUnit->flags3 & BTLUNIT_FLAG3_NOROT))
         {
             if (packet->move.flags & 0x40)
             {
-                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
+                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &packet->move.unit->pos);
                 scaledCenterA.x = targetUnit->sphereCenter.x * targetUnit->scale;
                 scaledCenterA.y = targetUnit->sphereCenter.y * targetUnit->scale;
                 scaledCenterA.z = targetUnit->sphereCenter.z * targetUnit->scale;
@@ -1767,7 +1765,7 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
             }
             else
             {
-                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
+                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &packet->move.unit->pos);
                 bounds = func_00288da0(targetUnit, 0);
                 scaledCenterB.x = bounds->centerX * targetUnit->scale;
                 scaledCenterB.y = bounds->centerY * targetUnit->scale;
