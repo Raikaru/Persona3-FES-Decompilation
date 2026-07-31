@@ -14907,25 +14907,27 @@ state_done:;
   return iVar6;
 }
 
-#pragma push
-#pragma schedule off
 // FUN_00403740
-
-
 s16 FUN_00403740(short param_1)
+
 {
-  int base = iGpffffac00;
-  __asm__ volatile ("" : "+r"(base));
-  return *(s16 *)(base + param_1 * 0x40 + 0x3a);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x3a);
 }
-#pragma pop
 
 // FUN_00403760
 
 
 s16 FUN_00403760(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x30);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x30);
 }
 
 // FUN_00403780
@@ -14933,7 +14935,11 @@ s16 FUN_00403760(short param_1)
 
 s16 FUN_00403780(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x32);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x32);
 }
 
 // FUN_004037A0
@@ -14941,7 +14947,11 @@ s16 FUN_00403780(short param_1)
 
 s16 FUN_004037a0(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x36);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x36);
 }
 
 // FUN_004037C0
@@ -14949,7 +14959,11 @@ s16 FUN_004037a0(short param_1)
 
 s16 FUN_004037c0(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x34);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x34);
 }
 
 // FUN_004037E0
@@ -15035,7 +15049,11 @@ u32 FUN_004038a0(short param_1)
 
 u32 FUN_004038e0(short param_1)
 {
-  return *(u32 *)(iGpffffac00 + param_1 * 0x40 + 0x2c);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(u32 *)(address + 0x2c);
 }
 
 // FUN_00403900
@@ -15043,7 +15061,11 @@ u32 FUN_004038e0(short param_1)
 
 s16 FUN_00403900(short param_1)
 {
-  return *(s16 *)(iGpffffac00 + param_1 * 0x40 + 0x3c);
+  volatile int *base_ptr = &iGpffffac00;
+  int base = *base_ptr;
+  int address = param_1 * 0x40;
+  address += base;
+  return *(s16 *)(address + 0x3c);
 }
 
 // FUN_00403920

@@ -55,12 +55,18 @@ extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e0958_abs[];
 extern u8 DAT_007e095a_abs[];
 extern u8* iGpffffb25c;
-extern void func_0018bc10(void* transition, s32 drawMode,
+extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
                           u64 start, u64 end, s32 param0, s32 tile,
-                          f32 depth, s32 startFrame, s32 endFrame);
+                          s32 startFrame, s32 endFrame);
+#pragma alias func_0018bc10_buffirst func_0018bc10
+extern void func_0018bc10_buffirst(void* transition, s32 drawMode,
+                                   s32 positionMode, s32 alphaMode,
+                                   u64 start, u64 end, s32 param0, s32 tile,
+                                   f32 depth, s32 startFrame, s32 endFrame);
+#define func_0018bc10 func_0018bc10_buffirst
 #define campStatusDrawTransitionCall(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
-    func_0018bc10(transition, drawMode, positionMode, alphaMode, start, end, param0, tile, depth, startFrame, endFrame)
+    func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame)
 extern void* DAT_00833B78;
 extern void* DAT_00833B8C;
 #pragma alias DAT_00833B80_abs DAT_00833B80
@@ -4357,3 +4363,4 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#undef func_0018bc10

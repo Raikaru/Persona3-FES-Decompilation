@@ -13,9 +13,7 @@ extern u8 D_00836458[];
 extern u8* FUN_00172c50(s16* outValue);
 extern s32 FUN_00172660(s32 socialLink);
 extern void FUN_00172a20(u32 value);
-extern u32 DAT_00836200;
-#pragma alias DAT_00836200_ptr DAT_00836200
-extern u8 DAT_00836200_ptr[];
+extern u8 DAT_00836200[];
 extern u8 D_008364BC[];
 extern s32 D_008364F4[];
 extern s32 D_008365F4[];

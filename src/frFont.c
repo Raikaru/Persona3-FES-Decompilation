@@ -3060,7 +3060,6 @@ void FUN_003b2400(FrFontState *state)
 }
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #undef FUN_003b2430
-#pragma opt_lifetimes on
 // FUN_003B2430 NONMATCHING
 
 
@@ -3373,7 +3372,6 @@ LAB_003b28b8:
 }
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #undef FUN_003b2900
-#pragma opt_lifetimes reset
 // FUN_003B2900
 
 
