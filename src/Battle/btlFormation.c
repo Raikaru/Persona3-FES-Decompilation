@@ -2042,7 +2042,7 @@ void func_002ba3a0(int param_1)
 
 {
   char cVar1;
-  u16 uVar2;
+  u32 uVar2;
   int iVar3;
   u32 uVar4;
   u32 uVar5;
@@ -2052,7 +2052,7 @@ void func_002ba3a0(int param_1)
   int *piVar10;
   char *pcVar11;
   int *piVar12;
-  u16 uVar13;
+  u32 uVar13;
   int iVar14;
   int iVar15;
   int iVar16;
@@ -2110,7 +2110,7 @@ void func_002ba3a0(int param_1)
       if ((*(u32 *)(pcVar11 + 0x10) < uVar6) && (*pcVar11 != -2)) {
         if (*piVar12 == 0) {
           if (((*(u16 *)(*piVar10 + 0x630) & 4) == 0) || (*pcVar11 == -3)) {
-            iVar14 = func_00325920(*(u32 *)(pcVar11 + 4));
+            iVar14 = func_00325920_u32(*(u32 *)(pcVar11 + 4));
             *piVar12 = iVar14;
             bVar7 = true;
           }

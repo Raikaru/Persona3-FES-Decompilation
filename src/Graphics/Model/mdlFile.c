@@ -37677,7 +37677,6 @@ void FUN_00344AA0(int param_1)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_00344B70 NONMATCHING
 
 
@@ -37830,7 +37829,6 @@ void FUN_00344b70(int param_1,int param_2)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00344EB0
 
 
@@ -39939,6 +39937,7 @@ void FUN_00347390(int param_1)
   *(u32 *)(param_1 + 0x10) = *(u32 *)(param_1 + 0x10) + 1;
 }
 
+#pragma opt_common_subs off
 // FUN_003473B0 NONMATCHING
 
 
@@ -40457,6 +40456,7 @@ void FUN_003473b0(u8 (*param_1) [16])
 
 
 
+#pragma opt_common_subs reset
 // FUN_00347CB0
 
 

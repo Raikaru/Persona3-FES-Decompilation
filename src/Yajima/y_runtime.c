@@ -18788,7 +18788,6 @@ u32 FUN_00458cb0(u64 param_1,char param_2,char param_3)
   return 0;
 }
 
-#pragma opt_loop_invariants on
 // FUN_00459790 NONMATCHING
 
 u32 FUN_00459790(u64 param_1,char param_2)
@@ -18924,7 +18923,6 @@ u32 FUN_00459790(u64 param_1,char param_2)
   return 0;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00459D60
 
 void FUN_00459d60(void)
@@ -19412,6 +19410,7 @@ void FUN_0045a490(void)
 }
 
 // Native `(u8)fVar8` costs +4 bytes (624/608 versus 620/608); retail keeps the expanded conversion.
+#pragma opt_common_subs off
 // FUN_0045ACE0 NONMATCHING
 
 void FUN_0045ace0(void)
@@ -19473,6 +19472,7 @@ void FUN_0045ace0(void)
   return;
 }
 
+#pragma opt_common_subs reset
 // FUN_0045AF40
 
 u32 FUN_0045af40(void)
