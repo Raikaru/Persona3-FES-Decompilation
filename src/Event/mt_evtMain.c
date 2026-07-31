@@ -1,6 +1,10 @@
 #include "temporary.h"
 
 typedef int code(...);
+typedef struct {
+  u64 xy;
+  f32 z;
+} __attribute__((packed)) EvtPosition65430;
 typedef u8 bool;
 
 extern u8 D_0069DFF0[];
@@ -5225,11 +5229,10 @@ void FUN_00365430(int param_1,int param_2)
   u32 lVar2;
 
   int iVar3;
-  struct {
-    u64 xy;
-    f32 z;
-    u32 pad;
-  } position;
+  EvtPosition65430 position;
+  EvtPosition65430 *positionPtr;
+  u64 positionXY;
+  f32 positionZ;
 
 
   
@@ -5245,9 +5248,12 @@ void FUN_00365430(int param_1,int param_2)
       if (((*(u32 *)(iVar3 + 4) & 8) == 0) && (param_1 == *(int *)(iVar3 + 0x10))) {
 
         FUN_003b78b0((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
-        position.xy = *(u64 *)(DAT_006a0000_65430_abs - 0x2918);
-        position.z = *(f32 *)(DAT_006a0000_65430_abs - 0x2910);
-        FUN_003b7930((u16)piVar1[3],&position);
+        positionPtr = &position;
+        positionXY = *(u64 *)(DAT_006a0000_65430_abs - 0x2918);
+        positionZ = *(f32 *)(DAT_006a0000_65430_abs - 0x2910);
+        position.xy = positionXY;
+        position.z = positionZ;
+        FUN_003b7930((u16)piVar1[3],positionPtr);
         FUN_003b8f30((u16)piVar1[3]);
         FUN_003b8e10((u16)piVar1[3],*(u8 *)((int)piVar1 + 0x57),0,0);
 

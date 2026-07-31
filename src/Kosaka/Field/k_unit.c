@@ -164,6 +164,7 @@ extern void func_001adff0(KwlnTask* collisCtlTask,
                           const RwV3d* axis,
                           f32 angle);
 extern void K_Abort(const char* message, const char* file, s32 line);
+extern void K_Assert(const char* file, s32 line);
 
 FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
 FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0
@@ -1589,7 +1590,7 @@ spawn:
         }
         if ((area & 0xffff) == 0xffff)
         {
-            K_ASSERT("k_unit.c", 0x57c);
+            K_Assert(D_00683940, 0x57c);
             area = 1;
         }
         func_001cf940(area, entry);
@@ -2327,7 +2328,7 @@ void func_001d1fa0(void)
         }
         if (slot >= 0x20)
         {
-            K_ASSERT(0, 0x85c);
+            K_Assert(D_00683940, 0x85c);
             return;
         }
         *(u32*)record = 1;

@@ -485,9 +485,8 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
         }
         {
             s32 j = 0;
-            void** table = D_00833B70;
             for (; j < 14; j++) {
-                table[j] = work->maestroResources[j];
+                D_00833B70[j] = work->maestroResources[j];
             }
         }
         work->state = 3;

@@ -262,7 +262,6 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     f32 x;
     f32 y;
     f32 z;
-
     angle_p = angle, axis_p = axis, matrix_p = matrix;
     cosine = cosf(angle_p);
     sine = sinf(angle_p);

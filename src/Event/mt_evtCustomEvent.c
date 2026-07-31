@@ -5437,72 +5437,38 @@ u32 FUN_0039e6f0(void)
 
 
 void FUN_0039e700(u8 *param_1)
-
-
-
 {
   extern u8 DAT_006a1800[];
-
-
-  MtEvtCustomData *iVar1;
-
+  int iVar1;
   int iVar2;
-
   int iVar3;
-
   int iVar4;
-
   u32 uVar5;
-
-  MtEvtCustomEntry *entry;
-
+  int iVar6;
   int iVar7;
-  int outputAddress;
-
-
-  
+  int entryType = 1;
 
   *(u32 *)(param_1 + 0x78c) = 0;
+  iVar1 = *(int *)(param_1 + 8);
 
-  iVar1 = *(MtEvtCustomData **)(param_1 + 8);
-
-
-
-  for (iVar7 = 0; iVar7 < iVar1->entryCount; iVar7 = iVar7 + 1) {
-
-    entry = &iVar1->entries[iVar7];
-
-    if (entry->type == 1) {
-
+  for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
+    iVar6 = *(int *)(iVar1 + 0x34);
+    iVar6 = iVar6 + iVar7 * 0x20;
+    if (*(int *)(iVar6 + 0x18) == entryType) {
       iVar2 = *(int *)(param_1 + 0x78c);
-
       if (9 < iVar2) break;
-
-      iVar3 = iVar1->unk_10;
-
-      iVar4 = entry->unk_10;
-      iVar3 = iVar3 + iVar4;
-
-      uVar5 = entry->unk_14;
-
+      iVar3 = *(int *)(iVar1 + 0x10);
+      iVar4 = *(int *)(iVar6 + 0x10);
+      uVar5 = *(u32 *)(iVar6 + 0x14);
       *(short *)(param_1 + iVar2 * 2 + 0x7b8) = iVar2 + 30000;
-
-      outputAddress = (int)param_1 + iVar2 * 4;
-
-      *(int *)(outputAddress + 0x790) = iVar3;
-
-      *(u32 *)(outputAddress + 0x7cc) = uVar5;
-
+      iVar6 = (int)param_1 + iVar2 * 4;
+      *(int *)(iVar6 + 0x790) = iVar3 + iVar4;
+      *(u32 *)(iVar6 + 0x7cc) = uVar5;
       *(int *)(param_1 + 0x78c) = *(int *)(param_1 + 0x78c) + 1;
-
     }
-
   }
-
   FUN_005225a8((u32)DAT_006a1800,*(u32 *)(param_1 + 0x78c));
-
   return;
-
 }
 #define FUN_0039e700(...) ((void (*)(...))FUN_0039e700)(__VA_ARGS__)
 #undef FUN_0039e7c0
