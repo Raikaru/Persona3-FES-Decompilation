@@ -1658,7 +1658,6 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
-#pragma opt_strength_reduction off
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 
@@ -1744,7 +1743,7 @@ LAB_003d7430:
 
 }
 
-#pragma opt_strength_reduction reset
+#pragma opt_common_subs off
 // FUN_003D74F0 NONMATCHING
 
 
@@ -2040,6 +2039,7 @@ LAB_003d79dc:
 
 }
 
+#pragma opt_common_subs reset
 // FUN_003D7AC0 NONMATCHING
 
 

@@ -2242,7 +2242,6 @@ void func_001140d0(f32 depth,
 
 /* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes on
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
                    f32 x,
@@ -2450,7 +2449,7 @@ void func_00114450(f32 depth,
 // Same reconstruction pattern as func_001140d0 above.
 /* Scoped loop-invariant pragma measured W330: without nd342, with nd22 (obj 884/896). */
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes reset
+#pragma opt_loop_invariants on
 // FUN_00114AF0 NONMATCHING
 void func_00114af0(f32 depth,
                    f32 x,
@@ -2535,6 +2534,7 @@ void func_00114af0(f32 depth,
 // Retail reconstruction: camera/state setup (0x114e70-0x114fec), vertex/color loop (0x115030-0x115164), UV/orientation staging (0x115168-0x115294), and final draw (0x1152a0-0x115300).
 /* Scoped loop-invariant pragma measured W330: without nd741, with nd736 (obj 1196/1248). */
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants reset
 // FUN_00114E70 NONMATCHING
 void func_00114e70(f32 depth,
                    f32 x,

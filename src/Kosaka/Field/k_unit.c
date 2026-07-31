@@ -2413,7 +2413,7 @@ void func_001d22a0(void* work)
 
 /* Removing this worsens FUN_001d2300 (nd502 -> nd511) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
+#pragma opt_dead_assignments off
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
 {
@@ -2494,7 +2494,7 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_common_subs reset
+#pragma opt_dead_assignments reset
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {

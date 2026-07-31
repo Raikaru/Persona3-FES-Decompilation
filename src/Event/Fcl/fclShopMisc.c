@@ -17510,7 +17510,7 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_0040A7F0 NONMATCHING
 
 
@@ -17907,7 +17907,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_propagation reset
 // FUN_0040B3A0
 
 

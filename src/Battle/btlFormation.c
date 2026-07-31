@@ -2538,7 +2538,6 @@ void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
   return;
 }
 
-#pragma opt_strength_reduction off
 // FUN_002bb3a0 NONMATCHING
 
 void func_002bb3a0(void)
@@ -2605,7 +2604,6 @@ void func_002bb3a0(void)
   return;
 }
 
-#pragma opt_strength_reduction reset
 // FUN_002bb580
 
 void func_002bb580(u16 *param_1)
@@ -3357,6 +3355,7 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
+#pragma opt_common_subs off
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
@@ -3420,6 +3419,7 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
   return;
 }
 
+#pragma opt_common_subs reset
 // FUN_002bccd0
 
 void func_002bccd0(u32 param_1,u32 param_2)

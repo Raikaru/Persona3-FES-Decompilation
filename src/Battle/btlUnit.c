@@ -2112,7 +2112,7 @@ u32 btlUnit00282cd0(BtlUnit* unit)
     return 0;
 }
 
-#pragma opt_common_subs off
+#pragma opt_dead_assignments off
 // FUN_00282d40 NONMATCHING
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
@@ -2235,7 +2235,7 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     }
 }
 
-#pragma opt_common_subs reset
+#pragma opt_dead_assignments reset
 // FUN_00283ba0
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {
