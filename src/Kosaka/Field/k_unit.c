@@ -3238,13 +3238,13 @@ void func_001d4180(void)
                     scene = func_001b9120();
                     func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
                 }
-                if (*taskSlot != NULL)
+                if (*taskSlot == NULL)
                 {
-                    KwlnTask** taskSlot2;
-
-                    taskSlot2 = &gFldUnitsPc[i].unk_180;
-                    func_00195020(*taskSlot2);
-                    *taskSlot2 = NULL;
+                }
+                else
+                {
+                    func_00195020(gFldUnitsPc[i].unk_180);
+                    gFldUnitsPc[i].unk_180 = NULL;
                 }
             }
         }

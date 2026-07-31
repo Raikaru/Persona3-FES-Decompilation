@@ -68,8 +68,8 @@ extern u8 D_0086B180[];
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
-    s32 i;
     s32 axis;
+    s32 i;
     s32 previous;
     u32 inside;
     f32 primary0;

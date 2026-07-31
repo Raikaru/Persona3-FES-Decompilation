@@ -2029,7 +2029,7 @@ void h_campDrawItemFrame(int param_1)
     local.pair.f[0] = 394.0f;
     local.pair.f[1] = 125.0f;
     local.third.u = local.pair.u;
-    local.third.f[1] = local.third.f[1] - 600.0f;
+    local.third.f[0] = local.third.f[0] - 600.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
                   local.third.u, local.pair.u, 0, 0, 0, 10);
 

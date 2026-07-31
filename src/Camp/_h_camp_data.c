@@ -413,7 +413,7 @@ void FUN_001675b0(KwlnTask* task)
     (*DAT_0096017c_abs)(task->workData);
 }
 
-// FUN_001675e0 NONMATCHING
+// FUN_001675e0 MATCHING
 void* FUN_001675e0(KwlnTask* task)
 {
     CampBridgeStateWork* work;
@@ -484,7 +484,10 @@ void* FUN_001675e0(KwlnTask* task)
                         func_001618a0,
                         func_00161d60,
                         allocated0);
-                    if (nextTask0 != 0) {
+                    if (nextTask0 == 0) {
+                        nextTask0 = 0;
+                    }
+                    else {
                         *(u32*)((u8*)allocated0 + 0x0c) =
                             (u32)screenMode0;
                     }
@@ -504,7 +507,10 @@ void* FUN_001675e0(KwlnTask* task)
                         func_00166c70,
                         FUN_001675b0,
                         allocated);
-                    if (nextTask1 != 0) {
+                    if (nextTask1 == 0) {
+                        nextTask1 = 0;
+                    }
+                    else {
                         *(u32*)((u8*)allocated + 0x0c) =
                             (u32)screenMode;
                     }

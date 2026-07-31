@@ -594,7 +594,7 @@ s32 fclCombineList003ddd20(FclSelection*);
 void fclCombineList003deb20(FclList*);
 void fclCombineList003ded40(FclCallbackProxy*);
 
-// FUN_003da0c0 NONMATCHING
+// FUN_003da0c0
 FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 {
     FclOwner* task;
@@ -2794,58 +2794,31 @@ int FUN_003dff80(int* param_1, int param_2)
 
 
 int FUN_003dffc0(int *param_1,int param_2,s32 param_3)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
 
-  
-
   iVar1 = *param_1;
-
   for (iVar2 = *(int *)(iVar1 + 4); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x10)) {
-
     iVar3 = *(int *)(iVar2 + 0x14);
-
     if (*(int *)(iVar3 + 0x10) == param_2) goto LAB_003e0008;
-
   }
-
   iVar3 = 0;
 LAB_003e0008:
-
   if (iVar3 == 0) {
-
     iVar1 = (s32)FUN_003c4910((FclNodeList *)iVar1,*(u16 *)(iVar1 + 0x10) + 1,(FclNodeValueStorage *)((int)param_3 + 0x38));
-
     iVar3 = *(int *)(iVar1 + 0x14);
-
     *(int *)(iVar3 + 4) = iVar1;
-
     if (param_3 != 0) {
-
       *(int *)(iVar3 + 0x34) = iVar3 + 0x38;
-
     }
-
     *(u32 *)(iVar3 + 0xc) = 0;
-
     *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) | 4;
-
   }
-
   *(u32 *)(iVar3 + 0xc) = 1;
-
   *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) & 0xfffffffb;
-
   return iVar3;
-
 }
 
 // FUN_003E0080
