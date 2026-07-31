@@ -806,12 +806,12 @@ void* func_002f8810()
 /* Removing this worsens FUN_002f88c0 (nd2 -> nd85) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002f88c0 NONMATCHING
-u32 func_002f88c0()
+u64 func_002f88c0()
 {
     BtlUnit* unit;
     u16 encounterId;
     u16 charId;
-    u32 result;
+    u64 result;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)
@@ -827,7 +827,7 @@ u32 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        return 1;
+                        result = 2 - 1;
                         goto case_1a0_done;
                 }
                 unit = unit->next;
