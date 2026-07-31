@@ -1596,7 +1596,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     s32 i;
     void (**setState)(u32, u32);
     void (**submitVertices)(u32, CampStatusVertex*, s32);
-    u32* textureWork;
+    void* textureWork;
 
     textureWork = texture;
     camera = (void*)FUN_00198590();
