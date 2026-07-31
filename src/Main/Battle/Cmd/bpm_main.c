@@ -31,6 +31,9 @@ void bpmUpdate(void)
 
 #include "Utils.h"
 
+#pragma alias datGetFlag_y2 datGetFlag_y2
+
+
 /* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
 extern u32* sBpc324; // 007CE324 / GP -0x49CC
 /* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
@@ -376,3 +379,6 @@ void FUN_002491f0(void)
     K_ASSERT(sBpc324 != NULL, 0x3d);
     func_003b0170(*(u32*)((u8*)sBpc324 + 4));
 }
+
+
+

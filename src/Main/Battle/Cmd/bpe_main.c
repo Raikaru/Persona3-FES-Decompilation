@@ -10,12 +10,6 @@ static u32* sBpeWork; // puGpffffb638
  
 void FUN_003c77a0();
 
-// FUN_00249240
-void bpe00249240(u32* param_1)
-{
-    *param_1 = 0;
-    sBpeWork = param_1;
-}
 
 // FUN_00249250
 void bpe00249250(void)
