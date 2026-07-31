@@ -940,8 +940,6 @@ extern u8* iGpffffb6fc;
 extern u8* iGpffffb720;
 /* Narrow ABI aliases used by FUN_002d8110; the raw declarations above serve
  * other decompiler-style callers in this translation unit. */
-#pragma alias FUN_00170670_u16 FUN_00170670
-extern u16 FUN_00170670_u16(s16 pcId, s16 index);
 #pragma alias FUN_001706c0_u16 FUN_001706c0
 extern u16 FUN_001706c0_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170710_void FUN_00170710
@@ -1056,61 +1054,72 @@ void func_002d80f0(void* arg)
 }
 
 // FUN_002d8110 NONMATCHING
-
-undefined4 FUN_002d8110(int *param_1)
-
+u32 FUN_002d8110(BtlAction **param_1)
 {
-  u8 cVar1;
-  int iVar2;
-  int iVar3;
-  short sVar4;
-  ushort uVar5;
-  short sVar6;
-  u32 lVar7;
-  
-  iVar2 = *param_1;
-  iVar3 = *(int *)(iVar2 + 0x30);
-  sVar6 = *(short *)(iVar2 + 0x6c);
-  switch (sVar6) {
-  case 2:
-      uVar5 = *(ushort *)(iVar2 + 0x6e);
-      lVar7 = FUN_003083f0(*(undefined4 *)(iVar3 + 0xa2c),uVar5);
-      if (lVar7 != 0) {
-        cVar1 = *(char *)(((uint)uVar5 * 10 + (uint)uVar5) * 4 + DAT_007ce3f8 + 3);
-        switch (cVar1) {
-        case 1:
-          FUN_00300410(*(undefined4 *)(iVar3 + 0xa2c),-(int)lVar7);
-          break;
-        case 2:
-          FUN_00300480(*(undefined4 *)(iVar3 + 0xa2c),-(int)lVar7);
-          break;
+    BtlAction *action;
+    BtlUnit *unit;
+    u32 command;
+    action = *param_1;
+    unit = action->unit;
+    command = action->target.commandId;
+    switch (command)
+    {
+    case 2:
+    {
+        u16 personaId = action->target.specificId;
+        u32 amount = FUN_003083f0((u32)(uintptr_t)unit->datUnit, personaId);
+        if (amount != 0)
+        {
+            u8 *table = DAT_007ce3f8;
+            u32 tableIndex = (u32)personaId & 0xffff;
+            u8 effect = *(u8 *)(table + tableIndex * 44 + 3);
+            switch (effect)
+            {
+            case 1:
+                FUN_00300410_void(unit->datUnit, -(s32)amount);
+                break;
+            case 2:
+                FUN_00300480_void(unit->datUnit, -(s32)amount);
+                break;
+            default:
+                break;
+            }
         }
-      }
-      break;
-  case 3:
-      if (*(char *)(iVar3 + 0xa2) == '\0') {
-        sVar6 = *(short *)(iVar2 + 0x70);
-        if (*(short *)(*(int *)(iVar3 + 0xa2c) + 2) == 1) {
-          sVar4 = FUN_00170760(1,sVar6);
-          FUN_00170860(*(undefined2 *)(*(int *)(iVar3 + 0xa2c) + 2),sVar6,sVar4 + -1);
+        break;
+    }
+    case 3:
+        if (unit->genus == 0)
+        {
+            u16 state = action->target.unk_38;
+            if (unit->datUnit->id == 1)
+            {
+                u16 value = FUN_00170760_u16((s16)unit->datUnit->id,
+                                             (s16)state);
+                FUN_00170860_void((s16)unit->datUnit->id, (s16)state,
+                                  (u16)(value - 1));
+            }
+            else
+            {
+                u16 i = 0;
+                u16 value;
+                while ((i < 0xc) &&
+                       ((value = FUN_00170670_u16((s16)unit->datUnit->id,
+                                                  (s16)i)),
+                        state != value))
+                    i++;
+                value = FUN_001706c0_u16((s16)unit->datUnit->id, (s16)i);
+                FUN_00170710_void((s16)unit->datUnit->id, (s16)i,
+                                  (u16)(value - 1));
+            }
         }
-        else {
-          uVar5 = 0;
-          while ((uVar5 < 0xc &&
-                 (sVar4 = FUN_00170670(*(undefined2 *)(*(int *)(iVar3 + 0xa2c) + 2),uVar5),
-                 sVar6 != sVar4))) {
-            uVar5 = uVar5 + 1;
-          }
-          sVar6 = FUN_001706c0(*(undefined2 *)(*(int *)(iVar3 + 0xa2c) + 2),uVar5);
-          FUN_00170710(*(undefined2 *)(*(int *)(iVar3 + 0xa2c) + 2),uVar5,sVar6 + -1);
-        }
-      }
-      break;
-  case 9:
-  case 1:
-      break;
-  }
-  return 1;
+        break;
+    case 9:
+    case 1:
+        break;
+    default:
+        break;
+    }
+    return 1;
 }
 
 // FUN_002d8310

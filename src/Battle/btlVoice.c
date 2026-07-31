@@ -4642,49 +4642,65 @@ BtlPacket* func_002e30a0(u16 arg0, u16 arg1, u16 arg2, u16 flags)
 
 // FUN_002e3120 NONMATCHING
 char * func_002e3120(int param_1)
-
 {
   char cVar1;
   short sVar2;
   int iVar3;
   int iVar4;
-  u32 uVar5;
+  u32 firstIndex;
   char *pcVar6;
-  
-  for (uVar5 = 0; uVar5 < 0xc; uVar5 = uVar5 + 1 & 0xffff) {
-    iVar3 = (int)iGpffffb6fc + uVar5 * 4;
-    if (*(char *)(iVar3 + 0xa60) != -1) {
-      iVar4 = *(int *)(iGpffffb6fc + *(char *)(iVar3 + 0xa60) * 8 + 0x154);
-      while ((iVar4 != 0 &&
-             ((*(int *)(iVar4 + 0xa2c) == 0 ||
-              (*(short *)(iVar3 + 0xa62) != *(short *)(*(int *)(iVar4 + 0xa2c) + 4)))))) {
+  u32 secondIndex;
+
+  firstIndex = 0;
+  cVar1 = -1;
+  goto first_check;
+first_body:
+  iVar3 = (int)iGpffffb6fc;
+  iVar3 += (firstIndex & 0xffff) * 4;
+  if (*(char *)(iVar3 + 0xa60) != cVar1) {
+    iVar4 = *(int *)(iGpffffb6fc + *(char *)(iVar3 + 0xa60) * 8 + 0x154);
+first_inner:
+    if (iVar4 != 0) {
+      if ((*(int *)(iVar4 + 0xa2c) == 0) ||
+          (*(short *)(iVar3 + 0xa62) != *(short *)(*(int *)(iVar4 + 0xa2c) + 4))) {
         iVar4 = *(int *)(iVar4 + 0xa30);
-      }
-      if (iVar4 == 0) {
-        *(u8 *)(iVar3 + 0xa60) = 0xff;
-        *(u16 *)(iGpffffb6fc + uVar5 * 4 + 0xa62) = 0;
+        goto first_inner;
       }
     }
+    if (iVar4 == 0) {
+      *(u8 *)(iVar3 + 0xa60) = cVar1;
+      *(u16 *)(iGpffffb6fc + firstIndex * 4 + 0xa62) = 0;
+    }
+  }
+  firstIndex = (firstIndex + 1) & 0xffff;
+first_check:
+  if (firstIndex < 0xc) {
+    goto first_body;
   }
   pcVar6 = (char *)0x0;
   cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
   sVar2 = *(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa2c) + 4);
-  uVar5 = 0;
-  while( true ) {
-    if (0xb < uVar5) {
-      FUN_00521408(pcVar6,0,4);
-      *pcVar6 = cVar1;
-      *(short *)(pcVar6 + 2) = sVar2;
-      return pcVar6;
-    }
-    iVar3 = (int)iGpffffb6fc + uVar5 * 4;
-    if ((*(char *)(iVar3 + 0xa60) == cVar1) && (*(short *)(iVar3 + 0xa62) == sVar2)) break;
-    if ((pcVar6 == (char *)0x0) && (*(char *)(iVar3 + 0xa60) == -1)) {
-      pcVar6 = (char *)(iVar3 + 0xa60);
-    }
-    uVar5 = uVar5 + 1 & 0xffff;
+  secondIndex = 0;
+  goto second_check;
+second_body:
+  iVar3 = (int)iGpffffb6fc;
+  iVar3 += (secondIndex & 0xffff) * 4;
+  if ((*(char *)(iVar3 + 0xa60) == cVar1) &&
+      (*(short *)(iVar3 + 0xa62) == sVar2)) {
+    return (char *)(iVar3 + 0xa60);
   }
-  return (char *)(iVar3 + 0xa60);
+  if ((pcVar6 == (char *)0x0) && (*(char *)(iVar3 + 0xa60) == -1)) {
+    pcVar6 = (char *)(iVar3 + 0xa60);
+  }
+  secondIndex = (secondIndex + 1) & 0xffff;
+second_check:
+  if (secondIndex < 0xc) {
+    goto second_body;
+  }
+  FUN_00521408(pcVar6,0,4);
+  *pcVar6 = cVar1;
+  *(short *)(pcVar6 + 2) = sVar2;
+  return pcVar6;
 }
 
 // FUN_002e32a0

@@ -131,7 +131,7 @@ void* func_00186190(KwlnTask* task);
 void func_001868f0(KwlnTask* task);
 KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue);
 void func_00186a40(void* resource, CalendarPackedPosition position, u32 alpha, s16 selection);
-void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection);
+void func_00186bd0(void* resource, CalendarPackedPosition position, u32 alpha, s16 selection);
 void* func_00186d50(KwlnTask* task);
 void func_00187050(KwlnTask* task);
 KwlnTask* func_001870e0(KwlnTask* parent);
@@ -3838,14 +3838,8 @@ typedef struct
 } CalendarTransitionMessageWork;
 
 
-static inline u64 clndPackPosition(CalendarPackedPosition* position, f32 x, f32 y)
-{
-    position->x = x;
-    position->y = y;
-    return *(u64*)position;
-}
 
-static inline CalendarPackedPosition clndPackPositionStruct(CalendarPackedPosition* position,
+static inline CalendarPackedPosition clndPackPosition(CalendarPackedPosition* position,
                                                             f32 x,
                                                             f32 y)
 {
@@ -3984,9 +3978,9 @@ void* func_00184f00(KwlnTask* task)
 
         case 3:
             offset = ((f32)(30 - work->frame) * -80.0f) / 30.0f;
-            func_00186100(work->resource, clndPackPositionStruct(&position, offset, 0.0f), 0);
+            func_00186100(work->resource, clndPackPosition(&position, offset, 0.0f), 0);
             offset = ((f32)(30 - work->frame) * 80.0f) / 30.0f;
-            func_00186140(work->resource, clndPackPositionStruct(&position, offset, 0.0f), 0);
+            func_00186140(work->resource, clndPackPosition(&position, offset, 0.0f), 0);
             work->frame++;
             if (work->frame == 30)
             {
@@ -4008,7 +4002,7 @@ void* func_00184f00(KwlnTask* task)
                 alpha = 0;
             }
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, offset, 0.0f),
+                          clndPackPosition(&position, offset, 0.0f),
                           alpha,
                           work->currentMonth);
             func_00185ae0(work->resource,
@@ -4017,7 +4011,7 @@ void* func_00184f00(KwlnTask* task)
                           work->currentMonth);
             alpha = (u16)(((60 - frame) * 0xff) / 60);
             func_00185b40(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           alpha,
                           work->currentMonth,
                           work->currentDay);
@@ -4033,7 +4027,7 @@ void* func_00184f00(KwlnTask* task)
 
         case 5:
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           0,
                           work->currentMonth);
             frame = work->frame;
@@ -4056,18 +4050,18 @@ void* func_00184f00(KwlnTask* task)
                     default: wave = 0.0f; break;
                 }
                 func_00185ae0(work->resource,
-                              clndPackPositionStruct(&position, wave, 0.0f),
+                              clndPackPosition(&position, wave, 0.0f),
                               0,
                               work->currentMonth);
             }
             work->frame++;
             wave = sinf((DAT_007caf38 * (f32)((work->frame * 0x5a) / 0xf)) / 180.0f);
             func_00185b40(work->resource,
-                          clndPackPositionStruct(&position, -(wave * 87.0f), 0.0f),
+                          clndPackPosition(&position, -(wave * 87.0f), 0.0f),
                           0,
                           work->currentMonth,
                           work->currentDay);
-            func_00186050(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f), 0);
+            func_00186050(work->resource, clndPackPosition(&position, 0.0f, 0.0f), 0);
             func_00186100(work->resource, position, 0);
             func_00186140(work->resource, position, 0);
             if (work->frame == 15)
@@ -4093,7 +4087,7 @@ void* func_00184f00(KwlnTask* task)
 
         case 6:
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           0,
                           work->targetMonth);
             func_00185ae0(work->resource,
@@ -4127,7 +4121,7 @@ void* func_00184f00(KwlnTask* task)
                 datSetFlag(0x141c, false);
             }
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           0,
                           work->targetMonth);
             func_00185ae0(work->resource,
@@ -4150,7 +4144,7 @@ void* func_00184f00(KwlnTask* task)
                 work->state = 7;
             }
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           0,
                           work->targetMonth);
             func_00185ae0(work->resource,
@@ -4171,7 +4165,7 @@ void* func_00184f00(KwlnTask* task)
             work->frame++;
             alpha = (u16)((work->frame * 0xff) / 15);
             func_00185980(work->resource,
-                          clndPackPositionStruct(&position, 0.0f, 0.0f),
+                          clndPackPosition(&position, 0.0f, 0.0f),
                           alpha,
                           work->targetMonth);
             func_00185ae0(work->resource,
@@ -4248,7 +4242,7 @@ KwlnTask* func_00185880(KwlnTask* parent,
 #pragma push
 /* Removing this pragma worsens func_00185980 (fndiff nd3 -> nd75, object 352B -> 344B) - measured W305. */
 #pragma opt_common_subs off
-// FUN_00185980 NONMATCHING
+// FUN_00185980
 void func_00185980(void* resource, CalendarPackedPosition position, u32 alpha, s16 month)
 {
     void* unused;
@@ -4261,6 +4255,8 @@ void func_00185980(void* resource, CalendarPackedPosition position, u32 alpha, s
     f32 yThird;
     s32 signedMonth;
 
+    /* Removing this barrier restores a 7-word f20/f21 residual (fndiff nd7 -> nd0) - measured W314. */
+    asm ("" : "+m"(position));
     y = position.y;
     /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(y));
@@ -4512,7 +4508,7 @@ void* func_00186190(KwlnTask* task)
         case 2:
             timer = ++work->timer;
             alpha = ((5 - timer) * 0xff) / 5;
-            func_00186a40(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f),
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
@@ -4525,7 +4521,7 @@ void* func_00186190(KwlnTask* task)
 
         case 3:
             timer = ++work->timer;
-            func_00186a40(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f),
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
@@ -4547,11 +4543,11 @@ void* func_00186190(KwlnTask* task)
             _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * 300.0f;
             alpha = (timer * 0xff) / 10;
             func_00186a40(work->resource,
-                          clndPackPositionStruct(&position, _x, 0.0f),
+                          clndPackPosition(&position, _x, 0.0f),
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          *(u64*)&position,
+                          position,
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 10)
@@ -4570,7 +4566,7 @@ void* func_00186190(KwlnTask* task)
             timer = 10 - timer;
             _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * -300.0f;
             func_00186a40(work->resource,
-                          clndPackPositionStruct(&position, _x, 0.0f),
+                          clndPackPosition(&position, _x, 0.0f),
                           (timer * 0xff) / 10,
                           (s16)work->selectedValue);
             if (work->timer == 10)
@@ -4583,7 +4579,7 @@ void* func_00186190(KwlnTask* task)
 
         case 6:
             timer = ++work->timer;
-            func_00186a40(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f),
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
             if (timer < 10)
             {
@@ -4630,11 +4626,11 @@ void* func_00186190(KwlnTask* task)
                  CLND_MOON_Y_SCALE;
             alpha = (timer * 0xff) / 5;
             func_00186a40(work->resource,
-                          clndPackPositionStruct(&position, _x, _y),
+                          clndPackPosition(&position, _x, _y),
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          *(u64*)&position,
+                          position,
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 5)
@@ -4647,7 +4643,7 @@ void* func_00186190(KwlnTask* task)
         case 8:
             timer = ++work->timer;
             alpha = (timer * 0xff) / 10;
-            func_00186a40(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f),
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
@@ -4671,7 +4667,7 @@ void* func_00186190(KwlnTask* task)
             break;
 
         case 0xb:
-            func_00186a40(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f),
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
@@ -4773,21 +4769,11 @@ void func_00186a40(void* resource, CalendarPackedPosition position, u32 alpha, s
 }
 
 // FUN_00186BD0 NONMATCHING
-void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
+void func_00186bd0(void* resource, CalendarPackedPosition position, u32 alpha, s16 selection)
 {
     s32 tile;
-    union
-    {
-        u64 value;
-        struct
-        {
-            f32 x;
-            f32 y;
-        } coords;
-    } packed;
     void* unused;
 
-    packed.value = position;
     if (alpha == 0xff)
     {
         return;
@@ -4818,8 +4804,8 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
                   resource,
                   tile,
                   alpha & 0xff,
-                  packed.coords.x + 207.0f,
-                  packed.coords.y + 211.0f,
+                  position.x + 207.0f,
+                  position.y + 211.0f,
                   50.0f);
 }
 

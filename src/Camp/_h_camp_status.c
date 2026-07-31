@@ -951,9 +951,9 @@ static inline s32 campStatusGetDisplayedValue(void* persona, void* bonus,
 #define campStatusDrawDigitRow(x, y, scale, bonus, persona, alpha, index, \
                                useSkillAccessors) \
 { \
+    u32 rowParent; \
     u32 rowValue; \
     void* rowResource; \
-    u32 rowParent; \
     if ((useSkillAccessors) != 0) { \
         rowValue = FUN_00173580((persona), (index)) & 0xff; \
     } else { \
@@ -1594,12 +1594,11 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     void* camera;
     f32 recipZ;
     s32 i;
-    s32 alphaValue;
+    void (**setState)(u32, u32);
     void (**submitVertices)(u32, CampStatusVertex*, s32);
     void* textureWork;
 
-    alphaValue = alpha;
-
+    textureWork = texture;
     camera = (void*)FUN_00198590();
     recipZ = 1.0f / *((f32*)camera + 0x20);
     setState = (void (**)(u32, u32))DAT_00960090_abs;
@@ -1615,7 +1614,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
         vertices[i].color.r = 255.0f;
         vertices[i].color.g = 255.0f;
         vertices[i].color.b = 255.0f;
-        vertices[i].color.a = (f32)alphaValue;
+        vertices[i].color.a = (f32)alpha;
         vertices[i].position.z = *(f32*)DAT_00960088_abs - x;
         vertices[i].recipZ = recipZ;
     }

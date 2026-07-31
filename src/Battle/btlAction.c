@@ -88,6 +88,7 @@ BtlPacket* FUN_002bd230(BtlUnit* unit, u32 a, u32 b);
 BtlPacket* FUN_002bd480(BtlUnit* unit);
 BtlPacket* FUN_002bd590(BtlUnit* unit, u16 id);
 BtlPacket* FUN_002bd690(BtlUnit* unit, u16 id);
+u32 FUN_002dbb00(BtlUnit* unit);
 BtlPacket* FUN_002bd850(BtlUnit* unit, s16 id);
 BtlPacket* func_002bd780(BtlUnit* unit, u16 id);
 BtlPacket* FUN_002bdbd0(BtlUnit* source, BtlUnit* target, s32 id, u32 a, u32 b, u32 c, u32 d, void* result);
@@ -1829,7 +1830,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
                 unit = btlUnitFindFromId(FUN_002db690());
                 if (unit != NULL)
                 {
-                    result = FUN_002dbb00();
+                    result = FUN_002dbb00(unit);
                     if (result >= 0)
                     {
                         FUN_002e2d00(result);
@@ -7866,7 +7867,6 @@ void btlActionUpdateStateExit(BtlAction* action)
     DatUnitPc* found;
     u16 i;
     DatUnitGenusBase* group;
-    u8* battleBase;
     DatUnitPc* current;
 
     if (action->unk_1a & 1)
@@ -7883,10 +7883,11 @@ void btlActionUpdateStateExit(BtlAction* action)
                 if (action->unk_18 & 0x20)
                 {
                     found = NULL;
-                    battleBase = (u8*)gBtl;
                     for (i = 0; i < 4; i++)
                     {
-                        current = *(DatUnitPc**)(battleBase + (u32)(u16)i * 4 + 0xbac);
+                        current = *(DatUnitPc**)((u8*)gBtl +
+                                                  (u32)(u16)i * 4 +
+                                                  0xbac);
                         if (current != NULL && current->base.unit == unit->datUnit)
                         {
                             found = current;
