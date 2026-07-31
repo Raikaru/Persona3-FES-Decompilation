@@ -7863,8 +7863,8 @@ void btlActionInitStateExit(BtlAction* action)
 void btlActionUpdateStateExit(BtlAction* action)
 {
     BtlUnit* unit;
-    u16 i;
     DatUnitPc* found;
+    u16 i;
     DatUnitGenusBase* group;
     u8* battleBase;
     DatUnitPc* current;
@@ -7883,9 +7883,9 @@ void btlActionUpdateStateExit(BtlAction* action)
                 if (action->unk_18 & 0x20)
                 {
                     found = NULL;
+                    battleBase = (u8*)gBtl;
                     for (i = 0; i < 4; i++)
                     {
-                        battleBase = (u8*)gBtl;
                         current = *(DatUnitPc**)(battleBase + (u32)(u16)i * 4 + 0xbac);
                         if (current != NULL && current->base.unit == unit->datUnit)
                         {
@@ -7898,7 +7898,7 @@ void btlActionUpdateStateExit(BtlAction* action)
                     {
                         for (i = 0; i < 3; i++)
                         {
-                            group = *(DatUnitGenusBase**)(battleBase +
+                            group = *(DatUnitGenusBase**)((u8*)gBtl +
                                                           (u32)(u16)i * 8 +
                                                           0xbc4);
                             if (group != NULL &&

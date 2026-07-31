@@ -938,6 +938,22 @@ extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce410;
 extern u8* iGpffffb6fc;
 extern u8* iGpffffb720;
+/* Narrow ABI aliases used by FUN_002d8110; the raw declarations above serve
+ * other decompiler-style callers in this translation unit. */
+#pragma alias FUN_00170670_u16 FUN_00170670
+extern u16 FUN_00170670_u16(s16 pcId, s16 index);
+#pragma alias FUN_001706c0_u16 FUN_001706c0
+extern u16 FUN_001706c0_u16(s16 pcId, s16 index);
+#pragma alias FUN_00170710_void FUN_00170710
+extern void FUN_00170710_void(s16 pcId, s16 index, u16 value);
+#pragma alias FUN_00170760_u16 FUN_00170760
+extern u16 FUN_00170760_u16(s16 pcId, s16 index);
+#pragma alias FUN_00170860_void FUN_00170860
+extern void FUN_00170860_void(s16 pcId, s16 index, u16 value);
+#pragma alias FUN_00300410_void FUN_00300410
+extern void FUN_00300410_void(DatUnit* unit, s32 delta);
+#pragma alias FUN_00300480_void FUN_00300480
+extern void FUN_00300480_void(DatUnit* unit, s32 delta);
 
 // FUN_002d7ef0
 void func_002d7ef0(void* arg)
