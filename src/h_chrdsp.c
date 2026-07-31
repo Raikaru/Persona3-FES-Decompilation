@@ -354,6 +354,8 @@ void H_Chrdsp_Main(void)
 
 /* Removing this worsens FUN_001059b0 (nd2207 -> nd2247) - measured W161. */
 #pragma opt_loop_invariants on
+/* W377 six-knob/pair probe: opt_dead_assignments off improved H_Chrdsp_UpdateWork from nd2476/object3180 to nd2469/object3160; window=3456. */
+#pragma opt_dead_assignments off
 // FUN_001059B0 NONMATCHING
 void H_Chrdsp_UpdateWork(HChrdspWork* work)
 {
@@ -672,6 +674,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         break;
     }
 }
+#pragma opt_dead_assignments reset
 #pragma opt_loop_invariants reset
 
 // FUN_00106730

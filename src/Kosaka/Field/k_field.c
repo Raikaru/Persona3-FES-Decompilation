@@ -1354,6 +1354,8 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     sDungeonRoomCounter++;
 }
 
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
@@ -1788,6 +1790,8 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
 
 // Residual MWCC register allocation and loop scheduling differ from retail; accepted floor.
 // Candidate bounds now follow the pattern dimensions; remaining mismatch is compiler codegen.
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 // FUN_001bc630 NONMATCHING
 u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 {

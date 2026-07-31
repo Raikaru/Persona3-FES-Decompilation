@@ -1292,7 +1292,6 @@ static void K_FldShadow_RenderRing(FldShadowRenderTex* shadow)
     RwCameraEndUpdate(camera);
 }
 
-#pragma opt_dead_assignments off
 // FUN_0019b2b0 NONMATCHING
 void* func_0019b2b0(KwlnTask* renderTexTask)
 {
@@ -1545,7 +1544,6 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     return KWLNTASK_CONTINUE;
 }
 
-#pragma opt_dead_assignments reset
 // FUN_0019bcf0
 void func_0019bcf0(KwlnTask* renderTexTask)
 {

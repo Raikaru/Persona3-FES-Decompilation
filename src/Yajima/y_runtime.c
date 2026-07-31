@@ -14127,7 +14127,6 @@ void FUN_0044e530(int param_1,u8 param_2)
   return;
 }
 
-#pragma opt_strength_reduction off
 // FUN_0044E560 NONMATCHING
 
 
@@ -14379,7 +14378,6 @@ u32 FUN_0044e560(int param_1)
   return uVar7;
 }
 
-#pragma opt_strength_reduction reset
 // FUN_0044F060
 
 u32 FUN_0044f060(float param_1,int param_2,float *param_3)
@@ -15433,6 +15431,7 @@ u32 FUN_004514a0(char param_1)
   return uVar4;
 }
 
+#pragma opt_lifetimes on
 // FUN_00451D70 NONMATCHING
 
 void FUN_00451d70(int param_1)
@@ -15492,6 +15491,7 @@ void FUN_00451d70(int param_1)
 /* W212: first divergence is the prologue (ours 0x100-byte frame, retail 0x150);
  * the missing 0x50 bytes are live search-state/aggregate structure, not a transfer
  * from the scalar FUN_00431aa0 template. */
+#pragma opt_lifetimes reset
 // FUN_00452010 NONMATCHING
 
 void FUN_00452010(float *param_1)
