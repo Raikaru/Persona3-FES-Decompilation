@@ -1144,6 +1144,7 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     return unit;
 }
 
+#pragma opt_common_subs off
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
 {
@@ -1213,6 +1214,7 @@ u32 func_001cfdd0(u32 index)
     return true;
 }
 
+#pragma opt_common_subs reset
 // FUN_001D00B0
 u32 func_001d00b0(void)
 {

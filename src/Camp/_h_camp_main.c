@@ -1000,6 +1000,7 @@ void FUN_00134d80(KwlnTask* task)
     RwFree(work);
 }
 
+#pragma opt_loop_invariants on
 // FUN_00135120 NONMATCHING
 void FUN_00135120(KwlnTask* task)
 {
@@ -1100,6 +1101,7 @@ done:
     ;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00135460
 void FUN_00135460(KwlnTask* task)
 {
