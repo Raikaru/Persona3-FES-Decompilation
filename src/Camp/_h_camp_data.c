@@ -1547,6 +1547,8 @@ void FUN_00169AE0(int param_1)
     (*DAT_0096017c_abs)(work);
 }
 
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_00169B90 NONMATCHING
 void FUN_00169B90(void* param_1, undefined8 param_2,
                   void* param_3, s32 param_4, undefined8 param_5)
@@ -1596,6 +1598,8 @@ void FUN_00169B90(void* param_1, undefined8 param_2,
     campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
 }
 
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 // FUN_0016A030 NONMATCHING
 undefined4 FUN_0016A030(void)
 {

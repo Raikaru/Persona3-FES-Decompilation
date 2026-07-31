@@ -2493,7 +2493,6 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_dead_assignments off
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
@@ -2608,7 +2607,6 @@ static inline s32 FldUnit_GridCoord(f32 value)
     return cell >> 2;
 }
 
-#pragma opt_dead_assignments reset
 // FUN_001d2a10 NONMATCHING
 void func_001d2a10(void)
 {
