@@ -830,6 +830,11 @@ void func_001d7260(void)
 #include "Script/scrScriptProcess.h"
 #include "rw/rprandom.h"
 
+#pragma alias func_004c69f0_y2 func_004c69f0
+#pragma alias FUN_001a1210_y2 FUN_001a1210
+#pragma alias FUN_0048d480_y2 FUN_0048d480
+
+
 extern s32 func_001c0040(void);
 extern u32 RpRandom(void);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
@@ -1762,4 +1767,137 @@ static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u3
         func_0035c1a0(child, (int)&work->records[slot]);
     }
     return child;
+}
+
+
+#include "Kosaka/Field/k_fldFilter.h"
+#include "rw/rwcore.h"
+
+#define FLDFILTER_FILE_SIZE 74752 // in bytes
+
+// num of pixels in a single quad
+#define FLDFILTER_QUAD_XPIXELS 80
+#define FLDFILTER_QUAD_YPIXELS 64
+#define FLDFILTER_GRID_WIDTH  (SCREEN_WIDTH / FLDFILTER_QUAD_XPIXELS)  // 8
+#define FLDFILTER_GRID_HEIGHT (SCREEN_HEIGHT / FLDFILTER_QUAD_YPIXELS) // 7
+
+// 256 bytes
+typedef struct
+{
+    RwIm2DVertex vert[4]; // 0x00
+} FilterQuad;
+
+/* The filter controller keeps the first six words in the small-BSS block. */
+extern void* sFilterFile;
+extern s32 sFilterColorOffset;
+extern s32 sFilterCurrent;
+extern f32 sFilterPrevious;
+extern f32 sFilterBlend;
+extern s32 sFilterBlendDuration;
+extern FilterQuad sFilterGrid[FLDFILTER_GRID_HEIGHT][FLDFILTER_GRID_WIDTH];
+#pragma alias sFilterGrid_abs sFilterGrid
+extern u8 sFilterGrid_abs[];
+
+/* This word belongs to the neighbouring field-resource work block. */
+extern u32 gp0xffff95d8;
+extern f32 fGpffff8248;
+#define FLDFILTER_ALPHA gp0xffff95d8
+
+extern const char D_00683A60[];
+extern const char D_00683A78[];
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
+#pragma alias D_00960090_abs D_00960090
+extern void (*D_00960090_abs[])(u32 state, u32 value);
+#pragma alias D_009600A0_abs D_009600A0
+extern void (*D_009600A0_abs[])(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
+extern u32 D_00960184[];
+extern void (*D_0096017c)(void* memory);
+#pragma alias D_0096017c_abs D_0096017c
+extern u32 D_0096017c_abs[];
+extern void func_004d7f60(s32 state, u32 value);
+extern void func_004c69f0_y2(RwV3d* output, const RwV3d* input);
+extern void func_004cb420(RwFrame* parent, RwFrame* child);
+extern void func_004cb590(RwFrame* frame);
+extern RwFrame* func_004caf10(void);
+extern RwFrame* func_004caf80(RwFrame* frame);
+extern void func_004cb930(RwFrame* frame);
+extern void func_004cb750(RwFrame* frame, const RwV3d* translation, RwOpCombineType combine);
+extern void FUN_001a1210_y2(RwCamera* camera, const RwV3d* at, const RwV3d* position, const RwV3d* up);
+extern void* FUN_0048d480_y2(f32 frame, void* curve, s32 flags, RwV3d* output, s32 unused);
+extern const char D_00683A48[];
+extern const char D_007CC2CC[];
+
+/* Work data for the field camera controller (the public header intentionally
+ * keeps the post-camera fields opaque). */
+typedef struct FldFilterCameraWork
+{
+    u32 state;                 // 0x00
+    u32 flags;                 // 0x04
+    u32 type;                  // 0x08
+    RwFrame* frame;            // 0x0c
+    RwFrame* parentFrame;      // 0x10
+    RwV3d posOffset;            // 0x14
+    f32 xzDeadZone;            // 0x20
+    f32 yDeadZone;             // 0x24
+    u8 unknown28[0x1c];         // 0x28
+    KwlnTask* pointTask0;       // 0x44
+    KwlnTask* pointTask1;       // 0x48
+    KwlnTask* pointTask2;       // 0x4c
+    u8 unknown50[0x10];         // 0x50
+    RwV3d cameraPoints[9];       // 0x60
+    ResrcModelChar* playerResrc;// 0xcc
+} FldFilterCameraWork;
+extern void* FUN_001d5220(KwlnTask* cameraTask);
+extern void FUN_001d59e0(KwlnTask* cameraTask);
+
+
+
+
+
+
+/* Return the closest camera point to the controlled character. */
+
+
+// FUN_001d5a90 NONMATCHING
+KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
+{
+    RwFrame** slot0;
+    RwFrame** slot1;
+    KwlnTask* task;
+    FldFilterCameraWork* work;
+
+    work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    task = kwlnTaskCreateWithAutoPriority(parentTask,
+                                          10,
+                                          D_00683A60,
+                                          (KwlnTaskUpdateFunc)FUN_001d5220,
+                                          (KwlnTaskDestroyFunc)FUN_001d59e0,
+                                          work);
+    slot1 = &work->frame;
+    *slot1 = func_004caf10();
+    if (*slot1 == NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(task);
+        return NULL;
+    }
+    func_004cb930(*slot1);
+    slot0 = &work->parentFrame;
+    *slot0 = ((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent;
+    if (*slot0 != NULL)
+    {
+        func_004cb590(kwlnGetMainCamera()->object.object.parent);
+        func_004cb420(*slot0, work->frame);
+        func_004cb420(*slot1, kwlnGetMainCamera()->object.object.parent);
+    }
+    else
+    {
+        K_Assert(D_00683A78, 0x1b4);
+    }
+    K_Draw_CreateCylinderTask(task);
+    return task;
 }

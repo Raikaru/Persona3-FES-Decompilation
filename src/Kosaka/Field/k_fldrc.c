@@ -2563,24 +2563,6 @@ void* FUN_001b7700(void* parent)
     return task;
 }
 
-// FUN_001b77b0
-void FUN_001b77b0(void* parent, const s16* params)
-{
-    u32* field;
-    u32 task;
-
-    if (((const u16*)params)[0] == 0)
-    {
-        FUN_0019d3f0(D_00679060, 0x58);
-    }
-    task = FUN_001ba5f0(0, ((const u16*)params)[0],
-                        ((const u16*)params)[1], ((const u16*)params)[2],
-                        params[3], params[4], 0, 6, 0x80, 0,
-                        -1, -1, -1, -1);
-    field = (u32*)FUN_001b9120();
-    *field = task;
-    (void)parent;
-}
 // FUN_001b2780
 void* FUN_001b2780(s16 majorId, s16 minorId)
 {

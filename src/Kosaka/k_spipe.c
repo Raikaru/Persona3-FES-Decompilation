@@ -88,6 +88,9 @@ KwlnTask* K_SPipe_CreateShadowNodeTask(KwlnTask* draw3DTask)
 #include "Scene/resrcManager.h"
 #include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_fldFrame.h"
+
+
+
 extern f32 cosf(f32 x);
 extern f32 sinf(f32 x);
 
@@ -1797,3 +1800,160 @@ static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
 #undef K_FldShadow_UsesCharRenderGuard
 #undef K_FldShadow_SetAttachedShadowEnabled
 /* W377: opt_dead_assignments off improves K_FldShadow_UpdateShadowMapTask (nd2297 -> nd2260; object 3520/3520). */
+
+
+#include "Kernel/Kwln/kwlnRoot.h"
+#include "h_snd.h"
+#include "h_fade.h"
+#include "h_dbprt.h"
+#include "Main/Game/gm_root.h"
+#include "h_chrdsp.h"
+#include "Yajima/y_misc.h"
+#include "rw/rprandom.h"
+#include "sce/eeregs.h"
+
+#pragma alias kwlnRootUpdateEtcDrawBeginTask FUN_00198e90
+#pragma alias kwlnRootUpdateEtcDrawEndTask FUN_00198fd0
+#pragma alias kwlnRootCreateEtcDrawBeginTask FUN_00199080
+#pragma alias kwlnRootCreateEtcDrawEndTask FUN_00199100
+#pragma alias kwlnRootCreateShowRasterTask FUN_00199360
+#pragma alias kwlnRootUpdateDrawBustupTask FUN_001993a0
+#pragma alias kwlnRootCreateDrawBustupTask FUN_001993d0
+#pragma alias kwlnRootDestroy3DDrawTask FUN_00199410
+#pragma alias kwlnRootCreate3DDrawTask FUN_00199440
+extern void kwlnRootDestroy3DDrawTask(KwlnTask* draw3DTask);
+
+KwlnTask* kwlnRootCreate2DDrawBeginTask();
+KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
+KwlnTask* kwlnRootCreate2DDrawEndTask();
+KwlnTask* kwlnRootCreate3DOn2DZClearTask();
+KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask();
+KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
+KwlnTask* kwlnRootCreateEtcDrawTask();
+void H_Pad_Update();
+u32 H_Snd_FUN_00109df0(s32 param);
+KwlnTask* kwlnRootCreate3DDrawTask(KwlnTask* rootTask);
+KwlnTask* kwlnRootCreateDrawBustupTask();
+KwlnTask* kwlnRootCreateEtcDrawBeginTask();
+KwlnTask* kwlnRootCreateEtcDrawEndTask();
+KwlnTask* kwlnRootCreateShowRasterTask();
+KwlnTask* func_00192de0();
+void kwlnInitGameData();
+extern u32 DAT_007ce12c;
+extern u32 DAT_007ce114;
+void func_001120c0();
+void func_001125d0();
+extern RwGlobals DAT_00960070;
+
+extern u32 jtbl_00960178[];
+#define KWLN_ALLOC2(size, flags) (*(void* (**)(u32, u32))jtbl_00960178)((size), (flags))
+#define KWLN_FREE(memory) (*(void (**)(void*))jtbl_0096017C)(memory)
+#define KWLN_ALLOC3(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
+void* func_004c9ed0(RwCamera* camera, u32 param_2, u32 param_3);
+int func_004c4d20(void);
+void* func_004ce200(RwRaster* raster, u32 param2, s32 param3);
+void* func_004cbf20(void* image);
+void* func_004cdc70(void* image, RwRaster* raster);
+void* func_004cde00(RwRaster* raster);
+void func_004c7cf0(s32 value);
+void func_0010bff0(void);
+void func_0010c5f0(void);
+void func_005810f0(void);
+
+extern f32 D_007CE150;
+extern f32 D_007CE14C;
+extern f32 D_007CE148;
+extern KwlnTask* D_007CE134;
+extern u32 D_007CE130;
+extern u32 D_007CE11C;
+extern u32 D_007CE118;
+extern u32 D_007CE110;
+extern void* D_007CE104;
+extern u32 D_007CE100;
+extern u32 D_007CE0F8;
+extern const char D_006787C8[]; // "rootProc"
+extern const char D_006787D8[]; // "kwlnRoot.c"
+extern const char D_006787E8[]; // "2D Draw Begin"
+extern const char D_00678800[]; // "2D Draw Begin Pre End"
+extern const char D_00678810[]; // "2D Draw End"
+extern const char D_00678820[]; // "3D on 2D Zclear"
+extern const char D_00678830[]; // "3D on 2D Draw Begin"
+extern const char D_00678850[]; // "3D on 2D Draw End"
+extern const char D_00678868[]; // "etc Draw Begin"
+extern const char D_00678878[]; // "etc Draw"
+extern const char D_00678888[]; // "etc Draw End"
+extern const char D_006788A0[]; // "<<< show raster >>>"
+extern const char D_006788B8[]; // "drawBustupProc"
+extern const char D_006788C8[]; // "k_spipe.c"
+#define sShowRasterPercent D_007CE150
+#define sShowRasterDelta D_007CE14C
+#define sShowRasterCurrent D_007CE148
+#define sDraw3DTask D_007CE134
+#define sShowRasterEnabled D_007CE130
+#define sShowRasterRasterB D_007CE11C
+#define sShowRasterRasterA D_007CE118
+#define sShowRasterResult D_007CE110
+#define sShowRasterImage D_007CE104
+#define sShowRasterCurrentCount D_007CE100
+#define sShowRasterUpdatePending D_007CE0F8
+
+
+void H_Snd_StopBgm();
+void func_003b5ab0();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef struct KwlnDraw3DWork
+{
+    u32 rasterA;
+    u32 rasterB;
+} KwlnDraw3DWork;
+
+// FUN_00199440
+KwlnTask* kwlnRootCreate3DDrawTask(KwlnTask* rootTask)
+{
+    KwlnDraw3DWork* work;
+
+    if (sDraw3DTask != NULL)
+    {
+        K_Assert(D_006788C8, 0x76);
+    }
+
+    work = (KwlnDraw3DWork*)KWLN_ALLOC3(1, sizeof(KwlnDraw3DWork), 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    sDraw3DTask = kwlnTaskCreate(rootTask, "3D Draw", 5, NULL, kwlnRootDestroy3DDrawTask, work);
+    work->rasterA = sShowRasterRasterB;
+    work->rasterB = sShowRasterRasterA;
+    K_SPipe_CreateShadowNodeTask(sDraw3DTask);
+    K_SPipe_Create3DDrwBeginTask(sDraw3DTask);
+    K_SPipe_Create3DDrwEndTask(sDraw3DTask);
+
+    return sDraw3DTask;
+}

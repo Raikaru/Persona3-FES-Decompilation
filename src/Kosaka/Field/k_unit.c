@@ -191,21 +191,6 @@ static void FldUnit_ClearPcMdlSlot(s32 index)
     }
 }
 
-// FUN_001CD7A0
-void func_001cd7a0(void)
-{
-    memset(gFldUnitsPcMdl, 0, sizeof(gFldUnitsPcMdl));
-    memset(gFldUnitsPc, 0, sizeof(gFldUnitsPc));
-    memset(gFldUnitsEc, 0, sizeof(gFldUnitsEc));
-    sFldUnitsEcCount = 0;
-    memset(DAT_0086e580, 0, 0x118);
-    memset(DAT_0086be80, 0, 0x2700);
-    DAT_007ce288 = 0;
-    DAT_007ce284 = 0;
-    memset(DAT_0086bdc0, 0, 0x40);
-    DAT_007ce280 = 0;
-    memset(DAT_0086b180, 0, 0xc40);
-}
 
 /* Removing this loses FUN_001cd8e0 (MATCH nd0 -> MISMATCH nd82) - measured W161. */
 #pragma opt_loop_invariants on
@@ -3295,24 +3280,4 @@ void func_001d4290(void)
         DAT_007ce294 = DAT_007ce290 + 0x180;
         func_00100ec0(object);
     }
-}
-// FUN_001d43e0
-u32 func_001d43e0(void* object)
-{
-    HCdvd* cdvd;
-    u32 fileSize;
-    void* fileMemory;
-
-    if (func_001016b0() == 0)
-    {
-        return 0;
-    }
-    cdvd = (HCdvd*)object;
-    DAT_007ce290 = DAT_00871ec0;
-    fileSize = ((volatile /* Removing this function's qualifier batch loses func_001d43e0 (MATCH nd0 -> MISMATCH nd4, size 120 -> 120) - measured W170. */ HCdvd*)cdvd)->fileSize;
-    fileMemory = ((volatile /* Removing this function's qualifier batch loses func_001d43e0 (MATCH nd0 -> MISMATCH nd4, size 120 -> 120) - measured W170. */ HCdvd*)cdvd)->fileMemory;
-    func_00521250(DAT_00871ec0, fileMemory, fileSize);
-    DAT_007ce294 = DAT_007ce290 + 0x180;
-    func_00100ec0(cdvd);
-    return 1;
 }
