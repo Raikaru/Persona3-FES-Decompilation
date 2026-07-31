@@ -3335,9 +3335,6 @@ void FUN_003cda60(u32 param_1)
   FclMiscVec3 translation;
 
   FclMiscColor color;
-
-  
-
   xy = *(u64 *)&fclMiscInitialRotation[0];
   z = fclMiscInitialRotation[0].z;
   *(u64 *)&rotation = xy;
@@ -3367,7 +3364,6 @@ void FUN_003cda60(u32 param_1)
   *(FclMiscRGBA *)(iVar2 + 0x80) = color.rgba;
 
   fclMisc6bc80Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x84));
-
   fclMisc6bdb0Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x94));
 
   FUN_00194b20(param_1,&DAT_007cd720,0x147c,

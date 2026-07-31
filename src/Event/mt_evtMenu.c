@@ -15594,7 +15594,7 @@ void FUN_00382c80(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-// FUN_00382D60 NONMATCHING
+// FUN_00382D60
 
 
 int FUN_00382d60(int param_1,int param_2,int param_3)
@@ -15611,7 +15611,7 @@ int FUN_00382d60(int param_1,int param_2,int param_3)
 
   iVar1 = 0;
 
-  FUN_0036f900(param_1,param_2,0x1e,5,0,1,param_3,(int)(code *)0x382c10,(code *)FUN_00382c80);
+  FUN_0036f900_evt(param_1,param_2,0x1e,5,0,1,param_3,(code *)FUN_00382c10,(code *)FUN_00382c80);
 
   iVar2 = (int)param_3;
 

@@ -153,6 +153,8 @@ u32 DAT_006b2e60;
 RwV3d DAT_006b2e68;
 RwV3d DAT_006b2e78;
 u32 DAT_006b2e90;
+#pragma alias DAT_006b2e90_abs DAT_006b2e90
+extern s16 DAT_006b2e90_abs[];
 u32 DAT_006b2eb0;
 RwV3d DAT_006b2ed8;
 RwV3d DAT_006b2ee8;
@@ -197,7 +199,7 @@ u8 DAT_007e0961[];
 code DAT_00960090;
 extern void *(*DAT_00960178)();
 #pragma alias DAT_00960178_abs DAT_00960178
-extern code DAT_00960178_abs[];
+extern void *(*DAT_00960178_abs[])(u32, u32);
 extern char DAT_006b2ae8[];
 extern char DAT_006b2af8[];
 extern char DAT_006b2b10[];
@@ -1014,7 +1016,7 @@ void FUN_004180e0(u32 *param_1,s16 param_2)
   return;
 }
 
-// FUN_00418130 NONMATCHING
+// FUN_00418130
 
 
 u64 FUN_00418130(u64 param_1,char *param_2)
@@ -1023,7 +1025,7 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -1035,31 +1037,22 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
   cVar1 = *param_2;
 
-  if (cVar1 == '\x06') {
-
-    uVar3 = (*DAT_00960178)(0xfa8,0x40000);
-
-    *(void **)(iVar2 + 8) = uVar3;
-    memset(uVar3,0,0xfa8);
-
-  }
-
-  else if (cVar1 == '\x05') {
-
-    uVar3 = (*DAT_00960178)(0x2730,0x40000);
-
-    *(void **)(iVar2 + 8) = uVar3;
-    memset(uVar3,0,0x2730);
-
-  }
-
-  else if (cVar1 == '\x04') {
-
-    uVar3 = (*DAT_00960178)(0x20,0x40000);
-
+  switch (cVar1) {
+  case 4:
+    uVar3 = (*DAT_00960178_abs)(0x20,0x40000);
     *(void **)(iVar2 + 8) = uVar3;
     memset(uVar3,0,0x20);
-
+    break;
+  case 5:
+    uVar3 = (*DAT_00960178_abs)(0x2730,0x40000);
+    *(void **)(iVar2 + 8) = uVar3;
+    memset(uVar3,0,0x2730);
+    break;
+  case 6:
+    uVar3 = (*DAT_00960178_abs)(0xfa8,0x40000);
+    *(void **)(iVar2 + 8) = uVar3;
+    memset(uVar3,0,0xfa8);
+    break;
   }
 
   return 0;
@@ -1855,30 +1848,42 @@ u8 FUN_00419050(int param_1,int *param_2)
 
 }
 
-// FUN_004195F0 NONMATCHING
+// FUN_004195F0
 
 
 u32 FUN_004195f0(int param_1,int *param_2)
 {
   int iVar1;
-  long lVar2;
+  int lVar2;
+  int *piVar2;
 
+  piVar2 = *(int **)(param_2 + 1);
   iVar1 = *param_2;
-  if (*(char *)(iVar1 + 4) == '@') {
-    if ((*(char *)(iVar1 + 5) == 2) &&
-        (lVar2 = MT_Scene_GetRes(*(u32 *)(iVar1 + 0xc) & 0x3ff | 0xc00), lVar2 != 0)) {
-      mdlAnimSet(*(u32 *)((int)lVar2 + 0x128),0,
-                 (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
-                 *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
-    } else if (*(char *)(iVar1 + 5) == 3) {
-      FUN_003cdcd0(*(u32 *)(param_1 + 0x18),
-                   (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
+  switch (*(char *)(iVar1 + 4)) {
+  case '@':
+    switch (*(char *)(iVar1 + 5)) {
+    case 1:
+      break;
+    case 2:
+      lVar2 = MT_Scene_GetRes((*(u32 *)(iVar1 + 0xc) & 0x3ff | 0xc00) & 0xffff);
+      if (lVar2 != 0) {
+        mdlAnimSet(*(u32 *)((int)lVar2 + 0x128),0,
+                   (short)((int)*(u32 *)(iVar1 + 0xc) >> 0x10),
                    *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
+      }
+      break;
+    case 3:
+      FUN_003cdcd0(*(u32 *)(param_1 + 0x18),
+                   (short)((int)*(u32 *)(iVar1 + 0xc) >> 0x10),
+                   *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
+      break;
     }
-  } else if (*(char *)(iVar1 + 4) == 3) {
-    mdlAnimSet(*(u32 *)(param_2[1] + 8),0,
-               (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
+    break;
+  case 3:
+    mdlAnimSet(*(u32 *)(piVar2 + 2),0,
+               (short)((int)*(u32 *)(iVar1 + 0xc) >> 0x10),
                *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
+    break;
   }
   return 1;
 }
@@ -1987,27 +1992,27 @@ u32 FUN_004198f0(int param_1,int param_2)
 
   short sVar1;
 
-  u16 sVar2;
+
 
   u32 uVar3;
-
   int lVar4;
-
-  int iVar5;
-
-  short *psVar6;
-
-  u32 uVar7;
 
   short *psVar8;
 
-  float fVar9;
+  u16 *psVar6;
 
-  short asStack_20 [16];
+  u32 uVar7;
+
+  int iVar5;
+
+
+  float fVar9;
+  u16 asStack_20 [16];
+  u32 sVar2;
 
   
 
-  sVar2 = *(short *)(param_1 + 0x22);
+  sVar2 = *(u16 *)(param_1 + 0x22);
 
   if (*(int *)(param_2 + 0xc) == 0) {
 
@@ -2019,24 +2024,15 @@ u32 FUN_004198f0(int param_1,int param_2)
 
   lVar4 = FUN_003cdd80(*(u32 *)(param_1 + 0x18));
 
-  if (lVar4 == 0) {
+  if (lVar4 != 0) {
 
-    *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
-
-    uVar3 = 0;
-
-  }
-
-  else {
-
-    psVar8 = (s16 *)(&DAT_006b2e90);
+    psVar8 = DAT_006b2e90_abs;
 
     psVar6 = asStack_20;
 
     iVar5 = 0xd;
 
     do {
-
       sVar1 = *psVar8;
 
       psVar8 = psVar8 + 1;
@@ -2051,7 +2047,7 @@ u32 FUN_004198f0(int param_1,int param_2)
 
     for (uVar7 = 0; uVar7 < 0xd; uVar7 = uVar7 + 1) {
 
-      if (sVar2 == asStack_20[uVar7]) {
+      if ((u16)sVar2 == asStack_20[uVar7]) {
 
         return 1;
 
@@ -2062,6 +2058,14 @@ u32 FUN_004198f0(int param_1,int param_2)
     FUN_003cdcd0(*(u32 *)(param_1 + 0x18),0,0x1e,1);
 
     uVar3 = 1;
+
+  }
+
+  else {
+
+    *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
+
+    uVar3 = 0;
 
   }
 
@@ -3013,7 +3017,9 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
 }
 
-// FUN_0041ADD0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0041ADD0
 u32 FUN_0041add0(int param_1, int *param_2)
 {
   int i;
@@ -3028,9 +3034,13 @@ u32 FUN_0041add0(int param_1, int *param_2)
   }
   return 1;
 }
+#pragma opt_loop_invariants off
+#pragma pop
 
 
-// FUN_0041AE20 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0041AE20
 
 
 u32 FUN_0041ae20(int param_1)
@@ -3114,6 +3124,8 @@ u32 FUN_0041ae20(int param_1)
   return uVar2;
 
 }
+#pragma opt_loop_invariants off
+#pragma pop
 
 
 

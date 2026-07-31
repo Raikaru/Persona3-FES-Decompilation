@@ -15619,8 +15619,8 @@ void FUN_00404470(short param_1)
   }
 }
 
-// b210 floor: at +0xc4 candidate emits lh/sll/lw while retail emits lw/lh/sll
-// for independent table and entry loads; all remaining visible words are this ordering.
+// Confirmed b210 floor: only +0xd0 differs in commutative addu operand order
+// (`addu $v0,$v1,$v0` versus `$v0,$v0,$v1`); all table loads and remaining words match.
 // FUN_004044C0 NONMATCHING
 
 
@@ -15678,7 +15678,6 @@ void FUN_004044c0(short param_1)
   tableOffset = *psVar4 * 0x40;
   table = table + tableOffset;
   uVar1 = *(short *)(table + 0x38);
-
   uVar3 = FUN_003e6dc0();
   FUN_003f0d60(uVar3,uVar1);
 

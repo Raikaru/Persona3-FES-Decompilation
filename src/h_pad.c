@@ -578,7 +578,6 @@ void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
         {
             copySize = newSize;
         }
-
         reallocated = H_Pad_RwMalloc(newSize, mallocHint);
         memcpy(reallocated, memory, copySize);
         H_Pad_RwFree(memory);

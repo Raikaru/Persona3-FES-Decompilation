@@ -76,7 +76,7 @@ extern void* func_0034fcd0(void* data);
 extern void* func_0034fd10(void* data);
 extern void* func_0034fd30(void* data);
 extern void* func_0034fd50(void* data);
-extern void* func_0034fd70(void* data, s16 value);
+extern void* func_0034fd70(void* data, u16 value);
 extern void* func_0034fcf0(void* data);
 extern void* func_0034fdf0(void* data, void* value);
 extern void* func_0034fe80(void* data, void* value);
@@ -1478,10 +1478,7 @@ s32 func_001a89c0(const u32* left, const u32* right)
     return (s32)(leftDistance - rightDistance);
 }
 
-// W212: transferring the matched sibling's absolute 0x00960090 call
-// spelling regressed nd 351 -> 420 (664/672) and was reverted. The first
-// residual remains the frame at +0x0 (ours 0x40, retail 0x50); the transfer
-// grows the frame but worsens the body, so this is not an honest close.
+/* Remaining differences are qsort argument load order and one commutative item-address add. */
 // FUN_001a8b10 NONMATCHING
 void func_001a8b10(u32* entries)
 {
@@ -1494,18 +1491,20 @@ void func_001a8b10(u32* entries)
     {
         item = &((KClumpMaterialNode*)(entries + 1))[i];
         sphere = func_004912b0(item->object);
-        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) !=
-            rwSPHEREOUTSIDE)
+        if (RwCameraFrustumTestSphere(
+                (RwCamera*)*(void**)D_007D2D60_abs, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 0);
+                (*(void (**)(u32, ...))D_00960090_abs)(0xe, 0);
             }
             func_001a7910(item->object, (f32*)((u8*)item + 0x0c));
-            if (item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
+            if (item->colorScale[3] < 1.0f && item->colorScale[3] > 0.0f)
             {
-                D_00960090(6, 1);
-                D_00960090(8, 1);
+                void (**renderState)(u32, ...);
+                renderState = (void (**)(u32, ...))D_00960090_abs;
+                (*renderState)(6, 1);
+                (*renderState)(8, 1);
                 RpSkyRenderStateSet(2, (void*)0x44);
                 RpSkyRenderStateSet(3, (void*)0x72001);
                 if (item->kind == 2)
@@ -1513,47 +1512,76 @@ void func_001a8b10(u32* entries)
                     (*(void (**)(void*))((u8*)item->object + 0x48))(
                         item->object);
                 }
-                D_00960090(6, 1);
-                D_00960090(8, 0);
-                if (item->kind == 3)
+                renderState = (void (**)(u32, ...))D_00960090_abs;
+                (*renderState)(6, 1);
+                (*renderState)(8, 0);
+                switch (item->kind)
                 {
-                    RpSkyRenderStateSet(2, (void*)0x48);
-                    RpSkyRenderStateSet(3, (void*)0x71801);
+                case 2:
+                {
+                    RpSkyRenderStateSet(2, (void*)0x44);
+                    RpSkyRenderStateSet(3, (void*)0x717fb);
                 }
-                else if (item->kind == 4)
+                    break;
+                case 4:
                 {
                     RpSkyRenderStateSet(2, (void*)0x42);
                     RpSkyRenderStateSet(3, (void*)0x71801);
                 }
-                else if (item->kind == 2)
+                    break;
+                case 3:
                 {
-                    RpSkyRenderStateSet(2, (void*)0x44);
-                    RpSkyRenderStateSet(3, (void*)0x717fb);
+                    RpSkyRenderStateSet(2, (void*)0x48);
+                    RpSkyRenderStateSet(3, (void*)0x71801);
+                }
+                    break;
                 }
                 (*(void (**)(void*))((u8*)item->object + 0x48))(item->object);
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 1);
+                (*(void (**)(u32, ...))D_00960090_abs)(0xe, 1);
             }
         }
     }
 }
 
+/* Remaining differences are one call-argument load order and one commutative address add. */
 // FUN_001a8db0 NONMATCHING
 s32 func_001a8db0(KwlnTask* task)
 {
     u32* work;
     s32 i;
-    u8 mode;
-    void* handle;
+    u32 mode;
 
     work = (u32*)task->workData;
-    if (work[0] == 3)
+    switch (work[0])
     {
-        return -1;
+    case 0:
+    {
+        if (work[3] == 0)
+        {
+            if (H_Cdvd_IsFileLoaded((HCdvd*)work[1]) == 0)
+            {
+                break;
+            }
+            if (work[1] != 0)
+            {
+                work[5] = (u32)func_0034fcd0(*(void**)((u8*)work[1] + 0x110));
+                H_Cdvd_Destroy((HCdvd*)work[1]);
+                work[1] = 0;
+            }
+        }
+        else
+        {
+            work[5] = (u32)func_0034fcd0(func_001021c0(work + 0x1d, (u8*)&mode));
+        }
+        work[0]++;
     }
-    if (work[0] == 2)
+        break;
+    case 1:
+        break;
+    case 2:
     {
         if (work[4] == 0 && work[8] == 0)
         {
@@ -1566,7 +1594,7 @@ s32 func_001a8db0(KwlnTask* task)
                 if (work[6] < work[2])
                 {
                     func_0034fd30((void*)work[5]);
-                    func_0034fd70((void*)work[5], (s16)work[7]);
+                    func_0034fd70((void*)work[5], (u16)work[7]);
                     work[6]++;
                 }
                 else
@@ -1580,13 +1608,13 @@ s32 func_001a8db0(KwlnTask* task)
                 {
                     if (work[0x11 + i] < work[2])
                     {
-                        func_0034fd30(NULL);
-                        func_0034fd70((void*)work[9 + i], *(s16*)((u8*)work + 100 + i * 2));
+                        func_0034fd30((void*)work[9 + i]);
+                        func_0034fd70((void*)work[9 + i], *(u16*)((u8*)work + 100 + i * 2));
                         work[0x11 + i]++;
                     }
                     else
                     {
-                        func_0034fcf0(NULL);
+                        func_0034fcf0((void*)work[9 + i]);
                         work[9 + i] = 0;
                         work[8]--;
                     }
@@ -1594,27 +1622,11 @@ s32 func_001a8db0(KwlnTask* task)
             }
         }
     }
-    else if (work[0] == 0)
+        break;
+    case 3:
     {
-        if (work[3] == 0)
-        {
-            handle = (void*)work[1];
-            if (handle == NULL || H_Cdvd_IsFileLoaded((HCdvd*)handle) == 0)
-            {
-                return 0;
-            }
-            if (handle != NULL)
-            {
-                work[5] = (u32)func_0034fcd0(*(void**)((u8*)handle + 0x110));
-                H_Cdvd_Destroy((HCdvd*)handle);
-                work[1] = 0;
-            }
-        }
-        else
-        {
-            work[5] = (u32)func_0034fcd0(func_001021c0(work + 0x1d, &mode));
-        }
-        work[0]++;
+        return -1;
+    }
     }
     return 0;
 }
@@ -1842,6 +1854,9 @@ void func_001a9470(KwlnTask* task)
     }
 }
 
+/* Remaining code differences are two commutative address-add operand reversals. */
+#pragma push
+#pragma opt_propagation off
 // FUN_001a9500 NONMATCHING
 s32 func_001a9500(KwlnTask* task)
 {
@@ -1859,22 +1874,27 @@ s32 func_001a9500(KwlnTask* task)
     KClumpSoundUpdateWork* work;
     s32 i;
     s32 fieldIndex;
-    KwlnTask** fieldTasks;
+    u8* fieldBase;
 
     work = (KClumpSoundUpdateWork*)task->workData;
     switch (work->state)
     {
     case 0:
-        work->state = 1;
+        work->state++;
     case 1:
         if (work->count > 0)
         {
-            fieldTasks = (KwlnTask**)((u8*)K_Field_Get() + 0x11f4);
+            fieldBase = (u8*)K_Field_Get();
             fieldIndex = (s32)work->values[0];
-            func_001a91b0(fieldTasks[fieldIndex], &work->positions[0]);
-            if ((s32)work->sounds[0] >= 0)
+            func_001a91b0(
+                *(KwlnTask**)(fieldBase + fieldIndex * 4 + 0x11f4),
+                &work->positions[0]);
+            if (((s32)work->sounds[0] <= -1) != 0)
             {
-                func_0010a4e0(1, 8, (u16)work->sounds[0], (u16)work->flags[0]);
+            }
+            else
+            {
+                func_0010a4e0(1, 8, (s16)work->sounds[0], (s16)work->flags[0]);
             }
             work->count--;
             for (i = 1; i < 8; i++)
@@ -1903,6 +1923,7 @@ s32 func_001a9500(KwlnTask* task)
     }
     return 0;
 }
+#pragma pop
 
 // FUN_001a9690
 void func_001a9690(KwlnTask* task)

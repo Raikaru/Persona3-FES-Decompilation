@@ -506,19 +506,10 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     f32 dot;
     f32 lineLength;
     f32 crossLength;
-    f32 debugDeltaX;
-    f32 debugDeltaY;
-    f32 debugDeltaZ;
-    f32 debugProjectionX;
-    f32 debugProjectionY;
-    f32 debugProjectionZ;
+    f32 debugDot;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
     if (work->playerResrc == NULL)
-    {
-        return KWLNTASK_CONTINUE;
-    }
-    if (work->state != 0)
     {
         return KWLNTASK_CONTINUE;
     }
@@ -624,43 +615,35 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 projection.x = target.x - point0.x;
                 projection.y = target.y - point0.y;
                 projection.z = target.z - point0.z;
-                debugDeltaX = delta.x;
-                debugDeltaY = delta.y;
-                debugDeltaZ = delta.z;
-                debugProjectionX = projection.x;
-                debugProjectionY = projection.y;
-                debugProjectionZ = projection.z;
-                denominator = debugDeltaX * debugDeltaX + debugDeltaY * debugDeltaY + debugDeltaZ * debugDeltaZ;
+                denominator = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
                 if (denominator != 0.0f)
                 {
-                    fraction = (debugProjectionX * debugDeltaX + debugProjectionY * debugDeltaY +
-                                debugProjectionZ * debugDeltaZ) / denominator;
-                    cross.x = debugDeltaY * debugProjectionZ -
-                              debugDeltaZ * debugProjectionY;
-                    cross.y = debugDeltaZ * debugProjectionX -
-                              debugDeltaX * debugProjectionZ;
-                    cross.z = debugDeltaX * debugProjectionY -
-                              debugDeltaY * debugProjectionX;
+                    fraction = (projection.x * delta.x + projection.y * delta.y +
+                                projection.z * delta.z) / denominator;
+                    cross.x = delta.y * projection.z -
+                              delta.z * projection.y;
+                    cross.y = delta.z * projection.x -
+                              delta.x * projection.z;
+                    cross.z = delta.x * projection.y -
+                              delta.y * projection.x;
                     lineLength = sqrtf(denominator);
                     crossLength = sqrtf(cross.x * cross.x +
                                         cross.y * cross.y +
                                         cross.z * cross.z);
-                    debugProjectionX = point0.x + debugDeltaX * fraction - point0.x;
-                    debugProjectionY = point0.y + debugDeltaY * fraction - point0.y;
-                    debugProjectionZ = point0.z + debugDeltaZ * fraction - point0.z;
-                    projection.x = debugProjectionX;
-                    projection.y = debugProjectionY;
-                    projection.z = debugProjectionZ;
+                    projection.x = point0.x + delta.x * fraction - point0.x;
+                    projection.y = point0.y + delta.y * fraction - point0.y;
+                    projection.z = point0.z + delta.z * fraction - point0.z;
                     amount = crossLength / lineLength;
-                    dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
-                          debugDeltaZ * debugProjectionZ;
+                    fraction = amount;
+                    debugDot = delta.x * projection.x + delta.y * projection.y +
+                               delta.z * projection.z;
                     printf(D_00683A48,
                            func_00530da0(lineLength),
                            func_00530da0(crossLength),
                            func_00530da0(amount),
-                           func_00530da0(dot));
-                    dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
-                          debugDeltaZ * debugProjectionZ;
+                           func_00530da0(debugDot));
+                    dot = delta.x * projection.x + delta.y * projection.y +
+                          delta.z * projection.z;
                     if (dot < 0.0f)
                     {
                         fraction = 0.0f;

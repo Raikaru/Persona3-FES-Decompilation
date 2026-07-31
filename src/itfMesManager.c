@@ -243,7 +243,7 @@ extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int pa
                           u32 param_6,int param_7,int param_8);
 #pragma alias FUN_003a53b0_8f FUN_003a53b0
 extern u64 FUN_003a53b0_8f(int param_1,int param_2,f32 param_3,int param_4,int param_5,
-                           u32 param_6,int param_7,int param_8);
+                           u32 param_6,int param_7,int param_8,int param_9);
 #pragma alias FUN_003a53b0_int FUN_003a53b0
 extern u32 FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
                             u32 param_6,int param_7,int param_8,int param_9);
@@ -284,7 +284,7 @@ extern void FUN_003a62b0_typed(u32 param_1, u32 *param_2);
 int FUN_003a62e0(int param_1,int param_2);
 #pragma alias FUN_003a62e0_typed FUN_003a62e0
 extern s32 FUN_003a62e0_typed(u32 param_1, u32 param_2);
-static void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
+static int FUN_003a6380();
 #pragma alias FUN_003a6380_direct FUN_003a6380
 extern void FUN_003a6380_direct(int param_1,int param_2,int param_3,u8 param_4);
 void FUN_003a6410(int param_1,u32 param_2);
@@ -3033,7 +3033,7 @@ FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 }
 #define FUN_003a5570(...) ((u64 (*)(...))FUN_003a5570)(__VA_ARGS__)
 #undef FUN_003a56f0
-// FUN_003A56F0 NONMATCHING
+// FUN_003A56F0
 
 
 
@@ -3092,7 +3092,7 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
       uVar3 = FUN_003a53b0_8f(param_1,param_2 + 0x19,param_3,param_4,param_5,param_6,param_7,
 
-                           param_10);
+                           param_10,param_11);
 
     }
 
@@ -3100,7 +3100,7 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
       uVar3 = FUN_003a53b0_8f(param_1,param_2 + 0x32,param_3,param_4,param_5,param_6,param_7,
 
-                           param_10);
+                           param_10,param_11);
 
     }
 
@@ -3790,7 +3790,11 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 
 #undef FUN_003a6380
 // FUN_003A6380
-static void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
+static int FUN_003a6380(param_1,param_2,param_3,param_4)
+int param_1;
+int param_2;
+int param_3;
+u8 param_4;
 {
   int color;
   int diff;
@@ -5369,32 +5373,36 @@ u32 FUN_003a7a40(int param_1)
 #define FUN_003a7a40(...) ((u32 (*)(...))FUN_003a7a40)(__VA_ARGS__)
 #undef FUN_003a7cb0
 #undef FUN_003a6380
-// FUN_003A7CB0 NONMATCHING
+/* Retail's old-style non-prototype call keeps the loaded current index in $v0:
+   FUN_003a6380 does not clobber $v0, so the caller reuses it after the call. */
+// FUN_003A7CB0
 
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
   int cur;
-  int max;
   int next;
 
   cur = *(s16 *)(param_1 + 0x16);
-  max = *(s16 *)(param_1 + 0x1a);
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),cur,max,0);
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),cur,*(s16 *)(param_1 + 0x1a),0);
   if (param_2 < 0) {
     next = cur - 1;
     if (next < 0) {
-      next = max - 1;
+      next = *(s16 *)(param_1 + 0x1a) - 1;
     }
   } else {
     next = cur + 1;
-    if (max <= next) {
+    if (next < *(s16 *)(param_1 + 0x1a)) {
+    } else {
       next = 0;
     }
   }
+  {
+    int max = *(s16 *)(param_1 + 0x1a);
+    FUN_003a6380(*(u32 *)(param_1 + 0xc),next,max,6);
+  }
   *(s16 *)(param_1 + 0x16) = next;
   *(s16 *)(param_1 + 0x18) = next;
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),next,max,6);
   FUN_0010a4e0(0,0,0,0);
 }
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)
