@@ -1816,7 +1816,7 @@ void func_001d0e50(s32 isDungeon)
             modelMatrix = (RwMatrix*)func_00318b60(*model);
             *modelMatrix = unit->matBeforeBtl;
             func_004c2f10((u64)func_00318b60(*model));
-            func_001a0dc0((*resource)->base.resTypeId, 1);
+            func_001a0dc0(resourceId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
             if (i == 0)

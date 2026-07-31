@@ -3602,7 +3602,6 @@ void func_00313be0(MdlAnimEntryTable* table)
 
 
 
-#pragma opt_common_subs off
 // FUN_00313CA0 NONMATCHING
 
 
@@ -3739,7 +3738,6 @@ void func_00313ca0(int *param_1,u32 param_2)
 
 
 
-#pragma opt_common_subs reset
 // FUN_00313E60
 
 
@@ -5270,6 +5268,7 @@ void func_003151d0(Model* param_1)
 
 
 
+#pragma opt_common_subs off
 // FUN_00315C20 NONMATCHING
 
 
@@ -5392,6 +5391,7 @@ void func_00315c20(int param_1)
 
 
 
+#pragma opt_common_subs reset
 // FUN_00315ED0
 
 

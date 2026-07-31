@@ -634,7 +634,7 @@ void* func_001dc6f0(KwlnTask* task)
         {
             if (work->timer >= 0x29)
             {
-                u32 i;
+                s32 i;
                 func_001d4180();
                 for (i = 0; i < FLDUNIT_PC_MAX; ++i)
                 {

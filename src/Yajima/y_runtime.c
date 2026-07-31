@@ -13809,7 +13809,6 @@ LAB_0044d510:
   return;
 }
 
-#pragma opt_common_subs off
 // FUN_0044D600 NONMATCHING
 
 void FUN_0044d600(int param_1)
@@ -14009,7 +14008,6 @@ void FUN_0044d600(int param_1)
   return;
 }
 
-#pragma opt_common_subs reset
 // FUN_0044DFC0 NONMATCHING
 
 void FUN_0044dfc0(int param_1)
@@ -14479,6 +14477,7 @@ void FUN_0044f270(float *param_1,float *param_2)
   return;
 }
 
+#pragma opt_common_subs off
 // FUN_0044F300 NONMATCHING
 
 u32 FUN_0044f300(char param_1)
@@ -14660,6 +14659,7 @@ u32 FUN_0044f300(char param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs reset
 // FUN_0044FAB0 NONMATCHING
 
 u8 FUN_0044fab0(int param_1)

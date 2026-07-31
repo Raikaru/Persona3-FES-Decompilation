@@ -21780,7 +21780,6 @@ void FUN_00332b30(int param_1)
 
 
 
-#pragma opt_common_subs off
 // FUN_00332B60 NONMATCHING
 
 
@@ -21943,7 +21942,6 @@ void FUN_00332b60(int *param_1)
 // declaration order + wrong (float)int cast fixed to raw reinterpret. nd
 // 70 -> 10. Residual: retail evaluates the final call's 2nd argument
 // before the 1st; not reproduced.
-#pragma opt_common_subs reset
 // FUN_00332E10
 
 void FUN_00332e10(int *param_1)
@@ -23456,6 +23454,7 @@ void FUN_00334820(int param_1)
 
 
 
+#pragma opt_common_subs off
 // FUN_003348B0 NONMATCHING
 
 
@@ -23973,6 +23972,7 @@ LAB_003350f0:
 
 
 
+#pragma opt_common_subs reset
 // FUN_00335180 NONMATCHING
 
 void FUN_00335180(int param_1)
