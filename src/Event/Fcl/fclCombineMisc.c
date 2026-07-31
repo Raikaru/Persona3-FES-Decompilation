@@ -589,7 +589,7 @@ u64 FUN_003d5bb0(u32 param_1)
   return uVar5;
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_003D5CD0 NONMATCHING
 
 
@@ -617,7 +617,7 @@ s32 FUN_003d5cd0(u32 *param_1)
   }
   return (s64)sVar4;
 }
-#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 // FUN_003D5DC0
 
 

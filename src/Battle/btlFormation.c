@@ -3351,7 +3351,6 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
-#pragma opt_common_subs off
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
@@ -3415,7 +3414,6 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
   return;
 }
 
-#pragma opt_common_subs reset
 // FUN_002bccd0
 
 void func_002bccd0(u32 param_1,u32 param_2)
@@ -3465,6 +3463,7 @@ void func_002bcde0(u64 param_1,u32 *param_2)
   return;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002bce10 NONMATCHING
 
 void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5)
@@ -3517,6 +3516,7 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
   }
   return;
 }
+#pragma opt_loop_invariants reset
 // FUN_002bd060
 void LAB_002bd060(u32 **param_1)
 {
