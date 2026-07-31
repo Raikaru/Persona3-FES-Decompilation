@@ -7423,7 +7423,6 @@ u8 FUN_003fa1e0(void)
   return FUN_003c6270() == 3;
 }
 
-#pragma opt_loop_invariants on
 // FUN_003FA210 NONMATCHING
 
 
@@ -7563,7 +7562,6 @@ void FUN_003fa210(int param_1)
 
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003FA520
 
 
@@ -11361,6 +11359,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 }
 
+#pragma opt_loop_invariants on
 // FUN_003FFA20 NONMATCHING
 
 
@@ -11415,6 +11414,7 @@ u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3)
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003FFBB0
 void FUN_003ffbb0(int param_1,int param_2)
 {

@@ -5727,6 +5727,7 @@ done:
 /* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
 #pragma push
 #pragma opt_common_subs off
+/* W323 followups: retained iVar5+4 base pointer nd197 -> nd184; callback symbols nd184 -> nd168. */
 // FUN_00316970 NONMATCHING
 
 
@@ -5741,8 +5742,9 @@ void func_00316970(Model* param_1)
 
   u32 uVar4;
 
-  int iVar5;
   u32 *pVar6;
+  u32 *hierarchy;
+  int iVar5;
 
   u32 uStack_4;
 
@@ -5750,7 +5752,7 @@ void func_00316970(Model* param_1)
 
   iVar3 = (int)param_1;
 
-  func_004916d0(*(u32 *)(iVar3 + 0xdc),0x3165e0,0);
+  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)func_003165e0,0);
 
   if (*(int *)(iVar3 + 0x37c) != 0) {
     func_003143c0((u8 *)param_1 + 0x364,param_1->clump);
@@ -5766,13 +5768,13 @@ void func_00316970(Model* param_1)
 
     uStack_4 = 0;
 
-    func_004cb6e0(*pVar6,0x3115a0,&uStack_4);
+    func_004cb6e0(*pVar6,(void *)func_003115a0,&uStack_4);
 
     *(u32 *)(iVar3 + 0x10c) = uStack_4;
 
-    func_004916d0(iVar5,0x311610);
+    func_004916d0(iVar5,(void *)mdl00311610);
 
-    func_004916d0(iVar5,0x312f90,*pVar6);
+    func_004916d0(iVar5,(void *)func_00312f90,*pVar6);
 
     func_001a7170(iVar5,*(u32 *)(iVar3 + 0x10c));
 
@@ -5788,9 +5790,8 @@ void func_00316970(Model* param_1)
 
         *(u16 *)(iVar5 + 0xec) = *(u16 *)(iVar5 + 0xec) | 2;
 
-        uVar1 = func_00466480(*(u32 **)(iVar3 + 0x10c),0,**(u32 **)(iVar3 + 0x10c),
-
-                             0xffffffffffffffff);
+        hierarchy = *(u32 **)(iVar3 + 0x10c);
+        uVar1 = func_00466480(hierarchy,0,*hierarchy,-1);
 
         *(u32 *)(iVar5 + 0x10c) = uVar1;
 
@@ -5804,7 +5805,7 @@ void func_00316970(Model* param_1)
 
   *(u32 *)(iVar3 + 0xe0) = uVar1;
 
-  func_004916d0(*(u32 *)(iVar3 + 0xdc),0x315ed0,0);
+  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)func_00315ed0,0);
 
   if (*(int *)(iVar3 + 0x3f4) != 0) {
     func_0031ded0(*(void **)(iVar3 + 0x3f4));

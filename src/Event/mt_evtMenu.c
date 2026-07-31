@@ -14291,7 +14291,6 @@ FUN_00381110_done:
 }
 
 
-#pragma opt_common_subs off
 // FUN_00381280 NONMATCHING
 
 
@@ -14481,7 +14480,6 @@ int FUN_00381280(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
 // FUN_003814D0
 
 

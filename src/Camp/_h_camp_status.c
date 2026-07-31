@@ -273,6 +273,8 @@ static inline void campStatusDrawParticle(f32 texture, f32 x, f32 y, s8 alpha,
     FUN_001127d0(particle, 1);
     FUN_00115980(particle);
 }
+/* opt_common_subs off: default/on nd703/1056B -> off nd664/1096B; retained. */
+#pragma opt_common_subs off
 // FUN_001230C0 NONMATCHING
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
 {
@@ -383,6 +385,7 @@ void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_common_subs reset
 
 void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
                              f32 alpha, s16 pcId, s32 fade);
@@ -411,6 +414,8 @@ drawStatus:
 done:;
 }
 
+/* opt_common_subs off: default/on nd767/1048B -> off nd765/1040B; retained. */
+#pragma opt_common_subs off
 // FUN_001236A0 NONMATCHING
 void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -483,7 +488,10 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
+#pragma opt_common_subs reset
 
+/* opt_common_subs off: default/on nd591/1024B -> off nd363/1016B; retained. */
+#pragma opt_common_subs off
 // FUN_00123B70 NONMATCHING
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -554,6 +562,7 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         parent, font, val + 0xb, (position.x + 138.0f) + 30.0f, y,
         (u8)fade, alpha, 0x66);
 }
+#pragma opt_common_subs reset
 
 // FUN_00123F80
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
@@ -1044,6 +1053,8 @@ static void campStatusDrawExp(CampVec2 position, f32 scale, void* bonus,
                  (u8)(0xff - alpha), 4, text, 1);
 }
 
+/* opt_loop_invariants on: off nd897/1192B -> on nd755/1232B; retained. */
+#pragma opt_loop_invariants on
 // FUN_0012B300 NONMATCHING
 void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
 {
@@ -1109,6 +1120,7 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
     FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
                  (u8)(0xff - alpha), 4, text, 1);
 }
+#pragma opt_loop_invariants reset
 
 // FUN_0012B860 NONMATCHING
 void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
@@ -1192,6 +1204,8 @@ void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
         }
     }
 }
+/* opt_loop_invariants on: off nd449/604B -> on nd391/612B; retained. */
+#pragma opt_loop_invariants on
 // FUN_0012BCE0 NONMATCHING
 void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
                   void* persona, u8 alpha)
@@ -1228,6 +1242,7 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
     FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
                  (u8)(0xff - alpha), 4, text, 1);
 }
+#pragma opt_loop_invariants reset
 
 // FUN_0012BFB0 NONMATCHING
 void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
@@ -2058,6 +2073,8 @@ KwlnTask* h_campStatusCreatePartsTask(KwlnTask* parent, u32 priority,
 
 void h_campStatusRenderMode(CampVec2 position, f32 scale, void* persona,
                             s32 mode, s32 frame, s32 alpha);
+/* opt_common_subs off: default/on nd634/920B -> off nd614/944B; retained. */
+#pragma opt_common_subs off
 // FUN_00127C00 NONMATCHING
 void* h_campStatusUpdatePanelTask(KwlnTask* task)
 {
@@ -2152,6 +2169,7 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_common_subs reset
 
 // FUN_00127FC0
 void h_campStatusDestroyPanelTask(KwlnTask* task)
@@ -2438,7 +2456,6 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
     }
 }
 
-#pragma opt_common_subs off
 // FUN_001293B0 NONMATCHING
 #pragma push
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
@@ -2612,7 +2629,6 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
 }
 
 #pragma pop
-#pragma opt_common_subs reset
 // FUN_00129B30 NONMATCHING
 void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                 void* persona, s32 frame)
@@ -2894,6 +2910,8 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     FUN_0040eb50(parentBottom, (s32)footerX, (s32)footerY,
                  0xff - alpha, 4, text, 1);
 }
+/* opt_loop_invariants on: off nd1115/1508B -> on nd1088/1520B; retained. */
+#pragma opt_loop_invariants on
 // FUN_0012AC60 NONMATCHING
 void h_campStatusDrawSteady(CampVec2 position, f32 scale,
                             void* persona, s32 alpha)
@@ -3006,6 +3024,7 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
     FUN_0040eb50(parentBottom, (s32)footerPosition.x,
                  (s32)footerPosition.y, 0xff - alpha, 4, text, 1);
 }
+#pragma opt_loop_invariants reset
 /*
  * Persona status draw task.
  *

@@ -406,37 +406,35 @@ void func_00108bc0(void)
         for (i = 2; i < HSND_SLOT_COUNT; )
         {
             channel = &sChannels[i];
-            if (channel->active == false)
+            if (channel->active != false)
             {
-                continue;
-            }
-
-            handle = &channel->handle;
-            status = func_0054d148(*handle);
-            if (status == 3)
-            {
-                channel->active = false;
-            }
-            else if (status == 4)
-            {
-                func_00109070((s16)i);
-                H_Snd_00109180((s16)i);
-                func_0054d208(*handle, true);
-            }
-            else
-            {
-                state = &channel->state;
-                switch (*state)
+                handle = &channel->handle;
+                status = func_0054d148(*handle);
+                if (status == 3)
                 {
-                    case HSND_CHANNEL_PLAYING:
-                        func_0054d100(*handle);
-                        *state = HSND_CHANNEL_STARTING;
-                        break;
+                    channel->active = false;
+                }
+                else if (status == 4)
+                {
+                    func_00109070((s16)i);
+                    H_Snd_00109180((s16)i);
+                    func_0054d208(*handle, true);
+                }
+                else
+                {
+                    state = &channel->state;
+                    switch (*state)
+                    {
+                        case HSND_CHANNEL_PLAYING:
+                            func_0054d100(*handle);
+                            *state = HSND_CHANNEL_STARTING;
+                            break;
 
-                    case HSND_CHANNEL_RELEASING:
-                        H_Snd_00109180((s16)i);
-                        *state = HSND_CHANNEL_STARTING;
-                        break;
+                        case HSND_CHANNEL_RELEASING:
+                            H_Snd_00109180((s16)i);
+                            *state = HSND_CHANNEL_STARTING;
+                            break;
+                    }
                 }
             }
             {
@@ -806,7 +804,7 @@ done:
 void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
                          u32 data1Size, void* data2, u32 data2Size)
 {
-    if (H_Snd_FUN_00109df0(slotIndex) != 0)
+    if (H_Snd_FUN_00109df0(slotIndex))
     {
         sSlotWork[(s16)slotIndex].param2 = 0x3E7;
     }

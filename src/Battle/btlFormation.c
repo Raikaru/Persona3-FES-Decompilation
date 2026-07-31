@@ -1855,6 +1855,8 @@ void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
 }
 
 
+/* W322 probe: func_002ba0f0 with opt_common_subs off improved normalized_diff 389 -> 372 (object 680/688). */
+#pragma opt_common_subs off
 // FUN_002ba0f0 NONMATCHING
 
 void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
@@ -2028,6 +2030,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
   }
   return;
 }
+#pragma opt_common_subs on
 
 // FUN_002ba3a0 NONMATCHING
 
@@ -4080,6 +4083,8 @@ u16 func_002bde10(int unit, u16* output)
 #pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
+/* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
+#pragma opt_loop_invariants on
 // FUN_002bdfb0 NONMATCHING
 
 static u32 func_002bdfb0(int state)
@@ -4164,6 +4169,7 @@ static u32 func_002bdfb0(int state)
 
   return result;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002BE2E0
 void FUN_002BE2E0(void)
@@ -5063,6 +5069,8 @@ void func_002bfc90(void)
   return;
 }
 
+/* W322 probe: func_002bfcb0 with opt_loop_invariants on improved normalized_diff 479 -> 446 (object 688/688). */
+#pragma opt_loop_invariants on
 // FUN_002bfcb0 NONMATCHING
 
 void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5)
@@ -5144,6 +5152,7 @@ LAB_002bfefc:
   }
   return;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002bff60
 
@@ -5179,6 +5188,8 @@ u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
 }
 
 #pragma opt_propagation on
+/* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
+#pragma opt_loop_invariants on
 // FUN_002c0070 NONMATCHING
 
 void func_002c0070(int param_1,int param_2)
@@ -5401,6 +5412,7 @@ void func_002c0070(int param_1,int param_2)
   }
   return;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c0880
 
@@ -6929,6 +6941,8 @@ u32 func_002c2d00(int param_1,u32 param_2)
   return uVar6;
 }
 
+/* W322 probe: func_002c2ed0 with opt_loop_invariants on improved normalized_diff 178 -> 158 (object 540/544). */
+#pragma opt_loop_invariants on
 // FUN_002c2ed0 NONMATCHING
 
 bool func_002c2ed0(int param_1,u16 param_2,int param_3)
@@ -6982,6 +6996,7 @@ bool func_002c2ed0(int param_1,u16 param_2,int param_3)
   uVar7 = func_0030b4b0(*(u32 *)(iVar2 + 0xa2c),param_2);
   return (uVar7 & 0x7000000) == 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c30f0
 
@@ -7254,6 +7269,8 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
   return 1;
 }
 
+/* W322 probe: func_002c3770 with opt_loop_invariants on improved normalized_diff 817 -> 808 (object 1056/1136). */
+#pragma opt_loop_invariants on
 // FUN_002c3770 NONMATCHING
 
 u32 func_002c3770(u32 param_1,u32 param_2)
@@ -7358,6 +7375,7 @@ u32 func_002c3770(u32 param_1,u32 param_2)
   }
   return 1;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c3be0
 u32 func_002c3be0(u32 param_1)
@@ -7820,6 +7838,8 @@ void func_002c4860(u64 param_1,u64 param_2)
   return;
 }
 
+/* W322 probe: func_002c48a0 with opt_loop_invariants on improved normalized_diff 206 -> 48 (object 484/496). */
+#pragma opt_loop_invariants on
 // FUN_002c48a0 NONMATCHING
 
 u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
@@ -7866,7 +7886,10 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   return uVar7;
 }
+#pragma opt_loop_invariants off
 
+/* W322 probe: func_002c4a90 with opt_loop_invariants on improved normalized_diff 206 -> 56 (object 492/496). */
+#pragma opt_loop_invariants on
 // FUN_002c4a90 NONMATCHING
 
 u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5)
@@ -7913,7 +7936,10 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   return uVar7;
 }
+#pragma opt_loop_invariants off
 
+/* W322 probe: func_002c4c80 with opt_loop_invariants on improved normalized_diff 239 -> 19 (object 460/464). */
+#pragma opt_loop_invariants on
 // FUN_002c4c80 NONMATCHING
 
 u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
@@ -7959,7 +7985,10 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   return uVar8;
 }
+#pragma opt_loop_invariants off
 
+/* W322 probe: func_002c4e50 with opt_common_subs off improved normalized_diff 288 -> 210 (object 472/480). */
+#pragma opt_common_subs off
 // FUN_002c4e50 NONMATCHING
 
 u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
@@ -8003,7 +8032,10 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   return uVar8;
 }
+#pragma opt_common_subs on
 
+/* W322 probe: func_002c5030 with opt_loop_invariants on improved normalized_diff 534 -> 533 (object 840/848). */
+#pragma opt_loop_invariants on
 // FUN_002c5030 NONMATCHING
 
 s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4)
@@ -8097,6 +8129,7 @@ LAB_002c5168:
     uVar11 = uVar11 + 1 & 0xffff;
   } while( true );
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c5380 NONMATCHING
 
@@ -8525,6 +8558,8 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
   return lVar8;
 }
 
+/* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
+#pragma opt_common_subs off
 // FUN_002c6300 NONMATCHING
 
 s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
@@ -8597,6 +8632,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
   }
   return lVar7;
 }
+#pragma opt_common_subs on
 
 // FUN_002c65d0 NONMATCHING
 
@@ -8653,19 +8689,17 @@ u32 func_002c65d0(int param_1)
       }
     }
     do {
-      u16 sortIndex;
       bVar3 = false;
-      sortIndex = 0;
-      for (; sortIndex < *(u16 *)(param_1 + 0xc0) - 1; sortIndex = sortIndex + 1) {
-        sVar1 = asStack_20[sortIndex + 1];
-        sVar2 = asStack_20[sortIndex];
+      for (uVar6 = 0; uVar6 < *(u16 *)(param_1 + 0xc0) - 1; uVar6 = uVar6 + 1) {
+        sVar1 = asStack_20[uVar6 + 1];
+        sVar2 = asStack_20[uVar6];
         if (sVar2 < sVar1) {
-          iVar9 = param_1 + sortIndex * 4;
+          iVar9 = param_1 + uVar6 * 4;
           uVar7 = *(u32 *)(iVar9 + 0x88);
           *(u32 *)(iVar9 + 0x88) = *(u32 *)(iVar9 + 0x8c);
           *(u32 *)(iVar9 + 0x8c) = uVar7;
-          asStack_20[sortIndex] = sVar1;
-          asStack_20[sortIndex + 1] = sVar2;
+          asStack_20[uVar6] = sVar1;
+          asStack_20[uVar6 + 1] = sVar2;
           bVar3 = true;
         }
       }
@@ -8736,6 +8770,8 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
 
 // FUN_002c6ba0 NONMATCHING
 
+/* W322 probe: func_002c6ba0 with opt_loop_invariants on improved normalized_diff 394 -> 358 (object 632/656). */
+#pragma opt_loop_invariants on
 u16 func_002c6ba0(int param_1)
 
 {
@@ -8795,6 +8831,7 @@ u16 func_002c6ba0(int param_1)
   }
   return *(char *)(iVar3 + 0x12);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c6e30 NONMATCHING
 
@@ -14479,6 +14516,8 @@ u32 func_002d0270(void)
   return 1;
 }
 
+/* W322 probe: func_002d03e0 with opt_loop_invariants on improved normalized_diff 190 -> 188 (object 472/480). */
+#pragma opt_loop_invariants on
 // FUN_002d03e0 NONMATCHING
 
 u32 func_002d03e0(void)
@@ -14529,6 +14568,7 @@ u32 func_002d03e0(void)
   }
   return 1;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002d05c0
 
