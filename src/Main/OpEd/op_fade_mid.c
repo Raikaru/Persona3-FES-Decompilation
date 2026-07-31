@@ -731,91 +731,10 @@ void func_00276920(void)
     gOpWorkCC = NULL;
 }
 
-// FUN_00276930
-void func_00276930(void)
-{
-    u8 *work;
-    s32 flags;
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    flags = OP_U32(work, 0);
-    if ((~flags & 1) == 0 && (flags & 8) != 0 && func_003c9ab0(OP_U32(work, 4)) != 0)
-        OP_U32(work, 0) &= ~8u;
-}
-
-// FUN_002769c0
-void func_002769c0(u32 arg0, u16 arg1)
-{
-    u8 *work;
-
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    func_003c9ba0(arg0, (u32)(uintptr_t)FUN_001749a0(arg1));
-    func_003c9d00(arg0, 8);
-    func_003c9cd0(arg0, -1);
-    OP_S16(work, 8) = arg1;
-    OP_U32(work, 4) = arg0;
-    OP_U32(work, 0) |= 8;
-    OP_U32(work, 0) |= 1;
-}
-// FUN_00276a80
-void func_00276a80(void)
-{
-    u8 *work;
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x59);
-    func_003c9d00(OP_U32(work, 4), 0x10);
-    OP_U32(work, 0) |= 4;
-}
-// FUN_00276b10
-void func_00276b10(void)
-{
-    u8 *work;
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x62);
-    func_003c9d00(OP_U32(work, 4), 8);
-    OP_U32(work, 0) &= ~4u;
-}
-// FUN_00276ba0
-void func_00276ba0(void)
-{
-    u8 *work;
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x6b);
-    func_003c9d00(OP_U32(work, 4), 2);
-    OP_U32(work, 0) |= 2;
-}
-// FUN_00276c30
-void func_00276c30(void)
-{
-    u8 *work;
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    work = OP_WORKC;
-    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x74);
-    func_003c9d80(OP_U32(work, 4), 2);
-    OP_U32(work, 0) &= ~2u;
-}
 
 
-// FUN_00276cc0
-u32 func_00276cc0(void)
-{
-    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
-    return *gOpWorkCC & 8;
-}
 
-// FUN_00276D10
-void func_00276d10(u32 *work)
-{
-    work[0] = 0;
-    work[0x3730 / 4] = 0;
-    work[0x3734 / 4] = 0;
-    work[0x3738 / 4] = 0;
-    gOpWorkD0 = work;
-}
+
 
 // FUN_00276d30
 void func_00276d30(void)

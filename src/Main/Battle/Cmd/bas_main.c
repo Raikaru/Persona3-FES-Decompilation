@@ -20,18 +20,7 @@ static BasWork* sBasWork; // puGpffffb63c
 
 void bpRootRequestAnalyze(u32 unitId); // bp_root.c
 
-// FUN_0024a6c0
-void basInit(BasWork* work)
-{
-    work->flags = 0;
-    sBasWork = work;
-}
 
-// FUN_0024a6d0
-void basShutdown(void)
-{
-    sBasWork = NULL;
-}
 
 // FUN_0024a6e0
 void basRequestAnalyze(u32 unitId)
