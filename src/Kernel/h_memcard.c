@@ -235,7 +235,7 @@ s32 func_0018f2c0(void)
             {
                 if (cardError == 0)
                 {
-                    switch (*(volatile u32*)&cardCode)
+                    switch (cardCode)
                     {
                         case 0x9003:
                             return -3;
@@ -758,7 +758,6 @@ state12_mode1:
                     }
                 }
             }
-            size = 0;
             FUN_00513cc8(sSocketNo, D_00846EA0, FUN_001021c0(D_005E4B40, &size), 0, size);
             goto state12_done;
 

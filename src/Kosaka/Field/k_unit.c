@@ -1152,10 +1152,7 @@ u32 func_001cfdd0(u32 index)
     u16 resourceId;
     RwV3d axis;
     Model* baseModel;
-    FldUnit* units;
-
-    units = gFldUnitsEc;
-    unit = &units[index];
+    unit = &gFldUnitsEc[index];
     if (unit->genusBase == NULL || unit->resrc != NULL)
     {
         return true;
