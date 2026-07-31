@@ -48,6 +48,9 @@ extern void FUN_0040e3f0_i2f1i3f3(s32 param_5, s32 param_6, f32 param_1, u8 para
 #pragma alias FUN_0040eb50_i FUN_0040eb50
 extern s32 FUN_0040eb50_i(s32 x, s32 y, f32 scale, u8 color, s16 font,
                            const void* text, s32 maxWidth);
+#pragma alias FUN_0040e3c0_i FUN_0040e3c0
+extern void FUN_0040e3c0_i(s32 x, s32 y, f32 scale, u8 color, s32 type,
+                            s32 value);
 void FUN_003e6130(int param_1);
 void FUN_003e6400(u32 param_1,u8* param_2);
 u64 FUN_003e6d40(void);

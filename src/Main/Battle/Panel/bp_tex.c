@@ -3713,24 +3713,27 @@ void func_00221b60(void)
         }
     }
 
-    if (*(u32*)(work + 0x463c) != 3)
+    switch (*(u32*)(work + 0x463c))
     {
-        return;
-    }
-    switch (*(u32*)(work + 0x4644))
-    {
-    case 0:
-        if ((*(u32*)(work + 0x4648) == 1 ||
-             *(u32*)(work + 0x4648) == 2) &&
-            *(u32*)(work + 0x4658) < 6)
+    case 3:
+        switch (*(u32*)(work + 0x4644))
         {
-            func_00226040();
+        case 0:
+            if ((*(u32*)(work + 0x4648) == 1 ||
+                 *(u32*)(work + 0x4648) == 2) &&
+                *(u32*)(work + 0x4658) < 6)
+            {
+                func_00226040();
+                return;
+            }
             return;
+        case 1:
+        case 2:
+            func_00226040();
+            break;
         }
-        return;
-    case 1:
-    case 2:
-        func_00226040();
         break;
+    default:
+        return;
     }
 }

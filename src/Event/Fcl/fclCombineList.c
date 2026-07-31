@@ -1371,18 +1371,19 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     (void)unused_alternate;
 }
 
-// FUN_003dca10 NONMATCHING
+// FUN_003dca10
 void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style)
 {
     FclTextResourceData* resource_data;
     s32 available_count;
-    s32 i;
 
     available_count = (s32)(FUN_00175410() & 0xffff);
     resource_data = (FclTextResourceData*)source_link->payload->data.text_node;
 
     if (*(s32*)((byte*)owner->container->work + 0xc) == 3) {
+        s32 i;
+
         for (i = 0; i < 0xc; i++) {
             if (i < available_count) {
                 if ((resource_data->selection_mask & (1 << i)) != 0) {
@@ -1398,6 +1399,8 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             }
         }
     } else {
+        s32 i;
+
         for (i = 0; i < 0xc; i++) {
             if (i < available_count) {
                 if ((resource_data->selection_mask & (1 << i)) != 0) {

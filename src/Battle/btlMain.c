@@ -789,7 +789,7 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
     u64 formationPacketUID;
     u64 lastPacketUID;
     u16 enemyCount;
-    u8 firstUnit;
+    u32 firstUnit;
     enemyCount = 0;
     for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
     {
