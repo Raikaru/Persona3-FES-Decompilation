@@ -44487,7 +44487,7 @@ void FUN_0034cc00(u32 *param_1)
 
   float scaleStack [3];
 
-  u32 uStack_c;
+  volatile u32 uStack_c;
 
   int iStack_4;
 

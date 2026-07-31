@@ -6352,9 +6352,10 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
 
   iVar3 = (int)param_3;
 
+  if (*(int *)(iVar3 + 0xd4) == 6) goto process_75d70;
   uVar1 = 0;
-  switch (*(int *)(iVar3 + 0xd4)) {
-  case 6:
+  goto done_75d70;
+process_75d70:
 
     if ((DAT_007e094e & 0x40) == 0) {
 
@@ -6458,8 +6459,7 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
 
     }
 
-    break;
-  }
+done_75d70:
 
 
   return uVar1;

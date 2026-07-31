@@ -8653,17 +8653,19 @@ u32 func_002c65d0(int param_1)
       }
     }
     do {
+      u16 sortIndex;
       bVar3 = false;
-      for (uVar6 = 0; uVar6 < *(u16 *)(param_1 + 0xc0) - 1; uVar6 = uVar6 + 1) {
-        sVar1 = asStack_20[uVar6 + 1];
-        sVar2 = asStack_20[uVar6];
+      sortIndex = 0;
+      for (; sortIndex < *(u16 *)(param_1 + 0xc0) - 1; sortIndex = sortIndex + 1) {
+        sVar1 = asStack_20[sortIndex + 1];
+        sVar2 = asStack_20[sortIndex];
         if (sVar2 < sVar1) {
-          iVar9 = param_1 + uVar6 * 4;
+          iVar9 = param_1 + sortIndex * 4;
           uVar7 = *(u32 *)(iVar9 + 0x88);
           *(u32 *)(iVar9 + 0x88) = *(u32 *)(iVar9 + 0x8c);
           *(u32 *)(iVar9 + 0x8c) = uVar7;
-          asStack_20[uVar6] = sVar1;
-          asStack_20[uVar6 + 1] = sVar2;
+          asStack_20[sortIndex] = sVar1;
+          asStack_20[sortIndex + 1] = sVar2;
           bVar3 = true;
         }
       }

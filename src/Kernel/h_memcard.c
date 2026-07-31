@@ -668,13 +668,13 @@ state5_done:
                     switch (cardCode)
                     {
                         case 0x11:
+                            sMemcardSeqMode = 0xc;
                             break;
                         case 0x1c:
                             return -6;
                         default:
                             return -3;
                     }
-                    sMemcardSeqMode = 0xc;
                 }
             }
             break;
