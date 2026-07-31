@@ -3456,6 +3456,9 @@ void FUN_00430630(int param_1)
 /* W212: first divergence is offset 216 after an exact prefix; the residual begins with
  * retail retaining the divided float in $f2 while this build puts it in $f0.  The
  * FUN_0045b620 template shares calls but not this straight-line float lifetime shape. */
+#pragma push
+/* W373 singles base 345/684; loop 345/684; common 496/744; life 345/684; propagation 441/656; strength 345/684; dead 324/680. */
+#pragma opt_dead_assignments off
 // FUN_00430780 NONMATCHING
 
 void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
@@ -3511,6 +3514,7 @@ void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
   FUN_00115980_arg(uVar2);
   return;
 }
+#pragma opt_dead_assignments reset
 
 #pragma opt_loop_invariants on
 // FUN_00430A40
@@ -3688,6 +3692,7 @@ void FUN_004311f0(void *param_1,u32 param_2,u32 param_3)
   *(YVec3f *)param_1 = vector;
 }
 
+#pragma pop
 // FUN_004312B0 NONMATCHING
 
 u64 FUN_004312b0(int param_1)
@@ -5212,6 +5217,9 @@ void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float 
   return;
 }
 
+#pragma push
+/* W373 singles base 223/416; loop 223/416; common 217/416; life 223/416; propagation 223/416; strength 223/416; dead 223/416. */
+#pragma opt_common_subs off
 // FUN_00434770 NONMATCHING
 
 u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
@@ -5256,6 +5264,8 @@ u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
   return uVar3;
 }
 
+#pragma pop
+#pragma opt_common_subs reset
 // FUN_00434920 NONMATCHING
 
 u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
@@ -6860,7 +6870,8 @@ void FUN_00437e80(u32 *param_1,char param_2)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_propagation off
+/* W373 singles base 3602/4976; loop 3602/4976; common 3660/5136; life 3607/4976; propagation 3576/4976; strength 3602/4976; dead 3491/4972; pair propagation+dead 3576/4976. */
+#pragma opt_dead_assignments off
 // FUN_00438010 NONMATCHING
 
 void FUN_00438010(int param_1)
@@ -7362,7 +7373,6 @@ switchD_004387bc_caseD_5:
 }
 
 #pragma pop
-#pragma opt_propagation reset
 // FUN_00439400
 
 void FUN_00439400(char param_1)
@@ -7396,6 +7406,7 @@ void FUN_00439400(char param_1)
   return;
 }
 
+#pragma opt_dead_assignments reset
 // FUN_00439520 NONMATCHING
 
 void FUN_00439520(int param_1)
@@ -8458,6 +8469,10 @@ short FUN_0043bda0(char param_1,char param_2)
 }
 
 #pragma pop
+#pragma push
+/* W373 singles base 348/536; loop 348/536; common 410/592; life 348/536; propagation 259/552; strength 348/536; dead 259/552; pair propagation+dead 259/552. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_0043BF50 NONMATCHING
 
 void FUN_0043bf50(u64 param_1)
@@ -8519,6 +8534,9 @@ void FUN_0043bf50(u64 param_1)
   return;
 }
 
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
@@ -8829,6 +8847,8 @@ u32 FUN_0043c910(char param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 35859/44904; loop 35859/44904; common 40944/49496; life 35885/44864; propagation 34998/43300; strength 35859/44904; dead 35987/44880. */
+#pragma opt_propagation off
 // FUN_0043CA30 NONMATCHING
 
 u32 FUN_0043ca30(int param_1)
@@ -11840,6 +11860,7 @@ u32 FUN_0043ca30(int param_1)
 }
 
 #pragma pop
+#pragma opt_propagation reset
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
@@ -12034,6 +12055,9 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
 }
 
 #pragma pop
+#pragma push
+/* W373 singles base 2419/3208; loop 2428/3208; common 2617/3520; life 2419/3208; propagation 2363/3164; strength 2419/3208; dead 2424/3208. */
+#pragma opt_propagation off
 // FUN_00448060 NONMATCHING
 
 void FUN_00448060(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
@@ -12222,8 +12246,12 @@ void FUN_00448060(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
   return;
 }
 
+#pragma pop
+#pragma opt_propagation reset
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 3031/3984; loop 3031/3984; common 3342/4200; life 3032/3984; propagation 3102/3900; strength 3031/3984; dead 2995/3984. */
+#pragma opt_dead_assignments off
 // FUN_00448CF0 NONMATCHING
 
 void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
@@ -12495,6 +12523,7 @@ void FUN_00449d10(int param_1)
   return;
 }
 
+#pragma opt_dead_assignments reset
 // FUN_00449D60 NONMATCHING
 
 void FUN_00449d60(int param_1)
@@ -13323,6 +13352,10 @@ void FUN_0044b7d0(int param_1)
   return;
 }
 
+#pragma push
+/* W373 singles base 4381/5952; loop 4381/5952; common 4521/6152; life 4379/5952; propagation 4377/5944; strength 4381/5952; dead 4377/5944; pair life+prop 4376/5944; life+dead 4376/5944; prop+dead 4377/5944. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0044BEB0 NONMATCHING
 
 void FUN_0044beb0(int param_1)
@@ -13794,6 +13827,9 @@ LAB_0044d510:
   return;
 }
 
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 // FUN_0044D600 NONMATCHING
 
 void FUN_0044d600(int param_1)
@@ -14756,6 +14792,9 @@ u8 FUN_0044fab0(int param_1)
 }
 
 #pragma pop
+#pragma push
+/* W373 singles base 330/488; loop 330/488; common 327/500; life 330/488; propagation 330/488; strength 330/488; dead 330/488. */
+#pragma opt_common_subs off
 // FUN_0044FFB0 NONMATCHING
 
 u32 FUN_0044ffb0(int param_1)
@@ -14812,6 +14851,8 @@ u32 FUN_0044ffb0(int param_1)
   return uVar6;
 }
 
+#pragma pop
+#pragma opt_common_subs reset
 // FUN_004501B0 NONMATCHING
 
 void FUN_004501b0(char param_1)
@@ -15432,6 +15473,10 @@ u32 FUN_004514a0(char param_1)
   return uVar4;
 }
 
+#pragma push
+/* W373 singles base 398/600; loop 398/600; common 417/620; life 398/600; propagation 394/608; strength 398/600; dead 394/596; pair propagation+dead 394/608. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_00451D70 NONMATCHING
 
 void FUN_00451d70(int param_1)
@@ -15486,11 +15531,17 @@ void FUN_00451d70(int param_1)
   return;
 }
 
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 #pragma push
 #pragma opt_loop_invariants on
 /* W212: first divergence is the prologue (ours 0x100-byte frame, retail 0x150);
  * the missing 0x50 bytes are live search-state/aggregate structure, not a transfer
  * from the scalar FUN_00431aa0 template. */
+/* W373 singles base 683/912; loop 683/912; common 783/1016; life 683/912; propagation 674/908; strength 683/912; dead 674/908; pair propagation+dead 674/908. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_00452010 NONMATCHING
 
 void FUN_00452010(float *param_1)
@@ -15582,6 +15633,8 @@ LAB_00452294:
 }
 
 #pragma pop
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 // FUN_004523C0 NONMATCHING
 
 u32 FUN_004523c0(u64 param_1,char param_2)
@@ -15985,6 +16038,9 @@ void FUN_00453490(int param_1)
 /* W212: first divergence is offset 40 (global-base setup and saved work pointer);
  * the 260-byte object deficit confirms a full four-direction path reconstruction,
  * not the matched FUN_00431aa0 dispatch idiom. */
+#pragma push
+/* W373 singles base 1697/2260; loop 1697/2260; common 1909/2600; life 1697/2260; propagation 1625/2208; strength 1697/2260; dead 1713/2252. */
+#pragma opt_propagation off
 // FUN_004534B0 NONMATCHING
 
 
@@ -16445,6 +16501,8 @@ u32 FUN_00454520(float *param_1,char param_2)
   return bVar1;
 }
 
+#pragma pop
+#pragma opt_propagation reset
 // FUN_00454620 NONMATCHING
 
 u64 FUN_00454620(char param_1)
@@ -16562,6 +16620,10 @@ u64 FUN_00454620(char param_1)
 #undef fStack_8c
 #undef fStack_88
 
+#pragma push
+/* W373 singles base 432/616; loop 432/616; common 405/620; life 432/616; propagation 426/604; strength 432/616; dead 432/616; pair common+prop 405/620. */
+#pragma opt_common_subs off
+#pragma opt_propagation off
 // FUN_00454A70 NONMATCHING
 
 u8 FUN_00454a70(char param_1,RwV3d param_2)
@@ -16616,6 +16678,12 @@ u8 FUN_00454a70(char param_1,RwV3d param_2)
   return 0;
 }
 
+#pragma pop
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma push
+/* W373 singles base 338/592; loop 338/592; common 500/736; life 338/592; propagation 399/596; strength 338/592; dead 113/588. */
+#pragma opt_dead_assignments off
 // FUN_00454D00 NONMATCHING
 
 u8 FUN_00454d00(RwV3d param_1)
@@ -16668,6 +16736,11 @@ u8 FUN_00454d00(RwV3d param_1)
   return 1;
 }
 
+#pragma pop
+#pragma opt_dead_assignments reset
+#pragma push
+/* W373 singles base 2278/2876; loop 2278/2876; common 2434/3048; life 2287/2860; propagation 2261/2868; strength 2278/2876; dead 2285/2880. */
+#pragma opt_propagation off
 // FUN_00454F50 NONMATCHING
 
 void FUN_00454f50(char param_1,char param_2)
@@ -16911,6 +16984,8 @@ void FUN_00454f50(char param_1,char param_2)
 /* W212: hoisting the first-loop invariants and preserving its distinct one/five
  * values improved nd287 -> nd283 (340 -> 332 bytes).  The remaining offset-0
  * divergence is the combined retail preheader; no window growth was introduced. */
+#pragma pop
+#pragma opt_propagation reset
 // FUN_00455B50 NONMATCHING
 
 void FUN_00455b50(void)
@@ -16971,6 +17046,9 @@ void FUN_00455b50(void)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 172/248; loop 172/248; common 190/284; life 152/248; propagation 168/240; strength 172/248; dead 172/248; pair life+prop 145/240. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_00455CF0 NONMATCHING
 
 void FUN_00455cf0(void)
@@ -17018,6 +17096,8 @@ void FUN_00455cf0(void)
 }
 
 #pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 // FUN_00455E00 NONMATCHING
 
 u32 FUN_00455e00(u32 param_1)
@@ -17566,6 +17646,8 @@ return; }
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 776/1060; loop 776/1060; common 803/1112; life 776/1060; propagation 768/1052; strength 776/1060; dead 754/1056; pair propagation+dead 768/1052. */
+#pragma opt_dead_assignments off
 // FUN_00456EA0 NONMATCHING
 
 void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
@@ -17773,6 +17855,7 @@ u32 FUN_00457470(int param_1)
   return 1;
 }
 
+#pragma opt_dead_assignments reset
 // FUN_004575E0 NONMATCHING
 
 u32 FUN_004575e0(int param_1)
@@ -17920,6 +18003,8 @@ u32 FUN_004579b0(u64 param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 1965/2932; loop 1965/2932; common 2111/3096; life 1965/2932; propagation 1965/2932; strength 1965/2932; dead 1964/2932. */
+#pragma opt_dead_assignments off
 // FUN_00457A40 NONMATCHING
 
 u64 FUN_00457a40(u64 param_1)
@@ -18489,6 +18574,7 @@ void FUN_00458bb0(void)
   }
 }
 
+#pragma opt_dead_assignments reset
 // FUN_00458CB0 NONMATCHING
 
 u32 FUN_00458cb0(u64 param_1,char param_2,char param_3)
@@ -19207,6 +19293,9 @@ void FUN_0045a430(char param_1)
   return;
 }
 
+#pragma push
+/* W373 singles base 1459/2100; loop 1459/2100; common 1693/2264; life 1460/2100; propagation 1323/1788; strength 1459/2100; dead 1459/2100. */
+#pragma opt_propagation off
 // FUN_0045A490 NONMATCHING
 
 void FUN_0045a490(void)
@@ -19396,6 +19485,8 @@ void FUN_0045a490(void)
 }
 
 // Native `(u8)fVar8` costs +4 bytes (624/608 versus 620/608); retail keeps the expanded conversion.
+#pragma pop
+#pragma opt_propagation reset
 // FUN_0045ACE0 NONMATCHING
 
 void FUN_0045ace0(void)
@@ -19831,6 +19922,9 @@ void FUN_0045b830(int param_1,long param_2)
   return;
 }
 
+#pragma push
+/* W373 singles base 596/920; loop 596/920; common 588/904; life 596/920; propagation 646/924; strength 596/920; dead 597/920. */
+#pragma opt_common_subs off
 // FUN_0045B8F0 NONMATCHING
 
 void FUN_0045b8f0(int param_1)
@@ -19928,6 +20022,7 @@ void FUN_0045b8f0(int param_1)
     FUN_0010a4e0(0,0,0,0);
   }
 }
+#pragma opt_common_subs reset
 
 // FUN_0045BCB0
 
@@ -19959,6 +20054,10 @@ LAB_0045bd70:
   return;
 }
 
+#pragma pop
+#pragma push
+/* W373 singles base 1203/1900; loop 1203/1900; common 1194/1928; life 1194/1900; propagation 1203/1900; strength 1203/1900; dead 1203/1900. */
+#pragma opt_lifetimes on
 // FUN_0045BD90 NONMATCHING
 
 void FUN_0045bd90(u64 param_1)
@@ -20149,6 +20248,8 @@ LAB_0045bfe0:
   return;
 }
 
+#pragma pop
+#pragma opt_lifetimes reset
 // FUN_0045C530 NONMATCHING
 
 void FUN_0045c530(int param_1)
@@ -20233,6 +20334,10 @@ void FUN_0045c530(int param_1)
   return;
 }
 
+#pragma push
+/* W373 singles base 697/964; loop 697/964; common 722/988; life 695/964; propagation 575/968; strength 697/964; dead 697/968; pair life+prop 571/968. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0045C8C0 NONMATCHING
 
 void FUN_0045c8c0(int param_1,int param_2)
@@ -20344,6 +20449,12 @@ void FUN_0045cdd0(int param_1,long param_2)
   return;
 }
 
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
+#pragma push
+/* W373 singles base 2027/2720; loop 2027/2720; common 2027/2788; life 2022/2720; propagation 2032/2764; strength 2027/2720; dead 2027/2720; pair loop+life 2022/2720; common+life 2024/2788. */
+#pragma opt_lifetimes on
 // FUN_0045CE90 NONMATCHING
 
 void FUN_0045ce90(int param_1)
@@ -20556,6 +20667,8 @@ void FUN_0045ce90(int param_1)
 #undef fStack_8
 #undef fStack_4
 
+#pragma pop
+#pragma opt_lifetimes reset
 // FUN_0045D990 NONMATCHING
 
 void FUN_0045d990(int param_1,long param_2)
@@ -20750,6 +20863,8 @@ u8 FUN_0045e0c0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W373 singles base 372/596; loop 372/596; common 55/616; life 373/596; propagation 372/596; strength 372/596; dead 372/596. */
+#pragma opt_common_subs off
 // FUN_0045E170 NONMATCHING
 
 u8 FUN_0045e170(int param_1)
@@ -20806,6 +20921,10 @@ u8 FUN_0045e170(int param_1)
 }
 
 #pragma pop
+#pragma opt_common_subs reset
+#pragma push
+/* W373 singles base 398/956; loop 398/956; common 636/1000; life 392/956; propagation 586/964; strength 398/956; dead 400/956. */
+#pragma opt_lifetimes on
 // FUN_0045E3E0 NONMATCHING
 
 u32 FUN_0045e3e0(int param_1)
@@ -20906,6 +21025,8 @@ u32 FUN_0045e3e0(int param_1)
   return 0;
 }
 
+#pragma pop
+#pragma opt_lifetimes reset
 // FUN_0045E7B0
 
 void FUN_0045e7b0(int param_1)
