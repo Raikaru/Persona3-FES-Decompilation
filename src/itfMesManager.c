@@ -6230,9 +6230,7 @@ void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 #define FUN_003ae360(...) ((u64 (*)(...))FUN_003ae360)(__VA_ARGS__)
 
 #undef FUN_003a87d0
-#pragma opt_loop_invariants on
 
-#pragma opt_loop_invariants on
 // FUN_003A87D0 NONMATCHING
 void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5,u32 param_6,
                   long param_7)

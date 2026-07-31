@@ -1015,6 +1015,8 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
     return actionTask;
 }
 
+/* W357 measured opt_loop_invariants on: without nd273/object408, with nd268/object404; window 432; retained. */
+#pragma opt_loop_invariants on
 // FUN_0017DB40 NONMATCHING
 u32 func_0017db40(s16 daysSinceApr5)
 {
@@ -1072,6 +1074,9 @@ u32 func_0017db40(s16 daysSinceApr5)
 #pragma opt_propagation off
 
 // Residual is limited to MWCC register coloring and branch layout; date and holiday logic matches retail.
+#pragma opt_loop_invariants reset
+/* W357 measured opt_lifetimes on: without nd290/object608, with nd288/object608; window 608; retained. */
+#pragma opt_lifetimes on
 // FUN_0017DDF0 NONMATCHING
 u32 func_0017ddf0(s16* monthOut, s16* dayOut)
 {
@@ -1159,6 +1164,7 @@ check:
 }
 #pragma pop
 
+#pragma opt_lifetimes reset
 // FUN_0017E050 NONMATCHING
 u32 func_0017e050(s32 category, s16 month, s32 day)
 {
@@ -1587,6 +1593,8 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
     return false;
 }
 
+/* W357 measured opt_loop_invariants on: without nd2861/object4668, with nd2662/object4636; window 4688; retained. */
+#pragma opt_loop_invariants on
 // FUN_0017e680 NONMATCHING
 void* clndUpdateTask(KwlnTask* clndTask)
 {
@@ -2101,6 +2109,7 @@ void* clndUpdateTask(KwlnTask* clndTask)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_0017fa10
 void clndReqSkip()
 {
@@ -2673,6 +2682,8 @@ u8 func_00182810(u32 index)
     return random < weights[1] + weights[2] + weights[3] + weights[4];
 }
 
+/* W357 measured opt_propagation off: without nd554/object820, with nd461/object832; window 896; retained. */
+#pragma opt_propagation off
 // FUN_001828D0 NONMATCHING
 u32 func_001828d0(s16 id, DatEquipment* out)
 {
@@ -2740,6 +2751,7 @@ u32 func_001828d0(s16 id, DatEquipment* out)
     return 1;
 }
 
+#pragma opt_propagation reset
 // FUN_00182C50
 u32 func_00182c50(s16 id, DatEquipment* out)
 {
@@ -2980,6 +2992,8 @@ extern void func_001842c0(KwlnTask* task,
                           s32 frame,
                           void* context);
 
+/* W357 measured opt_common_subs off: without nd707/object1052, with nd633/object1068; window 1072; retained. */
+#pragma opt_common_subs off
 // FUN_00183410 NONMATCHING
 void* func_00183410(KwlnTask* task)
 {
@@ -3138,6 +3152,9 @@ void* func_00183410(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_common_subs reset
+/* W357 measured opt_propagation off: without nd709/object920, with nd591/object916; window 928; retained. */
+#pragma opt_propagation off
 // FUN_00183840 NONMATCHING
 void func_00183840(void* resource,
                    s32 alpha,
@@ -3266,6 +3283,9 @@ void func_00183840(void* resource,
     }
 }
 
+#pragma opt_propagation reset
+/* W357 measured opt_propagation off: without nd462/object892, with nd420/object888; window 896; retained. */
+#pragma opt_propagation off
 // FUN_00183BE0 NONMATCHING
 void func_00183be0(void* resource,
                    s32 alpha,
@@ -3343,6 +3363,7 @@ void func_00183be0(void* resource,
                   baseX + 592.0f, baseY + 13.0f, 50.0f);
 }
 
+#pragma opt_propagation reset
 // FUN_00183F60 NONMATCHING
 void func_00183f60(void* resource,
                    s32 alpha,
@@ -3406,6 +3427,8 @@ void func_00183f60(void* resource,
 /* W212: first divergence is the prologue (ours 0xa0-byte frame, retail 0x90);
  * this is an excess live-range/frame defect before the displaced draw tail, not
  * a tail defect.  func_00187ec0 does not share this draw/phase loop structure. */
+/* W357 measured opt_loop_invariants on: without nd947/object1440, with nd945/object1440; window 1488; retained. */
+#pragma opt_loop_invariants on
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,
@@ -3520,6 +3543,7 @@ void func_001842c0(KwlnTask* task,
 
 extern void* DAT_007cdff0;
 
+#pragma opt_loop_invariants reset
 // FUN_00184890
 void func_00184890(KwlnTask* task)
 {
@@ -3535,6 +3559,8 @@ void func_00184890(KwlnTask* task)
     RwFree(work);
 }
 
+/* W357 measured opt_common_subs off: without nd472/object808, with nd467/object820; window 912; retained. */
+#pragma opt_common_subs off
 // FUN_001848F0 NONMATCHING
 void func_001848f0(KwlnTask* task, u32 confirmed)
 {
@@ -3635,6 +3661,7 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_00184C80
 void func_00184c80(KwlnTask* task, u32 confirmed)
 {
@@ -4386,6 +4413,8 @@ KwlnTask* func_00184db0(KwlnTask* parent)
     return task;
 }
 
+/* W357 measured opt_dead_assignments off: without nd1505/object2260, with nd1344/object2352; window 2352; retained. */
+#pragma opt_dead_assignments off
 // FUN_00184F00 NONMATCHING
 void* func_00184f00(KwlnTask* task)
 {
@@ -4640,6 +4669,7 @@ void* func_00184f00(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_dead_assignments reset
 // FUN_00185830
 void func_00185830(KwlnTask* task)
 {
@@ -4878,7 +4908,9 @@ void func_00185b40(void* resource,
 #pragma push
 /* Removing this worsens func_00186050 (nd29 -> nd37) - measured W161. */
 #pragma opt_common_subs off
-// FUN_00186050 NONMATCHING
+/* W357 measured opt_propagation off: without nd24/object172, with nd0/object172; window 176; retained. */
+#pragma opt_propagation off
+// FUN_00186050
 void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 {
     f32 y;
@@ -4894,6 +4926,7 @@ void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 }
 #pragma pop
 
+#pragma opt_propagation reset
 // FUN_00186100
 void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha)
 {
@@ -5510,6 +5543,8 @@ KwlnTask* func_00187550(KwlnTask* parent)
     return task;
 }
 
+/* W357 measured opt_dead_assignments off: without nd1107/object1440, with nd1100/object1436; window 1520; retained. */
+#pragma opt_dead_assignments off
 // FUN_001875F0 NONMATCHING
 void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
 {
@@ -5617,6 +5652,7 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+#pragma opt_dead_assignments reset
 // FUN_00187BE0
 void* func_00187be0(KwlnTask* task)
 {
@@ -7052,6 +7088,8 @@ void func_0018c0c0(KwlnTask* task, s32 visible)
     }
 }
 
+/* W357 measured opt_common_subs off: without nd1165/object1568, with nd984/object1564; window 1584; retained. */
+#pragma opt_common_subs off
 // FUN_0018C150 NONMATCHING
 void func_0018c150(KwlnTask* task)
 {
@@ -7156,6 +7194,7 @@ void func_0018c150(KwlnTask* task)
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }
 
+#pragma opt_common_subs reset
 // FUN_0018C780 NONMATCHING
 void func_0018c780(KwlnTask* task)
 {
@@ -7224,6 +7263,8 @@ void func_0018c780(KwlnTask* task)
     }
 }
 
+/* W357 measured opt_common_subs off: without nd815/object1152, with nd782/object1088; window 1232; retained. */
+#pragma opt_common_subs off
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
@@ -7255,6 +7296,9 @@ void func_0018ce50(KwlnTask* task)
     func_00115980(sprite);
 }
 
+#pragma opt_common_subs reset
+/* W357 measured opt_propagation off: without nd1487/object2016, with nd1359/object1884; window 2048; retained. */
+#pragma opt_propagation off
 // FUN_0018D320 NONMATCHING
 void func_0018d320(KwlnTask* task)
 {
@@ -7368,6 +7412,7 @@ void func_0018d320(KwlnTask* task)
     }
 }
 
+#pragma opt_propagation reset
 // FUN_0018DB20 NONMATCHING
 void* func_0018db20(KwlnTask* task)
 {
@@ -7508,6 +7553,8 @@ void func_0018dde0(KwlnTask* transitionTask, s32 mode)
     GS_S32(transition, 0x18) = 0;
 }
 
+/* W357 measured opt_common_subs off: without nd852/object1204, with nd819/object1220; window 1232; retained. */
+#pragma opt_common_subs off
 // FUN_0018DE60 NONMATCHING
 void* func_0018de60(KwlnTask* task)
 {
@@ -7638,6 +7685,7 @@ void* func_0018de60(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_common_subs reset
 // FUN_0018E330
 void func_0018e330(KwlnTask* task)
 {
