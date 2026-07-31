@@ -766,7 +766,7 @@ u32 datAddMoney(s32 amount)
     return finalMoney;
 }
 
-/* Removing this loses datScrCmd_SAVE_PARTY (MATCH nd0 -> MISMATCH nd8) - measured W161. */
+/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
 // FUN_0016eb80
 #pragma optimization_level 1
 u32 datScrCmd_SAVE_PARTY()
@@ -791,7 +791,7 @@ u32 datScrCmd_SAVE_PARTY()
 }
 #pragma optimization_level 2
 
-/* Removing this loses datScrCmd_RESTORE_PARTY (MATCH nd0 -> MISMATCH nd8) - measured W161. */
+/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
 // FUN_0016ebe0
 #pragma optimization_level 1
 u32 datScrCmd_RESTORE_PARTY()
@@ -3606,7 +3606,7 @@ void FUN_00172820(s16 pcId)
     datSetPhysicalCondition(1, pcId);
 }
 
-/* Removing this loses FUN_00172860 (MATCH nd0 -> MISMATCH nd10) - measured W161. */
+/* W357 measured optimization_level 0: without nd10/object24 (MISMATCH), with nd0/object44 (MATCH); window 48; retained. */
 
 #pragma optimization_level 0
 // FUN_00172860
@@ -3618,8 +3618,8 @@ u8 FUN_00172860(void)
     }
     return 0;
 }
-#pragma optimization_level 2
 
+#pragma optimization_level 2
 
 
 

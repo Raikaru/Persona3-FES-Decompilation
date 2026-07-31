@@ -2215,6 +2215,8 @@ u32 FUN_003a42c0(int param_1,u32 param_2)
 }
 #define FUN_003a42c0(...) ((u32 (*)(...))FUN_003a42c0)(__VA_ARGS__)
 #undef FUN_003a4360
+/* opt_common_subs off: measured nd 1076 -> 1075, object 1536/1584 -> 1536/1584. */
+#pragma opt_common_subs off
 // FUN_003A4360 NONMATCHING
 
 
@@ -2504,6 +2506,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 
 }
 #define FUN_003a4360(...) ((u64 (*)(...))FUN_003a4360)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003a4a70
 // W295: addu orientation fell to container-cast base-first form + load-to-temp compare
 // (sVal = ((ItfMesChoiceWork *)((u8 *)work + i * 4))->entries[0].type) - not a floor.
@@ -3340,6 +3343,8 @@ void FUN_003a5980(u32 *param_1)
 }
 #define FUN_003a5980(...) ((void (*)(...))FUN_003a5980)(__VA_ARGS__)
 #undef FUN_003a5ca0
+/* opt_common_subs off: measured nd 217 -> 55, object 508/512 -> 508/512. */
+#pragma opt_common_subs off
 // W212: transferring FUN_003A5EA0's typed allocation-slot structure and
 // shared allocation path regressed nd 208 -> 228 and shrank 492 -> 396
 // bytes (512 window), proving the duplicated branch bodies are genuine.
@@ -3481,6 +3486,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
 }
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003a5ea0
 
 
@@ -3701,6 +3707,7 @@ u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
 
 
 #undef FUN_003a628c
+/* optimization_level 3: measured O2 nd 26, object 32/8 (over window); O3 nd 0, object 8/8 (MATCH); retain O3. */
 #pragma optimization_level 3
 // FUN_003A6280 thunk_FUN_003a628c
 int thunk_FUN_003a628c(int param_1)
@@ -4751,6 +4758,8 @@ void FUN_003a6e30(u32 *param_1)
 }
 #define FUN_003a6e30(...) ((void (*)(...))FUN_003a6e30)(__VA_ARGS__)
 #undef FUN_003a7120
+/* opt_lifetimes on: measured nd 539 -> 536, object 876/880 -> 876/880. */
+#pragma opt_lifetimes on
 // FUN_003A7120 NONMATCHING
 
 
@@ -4922,6 +4931,7 @@ void FUN_003a7120(u32 *param_1)
 
 }
 #define FUN_003a7120(...) ((void (*)(...))FUN_003a7120)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003a7490
 // FUN_003A7490 NONMATCHING
 
@@ -5233,6 +5243,8 @@ void FUN_003a7940(int param_1,int param_2)
 }
 #define FUN_003a7940(...) ((void (*)(...))FUN_003a7940)(__VA_ARGS__)
 #undef FUN_003a7a40
+/* opt_lifetimes on: measured nd 408 -> 407, object 600/624 -> 600/624. */
+#pragma opt_lifetimes on
 // FUN_003A7A40 NONMATCHING
 
 
@@ -5384,6 +5396,7 @@ u32 FUN_003a7a40(int param_1)
 
 }
 #define FUN_003a7a40(...) ((u32 (*)(...))FUN_003a7a40)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003a7cb0
 #undef FUN_003a6380
 /* Retail's old-style non-prototype call keeps the loaded current index in $v0:
@@ -6921,6 +6934,8 @@ void FUN_003a96f0(int *param_1,int param_2,int param_3,int param_4,int param_5)
 #define FUN_003a96f0(...) ((void (*)(...))FUN_003a96f0)(__VA_ARGS__)
 #undef FUN_003a9780
 
+/* opt_lifetimes on: measured nd 192 -> 171, object 404/432 -> 404/432. */
+#pragma opt_lifetimes on
 // FUN_003A9780 NONMATCHING
 
 
@@ -7018,8 +7033,11 @@ void FUN_003a9780(int *param_1,int param_2,int param_3,int param_4,int param_5)
 
 }
 #define FUN_003a9780(...) ((void (*)(...))FUN_003a9780)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003a9930
 
+/* opt_lifetimes on: measured nd 179 -> 153, object 384/400 -> 384/400. */
+#pragma opt_lifetimes on
 // FUN_003A9930 NONMATCHING
 
 
@@ -7113,6 +7131,7 @@ void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5)
 
 }
 #define FUN_003a9930(...) ((void (*)(...))FUN_003a9930)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 
 // Retail 0x003a9ac0-0x003a9ae4
 // FUN_003A9AC0
@@ -7453,6 +7472,8 @@ void FUN_003aa000(int param_1,u64 param_2)
 #define FUN_003aa000(...) ((void (*)(...))FUN_003aa000)(__VA_ARGS__)
 #undef FUN_003aa130
 
+/* opt_loop_invariants on: measured nd 235 -> 216, object 328/336 -> 328/336. */
+#pragma opt_loop_invariants on
 // FUN_003AA130 NONMATCHING
 
 
@@ -7482,6 +7503,7 @@ void FUN_003aa130(int param_1,u64 param_2)
   return;
 }
 #define FUN_003aa130(...) ((void (*)(...))FUN_003aa130)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef FUN_003aa280
 
 // FUN_003AA280
@@ -7532,6 +7554,8 @@ void FUN_003aa2d0(int param_1,u64 param_2)
 #define FUN_003aa2d0(...) ((void (*)(...))FUN_003aa2d0)(__VA_ARGS__)
 #undef FUN_003aa370
 
+/* opt_dead_assignments off: measured nd 381 -> 378, object 920/944 -> 920/944. */
+#pragma opt_dead_assignments off
 // FUN_003AA370 NONMATCHING
 
 
@@ -7634,6 +7658,7 @@ void FUN_003aa370(int param_1,u64 param_2)
 
 }
 #define FUN_003aa370(...) ((void (*)(...))FUN_003aa370)(__VA_ARGS__)
+#pragma opt_dead_assignments reset
 #undef FUN_003aa720
 
 // FUN_003AA720 NONMATCHING
@@ -8263,6 +8288,9 @@ void FUN_003ab320(int param_1)
 #define FUN_003ab320(...) ((void (*)(...))FUN_003ab320)(__VA_ARGS__)
 #undef FUN_003abb10
 
+/* opt_lifetimes on: measured nd 1270 -> 1264, object 1796/1824 -> 1796/1824; opt_dead_assignments off alone: nd 1270 -> 1268, object 1796/1824 -> 1796/1824; stacked: nd 1262, object 1796/1824 (retained). */
+#pragma opt_lifetimes on
+#pragma opt_dead_assignments off
 // FUN_003ABB10 NONMATCHING
 
 
@@ -8608,6 +8636,8 @@ void FUN_003abb10(int param_1)
 
 }
 #define FUN_003abb10(...) ((void (*)(...))FUN_003abb10)(__VA_ARGS__)
+#pragma opt_dead_assignments reset
+#pragma opt_lifetimes reset
 
 // FUN_003AC230
 void FUN_003ac230(void)
@@ -8655,6 +8685,8 @@ void FUN_003ac240(int param_1,u64 param_2)
 #define FUN_003ac240(...) ((void (*)(...))FUN_003ac240)(__VA_ARGS__)
 #undef FUN_003ac350
 
+/* opt_common_subs off: measured nd 316 -> 286, object 428/432 -> 428/432. */
+#pragma opt_common_subs off
 // FUN_003AC350 NONMATCHING
 
 
@@ -8734,6 +8766,7 @@ void FUN_003ac350(int param_1,u64 param_2)
 
 }
 #define FUN_003ac350(...) ((void (*)(...))FUN_003ac350)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003ac500
 
 // FUN_003AC500
@@ -10438,7 +10471,6 @@ u64 FUN_003ae150(u64 param_1,int param_2)
 }
 #undef FUN_003ae160
 
-#pragma opt_dead_assignments off
 // FUN_003AE160 NONMATCHING
 
 
@@ -10544,7 +10576,6 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 #define FUN_003ae160(...) ((u64 (*)(...))FUN_003ae160)(__VA_ARGS__)
 #undef FUN_003ae260
 
-#pragma opt_dead_assignments reset
 // FUN_003AE260 NONMATCHING
 
 

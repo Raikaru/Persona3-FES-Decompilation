@@ -7618,6 +7618,9 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
 #pragma opt_loop_invariants reset
 #undef DAT_00960090
 
+/* measured typed globals: 6780/6768; opt_dead_assignments off: 6764/6768 nd5016; + opt_lifetimes on: 6764/6768 nd5012; retained */
+#pragma opt_dead_assignments off
+#pragma opt_lifetimes on
 // FUN_004281F0 NONMATCHING
 
 
@@ -8725,6 +8728,8 @@ u32 FUN_004281f0(u32 param_1)
 
 }
 
+#pragma opt_lifetimes reset
+#pragma opt_dead_assignments reset
 // FUN_00429C60
 
 

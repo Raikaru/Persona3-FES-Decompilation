@@ -7375,7 +7375,6 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
   }
 }
 
-#pragma opt_lifetimes on
 // FUN_002c6ba0 NONMATCHING
 
 /* W322 probe: func_002c6ba0 with opt_loop_invariants on improved normalized_diff 394 -> 358 (object 632/656). */
@@ -7441,7 +7440,6 @@ u16 func_002c6ba0(int param_1)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_lifetimes reset
 // FUN_002c6e30 NONMATCHING
 
 undefined* func_002c6e30(int unit, u32 group)
