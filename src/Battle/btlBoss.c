@@ -1445,7 +1445,11 @@ extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 v
 #pragma alias func_00282d40_reordered func_00282d40
 extern void func_00282d40_reordered(BtlUnit* unit, s16 value2, s32 value3, s8 value4, f32 value);
 extern void func_00287510(BtlUnit* unit);
-extern void func_0027f650(BtlUnit* unit, u32 value);
+extern void func_0027f650(BtlUnit* unit, s32 value);
+#pragma alias func_0027f650_ptr func_0027f650
+extern void func_0027f650_ptr(BtlUnit* unit, void* value);
+#pragma alias DAT_00957180_boss DAT_00957180
+extern u8 DAT_00957180_boss[];
 extern void func_002eaa40(void);
 
 // FUN_002f9c10 NONMATCHING
@@ -1756,8 +1760,9 @@ void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result
             break;
     }
 }
+/* Measured W306: opt_loop_invariants off leaves faab0 at nd49; on enables the retail loop shape and final nd0. */
 #pragma opt_loop_invariants on
-// FUN_002faab0 NONMATCHING
+// FUN_002faab0
 void func_002faab0()
 {
     switch (btlBossGetEncounterId())
@@ -1807,6 +1812,7 @@ void func_002faab0()
     case 0x1b4:
     {
         BtlUnit* unit;
+        s8 unk_9e8;
         for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
         {
             switch (unit->charId)
@@ -1814,8 +1820,10 @@ void func_002faab0()
             case 0xf2:
                 func_002d3fe0(unit);
                 func_002831c0(unit, 0);
-                func_00282d40_reordered(unit, unit->unk_9e0, 0, unit->unk_9e8, unit->unk_9e4);
-                func_0027f650(unit, 0x957180);
+                unk_9e8 = *(volatile s8*)((u8*)unit + 0x9e8);
+                func_00282d40_reordered(unit, unit->unk_9e0, 0, unk_9e8, unit->unk_9e4);
+                func_00287510(unit);
+                func_0027f650_ptr(unit, DAT_00957180_boss);
                 break;
             }
         }

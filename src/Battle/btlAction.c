@@ -42,6 +42,19 @@ typedef struct BtlEnemyRecord
 #define ACTION_U64(action, offset) (*(u64*)((u8*)(action) + (offset)))
 #define ACTION_U32(action, offset) (*(u32*)((u8*)(action) + (offset)))
 #define BATTLE_U16(offset) (*(u16*)((u8*)gBtl + (offset)))
+typedef struct BtlActionTargetEntry
+{
+    u32 statusFlags;
+    u8 pad_04[0x0e];
+    u16 flags;
+    u8 pad_14[8];
+} BtlActionTargetEntry;
+
+typedef struct BtlActionTargetView
+{
+    u8 pad_00[0xe8];
+    BtlActionTargetEntry entries[12];
+} BtlActionTargetView;
 
 #pragma alias FUN_002819d0_btlAction FUN_002819d0
 extern BtlPacket* FUN_002819d0_btlAction(BtlUnit*, const RwV3d*, f32, u32);
@@ -701,20 +714,19 @@ u32 FUN_0028a3e0(BtlAction* action)
     case 0:
     {
         BtlAction* target;
+        s32 targetedCount;
         u16 i;
         u16 j;
         s32 count;
-        s32 targetedCount;
+        u32 badStatus;
 
-        i = 0;
-        targetedCount = action->target.targetedCount;
-        for (; i < targetedCount; i++)
+        for (i = 0, targetedCount = action->target.targetedCount, badStatus = 0x100000; i < targetedCount; i++)
         {
             target = action->target.targetedActions[i];
             count = ACTION_U8(target, 0xc8);
             for (j = 0; j < count; j++)
             {
-                if ((ACTION_U32(target, 0xe8 + j * 0x1c) & 0x100000) != 0)
+                if (((BtlActionTargetView*)target)->entries[j].statusFlags & badStatus)
                 {
                     return true;
                 }
@@ -738,7 +750,7 @@ u32 FUN_0028a3e0(BtlAction* action)
             count = ACTION_U8(target, 0xc8);
             for (j = 0; j < count; j++)
             {
-                if ((ACTION_U16(target, 0xfa + j * 0x1c) & 4) != 0)
+                if (((BtlActionTargetView*)target)->entries[j].flags & 4)
                 {
                     return true;
                 }

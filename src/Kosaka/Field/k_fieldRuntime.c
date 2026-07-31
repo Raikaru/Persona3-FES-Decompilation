@@ -6668,8 +6668,6 @@ void func_001edbe0(void* workData)
     } RuntimeColor;
 
     RuntimeRenderCollection* work;
-    u8* command;
-    u8* entry;
     void* matrix;
     void* owner;
     void* material;
@@ -6687,11 +6685,13 @@ void func_001edbe0(void* workData)
 
     for (index = 0; index < *(s16*)(work->input + 4); index++)
     {
-        command = work->commands + index * 0x20;
-        entry = work->entries + index * 0x4c;
 
         if (active != 0)
         {
+    u8* command;
+    u8* entry;
+        command = work->commands + index * 0x20;
+        entry = work->entries + index * 0x4c;
             func_001eba80((RuntimeCommandWork*)command, &commandResult);
             if ((~work->flags & 8) != 0 &&
                 (*(u32*)command & 2) != 0)

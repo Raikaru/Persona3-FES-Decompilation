@@ -5668,14 +5668,15 @@ void FUN_0039eaa0(int param_1)
   MtEvtCustomEntry *entry;
   MtEvtCustomEntry *entries;
   int *output;
+  int entryType;
 
   output = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(output,0,0x38);
   base = *(MtEvtCustomData **)(param_1 + 8);
-  for (index = 0; index < base->entryCount; index = index + 1) {
-    entries = base->entries;
+  for (index = 0, entries = base->entries, entryType = 2; index < base->entryCount; index = index + 1) {
+    entries = *(MtEvtCustomEntry **)((u8 *)(uintptr_t)base + 0x34);
     entry = &entries[index];
-    if (entry->type == 2) {
+    if (entry->type == entryType) {
       count = *output;
       if (4 < count) break;
       baseValue = base->unk_10;

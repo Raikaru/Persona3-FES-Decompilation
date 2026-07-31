@@ -172,8 +172,8 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwFrame* cameraFrame;
     RwV3d cameraPosition;
     RwV3d target;
-    RwV3d axis;
-    RwV3d* const axisPtr = (RwV3d*)((u8*)&axis + 0);
+    volatile RwV3d axis;
+    RwV3d* axisPtr;
     u64 axisXY;
     f32 axisZ;
     u8* targetBytes;
@@ -199,15 +199,15 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
             i--;
         } while (i != 0);
     }
+    axisPtr = (RwV3d*)((u8*)&axis + 0);
     axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = D_00683AA0;
-    *(u64*)&axis = axisXY;
-    axis.z = axisZ;
+    *(u64*)axisPtr = axisXY;
+    axisPtr->z = axisZ;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
-}
 
 // FUN_001d5f30
 void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId)
