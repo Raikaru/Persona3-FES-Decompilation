@@ -36,6 +36,11 @@ extern void campStatusDrawSprite4Call(f32 x, f32 y, f32 alpha, s32 digit);
 extern void campStatusDrawSpriteFadeCall(u32 parent, void* resource, s32 frame,
                                          u32 alpha, f32 x, f32 y, f32 scale,
                                          u32 fade);
+/* XY order matches retail's float materialization before integer setup. */
+#pragma alias campStatusDrawSpriteFadeXYCall FUN_00115ad0
+extern void campStatusDrawSpriteFadeXYCall(u32 parent, void* resource,
+                                           s32 frame, f32 x, f32 y,
+                                           u32 alpha, f32 scale, u32 fade);
 #pragma alias campStatusDrawGaugeCall FUN_00113a30
 extern void campStatusDrawGaugeCall(f32 scale, f32 x, f32 y, u32 color,
                                     s32 width, s32 height);
@@ -496,55 +501,58 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                                 0xffffff00, barOffset, 10);
     }
     /* Separator */
-    campStatusDrawSpriteCall(parent, DAT_00833B90, 4, (u32)(u8)fade,
-                             position.x + 195.0f,
-                             (87.0f + position.y) - 12.0f, alpha);
+    campStatusDrawSpriteCallXY(parent, *(void**)DAT_00833B90_abs, 4,
+                               position.x + 195.0f,
+                               (87.0f + position.y) - 12.0f,
+                               (u8)fade, alpha);
     /* Draw current SP digits */
     val = datGetSp((s32)(s16)pcId);
     hundreds = 0;
     if (val >= 100) {
         hundreds = 1;
         font = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)fade, position.x + 79.0f,
-                                 (85.0f + position.y) - 12.0f, alpha);
+        campStatusDrawSpriteCallXY(parent, font, val / 100 + 0xb,
+                                   position.x + 79.0f,
+                                   (85.0f + position.y) - 12.0f,
+                                   (u8)fade, alpha);
         val %= 100;
     }
     if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)fade,
-                                 (position.x + 79.0f) + 15.0f,
-                                 (85.0f + position.y) - 12.0f, alpha);
+        campStatusDrawSpriteCallXY(parent, font, val / 10 + 0xb,
+                                   (position.x + 79.0f) + 15.0f,
+                                   (85.0f + position.y) - 12.0f,
+                                   (u8)fade, alpha);
         val %= 10;
     }
     font = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)fade,
-                             (position.x + 79.0f) + 30.0f,
-                             (85.0f + position.y) - 12.0f, alpha);
+    campStatusDrawSpriteCallXY(parent, font, val + 0xb,
+                               (position.x + 79.0f) + 30.0f,
+                               (85.0f + position.y) - 12.0f,
+                               (u8)fade, alpha);
     /* Draw max SP digits */
     val = func_0016c670((s32)(s16)pcId);
     hundreds = 0;
     if (val >= 100) {
         hundreds = 1;
         font = campStatusGetFont(2);
-        campStatusDrawSpriteFadeCall(
-            parent, font, val / 100 + 0xb, (u32)(u8)fade,
-            position.x + 138.0f, position.y, alpha, 0x66);
+        campStatusDrawSpriteFadeXYCall(
+            parent, font, val / 100 + 0xb,
+            position.x + 138.0f, position.y, (u8)fade, alpha, 0x66);
         val %= 100;
     }
     if (val >= 10 || hundreds != 0) {
         font = campStatusGetFont(2);
-        campStatusDrawSpriteFadeCall(
-            parent, font, val / 10 + 0xb, (u32)(u8)fade,
-            (position.x + 138.0f) + 15.0f, position.y, alpha, 0x66);
+        campStatusDrawSpriteFadeXYCall(
+            parent, font, val / 10 + 0xb,
+            (position.x + 138.0f) + 15.0f, position.y,
+            (u8)fade, alpha, 0x66);
         val %= 10;
     }
     font = campStatusGetFont(2);
-    campStatusDrawSpriteFadeCall(
-        parent, font, val + 0xb, (u32)(u8)fade,
-        (position.x + 138.0f) + 30.0f, position.y, alpha, 0x66);
+    campStatusDrawSpriteFadeXYCall(
+        parent, font, val + 0xb, (position.x + 138.0f) + 30.0f,
+        position.y, (u8)fade, alpha, 0x66);
 }
 
 // FUN_00123F80

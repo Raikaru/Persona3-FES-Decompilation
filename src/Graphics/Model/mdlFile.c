@@ -306,45 +306,47 @@ static __inline u32 mdlVuScalePackedColor(u32 color, const u8 (*scale)[16], u32 
 }
 
 /* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
-#define mdlVuModulateStackedV0(pc1,c2,inv255,out) \
-do { \
-    __asm__ volatile ( \
-        ".set noreorder                  \n" \
-        "lw          $v0, 0(%1)          \n" \
-        "pextlb      $v0, $zero, $v0     \n" \
-        "pextlh      $v0, $zero, $v0     \n" \
-        "qmtc2       $v0, $vf10           \n" \
-        "vitof0.xyzw $vf10, $vf10        \n" \
-        "mfc1        $v0, %3             \n" \
-        "nop                             \n" \
-        "qmtc2       $v0, $vf2           \n" \
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n" \
-        "vmove.xyzw  $vf11, $vf10        \n" \
-        "sw          %2, 0x138($sp)       \n" \
-        "addiu       $v0, $sp, 0x138      \n" \
-        "lw          $v0, 0($v0)          \n" \
-        "pextlb      $v0, $zero, $v0     \n" \
-        "pextlh      $v0, $zero, $v0     \n" \
-        "qmtc2       $v0, $vf10          \n" \
-        "vitof0.xyzw $vf10, $vf10        \n" \
-        "mfc1        $v0, %3             \n" \
-        "nop                             \n" \
-        "qmtc2       $v0, $vf2           \n" \
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n" \
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n" \
-        "lui         $v0, 0x437F          \n" \
-        "qmtc2       $v0, $vf2           \n" \
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n" \
-        "vftoi0.xyzw $vf10, $vf10        \n" \
-        "qmfc2       $v0, $vf10           \n" \
-        "ppach       $v0, $zero, $v0     \n" \
-        "ppacb       $v0, $zero, $v0     \n" \
-        "sw          $v0, 0x134($sp)      \n" \
-        ".set reorder" \
-        : "=m"(out) \
-        : "r"(pc1), "r"(c2), "f"(inv255) \
-        : "$v0", "memory"); \
-} while (0)
+static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0(%1)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %2, 0x138($sp)       \n"
+        "addiu       $v0, $sp, 0x138      \n"
+        "lw          $v0, 0($v0)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F          \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10           \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x134($sp)      \n"
+        ".set reorder"
+        : "=m"(tmp)
+        : "r"(pc1), "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+    return tmp;
+}
 
 /* The 0x90-byte animation frames interleave their second colour spill with
    the VU kernel.  Fixed VU/GPR registers are part of the retail macro-mode

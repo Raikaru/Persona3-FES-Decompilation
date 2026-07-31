@@ -12,7 +12,7 @@ typedef char *va_list;
 extern void evtMenuVFormatText(u8 *text,const char *format,va_list args);
 extern u32 FUN_00530da0(float);
 #pragma alias FUN_00394040_evt_misc FUN_00394040
-extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,long param_4);
+extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,int param_4);
 #pragma alias FUN_00394070_evt_misc FUN_00394070
 extern void FUN_00394070_evt_misc(f32 param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 #pragma alias FUN_001050e0_typed FUN_001050e0
@@ -5347,6 +5347,7 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
   u32 uVar5;
 
   int iVar6;
+  int iVar7;
 
   f32 *puVar7;
 
@@ -5458,102 +5459,115 @@ C540_default:
 
   goto C540_done;
 
-C540_process:
-  if (puStack_4 != (u16 *)0x0) {
+ C540_process:
+  if (puStack_4 == (u16 *)0x0) {
+    goto C540_copy_first;
+  }
 
-    fVar11 = *(f32 *)(puStack_4 + 8);
+  iVar7 = *(int *)(puStack_4 + 0x24);
 
-    fVar9 = *(f32 *)(puStack_4 + 10);
+  fVar11 = *(f32 *)(puStack_4 + 8);
 
-    if ((iVar1 == 0) && (*(int *)(puStack_4 + 0x24) == 0)) {
+  fVar9 = *(f32 *)(puStack_4 + 10);
 
-      fVar8 = DAT_007cadd0_f32;
-      *puVar7 = DAT_007cadd0_f32;
+  goto C540_conditions;
 
-      puVar7[1] = fVar8;
+C540_copy_first:
+  for (i = 0; i < 4; i = i + 1) {
 
-      puVar7[2] = fVar8;
+    puVar4 = (f32 *)(iVar1 + i * 4);
 
-      puVar7[3] = 0;
+    puVar3 = puVar7 + i;
 
-      puVar7[4] = 0;
+    *puVar3 = *puVar4;
 
-      puVar7[5] = 0;
+    puVar3[4] = puVar4[4];
 
-      puVar7[6] = 0;
-
-      puVar7[7] = 0;
-
-      fVar8 = DAT_007cafec_f32;
-
-      puVar7[8] = DAT_007cafec_f32;
-
-      puVar7[9] = fVar8;
-      puVar7[10] = fVar8;
-
-      puVar7[0xb] = 0;
-
-      *param_5 = 0x40e00000;
-
-      *param_6 = 0;
-
-    }
-
-    else if (iVar6 == 0) {
-
-      for (i = 0; i < 4; i = i + 1) {
-
-        puVar4 = (f32 *)(iVar1 + i * 4);
-
-        puVar3 = puVar7 + i;
-
-        *puVar3 = *puVar4;
-
-        puVar3[4] = puVar4[4];
-
-        puVar3[8] = puVar4[8];
-
-      }
-
-      *(f32 *)param_5 = fVar13;
-
-      *(f32 *)param_6 = fVar12;
-
-    }
-
-    else {
-
-      FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_4 + 0x24),param_4);
-
-      *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
-
-      *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
-
-    }
+    puVar3[8] = puVar4[8];
 
   }
 
-  else {
+  *(f32 *)param_5 = fVar13;
 
-    for (i = 0; i < 4; i = i + 1) {
+  *(f32 *)param_6 = fVar12;
 
-      puVar4 = (f32 *)(iVar1 + i * 4);
+  goto C540_done;
 
-      puVar3 = puVar7 + i;
+C540_conditions:
+  if (iVar1 != 0) {
+    goto C540_type;
+  }
 
-      *puVar3 = *puVar4;
+  if (iVar7 != 0) {
+    goto C540_type;
+  }
 
-      puVar3[4] = puVar4[4];
+C540_default2:
+  fVar8 = DAT_007cadd0_f32;
+  *puVar7 = DAT_007cadd0_f32;
 
-      puVar3[8] = puVar4[8];
+  puVar7[1] = fVar8;
 
-    }
+  puVar7[2] = fVar8;
 
-    *(f32 *)param_5 = fVar13;
+  puVar7[3] = 0;
 
-    *(f32 *)param_6 = fVar12;
+  puVar7[4] = 0;
+
+  puVar7[5] = 0;
+
+  puVar7[6] = 0;
+
+  puVar7[7] = 0;
+
+  fVar8 = DAT_007cafec_f32;
+
+  puVar7[8] = DAT_007cafec_f32;
+
+  puVar7[9] = fVar8;
+
+  puVar7[10] = fVar8;
+
+  puVar7[0xb] = 0;
+
+  *param_5 = 0x40e00000;
+
+  *param_6 = 0;
+
+  goto C540_done;
+
+C540_type:
+  if (iVar6 != 0) {
+    goto C540_calls;
+  }
+
+C540_copy_second:
+  for (i = 0; i < 4; i = i + 1) {
+
+    puVar4 = (f32 *)(iVar1 + i * 4);
+
+    puVar3 = puVar7 + i;
+
+    *puVar3 = *puVar4;
+
+    puVar3[4] = puVar4[4];
+
+    puVar3[8] = puVar4[8];
 
   }
+
+  *(f32 *)param_5 = fVar13;
+
+  *(f32 *)param_6 = fVar12;
+
+  goto C540_done;
+
+C540_calls:
+  FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)iVar7,param_4);
+
+  *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
+
+  *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
 
 C540_done:
   ;
@@ -5713,20 +5727,20 @@ void FUN_0038ca80(int param_1)
     }
 
       for (listIndex = 0; listIndex < totalCount; listIndex++) {
-        nodeSlot = &nodes[listIndex];
+        nodeSlot = (int **)((int)nodes + listIndex * 4);
         currentNode = (u16 *)*nodeSlot;
         currentValue = *currentNode;
       matchCount = *(int *)(param_1 + 0x97c);
-      for (searchIndex = 0; searchIndex < matchCount; searchIndex++) {
+      searchIndex = 0;
+      while (searchIndex < matchCount) {
         matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);
-        if (*matchedNode != currentValue) {
-          continue;
+        if (*matchedNode == currentValue) {
+          goto matched;
         }
-        break;
+        searchIndex++;
       }
-      if (searchIndex == matchCount) {
-        matchedNode = NULL;
-      }
+      matchedNode = NULL;
+matched:
       FUN_0038cc10(param_1,currentNode,(int)matchedNode);
     }
   }

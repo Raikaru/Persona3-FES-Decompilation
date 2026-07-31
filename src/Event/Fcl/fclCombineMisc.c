@@ -50,7 +50,7 @@ extern int FUN_003d5730_i(void *param_1,int param_2,int param_3,u32 *param_4);
 int FUN_003d58c0(int param_1,int param_2);
 s16 FUN_003d5dc0(u32 param_1);
 u64 FUN_003d5bb0(u32 param_1);
-short FUN_003d5cd0(u32 *param_1);
+s32 FUN_003d5cd0(u32 *param_1);
 u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3);
 u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4);
 u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3);
@@ -592,20 +592,20 @@ u64 FUN_003d5bb0(u32 param_1)
 // FUN_003D5CD0 NONMATCHING
 
 
-short FUN_003d5cd0(u32 *param_1)
+s32 FUN_003d5cd0(u32 *param_1)
 {
   int lVar1;
   u32 uVar2;
   u32 *puVar3;
-  long sVar4;
-  long sVar5;
+  s32 sVar5;
+  s32 sVar4;
 
   sVar4 = 0;
   memset(param_1,0,0x90);
-  for (sVar5 = 0; uVar2 = FUN_00175410(), (long)sVar5 < (long)(uVar2 & 0xffff); sVar5 = sVar5 + 1) {
+  for (sVar5 = 0; (long)sVar5 < (long)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = sVar5 + 1) {
     lVar1 = datPersonaGetHeroPersona(sVar5);
     if (lVar1 != 0) {
-      puVar3 = (u32 *)((int)param_1 + sVar4 * 0xc);
+    puVar3 = (u32 *)((int)param_1 + (long)sVar4 * 0xc);
       *puVar3 = 0;
       puVar3[1] = (int)lVar1;
       puVar3[2] = DAT_007ce420 + (u32)*(u16 *)((int)lVar1 + 2) * 0xe;

@@ -129,6 +129,8 @@ extern u32 func_00195460_marker(u32 marker);
 extern void func_001ad870(void* task, u32 flags);
 extern void func_001add40(void* task);
 extern void func_001ad8c0(f32 value, void* task);
+#pragma alias func_001ad8c0_reordered func_001ad8c0
+extern void func_001ad8c0_reordered(KwlnTask* task, f32 value);
 extern f32 func_001ad8b0(void* task);
 extern u32 func_001ad930(void* task);
 extern void* func_001a91b0(void* task, const RwV3d* pos);
@@ -1938,7 +1940,7 @@ void func_001d1360(void)
             func_001a0dc0((*resource)->base.resTypeId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
-            func_001ad8c0(35.0f, (*resource)->collisCtlTask);
+            func_001ad8c0_reordered((*resource)->collisCtlTask, 35.0f);
             (*resource)->baseMdl = (Model*)func_00317450(uGpffffb52c);
             light.z = func_001ad8b0((*resource)->collisCtlTask);
             light.y = light.z;

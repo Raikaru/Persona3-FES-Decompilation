@@ -550,6 +550,11 @@ void FUN_0040e3c0(float, s32, s32, byte, s32, s32);
 #pragma alias FUN_0040e3c0_i FUN_0040e3c0
 void FUN_0040e3c0_i(s32, s32, float, byte, s32, s32);
 void FUN_0040e3f0(float, float, float, float, s32, s32, byte, s32, s32, s32, s32);
+ #pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
+ extern void FUN_0040e3f0_i2f1i3f3(s32 param_5, s32 param_6, float param_1,
+                                   byte param_7, s32 param_8, s32 param_9,
+                                   s32 param_10, s32 param_11, float param_2,
+                                   float param_3, float param_4);
 s32 FUN_0040eb50(float, s32, s32, byte, s16, const void*, s32);
 s32 FUN_003b32d0(float, s32, s32, s32, s8, s32, const FclGlyphSet*, s32, s32);
 void FUN_00523ac8(FclTextLayout*, const FclTextLayoutTemplate*, byte);
@@ -2650,7 +2655,8 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
   if (bVar1) {
 
-    FUN_0040e3f0(0,(float)iVar5,1.0f,1.0f,sVar2,sVar3,(byte)uVar4,2,bVar1,0x26,0);
+    FUN_0040e3f0_i2f1i3f3(sVar2, sVar3, 0.0f, (byte)uVar4, 2, bVar1, 0x26, 0,
+                 (float)iVar5,1.0f,1.0f);
 
     if ((param_2[2] & 2U) == 0) {
 
