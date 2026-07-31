@@ -7963,9 +7963,8 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   lVar9 = 0xffffff;
   mode = param_5;
   mode &= 0xffff;
-  uVar7 = 0;
   count = param_4 & 0xffff;
-  for (; uVar7 < count; uVar7++) {
+  for (uVar7 = 0; uVar7 < count; uVar7++) {
     uVar2 = param_3[uVar7];
     if (uVar2 != 0 && uVar2 < 0x1d0) {
       cVar1 = *(u8 *)(DAT_007ce3f8 + ((u32)uVar2 * 44) + 8);

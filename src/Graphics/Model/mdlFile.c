@@ -23454,7 +23454,6 @@ void FUN_00334820(int param_1)
 
 
 
-#pragma opt_common_subs off
 // FUN_003348B0 NONMATCHING
 
 
@@ -23972,7 +23971,6 @@ LAB_003350f0:
 
 
 
-#pragma opt_common_subs reset
 // FUN_00335180 NONMATCHING
 
 void FUN_00335180(int param_1)
@@ -26507,6 +26505,7 @@ void FUN_00337f80(int param_1)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_00337FD0 NONMATCHING
 
 
@@ -26702,6 +26701,7 @@ void FUN_00337fd0(int param_1)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_00338360
 
 
