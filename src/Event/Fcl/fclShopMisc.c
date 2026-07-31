@@ -3151,7 +3151,6 @@ ret:
   return result;
 }
 
-#pragma opt_loop_invariants on
 // FUN_003F33D0 NONMATCHING
 
 
@@ -3330,7 +3329,6 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
   return task;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003F3970
 
 
@@ -12030,7 +12028,6 @@ void FUN_004003a0(int param_1)
 
 }
 
-#pragma opt_common_subs off
 // FUN_004003F0 NONMATCHING
 
 
@@ -12208,7 +12205,6 @@ u32 FUN_004003f0(int *param_1)
 
 }
 
-#pragma opt_common_subs reset
 // FUN_00400690
 
 
@@ -18765,6 +18761,7 @@ void FUN_0040c6a0(u64 param_1)
 }
 
 // W212: absolute u32 alias for DAT_006af930 measured nd290 -> nd295 (588 -> 592 bytes); rejected.
+#pragma opt_loop_invariants on
 // FUN_0040C6F0 NONMATCHING
 
 
@@ -18902,6 +18899,7 @@ int FUN_0040c6f0(int param_1)
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_0040C9A0
 void FUN_0040c9a0(int param_1)
 

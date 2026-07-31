@@ -1622,7 +1622,6 @@ void FUN_00425d30(int param_1,u8 param_2,u8 param_3)
   *(u8 *)&DAT_007ce6b4 = param_2;
 }
 
-#pragma opt_common_subs off
 // FUN_00425D50 NONMATCHING
 
 
@@ -1880,7 +1879,6 @@ u32 FUN_00425d50(s8 param_1,s8 param_2)
 
 }
 
-#pragma opt_common_subs reset
 // FUN_00426040
 
 
@@ -4933,6 +4931,7 @@ void FUN_0042ac60(int param_1,int param_2)
   return;
 }
 
+#pragma opt_common_subs off
 // FUN_0042ADB0 NONMATCHING
 
 
@@ -5091,6 +5090,7 @@ void FUN_0042adb0(int param_1)
 
 }
 
+#pragma opt_common_subs reset
 // FUN_0042B050 NONMATCHING
 
 

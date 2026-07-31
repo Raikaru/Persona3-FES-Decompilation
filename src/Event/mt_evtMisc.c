@@ -6623,8 +6623,8 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
   int count;
   int index;
-  int reverseIndex;
   int selectedIndex;
+  int reverseIndex;
   RwV3d *source;
   RwV3d *destination;
 

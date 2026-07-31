@@ -1855,7 +1855,6 @@ start:
 
 #define FUN_0038f8c0(...) ((void (*)(...))FUN_0038f8c0)(__VA_ARGS__)
 #undef FUN_0038fa10
-#pragma opt_common_subs off
 // FUN_0038FA10 NONMATCHING
 
 
@@ -2202,7 +2201,6 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
 #define FUN_0038fa10(...) ((void (*)(...))FUN_0038fa10)(__VA_ARGS__)
 #undef FUN_0038ffb0
-#pragma opt_common_subs reset
 // FUN_0038FFB0 NONMATCHING
 
 

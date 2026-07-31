@@ -4201,7 +4201,6 @@ u32 func_002be2f0(int param_1)
   return 0;
 }
 
-#pragma opt_loop_invariants on
 // FUN_002be390 NONMATCHING
 
 void func_002be390(short *param_1,int param_2,int param_3)
@@ -4237,7 +4236,6 @@ void func_002be390(short *param_1,int param_2,int param_3)
   return;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002be580
 
 u32 func_002be580(u64 param_1,int param_2)
@@ -5688,6 +5686,7 @@ u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
   return result;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002c1080 NONMATCHING
 
 u32
@@ -5744,6 +5743,7 @@ LAB_002c12a0:
   } while( true );
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002c12f0
 
 bool func_002c12f0(int param_1,int param_2)
