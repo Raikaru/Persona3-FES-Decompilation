@@ -948,7 +948,6 @@ void func_00215b00(void)
     *sSflPsel |= 1;
 }
 
-#pragma opt_common_subs off
 // FUN_00215FC0 NONMATCHING
 void func_00215fc0(void)
 {
@@ -1239,7 +1238,6 @@ void func_00215fc0(void)
     }
     func_00217780();
 }
-#pragma opt_common_subs reset
 // FUN_00216800
 void func_00216800(void)
 {

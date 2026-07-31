@@ -611,7 +611,6 @@ static u32 K_Footstep_GameState(void)
     return func_001a01c0();
 }
 
-#pragma opt_loop_invariants on
 // FUN_001dc6f0 NONMATCHING
 void* func_001dc6f0(KwlnTask* task)
 {
@@ -666,7 +665,6 @@ void* func_001dc6f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_001dc8e0
 void func_001dc8e0(KwlnTask* task)
 {
@@ -1075,6 +1073,8 @@ u32 func_001dd600(void)
     return result;
 }
 
+/* W328 probe: opt_loop_invariants on improves func_001dd8e0 normalized_diff 295 -> 290 (object 516/592); default is 295 (object 524/592). */
+#pragma opt_loop_invariants on
 // FUN_001dd8e0 NONMATCHING
 void func_001dd8e0(void)
 {
@@ -1137,6 +1137,7 @@ void func_001dd8e0(void)
         }
     }
 }
+#pragma opt_loop_invariants reset
 
 // FUN_001ddb30
 const void* func_001ddb30(void)

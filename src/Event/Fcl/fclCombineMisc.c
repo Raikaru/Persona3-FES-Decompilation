@@ -436,6 +436,8 @@ int FUN_003d58c0(int param_1,int param_2)
                15.0f);
 }
 
+/* W327 sweep: opt_common_subs off improves FUN_003d5a40 from nd231/obj324 to nd219/obj328 (window 368); retained. */
+#pragma opt_common_subs off
 // FUN_003D5A40 NONMATCHING
 
 
@@ -546,6 +548,7 @@ u32 FUN_003d5a40(u16 *param_1,u16 param_2,u16 *param_3,short param_4,void *param
   return uVar2;
 
 }
+#pragma opt_common_subs reset
 
 // FUN_003D5BB0
 
@@ -598,7 +601,7 @@ s32 FUN_003d5cd0(u32 *param_1)
   u32 uVar2;
   u32 *puVar3;
   s32 sVar5;
-  s32 sVar4;
+  s16 sVar4;
   s64 temp;
 
   sVar4 = 0;
@@ -1101,6 +1104,8 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 }
 
+/* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
+#pragma opt_common_subs off
 // FUN_003D6740 NONMATCHING
 
 
@@ -1197,6 +1202,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
   return uVar3;
 
 }
+#pragma opt_common_subs reset
 
 // W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
 // FUN_003D6910 NONMATCHING
@@ -2627,7 +2633,6 @@ s32 lVar2;
 
 }
 
-#pragma opt_loop_invariants on
 // FUN_003D84C0 NONMATCHING
 
 
@@ -2721,7 +2726,8 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
 }
 
-#pragma opt_loop_invariants reset
+/* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
+#pragma opt_loop_invariants on
 // FUN_003D8630 NONMATCHING
 
 
@@ -2860,6 +2866,7 @@ u32 FUN_003d8630(int param_1,int param_2)
   } while( 1 );
 
 }
+#pragma opt_loop_invariants reset
 
 // FUN_003D8850
 void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)

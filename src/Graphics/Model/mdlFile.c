@@ -13669,7 +13669,6 @@ void FUN_00329ed0(float *param_1)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_0032A120 NONMATCHING
 
 
@@ -13770,7 +13769,6 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_0032A540 NONMATCHING
 
 
@@ -16725,6 +16723,7 @@ void FUN_0032d7c0(int param_1, float scale)
   *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
 }
 
+#pragma opt_common_subs off
 // FUN_0032D840 NONMATCHING
 
 
@@ -17255,6 +17254,7 @@ void FUN_0032d840(int param_1)
 
 
 
+#pragma opt_common_subs reset
 // FUN_0032E110
 void FUN_0032e110(int param_1, float scale)
 {
