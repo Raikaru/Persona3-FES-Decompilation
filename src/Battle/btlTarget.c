@@ -1053,7 +1053,7 @@ void func_002d80f0(void* arg)
     work->action->unit->packetCount++;
 }
 
-// FUN_002d8110 NONMATCHING
+// FUN_002d8110
 u32 FUN_002d8110(BtlAction **param_1)
 {
     BtlAction *action;
@@ -1070,8 +1070,9 @@ u32 FUN_002d8110(BtlAction **param_1)
         u32 amount = FUN_003083f0((u32)(uintptr_t)unit->datUnit, personaId);
         if (amount != 0)
         {
+            u8 *table = DAT_007ce3f8;
             u32 tableIndex = (u32)personaId & 0xffff;
-            u8 effect = *(u8 *)(DAT_007ce3f8 + tableIndex * 44 + 3);
+            u8 effect = table[tableIndex * 44 + 3];
             switch (effect)
             {
             case 1:
@@ -4512,8 +4513,9 @@ void FUN_002d7560(BtlAction *action)
                 {
                     u8 *rewards;
                     found = 0;
+                    i = 0;
                     rewards = DAT_007ce3ec;
-                    for (i = 0; i < 3; i++)
+                    for (; i < 3; i++)
                     {
                         if (*(u16 *)(rewards + i * 8 + 0xbe0) == personaId)
                         {

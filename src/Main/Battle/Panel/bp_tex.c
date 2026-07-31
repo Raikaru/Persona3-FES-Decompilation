@@ -128,6 +128,13 @@ typedef struct BpTexTexture
     u32 frameCount;
 } BpTexTexture;
 
+typedef struct BpTexPoint
+{
+    f32 x;
+    f32 y;
+} BpTexPoint;
+
+
 
 static inline u32 bpTexByteToFloatBits(u8 value)
 {

@@ -437,7 +437,6 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     CampSkillRecord* record;
     void* owner;
     s16 equipment;
-    s16 id;
     s32 style;
     s32 value;
     s32 valueA;
@@ -454,6 +453,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     case 2:
     {
         /* -- category 0 -- */
+        s16 id;
         s32 effect;
         equipment = datGetEquipmentIdx(work->pcId, 0);
         valueA = (s32)func_0016f9f0(work->pcId, equipment);
@@ -533,6 +533,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     case 3:
     {
         /* -- category 1 -- */
+        s16 id;
         s32 effect;
         equipment = datGetEquipmentIdx(work->pcId, 1);
         valueA = (s32)func_0016fbd0(work->pcId, equipment);
@@ -594,6 +595,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     case 4:
     {
         /* -- category 2 -- */
+        s16 id;
         s32 effect;
         equipment = datGetEquipmentIdx(work->pcId, 2);
         valueA = (s32)func_0016fcc0(work->pcId, equipment);
@@ -655,6 +657,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     case 5:
     {
         /* -- category 3 -- */
+        s16 id;
         s32 effect;
         fx = record->x - 15.0f;
         fy = record->y + 4.0f;
@@ -1552,9 +1555,6 @@ void* FUN_001618a0(KwlnTask* task)
             if (DAT_007cdf54 != NULL) {
                 panelWork->unused_0c = 0;
                 panelWork->drawId = panelPcId;
-            } else {
-                RwFree(panelWork);
-            }
         }
         personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
         if (personaWork != NULL) {
