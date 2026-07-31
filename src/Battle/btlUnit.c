@@ -3250,6 +3250,55 @@ void btlUnitInit00285d30Packet(void* work)
 
     packet->unit->packetCount++;
 }
+static __inline u32 btlUnitVuInterpolateColor(u32 start, u32 target, f32 factor)
+{
+    u32 result;
+    f32 inv255 = DAT_007cae4c;
+
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "pextlb      %0, $zero, %2       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf11           \n"
+        "vitof0.xyzw $vf11, $vf11        \n"
+        "mfc1        %0, %3              \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
+        "pextlb      %0, $zero, %1       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "lui         %0, 0x3f80          \n"
+        "mtc1        %0, $f0             \n"
+        "sub.s       $f0, $f0, %4        \n"
+        "mfc1        %0, $f0             \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "mfc1        %0, %4              \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
+        "vadd.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437f          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(result)
+        : "r"(start), "r"(target), "f"(inv255), "f"(factor)
+        : "vf2", "vf10", "vf11", "memory");
+
+    return result;
+}
 
 // FUN_00285880 NONMATCHING
 #pragma optimization_level 3
