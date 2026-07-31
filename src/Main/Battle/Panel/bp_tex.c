@@ -1466,19 +1466,21 @@ u32* bpTexFindFreeNode(void)
 u32* bpTexFindNodeByIndex(u32 index)
 {
     u32* node;
+    u32* result;
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
          node != NULL;
          node = (u32*)node[0x3f1])
     {
+        result = node;
         if ((node[0] & 2) == 0 && node[4] == index)
         {
             break;
         }
     }
     K_ASSERT(node != NULL, 0x47a);
-    return node;
+    return result;
 }
 
 // FUN_002554F0 bpTexGetNodeCount

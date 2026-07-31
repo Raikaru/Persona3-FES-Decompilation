@@ -4445,7 +4445,6 @@ void FUN_0031fde0(void)
 
   return;
 }
-#pragma opt_common_subs reset
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1,u8 *param_2)
 {

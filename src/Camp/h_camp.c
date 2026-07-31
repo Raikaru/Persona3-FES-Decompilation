@@ -4364,7 +4364,6 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 #undef func_0018bc10
-
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
@@ -5278,4 +5277,6 @@ static inline void campStatusResetPersonaAnimations(void* records)
 /* Retail 0x1313e0 uses the direct child-create call; case 1 reloads archive
  * state at 0x13132c/0x131368/0x1313a4, and case 3 reloads records at
  * 0x131504/0x1315f0/0x13169c/0x1316e8. */
+
+
 
