@@ -12759,7 +12759,7 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_0044A630 NONMATCHING
+// FUN_0044A630
 
 void FUN_0044a630(int param_1)
 
@@ -12767,7 +12767,7 @@ void FUN_0044a630(int param_1)
   int iVar1;
   int lVar2;
   int iVar3;
-  s8 *slot;
+  volatile s8 *slot;
   int iVar4;
   
   iVar1 = *(int *)(param_1 + 0x3c);

@@ -884,57 +884,65 @@ void func_0021dd60(void* destination, const u8* colors)
     BP_TEX_F32(destination, 0xec) = converted;
 }
 
+#pragma optimization_level 1
 // FUN_0021e170 NONMATCHING
 void func_0021e170(void* destination,
                    const f32* center,
                    const f32* direction,
                    const f32* size)
 {
-    f32 points[8];
-    f32 sourcePoints[8];
+    f32 sourcePoints[4][2];
     f32 length;
     f32 angle;
     f32 sine;
     f32 cosine;
-    f32 cx;
     f32 x;
     f32 y;
+    f32 rotatedX;
+    f32 cx;
+    f32 cy;
     s32 i;
+    s32 j;
 
-    cx = center[0];
     length = sqrtf(direction[0] * direction[0] +
                    direction[1] * direction[1]);
     angle = func_0052ea18(direction[0] / length,
                           -(direction[1] / length));
-    sourcePoints[0] = -size[0] / 2.0f;
-    sourcePoints[1] = -size[1] / 2.0f;
-    sourcePoints[2] = size[0] / 2.0f;
-    sourcePoints[3] = sourcePoints[1];
-    sourcePoints[4] = sourcePoints[2];
-    sourcePoints[5] = size[1] / 2.0f;
-    sourcePoints[6] = sourcePoints[0];
-    sourcePoints[7] = sourcePoints[5];
+    sourcePoints[0][0] = -size[0] / 2.0f;
+    sourcePoints[0][1] = -size[1] / 2.0f;
+    sourcePoints[1][0] = size[0] / 2.0f;
+    sourcePoints[1][1] = sourcePoints[0][1];
+    sourcePoints[2][0] = sourcePoints[1][0];
+    sourcePoints[2][1] = size[1] / 2.0f;
+    sourcePoints[3][0] = sourcePoints[0][0];
+    sourcePoints[3][1] = sourcePoints[2][1];
     for (i = 0; i < 4; i++)
     {
-        x = sourcePoints[i * 2];
-        y = sourcePoints[i * 2 + 1];
+        y = sourcePoints[i][1];
+        x = sourcePoints[i][0];
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
-        points[i * 2] = x * cosine - y * sine;
+        rotatedX = x * cosine - y * sine;
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
-        points[i * 2 + 1] = x * sine + y * cosine;
-        points[i * 2] += cx;
-        points[i * 2 + 1] += center[1];
+        sourcePoints[i][0] = rotatedX;
+        sourcePoints[i][1] = x * sine + y * cosine;
     }
-    BP_TEX_F32(destination, 0x00) = points[0];
-    BP_TEX_F32(destination, 0x04) = points[1];
-    BP_TEX_F32(destination, 0x40) = points[2];
-    BP_TEX_F32(destination, 0x44) = points[3];
-    BP_TEX_F32(destination, 0x80) = points[4];
-    BP_TEX_F32(destination, 0x84) = points[5];
-    BP_TEX_F32(destination, 0xc0) = points[6];
-    BP_TEX_F32(destination, 0xc4) = points[7];
+    cx = center[0];
+    cy = center[1];
+    for (j = 0; j < 4; j++)
+    {
+        sourcePoints[j][0] += cx;
+        sourcePoints[j][1] += cy;
+    }
+    BP_TEX_F32(destination, 0x00) = sourcePoints[0][0];
+    BP_TEX_F32(destination, 0x04) = sourcePoints[0][1];
+    BP_TEX_F32(destination, 0x40) = sourcePoints[1][0];
+    BP_TEX_F32(destination, 0x44) = sourcePoints[1][1];
+    BP_TEX_F32(destination, 0x80) = sourcePoints[2][0];
+    BP_TEX_F32(destination, 0x84) = sourcePoints[2][1];
+    BP_TEX_F32(destination, 0xc0) = sourcePoints[3][0];
+    BP_TEX_F32(destination, 0xc4) = sourcePoints[3][1];
 }
 
 // FUN_0021e380
@@ -2526,7 +2534,7 @@ void bpTexDumpNodes(void)
     func_005225a8((u32)"\n\n");
 }
 
-// FUN_00257F10 NONMATCHING
+// FUN_00257F10
 void bpTexPrepareNodes(void)
 {
     u32* work;
@@ -2556,18 +2564,18 @@ void bpTexPrepareNodes(void)
         {
             func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
         }
-        for (scan = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
-             scan != NULL;
-             scan = (u32*)scan[0x3f1])
+        scan = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+        while (scan != NULL)
         {
+            node = scan;
             if ((scan[0] & 2) == 0 &&
                 scan[4] == (u32)i)
             {
                 break;
             }
+            scan = (u32*)scan[0x3f1];
         }
-        node = scan;
-        if (node == NULL)
+        if (scan == NULL)
         {
             func_0019d3f0((const char*)D_0068EA00_abs, 0x47a);
         }
