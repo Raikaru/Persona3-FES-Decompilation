@@ -1931,7 +1931,12 @@ FclList* fclCombineList003de290(void* input, s32 state)
     FclList* work;
     s32 capacity;
 
-    capacity = state == 4 ? 6 : (state == 3 ? 5 : (state == 2 ? 4 : 0));
+    switch (state) {
+    case 4: capacity = 6; break;
+    case 3: capacity = 5; break;
+    case 2: capacity = 4; break;
+    default: capacity = 0; break;
+    }
     K_ASSERT(capacity != 0, 0x966);
     task = FUN_003c58f0(0, capacity * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
@@ -1941,6 +1946,7 @@ FclList* fclCombineList003de290(void* input, s32 state)
     work->flags = 0;
     work->values = work->embedded_values;
     memcpy(work->input_copy, input, 0x90);
+    work->result = (FclResultStream*)FUN_003dfeb0((s32)work);
     FUN_003d9ea0(work);
     FUN_003d8850((s32)work, 0xb, 0);
     FUN_003d8850((s32)work, 7, 0);

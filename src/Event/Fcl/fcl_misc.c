@@ -402,10 +402,14 @@ u32 FUN_003c8400(u32 param_1,int param_2)
   iVar6 = (int)param_1;
   puVar5 = (u32 *)(iVar6 + param_2 * 0xc + 0x1c);
   if ((*puVar5 & 2) == 0) {
-    for (iVar3 = *(int *)(*(int *)(iVar6 + 0x18) + 4);
-         iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
+    iVar3 = *(int *)(*(int *)(iVar6 + 0x18) + 4);
+    while (iVar3 != 0) {
       iVar4 = *(int *)(iVar3 + 0x14);
-      if (*(int *)(iVar4 + 4) == param_2) goto LAB_003c84bc;
+      if (*(int *)(iVar4 + 4) != param_2) {
+        iVar3 = *(int *)(iVar3 + 0x10);
+      } else {
+        goto LAB_003c84bc;
+      }
     }
     iVar4 = 0;
 LAB_003c84bc:

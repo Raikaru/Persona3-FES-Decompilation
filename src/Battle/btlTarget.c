@@ -2589,7 +2589,7 @@ int FUN_002d2c10(float *param_1, float *param_2)
                 return 0;
             }
             next = *(float **)(record + 0x18);
-            if ((0.0f < *(float *)(record + 0x1c)) && (next != NULL))
+            if ((*(float *)(record + 0x1c) > 0.0f) && (next != NULL))
             {
                 int intersects;
                 int side_a = FUN_002d2ee0(edge, next, param_1);
