@@ -1129,33 +1129,6 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
     unit->unk_9e8 = (s8)mode;
 
 }
-// FUN_0027F530
-void func_0027f530(BtlUnit* unit)
-{
-    unit->scale = 1.0f;
-    unit->pos = D_00957180;
-    unit->posOffset = D_00957180;
-
-    unit->rot.real = 1.0f;
-    unit->rot.imag.x = 0.0f;
-    unit->rot.imag.y = 0.0f;
-    unit->rot.imag.z = 0.0f;
-
-    unit->cols[0].r = 0xff;
-    unit->cols[0].g = 0xff;
-    unit->cols[0].b = 0xff;
-    unit->cols[0].a = 0xff;
-    unit->cols[1] = unit->cols[0];
-    unit->cols[3] = unit->cols[0];
-    unit->cols[4] = unit->cols[0];
-
-    unit->unk_4c = 0;
-    unit->unk_54 = D_00957180;
-    unit->unk_70.imag.x = 0.0f;
-    unit->unk_70.imag.y = 0.0f;
-    unit->unk_70.imag.z = 0.0f;
-    unit->unk_70.real = 0.5f;
-}
 
 // FUN_0027f650
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
