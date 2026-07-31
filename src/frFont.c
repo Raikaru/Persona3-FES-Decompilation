@@ -305,7 +305,7 @@ void FUN_003afa40(void)
 // FUN_003AFAD0 NONMATCHING
 
 
-void FUN_003afad0(int slot_id, int font_data, int resource)
+void FUN_003afad0(int slot_id, u8 *font_data, int resource)
 
 
 
@@ -343,13 +343,13 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
     slot->block1 = data + offset;
     offset += slot->block1_size;
   } else {
-    ((volatile FrFontSlot *)slot)->block0_size = 0;
-    ((volatile FrFontSlot *)slot)->block0 = NULL;
-    ((volatile FrFontSlot *)slot)->block1_size = 0;
-    ((volatile FrFontSlot *)slot)->block1 = NULL;
+    slot->block0_size = 0;
+    slot->block0 = NULL;
+    slot->block1_size = 0;
+    slot->block1 = NULL;
   }
 
-  ((volatile FrFontSlot *)slot)->flags = (u32)(data + offset);
+  slot->flags = (u32)(font_data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
   slot->object = (u8 *)slot->font_data + offset +
