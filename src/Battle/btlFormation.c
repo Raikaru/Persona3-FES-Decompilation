@@ -7254,7 +7254,6 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
   return 1;
 }
 
-#pragma opt_common_subs off
 // FUN_002c3770 NONMATCHING
 
 u32 func_002c3770(u32 param_1,u32 param_2)
@@ -7360,7 +7359,6 @@ u32 func_002c3770(u32 param_1,u32 param_2)
   return 1;
 }
 
-#pragma opt_common_subs reset
 // FUN_002c3be0
 u32 func_002c3be0(u32 param_1)
 {
@@ -7962,6 +7960,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   return uVar8;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002c4e50 NONMATCHING
 
 u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
@@ -8006,6 +8005,7 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   return uVar8;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002c5030 NONMATCHING
 
 s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4)

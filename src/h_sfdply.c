@@ -2158,6 +2158,8 @@ void func_0010dee0(HSfdImage* image, const u8* source)
 }
 
 
+/* W318 measured: opt_loop_invariants on changes df60 nd69->14; object stays 168/176. */
+#pragma opt_loop_invariants on
 // FUN_0010DF60 NONMATCHING
 void func_0010df60(HSfdImage* image, const u8* source)
 {
@@ -2187,6 +2189,7 @@ void func_0010df60(HSfdImage* image, const u8* source)
         }
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_0010E010
 void func_0010e010(HSfdImage* image, s32 bitDepth)
@@ -2618,7 +2621,6 @@ void* func_0010e880(const u8* stream)
 // RpSkyRenderStateSet pairs. Retail then gates the whole body on work[0] == 3
 // (bne $a0, 3 branches to the tail); that body is fully reconstructed here
 // as an element-loop over frame commands with color processing.
-#pragma opt_loop_invariants on
 // FUN_0010EC50 NONMATCHING
 void func_0010ec50(KwlnTask* task)
 {
@@ -2945,7 +2947,6 @@ void func_0010ec50(KwlnTask* task)
 
 // Retail 0x10fbe4-0x110250 re-fetches command pointers and carries the prior
 // endpoint into command-2 rectangles; preserve those conversions and spill slots.
-#pragma opt_loop_invariants reset
 // FUN_0010F6C0 NONMATCHING
 void* func_0010f6c0(KwlnTask* task)
 {
