@@ -352,18 +352,13 @@ static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
 // FUN_00108BC0 NONMATCHING
 void func_00108bc0(void)
 {
-    s16 i;
-    HsndChannel* channel;
-    void** handle;
-    s16* state;
-    s32 status;
-
-    func_00540ec0();
-    func_0051db00(3, 0x80, 0x7F, 0x7F);
-
-    for (i = 0; i < HSND_SLOT_COUNT; i++)
     {
-        func_00108e80(&sSlotWork[i]);
+        s16 i;
+
+        for (i = 0; i < HSND_SLOT_COUNT; i++)
+        {
+            func_00108e80(&sSlotWork[i]);
+        }
     }
 
     if (sChannels[0].active != false)
@@ -378,49 +373,64 @@ void func_00108bc0(void)
         }
 
         func_0054d3a8(sChannels[0].handle, false);
-        status = func_0054d148(sChannels[0].handle);
-        if (status == 3)
         {
-            sChannels[0].active = false;
-        }
-        else if (status == 4)
-        {
-            func_00109070(0);
-            H_Snd_00109180(0);
-            func_0054d208(sChannels[0].handle, true);
+            s32 status = func_0054d148(sChannels[0].handle);
+            if (status == 3)
+            {
+                sChannels[0].active = false;
+            }
+            else if (status == 4)
+            {
+                func_00109070(0);
+                H_Snd_00109180(0);
+                func_0054d208(sChannels[0].handle, true);
+            }
         }
     }
 
-    for (i = 2; i < HSND_CHANNEL_COUNT; i++)
     {
-        channel = &sChannels[i];
-        handle = &channel->handle;
-        state = &channel->state;
-        if (channel->active == false)
-        {
-            continue;
-        }
+        s16 i;
+        HsndChannel* channel;
+        void** handle;
+        s32 status;
+        s16* state;
 
-        status = func_0054d148(*handle);
-        if (status == 3)
+        for (i = 2; i < HSND_CHANNEL_COUNT; i++)
         {
-            channel->active = false;
-        }
-        else if (status == 4)
-        {
-            func_00109070(i);
-            H_Snd_00109180(i);
-            func_0054d208(*handle, true);
-        }
-        else if (*state == HSND_CHANNEL_STARTING)
-        {
-            func_0054d100(*handle);
-            *state = HSND_CHANNEL_PLAYING;
-        }
-        else if (*state == HSND_CHANNEL_PLAYING)
-        {
-            H_Snd_00109180(i);
-            *state = HSND_CHANNEL_PLAYING;
+            channel = &sChannels[i];
+            if (channel->active == false)
+            {
+                continue;
+            }
+
+            handle = &channel->handle;
+            status = func_0054d148(*handle);
+            if (status == 3)
+            {
+                channel->active = false;
+            }
+            else if (status == 4)
+            {
+                func_00109070(i);
+                H_Snd_00109180(i);
+                func_0054d208(*handle, true);
+            }
+            else
+            {
+                state = &channel->state;
+                switch (*state)
+                {
+                    case HSND_CHANNEL_STARTING:
+                        func_0054d100(*handle);
+                        *state = HSND_CHANNEL_PLAYING;
+                        break;
+
+                    case HSND_CHANNEL_PLAYING:
+                        H_Snd_00109180(i);
+                        *state = HSND_CHANNEL_PLAYING;
+                        break;
+                }
+            }
         }
     }
 }

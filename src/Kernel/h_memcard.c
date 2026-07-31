@@ -584,6 +584,7 @@ state5_done:
                         }
                     }
                 }
+            }
                 break;
             case 1:
             {
@@ -616,6 +617,7 @@ state5_done:
                         }
                     }
                 }
+            }
                 break;
             case 2:
             {

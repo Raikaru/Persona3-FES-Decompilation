@@ -729,14 +729,14 @@ void *func_001f1210(void)
     return (void *)func_003c7650(1);
 }
 
-// FUN_001f1240 NONMATCHING
+// FUN_001f1240
 void func_001f1240(KwlnTask *task)
 {
     u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
 
     K_ASSERT((~work[0] & 0x20000) != 0, 0x603);
-    if ((work[0] & 2) == 0) {
+    if (((~work[0]) & 2) != 0) {
         ratio = (f32)(s32)work[0xb4 / 4] / (f32)(s32)work[0x11c / 4];
     } else {
         ratio = ((f32)(s32)work[0xb4 / 4] * (f32)(s32)work[0x2a5c / 4] / 100.0f) /
