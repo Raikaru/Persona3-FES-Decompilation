@@ -2469,7 +2469,7 @@ void FUN_00389b50(int *param_1)
 
   u32 *puVar7;
 
-  s32 (**alloc_ptr)(u32,u32,u32);
+  int iVar8;
   int iVar6;
 
   
@@ -2477,8 +2477,7 @@ void FUN_00389b50(int *param_1)
   iVar6 = 0;
 
   if ((*param_1 == 0x30) || (*param_1 == 1)) {
-    for (puVar7 = (u32 *)param_1[0x1b]; puVar7 != (u32 *)0x0;
-         puVar7 = (u32 *)puVar7[0x13]) {
+    for (iVar8 = param_1[0x1b]; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x4c)) {
 
       iVar6 = iVar6 + 1;
     }
@@ -2491,8 +2490,7 @@ void FUN_00389b50(int *param_1)
 
       }
 
-      alloc_ptr = (s32 (**)(u32,u32,u32))DAT_00960184_abs;
-      base = (u32 *)(*alloc_ptr)(1,iVar6 * 0x54,0x40000);
+      base = (u32 *)(*DAT_00960184)(1,iVar6 * 0x54,0x40000);
       if (base == (u32 *)0x0) {
 
         FUN_0019d3f0("mt_evtMisc.c",0x3b);
@@ -2534,7 +2532,7 @@ void FUN_00389b50(int *param_1)
 
         if (puVar1[0x10] != 0) {
 
-          puVar4 = (u32 *)(*alloc_ptr)(1,0x130,0x40000);
+          puVar4 = (u32 *)(*DAT_00960184)(1,0x130,0x40000);
 
           if (puVar4 == (u32 *)0x0) {
 
