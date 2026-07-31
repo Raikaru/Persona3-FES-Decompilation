@@ -539,7 +539,6 @@ void h_campDestroySpriteSetupTask(KwlnTask* task)
 }
 #pragma pop
 
-#pragma opt_lifetimes on
 // FUN_0011abd0 NONMATCHING
 u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* selectedEntry)
 {
@@ -674,7 +673,6 @@ u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* 
     return changed;
 }
 
-#pragma opt_lifetimes reset
 // FUN_0011b0b0
 void* h_campUpdatePersonaTextureControlTask(KwlnTask* task)
 {
@@ -1819,6 +1817,7 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
                   alpha, 0, 0xa);
 }
 
+#pragma opt_propagation off
 // FUN_0011ddb0 NONMATCHING
 void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 {
@@ -1854,6 +1853,7 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(work, alpha);
 }
 
+#pragma opt_propagation reset
 // FUN_0011dfe0 NONMATCHING
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {

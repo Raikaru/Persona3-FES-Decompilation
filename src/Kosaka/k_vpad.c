@@ -263,6 +263,10 @@ extern void func_001ad8c0(f32 value, void* controller);
 extern void func_001ad870(void* controller, u32 flags);
 extern void func_001ad890(void* controller, u32 flags);
 extern void func_001ad940(RuntimeVec3* output, void* controller);
+extern void func_001addf0(f32 amount, void* controller,
+                          const RuntimeVec3* direction);
+extern void func_001adff0(f32 amount, void* controller,
+                          const RuntimeVec3* direction);
 extern void func_001ae0d0(void* controller);
 extern void func_0019c320(f32 value, void* controller);
 extern s32 func_001a4380(void* task, u32 id);
@@ -321,6 +325,8 @@ extern char D_006844F8[];
 extern void func_0019d3f0(const char* file, s32 line);
 extern f32 func_004c6ac0(RuntimeVec3* vector);
 extern void func_004c69f0(RuntimeVec3* output, const RuntimeVec3* input);
+extern void func_004c6be0(RuntimeVec3* destination,
+                          const RuntimeVec3* source, void* matrix);
 extern void func_004c32a0(void* destination, const void* source);
 extern f32 D_007CADD4;
 extern char D_007CC348;
