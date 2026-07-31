@@ -5813,7 +5813,6 @@ void FUN_00324b50(u32 param_1)
 }
 
 
-#pragma opt_strength_reduction off
 // FUN_00324BD0 NONMATCHING
 
 
@@ -6217,7 +6216,7 @@ u32 FUN_00324bd0(u32 param_1)
 
 
 
-#pragma opt_strength_reduction reset
+#pragma opt_propagation off
 // FUN_003252A0 NONMATCHING
 
 
@@ -6388,6 +6387,7 @@ void FUN_003252a0(u64 param_1)
 
 
 
+#pragma opt_propagation reset
 // FUN_00325500 NONMATCHING
 
 

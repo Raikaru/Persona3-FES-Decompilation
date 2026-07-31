@@ -378,23 +378,6 @@ extern u8 DAT_006a1070_abs[];
 
 #undef FUN_00396e30
 // FUN_00396E30
-/* Region call-cast macros */
-#define FUN_00396e30(...) ((u32 (*)(...))FUN_00396e30)(__VA_ARGS__)
-#define FUN_00396ed0(...) ((u32 (*)(...))FUN_00396ed0)(__VA_ARGS__)
-#define FUN_00396f50(...) ((void (*)(...))FUN_00396f50)(__VA_ARGS__)
-#define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)
-#define FUN_003970d0(...) ((void (*)(...))FUN_003970d0)(__VA_ARGS__)
-#define FUN_003971a0(...) ((u32 (*)(...))FUN_003971a0)(__VA_ARGS__)
-#define FUN_003973e0(...) ((u8 (*)(...))FUN_003973e0)(__VA_ARGS__)
-#define FUN_00397450(...) ((void (*)(...))FUN_00397450)(__VA_ARGS__)
-#define FUN_00397500(...) ((u32 (*)(...))FUN_00397500)(__VA_ARGS__)
-#define FUN_00397510(...) ((void (*)(...))FUN_00397510)(__VA_ARGS__)
-#define FUN_00397520(...) ((u32 (*)(...))FUN_00397520)(__VA_ARGS__)
-#define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
-#define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
-#define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
-#define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
-#define FUN_00397870(...) ((u32 (*)(...))FUN_00397870)(__VA_ARGS__)
 #undef FUN_00396e30
 
 
@@ -431,6 +414,23 @@ u32 FUN_00396e30(int param_1)
 }
 
 #define FUN_00396e30(...) ((u32 (*)(...))FUN_00396e30)(__VA_ARGS__)
+/* Region call-cast macros */
+#define FUN_00396e30(...) ((u32 (*)(...))FUN_00396e30)(__VA_ARGS__)
+#define FUN_00396ed0(...) ((u32 (*)(...))FUN_00396ed0)(__VA_ARGS__)
+#define FUN_00396f50(...) ((void (*)(...))FUN_00396f50)(__VA_ARGS__)
+#define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)
+#define FUN_003970d0(...) ((void (*)(...))FUN_003970d0)(__VA_ARGS__)
+#define FUN_003971a0(...) ((u32 (*)(...))FUN_003971a0)(__VA_ARGS__)
+#define FUN_003973e0(...) ((u8 (*)(...))FUN_003973e0)(__VA_ARGS__)
+#define FUN_00397450(...) ((void (*)(...))FUN_00397450)(__VA_ARGS__)
+#define FUN_00397500(...) ((u32 (*)(...))FUN_00397500)(__VA_ARGS__)
+#define FUN_00397510(...) ((void (*)(...))FUN_00397510)(__VA_ARGS__)
+#define FUN_00397520(...) ((u32 (*)(...))FUN_00397520)(__VA_ARGS__)
+#define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
+#define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
+#define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
+#define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
+#define FUN_00397870(...) ((u32 (*)(...))FUN_00397870)(__VA_ARGS__)
 #undef FUN_00396ed0
 // FUN_00396ED0
 

@@ -5061,7 +5061,6 @@ return 0; }
 
 /* W327 measured: opt_loop_invariants on normalized_diff 573 -> 524; object 1116/1152 -> 1116/1152 (without/with). */
 #pragma opt_loop_invariants on
-#pragma opt_dead_assignments off
 // FUN_00415DC0 NONMATCHING
 
 
@@ -5313,7 +5312,6 @@ u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3)
 }
 
 #pragma opt_loop_invariants reset
-#pragma opt_dead_assignments reset
 // FUN_00416240 NONMATCHING
 
 

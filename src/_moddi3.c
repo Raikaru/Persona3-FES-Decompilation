@@ -95,7 +95,7 @@ u64 FUN_0052f6a0(long param_1,long param_2)
   }
   return uVar2;
 }
-/* Structured unsigned core, measured against the raw Ghidra form below. */
+/* Structured unsigned core: 1936/1736 nd1750 -> 1732/1736 nd1521. */
 #pragma opt_propagation off
 // FUN_0052F7D0 NONMATCHING
 u64 FUN_0052f7d0(u64 n, u64 d, u64 *rp)

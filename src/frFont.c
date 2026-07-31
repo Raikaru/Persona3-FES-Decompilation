@@ -2111,7 +2111,6 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 }
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
 #undef FUN_003b1710
-#pragma opt_propagation off
 // FUN_003B1710 NONMATCHING
 
 
@@ -2234,7 +2233,6 @@ int FUN_003b1710(long param_1)
 }
 #define FUN_003b1710(...) ((int (*)(...))FUN_003b1710)(__VA_ARGS__)
 #undef FUN_003b18c0
-#pragma opt_propagation reset
 // FUN_003B18C0
 
 
@@ -2556,6 +2554,7 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 }
 #define FUN_003b1c40(...) ((void (*)(...))FUN_003b1c40)(__VA_ARGS__)
 #undef FUN_003b1c90
+#pragma opt_dead_assignments off
 // FUN_003B1C90 NONMATCHING
 
 
@@ -2613,6 +2612,7 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 }
 #define FUN_003b1c90(...) ((void (*)(...))FUN_003b1c90)(__VA_ARGS__)
 #undef FUN_003b1d90
+#pragma opt_dead_assignments reset
 // FUN_003B1D90 NONMATCHING
 
 
