@@ -393,10 +393,7 @@ float FUN_0052eb60(s64 u)
   f = (s32)(u >> 0x20);
   f *= 65536.0;
   f *= 65536.0;
-  f += (s32)u;
-  if ((s32)u < 0) {
-    f += 4294967296.0;
-  }
+  f += (u32)u;
   return (float)f;
 }
 // FUN_0052EC28 NONMATCHING

@@ -26,6 +26,7 @@ void FUN_00201A50(void);
 u32 FUN_00201AF0(void);
 void FUN_00201EF0(void);
 void FUN_00202010(void);
+void FUN_00202830(void);
 u32 bpe00249600(void);
 void* func_0021c5d0(void);
 void* func_0021c640(void);

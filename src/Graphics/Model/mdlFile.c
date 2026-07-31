@@ -812,10 +812,8 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u32 param_2);
 static u32 * FUN_0031fbd0(float param_1,int *param_2);
-#pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
-extern u32 *FUN_0031fbd0_noargs(void);
 u8 * FUN_0031fd00(float firstTime, int *track);
-void FUN_0031fde0(void);
+void FUN_0031fde0(f32 param_1, u8 *param_2);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
 void FUN_00320290(int param_1);
@@ -4409,34 +4407,24 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 
 
 
-void FUN_0031fde0(void)
-
-
-
+void FUN_0031fde0(f32 param_1, u8 *param_2)
 {
-
-
-
-
-
-  
-  float extraout_f13;
-  u8 *extraout_t1_lo;
+  u32 *result;
   f32 red;
   f32 green;
   f32 blue;
-  FUN_0031fbd0_noargs();
 
-  red = (f32)*extraout_t1_lo / 255.0f;
-  green = (f32)extraout_t1_lo[1] / 255.0f;
-  blue = (f32)extraout_t1_lo[2] / 255.0f;
+  result = FUN_0031fbd0(param_1, (int *)param_2);
+  red = (f32)param_2[1] / 255.0f;
+  green = (f32)param_2[2] / 255.0f;
+  blue = (f32)param_2[0] / 255.0f;
 
-  DAT_00957244_f32 =
-       extraout_f13 * (red - DAT_00957244_f32) + DAT_00957244_f32 + 0.0f;
-  DAT_00957248_f32 =
-       extraout_f13 * (green - DAT_00957248_f32) + DAT_00957248_f32 + 0.0f;
-  DAT_0095724c_f32 =
-       extraout_f13 * (blue - DAT_0095724c_f32) + DAT_0095724c_f32 + 0.0f;
+  *(f32 *)(result + 1) =
+      param_1 * (red - *(f32 *)(result + 1)) + *(f32 *)(result + 1) + 0.0f;
+  *(f32 *)(result + 2) =
+      param_1 * (green - *(f32 *)(result + 2)) + *(f32 *)(result + 2) + 0.0f;
+  *(f32 *)(result + 3) =
+      param_1 * (blue - *(f32 *)(result + 3)) + *(f32 *)(result + 3) + 0.0f;
 }
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1,u8 *param_2)

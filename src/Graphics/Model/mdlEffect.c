@@ -808,7 +808,7 @@ void FUN_00322660(int param_1);
 void FUN_003226b0(int *param_1,int param_2);
 u32 FUN_00322880(int param_1);
 void FUN_00322a20(int param_1);
-void FUN_00322ab0(int *param_1,int param_2,float *param_3);
+void FUN_00322ab0(int *param_1,u8 *param_2,float *param_3);
 void FUN_00322d10(int param_1,float *param_2);
 void FUN_00322d40(int param_1,u32 param_2);
 #pragma alias FUN_00322d40_onearg FUN_00322d40
@@ -957,7 +957,7 @@ int FUN_003261c0(int param_1,int param_2);
 int FUN_00326200(int param_1,int param_2);
 int FUN_00326240(int param_1,int param_2);
 void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16]);
-void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16]);
+void FUN_003263b0(u8 *param_1,u8 *param_2,u8 (*param_3) [16]);
 u32 FUN_00326490(u32 param_1);
 u32 FUN_00326510(u32 param_1);
 void FUN_00326740(int param_1);
@@ -3956,7 +3956,7 @@ void FUN_00322a20(int param_1)
 // FUN_00322AB0 NONMATCHING
 
 
-void FUN_00322ab0(int *param_1,int param_2,float *param_3)
+void FUN_00322ab0(int *param_1,u8 *param_2,float *param_3)
 
 
 
@@ -4120,7 +4120,7 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
 void FUN_00322d10(int param_1,float *param_2)
 {
-  FUN_00322ab0((int *)(u32)param_1,*(u32 *)(param_1 + 0x10),param_2);
+  FUN_00322ab0((int *)(u32)param_1,(u8 *)(u32)*(u32 *)(param_1 + 0x10),param_2);
 }
 
 
@@ -6263,7 +6263,7 @@ void FUN_003252a0(u64 param_1)
 
     savedTransform = *(u_long128 *)pauVar7[5];
 
-    FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+    FUN_003263b0((u8 *)(u32)param_1,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
     FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
@@ -6354,7 +6354,7 @@ void FUN_003252a0(u64 param_1)
 
       if ((*(u32 *)(iVar3 + 0x68) & 0x60) != 0) {
 
-        FUN_003263b0((int)(iVar3),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+        FUN_003263b0((u8 *)(u32)iVar3,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
         uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
@@ -6441,7 +6441,7 @@ void FUN_00325500(u64 param_1)
 
       savedTransform = *(u_long128 *)pauVar8[5];
 
-      FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+      FUN_003263b0((u8 *)(u32)param_1,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
       FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
@@ -6526,7 +6526,7 @@ void FUN_00325500(u64 param_1)
 
           if ((*(u32 *)(iVar4 + 0x68) & 0x60) != 0) {
 
-            FUN_003263b0((int)(iVar4),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+            FUN_003263b0((u8 *)(u32)iVar4,(u8 *)(u32)(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
             uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
@@ -7425,7 +7425,7 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 // FUN_003263B0 NONMATCHING
-void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
+void FUN_003263b0(u8 *param_1,u8 *param_2,u8 (*param_3) [16])
 
 
 
@@ -7451,7 +7451,25 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   
 
-  if ((*(u32 *)(param_1 + 0x68) & 0x60) != 0) {
+  if ((*(u32 *)(param_1 + 0x68) & 0x60) == 0) {
+
+    uVar1 = *(u32 *)(param_1 + 0x54);
+
+    uVar2 = *(u32 *)(param_1 + 0x58);
+
+    uVar3 = *(u32 *)(param_1 + 0x5c);
+
+    *(u32 *)*param_3 = *(u32 *)(param_1 + 0x50);
+
+    *(u32 *)(*param_3 + 4) = uVar1;
+
+    *(u32 *)(*param_3 + 8) = uVar2;
+
+    *(u32 *)(*param_3 + 0xc) = uVar3;
+
+  }
+
+  else {
 
     FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
 
@@ -7484,24 +7502,6 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
     }
 
     __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(param_3) : "memory");
-
-  }
-
-  else {
-
-    uVar1 = *(u32 *)(param_1 + 0x54);
-
-    uVar2 = *(u32 *)(param_1 + 0x58);
-
-    uVar3 = *(u32 *)(param_1 + 0x5c);
-
-    *(u32 *)*param_3 = *(u32 *)(param_1 + 0x50);
-
-    *(u32 *)(*param_3 + 4) = uVar1;
-
-    *(u32 *)(*param_3 + 8) = uVar2;
-
-    *(u32 *)(*param_3 + 0xc) = uVar3;
 
   }
 
