@@ -1170,7 +1170,7 @@ void func_0020b250(void* work)
     u8 c2;
     u8 c3;
     f32 alpha;
-    u32 value;
+    s32 value;
     s32 mode;
     mode = *(s32*)(panel + 4);
     if (mode < 0 || mode >= 3) {
@@ -1208,13 +1208,7 @@ void func_0020b250(void* work)
             color[2] = c2;
             color[3] = c0;
             value = panel[0x43];
-            if (value >= 0) {
-                alpha = (f32)value;
-            } else {
-                value = (value >> 1) | (value & 1);
-                alpha = (f32)value;
-                alpha += alpha;
-            }
+            alpha = (f32)(u32)value;
             alpha = (30.0f * alpha) / 100.0f;
             if (alpha < 2.1474836e9f) {
                 color[3] = (u8)(s32)alpha;
@@ -1286,13 +1280,7 @@ void func_0020b250(void* work)
             color[0] = 0;
             color[1] = 0;
             color[2] = 0;
-            if (value >= 0) {
-                alpha = (f32)value;
-            } else {
-                value = (value >> 1) | (value & 1);
-                alpha = (f32)value;
-                alpha += alpha;
-            }
+            alpha = (f32)(u32)value;
             alpha = *(f32*)(mode2 + 0x32C) * (alpha * *(f32*)(mode2 + 0x328));
             if (alpha < 2.1474836e9f) {
                 color[3] = (u8)(s32)alpha;
@@ -1313,13 +1301,7 @@ void func_0020b250(void* work)
         color[2] = panel[0x42];
         color[3] = panel[0x43];
         value = panel[0x43];
-        if (value >= 0) {
-            alpha = (f32)value;
-        } else {
-            value = (value >> 1) | (value & 1);
-            alpha = (f32)value;
-            alpha += alpha;
-        }
+        alpha = (f32)(u32)value;
         alpha = (255.0f * *(f32*)(mode0 + 0x5FC) * alpha) / 255.0f;
         if (alpha < 2.1474836e9f) {
             color[3] = (u8)(s32)alpha;
@@ -1335,13 +1317,7 @@ void func_0020b250(void* work)
             color[3] = 0;
         } else {
             value = panel[0x43];
-            if (value >= 0) {
-                alpha = (f32)value;
-            } else {
-                value = (value >> 1) | (value & 1);
-                alpha = (f32)value;
-                alpha += alpha;
-            }
+            alpha = (f32)(u32)value;
             alpha = (255.0f * *(f32*)(mode0 + 0x5F8) * alpha) / 255.0f;
             if (alpha < 2.1474836e9f) {
                 color[3] = (u8)(s32)alpha;

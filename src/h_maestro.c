@@ -2309,12 +2309,7 @@ void func_00114450(f32 depth,
     {
         vertices[i].u.els.camVertex_z = z;
         vertices[i].u.els.recipZ = recipZ;
-        if (r >= 0) {
-            vertices[i].u.els.color.r = (f32)r;
-        } else {
-            tmp = (f32)(s32)(((u32)r >> 1) | r1);
-            vertices[i].u.els.color.r = tmp + tmp;
-        }
+        vertices[i].u.els.color.r = (f32)(u32)r;
         if (g >= 0) {
             vertices[i].u.els.color.g = (f32)g;
         } else {

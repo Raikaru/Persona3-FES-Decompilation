@@ -21610,15 +21610,14 @@ u32 FUN_00332780(int param_1)
 
 
 
-// Confirmed b210 call-argument setup-order floor (W211): +196/+200 are the
-// independent move a0,s0 and lhu a1,0(v0), emitted in the opposite order.
-// FUN_00332880 NONMATCHING
+// FUN_00332880
 u32 *FUN_00332880(int *arg0)
 {
   int *model;
   u32 *result;
   u32 count;
   u16 index;
+  u16 id;
 
   model = *(int **)((u8 *)*(int **)((u8 *)arg0 + 0x30) + 0x24);
   if (model[8] == 0) {
@@ -21635,9 +21634,10 @@ u32 *FUN_00332880(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  index = **(u16 **)(arg0 + 12);
+  index = *(volatile u16 *)*(u16 **)(arg0 + 12);
   FUN_00332a30((int *)result,index,(int *)((u8 *)arg0 + 0xc));
-  FUN_00332ac0(result,**(u16 **)(arg0 + 12),model);
+  id = *(volatile u16 *)*(u16 **)(arg0 + 12);
+  FUN_00332ac0(result,id,model);
   FUN_00332990(result,(int)arg0);
   return result;
 }
@@ -48251,7 +48251,7 @@ void FUN_00351510(int param_1)
     widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
-    ratio = ratio * 255.0f;
+    ratio = 255.0f * ratio;
     if (2147483648.0f > ratio) {
       alphaByte = (s32)ratio & 0xff;
     } else {
