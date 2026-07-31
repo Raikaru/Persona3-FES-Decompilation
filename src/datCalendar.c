@@ -4247,7 +4247,9 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     f32 x;
     f32 y;
     void* unused;
+    u32 drawAlpha;
 
+    drawAlpha = alpha;
     packed.bits = position;
     x = packed.coords[0] + 289.0f;
     /* Keep the x aggregate load ahead of the y load as in retail. */
@@ -4255,12 +4257,18 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     y = packed.coords[1] + 112.0f;
     /* Keep the y aggregate load ahead of the first draw call as in retail. */
     asm ("" : "+m"(y));
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm ("" : "+r"(alpha));
     func_001159f0(unused, resource, month < 4 ? 0x50 : 0x4f,
-                  alpha & 0xff, x, y, 50.0f);
+                  drawAlpha & 0xff, x, y, 50.0f);
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm ("" : "+r"(alpha));
     func_001159f0(unused, resource, month - 1,
-                  alpha & 0xff, x + 251.0f, y + 131.0f, 50.0f);
+                  drawAlpha & 0xff, x + 251.0f, y + 131.0f, 50.0f);
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm ("" : "+r"(alpha));
     func_001159f0(unused, resource, month + 0xb,
-                  alpha & 0xff, x + 251.0f, y + 163.0f, 50.0f);
+                  drawAlpha & 0xff, x + 251.0f, y + 163.0f, 50.0f);
 }
 
 // FUN_00185AE0
