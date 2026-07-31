@@ -193,8 +193,8 @@ void H_Dbprt_Main()
 
 
 
-#pragma opt_loop_invariants off
-#pragma opt_lifetimes off
+#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 // FUN_00104710 NONMATCHING
 static void H_Dbprt_DrawText3D(void)
 {

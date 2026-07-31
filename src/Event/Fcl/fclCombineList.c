@@ -1641,7 +1641,7 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
         }
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_003dd800 NONMATCHING
 void fclCombineList003dd800(s32 x, s32 y, s32 alpha, FclOwner* owner,

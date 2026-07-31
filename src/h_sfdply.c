@@ -1586,7 +1586,7 @@ void func_0010c7d0(HSfdQueueSlot* slot)
     }
 }
 
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {
@@ -2625,6 +2625,7 @@ void* func_0010e880(const u8* stream)
     }
     return raster;
 }
+#pragma opt_loop_invariants reset
 
 // Reconstructed from the retail window. The opening is the same render-state
 // prologue the sibling func_0010f6c0 already carries: two indirect calls
@@ -2959,6 +2960,8 @@ void func_0010ec50(KwlnTask* task)
 
 // Retail 0x10fbe4-0x110250 re-fetches command pointers and carries the prior
 // endpoint into command-2 rectangles; preserve those conversions and spill slots.
+/* W375 measured opt_loop_invariants off for FUN_0010F6C0: default nd2034/object3060; off nd2031/object3060; retained. */
+#pragma opt_loop_invariants off
 // FUN_0010F6C0 NONMATCHING
 void* func_0010f6c0(KwlnTask* task)
 {
@@ -3336,3 +3339,4 @@ void* func_0010f6c0(KwlnTask* task)
     }
     return NULL;
 }
+#pragma opt_loop_invariants reset

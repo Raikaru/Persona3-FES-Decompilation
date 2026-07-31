@@ -1836,7 +1836,6 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
 }
 
 
-#pragma opt_propagation off
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
@@ -1878,7 +1877,6 @@ extern u8 campMainSocialIconResourceAbs[];
 #define D_00833B44 (*(void**)campMainSocialFrameResourceAbs)
 #define D_00833B48 (*(void**)campMainSocialIconResourceAbs)
 
-#pragma opt_propagation reset
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
 {

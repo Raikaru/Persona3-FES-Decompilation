@@ -3311,7 +3311,7 @@ u8 FUN_002a1400(float *param_1)
   *(u32 *)(param_1 + 5) = counter + 1;
   return 0;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 // FUN_002A1710 NONMATCHING
 
@@ -3451,7 +3451,7 @@ u32 FUN_002a1b70(u32 *param_1)
   }
   return uVar2;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002A1DB0
 

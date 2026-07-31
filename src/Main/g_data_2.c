@@ -1624,7 +1624,7 @@ s32 FUN_0017c700(void)
     }
     return count;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_0017c750
 void FUN_0017c750(u64 value)

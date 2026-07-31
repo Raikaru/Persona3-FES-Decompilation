@@ -5993,7 +5993,7 @@ void FUN_002dcc40(void)
         }
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002dcd20
 void FUN_002dcd20(void)

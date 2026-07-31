@@ -336,7 +336,7 @@ void sflResUpdate(void)
         work->requestFlags &= ~0x10u;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_0020dfe0
 u32 sflResIsBaseArchivePending(void)

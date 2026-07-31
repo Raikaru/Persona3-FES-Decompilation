@@ -1034,7 +1034,7 @@ void func_001f1c90(KwlnTask *task)
     BR_U32(work, 0) |= 0x200000;
 }
 
-#pragma opt_propagation on
+#pragma opt_propagation reset
 // FUN_001f1df0
 void brRoot001f1df0(u16 *outIds, s32 *count)
 {

@@ -1557,7 +1557,7 @@ secondAssertDone:
 
     return skillOrder;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_00177270
 void FUN_00177270(void)

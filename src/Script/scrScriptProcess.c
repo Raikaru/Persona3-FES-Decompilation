@@ -228,7 +228,7 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
                           strings,
                           prcdIdx);
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_0035bb40. Create a script task by a script header
 KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)

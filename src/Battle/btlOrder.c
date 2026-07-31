@@ -471,6 +471,7 @@ void FUN_0029a750(void)
         actions[i] = NULL;
     }
 }
+#pragma opt_loop_invariants reset
 static inline void btlOrderFinishAction(BtlAction* action)
 {
     if ((action->unk_18 & 4) != 0)

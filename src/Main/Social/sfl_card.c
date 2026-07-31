@@ -1060,7 +1060,7 @@ void FUN_00258300(void)
     item[6] = j;
   }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_00258540
 

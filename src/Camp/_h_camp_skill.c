@@ -434,6 +434,8 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
    from retail's $s0/$s1 to $s1/$s2 and cascading through every record-relative row.
    Retail keeps them separate ($s6 in cases 2/3, $s4 in cases 4/5), which per-case
    scoping alone does not reproduce. */
+/* opt_lifetimes on: off nd1392/5520B -> on nd1174/5520B; retained. */
+#pragma opt_lifetimes on
 // FUN_00161D90 NONMATCHING
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
 {
@@ -748,6 +750,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         break;
     }
 }
+#pragma opt_lifetimes reset
 
 static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 {
@@ -758,6 +761,8 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 #pragma push
 /* opt_loop_invariants on: off nd4237/5300B -> on nd4230/5292B; retained. */
 #pragma opt_loop_invariants on
+/* opt_propagation off: baseline nd4230/5292B -> off nd3965/5000B; dead_assignments off nd4208/5292B; pair nd4002/5000B; propagation retained. */
+#pragma opt_propagation off
 // FUN_00163330 NONMATCHING
 #pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
@@ -1166,6 +1171,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         break;
     }
 }
+#pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 #pragma pop
 
@@ -1779,6 +1785,8 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 #pragma opt_loop_invariants on
 /* opt_common_subs off: default/on nd6040/7964B -> off nd5956/8180B; retained. */
 #pragma opt_common_subs off
+/* opt_dead_assignments off: baseline nd5956/8180B -> off nd5910/8212B; retained. */
+#pragma opt_dead_assignments off
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
 {
@@ -1982,6 +1990,7 @@ void* FUN_00164920(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_dead_assignments reset
 #pragma opt_common_subs reset
 #pragma opt_loop_invariants reset
 
@@ -2175,11 +2184,11 @@ void* FUN_00166c70(KwlnTask* task)
                 selectedId = work->characterIds[0];
                 personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
+                    personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
                         h_campPersonaDestroyKaniControlTask, personaWork);
                     if (DAT_007cdf58 != NULL) {
-                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                         *(s16*)((u8*)personaWork + 0x18) = selectedId;
                     } else {
                         RwFree(personaWork);
@@ -2291,11 +2300,11 @@ void* FUN_00166c70(KwlnTask* task)
                 selectedId = work->characterIds[work->selected];
                 personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
+                    personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
                         h_campPersonaDestroyKaniControlTask, personaWork);
                     if (DAT_007cdf58 != NULL) {
-                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
                         *(s16*)((u8*)personaWork + 0x18) = selectedId;
                     } else {
                         RwFree(personaWork);

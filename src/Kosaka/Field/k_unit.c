@@ -300,7 +300,9 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 // Retail offsets 0x21c-0x464 expand the scenario dispatch; offsets 0x684-0xedc re-fetch each PC model cache field per case.
 // The remaining register coloring/layout differences are intentionally NONMATCHING.
 // Measured opt_loop_invariants on: nd2603 -> 2599, object 3784/3808; retained (under window).
+// Measured opt_propagation off: nd2599 -> 2592, object 3800/3808; stacked opt_loop_invariants on + opt_propagation off: nd2599 -> 2592, object 3800/3808; retained (under window).
 #pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
@@ -504,6 +506,7 @@ void* func_001cd9a0(u32 charId)
         }
     }
 }
+#pragma opt_propagation on
 #pragma opt_loop_invariants off
 
 static inline void FldUnit_SetPcFormationPosition(s32 index,
@@ -1042,6 +1045,9 @@ u32 func_001ce960(void)
     return true;
 }
 #pragma opt_loop_invariants off
+// Measured opt_propagation off: nd535 -> 529, object 744/784; opt_dead_assignments off: nd535 -> 529, object 744/784; stacked opt_propagation off + opt_dead_assignments off: nd535 -> 529, object 744/784; retained (under window).
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_001CF940 NONMATCHING
 FldUnit* func_001cf940(u32 encounter, void* unitData)
 {
@@ -1143,6 +1149,8 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     sFldUnitsEcCount++;
     return unit;
 }
+#pragma opt_dead_assignments on
+#pragma opt_propagation on
 
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
@@ -2607,6 +2615,8 @@ static inline s32 FldUnit_GridCoord(f32 value)
     return cell >> 2;
 }
 
+// Measured opt_dead_assignments off: nd1517 -> 1499, object 2116/2192; retained (under window).
+#pragma opt_dead_assignments off
 // FUN_001d2a10 NONMATCHING
 void func_001d2a10(void)
 {
@@ -2746,9 +2756,12 @@ void func_001d2a10(void)
     }
     (void)reaper;
 }
+#pragma opt_dead_assignments on
 
+// Measured opt_lifetimes on: nd425 -> 424, object 1024/1056; stacked opt_loop_invariants on + opt_lifetimes on: nd425 -> 424, object 1024/1056; retained (under window).
 /* Removing this worsens FUN_001d32a0 (nd588 -> nd637) - measured W161. */
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_001d32a0 NONMATCHING
 void* func_001d32a0(KwlnTask* task)
 {
@@ -2866,6 +2879,7 @@ void* func_001d32a0(KwlnTask* task)
     (void)area;
     return NULL;
 }
+#pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
 // FUN_001d36c0

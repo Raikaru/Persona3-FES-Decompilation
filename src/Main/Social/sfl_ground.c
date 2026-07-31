@@ -1634,4 +1634,4 @@ void func_0023d650(void)
         row++;
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
