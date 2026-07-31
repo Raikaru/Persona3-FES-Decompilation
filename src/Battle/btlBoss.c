@@ -1445,7 +1445,7 @@ extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 v
 #pragma alias func_00282d40_reordered func_00282d40
 extern void func_00282d40_reordered(BtlUnit* unit, s16 value2, s32 value3, s8 value4, f32 value);
 extern void func_00287510(BtlUnit* unit);
-extern void func_0027f650(BtlUnit* unit, s32 value);
+extern void func_0027f650(BtlUnit* unit, u32 value);
 #pragma alias func_0027f650_ptr func_0027f650
 extern void func_0027f650_ptr(BtlUnit* unit, void* value);
 #pragma alias DAT_00957180_boss DAT_00957180
@@ -1772,8 +1772,8 @@ void func_002faab0()
         break;
     case 0x1a5:
     {
-        u16 expectedCharId = 0x107;
         BtlUnit* unit = btlBossGetEnemyHead();
+        u16 expectedCharId = 0x107;
         while (unit != NULL)
         {
             switch (unit->charId)
@@ -1793,8 +1793,8 @@ void func_002faab0()
         break;
     case 0x1ac:
     {
-        u16 expectedCharId = 0x111;
         BtlUnit* unit = btlBossGetEnemyHead();
+        u16 expectedCharId = 0x111;
         while (unit != NULL)
         {
             switch (unit->charId)

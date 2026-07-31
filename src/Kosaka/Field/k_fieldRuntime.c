@@ -6687,21 +6687,20 @@ void func_001edbe0(RuntimeRenderCollection* work)
 
     for (index = 0; index < *(s16*)(work->input + 4); index++)
     {
-        u8* tailEntry;
 
         if (active != 0)
         {
-        u32 commandOffset;
+        u8* command;
         u8* activeEntry;
         activeEntry = work->entries + index * 0x4c;
-        commandOffset = index * 0x20;
+        command = work->commands + index * 0x20;
             func_001eba80(
-                (RuntimeCommandWork*)(work->commands + commandOffset),
+                (RuntimeCommandWork*)command,
                 &commandResult);
             if ((~work->flags & 8) != 0 &&
-                (*(u32*)(work->commands + commandOffset) & 2) != 0)
+                (*(u32*)command & 2) != 0)
             {
-                if ((*(u32*)(work->commands + commandOffset) & 8) != 0)
+                if ((*(u32*)command & 8) != 0)
                 {
                     func_001eb920(
                         activeEntry,
@@ -6757,11 +6756,14 @@ void func_001edbe0(RuntimeRenderCollection* work)
             ((u8*)material)[7] = color.alpha;
         }
 
+        {
+            u8* tailEntry;
         tailEntry = work->entries + index * 0x4c;
         func_001ed0d0(
             (RuntimeWork*)tailEntry, &delta);
         frameValue = *(u32*)((u8*)work->renderObjects[index * 2] + 0x18);
         func_001e9af0((RuntimeWork*)tailEntry, &frameValue);
+        }
     }
 }
 
