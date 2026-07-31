@@ -7156,7 +7156,6 @@ void func_0018c150(KwlnTask* task)
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }
 
-#pragma opt_propagation off
 // FUN_0018C780 NONMATCHING
 void func_0018c780(KwlnTask* task)
 {
@@ -7225,7 +7224,7 @@ void func_0018c780(KwlnTask* task)
     }
 }
 
-#pragma opt_propagation reset
+#pragma opt_strength_reduction off
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
@@ -7257,6 +7256,7 @@ void func_0018ce50(KwlnTask* task)
     func_00115980(sprite);
 }
 
+#pragma opt_strength_reduction reset
 // FUN_0018D320 NONMATCHING
 void func_0018d320(KwlnTask* task)
 {

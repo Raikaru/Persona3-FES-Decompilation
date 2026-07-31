@@ -927,7 +927,6 @@ void FUN_0017ac60(u32 code)
 #pragma opt_loop_invariants reset
 
 /* Removing this loses FUN_0017ad90 (MATCH nd0 -> MISMATCH nd5) - measured W161. */
-#pragma optimization_level 1
 // FUN_0017ad90
 void FUN_0017ad90(void)
 {
@@ -951,7 +950,6 @@ void FUN_0017ad90(void)
         i++;
     }
 }
-#pragma optimization_level 2
 
 // FUN_0017adf0
 void FUN_0017adf0(void)
