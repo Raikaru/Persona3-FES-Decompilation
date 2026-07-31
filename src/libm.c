@@ -240,6 +240,7 @@ float floorf(register float x)
 }
 
 #pragma optimization_level 3
+#pragma opt_loop_invariants on
 // FUN_0052e878 NONMATCHING
 float sinf(float x)
 {
@@ -271,6 +272,7 @@ large_argument:
 }
 #pragma optimization_level 3
 
+#pragma opt_loop_invariants reset
 // FUN_0052e930 NONMATCHING
 float tanf(float x)
 {

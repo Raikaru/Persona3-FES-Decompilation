@@ -483,6 +483,7 @@ void FUN_003e6130(int ownerAddress)
     }
 }
 
+#pragma opt_dead_assignments off
 // FUN_003E6400 NONMATCHING
 
 
@@ -954,6 +955,7 @@ void FUN_003e6400(u32 param_1,u8* param_2)
 #undef DAT_006a6f44
 #undef DAT_006a6f48
 
+#pragma opt_dead_assignments reset
 // FUN_003E6D40
 
 
@@ -6478,10 +6480,10 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   lVar5 = FUN_0040a490(iVar1);
 
 
-  if (lVar5 == 0) {
+  if (lVar5 != 0) {
+    return (u8 *)&LAB_003c5170;
   }
-
-    switch(*(u32 *)(work + 8)) {
+  switch(*(u32 *)(work + 8)) {
     case 0:
 
       FUN_003c9d00(*(u32 *)(iVar2 + 8),0x10);
@@ -6851,10 +6853,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   }
   return (u8 *)0x0;
-  }
-    return (u8 *)&LAB_003c5170;
 }
-
 // FUN_003EDD80
 
 

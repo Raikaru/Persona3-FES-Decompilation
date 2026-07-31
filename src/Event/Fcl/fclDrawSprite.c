@@ -124,42 +124,27 @@ void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,i
 }
 
 // FUN_0040E3F0
+#pragma push
+#pragma schedule on
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  __asm__ (
-      ".set noreorder ;"
-      ".word 0x27bdfff0 ;"
-      ".word 0xffbf0000 ;"
-      ".word 0x0120102d ;"
-      ".word 0x0140582d ;"
-      ".word 0x8f89b9b0 ;"
-      ".word 0x0040502d ;"
-      ".word 0x0c1039c4 ;"
-      ".word 0x00000000 ;"
-      ".word 0xdfbf0000 ;"
-      ".word 0x27bd0010 ;"
-      ".set reorder");
+  FUN_0040e710(param_5,param_6,param_1,param_7,param_8,param_9,(int)DAT_007ce6a0,
+               param_10,param_11,param_2,param_3,param_4);
 }
+#pragma pop
 
 // FUN_0040E420
+#pragma push
+#pragma schedule on
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  __asm__ (
-      ".set noreorder ;"
-      ".word 0x27bdfff0 ;"
-      ".word 0xffbf0000 ;"
-      ".word 0x0120102d ;"
-      ".word 0x0140582d ;"
-      ".word 0x8f89b9b0 ;"
-      ".word 0x0040502d ;"
-      ".word 0x0c103a4c ;"
-      ".word 0x00000000 ;"
-      ".word 0xdfbf0000 ;"
-      ".word 0x27bd0010 ;"
-      ".set reorder");
+  FUN_0040e930(param_5,param_6,param_1,param_7,param_8,param_9,(int)DAT_007ce6a0,
+               param_10,param_11,param_2,param_3,param_4);
 }
+#pragma pop
+
 
 // FUN_0040E450
 u32 FUN_0040e450(int param_1)

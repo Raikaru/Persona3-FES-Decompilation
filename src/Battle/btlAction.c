@@ -5767,8 +5767,9 @@ void btlActionUpdateStateSummon(BtlAction* action)
     BtlPacket* modelPacket;
     BtlPacket* waitPacket;
     u32 formation;
+    u64 actionUID;
     void* handle;
-    u16 specificId;
+    s16 specificId;
     s16 castDelay;
     u32 outA;
     u32 outB;
@@ -5781,30 +5782,31 @@ void btlActionUpdateStateSummon(BtlAction* action)
     BtlAction* child;
     BtlUnit* childUnit;
 
+    specificId = action->target.specificId;
+    actionUID = action->uid;
     btlAction0028a780(action);
     formation = FUN_002b8f90(1);
-    specificId = action->target.specificId;
 
     packet = FUN_002bd590(action->unit, specificId);
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
 
     packet = FUN_002d8330(action);
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_002d7fb0(action, 0);
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     castAnim = btlUnitCreateAnimPacket(action->unit, 7, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-    castAnim->actionUID = action->uid;
+    castAnim->actionUID = actionUID;
     btlPacketRegister(castAnim, BTLPACKET_TYPE_1);
 
     camPacket = btlCameraCreateSetStatePacket(action, 0x11);
     camPacket->unk_00 = 4;
     camPacket->parentUID = castAnim->uid;
-    camPacket->actionUID = action->uid;
+    camPacket->actionUID = actionUID;
     btlPacketRegister(camPacket, BTLPACKET_TYPE_0);
 
     castDelay = func_002835e0(action->unit, 7, 1.0f);
@@ -5813,7 +5815,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
     packet = func_0029f4b0(outB, outA, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     handle = func_0029ec00(specificId);
@@ -5821,20 +5823,20 @@ void btlActionUpdateStateSummon(BtlAction* action)
     packet = func_002a0050(handle, outB, outA, 0x10, 0);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     handle = func_0029ec50(specificId);
     packet = func_002a1280(handle, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = func_002a1b00(action, specificId, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     func_002bb6f0(specificId, stackBufE0);
@@ -5842,13 +5844,13 @@ void btlActionUpdateStateSummon(BtlAction* action)
     castChain->unk_00 = 4;
     castChain->parentUID = 0;
     castChain->preUpdateDelay = castDelay + 6;
-    castChain->actionUID = action->uid;
+    castChain->actionUID = actionUID;
     btlPacketRegister(castChain, BTLPACKET_TYPE_1);
 
     savedSE = btlSoundCreateSkillSEPacket(specificId, 0);
     savedSE->unk_00 = 4;
     savedSE->parentUID = castChain->uid;
-    savedSE->actionUID = action->uid;
+    savedSE->actionUID = actionUID;
     btlPacketRegister(savedSE, BTLPACKET_TYPE_1);
 
     packet2 = FUN_002baf90(formation, action->unit, action->unit, 0, 0);
@@ -5869,13 +5871,13 @@ void btlActionUpdateStateSummon(BtlAction* action)
     tailPacket->unk_00 = 4;
     tailPacket->parentUID = chainUID;
     tailPacket->preUpdateDelay = 0x18;
-    tailPacket->actionUID = action->uid;
+    tailPacket->actionUID = actionUID;
     btlPacketRegister(tailPacket, BTLPACKET_TYPE_1);
 
     packet = func_002bb2f0(ACTION_U32(gBtl, 0xca8), action->unit, 0, tailPacket->uid, 0x100);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_002dd100(0xa, 2, 5);
@@ -5900,7 +5902,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
             packet = btlFormation002b8f40(0);
             packet->unk_00 = 4;
             packet->parentUID = savedSE->uid;
-            packet->actionUID = action->uid;
+            packet->actionUID = actionUID;
             btlPacketRegister(packet, BTLPACKET_TYPE_0);
 
             if ((iGpffffb710[(s16)action->target.specificId].flags & 0x40) == 0)
@@ -5908,13 +5910,13 @@ void btlActionUpdateStateSummon(BtlAction* action)
                 packet = FUN_002bc7e0(8);
                 packet->unk_00 = 4;
                 packet->parentUID = savedSE->uid;
-                packet->actionUID = action->uid;
+                packet->actionUID = actionUID;
                 btlPacketRegister(packet, BTLPACKET_TYPE_0);
 
                 camPacket = btlCameraCreateSetStatePacket(action, 0x26);
                 camPacket->unk_00 = 4;
                 camPacket->parentUID = savedSE->uid;
-                camPacket->actionUID = action->uid;
+                camPacket->actionUID = actionUID;
                 btlPacketRegister(camPacket, BTLPACKET_TYPE_0);
             }
             didFormationSetup = 1;
@@ -5922,7 +5924,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
         modelPacket = btlUnitCreateModelPacket(childUnit, childId, 0x7e);
         modelPacket->unk_00 = 4;
         modelPacket->parentUID = chainUID;
-        modelPacket->actionUID = action->uid;
+        modelPacket->actionUID = actionUID;
         btlPacketRegister(modelPacket, BTLPACKET_TYPE_1);
 
         resourcePacket = FUN_002864a0(childUnit, childId, 0x10);
@@ -5935,7 +5937,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
         waitPacket->parentUID = resourcePacket->uid;
         waitPacket->preUpdateWait.type = 4;
         waitPacket->preUpdateWait.value = savedSE->uid;
-        waitPacket->actionUID = action->uid;
+        waitPacket->actionUID = actionUID;
         btlPacketRegister(waitPacket, BTLPACKET_TYPE_3D);
 
         packet = FUN_002dd5e0(1);
@@ -5949,7 +5951,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
         packet->preUpdateWait.type = 0xb;
         packet->preUpdateWait.value = waitPacket->uid;
         packet->preUpdateDelay = 1;
-        packet->actionUID = action->uid;
+        packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
         chainUID = resourcePacket->uid;
@@ -5966,28 +5968,28 @@ void btlActionUpdateStateSummon(BtlAction* action)
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_002a1080(0x10, 0);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_002a16c0(0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_002a1db0(8);
     packet->unk_00 = 4;
     packet->parentUID = chainUID;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
 
     func_002b9030(formation);

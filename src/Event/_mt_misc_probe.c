@@ -254,8 +254,8 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3);
 u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4);
 u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 u32 FUN_00397870(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6);
-extern int FUN_00195340(const char *);
-extern int FUN_00195540(int);
+extern int FUN_00195340();
+extern int FUN_00195540();
 #pragma alias FUN_00396f50_int FUN_00396f50
 extern void FUN_00396f50_int(int);
 #pragma alias FUN_00397030_int FUN_00397030
@@ -2154,8 +2154,8 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
 u32 FUN_00396e30(int param_1)
 {
-  extern int FUN_00195340(const char *);
-  extern int FUN_00195540(int);
+  extern int FUN_00195340();
+  extern int FUN_00195540();
   int entry;
   u32 result;
   int manager;
