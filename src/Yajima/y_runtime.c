@@ -7765,6 +7765,9 @@ u32 FUN_0043a230(char param_1)
   return 0;
 }
 
+#pragma push
+/* W380 measured FUN_0043A2F0: pre-closure 1524/967; loop_invariants on 1524/967 (window 1648). Restores a setting lost when a leaked file-scope pragma was closed. */
+#pragma opt_loop_invariants on
 // FUN_0043A2F0 NONMATCHING
 
 void FUN_0043a2f0(int param_1)
@@ -7929,6 +7932,9 @@ void FUN_0043a2f0(int param_1)
   }
   return;
 }
+
+#pragma pop
+#pragma opt_loop_invariants reset
 
 // FUN_0043A960
 
@@ -16986,6 +16992,9 @@ void FUN_00454f50(char param_1,char param_2)
  * divergence is the combined retail preheader; no window growth was introduced. */
 #pragma pop
 #pragma opt_propagation reset
+#pragma push
+/* W380 measured FUN_00455B50: pre-closure 336/243; loop_invariants on 336/243 (window 416). Restores a setting lost when a leaked file-scope pragma was closed. */
+#pragma opt_loop_invariants on
 // FUN_00455B50 NONMATCHING
 
 void FUN_00455b50(void)
@@ -17043,12 +17052,15 @@ void FUN_00455b50(void)
     }
   }
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 
 #pragma push
 #pragma opt_loop_invariants on
 /* W373 singles base 172/248; loop 172/248; common 190/284; life 152/248; propagation 168/240; strength 172/248; dead 172/248; pair life+prop 145/240. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+
 // FUN_00455CF0 NONMATCHING
 
 void FUN_00455cf0(void)
@@ -19487,6 +19499,10 @@ void FUN_0045a490(void)
 // Native `(u8)fVar8` costs +4 bytes (624/608 versus 620/608); retail keeps the expanded conversion.
 #pragma pop
 #pragma opt_propagation reset
+#pragma push
+/* W380 measured: without 632/608 nd408 (OVER window); opt_loop_invariants off 608/608 nd284.
+   Restores the setting this function previously received from a leaked file-scope pragma. */
+#pragma opt_loop_invariants off
 // FUN_0045ACE0 NONMATCHING
 
 void FUN_0045ace0(void)
@@ -19547,6 +19563,9 @@ void FUN_0045ace0(void)
   }
   return;
 }
+
+#pragma pop
+#pragma opt_loop_invariants reset
 
 // FUN_0045AF40
 
@@ -20669,6 +20688,9 @@ void FUN_0045ce90(int param_1)
 
 #pragma pop
 #pragma opt_lifetimes reset
+#pragma push
+/* W380 measured FUN_0045D990: pre-closure 1344/947; propagation off 1368/900 (window 1392). Restores a setting lost when a leaked file-scope pragma was closed. */
+#pragma opt_propagation off
 // FUN_0045D990 NONMATCHING
 
 void FUN_0045d990(int param_1,long param_2)
@@ -20757,6 +20779,8 @@ void FUN_0045d990(int param_1,long param_2)
   }
   return;
 }
+#pragma pop
+#pragma opt_propagation reset
 
 #pragma alias DAT_007ce700_y2 DAT_007ce700
 extern u8 DAT_006b4c00[];
@@ -20779,6 +20803,7 @@ extern void FUN_003c77a0_y2(void);
 extern u32 FUN_003c7850_y2(void);
 extern u32 FUN_003c78d0_y2(void);
 extern void FUN_003c7b90_y2(void);
+
 // FUN_0045DF00
 u32 FUN_0045df00(int param_1)
 {
