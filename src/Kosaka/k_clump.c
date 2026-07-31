@@ -1558,8 +1558,8 @@ s32 func_001a8db0(KwlnTask* task)
     {
         u32 value;
     } KClumpWord;
-    u32* work;
     s32 i;
+    u32* work;
     u32 mode;
 
     work = (u32*)task->workData;

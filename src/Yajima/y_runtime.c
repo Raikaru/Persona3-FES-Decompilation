@@ -12770,6 +12770,7 @@ void FUN_0044a630(int param_1)
   int iVar3;
   u32 slot;
   int iVar4;
+  char clear;
   
   iVar1 = *(int *)(param_1 + 0x3c);
   for (lVar2 = 0; lVar2 < *(char *)(iVar1 + 0x93f); lVar2++) {
@@ -12791,11 +12792,11 @@ void FUN_0044a630(int param_1)
   for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
     *(u8 *)(*(int *)(iVar1 + iVar4 * 4 + 0x33c) + 0x18) = 0xff;
   }
-  iVar4 = 0xff;
   for (iVar3 = 0; iVar3 < 0x38; iVar3 = iVar3 + 1) {
+    clear = -1;
     slot = (u32)DAT_006b46d0_abs;
     if (*(volatile s8 *)(slot + iVar3 * 6) != -1) {
-      *(u8 *)(0x18 + *(int *)(iVar1 + iVar3 * 4 + 8)) = 0xff;
+      *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 8) + 0x18) = clear;
     }
   }
   return;
