@@ -44987,7 +44987,11 @@ u32 FUN_0034d510(int param_1)
   if (lVar4 != 0) {
     switch (*(u16 *)(iVar6 + 0x1c)) {
     case 3:
-      FUN_0034d990(uVar3,lVar4,*(u32 *)(iVar6 + 0x24));
+      {
+        u32 texId;
+        texId = *(volatile u32 *)(iVar6 + 0x24);
+        FUN_0034d990(uVar3,lVar4,texId);
+      }
       break;
     }
 

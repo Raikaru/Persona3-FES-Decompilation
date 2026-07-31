@@ -2404,7 +2404,12 @@ void func_00114450(f32 depth,
         tmp = (f32)(s32)(((u32)b >> 1) | b1);
         vertices[2].u.els.color.b = tmp + tmp;
     }
-    vertices[2].u.els.color.a = (f32)(u32)a2;
+    if (a2 >= 0) {
+        vertices[2].u.els.color.a = (f32)a2;
+    } else {
+        tmp = (f32)(s32)(((u32)a2 >> 1) | (a2 & 1));
+        vertices[2].u.els.color.a = tmp + tmp;
+    }
 
     vertices[0].u.els.u = 0.0f;
     vertices[0].u.els.v = 0.0f;
@@ -2703,13 +2708,7 @@ void func_00115350(f32 depth,
     alpha2f = (f32)alpha2;
     alpha1f = (f32)alpha1;
     alpha0f = (f32)alpha0;
-    if (b >= 0)
-        blue = (f32)b;
-    else
-    {
-        tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-        blue = tmpB + tmpB;
-    }
+    blue = (f32)(u32)b;
 
     for (i = 0; i < 4; i++)
     {
@@ -2719,13 +2718,7 @@ void func_00115350(f32 depth,
         case 0:
             v->u.els.scrVertex.z = z;
             v->u.els.recipZ = recipZ;
-            if (r >= 0)
-                v->u.els.color.r = (f32)r;
-            else
-            {
-                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
-                v->u.els.color.r = tmpR + tmpR;
-            }
+            v->u.els.color.r = (f32)(u32)r;
             if (g >= 0)
                 v->u.els.color.g = (f32)g;
             else

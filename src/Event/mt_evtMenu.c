@@ -18240,11 +18240,12 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
   *puVar2 = param_3;
   DAT_007ce60c = 0;
   {
-    u16 *table;
     u16 *puVar3;
+    u16 *table;
+    puVar3 = (u16 *)FUN_003b5d50(3);
+    table = (u16 *)DAT_00958850_abs;
     while (puVar3 != NULL) {
       s32 count;
-    table = (u16 *)DAT_00958850_abs;
       count = DAT_007ce60c;
       if (count >= 0x1e) {
         break;
@@ -18256,11 +18257,12 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
   }
 
   {
-    u16 *table;
     u16 *puVar3;
+    u16 *table;
+    puVar3 = (u16 *)FUN_003b5d50(1);
+    table = (u16 *)DAT_00958850_abs;
     while (puVar3 != NULL) {
       s32 count;
-    table = (u16 *)DAT_00958850_abs;
       count = DAT_007ce60c;
       if (count >= 0x1e) {
         break;

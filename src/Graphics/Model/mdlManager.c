@@ -6712,6 +6712,10 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 
 
+/* Required for Mdl matrix aggregate copy under MWCCPS2 b210 (without: nd32). */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_003197C0
 
 
@@ -6730,6 +6734,7 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
         }
     }
 }
+#pragma pop
     
 
 
@@ -8648,7 +8653,7 @@ LAB_0031bfb8:
 
 
 
-// FUN_0031C000 NONMATCHING
+// FUN_0031C000
 
 
 void func_0031c000(char* param_1,u32 param_2)
