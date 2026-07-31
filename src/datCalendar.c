@@ -4237,6 +4237,7 @@ KwlnTask* func_00185880(KwlnTask* parent,
 }
 
 #pragma push
+/* Removing this pragma worsens func_00185980 (fndiff nd3 -> nd75, object 352B -> 344B) - measured W305. */
 #pragma opt_common_subs off
 // FUN_00185980 NONMATCHING
 void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
@@ -4257,19 +4258,19 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     s32 signedMonth;
 
     packed.bits = position;
-    /* Keep the packed argument spill before the callee-saved argument copies as in retail. */
-    asm volatile ("" : "+m"(packed.bits));
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
+    asm ("" : "+m"(packed.bits));
     y = packed.coords[1];
-    /* Keep the packed y load ahead of the x load as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(y));
     x = packed.coords[0];
-    /* Keep the packed x load ahead of the first coordinate offsets as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(x));
     xFirst = x + 289.0f;
-    /* Keep the first x offset before the month dispatch as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(xFirst));
     yFirst = y + 112.0f;
-    /* Keep the first y offset before the month dispatch as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(yFirst));
     if (month < 4)
     {
@@ -4283,13 +4284,13 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     }
     x2 = packed.coords[0] + 251.0f;
     ySecond = y + 131.0f;
-    /* Keep the second y offset before the month setup as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(ySecond));
     signedMonth = month;
     func_001159f0(unused, resource, signedMonth - 1,
                   alpha & 0xff, x2, ySecond, 50.0f);
     yThird = y + 163.0f;
-    /* Keep the third y offset after the second draw as in retail. */
+    /* Part of the measured barrier set: removing all seven worsens fndiff nd3 -> nd17 (W305). */
     asm ("" : "+m"(yThird));
     func_001159f0(unused, resource, signedMonth + 0xb,
                   alpha & 0xff, x2, yThird, 50.0f);

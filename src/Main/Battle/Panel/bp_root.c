@@ -1784,7 +1784,7 @@ void FUN_00203030(void)
     *(u32*)work |= 4;
 }
 
-// FUN_002031C0 NONMATCHING
+// FUN_002031C0
 void FUN_002031C0(void)
 {
     u8* work;
@@ -1800,7 +1800,7 @@ void FUN_002031C0(void)
     K_ASSERT((*(u32*)work & 4) != 0, 0x9e0);
     FUN_00203410();
     visible = *(s32*)(work + 0x260);
-    if (visible >= 5)
+    if (visible > 4)
     {
         visible = 4;
     }
@@ -1808,8 +1808,8 @@ void FUN_002031C0(void)
     {
         row = rows + i * 0x104;
         row[0] = *(u32*)(work + 0x8c + i * 4);
-        id = *(s16*)(work + 0x9c +
-                     (i + *(s32*)(work + 0x7690)) * 2);
+        id = *(volatile s16*)(work + 0x9c +
+                              (*(s32*)(work + 0x7690) + i) * 2);
         row[1] = func_00170760(1, id);
     }
     *(u32*)(work + 0x7640) = 0;
@@ -1819,12 +1819,14 @@ void FUN_002031C0(void)
     *(u32*)(work + 0x64a4) = *(u32*)(work + 0x260);
     *(u32*)(work + 0x6d28) = 0;
     if (bcmIsItemUsable(func_0030bc20(
-            *(u16*)(work + 0x9c + *(s32*)(work + 0x7698) * 2))))
+            *(u16*)((u8*)(uintptr_t)(*(s32*)(work + 0x7698) * 2) +
+                    (uintptr_t)work + 0x9c))))
     {
         *(u32*)(work + 0x6d28) = 1;
         *(u32*)(work + 0x6d24) = FUN_00207960(
             (u16)func_0030bc20(
-                *(u16*)(work + 0x9c + *(s32*)(work + 0x7698) * 2)));
+                *(u16*)((u8*)(uintptr_t)(*(s32*)(work + 0x7698) * 2) +
+                        (uintptr_t)work + 0x9c)));
     }
     FUN_00222d60();
 }
