@@ -1610,7 +1610,7 @@ s32 func_001a8db0(KwlnTask* task)
             }
             for (i = 0; i < 8; i++)
             {
-                if (*(u32*)((u8*)work + (9 + i) * 4) != 0)
+                if (work[9 + i] != 0)
                 {
                     if (work[0x11 + i] < work[2])
                     {

@@ -2389,7 +2389,7 @@ u32 func_001fc720(u8* event)
 
     return result;
 }
-// FUN_001FC870 NONMATCHING
+// FUN_001FC870
 
 int func_001fc870(u8* event, void* target)
 {
@@ -2400,17 +2400,10 @@ int func_001fc870(u8* event, void* target)
     f32 amount;
 
     raw = FUN_0030bc50(target);
-    if (raw >= 0)
-        amount = (f32)raw;
-    else
-    {
-        half = (s32)(((u32)raw >> 1) | (raw & 1));
-        amount = (f32)half;
-        amount += amount;
-    }
+    amount = (f32)(u32)raw;
 
-    level = FUN_00173300(*(u16*)(event + 2));
-    delta = *(u8*)((u8*)target + 6) - (level & 0xff);
+    level = FUN_00173300(*(u16*)(event + 2)) & 0xff;
+    delta = *(u8*)((u8*)target + 6) - level;
     if (delta < -10)
         delta = -10;
     if (delta > 10)

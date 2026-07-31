@@ -21637,8 +21637,7 @@ u32 *FUN_00332880(int *arg0)
   *(u16 *)(result + 0xd) = 1;
   index = **(u16 **)(arg0 + 12);
   FUN_00332a30((int *)result,index,(int *)((u8 *)arg0 + 0xc));
-  index = **(u16 **)(arg0 + 12);
-  FUN_00332ac0(result,index,model);
+  FUN_00332ac0(result,**(u16 **)(arg0 + 12),model);
   FUN_00332990(result,(int)arg0);
   return result;
 }

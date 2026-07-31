@@ -64,7 +64,7 @@ extern const char D_00683AD0[];
 extern const char D_00683A90[];
 extern const u64 D_00683A98;
 #pragma alias D_00683A98_abs D_00683A98
-extern u64 D_00683A98_abs[];
+extern u8 D_00683A98_abs[];
 extern const f32 D_00683AA0;
 extern void* DAT_00960184[];
 extern u32* PTR_DAT_007cd540;
@@ -198,8 +198,8 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
             i--;
         } while (i != 0);
     }
-    axisPtr = &axis;
-    axisXY = D_00683A98_abs[0];
+    axisPtr = (RwV3d*)((u8*)&axis + 0);
+    axisXY = *(u64*)D_00683A98_abs;
     *(u64*)axisPtr = axisXY;
     axisPtr->z = D_00683AA0;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
