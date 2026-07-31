@@ -5086,8 +5086,6 @@ u8 FUN_003093a0(u16 *param_1)
 
 
 
-#pragma opt_loop_invariants on
-#pragma opt_strength_reduction off
 // FUN_00309490 NONMATCHING
 u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4)
 
@@ -5754,8 +5752,6 @@ LAB_00309c04:
 
 
 
-#pragma opt_strength_reduction reset
-#pragma opt_loop_invariants reset
 // FUN_0030a740 NONMATCHING
 u32 FUN_0030a740(s32 param_1,u32 param_2,u32 param_3,short param_4)
 

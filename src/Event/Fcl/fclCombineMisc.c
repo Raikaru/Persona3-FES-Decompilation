@@ -825,6 +825,8 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
+#pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
 // FUN_003D6200 NONMATCHING
 
 
@@ -974,6 +976,8 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
+#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants reset
 // FUN_003D64A0 NONMATCHING
 
 

@@ -195,6 +195,9 @@ void H_Dbprt_Main()
 
 #pragma opt_loop_invariants reset
 #pragma opt_lifetimes reset
+/* W389 pragma: opt_propagation off; without nd=1000/object=1500, with nd=966/object=1468; window=1536. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00104710 NONMATCHING
 static void H_Dbprt_DrawText3D(void)
 {
@@ -318,7 +321,10 @@ static void H_Dbprt_DrawText3D(void)
         text = text->next;
     }
 }
+#pragma pop
+#pragma opt_propagation reset
 
+/* W389 residual: stack-address scheduling (candidate materializes sp+0x60 then adds character; retail adds character to sp then applies +0x60). Baseline nd=7/object=416 at the window; loop-invariants/common-subs exceeded the window (nd=314/424 and 261/428), other singles and all pairs were neutral. Volatile-cast and integer-address spellings stayed nd=7; array indexing regressed to nd=125/object=412 and was reverted. */
 // FUN_00104D10 NONMATCHING
 void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NONMATCHING nd170 -> NONMATCHING nd290, size 412 -> 424) - measured W170. */ RwV2d pos, const char* fmt, ...)
 {

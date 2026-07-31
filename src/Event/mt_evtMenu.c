@@ -1506,15 +1506,15 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
 
   if (param_8 != 0) {
     iVar2 = ((code)param_8)(param_1,param_2,param_7);
-    param_2 = param_2 + iVar2;
-    iVar1 = iVar1 + iVar2;
+    param_2 += iVar2;
+    iVar1 += iVar2;
   }
 
-  for (; iVar1 < param_4; iVar1 = iVar1 + 1) {
+  for (; iVar1 < param_4; iVar1++) {
     if (param_9 != (code *)0x0) {
       ((code)param_9)(param_1,param_2,param_5,param_7);
-      param_5 = param_5 + 1;
-      param_2 = param_2 + 1;
+      param_5++;
+      param_2++;
     }
   }
   return;

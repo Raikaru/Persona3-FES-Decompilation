@@ -643,6 +643,9 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
         }
     }
 }
+/* W389 measured: opt_loop_invariants on nd754->753, object 1744/1760 -> 1744/1760. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0029b760 NONMATCHING
 u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
 {
@@ -777,9 +780,14 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     FUN_002bfc50(0);
     return BTL_STATE_UNITLOAD;
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 
-/* W323 measured: opt_loop_invariants on nd481->470, object 692/720; default nd481, 692/720. */
+/* W389 measured: opt_lifetimes on + opt_propagation off with existing opt_loop_invariants on nd470->455, object 692/720 -> 672/720. */
+#pragma push
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0029be40 NONMATCHING
 void btlMainInitStateUnitLoad(BtlStateWork* work)
 {
@@ -844,7 +852,10 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
     packet = FUN_002dbfe0(FUN_0016f190(0x141) == 0);
     btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, lastPacketUID);
 }
-#pragma opt_loop_invariants off
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 // FUN_0029c110
 u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
 {
@@ -1322,9 +1333,6 @@ u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
     return state;
 }
 
-#pragma push
-#pragma opt_common_subs off
-#pragma opt_strength_reduction off
 // FUN_0029d1f0 NONMATCHING
 void btlMainInitStateCondition(BtlStateWork* work)
 {
@@ -1477,9 +1485,6 @@ void btlMainInitStateCondition(BtlStateWork* work)
     packet->parentUID = lastPacketUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 }
-#pragma opt_strength_reduction reset
-#pragma opt_common_subs reset
-#pragma pop
 // FUN_0029d6e0
 u32 btlMainUpdateStateCondition(BtlStateWork* work)
 {
@@ -2377,6 +2382,9 @@ u32 FUN_0029f760(float *param_1)
 
 }
 
+/* W389 measured: opt_lifetimes on nd852->804, object 1408/1456 -> 1408/1456. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0029FAA0 NONMATCHING
 
 
@@ -2672,9 +2680,13 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
   return uVar3;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+/* W389 measured: opt_loop_invariants on + opt_propagation off with existing opt_common_subs on nd2367->2325, object 3088/3136 -> 3000/3136. */
 #pragma push
- 
 #pragma opt_common_subs on
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_002A0440 NONMATCHING
 u32 FUN_002a0440(float *param_1)
 
@@ -3212,6 +3224,9 @@ u32 FUN_002a0440(float *param_1)
 
 }
 #pragma pop
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 // FUN_002A10E0
 
 
@@ -3319,6 +3334,10 @@ u8 FUN_002a1400(float *param_1)
 }
 #pragma opt_common_subs reset
 
+/* W389 measured: opt_common_subs off + opt_dead_assignments off nd680->592, object 952/1008 -> 1008/1008. */
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_dead_assignments off
 // FUN_002A1710 NONMATCHING
 
 
@@ -3399,6 +3418,9 @@ u32 FUN_002a1710(int *param_1)
   }
   return uVar7;
 }
+#pragma pop
+#pragma opt_dead_assignments reset
+#pragma opt_common_subs reset
 
 // FUN_002A1B00
 
@@ -3416,8 +3438,10 @@ void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3)
     *(s32*)(work + 8) = 0;
 }
 
-/* W323 measured: opt_loop_invariants on nd391->356, object 544/576; default nd391, 536/576. */
+/* W389 measured: opt_common_subs off with existing opt_loop_invariants on nd356->309, object 544/576 -> 556/576. */
+#pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_002A1B70 NONMATCHING
 
 
@@ -3457,6 +3481,8 @@ u32 FUN_002a1b70(u32 *param_1)
   }
   return uVar2;
 }
+#pragma pop
+#pragma opt_common_subs reset
 #pragma opt_loop_invariants reset
 
 // FUN_002A1DB0
