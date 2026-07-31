@@ -161,13 +161,9 @@ float atanf(float x)
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
-    u32 ix;
     s32 n;
     float y[2];
-
-    ix = *(u32*)&x;
-    ix &= 0x7FFFFFFF;
-    if (ix <= 0x3F490FD8)
+    if ((*(u32*)&x & 0x7FFFFFFF) <= 0x3F490FD8)
     {
         goto small_argument;
     }
@@ -181,9 +177,8 @@ float cosf(float x)
         return -func_0052dc48(y[0], y[1], 1);
     case 2:
         return -func_0052d2d8(y[0], y[1]);
-    default:
-        return func_0052dc48(y[0], y[1], 1);
     }
+    return func_0052dc48(y[0], y[1], 1);
 
 small_argument:
     return func_0052d2d8(x, 0.0f);
@@ -390,30 +385,25 @@ f64 FUN_0052eac8(s64 u)
   f += (u32)u;
   return f;
 }
-#pragma optimization_level 2
+// Scoped optimization: this function measures 200B at level 3 versus 224B at level 2.
+#pragma optimization_level 3
 // FUN_0052EB60 NONMATCHING
-float FUN_0052eb60(long u)
+float FUN_0052eb60(s64 u)
 {
-    unsigned long uVar1;
-    unsigned long uVar2;
-    long low;
-    u64 round = (u64)-0x800;
-    if ((unsigned long)u + ((unsigned long)-0x800 >> 0xb) >
-        (unsigned long)-0x800 >> 0xa &&
-        (((unsigned long)u & 0x7ff) != 0)) {
-        u |= 0x800;
+  f64 f;
+
+  if (!(-((s64)1 << 0x35) < u && u < ((s64)1 << 0x35))) {
+    if (((u64)u & 0x7ff) != 0) {
+      u |= 0x800;
     }
-    uVar1 = FUN_00531720_u64((u64)(u >> 0x20));
-    uVar1 = FUN_00531230_u64(uVar1, 0x40f0000000000000);
-    uVar1 = FUN_00531230_u64(uVar1, 0x40f0000000000000);
-    low = (s32)u;
-    uVar2 = FUN_00531720_u64((u64)low);
-    if (low < 0) {
-        uVar2 = FUN_00531170_u64(uVar2, 0x41f0000000000000);
-    }
-    uVar1 = FUN_00531170_u64(uVar1, uVar2);
-    return FUN_005318a0_f32(uVar1);
+  }
+  f = (s32)(u >> 0x20);
+  f *= 65536.0;
+  f *= 65536.0;
+  f += (u32)u;
+  return (float)f;
 }
+#pragma optimization_level 2
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)
 

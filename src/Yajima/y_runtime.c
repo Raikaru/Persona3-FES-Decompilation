@@ -1632,7 +1632,7 @@ void FUN_004501b0(char param_1);
 void FUN_00450b30(char param_1);
 void FUN_00451d70(int param_1);
 void FUN_00452010(float *param_1);
-void FUN_00452f70(YVec3f *param_1,int param_2);
+void FUN_00452f70(u32 *param_1,int param_2);
 void FUN_004532d0(char param_1);
 void FUN_004533e0(u8 param_1);
 void FUN_00453470(u16 param_1);
@@ -3048,7 +3048,7 @@ void FUN_004501b0(char param_1);
 void FUN_00450b30(char param_1);
 void FUN_00451d70(int param_1);
 void FUN_00452010(float *param_1);
-void FUN_00452f70(YVec3f *param_1,int param_2);
+void FUN_00452f70(u32 *param_1,int param_2);
 void FUN_004532d0(char param_1);
 void FUN_004533e0(u8 param_1);
 void FUN_00453470(u16 param_1);
@@ -12984,7 +12984,7 @@ u32 FUN_0044ad20(u64 param_1,char param_2)
     puVar6[0x40] = 1;
   }
   if (*piVar4 == 4) {
-    FUN_00452f70(&vec,uVar3);
+    FUN_00452f70((u32 *)&vec,uVar3);
     *(YVec3f *)(puVar6 + 0x28) = vec;
   }
   return uVar3;
@@ -15798,9 +15798,10 @@ u32 FUN_00452a70(char param_1,char param_2)
 
 // FUN_00452F70 NONMATCHING
 
-void FUN_00452f70(YVec3f *param_1,int param_2)
+void FUN_00452f70(u32 *param_1,int param_2)
 
 {
+  u32 *out;
   int iVar1;
   int iVar2;
   int iVar3;
@@ -15810,12 +15811,10 @@ void FUN_00452f70(YVec3f *param_1,int param_2)
   u32 uVar6;
   u32 uVar7;
   u32 uVar8;
-  YVec3f eastPosition;
-  YVec3f southPosition;
-  YVec3f westPosition;
-  YVec3f northPosition;
+  YVec3f direction;
   YVec3f position;
   
+  out = param_1;
   iVar1 = *(int *)(param_2 + 0x3c);
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
     uVar6 = 0;
@@ -15847,8 +15846,8 @@ LAB_00453278:
          (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + -0xb6) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 - 1);
-        FUN_001bf220(&northPosition,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = northPosition;
+        FUN_001bf220(&direction,uVar6,uVar5);
+        *(YVec3f *)(iVar1 + 0x34) = direction;
       }
       iVar2 = FUN_001b9120_u32();
       iVar2 = columnOffset + iVar2;
@@ -15857,8 +15856,8 @@ LAB_00453278:
          (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x3a) != 8)) {
         FUN_001bf220(&position,uVar6 - 1,uVar5);
-        FUN_001bf220(&westPosition,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = westPosition;
+        FUN_001bf220(&direction,uVar6,uVar5);
+        *(YVec3f *)(iVar1 + 0x34) = direction;
       }
       iVar2 = FUN_001b9120_u32();
       iVar2 = columnOffset + iVar2;
@@ -15867,8 +15866,8 @@ LAB_00453278:
          (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x14a) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 + 1);
-        FUN_001bf220(&southPosition,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = southPosition;
+        FUN_001bf220(&direction,uVar6,uVar5);
+        *(YVec3f *)(iVar1 + 0x34) = direction;
       }
       iVar2 = FUN_001b9120_u32();
       iVar2 = columnOffset + iVar2;
@@ -15877,12 +15876,12 @@ LAB_00453278:
          (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x5a) != 8)) {
         FUN_001bf220(&position,uVar6 + 1,uVar5);
-        FUN_001bf220(&eastPosition,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = eastPosition;
+        FUN_001bf220(&direction,uVar6,uVar5);
+        *(YVec3f *)(iVar1 + 0x34) = direction;
       }
     }
   }
-  *param_1 = position;
+  *(YVec3f *)out = position;
   return;
 }
 

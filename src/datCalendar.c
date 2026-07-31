@@ -1587,6 +1587,7 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
     return false;
 }
 
+#pragma opt_common_subs off
 // FUN_0017e680 NONMATCHING
 void* clndUpdateTask(KwlnTask* clndTask)
 {
@@ -2101,6 +2102,7 @@ void* clndUpdateTask(KwlnTask* clndTask)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_common_subs reset
 // FUN_0017fa10
 void clndReqSkip()
 {
