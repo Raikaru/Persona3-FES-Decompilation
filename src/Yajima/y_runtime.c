@@ -7645,8 +7645,8 @@ u64 FUN_00439f60(int param_1,char param_2)
 
 {
   int iVar1;
-  int iVar2;
   u32 lVar3;
+  int iVar2;
   u32 uVar4;
   u32 lVar5;
 

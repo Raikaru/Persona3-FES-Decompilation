@@ -5412,122 +5412,94 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
   puVar7 = (f32 *)param_4;
 
   if (puStack_8 == (u16 *)0x0) {
-
-    fVar8 = DAT_007cadd0_f32;
-    *puVar7 = DAT_007cadd0_f32;
-
-    puVar7[1] = fVar8;
-
-    puVar7[2] = fVar8;
-
-    puVar7[3] = 0;
-
-    puVar7[4] = 0;
-
-    puVar7[5] = 0;
-
-    puVar7[6] = 0;
-
-    puVar7[7] = 0;
-
-    fVar8 = DAT_007cafec_f32;
-
-    puVar7[8] = DAT_007cafec_f32;
-
-    puVar7[9] = fVar8;
-
-    puVar7[0xb] = 0;
-
-    *param_5 = 0x40e00000;
-
-    *param_6 = 0;
-
+    goto C540_default;
   }
 
-  else {
+  iVar1 = *(int *)(puStack_8 + 0x24);
 
-    iVar1 = *(int *)(puStack_8 + 0x24);
+  fVar13 = *(f32 *)(puStack_8 + 8);
 
-    fVar13 = *(f32 *)(puStack_8 + 8);
+  fVar12 = *(f32 *)(puStack_8 + 10);
 
-    fVar12 = *(f32 *)(puStack_8 + 10);
+  iVar6 = *(int *)(puStack_8 + 2);
 
-    iVar6 = *(int *)(puStack_8 + 2);
+  goto C540_process;
 
-    if (puStack_4 != (u16 *)0x0) {
+C540_default:
+  fVar8 = DAT_007cadd0_f32;
+  *puVar7 = DAT_007cadd0_f32;
 
-      fVar11 = *(f32 *)(puStack_4 + 8);
+  puVar7[1] = fVar8;
 
-      fVar9 = *(f32 *)(puStack_4 + 10);
+  puVar7[2] = fVar8;
 
-      if ((iVar1 == 0) && (*(int *)(puStack_4 + 0x24) == 0)) {
+  puVar7[3] = 0;
 
-        fVar8 = DAT_007cadd0_f32;
-        *puVar7 = DAT_007cadd0_f32;
+  puVar7[4] = 0;
 
-        puVar7[1] = fVar8;
+  puVar7[5] = 0;
 
-        puVar7[2] = fVar8;
+  puVar7[6] = 0;
 
-        puVar7[3] = 0;
+  puVar7[7] = 0;
 
-        puVar7[4] = 0;
+  fVar8 = DAT_007cafec_f32;
 
-        puVar7[5] = 0;
+  puVar7[8] = DAT_007cafec_f32;
 
-        puVar7[6] = 0;
+  puVar7[9] = fVar8;
+  puVar7[10] = fVar8;
 
-        puVar7[7] = 0;
+  puVar7[0xb] = 0;
 
-        fVar8 = DAT_007cafec_f32;
+  *param_5 = 0x40e00000;
 
-        puVar7[8] = DAT_007cafec_f32;
+  *param_6 = 0;
 
-        puVar7[9] = fVar8;
+  goto C540_done;
 
-        puVar7[0xb] = 0;
+C540_process:
+  if (puStack_4 != (u16 *)0x0) {
 
-        *param_5 = 0x40e00000;
+    fVar11 = *(f32 *)(puStack_4 + 8);
 
-        *param_6 = 0;
+    fVar9 = *(f32 *)(puStack_4 + 10);
 
-      }
+    if ((iVar1 == 0) && (*(int *)(puStack_4 + 0x24) == 0)) {
 
-      else if (iVar6 == 0) {
+      fVar8 = DAT_007cadd0_f32;
+      *puVar7 = DAT_007cadd0_f32;
 
-        for (i = 0; i < 4; i = i + 1) {
+      puVar7[1] = fVar8;
 
-          puVar4 = (f32 *)(iVar1 + i * 4);
+      puVar7[2] = fVar8;
 
-          puVar3 = puVar7 + i;
+      puVar7[3] = 0;
 
-          *puVar3 = *puVar4;
+      puVar7[4] = 0;
 
-          puVar3[4] = puVar4[4];
+      puVar7[5] = 0;
 
-          puVar3[8] = puVar4[8];
+      puVar7[6] = 0;
 
-        }
+      puVar7[7] = 0;
 
-        *(f32 *)param_5 = fVar13;
+      fVar8 = DAT_007cafec_f32;
 
-        *(f32 *)param_6 = fVar12;
+      puVar7[8] = DAT_007cafec_f32;
 
-      }
+      puVar7[9] = fVar8;
+      puVar7[10] = fVar8;
 
-      else {
+      puVar7[0xb] = 0;
 
-        FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_4 + 0x24),param_4);
+      *param_5 = 0x40e00000;
 
-        *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
-
-        *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
-
-      }
+      *param_6 = 0;
 
     }
 
-    else {
+    else if (iVar6 == 0) {
 
       for (i = 0; i < 4; i = i + 1) {
 
@@ -5549,7 +5521,42 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
     }
 
+    else {
+
+      FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_4 + 0x24),param_4);
+
+      *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
+
+      *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,fVar11,fVar9,iVar6);
+
+    }
+
   }
+
+  else {
+
+    for (i = 0; i < 4; i = i + 1) {
+
+      puVar4 = (f32 *)(iVar1 + i * 4);
+
+      puVar3 = puVar7 + i;
+
+      *puVar3 = *puVar4;
+
+      puVar3[4] = puVar4[4];
+
+      puVar3[8] = puVar4[8];
+
+    }
+
+    *(f32 *)param_5 = fVar13;
+
+    *(f32 *)param_6 = fVar12;
+
+  }
+
+C540_done:
+  ;
 
   return;
 
@@ -5678,8 +5685,9 @@ void FUN_0038ca80(int param_1)
   int *listNode3;
   int *listNode1;
   int *listNode12;
+  int **nodeSlot;
   u16 *currentNode;
-  u16 currentValue;
+  int currentValue;
   u16 *matchedNode;
   int matchCount;
   int *nodes[52];
@@ -5704,9 +5712,10 @@ void FUN_0038ca80(int param_1)
       nodes[listIndex++] = listNode12;
     }
 
-    for (listIndex = 0; listIndex < totalCount; listIndex++) {
-      currentNode = (u16 *)nodes[listIndex];
-      currentValue = *currentNode;
+      for (listIndex = 0; listIndex < totalCount; listIndex++) {
+        nodeSlot = &nodes[listIndex];
+        currentNode = (u16 *)*nodeSlot;
+        currentValue = *currentNode;
       matchCount = *(int *)(param_1 + 0x97c);
       for (searchIndex = 0; searchIndex < matchCount; searchIndex++) {
         matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);

@@ -3634,7 +3634,7 @@ void func_00221b60(void)
     case 3:
     case 4:
         func_00227800();
-        goto bpTexAfterFirstDispatch;
+        break;
     case 0:
         previousSub = *(u32*)(work + 0x4640);
         switch (previousSub)
@@ -3644,14 +3644,11 @@ void func_00221b60(void)
             if (*(u32*)(work + 0x4650) != 3)
             {
                 func_00227800();
-                goto bpTexAfterFirstDispatch;
             }
             break;
         }
         break;
     }
-
-bpTexAfterFirstDispatch:
 
     sub = *(u32*)(work + 0x463c);
     if (sub == 2 ||

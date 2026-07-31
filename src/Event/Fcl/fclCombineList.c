@@ -1073,12 +1073,12 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     switch (mode) {
     case 4:
         if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1a, 0);
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1b, 0);
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1c, 0);
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1d, 0);
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1e, 0);
-        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1f, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1a, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1b, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1c, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1d, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1e, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1f, 0);
         return;
 
     case 5:

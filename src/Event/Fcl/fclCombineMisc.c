@@ -1618,11 +1618,9 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
 }
 
-// FUN_003D71D0 NONMATCHING
+// FUN_003D71D0
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3)
 {
   u16 sVar2;
@@ -1652,7 +1650,6 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
-#pragma pop
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 

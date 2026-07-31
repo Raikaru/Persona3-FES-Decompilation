@@ -2201,7 +2201,6 @@ u32 FUN_0029f150(float *param_1)
   float fVar11;
 
   float fVar12;
-  u32 duration;
   u32 counter;
 
   
