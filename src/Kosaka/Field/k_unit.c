@@ -1548,13 +1548,13 @@ static inline f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
 // FUN_001d0720 NONMATCHING
 s32 func_001d0720(s32 targetCount)
 {
-    s32* ptr;
     s32 spawned;
     s32 major;
     u16* values;
     u16 gridId;
     u32 area;
     u8* entry;
+    s32* ptr;
 
     spawned = 0;
     if (datGetFlag(0x1415) == 1)
@@ -1938,7 +1938,8 @@ void func_001d1360(void)
             func_001a0dc0((*resource)->base.resTypeId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
-            func_001ad8c0(35.0f, (*resource)->collisCtlTask);
+            func_001ad8c0(35.0f,
+                          ((volatile ResrcModelChar*)*resource)->collisCtlTask);
             (*resource)->baseMdl = (Model*)func_00317450(uGpffffb52c);
             light.z = func_001ad8b0((*resource)->collisCtlTask);
             light.y = light.z;

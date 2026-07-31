@@ -51,8 +51,6 @@ extern s32 FUN_0040eb50_i(s32 x, s32 y, f32 scale, u8 color, s16 font,
 #pragma alias FUN_0040e3c0_i FUN_0040e3c0
 extern void FUN_0040e3c0_i(s32 x, s32 y, f32 scale, u8 color, s32 type,
                             s32 value);
-#pragma alias DAT_006a7590_abs DAT_006a7590
-extern u8 DAT_006a7590_abs[];
 void FUN_003e6130(int param_1);
 void FUN_003e6400(u32 param_1,u8* param_2);
 u64 FUN_003e6d40(void);
@@ -6465,8 +6463,10 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 == 0) {
+  if (lVar5 != 0) {
 
+    return (u8 *)&LAB_003c5170;
+  } else {
     switch(*(u32 *)(iVar4 + 8)) {
 
     case 0:
@@ -6838,9 +6838,8 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
       }
 
     }
-  return (u8 *)0x0;
   }
-  return (u8 *)&LAB_003c5170;
+  return (u8 *)0x0;
 
 
 }
