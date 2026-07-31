@@ -9124,6 +9124,8 @@ void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3)
   return;
 }
 
+// W325 pragma sweep: opt_common_subs off nd91 -> nd89 (obj 260/272).
+#pragma opt_common_subs off
 // FUN_003FCAD0 NONMATCHING
 
 
@@ -9147,7 +9149,7 @@ void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4)
     FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,0,*(s16 *)(iVar1 + 4));
   }
 }
-
+#pragma opt_common_subs reset
 // FUN_003FCBE0
 
 
@@ -9477,6 +9479,8 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
+// W325 pragma sweep: opt_common_subs off nd156 -> nd131 (obj 440/448).
+#pragma opt_common_subs off
 // FUN_003FD570 NONMATCHING
 
 
@@ -9623,6 +9627,7 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
   return 0;
 
 }
+#pragma opt_common_subs reset
 
 // FUN_003FD730
 u64 FUN_003fd730(u64 param_1,int param_2)
@@ -11012,6 +11017,8 @@ u32 FUN_003ff570(u64 param_1)
   return uVar1;
 }
 
+// W325 pragma sweep: opt_common_subs off nd718 -> nd713 (obj 1004/1008).
+#pragma opt_common_subs off
 // FUN_003FF630 NONMATCHING
 
 
@@ -11360,6 +11367,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
   return;
 
 }
+#pragma opt_common_subs reset
 
 // FUN_003FFA20 NONMATCHING
 
@@ -11496,6 +11504,10 @@ void FUN_003ffe00(int param_1)
 
 // W212: signed-byte and typed-callback transfer measured nd914 -> nd972 (1344 -> 1320 bytes); rejected.
 // W212: retaining the final callback across calls fixed the 0x100-byte frame but measured nd914 -> nd942 and 1344/1344 -> 1352/1344; rejected as over-window.
+// W325 pragma sweep: opt_loop_invariants on nd953 -> nd939 (obj 1328/1344).
+#pragma opt_loop_invariants on
+// W325 pragma sweep: opt_common_subs off nd953 -> nd894 (obj 1344/1344).
+#pragma opt_common_subs off
 // FUN_003FFE60 NONMATCHING
 
 
@@ -12004,6 +12016,8 @@ int * FUN_003ffe60(int param_1)
   return piVar4;
 
 }
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 
 // FUN_004003A0
 
@@ -15528,6 +15542,8 @@ u32 FUN_00403f20(short param_1,int param_2)
   return 0;
 }
 
+// W325 pragma sweep: opt_common_subs off nd564 -> nd463 (obj 840/848).
+#pragma opt_common_subs off
 // FUN_00404120 NONMATCHING
 
 
@@ -15607,6 +15623,7 @@ u32 FUN_00404120(short param_1,int param_2)
   }
   return 1;
 }
+#pragma opt_common_subs reset
 
 // FUN_00404470
 
@@ -16481,6 +16498,8 @@ LAB_00406468:
 
 
 
+// W325 pragma sweep: opt_loop_invariants on nd953 -> nd872 (obj 1460/1472).
+#pragma opt_loop_invariants on
 // FUN_004064E0 NONMATCHING
 void FUN_004064e0(int param_1,int param_2,int param_3,int param_4)
 
@@ -16622,6 +16641,7 @@ void FUN_004064e0(int param_1,int param_2,int param_3,int param_4)
   return;
 
 }
+#pragma opt_loop_invariants reset
 #undef bStack_3c
 #undef FORMAT_SHOP_RECORD_TEXT
 
@@ -16724,7 +16744,6 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
 }
 
-#pragma opt_common_subs off
 // FUN_00406CA0 NONMATCHING
 
 
@@ -16887,7 +16906,6 @@ void FUN_00406ca0(int param_1,int param_2,int *param_3)
 
 }
 
-#pragma opt_common_subs reset
 // FUN_00407180
 
 
@@ -18062,6 +18080,8 @@ void FUN_0040b840(int param_1)
 
 }
 
+// W325 pragma sweep: opt_common_subs off nd1235 -> nd1212 (obj 2112/2112).
+#pragma opt_common_subs off
 // FUN_0040B910 NONMATCHING
 
 
@@ -18478,6 +18498,7 @@ u32 FUN_0040b910(u32 param_1)
   return 0;
 
 }
+#pragma opt_common_subs reset
 
 // FUN_0040C150
 

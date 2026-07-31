@@ -635,6 +635,8 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
 }
 
 /* W212: template 002823b0 confirms direct flag-first guarded movement, but target remains nd800/1076 (window 1232); residual begins at offset 4 (saved-ra slot 0x80 versus retail 0x60) and retail has 140 bytes of real tail logic, so no honest local template transfer was kept. */
+// opt_loop_invariants on: normalized_diff 875 -> 871 (object 1176/1232; off=875)
+#pragma opt_loop_invariants on
 // FUN_00280DA0 NONMATCHING
 void func_00280da0(BtlUnit* unit)
 {
@@ -772,6 +774,7 @@ void func_00280da0(BtlUnit* unit)
     }
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
+#pragma opt_loop_invariants reset
 
 // FUN_002812D0
 f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
@@ -4705,7 +4708,6 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
     return -1;
 }
 
-#pragma opt_common_subs off
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
@@ -4769,7 +4771,6 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
     return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
 }
 
-#pragma opt_common_subs reset
 // FUN_00283E40 NONMATCHING
 u16 func_00283e40(BtlUnit* unit, s16 id)
 {

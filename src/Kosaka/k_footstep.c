@@ -634,7 +634,7 @@ void* func_001dc6f0(KwlnTask* task)
         {
             if (work->timer >= 0x29)
             {
-                s32 i;
+                u32 i;
                 func_001d4180();
                 for (i = 0; i < FLDUNIT_PC_MAX; ++i)
                 {
@@ -1073,7 +1073,7 @@ u32 func_001dd600(void)
     return result;
 }
 
-/* W328 probe: opt_loop_invariants on improves func_001dd8e0 normalized_diff 295 -> 290 (object 516/592); default is 295 (object 524/592). */
+/* W328 hand probe: valid=0 before unit pointer plus opt_loop_invariants on; off nd278/obj524, on nd273/obj516 (original order off nd295/obj524). */
 #pragma opt_loop_invariants on
 // FUN_001dd8e0 NONMATCHING
 void func_001dd8e0(void)
@@ -1094,8 +1094,8 @@ void func_001dd8e0(void)
         u32 personaLevel;
         u32 dataLevel;
 
-        unit = &gFldUnitsPc[i];
         valid = 0;
+        unit = &gFldUnitsPc[i];
         if (unit->genusBase != NULL && unit->resrc != NULL)
         {
             valid = 1;
