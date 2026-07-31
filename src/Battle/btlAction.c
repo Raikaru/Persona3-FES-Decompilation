@@ -767,7 +767,7 @@ u32 FUN_0028a3e0(BtlAction* action)
 
     return false;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_0028a540
 void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4)
