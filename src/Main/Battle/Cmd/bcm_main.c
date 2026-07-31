@@ -6,6 +6,13 @@
 #include "Main/Battle/Cmd/bpp_main.h"
 #include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
+typedef struct PanelSkillRow
+{
+    u32 flags;
+    u32 handle;
+    u32 type;
+    u32 icon;
+} PanelSkillRow;
 #pragma alias bcmIsItemUsable FUN_00207930
 #pragma alias bcmDestroyOwnedResourceCallback FUN_00201ad0
 #pragma alias bcmDestroyCommandResources FUN_00203360
@@ -15,6 +22,10 @@ u8* gBcmWork; // 007ce2e8
 extern u8* DAT_007ce3ec;
 
 s32 FUN_0017d2e0();
+void FUN_00201A50(void);
+u32 FUN_00201AF0(void);
+void FUN_00201EF0(void);
+void FUN_00202010(void);
 u32 bpe00249600(void);
 void* func_0021c5d0(void);
 void* func_0021c640(void);

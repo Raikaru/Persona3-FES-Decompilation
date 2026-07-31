@@ -4,11 +4,15 @@
 #include "rw/rwcore.h"
 
 static u32* sBcmPanel;
+extern u8 D_00960090_abs[];
+extern u8 D_0096009C_abs[];
+extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_0096009C_u32 D_0096009C
+extern u32 D_0096009C_u32[];
 u32 FUN_0021c3f0();
 u32 FUN_0021cca0();
 void FUN_0021d3b0();
 u32 FUN_0021cce0();
-extern void RpSkyRenderStateSet(u32, void*);
 void FUN_00226320();
 void FUN_00222d60();
 void FUN_0021e380();
@@ -2969,7 +2973,7 @@ void FUN_002265D0(void)
 
 // Previous body was a wrong-helper stub (232B) unrelated to retail (1296B
 // window). Rewritten from disasm: retail does a 9-entry jump-table
-// resource dispatch + per-slot D_00960090/D_0096009C indirect-vtable
+// resource dispatch + per-slot D_00960090/D_0096009C_u32 indirect-vtable
 // quad-draw calls (matching FUN_00229B40's style), not the guessed
 // bcm_panel_* helpers. obj now 1292B/1296B; residual is a single
 // register-bank choice (retail s3/mine s4 for `work`) cascading through
@@ -4505,7 +4509,7 @@ void FUN_0022C5A0(void)
     (*(void (**)(u32, u32))D_00960090_abs)(1, FUN_0021cce0(resource));
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    setColour = (void (**)(u32*, u32, u32, u32, u32))D_0096009C;
+    setColour = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_u32;
     (*setColour)((u32*)(base + 0x6a00), 4, 0, 1, 2);
     (*setColour)((u32*)(base + 0x6a00), 4, 0, 2, 3);
     (*setColour)((u32*)(base + 0x6b00), 4, 0, 1, 2);

@@ -179,11 +179,11 @@ float cosf(float x)
 }
 #pragma optimization_level 2
 
-#pragma optimization_level 3
+#pragma intrinsic fabsf
 // FUN_0052e788 NONMATCHING
 float fabsf(register float x)
 {
-    return x >= 0.0f ? x : -x;
+    return fabsf(x);
 }
 #pragma optimization_level 2
 
@@ -369,20 +369,15 @@ u64 FUN_0052ea78(long param_1, long param_2)
 #pragma optimization_level 2
 #pragma optimization_level 3
 // FUN_0052EAC8 NONMATCHING
-u64 FUN_0052eac8(u64 param_1)
+f64 FUN_0052eac8(s64 u)
 {
-  u64 uVar1;
-  u64 uVar2;
+  f64 f;
 
-  uVar1 = FUN_00531720_u64(param_1 >> 0x20);
-  uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
-  uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
-  uVar2 = FUN_00531720_u64((int)param_1);
-  if ((int)param_1 < 0) {
-    uVar2 = FUN_00531170_u64(uVar2,0x41f0000000000000);
-  }
-  FUN_00531170_u64(uVar1,uVar2);
-  return (u64)(uVar1 | uVar2);
+  f = (s32)(u >> 0x20);
+  f *= 65536.0;
+  f *= 65536.0;
+  f += (u32)u;
+  return f;
 }
 #pragma optimization_level 2
 // FUN_0052EB60 NONMATCHING
