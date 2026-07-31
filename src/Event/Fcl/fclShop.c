@@ -7431,8 +7431,8 @@ u64 FUN_003ee920(u64 unused, u64 handle)
 
     work = (u8*)FUN_003c5470(handle);
     value = *(u32*)(work + 8);
-    cosf((DAT_007cae00 * (float)*(s16*)(work + 0x18)) / 255.0f);
-    x = (s32)(sinf((DAT_007cae00 * (float)*(s16*)(work + 0x1a)) / 255.0f) * 300.0f);
+    cosine = cosf((DAT_007cae00 * (float)*(s16*)(work + 0x18)) / 255.0f);
+    x = (s32)(sinf((DAT_007cae00 * (float)*(s16*)(work + 0x1a)) / 255.0f) * 300.0f + cosine * 300.0f);
     zero = 0.0f;
     FUN_0040e3c0(zero, x, 0, 0xff, descriptors[*state * 2], 0);
     FUN_0040e3c0(0.0f, x, -3, 0xff, descriptors[*state * 2 + 1], 0);

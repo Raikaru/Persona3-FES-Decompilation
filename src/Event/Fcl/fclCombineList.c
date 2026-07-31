@@ -598,8 +598,8 @@ void fclCombineList003ded40(FclCallbackProxy*);
 FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 {
     FclOwner* task;
-    FclList* work;
     s32 mode;
+    FclList* work;
 
     switch (param_2) {
     case 0:
@@ -609,10 +609,9 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
         mode = 3;
         break;
     default:
-        mode = 0;
+        K_ASSERT(0, 0x3b8);
         break;
     }
-    K_ASSERT(mode != 0, 0x3b8);
     task = FUN_003c58f0(0, mode * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
     work->list = task;

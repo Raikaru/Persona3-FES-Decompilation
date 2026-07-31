@@ -2296,7 +2296,7 @@ void func_001d1fa0(void)
     u16* model;
     u8* record;
     u8* candidate;
-    u32 slot;
+    s32 slot;
     u8* base;
     u16 spawnId;
     typedef struct
@@ -2921,14 +2921,18 @@ void func_001d3810(KwlnTask* task, u32 value)
 }
 
 #pragma push
-// FUN_001d3830 NONMATCHING
+// FUN_001d3830
 s32 func_001d3830(KwlnTask* task)
 {
     s32 remaining;
     s32 result;
 
     result = -1;
-    if (((s32*)task->workData)[3] != 0)
+    if (((s32*)task->workData)[3] == 0)
+    {
+        result = -1;
+    }
+    else
     {
         remaining = func_001d38a0(task);
         if (remaining == 0)
@@ -3236,8 +3240,11 @@ void func_001d4180(void)
                 }
                 if (*taskSlot != NULL)
                 {
-                    func_00195020(*taskSlot);
-                    *taskSlot = NULL;
+                    KwlnTask** taskSlot2;
+
+                    taskSlot2 = &gFldUnitsPc[i].unk_180;
+                    func_00195020(*taskSlot2);
+                    *taskSlot2 = NULL;
                 }
             }
         }

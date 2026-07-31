@@ -943,7 +943,7 @@ extern u8* iGpffffb720;
 #pragma alias FUN_001706c0_u16 FUN_001706c0
 extern u16 FUN_001706c0_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170710_void FUN_00170710
-extern void FUN_00170710_void(s16 pcId, s16 index, s32 value);
+extern void FUN_00170710_void(s16 pcId, s16 index, s16 value);
 #pragma alias FUN_00170760_u16 FUN_00170760
 extern u16 FUN_00170760_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170860_void FUN_00170860
