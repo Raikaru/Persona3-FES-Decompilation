@@ -998,8 +998,9 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
                           func_0019b2b0, func_0019bcf0, shadow);
     shadow->resTypeId = resTypeId;
     shadow->mode = (u16)param_3;
-
     sourceIndex = 0;
+
+
     source = MT_Scene_GetResListHead(RESRC_TYPE_19);
     while (source != NULL)
     {

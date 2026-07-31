@@ -33,6 +33,12 @@ extern u8 D_006833A0[];
 extern u8 D_0086E580[];
 extern u8 D_0086EDA0[];
 extern u8 D_008717A0[];
+extern const char D_0067F5C8[];
+extern RwV3d D_0067F5B8;
+extern u8 D_00869F98[];
+extern u8 D_00869FA2[];
+extern u8 D_00869FA3[];
+extern u8 D_00869FA4[];
 
 extern u32 FUN_00198590(void);
 extern f32 FUN_001A5AA0(void* value);
@@ -899,10 +905,11 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
                         u8 param8, u8 param9, s16 param10, s32 param11,
                         s32 param12, s32 param13, s32 param14)
 {
-    void* workData;
     KwlnTask* fldRootTask;
+    void* workData;
     RwCamera* camera;
     u8* cameraFrame;
+    RwV3d clearColor;
     RwMatrixTolerance tolerance;
     RwMatrix* matrix;
 
@@ -915,7 +922,7 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
     }
 
     fldRootTask = kwlnTaskCreateWithAutoPriority(
-        parentTask, 10, (const char*)0x0067f5c8, func_001b9480, func_001ba3d0,
+        parentTask, 10, D_0067F5C8, func_001b9480, func_001ba3d0,
         workData);
     sField.rootTask = fldRootTask;
     if (param11 >= 1)
@@ -933,10 +940,10 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
         ROOT_U16(workData, 0x18) = param5;
         ROOT_U16(workData, 0x1a) = param6;
         ROOT_U16(workData, 0x14) = param4;
-        FIELD_U32(0x00869f98) = flags;
-        FIELD_U8(0x00869fa2) = param8;
-        FIELD_U8(0x00869fa3) = param9;
-        FIELD_U16(0x00869fa4) = (u16)param10;
+        *(u32*)D_00869F98 = flags;
+        D_00869FA2[0] = param8;
+        D_00869FA3[0] = param9;
+        *(u16*)D_00869FA4 = (u16)param10;
         K_Fldrc_RequestFldPac((s16)majorId, (s16)minorId);
         if (majorId > 0x1d && majorId < 0x28 &&
             K_FldDungeon_GetCurrentFloor() == 0)
@@ -946,14 +953,12 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
         ROOT_U32(workData, 0) = 1;
     }
 
+    clearColor = D_0067F5B8;
+    camera = kwlnGetMainCamera();
+    func_004cb930(camera->object.object.parent);
     camera = kwlnGetMainCamera();
     cameraFrame = (u8*)camera->object.object.parent;
-    func_004cb930(cameraFrame);
-    camera = kwlnGetMainCamera();
-    cameraFrame = (u8*)camera->object.object.parent;
-    *(f32*)(cameraFrame + 0x40) = *(f32*)(void*)0x0067f5b8;
-    *(f32*)(cameraFrame + 0x44) = *(f32*)(void*)0x0067f5bc;
-    *(f32*)(cameraFrame + 0x48) = *(f32*)(void*)0x0067f5c0;
+    *(RwV3d*)(cameraFrame + 0x40) = clearColor;
     RwEngineGetMatrixTolerances(&tolerance);
     camera = kwlnGetMainCamera();
     matrix = (RwMatrix*)((u8*)camera->object.object.parent + 0x10);
@@ -2630,51 +2635,48 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
     if (chance - 1 < 0)
     {
         FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-        goto done;
+        return 0;
     }
     if (floorData->minorId != 0)
     {
-        goto done;
+        return 0;
     }
-    if (chance - 1 == 0)
-    {
-        random = (s32)(RpRandom() % 100);
-        lower = (s32)FUN_0016F380(0x3c);
-        if (random >= lower)
-        {
-            goto done;
-        }
-        lower = (s32)FUN_0016F380(0x3d);
-        upper = (s32)FUN_0016F380(0x3e);
-        total = (s32)FUN_0016F380(0x37);
-        total += lower + upper;
-        i = (s32)FUN_0016F380(0x36);
-        choice = (s32)(RpRandom() % (total + i));
-        FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-        if (choice < lower)
-        {
-            return 1;
-        }
-        if (choice < lower + upper)
-        {
-            return 2;
-        }
-        if (choice < total)
-        {
-            return 3;
-        }
-        for (i = 0; i < 3; i++)
-        {
-            if (FUN_0016DD60(i) >= 1)
-            {
-                return 4;
-            }
-        }
-    }
-    else
+    if (chance - 1 != 0)
     {
         FUN_0016F3E0(0x3b, chance - 1);
+        return 0;
     }
-done:
+    random = (s32)(RpRandom() % 100);
+    lower = (s32)FUN_0016F380(0x3c);
+    if (random >= lower)
+    {
+        return 0;
+    }
+    lower = (s32)FUN_0016F380(0x3d);
+    upper = (s32)FUN_0016F380(0x3e);
+    total = (s32)FUN_0016F380(0x37);
+    i = (s32)FUN_0016F380(0x36);
+    total += lower + upper;
+    choice = (s32)(RpRandom() % (total + i));
+    FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
+    if (choice < lower)
+    {
+        return 1;
+    }
+    if (choice < lower + upper)
+    {
+        return 2;
+    }
+    if (choice < total)
+    {
+        return 3;
+    }
+    for (i = 0; i < 3; i++)
+    {
+        if (FUN_0016DD60(i) >= 1)
+        {
+            return 4;
+        }
+    }
     return 0;
 }

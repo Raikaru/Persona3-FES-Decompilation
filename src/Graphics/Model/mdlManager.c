@@ -8518,135 +8518,63 @@ void func_0031b820(u32 param_1,u32 param_2)
 
 
 u32 func_0031be80(u32 param_1)
-
-
-
 {
-
   short sVar1;
-
   short sVar2;
-
   int bVar4;
-
   u32 uVar5;
-
   int lVar6;
-
   int iVar8;
-
   int iVar7;
-
   short *psVar9;
-
   short *psVar10;
-
-  int sVar3;
-
-  short asStack_20 [12];
-
+  u16 sVar3;
+  short asStack_20[12];
   int iStack_8;
-
   int iStack_4;
 
-  
-
   iStack_8 = 0;
-
   iStack_4 = 0;
-
   iVar8 = (int)param_1;
-
-  lVar6 = func_0031b680(*(u16 *)(iVar8 + 0xd4),*(u16 *)(iVar8 + 0xd6),&iStack_8,
-
-                       &iStack_4);
-
+  lVar6 = func_0031b680(*(u16 *)(iVar8 + 0xd4), *(u16 *)(iVar8 + 0xd6),
+                       &iStack_8, &iStack_4);
   if (lVar6 == 1) {
-
     if ((iStack_8 != 0) && (iStack_4 != 0)) {
-
-      func_0031b820(param_1,iStack_8);
-
+      func_0031b820(param_1, iStack_8);
       uVar5 = 1;
-
-    }
-
-    else {
-
+    } else {
       uVar5 = 0;
-
     }
-
-  }
-
-  else {
-
+  } else {
     sVar3 = *(u16 *)(iVar8 + 0xd6);
-
     *(MdlShortVec10 *)((u8 *)asStack_20) =
         *(MdlShortVec10 *)((u8 *)DAT_0069b190_abs);
     if (*(u16 *)(iVar8 + 0xd4) != 5) {
-
       bVar4 = 0;
-
-    }
-
-    else {
-
+    } else {
       for (iVar8 = 0; iVar8 < 0x14; iVar8 = iVar8 + 1) {
-
         if (sVar3 == (u16)asStack_20[iVar8]) {
-
           if ((u16)asStack_20[iVar8] != 0x3e6) {
-
             iStack_8 = iVar8 + 1;
-
-          }
-
-          else {
-
+          } else {
             iStack_8 = 9;
-
           }
-
           bVar4 = 1;
-
           goto LAB_0031bfb8;
-
         }
-
       }
-
       bVar4 = 0;
-
     }
-
 LAB_0031bfb8:
-
-
     if (bVar4 == 1) {
-
-      func_0031b820(param_1,iStack_8);
-
+      func_0031b820(param_1, iStack_8);
       uVar5 = 1;
-
-    }
-
-    else {
-
+    } else {
       uVar5 = 0;
-
     }
-
   }
-
   return uVar5;
-
 }
-
-
-
-
 // FUN_0031C000
 
 

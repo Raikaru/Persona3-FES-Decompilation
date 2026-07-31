@@ -1207,8 +1207,9 @@ void func_00101c70(void)
     buildKey = (void (**)(void*, const char*))D_0096013C;
     (*buildKey)(&key0, "hst:");
     (*buildKey)(&key2, "hst");
-    if ((context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
-                                  &key0, &key2)) == NULL)
+    context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
+                             &key0, &key2);
+    if (context1 == NULL)
     {
         goto empty;
     }
@@ -1274,8 +1275,9 @@ static void H_Cdvd_CopyArchiveEntries(void* requestData, u8* archive,
     }
 }
 
-// FUN_00101e30 NONMATCHING
+/* opt_loop_invariants required: normalized_diff 121 without pragma, 0 with pragma (W310). */
 #pragma opt_loop_invariants on
+// FUN_00101e30
 void func_00101e30(void* requestData)
 {
     struct

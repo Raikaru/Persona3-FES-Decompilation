@@ -712,10 +712,6 @@ void FUN_00395570(int param_1)
   code *p;
   f32 recip;
   u8 *q0;
-  u8 *q1;
-  u8 *q2;
-  u8 *q3;
-  u8 *q4;
 
   if (*(int *)(param_1 + 0x670) != 0) {
     iVar1 = *(int *)(param_1 + 0x674);
@@ -726,6 +722,8 @@ void FUN_00395570(int param_1)
     DAT_00958aa0 = (f32)iVar1;
     DAT_00958aa4 = (f32)iVar2;
     q0 = DAT_00960088_abs;
+    /* Removing this barrier worsens FUN_00395570 (nd103 -> nd117) - measured W164. */
+    asm ("" : "+m"(q0));
     DAT_00958aa8 = *(f32 *)q0;
     DAT_00958ac0 = 0x43480000;
     DAT_00958ac4 = 0x42a00000;
@@ -734,8 +732,7 @@ void FUN_00395570(int param_1)
     DAT_00958ab8 = recip;
     DAT_00958ae0 = (f32)(iVar1 + 0x200);
     DAT_00958ae4 = DAT_00958aa4;
-    q1 = DAT_00960088_abs;
-    DAT_00958ae8 = *(f32 *)q1;
+    DAT_00958ae8 = *(f32 *)q0;
     DAT_00958b00 = 0x43480000;
     DAT_00958b04 = 0x42a00000;
     DAT_00958b08 = 0x42a00000;
@@ -743,8 +740,7 @@ void FUN_00395570(int param_1)
     DAT_00958af8 = DAT_00958ab8;
     DAT_00958b20 = DAT_00958ae0;
     DAT_00958b24 = (f32)(iVar2 + 0x200);
-    q2 = DAT_00960088_abs;
-    DAT_00958b28 = *(f32 *)q2;
+    DAT_00958b28 = *(f32 *)q0;
     DAT_00958b40 = 0x43480000;
     DAT_00958b44 = 0x42a00000;
     DAT_00958b48 = 0x42a00000;
@@ -752,8 +748,7 @@ void FUN_00395570(int param_1)
     DAT_00958b38 = DAT_00958ab8;
     DAT_00958b60 = DAT_00958aa0;
     DAT_00958b64 = DAT_00958b24;
-    q3 = DAT_00960088_abs;
-    DAT_00958b68 = *(f32 *)q3;
+    DAT_00958b68 = *(f32 *)q0;
     DAT_00958b80 = 0x43480000;
     DAT_00958b84 = 0x42a00000;
     DAT_00958b88 = 0x42a00000;
@@ -761,13 +756,13 @@ void FUN_00395570(int param_1)
     DAT_00958b78 = DAT_00958ab8;
     DAT_00958ba0 = DAT_00958aa0;
     DAT_00958ba4 = DAT_00958aa4;
-    q4 = DAT_00960088_abs;
-    DAT_00958ba8 = *(f32 *)q4;
+    DAT_00958ba8 = *(f32 *)q0;
     DAT_00958bc0 = 0x43480000;
     DAT_00958bc4 = 0x42a00000;
     DAT_00958bc8 = 0x42a00000;
     DAT_00958bcc = 0x43750000;
 
+    DAT_00958b78 = DAT_00958ab8;
     p = (code *)&DAT_00960090_abs;
     (*p)(1,0);
     (*p)(7,2);

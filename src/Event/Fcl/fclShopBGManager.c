@@ -151,6 +151,8 @@ u32 DAT_007cda5a;
 u32 DAT_007cda5c;
 u32 DAT_007cda5e;
 u32 DAT_007cda64;
+#pragma alias DAT_007cda64_f DAT_007cda64
+extern float DAT_007cda64_f[];
 u8 *DAT_007ce420;
 u8 *DAT_007ce4e4;
 code DAT_00960090;
@@ -5659,13 +5661,13 @@ u8 *puVar2;
 
 u8 *puVar3;
 
-u16 *puVar4;
+s16 *puVar4;
 
-int iVar5;
+u8 **ppuVar7;
 
 u32 *puVar6;
 
-u8 **ppuVar7;
+int iVar5;
 
 int iVar8;
 
@@ -5703,9 +5705,11 @@ do {
 
 puStack_8 = (FclShopBgCallbackPair *)(auStack_20 + 6);
 
-puStack_8[0].count = DAT_007cda64;
+*(float *)(auStack_20 + 6) = DAT_007cda64_f[0];
 
-puStack_8[0].callbacks = auStack_20;
+*(float *)(auStack_20 + 7) = DAT_007cda64_f[1];
+
+*(u32 *)(auStack_20 + 6) = (u32)auStack_20;
 
 iVar5 = *(int *)(iVar1 + 0x4c) >> 1;
 
@@ -5715,7 +5719,7 @@ iVar5 = puStack_8[iVar5].count;
 
 for (iVar8 = 0; iVar8 < iVar5; iVar8 = iVar8 + 1) {
 
-  puVar4 = (u16 *)(iVar1 + iVar8 * 0xc);
+  puVar4 = (s16 *)(iVar1 + iVar8 * 0xc);
 
     ((FclShopBgCallback)puVar6[iVar8])
               (0,*(float *)(puVar4 + 4),*(float *)(puVar4 + 4),param_1,param_2,*puVar4,

@@ -9433,8 +9433,6 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
 {
   int rowCount;
   u16 buttons;
-  u32 extraout_a2;
-  u32 result;
   if (*(int *)(param_3 + 0x120) == 0) {
     rowCount = 10;
   }
@@ -9454,10 +9452,9 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
                *(u32 *)(param_3 + 0x11c),
                *(u32 *)(param_3 + 0x11c),0,0x4000,0x1000);
   FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
-  result = extraout_a2;
   buttons = *(u16 *)DAT_007e094e_abs;
   if ((buttons & 0x40) != 0) {
-    return result;
+    return 1;
   }
   if ((buttons & 0x20) != 0) {
     return -1;
@@ -9670,6 +9667,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
 u32 FUN_0037abd0(int param_1,int param_2,int param_3)
 {
+  u32 extraout_a3;
   FUN_0036f900(param_1,param_2,0x16,0x11,0,0x11,param_3,0,(code *)FUN_0037a790);
 
   if (*(int *)((int)param_3 + 0xd4) != 1) {
@@ -9678,6 +9676,7 @@ u32 FUN_0037abd0(int param_1,int param_2,int param_3)
   else {
     u32 result = FUN_0036f680_ret_ptr2(0,(u32 *)((u8 *)(uintptr_t)param_3 + 0x104),
                                        0x11,0x11,0,0x4000,0x1000);
+    FUN_0036f680(0,0,result,result,0,0x2000,0x8000);
 
     if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
       return 1;

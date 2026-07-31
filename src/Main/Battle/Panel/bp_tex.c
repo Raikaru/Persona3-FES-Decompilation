@@ -40,7 +40,7 @@ extern void func_0024daf0(void* state);
 extern u32 func_00250b90(void* state);
 extern void func_00251030(void* state);
 extern f32 func_0020c660(u32 index, s32 count);
-extern void func_00250cf0(f32 value, u32 mode, void* state, void* value2, u32 count);
+extern void func_00250cf0(u32* work, void* target, f32 startAngle, f32 endAngle, s32 frames);
 extern void func_002505b0(void* state, void* value, s32 duration, const f32* offsets);
 extern void func_005225a8(u32 id, ...);
 extern void func_004bdde0(s32 mode, void* value, void* pos, s32 flags);
@@ -80,6 +80,15 @@ extern volatile u8 D_0068EA30_abs[];
 extern f32 D_0068EA38;
 #pragma alias D_0068EA38_abs D_0068EA38
 extern volatile u8 D_0068EA38_abs[];
+extern u8 D_0068EA00;
+#pragma alias D_0068EA00_abs D_0068EA00
+extern volatile u8 D_0068EA00_abs[];
+extern u64 D_0068EA90;
+#pragma alias D_0068EA90_abs D_0068EA90
+extern volatile u8 D_0068EA90_abs[];
+extern f32 D_0068EA98;
+#pragma alias D_0068EA98_abs D_0068EA98
+extern volatile u8 D_0068EA98_abs[];
 
 extern u32 jtbl_00960178[];
 extern void (*jtbl_0096017C)(void* memory);
@@ -2521,39 +2530,52 @@ void bpTexDumpNodes(void)
 void bpTexPrepareNodes(void)
 {
     u32* work;
-    u32* node;
     s32 i;
-    f32 origin[3];
+    u32* node;
+    u32* scan;
+    u64 xy;
+    f32 z;
+    struct
+    {
+        u64 xy;
+        f32 z;
+    } origin;
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     work = BP_TEX_GLOBAL;
-    origin[0] = *(f32*)0x0068ea90;
-    origin[1] = *(f32*)0x0068ea94;
-    origin[2] = *(f32*)0x0068ea98;
+    xy = *(volatile u64*)D_0068EA90_abs;
+    z = *(volatile f32*)D_0068EA98_abs;
+    origin.xy = xy;
+    origin.z = z;
     for (i = 0; i < (s32)BP_TEX_U32(work, 0x499f * 4); i++)
     {
         if (BP_TEX_GLOBAL == NULL)
         {
-            func_0019d3f0((const char*)0x0068ea00, 0xbc);
+            func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
         }
-        node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
-        while (node != NULL)
+        for (scan = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+             scan != NULL;
+             scan = (u32*)scan[0x3f1])
         {
-            if ((node[0] & 2) == 0 &&
-                node[4] == (u32)i)
+            if ((scan[0] & 2) == 0 &&
+                scan[4] == (u32)i)
             {
                 break;
             }
-            node = (u32*)node[0x3f1];
         }
+        node = scan;
         if (node == NULL)
         {
-            func_0019d3f0((const char*)0x0068ea00, 0x47a);
+            func_0019d3f0((const char*)D_0068EA00_abs, 0x47a);
         }
-        func_00250cf0(*(f32*)0x007caf38, 0, (u8*)node + 0x45a, origin, 0xc);
+        func_00250cf0((u32*)node + 0x45a,
+                      &origin,
+                      DAT_007caf38,
+                      0.0f,
+                      0xc);
         node[0x494] = 0;
         node[0x495] = 0xc;
         node[0x493] = 2;

@@ -2721,6 +2721,9 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 
 /* Removing this worsens FUN_00145350 (nd291 -> nd292) - measured W161. */
 #pragma schedule on
+#define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
+  func_0018bc10_buffirst((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
+
 // FUN_00145350 NONMATCHING
 
 void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
@@ -2758,6 +2761,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
         }
     }
 }
+#undef func_0018bc10
 #pragma schedule off
 
 

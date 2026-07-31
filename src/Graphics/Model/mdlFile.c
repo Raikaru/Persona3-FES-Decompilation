@@ -756,7 +756,7 @@ u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
 void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
-u32 FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
+u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
             u32 param_5);
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
@@ -2410,7 +2410,7 @@ void FUN_0031d7d0(u32 *param_1)
 
 u32
 
-FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
+FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
             u32 param_5)
 
@@ -2428,7 +2428,7 @@ FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
   
 
   allocator = (u32 (**)(...))DAT_00960178_abs;
-  puVar1 = (u32 *)(*allocator)(param_3 + 0x10,0x40000);
+  puVar1 = (u32 *)(*allocator)(param_4 + 0x10,0x40000);
 
   *puVar1 = (u32)(puVar1 + 4);
 
@@ -2438,7 +2438,7 @@ FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
 
   puVar1[2] = 1;
 
-  FUN_00521250(*puVar1,param_2,param_3);
+  FUN_00521250(*puVar1,param_2,param_4);
 
   uVar2 = (*allocator)(0x14,0x40000);
 
@@ -2466,7 +2466,7 @@ FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
 
   *puVar3 = (u32)puVar1;
 
-  *(u16 *)(puVar3 + 1) = param_4;
+  *(u16 *)(puVar3 + 1) = param_3;
 
   return uVar2;
 
@@ -10752,10 +10752,9 @@ u32 FUN_003268c0(u32 param_1)
 
   
 
+
   iVar4 = (int)param_1;
-
   iVar1 = *(int *)(*(int *)(iVar4 + 0x4c) + 0x24);
-
   if (*(int *)(iVar1 + 0x20) == 0) {
 
     uVar2 = *(int *)(iVar1 + 0xb8) * *(int *)(iVar1 + 0x24);
