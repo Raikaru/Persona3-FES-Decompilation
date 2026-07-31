@@ -566,9 +566,9 @@ void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
-    u8 *entry;
     u8 *work;
     s32 i;
+    u8 *entry;
     s32 j;
     work = task->workData;
 
@@ -577,9 +577,8 @@ void func_001f0c40(KwlnTask *task)
         if (dat00171360(BR_U16(entry, 0)) != 0) {
             func_00171390(BR_U16(entry, 0));
         } else {
-            u8 *base = work + i * 8;
             s32 level = (s32)(func_00170760(1, BR_S16(entry, 0)) & 0xffff);
-            level += BR_S32(base, 0x9c);
+            level += BR_S32(work + i * 8, 0x9c);
             if (level >= 100) {
                 level = 99;
             }
@@ -1125,6 +1124,7 @@ KwlnTask *func_001f2080(const u8 *params)
     kwlnTaskAddChild(task, child);
     child = kwlnTaskInitEx("battle result draw", 0x18a6, 1, 2,
                            func_001f2f80, NULL, work);
+    BR_U32(work, 0x10) = (u32)child;
     kwlnTaskAddChild(task, child);
     viewWindow.x = 1.0f;
     viewWindow.y = 0.5f;
@@ -1147,6 +1147,7 @@ KwlnTask *func_001f2080(const u8 *params)
     sflPersonaInit(work + 0x2a200);
     BR_U32(work, 0xe4) = 0;
     func_001f4650(task, params);
+    BR_U32(work, 8) = 0;
     func_001f3270(task);
     BR_U32(work, 0x2a210) = 0;
     return task;

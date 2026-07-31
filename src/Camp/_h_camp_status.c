@@ -1902,7 +1902,7 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     CampVec2 bottomPosition;
     char text[264];
 
-    drawParent = parent;
+    drawParent = 0x42c80000;
     drawAlpha = (u8)alpha;
     left = position.x + 21.0f;
     right = position.x + 127.0f;

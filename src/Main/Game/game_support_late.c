@@ -1513,10 +1513,13 @@ void* func_0018db20(KwlnTask* task)
             break;
         case 1:
         {
-            s16 pcId = object->pcId;
-            GsTransition* transition = (GsTransition*)object->transition;
-            void* atlas;
             void* unused;
+            void** atlas;
+            GsTransition* transition;
+            s16 pcId;
+
+            transition = (GsTransition*)object->transition;
+            pcId = object->pcId;
 
             if (datGetScenarioMode() != 0)
             {
@@ -1533,12 +1536,19 @@ void* func_0018db20(KwlnTask* task)
                     pcId = 11;
                 }
             }
-            atlas = object->atlases[pcId];
-            func_001159f0(unused, atlas, 3, *(u8*)&transition->alpha,
-                          transition->position.valueF[0] + 20.0f,
-                          transition->position.valueF[1] + 18.0f,
-                          transition->depth);
-            func_001159f0(unused, atlas, 1, *(u8*)&transition->alpha,
+            atlas = &object->atlases[pcId];
+            {
+                f32 x;
+                f32 y;
+                u32 alpha;
+
+                x = transition->position.valueF[0] + 20.0f;
+                y = transition->position.valueF[1] + 18.0f;
+                alpha = *(volatile u8*)&transition->alpha;
+                gsDrawSpritePositionFirst(x, y, unused, *atlas, 3, alpha,
+                                          transition->depth);
+            }
+            func_001159f0(unused, *atlas, 1, *(u8*)&transition->alpha,
                           transition->position.valueF[0] + 20.0f,
                           transition->position.valueF[1] + 18.0f,
                           transition->depth);

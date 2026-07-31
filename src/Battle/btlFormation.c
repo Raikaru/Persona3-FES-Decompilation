@@ -612,7 +612,7 @@ extern void func_002baa20(int *param_1);
 extern u32 func_002baad0(int *param_1);
 extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
 extern void func_002bacb0(u32 *param_1);
-extern u32 func_002bad60(int *param_1);
+extern u32 func_002bad60(u32 *param_1);
 extern bool func_002baec0(u32 *param_1);
 extern void func_002baf30(u32 *param_1);
 extern void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u32 param_5);
@@ -2321,7 +2321,7 @@ void func_002bacb0(u32 *param_1)
 
 // FUN_002bad60 NONMATCHING
 
-u32 func_002bad60(int *param_1)
+u32 func_002bad60(u32 *param_1)
 
 {
   short sVar1;
@@ -4924,9 +4924,7 @@ void func_002bf9a0(void)
   return;
 }
 
-// Forbidden inline asm (mtc1/daddu/mov.s) removed and replaced with honest C;
-// residual is 3-word MWCC call-argument evaluation-order scheduling.
-// FUN_002bf9b0 NONMATCHING
+// FUN_002bf9b0
 
 void func_002bf9b0(void)
 

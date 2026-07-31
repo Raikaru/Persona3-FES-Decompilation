@@ -1480,7 +1480,6 @@ void FUN_003a9ed0(int param_1,u64 param_2)
   u8 *iVar3;
   int iVar5;
   u8 *iVar4;
-
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(u8 **)(param_1 + 8);
   iVar3 = iVar2 + 0x140;
