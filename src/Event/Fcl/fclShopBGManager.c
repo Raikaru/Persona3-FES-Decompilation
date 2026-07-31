@@ -5,6 +5,16 @@ typedef struct {
     u32 *callbacks;
     int count;
 } FclShopBgCallbackPair;
+
+typedef union {
+    float floats[4];
+    u32 words[4];
+} FclShopBgHeader;
+typedef struct {
+    FclShopBgHeader header;
+    s16 table2[24];
+    s16 table1[40];
+} FclShopBgLocal;
 u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
 u32 H_Maestro_FinishedInit(u32 task);
 void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
@@ -125,8 +135,11 @@ extern u8 DAT_006b0de0_abs[];
 u32 DAT_006b0e30;
 #pragma alias DAT_006b0e30_abs DAT_006b0e30
 extern u8 DAT_006b0e30_abs[];
+
 u32 DAT_006b0e64;
 u32 DAT_006b0e6c;
+#pragma alias DAT_006b0e64_abs DAT_006b0e64
+extern u8 DAT_006b0e64_abs[];
 u32 DAT_006b10e0;
 u32 DAT_006b1130;
 u32 DAT_006b1178;
@@ -2775,9 +2788,9 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 {
 
-s16 uVar1;
+  s16 uVar1;
 
-s16 uVar2;
+  s16 uVar2;
 
   short sVar3;
 
@@ -2785,9 +2798,9 @@ s16 uVar2;
 
   int iVar5;
 
-s16 *puVar6;
+  s16 *puVar6;
 
-s16 *puVar7;
+  s16 *puVar7;
 
   short *psVar8;
 
@@ -2797,17 +2810,8 @@ s16 *puVar7;
 
   int iVar11;
 
-s16 *puStack_90;
+  FclShopBgLocal stack;
 
-  int iStack_8c;
-
-s16 *puStack_88;
-
-  u32 uStack_84;
-
-s16 auStack_50 [40];
-
-s16 auStack_80 [24];
 
   
 
@@ -2815,7 +2819,7 @@ s16 auStack_80 [24];
 
   puVar7 = (s16 *)DAT_006b0de0_abs;
 
-  puVar6 = auStack_50;
+  puVar6 = stack.table1;
 
   iVar5 = 0x14;
 
@@ -2839,7 +2843,7 @@ s16 auStack_80 [24];
 
   puVar7 = (s16 *)DAT_006b0e30_abs;
 
-  puVar6 = auStack_80;
+  puVar6 = stack.table2;
 
   iVar5 = 0xc;
 
@@ -2861,19 +2865,23 @@ s16 auStack_80 [24];
 
   } while (0 < iVar5);
 
-  iStack_8c = DAT_006b0e64;
+  stack.header.floats[0] = *(float *)((u8 *)DAT_006b0e64_abs - 4);
 
-  uStack_84 = DAT_006b0e6c;
+  stack.header.floats[1] = *(float *)DAT_006b0e64_abs;
 
-  puStack_90 = auStack_50;
+  stack.header.floats[2] = *(float *)((u8 *)DAT_006b0e64_abs + 4);
 
-  puStack_88 = auStack_80;
+  stack.header.floats[3] = *(float *)((u8 *)DAT_006b0e64_abs + 8);
+
+  stack.header.words[0] = (u32)stack.table1;
+
+  stack.header.words[2] = (u32)stack.table2;
 
   iVar5 = *(int *)(iVar4 + 0x7c) >> 1;
 
-  puVar6 = (&puStack_90)[iVar5 * 2];
+  puVar6 = (s16 *)stack.header.words[iVar5 * 2];
 
-  iVar5 = (&iStack_8c)[iVar5 * 2];
+  iVar5 = ((int *)stack.header.words)[iVar5 * 2 + 1];
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
 

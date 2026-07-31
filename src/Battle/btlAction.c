@@ -89,6 +89,7 @@ BtlPacket* FUN_002bd480(BtlUnit* unit);
 BtlPacket* FUN_002bd590(BtlUnit* unit, u16 id);
 BtlPacket* FUN_002bd690(BtlUnit* unit, u16 id);
 u32 FUN_002dbb00(BtlUnit* unit);
+void FUN_002e2d00(u16 result);
 BtlPacket* FUN_002bd850(BtlUnit* unit, s16 id);
 BtlPacket* func_002bd780(BtlUnit* unit, u16 id);
 BtlPacket* FUN_002bdbd0(BtlUnit* source, BtlUnit* target, s32 id, u32 a, u32 b, u32 c, u32 d, void* result);
@@ -1776,6 +1777,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
 {
     BtlPacket* packet;
     BtlUnit* unit;
+    BtlUnit* unit2;
     BtlAction* targetAction;
     u32 unitId;
     s32 result;
@@ -1827,10 +1829,10 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
         case 2:
             if (FUN_001febb0() == 0)
             {
-                unit = btlUnitFindFromId(FUN_002db690());
-                if (unit != NULL)
+                unit2 = btlUnitFindFromId(FUN_002db690());
+                if (unit2 != NULL)
                 {
-                    result = FUN_002dbb00(unit);
+                    result = FUN_002dbb00(unit2);
                     if (result >= 0)
                     {
                         FUN_002e2d00(result);

@@ -951,9 +951,9 @@ static inline s32 campStatusGetDisplayedValue(void* persona, void* bonus,
 #define campStatusDrawDigitRow(x, y, scale, bonus, persona, alpha, index, \
                                useSkillAccessors) \
 { \
-    u32 rowParent; \
     u32 rowValue; \
     void* rowResource; \
+    u32 rowParent; \
     if ((useSkillAccessors) != 0) { \
         rowValue = FUN_00173580((persona), (index)) & 0xff; \
     } else { \
@@ -1596,7 +1596,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     s32 i;
     void (**setState)(u32, u32);
     void (**submitVertices)(u32, CampStatusVertex*, s32);
-    void* textureWork;
+    u32* textureWork;
 
     textureWork = texture;
     camera = (void*)FUN_00198590();
@@ -1634,13 +1634,17 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     vertices[2].v = 1.0f;
     vertices[3].u = 1.0f;
     vertices[3].v = 1.0f;
-    submitVertices = (void (**)(u32, CampStatusVertex*, s32))DAT_009600A0_abs;
     (*setState)(1, *(u32*)textureWork);
+    submitVertices = (void (**)(u32, CampStatusVertex*, s32))DAT_009600A0_abs;
     (*submitVertices)(4, vertices, 4);
-    vertices[0].position.y = position.y + 1104.0f;
-    vertices[1].position.y = position.y + 1104.0f;
-    vertices[2].position.y = position.y + 2128.0f;
-    vertices[3].position.y = position.y + 2128.0f;
+    vertices[0].position.x = position.x;
+    vertices[0].position.y = position.y + 80.0f;
+    vertices[1].position.x = position.x + 512.0f;
+    vertices[1].position.y = position.y + 80.0f;
+    vertices[2].position.x = position.x;
+    vertices[2].position.y = position.y + 1104.0f;
+    vertices[3].position.x = position.x + 512.0f;
+    vertices[3].position.y = position.y + 1104.0f;
     (*setState)(1, *(u32*)textureWork);
     (*submitVertices)(4, vertices, 4);
 }
