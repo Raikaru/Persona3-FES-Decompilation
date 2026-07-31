@@ -2323,11 +2323,11 @@ u32 func_002bad60(u32 *param_1)
 {
   short sVar1;
   u16 *puVar2;
-  u32 flags;
   int iVar3;
   u16 functionIndex;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
+  u32 flags;
   
   if (func_002b9350_u32(*param_1) == 0)
     return 0;

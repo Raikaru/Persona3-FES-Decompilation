@@ -546,7 +546,7 @@ state5_done:
 
 
         case 10:
-            if (sMemcardMode == 2)
+            if (sMemcardMode == 0)
             {
                 if (sMemcardAsync == 0)
                 {
@@ -554,28 +554,28 @@ state5_done:
                     {
                         if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
                         }
                     }
                     else
                     {
                         if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
                 }
             }
             else if (sMemcardMode == 1)
@@ -610,7 +610,7 @@ state5_done:
                     FUN_00523ac8(D_00846DA0, D_005E4A00, sMemcardFile);
                 }
             }
-            else if (sMemcardMode == 0)
+            else if (sMemcardMode == 2)
             {
                 if (sMemcardAsync == 0)
                 {
@@ -618,28 +618,28 @@ state5_done:
                     {
                         if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
                         }
                     }
                     else
                     {
                         if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
                 }
             }
             FUN_00513de8(sSocketNo, D_00846DA0);

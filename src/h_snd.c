@@ -786,8 +786,8 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
 {
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
-        s16 index = (s16)slotIndex;
-        sSlotWork[index].param2 = 0x3E7;
+        HsndSlotWork* slot = &sSlotWork[(s16)slotIndex];
+        slot->param2 = 0x3E7;
         return;
     }
 

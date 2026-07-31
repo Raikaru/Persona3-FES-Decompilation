@@ -1105,11 +1105,12 @@ u32 func_001f1f40(void)
 KwlnTask *func_001f2080(const u8 *params)
 {
     u8 *work = (u8 *)BR_ALLOC2(0x2a220, 0x40000);
+    u32 *work32 = (u32 *)work;
     KwlnTask *task;
     KwlnTask *child;
     RwV2d viewWindow;
     sBrCard = work;
-    BR_U32(work, 4) = 0;
+    work32[1] = 0;
     BR_U32(work, 0x14) = 0;
     task = kwlnTaskCreateWithAutoPriority(NULL, 10, "battle result card",
                                           func_001f2300, func_001f2fd0, work);
@@ -1124,7 +1125,7 @@ KwlnTask *func_001f2080(const u8 *params)
     viewWindow.x = 1.0f;
     viewWindow.y = 0.5f;
     RwCameraSetViewWindow((RwCamera *)kwlnGetMainCamera(), &viewWindow);
-    BR_U32(work, 4) |= 3;
+    work32[1] |= 3;
     func_00219c90(work + 0x95c0);
     sflResInit((SflResourceManager *)(work + 0x60));
     func_00239170(work + 0xf0);
