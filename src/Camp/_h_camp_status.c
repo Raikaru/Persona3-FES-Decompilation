@@ -1594,11 +1594,11 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     void* camera;
     f32 recipZ;
     s32 i;
+    s32 alphaValue;
     void (**submitVertices)(u32, CampStatusVertex*, s32);
-    void (**setState)(u32, u32);
     void* textureWork;
 
-    textureWork = texture;
+    alphaValue = alpha;
 
     camera = (void*)FUN_00198590();
     recipZ = 1.0f / *((f32*)camera + 0x20);
@@ -1615,7 +1615,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
         vertices[i].color.r = 255.0f;
         vertices[i].color.g = 255.0f;
         vertices[i].color.b = 255.0f;
-        vertices[i].color.a = (f32)alpha;
+        vertices[i].color.a = (f32)alphaValue;
         vertices[i].position.z = *(f32*)DAT_00960088_abs - x;
         vertices[i].recipZ = recipZ;
     }

@@ -4763,20 +4763,20 @@ void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4,
   float fVar2;
   u32 uVar1;
   fVar2 = (float)param_6 * 0.5f;
-  if (!(2147483648.0f <= fVar2)) {
-    uVar1 = (u32)(s32)fVar2;
-    goto convert_done_154e0;
+  if (2147483648.0f <= fVar2) {
+    uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
   }
-  uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
-convert_done_154e0:
+  else {
+    uVar1 = (u32)(s32)fVar2;
+  }
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
                     uVar1 & 0xff,0x5a,0,0,0);
-  if (!(2147483648.0f <= fVar2)) {
-    uVar1 = (u32)(s32)fVar2;
-    goto convert_done_154e0_b;
+  if (2147483648.0f <= fVar2) {
+    uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
   }
-  uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
-convert_done_154e0_b:
+  else {
+    uVar1 = (u32)(s32)fVar2;
+  }
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0xd8,
                     uVar1 & 0xff,0x5b,0,0,0);
 }

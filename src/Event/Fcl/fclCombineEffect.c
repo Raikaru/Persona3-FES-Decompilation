@@ -2752,11 +2752,7 @@ u32 FUN_0041a730(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  if (!((float)*(int *)(param_2 + 0xc) <=
-        (float)(int)(puVar1[1] << 1) + 6.0f)) {
-    return 1;
-  }
-  return 0;
+  return (float)(int)(puVar1[1] << 1) + 6.0f < (float)*(int *)(param_2 + 0xc);
 
 }
 #pragma opt_loop_invariants off

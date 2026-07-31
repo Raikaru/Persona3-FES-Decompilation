@@ -5370,7 +5370,7 @@ u32 func_002e4430(BtlAction* action, s32 skillId)
     return 0;
 }
 
-// FUN_002e4520 NONMATCHING
+// FUN_002e4520
 u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
 
 {
@@ -5398,13 +5398,13 @@ u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
       uVar7 = 1 << uVar5;
       if ((uVar4 & uVar7) != 0) {
         uVar6 = 0;
-        do {
+        while (uVar6 < *(u16 *)(param_1 + 0x6a)) {
           lVar2 = FUN_00301ca0(*(u32 *)
                                (*(int *)(*(int *)(param_1 + uVar6 * 4 + 0x38) + 0x30) +
                                0xa2c), uVar7);
           if (lVar2 == 0) break;
           uVar6 = uVar6 + 1;
-        } while (uVar6 < *(u16 *)(param_1 + 0x6a));
+        }
         if (uVar6 != *(u16 *)(param_1 + 0x6a)) break;
       }
     }
@@ -5416,18 +5416,19 @@ u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
     }
   }
   uVar4 = 0;
-  while (((uVar4 < *(u16 *)(param_1 + 0x6a) &&
-          (lVar2 = FUN_003068d0(param_2 & 0xffff,
-                                *(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                                *(u32 *)
-                                 (*(int *)(*(int *)(param_1 + uVar4 * 4 + 0x38) + 0x30) + 0xa2c)
-                                ,param_3), lVar2 != 0)) && (lVar2 != 0xffff))) {
+  while (uVar4 < *(u16 *)(param_1 + 0x6a)) {
+    lVar2 = FUN_003068d0(param_2 & 0xffff,
+                          *(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
+                          *(u32 *)
+                           (*(int *)(*(int *)(param_1 + uVar4 * 4 + 0x38) + 0x30) + 0xa2c)
+                          ,param_3);
+    if (lVar2 == 0 || lVar2 == 0xffff) break;
     uVar4 = uVar4 + 1;
   }
-  if (uVar4 != *(u16 *)(param_1 + 0x6a)) {
-    return 0;
+  if (uVar4 == *(u16 *)(param_1 + 0x6a)) {
+    return 4;
   }
-  return 4;
+  return 0;
 }
 
 // FUN_002e4720

@@ -124,9 +124,9 @@ KwlnTask* func_00185880(KwlnTask* parent, s16 sourceMonth, s16 sourceDay, s16 ta
 void func_00185980(void* resource, CalendarPackedPosition position, u32 alpha, s16 day);
 void func_00185ae0(void* resource, CalendarPackedPosition position, u32 alpha, s16 day);
 void func_00185b40(void* resource, CalendarPackedPosition position, u32 unused, s16 month, s16 day);
-void func_00186050(void* resource, u64 position, u32 alpha);
-void func_00186100(void* resource, u64 position, u32 alpha);
-void func_00186140(void* resource, u64 position, u32 alpha);
+void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha);
+void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha);
+void func_00186140(void* resource, CalendarPackedPosition position, u32 alpha);
 void* func_00186190(KwlnTask* task);
 void func_001868f0(KwlnTask* task);
 KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue);
@@ -3984,9 +3984,9 @@ void* func_00184f00(KwlnTask* task)
 
         case 3:
             offset = ((f32)(30 - work->frame) * -80.0f) / 30.0f;
-            func_00186100(work->resource, clndPackPosition(&position, offset, 0.0f), 0);
+            func_00186100(work->resource, clndPackPositionStruct(&position, offset, 0.0f), 0);
             offset = ((f32)(30 - work->frame) * 80.0f) / 30.0f;
-            func_00186140(work->resource, clndPackPosition(&position, offset, 0.0f), 0);
+            func_00186140(work->resource, clndPackPositionStruct(&position, offset, 0.0f), 0);
             work->frame++;
             if (work->frame == 30)
             {
@@ -4021,9 +4021,9 @@ void* func_00184f00(KwlnTask* task)
                           alpha,
                           work->currentMonth,
                           work->currentDay);
-            func_00186050(work->resource, *(u64*)&position, alpha);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
+            func_00186050(work->resource, position, alpha);
+            func_00186100(work->resource, position, 0);
+            func_00186140(work->resource, position, 0);
             if (frame == 60)
             {
                 work->frame = 0;
@@ -4067,9 +4067,9 @@ void* func_00184f00(KwlnTask* task)
                           0,
                           work->currentMonth,
                           work->currentDay);
-            func_00186050(work->resource, clndPackPosition(&position, 0.0f, 0.0f), 0);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
+            func_00186050(work->resource, clndPackPositionStruct(&position, 0.0f, 0.0f), 0);
+            func_00186100(work->resource, position, 0);
+            func_00186140(work->resource, position, 0);
             if (work->frame == 15)
             {
                 currentDays = clndGetDaysSinceStartFromDate(work->currentMonth,
@@ -4105,9 +4105,9 @@ void* func_00184f00(KwlnTask* task)
                           0,
                           work->targetMonth,
                           work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, 0);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
+            func_00186050(work->resource, position, 0);
+            func_00186100(work->resource, position, 0);
+            func_00186140(work->resource, position, 0);
             if (++work->frame == 20)
             {
                 work->frame = 0;
@@ -4139,9 +4139,9 @@ void* func_00184f00(KwlnTask* task)
                           0,
                           work->targetMonth,
                           work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, 0);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
+            func_00186050(work->resource, position, 0);
+            func_00186100(work->resource, position, 0);
+            func_00186140(work->resource, position, 0);
             break;
 
         case 9:
@@ -4162,9 +4162,9 @@ void* func_00184f00(KwlnTask* task)
                           0,
                           work->targetMonth,
                           work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, 0);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
+            func_00186050(work->resource, position, 0);
+            func_00186100(work->resource, position, 0);
+            func_00186140(work->resource, position, 0);
             break;
 
         case 7:
@@ -4183,9 +4183,9 @@ void* func_00184f00(KwlnTask* task)
                           alpha,
                           work->targetMonth,
                           work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, alpha);
-            func_00186100(work->resource, *(u64*)&position, alpha);
-            func_00186140(work->resource, *(u64*)&position, alpha);
+            func_00186050(work->resource, position, alpha);
+            func_00186100(work->resource, position, alpha);
+            func_00186140(work->resource, position, alpha);
             if (work->frame == 15)
             {
                 return KWLNTASK_STOP;
@@ -4433,78 +4433,48 @@ void func_00185b40(void* resource,
 /* Removing this worsens func_00186050 (nd29 -> nd37) - measured W161. */
 #pragma opt_common_subs off
 // FUN_00186050 NONMATCHING
-void func_00186050(void* resource, u64 position, u32 alpha)
+void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 {
-    volatile /* Removing this qualifier worsens func_00186050 (NONMATCHING nd29 -> NONMATCHING nd32, size 172 -> 172) - measured W170. */ union
-    {
-        u64 value;
-        struct
-        {
-            f32 x;
-            f32 y;
-        } coords;
-    } packed;
     f32 y;
     f32 x;
     void* unused;
 
-    packed.value = position;
-    y = packed.coords.y;
+    y = position.y;
     func_001159f0(unused, resource, 0x2b, alpha & 0xff,
-                  packed.coords.x, y, 48.0f);
-    x = packed.coords.x + 449.0f;
+                  position.x, y, 48.0f);
+    x = position.x + 449.0f;
     func_001159f0(unused, resource, 0x2c, alpha & 0xff,
                   x, y, 48.0f);
 }
 #pragma pop
 
 // FUN_00186100
-void func_00186100(void* resource, u64 position, u32 alpha)
+void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha)
 {
     f32 x;
     f32 y;
     u32 drawAlpha;
-    union
-    {
-        u64 value;
-        struct
-        {
-            f32 x;
-            f32 y;
-        } coords;
-    } packed;
 
-    packed.value = position;
-    y = packed.coords.y;
+    y = position.y;
     /* Removing this barrier loses func_00186100 (MATCH nd0 -> MISMATCH nd24) - measured W164. */
     asm ("" : "+m"(y));
-    x = packed.coords.x;
+    x = position.x;
     drawAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x29, drawAlpha,
                   x, y, 48.0f);
 }
 
 // FUN_00186140
-void func_00186140(void* resource, u64 position, u32 alpha)
+void func_00186140(void* resource, CalendarPackedPosition position, u32 alpha)
 {
     f32 x;
     f32 y;
     u32 drawAlpha;
-    union
-    {
-        u64 value;
-        struct
-        {
-            f32 x;
-            f32 y;
-        } coords;
-    } packed;
 
-    packed.value = position;
-    y = packed.coords.y + 404.0f;
+    y = position.y + 404.0f;
     /* Removing this barrier loses func_00186140 (MATCH nd0 -> MISMATCH nd20) - measured W164. */
     asm ("" : "+m"(y));
-    x = packed.coords.x;
+    x = position.x;
     drawAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x2a, drawAlpha,
                   x, y, 48.0f);
