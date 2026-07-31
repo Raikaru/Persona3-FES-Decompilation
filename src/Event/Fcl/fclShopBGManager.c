@@ -1,15 +1,9 @@
 #include "temporary.h"
 typedef int (*code)();
 typedef void (*FclShopBgCallback)(float, float, float, int, int, int, int, int, int, int, int);
-typedef union {
-    struct {
-        u32 *callbacks;
-        int count;
-    } asPair;
-    struct {
-        float first;
-        float second;
-    } asFloats;
+typedef struct {
+    u32 *callbacks;
+    int count;
 } FclShopBgCallbackPair;
 u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
 u32 H_Maestro_FinishedInit(u32 task);
@@ -5725,17 +5719,17 @@ fVar1 = DAT_007cda64_f;
 
 fVar0 = *(float *)((u8 *)&DAT_007cda64_f + 4);
 
-puStack_8[0].asFloats.first = fVar1;
+*(float *)(auStack_20 + 6) = fVar1;
 
-puStack_8[0].asFloats.second = fVar0;
+*(float *)(auStack_20 + 7) = fVar0;
 
-puStack_8[0].asPair.callbacks = auStack_20;
+*(u32 *)(auStack_20 + 6) = (u32)auStack_20;
 
 iVar5 = *(int *)(iVar1 + 0x4c) >> 1;
 
-puVar6 = puStack_8[iVar5].asPair.callbacks;
+puVar6 = puStack_8[iVar5].callbacks;
 
-iVar5 = puStack_8[iVar5].asPair.count;
+iVar5 = puStack_8[iVar5].count;
 
 for (iVar8 = 0; iVar8 < iVar5; iVar8 = iVar8 + 1) {
   puVar4 = (s16 *)(iVar1 + iVar8 * 0xc);

@@ -9451,15 +9451,18 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
   FUN_0036f680_ptr2(0,(u32 *)((u8 *)(uintptr_t)param_3 + 0x118),
                *(u32 *)(param_3 + 0x11c),
                *(u32 *)(param_3 + 0x11c),0,0x4000,0x1000);
-  FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
-  buttons = *(u16 *)DAT_007e094e_abs;
-  if ((buttons & 0x40) != 0) {
-    return 1;
+  {
+    u32 extraout_a2;
+    FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
+    buttons = *(u16 *)DAT_007e094e_abs;
+    if ((buttons & 0x40) != 0) {
+      return extraout_a2;
+    }
+    if ((buttons & 0x20) != 0) {
+      return -1;
+    }
+    return 0;
   }
-  if ((buttons & 0x20) != 0) {
-    return -1;
-  }
-  return 0;
 }
 
 
