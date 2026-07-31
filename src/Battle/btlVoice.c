@@ -477,6 +477,8 @@ s32 func_002f0580(BtlAction* action)
     return 1;
 }
 
+/* W367 pragma probe: opt_common_subs off nd 1127 -> 1122; on nd 1127; object 2100/2112. The loop-invariants + common-subs pair also measured nd1122. */
+#pragma opt_common_subs off
 // FUN_002f05f0 NONMATCHING
 void func_002f05f0(BtlAction *action)
 {
@@ -697,6 +699,7 @@ void func_002f05f0(BtlAction *action)
     func_002b9030(object);
 }
 
+#pragma opt_common_subs reset
 // FUN_002f0e30
 s32 func_002f0e30(BtlAction* action)
 {
@@ -2694,6 +2697,8 @@ void func_002f4e70(void)
 }
 #pragma opt_loop_invariants off
 
+/* W367 pragma probe: opt_loop_invariants on nd 569 -> 539; off nd 569; object 728/752. */
+#pragma opt_loop_invariants on
 // FUN_002f5030 NONMATCHING
 void func_002f5030(int param_1)
 
@@ -2779,6 +2784,7 @@ void func_002f5030(int param_1)
   return;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002f5320
 u32 func_002f5320(void)
 
@@ -3137,6 +3143,9 @@ LAB_002f5d34:
 }
 #pragma opt_loop_invariants off
 
+/* W367 stacked probe: opt_lifetimes + opt_propagation nd 644 -> 441; singles 642/447; object 924/928. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_002f5d80 NONMATCHING
 void func_002f5d80(u32 param_1)
 
@@ -3218,7 +3227,9 @@ void func_002f5d80(u32 param_1)
 }
 
 /* Removing this loses func_002f6120 (MATCH nd0 -> MISMATCH nd12) - measured W296. */
-
+#pragma opt_loop_invariants on
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 // FUN_002f6120
 void func_002f6120(void)
 {
@@ -5534,6 +5545,9 @@ void func_002e4a30(void)
 {
 }
 
+/* W367 stacked probe: opt_lifetimes + opt_dead_assignments nd 911 -> 895; singles 910/896; object 1288/1296. */
+#pragma opt_lifetimes on
+#pragma opt_dead_assignments off
 // FUN_002e4a40 NONMATCHING
 void func_002e4a40(u64 param_1)
 
@@ -5656,6 +5670,8 @@ LAB_002e4af0:
   return;
 }
 
+#pragma opt_dead_assignments reset
+#pragma opt_lifetimes reset
 // FUN_002e4f50
 void func_002e4f50(BtlCamera* camera)
 {
@@ -5707,6 +5723,8 @@ void func_002e5040(void)
   return;
 }
 
+/* W367 pragma probe: opt_propagation off nd 1421 -> 1395; on nd 1421; object 1924/2112. */
+#pragma opt_propagation off
 // FUN_002e5060 NONMATCHING
 void func_002e5060(BtlCamera* camera)
 {
@@ -5913,6 +5931,9 @@ void func_002e5060(BtlCamera* camera)
   return;
 }
 
+#pragma opt_propagation reset
+/* W367 pragma probe: opt_dead_assignments off nd 1472 -> 1467; on nd 1472; object 2020/2192. */
+#pragma opt_dead_assignments off
 // FUN_002e58a0 NONMATCHING
 void func_002e58a0(BtlCamera* param_1)
 
@@ -6118,6 +6139,7 @@ LAB_002e59dc:
   FUN_002a3110((void *)param_1,1.5f);
 }
 
+#pragma opt_dead_assignments reset
 // FUN_002e6130
 f32 func_002e6130(BtlUnit* param_1,BtlUnit* param_2,float* param_3,float* param_4)
 {
@@ -6362,6 +6384,8 @@ extern void FUN_002a44f0_6a20(f32* first, f32* second);
 extern void FUN_002a4470_6a20(f32* dst, f32* src);
 
 /* Retail 0x00-0x67f: reconstruct the paired-unit quaternion, projection, and playback paths; 1644/1680 bytes emitted, with no unjustified bytes. */
+/* W367 pragma probe: opt_propagation off nd 1266 -> 1242; on nd 1266; object 1652/1680. */
+#pragma opt_propagation off
 // FUN_002e6a20 NONMATCHING
 void func_002e6a20(BtlCamera* camera, float weight)
 {
@@ -6542,6 +6566,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
     FUN_002a3110(camera, work.temp2);
   }
 }
+#pragma opt_propagation reset
 // FUN_002e70b0
 void func_002e70b0(BtlCamera* camera)
 
@@ -8289,6 +8314,8 @@ void func_002eabb0(void)
   return;
 }
 
+/* W367 pragma probe: opt_propagation off nd 1029 -> 1024; on nd 1029; object 1620/1632. */
+#pragma opt_propagation off
 // FUN_002eabf0 NONMATCHING
 void func_002eabf0(void)
 
@@ -8459,6 +8486,7 @@ void func_002eabf0(void)
   return;
 }
 
+#pragma opt_propagation reset
 // FUN_002eb250
 u32 func_002eb250(BtlAction* action)
 {
@@ -8474,6 +8502,8 @@ u32 func_002eb250(BtlAction* action)
     return 1;
 }
 
+/* W367 pragma probe: opt_propagation off nd 1176 -> 1109; on nd 1176; object 1812/1824. */
+#pragma opt_propagation off
 // FUN_002eb2c0 NONMATCHING
 void func_002eb2c0(void)
 
@@ -8664,6 +8694,7 @@ void func_002eb2c0(void)
   return;
 }
 
+#pragma opt_propagation reset
 // FUN_002eb9e0
 u32 func_002eb9e0(BtlAction* action)
 {
@@ -8680,6 +8711,9 @@ u32 func_002eb9e0(BtlAction* action)
 }
 
 /* W212: template 002ef000 confirms direct packet locals and flag-first setup already used here; target remains nd768/1064 (window 1136). Residual starts at frame 0x70 versus retail 0xa0 and retail has 52 bytes of real tail code, so the deficit is reconstruction rather than a removable staged result. */
+/* W367 stacked probe: opt_common_subs + opt_propagation nd 758 -> 696; singles 753/751; object 1100/1136. */
+#pragma opt_common_subs off
+#pragma opt_propagation off
 // FUN_002eba50 NONMATCHING
 void func_002eba50(BtlAction* action)
 {
@@ -8793,6 +8827,8 @@ void func_002eba50(BtlAction* action)
 
 /* Removing this loses FUN_002ebec0 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
 #pragma opt_loop_invariants on
+#pragma opt_propagation reset
+#pragma opt_common_subs reset
 // FUN_002ebec0
 u32 func_002ebec0(BtlAction* action)
 {
@@ -10000,6 +10036,9 @@ u32 func_002ed360(u64 *param_1)
 }
 
 /* W212: template 002f3320's packet-local structure is already present. Recasting the unit search as retail's explicit do/while held nd444 but shrank 968 to 960 (window 976), so it was reverted; residual first differs at offset 28 as cyclic saved-register coloring, then at offset 292 in the search dispatch. */
+/* W367 stacked probe: opt_loop_invariants + opt_lifetimes nd 444 -> 432; singles 433/443; object 968/976. */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_002ee640 NONMATCHING
 void func_002ee640(BtlAction* action)
 {
@@ -10080,6 +10119,8 @@ void func_002ee640(BtlAction* action)
   func_002b9030(object);
 }
 
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 // FUN_002eea10
 u32 func_002eea10(BtlAction* action)
 {

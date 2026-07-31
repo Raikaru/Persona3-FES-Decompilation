@@ -13879,8 +13879,8 @@ void FUN_0032ce10(int param_1)
 
   }
 
-  return;
 
+  return;
 }
 #pragma opt_lifetimes reset
 #pragma opt_loop_invariants reset
