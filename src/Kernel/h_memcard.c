@@ -561,18 +561,7 @@ state5_done:
                 }
                 else
                 {
-                    if (FUN_0017d800() == 0)
-                    {
-                        if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
-                        }
-                    }
-                    else
+                    if (FUN_0017d800() != 0)
                     {
                         if (FUN_0016f190(0x1422) == 0)
                         {
@@ -581,6 +570,17 @@ state5_done:
                         else
                         {
                             FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
+                        }
+                    }
+                    else
+                    {
+                        if (FUN_0016f190(0x1422) == 0)
+                        {
+                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
+                        }
+                        else
+                        {
+                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
                         }
                     }
                 }

@@ -352,6 +352,9 @@ static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
 // FUN_00108BC0 NONMATCHING
 void func_00108bc0(void)
 {
+    func_00540ec0();
+    func_0051db00(3, 0x80, 0x7F, 0x7F);
+
     {
         s16 i;
 
