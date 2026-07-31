@@ -240,7 +240,6 @@ float floorf(register float x)
 }
 
 #pragma optimization_level 3
-#pragma opt_loop_invariants on
 // FUN_0052e878 NONMATCHING
 float sinf(float x)
 {
@@ -272,7 +271,6 @@ large_argument:
 }
 #pragma optimization_level 3
 
-#pragma opt_loop_invariants reset
 // FUN_0052e930 NONMATCHING
 float tanf(float x)
 {
@@ -327,6 +325,7 @@ float FUN_0052e9e8(float param_1)
   return FUN_0052abd8(param_1);
 }
 #pragma tailcall off
+#pragma opt_common_subs off
 // FUN_0052EA00 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea00(float param_1)
@@ -334,6 +333,7 @@ float FUN_0052ea00(float param_1)
   return FUN_0052afe8(param_1);
 }
 #pragma tailcall off
+#pragma opt_common_subs reset
 // FUN_0052EA18 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea18(float param_1, float param_2)

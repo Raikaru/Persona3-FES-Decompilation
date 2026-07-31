@@ -824,6 +824,8 @@ void func_00215aa0(void)
     sSflPsel = NULL;
 }
 
+/* opt_lifetimes on: func_00215b00 nd765 -> nd748, object 1216 -> 1212/1216; measured W328. */
+#pragma opt_lifetimes on
 // FUN_00215B00 NONMATCHING
 void func_00215b00(void)
 {
@@ -947,6 +949,7 @@ void func_00215b00(void)
     *sSflPsel |= 0x20;
     *sSflPsel |= 1;
 }
+#pragma opt_lifetimes reset
 
 // FUN_00215FC0 NONMATCHING
 void func_00215fc0(void)
@@ -1262,7 +1265,8 @@ u32 func_002168a0(void)
     return *sSflPsel & 0x20;
 }
 
-#pragma opt_strength_reduction off
+/* opt_lifetimes on: func_002168f0 nd777 -> nd716, object 1992 -> 1992/2000; measured W328. */
+#pragma opt_lifetimes on
 // FUN_002168F0 NONMATCHING
 void func_002168f0(void)
 {
@@ -1366,8 +1370,8 @@ void func_002168f0(void)
         (*draw)((u32*)(work + 0x5f90), 4, 0, 2, 3);
     }
 }
+#pragma opt_lifetimes reset
 
-#pragma opt_strength_reduction reset
 // FUN_002170C0
 void func_002170c0(void)
 {

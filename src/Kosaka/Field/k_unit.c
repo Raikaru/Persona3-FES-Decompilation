@@ -1144,7 +1144,6 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     return unit;
 }
 
-#pragma opt_lifetimes on
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
 {
@@ -1214,7 +1213,6 @@ u32 func_001cfdd0(u32 index)
     return true;
 }
 
-#pragma opt_lifetimes reset
 // FUN_001D00B0
 u32 func_001d00b0(void)
 {
@@ -2415,6 +2413,7 @@ void func_001d22a0(void* work)
 
 /* Removing this worsens FUN_001d2300 (nd502 -> nd511) - measured W161. */
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
 {
@@ -2495,6 +2494,7 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
+#pragma opt_common_subs reset
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
