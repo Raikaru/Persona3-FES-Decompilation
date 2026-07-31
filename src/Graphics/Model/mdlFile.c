@@ -44528,11 +44528,11 @@ void FUN_0034cc00(u32 *param_1)
   float scaleStack [3];
 
   u32 uStack_c;
-  u32 tmpStack;
 
   int iStack_4;
 
   int iStack_8;
+  u32 tmpStack;
 
 
   
@@ -44578,8 +44578,7 @@ void FUN_0034cc00(u32 *param_1)
       iStack_4 = param_1[9];
 
       stackPtr = (u32 *)&iStack_4;
-      mdlVuModulateStackedV0Out(tmpStack,stackPtr,(u32)iStack_8,DAT_007cae4c);
-      uStack_c = tmpStack;
+      mdlVuModulateStackedV0Out(uStack_c,stackPtr,(u32)iStack_8,DAT_007cae4c);
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
@@ -44602,7 +44601,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(positionStack));
 
-          FUN_00326030(*puVar7,uStack_c);
+          FUN_00326030(*puVar7,*((u32 *)&uStack_c - 1));
 
           renderStack[1] = matrixStack[1];
 

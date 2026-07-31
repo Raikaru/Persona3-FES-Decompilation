@@ -3885,44 +3885,57 @@ void* func_00314170(void* param_1, void* param_2)
 {
 
   int *piVar1;
-
   long lVar2;
-
   u16 *puVar3;
-
   int *piVar4;
 
   
 
   piVar4 = (int *)param_1;
-  func_004b6ec0(param_1,*piVar4);
-  piVar4[0x10] = (int)&LAB_00314020;
-  piVar4[0x11] = (int)&LAB_00314060;
-
 
   if (param_2 != 0) {
 
     puVar3 = (u16 *)param_2;
-
     piVar1 = *(int **)(puVar3 + 0xc);
 
-    if ((((piVar1 == (int *)0x0) || ((long)(u32)*(u16 *)(piVar1 + 3) <= (long)(short)puVar3[2])
+    if (piVar1 == (int *)0x0) {
+      goto fallback;
+    }
 
-         ) || (*(int *)(*piVar1 + (short)puVar3[2] * 8) == 0)) || ((*puVar3 & 1) == 0)) {
+    if ((long)(u32)*(u16 *)(piVar1 + 3) <= (long)(short)puVar3[2]) {
+      goto fallback;
+    }
 
-      piVar1 = *(int **)(puVar3 + 0xc);
-      if (piVar1 != (int *)0x0) {
-        lVar2 = (long)(short)puVar3[2];
-        if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
-              (*(int *)(*piVar1 + (short)puVar3[2] * 8) != 0)) &&
-             ((*puVar3 & 1) == 0)) &&
-            ((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3) &&
-              (0 <= (short)puVar3[2])))) {
-          func_004b74c0_typed(*(f32 *)(*piVar4 + 0xc),param_1);
-          *(u8 *)(puVar3 + 1) = 1;
-        }
-      }
-      return param_1;
+    if (*(int *)(*piVar1 + (short)puVar3[2] * 8) == 0) {
+      goto fallback;
+    }
+
+    if ((*puVar3 & 1) == 0) {
+      goto fallback;
+    }
+
+  }
+
+  func_004b6ec0(param_1,*piVar4);
+  piVar4[0x10] = (int)&LAB_00314020;
+  piVar4[0x11] = (int)&LAB_00314060;
+
+  return param_1;
+
+fallback:
+
+  piVar1 = *(int **)(puVar3 + 0xc);
+  if (piVar1 != (int *)0x0) {
+
+    lVar2 = (long)(short)puVar3[2];
+    if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
+          (*(int *)(*piVar1 + (short)puVar3[2] * 8) != 0)) &&
+         ((*puVar3 & 1) == 0)) &&
+        ((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3) &&
+          (0 <= (short)puVar3[2])))) {
+
+      func_004b74c0_typed(*(f32 *)(*piVar4 + 0xc),param_1);
+      *(u8 *)(puVar3 + 1) = 1;
 
     }
 

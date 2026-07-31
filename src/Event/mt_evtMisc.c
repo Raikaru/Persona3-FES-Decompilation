@@ -2437,6 +2437,8 @@ switchD_003898b0_caseD_0:
 }
 
 
+#pragma push
+#pragma opt_loop_invariants off
 // FUN_00389B50 NONMATCHING
 
 
@@ -2578,6 +2580,7 @@ void FUN_00389b50(int *param_1)
   return;
 
 }
+#pragma pop
 
 
 // FUN_00389D80

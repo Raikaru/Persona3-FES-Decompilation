@@ -8812,7 +8812,9 @@ undefined* func_002c6e30(int unit, u32 group)
   unitId = *(u16*)(*(int*)(unit + 0x30) + 0xa4);
   weights = DAT_007ce41c + (unitId * 0x29) * 4;
   total = 0;
-  for (i1 = 0; i1 < 5; i1 = (i1 + 1) & 0xffff) {
+  i1 = 0;
+  weights += (group & 0xffff) * 0x28;
+  for (; i1 < 5; i1 = (i1 + 1) & 0xffff) {
     idx = i1;
     total += weights[idx * 8 + 0x2c];
   }

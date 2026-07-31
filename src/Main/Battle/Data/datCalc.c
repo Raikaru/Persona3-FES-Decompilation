@@ -1255,8 +1255,8 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 void FUN_00301540(int param_1,u32 param_2)
 
 {
-  u16 iVar1;
   s32 uVar2;
+  u16 iVar1;
   
   uVar2 = param_2 & 0xff;
   if (!(uVar2 < 0x15)) {
