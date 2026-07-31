@@ -76,11 +76,6 @@ void FUN_00249690();
 void* H_Maestro_001120a0(s32 font);
 void func_00249680(void* work);
 
-// FUN_00239140
-void* func_00239140(s32 font)
-{
-    return *(void**)((u8*)H_Maestro_001120a0(font) + 0x104);
-}
 
 // FUN_00239170
 void func_00239170(u32* work)
