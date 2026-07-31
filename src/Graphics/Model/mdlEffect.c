@@ -11423,6 +11423,11 @@ void FUN_0032a890(int param_1,u64 param_2)
 
 
 
+#pragma opt_loop_invariants on
+
+#pragma opt_lifetimes on
+
+// helper alias + opt_loop_invariants on + opt_lifetimes on: FUN_0032a890_u32 change and pragmas 2668B/nd1783 -> 2652B/nd1559; retained for window reduction.
 // FUN_0032AF30 NONMATCHING
 
 
@@ -11990,7 +11995,7 @@ void FUN_0032af30(int param_1)
 
           *(float *)(pauVar15[1] + 0xc) = *(float *)(pauVar15[1] + 0xc) + pfVar14[0xd];
 
-          FUN_0032a890(param_1,(u64)(pauVar15));
+          FUN_0032a890_u32(param_1,(u32)(pauVar15));
 
           *(int *)pauVar15[1] = iVar8 + 1;
 
@@ -12010,6 +12015,8 @@ void FUN_0032af30(int param_1)
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 // FUN_0032B990
 void FUN_0032b990(int param_1, float scale)
 {
@@ -12567,6 +12574,9 @@ void FUN_0032c2b0(int param_1, float scale)
   *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
 }
 
+#pragma opt_loop_invariants on
+
+// opt_loop_invariants on: 2632B/nd1897 -> 2604B/nd1348; retained for window reduction.
 // FUN_0032C340 NONMATCHING
 
 
@@ -13143,6 +13153,7 @@ void FUN_0032c340(int param_1)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_0032CD70
 void FUN_0032cd70(int param_1, float scale)
 {
@@ -13465,7 +13476,7 @@ void FUN_0032ce10(int param_1)
           __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
           *(float *)(*pauVar20 + 4) += pfVar19[9];
 
-          FUN_0032a770(pauVar20,(int)(puVar4),iVar12,(u8 (*)[16])(&uStack_50));
+          FUN_0032a770_u32(pauVar20,(int)(puVar4),iVar12,(u8 (*)[16])(&uStack_50));
 
           *(float *)(pauVar20[1] + 8) = *(float *)(pauVar20[1] + 8) * pfVar19[10];
 
@@ -13473,7 +13484,7 @@ void FUN_0032ce10(int param_1)
 
           *(float *)(pauVar20[1] + 0xc) = *(float *)(pauVar20[1] + 0xc) + pfVar19[0xb];
 
-          FUN_0032a890(param_1,(u64)(pauVar20));
+          FUN_0032a890_u32(param_1,(u32)(pauVar20));
 
           *(int *)pauVar20[1] = iVar12 + 1;
 
@@ -13596,7 +13607,7 @@ void FUN_0032ce10(int param_1)
 
                 pfVar19[0xb] = fVar24 * fVar23;
 
-                uVar13 = FUN_00357fd0(0);
+                uVar13 = FUN_00357fd0_u32(0);
 
                 if ((uVar13 & 1) != 0) {
 
@@ -13620,7 +13631,7 @@ void FUN_0032ce10(int param_1)
 
             if (bVar7) {
 
-              iVar12 = FUN_00357fd0(0);
+              iVar12 = (int)FUN_00357fd0_u32(0);
 
               fVar23 = (float)(u32)(iVar12 % iVar5);
 
@@ -13661,7 +13672,8 @@ void FUN_0032ce10(int param_1)
 
             }
 
-            FUN_0032a770(pauVar20,(int)(puVar4),*(u32 *)pauVar20[1],(u8 (*)[16])(&uStack_50));
+            FUN_0032a770_u32(pauVar20,(int)(puVar4),*(u32 *)pauVar20[1],
+                              (u8 (*)[16])(&uStack_50));
 
             *(float *)(pauVar20[1] + 8) = *(float *)(pauVar20[1] + 8) * pfVar19[10];
 
@@ -17456,6 +17468,9 @@ void FUN_003315d0(int param_1, float scale)
   *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
 }
 
+#pragma opt_loop_invariants on
+
+// helper alias + opt_loop_invariants on: 2440B/nd1831 -> 2432B/nd1713; retained for window reduction.
 // FUN_00331650 NONMATCHING
 
 
@@ -17744,7 +17759,7 @@ void FUN_00331650(int param_1)
 
           *(float *)(pauVar14[1] + 0xc) = *(float *)(pauVar14[1] + 0xc) + pfVar13[0xe];
 
-          FUN_0032a890(param_1,(u64)(pauVar14));
+          FUN_0032a890_u32(param_1,(u32)(pauVar14));
 
           *(int *)pauVar14[1] = iVar15 + 1;
 
@@ -18020,7 +18035,8 @@ void FUN_00331650(int param_1)
 
             }
 
-            iVar12 = iVar12 + -1;
+
+          iVar12 = iVar12 + -1;
 
           }
 
@@ -18043,6 +18059,7 @@ void FUN_00331650(int param_1)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_00331FD0
 void FUN_00331fd0(int param_1, float scale)
 {

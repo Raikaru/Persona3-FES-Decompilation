@@ -150,42 +150,38 @@ float atanf(float x)
 
 
 #pragma optimization_level 3
-#pragma opt_common_subs off
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
     u32 ix;
     s32 n;
     float y[2];
-    ix = *(u32*)&x;
-    ix &= 0x7FFFFFFF;
+    ix = *(u32*)&x & 0x7FFFFFFF;
     if (ix <= 0x3F490FD8)
-    {
         return func_0052d2d8(x, 0.0f);
-    }
-
     n = func_0052c000(x, y);
-    switch (n & 3)
-    {
-    case 0:
-        return func_0052d2d8(y[0], y[1]);
-    case 1:
-        return -func_0052dc48(y[0], y[1], 1);
-    case 2:
-        return -func_0052d2d8(y[0], y[1]);
-    default:
-        return func_0052dc48(y[0], y[1], 1);
-    }
+    n &= 3;
+    if (n == 0) return func_0052d2d8(y[0], y[1]);
+    if (n == 1) return -func_0052dc48(y[0], y[1], 1);
+    if (n == 2) return -func_0052d2d8(y[0], y[1]);
+    return func_0052dc48(y[0], y[1], 1);
 }
 #pragma optimization_level 2
 
 #pragma intrinsic fabsf
-#pragma opt_common_subs reset
 // FUN_0052e788 NONMATCHING
-float fabsf(register float x)
+#pragma opt_alias on
+float fabsf(float x)
 {
-    return fabsf(x);
+    union {
+        float f;
+        u32 i;
+    } ux;
+    ux.f = x;
+    ux.i &= 0x7FFFFFFF;
+    return ux.f;
 }
+#pragma opt_alias reset
 #pragma optimization_level 2
 
 #pragma optimization_level 3
@@ -370,15 +366,18 @@ u64 FUN_0052ea78(long param_1, long param_2)
 #pragma optimization_level 2
 #pragma optimization_level 3
 // FUN_0052EAC8 NONMATCHING
-f64 FUN_0052eac8(s64 u)
+u64 FUN_0052eac8(s64 u)
 {
-  f64 f;
+    u64 high;
+    u64 low;
 
-  f = (s32)(u >> 0x20);
-  f *= 65536.0;
-  f *= 65536.0;
-  f += (u32)u;
-  return f;
+    high = FUN_00531720_u64((u32)(u >> 0x20));
+    high = FUN_00531230_u64(high, 0x40F0000000000000ULL);
+    high = FUN_00531230_u64(high, 0x40F0000000000000ULL);
+    low = FUN_00531720_u64((u32)u);
+    if ((s32)u < 0)
+        low = FUN_00531170_u64(low, 0x41F0000000000000ULL);
+    return FUN_00531170_u64(high, low);
 }
 #pragma optimization_level 2
 // Scoped scheduler: level-2 target is 224B without schedule and 200B with schedule.
