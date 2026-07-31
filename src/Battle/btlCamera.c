@@ -7675,7 +7675,6 @@ void LAB_002b8970(u32 *work)
   (*(u16 *)(unit + 0xa0))++;
 }
 
-#pragma opt_loop_invariants on
 // FUN_002b8990 NONMATCHING
 
 undefined4 FUN_002b8990(undefined4 *param_1)
@@ -7715,7 +7714,6 @@ undefined4 FUN_002b8990(undefined4 *param_1)
   return 1;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002b8b50
 void LAB_002b8b50(u32 *work)
 {
@@ -9904,6 +9902,7 @@ typedef struct BtlCameraFramingWork {
   f32 auStack_8;
   f32 fStack_4;
 } BtlCameraFramingWork;
+#pragma opt_loop_invariants on
 // FUN_002AEF80 NONMATCHING
 
 void func_002aef80(BtlCamera* camera, int param_2)
@@ -10187,6 +10186,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
 extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
 extern u16 FUN_002c09f0(int target);
 
+#pragma opt_loop_invariants reset
 // FUN_002AF7F0
 
 void func_002af7f0(BtlCamera* camera)

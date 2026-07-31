@@ -477,27 +477,29 @@ void func_002807a0(BtlUnit* unit, RwV3d* param_2)
 f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
                   f32* param_4, f32* param_5, u32 param_6)
 {
-    u32 genus;
-    u32 count;
     BtlUnit* unit;
     BtlUnit* lastUnit;
     RwV3d scaled;
     RwV3d transformed;
     RwV3d center;
     RwV3d delta;
-    RwV3d sum;
-    f32 minY;
+    f32 sumX;
+    f32 sumY;
+    f32 sumZ;
     f32 maxY;
+    f32 minY;
     f32 radius;
     f32 extent;
+    u32 count;
+    u32 genus;
 
+    sumX = 0.0f;
+    sumY = 0.0f;
+    sumZ = 0.0f;
     maxY = 0.0f;
     minY = 100000000.0f;
     count = 0;
     lastUnit = NULL;
-    sum = D_00957180_abs;
-    param_1 = (u16)param_1;
-    param_6 = (u16)param_6;
 
     for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
     {
@@ -509,9 +511,6 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
         for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
         {
             f32 top;
-            f32 pointX;
-            f32 pointY;
-            f32 pointZ;
 
             if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
                 (unit->flags3 & param_2) != 0)
@@ -525,21 +524,21 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
                 scaled.y = unit->sphereCenter.y * unit->scale;
                 scaled.z = unit->sphereCenter.z * unit->scale;
                 RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
-                pointX = transformed.x + unit->pos.x;
-                pointY = transformed.y + unit->pos.y;
-                pointZ = transformed.z + unit->pos.z;
+                center.x = transformed.x + unit->pos.x;
+                center.y = transformed.y + unit->pos.y;
+                center.z = transformed.z + unit->pos.z;
             }
             else
             {
-                pointX = unit->unk_94 * 25 - 0x6d6;
-                pointY = unit->sphereCenter.y * unit->scale + unit->pos.y;
-                pointZ = unit->unk_96 * 25 - 0x6d6;
+                center.x = unit->unk_94 * 25 - 0x6d6;
+                center.y = unit->sphereCenter.y * unit->scale + unit->pos.y;
+                center.z = unit->unk_96 * 25 - 0x6d6;
             }
 
-            sum.x += pointX;
-            sum.y += pointY;
-            sum.z += pointZ;
-            top = pointY + unit->unk_8c * unit->scale * 0.5f;
+            sumX += center.x;
+            sumY += center.y;
+            sumZ += center.z;
+            top = center.y + unit->unk_8c * unit->scale * 0.5f;
             if (top > maxY)
             {
                 maxY = top;
@@ -560,7 +559,9 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
 
     if (count == 1)
     {
-        center = sum;
+        center.x = sumX;
+        center.y = sumY;
+        center.z = sumZ;
         extent = lastUnit->unk_8c * lastUnit->scale * 0.5f;
         radius = lastUnit->sphereRadius * lastUnit->scale;
         if (radius < extent)
@@ -574,10 +575,9 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
         u32 genus2;
         f32 invCount;
 
-        invCount = 1.0f / count;
-        center.x = sum.x * invCount;
-        center.y = sum.y * invCount;
-        center.z = sum.z * invCount;
+        center.x = sumX * invCount;
+        center.y = sumY * invCount;
+        center.z = sumZ * invCount;
         radius = 0.0f;
 
         for (genus2 = 0; genus2 < UNIT_GENUS_MAX; genus2++)
