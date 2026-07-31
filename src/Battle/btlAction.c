@@ -2283,7 +2283,6 @@ void btlActionUpdateStateReady(BtlAction* action)
     }
 }
 
-#pragma opt_propagation off
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
@@ -2717,7 +2716,6 @@ do_camera_packet_0x13:
 epilogue:
     action->unk_18 &= ~0x10;
 }
-#pragma opt_propagation reset
 // FUN_0028e740
 void btlActionUpdateStateMoveTarget(BtlAction* action)
 {

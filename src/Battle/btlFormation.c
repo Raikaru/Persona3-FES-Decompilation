@@ -3836,7 +3836,6 @@ void btlFormationInit050aPacket(void* work)
     units[1]->packetCount++;
 }
 
-#pragma opt_strength_reduction off
 // FUN_002bd8e0 NONMATCHING
 
 u32 func_002bd8e0(int *param_1)
@@ -3950,7 +3949,6 @@ u32 func_002bd8e0(int *param_1)
   return 0;
 }
 
-#pragma opt_strength_reduction reset
 // FUN_002bdba0
 void btlFormationDestroy050aPacket(void* work)
 {

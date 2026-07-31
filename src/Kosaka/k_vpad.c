@@ -60,7 +60,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     s32 animation;
     s32 rotated;
     s32 forceAnimation;
-    s32 cameraInput;
+    u16 cameraInput;
     work = (VPadWork*)task->workData;
     kwlnGetMainCamera();
     axis = D_00683D78;

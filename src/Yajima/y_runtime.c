@@ -5643,7 +5643,6 @@ s8 FUN_004353f0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants on
 // FUN_00435440 NONMATCHING
 
 char FUN_00435440(char param_1)
@@ -5686,7 +5685,6 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants reset
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)

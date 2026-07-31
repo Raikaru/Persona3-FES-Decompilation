@@ -2660,7 +2660,6 @@ void func_00114e70(f32 depth,
  * compiler frame/register layout across the same retail ranges. */
 /* Scoped loop-invariant pragma measured W330: without nd944, with nd911 (obj 1212/1376). */
 #pragma opt_loop_invariants on
-#pragma opt_strength_reduction off
 // FUN_00115350 NONMATCHING
 void func_00115350(f32 depth,
                    u32 color,
@@ -2925,7 +2924,6 @@ typedef struct MaestroCampSpriteSetupWork
     void* ownerPool;                  /* +0x44 */
 } MaestroCampSpriteSetupWork;
 
-#pragma opt_strength_reduction reset
 // FUN_001158B0
 
 
