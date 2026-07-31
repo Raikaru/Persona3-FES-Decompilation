@@ -11,6 +11,9 @@ static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model ty
 typedef struct MdlShortVec8 {
     short values[8];
 } MdlShortVec8;
+typedef struct MdlShortVec10 {
+    short values[10];
+} MdlShortVec10;
 
 void mdlStreamInit(Model* mdl);
 void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
@@ -2978,7 +2981,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
     if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
 
-        (puVar2 = *(u8 **)&((u8 *)(*piVar1))[0x40 + sVar5 * 0x50],
+        (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
 
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
 
@@ -6709,14 +6712,7 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 
 
-// Confirmed b210 cyclic a2/a3 colouring floor (W205, ours/retail):
-// +4 08000724/08000624, +16 ffff6631/ffff6731, +20 40180600/40180700,
-// +24 21186600/21186700, +52 2d40e000/2d40c000, +60 0000468d/0000478d,
-// +76 000026ad/000027ad.
-#pragma push
-#pragma opt_loop_invariants on
-#pragma opt_propagation off
-// FUN_003197C0 NONMATCHING
+// FUN_003197C0
 
 
 void func_003197c0(Model* param_1, RwMatrix* param_2)
@@ -6734,7 +6730,6 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
         }
     }
 }
-#pragma pop
     
 
 
@@ -8589,29 +8584,8 @@ u32 func_0031be80(u32 param_1)
 
     sVar3 = *(u16 *)(iVar8 + 0xd6);
 
-    psVar10 = (short*)DAT_0069b190_abs;
-
-    psVar9 = asStack_20;
-
-    iVar7 = 5;
-
-    do {
-
-      sVar1 = *psVar10;
-
-      sVar2 = psVar10[1];
-
-      psVar10 = psVar10 + 2;
-
-      iVar7 = iVar7 + -1;
-
-      *psVar9 = sVar1;
-
-      psVar9[1] = sVar2;
-
-      psVar9 = psVar9 + 2;
-
-    } while (0 < iVar7);
+    *(MdlShortVec10 *)((u8 *)asStack_20) =
+        *(MdlShortVec10 *)((u8 *)DAT_0069b190_abs);
     if (*(u16 *)(iVar8 + 0xd4) != 5) {
 
       bVar4 = 0;
@@ -8683,9 +8657,6 @@ void func_0031c000(char* param_1,u32 param_2)
 
 {
 
-  short uVar1;
-
-  short uVar2;
 
   u8 uVar3;
 
@@ -8695,9 +8666,6 @@ void func_0031c000(char* param_1,u32 param_2)
 
   int iVar6;
 
-  short *puVar7;
-
-  short *puVar8;
 
   short auStack_20 [12];
 

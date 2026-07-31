@@ -304,7 +304,8 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     matrix_p->up.x = z * sine - x * y * (1.0f - cosine);
     ySquared = y * y;
     matrix_p->up.y = ySquared + (1.0f - ySquared) * cosine;
-    matrix_p->up.z = x * sine + y * z * (1.0f - cosine);
+    xSquared = y * z;
+    matrix_p->up.z = x * sine + xSquared * (1.0f - cosine);
     matrix_p->pad1 = 0;
 
     matrix_p->at.x = y * sine + x * z * (1.0f - cosine);

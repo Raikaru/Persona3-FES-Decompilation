@@ -2933,7 +2933,9 @@ FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
   }
 
-  iVar1 = param_8 * 8 + *(int *)(iVar1 + 4) + 0x20;
+  lVar2 = *(int *)(iVar1 + 4);
+  iVar1 = param_8 * 8;
+  iVar1 = iVar1 + lVar2 + 0x20;
 
   if (iVar1 == 0) {
 

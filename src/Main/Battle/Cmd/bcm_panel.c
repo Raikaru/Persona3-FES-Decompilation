@@ -417,7 +417,8 @@ static void bcm_panel_refresh_records(void)
     }
 }
 
-// FUN_002230e0 NONMATCHING
+/* Removing this loses FUN_002230e0 (MATCH nd0 -> MISMATCH nd19) - measured W302. */
+// FUN_002230e0
 #pragma optimization_level 1
 void FUN_002230e0(void)
 {

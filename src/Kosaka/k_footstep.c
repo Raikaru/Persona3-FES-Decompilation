@@ -2578,15 +2578,7 @@ void* func_001dfa70(KwlnTask* task)
             }
 
             stickValue = (s32)D_007E0961[0];
-            if (stickValue >= 0)
-            {
-                stick = (f32)stickValue;
-            }
-            else
-            {
-                stick = (f32)((stickValue >> 1) | (stickValue & 1));
-                stick *= 2.0f;
-            }
+            stick = (f32)(u32)stickValue;
             axisDelta = stick - 128.0f;
             if ((axisDelta < -48.0f) || !(axisDelta <= 48.0f))
             {

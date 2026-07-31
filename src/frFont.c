@@ -1575,10 +1575,11 @@ u16 FUN_003b0e90(u16 param_1)
 }
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
 #undef FUN_003b0ec0
+// Retail hoists the loop-invariant mask/type constants here; without
+// opt_loop_invariants this function measures nd102 at 136B instead of nd1 at 140B.
 // FUN_003B0EC0 NONMATCHING
 #pragma push
 #pragma opt_loop_invariants on
-
 
 u32 FUN_003b0ec0(int list)
 {
