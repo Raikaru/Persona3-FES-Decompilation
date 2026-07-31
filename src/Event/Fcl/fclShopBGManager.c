@@ -3478,7 +3478,6 @@ u64 FUN_00413b10(u64 param_1,int param_2)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_00413B70 NONMATCHING
 
 
@@ -3900,7 +3899,6 @@ return uVar6; }
 
 #pragma push
 #pragma opt_common_subs off
-#pragma opt_loop_invariants reset
 // FUN_00414100
 
 
@@ -5456,6 +5454,7 @@ void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
 }
 
+#pragma opt_loop_invariants on
 // FUN_004167D0 NONMATCHING
 
 
@@ -5563,6 +5562,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00416B90 NONMATCHING
 
 

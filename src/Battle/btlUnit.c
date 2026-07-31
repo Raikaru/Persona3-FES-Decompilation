@@ -805,7 +805,6 @@ f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
     return offset;
 }
 
-#pragma opt_loop_invariants on
 // FUN_002826D0 NONMATCHING
 void func_002826d0(BtlUnit* unit)
 {
@@ -934,7 +933,6 @@ void func_002826d0(BtlUnit* unit)
     unit->unk_9cc &= (u16)~8;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_00282BC0
 void func_00282bc0(BtlUnit* unit)
 {
@@ -4707,6 +4705,7 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
     return -1;
 }
 
+#pragma opt_common_subs off
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
@@ -4770,6 +4769,7 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
     return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
 }
 
+#pragma opt_common_subs reset
 // FUN_00283E40 NONMATCHING
 u16 func_00283e40(BtlUnit* unit, s16 id)
 {

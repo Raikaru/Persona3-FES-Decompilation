@@ -1855,6 +1855,8 @@ start:
 
 #define FUN_0038f8c0(...) ((void (*)(...))FUN_0038f8c0)(__VA_ARGS__)
 #undef FUN_0038fa10
+/* Measured W327: opt_loop_invariants on, with/without nd 721/726, object 1436/1440. */
+#pragma opt_loop_invariants on
 // FUN_0038FA10 NONMATCHING
 
 
@@ -2200,7 +2202,10 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
 
 #define FUN_0038fa10(...) ((void (*)(...))FUN_0038fa10)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef FUN_0038ffb0
+/* Measured W327: opt_common_subs off, with/without nd 399/420, object 740/784. */
+#pragma opt_common_subs off
 // FUN_0038FFB0 NONMATCHING
 
 
@@ -2386,6 +2391,7 @@ void FUN_0038ffb0(int param_1,int param_2)
 }
 
 #define FUN_0038ffb0(...) ((void (*)(...))FUN_0038ffb0)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003902c0
  
 // FUN_003902C0 NONMATCHING
@@ -3302,6 +3308,8 @@ LAB_00391290:
 #undef FUN_00390c90
 #undef FUN_00390ef0
 #undef FUN_00391080
+/* Measured W327: opt_loop_invariants on, with/without nd 7848/7975, object 10720/11072. */
+#pragma opt_loop_invariants on
 // FUN_003912F0 NONMATCHING
 
 
@@ -5560,3 +5568,4 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
 }
 #define FUN_003912f0(...) ((u32 (*)(...))FUN_003912f0)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
