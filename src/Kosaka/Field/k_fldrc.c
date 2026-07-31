@@ -623,7 +623,10 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
  * Archive readiness and destruction are inlined to preserve the retail calls.
  */
 #pragma push
+/* W389: baseline obj 5656/5776, nd 3581; opt_lifetimes on + opt_propagation off -> obj 5656/5776, nd 3574. */
 #pragma opt_cse off
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_001b10f0 NONMATCHING
 u32 K_Fldrc_Init()
 {
@@ -1299,6 +1302,8 @@ init_phase29:
     *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
     return false;
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 #pragma pop
 
 // FUN_001b5850
@@ -1339,6 +1344,9 @@ KwlnTask* K_Fldrc_CreateFilterTask(KwlnTask* parent)
 
     return task;
 }
+#pragma push
+/* W389: baseline obj 1568/1760, nd 912; opt_lifetimes on -> obj 1560/1760, nd 854. */
+#pragma opt_lifetimes on
 // FUN_001b4720 NONMATCHING
 void FUN_001b4720(void* camera, u32* resource)
 {
@@ -1526,6 +1534,8 @@ void FUN_001b4720(void* camera, u32* resource)
     FUN_00198570();
     FUN_00198610(3, 0);
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 #pragma push
 /* Removing this worsens FUN_001b4e00 (nd650 -> nd651) - measured W161. */
@@ -1689,6 +1699,10 @@ typedef struct FldrcCloneRecord
     u32 words[6];
 } FldrcCloneRecord;
 
+#pragma push
+/* W389: baseline obj 644/656, nd 366; opt_loop_invariants on + opt_lifetimes on -> obj 640/656, nd 354. */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_001b5380 NONMATCHING
 void* FUN_001b5380(u32* resource, void* position, u32 direction)
 {
@@ -1750,6 +1764,9 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     FUN_001b4e00(copy, (const f32*)position, angle);
     return copy;
 }
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
+#pragma pop
 
 // FUN_001b5610
 void FUN_001b5610(u32* resource, const f32* color)
@@ -2257,6 +2274,10 @@ static inline void fldrc_apply_field_config(u32 config)
     }
 }
 
+#pragma push
+/* W389: baseline obj 3244/3264, nd 2138; opt_lifetimes on + opt_propagation off -> obj 3244/3264, nd 2127. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_001b61f0 NONMATCHING
 u32 FUN_001b61f0(void* resource, u32 archiveEntry)
 {
@@ -2294,6 +2315,9 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
     }
     return 1;
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 static u32 fldrc_event_override(u16 group, u32 id)
 {
     if (((group == 6) && ((id == 4) || (id == 5) || (id == 7) || (id == 8) ||
@@ -2692,6 +2716,9 @@ u32 FUN_001b2b30(u32 resource)
     return true;
 }
 
+#pragma push
+/* W389: baseline obj 856/880, nd 528; opt_common_subs off -> obj 856/880, nd 521. */
+#pragma opt_common_subs off
 // FUN_001b2b90 NONMATCHING
 void FUN_001b2b90(u32 resource)
 {
@@ -2782,6 +2809,8 @@ cleanup:
         (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
     }
 }
+#pragma opt_common_subs reset
+#pragma pop
 // FUN_001b2f00 NONMATCHING
 u32 FUN_001b2f00(u32* resource)
 {
@@ -3004,6 +3033,9 @@ outer_check:
 done:
     return result;
 }
+#pragma push
+/* W389: baseline obj 1352/1376, nd 991; opt_dead_assignments off -> obj 1352/1376, nd 990. */
+#pragma opt_dead_assignments off
 // FUN_001b3480 NONMATCHING
 void FUN_001b3480(u32 resource)
 {
@@ -3140,6 +3172,8 @@ void FUN_001b3480(u32 resource)
         }
     }
 }
+#pragma opt_dead_assignments reset
+#pragma pop
 // FUN_001b39e0 NONMATCHING
 u32 FUN_001b39e0(u32 resource)
 {

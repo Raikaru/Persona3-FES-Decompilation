@@ -187,6 +187,10 @@ void FUN_003b3770(void)
 }
 #define FUN_003b3770(...) ((void (*)(...))FUN_003b3770)(__VA_ARGS__)
 #undef FUN_003b38f0
+/* W389 pragma pair: opt_loop_invariants on + opt_lifetimes on; without nd=740/object=1084, with nd=709/object=1072; window=1136. */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_003B38F0 NONMATCHING
 u64
 
@@ -407,6 +411,9 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
   return 0;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #define FUN_003b38f0(...) ((u64 (*)(...))FUN_003b38f0)(__VA_ARGS__)
 #undef FUN_003b3d60
 // FUN_003B3D60

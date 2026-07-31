@@ -1322,6 +1322,9 @@ u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
     return state;
 }
 
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 // FUN_0029d1f0 NONMATCHING
 void btlMainInitStateCondition(BtlStateWork* work)
 {
@@ -1474,6 +1477,9 @@ void btlMainInitStateCondition(BtlStateWork* work)
     packet->parentUID = lastPacketUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 }
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
+#pragma pop
 // FUN_0029d6e0
 u32 btlMainUpdateStateCondition(BtlStateWork* work)
 {

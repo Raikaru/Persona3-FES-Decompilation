@@ -222,6 +222,10 @@ u64 FUN_003ae560(u64 param_1,int param_2)
 }
 #define FUN_003ae560(...) ((u64 (*)(...))FUN_003ae560)(__VA_ARGS__)
 #undef FUN_003ae650
+/* W389 pragma pair: opt_loop_invariants on + opt_lifetimes on; without nd=76/object=256, with nd=0/object=256; window=256. */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_003AE650 NONMATCHING
 
 
@@ -256,6 +260,9 @@ u32 FUN_003ae650(u64 param_1,int param_2)
   *(int *)(param_2 + 0x18) = *(int *)(param_2 + 0x18) + index;
   return 0;
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #define FUN_003ae650(...) ((u64 (*)(...))FUN_003ae650)(__VA_ARGS__)
 #undef FUN_003ae750
 // FUN_003AE750
@@ -487,6 +494,10 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 }
 #define FUN_003ae9b0(...) ((u64 (*)(...))FUN_003ae9b0)(__VA_ARGS__)
 #undef FUN_003aea50
+/* W389 pragma pair: opt_lifetimes on + opt_dead_assignments off; without nd=288/object=432, with nd=274/object=432; window=464. */
+#pragma push
+#pragma opt_lifetimes on
+#pragma opt_dead_assignments off
 // FUN_003AEA50 NONMATCHING
 
 
@@ -558,6 +569,9 @@ u32 FUN_003aea50(u64 param_1, int param_2)
   FUN_003b93c0(value0, value1, value2, value3, value4);
   return 0;
 }
+#pragma pop
+#pragma opt_dead_assignments reset
+#pragma opt_lifetimes reset
 
 #define FUN_003aea50(...) ((u64 (*)(...))FUN_003aea50)(__VA_ARGS__)
 #undef FUN_003aec20
@@ -770,6 +784,9 @@ u64 FUN_003aee20(u64 param_1, int param_2)
 }
 #define FUN_003aee20(...) ((u64 (*)(...))FUN_003aee20)(__VA_ARGS__)
 #undef FUN_003af110
+/* W389 pragma: opt_common_subs off; without nd=370/object=528, with nd=358/object=580; window=592. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_003AF110 NONMATCHING
 
 
@@ -879,6 +896,8 @@ u32 FUN_003af110(u64 param_1,int param_2)
   return 0;
 
 }
+#pragma pop
+#pragma opt_common_subs reset
 #define FUN_003af110(...) ((u64 (*)(...))FUN_003af110)(__VA_ARGS__)
 #undef FUN_003af360
 #pragma alias frTagTableGetArgument0 FUN_003af360
@@ -1158,8 +1177,12 @@ void FUN_003af770(u64 param_1,u64 param_2)
 }
 #define FUN_003af770(...) ((void (*)(...))FUN_003af770)(__VA_ARGS__)
 #undef FUN_003af7a0
-// FUN_003AF7A0 NONMATCHING
+/* W389 pragma pair: opt_common_subs off + opt_lifetimes on; without nd=334/object=636, with nd=324/object=652; window=672. */
 #pragma opt_loop_invariants on
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
+// FUN_003AF7A0 NONMATCHING
 
 
 
@@ -1239,5 +1262,8 @@ void FUN_003af7a0(int param_1, u64 param_2)
   DAT_007ce648 = iVar4 << 4;
   FUN_003b35e0(param_2);
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 #pragma opt_loop_invariants off
 #define FUN_003af7a0(...) ((void (*)(...))FUN_003af7a0)(__VA_ARGS__)

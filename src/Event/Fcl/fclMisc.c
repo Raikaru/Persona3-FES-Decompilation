@@ -391,8 +391,6 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 #pragma push
 /* W389 sweep: opt_common_subs off measured nd126/obj328 -> nd95/obj336 (window 336). */
 #pragma opt_common_subs off
-#pragma opt_loop_invariants on
-#pragma opt_propagation off
 // FUN_003C8400 NONMATCHING
 u32 FUN_003c8400(u32 param_1,int param_2)
 {
@@ -442,8 +440,6 @@ LAB_003c84bc:
 #pragma pop
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #undef FUN_003c8550
-#pragma opt_propagation reset
-#pragma opt_loop_invariants reset
 // FUN_003C8550
 
 
@@ -2350,6 +2346,8 @@ void FUN_003cacc0(int param_1)
 #pragma push
 // b210 floor: both call sites differ only in independent argument setup order
 // (mtc1/addiu and lw/move/move/mov.s/mov.s); the calls and values are identical.
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 // FUN_003CB050 NONMATCHING
 void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
                   s32 param_6,s32 param_7,s32 param_8)
@@ -2376,6 +2374,8 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
 #pragma pop
 #define FUN_003cb050(...) ((void (*)(...))FUN_003cb050)(__VA_ARGS__)
 #undef FUN_003cb100
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
 // FUN_003CB100 NONMATCHING
 
 
