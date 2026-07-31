@@ -2290,6 +2290,7 @@ void func_001d1fa0(void)
     u16 area;
     u8* spawn;
     u8* record;
+    u16* model;
     u32 count;
     u16 spawnId;
     typedef struct
@@ -2318,6 +2319,11 @@ void func_001d1fa0(void)
     index = 0;
     while ((spawn = (u8*)func_001d2300(index, count)) != NULL)
     {
+        model = func_001d78c0(*puGpffffa850, puGpffffa850[2], area);
+        if (model == NULL)
+        {
+            K_Assert(D_00683940, 0x85c);
+        }
         for (slot = 0; slot < 0x20; slot++)
         {
             record = DAT_0086be80 + slot * 0x138;
@@ -2326,28 +2332,23 @@ void func_001d1fa0(void)
                 break;
             }
         }
-        if (slot >= 0x20)
-        {
-            K_Assert(D_00683940, 0x85c);
-            return;
-        }
         *(u32*)record = 1;
-        *(u32*)(record + 0x11c) = (u32)func_001d78c0(*puGpffffa850, puGpffffa850[2], area);
+        *(u32*)(record + 0x11c) = (u32)model;
         *(SpawnCopy*)(record + 0x0c) = *(SpawnCopy*)spawn;
         func_001d1db0(record, spawn, (u16)(0x3fe - index));
-        spawnId = *(u16*)(*(u32*)(record + 0x11c) + 2);
+        spawnId = model[1];
         if (spawnId < 5000)
         {
             if (spawnId < 4000)
             {
-                if (*(u8*)(*(u32*)(record + 0x11c) + 5) == 0)
+                if (*(u8*)((u8*)model + 5) == 0)
                 {
                     func_001828d0(spawnId, record + 0x120);
                 }
                 else
                 {
                     func_00182d90(spawnId, 2,
-                                   *(u8*)(*(u32*)(record + 0x11c) + 5), record + 0x120);
+                                   *(u8*)((u8*)model + 5), record + 0x120);
                 }
             }
             else

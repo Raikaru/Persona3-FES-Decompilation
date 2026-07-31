@@ -440,6 +440,10 @@ const char* h_camp_getCourageLevelString(s16 idx)
     return sCourageLevels[idx];
 }
 
+#pragma push
+/* Keep the table base loop-invariant; measured direct-global probe nd16 -> nd0. */
+#pragma opt_loop_invariants on
+ 
 // FUN_0011a8a0 NONMATCHING
 void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
@@ -496,6 +500,7 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 #pragma push
 /* Removing this loses FUN_0011aae0 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
@@ -1413,7 +1418,9 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
         f32 startY;
     } pos;
     f32 temp;
+    f32 offset;
     s32 i;
+    s32 selectedEntry;
 
     pos.endX = 46.0f;
     pos.endY = 59.0f;
@@ -1427,8 +1434,14 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = 19.0f * (f32)work->selectedEntry;
-    temp += 57.0f;
+    selectedEntry = work->selectedEntry;
+    /* Keep the selected-entry value live before the constant setup; measured against the target arithmetic. */
+    asm ("" : "+r"(selectedEntry));
+    temp = 19.0f;
+    temp = temp * (f32)selectedEntry;
+    offset = temp;
+    temp = 57.0f;
+    temp = temp + offset;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;

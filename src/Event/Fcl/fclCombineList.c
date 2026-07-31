@@ -1931,8 +1931,20 @@ FclList* fclCombineList003de290(void* input, s32 state)
     FclList* work;
     s32 capacity;
 
-    capacity = state == 4 ? 6 : (state == 3 ? 5 : (state == 2 ? 4 : 0));
-    K_ASSERT(capacity != 0, 0x966);
+    switch (state) {
+    case 2:
+        capacity = 4;
+        break;
+    case 3:
+        capacity = 5;
+        break;
+    case 4:
+        capacity = 6;
+        break;
+    default:
+        K_Assert(DAT_006A6020, 0x966);
+        break;
+    }
     task = FUN_003c58f0(0, capacity * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
     work->list = task;
