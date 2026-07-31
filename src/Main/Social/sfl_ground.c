@@ -144,43 +144,6 @@ void func_0023c850();
 
 static void sflGroundCallState(u32 selector, u32 value);
 static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value);
-// FUN_0024A180
-void func_0024a180(u32* work)
-{
-    u32* owner;
-
-    if ((~GROUND_U32(work, 0x604) & 1) != 0) {
-        return;
-    }
-
-    {
-        const u32* const state = &D_00960090[0];
-
-        ((SflGroundRenderStateCallback)(void*)state[0])(9, 2);
-        ((SflGroundRenderStateCallback)(void*)state[0])(0x14, 2);
-        ((SflGroundRenderStateCallback)(void*)state[0])(6, 0);
-        ((SflGroundRenderStateCallback)(void*)state[0])(8, 0);
-        owner = *(u32**)GROUND_PTR(work, 0x600);
-        ((SflGroundTickCallback)(void*)GROUND_U32(owner, 0x48))(owner);
-    }
-}
-// FUN_0024A230
-void func_0024a230(void* work, const volatile /* Removing this qualifier loses func_0024a230 (MATCH nd0 -> MISMATCH nd8, size 40 -> 40) - measured W170. */ SflGroundColor* color)
-{
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-
-    r = color->r;
-    g = color->g;
-    b = color->b;
-    a = color->a;
-    ((u8*)work)[0x614] = r;
-    ((u8*)work)[0x615] = g;
-    ((u8*)work)[0x616] = b;
-    ((u8*)work)[0x617] = a;
-}
 void func_0023c8c0();
 void func_0023ca10();
 void func_0023cda0();

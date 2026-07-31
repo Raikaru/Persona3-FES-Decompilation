@@ -507,28 +507,3 @@ typedef struct KwlnDraw3DWork
     u32 rasterB;
 } KwlnDraw3DWork;
 
-// FUN_00199440
-KwlnTask* kwlnRootCreate3DDrawTask(KwlnTask* rootTask)
-{
-    KwlnDraw3DWork* work;
-
-    if (sDraw3DTask != NULL)
-    {
-        K_Assert(D_006788C8, 0x76);
-    }
-
-    work = (KwlnDraw3DWork*)KWLN_ALLOC3(1, sizeof(KwlnDraw3DWork), 0x40000);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    sDraw3DTask = kwlnTaskCreate(rootTask, "3D Draw", 5, NULL, kwlnRootDestroy3DDrawTask, work);
-    work->rasterA = sShowRasterRasterB;
-    work->rasterB = sShowRasterRasterA;
-    K_SPipe_CreateShadowNodeTask(sDraw3DTask);
-    K_SPipe_Create3DDrwBeginTask(sDraw3DTask);
-    K_SPipe_Create3DDrwEndTask(sDraw3DTask);
-
-    return sDraw3DTask;
-}
