@@ -6347,11 +6347,14 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
 
   
 
-  FUN_0036f900(param_1,param_2,0x16,0xb,0,1,param_3,0x375a40,0);
+  FUN_0036f900_evt(param_1,param_2,0x16,0xb,0,1,param_3,
+               (code *)FUN_00375a40,(code *)FUN_00375ab0);
 
   iVar3 = (int)param_3;
 
-  if (*(int *)(iVar3 + 0xd4) == 6) {
+  uVar1 = 0;
+  switch (*(int *)(iVar3 + 0xd4)) {
+  case 6:
 
     if ((DAT_007e094e & 0x40) == 0) {
 
@@ -6455,13 +6458,9 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
 
     }
 
+    break;
   }
 
-  else {
-
-    uVar1 = 0;
-
-  }
 
   return uVar1;
 

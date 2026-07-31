@@ -3466,27 +3466,34 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
   float fVar3;
   float fVar4;
   float fVar5;
+  float *out;
+  float *first;
+  float *second;
   struct {
-    float values[10];
+    float values[9];
+    u32 mode;
   } interpolation;
 
+  out = param_2;
+  first = param_3;
+  second = param_4;
   fVar5 = 1.0f - param_1;
-  fVar1 = param_3[1];
-  fVar2 = param_3[2];
-  fVar3 = param_4[1];
-  fVar4 = param_4[2];
-  *param_2 = *param_3 * fVar5 + *param_4 * param_1;
-  param_2[1] = fVar1 * fVar5 + fVar3 * param_1;
-  param_2[2] = fVar2 * fVar5 + fVar4 * param_1;
-  FUN_004be310(param_3 + 3,param_4 + 3,interpolation.values);
+  fVar1 = first[1] * fVar5;
+  fVar2 = first[2] * fVar5;
+  fVar3 = second[1] * param_1;
+  fVar4 = second[2] * param_1;
+  *out = *first * fVar5 + *second * param_1;
+  out[1] = fVar1 + fVar3;
+  out[2] = fVar2 + fVar4;
+  FUN_004be310(first + 3,second + 3,interpolation.values);
   if (param_1 <= 0.0f) {
-    *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_3 + 3);
+    *(RwV4d*)(out + 3) = *(RwV4d*)(first + 3);
   }
   else if (1.0f <= param_1) {
-    *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_4 + 3);
+    *(RwV4d*)(out + 3) = *(RwV4d*)(second + 3);
   }
   else {
-    if (interpolation.values[9] == 0) {
+    if (interpolation.mode == 0) {
       fVar5 = fVar5 * interpolation.values[8];
       fVar1 = fVar5 * fVar5;
       fVar5 = fVar1 * fVar5 *
@@ -3500,13 +3507,13 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
                                            fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) +
                          fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + param_1 + 0.0f;
     }
-    param_2[3] = interpolation.values[0] * fVar5;
-    param_2[4] = interpolation.values[1] * fVar5;
-    param_2[5] = interpolation.values[2] * fVar5;
-    param_2[3] = interpolation.values[4] * param_1 + param_2[3] + 0.0f;
-    param_2[4] = interpolation.values[5] * param_1 + param_2[4] + 0.0f;
-    param_2[5] = interpolation.values[6] * param_1 + param_2[5] + 0.0f;
-    param_2[6] = interpolation.values[3] * fVar5 + interpolation.values[7] * param_1;
+    out[3] = interpolation.values[0] * fVar5;
+    out[4] = interpolation.values[1] * fVar5;
+    out[5] = interpolation.values[2] * fVar5;
+    out[3] = interpolation.values[4] * param_1 + out[3] + 0.0f;
+    out[4] = interpolation.values[5] * param_1 + out[4] + 0.0f;
+    out[5] = interpolation.values[6] * param_1 + out[5] + 0.0f;
+    out[6] = interpolation.values[3] * fVar5 + interpolation.values[7] * param_1;
   }
 }
 

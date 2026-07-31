@@ -2014,7 +2014,9 @@ void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
         sSfdCueTable_abs[cue].param = func_0051df58_t(outputHandle, 0, 10, param3, param4);
     }
 }
-// FUN_0010DD10 NONMATCHING
+/* W318 measured: opt_loop_invariants on changes dd10 nd67->0; ddc0 nd48->0; de40 nd79->0. */
+#pragma opt_loop_invariants on
+// FUN_0010DD10
 void func_0010dd10(HSfdImage* image, const u8* source)
 {
     u8* dst;
@@ -2055,8 +2057,6 @@ void func_0010dd10(HSfdImage* image, const u8* source)
         y++;
     }
 }
-/* W318 measured: opt_loop_invariants on changes ddc0 nd48->0 and de40 nd79->0. */
-#pragma opt_loop_invariants on
 // FUN_0010DDC0
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {

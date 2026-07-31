@@ -31,6 +31,8 @@ static HsndSlotWork sSlotWork[HSND_SLOT_COUNT];
 extern u8 sSlotWork_alt[];
 static HsndBackendControl sBackendControls[HSND_CHANNEL_COUNT];
 static s16 sBgmRestartCountdown;
+ #pragma alias sBgmRestartCountdown_alt sBgmRestartCountdown
+ extern s16 sBgmRestartCountdown_alt[];
 static void* sChannelData0[HSND_CHANNEL_COUNT];
 static void* sChannelData1[HSND_CHANNEL_COUNT];
 static void* sChannelData2[HSND_CHANNEL_COUNT];
@@ -366,10 +368,10 @@ void func_00108bc0(void)
 
     if (sChannels[0].active != false)
     {
-        if (sChannels[0].gate != false && sBgmRestartCountdown != 0)
+        if (sChannels[0].gate != false && sBgmRestartCountdown_alt[0] != 0)
         {
-            sBgmRestartCountdown--;
-            if (sBgmRestartCountdown == 0)
+            sBgmRestartCountdown_alt[0]--;
+            if (sBgmRestartCountdown_alt[0] == 0)
             {
                 func_0054d118(sChannels[0].handle, true);
             }
