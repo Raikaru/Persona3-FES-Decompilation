@@ -754,7 +754,7 @@ extern u32 FUN_002d6370(s16);
 extern u32 FUN_002d63b0(int, s16, int);
 
 // FUN_002a4c70 NONMATCHING
-void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
+void FUN_002a4c70(BtlCamera* camera, f32 param_1, f32 param_2)
 {
     struct CameraWork
     {
@@ -995,7 +995,7 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
 // FUN_002A5430
 void FUN_002a5430(BtlCamera* camera)
 {
-    FUN_002a4c70(45.0f, 200.0f, camera);
+    FUN_002a4c70(camera, 45.0f, 200.0f);
 }
 
 // FUN_002a5460
@@ -9177,7 +9177,7 @@ void func_002ad680(BtlCamera* camera)
   *(undefined2 *)((int)camera + 0x110) = uVar1;
   switch(*(undefined2 *)((int)camera + 0x110)) {
   case 1:
-    FUN_002a4c70(45.0f,200.0f,camera);
+    FUN_002a4c70(camera, 45.0f, 200.0f);
     break;
   case 2:
     func_002ac920(camera,1);

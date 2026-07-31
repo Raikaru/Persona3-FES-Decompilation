@@ -1981,6 +1981,9 @@ u32 FUN_00419790(int param_1,int param_2)
 
 }
 
+#pragma push
+#pragma opt_loop_invariants on
+/* measured opt_loop_invariants: off nd11/obj308, on nd10/obj308; retained */
 // FUN_004198F0 NONMATCHING
 
 
@@ -2072,6 +2075,8 @@ u32 FUN_004198f0(int param_1,int param_2)
   return uVar3;
 
 }
+#pragma opt_loop_invariants off
+#pragma pop
 
 // FUN_00419A30
 
@@ -2687,6 +2692,9 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
 }
 
+#pragma push
+#pragma opt_loop_invariants on
+/* measured opt_loop_invariants: off nd51/obj452, on nd49/obj452; retained */
 // FUN_0041A730 NONMATCHING
 
 
@@ -2705,7 +2713,6 @@ u32 FUN_0041a730(u64 param_1,int param_2)
   u32 uVar4;
 
   RwV3d position;
-  int iVar2;
 
   
 
@@ -2732,11 +2739,9 @@ u32 FUN_0041a730(u64 param_1,int param_2)
     }
 
     uVar3 = 1 << uVar4;
-
     if (((*puVar1 & uVar3) != 0) &&
 
-       (FUN_004bdde0_fcl(-30.0f,iVar2 + 0x10,&position,0),
-
+       (FUN_004bdde0(0xc1f00000,iVar2 + 0x10,&position),
        (float)*(int *)(param_2 + 0xc) == ((float)(int)(uVar4 << 1) + 6.0f) - 1.0f)) {
 
       *puVar1 = *puVar1 & ~uVar3;
@@ -2747,9 +2752,15 @@ u32 FUN_0041a730(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  return (float)(int)(puVar1[1] << 1) + 6.0f < (float)*(int *)(param_2 + 0xc);
+  if (!((float)*(int *)(param_2 + 0xc) <=
+        (float)(int)(puVar1[1] << 1) + 6.0f)) {
+    return 1;
+  }
+  return 0;
 
 }
+#pragma opt_loop_invariants off
+#pragma pop
 
 // FUN_0041A900 NONMATCHING
 
@@ -3019,6 +3030,7 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 }
 
 #pragma push
+/* measured opt_loop_invariants: off MISMATCH nd24/obj80, on MATCH nd0/obj80; retained */
 #pragma opt_loop_invariants on
 // FUN_0041ADD0
 u32 FUN_0041add0(int param_1, int *param_2)
@@ -3040,6 +3052,7 @@ u32 FUN_0041add0(int param_1, int *param_2)
 
 
 #pragma push
+/* measured opt_loop_invariants: off MISMATCH nd33/obj452, on MATCH nd0/obj452; retained */
 #pragma opt_loop_invariants on
 // FUN_0041AE20
 

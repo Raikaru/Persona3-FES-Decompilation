@@ -5385,55 +5385,49 @@ u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
   u32 uVar6;
   u32 uVar7;
   
-  if ((s32)param_2 >= 1) {
-    pbVar3 = (u8 *)(DAT_007ce3f8 + (int)param_2 * 0x2c);
-    if ((*pbVar3 & 8) != 0) {
-      uVar4 = *(u32 *)(pbVar3 + 0x20);
-      if (((uVar4 & 0x3ffffff) != 0) && ((uVar4 & 0xfc000000) == 0)) {
-        for (uVar7 = 0; uVar7 < 0x20; uVar7 = uVar7 + 1) {
-          uVar5 = 1 << (uVar7 & 0x1f);
-          if ((uVar4 & uVar5) != 0) {
-            uVar6 = 0;
-            while ((uVar6 < *(u16 *)(param_1 + 0x6a) &&
-                   (lVar2 = FUN_00301ca0(*(u32 *)
-                                          (*(int *)(*(int *)(param_1 + uVar6 * 4 + 0x38) + 0x30) +
-                                          0xa2c),uVar5), lVar2 != 0))) {
-              uVar6 = uVar6 + 1;
-            }
-            if (uVar6 != *(u16 *)(param_1 + 0x6a)) break;
-          }
-        }
-        if (uVar7 == 0x20) {
-          if ((uVar4 & 0x3000) != 0) {
-            return 5;
-          }
-          return 3;
-        }
-      }
-      uVar4 = 0;
-      while (((uVar4 < *(u16 *)(param_1 + 0x6a) &&
-              (lVar2 = FUN_003068d0(param_2 & 0xffff,
-                                    *(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                                    *(u32 *)
-                                     (*(int *)(*(int *)(param_1 + uVar4 * 4 + 0x38) + 0x30) + 0xa2c)
-                                    ,param_3), lVar2 != 0)) && (lVar2 != 0xffff))) {
-        uVar4 = uVar4 + 1;
-      }
-      if (uVar4 != *(u16 *)(param_1 + 0x6a)) {
-        uVar1 = 0;
-      }
-      else {
-        uVar1 = 4;
+  if ((s32)param_2 <= 0) {
+    return 0;
+  }
+  pbVar3 = (u8 *)(DAT_007ce3f8 + (int)param_2 * 0x2c);
+  if ((*pbVar3 & 8) == 0) {
+    return 0;
+  }
+  uVar4 = *(u32 *)(pbVar3 + 0x20);
+  if (((uVar4 & 0x3ffffff) != 0) && ((uVar4 & 0xfc000000) == 0)) {
+    for (uVar5 = 0; uVar5 < 0x20; uVar5 = uVar5 + 1) {
+      uVar7 = 1 << uVar5;
+      if ((uVar4 & uVar7) != 0) {
+        uVar6 = 0;
+        do {
+          lVar2 = FUN_00301ca0(*(u32 *)
+                               (*(int *)(*(int *)(param_1 + uVar6 * 4 + 0x38) + 0x30) +
+                               0xa2c), uVar7);
+          if (lVar2 == 0) break;
+          uVar6 = uVar6 + 1;
+        } while (uVar6 < *(u16 *)(param_1 + 0x6a));
+        if (uVar6 != *(u16 *)(param_1 + 0x6a)) break;
       }
     }
-    else {
-      uVar1 = 0;
+    if (uVar5 == 0x20) {
+      if ((uVar4 & 0x3000) != 0) {
+        return 5;
+      }
+      return 3;
     }
   }
-  else {
-    uVar1 = 0;
+  uVar4 = 0;
+  while (((uVar4 < *(u16 *)(param_1 + 0x6a) &&
+          (lVar2 = FUN_003068d0(param_2 & 0xffff,
+                                *(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
+                                *(u32 *)
+                                 (*(int *)(*(int *)(param_1 + uVar4 * 4 + 0x38) + 0x30) + 0xa2c)
+                                ,param_3), lVar2 != 0)) && (lVar2 != 0xffff))) {
+    uVar4 = uVar4 + 1;
   }
-  return uVar1;
+  if (uVar4 != *(u16 *)(param_1 + 0x6a)) {
+    return 0;
+  }
+  return 4;
 }
 
 // FUN_002e4720
@@ -9292,9 +9286,9 @@ void func_002ecc60(s16 *param_1, s16 *param_2)
   } VoiceRegionLocals;
   VoiceRegionLocals stack;
   s16 *table;
+  u16 index;
   s16 firstResult;
   s16 secondResult;
-  u16 index;
   s16 *entry;
   s16 *entryResult;
   u16 command;
