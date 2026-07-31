@@ -569,6 +569,8 @@ static void campMainDrawPersonaCard(const CampMainDrawItem* item,
 extern void FUN_001345B0_s16(CampMainDrawItem* item, const void* resources,
                              s32 mode, const s16* personaIds,
                              s16 personaIndex, s16 alternatePersonaIndex);
+/* W373 pragma sweep: default nd571/object788/848; common_subs off nd570/object788/848; propagation off nd512/object768/848. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_001345B0 NONMATCHING
 void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
                   const s16* personaIds, s16 personaIndex,
@@ -627,6 +629,7 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
         break;
     }
 }
+#pragma opt_propagation reset
 
 // FUN_00134900
 u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
@@ -900,6 +903,9 @@ void* FUN_00134a10(KwlnTask* task)
 }
 #pragma opt_loop_invariants reset
 
+/* W373 pragma sweep: default nd453/object908/928; loop_invariants on nd452/object908/928; common_subs off nd382/object920/928; lifetimes on nd444/object908/928; loop+common nd381/object920/928; loop+lifetimes nd444/object908/928; common+lifetimes nd376/object920/928. Retained common_subs off + lifetimes on. */
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_00134d80 NONMATCHING
 void FUN_00134d80(KwlnTask* task)
 {
@@ -999,7 +1005,12 @@ void FUN_00134d80(KwlnTask* task)
     }
     RwFree(work);
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
+/* W373 pragma sweep: default nd263/object736/832; propagation off nd252/object736/832; dead_assignments off nd252/object736/832; propagation+dead_assignments nd252/object736/832. Retained propagation off + dead_assignments off. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_00135120 NONMATCHING
 void FUN_00135120(KwlnTask* task)
 {
@@ -1099,6 +1110,8 @@ request_zero:
 done:
     ;
 }
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 
 // FUN_00135460
 void FUN_00135460(KwlnTask* task)
@@ -1147,6 +1160,8 @@ void FUN_00135460(KwlnTask* task)
     work[0x57] = (u32)H_Cdvd_Request(D_005DB998[(s32)cardType], 0);
 }
 
+/* W373 pragma sweep: default nd2803/object4056/4080; lifetimes on nd2801/object4056/4080. Retained lifetimes on. */
+#pragma opt_lifetimes on
 // FUN_001355c0 NONMATCHING
 void* FUN_001355c0(KwlnTask* task)
 {
@@ -1509,6 +1524,7 @@ void* FUN_001355c0(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_lifetimes reset
 
 
 /* ---- Camp slice continuation ---- */
@@ -1734,6 +1750,9 @@ static void campDrawCardText(f32 scale, f32 x, f32 y, u32 color,
     FUN_003B2F90(100.0f, (s32)x, (s32)y, color, font, 1, text, 0x10, -1);
 }
 
+/* W373 pragma sweep: default nd109/object404/416; propagation off nd108/object404/416; dead_assignments off nd108/object404/416; propagation+dead_assignments nd108/object404/416. Retained propagation off + dead_assignments off. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_001365B0 NONMATCHING
 void FUN_001365b0(KwlnTask* task)
 {
@@ -1795,6 +1814,8 @@ void FUN_001365b0(KwlnTask* task)
     fn = *(void (**)(void*))jtbl_0096017C_abs;
     fn(work);
 }
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
@@ -1836,6 +1857,8 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
 }
 
 
+/* W373 pragma sweep: default nd22/object364/368; lifetimes on nd14/object364/368. Retained lifetimes on. */
+#pragma opt_lifetimes on
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
@@ -1870,6 +1893,7 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
         DAT_007cdf9c += 0x452;
     }
 }
+#pragma opt_lifetimes reset
 #pragma alias campMainSocialFrameResourceAbs D_00833B44
 extern u8 campMainSocialFrameResourceAbs[];
 #pragma alias campMainSocialIconResourceAbs D_00833B48
@@ -1877,6 +1901,8 @@ extern u8 campMainSocialIconResourceAbs[];
 #define D_00833B44 (*(void**)campMainSocialFrameResourceAbs)
 #define D_00833B48 (*(void**)campMainSocialIconResourceAbs)
 
+/* W373 pragma sweep: default nd1626/object2256/2288; lifetimes on nd1625/object2256/2288. Retained lifetimes on. */
+#pragma opt_lifetimes on
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
 {
@@ -1995,6 +2021,7 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
                      p.value.y + 37.0f, alpha);
     }
 }
+#pragma opt_lifetimes reset
 #undef D_00833B44
 #undef D_00833B48
 
@@ -2081,6 +2108,8 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     }
 }
 
+/* W373 pragma sweep: default nd1925/object2620/2912; propagation off nd1922/object2564/2912. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_00137580 NONMATCHING
 void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
@@ -2292,6 +2321,10 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
 }
+#pragma opt_propagation reset
+/* W373 pragma sweep: default nd1195/object1656/1744; loop_invariants on nd1179/object1660/1744; propagation off nd1156/object1612/1744; dead_assignments off nd1186/object1660/1744; loop+propagation nd1207/object1612/1744; loop+dead_assignments nd1202/object1668/1744; propagation+dead_assignments nd1156/object1612/1744. Retained propagation off + dead_assignments off. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_001380E0 NONMATCHING
 void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
@@ -2420,7 +2453,11 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001159f0(NULL, D_00833BA4, 1, 0, 465.0f, 415.0f, alpha);
     FUN_001159f0(NULL, D_00833BA4, 3, 0, 561.0f, 415.0f, alpha);
 }
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 
+/* W373 pragma sweep: default nd1135/object1664/1744; lifetimes on nd1133/object1664/1744. Retained lifetimes on. */
+#pragma opt_lifetimes on
 // FUN_001387B0 NONMATCHING
 void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
@@ -2533,6 +2570,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001159f0(parent, *(void**)D_00833BA4_abs, 1, 0, 465.0f, 415.0f, alpha);
     FUN_001159f0(parent, *(void**)D_00833BA4_abs, 3, 0, 561.0f, 415.0f, alpha);
 }
+#pragma opt_lifetimes reset
 
 #pragma alias FUN_00139FC0_call FUN_00139FC0
 extern void FUN_00139FC0_call(f32 alpha, u64 position, const s32* entries, u64 unused,
@@ -2668,6 +2706,9 @@ void FUN_001392D0(f32 alpha, u64 position, s32 textAlpha, s32 resource)
 #pragma alias campMainDrawCardSprite FUN_001159F0
 extern void campMainDrawCardSprite(void* owner, void* resource, s32 frame,
                                    u32 alpha, f32 x, f32 y, f32 scale);
+/* W373 pragma sweep: default nd1289/object1872/1888; loop_invariants on nd1260/object1836/1888; lifetimes on nd1288/object1872/1888; loop+lifetimes nd1260/object1836/1888. Retained loop_invariants on + lifetimes on. */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00139660 NONMATCHING
 void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                   s32 textAlpha)
@@ -2812,6 +2853,8 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
         }
     }
 }
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 
 
 /* ---- Camp slice continuation ---- */
@@ -2990,6 +3033,9 @@ void FUN_00139DC0(f32 param_1)
         (rwPRIMTYPETRISTRIP, work.vertices, 3);
 }
 
+/* W373 pragma sweep: default nd3084/object3972/4112; common_subs off nd3047/object4040/4112; propagation off nd2787/object3628/4112; dead_assignments off nd3033/object3928/4112; common+propagation nd3036/object4040/4112; common+dead_assignments nd3047/object4040/4112; propagation+dead_assignments nd2787/object3628/4112. Retained propagation off + dead_assignments off. */
+#pragma opt_propagation off
+#pragma opt_dead_assignments off
 // FUN_00139FC0 NONMATCHING
 void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8, s32 param_9)
@@ -3264,6 +3310,8 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     campDrawSprite(D_00833B60, 1, (u8)alpha,
                    x, position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
+#pragma opt_dead_assignments reset
+#pragma opt_propagation reset
 
 #define D_00833B44 (*(void**)D_00833B44_abs)
 #define D_00833B58 (*(void**)D_00833B58_abs)
@@ -3271,6 +3319,8 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 #define D_00833B64 (*(void**)D_00833B64_abs)
 #define D_00833B68 (*(void**)D_00833B68_abs)
 #define D_00833BA4 (*(void**)D_00833BA4_abs)
+/* W373 pragma sweep: default nd2277/object3248/3296; propagation off nd2111/object2880/3296. Retained propagation off. */
+#pragma opt_propagation off
 // FUN_0013AFD0 NONMATCHING
 void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8)
@@ -3436,6 +3486,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     campDrawSprite(D_00833B60, 1, (u8)param_7, x,
                    position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
+#pragma opt_propagation reset
 #undef D_00833B44
 #undef D_00833B58
 #undef D_00833B60
@@ -3488,6 +3539,8 @@ void FUN_0013BCE0(u8 param_1)
     }
 }
 
+/* W373 pragma sweep: default nd695/object1004/1008; common_subs off nd616/object992/1008. Retained common_subs off. */
+#pragma opt_common_subs off
 // FUN_0013BE50 NONMATCHING
 s32 FUN_0013BE50(u8* param_1, s32 param_2)
 {
@@ -3611,3 +3664,4 @@ s32 FUN_0013BE50(u8* param_1, s32 param_2)
     return changed;
 #undef entries
 }
+#pragma opt_common_subs reset
