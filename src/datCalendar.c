@@ -1595,7 +1595,6 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
 
 /* W357 measured opt_loop_invariants on: without nd2861/object4668, with nd2662/object4636; window 4688; retained. */
 #pragma opt_loop_invariants on
-#pragma opt_dead_assignments off
 // FUN_0017e680 NONMATCHING
 void* clndUpdateTask(KwlnTask* clndTask)
 {
@@ -2111,7 +2110,6 @@ void* clndUpdateTask(KwlnTask* clndTask)
 }
 
 #pragma opt_loop_invariants reset
-#pragma opt_dead_assignments reset
 // FUN_0017fa10
 void clndReqSkip()
 {
@@ -3158,6 +3156,7 @@ void* func_00183410(KwlnTask* task)
 /* W357 measured opt_propagation off: without nd709/object920, with nd591/object916; window 928; retained. */
 #pragma opt_propagation off
 #pragma opt_common_subs off
+#pragma opt_common_subs off
 // FUN_00183840 NONMATCHING
 void func_00183840(void* resource,
                    s32 alpha,
@@ -3289,6 +3288,7 @@ void func_00183840(void* resource,
 #pragma opt_propagation reset
 /* W357 measured opt_propagation off: without nd462/object892, with nd420/object888; window 896; retained. */
 #pragma opt_propagation off
+#pragma opt_common_subs reset
 #pragma opt_common_subs reset
 // FUN_00183BE0 NONMATCHING
 void func_00183be0(void* resource,

@@ -1138,6 +1138,8 @@ typedef struct FormationLoadWork {
 
 
 
+/* W357 measured func_002bb3a0: opt_propagation off nd224/480B -> nd222/480B; window 480B. */
+#pragma opt_propagation off
 // FUN_002bb3a0 NONMATCHING
 
 void func_002bb3a0(void)
@@ -1203,6 +1205,7 @@ void func_002bb3a0(void)
   }
   return;
 }
+#pragma opt_propagation on
 
 // FUN_002bb580
 
@@ -2067,6 +2070,8 @@ void func_002bcde0(u64 param_1,u32 *param_2)
   return;
 }
 
+/* W357 measured func_002bce10: opt_lifetimes on nd332/592B -> nd130/584B; window 592B. */
+#pragma opt_lifetimes on
 // FUN_002bce10 NONMATCHING
 
 void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5)
@@ -2119,6 +2124,7 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
   }
   return;
 }
+#pragma opt_lifetimes off
 // FUN_002bd060
 void LAB_002bd060(u32 **param_1)
 {
@@ -2689,6 +2695,8 @@ u16 func_002bde10(int unit, u16* output)
 
 /* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
 #pragma opt_loop_invariants on
+/* W357 measured func_002bdfb0: opt_lifetimes on stacked with existing opt_loop_invariants on, nd373/796B -> nd360/796B; window 816B. */
+#pragma opt_lifetimes on
 // FUN_002bdfb0 NONMATCHING
 
 static u32 func_002bdfb0(int state)
@@ -2773,6 +2781,7 @@ static u32 func_002bdfb0(int state)
 
   return result;
 }
+#pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
 // FUN_002BE2E0
@@ -2805,6 +2814,8 @@ u32 func_002be2f0(int param_1)
   return 0;
 }
 
+/* W357 measured func_002be390: opt_propagation off nd299/492B -> nd298/492B; window 496B. */
+#pragma opt_propagation off
 // FUN_002be390 NONMATCHING
 
 void func_002be390(short *param_1,int param_2,int param_3)
@@ -2840,6 +2851,7 @@ void func_002be390(short *param_1,int param_2,int param_3)
   return;
 }
 
+#pragma opt_propagation on
 // FUN_002be580
 
 u32 func_002be580(u64 param_1,int param_2)
@@ -2921,6 +2933,8 @@ u64 func_002be620(int param_1,int param_2)
   return uVar3;
 }
 
+/* W357 measured func_002be720: opt_propagation off nd415/684B -> nd402/684B; window 688B. */
+#pragma opt_propagation off
 // FUN_002be720 NONMATCHING
 
 void func_002be720(short *param_1,short param_2,short param_3,int param_4)
@@ -2970,6 +2984,7 @@ void func_002be720(short *param_1,short param_2,short param_3,int param_4)
   }
   return;
 }
+#pragma opt_propagation on
 
 // FUN_002BE9D0
 void FUN_002BE9D0(void)
@@ -3794,6 +3809,8 @@ u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
 #pragma opt_propagation on
 /* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
 #pragma opt_loop_invariants on
+/* W357 measured func_002c0070: opt_lifetimes on stacked with existing opt_loop_invariants on, nd1570/1988B -> nd1565/1988B; window 2064B. */
+#pragma opt_lifetimes on
 // FUN_002c0070 NONMATCHING
 
 void func_002c0070(int param_1,int param_2)
@@ -4016,6 +4033,7 @@ void func_002c0070(int param_1,int param_2)
   }
   return;
 }
+#pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
 // FUN_002c0880
@@ -4143,6 +4161,8 @@ void func_002c0a50(u32 param_1,u16 param_2)
   *(u64 *)(destination + 0xb8) = *(u64 *)source;
 }
 
+/* W357 measured func_002c0ac0: opt_lifetimes on nd574/824B -> nd572/824B; window 880B. */
+#pragma opt_lifetimes on
 // FUN_002c0ac0 NONMATCHING
 
 void func_002c0ac0(int param_1,int param_2)
@@ -4223,6 +4243,7 @@ void func_002c0ac0(int param_1,int param_2)
   }
   return;
 }
+#pragma opt_lifetimes off
 
 // FUN_002c0e30
 int func_002c0e30(short param_1,u32 param_2,u32 param_3)
@@ -5875,6 +5896,8 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
 
 /* W322 probe: func_002c3770 with opt_loop_invariants on improved normalized_diff 817 -> 808 (object 1056/1136). */
 #pragma opt_loop_invariants on
+/* W357 measured func_002c3770: opt_dead_assignments off stacked with existing opt_loop_invariants on, nd808/1056B -> nd773/1056B; window 1136B. */
+#pragma opt_dead_assignments off
 // FUN_002c3770 NONMATCHING
 
 u32 func_002c3770(u32 param_1,u32 param_2)
@@ -5979,6 +6002,7 @@ u32 func_002c3770(u32 param_1,u32 param_2)
   }
   return 1;
 }
+#pragma opt_dead_assignments on
 #pragma opt_loop_invariants off
 
 // FUN_002c3be0
@@ -6544,6 +6568,8 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
 
 /* W322 probe: func_002c4c80 with opt_loop_invariants on improved normalized_diff 239 -> 19 (object 460/464). */
 #pragma opt_loop_invariants on
+/* W357 measured func_002c4c80: opt_propagation off stacked with existing opt_loop_invariants on, nd19/460B -> nd10/460B; window 464B. */
+#pragma opt_propagation off
 // FUN_002c4c80 NONMATCHING
 
 u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
@@ -6589,6 +6615,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   return uVar8;
 }
+#pragma opt_propagation on
 #pragma opt_loop_invariants off
 
 /* W322 probe: func_002c4e50 with opt_common_subs off improved normalized_diff 288 -> 210 (object 472/480). */
@@ -6931,6 +6958,8 @@ u32 func_002c5380(int param_1,int param_2,u16 *param_3,int param_4)
   return uVar8;
 }
 
+/* W357 measured func_002c59d0: opt_propagation off nd1090/1460B -> nd1035/1472B; window 1520B. */
+#pragma opt_propagation off
 // FUN_002c59d0 NONMATCHING
 
 u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4)
@@ -7073,6 +7102,9 @@ u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4)
   return uVar8;
 }
 
+#pragma opt_propagation on
+/* W357 measured func_002c5fc0: opt_dead_assignments off nd574/828B -> nd547/828B; window 832B. */
+#pragma opt_dead_assignments off
 // FUN_002c5fc0 NONMATCHING
 
 s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
@@ -7161,6 +7193,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
   }
   return lVar8;
 }
+#pragma opt_dead_assignments on
 
 /* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
 #pragma opt_common_subs off
@@ -7240,6 +7273,8 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
 
 /* W322 rerun probe: func_002c65d0 with opt_loop_invariants on improved normalized_diff 191 -> 125 (object 1068/1072). */
 #pragma opt_loop_invariants on
+/* W357 measured func_002c65d0: opt_lifetimes on stacked with existing opt_loop_invariants on, nd125/1068B -> nd118/1068B; window 1072B. */
+#pragma opt_lifetimes on
 // FUN_002c65d0 NONMATCHING
 
 u32 func_002c65d0(int param_1)
@@ -7321,6 +7356,7 @@ u32 func_002c65d0(int param_1)
   uVar7 = 0;
   return uVar7;
 }
+#pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
 // FUN_002c6a00 NONMATCHING
