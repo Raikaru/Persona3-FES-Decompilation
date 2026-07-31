@@ -1,3 +1,5 @@
+typedef void (*MdlVoidFn)(...);
+typedef void (*MdlVoidFnU32)(unsigned int);
 #include "Graphics/Model/mdlFile.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Graphics/Model/mdlFldCharIds.h"
@@ -6,6 +8,27 @@
 #include "Main/Battle/Data/datUnit.h"
 #include "Battle/btlVoice.h"
 #include "temporary.h"
+
+#pragma alias DAT_007cca10_y2 DAT_007cca10
+#pragma alias FUN_004c2f30_y2 FUN_004c2f30_y2
+#pragma alias FUN_004c6be0_y2 FUN_004c6be0_y2
+#pragma alias FUN_00491cc0_y2 FUN_00491cc0_y2
+#pragma alias FUN_00491ea0_y2 FUN_00491ea0_y2
+#pragma alias FUN_004cb7f0_y2 FUN_004cb7f0_y2
+#pragma alias FUN_004916d0_y2 FUN_004916d0_y2
+#pragma alias DAT_0096017c_y2 DAT_0096017c_y2
+#pragma alias DAT_007cada0_y2 DAT_007cada0_y2
+#pragma alias DAT_00960090_y2 DAT_00960090_y2
+#pragma alias DAT_00960090_abs_y2 DAT_00960090_abs_y2
+#pragma alias DAT_00960094_y2 DAT_00960094_y2
+#pragma alias DAT_007caf08_y2 DAT_007caf08_y2
+#pragma alias RpMaterialGetUserDataArray_y2 RpMaterialGetUserDataArray_y2
+#pragma alias RpUserDataArrayGetName_y2 RpUserDataArrayGetName_y2
+#pragma alias RpUserDataArrayGetFormat_y2 RpUserDataArrayGetFormat_y2
+#pragma alias func_0031c820_y2 func_0031c820_y2
+#pragma alias FUN_0031e4d0_y2 FUN_0031e4d0_y2
+#pragma alias FUN_00320640_y2 FUN_00320640_y2
+
 
 extern f32 sqrtf(f32 value);
 extern f32 fabsf(f32 value);
@@ -19,7 +42,7 @@ extern const char DAT_0069ba70[];
 extern const char DAT_0069ba90[];
 extern const char DAT_0069bab0[];
 extern const char DAT_0069bad0[];
-extern const char DAT_007cca10[];
+extern const char DAT_007cca10_y2[];
 extern unsigned char DAT_006a6b20[];
 
 
@@ -2219,14 +2242,14 @@ extern u8 DAT_00960088_abs[];
 extern u32 DAT_0096008c;
 #pragma alias DAT_0096008c_abs DAT_0096008c
 extern u8 DAT_0096008c_abs[];
-extern void (*DAT_00960090)(...);
+extern MdlVoidFn DAT_00960090;
 #pragma alias DAT_00960090_abs DAT_00960090
 extern code DAT_00960090_abs[];
-extern void (*DAT_00960094)(...);
-extern void (*DAT_009600a0)(...);
+extern MdlVoidFn DAT_00960094;
+extern MdlVoidFn DAT_009600a0;
 #pragma alias DAT_009600a0_abs DAT_009600a0
 extern code DAT_009600a0_abs[];
-extern void (*DAT_009600a4)(...);
+extern MdlVoidFn DAT_009600a4;
 #pragma alias DAT_009600a4_abs DAT_009600a4
 extern code DAT_009600a4_abs[];
 extern u64 (*DAT_00960178)(...);
@@ -2234,7 +2257,7 @@ extern u64 (*DAT_00960178)(...);
 extern u32 (*DAT_00960178_u32)(...);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
-extern void (*DAT_0096017c)(...);
+extern MdlVoidFn DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern void FUN_004c6be0(float *out,float *in,int matrix);
@@ -2292,7 +2315,7 @@ extern void* PTR_LAB_0069be30;
 #pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
 extern u8 PTR_LAB_0069be30_abs[];
 #pragma alias PTR_LAB_0069be30_cb PTR_LAB_0069be30
-extern void (*PTR_LAB_0069be30_cb[])(u32);
+extern MdlVoidFnU32 PTR_LAB_0069be30_cb[];
 extern void* PTR_LAB_0069be34;
 #pragma alias PTR_LAB_0069be34_abs PTR_LAB_0069be34
 extern code PTR_LAB_0069be34_abs[];
@@ -3232,10 +3255,10 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
         if (lVar5 == 0) {
           uVar4 = FUN_0016cd60(1);
           uVar2 = FUN_00308c60(uVar4);
-          FUN_00523ac8(auStack_100,DAT_0069ba70,DAT_007cca10,1,uVar2);
+          FUN_00523ac8(auStack_100,DAT_0069ba70,DAT_007cca10_y2,1,uVar2);
         }
         else {
-          FUN_00523ac8(auStack_100,DAT_0069ba50,DAT_007cca10,1);
+          FUN_00523ac8(auStack_100,DAT_0069ba50,DAT_007cca10_y2,1);
         }
       }
       else {
@@ -3257,14 +3280,14 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
             }
           }
           if (lVar5 == 0) {
-            FUN_00523ac8(auStack_100,DAT_0069ba90,DAT_007cca10,param_3);
+            FUN_00523ac8(auStack_100,DAT_0069ba90,DAT_007cca10_y2,param_3);
           }
           else {
-            FUN_00523ac8(auStack_100,DAT_0069bab0,DAT_007cca10,param_3);
+            FUN_00523ac8(auStack_100,DAT_0069bab0,DAT_007cca10_y2,param_3);
           }
         }
         else {
-          FUN_00523ac8(auStack_100,DAT_0069ba50,DAT_007cca10,9);
+          FUN_00523ac8(auStack_100,DAT_0069ba50,DAT_007cca10_y2,9);
         }
       }
       uVar3 = FUN_00100d80(auStack_100,0);
@@ -3284,7 +3307,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
       }
       uVar3 = FUN_0031e310_u32(param_2,param_3);
       *(u32 *)*param_1 = uVar3;
-      FUN_00523ac8(auStack_100,DAT_0069bad0,DAT_007cca10,param_3 & 0xffff);
+      FUN_00523ac8(auStack_100,DAT_0069bad0,DAT_007cca10_y2,param_3 & 0xffff);
       uVar3 = FUN_00100d80(auStack_100,1);
       *(u32 *)(*param_1 + 0x10) = uVar3;
       *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) | 2;
@@ -8118,3 +8141,1568 @@ extern u32 DAT_00957be0_abs[];
 /* Retail sibling body starts at offset 0xA0 from 0x0034B600. */
 
 
+
+
+typedef void (*MdlVoidFn)(...);
+#include "rw/rpworld.h"
+#include "rw/rphanim.h"
+#include "h_cdvd.h"
+
+f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
+
+static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
+typedef struct MdlShortVec8 {
+    short values[8];
+} MdlShortVec8;
+typedef struct MdlShortVec10 {
+    short values[10];
+} MdlShortVec10;
+
+void mdlStreamInit(Model* mdl);
+void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
+void mdlStreamRequestCdvd(Model* mdl, const char* path);
+void mdlStreamDestroy(Model* mdl);
+void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
+void mdl00319900(Model* mdl, u32 value);
+extern RtAnimAnimation DAT_009571d0;
+#pragma alias DAT_009571d0_abs DAT_009571d0
+extern u8 DAT_009571d0_abs[];
+extern u8 DAT_0069abb8[];
+extern void* jtbl_00960178[];
+
+extern RwMatrix* FUN_004c2f30_y2(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
+extern RwV3d* FUN_004c6be0_y2(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
+extern s32 func_001a6c00(void* object, const char* name);
+extern char DAT_007cca08[1];
+#pragma alias DAT_007cca08_abs DAT_007cca08
+extern char DAT_007cca08_abs[];
+extern const char DAT_0069b210[];
+extern char DAT_007cca18[1];
+extern char DAT_007cca10[1];
+#define MDL_PATH_FORMAT(addr) (DAT_0069b210 + ((addr) - 0x69b210))
+void* FUN_00491cc0_y2(RpClump* clump);
+void FUN_00491ea0_y2(RpClump* clump);
+void* FUN_001a7570(RpClump* clump);
+void FUN_001a7710(void* object);
+void FUN_001ef340(Model* mdl);
+void FUN_004cb6e0(void* object, void (*callback)(void), void* data);
+void FUN_001a7170(RpClump* clump, RpHAnimHierarchy* hierarchy);
+RpHAnimHierarchy* FUN_00466480(RpHAnimHierarchy* hierarchy, u32 flags, u32 value, s32 index);
+void* func_0031d700(void* resource);
+void func_00320290(void* resource);
+void* func_0031e0b0(void* resource);
+void func_00313230(MdlAnimSlot* slot);
+void func_003132c0(u8* slot);
+void func_00313be0(MdlAnimEntryTable* table);
+void func_00313e60(void* data);
+void func_003143c0(u8* state, RpClump* clump);
+void func_00314d30(void* state);
+void func_00314730(u8* state, f32 frame);
+#pragma alias func_00314730_ptrfirst func_00314730
+void func_00314730_ptrfirst(u8* state, f32 frame);
+void func_00314850(RpClump* clump, void* state, s16 id, u16 blendFrameCount, u16 flags);
+void func_003138e0(MdlAnim* anim, s16 id, u16 blendFrameCount, u16 flags);
+void* func_00313490(MdlAnimSlot* slot, void* hierarchy);
+u32 func_00318620(Model* mdl, u16 slotIdx, s16 id);
+void func_003196f0(Model* mdl, u16 wpnIdx);
+void func_003197c0(Model* mdl, RwMatrix* matrix);
+u32 func_0031b220(Model* mdl);
+u32 func_0031ebe0(void* data);
+void func_0031ded0(void* data);
+void func_0031ee80(void* dst, const void* src);
+void func_0031eee0(void* data);
+void func_0031eeb0(void* data);
+void func_0031dda0(void* data, const RwV3d* scale);
+void func_0031d9c0(void* data, Model* mdl);
+void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
+void FUN_004cb7f0_y2(RwFrame* frame, const RwMatrix* matrix, u32 flags);
+void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
+#pragma alias func_004b74c0_typed func_004b74c0
+extern void func_004b74c0_typed(f32 frame, void* interpolator);
+#pragma alias func_004b74c0_frame FUN_004b74c0
+extern void func_004b74c0_frame(f32 frame, u32 interpolator);
+#pragma alias func_004b74c0_ptrfirst FUN_004b74c0
+extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
+#pragma alias func_004b7240_frame FUN_004b7240
+extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
+#pragma alias func_00320640_frame FUN_00320640_y2
+extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
+extern f32 func_00320810(void* animation);
+void func_00316970(Model* mdl);
+u32 func_003115a0(void* param_1, u32* param_2);
+u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
+void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
+extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
+#pragma alias func_004916d0_typed func_004916d0
+extern void func_004916d0_typed(u64 object, void* callback, void* data);
+#pragma alias func_004916d0_callback func_004916d0
+extern void func_004916d0_callback(RpClump* object, void (*callback)(void), void* data);
+void func_0031f5c0(void* data);
+
+/* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
+
+void FUN_0048a2a0(void);
+
+
+void FUN_004916d0_y2();
+u64 FUN_00316410(u64 param_1);
+#pragma alias datGetUnit_y2 datGetUnit
+extern u32 datGetUnit_y2(u32);
+#pragma alias datCalcGetHeldWeaponType_y2 datCalcGetHeldWeaponType
+extern u32 datCalcGetHeldWeaponType_y2(u32);
+
+
+
+
+
+
+/* W323 measured mdlCreateAndResolvePath opt_loop_invariants on: nd202 -> nd191; object 356/368. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void FUN_004c3760(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---- Recovered range 0x311480-0x31D4F0 (Ghidra reference, pending match) ---- */
+typedef struct MdlAnimResourceEntry
+{
+    void* resource;
+    u8 flags;
+    u8 unk_05[3];
+} MdlAnimResourceEntry;
+
+typedef int (*code)(...);
+typedef u8 bool;
+#ifndef CONCAT44
+#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
+#endif
+#ifndef CONCAT11
+#define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
+#endif
+extern s32 DAT_0096012c;
+extern u8 LAB_00464760;
+extern f32 DAT_009571c0;
+extern f32 DAT_009571c4;
+#pragma alias DAT_009571c0_abs DAT_009571c0
+extern u8 DAT_009571c0_abs[];
+#pragma alias DAT_009571c4_abs DAT_009571c4
+extern u8 DAT_009571c4_abs[];
+extern float fGpffff80d0;
+extern float fGpffff80f4;
+extern float fGpffff814c;
+extern float fGpffff8048;
+extern float fGpffff8118;
+extern float fGpffff8050;
+extern float fGpffff8054;
+extern float fGpffff8058;
+extern float fGpffff8150;
+extern float fGpffff8154;
+extern float fGpffff8158;
+extern s32 DAT_009571b8;
+extern float* DAT_009571bc;
+extern code DAT_009571b0;
+extern s32 DAT_009571b4;
+#pragma alias DAT_009571b0_abs DAT_009571b0
+extern code DAT_009571b0_abs[];
+#pragma alias DAT_009571b4_abs DAT_009571b4
+extern u8 DAT_009571b4_abs[];
+#pragma alias DAT_009571b8_abs DAT_009571b8
+extern u8 DAT_009571b8_abs[];
+#pragma alias DAT_009571bc_abs DAT_009571bc
+extern u8 DAT_009571bc_abs[];
+extern float fGpffff80e4;
+extern char gp0xffff9d10;
+extern u8 LAB_003131f8;
+extern f32 DAT_007cada4;
+extern MdlVoidFn DAT_0096017c_y2[];
+extern u8 LAB_0031379c;
+extern u8 LAB_00313790;
+extern u8 LAB_00313b48;
+extern u8 LAB_00314020;
+extern u8 LAB_00314060;
+#pragma alias LAB_00314020_abs LAB_00314020
+extern u8 LAB_00314020_abs[];
+#pragma alias LAB_00314060_abs LAB_00314060
+extern u8 LAB_00314060_abs[];
+extern u8 LAB_0031494c;
+extern u8 LAB_003140a0;
+extern u8 LAB_003140b0;
+#pragma alias LAB_003140a0_abs LAB_003140a0
+extern u8 LAB_003140a0_abs[];
+#pragma alias LAB_003140b0_abs LAB_003140b0
+extern u8 LAB_003140b0_abs[];
+extern f32 DAT_007cadd4;
+extern f32 DAT_007caf0c;
+extern f32 DAT_007caf10;
+extern f32 DAT_007cad38;
+extern f32 DAT_007cae08;
+extern f32 DAT_007cad40;
+extern f32 DAT_007cad44;
+extern f32 DAT_007caed0;
+extern u32 DAT_007cada0_y2;
+extern MdlVoidFn DAT_00960090_y2[];
+ extern u8 DAT_00960090_abs_y2[];
+extern MdlVoidFn DAT_00960094_y2[];
+extern u32 DAT_00960070;
+extern f32 DAT_007caf08_y2;
+extern u32 DAT_0069aee0;
+extern u32 DAT_0069aee2;
+extern u32 DAT_0069aee4;
+extern u8 LAB_0031b594;
+extern u8 gp0xffff9d20;
+extern u32 DAT_0069af00;
+extern u32 DAT_0069b190;
+#pragma alias DAT_0069b190_abs DAT_0069b190
+extern u8 DAT_0069b190_abs[];
+extern u8 LAB_0031bfb8;
+extern u32 DAT_0069b1b0;
+#pragma alias DAT_0069b1b0_abs DAT_0069b1b0
+extern u8 DAT_0069b1b0_abs[];
+extern u32 DAT_0069b0d0;
+#pragma alias DAT_0069b0d0_abs DAT_0069b0d0
+extern u8 DAT_0069b0d0_abs[];
+extern u32 DAT_0069b1c0;
+#pragma alias DAT_0069b1c0_abs DAT_0069b1c0
+extern u8 DAT_0069b1c0_abs[];
+extern u32 DAT_0069b1d0;
+#pragma alias DAT_0069b1d0_abs DAT_0069b1d0
+extern u8 DAT_0069b1d0_abs[];
+extern u32 DAT_0069b1e0;
+#pragma alias DAT_0069b1e0_abs DAT_0069b1e0
+extern u8 DAT_0069b1e0_abs[];
+extern void* PTR_PTR_0069ae80[];
+extern void* RpMaterialGetUserDataArray_y2(void* material,int data);
+extern char* RpUserDataArrayGetName_y2(void* userData);
+extern int RpUserDataArrayGetFormat_y2(void* userData);
+extern f32 func_0052e9e8(f32 value);
+#pragma alias func_0052ea18_typed func_0052ea18
+extern f32 func_0052ea18_typed(f32 x, f32 y);
+u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+                  RtAnimInterpolator* param_4, f32 param_1);
+u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
+void func_00312c70(u8* param_1,int param_2);
+void func_00312d40(u8* param_1,u8* param_2);
+void func_00312e80(int param_1);
+u32 func_00312f90(u32 param_1);
+u32 func_00313090(u32 param_1,u32 param_2);
+void func_00313ca0(int *param_1,u32 param_2);
+int func_00313f40(int param_1,void* param_2);
+void* func_00313fe0(void* param_1,u32 *param_2);
+void* func_003140c0(void* param_1,u16 *param_2);
+void* func_00314170(void* param_1, void* param_2);
+u32 func_003142b0(void* param_1);
+void* func_00314510(void* param_1);
+u32 func_00314650(u32 param_1);
+void* func_00315010(void* object, void* data);
+u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
+void func_003151d0(Model* param_1);
+void func_00315c20(int param_1);
+Model* func_00315ed0(Model* param_1);
+u32 func_00315f50(void* param_1,u32 *param_2);
+void func_00316320(u64 param_1,u32* param_2,u16 param_3);
+u32 func_00316360(void* param_1,u32 *param_2);
+void func_003164f0(int param_1,int param_2);
+void* func_003165e0(void* param_1);
+Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
+void func_003176c0(Model* param_1);
+u32 func_003186e0(int param_1,u32 param_2,short param_3);
+void func_00318b10(u32 *param_1);
+u32 func_00318b90(u32 param_1);
+u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3);
+bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3);
+u32 func_00318fc0(int param_1);
+void func_00319230(int param_1,u16 param_2);
+void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5);
+void func_003195f0(int param_1,u32 param_2,Model* param_3);
+u32 func_00319970(Model* param_1);
+int func_0031aad0(Model* param_1);
+void func_0031b470(void);
+void func_0031b4a0(char* param_1,u16 param_2);
+u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
+void func_0031b820(u32 param_1,u32 param_2);
+#pragma alias func_0031b680_u32ptr func_0031b680
+extern u32 func_0031b680_u32ptr(int param_1,int param_2,u32 *param_3,u32 *param_4);
+u32 func_0031be80(u32 param_1);
+void func_0031c000(char* param_1,u32 param_2);
+u32 func_0031c1d0(int param_1);
+u32 func_0031c7e0(int param_1);
+u32 func_0031c820_y2(u16 param_1,u16 param_2,char* param_3);
+void FUN_0031e4d0_y2(int *param_1,u16 param_2,u16 param_3);
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
+/* W389 measured func_00311730 opt_loop_invariants on + opt_lifetimes on: nd 4296 -> 4240; object 5360/5440 -> 5328/5440. */
+#undef fStack_210
+#undef fStack_20c
+#undef fStack_208
+#undef uStack_204
+#undef fStack_200
+#undef fStack_1fc
+#undef fStack_1f8
+#undef fStack_1f0
+#undef fStack_1ec
+#undef fStack_1e8
+#undef uStack_1e0
+#undef uStack_1dc
+#undef uStack_1d8
+#undef fStack_310
+#undef fStack_30c
+#undef fStack_308
+#undef uStack_304
+#undef fStack_300
+#undef fStack_2fc
+#undef fStack_2f8
+#undef fStack_2f0
+#undef fStack_2ec
+#undef fStack_2e8
+#undef fStack_2e0
+#undef fStack_2dc
+#undef fStack_2d8
+#undef fStack_380
+#undef fStack_37c
+#undef fStack_378
+#undef fStack_374
+#undef fStack_370
+#undef fStack_36c
+#undef fStack_368
+#undef fStack_364
+#undef fStack_360
+#undef fStack_35c
+#undef fStack_358
+#undef fStack_354
+#undef fStack_350
+#undef fStack_34c
+#undef fStack_348
+#undef fStack_344
+#undef fStack_340
+#undef fStack_33c
+#undef fStack_338
+#undef fStack_334
+#undef fStack_330
+#undef iStack_32c
+#undef fStack_320
+#undef fStack_31c
+#undef fStack_318
+#undef fStack_314
+#undef fStack_50
+#undef fStack_4c
+#undef fStack_48
+#undef fStack_40
+#undef fStack_3c
+#undef fStack_38
+#undef fStack_30
+#undef fStack_2c
+#undef fStack_28
+#undef fStack_20
+#undef fStack_1c
+#undef fStack_18
+#undef uStack_10
+#undef uStack_c
+#undef uStack_8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// W389 residual nd1: the sole differing instruction is commutative addu operand order (retail v0=v0+v1 vs. ours v0=v1+v0); this is a documented compiler floor.
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured func_00313490 opt_propagation off: nd 746 -> 608; object 1104/1104 -> 1100/1104. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured func_00314850 opt_lifetimes on: nd 729 -> 726; object 1208/1248 -> 1208/1248. */
+
+
+
+
+/* W389 measured func_00314d30 opt_lifetimes on: nd 446 -> 415; object 724/736 -> 720/736. */
+
+
+
+
+
+
+
+
+/* W323 measured func_00315090 opt_loop_invariants on: nd195 -> nd188; object 292/320. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured func_00315f50 opt_dead_assignments off: nd 563 -> 559; object 892/976 -> 892/976. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured FUN_00317a20 opt_lifetimes on: nd 1381 -> 1367; object 2164/2224 -> 2164/2224. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Template probe: reversing the two top-level branches to match func_00318ed0
+// retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
+/* W323 measured func_00318d10 opt_loop_invariants on: nd268 -> nd266; object 420/448. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Required for Mdl matrix aggregate copy under MWCCPS2 b210 (without: nd32). */
+    
+
+
+
+/* W323 measured func_00319970 opt_loop_invariants on: nd3132 -> nd3045; object 4304/4448. */
+
+
+
+
+/* W389 measured func_0031aad0 opt_propagation off: nd 1092 -> 1085; object 1832/1872 -> 1836/1872. */
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured func_0031b4a0 opt_loop_invariants on: nd293 -> nd266; object 472/480. */
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_0031C000
+
+
+void func_0031c000(char* param_1,u32 param_2)
+
+
+
+{
+
+
+  u8 uVar3;
+
+  u32 lVar4;
+
+  u32 uVar5;
+
+
+
+  short auStack_20 [12];
+
+  int iStack_4;
+
+  int iStack_8;
+
+  u32 uVar9;
+
+  
+
+  uVar9 = param_2 & 0xffff;
+
+  iStack_4 = 0;
+
+  iStack_8 = 0;
+
+  lVar4 = func_0031b680(5,uVar9,&iStack_4,&iStack_8);
+
+  if (lVar4 == 1) {
+
+    if (iStack_4 >= 0xb) {
+
+      K_Assert((const char*)DAT_0069b1c0_abs,0x1a7);
+
+    }
+
+    if (iStack_4 == 0) {
+
+      sprintf(param_1, (const char*)DAT_0069b1d0_abs, &gp0xffff9d20);
+
+      return;
+
+    }
+
+    if ((iStack_4 == 1) && (iStack_8 == 2)) {
+
+      *(MdlShortVec8 *)((u8 *)auStack_20) =
+          *(MdlShortVec8 *)((u8 *)DAT_0069b1b0_abs);
+
+      uVar5 = datGetUnit_y2(1);
+
+      uVar3 = datCalcGetHeldWeaponType_y2(uVar5);
+
+      if (uVar3 >= 8) {
+
+        K_Assert((const char*)DAT_0069b1c0_abs,0x1bc);
+
+      }
+
+      lVar4 = datGetScenarioMode();
+
+      if (lVar4 != 0) {
+
+        uVar9 = 0x91;
+
+      }
+
+      else {
+
+        uVar9 = (u16)auStack_20[uVar3];
+
+      }
+
+      printf((const char*)DAT_0069b1e0_abs,uVar9);
+
+    }
+
+    else if ((iStack_4 == 9) && (lVar4 = datGetScenarioMode(), lVar4 != 0)) {
+
+      uVar9 = 0x3e6;
+
+    }
+
+    else {
+
+      uVar9 = *(u16 *)(DAT_0069b0d0_abs + iStack_4 * 2);
+
+    }
+
+  }
+
+  func_0031b4a0(param_1,uVar9);
+
+  return;
+
+}
+
+
+
+
+/* W323 measured func_0031c1d0 opt_common_subs off: nd1055 -> nd889; object 1544/1552. */
+#pragma push
+#pragma opt_common_subs off
+// FUN_0031C1D0 NONMATCHING
+
+
+u32 func_0031c1d0(int param_1)
+
+
+
+{
+
+  u8 cVar1;
+
+  u16 uVar2;
+
+  int sVar3;
+
+
+  u32 uVar5;
+  int lVar6;
+
+  int iVar7;
+
+
+
+
+  int sVar8;
+
+  char auStack_100[256];
+
+  
+
+  iVar7 = (int)param_1;
+
+  if (*(u16 *)(iVar7 + 0xd4) != 1) return 0;
+
+    uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
+
+    sVar3 = datGetEquipmentId(*(u16 *)(iVar7 + 0xd6),uVar2);
+
+    switch(*(u16 *)(iVar7 + 0xd6)) {
+
+    case 1:
+
+      uVar5 = datGetUnit_y2(1);
+
+      cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
+
+      if ((cVar1 == '\x03') || (cVar1 == '\a')) {
+
+        lVar6 = (int)mdlSearch(10,sVar3,0);
+
+        if (lVar6 == 0) {
+
+          if (cVar1 == '\a') {
+
+            sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+          }
+
+          else {
+
+            sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar3);
+
+          }
+
+          func_003192a0(param_1,0,10,sVar3,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,0,10,sVar3,0);
+
+        }
+
+        sVar8 = sVar3 + 1000;
+
+        lVar6 = (int)mdlSearch(10,sVar8,0);
+
+        if (lVar6 == 0) {
+
+          if (cVar1 == '\a') {
+
+            sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+          }
+
+          else {
+
+            sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar3);
+
+          }
+
+          func_003192a0(param_1,1,10,sVar8,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,1,10,sVar8,0);
+
+        }
+
+      }
+      else {
+        func_00319490(param_1,0,10,sVar3,0);
+      }
+
+      break;
+
+    case 2:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 3:
+
+      lVar6 = (int)mdlSearch(7,sVar3,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      sVar8 = sVar3 + 1000;
+
+      lVar6 = (int)mdlSearch(7,sVar8,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,1,7,sVar8,0);
+
+      }
+
+      break;
+
+    case 4:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 5:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 7:
+
+      lVar6 = (int)mdlSearch(7,sVar3,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      sVar8 = sVar3 + 1000;
+
+      lVar6 = (int)mdlSearch(7,sVar8,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,1,7,sVar8,0);
+
+      }
+
+      break;
+
+    case 8:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 9:
+
+      lVar6 = datGetScenarioMode();
+
+      if (lVar6 == 0) {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      else {
+
+        lVar6 = (int)mdlSearch(7,sVar3,0);
+
+        if (lVar6 == 0) {
+
+          sprintf(auStack_100, (const char*)0x69b170, &gp0xffff9d20,sVar3);
+
+          func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,0,7,sVar3,0);
+
+        }
+
+      }
+
+      break;
+
+    case 10:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+    }
+
+    mdl003196d0((Model*)param_1,0,500);
+
+    mdl003196d0((Model*)param_1,1,0x1f5);
+
+  return 1;
+}
+#pragma pop
+
+
+
+
+// FUN_0031C7E0
+
+
+u32 func_0031c7e0(int param_1)
+
+
+
+{
+  int iVar1;
+  iVar1 = param_1;
+  FUN_0031e4d0_y2((int *)(iVar1 + 0x3f8),*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6));
+
+  return 1;
+
+}
+
+
+
+
+// FUN_0031C820 NONMATCHING
+
+
+u32 func_0031c820_y2(u16 param_1,u16 param_2,char* param_3)
+
+
+
+{
+
+  u8 cVar1;
+
+  int uVar2;
+
+  int sVar3;
+
+  u32 lVar4;
+
+  u32 uVar5;
+
+  
+
+  switch(param_1) {
+
+
+  case 1:
+
+    uVar2 = datGetEquipmentIdx((short)param_2,1);
+
+    sVar3 = datGetEquipmentId((short)param_2,uVar2);
+
+    if (param_2 == 1) {
+
+      lVar4 = datGetScenarioMode();
+
+      if (lVar4 != 0) {
+        switch (sVar3) {
+        case 0x43d:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b230));
+          break;
+        case 0x466:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b250));
+          break;
+        case 0x464:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b270));
+          break;
+        default:
+          lVar4 = datGetFlag(0x2f0);
+          if (lVar4 != 1) {
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b2b0));
+          }
+          else {
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b290));
+          }
+          break;
+        }
+      }
+      else {
+        uVar5 = datGetUnit_y2(1);
+        cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
+        if ((((cVar1 == '\0') && (lVar4 = datGetFlag(0x15), lVar4 == 0)) &&
+            (lVar4 = datGetFlag(0x1310), lVar4 == 0)) && (lVar4 = func_0031e420(1,1), lVar4 == 0))
+        {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b2d0));
+        }
+        else if (sVar3 == 0x40e) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b370), 1, cVar1);
+        }
+        else if (sVar3 == 0x45f) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b350), 1, cVar1);
+        }
+        else if (sVar3 == 0x453) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b330), 1, cVar1);
+        }
+        else if (sVar3 == 0x452) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b310), 1, cVar1);
+        }
+        else if (sVar3 == 0x439) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b2f0), 1, cVar1);
+        }
+        else {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b390), 1, cVar1);
+        }
+      }
+    }
+
+    else {
+
+      switch(param_2) {
+
+      default:
+
+        sprintf(param_3, MDL_PATH_FORMAT(0x69b930), DAT_007cca10);
+
+        break;
+
+      case 2:
+
+        if (sVar3 == 0x41e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b450), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x462) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b430), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45d) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b410), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x459) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x458) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43a) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3b0), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b470), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b490), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 3:
+
+        if (sVar3 == 0x464) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x466) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43d) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4b0), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b510), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b530), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 4:
+
+        if (sVar3 == 0x41e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x463) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45b) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b590), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45a) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b570), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43c) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b550), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b610), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b630), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 5:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x460) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x455) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b690), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x454) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b670), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x440) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b650), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b6f0), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b710), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 7:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b7b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x461) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b790), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x457) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b770), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x456) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b750), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43b) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b730), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7d0), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7f0), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 8:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b870), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x465) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b850), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45c) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b830), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b810), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b890), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8b0), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 9:
+
+        lVar4 = datGetScenarioMode();
+
+        if (lVar4 == 0) {
+
+          if (sVar3 != 0x40e) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b910), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8f0), DAT_007cca10);
+
+          }
+
+        }
+
+        else {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b8d0), DAT_007cca10);
+
+        }
+
+      }
+
+    }
+
+    break;
+
+  case 2:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b950), DAT_007cca10,param_2);
+
+    break;
+
+  case 3:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b970), DAT_007cca10,param_2);
+
+    break;
+
+  case 5:
+
+    func_0031c000(param_3,param_2);
+
+    break;
+
+  case 7:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9b0), DAT_007cca10,param_2);
+
+    break;
+
+  case 8:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9d0), DAT_007cca10,param_2);
+
+    break;
+
+  case 9:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b210), DAT_007cca10,(int)(u32)param_2 >> 8,param_2 & 0xff);
+
+    break;
+
+  case 10:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b990), DAT_007cca10,param_2);
+
+    break;
+
+  case 0xb:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9f0), DAT_007cca10,param_2);
+
+    break;
+
+  default:
+
+    sprintf(param_3, DAT_007cca18, DAT_007cca10,
+
+                 *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
+
+    break;
+  }
+
+  return 1;
+
+}

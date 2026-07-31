@@ -2809,7 +2809,6 @@ extern u32 iGpffffb418;
 extern s32* PTR_DAT_007cd540;
 extern RwMatrix* func_004c38c0(void);
 extern void func_004c3880(RwMatrix* matrix);
-extern f32 func_004c69f0_y2(RwV3d* out, const RwV3d* in);
 extern f32 acosf(f32 value);
 #pragma alias sDegreesPerRadian D_007CAFA0
 extern f32 sDegreesPerRadian;
@@ -2870,7 +2869,6 @@ extern u16 func_002ffb00(DatUnitGenusBase* genus);
 extern void func_0035c1a0(KwlnTask* task, int record);
 extern ScrHeader* D_007CE220;
 extern void func_001b00c0(KwlnTask* task);
-extern void func_0010a4e0_y2(s32 bank, s32 cue, s32 variant, s32 pan);
 
 static u32 K_Encount_Now(KwlnTask* task)
 {

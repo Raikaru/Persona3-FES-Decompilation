@@ -1572,8 +1572,8 @@ void FUN_00177270(void)
 
 #include "Main/Battle/Data/datCalc.h"
 
-#pragma alias func_001754a0_y2 func_001754a0_y2
-#pragma alias FUN_00173280_y2 FUN_00173280_y2
+#pragma alias func_001754a0_y2 func_001754a0
+#pragma alias FUN_00173280_y2 FUN_00173280
 
 
 /* GP-relative data pointers used by the retail Persona tables. */
