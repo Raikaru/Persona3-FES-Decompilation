@@ -441,9 +441,9 @@ const char* h_camp_getCourageLevelString(s16 idx)
 }
 
 #pragma push
-/* Keep the table base loop-invariant; measured direct-global probe nd16 -> nd0. */
+/* Removing this loop-invariant pragma leaves h_campUpdateSpriteSetupTask at normalized_diff 16; measured with it, normalized_diff is 0. */
 #pragma opt_loop_invariants on
- 
+
 // FUN_0011a8a0 NONMATCHING
 void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
@@ -1435,7 +1435,7 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
 
     pos.startX = -19.0f;
     selectedEntry = work->selectedEntry;
-    /* Keep the selected-entry value live before the constant setup; measured against the target arithmetic. */
+    /* Removing this barrier from the selected-entry split leaves normalized_diff 452; measured with it, normalized_diff is 0. */
     asm ("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;

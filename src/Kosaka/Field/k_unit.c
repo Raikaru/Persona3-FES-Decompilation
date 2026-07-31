@@ -61,7 +61,7 @@ extern void* DAT_0086bdc0[0x10];
 extern u32 func_001a02c0(void);
 extern u32 func_001a0310(void);
 extern u8* func_001b9120(void);
-extern u16 func_001bff20(void);
+extern u32 func_001bff20(void);
 extern u32 func_001d7300(u32 major, u16 minor, u32 area);
 extern u16 func_001d75f0(u32 major, u16 minor, u32 area);
 extern u16 func_001d76e0(u32 major, u16 minor, u32 area);
@@ -2285,12 +2285,12 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
 // FUN_001d1fa0 NONMATCHING
 void func_001d1fa0(void)
 {
+    u8* spawn;
     u32 area;
     u32 count;
     s32 index;
     u16* model;
     u8* record;
-    u8* spawn;
     s32 slot;
     u16 spawnId;
     typedef struct

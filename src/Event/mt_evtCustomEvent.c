@@ -5659,12 +5659,12 @@ done:
 void FUN_0039eaa0(int param_1)
 {
   int iVar1;
-  int iVar2;
   int iVar3;
   int iVar4;
   int iVar5;
   int iVar6;
   int *piVar7;
+  int iVar2;
 
   piVar7 = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(piVar7,0,0x38);

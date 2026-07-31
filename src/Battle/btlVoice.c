@@ -3074,15 +3074,15 @@ void func_002f5a70(void)
 void func_002f6840(BtlAction* action);
 u32 func_002f6ab0(BtlAction* action);
 
-#pragma opt_loop_invariants on
-// FUN_002f5bf0 NONMATCHING
+#pragma opt_loop_invariants off
+// FUN_002f5bf0
 void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_3)
 
 {
-  s32 hpDelta;
   u32 bVar1;
-  BtlUnit* sourceUnit;
   int iVar2;
+  s32 hpDelta;
+  BtlUnit* sourceUnit;
   u16 *puVar3;
   s32 lVar4;
   BtlAction* unaff_s0;

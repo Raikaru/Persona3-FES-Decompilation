@@ -4711,50 +4711,22 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
-    s32 category;
+    s16 category;
     u16 charId;
-    u8 genus = unit->genus;
+    u32 unitId;
+    const u8* table;
 
-    if (genus == UNIT_GENUS_EC)
+    category = btlUnitAnimCategory(unit, (s16)id);
+    if (category < 0)
     {
-        switch (id)
-        {
-        case 4:
-        case 5:
-        case 6:
-            category = 0;
-            break;
-        default:
-            category = -1;
-            break;
-        }
-    }
-    else
-    {
-        switch (id)
-        {
-        case 4:
-            category = 0;
-            break;
-        case 5:
-            category = 1;
-            break;
-        case 6:
-            category = 2;
-            break;
-        default:
-            category = -1;
-            break;
-        }
-    }
-
-    if (category == -1)
         return 1;
+    }
 
     charId = unit->charId;
-    if (genus == UNIT_GENUS_EC)
+    if (unit->genus == UNIT_GENUS_EC)
     {
-        return *(s16*)(iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1a + category * 4);
+        table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1a;
+        return *(const u16*)(table + category * 4);
     }
 
     if (charId == 4)
@@ -4764,11 +4736,15 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
 
     if (charId == 1)
     {
-        u32 unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
-        return *(s16*)(iGpffffb718 + (unitId & 0xff) * 0x128 + 0x18 + category * 4);
+        unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
+        table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x18;
+    }
+    else
+    {
+        table = iGpffffb71c + ((u32)charId * 0x10a) + 0x18;
     }
 
-    return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
+    return *(const u16*)(table + category * 4);
 }
 
 // FUN_00283E40 NONMATCHING

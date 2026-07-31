@@ -5468,13 +5468,12 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
-  register ItfMesAnim *anim;
+  ItfMesAnim *anim;
+  int count;
+  s16 *source;
+  s16 *dest;
 
   anim = (ItfMesAnim *)(object + 0x1d4);
-  {
-    register int count;
-    register s16 *source;
-    register s16 *dest;
     source = DAT_006a1bd0_signed;
     dest = values;
     count = 3;
@@ -5488,7 +5487,6 @@ void FUN_003a7dd0(int object)
     dest[1] = second;
     dest += 2;
   } while (count > 0);
-  }
 
   if (anim->active != 0) {
     switch (anim->state) {
