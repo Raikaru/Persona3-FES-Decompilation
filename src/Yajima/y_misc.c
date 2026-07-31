@@ -105,7 +105,6 @@ s16 func_00170ab0(s16 pcId, s16 index);
 void func_00170b20(s16 pcId, s16 index, u16 value);
 void func_00170b90(s16 pcId, s16 index, u16 value);
 s32 func_0016f490(s16 pcId);
-u8 func_0016f810(s16 pcId, s32 equipmentIdx);
 u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx);
 u32 FUN_00421de0(s8 param_1, s8 param_2, s8 param_3, s8 param_4, s8 param_5);
 u32 FUN_00424230(void);

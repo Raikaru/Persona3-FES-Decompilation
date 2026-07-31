@@ -4409,18 +4409,21 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 
 void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend)
 {
-  f32 *result;
+  u32 *result;
   f32 red;
   f32 green;
   f32 blue;
-  result = (f32 *)FUN_0031fbd0(firstTime, track);
+  result = FUN_0031fbd0(firstTime, track);
   red = (f32)color[0] / 255.0f;
   green = (f32)color[1] / 255.0f;
   blue = (f32)color[2] / 255.0f;
 
-  result[1] = blend * (red - result[1]) + result[1] + 0.0f;
-  result[2] = blend * (green - result[2]) + result[2] + 0.0f;
-  result[3] = blend * (blue - result[3]) + result[3] + 0.0f;
+  *(f32 *)(result + 1) =
+      blend * (red - *(f32 *)(result + 1)) + *(f32 *)(result + 1) + 0.0f;
+  *(f32 *)(result + 2) =
+      blend * (green - *(f32 *)(result + 2)) + *(f32 *)(result + 2) + 0.0f;
+  *(f32 *)(result + 3) =
+      blend * (blue - *(f32 *)(result + 3)) + *(f32 *)(result + 3) + 0.0f;
 }
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1, u8 *param_2)
