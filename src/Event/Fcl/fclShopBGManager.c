@@ -120,7 +120,11 @@ u32 DAT_006b0cb0;
 u32 DAT_006b0dd4;
 u32 DAT_006b0ddc;
 u32 DAT_006b0de0;
+#pragma alias DAT_006b0de0_abs DAT_006b0de0
+extern u8 DAT_006b0de0_abs[];
 u32 DAT_006b0e30;
+#pragma alias DAT_006b0e30_abs DAT_006b0e30
+extern u8 DAT_006b0e30_abs[];
 u32 DAT_006b0e64;
 u32 DAT_006b0e6c;
 u32 DAT_006b10e0;
@@ -2771,9 +2775,9 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 {
 
-  u16 uVar1;
+s16 uVar1;
 
-  u16 uVar2;
+s16 uVar2;
 
   short sVar3;
 
@@ -2781,9 +2785,9 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   int iVar5;
 
-  u16 *puVar6;
+s16 *puVar6;
 
-  u16 *puVar7;
+s16 *puVar7;
 
   short *psVar8;
 
@@ -2793,23 +2797,23 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   int iVar11;
 
-  u16 *puStack_90;
+s16 *puStack_90;
 
   int iStack_8c;
 
-  u16 *puStack_88;
+s16 *puStack_88;
 
   u32 uStack_84;
 
-  u16 auStack_80 [24];
+s16 auStack_50 [40];
 
-  u16 auStack_50 [40];
+s16 auStack_80 [24];
 
   
 
   iVar4 = *(int *)(param_2 + 0xc);
 
-  puVar7 = (u16 *)(&DAT_006b0de0);
+  puVar7 = (s16 *)DAT_006b0de0_abs;
 
   puVar6 = auStack_50;
 
@@ -2833,7 +2837,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   } while (0 < iVar5);
 
-  puVar7 = (u16 *)(&DAT_006b0e30);
+  puVar7 = (s16 *)DAT_006b0e30_abs;
 
   puVar6 = auStack_80;
 

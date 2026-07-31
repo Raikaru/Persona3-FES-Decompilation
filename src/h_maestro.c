@@ -319,16 +319,20 @@ u32 func_00110510(KwlnTask* task)
         for (i = 0; i < (s32)work->resourceCount; i++)
         {
             s8 recordType;
+            u8* resource;
+            s32* recordIndex;
 
-            while ((recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1]) != -1)
+            resource = *(u8**)((u8*)work + i * 4 + 8);
+            recordIndex = (s32*)((u8*)work + i * 4 + 0x1e8);
+            while ((recordType = resource[*recordIndex * 18 + 1]) != -1)
             {
                 if (recordType == -2)
                 {
                     return false;
                 }
-                work->recordIndices[i]++;
+                (*recordIndex)++;
             }
-            work->recordIndices[i]++;
+            (*recordIndex)++;
             work->completedRecords++;
         }
     }
