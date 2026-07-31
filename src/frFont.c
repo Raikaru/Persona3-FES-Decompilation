@@ -335,11 +335,13 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   offset = *(u32 *)data + data[10] * 0x40;
   if (data[0x16] != 0) {
     slot->block0_size = *(u32 *)(data + offset);
-    slot->block0 = data + offset + 4;
-    offset += slot->block0_size + 4;
+    offset += 4;
+    slot->block0 = data + offset;
+    offset += slot->block0_size;
     slot->block1_size = *(u32 *)(data + offset);
-    slot->block1 = data + offset + 4;
-    offset += slot->block1_size + 4;
+    offset += 4;
+    slot->block1 = data + offset;
+    offset += slot->block1_size;
   } else {
     slot->block0_size = 0;
     slot->block0 = NULL;
@@ -347,7 +349,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
     slot->block1 = NULL;
   }
 
-  slot->flags = (u32)(data + offset);
+  slot->flags = (u32)((char *)slot->font_data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
   slot->object = (u8 *)slot->font_data + offset +

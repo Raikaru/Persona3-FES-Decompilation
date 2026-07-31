@@ -51,7 +51,6 @@ u64 FUN_003c5870(u64 param_1,int param_2);
 u32 FUN_003c58f0(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003c5a20(void);
 u32 FUN_003c5a40(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
-u32 FUN_003c4d20(u32 param_1,u32 param_2);
 void FUN_003c5af0(u32 param_1);
 void FUN_003c5bb0(u32 param_1);
 u32 FUN_003c5c50(u32 param_1);
@@ -712,8 +711,14 @@ void FUN_003c5af0(u32 param_1)
   iVar1 = *(int *)(iVar4 + 0x24);
   iVar2 = FUN_003c4d20(param_1,iVar4 + 4);
   if (iVar2 != 0) {
-    if (*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) <
-        *(int *)(*(int *)(iVar2 + 0x14) + 0xc)) {
+    if (!(*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) <
+          *(int *)(*(int *)(iVar2 + 0x14) + 0xc))) {
+      iVar2 = *(int *)(*(int *)(iVar1 + 0x2c) + 0xc);
+      if (iVar2 != 0) {
+        *(int *)(iVar1 + 0x2c) = iVar2;
+      }
+    }
+    else {
       if (iVar2 == *(int *)(iVar4 + 8)) {
         iVar4 = *(int *)(iVar1 + 0x20);
         do {
@@ -722,12 +727,6 @@ void FUN_003c5af0(u32 param_1)
           iVar2 = iVar3;
           iVar4 = iVar4 + -1;
         } while (iVar4 > 0);
-        *(int *)(iVar1 + 0x2c) = iVar2;
-      }
-    }
-    else {
-      iVar2 = *(int *)(*(int *)(iVar1 + 0x2c) + 0xc);
-      if (iVar2 != 0) {
         *(int *)(iVar1 + 0x2c) = iVar2;
       }
     }

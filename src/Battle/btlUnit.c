@@ -2353,12 +2353,12 @@ void btlUnitInit002843e0Packet(void* work)
 // FUN_00284350 NONMATCHING
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
-    BtlUnit* unit;
     BtlUnitPacket002843e0* packet;
+    BtlUnit* unit;
     s16 activeAnimation;
 
-    unit = ((BtlUnitPacket002843e0*)work)->unit;
     packet = (BtlUnitPacket002843e0*)work;
+    unit = packet->unit;
 
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {

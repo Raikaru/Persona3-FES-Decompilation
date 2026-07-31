@@ -2744,8 +2744,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
                 x = (f32)(index * 0x1d) + 61.0f;
                 end.y = x;
                 drawBuffer = work->drawBuffer;
-                selectedStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
-                selectedStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
+                selectedStart = *(CampPair*)(drawBuffer + index * 0x44 + 0x2e0);
                 func_0018bc10(103.0f,
                               drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&selectedStart, *(u64*)&end, 0, 0, 0, 2);
@@ -2756,8 +2755,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
                 x = (f32)(index * 0x1d) + 61.0f;
                 end.y = x;
                 drawBuffer = work->drawBuffer;
-                hoverStart.x = *(f32*)(drawBuffer + index * 0x44 + 0x2e0);
-                hoverStart.y = *(f32*)(drawBuffer + index * 0x44 + 0x2e4);
+                hoverStart = *(CampPair*)(drawBuffer + index * 0x44 + 0x2e0);
                 func_0018bc10(103.0f,
                               drawBuffer + (index + 0xa) * 0x44,
                               0, 2, 0, *(u64*)&hoverStart, *(u64*)&end, 0, 0, 0, 2);

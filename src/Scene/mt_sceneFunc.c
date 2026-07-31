@@ -3278,6 +3278,7 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   axis3.raw.xy = xy;
   axis3.raw.z = z;
 
+  *(volatile f32 *)&matrix.at.z = 1.0f;
   matrix.at.z = 1.0f;
   matrix.up.y = 1.0f;
   matrix.right.x = 1.0f;
