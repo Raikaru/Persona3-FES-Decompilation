@@ -1609,7 +1609,9 @@ void FUN_002230e0(void)
 }
 #pragma optimization_level 2
 
-#pragma opt_loop_invariants on
+/* W357 measured FUN_00223290: opt_propagation off nd2166/3392B -> nd2127/3224B,
+ * window 3776B. */
+#pragma opt_propagation off
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
@@ -1884,6 +1886,7 @@ alpha_done:
         ;
     }
 }
+#pragma opt_propagation on
 
 // Previous body was a wrong-helper stub unrelated to retail (1296B window).
 // Rewritten from disasm: retail dispatches per-record state via a switch
@@ -1895,7 +1898,6 @@ alpha_done:
 // counter on the other switch arm). nd 198->6 (obj 1292B/1296B); residual
 // is a 2-variable register-bank swap (slot0/setQuad), unfixable per the
 // usual declaration/statement-order floor.
-#pragma opt_loop_invariants reset
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -5234,6 +5236,11 @@ u32 bpTexHasPendingNode(void)
     return false;
 }
 
+/* W357 debt: bpTexUpdateNode at honest -O2 is 2860B vs 2656B window
+ * (nd2145), 204B over. optimization_level 3 measures 2516B/2656
+ * (nd1915) and preserves link layout; real repair needs retail frame
+ * comparison, ordered helper call census, and the ABS_f32 stub sweep. */
+#pragma optimization_level 3
 // FUN_002564C0 NONMATCHING
 void bpTexUpdateNode(void* nodeData)
 {
@@ -5459,6 +5466,7 @@ void bpTexUpdateNode(void* nodeData)
         }
     }
 }
+#pragma optimization_level 2
 
 // FUN_00256F20
 void bpTexCollectLeafPos(void* node, void* values, s32* count)

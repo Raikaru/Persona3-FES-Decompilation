@@ -380,7 +380,7 @@ f64 FUN_0052eac8(s64 u)
   return f;
 }
 #pragma optimization_level 2
-// Scheduler probe: level-2 target is 224B without scheduling and measured separately with schedule enabled.
+// Scoped scheduler: level-2 target is 224B without schedule and 200B with schedule.
 #pragma schedule on
 // FUN_0052EB60 NONMATCHING
 float FUN_0052eb60(s64 u)

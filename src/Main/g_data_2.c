@@ -183,7 +183,7 @@ void FUN_00177d40(void)
     PTRP(0x00836798) = (u8*)(*allocator)(300, 2, 0x40000);
 }
 
-/* W357 measured opt_common_subs off: without nd3325/object4636, with nd3176/object4704; window 4736 (under). */
+/* W357 pragma sweep: FUN_00177db0 default nd3325/object4636; loop_invariants on nd3322/object4636; lifetimes on nd3321/object4636; common_subs off nd3176/object4704; common+loop nd3177/object4704; common+lifetimes nd3175/object4704 retained; loop+lifetimes nd3320/object4636; all three nd3176/object4704; window 4736. */
 #pragma opt_common_subs off
 #pragma opt_lifetimes on
 // FUN_00177db0 NONMATCHING
@@ -864,10 +864,10 @@ void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
     }
 }
 
-/* W357 measured opt_loop_invariants on: without nd121/object296, with nd55/object296; window 304 (under). */
+/* W357 pragma sweep: FUN_0017ac60 default nd121/object296; loop_invariants on nd55/object296; lifetimes on nd118/object296; loop+lifetimes nd0/object296 retained; window 304. */
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
-// FUN_0017ac60 NONMATCHING
+// FUN_0017ac60
 void FUN_0017ac60(u32 code)
 {
     struct CodeEntry
@@ -1695,25 +1695,25 @@ s32 FUN_0017ca10(const void* record)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        unsignedValue = *(u8*)(stored + 0x1c + i);
-        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        if ((u32)unsignedValue != (u32)*(u8*)(source + 0x1c + index)) return 1;
+        unsignedValue = *(u8*)(stored + 0x1c + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
+        if ((u32)unsignedValue != (u32)*(u8*)(source + 0x1c + i)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        signedValue = *(s8*)(stored + 0x21 + i);
-        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        if ((s32)signedValue != (s32)*(s8*)(source + 0x21 + index)) return 1;
+        signedValue = *(s8*)(stored + 0x21 + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x21 + i)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        signedValue = *(s8*)(stored + 0x26 + i);
-        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + index)) return 1;
+        signedValue = *(s8*)(stored + 0x26 + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + i)) return 1;
     }
     {
         const u16* storedValues = (const u16*)(stored + 0xc);

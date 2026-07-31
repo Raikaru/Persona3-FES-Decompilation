@@ -4878,7 +4878,6 @@ void func_00185b40(void* resource,
 #pragma push
 /* Removing this worsens func_00186050 (nd29 -> nd37) - measured W161. */
 #pragma opt_common_subs off
-#pragma opt_loop_invariants on
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 {
@@ -4895,7 +4894,6 @@ void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha)
 }
 #pragma pop
 
-#pragma opt_loop_invariants reset
 // FUN_00186100
 void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha)
 {
@@ -7158,6 +7156,7 @@ void func_0018c150(KwlnTask* task)
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }
 
+#pragma opt_propagation off
 // FUN_0018C780 NONMATCHING
 void func_0018c780(KwlnTask* task)
 {
@@ -7226,6 +7225,7 @@ void func_0018c780(KwlnTask* task)
     }
 }
 
+#pragma opt_propagation reset
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
