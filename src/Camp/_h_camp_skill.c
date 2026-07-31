@@ -1540,9 +1540,9 @@ void* FUN_001618a0(KwlnTask* task)
     case 0:
     {
         CampPanelTransitionWork* panelWork;
-        u32* personaWork;
-        void* (**callocFunc)(u32, u32, u32);
         s16 panelPcId;
+        void* (**callocFunc)(u32, u32, u32);
+        u32* personaWork;
 
         panelPcId = work->pcId;
         callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;

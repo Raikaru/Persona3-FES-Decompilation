@@ -852,8 +852,8 @@ void FUN_0038e660(int param_1,int param_2,int param_3)
 {
   extern u8 DAT_006a0b50[];
   int iVar1;
-  int iVar2;
   int iVar4;
+  int iVar2;
   int *piVar3;
   s16 *psVar2;
   s16 c3;

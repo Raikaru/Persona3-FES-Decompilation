@@ -2940,6 +2940,7 @@ active:
     }
 done:
     return result;
+}
 
 // FUN_001d38a0
 s32 func_001d38a0(KwlnTask* task)
@@ -3219,20 +3220,20 @@ void func_001d4180(void)
         hasResources = (hasResources != 0);
         if (hasResources)
         {
-            KwlnTask** taskSlot;
-
-            taskSlot = &gFldUnitsPc[i].unk_180;
-            if (*taskSlot != NULL)
+            if (gFldUnitsPc[i].unk_180 != NULL)
             {
-                work = (s32*)(*taskSlot)->workData;
+                work = (s32*)gFldUnitsPc[i].unk_180->workData;
                 if (work[2] == 1)
                 {
                     work[2] = 0;
                     scene = func_001b9120();
                     func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
                 }
-                if (*taskSlot != NULL)
+                if (gFldUnitsPc[i].unk_180 != NULL)
                 {
+                    KwlnTask** taskSlot;
+
+                    taskSlot = &gFldUnitsPc[i].unk_180;
                     func_00195020(*taskSlot);
                     *taskSlot = NULL;
                 }
