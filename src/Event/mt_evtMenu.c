@@ -9403,7 +9403,6 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-#pragma opt_strength_reduction off
 // FUN_0037A640 NONMATCHING
 
 
@@ -9441,7 +9440,6 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_strength_reduction reset
 // FUN_0037A790
 
 
@@ -16693,6 +16691,7 @@ void FUN_00384520(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+#pragma opt_common_subs off
 // FUN_00384780 NONMATCHING
 
 
@@ -16854,6 +16853,7 @@ done:
 }
 
 
+#pragma opt_common_subs reset
 // FUN_003849E0
 
 

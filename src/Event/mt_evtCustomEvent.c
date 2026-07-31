@@ -225,6 +225,9 @@ int FUN_003983e0(int param_1,int param_2)
 }
 #define FUN_003983e0(...) ((int (*)(...))FUN_003983e0)(__VA_ARGS__)
 #undef FUN_00398530
+/* opt_propagation off: default nd3002/4864B -> nd2999/4864B; retained. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00398530 NONMATCHING
 
 
@@ -1165,6 +1168,7 @@ LAB_00399518:
   return 0;
 
 }
+#pragma pop
 #define FUN_00398530(...) ((u32 (*)(...))FUN_00398530)(__VA_ARGS__)
 #undef FUN_00399830
 // FUN_00399830
@@ -1439,6 +1443,9 @@ void FUN_00399be0(int param_1)
 }
 #define FUN_00399be0(...) ((void (*)(...))FUN_00399be0)(__VA_ARGS__)
 #undef FUN_00399c40
+/* opt_propagation off: default nd1399/2280B -> nd1392/2280B; retained. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00399C40 NONMATCHING
 
 
@@ -1961,6 +1968,7 @@ u32 FUN_00399c40(int param_1)
   return 0;
 
 }
+#pragma pop
 #define FUN_00399c40(...) ((u32 (*)(...))FUN_00399c40)(__VA_ARGS__)
 #undef FUN_0039a560
 // FUN_0039A560
@@ -2187,6 +2195,9 @@ void FUN_0039a840(int param_1)
 }
 #define FUN_0039a840(...) ((void (*)(...))FUN_0039a840)(__VA_ARGS__)
 #undef FUN_0039a8a0
+/* opt_lifetimes on: default nd2555/3908B -> nd2512/3908B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0039A8A0 NONMATCHING
 
 
@@ -2987,6 +2998,7 @@ u32 FUN_0039a8a0(int param_1)
   return 0;
 
 }
+#pragma pop
 #define FUN_0039a8a0(...) ((u32 (*)(...))FUN_0039a8a0)(__VA_ARGS__)
 #undef FUN_0039b830
 // FUN_0039B830
@@ -3467,6 +3479,9 @@ void FUN_0039c090(int param_1)
 }
 #define FUN_0039c090(...) ((void (*)(...))FUN_0039c090)(__VA_ARGS__)
 #undef FUN_0039c0f0
+/* opt_propagation off: default nd434/732B -> nd429/732B; retained. */
+#pragma push
+#pragma opt_propagation off
 // FUN_0039C0F0 NONMATCHING
 
 
@@ -3644,6 +3659,7 @@ u32 FUN_0039c0f0(int param_1)
   return 0;
 
 }
+#pragma pop
 #define FUN_0039c0f0(...) ((u32 (*)(...))FUN_0039c0f0)(__VA_ARGS__)
 #undef FUN_0039c3e0
 // FUN_0039C3E0
@@ -4924,6 +4940,9 @@ void FUN_0039dd30(int param_1)
 }
 #define FUN_0039dd30(...) ((void (*)(...))FUN_0039dd30)(__VA_ARGS__)
 #undef FUN_0039dd90
+/* opt_lifetimes on: default nd350/912B -> nd349/912B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0039DD90 NONMATCHING
 
 
@@ -5132,6 +5151,7 @@ u32 FUN_0039dd90(int param_1)
   return 0;
 
 }
+#pragma pop
 #define FUN_0039dd90(...) ((u32 (*)(...))FUN_0039dd90)(__VA_ARGS__)
 #undef FUN_0039e130
 // FUN_0039E130
@@ -5521,6 +5541,9 @@ void FUN_0039e820(u64 param_1)
 }
 #define FUN_0039e820(...) ((void (*)(...))FUN_0039e820)(__VA_ARGS__)
 #undef FUN_0039e880
+/* opt_common_subs off: default nd123/408B -> nd44/408B; retained. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_0039E880 NONMATCHING
 
 
@@ -5614,6 +5637,7 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
   return uVar2;
 
 }
+#pragma pop
 #define FUN_0039e880(...) ((u32 (*)(...))FUN_0039e880)(__VA_ARGS__)
 #undef FUN_0039ea20
 // FUN_0039EA20
