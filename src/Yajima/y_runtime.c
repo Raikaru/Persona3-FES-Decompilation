@@ -12734,8 +12734,9 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
   cVar1 = *(char *)(iGpffffb9fc + 0xa6 + iVar8);
   if (cVar1 == '\0') {
     iVar4 = iVar8 * 8 + iVar3;
-    FUN_001140d0_f3(4.0f,*(float *)(iVar4 + 0x2cc) - 128.0f,*(float *)(iVar4 + 0x2d0) - 64.0f,
-                 uVar10 | 0xffffff00,0x100,0x80,*(u32 *)(iVar8 * 4 + iVar3 + 0x274));
+    FUN_001140d0_f3(4.0f,*(float *)(iVar4 + 0x2cc) - 128.0f,
+                    *(float *)(iVar4 + 0x2d0) - 64.0f,
+                    uVar10 | 0xffffff00,0x100,0x80,*(u32 *)(iVar8 * 4 + iVar3 + 0x274));
     psVar5 = (short *)(iGpffffb9fc + 0x7c + iVar6);
     sVar2 = *psVar5;
     if (sVar2 < (short)param_3) {
@@ -15811,9 +15812,9 @@ u32 FUN_00452a70(char param_1,char param_2)
 void FUN_00452f70(YVec3f *param_1,int param_2)
 
 {
-  int iVar1;
   int iVar3;
   int columnOffset;
+  int iVar1;
   u32 uVar5;
   u32 uVar6;
   int iVar2;
@@ -16990,9 +16991,9 @@ void FUN_00455cf0(void)
   int valid;
   u8 *row;
 
+  base = DAT_008717a0_bytes;
   index = 1;
   for (; index < 4; index = index + 1) {
-    base = DAT_008717a0_bytes;
     valid = 0;
     checkRow = base + index * 0x1c0;
     if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {
@@ -17005,9 +17006,9 @@ void FUN_00455cf0(void)
       row[0x19c] = 0;
     }
   }
+  base = DAT_0086eda0_bytes;
   index = 0;
   for (; index < 0x18; index = index + 1) {
-    base = DAT_0086eda0_bytes;
     valid = 0;
     checkRow = base + index * 0x1c0;
     if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {

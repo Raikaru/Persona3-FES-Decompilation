@@ -1274,6 +1274,8 @@ void func_0031b470(void);
 void func_0031b4a0(char* param_1,u16 param_2);
 u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
 void func_0031b820(u32 param_1,u32 param_2);
+#pragma alias func_0031b680_u32ptr func_0031b680
+extern u32 func_0031b680_u32ptr(int param_1,int param_2,u32 *param_3,u32 *param_4);
 u32 func_0031be80(u32 param_1);
 void func_0031c000(char* param_1,u32 param_2);
 u32 func_0031c1d0(int param_1);
@@ -8530,14 +8532,14 @@ u32 func_0031be80(u32 param_1)
   short *psVar10;
   int sVar3;
   u16 asStack_20[12];
-  int iStack_8;
-  int iStack_4;
+  u32 iStack_8;
+  u32 iStack_4;
 
   iStack_8 = 0;
   iStack_4 = 0;
   iVar8 = (int)param_1;
-  lVar6 = func_0031b680(*(u16 *)(iVar8 + 0xd4), *(u16 *)(iVar8 + 0xd6),
-                       &iStack_8, &iStack_4);
+  lVar6 = func_0031b680_u32ptr(*(u16 *)(iVar8 + 0xd4), *(u16 *)(iVar8 + 0xd6),
+                              &iStack_8, &iStack_4);
   if (lVar6 == 1) {
     if ((iStack_8 != 0) && (iStack_4 != 0)) {
       func_0031b820(param_1, iStack_8);
