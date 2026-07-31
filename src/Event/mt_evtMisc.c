@@ -4570,7 +4570,6 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 #pragma pop
 
 
-#pragma opt_dead_assignments off
 // FUN_0038B960 NONMATCHING
 
 
@@ -4738,7 +4737,6 @@ void FUN_0038b960(int param_1,int param_2,int param_3)
 /* opt_loop_invariants on: FUN_0038BC70 nd1721 -> nd1565, object 2020/2032; measured W319. */
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_dead_assignments reset
 // FUN_0038BC70 NONMATCHING
 
 
@@ -5714,6 +5712,7 @@ void FUN_0038ca00(void)
 #pragma pop
 
 
+#pragma opt_strength_reduction off
 // FUN_0038CA80 NONMATCHING
 
 
@@ -5774,6 +5773,7 @@ matched:
 }
 
 
+#pragma opt_strength_reduction reset
 // FUN_0038CC10 NONMATCHING
 
 

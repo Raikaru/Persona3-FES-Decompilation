@@ -1743,7 +1743,6 @@ LAB_003d7430:
 
 }
 
-#pragma opt_common_subs off
 // FUN_003D74F0 NONMATCHING
 
 
@@ -2039,7 +2038,6 @@ LAB_003d79dc:
 
 }
 
-#pragma opt_common_subs reset
 // FUN_003D7AC0 NONMATCHING
 
 
@@ -2400,6 +2398,7 @@ LAB_003d7f94:
 
 }
 
+#pragma opt_loop_invariants on
 // FUN_003D8080 NONMATCHING
 
 
@@ -2511,6 +2510,7 @@ s32 lVar6;
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_003D8260
 u32 FUN_003d8260(int param_1,u32 param_2)
 

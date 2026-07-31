@@ -2112,7 +2112,6 @@ u32 btlUnit00282cd0(BtlUnit* unit)
     return 0;
 }
 
-#pragma opt_dead_assignments off
 // FUN_00282d40 NONMATCHING
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
@@ -2235,7 +2234,6 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     }
 }
 
-#pragma opt_dead_assignments reset
 // FUN_00283ba0
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {
@@ -4251,6 +4249,7 @@ BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
     return packet;
 }
 
+#pragma opt_propagation off
 // FUN_002889c0 NONMATCHING
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
@@ -4322,6 +4321,7 @@ update:
     func_002bcde0(unit, &unit->unkData8);
 }
 
+#pragma opt_propagation reset
 // FUN_00288f80
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId)
 {

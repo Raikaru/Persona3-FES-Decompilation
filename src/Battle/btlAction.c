@@ -2030,7 +2030,6 @@ void btlActionInitStateBad(BtlAction* action)
     action->unk_488 = 0;
 }
 /* Retail reconstruction covers the guard, down-status packet sequence, result dispatch, and moved-home state paths at 0x28d5e8-0x28dbc0. */
-#pragma opt_loop_invariants on
 // FUN_0028d5a0 NONMATCHING
 void btlActionUpdateStateBad(BtlAction* action)
 {
@@ -2205,7 +2204,6 @@ void btlActionUpdateStateBad(BtlAction* action)
     }
 }
 
-#pragma opt_loop_invariants reset
 // FUN_0028dbe0
 void btlActionInitStateReady(BtlAction* action)
 {
@@ -2285,6 +2283,7 @@ void btlActionUpdateStateReady(BtlAction* action)
     }
 }
 
+#pragma opt_propagation off
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
@@ -2718,6 +2717,7 @@ do_camera_packet_0x13:
 epilogue:
     action->unk_18 &= ~0x10;
 }
+#pragma opt_propagation reset
 // FUN_0028e740
 void btlActionUpdateStateMoveTarget(BtlAction* action)
 {

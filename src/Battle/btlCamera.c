@@ -8978,6 +8978,8 @@ void func_002ac920(BtlCamera* camera, long unused)
     FUN_002a3110_c920(camera, work.step);
 }
 
+/* W331: removing the immediately overwritten local store and disabling dead-assignment folding measured 1780B/nd889 baseline; 1772B/nd965 without the pragma; 1768B/nd551 with it (window 1776B). */
+#pragma opt_dead_assignments off
 // FUN_002ACF90 NONMATCHING
 
 void func_002acf90(BtlCamera* camera, long unused)
@@ -9035,7 +9037,7 @@ void func_002acf90(BtlCamera* camera, long unused)
     } else {
         modeRaw = 3;
     }
-    mode = modeRaw;
+    mode = modeRaw & 0xffff;
     distance = FUN_00280870(mode, 1, (void*)&scratch.f140, (void*)&scratch.f14c, 0, 0);
     scratch.f144 = scratch.f14c * 0.75f;
     radius = distance /
@@ -9087,7 +9089,6 @@ void func_002acf90(BtlCamera* camera, long unused)
     scratch.v110.y = scratch.v110.y * scale;
     scratch.v110.z = scratch.v110.z * scale;
     scratch.v100.x = scratch.f140 + scratch.v110.x;
-    scratch.v100.y = scratch.f144 + scratch.v110.y;
     scratch.v100.z = scratch.f148 + scratch.v110.z;
     scratch.v100.y = scratch.f144;
     if (speed < 250.0f) {
@@ -9168,6 +9169,7 @@ void func_002acf90(BtlCamera* camera, long unused)
     FUN_002a2290((u16*)camera, (RwV3d*)&scratch.v50, (RwV3d*)&scratch.v6c, 1);
     FUN_002a3110((u16*)camera, speed);
 }
+#pragma opt_dead_assignments reset
 
 // FUN_002AD680
 

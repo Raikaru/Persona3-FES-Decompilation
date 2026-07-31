@@ -1546,7 +1546,6 @@ void func_001a4380(KwlnTask* task, s32 id)
 {
     KWindowManagerWork* manager;
     KWindowEntry* entry;
-    s32 oldCount;
     manager = KWindow_GetManager(task);
     entry = manager->entries;
     if (id == -1)
@@ -1577,20 +1576,21 @@ check_entry:
         entry->next->previous = entry->previous;
     }
     (*(void (**)(void*))D_0096017c_abs)(entry);
-    oldCount = manager->entryCount;
-    manager->entryCount = oldCount - 1;
+    manager->entryCount--;
     if (manager->entryCount == 0)
     {
         manager->entries = NULL;
         manager->firstVisible = 0;
         manager->cursor = 0;
     }
-    else if (manager->entryCount < manager->visibleRows &&
-             manager->entryCount <= manager->firstVisible + manager->cursor)
+    else if (manager->entryCount >= manager->visibleRows ||
+             manager->firstVisible + manager->cursor < manager->entryCount)
     {
-        manager->firstVisible = oldCount - 2;
-        manager->cursor = 0;
+        goto after_adjust;
     }
+    manager->firstVisible = manager->entryCount - 1;
+    manager->cursor = 0;
+after_adjust:
     func_001a3c30(task);
 }
 #pragma opt_common_subs reset
