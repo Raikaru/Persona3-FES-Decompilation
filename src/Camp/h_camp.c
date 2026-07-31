@@ -6819,7 +6819,6 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 1);
 }
 
-#pragma opt_dead_assignments off
 // FUN_00129160 NONMATCHING
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)
@@ -6855,7 +6854,6 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
     }
 }
 
-#pragma opt_dead_assignments reset
 // FUN_001293B0 NONMATCHING
 #pragma push
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
@@ -7573,6 +7571,7 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
 }
 #pragma opt_loop_invariants reset
 
+#pragma opt_lifetimes on
 // FUN_0012BFB0 NONMATCHING
 void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
                       void* persona, s32 alpha)
@@ -7657,6 +7656,7 @@ void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
     }
 }
 
+#pragma opt_lifetimes reset
 // FUN_001311D0 NONMATCHING
 void* FUN_001311d0(KwlnTask* task)
 {

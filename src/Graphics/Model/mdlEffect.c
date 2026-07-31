@@ -13176,8 +13176,9 @@ void FUN_0032cd70(int param_1, float scale)
   *(float *)(dest + 0xf0) = *(float *)(source + 0xf0) * scale;
 }
 
+#pragma opt_loop_invariants on
+// opt_loop_invariants on + opt_lifetimes on: 2512B/nd1876 -> 2488B/nd1691; retained for window reduction.
 #pragma opt_lifetimes on
-// probe: opt_lifetimes on
  
 // FUN_0032CE10 NONMATCHING
 
@@ -13721,6 +13722,7 @@ void FUN_0032ce10(int param_1)
 
 }
 #pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 
 
 
