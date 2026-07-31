@@ -1361,30 +1361,65 @@ void func_0018ce50(KwlnTask* task)
 {
     void* object = (void*)task;
     void* transition = GS_PTR(object, 0x70);
-    void* sprite;
-    GsSprite* node;
-    f32 width;
-    f32 height;
+    {
+        void* atlas;
+        s16 pcId;
 
-    gsDrawHeader(object, 8, 7, 6);
+        pcId = GS_S16(object, 0x14);
+        if (datGetScenarioMode() != 0)
+        {
+            if (pcId == 1)
+            {
+                pcId = 11;
+            }
+            if (pcId == 9)
+            {
+                pcId = 12;
+            }
+            if (pcId == 3)
+            {
+                pcId = 11;
+            }
+        }
+        atlas = GS_PTR(object, 0x3c + (pcId * 4));
+        gsDrawSprite(atlas, 8, GS_U8(transition, 0x40),
+                     GS_F32(transition, 0x38) + 20.0f,
+                     GS_F32(transition, 0x3c) + 18.0f,
+                     GS_F32(transition, 0x24));
+        gsDrawSprite(atlas, 7, GS_U8(transition, 0x40),
+                     GS_F32(transition, 0x38) + 20.0f,
+                     GS_F32(transition, 0x3c) + 18.0f,
+                     GS_F32(transition, 0x24));
+        gsDrawSprite(GS_PTR(object, 0x2c), 6, GS_U8(transition, 0x40),
+                     GS_F32(transition, 0x38) + 44.0f,
+                     GS_F32(transition, 0x3c) + 39.0f,
+                     GS_F32(transition, 0x24));
+    }
     gsDrawStatusBars(object);
-    sprite = func_001158b0(NULL, GS_PTR(object, 0x3c), 1);
-    node = (GsSprite*)sprite;
-    node->depth = GS_F32(transition, 0x24) - 4.0f;
-    node->scaleX = 0x1000;
-    node->scaleY = 0x1000;
-    width = func_001126b0(sprite);
-    node->centerX = (s16)(s32)(width / 2.0f);
-    height = func_00112740(sprite);
-    node->centerY = (s16)(s32)(height / 2.0f);
-    node->angle = 90.0f;
-    width = func_001126b0(sprite);
-    node->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
-    height = func_00112740(sprite);
-    node->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
-    node->alpha = 0x28;
-    func_001127d0(sprite, 1);
-    func_00115980(sprite);
+    {
+        void* sprite;
+        GsSprite* node;
+        f32 width;
+        f32 height;
+
+        sprite = func_001158b0(NULL, GS_PTR(object, 0x3c), 1);
+        node = (GsSprite*)sprite;
+        node->depth = GS_F32(transition, 0x24) - 4.0f;
+        node->scaleX = 0x1000;
+        node->scaleY = 0x1000;
+        width = func_001126b0(sprite);
+        node->centerX = (s16)(s32)(width / 2.0f);
+        height = func_00112740(sprite);
+        node->centerY = (s16)(s32)(height / 2.0f);
+        node->angle = 90.0f;
+        width = func_001126b0(sprite);
+        node->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
+        height = func_00112740(sprite);
+        node->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
+        node->alpha = 0x28;
+        func_001127d0(sprite, 1);
+        func_00115980(sprite);
+    }
 }
 
 // FUN_0018D320 NONMATCHING
@@ -1613,7 +1648,7 @@ void* func_0018db20(KwlnTask* task)
             break;
         }
 done:
-    return KWLNTASK_CONTINUE;
+    ;
 }
 
 // FUN_0018DDE0

@@ -1585,8 +1585,8 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 void func_0010cac0(void)
 {
     s16 i;
-    HSfdDecodeSlot* slots;
     s16 j;
+    HSfdDecodeSlot* slots;
 
     FUN_00512868();
     FUN_0051da48(0);
@@ -1609,8 +1609,9 @@ void func_0010cac0(void)
         slots[i].status = 0;
         slots[i].index = i;
     }
+    j = 0;
     *(s32*)sSfdFrameIndex_abs = 0;
-    for (j = 0; j < 16; j++)
+    for (; j < 16; j++)
         ;
 
     sSfdDecodeSlots[0].intermediate = (u8*)FUN_0051d6f8(0x96000);

@@ -1502,11 +1502,11 @@ s32 bpTexGetNodeCount(void)
 void bpTexQueueNodeRange(s32 start, s32 count)
 {
     u32* work;
-    u32* selected[7];
     u32* node;
     u32* action;
     s32 total;
     s32 i;
+    u32* selected[7];
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
@@ -3499,8 +3499,9 @@ void func_00221b60(void)
     {
     case 1:
     case 2:
-        currentFrame = func_0021cca0((frame = texture), (s32)*(u32*)(work + 0x4634));
-        previousFrame = func_0021cca0((frame = texture), (s32)*(u32*)(work + 0x4638));
+        frame = texture;
+        currentFrame = func_0021cca0(frame, (s32)*(u32*)(work + 0x4634));
+        previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
         mask |= 1;
         if (*(u32*)(work + 0x464c) != 4)
         {

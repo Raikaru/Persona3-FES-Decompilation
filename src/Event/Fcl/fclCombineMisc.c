@@ -1635,28 +1635,24 @@ u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3)
   memset(param_1,0,0x54);
   cVar1 = datGetLevel(1);
   sVar2 = FUN_003d7da0(1,cVar1 + 3,param_3);
-  uVar3 = 0;
-  if (sVar2 != 0) {
-    if (FUN_001749a0(sVar2) == 0) {
-      if (*(u16 *)(param_2 + 6) != sVar2) {
-        FUN_00176680(param_1 + 1,sVar2);
-        FUN_003d6e60((int)param_1,(int)param_2);
-        FUN_00176c80(param_1 + 1,param_2 + 4);
-        uVar3 = 1;
-      }
+  if (sVar2 == 0) {
+    return 0;
+  }
+  if (FUN_001749a0(sVar2) == 0) {
+    if (*(u16 *)(param_2 + 6) != sVar2) {
+      FUN_00176680(param_1 + 1,sVar2);
+      FUN_003d6e60((int)param_1,(int)param_2);
+      FUN_00176c80(param_1 + 1,param_2 + 4);
+      return 1;
     }
   }
-  return uVar3;
+  return 0;
+
+
+
+
 }
 #pragma pop
-
-// FUN_003D72F0 NONMATCHING
-
-
-
-
-
-
 u64 FUN_003d72f0(u16 *param_1)
 
 

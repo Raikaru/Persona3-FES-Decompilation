@@ -5340,27 +5340,29 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   u32 uVar2;
 
-  u32 *puVar3;
+  f32 *puVar3;
 
-  u32 *puVar4;
+  f32 *puVar4;
 
   u32 uVar5;
 
   int iVar6;
 
-  u32 *puVar7;
+  f32 *puVar7;
 
-  u32 uVar8;
+  f32 fVar8;
 
-  f32 fVar9;
-
-  float fVar10;
+  f32 fVar13;
 
   f32 fVar11;
 
   f32 fVar12;
 
-  f32 fVar13;
+  f32 fVar9;
+
+  f32 fVar10;
+
+  int i;
 
   u16 *puStack_8;
 
@@ -5407,7 +5409,7 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   }
 
-  puVar7 = (u32 *)param_4;
+  puVar7 = (f32 *)param_4;
 
   if (puStack_8 != (u16 *)0x0) {
 
@@ -5427,12 +5429,12 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
       if ((iVar1 == 0) && (*(int *)(puStack_4 + 0x24) == 0)) {
 
-        uVar8 = DAT_007cadd0;
-        *puVar7 = DAT_007cadd0;
+        fVar8 = DAT_007cadd0_f32;
+        *puVar7 = DAT_007cadd0_f32;
 
-        puVar7[1] = uVar8;
+        puVar7[1] = fVar8;
 
-        puVar7[2] = uVar8;
+        puVar7[2] = fVar8;
 
         puVar7[3] = 0;
 
@@ -5444,13 +5446,11 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
         puVar7[7] = 0;
 
-        uVar8 = DAT_007cafec;
+        fVar8 = DAT_007cafec_f32;
 
-        puVar7[8] = DAT_007cafec;
+        puVar7[8] = DAT_007cafec_f32;
 
-        puVar7[9] = uVar8;
-
-        puVar7[10] = uVar8;
+        puVar7[9] = fVar8;
 
         puVar7[0xb] = 0;
 
@@ -5462,11 +5462,11 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
       else if (iVar6 == 0) {
 
-        for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
+        for (i = 0; i < 4; i = i + 1) {
 
-          puVar4 = (u32 *)(iVar1 + iVar6 * 4);
+          puVar4 = (f32 *)(iVar1 + i * 4);
 
-          puVar3 = puVar7 + iVar6;
+          puVar3 = puVar7 + i;
 
           *puVar3 = *puVar4;
 
@@ -5496,11 +5496,11 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
     else {
 
-      for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
+      for (i = 0; i < 4; i = i + 1) {
 
-        puVar4 = (u32 *)(iVar1 + iVar6 * 4);
+        puVar4 = (f32 *)(iVar1 + i * 4);
 
-        puVar3 = puVar7 + iVar6;
+        puVar3 = puVar7 + i;
 
         *puVar3 = *puVar4;
 
@@ -5520,12 +5520,12 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   else {
 
-    uVar8 = DAT_007cadd0;
-    *puVar7 = DAT_007cadd0;
+    fVar8 = DAT_007cadd0_f32;
+    *puVar7 = DAT_007cadd0_f32;
 
-    puVar7[1] = uVar8;
+    puVar7[1] = fVar8;
 
-    puVar7[2] = uVar8;
+    puVar7[2] = fVar8;
 
     puVar7[3] = 0;
 
@@ -5537,13 +5537,11 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
     puVar7[7] = 0;
 
-    uVar8 = DAT_007cafec;
+    fVar8 = DAT_007cafec_f32;
 
-    puVar7[8] = DAT_007cafec;
+    puVar7[8] = DAT_007cafec_f32;
 
-    puVar7[9] = uVar8;
-
-    puVar7[10] = uVar8;
+    puVar7[9] = fVar8;
 
     puVar7[0xb] = 0;
 
@@ -5674,9 +5672,9 @@ void FUN_0038ca00(void)
 
 void FUN_0038ca80(int param_1)
 {
-  int searchIndex;
   int totalCount;
   int listIndex;
+  int searchIndex;
   int *listNode3;
   int *listNode1;
   int *listNode12;
