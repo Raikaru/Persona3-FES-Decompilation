@@ -1809,20 +1809,20 @@ u32* bpTexGetCurrentNode(void)
 // FUN_00256110 bpTexFindNodeById
 u32* bpTexFindNodeById(u32 id)
 {
-    __asm__ (
-        ".set noreorder ;"
-        ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
-        ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
-        ".word 0x3c040069 ; .word 0x2484ea00 ; .word 0x240500bc ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x8f83b664 ; .word 0x3c020001 ; .word 0x00621021 ; .word 0x8c43265c ;"
-        ".word 0x1000000a ; .word 0x00000000 ; .word 0x0060802d ; .word 0x8c620000 ;"
-        ".word 0x30420002 ; .word 0x14400004 ; .word 0x00000000 ; .word 0x8c620010 ;"
-        ".word 0x10510004 ; .word 0x00000000 ; .word 0x8c630fc4 ; .word 0x1460fff6 ;"
-        ".word 0x00000000 ; .word 0x14600006 ; .word 0x00000000 ; .word 0x3c040069 ;"
-        ".word 0x2484ea00 ; .word 0x2405047a ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x0200102d ; .word 0xdfbf0020 ; .word 0x7bb10010 ; .word 0x7bb00000 ;"
-        ".word 0x27bd0030 ; .set reorder"
-    );
+    u32* node;
+
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((node[0] & 2) == 0 && node[4] == id)
+        {
+            break;
+        }
+    }
+    K_ASSERT(node != NULL, 0x47a);
+    return node;
 }
 // FUN_002561E0
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
@@ -2160,6 +2160,7 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
             scratch.stackCount = stackIndex + 1;
         }
     }
+    K_ASSERT(initialCount == leafCount, 0x702);
     last = leafCount - 1;
     i = 0;
     while (i < leafCount)
