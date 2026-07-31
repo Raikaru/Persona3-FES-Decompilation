@@ -3832,7 +3832,6 @@ void btlFormationInit050aPacket(void* work)
     units[1]->packetCount++;
 }
 
-#pragma opt_loop_invariants on
 // FUN_002bd8e0 NONMATCHING
 
 u32 func_002bd8e0(int *param_1)
@@ -3946,7 +3945,6 @@ u32 func_002bd8e0(int *param_1)
   return 0;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002bdba0
 void btlFormationDestroy050aPacket(void* work)
 {
@@ -4203,6 +4201,7 @@ u32 func_002be2f0(int param_1)
   return 0;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002be390 NONMATCHING
 
 void func_002be390(short *param_1,int param_2,int param_3)
@@ -4238,6 +4237,7 @@ void func_002be390(short *param_1,int param_2,int param_3)
   return;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002be580
 
 u32 func_002be580(u64 param_1,int param_2)

@@ -819,7 +819,6 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
-#pragma opt_loop_invariants on
 // FUN_003D6200 NONMATCHING
 
 
@@ -969,7 +968,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1103,6 +1101,7 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 }
 
+#pragma opt_loop_invariants on
 // FUN_003D6740 NONMATCHING
 
 
@@ -1201,6 +1200,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 }
 
 // W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
+#pragma opt_loop_invariants reset
 // FUN_003D6910 NONMATCHING
 
 
