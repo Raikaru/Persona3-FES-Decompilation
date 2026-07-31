@@ -4269,12 +4269,15 @@ void FUN_003bc940(void)
   float fVar6;
 
   float afStack_10 [4];
+  f32 ha;
+  f32 hb;
 
   
 
-  afStack_10[0] = DAT_007cd560;
-
-  afStack_10[1] = (float)DAT_007cd564;
+  ha = *(volatile f32 *)&DAT_007cd560;
+  hb = *(volatile f32 *)&DAT_007cd564;
+  afStack_10[0] = ha;
+  afStack_10[1] = hb;
 
   if (DAT_007ce658 == 0) {
 
@@ -4296,9 +4299,11 @@ void FUN_003bc940(void)
 
   else {
 
-    afStack_10[2] = DAT_007cada0 * (float)DAT_007ce660;
+    ha = (float)DAT_007ce660;
+    afStack_10[2] = ha * DAT_007cada0;
 
-    afStack_10[3] = DAT_007cada0 * (float)DAT_007ce664;
+    ha = (float)DAT_007ce664;
+    afStack_10[3] = ha * DAT_007cada0;
 
     for (iVar1 = 0; iVar1 < 2; iVar1 = iVar1 + 1) {
 
