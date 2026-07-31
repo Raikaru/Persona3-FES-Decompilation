@@ -2437,6 +2437,8 @@ switchD_003898b0_caseD_0:
 }
 
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00389B50 NONMATCHING
 
 
@@ -2455,6 +2457,7 @@ void FUN_00389b50(int *param_1)
   u32 *puVar4;
 
   long lVar5;
+  code *fn;
 
   int iVar6;
 
@@ -2464,7 +2467,6 @@ void FUN_00389b50(int *param_1)
   int iVar8;
 
   int iVar9;
-  int iVar10;
 
   
 
@@ -2485,7 +2487,8 @@ void FUN_00389b50(int *param_1)
 
       }
 
-      lVar5 = (*DAT_00960184)(1,iVar6 * 0x54,0x40000);
+      fn = (code *)&DAT_00960184_abs;
+      lVar5 = (*fn)(1,iVar6 * 0x54,0x40000);
 
       if (lVar5 == 0) {
 
@@ -2530,7 +2533,7 @@ void FUN_00389b50(int *param_1)
 
         if (puVar1[0x10] != 0) {
 
-          puVar4 = (u32 *)(*DAT_00960184)(1,0x130,0x40000);
+          puVar4 = (u32 *)(*fn)(1,0x130,0x40000);
 
           if (puVar4 == (u32 *)0x0) {
 
@@ -2539,8 +2542,7 @@ void FUN_00389b50(int *param_1)
           }
 
           FUN_00386c40(10,0x130);
-          iVar10 = iVar8 + iVar9 * 0x54;
-          *(u32 **)(iVar10 + 0x40) = puVar4;
+          *(u32 **)(iVar8 + iVar9 * 0x54 + 0x40) = puVar4;
 
           puVar7 = (u32 *)puVar1[0x10];
 
@@ -2577,6 +2579,8 @@ void FUN_00389b50(int *param_1)
   return;
 
 }
+#pragma opt_common_subs on
+#pragma pop
 
 
 // FUN_00389D80

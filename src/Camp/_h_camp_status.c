@@ -36,7 +36,7 @@ extern void campStatusDrawSprite4Call(f32 x, f32 y, f32 alpha, s32 digit);
 extern void campStatusDrawSpriteFadeCall(u32 parent, void* resource, s32 frame,
                                          u32 alpha, f32 x, f32 y, f32 scale,
                                          u32 fade);
-/* XY order matches retail's float materialization before integer setup. */
+/* Fade XY order: h_campStatusDrawSp nd637/1020B -> nd591/1024B. */
 #pragma alias campStatusDrawSpriteFadeXYCall FUN_00115ad0
 extern void campStatusDrawSpriteFadeXYCall(u32 parent, void* resource,
                                            s32 frame, f32 x, f32 y,
@@ -1594,7 +1594,8 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
 
 // FUN_00126710 NONMATCHING
 #pragma push
-#pragma opt_loop_invariants off
+/* opt_loop_invariants on: nd281/620B off -> nd147/624B on; retained. */
+#pragma opt_loop_invariants on
 void h_campStatusDrawViewport(void* texture, CampVec2 position, f32 x,
                               s32 alpha)
 {

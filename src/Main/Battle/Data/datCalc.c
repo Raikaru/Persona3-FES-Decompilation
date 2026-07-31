@@ -230,10 +230,10 @@ u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 // FUN_003005e0 NONMATCHING
 u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 {
-    DatCalcEquipmentEffect* accessoryEffect;
-    u16* skills;
     u16 count;
     u16 i;
+    u16* skills;
+    DatCalcEquipmentEffect* accessoryEffect;
     s16 pcId;
     s16 equipmentIdx;
     u16 equipmentId;
@@ -1255,36 +1255,36 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 void FUN_00301540(int param_1,u32 param_2)
 
 {
-  u16 index;
-  u16 value;
+  s32 uVar2;
+  u16 iVar1;
   
-  value = param_2 & 0xff;
-  if (!(value < 0x15)) {
+  uVar2 = param_2 & 0xff;
+  if (!(uVar2 < 0x15)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x499);
   }
-  if (value < 0x11) {
-    if (!(value < 0x15)) {
+  if (uVar2 < 0x11) {
+    if (!(uVar2 < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x438);
     }
-    index = (int)value >> 1;
-    if ((value & 1) != 0) {
-      *(u8 *)(index + param_1 + 0x1c) = *(u8 *)(index + param_1 + 0x1c) & 0xf;
+    iVar1 = (int)uVar2 >> 1;
+    if ((uVar2 & 1) != 0) {
+      *(u8 *)(iVar1 + param_1 + 0x1c) = *(u8 *)(iVar1 + param_1 + 0x1c) & 0xf;
     }
     else {
-      *(u8 *)(index + param_1 + 0x1c) = *(u8 *)(index + param_1 + 0x1c) & 0xf0;
+      *(u8 *)(iVar1 + param_1 + 0x1c) = *(u8 *)(iVar1 + param_1 + 0x1c) & 0xf0;
     }
-    if (!(value < 0x15)) {
+    if (!(uVar2 < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
-    index = index & 0xffff;
-    if ((value & 1) != 0) {
-      *(u8 *)(index + param_1 + 0x29) = *(u8 *)(index + param_1 + 0x29) & 0xf;
+    iVar1 = iVar1 & 0xffff;
+    if ((uVar2 & 1) != 0) {
+      *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf;
     }
     else {
-      *(u8 *)(index + param_1 + 0x29) = *(u8 *)(index + param_1 + 0x29) & 0xf0;
+      *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf0;
     }
   }
-  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << value);
+  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << uVar2);
   return;
 }
 

@@ -342,9 +342,9 @@ static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
         "ppacb       $v0, $zero, $v0     \n"
         "sw          $v0, 0x134($sp)      \n"
         ".set reorder"
-        : "=m"(tmp)
+        : "=r"(tmp)
         : "r"(pc1), "r"(c2), "f"(inv255)
-        : "$v0", "memory");
+        : "memory");
     return tmp;
 }
 
@@ -44487,11 +44487,11 @@ void FUN_0034cc00(u32 *param_1)
 
   float scaleStack [3];
 
+  u32 uStack_c;
+
   int iStack_4;
 
   int iStack_8;
-
-  u32 uStack_c;
 
 
   
