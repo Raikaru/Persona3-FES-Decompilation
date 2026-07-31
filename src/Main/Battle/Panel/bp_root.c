@@ -1334,7 +1334,7 @@ void FUN_00202010(void)
     func_00208570(p + 0x7658);
     if (datGetFlag(0x186))
     {
-        selectedSkill = FUN_0016F380(0x31);
+        selectedSkill = (u16)FUN_0016F380(0x31);
         if (selectedSkill == 0)
         {
             *(u32*)(p + 0x7664) = 0;
@@ -1342,34 +1342,40 @@ void FUN_00202010(void)
         }
         else
         {
-            for (i = 0; i < *(s32*)(p + 0x74); i++)
+            s32 selectedIndex;
+            s32 skillCount;
+
+            selectedIndex = 0;
+            skillCount = *(s32*)(p + 0x74);
+            for (; selectedIndex < skillCount; selectedIndex++)
             {
-                if (*(u16*)(p + 0x2c + i * 8) == (u16)selectedSkill)
+                if (*(u16*)(p + 0x2c + selectedIndex * 8) ==
+                    (u16)selectedSkill)
                 {
                     break;
                 }
             }
-            if (i == *(s32*)(p + 0x74))
+            if (selectedIndex == skillCount)
             {
                 *(u32*)(p + 0x7664) = 0;
                 *(u32*)(p + 0x765c) = 0;
             }
-            else if (i == *(s32*)(p + 0x74) - 1)
+            else if (selectedIndex == skillCount - 1)
             {
                 *(u32*)(p + 0x765c) =
-                    i - (*(s32*)(p + 0x70) - 1);
-                *(u32*)(p + 0x7664) = i;
+                    selectedIndex - (*(s32*)(p + 0x70) - 1);
+                *(u32*)(p + 0x7664) = selectedIndex;
             }
-            else if (*(s32*)(p + 0x70) - 2 < i)
+            else if (*(s32*)(p + 0x70) - 2 < selectedIndex)
             {
                 *(u32*)(p + 0x765c) =
-                    i - (*(s32*)(p + 0x70) - 2);
-                *(u32*)(p + 0x7664) = i;
+                    selectedIndex - (*(s32*)(p + 0x70) - 2);
+                *(u32*)(p + 0x7664) = selectedIndex;
             }
             else
             {
                 *(u32*)(p + 0x765c) = 0;
-                *(u32*)(p + 0x7664) = i;
+                *(u32*)(p + 0x7664) = selectedIndex;
             }
         }
     }
