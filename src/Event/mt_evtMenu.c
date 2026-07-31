@@ -2232,6 +2232,8 @@ void FUN_003702a0(int param_1,int param_2,int param_3,int param_4)
 
 /* opt_loop_invariants on: default nd1738/2420B -> nd1719/2424B; retained. */
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_003709D0 NONMATCHING
 
 
@@ -2957,6 +2959,8 @@ u64 FUN_003709d0(int param_1,int param_2,u8 *param_3)
 /* opt_lifetimes on: default nd326/592B -> nd320/592B; retained. */
 #pragma push
 #pragma opt_lifetimes on
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 // FUN_00371350 NONMATCHING
 
 
@@ -15857,9 +15861,9 @@ void FUN_00382f30(int param_1,int param_2,int param_3,int param_4)
   return;
 
 }
-
-
 #pragma pop
+
+
 /* opt_lifetimes on: default nd912/1172B -> nd908/1172B; retained. */
 #pragma push
 #pragma opt_lifetimes on
