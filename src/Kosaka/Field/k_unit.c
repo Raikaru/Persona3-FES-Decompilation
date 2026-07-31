@@ -299,6 +299,8 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 
 // Retail offsets 0x21c-0x464 expand the scenario dispatch; offsets 0x684-0xedc re-fetch each PC model cache field per case.
 // The remaining register coloring/layout differences are intentionally NONMATCHING.
+// Measured opt_loop_invariants on: nd2603 -> 2599, object 3784/3808; retained (under window).
+#pragma opt_loop_invariants on
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
@@ -502,6 +504,7 @@ void* func_001cd9a0(u32 charId)
         }
     }
 }
+#pragma opt_loop_invariants off
 
 static inline void FldUnit_SetPcFormationPosition(s32 index,
                                                     FldUnit* unit,
@@ -1419,6 +1422,8 @@ static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
     }
 }
 
+// Measured opt_common_subs off: nd506 -> 418, object 812/816; retained (under window).
+#pragma opt_common_subs off
 /* Removing this worsens FUN_001d03f0 (nd506 -> nd517) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d03f0 NONMATCHING
@@ -1527,6 +1532,7 @@ void func_001d03f0(u16 charId)
     }
 }
 #pragma opt_loop_invariants off
+#pragma opt_common_subs on
 
 typedef struct FldUnitNode
 {
@@ -1785,6 +1791,8 @@ u32 func_001d0e40(void)
     return uGpffffb59c;
 }
 
+// Measured opt_loop_invariants on: nd491 -> 418, object 804/864; retained (under window).
+#pragma opt_loop_invariants on
 // FUN_001d0e50 NONMATCHING
 void func_001d0e50(s32 isDungeon)
 {
@@ -1861,6 +1869,7 @@ void func_001d0e50(s32 isDungeon)
         func_00434f60();
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_001d11b0
 void func_001d11b0(void)
@@ -2408,7 +2417,6 @@ void func_001d22a0(void* work)
 
 /* Removing this worsens FUN_001d2300 (nd502 -> nd511) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
 {
@@ -2489,7 +2497,6 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_common_subs reset
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
@@ -3206,6 +3213,7 @@ KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit)
     return task;
 }
 
+// Address-expression probe floor: retained nd7 form; typed byte/base-local and postTask shapes measured worse (nd23, nd62-64, nd171). Residuals are offsets 164/168 (task load/branch register) and 196/200 (clear-address addu/reload versus retail base addu/addiu).
 // FUN_001d4180 NONMATCHING
 void func_001d4180(void)
 {

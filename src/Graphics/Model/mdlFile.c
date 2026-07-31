@@ -2410,6 +2410,7 @@ void FUN_0031d7d0(u32 *param_1)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_0031D7E0 NONMATCHING
 
 
@@ -2480,6 +2481,7 @@ FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_0031D900
 
 
@@ -4230,7 +4232,6 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 
 
 
-#pragma opt_loop_invariants on
 // FUN_0031F9D0 NONMATCHING
 
 
@@ -4264,7 +4265,6 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_0031FAF0 NONMATCHING
 void FUN_0031faf0(f32 *param_1,u32 param_2)
 {
@@ -4394,6 +4394,7 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 
 
 
+#pragma opt_common_subs off
 // FUN_0031FDE0 NONMATCHING
 
 
@@ -4440,6 +4441,7 @@ void FUN_0031fde0(void)
 
   return;
 }
+#pragma opt_common_subs reset
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1,u8 *param_2)
 {

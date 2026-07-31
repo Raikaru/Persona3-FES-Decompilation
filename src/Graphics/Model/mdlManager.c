@@ -3598,7 +3598,6 @@ void func_00313be0(MdlAnimEntryTable* table)
 
 
 
-#pragma opt_common_subs off
 // FUN_00313CA0 NONMATCHING
 
 
@@ -3735,7 +3734,6 @@ void func_00313ca0(int *param_1,u32 param_2)
 
 
 
-#pragma opt_common_subs reset
 // FUN_00313E60
 
 
@@ -6265,6 +6263,7 @@ u32 func_00318b90(u32 param_1)
 
 // Template probe: reversing the two top-level branches to match func_00318ed0
 // retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
+#pragma opt_loop_invariants on
 // FUN_00318D10 NONMATCHING
 
 
@@ -6343,6 +6342,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_00318ED0
 
 

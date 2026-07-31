@@ -22,6 +22,8 @@ extern s32 FUN_00514900();
 extern s32 FUN_0017d800();
 extern s32 FUN_0016f190();
 extern s32 FUN_001021c0();
+#pragma alias FUN_001021c0_memcard FUN_001021c0
+extern void* FUN_001021c0_memcard(const char* path, u32* fileSize);
 extern s32 FUN_005136f8();
 extern s32 FUN_005137b8();
 extern s32 FUN_00513968();
@@ -756,7 +758,7 @@ state12_mode1:
                 }
             }
             size = 0;
-            FUN_00513cc8(sSocketNo, D_00846EA0, FUN_001021c0(D_005E4B40, &size), 0, size);
+            FUN_00513cc8(sSocketNo, D_00846EA0, FUN_001021c0_memcard((const char*)D_005E4B40, (u32*)&size), 0, size);
             goto state12_done;
 
 state12_mode2:

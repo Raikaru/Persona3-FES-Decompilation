@@ -268,6 +268,8 @@ color_check:
 
 /* Retail 0x0021ec40-0x0021f080: TMX format selection, palette upload, and
  * format-specific row-major pixel copies. */
+/* W310 measured: opt_common_subs off nd599->583, object 1140/1152; reset nd599. */
+#pragma opt_common_subs off
 // FUN_0021ec40 NONMATCHING
 RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
 {
@@ -463,6 +465,7 @@ RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
     func_004cde00(raster);
     return raster;
 }
+#pragma opt_common_subs on
 
 
 // FUN_0021cc20
@@ -1498,6 +1501,8 @@ s32 bpTexGetNodeCount(void)
 }
 
 /* Retail queueing performs its root census and action-record writes inline. */
+/* W310 measured: opt_common_subs off nd434->407, object 668/672; reset nd434. */
+#pragma opt_common_subs off
 // FUN_00255570 NONMATCHING
 void bpTexQueueNodeRange(s32 start, s32 count)
 {
@@ -1559,7 +1564,10 @@ void bpTexQueueNodeRange(s32 start, s32 count)
     }
     BP_TEX_U32(work, 0x127a8)++;
 }
+#pragma opt_common_subs on
 
+/* W310 measured: opt_common_subs off nd477->392, object 776/784; reset nd477. */
+#pragma opt_common_subs off
 // FUN_00255810 NONMATCHING
 void bpTexRemoveNodeAt(s32 index)
 {
@@ -1637,7 +1645,10 @@ void bpTexRemoveNodeAt(s32 index)
     action[2] = (u32)node;
     BP_TEX_U32(work, 0x127a8)++;
 }
+#pragma opt_common_subs on
 
+/* W310 measured: opt_common_subs off nd703->571, object 1036/1040; reset nd703. */
+#pragma opt_common_subs off
 // FUN_00255B20 NONMATCHING
 void bpTexShuffleNodes(void)
 {
@@ -1725,6 +1736,7 @@ void bpTexShuffleNodes(void)
     BP_TEX_U32(work, 0x49ee * 4) = 0;
     *work |= 0x10;
 }
+#pragma opt_common_subs on
 
 // FUN_00255F30
 u32 bpTexIsShuffleActive(void)
@@ -2162,6 +2174,8 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 /*
  * Retail offsets 0x9ec-0xbc4 count unowned roots, locate each by index, and redraw leaves.
  */
+/* W310 measured: opt_loop_invariants on nd2267->2266, object 2908/3024; reset nd2267. */
+#pragma opt_loop_invariants on
 // FUN_00257130 NONMATCHING
 void bpTexApplyActions(void)
 {
@@ -2484,6 +2498,7 @@ void bpTexApplyActions(void)
     BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
     func_005225a8((u32)"speed: %d\n", BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
+#pragma opt_loop_invariants off
 
 
 // FUN_00257D00 bpTexBuildPosition

@@ -3258,7 +3258,6 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
 }
 
 
-#pragma opt_common_subs off
 // FUN_00371DD0 NONMATCHING
 
 
@@ -3494,7 +3493,6 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
 // FUN_00372260
 
 
@@ -9201,6 +9199,7 @@ void FUN_0037a1e0(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+#pragma opt_common_subs off
 // FUN_0037A2B0 NONMATCHING
 
 
@@ -9337,6 +9336,7 @@ u32 FUN_0037a2b0(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0037A4D0
 
 

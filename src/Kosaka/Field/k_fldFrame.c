@@ -1826,9 +1826,10 @@ typedef struct FldFrameCollisionCollector
 } FldFrameCollisionCollector;
 typedef struct FldFrameCollisionQuery
 {
+    u8 prefix[0x10];
     RwV3d center;
     f32 radius;
-    u8 reserved[8];
+    u8 reserved[0x18];
     u32 type;
 } FldFrameCollisionQuery;
 
@@ -2160,8 +2161,8 @@ void* func_001aaf30(const RwV3d* point, void* unused,
 s32 func_001ab390(void* collision, const RwV3d* pos,
                   RwV3d* translation, f32 sphereCollisRadius)
 {
-    FldFrameCollisionCollector collector;
     FldFrameCollisionQuery query;
+    FldFrameCollisionCollector collector;
     RwV3d diff;
     f32 correction;
     f32 adjustX;
@@ -2171,6 +2172,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     s32 i;
     s32 result;
 
+    result = 0;
     query.center.x = pos->x + translation->x;
     query.center.y = pos->y + translation->y;
     query.center.z = pos->z + translation->z;
@@ -2183,13 +2185,12 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
         collector.distances[i] = 1.0e30f;
     }
     collector.count = 0;
-    result = 0;
     if (collision == NULL)
     {
         return result;
     }
 
-    func_00464020(collision, &query, func_001aaf30, &collector);
+    func_00464020(collision, (u8*)&query + 0x20, func_001aaf30, &collector);
     for (i = 0; i < (s32)collector.count; i++)
     {
         if (collector.distances[i] < 1.0e30f)
