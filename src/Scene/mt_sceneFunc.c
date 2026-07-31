@@ -596,7 +596,7 @@ void FUN_003bb400(u32 param_1);
 void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
 #pragma alias FUN_003bb450_scene_typed FUN_003bb450
 extern void FUN_003bb450_scene_typed(float *param_1,float param_2,float param_3,float param_4,float param_5,float *param_6);
-void FUN_003bb620(float param_1,u32 *param_2,int param_3);
+void FUN_003bb620(u32 *param_2,int param_3,float param_1);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
 #pragma alias FUN_003bb9b0_scene_typed FUN_003bb9b0
@@ -3253,7 +3253,7 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 // FUN_003BB620 NONMATCHING
 
 
-void FUN_003bb620(float param_1,u32 *param_2,int param_3)
+void FUN_003bb620(u32 *param_2,int param_3,float param_1)
 
 
 
@@ -3272,8 +3272,6 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
   u64 *puVar5;
 
   int cnt;
-
-  f32 *pdir;
 
   u64 dstbuf[8];
 
@@ -3347,10 +3345,9 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
     } while (0 < cnt);
 
-    pdir = direction;
-    *(u64 *)pdir = dstbuf[0];
-    pdir[2] = ((f32 *)dstbuf)[2];
-    FUN_004c69f0(normal,pdir);
+    *(u64 *)direction = dstbuf[0];
+    direction[2] = ((f32 *)dstbuf)[2];
+    FUN_004c69f0(normal,direction);
 
     src1[0] = src1[0] - normal[0] * 15.0f;
 
@@ -3430,7 +3427,7 @@ void FUN_003bb7a0(Resrc* param_1)
   }
   else {
 
-    (FUN_003bb620)(0.0f,(u32 *)outv,(int)param_1);
+    (FUN_003bb620)((u32 *)outv,(int)param_1,0.0f);
 
     fa = *(volatile f32 *)&outv[0];
     fb = *(volatile f32 *)&outv[1];
@@ -3683,8 +3680,8 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
   int iVar2;
 
-  int iVar3;
   int segmentIndex;
+  int iVar3;
 
 
   float fVar5;

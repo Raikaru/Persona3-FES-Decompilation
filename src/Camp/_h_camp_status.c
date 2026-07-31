@@ -420,7 +420,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     void* font;
 
     FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
-    bright = campStatusClampFade(0xff - fade);
+    bright = 0xff - fade;
     campStatusDrawTextCall(alpha - 1.0f, (s32)(position.x + 125.0f),
                            (s32)(position.y + 36.0f),
                            bright | 0xffffff00, 10, 1, text, 0x10, 0x78);
@@ -483,7 +483,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
-    u32 val;
+    s32 val;
     f32 dx;
     f32 dy;
     u32 parent;
@@ -788,7 +788,7 @@ void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
 {
     u32 parent;
     void* font;
-    u32 level;
+    s32 level;
     s32 hpBarOffset;
     s32 spBarOffset;
 
@@ -1372,6 +1372,12 @@ extern void (*DAT_00960090)(u32 state, u32 value);
 extern void (*DAT_009600A0)(u32 primitive, CampStatusVertex* vertices,
                             s32 vertexCount);
 extern f32 DAT_00960088;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
+#pragma alias DAT_009600A0_abs DAT_009600A0
+extern u8 DAT_009600A0_abs[];
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 extern s32 FUN_00198590();
 extern void (*jtbl_007B5B60[9])();
 extern void* DAT_00833B98;
@@ -1589,6 +1595,8 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
 }
 
 // FUN_00126710 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
 void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
                               s32 alpha)
 {
@@ -1596,15 +1604,15 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     void* camera;
     f32 recipZ;
     s32 i;
-    void (**setState)();
-    void (**submitVertices)();
+    void (**setState)(u32, u32);
+    void (**submitVertices)(u32, CampStatusVertex*, s32);
     void* textureWork;
 
     textureWork = texture;
 
     camera = (void*)FUN_00198590();
     recipZ = 1.0f / *((f32*)camera + 0x20);
-    setState = &DAT_00960090;
+    setState = (void (**)(u32, u32))DAT_00960090_abs;
     (*setState)(6, 1);
     (*setState)(7, 2);
     (*setState)(8, 1);
@@ -1614,12 +1622,12 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     (*setState)(12, 1);
     (*setState)(2, 4);
     for (i = 0; i < 4; i++) {
-        vertices[i].position.z = DAT_00960088 - x;
-        vertices[i].recipZ = recipZ;
         vertices[i].color.r = 255.0f;
         vertices[i].color.g = 255.0f;
         vertices[i].color.b = 255.0f;
         vertices[i].color.a = (f32)alpha;
+        vertices[i].position.z = *(f32*)DAT_00960088_abs - x;
+        vertices[i].recipZ = recipZ;
     }
     vertices[0].position.x = position.x;
     vertices[0].position.y = position.y;
@@ -1637,7 +1645,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     vertices[2].v = 1.0f;
     vertices[3].u = 1.0f;
     vertices[3].v = 1.0f;
-    submitVertices = &DAT_009600A0;
+    submitVertices = (void (**)(u32, CampStatusVertex*, s32))DAT_009600A0_abs;
     (*setState)(1, *(u32*)textureWork);
     (*submitVertices)(4, vertices, 4);
     vertices[0].position.y = position.y + 1104.0f;
@@ -1647,6 +1655,7 @@ void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
     (*setState)(1, *(u32*)textureWork);
     (*submitVertices)(4, vertices, 4);
 }
+#pragma pop
 
 
 static void h_campStatusDrawPanel(CampStatusPartsWork* work, s32 alpha,
@@ -2056,14 +2065,10 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
 {
     CampStatusPanelWork* work;
     CampVec2 position;
-    s32 done;
-    s32 i;
-    s32 alpha;
-    s32 input;
 
     work = (CampStatusPanelWork*)task->workData;
-    position.x = work->x;
-    position.y = work->y;
+    position.x = 0.0f;
+    position.y = 0.0f;
     switch (work->state) {
     case 0:
         if (FUN_0011e380(DAT_007cdf50, 3) != 0) {
@@ -2085,19 +2090,15 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
             FUN_00133a80(work->child);
         }
         if (work->panelMode == 0) {
-            input = 0;
             if (work->animationFrame < 0x14) {
                 work->animationFrame++;
-            }
-            else {
-                input = 1;
             }
             if (work->animationFrame != 0) {
                 h_campStatusRenderMode(position, 100.0f,
                                        (void*)FUN_00174800(1), 0,
                                        work->animationFrame, 0);
             }
-            if (input != 0) {
+            if (work->animationFrame >= 0x14) {
                 if ((DAT_007e094e & 0x20) != 0) {
                     FUN_0010a4e0(0, 0, 0, 2);
                     work->result = -1;
@@ -2151,9 +2152,6 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
                                work->animationFrame, 0);
         break;
     }
-    (void)done;
-    (void)i;
-    (void)alpha;
     return KWLNTASK_CONTINUE;
 }
 
