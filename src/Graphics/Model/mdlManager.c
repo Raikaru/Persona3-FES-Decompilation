@@ -5728,7 +5728,7 @@ done:
 /* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
 #pragma push
 #pragma opt_common_subs off
-/* W323 followups: retained iVar5+4 base pointer nd197 -> nd184; callback symbols nd184 -> nd168. */
+/* W323 followups: base pointer nd197 -> nd184; callback symbols nd184 -> nd168; -1 width nd168 -> nd122; hierarchy local nd122 -> nd107; stack-init order nd107 -> nd101. */
 // FUN_00316970 NONMATCHING
 
 
@@ -5765,9 +5765,10 @@ void func_00316970(Model* param_1)
   if (lVar2 != 0) {
 
     iVar5 = *(int *)(iVar3 + 0xdc);
-    pVar6 = (u32 *)(iVar5 + 4);
 
     uStack_4 = 0;
+
+    pVar6 = (u32 *)(iVar5 + 4);
 
     func_004cb6e0(*pVar6,(void *)func_003115a0,&uStack_4);
 

@@ -611,6 +611,7 @@ static u32 K_Footstep_GameState(void)
     return func_001a01c0();
 }
 
+#pragma opt_loop_invariants on
 // FUN_001dc6f0 NONMATCHING
 void* func_001dc6f0(KwlnTask* task)
 {
@@ -665,6 +666,7 @@ void* func_001dc6f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_001dc8e0
 void func_001dc8e0(KwlnTask* task)
 {

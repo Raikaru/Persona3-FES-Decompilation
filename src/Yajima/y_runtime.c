@@ -7395,7 +7395,6 @@ void FUN_00439400(char param_1)
   return;
 }
 
-#pragma opt_common_subs off
 // FUN_00439520 NONMATCHING
 
 void FUN_00439520(int param_1)
@@ -7642,7 +7641,6 @@ void FUN_00439520(int param_1)
   return;
 }
 
-#pragma opt_common_subs reset
 // FUN_00439F60 NONMATCHING
 
 u64 FUN_00439f60(int param_1,char param_2)
@@ -8413,6 +8411,7 @@ char FUN_0043bc20(char param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
 // FUN_0043BDA0 NONMATCHING
 
 short FUN_0043bda0(char param_1,char param_2)
@@ -8459,6 +8458,7 @@ short FUN_0043bda0(char param_1,char param_2)
 }
 
 #pragma pop
+#pragma opt_loop_invariants reset
 // FUN_0043BF50 NONMATCHING
 
 void FUN_0043bf50(u64 param_1)
