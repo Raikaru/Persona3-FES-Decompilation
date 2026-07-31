@@ -1069,6 +1069,10 @@ void FUN_002453d0(u16 param_1)
 
 
 
+/* W389 measured opt_dead_assignments off: nd16/1264B -> nd8/1264B (window 1264B). */
+/* W389 volatile staging of calc/skill and mode/skill loads was neutral at nd8/1264B; reverted. */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_00245420 NONMATCHING
 void FUN_00245420(uint *param_1,uint param_2)
 
@@ -1188,6 +1192,8 @@ void FUN_00245420(uint *param_1,uint param_2)
   }
   return;
 }
+#pragma pop
+#pragma opt_dead_assignments reset
 
 
 
@@ -1386,6 +1392,9 @@ void FUN_00245e50(void)
 
 
 
+/* W389 measured opt_propagation off: nd7126/9636B -> nd6938/9468B (window 9712B). */
+#pragma push
+#pragma opt_propagation off
 // FUN_00245EA0 NONMATCHING
 void FUN_00245ea0(void)
 
@@ -2222,6 +2231,8 @@ LAB_00247ba8:
   }
   return;
 }
+#pragma pop
+#pragma opt_propagation reset
 
 
 

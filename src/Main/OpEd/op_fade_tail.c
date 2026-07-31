@@ -316,7 +316,7 @@ void func_002798f0(void)
     K_ASSERT(sOpTailA != NULL, 0x61);
     sOpTailA[0] |= 0x40;
 }
-// Alignment cursor codegen remains a MWCCPS2 register-coloring residual (normalized_diff 20); pragma, pointer-type, temporary, and declaration-order probes were reverted when they did not improve the match.
+// W389 residual nd20 (object 372/384): six-knob singles and all 15 knob pairs, plus pointer-type, temporary, and declaration-order probes, were reverted as neutral; alignment-cursor register coloring remains a compiler floor.
 // FUN_00279940 NONMATCHING
 u32* func_00279940(const u32* header)
 {

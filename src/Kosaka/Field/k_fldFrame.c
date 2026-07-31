@@ -10,6 +10,11 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "libm.h"
+/* RenderWare's retail globals place memFuncs at absolute offset 0x178. */
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
+typedef void* (*KFldFrameRwCallocFunc)(u32 elemCount, u32 elemSize, u32 hint);
+
 
 #define COLLISCTL_SUBSTEPS 3
 
@@ -429,7 +434,9 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
     s32 i;
     FldUnit* units;
     FldUnit* unitsBase;
-    ctl = RwCalloc(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
+    KFldFrameRwCallocFunc callocFunc;
+    callocFunc = *(KFldFrameRwCallocFunc*)(rwGlobals_abs + 0x184);
+    ctl = (*callocFunc)(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
     if (ctl == NULL)
     {
         return NULL;

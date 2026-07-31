@@ -392,6 +392,9 @@ typedef struct {
 #define fStack_c frame.fStack_c
 #define auStack_4 frame.auStack_4
 /* Recovered battle-misc harvest: 0x00253A40-0x002594C0 */
+/* W389 measured FUN_00253A40 opt_lifetimes on: nd 2726 -> 2722; object 4408/4432 -> 4408/4432. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00253A40 NONMATCHING
 
 
@@ -1003,6 +1006,8 @@ void FUN_00253a40(void)
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 #undef auStack_70
 #undef aiStack_60
 #undef auStack_40
@@ -1205,6 +1210,7 @@ void FUN_00258630(u32 *param_1)
 #undef transformed
 #undef origin
 
+// W389 residual nd13: pure call-argument evaluation scheduling; retail materializes 90.0f before the pointer addiu, while MWCCPS2 does the pointer load/addiu first. No load permutation or source-order lever applies.
 // FUN_00258B40 NONMATCHING
 
 

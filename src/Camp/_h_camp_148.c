@@ -391,6 +391,7 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
  * start coordinate per call and recompute the -100.0f x shift in place. */
 /* W373 pragma sweep: default nd2111/object2708/2784; common_subs off nd2059/object2740/2784; propagation off nd1906/object2424/2784. Retained propagation off. */
 #pragma opt_propagation off
+#pragma opt_strength_reduction off
 // FUN_00148C10 NONMATCHING
 void h_campDrawStatusComparison(int param_1)
 {
@@ -591,6 +592,7 @@ void h_campDrawStatusComparison(int param_1)
  * recovered second-loop entry update rather than silently omitting it. */
 /* W373 pragma sweep: default nd2626/object3276/3488; propagation off nd2567/object3104/3488; dead_assignments off nd2513/object3260/3488; propagation+dead_assignments nd2567/object3104/3488. Retained dead_assignments off. */
 #pragma opt_dead_assignments off
+#pragma opt_strength_reduction reset
 // FUN_001496F0 NONMATCHING
 void h_campDrawPersonaOverview(int param_1)
 {

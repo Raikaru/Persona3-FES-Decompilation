@@ -1894,10 +1894,9 @@ alpha_done:
 // D_00960090_abs/D_0096009C_abs vtable style as this file's other draw
 // functions. Key finding: D_0096009C_abs must be re-cast to a fresh local
 // inside both the state==1 loop and the case 0/2 body, matching retail's
-// per-branch re-materialization (its cache register doubles as the loop
-// counter on the other switch arm). nd 198->6 (obj 1292B/1296B); residual
-// is a 2-variable register-bank swap (slot0/setQuad), unfixable per the
-// usual declaration/statement-order floor.
+// W389 measured first-use swap (slot0 before records): nd11/1292B -> nd16/1292B
+// (window 1296B), reverted. Residual is the 2-variable register-bank swap
+// (slot0/setQuad), unfixable per the declaration/statement-order floor.
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -2068,6 +2067,9 @@ void FUN_00224860(void)
     }
 }
 
+/* W389 measured opt_dead_assignments off: nd1212/1760B -> nd1211/1748B (window 1792B). */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_00224940 NONMATCHING
 void FUN_00224940(void)
 {
@@ -2215,6 +2217,8 @@ void FUN_00224940(void)
     color[3] = alphaByte;
     FUN_0021d950(records + 0x1050, color);
 }
+#pragma pop
+#pragma opt_dead_assignments reset
 
 // Previous body was a wrong-helper stub unrelated to retail (1120B window).
 // Rewritten from disasm: retail draws each record's icon then 2 status
@@ -2984,6 +2988,9 @@ void FUN_002265D0(void)
 // bcm_panel_* helpers. obj now 1292B/1296B; residual is a single
 // register-bank choice (retail s3/mine s4 for `work`) cascading through
 // the whole body - 2 declaration-order attempts had no effect (floor).
+/* W389 measured opt_lifetimes on: nd562/1296B -> nd217/1280B (window 1296B). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00227800 NONMATCHING
 void FUN_00227800(void)
 {
@@ -3082,6 +3089,8 @@ void FUN_00227800(void)
         (*setQuad3)((u32*)(record + 0x2330), 4, 0, 2, 3);
     }
 }
+#pragma pop
+#pragma opt_lifetimes reset
 
 // FUN_00227D10
 void FUN_00227D10(void)
@@ -3404,6 +3413,8 @@ void FUN_002289B0(void)
 }
 
 #pragma push
+/* W389 measured opt_lifetimes on: nd1910/3296B -> nd1908/3296B (window 3328B). */
+#pragma opt_lifetimes on
 // FUN_00228E40 NONMATCHING
 void FUN_00228E40(void)
 {
@@ -3626,6 +3637,7 @@ void FUN_00228E40(void)
     FUN_0021d950(overlay + 0x410, color);
 }
 #pragma pop
+#pragma opt_lifetimes reset
 
 #define BCM_29_STATE(...) (*setStatePtr)(__VA_ARGS__)
 #define BCM_29_QUAD(...) (*setQuadPtr)(__VA_ARGS__)
@@ -3735,6 +3747,9 @@ void FUN_00229B40(void)
 #undef BCM_29_STATE2
 #undef BCM_29_QUAD
 
+/* W389 measured opt_loop_invariants on: nd1997/2852B -> nd1941/2732B (window 3024B). */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0022A2B0 NONMATCHING
 void FUN_0022A2B0(void)
 {
@@ -3959,6 +3974,8 @@ void FUN_0022A2B0(void)
     color[3] = alphaByte;
     FUN_0021d950(overlay + 0x310, color);
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 
 #define BCM_2AE_STATE(...) (*pRender)(__VA_ARGS__)
 #define BCM_2AE_QUAD(...) (*pQuad)(__VA_ARGS__)
@@ -4117,6 +4134,9 @@ void bcmPanel0022b580(void)
     }
 }
 
+/* W389 measured opt_loop_invariants on: nd797/1676B -> nd716/1676B (window 1728B). */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0022B630 NONMATCHING
 void FUN_0022B630(void)
 {
@@ -4280,6 +4300,8 @@ void FUN_0022B630(void)
         break;
     }
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 
 // Previous body was a wrong-helper stub unrelated to retail (624B window).
 // Rewritten from disasm: retail loops 3 quad-setter calls, then computes a
@@ -4564,6 +4586,9 @@ void FUN_0022c720(u32* object, u32 style)
 
 
 
+/* W389 measured opt_lifetimes on: nd442/636B -> nd441/636B (window 640B). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00254B90 NONMATCHING
 void bpTexSortVisibleNodes(void)
 {
@@ -4640,6 +4665,8 @@ void bpTexSortVisibleNodes(void)
         }
     }
 }
+#pragma pop
+#pragma opt_lifetimes reset
 
 // FUN_00254E10
 void bpTexFinishNodeStreams(void)
@@ -5014,6 +5041,10 @@ void bpTexRemoveNodeAt(s32 index)
 
 /* W310 measured: opt_common_subs off nd703->571, object 1036/1040; reset nd703. */
 #pragma opt_common_subs off
+/* W389 measured opt_loop_invariants on + opt_lifetimes on: nd571/1036B -> nd568/1036B (window 1040B). */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00255B20 NONMATCHING
 void bpTexShuffleNodes(void)
 {
@@ -5101,6 +5132,9 @@ void bpTexShuffleNodes(void)
     BP_TEX_U32(work, 0x49ee * 4) = 0;
     *work |= 0x10;
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #pragma opt_common_subs reset
 
 // FUN_00255F30
@@ -5552,6 +5586,9 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
  */
 /* W310 measured: opt_loop_invariants on nd2267->2266, object 2908/3024; reset nd2267. */
 #pragma opt_loop_invariants on
+/* W389 measured opt_propagation off: nd2266/2908B -> nd2256/2920B (window 3024B). */
+#pragma push
+#pragma opt_propagation off
 // FUN_00257130 NONMATCHING
 void bpTexApplyActions(void)
 {
@@ -5874,6 +5911,8 @@ void bpTexApplyActions(void)
     BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
     func_005225a8((u32)"speed: %d\n", BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
+#pragma pop
+#pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 
 

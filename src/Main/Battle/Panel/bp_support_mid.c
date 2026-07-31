@@ -836,6 +836,7 @@ void func_0020cd50(void* work, void* resource)
 #pragma push
 /* Removing this worsens FUN_0020cda0 (nd12 -> nd259) and 1 more - measured W161. */
 #pragma opt_loop_invariants on
+/* W389 preheader direct-global rewrite nd12/384B -> nd12/384B (neutral); reverted, residual is hoist order. */
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {
@@ -900,6 +901,9 @@ void func_0020cda0(u8* work)
     }
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
+/* W389 measured opt_lifetimes on: nd632/1492B -> nd627/1492B (window 1504B). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0020cf20 NONMATCHING
 void func_0020cf20(void* destination, PanelTransform* transform)
 {
@@ -1061,4 +1065,6 @@ void func_0020cf20(void* destination, PanelTransform* transform)
     }
     func_004c3880(matrix);
 }
+#pragma pop
+#pragma opt_lifetimes reset
 #pragma pop

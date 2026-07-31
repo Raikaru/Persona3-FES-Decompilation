@@ -427,6 +427,7 @@ static void campEquipmentClearCategoryCounts(CampEquipmentWork* work)
     }
 }
 
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd376/object1100/1120, no lowering under the window. Residual is large control/data divergence. */
 // FUN_0013c240 NONMATCHING
 void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 {
@@ -522,7 +523,10 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
     work->entryCount = outCount;
 }
 
-// FUN_0013c6a0 NONMATCHING
+#pragma push
+/* opt_loop_invariants on: baseline nd15/object212/224 -> nd0/object212/224; retained W389. */
+#pragma opt_loop_invariants on
+// FUN_0013c6a0
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
@@ -570,6 +574,12 @@ found:
     }
     return 0;
 }
+#pragma opt_loop_invariants reset
+#pragma pop
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd481/object1248/1296 -> nd476/object1248/1296; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0013c780 NONMATCHING
 void FUN_0013c780(CampEquipmentWork* work)
 {
@@ -698,7 +708,14 @@ void FUN_0013c780(CampEquipmentWork* work)
     }
     work->entryCount = recordCount;
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd320/object748/752 -> nd314/object748/752; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0013cc90 NONMATCHING
 void FUN_0013cc90(CampEquipmentWork* work)
 {
@@ -776,6 +793,9 @@ void FUN_0013cc90(CampEquipmentWork* work)
     }
     work->entryCount = recordCount;
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 
 // FUN_0013cf80
 void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
@@ -843,6 +863,10 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
     campDrawSprite(parent,H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
 #define campEquipmentEntry(work,index) (&(work)->entries[(index)])
  
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3969/object5348/5488 -> nd3552/object5076/5488; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_0013d1a0 NONMATCHING
 
 void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 alpha)
@@ -1142,6 +1166,9 @@ LAB_0013e694:
     rowIndex = rowIndex + 1;
   } while( true );
 }
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
 #undef campEquipmentDrawFixed
 #undef campEquipmentDrawAtlas
 #undef campEquipmentDrawAlt
@@ -1165,6 +1192,10 @@ LAB_0013e694:
 // Retail retains an implicit parent pointer in a callee-saved register that
 // is not represented by the current source signature; the remaining mismatch
 // is therefore retained while preserving the recovered branch and frame logic.
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3872/object5304/5520 -> nd3579/object5080/5520; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_0013e710 NONMATCHING
 
 void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alpha)
@@ -1554,6 +1585,9 @@ LAB_0013fc20:
     rowIndex = rowIndex + 1;
   } while( true );
 }
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
 #undef campEquipmentDrawFixed
 #undef campEquipmentDrawAtlas
 #undef campEquipmentDrawAlt
@@ -1561,6 +1595,10 @@ LAB_0013fc20:
 
 
 
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd1847/object2588/2608 -> nd1824/object2540/2608; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_0013fca0 NONMATCHING
 
 void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
@@ -1752,6 +1790,9 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
         break;
     }
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 
@@ -2220,6 +2261,7 @@ void FUN_00141660(CampEquipmentPanelWork* work)
 
 
 
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd1800/object2420/2432, no lowering under the window. Residual is large draw-sequence divergence. */
 // FUN_00141fb0 NONMATCHING
 
 void FUN_00141fb0(CampEquipmentPanelWork* work)
@@ -2320,6 +2362,7 @@ void FUN_00141fb0(CampEquipmentPanelWork* work)
 
 
 
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd1829/object2472/2496, no lowering under the window. Residual is large draw-sequence divergence. */
 // FUN_00142930 NONMATCHING
 
 void FUN_00142930(CampEquipmentPanelWork* work)
@@ -2417,6 +2460,10 @@ void FUN_00142930(CampEquipmentPanelWork* work)
 
 
 
+#pragma push
+/* opt_propagation off + opt_strength_reduction off: baseline nd1410/object1804/1808 -> nd1366/object1768/1808; retained W389. */
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 // FUN_001432f0 NONMATCHING
 
 void FUN_001432f0(CampEquipmentPanelWork* work)
@@ -2507,9 +2554,16 @@ void FUN_001432f0(CampEquipmentPanelWork* work)
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 2, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
   return;
 }
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma pop
 
 
 
+#pragma push
+/* opt_loop_invariants on + opt_dead_assignments off: baseline nd936/object1172/1248 -> nd924/object1176/1248; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
 // FUN_00143a00 NONMATCHING
 
 void FUN_00143a00(CampEquipmentPanelWork* work,s32 targetSlot)
@@ -2563,9 +2617,16 @@ LAB_00143e94:
     entryIndex = entryIndex + 1;
   } while( true );
 }
+#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants reset
+#pragma pop
 
 
 
+#pragma push
+/* opt_propagation off + opt_strength_reduction off: baseline nd2088/object2576/2608 -> nd2018/object2528/2608; retained W389. */
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 // FUN_00143ee0 NONMATCHING
 
 void FUN_00143ee0(CampEquipmentPanelWork* work)
@@ -2632,9 +2693,13 @@ void FUN_00143ee0(CampEquipmentPanelWork* work)
   }
   return;
 }
+#pragma opt_strength_reduction reset
+#pragma opt_propagation reset
+#pragma pop
 
 
 
+/* W389 six-knob sweep: singles + all 15 pairs; baseline nd2032/object2620/2624, no lowering under the window. Residual is large draw-sequence divergence. */
 // FUN_00144910 NONMATCHING
 
 void FUN_00144910(CampEquipmentPanelWork* work)
@@ -2768,6 +2833,10 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
 
 
 
+#pragma push
+/* opt_loop_invariants on + opt_propagation off: baseline nd3081/object4360/4592 -> nd3057/object4240/4592; retained W389. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_00145520 NONMATCHING
 
 void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
@@ -3093,10 +3162,16 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
         break;
     }
 }
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+#pragma pop
 
 
 
 /* Retail reconstruction from FUN_00146710 offsets +0x1c..+0xddc; pairSlots maps the measured draw/status temporaries at +0x68..+0x128. */
+#pragma push
+/* opt_lifetimes on: baseline nd1347/object3520/3552 -> nd1346/object3520/3552; retained W389. */
+#pragma opt_lifetimes on
 // FUN_00146710 NONMATCHING
 
 void FUN_00146710(CampEquipmentPanelWork* work)
@@ -3359,6 +3434,8 @@ void FUN_00146710(CampEquipmentPanelWork* work)
                  0, 2, 1, *(u64*)&base, pair25, 0, 0, 0, 10);
   return;
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 
@@ -3389,6 +3466,10 @@ void FUN_00146710(CampEquipmentPanelWork* work)
 #undef pair1
 #undef pair0
 
+#pragma push
+/* opt_lifetimes on + opt_propagation off: baseline nd2853/object3532/3584 -> nd2685/object3216/3584; retained W389. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_001474f0 NONMATCHING
 
 void FUN_001474f0(CampEquipmentPanelWork* work)
@@ -3593,6 +3674,9 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)), 0, 2, 2, *(u64*)&pair25, *(u64*)&base, 0, 0, 0, 10);
   return;
 }
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 

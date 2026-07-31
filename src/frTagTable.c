@@ -577,7 +577,6 @@ u32 FUN_003aec20(u64 unused, int context)
   char *dest;
   int offset;
   int base;
-
   offset = *(int *)(context + 0x18);
   base = *(int *)(context + 0x10);
   cursor = (u8 *)(offset + base);
