@@ -6581,18 +6581,15 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
         action->unk_488 = 1;
         return;
     }
-    if (action->unk_488 != 0)
+    if (FUN_001ff2d0() == 0)
     {
-        if (FUN_001ff2d0() == 0)
-        {
-            btlActionSetState(action, BTLACTION_STATE_ESCAPE);
-        }
-        else
-        {
-            btlPacketRegister(btlVoice002e2be0(action, 3, 0, 0, 0), BTLPACKET_TYPE_1);
-            action->unk_18 |= 0x80;
-            btlActionSetState(action, action->target.commandId);
-        }
+        btlActionSetState(action, BTLACTION_STATE_ESCAPE);
+    }
+    else
+    {
+        btlPacketRegister(btlVoice002e2be0(action, 3, 0, 0, 0), BTLPACKET_TYPE_1);
+        action->unk_18 |= 0x80;
+        btlActionSetState(action, action->target.commandId);
     }
 }
 

@@ -6667,7 +6667,6 @@ void func_001edbe0(RuntimeRenderCollection* work)
         u8 alpha;
     } RuntimeColor;
 
-    s32 active;
     void* matrix;
     void* owner;
     void* material;
@@ -6678,6 +6677,7 @@ void func_001edbe0(RuntimeRenderCollection* work)
     u32 frameValue;
     f32 delta;
     s32 index;
+    s32 active;
 
     active = 0;
     if (*(f32*)((u8*)*(void**)(work->input + 0x20) + 0xf4) != 0.0f)
@@ -6691,15 +6691,17 @@ void func_001edbe0(RuntimeRenderCollection* work)
 
         if (active != 0)
         {
-    u8* command;
+        u32 commandOffset;
         u8* activeEntry;
-        command = work->commands + index * 0x20;
         activeEntry = work->entries + index * 0x4c;
-            func_001eba80((RuntimeCommandWork*)command, &commandResult);
+        commandOffset = index * 0x20;
+            func_001eba80(
+                (RuntimeCommandWork*)(work->commands + commandOffset),
+                &commandResult);
             if ((~work->flags & 8) != 0 &&
-                (*(u32*)command & 2) != 0)
+                (*(u32*)(work->commands + commandOffset) & 2) != 0)
             {
-                if ((*(u32*)command & 8) != 0)
+                if ((*(u32*)(work->commands + commandOffset) & 8) != 0)
                 {
                     func_001eb920(
                         activeEntry,

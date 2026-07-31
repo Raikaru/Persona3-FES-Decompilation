@@ -4241,6 +4241,12 @@ KwlnTask* func_00185880(KwlnTask* parent,
 // FUN_00185980 NONMATCHING
 void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 {
+    void* unused;
+    union
+    {
+        u64 bits;
+        f32 coords[2];
+    } packed;
     f32 y;
     f32 x;
     f32 xFirst;
@@ -4249,16 +4255,8 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     f32 ySecond;
     f32 yThird;
     s32 signedMonth;
-    u64 positionCopy;
-    union
-    {
-        u64 bits;
-        f32 coords[2];
-    } packed;
-    void* unused;
 
-    positionCopy = position;
-    packed.bits = positionCopy;
+    packed.bits = position;
     /* Keep the packed argument spill before the callee-saved argument copies as in retail. */
     asm ("" : "+m"(packed.bits));
     y = packed.coords[1];
