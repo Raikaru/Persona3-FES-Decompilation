@@ -7,7 +7,7 @@ typedef struct {
 } EvtPosition65430;
 typedef u8 bool;
 #pragma alias FUN_00393e30_evt_main FUN_00393e30
-extern void FUN_00393e30_evt_main(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,code *param_6);
+extern void FUN_00393e30_evt_main(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,code *(*param_6)(int));
 
 extern u8 D_0069DFF0[];
 extern u8 D_0069E088[];
@@ -5213,10 +5213,10 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
 }
 
 
-// Caller-specific absolute BYTE-base loads now reproduce retail's shared
-// DAT_006a0000 offsets for both u64 xy and f32 z. The remaining nine words are
-// b210 scheduling/register choices: a1 setup, v0/v1 load coloring, and the
-// independent aggregate stores/a0 setup around FUN_003b7930.
+// Caller-specific absolute BYTE-base loads reproduce retail's shared DAT offsets.
+// A typed aggregate assignment and early stack-pointer local now reproduce
+// retail's load/store staging; five reloc-masked words remain as b210 choices:
+// a1 setup, v0/v1 load coloring, and independent store/call setup.
 // FUN_00365430 NONMATCHING
 
 
@@ -5229,11 +5229,9 @@ void FUN_00365430(int param_1,int param_2)
   int *piVar1;
 
   u32 lVar2;
-
   int iVar3;
   EvtPosition65430 position;
   EvtPosition65430 *positionPtr;
-
 
   
 
@@ -8960,7 +8958,7 @@ u64 FUN_00368cb0(u64 param_1,u64 param_2,int param_3)
 }
 
 
-// FUN_00368D70 NONMATCHING
+// FUN_00368D70
 
 
 u32 FUN_00368d70(u64 param_1,u64 param_2,int param_3)

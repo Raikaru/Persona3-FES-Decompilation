@@ -5658,32 +5658,37 @@ done:
 
 void FUN_0039eaa0(int param_1)
 {
-  int iVar1;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  int iVar6;
-  int *piVar7;
-  int iVar2;
+  MtEvtCustomData *base;
+  int count;
+  int baseValue;
+  int entryValue;
+  int combinedValue;
+  int extraValue;
+  int index;
+  MtEvtCustomEntry *entry;
+  MtEvtCustomEntry *entries;
+  int *output;
 
-  piVar7 = (int *)(param_1 + 0x7f4);
-  FUN_00521408_b8b0(piVar7,0,0x38);
-  iVar1 = *(int *)(param_1 + 8);
-  for (iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
-    iVar5 = *(int *)(iVar1 + 0x34) + iVar6 * 0x20;
-    if (*(int *)(iVar5 + 0x18) == 2) {
-      iVar2 = *piVar7;
-      if (4 < iVar2) break;
-      iVar3 = *(int *)(iVar1 + 0x10);
-      iVar4 = *(int *)(iVar5 + 0x10);
-      iVar5 = *(int *)(iVar5 + 0x14);
-      *(short *)((int)piVar7 + iVar2 * 2 + 0x18) = (short)iVar2 + 31000;
-      piVar7[iVar2 + 1] = iVar3 + iVar4;
-      piVar7[iVar2 + 9] = iVar5;
-      *piVar7 = *piVar7 + 1;
+  output = (int *)(param_1 + 0x7f4);
+  FUN_00521408_b8b0(output,0,0x38);
+  base = *(MtEvtCustomData **)(param_1 + 8);
+  for (index = 0; index < base->entryCount; index = index + 1) {
+    entries = base->entries;
+    entry = &entries[index];
+    if (entry->type == 2) {
+      count = *output;
+      if (4 < count) break;
+      baseValue = base->unk_10;
+      entryValue = entry->unk_10;
+      combinedValue = baseValue + entryValue;
+      extraValue = entry->unk_14;
+      *(short *)((int)output + count * 2 + 0x18) = count + 31000;
+      output[count + 1] = combinedValue;
+      output[count + 9] = extraValue;
+      *output = *output + 1;
     }
   }
-  FUN_005225a8_eaa0(DAT_006a1820,*piVar7);
+  FUN_005225a8_eaa0(DAT_006a1820,*output);
   return;
 }
 #define FUN_0039eaa0(...) ((void (*)(...))FUN_0039eaa0)(__VA_ARGS__)

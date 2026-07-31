@@ -6755,8 +6755,7 @@ void func_001edbe0(void* workData)
         func_001ed0d0(
             (RuntimeWork*)entry, &delta);
         frameValue = *(u32*)((u8*)work->renderObjects[index * 2] + 0x18);
-        ((void (*)(void*, u32*))func_001e9af0)(
-            entry, &frameValue);
+        func_001e9af0((RuntimeWork*)entry, &frameValue);
     }
 }
 

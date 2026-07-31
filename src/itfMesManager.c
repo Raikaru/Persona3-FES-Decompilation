@@ -5468,8 +5468,6 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
-  s16 first;
-  s16 second;
   ItfMesAnim *anim;
   int count;
   s16 *source;
@@ -5480,8 +5478,8 @@ void FUN_003a7dd0(int object)
   dest = values;
   count = 3;
   do {
-    first = source[0];
-    second = source[1];
+    s16 first = source[0];
+    s16 second = source[1];
     source += 2;
     count--;
     dest[0] = first;

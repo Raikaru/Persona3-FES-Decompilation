@@ -2523,7 +2523,6 @@ int FUN_002d2c10(float *param_1, float *param_2)
 {
     u8 *node;
     int i;
-
     if (*(u8 **)((u8 *)param_2 + 0x10) == (u8 *)param_1)
     {
         return 1;
@@ -2576,11 +2575,12 @@ int FUN_002d2c10(float *param_1, float *param_2)
         }
     }
 
-    for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
+        u8 *node2;
+        for (node2 = *(u8 **)(iGpffffb6fc + 0x2cc); node2 != NULL; node2 = *(u8 **)(node2 + 0x4cc))
         for (i = 0; i < 4; ++i)
         {
-            u8 *record = node + i * 0x130;
+            u8 *record = node2 + i * 0x130;
             float *edge = (float *)(record + 0x08);
             float *next;
 
