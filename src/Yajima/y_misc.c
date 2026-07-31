@@ -69,6 +69,10 @@ typedef struct RwFrame RwFrame;
 extern RwCamera *RwCameraBeginUpdate_fcl(RwCamera *camera);
 #pragma alias RwCameraEndUpdate_fcl RwCameraEndUpdate
 extern RwCamera *RwCameraEndUpdate_fcl(RwCamera *camera);
+#pragma alias RwCameraBeginUpdate_u32 RwCameraBeginUpdate
+extern RwCamera *RwCameraBeginUpdate_u32(u32 camera);
+#pragma alias RwCameraEndUpdate_u32 RwCameraEndUpdate
+extern RwCamera *RwCameraEndUpdate_u32(u32 camera);
 extern u32 mdlCreateFromRmdMemory(u32, u32, u32, u32, u32);
 extern u32 func_0010c3a0(u32, void *, u32);
 typedef int (*code)(...);
@@ -1458,7 +1462,7 @@ u32 FUN_00425690(int param_1)
 
   uVar8 = kwlnGetMainCamera();
 
-  lVar10 = RwCameraBeginUpdate(uVar8);
+  lVar10 = RwCameraBeginUpdate_u32(uVar8);
 
   if (lVar10 != 0) {
 
@@ -1554,7 +1558,7 @@ LAB_00425aec:
 
   uVar8 = kwlnGetMainCamera();
 
-  RwCameraEndUpdate(uVar8);
+  RwCameraEndUpdate_u32(uVar8);
 
   uVar8 = kwlnGetWorld(DAT_007ce0cc);
 
@@ -2085,7 +2089,7 @@ u64 FUN_004260a0(int param_1)
 
   uVar8 = kwlnGetMainCamera();
 
-  lVar10 = RwCameraBeginUpdate(uVar8);
+  lVar10 = RwCameraBeginUpdate_u32(uVar8);
 
   if (lVar10 != 0) {
 
@@ -2153,7 +2157,7 @@ u64 FUN_004260a0(int param_1)
 
   uVar8 = kwlnGetMainCamera();
 
-  RwCameraEndUpdate(uVar8);
+  RwCameraEndUpdate_u32(uVar8);
 
   uVar8 = kwlnGetWorld(DAT_007ce0cc);
 
