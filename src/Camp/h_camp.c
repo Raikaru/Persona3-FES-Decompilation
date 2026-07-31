@@ -1,4 +1,5 @@
 #include "Camp/h_camp.h"
+#include "Camp/_h_camp_status.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Main/g_data.h"
 #include "h_cdvd.h"
@@ -10,11 +11,6 @@ extern void* func_0010c3a0();
 extern void func_00133d30();
 extern void func_004d0f00();
 extern void func_00123640();
-typedef struct CampVec2
-{
-    f32 x;
-    f32 y;
-} CampVec2;
 extern KwlnTask* iGpffffb258;
 extern KwlnTask* func_00119f10(KwlnTask* parent, u32 initializeMessages);
 extern KwlnTask* FUN_00122660(KwlnTask* parent);
