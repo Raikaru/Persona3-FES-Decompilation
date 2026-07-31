@@ -1008,6 +1008,7 @@ void FUN_003c8fa0(void)
 #pragma opt_rebuildconditionals off
 // Conditional-rebuild pragma measured normalized_diff 76 -> 14; remaining
 // residuals are commutative mul.s operand order and result-register coloring.
+// W389 re-test: six-knob singles/inverse/pairs and m_loadperm found no further change; nd14 remains.
 // FUN_003C9000 NONMATCHING
 
 
@@ -1965,6 +1966,7 @@ void FUN_003ca6b0(void)
 #pragma opt_rebuildconditionals off
 // Conditional-rebuild pragma and integer-first signature measured normalized_diff
 // 36 -> 14; remaining residuals are mul.s operand order and v0/v1 coloring.
+// W389 re-test: six-knob singles/inverse/pairs and m_loadperm found no further change; nd14 remains.
 // FUN_003CA780 NONMATCHING
 
 
@@ -2195,7 +2197,8 @@ void FUN_003ca960(int param_1)
 #define FUN_003ca960(...) ((void (*)(...))FUN_003ca960)(__VA_ARGS__)
 #undef FUN_003cacc0
 #pragma push
-/* W389 sweep: opt_propagation off measured nd654/obj876 -> nd617/obj900 (window 912). */
+/* W389 pair sweep: opt_lifetimes on + opt_propagation off measured nd617/obj900 -> nd616/obj900 (window 912). */
+#pragma opt_lifetimes on
 #pragma opt_propagation off
 // FUN_003CACC0 NONMATCHING
 
@@ -2339,6 +2342,7 @@ void FUN_003cacc0(int param_1)
   return;
 
 }
+#pragma opt_lifetimes reset
 #pragma opt_propagation reset
 #pragma pop
 #define FUN_003cacc0(...) ((void (*)(...))FUN_003cacc0)(__VA_ARGS__)
@@ -3369,6 +3373,7 @@ u32 FUN_003cda00(void)
 // Addressing-signal audit: retail has the same $gp color load and $gp data address.
 // Residual +48..+60 is aggregate load/store scheduling; +216..+244 is JAL setup order.
 // Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
+// W389 hand tests: translation z volatile load held nd12; volatile handle sequencing regressed nd12 -> nd16; both reverted.
 #pragma push
 /* W389 sweep: opt_propagation off measured nd20/obj320 -> nd12/obj320 (window 320). */
 #pragma opt_propagation off

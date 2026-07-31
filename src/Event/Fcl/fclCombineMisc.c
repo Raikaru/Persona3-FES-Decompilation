@@ -596,6 +596,7 @@ u64 FUN_003d5bb0(u32 param_1)
 }
 
 // FUN_003D5CD0 NONMATCHING
+// W389 hand tests: s16 loop/count widened nd10/obj236 -> nd143/obj244 (window 240); typed s16/u32 callee aliases gave nd132; both reverted.
 
 
 s32 FUN_003d5cd0(u32 *param_1)
@@ -1666,8 +1667,6 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
-#pragma opt_strength_reduction off
-#pragma opt_dead_assignments off
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 
@@ -1756,8 +1755,6 @@ LAB_003d7430:
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd796/obj1344 -> nd788/obj1344 (window 1344). */
 #pragma opt_lifetimes on
-#pragma opt_dead_assignments reset
-#pragma opt_strength_reduction reset
 // FUN_003D74F0 NONMATCHING
 
 
@@ -2662,6 +2659,10 @@ s32 lVar2;
 
 }
 
+#pragma push
+/* W389 pair sweep: opt_loop_invariants on + opt_common_subs off measured nd217/obj356 -> nd187/obj368 (window 368). */
+#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_003D84C0 NONMATCHING
 
 
@@ -2754,6 +2755,9 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
   }
 
 }
+#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
+#pragma pop
 
 /* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
 #pragma opt_loop_invariants on
