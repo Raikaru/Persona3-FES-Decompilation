@@ -6847,7 +6847,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   return (u8 *)0x0;
   }
-  }
 }
 
 // FUN_003EDD80
