@@ -17484,6 +17484,7 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 }
 
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 // FUN_0040A7F0 NONMATCHING
 
 #define FUN_0040e3f0 FUN_0040e3f0_f32
@@ -17733,7 +17734,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
       uVar3 = FUN_0017cf00();
 
       sprintf((char *)scratch.wide_text,&gp0xffffac10,uVar3);
-      FUN_0040ec20(0,iVar6,iVar5,uVar11 & 0xff,0,scratch.wide_text,1,0x26,FUN_0040a7c0);
+      FUN_0040ec20(0,iVar6,iVar5,uVar11 & 0xff,0,scratch.wide_text,1,0x26,0x40a7c0);
 
       break;
 
@@ -17880,6 +17881,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 #undef FUN_0040e3f0
 
 // FUN_0040B3A0
