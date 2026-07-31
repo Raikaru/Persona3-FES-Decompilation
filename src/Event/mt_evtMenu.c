@@ -14538,6 +14538,9 @@ u32 FUN_003814d0(int param_1,int param_2,int param_3)
 }
 
 
+/* opt_lifetimes on: default nd762/1124B -> nd761/1124B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00381540 NONMATCHING
 void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
@@ -14632,6 +14635,7 @@ void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
     break;
   }
 }
+#pragma pop
 
 
 // FUN_003819B0 NONMATCHING
@@ -15376,6 +15380,9 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
 
 #pragma alias FUN_003b55b0_evt_f32 FUN_003b55b0
 extern f32 *FUN_003b55b0_evt_f32(int param_1);
+/* opt_propagation off: default nd701/944B -> nd654/944B; retained. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00382840 NONMATCHING
 
 
@@ -15588,6 +15595,7 @@ int FUN_00382840(int param_1,int param_2,int param_3)
   return iVar2;
 
 }
+#pragma pop
 
 
 // FUN_00382C10
@@ -15745,6 +15753,9 @@ u32 FUN_00382ec0(int param_1,int param_2,int param_3)
 }
 
 
+/* opt_lifetimes on: default nd364/1072B -> nd344/1072B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00382F30 NONMATCHING
 
 
@@ -15848,6 +15859,7 @@ void FUN_00382f30(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+#pragma pop
 // FUN_00383360 NONMATCHING
 
 

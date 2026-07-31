@@ -2354,25 +2354,23 @@ void btlUnitInit002843e0Packet(void* work)
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
     BtlUnitPacket002843e0* packet;
-    BtlUnit* unit;
     s16 activeAnimation;
 
     packet = (BtlUnitPacket002843e0*)work;
-    unit = packet->unit;
 
-    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    if (packet->unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
-        activeAnimation = unit->unk_9ce;
+        activeAnimation = packet->unit->unk_9ce;
     }
     else
     {
         activeAnimation = 0;
     }
 
-    if (unit->unk_9e0 != activeAnimation)
+    if (packet->unit->unk_9e0 != activeAnimation)
     {
-        btlUnitAnimate(unit, unit->unk_9e0, packet->unk_4,
-                       unit->unk_9e4, unit->unk_9e8);
+        btlUnitAnimate(packet->unit, packet->unit->unk_9e0, packet->unk_4,
+                       packet->unit->unk_9e4, packet->unit->unk_9e8);
     }
 
     return 1;
