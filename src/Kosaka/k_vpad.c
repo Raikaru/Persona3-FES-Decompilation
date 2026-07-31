@@ -529,6 +529,8 @@ extern void func_004c31b0(RuntimeMatrix* matrix, const RuntimeVec3* axis,
 extern void func_004c6c20(RuntimeVec3* destination,
                           const RuntimeVec3* source, s32 count,
                           RuntimeMatrix* matrix);
+extern void func_004c6be0(RuntimeVec3* destination,
+                          const RuntimeVec3* source, void* matrix);
 extern void func_003b6870(u16 resourceId, const RuntimeVec3* position,
                           f32 angleX, f32 angleY, f32 angleZ, u32 packed);
 extern void func_003b69a0(u16 resourceId, const RuntimeVec3* position,
