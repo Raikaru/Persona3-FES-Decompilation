@@ -6,6 +6,8 @@
 #include "Main/Game/game_support.h"
 #include "libm.h"
 #include "rw/rwplcore.h"
+#pragma alias campStatusDrawTransitionCall func_0018bc10
+extern void campStatusDrawTransitionCall();
 
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);
@@ -3072,7 +3074,7 @@ typedef KwlnTask* (*CampStatusPersonaChildCreateFn)(KwlnTask* parent,
 
 #define campStatusAnimateRecord(records, index, alphaMode, start, end, \
                                 startFrame, endFrame) \
-    func_0018bc10(100.0f, (u8*)(records) + (index) * 0x44, 0, 2, \
+    campStatusDrawTransitionCall(100.0f, (u8*)(records) + (index) * 0x44, 0, 2, \
                   (alphaMode), *(u64*)&(start), *(u64*)&(end), \
                   0, 0, (startFrame), (endFrame))
 
@@ -3467,7 +3469,7 @@ void* FUN_001311d0(KwlnTask* task)
         position.x = 0.0f;
         position.y = 0.0f;
         start = position;
-        func_0018bc10(100.0f, *(void**)(work + 0x64), 0, 2, 1,
+        campStatusDrawTransitionCall(100.0f, *(void**)(work + 0x64), 0, 2, 1,
                       *(u64*)&start, *(u64*)&position, 0, 0, 5, 5);
         for (i = 0; i < *(s16*)(work + 0x4a); i++) {
             position.x = 119.0f;
@@ -3477,7 +3479,7 @@ void* FUN_001311d0(KwlnTask* task)
             }
             start = position;
             start.x -= 600.0f;
-            func_0018bc10(100.0f,
+            campStatusDrawTransitionCall(100.0f,
                           (u8*)*(void**)(work + 0x64) +
                               (i + 1) * 0x44,
                           0, 2, 1, *(u64*)&start, *(u64*)&position,
@@ -3489,7 +3491,7 @@ void* FUN_001311d0(KwlnTask* task)
             }
             start = position;
             start.x -= 600.0f;
-            func_0018bc10(100.0f,
+            campStatusDrawTransitionCall(100.0f,
                           (u8*)*(void**)(work + 0x64) +
                               (i + 14) * 0x44,
                           0, 2, 1, *(u64*)&start, *(u64*)&position,
@@ -3499,7 +3501,7 @@ void* FUN_001311d0(KwlnTask* task)
         position.y = 26.0f;
         start = position;
         start.x += 600.0f;
-        func_0018bc10(100.0f,
+        campStatusDrawTransitionCall(100.0f,
                       (u8*)*(void**)(work + 0x64) + 27 * 0x44,
                       0, 2, 1, *(u64*)&start, *(u64*)&position,
                       0, 0, 0, 10);
@@ -3507,7 +3509,7 @@ void* FUN_001311d0(KwlnTask* task)
         position.y = 415.0f;
         start = position;
         start.x += 600.0f;
-        func_0018bc10(100.0f,
+        campStatusDrawTransitionCall(100.0f,
                       (u8*)*(void**)(work + 0x64) + 28 * 0x44,
                       0, 2, 1, *(u64*)&start, *(u64*)&position,
                       0, 0, 0, 10);

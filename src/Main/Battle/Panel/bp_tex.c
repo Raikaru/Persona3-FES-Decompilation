@@ -73,6 +73,7 @@ extern void func_0034fe30(void* resource, u32 a, u32 b, u32 c);
 extern void func_0034fd30(void* resource);
 extern void func_0034fd70(void* resource, u32 layer);
 extern f32 DAT_007cad60;
+extern f32 DAT_007cc470;
 extern f32 DAT_007caf38;
 extern u64 D_0068EA30;
 #pragma alias D_0068EA30_abs D_0068EA30
@@ -1826,21 +1827,21 @@ u32* bpTexFindNodeById(u32 id)
 // FUN_002561E0
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
 {
-    u32 color;
     RwRGBA rgba;
+    f32 color;
     u32* leaves[8];
     s32 count;
     s32 i;
 
-    color = *(u32*)0x007cc470;
-    rgba.r = (u8)(((s32)(color & 0xff) - 0xff) * amount + 255.0f);
-    rgba.g = (u8)(((s32)((color >> 8) & 0xff) - 0xff) * amount + 255.0f);
-    rgba.b = (u8)(((s32)((color >> 16) & 0xff) - 0xff) * amount + 255.0f);
-    rgba.a = (u8)(((s32)(color >> 24) - 0xff) * amount + 255.0f);
+    color = DAT_007cc470;
+    rgba.r = (u8)(((s32)((u8*)&color)[0] - 0xff) * amount + 255.0f);
+    rgba.g = (u8)(((s32)((u8*)&color)[1] - 0xff) * amount + 255.0f);
+    rgba.b = (u8)(((s32)((u8*)&color)[2] - 0xff) * amount + 255.0f);
+    rgba.a = (u8)(((s32)((u8*)&color)[3] - 0xff) * amount + 255.0f);
     bpTexCollect(node, leaves, &count);
     for (i = 0; i < count; i++)
     {
-        func_0020cc80((u8*)leaves[i] + 0x18, &rgba);
+        func_0020cc80(leaves[i], &rgba);
     }
 }
 

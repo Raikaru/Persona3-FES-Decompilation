@@ -6,18 +6,26 @@ void FUN_0040e360(void);
 void FUN_0040e390(void);
 void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6);
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   char param_7,int param_8,int param_9,int param_10,int param_11);
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
 #pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
 extern void FUN_0040e3f0_i2f1i3f3(int param_5,int param_6,float param_1,u8 param_7,int param_8,
                                   int param_9,int param_10,int param_11,float param_2,
                                   float param_3,float param_4);
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   char param_7,int param_8,int param_9,int param_10,int param_11);
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
 u32 FUN_0040e450(int param_1);
 u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
+#pragma alias FUN_0040e710_i2f1u8i4i3f FUN_0040e710
+extern void FUN_0040e710_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
+#pragma alias FUN_0040e930_i2f1u8i4i3f FUN_0040e930
+extern void FUN_0040e930_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
 u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
 #pragma alias fclDrawSpriteCreate_i FUN_001158b0
 extern u32 fclDrawSpriteCreate_i(int param_1, u32 param_2, int param_3);
@@ -127,10 +135,10 @@ void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,i
 #pragma push
 #pragma schedule on
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   char param_7,int param_8,int param_9,int param_10,int param_11)
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  FUN_0040e710(param_5,param_6,param_1,param_7,param_8,param_9,(int)DAT_007ce6a0,
-               param_10,param_11,param_2,param_3,param_4);
+  FUN_0040e710_i2f1u8i4i3f(param_5,param_6,param_1,param_7,param_8,param_9,
+                           (int)DAT_007ce6a0,param_10,param_11,param_2,param_3,param_4);
 }
 #pragma pop
 
@@ -138,10 +146,10 @@ void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int pa
 #pragma push
 #pragma schedule on
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   char param_7,int param_8,int param_9,int param_10,int param_11)
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  FUN_0040e930(param_5,param_6,param_1,param_7,param_8,param_9,(int)DAT_007ce6a0,
-               param_10,param_11,param_2,param_3,param_4);
+  FUN_0040e930_i2f1u8i4i3f(param_5,param_6,param_1,param_7,param_8,param_9,
+                           (int)DAT_007ce6a0,param_10,param_11,param_2,param_3,param_4);
 }
 #pragma pop
 
