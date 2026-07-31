@@ -1170,7 +1170,7 @@ void func_0020b250(void* work)
     u8 c2;
     u8 c3;
     f32 alpha;
-    s32 value;
+    u32 value;
     s32 mode;
     mode = *(s32*)(panel + 4);
     if (mode < 0 || mode >= 3) {

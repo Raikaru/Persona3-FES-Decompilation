@@ -174,6 +174,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwV3d cameraPosition;
     RwV3d target;
     RwV3d axis;
+    RwV3d* axisPtr;
     u64 axisXY;
     f32 axisZ;
     u8* targetBytes;
@@ -199,11 +200,12 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
             i--;
         } while (i != 0);
     }
+    axisPtr = (RwV3d*)((u8*)&axis + 0);
     axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = *(f32*)D_00683AA0_abs;
     *(u64*)&axis = axisXY;
     axis.z = axisZ;
-    FUN_004cb890(cameraFrame, amount, (RwV3d*)((u8*)&axis + 0), 2);
+    FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
@@ -602,7 +604,8 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        sprintf(path, D_00683AD0,
+        sprintf((char*)((u8*)(uintptr_t)path + 0),
+                (const char*)((u8*)(uintptr_t)D_00683AD0 + 0),
                 (s32)PTR_DAT_007cd540[0], (s32)PTR_DAT_007cd540[1]);
         if (H_Cdvd_FileExists(path) != false)
         {

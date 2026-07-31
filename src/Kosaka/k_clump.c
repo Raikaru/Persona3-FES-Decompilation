@@ -1478,8 +1478,7 @@ s32 func_001a89c0(const u32* left, const u32* right)
     return (s32)(leftDistance - rightDistance);
 }
 
-/* Remaining differences are qsort argument load order and one commutative item-address add. */
-// FUN_001a8b10 NONMATCHING
+// FUN_001a8b10
 void func_001a8b10(u32* entries)
 {
     s32 i;
@@ -1550,16 +1549,12 @@ void func_001a8b10(u32* entries)
     }
 }
 
-/* Remaining differences are one call-argument load order and one commutative address add. */
+/* One commutative address add remains. */
 // FUN_001a8db0 NONMATCHING
 s32 func_001a8db0(KwlnTask* task)
 {
-    typedef struct
-    {
-        u32 value;
-    } KClumpWord;
-    s32 i;
     u32* work;
+    s32 i;
     u32 mode;
 
     work = (u32*)task->workData;
@@ -1614,7 +1609,7 @@ s32 func_001a8db0(KwlnTask* task)
             }
             for (i = 0; i < 8; i++)
             {
-                if (((KClumpWord*)work)[9 + i].value != 0)
+                if (work[9 + i] != 0)
                 {
                     if (work[0x11 + i] < work[2])
                     {
@@ -1864,9 +1859,7 @@ void func_001a9470(KwlnTask* task)
     }
 }
 
-/* Remaining code differences are two commutative address-add operand reversals. */
-#pragma push
-// FUN_001a9500 NONMATCHING
+// FUN_001a9500
 s32 func_001a9500(KwlnTask* task)
 {
     typedef struct KClumpSoundUpdateWork
@@ -1932,7 +1925,6 @@ s32 func_001a9500(KwlnTask* task)
     }
     return 0;
 }
-#pragma pop
 
 // FUN_001a9690
 void func_001a9690(KwlnTask* task)

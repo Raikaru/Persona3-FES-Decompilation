@@ -44973,7 +44973,11 @@ u32 FUN_0034d510(int param_1)
   FUN_00521250(puVar5 + 4,uVar2,0x44);
 
 
-  FUN_0034d8a0(uVar3,*(u16 *)(iVar6 + 0xc),iVar1 + 0x44);
+  {
+    u16 fidx;
+    fidx = *(volatile u16 *)(iVar6 + 0xc);
+    FUN_0034d8a0(uVar3,fidx,iVar1 + 0x44);
+  }
 
   if (*(int *)(puVar5[0x16] + 8) == 0) {
     return uVar3;
