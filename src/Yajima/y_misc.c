@@ -43,6 +43,24 @@ typedef struct YPositionWork {
     u8 pad_0f0[4];
     s16 counter1;
 } YPositionWork;
+#ifndef Y_MISC_RW_TYPES
+#define Y_MISC_RW_TYPES
+typedef struct RwV2d { f32 x; f32 y; } RwV2d;
+typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
+typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
+typedef struct RwMatrixTag {
+    RwV3d right;
+    u32 flags;
+    RwV3d up;
+    u32 pad1;
+    RwV3d at;
+    u32 pad2;
+    RwV3d pos;
+    u32 pad3;
+} RwMatrix;
+typedef struct RwCamera RwCamera;
+typedef struct RwFrame RwFrame;
+#endif
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -368,7 +386,7 @@ u32 Y_Misc_GetT0Count()
 {
     return DGET_T0_COUNT();
 }
-#ifndef RWPLCORE_H
+#ifndef Y_MISC_RW_TYPES
 typedef struct RwV2d { f32 x; f32 y; } RwV2d;
 typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
 typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
