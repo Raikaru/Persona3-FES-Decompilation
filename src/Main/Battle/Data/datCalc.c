@@ -6524,7 +6524,7 @@ int FUN_0030c0c0(void)
 {
   s32 outer;
   u16 currentValue;
-  s16 current;
+  u16 current;
   u16 inner;
   u16 raw;
   s32 target;

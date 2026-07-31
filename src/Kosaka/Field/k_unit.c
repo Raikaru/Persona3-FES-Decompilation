@@ -1148,7 +1148,6 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
 u32 func_001cfdd0(u32 index)
 {
     FldUnit* unit;
-    ResrcModelChar* resource;
     u16 resourceId;
     RwV3d axis;
     Model* baseModel;
@@ -1163,9 +1162,8 @@ u32 func_001cfdd0(u32 index)
     }
 
     resourceId = func_003b6030((u32)index + 100, 0, unit->mdl);
-    resource = (ResrcModelChar*)func_003b5d10(resourceId);
-    unit->resrc = resource;
-    if (resource == NULL)
+    unit->resrc = (ResrcModelChar*)func_003b5d10(resourceId);
+    if (unit->resrc == NULL)
     {
         return false;
     }
@@ -1176,35 +1174,35 @@ u32 func_001cfdd0(u32 index)
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 0.0f;
-    func_001adff0(resource->collisCtlTask, &axis,
+    func_001adff0(unit->resrc->collisCtlTask, &axis,
                   *(f32*)((u8*)unit->unk_168 + 0x10c));
-    func_001adc20(resource->collisCtlTask,
+    func_001adc20(unit->resrc->collisCtlTask,
                   (const RwV3d*)((u8*)unit->unk_168 + 0x100));
     func_001a0dc0(resourceId, 1);
-    func_001ad870(resource->collisCtlTask, 0x40000000);
-    func_001ad8c0(35.0f, resource->collisCtlTask);
+    func_001ad870(unit->resrc->collisCtlTask, 0x40000000);
+    func_001ad8c0(35.0f, unit->resrc->collisCtlTask);
 
     baseModel = (Model*)func_00317450(uGpffffb52c);
-    resource->baseMdl = baseModel;
+    unit->resrc->baseMdl = baseModel;
     {
         RwV3d scale;
         f32 radius;
 
-        radius = func_001ad8b0(resource->collisCtlTask);
+        radius = func_001ad8b0(unit->resrc->collisCtlTask);
         scale.x = radius;
         scale.y = radius;
         scale.z = radius;
         func_00318a90(baseModel, &scale, 2);
     }
     func_004cb420(func_00318b70(unit->mdl),
-                  func_00318b70(resource->baseMdl));
-    func_00317730(resource->baseMdl);
-    unit->unk_170 = (KwlnTask*)func_001af930(0, resource);
+                  func_00318b70(unit->resrc->baseMdl));
+    func_00317730(unit->resrc->baseMdl);
+    unit->unk_170 = (KwlnTask*)func_001af930(0, unit->resrc);
     unit->unk_16c = (KwlnTask*)func_0044ad20(0, (s32)(s8)index);
     if (unit->unk_18c == 2)
     {
         unit->unk_178 = func_001d3c40(
-            NULL, *(u32*)((u8*)resource->mdl + 0x128));
+            NULL, *(u32*)((u8*)unit->resrc->mdl + 0x128));
     }
     if (func_001c65e0(unit) == false)
     {

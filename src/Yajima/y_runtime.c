@@ -5212,7 +5212,7 @@ void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float 
   return;
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_00434770 NONMATCHING
 
 u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
@@ -5257,7 +5257,7 @@ u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
   return uVar3;
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 // FUN_00434920 NONMATCHING
 
 u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
