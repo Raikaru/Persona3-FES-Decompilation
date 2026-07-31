@@ -348,6 +348,47 @@ static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
     return tmp;
 }
 
+/* Direct output form keeps the caller's colour word at the retail spill slot. */
+#define mdlVuModulateStackedV0Out(out, pc1, c2, inv255)              \
+    do {                                                            \
+        __asm__ volatile (                                           \
+            ".set noreorder                  \n"                    \
+            "lw          $v0, 0(%1)          \n"                    \
+            "pextlb      $v0, $zero, $v0     \n"                    \
+            "pextlh      $v0, $zero, $v0     \n"                    \
+            "qmtc2       $v0, $vf10          \n"                    \
+            "vitof0.xyzw $vf10, $vf10        \n"                    \
+            "mfc1        $v0, %3             \n"                    \
+            "nop                             \n"                    \
+            "qmtc2       $v0, $vf2           \n"                    \
+            "vmulx.xyzw  $vf10, $vf10, $vf2x \n"                    \
+            "vmove.xyzw  $vf11, $vf10        \n"                    \
+            "sw          %2, 0x138($sp)       \n"                   \
+            "addiu       $v0, $sp, 0x138      \n"                   \
+            "lw          $v0, 0($v0)          \n"                   \
+            "pextlb      $v0, $zero, $v0     \n"                    \
+            "pextlh      $v0, $zero, $v0     \n"                    \
+            "qmtc2       $v0, $vf10          \n"                    \
+            "vitof0.xyzw $vf10, $vf10        \n"                    \
+            "mfc1        $v0, %3             \n"                    \
+            "nop                             \n"                    \
+            "qmtc2       $v0, $vf2           \n"                    \
+            "vmulx.xyzw  $vf10, $vf10, $vf2x \n"                    \
+            "vmul.xyzw   $vf10, $vf10, $vf11 \n"                    \
+            "lui         $v0, 0x437F          \n"                   \
+            "qmtc2       $v0, $vf2           \n"                    \
+            "vmulx.xyzw  $vf10, $vf10, $vf2x \n"                    \
+            "vftoi0.xyzw $vf10, $vf10        \n"                    \
+            "qmfc2       $v0, $vf10           \n"                    \
+            "ppach       $v0, $zero, $v0     \n"                    \
+            "ppacb       $v0, $zero, $v0     \n"                    \
+            "sw          $v0, 0x134($sp)      \n"                    \
+            ".set reorder"                                           \
+            : "=m"(out)                                               \
+            : "r"(pc1), "r"(c2), "f"(inv255)                         \
+            : "$v0", "memory");                                       \
+    } while (0)
+
 /* The 0x90-byte animation frames interleave their second colour spill with
    the VU kernel.  Fixed VU/GPR registers are part of the retail macro-mode
    sequence; the result is written to the caller's contiguous colour stack. */
@@ -44488,8 +44529,6 @@ void FUN_0034cc00(u32 *param_1)
 
   u32 uStack_c;
 
-  u32 resultStack;
-
   int iStack_4;
 
   int iStack_8;
@@ -44538,8 +44577,7 @@ void FUN_0034cc00(u32 *param_1)
       iStack_4 = param_1[9];
 
       stackPtr = (u32 *)&iStack_4;
-      uStack_c = mdlVuModulateStackedV0(stackPtr,(u32)iStack_8,DAT_007cae4c);
-      resultStack = uStack_c;
+      mdlVuModulateStackedV0Out(uStack_c,stackPtr,(u32)iStack_8,DAT_007cae4c);
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
@@ -44602,7 +44640,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325e40_reordered((u8 (*) [16])(*puVar7),(float)(fVar8));
 
-          FUN_00326030(*puVar7,resultStack);
+          FUN_00326030(*puVar7,uStack_c);
 
           FUN_003252a0((u64)(*puVar7));
 

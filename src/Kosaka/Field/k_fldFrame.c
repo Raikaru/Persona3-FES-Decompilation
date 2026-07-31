@@ -1628,7 +1628,7 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     line[1].y -= 1000.0f;
     if (work->pointCount >= 47)
     {
-        return false;
+        goto done;
     }
     if (K_FldFrame_Raycast(line, &resolved) != false)
     {
@@ -1652,6 +1652,8 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     }
     work->pointCount++;
     return true;
+done:
+    return false;
 }
 
 // The existing model/matrix-derived position guess did not match retail

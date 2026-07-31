@@ -1564,7 +1564,6 @@ int FUN_00388df0(int param_1,int param_2)
       *(u32 *)(entries + iVar1 + 4) = 0xffffffff;
 
       *(u32 *)(entries + iVar1 + 8) = 0xffffffff;
-
     }
 
     else {
@@ -1598,7 +1597,6 @@ int FUN_00388df0(int param_1,int param_2)
         iVar5 = *(int *)(entries + iVar4 * 0xc + 8);
 
         if ((iVar5 != -1) && (iVar6 < iVar5)) {
-
           iVar6 = iVar5;
 
           iVar7 = iVar4;
@@ -1612,7 +1610,6 @@ int FUN_00388df0(int param_1,int param_2)
     }
 
     if (((*(u32 *)(entries + iVar4 * 0xc) != 0xffffffff) &&
-
         (*(u32 *)(entries + iVar4 * 0xc) <= uVar3)) &&
 
        (uVar3 <= *(u32 *)(entries + iVar4 * 0xc + 4))) break;
@@ -2457,7 +2454,7 @@ void FUN_00389b50(int *param_1)
 
   u32 *puVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 

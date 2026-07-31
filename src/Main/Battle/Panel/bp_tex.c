@@ -3500,8 +3500,8 @@ void func_00221b60(void)
     case 1:
     case 2:
         frame = texture;
-        currentFrame = func_0021cca0(frame, (s32)*(u32*)(work + 0x4634));
-        previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
+        currentFrame = func_0021cca0(frame, *(s32*)(work + 0x4634));
+        previousFrame = func_0021cca0(texture, *(s32*)(work + 0x4638));
         mask |= 1;
         if (*(u32*)(work + 0x464c) != 4)
         {
@@ -3509,7 +3509,7 @@ void func_00221b60(void)
         }
         break;
     case 3:
-        currentFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+        currentFrame = func_0021cca0(texture, *(s32*)(work + 0x4634));
         previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634) + 7);
         sub = *(u32*)(work + 0x463c);
         switch (sub)
@@ -3538,7 +3538,7 @@ void func_00221b60(void)
         switch (sub)
         {
         case 0:
-            currentFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+            currentFrame = func_0021cca0(texture, *(s32*)(work + 0x4634));
             mask |= 1;
             break;
         case 1:
@@ -3698,12 +3698,26 @@ bpTexSubAfter:
     }
 
     sub = *(u32*)(work + 0x463c);
-    if (sub == 3 ||
-        (sub == 0 && *(u32*)(work + 0x4640) == 3 &&
-         *(s32*)(work + 0x4650) < 3))
+    if (sub == 3)
     {
-        func_00224150();
+        goto bpTexSub3Body;
     }
+    if (sub != 0)
+    {
+        goto bpTexSub3After;
+    }
+    previousSub = *(u32*)(work + 0x4640);
+    if (previousSub != 3)
+    {
+        goto bpTexSub3After;
+    }
+    if (*(s32*)(work + 0x4650) >= 3)
+    {
+        goto bpTexSub3After;
+    }
+bpTexSub3Body:
+    func_00224150();
+bpTexSub3After:
 
     sub = *(u32*)(work + 0x463c);
     if (sub == 3)

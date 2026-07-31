@@ -7681,19 +7681,20 @@ u64 FUN_00439f60(int param_1,char param_2)
 u64 FUN_0043a0b0(u64 param_1,char param_2)
 
 {
-  int iVar2;
-  int rowOffset;
-  int iVar1;
   u32 lVar3;
+  int iVar1;
+  u32 rowOffset;
+  int iVar2;
+  u32 uVar4;
 
   rowOffset = param_2 * 0x1c0;
   iVar2 = *(int *)(*(int *)(DAT_0087190c_abs + rowOffset) + 0x3c);
   iVar1 = iGpffffb5a0;
   lVar3 = FUN_001c6720_f32first(*(float *)(iVar1 + 0x14),(u32)DAT_008717a0_bytes);
   if ((*(char *)(iVar2 + 0x1216) == '\0') && (lVar3 != 0)) {
-    rowOffset = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + rowOffset));
+    uVar4 = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + rowOffset));
     iVar2 = FUN_00318b60(*(u32 *)((int)lVar3 + 0x50));
-    lVar3 = FUN_001c6450_f32(rowOffset,(void *)((u8 *)(uintptr_t)iVar2 + 0x30),
+    lVar3 = FUN_001c6450_f32(uVar4,(void *)((u8 *)(uintptr_t)iVar2 + 0x30),
                              *(float *)(iVar1 + 0x10),*(float *)(iVar1 + 0x14));
     if (lVar3 == 1) {
       return 1;

@@ -12264,14 +12264,14 @@ void FUN_00400740(int param_1,int param_2,int param_3,int param_4)
   short *psVar;
 
   iVar1 = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
-  FUN_0040e3c0_f32(1.0f,param_1,param_2,param_3,0x15,0);
-  FUN_0040e3c0_f32(1.0f,param_1,param_2,param_3,0x16,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0x15d,param_2,param_3,0x15,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0x15d,param_2,param_3,0x16,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0x70,param_2,param_3,0x17,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0x70,param_2,param_3,0x18,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0xe0,param_2,param_3,0x17,0);
-  FUN_0040e3c0_f32(1.0f,param_1 + 0xe0,param_2,param_3,0x18,0);
+  FUN_0040e3c0_i(param_1,param_2,1.0f,param_3,0x15,0);
+  FUN_0040e3c0_i(param_1,param_2,1.0f,param_3,0x16,0);
+  FUN_0040e3c0_i(param_1 + 0x15d,param_2,1.0f,param_3,0x15,0);
+  FUN_0040e3c0_i(param_1 + 0x15d,param_2,1.0f,param_3,0x16,0);
+  FUN_0040e3c0_i(param_1 + 0x70,param_2,1.0f,param_3,0x17,0);
+  FUN_0040e3c0_i(param_1 + 0x70,param_2,1.0f,param_3,0x18,0);
+  FUN_0040e3c0_i(param_1 + 0xe0,param_2,1.0f,param_3,0x17,0);
+  FUN_0040e3c0_i(param_1 + 0xe0,param_2,1.0f,param_3,0x18,0);
 
   iVar1 = *(int *)(iVar1 + 4);
   iVar2 = *(int *)(iVar1 + 4);
@@ -12353,12 +12353,12 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
 
 void FUN_00400a90(int x,int y,int alpha,int task,u32 *entry)
 {
+  int selected;
+  int xOffset;
   int drawAlpha;
   int config;
   int spriteConfig;
   u32 *flags;
-  int selected;
-  int xOffset;
   int duration;
   int divisor;
 
