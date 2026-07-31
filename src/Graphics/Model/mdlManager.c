@@ -8093,7 +8093,6 @@ void func_0031b470(void)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_0031B4A0 NONMATCHING
 
 
@@ -8195,7 +8194,7 @@ LAB_0031b594:
 
 
 
-#pragma opt_loop_invariants reset
+#pragma opt_loop_invariants on
 // FUN_0031B680 NONMATCHING
 
 
@@ -8249,6 +8248,7 @@ u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_0031B820 NONMATCHING
 
 

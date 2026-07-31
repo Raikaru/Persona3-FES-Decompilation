@@ -5685,7 +5685,7 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
@@ -5739,7 +5739,7 @@ joined_r0x004357c4:
 }
 
 #pragma pop
-#pragma opt_loop_invariants reset
+#pragma opt_common_subs reset
 // FUN_00435810 NONMATCHING
 
 u8 FUN_00435810(void)

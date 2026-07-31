@@ -411,7 +411,6 @@ drawStatus:
 done:;
 }
 
-#pragma opt_loop_invariants on
 // FUN_001236A0 NONMATCHING
 void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -485,7 +484,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                                  (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_loop_invariants on
 // FUN_00123B70 NONMATCHING
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -557,6 +556,7 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         (u8)fade, alpha, 0x66);
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00123F80
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)

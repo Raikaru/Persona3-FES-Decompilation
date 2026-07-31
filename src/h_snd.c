@@ -402,8 +402,7 @@ void func_00108bc0(void)
 
         for (i = 2; i < HSND_CHANNEL_COUNT; i++)
         {
-            s16 index = (s16)i;
-            channel = &sChannels[index];
+            channel = &sChannels[i];
             if (channel->active == false)
             {
                 continue;

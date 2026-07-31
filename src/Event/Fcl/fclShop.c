@@ -6466,9 +6466,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 == 0) {
+  if (lVar5 != 0) goto LAB_return;
 
-    switch(*(u32 *)(iVar4 + 8)) {
+  switch(*(u32 *)(iVar4 + 8)) {
     case 0:
 
       FUN_003c9d00(*(u32 *)(iVar2 + 8),0x10);
@@ -6838,7 +6838,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   }
   return (u8 *)0x0;
-  }
+LAB_return:
   return (u8 *)&LAB_003c5170;
 }
 
