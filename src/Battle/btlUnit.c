@@ -4704,9 +4704,6 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
     return -1;
 }
 
-#pragma push
-#pragma opt_loop_invariants on
-#pragma opt_dead_assignments off
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
@@ -4770,9 +4767,9 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
     return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
 }
 
-#pragma opt_dead_assignments reset
-#pragma opt_loop_invariants reset
-#pragma pop
+#pragma push
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_00283E40 NONMATCHING
 u16 func_00283e40(BtlUnit* unit, s16 id)
 {
@@ -4808,6 +4805,9 @@ u16 func_00283e40(BtlUnit* unit, s16 id)
 }
 
 
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+#pragma pop
 // FUN_00283FE0
 const void* func_00283fe0(BtlUnit* unit, u32 id)
 {

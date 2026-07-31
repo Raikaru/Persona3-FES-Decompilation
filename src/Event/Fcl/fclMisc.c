@@ -388,6 +388,9 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 
 #undef FUN_003c8400
 // W212: structured break-based list search measured nd126 -> nd231 and 328/336 -> 344/336; rejected as over-window.
+#pragma push
+/* W389 sweep: opt_common_subs off measured nd126/obj328 -> nd95/obj336 (window 336). */
+#pragma opt_common_subs off
 // FUN_003C8400 NONMATCHING
 u32 FUN_003c8400(u32 param_1,int param_2)
 {
@@ -433,6 +436,8 @@ LAB_003c84bc:
   }
   return 0;
 }
+#pragma opt_common_subs reset
+#pragma pop
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #undef FUN_003c8550
 // FUN_003C8550
@@ -2189,6 +2194,9 @@ void FUN_003ca960(int param_1)
 }
 #define FUN_003ca960(...) ((void (*)(...))FUN_003ca960)(__VA_ARGS__)
 #undef FUN_003cacc0
+#pragma push
+/* W389 sweep: opt_propagation off measured nd654/obj876 -> nd617/obj900 (window 912). */
+#pragma opt_propagation off
 // FUN_003CACC0 NONMATCHING
 
 
@@ -2331,6 +2339,8 @@ void FUN_003cacc0(int param_1)
   return;
 
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_003cacc0(...) ((void (*)(...))FUN_003cacc0)(__VA_ARGS__)
 #undef FUN_003cb050
 #pragma push
@@ -3071,6 +3081,9 @@ void FUN_003ccc30(void)
 }
 
 #undef FUN_003ccc40
+#pragma push
+/* W389 sweep: opt_propagation off measured nd799/obj1112 -> nd720/obj1108 (window 1120). */
+#pragma opt_propagation off
 // FUN_003CCC40 NONMATCHING
 
 
@@ -3141,6 +3154,8 @@ void FUN_003ccc40(int *param_1)
   }
   return;
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_003ccc40(...) ((void (*)(...))FUN_003ccc40)(__VA_ARGS__)
 // Retail sibling at 0x3cd0a0: standalone jr $ra nullsub.
 // FUN_003CD0A0
@@ -3149,6 +3164,9 @@ void FUN_003cd0a0(void)
 }
 
 #undef FUN_003cd0b0
+#pragma push
+/* W389 sweep: opt_propagation off measured nd916/obj1248 -> nd800/obj1244 (window 1248). */
+#pragma opt_propagation off
 // FUN_003CD0B0 NONMATCHING
 
 
@@ -3236,6 +3254,8 @@ void FUN_003cd0b0(int *param_1)
   }
   return;
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_003cd0b0(...) ((void (*)(...))FUN_003cd0b0)(__VA_ARGS__)
 // Retail sibling at 0x3cd590: standalone jr $ra nullsub.
 // FUN_003CD590
@@ -3243,6 +3263,9 @@ void FUN_003cd590(void)
 {
 }
 #undef FUN_003cd5a0
+#pragma push
+/* W389 sweep: opt_propagation off measured nd799/obj1112 -> nd720/obj1108 (window 1120). */
+#pragma opt_propagation off
 // FUN_003CD5A0 NONMATCHING
 
 
@@ -3323,6 +3346,8 @@ void FUN_003cd5a0(int *param_1)
   }
   return;
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_003cd5a0(...) ((void (*)(...))FUN_003cd5a0)(__VA_ARGS__)
 #undef FUN_003cda00
 // FUN_003CDA00
@@ -3344,6 +3369,9 @@ u32 FUN_003cda00(void)
 // Addressing-signal audit: retail has the same $gp color load and $gp data address.
 // Residual +48..+60 is aggregate load/store scheduling; +216..+244 is JAL setup order.
 // Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
+#pragma push
+/* W389 sweep: opt_propagation off measured nd20/obj320 -> nd12/obj320 (window 320). */
+#pragma opt_propagation off
 // FUN_003CDA60 NONMATCHING
 
 
@@ -3401,6 +3429,8 @@ void FUN_003cda60(u32 param_1)
   return;
 
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_003cda60(...) ((void (*)(...))FUN_003cda60)(__VA_ARGS__)
 #undef FUN_003cdba0
 // FUN_003CDBA0
@@ -4117,6 +4147,9 @@ u64 FUN_003ce2a0(u64 param_1)
 }
 #define FUN_003ce2a0(...) ((u64 (*)(...))FUN_003ce2a0)(__VA_ARGS__)
 #undef FUN_003cea50
+#pragma push
+/* W389 sweep: opt_lifetimes on measured nd1041/obj1532 -> nd942/obj1488 (window 1584). */
+#pragma opt_lifetimes on
 // FUN_003CEA50 NONMATCHING
 
 
@@ -4467,8 +4500,13 @@ u64 FUN_003cea50(u16 *param_1)
   return 0;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 #define FUN_003cea50(...) ((u64 (*)(...))FUN_003cea50)(__VA_ARGS__)
 #undef FUN_003cf6c0
+#pragma push
+/* W389 sweep: opt_lifetimes on measured nd378/obj524 -> nd339/obj520 (window 560). */
+#pragma opt_lifetimes on
 // FUN_003CF6C0 NONMATCHING
 
 
@@ -4584,6 +4622,8 @@ LAB_003cf7a4:
   return sVar5;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 #define FUN_003cf6c0(...) ((short (*)(...))FUN_003cf6c0)(__VA_ARGS__)
 #undef FUN_003cf960
 // FUN_003CF960 NONMATCHING

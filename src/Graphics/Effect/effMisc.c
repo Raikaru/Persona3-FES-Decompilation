@@ -262,7 +262,9 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     f32 x;
     f32 y;
     f32 z;
-    angle_p = angle, axis_p = axis, matrix_p = matrix;
+    angle_p = angle;
+    axis_p = axis;
+    matrix_p = matrix;
     cosine = cosf(angle_p);
     sine = sinf(angle_p);
 
@@ -295,7 +297,9 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     z = normalizedAxis.z;
     xSquared = x * x;
     matrix_p->right.x = xSquared + (1.0f - xSquared) * cosine;
-    matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
+    xz = z * sine;
+    xSquared = x * y * (1.0f - cosine);
+    matrix_p->right.y = xz + xSquared;
     xz = x * z;
     matrix_p->right.z = xz * (1.0f - cosine) - y * sine;
     matrix_p->flags = 0;

@@ -1109,6 +1109,9 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 /* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
 #pragma opt_common_subs off
+#pragma push
+/* W389 sweep: opt_propagation off measured nd283/obj448 -> nd281/obj448 (window 464). */
+#pragma opt_propagation off
 // FUN_003D6740 NONMATCHING
 
 
@@ -1205,6 +1208,8 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
   return uVar3;
 
 }
+#pragma opt_propagation reset
+#pragma pop
 #pragma opt_common_subs reset
 
 // W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
@@ -1746,6 +1751,9 @@ LAB_003d7430:
 
 }
 
+#pragma push
+/* W389 sweep: opt_lifetimes on measured nd796/obj1344 -> nd788/obj1344 (window 1344). */
+#pragma opt_lifetimes on
 // FUN_003D74F0 NONMATCHING
 
 
@@ -2042,7 +2050,12 @@ LAB_003d79dc:
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
+#pragma push
+/* W389 sweep: opt_lifetimes on measured nd341/obj720 -> nd338/obj720 (window 736). */
+#pragma opt_lifetimes on
 // FUN_003D7AC0 NONMATCHING
 
 
@@ -2222,7 +2235,12 @@ LAB_003d7cb4:
   return uVar9;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
+#pragma push
+/* W389 sweep: opt_lifetimes on measured nd341/obj720 -> nd338/obj720 (window 736). */
+#pragma opt_lifetimes on
 // FUN_003D7DA0 NONMATCHING
 
 
@@ -2402,6 +2420,8 @@ LAB_003d7f94:
   return uVar9;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 // FUN_003D8080 NONMATCHING
 
@@ -2733,7 +2753,6 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
 /* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
 #pragma opt_loop_invariants on
-#pragma opt_propagation on
 // FUN_003D8630 NONMATCHING
 
 
@@ -2874,7 +2893,6 @@ u32 FUN_003d8630(int param_1,int param_2)
 }
 #pragma opt_loop_invariants reset
 
-#pragma opt_propagation reset
 // FUN_003D8850
 void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)
 {

@@ -432,8 +432,8 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
     CollisCtl* ctl;
     Resrc* res;
     s32 i;
-    FldUnit* units;
     FldUnit* unitsBase;
+    FldUnit* units;
     KFldFrameRwCallocFunc callocFunc;
     callocFunc = *(KFldFrameRwCallocFunc*)(rwGlobals_abs + 0x184);
     ctl = (*callocFunc)(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
