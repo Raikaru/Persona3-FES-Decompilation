@@ -4166,6 +4166,15 @@ s32 lVar6;
 
     switch(uVar2) {
 
+    case 6:
+
+      puVar1[2] = 2;
+      break;
+    case 5:
+
+      puVar1[2] = 0x10;
+
+      break;
     case 0:
 
     case 1:
@@ -4188,15 +4197,7 @@ s32 lVar6;
 
       break;
 
-    case 5:
 
-      puVar1[2] = 0x10;
-
-      break;
-
-    case 6:
-
-      puVar1[2] = 2;
 
     }
 

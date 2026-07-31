@@ -15860,6 +15860,9 @@ void FUN_00382f30(int param_1,int param_2,int param_3,int param_4)
 
 
 #pragma pop
+/* opt_lifetimes on: default nd912/1172B -> nd908/1172B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00383360 NONMATCHING
 
 
@@ -16174,6 +16177,7 @@ int FUN_00383360(int param_1,int param_2,int param_3)
   return iVar2;
 
 }
+#pragma pop
 
 
 // FUN_00383810
@@ -16755,6 +16759,9 @@ void FUN_00384520(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* opt_lifetimes on: default nd337/572B -> nd331/572B; retained. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00384780 NONMATCHING
 
 
@@ -16914,6 +16921,7 @@ done:
   return iVar1;
 
 }
+#pragma pop
 
 
 // FUN_003849E0

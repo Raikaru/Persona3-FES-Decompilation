@@ -21165,6 +21165,9 @@ void FUN_00335180(int param_1)
   int count;
   int alpha;
   int modelAlpha;
+  int limit;
+
+  int nodeValue;
   f32 inv255;
   int index;
   u16 *entry;
@@ -21186,7 +21189,11 @@ void FUN_00335180(int param_1)
   entryHolder = *(u32 **)(param_1 + 0x30);
   node = *(int *)(param_1 + 0x34);
   entries = (u32 *)*entryHolder;
-  if ((*(int *)(param_1 + 0x28) <= *(int *)(node + 0x34)) || (*(int *)(node + 0x34) == 0)) {
+  limit = *(volatile int *)(param_1 + 0x28);
+
+  nodeValue = *(volatile int *)(node + 0x34);
+
+  if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
