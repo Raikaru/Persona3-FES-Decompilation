@@ -2307,10 +2307,7 @@ void func_001d1fa0(void)
     area = func_001bff20();
     memset(DAT_0086be80, 0, 0x2700);
     iGpffffb598 = 0;
-    {
-        u16 minor = puGpffffa850[2];
-        count = func_001d77d0_u32(*puGpffffa850, minor, area);
-    }
+    count = func_001d77d0_u32(*puGpffffa850, puGpffffa850[2], area);
     switch (func_001c0040())
     {
         case 0:

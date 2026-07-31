@@ -5508,9 +5508,9 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
       }
 
-      *param_5 = uVar13;
+      *(f32 *)param_5 = fVar13;
 
-      *param_6 = uVar12;
+      *(f32 *)param_6 = fVar12;
 
     }
 

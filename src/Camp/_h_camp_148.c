@@ -873,9 +873,9 @@ CAMP_DRAW_CALC_FIRST_AT(u9, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
 // FUN_0014BCE0 NONMATCHING
 void h_campDrawSocialList(int param_1)
 {
-    CAMP_DRAW_PAIR_FIRST_AT(t1, 100.0f,
-                            (void*)((u8 *)(uintptr_t)*(u32 *)(param_1 + 0xc4) + 0x44), 2,
-                            13.0f, 27.0f, fade);
+    CampPair t0;
+    CampPair pair;
+    CampPair t10, t9, t8, t7, t6, t5, t4, t3, t2, t1;
     s32 i;
     f32 y;
     f32 fade = 0.0f;
@@ -884,7 +884,7 @@ void h_campDrawSocialList(int param_1)
                             (void*)(*(u32 *)(param_1 + 0xc4)), 2,
                             381.0f, 12.0f, fade);
     CAMP_DRAW_PAIR_FIRST_AT(t1, 100.0f,
-                            (void*)(*(u32 *)(param_1 + 0xc4) + 0x44), 2,
+                            (void*)((u8 *)(uintptr_t)*(u32 *)(param_1 + 0xc4) + 0x44), 2,
                             13.0f, 27.0f, fade);
     CAMP_DRAW_PAIR_FIRST_AT(t2, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x88), 2,

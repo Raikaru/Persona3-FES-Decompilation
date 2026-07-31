@@ -1910,48 +1910,48 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     top = position.y + 49.0f;
     campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
                              drawAlpha, left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
                              right, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
                              left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
                              right, top, 100.0f);
 
     count = (s16)FUN_00177280(FUN_0016c6f0(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count - 1, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count - 1,
                              position.x + 129.0f, position.y + 72.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
                              right, position.y + 63.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x17, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x17,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1a, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1a,
                              right, position.y + 97.0f, 100.0f);
 
     count = (s16)FUN_001772F0(FUN_0016c740(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 6, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 6,
                              position.x + 129.0f, position.y + 120.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
                              right, position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x18,
                              left, position.y + 147.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1b,
                              right, position.y + 147.0f, 100.0f);
 
     count = (s16)FUN_00177360(FUN_0016c790(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 13, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 13,
                              position.x + 129.0f, position.y + 170.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
                              right, position.y + 161.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 161.0f, 100.0f);
