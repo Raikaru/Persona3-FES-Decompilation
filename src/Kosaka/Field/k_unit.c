@@ -1558,13 +1558,15 @@ s32 func_001d0720(s32 targetCount)
     u16 gridId;
     u32 area;
     u8* entry;
+    s32* ptr;
 
     spawned = 0;
     if (datGetFlag(0x1415) == 1)
     {
         return spawned;
     }
-    major = ((s32*)PTR_DAT_007cd540)[0];
+    ptr = (s32*)PTR_DAT_007cd540;
+    major = ptr[0];
     if (major >= 0x14)
     {
         if (major >= 0x1d)
@@ -1578,7 +1580,7 @@ s32 func_001d0720(s32 targetCount)
                 goto spawn;
             }
         }
-        if (((s32*)PTR_DAT_007cd540)[1] != 0)
+        if (ptr[1] != 0)
         {
             goto done;
         }

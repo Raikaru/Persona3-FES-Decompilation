@@ -2448,6 +2448,8 @@ void FUN_00389b50(int *param_1)
 
 {
 
+  int iVar6;
+
   u32 *puVar1;
 
   u32 uVar2;
@@ -2457,10 +2459,6 @@ void FUN_00389b50(int *param_1)
   u32 *puVar4;
 
   long lVar5;
-  code *fn;
-
-  int iVar6;
-
 
   u32 *puVar7;
 
@@ -2487,8 +2485,7 @@ void FUN_00389b50(int *param_1)
 
       }
 
-      fn = (code *)&DAT_00960184_abs;
-      lVar5 = (*fn)(1,iVar6 * 0x54,0x40000);
+      lVar5 = (*DAT_00960184)(1,iVar6 * 0x54,0x40000);
 
       if (lVar5 == 0) {
 
@@ -2533,7 +2530,7 @@ void FUN_00389b50(int *param_1)
 
         if (puVar1[0x10] != 0) {
 
-          puVar4 = (u32 *)(*fn)(1,0x130,0x40000);
+          puVar4 = (u32 *)(*DAT_00960184)(1,0x130,0x40000);
 
           if (puVar4 == (u32 *)0x0) {
 
