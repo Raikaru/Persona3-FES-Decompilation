@@ -1254,6 +1254,7 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 
 
 
+/* W389 classification: register-colouring floor; baseline nd18/object324/336. Six singles and all 15 knob pairs were neutral; declaration-order swap stayed nd18. */
 // FUN_00301540 NONMATCHING
 void FUN_00301540(int param_1,u32 param_2)
 

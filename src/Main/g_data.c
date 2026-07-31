@@ -4349,6 +4349,7 @@ u8* func_001778b0(s16 param_1)
 
 
 /* Removing this worsens FUN_001779a0 (nd14 -> nd121) - measured W161. */
+/* W389 classification: register-colouring/loop-index allocation floor; six singles and all 15 knob pairs were neutral, declaration-order trial nd19 vs baseline nd14. */
 // FUN_001779A0 NONMATCHING
 #pragma opt_loop_invariants on
 void func_001779a0(void)

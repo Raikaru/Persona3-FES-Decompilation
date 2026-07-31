@@ -2578,6 +2578,17 @@ void FUN_003b9610(Resrc* param_1)
 }
 #define FUN_003b9610(...) ((void (*)(...))FUN_003b9610)(__VA_ARGS__)
 #undef FUN_003baa70
+/* W390 measured: the `SceneVecBits` whole-aggregate copy of the 12-byte
+ * {u64 xy; f32 z;} header is what reproduces retail's TWO separate
+ * lui/LO16 materializations of DAT_006a2da0 (nd 57 -> 4, with the two
+ * upper-bound comparison orientations flipped to `fVar5 < base + 100.0f`).
+ * Splitting it back into typed per-field assignments
+ * (`blk.xy = *(u64*)DAT_006a2da0_abs; blk.z = *(f32*)DAT_006a2da8_abs;`)
+ * collapses those to ONE base register and measures nd 45 - do not retry.
+ * Residual nd 4 is a b210 aggregate-copy WIDTH floor: retail moves the
+ * tail as ld + lwc1/swc1 (12 bytes exactly), while b210 blits the packed
+ * 12-byte struct as ld/sd + ld/sd (16 bytes, over-reading 4). No natural
+ * 12-byte struct with a u64 member exists - alignment forces 16. */
 // FUN_003BAA70 NONMATCHING
 
 
@@ -2604,8 +2615,6 @@ u32 FUN_003baa70(char *param_1)
     u32 pad;
     int addrs[3];
   } blk;
-  u64 txy;
-  f32 tz;
 
   
 
@@ -2631,10 +2640,7 @@ u32 FUN_003baa70(char *param_1)
 
     for (; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
-      txy = *(volatile u64 *)DAT_006a2da0_abs;
-      tz = *(volatile f32 *)DAT_006a2da8_abs;
-      *(volatile u64 *)&blk.xy = txy;
-      *(volatile f32 *)&blk.z = tz;
+      *(SceneVecBits *)&blk.xy = *(SceneVecBits *)DAT_006a2da0_abs;
 
       blk.addrs[0] = iVar1 + 0x11c;
 
@@ -2646,7 +2652,7 @@ u32 FUN_003baa70(char *param_1)
 
       if (lVar2 == 1) {
 
-        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
+        if (((fVar5 = *(float *)((int)param_1 + 4)) < *(float *)(blk.addrs[0] + 4) + 100.0f) &&
 
            (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
@@ -2667,7 +2673,7 @@ u32 FUN_003baa70(char *param_1)
 
       if (lVar2 == 1) {
 
-        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
+        if (((fVar5 = *(float *)((int)param_1 + 4)) < *(float *)(blk.addrs[0] + 4) + 100.0f) &&
 
            (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
@@ -3248,6 +3254,13 @@ void FUN_003bb400(u32 param_1)
  * sp+0x80 (axis2 +0x90, axis1 +0xa0, transformed +0xd0, source +0xc0,
  * axis0 +0xe0), with no local overlap at sp+0x68.
  */
+/* W390 measured: nd 72 -> 4 by copying the axis2 {u64 xy; f32 z;} header as
+ * ONE `SceneVecBits` aggregate instead of two per-field assignments, which
+ * reproduces retail's two separate lui/LO16 materializations of DAT_006a2ef8
+ * and removed the offset shift the W386 note above describes. The two dead
+ * `xy`/`z` loads that used to feed axis2 were deleted with no nd change.
+ * Residual nd 4 is the same b210 aggregate-copy WIDTH floor as FUN_003BAA70:
+ * retail moves the tail via lwc1/swc1 (12 bytes), b210 blits ld/sd (16). */
 // FUN_003BB450 NONMATCHING
 
 
@@ -3281,10 +3294,7 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   z = *(f32 *)DAT_006a2ef0_abs;
   axis1.raw.xy = xy;
   axis1.raw.z = z;
-  xy = *(u64 *)DAT_006a2ef8_abs;
-  z = *(f32 *)DAT_006a2f00_abs;
-  axis2.raw.xy = xy;
-  axis2.raw.z = z;
+  *(SceneVecBits *)&axis2.raw.xy = *(SceneVecBits *)DAT_006a2ef8_abs;
   xy = *(volatile u64 *)DAT_006a2f08_abs;
   z = *(volatile f32 *)DAT_006a2f10_abs;
   axis3.raw.xy = xy;
@@ -5351,6 +5361,7 @@ void FUN_003bdbd0(int param_1)
   s16 sVar1;
   u32 lVar4;
   int iVar5;
+
   lVar4 = FUN_0016dce0((s16)param_1);
   if ((lVar4 != 0) && (lVar4 = FUN_00172a50((s16)param_1), lVar4 != 0)) {
     for (iVar5 = 0; iVar5 < 6; iVar5 = iVar5 + 1) {

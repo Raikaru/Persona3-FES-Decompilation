@@ -41,6 +41,7 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
 #pragma opt_loop_invariants on
 // MWCC b210 register-colouring floor: the residual is a consistent $s0/$s1 swap across
 // the two u16 loop/index lifetimes; the loop-invariant setting above is the measured best form.
+/* W389 sweep: six singles and all 15 knob pairs were neutral; final nd12/object348/352. */
 // FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
 {
