@@ -5631,8 +5631,8 @@ s32 FUN_00374af0(s32 param_1,s32 param_2,s32 param_3)
   iVar4 = 0xd;
   iVar1 = FUN_003b5df0(*(u32 *)(iVar3 + 0x660));
   callCount = iVar1 + 1;
-  FUN_0036f900_evt(param_1,param_2,0xc,0xd,*(u32 *)(iVar3 + 0x108),callCount,param_3,
-               (code *)0,(code *)FUN_003747a0);
+  FUN_0036f900(param_1,param_2,0xc,0xd,*(u32 *)(iVar3 + 0x108),callCount,param_3,0,
+               (code *)FUN_003747a0);
   if (*(int *)(iVar3 + 0xd4) != 10) {
     return 0;
   }

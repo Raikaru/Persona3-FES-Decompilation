@@ -2052,13 +2052,13 @@ void func_0010dd10(HSfdImage* image, const u8* source)
         y++;
     }
 }
-/* W318 measured: opt_loop_invariants on changes ddc0 nd48->11 and de40 nd79->0. */
+/* W318 measured: opt_loop_invariants on changes ddc0 nd48->0 and de40 nd79->0. */
 #pragma opt_loop_invariants on
-// FUN_0010DDC0 NONMATCHING
+// FUN_0010DDC0
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
-    s32 x;
     u8* dst;
+    s32 x;
     s32 y;
     s32 width;
     s32 height;

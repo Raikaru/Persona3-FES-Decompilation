@@ -1276,6 +1276,7 @@ void FUN_00301540(int param_1,u32 param_2)
     if (!(uVar2 < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
+    iVar1 = iVar1 & 0xffff;
     if ((uVar2 & 1) != 0) {
       *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf;
     }

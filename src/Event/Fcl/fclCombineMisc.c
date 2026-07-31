@@ -597,7 +597,7 @@ s32 FUN_003d5cd0(u32 *param_1)
   int lVar1;
   u32 uVar2;
   u32 *puVar3;
-  s32 sVar5;
+  s16 sVar5;
   s32 sVar4;
   s64 temp;
 
