@@ -1192,6 +1192,7 @@ char FUN_003f03e0(int param_1)
 }
 
 /* Reconstructed the packed shop-date availability gate and all date-mode paths. */
+#pragma opt_common_subs off
 // FUN_003F04F0 NONMATCHING
 
 
@@ -1262,6 +1263,7 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
   return uVar3;
 }
 
+#pragma opt_common_subs reset
 // FUN_003F06E0 NONMATCHING
 
 
@@ -4895,19 +4897,22 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
 
   u32 uVar12;
 
-  u8 auStack_30[16];
-
-  char acStack_20 [16];
-
-  short sStack_10;
-
-  short sStack_e;
-
-  short sStack_c;
-
-  short sStack_a;
-
-  char acStack_8 [8];
+  struct {
+    u8 auStack_30[16];
+    char acStack_20[16];
+    short sStack_10;
+    short sStack_e;
+    short sStack_c;
+    short sStack_a;
+    char acStack_8[8];
+  } scratch;
+#define auStack_30 scratch.auStack_30
+#define acStack_20 scratch.acStack_20
+#define sStack_10 scratch.sStack_10
+#define sStack_e scratch.sStack_e
+#define sStack_c scratch.sStack_c
+#define sStack_a scratch.sStack_a
+#define acStack_8 scratch.acStack_8
 
   
 
@@ -5110,6 +5115,13 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
   return;
 
 }
+#undef auStack_30
+#undef acStack_20
+#undef sStack_10
+#undef sStack_e
+#undef sStack_c
+#undef sStack_a
+#undef acStack_8
 
 // FUN_003F67E0 NONMATCHING
 

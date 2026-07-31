@@ -924,7 +924,6 @@ int FUN_003b03a0(void)
 }
 #define FUN_003b03a0(...) ((int (*)(...))FUN_003b03a0)(__VA_ARGS__)
 #undef FUN_003b0430
-#pragma opt_lifetimes on
 // FUN_003B0430 NONMATCHING
 
 
@@ -1007,7 +1006,6 @@ void FUN_003b0430(int param_1,u32 param_2)
 }
 #define FUN_003b0430(...) ((void (*)(...))FUN_003b0430)(__VA_ARGS__)
 #undef FUN_003b05c0
-#pragma opt_lifetimes reset
 // FUN_003B05C0
 
 
@@ -1598,6 +1596,7 @@ u16 FUN_003b0e90(u16 param_1)
 #undef FUN_003b0ec0
 // Retail hoists the loop-invariant mask/type constants here; without
 // opt_loop_invariants this function measures nd102 at 136B instead of nd1 at 140B.
+#pragma opt_propagation off
 // FUN_003B0EC0 NONMATCHING
 #pragma push
 #pragma opt_loop_invariants on
@@ -1637,6 +1636,7 @@ u32 FUN_003b0ec0(int list)
 #pragma pop
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
 #undef FUN_003b0f50
+#pragma opt_propagation reset
 // FUN_003B0F50 NONMATCHING
 
 

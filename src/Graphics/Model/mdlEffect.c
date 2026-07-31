@@ -4652,7 +4652,6 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
 
 
-#pragma opt_dead_assignments off
 // FUN_00323640 NONMATCHING
 
 
@@ -4740,7 +4739,6 @@ u32 FUN_00323640(u16 *param_1)
 
 
 
-#pragma opt_dead_assignments reset
 // FUN_003237C0 MATCHING
 
 
@@ -5217,6 +5215,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
 
 
+#pragma opt_lifetimes on
 // FUN_00324160 NONMATCHING
 
 
@@ -5314,6 +5313,7 @@ u32 FUN_00324160(int param_1)
 
 
 
+#pragma opt_lifetimes reset
 // FUN_00324310
 
 

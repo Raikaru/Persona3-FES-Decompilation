@@ -163,6 +163,12 @@ typedef union Vec128 {
 } Vec128;
 typedef u32 (*MdlCreate3FloatFn)(float, float, float);
 typedef u32 (*MdlFrameCallback)(f32, f32, int *, int *);
+typedef struct MdlFrameDispatch {
+    code callback0;
+    code callback1;
+    MdlFrameCallback create;
+    code apply;
+} MdlFrameDispatch;
 typedef u32 (*MdlCreate2FloatFn)(float, int, float);
 #define RpSkyRenderStateSet(n,p) ((void)RpSkyRenderStateSet((n),(void *)(u32)(p)))
 #define RwCameraBeginUpdate(p) RwCameraBeginUpdate((RwCamera *)(u32)(p))
@@ -4811,17 +4817,19 @@ void FUN_00320640(f32 param_1,f32 param_2,int *param_3)
     uVar1 = *(u16 *)(piVar2 + 1);
 
     for (uVar6 = 0; uVar6 < 4; uVar6 = uVar6 + 1) {
+      MdlFrameDispatch *dispatch =
+          ((MdlFrameDispatch *)PTR_LAB_0069bb10_abs) + uVar6;
 
-      if (((&PTR_FUN_0069bb1c)[uVar6 * 4] != (u8 *)0x0) &&
+      if ((dispatch->apply != (code)0) &&
 
          (iVar4 = iVar7 + uVar6 * 0x10, *(int *)(iVar4 + 0xc) != 0)) {
 
-        uVar3 = ((MdlFrameCallback)(&PTR_FUN_0069bb18)[uVar6 * 4])
+        uVar3 = dispatch->create
                     (param_1, param_2, (int *)iVar4, (int *)(iVar7 + 0x40));
 
         for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
 
-          (*(code *)(&PTR_FUN_0069bb1c)[uVar6 * 4])(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
+          dispatch->apply(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
 
         }
 
