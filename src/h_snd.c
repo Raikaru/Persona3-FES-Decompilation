@@ -804,7 +804,7 @@ done:
 void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
                          u32 data1Size, void* data2, u32 data2Size)
 {
-    if (H_Snd_FUN_00109df0(slotIndex))
+    if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
         sSlotWork[(s16)slotIndex].param2 = 0x3E7;
     }

@@ -2476,7 +2476,8 @@ void FUN_00389b50(int *param_1)
 
   iVar6 = 0;
 
-  if ((*param_1 == 0x30) || (*param_1 == 1)) {
+  iVar8 = *param_1;
+  if ((iVar8 == 0x30) || (iVar8 == 1)) {
 
     for (iVar8 = param_1[0x1b]; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x4c)) {
 
