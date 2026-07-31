@@ -2779,6 +2779,8 @@ else if (*(short *)(iVar2 + 0x78) == 0) {
 
 return 1; }
 
+#pragma opt_propagation off
+/* probe: opt_propagation off */
 // FUN_00413010 NONMATCHING
 
 
@@ -2801,14 +2803,15 @@ u64 FUN_00413010(u64 param_1,int param_2)
   s16 *puVar6;
 
   s16 *puVar7;
+  short *psVar9;
 
   short *psVar8;
 
-  short *psVar9;
 
   int iVar10;
 
   int iVar11;
+  u8 bVar;
 
   FclShopBgLocal stack;
 
@@ -2895,11 +2898,12 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
     iVar10 = (int)sVar3 >> 1;
 
+    bVar = (u8)psVar9[2];
     FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
 
                  ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
 
-                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(char)psVar9[2],psVar8[3],0,iVar10,
+                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,bVar,psVar8[3],0,iVar10,
 
                  iVar10);
 
@@ -2908,6 +2912,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
   return 0;
 
 }
+#pragma opt_propagation on
 
 // FUN_004131A0 NONMATCHING
 

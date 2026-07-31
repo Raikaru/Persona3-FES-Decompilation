@@ -2924,19 +2924,22 @@ s32 func_001d3830(KwlnTask* task)
     result = -1;
     if (((s32*)task->workData)[3] != 0)
     {
-        remaining = func_001d38a0(task);
-        if (remaining == 0)
-        {
-            result = 2;
-        }
-        else if (remaining < 0x3c)
-        {
-            result = 1;
-        }
+        goto active;
     }
+    goto done;
+active:
+    remaining = func_001d38a0(task);
+    if (remaining == 0)
+    {
+        result = 2;
+        goto done;
+    }
+    if (remaining < 0x3c)
+    {
+        result = 1;
+    }
+done:
     return result;
-}
-#pragma pop
 
 // FUN_001d38a0
 s32 func_001d38a0(KwlnTask* task)

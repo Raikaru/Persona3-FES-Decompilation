@@ -601,7 +601,17 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     FclList* work;
     s32 mode;
 
-    mode = param_2 == 0 ? 2 : (param_2 == 1 ? 3 : 0);
+    switch (param_2) {
+    case 0:
+        mode = 2;
+        break;
+    case 1:
+        mode = 3;
+        break;
+    default:
+        mode = 0;
+        break;
+    }
     K_ASSERT(mode != 0, 0x3b8);
     task = FUN_003c58f0(0, mode * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
@@ -632,8 +642,8 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 void fclCombineList003da2a0(FclList* param_1)
 {
     FclNodeData* data;
-    s32 i;
     FclTaskLink* node;
+    s32 i;
 
     i = 0;
     node = param_1->list->links;
