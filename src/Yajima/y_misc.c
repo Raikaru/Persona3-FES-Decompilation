@@ -236,7 +236,9 @@ extern u8 DAT_0086be04_abs[];
 #pragma alias DAT_0086be0c_abs DAT_0086be0c
 extern u8 DAT_0086be0c_abs[];
 u32 DAT_007ce6f8;
-u32 DAT_007e094c;
+u16 DAT_007e094c[];
+#pragma alias DAT_007e094c_u32 DAT_007e094c
+extern u32 DAT_007e094c_u32;
 u32 DAT_007e0988;
 u32 DAT_0086be00;
 u32 DAT_0086be04;
@@ -2074,7 +2076,7 @@ u64 FUN_004260a0(int param_1)
 
       FUN_00317a20((&DAT_0095bec0)[DAT_007ce6b4]);
 
-      if ((DAT_007e094c & 0x20) != 0) {
+      if ((DAT_007e094c_u32 & 0x20) != 0) {
 
         mdlAnimSetSpeed((&DAT_0095bec0)[DAT_007ce6b4],0,2.0f);
 
