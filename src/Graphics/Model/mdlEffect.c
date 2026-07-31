@@ -6657,7 +6657,6 @@ void FUN_003257e0(u32 param_1)
 
 
 
-#pragma opt_strength_reduction off
 // FUN_00325920 NONMATCHING
 
 
@@ -6804,7 +6803,6 @@ u32 FUN_00325920(u64 *param_1)
 
 
 
-#pragma opt_strength_reduction reset
 // FUN_00325B80
 
 
@@ -6977,6 +6975,7 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 // b210 floor: the remaining rows are three VU-asm operand-address setup order/color groups
 // at +0x14..+0x1c, +0x4c..+0x50, and +0x60..+0x64; all ordinary C and calls now agree.
+#pragma opt_lifetimes on
 // FUN_00325D60 NONMATCHING
 #pragma alias FUN_00325d60_u32 FUN_00325d60
 void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
@@ -7029,6 +7028,7 @@ void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
 }
 
 
+#pragma opt_lifetimes reset
 // FUN_00325E40 NONMATCHING
 
 

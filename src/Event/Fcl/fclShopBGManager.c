@@ -1343,8 +1343,7 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   float fVar11;
 
-  float afStack_30 [12];
-
+  float afStack_30 [10];
   
 
   puVar1 = *(u32 **)(param_2 + 0xc);
