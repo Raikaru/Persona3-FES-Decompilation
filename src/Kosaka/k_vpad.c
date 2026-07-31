@@ -227,6 +227,10 @@ extern s32* func_001a41b0(void* task, u32 id);
 extern void K_Draw_CopyPositionCenter(RuntimeVec3* destination, void* task);
 extern void* K_Draw_GetPositionMatrix(void* task);
 extern void K_Draw_SetPositionPos(void* task, const RuntimeVec3* position);
+extern void K_Draw_MovePositionInDir(f32 distance, void* task,
+                                     const RuntimeVec3* direction);
+extern void K_Draw_RotatePosition(void* task, const RuntimeVec3* axis,
+                                  f32 angle);
 extern void* func_001a5000(void* task);
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
