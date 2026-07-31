@@ -1512,9 +1512,10 @@ void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 }
 
 
-/* opt_loop_invariants on: FUN_00388DF0 nd210 -> nd154, object 504/512; measured W319. */
+/* opt_loop_invariants on + opt_lifetimes on: FUN_00388DF0 default nd210 -> nd132 (loop-only nd154), object 500/512; measured W319. */
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00388DF0 NONMATCHING
 
 
@@ -1626,6 +1627,7 @@ int FUN_00388df0(int param_1,int param_2)
   return iVar4;
 
 }
+#pragma opt_lifetimes reset
 #pragma pop
 
 

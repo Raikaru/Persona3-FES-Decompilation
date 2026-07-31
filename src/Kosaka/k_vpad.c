@@ -153,7 +153,8 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                 }
             }
         }
-        else if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 ||
+            goto camera_input_done;
+        if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 ||
                  right.x < -48.0f)
         {
             if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
@@ -183,15 +184,17 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                 }
             }
         }
+            goto camera_input_done;
 
-        else if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
-                 (*(u16*)(gPads_abs + 0xe) & HPAD_BTN_CIRCLE) != 0 &&
-                 K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
+        if (cameraInput == 0 && (*(u16*)(gPads_abs + 0xc) & HPAD_BTN_CROSS) == 0 &&
+            (*(u16*)(gPads_abs + 0xe) & HPAD_BTN_CIRCLE) != 0 &&
+            K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
         {
             work->cameraTask = func_001d6270(task, 10, -1);
             return KWLNTASK_CONTINUE;
         }
 
+        camera_input_done:
         if (move.z < -48.0f || move.z > 48.0f ||
             move.x < -48.0f || move.x > 48.0f)
         {

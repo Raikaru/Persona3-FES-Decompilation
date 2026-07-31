@@ -1548,19 +1548,8 @@ void func_001a4380(KwlnTask* task, s32 id)
     KWindowEntry* entry;
     s32 oldCount;
     manager = KWindow_GetManager(task);
-    entry = manager->entries;
-    if (id != -1)
-    {
-        while (entry->id != id)
-        {
-            entry = entry->next;
-        }
-    }
-    else
-    {
-        entry = NULL;
-    }
-    if (entry == NULL)
+    entry = func_001a4330(task, id);
+    if (manager == NULL || entry == NULL)
     {
         return;
     }
