@@ -4661,7 +4661,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
       callbackData.result = 0;
       callbackData.expected = iVar1;
-      func_004cb6e0(iVar6,0x315010,&callbackData);
+      func_004cb6e0(iVar6,(void *)func_00315010,&callbackData);
       iVar6 = callbackData.result;
 
     }

@@ -1150,8 +1150,6 @@ u32 func_001cfdd0(u32 index)
     FldUnit* unit;
     u16 resourceId;
     RwV3d axis;
-    Model* baseModel;
-    unit = &gFldUnitsEc[index];
     if (unit->genusBase == NULL || unit->resrc != NULL)
     {
         return true;
@@ -1182,8 +1180,7 @@ u32 func_001cfdd0(u32 index)
     func_001ad870(unit->resrc->collisCtlTask, 0x40000000);
     func_001ad8c0(35.0f, unit->resrc->collisCtlTask);
 
-    baseModel = (Model*)func_00317450(uGpffffb52c);
-    unit->resrc->baseMdl = baseModel;
+    unit->resrc->baseMdl = (Model*)func_00317450(uGpffffb52c);
     {
         RwV3d scale;
         f32 radius;
@@ -1192,7 +1189,7 @@ u32 func_001cfdd0(u32 index)
         scale.x = radius;
         scale.y = radius;
         scale.z = radius;
-        func_00318a90(baseModel, &scale, 2);
+        func_00318a90(unit->resrc->baseMdl, &scale, 2);
     }
     func_004cb420(func_00318b70(unit->mdl),
                   func_00318b70(unit->resrc->baseMdl));

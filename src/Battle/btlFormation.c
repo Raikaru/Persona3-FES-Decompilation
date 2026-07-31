@@ -2032,6 +2032,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 }
 #pragma opt_common_subs on
 
+#pragma opt_common_subs off
 // FUN_002ba3a0 NONMATCHING
 
 void func_002ba3a0(int param_1)
@@ -2165,6 +2166,7 @@ LAB_002ba8a0:
   return;
 }
 
+#pragma opt_common_subs reset
 // FUN_002ba900
 
 void func_002ba900(int param_1)

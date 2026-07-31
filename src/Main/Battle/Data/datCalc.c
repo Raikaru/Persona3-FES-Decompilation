@@ -232,10 +232,10 @@ u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 // FUN_003005e0 NONMATCHING
 u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 {
+    DatCalcEquipmentEffect* accessoryEffect;
+    u16* skills;
     u16 count;
     u16 i;
-    u16* skills;
-    DatCalcEquipmentEffect* accessoryEffect;
     s16 pcId;
     s16 equipmentIdx;
     u16 equipmentId;

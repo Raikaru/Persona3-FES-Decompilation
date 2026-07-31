@@ -5256,7 +5256,6 @@ u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
   return uVar3;
 }
 
-#pragma opt_loop_invariants on
 // FUN_00434920 NONMATCHING
 
 u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
@@ -5340,7 +5339,6 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants reset
 // FUN_00434C90
 
 void FUN_00434c90(char param_1)
@@ -5645,6 +5643,7 @@ s8 FUN_004353f0(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 // FUN_00435440 NONMATCHING
 
 char FUN_00435440(char param_1)
@@ -5687,6 +5686,7 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_common_subs reset
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
