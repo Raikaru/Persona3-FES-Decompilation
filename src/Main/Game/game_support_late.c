@@ -1512,49 +1512,49 @@ void* func_0018db20(KwlnTask* task)
             func_0018c150(task);
             break;
         case 1:
-            {
-                GsTransition* transition = (GsTransition*)object->transition;
-                s16 pcId = object->pcId;
-                void* atlas;
+        {
+            s16 pcId = object->pcId;
+            GsTransition* transition = (GsTransition*)object->transition;
+            void* atlas;
 
-                if (datGetScenarioMode() != 0)
+            if (datGetScenarioMode() != 0)
+            {
+                if (pcId == 1)
                 {
-                    if (pcId == 1)
-                    {
-                        pcId = 11;
-                    }
-                    if (pcId == 9)
-                    {
-                        pcId = 12;
-                    }
-                    if (pcId == 3)
-                    {
-                        pcId = 11;
-                    }
+                    pcId = 11;
                 }
-                atlas = object->atlases[pcId];
-                gsDrawSprite(atlas, 3, transition->alpha,
-                             transition->position.valueF[0] + 20.0f,
-                             transition->position.valueF[1] + 18.0f,
-                             transition->depth);
-                gsDrawSprite(atlas, 1, transition->alpha,
-                             transition->position.valueF[0] + 20.0f,
-                             transition->position.valueF[1] + 18.0f,
-                             transition->depth);
-                gsDrawSprite(object->sprite2c, 0, transition->alpha,
-                             transition->position.valueF[0] + 44.0f,
-                             transition->position.valueF[1] + 39.0f,
-                             transition->depth);
-                gsDrawSprite(object->sprite2c, 3, transition->alpha,
-                             transition->position.valueF[0] + 50.0f,
-                             transition->position.valueF[1] + 51.0f,
-                             transition->depth);
-                gsDrawSprite(object->sprite34, 0, transition->alpha,
-                             transition->position.valueF[0] + 27.0f,
-                             transition->position.valueF[1] + 22.0f,
-                             transition->depth);
-                break;
+                if (pcId == 9)
+                {
+                    pcId = 12;
+                }
+                if (pcId == 3)
+                {
+                    pcId = 11;
+                }
             }
+            atlas = object->atlases[pcId];
+            gsDrawSprite(atlas, 3, transition->alpha,
+                         transition->position.valueF[0] + 20.0f,
+                         transition->position.valueF[1] + 18.0f,
+                         transition->depth);
+            gsDrawSprite(atlas, 1, transition->alpha,
+                         transition->position.valueF[0] + 20.0f,
+                         transition->position.valueF[1] + 18.0f,
+                         transition->depth);
+            gsDrawSprite(object->sprite2c, 0, transition->alpha,
+                         transition->position.valueF[0] + 44.0f,
+                         transition->position.valueF[1] + 39.0f,
+                         transition->depth);
+            gsDrawSprite(object->sprite2c, 3, transition->alpha,
+                         transition->position.valueF[0] + 50.0f,
+                         transition->position.valueF[1] + 51.0f,
+                         transition->depth);
+            gsDrawSprite(object->sprite34, 0, transition->alpha,
+                         transition->position.valueF[0] + 27.0f,
+                         transition->position.valueF[1] + 22.0f,
+                         transition->depth);
+            break;
+        }
         case 2:
             func_0018d320(task);
             break;

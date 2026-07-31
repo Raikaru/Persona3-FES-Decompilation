@@ -303,6 +303,7 @@ void* func_001a1550(KwlnTask* task)
             if (work->colorB.a < (u8)work->alphaStep)
             {
                 alpha = work->colorB.a;
+                // colorB.a is u8, so alpha is never negative; use a plain float cast.
                 alphaValue = (f32)alpha;
             }
             else
