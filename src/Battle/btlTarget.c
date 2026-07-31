@@ -2607,7 +2607,6 @@ int FUN_002d2c10(float *param_1, float *param_2)
     }
 
     {
-        u8 *node2;
         for (node2 = *(u8 **)(iGpffffb6fc + 0x2cc); node2 != NULL; node2 = *(u8 **)(node2 + 0x4cc))
         for (i = 0; i < 4; ++i)
         {

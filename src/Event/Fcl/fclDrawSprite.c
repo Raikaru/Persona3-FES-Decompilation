@@ -419,7 +419,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
     uVar4 = (u16)(int)param_3;
   }
   else {
-    uVar4 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
+      uVar4 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
   }
 
   *(u16 *)(iVar1 + 0x28) = uVar4;
@@ -430,7 +430,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
     uVar4 = (u16)(int)param_4;
   }
   else {
-    uVar4 = (u16)(0x80000000 | (u32)(int)(param_4 - 2147483648.0f));
+      uVar4 = (u16)(0x80000000 | (u32)(int)(param_4 - 2147483648.0f));
   }
 
   *(u16 *)(iVar1 + 0x2a) = uVar4;

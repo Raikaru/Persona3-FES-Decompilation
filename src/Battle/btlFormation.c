@@ -2337,6 +2337,8 @@ u32 func_002bad60(u32 *param_1)
   u16 functionIndex;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
+  u32 flags;
+  u32 mask;
   
   if (func_002b9350_u32(*param_1) == 0)
     return 0;
@@ -2352,8 +2354,10 @@ u32 func_002bad60(u32 *param_1)
           *puVar2 = *puVar2 | 0x100;
           return 0;
         }
-        if ((param_1[6] == 0) &&
-            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
+        if (param_1[6] == 0) {
+          flags = *(u32 *)(param_1 + 7);
+          mask = flags & 0xc00;
+          if (mask != 0xc00) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:
@@ -2368,6 +2372,7 @@ u32 func_002bad60(u32 *param_1)
           *(u32 *)(puVar2 + 8) =
               func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
           *puVar2 = *puVar2 | 0x30;
+        }
         }
         param_1[6] = param_1[6] + 2;
       }

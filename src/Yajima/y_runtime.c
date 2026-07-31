@@ -7697,7 +7697,7 @@ u64 FUN_0043a0b0(u64 param_1,char param_2)
 {
   u32 lVar3;
   int iVar1;
-  u32 rowOffset;
+  int rowOffset;
   int iVar2;
   u32 uVar4;
 

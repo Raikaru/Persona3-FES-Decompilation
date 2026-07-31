@@ -113,10 +113,6 @@ void FUN_003b4ee0(void);
 extern u8 DAT_0095aebc_abs[];
 #pragma alias DAT_0095aeb8_abs DAT_0095aeb8
 extern u8 DAT_0095aeb8_abs[];
-#pragma alias DAT_0095aebc_fm_abs DAT_0095aebc
-extern u8 DAT_0095aebc_fm_abs[];
-#pragma alias DAT_0095aeb8_fm_abs DAT_0095aeb8
-extern u8 DAT_0095aeb8_fm_abs[];
 #pragma alias DAT_0095aebc_sc DAT_0095aebc
 extern u32 DAT_0095aebc_sc[4];
 #pragma alias DAT_0095aeb8_sc DAT_0095aeb8
@@ -300,20 +296,25 @@ int * FUN_003b4520(void)
 
 void FUN_003b4580(int param_1)
 {
-  int *node = (int *)param_1;
-  int *head;
-  int *next;
+  typedef struct GslListNode {
+    int data[6];
+    struct GslListNode *prev;
+    struct GslListNode *next;
+  } GslListNode;
+  GslListNode *node = (GslListNode *)param_1;
+  GslListNode *head;
+  GslListNode *next;
 
   if (node == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  head = (int *)*(u32 *)DAT_0095aebc_fm_abs;
-  next = (int *)head[7];
-  node[6] = (int)head;
-  node[7] = (int)next;
-  head[7] = (int)node;
-  next[6] = (int)node;
-  *(u32 *)DAT_0095aeb8_fm_abs = *(u32 *)DAT_0095aeb8_fm_abs + 1;
+  head = (GslListNode *)DAT_0095aebc_sc[0];
+  next = head->next;
+  node->prev = head;
+  node->next = next;
+  head->next = node;
+  next->prev = node;
+  DAT_0095aeb8_sc[0] = DAT_0095aeb8_sc[0] + 1;
 }
 #define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
 #undef FUN_003b45f0

@@ -1648,7 +1648,6 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-#pragma opt_propagation off
 // FUN_0036FDA0 NONMATCHING
 
 
@@ -1925,7 +1924,6 @@ int FUN_0036fda0(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_propagation reset
 // FUN_00370230
 
 
@@ -6338,6 +6336,7 @@ void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4)
 }
 
 
+#pragma opt_strength_reduction off
 // FUN_00375D70 NONMATCHING
 
 
@@ -6444,6 +6443,7 @@ done_75d70:
 }
 
 
+#pragma opt_strength_reduction reset
 // FUN_00375F30
 
 
