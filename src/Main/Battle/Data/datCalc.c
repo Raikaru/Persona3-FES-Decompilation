@@ -1927,6 +1927,8 @@ u8 FUN_00302f50(u32 param_1)
 
 
 
+/* W367 measured: opt_lifetimes on nd6788 -> 6786, object 10264/10304; baseline object 10264/10304. */
+#pragma opt_lifetimes on
 // FUN_00303130 NONMATCHING
 
 u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
@@ -3171,6 +3173,9 @@ LAB_00305784:
 
 
 
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1103 -> 1066, object 1708/1712; baseline object 1712/1712. */
+#pragma opt_lifetimes on
 // FUN_00305970 NONMATCHING
 
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3)
@@ -3362,6 +3367,9 @@ LAB_00305f20:
 
 
 
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
+#pragma opt_lifetimes on
 // FUN_00306020 NONMATCHING
 u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
@@ -8476,6 +8484,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
   }
   return unaff_f20;
 }
+#pragma opt_lifetimes reset
 #undef DAT_00957190
 #undef DAT_00957194
 #undef DAT_00957198
