@@ -4768,8 +4768,8 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
 }
 
 #pragma push
-#pragma opt_lifetimes on
-#pragma opt_propagation off
+#pragma opt_strength_reduction off
+#pragma opt_dead_assignments off
 // FUN_00283E40 NONMATCHING
 u16 func_00283e40(BtlUnit* unit, s16 id)
 {
@@ -4805,8 +4805,8 @@ u16 func_00283e40(BtlUnit* unit, s16 id)
 }
 
 
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
+#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction reset
 #pragma pop
 // FUN_00283FE0
 const void* func_00283fe0(BtlUnit* unit, u32 id)

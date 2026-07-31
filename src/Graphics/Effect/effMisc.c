@@ -297,9 +297,7 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     z = normalizedAxis.z;
     xSquared = x * x;
     matrix_p->right.x = xSquared + (1.0f - xSquared) * cosine;
-    xz = z * sine;
-    xSquared = x * y * (1.0f - cosine);
-    matrix_p->right.y = xz + xSquared;
+    matrix_p->right.y = x * y * (1.0f - cosine) + z * sine;
     xz = x * z;
     matrix_p->right.z = xz * (1.0f - cosine) - y * sine;
     matrix_p->flags = 0;
