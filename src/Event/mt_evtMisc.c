@@ -2445,7 +2445,7 @@ switchD_003898b0_caseD_0:
 
 /* opt_common_subs off: FUN_00389B50 frame 0x70 -> 0x60, nd128 -> nd120, object 524 -> 552 / window 560; measured W319. */
 #pragma push
- #pragma opt_common_subs on
+ #pragma opt_common_subs off
 // FUN_00389B50 NONMATCHING
 
 

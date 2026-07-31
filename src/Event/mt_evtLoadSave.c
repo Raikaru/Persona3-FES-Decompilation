@@ -845,7 +845,6 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 // A direct typed f32 source/destination indexing attempt regressed nd13 -> nd179
 // and size 504 -> 500, so it was reverted. The seven-word residual is confined
 // to the ten-float copy loop's equivalent index/base address-formation order.
-#pragma opt_loop_invariants on
 // FUN_0038E660 NONMATCHING
 
 
@@ -940,7 +939,7 @@ next_node:
 
 #define FUN_0038e660(...) ((void (*)(...))FUN_0038e660)(__VA_ARGS__)
 #undef FUN_0038e860
-#pragma opt_loop_invariants reset
+#pragma opt_loop_invariants on
 // FUN_0038E860 NONMATCHING
 
 
@@ -1352,6 +1351,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
 #define FUN_0038e860(...) ((u32 (*)(...))FUN_0038e860)(__VA_ARGS__)
 #undef FUN_0038f0f0
+#pragma opt_loop_invariants reset
 // FUN_0038F0F0 NONMATCHING
 
 
