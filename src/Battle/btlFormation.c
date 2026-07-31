@@ -4080,7 +4080,6 @@ u16 func_002bde10(int unit, u16* output)
 #pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
-#pragma opt_loop_invariants on
 // FUN_002bdfb0 NONMATCHING
 
 static u32 func_002bdfb0(int state)
@@ -4166,7 +4165,6 @@ static u32 func_002bdfb0(int state)
   return result;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002BE2E0
 void FUN_002BE2E0(void)
 {
@@ -7256,6 +7254,7 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
   return 1;
 }
 
+#pragma opt_common_subs off
 // FUN_002c3770 NONMATCHING
 
 u32 func_002c3770(u32 param_1,u32 param_2)
@@ -7361,6 +7360,7 @@ u32 func_002c3770(u32 param_1,u32 param_2)
   return 1;
 }
 
+#pragma opt_common_subs reset
 // FUN_002c3be0
 u32 func_002c3be0(u32 param_1)
 {

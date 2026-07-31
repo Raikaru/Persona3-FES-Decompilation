@@ -2618,7 +2618,7 @@ void* func_0010e880(const u8* stream)
 // RpSkyRenderStateSet pairs. Retail then gates the whole body on work[0] == 3
 // (bne $a0, 3 branches to the tail); that body is fully reconstructed here
 // as an element-loop over frame commands with color processing.
-#pragma opt_common_subs off
+#pragma opt_loop_invariants on
 // FUN_0010EC50 NONMATCHING
 void func_0010ec50(KwlnTask* task)
 {
@@ -2945,7 +2945,7 @@ void func_0010ec50(KwlnTask* task)
 
 // Retail 0x10fbe4-0x110250 re-fetches command pointers and carries the prior
 // endpoint into command-2 rectangles; preserve those conversions and spill slots.
-#pragma opt_common_subs reset
+#pragma opt_loop_invariants reset
 // FUN_0010F6C0 NONMATCHING
 void* func_0010f6c0(KwlnTask* task)
 {

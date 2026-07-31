@@ -1510,6 +1510,9 @@ void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 }
 
 
+/* opt_loop_invariants on: FUN_00388DF0 nd210 -> nd154, object 504/512; measured W319. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00388DF0 NONMATCHING
 
 
@@ -1621,6 +1624,7 @@ int FUN_00388df0(int param_1,int param_2)
   return iVar4;
 
 }
+#pragma pop
 
 
 // FUN_00388FF0
@@ -2437,6 +2441,7 @@ switchD_003898b0_caseD_0:
 }
 
 
+/* opt_common_subs off: FUN_00389B50 frame 0x70 -> 0x60, nd128 -> nd120, object 524 -> 552 / window 560; measured W319. */
 #pragma push
 #pragma opt_common_subs off
 // FUN_00389B50 NONMATCHING
@@ -3563,6 +3568,9 @@ int FUN_0038a920(int param_1,u16 *param_2,int param_3)
 }
 
 
+/* opt_common_subs off: FUN_0038AB00 nd753 -> nd734, object 1096/1136; measured W319. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_0038AB00 NONMATCHING
 
 
@@ -3797,6 +3805,7 @@ int FUN_0038ab00(int param_1,u64 param_2)
   return lVar6;
 
 }
+#pragma pop
 
 
 // FUN_0038AF70
@@ -4366,6 +4375,9 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
 }
 
 
+/* opt_loop_invariants on: FUN_0038B6E0 nd403 -> nd388, object 620/640; measured W319. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0038B6E0 NONMATCHING
 
 
@@ -4555,9 +4567,9 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
   return;
 
 }
+#pragma pop
 
 
-#pragma opt_common_subs off
 // FUN_0038B960 NONMATCHING
 
 
@@ -4722,7 +4734,9 @@ void FUN_0038b960(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
+/* opt_loop_invariants on: FUN_0038BC70 nd1721 -> nd1565, object 2020/2032; measured W319. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0038BC70 NONMATCHING
 
 
@@ -5272,6 +5286,7 @@ void FUN_0038bc70(int param_1,int param_2,int param_3)
   return;
 
 }
+#pragma pop
 
 
 // FUN_0038C460
@@ -5653,7 +5668,10 @@ switchD_0038c8e0_caseD_0:
 }
 
 
-// FUN_0038CA00 NONMATCHING
+/* opt_loop_invariants on: FUN_0038CA00 nd50 -> nd0, object 128/128; measured W319. */
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0038CA00
 
 
 void FUN_0038ca00(void)
@@ -5691,6 +5709,7 @@ void FUN_0038ca00(void)
   }
   return;
 }
+#pragma pop
 
 
 // FUN_0038CA80 NONMATCHING
@@ -6598,6 +6617,9 @@ void FUN_0038d790(int param_1)
 }
 
 
+/* opt_loop_invariants on: FUN_0038D840 nd24 -> nd10, object 196/208; measured W319. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0038D840 NONMATCHING
 
 
@@ -6630,6 +6652,7 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   }
   return;
 }
+#pragma pop
 // FUN_0038D910
 
 

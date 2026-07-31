@@ -1049,6 +1049,8 @@ u32 FUN_003e6e20(u32 param_1)
 // The residual is diffuse register-bank/control-flow layout drift, not a
 // localized type, signedness, addressing-mode, or operand-order mismatch.
 // No source-level experiment improved the authoritative normalized_diff (3396).
+/* Measured: opt_common_subs off gives FUN_003e6e80 nd3327/obj6208; reset gives nd3362/obj6208. */
+#pragma opt_common_subs off
 // FUN_003E6E80 NONMATCHING
 
 
@@ -2469,6 +2471,7 @@ LAB_003e789c:
   return 0;
 
 }
+#pragma opt_common_subs reset
 
 // FUN_003E86C0
 void FUN_003e86c0(u8* owner)
@@ -6444,7 +6447,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   u32 uVar6;
 
   u32 uVar7;
-  u32 state;
 
   
 
@@ -6464,12 +6466,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 != 0) {
-    return (u8 *)&LAB_003c5170;
-  }
+  if (lVar5 == 0) {
 
-  state = *(u32 *)(iVar4 + 8);
-  switch(state) {
+    switch(*(u32 *)(iVar4 + 8)) {
     case 0:
 
       FUN_003c9d00(*(u32 *)(iVar2 + 8),0x10);
@@ -6836,10 +6835,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
         FUN_003c6f50(iVar1);
 
-      }
-
+  }
   }
   return (u8 *)0x0;
+  }
+  return (u8 *)&LAB_003c5170;
 }
 
 // FUN_003EDD80
@@ -7878,6 +7878,8 @@ u64 FUN_003eee80(u64 unused, u64 handle)
 }
 #pragma pop
 
+/* Measured: opt_loop_invariants on gives FUN_003ef2b0 nd989/obj1724; reset gives nd995/obj1728. */
+#pragma opt_loop_invariants on
 // FUN_003EF2B0 NONMATCHING
 
 
@@ -8258,6 +8260,7 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
   return 0;
 
 }
+#pragma opt_loop_invariants reset
 #undef FUN_0040e3c0
 
 // FUN_003EF970

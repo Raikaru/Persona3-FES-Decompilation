@@ -778,6 +778,8 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     return BTL_STATE_UNITLOAD;
 }
 
+/* W323 measured: opt_loop_invariants on nd481->470, object 692/720; default nd481, 692/720. */
+#pragma opt_loop_invariants on
 // FUN_0029be40 NONMATCHING
 void btlMainInitStateUnitLoad(BtlStateWork* work)
 {
@@ -842,6 +844,7 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
     packet = FUN_002dbfe0(FUN_0016f190(0x141) == 0);
     btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, lastPacketUID);
 }
+#pragma opt_loop_invariants off
 // FUN_0029c110
 u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
 {
@@ -3263,6 +3266,8 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 
 
 
+/* W323 measured: opt_common_subs off nd423->40, object 696/704; default nd423, 684/704. */
+#pragma opt_common_subs off
 // FUN_002A1400 NONMATCHING
 u8 FUN_002a1400(float *param_1)
 {
@@ -3302,13 +3307,13 @@ u8 FUN_002a1400(float *param_1)
   }
   else {
     *(RwRGBAReal *)(iGpffffb6fc + 0x234) = target;
-    return 1;
-  }
   *(u32 *)(param_1 + 5) = counter + 1;
+  }
+  *(u32 *)(param_1 + 5) = *(u32 *)(param_1 + 5) + 1;
   return 0;
 }
+#pragma opt_common_subs on
 
-#pragma opt_loop_invariants on
 // FUN_002A1710 NONMATCHING
 
 
@@ -3390,7 +3395,6 @@ u32 FUN_002a1710(int *param_1)
   return uVar7;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002A1B00
 
 
@@ -3407,6 +3411,8 @@ void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3)
     *(s32*)(work + 8) = 0;
 }
 
+/* W323 measured: opt_loop_invariants on nd391->356, object 544/576; default nd391, 536/576. */
+#pragma opt_loop_invariants on
 // FUN_002A1B70 NONMATCHING
 
 
@@ -3446,6 +3452,7 @@ u32 FUN_002a1b70(u32 *param_1)
   }
   return uVar2;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002A1DB0
 
