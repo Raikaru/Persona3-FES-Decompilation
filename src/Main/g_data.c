@@ -172,7 +172,6 @@ extern void FUN_00171B50(s16 socialLink);
 extern void FUN_00171C40(s16 socialLink, s32 value);
 extern void FUN_00171E90(s16 socialLink, s32 value);
 extern void FUN_00172200(s32 socialLink, s32 value);
-// Call-site alias retains the pre-merge narrow argument ABI.
 #pragma alias FUN_00172200_s16 FUN_00172200
 extern void FUN_00172200_s16(s16 socialLink, s32 value);
 extern void FUN_001723A0(s16 socialLink, s32 rank, s32 enabled);
