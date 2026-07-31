@@ -133,7 +133,7 @@ void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,i
 
 // FUN_0040E3F0
 #pragma push
-#pragma schedule on
+#pragma schedule off
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    u8 param_7,int param_8,int param_9,int param_10,int param_11)
 {
@@ -144,7 +144,7 @@ void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int pa
 
 // FUN_0040E420
 #pragma push
-#pragma schedule on
+#pragma schedule off
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    u8 param_7,int param_8,int param_9,int param_10,int param_11)
 {

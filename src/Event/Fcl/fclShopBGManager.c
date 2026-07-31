@@ -4808,7 +4808,6 @@ void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4,
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0xd8,
                     uVar1 & 0xff,0x5b,0,0,0);
 }
-#pragma opt_dead_assignments off
 // FUN_00415650 NONMATCHING
 void FUN_00415650(u64 param_1,u64 param_2,int param_3,int param_4,
                  int param_5,int param_6)
@@ -4836,7 +4835,6 @@ convert_done_15650_b:
 }
 
 
-#pragma opt_dead_assignments reset
 // FUN_004157C0
 
 
@@ -4944,6 +4942,7 @@ void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 }
 
+#pragma opt_dead_assignments off
 // FUN_00415C30 NONMATCHING
 
 
@@ -5063,6 +5062,7 @@ return 0; }
 
 /* W327 measured: opt_loop_invariants on normalized_diff 573 -> 524; object 1116/1152 -> 1116/1152 (without/with). */
 #pragma opt_loop_invariants on
+#pragma opt_dead_assignments reset
 // FUN_00415DC0 NONMATCHING
 
 

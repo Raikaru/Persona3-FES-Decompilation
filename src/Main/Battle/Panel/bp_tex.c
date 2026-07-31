@@ -2117,15 +2117,16 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
     u32* node;
-    u32* stack[8];
+    u32* nested[8];
     u32* leaves[8];
+    u32* stack[8];
     s32 stackCount;
     s32 leafCount;
     s32 i;
     s32 initialCount;
 
     node = (u32*)nodeData;
-    if ((*node & 8) == 0)
+    if ((~*node & 8) != 0)
     {
         ((u32*)values)[0] = (u32)node;
         *count = 1;
@@ -2138,13 +2139,12 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
     {
         u32* child;
         child = stack[--stackCount];
-        if ((*child & 8) == 0)
+        if ((~*child & 8) != 0)
         {
             leaves[leafCount++] = child;
         }
         else
         {
-            u32* nested[8];
             s32 nestedCount;
             func_00259190(child, nested, &nestedCount);
             for (i = 0; i < nestedCount; i++)

@@ -4610,7 +4610,6 @@ u64 FUN_003eaf30(u64 param_1,u64 param_2)
 
 }
 
-#pragma opt_loop_invariants on
 // FUN_003EAF90 NONMATCHING
 
 
@@ -5122,7 +5121,6 @@ done:
   return (u8 *)lVar8;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003EB940
 u64 FUN_003eb940(u64 unused, u64 handle)
 {
@@ -6426,6 +6424,7 @@ u64 FUN_003ed5a0(u64 param_1,u64 param_2)
 
 }
 
+#pragma opt_dead_assignments off
 // FUN_003ED5E0 NONMATCHING
 
 
@@ -6854,6 +6853,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   return (u8 *)0x0;
 }
+#pragma opt_dead_assignments reset
 // FUN_003EDD80
 
 
