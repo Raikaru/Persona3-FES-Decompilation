@@ -6204,7 +6204,6 @@ u32 FUN_0030b4b0(u32 param_1,u32 param_2)
 
 
 
-#pragma opt_common_subs off
 // FUN_0030b640 NONMATCHING
 u32 FUN_0030b640(s32 param_1,u32 param_2)
 
@@ -6303,7 +6302,6 @@ LAB_0030b740:
 
 
 
-#pragma opt_common_subs reset
 // FUN_0030b9a0 NONMATCHING
 u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
 {

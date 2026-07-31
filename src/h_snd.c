@@ -394,7 +394,7 @@ void func_00108bc0(void)
     }
 
     {
-s16 i;
+        s32 i;
         HsndChannel* channel;
         void** handle;
         s32 status;
@@ -402,7 +402,8 @@ s16 i;
 
         for (i = 2; i < HSND_CHANNEL_COUNT; i++)
         {
-            channel = &sChannels[(s32)i];
+            s16 index = (s16)i;
+            channel = &sChannels[index];
             if (channel->active == false)
             {
                 continue;

@@ -1796,15 +1796,15 @@ u32 func_001d0e40(void)
 // FUN_001d0e50 NONMATCHING
 void func_001d0e50(s32 isDungeon)
 {
-    s32 i;
     FldUnit* unit;
     DatUnitGenusBase** genusBase;
     Model** model;
     ResrcModelChar** resource;
     u16 resourceId;
     RwMatrix* modelMatrix;
-    RwV3d light;
     RwV3d scale;
+    RwV3d light;
+    s32 i;
 
     for (i = isDungeon ? 0 : 1; i < FLDUNIT_PC_MAX; i++)
     {

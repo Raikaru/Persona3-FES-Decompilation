@@ -1239,7 +1239,6 @@ void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* own
     work->flags &= 0xfffeffff;
 }
 
-#pragma opt_loop_invariants on
 // FUN_003dc2d0 NONMATCHING
 void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style,
@@ -1321,7 +1320,6 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     (void)owner;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003dc700 NONMATCHING
 void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style,
@@ -1530,6 +1528,7 @@ void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* res
 
     (void)callback_target;
 }
+#pragma opt_loop_invariants on
 // FUN_003dd260 NONMATCHING
 void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* result,
                              FclDrawCallbackRecord* record)
@@ -1642,6 +1641,7 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
     }
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003dd800 NONMATCHING
 void fclCombineList003dd800(s32 x, s32 y, s32 alpha, FclOwner* owner,
                              FclTaskLink* candidate)

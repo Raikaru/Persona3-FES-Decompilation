@@ -6263,7 +6263,6 @@ u32 func_00318b90(u32 param_1)
 
 // Template probe: reversing the two top-level branches to match func_00318ed0
 // retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
-#pragma opt_loop_invariants on
 // FUN_00318D10 NONMATCHING
 
 
@@ -6342,7 +6341,6 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00318ED0
 
 
@@ -8095,6 +8093,7 @@ void func_0031b470(void)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_0031B4A0 NONMATCHING
 
 
@@ -8196,6 +8195,7 @@ LAB_0031b594:
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_0031B680 NONMATCHING
 
 

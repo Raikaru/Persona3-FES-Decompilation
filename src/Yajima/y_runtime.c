@@ -5508,6 +5508,7 @@ void FUN_00435060(u8 param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
 // FUN_004350E0 NONMATCHING
 
 void FUN_004350e0(char param_1,char param_2)
@@ -5545,6 +5546,7 @@ void FUN_004350e0(char param_1,char param_2)
 }
 #pragma pop
 
+#pragma opt_loop_invariants reset
 // FUN_00435260
 
 u32 FUN_00435260(char param_1)
@@ -5683,6 +5685,7 @@ char FUN_00435440(char param_1)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
@@ -5736,6 +5739,7 @@ joined_r0x004357c4:
 }
 
 #pragma pop
+#pragma opt_loop_invariants reset
 // FUN_00435810 NONMATCHING
 
 u8 FUN_00435810(void)
@@ -7639,7 +7643,6 @@ void FUN_00439520(int param_1)
   return;
 }
 
-#pragma opt_loop_invariants on
 // FUN_00439F60 NONMATCHING
 
 u64 FUN_00439f60(int param_1,char param_2)
@@ -7677,7 +7680,6 @@ u64 FUN_00439f60(int param_1,char param_2)
   return 0;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_0043A0B0 NONMATCHING
 
 u64 FUN_0043a0b0(u64 param_1,char param_2)

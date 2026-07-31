@@ -3307,9 +3307,8 @@ u8 FUN_002a1400(float *param_1)
   }
   else {
     *(RwRGBAReal *)(iGpffffb6fc + 0x234) = target;
-  *(u32 *)(param_1 + 5) = counter + 1;
   }
-  *(u32 *)(param_1 + 5) = *(u32 *)(param_1 + 5) + 1;
+  *(u32 *)(param_1 + 5) = counter + 1;
   return 0;
 }
 #pragma opt_common_subs on

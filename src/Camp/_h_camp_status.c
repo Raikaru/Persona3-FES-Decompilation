@@ -411,6 +411,7 @@ drawStatus:
 done:;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001236A0 NONMATCHING
 void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -484,6 +485,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                                  (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00123B70 NONMATCHING
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -1683,7 +1685,6 @@ static inline void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
     }
 }
 
-#pragma opt_loop_invariants on
 #pragma opt_common_subs off
 // FUN_001269A0 NONMATCHING
 void* h_campStatusUpdatePartsTask(KwlnTask* task)
@@ -1898,7 +1899,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 
 /* Retail panel frame: seventeen status sprites, two footer sprites, and the
  * formatted footer text, with resource and frame selections from retail. */
-#pragma opt_loop_invariants reset
+#pragma opt_loop_invariants on
 #pragma opt_common_subs reset
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
@@ -1985,6 +1986,7 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
                              (u8)inverseAlpha, 4, text, 1);
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00127A40
 void h_campStatusDestroyPartsTask(KwlnTask* task)
 {
