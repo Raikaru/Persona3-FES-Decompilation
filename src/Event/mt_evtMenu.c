@@ -18275,8 +18275,8 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
 
   DAT_007ce608 = 0;
   {
-    s32 count;
     u16 *table;
+    s32 count;
     s32 selected;
     iVar5 = 0;
     selected = param_2;

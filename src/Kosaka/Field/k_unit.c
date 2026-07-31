@@ -3238,14 +3238,15 @@ void func_001d4180(void)
                     scene = func_001b9120();
                     func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
                 }
-                if (*taskSlot != NULL)
                 {
-                    u8* unitBase;
+                    KwlnTask* currentTask;
 
-                    unitBase = (u8*)gFldUnitsPc;
-                    unitBase += i * sizeof(FldUnit);
-                    func_00195020(*(KwlnTask**)(unitBase + 0x180));
-                    *(KwlnTask**)(unitBase + 0x180) = NULL;
+                    currentTask = *taskSlot;
+                    if (currentTask != NULL)
+                    {
+                        func_00195020(gFldUnitsPc[i].unk_180);
+                        gFldUnitsPc[i].unk_180 = NULL;
+                    }
                 }
             }
         }

@@ -1608,7 +1608,7 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 // inlined; retail does not jal any of them) - simpler single-path variant
 // with a fixed kind=3, no pathMode dispatch.
 // FUN_001AFD40 NONMATCHING
-u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
+u32 func_001afd40(KwlnTask* task, const RwV3d* position, f32 duration)
 {
     FldFrameMoveWork* work;
     RwV3d line[2];
@@ -2391,7 +2391,7 @@ extern void* func_00318b60(u32 id);
 extern void* func_004353f0(void* arg);
 extern void* func_002ff790(void* object);
 extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
-extern u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position);
+extern u32 func_001afd40(KwlnTask* task, const RwV3d* position, f32 duration);
 
 // Remaining: post-grid collision processing (type1 walk, final apply, dampening)
 // FUN_001abd20 NONMATCHING
