@@ -170,18 +170,10 @@ float cosf(float x)
 
 #pragma intrinsic fabsf
 // FUN_0052e788 NONMATCHING
-#pragma opt_alias on
-float fabsf(float x)
+float fabsf(register float x)
 {
-    union {
-        float f;
-        u32 i;
-    } ux;
-    ux.f = x;
-    ux.i &= 0x7FFFFFFF;
-    return ux.f;
+    return fabsf(x);
 }
-#pragma opt_alias reset
 #pragma optimization_level 2
 
 #pragma optimization_level 3
