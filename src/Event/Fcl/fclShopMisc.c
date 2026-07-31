@@ -3151,6 +3151,7 @@ ret:
   return result;
 }
 
+#pragma opt_loop_invariants on
 // FUN_003F33D0 NONMATCHING
 
 
@@ -3329,6 +3330,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
   return task;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003F3970
 
 
@@ -11010,6 +11012,7 @@ u32 FUN_003ff570(u64 param_1)
   return uVar1;
 }
 
+#pragma opt_loop_invariants on
 // FUN_003FF630 NONMATCHING
 
 
@@ -11359,6 +11362,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003FFA20 NONMATCHING
 
 
@@ -13212,7 +13216,6 @@ found:
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_loop_invariants on
 // FUN_00401A00 NONMATCHING
 
 
@@ -13462,7 +13465,6 @@ LAB_00401c48:
 }
 #pragma pop
 
-#pragma opt_loop_invariants reset
 // FUN_00401C90
 
 

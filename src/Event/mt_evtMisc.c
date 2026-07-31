@@ -2445,7 +2445,7 @@ switchD_003898b0_caseD_0:
 
 /* opt_common_subs off: FUN_00389B50 frame 0x70 -> 0x60, nd128 -> nd120, object 524 -> 552 / window 560; measured W319. */
 #pragma push
-#pragma opt_common_subs off
+ #pragma opt_common_subs on
 // FUN_00389B50 NONMATCHING
 
 
@@ -2476,9 +2476,7 @@ void FUN_00389b50(int *param_1)
 
   iVar6 = 0;
 
-  iVar8 = *param_1;
-  if ((iVar8 == 0x30) || (iVar8 == 1)) {
-
+  if ((*param_1 == 0x30) || (*param_1 == 1)) {
     for (iVar8 = param_1[0x1b]; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x4c)) {
 
       iVar6 = iVar6 + 1;
