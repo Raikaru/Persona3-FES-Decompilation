@@ -2,6 +2,11 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+#pragma alias FUN_0021d8e0_y2 FUN_0021d8e0_y2
+#pragma alias FUN_0021d950_y2 FUN_0021d950_y2
+#pragma alias FUN_0021d890_y2 FUN_0021d890_y2
+
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -1227,3 +1232,284 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     *(float *)(param_1 + 0xe8) = (float)abStack_20[14];
     *(float *)(param_1 + 0xec) = (float)abStack_20[15];
 }
+
+
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/Social/sfl_psel.h"
+#include "Main/Social/sfl_res.h"
+
+static u32* sSflPsel; // puGpffffb688
+u32 FUN_0021cca0();
+void FUN_0021d3b0();
+void FUN_00260c20();
+void FUN_00261480();
+extern void FUN_0021d8e0_y2(void*, const void*);
+extern void FUN_0021d950_y2(void*, const void*);
+extern void (*D_00960090)(u32, u32);
+extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+extern void RpSkyRenderStateSet(u32, void*);
+extern void func_004d7f60(s32 state, u32 value);
+extern float fGpffff8300;
+extern char D_00960088[];
+extern u32 uGpffffb948;
+extern u16 DAT_007e0952;
+#pragma alias DAT_007e0952_a DAT_007e0952
+extern u16 DAT_007e0952_a[8];
+extern u32 func_00173220(u16 id);
+extern u32 func_00173280(u16 id);
+extern u8* DAT_007ce420;
+extern u32 func_00175410(void);
+extern u32 func_001756f0(void);
+extern void* func_001749a0(u16 id);
+extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
+extern DatPersonaWork* datPersonaGetByPcId(u16 pcId);
+extern u32 func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern u32 func_0021cca0(u32 texture, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021d3b0(void* destination, u32 frame);
+extern void func_0021d8e0(void* destination, const f32* rect);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021e380(void* destination, u32 frame, s32 mode);
+extern f32 func_0021ea00(s32 duration);
+extern void func_0021eac0(void* animation, f32 value);
+extern void func_00238980(void* destination, s32 count, u32 value, s32 mode);
+extern void* func_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* origin);
+extern u32 func_00239140(s32 font);
+extern void func_0024a260(u32* state);
+extern u32 func_003b0970(u32 resource, s32 mode, s8 group, s32 a, s32 b);
+extern void func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern void func_003b1360(u32 resource, s32 mode, s32 value);
+extern void func_003b0170(u32 resource);
+extern void frFontSetTextScale(u32 resource, f32 value);
+extern u32 func_003c7610(void);
+extern void func_003c7650(s32 mode);
+extern u32 func_003c7850(void);
+extern u32 func_003c78d0(void);
+extern void func_003c7990(s32 mode);
+extern void func_003c7bc0(s32 mode, u32 value);
+extern void func_003c7430(u32 value);
+extern void sflPersonaLoad(u16 id);
+extern void sflPersonaSetPersona(u16 id);
+extern void sflPersonaDestroy(void);
+extern u32 sflPersonaIsLoading(void);
+extern void sflPersonaStartExitTransition(void);
+extern u32 sflPersonaIsTransitioning(void);
+extern void func_00523ac8(char* destination, const char* format, ...);
+extern s32 func_00524388(const char* text);
+extern void func_0019d3f0(const char* file, s32 line);
+extern char D_0068e228[];
+extern void func_003c74e0(u32 value);
+
+typedef void (*SflPselStateCallback)(u32 state, u32 value);
+typedef void (*SflPselDrawCallback)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+
+extern u32 FUN_0021cce0(u32 frame);
+
+static inline u8* sflPselBytes(u32* work, u32 offset)
+{
+    return (u8*)work + offset;
+}
+
+static u32 sflPselReadU32(const void* object, u32 offset)
+{
+    return *(const u32*)((const u8*)object + offset);
+}
+
+static inline s32 sflPselReadS32(const void* object, u32 offset)
+{
+    return *(const s32*)((const u8*)object + offset);
+}
+
+static u8* sflPselEntry(u32* work, s32 index)
+{
+    u8* entries;
+
+    entries = (u8*)(uintptr_t)sflPselReadU32(work, 0x184);
+    return entries + index * 0x80;
+}
+
+static inline void sflPselSetAlpha(void* object, u8 alpha)
+{
+    u8 color[4];
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alpha;
+    FUN_0021d950_y2(object, color);
+}
+
+static void sflPselDraw(void* object)
+{
+    D_0096009C((u32*)object, 4, 0, 1, 2);
+    D_0096009C((u32*)object, 4, 0, 2, 3);
+}
+
+// FUN_00260430
+void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
+{
+    u8* entry;
+    u8* resource;
+    u32 xMode;
+    s32 width;
+    s32 height;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
+    resource = (u8*)(uintptr_t)base[0x41 + *(u32*)(entry + 0x14)];
+    {
+        f32 x[2] = {0.0f, 0.0f};
+        x[0] = (f32)*(s32*)(entry + 0x54);
+        x[1] = (f32)*(s32*)(entry + 0x5c);
+        {
+            f32 y[2] = {0.0f, 0.0f};
+            y[0] = (f32)*(s32*)(entry + 0x58);
+            y[1] = (f32)*(s32*)(entry + 0x60);
+            width = *(s32*)(resource + 0xc);
+            height = *(s32*)(resource + 0x10);
+
+            switch (axis) {
+            case 0: xMode = 0; axis = 1; break;
+            case 1: xMode = 2; axis = 0; break;
+            case 2: xMode = 0; axis = 2; break;
+            case 3: xMode = 1; axis = 0; break;
+            case 4: xMode = 2; axis = 1; break;
+            case 5: xMode = 2; axis = 2; break;
+            case 6: xMode = 2; axis = 1; break;
+            case 7: xMode = 1; axis = 1; break;
+            }
+
+            switch (xMode) {
+            case 0:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
+                    uv[0] = x[0] / (f32)width;
+                    uv[2] = x[1] / (f32)width;
+                } else {
+                    uv[0] = x[1] / (f32)width;
+                    uv[2] = x[0] / (f32)width;
+                }
+                break;
+            case 1:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
+                    uv[0] = x[0] / (f32)width;
+                    uv[2] = (x[0] + 1.0f) / (f32)width;
+                } else {
+                    uv[0] = x[1] / (f32)width;
+                    uv[2] = (x[1] - 1.0f) / (f32)width;
+                }
+                break;
+            case 2:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
+                    uv[0] = (x[1] - 1.0f) / (f32)width;
+                    uv[2] = x[1] / (f32)width;
+                } else {
+                    uv[0] = (x[0] + 1.0f) / (f32)width;
+                    uv[2] = x[0] / (f32)width;
+                }
+                break;
+            }
+
+            switch (axis) {
+            case 0:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
+                    uv[1] = y[0] / (f32)height;
+                    uv[3] = y[1] / (f32)height;
+                } else {
+                    uv[1] = y[1] / (f32)height;
+                    uv[3] = y[0] / (f32)height;
+                }
+                break;
+            case 1:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
+                    uv[1] = y[0] / (f32)height;
+                    uv[3] = (y[0] + 1.0f) / (f32)height;
+                } else {
+                    uv[1] = y[1] / (f32)height;
+                    uv[3] = (y[1] - 1.0f) / (f32)height;
+                }
+                break;
+            case 2:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
+                    uv[1] = (y[1] - 1.0f) / (f32)height;
+                    uv[3] = y[1] / (f32)height;
+                } else {
+                    uv[1] = (y[0] + 1.0f) / (f32)height;
+                    uv[3] = y[0] / (f32)height;
+                }
+                break;
+            }
+        }
+    }
+}
+
+// FUN_00260900
+s32 sflPsel00260900(u32* base, s32 index)
+{
+    u8* entry;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
+    return *(s32*)(entry + 0x5c) - *(s32*)(entry + 0x54);
+}
+
+// FUN_00260920
+s32 sflPsel00260920(u32* base, s32 index)
+{
+    u8* entry;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
+    return *(s32*)(entry + 0x60) - *(s32*)(entry + 0x58);
+}
+
+// FUN_00260940
+u32 sflPsel00260940(u32* base, s32 index)
+{
+    u8* entry;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
+    return base[0x41 + *(u32*)(entry + 0x14)];
+}
+
+// FUN_00260970
+void sflPsel00260970(u8* work)
+{
+    float frame[4];
+    u8 color[4];
+
+    *(u32*)work = 0;
+    frame[0] = 0.0f;
+    frame[1] = 0.0f;
+    frame[2] = 640.0f;
+    frame[3] = 448.0f;
+    FUN_0021d8e0_y2(work + 0x310, frame);
+    FUN_0021eac0(work + 0x310, FUN_0021ea00(10));
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0;
+    FUN_0021d950_y2(work + 0x310, color);
+    sSflPsel = (u32*)work;
+}
+
+
+
+extern void FUN_0021d890_y2(void*, const void*);
+
+
+
+
+
+
+
+
+
+/* opt_lifetimes on: func_00215b00 nd765 -> nd748, object 1216 -> 1212/1216; measured W328. */
+
+
+
+/* opt_lifetimes on: func_002168f0 nd777 -> nd716, object 1992 -> 1992/2000; measured W328. */
