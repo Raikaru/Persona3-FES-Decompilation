@@ -9737,7 +9737,6 @@ u32 FUN_003ad640(u64 param_1,int param_2)
 #define FUN_003ad640(...) ((u64 (*)(...))FUN_003ad640)(__VA_ARGS__)
 #undef FUN_003ad740
 
-#pragma opt_strength_reduction off
 // FUN_003AD740 NONMATCHING
 
 
@@ -9825,7 +9824,6 @@ u32 FUN_003ad740(int param_1,int param_2)
 #define FUN_003ad740(...) ((u64 (*)(...))FUN_003ad740)(__VA_ARGS__)
 #undef FUN_003ad860
 
-#pragma opt_strength_reduction reset
 // FUN_003AD860
 
 
@@ -10440,6 +10438,7 @@ u64 FUN_003ae150(u64 param_1,int param_2)
 }
 #undef FUN_003ae160
 
+#pragma opt_dead_assignments off
 // FUN_003AE160 NONMATCHING
 
 
@@ -10545,6 +10544,7 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 #define FUN_003ae160(...) ((u64 (*)(...))FUN_003ae160)(__VA_ARGS__)
 #undef FUN_003ae260
 
+#pragma opt_dead_assignments reset
 // FUN_003AE260 NONMATCHING
 
 

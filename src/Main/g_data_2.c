@@ -926,7 +926,8 @@ void FUN_0017ac60(u32 code)
 #pragma opt_lifetimes reset
 #pragma opt_loop_invariants reset
 
-/* Removing this loses FUN_0017ad90 (MATCH nd0 -> MISMATCH nd5) - measured W161. */
+/* W357 measured optimization_level 1: without nd5/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
+#pragma optimization_level 1
 // FUN_0017ad90
 void FUN_0017ad90(void)
 {
@@ -951,6 +952,7 @@ void FUN_0017ad90(void)
     }
 }
 
+#pragma optimization_level 2
 // FUN_0017adf0
 void FUN_0017adf0(void)
 {
@@ -1504,7 +1506,7 @@ void FUN_0017c350(void)
 }
 #pragma opt_loop_invariants reset
 
-/* Removing this loses FUN_0017c4e0 (MATCH nd0 -> MISMATCH nd22) - measured W161. */
+/* W357 measured optimization_level 1: without nd22/object176 (MISMATCH), with nd0/object176 (MATCH); retained. */
 #pragma optimization_level 1
 // FUN_0017c4e0
 bool FUN_0017c4e0(s16 value)
@@ -2102,7 +2104,7 @@ u32 FUN_0017d7b0(void)
     return U32(0x0083aa98);
 }
 
-/* Removing this loses FUN_0017d7c0 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
+/* W357 measured optimization_level 1: without nd12/object36 (MISMATCH), with nd0/object40 (MATCH); window 48; retained. */
 #pragma optimization_level 1
 // FUN_0017d7c0
 void FUN_0017d7c0(u32 value)

@@ -7224,7 +7224,6 @@ void func_0018c780(KwlnTask* task)
     }
 }
 
-#pragma opt_strength_reduction off
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
@@ -7256,7 +7255,6 @@ void func_0018ce50(KwlnTask* task)
     func_00115980(sprite);
 }
 
-#pragma opt_strength_reduction reset
 // FUN_0018D320 NONMATCHING
 void func_0018d320(KwlnTask* task)
 {
