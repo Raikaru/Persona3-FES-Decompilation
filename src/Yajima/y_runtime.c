@@ -6861,7 +6861,6 @@ void FUN_00437e80(u32 *param_1,char param_2)
 #pragma pop
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_00438010 NONMATCHING
 
 void FUN_00438010(int param_1)
@@ -7363,7 +7362,6 @@ switchD_004387bc_caseD_5:
 }
 
 #pragma pop
-#pragma opt_common_subs reset
 // FUN_00439400
 
 void FUN_00439400(char param_1)
@@ -7397,6 +7395,7 @@ void FUN_00439400(char param_1)
   return;
 }
 
+#pragma opt_common_subs off
 // FUN_00439520 NONMATCHING
 
 void FUN_00439520(int param_1)
@@ -7643,6 +7642,7 @@ void FUN_00439520(int param_1)
   return;
 }
 
+#pragma opt_common_subs reset
 // FUN_00439F60 NONMATCHING
 
 u64 FUN_00439f60(int param_1,char param_2)

@@ -11496,7 +11496,6 @@ void FUN_003ffe00(int param_1)
 
 // W212: signed-byte and typed-callback transfer measured nd914 -> nd972 (1344 -> 1320 bytes); rejected.
 // W212: retaining the final callback across calls fixed the 0x100-byte frame but measured nd914 -> nd942 and 1344/1344 -> 1352/1344; rejected as over-window.
-#pragma opt_loop_invariants on
 // FUN_003FFE60 NONMATCHING
 
 
@@ -12006,7 +12005,6 @@ int * FUN_003ffe60(int param_1)
 
 }
 
-#pragma opt_loop_invariants reset
 // FUN_004003A0
 
 
@@ -12032,6 +12030,7 @@ void FUN_004003a0(int param_1)
 
 }
 
+#pragma opt_common_subs off
 // FUN_004003F0 NONMATCHING
 
 
@@ -12209,6 +12208,7 @@ u32 FUN_004003f0(int *param_1)
 
 }
 
+#pragma opt_common_subs reset
 // FUN_00400690
 
 
