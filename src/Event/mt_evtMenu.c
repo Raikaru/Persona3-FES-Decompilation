@@ -3606,7 +3606,6 @@ void FUN_003722d0(u32 param_1,u32 param_2,u32 param_3,u8 *param_4)
 }
 
 
-#pragma opt_common_subs off
 // FUN_00372790 NONMATCHING
 
 
@@ -3995,7 +3994,6 @@ int FUN_00372790(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
 // FUN_00372C40 NONMATCHING
 
 
@@ -4595,6 +4593,7 @@ LAB_003736a4:
 
 #pragma alias FUN_001a42f0_evt_f32 FUN_001a42f0
 extern f32 *FUN_001a42f0_evt_f32(int param_1,int param_2);
+#pragma opt_strength_reduction off
 // FUN_00373700 NONMATCHING
 
 
@@ -5432,6 +5431,7 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_strength_reduction reset
 // FUN_003747A0
 
 

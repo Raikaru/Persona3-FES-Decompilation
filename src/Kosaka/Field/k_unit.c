@@ -2413,7 +2413,6 @@ void func_001d22a0(void* work)
 
 /* Removing this worsens FUN_001d2300 (nd502 -> nd511) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_dead_assignments off
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
 {
@@ -2494,7 +2493,6 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_dead_assignments reset
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
@@ -2751,6 +2749,7 @@ void func_001d2a10(void)
 
 /* Removing this worsens FUN_001d32a0 (nd588 -> nd637) - measured W161. */
 #pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_001d32a0 NONMATCHING
 void* func_001d32a0(KwlnTask* task)
 {
@@ -2870,6 +2869,7 @@ void* func_001d32a0(KwlnTask* task)
 }
 #pragma opt_loop_invariants off
 
+#pragma opt_propagation reset
 // FUN_001d36c0
 void func_001d36c0(KwlnTask* task)
 {
