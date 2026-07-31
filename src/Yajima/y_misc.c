@@ -7618,7 +7618,6 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
 #pragma opt_loop_invariants reset
 #undef DAT_00960090
 
-#pragma opt_common_subs off
 // FUN_004281F0 NONMATCHING
 
 
@@ -8181,7 +8180,7 @@ u32 FUN_004281f0(u32 param_1)
       cVar6 = pcVar1[0xb29];
       fVar24 = FUN_00429ef0((float)cVar6,0);
       fVar24 = *(float *)(pcVar1 + 0x85c) + fVar24;
-      fVar25 = FUN_0042a3f0((float)cVar6,(float *)0x86e684);
+      fVar25 = FUN_0042a3f0((float)cVar6,&DAT_0086e684);
       fVar24 = fVar24 - fVar25;
 
       iVar15 = (int)cVar6;
@@ -8195,7 +8194,7 @@ u32 FUN_004281f0(u32 param_1)
       cVar6 = pcVar1[0xb29];
       fVar24 = FUN_00429fe0((float)cVar6,0);
       fVar24 = *(float *)(pcVar1 + 0x860) + fVar24;
-      fVar25 = FUN_0042a4a0((float)cVar6,(u32 *)0x86e684);
+      fVar25 = FUN_0042a4a0((float)cVar6,(u32 *)&DAT_0086e684);
       fVar24 = fVar24 - fVar25;
 
       iVar15 = (int)cVar6;
@@ -8206,10 +8205,10 @@ u32 FUN_004281f0(u32 param_1)
       *(float *)(pcVar1 + 0xb04) =
           (float)(iVar15 >> 2) + fVar24 + 2.0f - (float)((int)cVar6 << 1);
 
-      cVar6 = FUN_0044f120(0x86e684);
+      cVar6 = FUN_0044f120((u32)&DAT_0086e684);
       pcVar1[0xb08] = cVar6;
 
-      cVar6 = FUN_0044f170(0x86e684);
+      cVar6 = FUN_0044f170((u32)&DAT_0086e684);
       pcVar1[0xb09] = cVar6;
     }
 
@@ -8725,7 +8724,6 @@ u32 FUN_004281f0(u32 param_1)
   return 0;
 
 }
-#pragma opt_common_subs reset
 
 // FUN_00429C60
 
