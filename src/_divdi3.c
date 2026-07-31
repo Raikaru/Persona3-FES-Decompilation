@@ -305,7 +305,5 @@ u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
     }
   }
 
-  ww.s.low = q0;
-  ww.s.high = q1;
-  return ww.ll;
+  return CONCAT44(q1, q0);
 }

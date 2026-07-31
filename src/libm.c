@@ -369,10 +369,10 @@ u64 FUN_0052ea78(long param_1, long param_2)
 #pragma optimization_level 2
 #pragma optimization_level 3
 // FUN_0052EAC8 NONMATCHING
-u64 FUN_0052eac8(register u64 param_1)
+u64 FUN_0052eac8(u64 param_1)
 {
-  register u64 uVar1;
-  register u64 uVar2;
+  u64 uVar1;
+  u64 uVar2;
 
   uVar1 = FUN_00531720_u64(param_1 >> 0x20);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);

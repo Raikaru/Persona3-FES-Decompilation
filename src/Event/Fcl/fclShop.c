@@ -6478,8 +6478,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   lVar5 = FUN_0040a490(iVar1);
 
 
-  if (lVar5 != 0) {
-    return (u8 *)&LAB_003c5170;
+  if (lVar5 == 0) {
   }
 
     switch(*(u32 *)(work + 8)) {
@@ -6852,6 +6851,8 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   }
   return (u8 *)0x0;
+  }
+    return (u8 *)&LAB_003c5170;
 }
 
 // FUN_003EDD80
