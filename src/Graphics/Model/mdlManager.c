@@ -5778,7 +5778,8 @@ void func_00316970(Model* param_1)
 
     func_001a7170(iVar5,*(u32 *)(iVar3 + 0x10c));
 
-    **(u32 **)(iVar3 + 0x10c) = **(u32 **)(iVar3 + 0x10c) | 0x3000;
+    hierarchy = *(u32 **)(iVar3 + 0x10c);
+    *hierarchy = *hierarchy | 0x3000;
 
     mdlAnimSet(param_1,0,0,0,1);
 
