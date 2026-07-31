@@ -3289,7 +3289,6 @@ void func_002bf370(u64 param_1)
   return;
 }
 
-#pragma opt_propagation off
 // FUN_002bf3f0 NONMATCHING
 
 u32 func_002bf3f0(int param_1)
@@ -3369,7 +3368,6 @@ u32 func_002bf3f0(int param_1)
   return uVar1;
 }
 
-#pragma opt_propagation reset
 // FUN_002bf650
 
 void func_002bf650(void)
@@ -4292,6 +4290,7 @@ u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
   return result;
 }
 
+#pragma opt_propagation off
 // FUN_002c1080 NONMATCHING
 
 u32
@@ -4348,6 +4347,7 @@ LAB_002c12a0:
   } while( true );
 }
 
+#pragma opt_propagation reset
 // FUN_002c12f0
 
 bool func_002c12f0(int param_1,int param_2)

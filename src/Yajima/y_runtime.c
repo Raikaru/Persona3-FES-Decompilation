@@ -15796,14 +15796,14 @@ u32 FUN_00452a70(char param_1,char param_2)
   return uVar9;
 }
 
-/* probe: opt_loop_invariants on produced obj 880/frame 0xd0; testing off */
+/* measured opt_loop_invariants on: 880/864 nd650; off: 864/864 nd109; + opt_lifetimes on: 864/864 nd77; retained */
 #pragma opt_loop_invariants off
+#pragma opt_lifetimes on
 // FUN_00452F70 NONMATCHING
 
 void FUN_00452f70(u32 *param_1,int param_2)
 
 {
-  u32 *out;
   int iVar1;
   int iVar2;
   int iVar3;
@@ -15816,7 +15816,6 @@ void FUN_00452f70(u32 *param_1,int param_2)
   YVec3f direction;
   YVec3f position;
   
-  out = param_1;
   iVar1 = *(int *)(param_2 + 0x3c);
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
     uVar6 = 0;
@@ -15882,11 +15881,11 @@ LAB_00453278:
       }
     }
   }
-  *(YVec3f *)out = position;
-  return;
+  *(YVec3f *)param_1 = position;
 }
 
 #pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 #pragma push
 #pragma opt_loop_invariants on
 // FUN_004532D0

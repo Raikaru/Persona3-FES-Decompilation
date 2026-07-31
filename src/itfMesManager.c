@@ -7020,7 +7020,6 @@ void FUN_003a9780(int *param_1,int param_2,int param_3,int param_4,int param_5)
 #define FUN_003a9780(...) ((void (*)(...))FUN_003a9780)(__VA_ARGS__)
 #undef FUN_003a9930
 
-#pragma opt_strength_reduction off
 // FUN_003A9930 NONMATCHING
 
 
@@ -7116,7 +7115,6 @@ void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5)
 #define FUN_003a9930(...) ((void (*)(...))FUN_003a9930)(__VA_ARGS__)
 
 // Retail 0x003a9ac0-0x003a9ae4
-#pragma opt_strength_reduction reset
 // FUN_003A9AC0
 void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5)
 {
@@ -7638,6 +7636,7 @@ void FUN_003aa370(int param_1,u64 param_2)
 #define FUN_003aa370(...) ((void (*)(...))FUN_003aa370)(__VA_ARGS__)
 #undef FUN_003aa720
 
+#pragma opt_loop_invariants on
 // FUN_003AA720 NONMATCHING
 
 
@@ -7820,6 +7819,7 @@ void FUN_003aa720(int param_1)
 #define FUN_003aa720(...) ((void (*)(...))FUN_003aa720)(__VA_ARGS__)
 #undef FUN_003aaae0
 
+#pragma opt_loop_invariants reset
 // FUN_003AAAE0 NONMATCHING
 
 

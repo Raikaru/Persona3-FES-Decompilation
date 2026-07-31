@@ -1695,25 +1695,25 @@ s32 FUN_0017ca10(const void* record)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        unsignedValue = *(u8*)(stored + 0x1c + index);
-        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        if ((u32)unsignedValue != (u32)*(u8*)(source + 0x1c + i)) return 1;
+        unsignedValue = *(u8*)(stored + 0x1c + i);
+        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
+        if ((u32)unsignedValue != (u32)*(u8*)(source + 0x1c + index)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        signedValue = *(s8*)(stored + 0x21 + index);
-        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        if ((s32)signedValue != (s32)*(s8*)(source + 0x21 + i)) return 1;
+        signedValue = *(s8*)(stored + 0x21 + i);
+        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x21 + index)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        signedValue = *(s8*)(stored + 0x26 + index);
-        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + i)) return 1;
+        signedValue = *(s8*)(stored + 0x26 + i);
+        if ((u16)i >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + index)) return 1;
     }
     {
         const u16* storedValues = (const u16*)(stored + 0xc);
