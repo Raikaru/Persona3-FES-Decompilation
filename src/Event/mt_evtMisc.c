@@ -5722,10 +5722,11 @@ void FUN_0038ca80(int param_1)
         if (*matchedNode != currentValue) {
           continue;
         }
-        goto matched;
+        break;
       }
-      matchedNode = NULL;
-matched:
+      if (searchIndex == matchCount) {
+        matchedNode = NULL;
+      }
       FUN_0038cc10(param_1,currentNode,(int)matchedNode);
     }
   }

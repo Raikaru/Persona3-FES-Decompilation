@@ -597,8 +597,8 @@ short FUN_003d5cd0(u32 *param_1)
   int lVar1;
   u32 uVar2;
   u32 *puVar3;
-  s32 sVar4;
-  s32 sVar5;
+  long sVar4;
+  long sVar5;
 
   sVar4 = 0;
   memset(param_1,0,0x90);

@@ -2218,8 +2218,8 @@ u32 FUN_0029f150(float *param_1)
   }
 
   else {
+  u32 duration;
 
-  duration = *(u32 *)(param_1 + 0x18);
   counter = *(u32 *)(param_1 + 0x19);
   if (counter == 0) {
 
@@ -2272,6 +2272,7 @@ u32 FUN_0029f150(float *param_1)
       param_1[0xf] = param_1[0x17] * param_1[7];
 
     }
+  duration = *(u32 *)(param_1 + 0x18);
 
     if (counter < duration) {
       fVar11 = (float)counter / (float)duration;

@@ -1938,8 +1938,7 @@ void func_001d1360(void)
             func_001a0dc0((*resource)->base.resTypeId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
-            func_001ad8c0(35.0f,
-                          ((volatile ResrcModelChar*)*resource)->collisCtlTask);
+            func_001ad8c0(35.0f, (*resource)->collisCtlTask);
             (*resource)->baseMdl = (Model*)func_00317450(uGpffffb52c);
             light.z = func_001ad8b0((*resource)->collisCtlTask);
             light.y = light.z;
