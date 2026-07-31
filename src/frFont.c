@@ -343,13 +343,13 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
     slot->block1 = data + offset;
     offset += slot->block1_size;
   } else {
-    slot->block0_size = 0;
-    slot->block0 = NULL;
-    slot->block1_size = 0;
-    slot->block1 = NULL;
+    ((volatile FrFontSlot *)slot)->block0_size = 0;
+    ((volatile FrFontSlot *)slot)->block0 = NULL;
+    ((volatile FrFontSlot *)slot)->block1_size = 0;
+    ((volatile FrFontSlot *)slot)->block1 = NULL;
   }
 
-  slot->flags = (u32)((char *)slot->font_data + offset);
+  ((volatile FrFontSlot *)slot)->flags = (u32)(data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
   slot->object = (u8 *)slot->font_data + offset +
@@ -3009,12 +3009,10 @@ void FUN_003b22a0(u32 *param_1)
   int iVar6;
 
   int lVar7;
-  u32 *node;
 
   
-  node = (u32 *)param_1[5];
 
-  if ((node != 0) && (*(int *)((u8 *)node + 0x1c) == 0)) {
+  if ((param_1[5] != 0) && (*(int *)(param_1[5] + 0x1c) == 0)) {
 
     *(u8 *)(param_1 + 7) = 0;
 

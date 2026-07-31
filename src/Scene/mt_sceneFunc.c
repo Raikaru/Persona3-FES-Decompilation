@@ -3236,6 +3236,18 @@ void FUN_003bb400(u32 param_1)
 }
 #define FUN_003bb400(...) ((void (*)(...))FUN_003bb400)(__VA_ARGS__)
 #undef FUN_003bb450
+/* W386 measurement: retail emits two consecutive sw $v0, 0x68($sp)
+ * stores of 1.0f from one lui $v0, 0x3f80; our source emits one.
+ * The eleven downstream scanner offset rows are the resulting one-slot
+ * shift, not independent defects. Measured source forms: plain duplicate
+ * (460 bytes), volatile-cast first (460), volatile-cast second (460), and
+ * pointer-to-volatile (472), against this function's 464-byte window.
+ * The pointer form preserves both stores only as addiu $v1,$sp,0x68 plus
+ * indirect sws, so it cannot match retail and exceeds the window. The stack
+ * map is matrix at sp+0x40, matrix.at.z at sp+0x68; axis3 starts at
+ * sp+0x80 (axis2 +0x90, axis1 +0xa0, transformed +0xd0, source +0xc0,
+ * axis0 +0xe0), with no local overlap at sp+0x68.
+ */
 // FUN_003BB450 NONMATCHING
 
 
@@ -3278,7 +3290,6 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   axis3.raw.xy = xy;
   axis3.raw.z = z;
 
-  matrix.at = (RwV3d){0.0f, 0.0f, 1.0f};
   matrix.at.z = 1.0f;
   matrix.up.y = 1.0f;
   matrix.right.x = 1.0f;
