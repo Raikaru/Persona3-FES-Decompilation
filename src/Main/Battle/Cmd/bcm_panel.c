@@ -752,7 +752,7 @@ void FUN_00224150(void)
 {
     u8* work;
     u8* records;
-    u8* slot0;
+    u32* slot0;
     u8* record;
     u8* quadTarget;
     u32 table0;
@@ -764,6 +764,7 @@ void FUN_00224150(void)
     s32 i;
     s32 j;
     void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
     void (**setQuad2)(u32*, u32, u32, u32, u32);
     void (**setQuad3)(u32*, u32, u32, u32, u32);
 
@@ -771,18 +772,18 @@ void FUN_00224150(void)
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
     records = work + 0x4660;
-    slot0 = work + 0x6080;
+    slot0 = (u32*)(work + 0x6080);
 
     resource = FUN_0021cca0(table0, 0x23);
     setState = (void (**)(u32, u32))D_00960090_abs;
     texture = FUN_0021cce0(resource);
     (*setState)(1, texture);
 
-    setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-    (*setQuad3)((u32*)(work + 0x4230), 4, 0, 1, 2);
-    (*setQuad3)((u32*)(work + 0x4230), 4, 0, 2, 3);
-    (*setQuad3)((u32*)(work + 0x4330), 4, 0, 1, 2);
-    (*setQuad3)((u32*)(work + 0x4330), 4, 0, 2, 3);
+    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad)((u32*)(work + 0x4230), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4230), 4, 0, 2, 3);
+    (*setQuad)((u32*)(work + 0x4330), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4330), 4, 0, 2, 3);
 
     if ((*(u32*)work & 4) != 0) {
         selected = *(u32*)(records + 0x18c0);
@@ -795,15 +796,15 @@ void FUN_00224150(void)
             (*setState)(1, texture);
             RpSkyRenderStateSet(3, (void*)0x717fb);
             RpSkyRenderStateSet(2, (void*)0x44);
-            (*setQuad3)((u32*)(records + 0x18f0), 4, 0, 1, 2);
-            (*setQuad3)((u32*)(records + 0x18f0), 4, 0, 2, 3);
+            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 1, 2);
+            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 2, 3);
             break;
         case 1:
             break;
         }
-        func_003b1360(*(u32*)(slot0 + 0x560), 1, 0);
-        if (*(u32*)(slot0 + 0x564) != 0) {
-            func_003b1360(*(u32*)(slot0 + 0x564), 1, 0);
+        func_003b1360(*(u32*)((u8*)slot0 + 0x560), 1, 0);
+        if (*(u32*)((u8*)slot0 + 0x564) != 0) {
+            func_003b1360(*(u32*)((u8*)slot0 + 0x564), 1, 0);
         }
     }
 

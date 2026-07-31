@@ -8669,7 +8669,6 @@ void func_0031c000(char* param_1,u32 param_2)
 
   u32 uVar5;
 
-  int iVar6;
 
 
   short auStack_20 [12];

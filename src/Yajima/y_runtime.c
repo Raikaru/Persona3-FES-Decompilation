@@ -7644,9 +7644,9 @@ void FUN_00439520(int param_1)
 u64 FUN_00439f60(int param_1,char param_2)
 
 {
+  u32 lVar3;
   int iVar1;
   int iVar2;
-  u32 lVar3;
   u32 uVar4;
   u32 lVar5;
 
@@ -12794,7 +12794,7 @@ void FUN_0044a630(int param_1)
   for (iVar3 = 0; iVar3 < 0x38; iVar3 = iVar3 + 1) {
     slot = (u32)DAT_006b46d0_abs;
     if (*(volatile s8 *)(slot + iVar3 * 6) != -1) {
-      *(u8 *)(0x18 + *(int *)(iVar1 + iVar3 * 4 + 8)) = 0xff;
+      *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 8) + 0x18) = 0xff;
     }
   }
   return;
