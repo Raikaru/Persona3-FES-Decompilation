@@ -771,4 +771,4 @@ void func_0021b4a0(u8* resource)
     work->loadedFlags |= 4;
     work->loadedFlags |= 8;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset

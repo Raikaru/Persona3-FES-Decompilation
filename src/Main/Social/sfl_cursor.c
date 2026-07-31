@@ -245,7 +245,7 @@ void FUN_0025a130(void)
   return;
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_0025A440
 
 

@@ -2148,7 +2148,7 @@ void func_0016e410(s16 socialLink, s8 level)
     }
     func_0016e5f0_call(socialLink, 0);
 }
-#pragma opt_propagation on
+#pragma opt_propagation reset
 
 // FUN_0016e5f0
 void func_0016e5f0(s32 socialLink, s8 progress)
@@ -4369,7 +4369,7 @@ void func_001779a0(void)
         }
     }
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_00177A40
 u8 func_00177a40(u32 param_1,int param_2)
 

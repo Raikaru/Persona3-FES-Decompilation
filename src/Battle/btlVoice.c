@@ -10608,7 +10608,7 @@ void func_002ef7e0(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002ef9d0
 int func_002ef9d0(void)

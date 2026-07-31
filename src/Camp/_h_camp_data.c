@@ -182,7 +182,7 @@ extern u32 FUN_00194b20();
 extern u32 FUN_00195290();
 extern void FUN_0019d3f0(const char*, s32);
 extern f32 FUN_0021ea00(s32);
-extern u32 FUN_0025f370();
+extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
 extern u32 FUN_0025f570();
 extern u32 FUN_0035ed20();
 extern u32 FUN_003b2cb0();
@@ -621,7 +621,7 @@ void* FUN_00167930(KwlnTask* task)
             }
             opacity = *(s16*)((u8*)work + 0x0c);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_0012ac60(100.0f, coordinates, persona, 0xff - opacity);
+            FUN_00129b30(100.0f, coordinates, persona, 0xff - opacity);
         }
         else {
             timer = *(s16*)((u8*)work + 0x04);
@@ -632,7 +632,7 @@ void* FUN_00167930(KwlnTask* task)
             }
             value = *(s16*)((u8*)work + 0x04);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_00129b30(100.0f, coordinates, persona, value);
+            FUN_0012ac60(100.0f, coordinates, persona, value);
         }
         if (complete) {
             if (transitionKind == 0) {
@@ -1365,6 +1365,9 @@ bool FUN_00169420(void)
     return 0;
 }
 
+/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_00169470 NONMATCHING
 undefined4 FUN_00169470(KwlnTask* param_1)
 {
@@ -1410,6 +1413,8 @@ undefined4 FUN_00169470(KwlnTask* param_1)
             }
             FUN_0013c780(work->list);
             work->state = 2;
+            work->result = (u32)(uintptr_t)FUN_0025f370(
+                task, work->resources[1]);
         }
         break;
     case 2:
@@ -1524,6 +1529,8 @@ undefined4 FUN_00169470(KwlnTask* param_1)
     return 0;
 }
 
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 // FUN_00169AE0
 void FUN_00169AE0(int param_1)
 {
@@ -1546,7 +1553,9 @@ void FUN_00169AE0(int param_1)
     work->archive = NULL;
     (*DAT_0096017c_abs)(work);
 }
+/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
 
+/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
 // FUN_00169B90 NONMATCHING
@@ -1600,6 +1609,8 @@ void FUN_00169B90(void* param_1, undefined8 param_2,
 
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
+/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
+#pragma opt_lifetimes on
 // FUN_0016A030 NONMATCHING
 undefined4 FUN_0016A030(void)
 {
@@ -1728,6 +1739,7 @@ undefined4 FUN_0016A030(void)
     }
     return 1;
 }
+#pragma opt_lifetimes reset
 
 // FUN_0016A6A0
 undefined4 FUN_0016A6A0(void)
@@ -1746,6 +1758,8 @@ undefined4 FUN_0016A6A0(void)
 }
 
 
+/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
+#pragma opt_lifetimes on
 // FUN_0016A700 NONMATCHING
 void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
                   void* param_4, s32 param_5)
@@ -1910,7 +1924,10 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
         }
     }
 }
+#pragma opt_lifetimes reset
 
+/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
+#pragma opt_propagation off
 // FUN_0016AF90 NONMATCHING
 void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
                   void* param_4, s32 param_5)
@@ -2080,6 +2097,7 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
     }
 
 }
+#pragma opt_propagation reset
 
 
 // FUN_0016BA00

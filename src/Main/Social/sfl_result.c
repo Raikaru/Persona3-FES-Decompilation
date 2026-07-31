@@ -2309,7 +2309,7 @@ u32 func_001fc3c0(DatPersonaWork* persona)
         result = *(u8*)current + DAT_007ce420[persona->id * 0xe + 3];
     return result;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_001FC590
 u32 func_001fc590(u8* event, void* target)

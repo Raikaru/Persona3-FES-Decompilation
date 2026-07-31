@@ -249,7 +249,7 @@ void FUN_0025b690(void)
 }
 #pragma pop
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_0025BBF0
 
 

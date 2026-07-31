@@ -4672,7 +4672,6 @@ void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
 #undef pointA
 }
 #pragma opt_dead_assignments reset
-#pragma opt_common_subs on
 #pragma pop
 
 // FUN_002b2800

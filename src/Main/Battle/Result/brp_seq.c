@@ -1125,7 +1125,7 @@ next:
 done:
     return 0;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002743A0
 void func_002743a0(void)

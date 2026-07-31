@@ -225,7 +225,7 @@ u32 datUnitInit(DatUnit* unit, u8 genus, u16 id)
     unit->flags |= UNIT_FLAG_ACTIVE;
     return true;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002ffb00
 u16 func_002ffb00(DatUnitGenusBase* genusBase)

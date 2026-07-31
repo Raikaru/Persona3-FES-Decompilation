@@ -386,6 +386,7 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
 
 /* Retail offsets 0x148c10-0x1496dc: comparison draws retain one packed
  * start coordinate per call and recompute the -100.0f x shift in place. */
+#pragma opt_loop_invariants on
 // FUN_00148C10 NONMATCHING
 void h_campDrawStatusComparison(int param_1)
 {
@@ -583,6 +584,7 @@ void h_campDrawStatusComparison(int param_1)
  * MATCH count unchanged), so plain locals are used here.
  * The resulting instruction layout remains NONMATCHING, but retains the
  * recovered second-loop entry update rather than silently omitting it. */
+#pragma opt_loop_invariants reset
 // FUN_001496F0 NONMATCHING
 void h_campDrawPersonaOverview(int param_1)
 {

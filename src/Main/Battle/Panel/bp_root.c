@@ -3280,7 +3280,7 @@ void FUN_002065A0(void)
     }
     FUN_00205D60();
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 // FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {

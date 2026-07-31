@@ -2034,7 +2034,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
   }
   return;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 // FUN_002ba3a0 NONMATCHING
 
@@ -2995,6 +2995,7 @@ nonzero:
 done:
   return side;
 }
+#pragma opt_rebuildconditionals reset
 
 
 

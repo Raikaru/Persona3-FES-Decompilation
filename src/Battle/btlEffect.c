@@ -2984,7 +2984,7 @@ void func_002be720(short *param_1,short param_2,short param_3,int param_4)
   }
   return;
 }
-#pragma opt_propagation on
+#pragma opt_propagation reset
 
 // FUN_002BE9D0
 void FUN_002BE9D0(void)
@@ -3806,7 +3806,6 @@ u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
   return DAT_007ce3f8[(original & 0xffff) * 0x2c + 8];
 }
 
-#pragma opt_propagation on
 /* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
 #pragma opt_loop_invariants on
 /* W357 measured func_002c0070: opt_lifetimes on stacked with existing opt_loop_invariants on, nd1570/1988B -> nd1565/1988B; window 2064B. */
@@ -7102,7 +7101,7 @@ u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4)
   return uVar8;
 }
 
-#pragma opt_propagation on
+#pragma opt_propagation reset
 /* W357 measured func_002c5fc0: opt_dead_assignments off nd574/828B -> nd547/828B; window 832B. */
 #pragma opt_dead_assignments off
 // FUN_002c5fc0 NONMATCHING
@@ -7193,7 +7192,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
   }
   return lVar8;
 }
-#pragma opt_dead_assignments on
+#pragma opt_dead_assignments reset
 
 /* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
 #pragma opt_common_subs off
@@ -7269,7 +7268,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
   }
   return lVar7;
 }
-#pragma opt_common_subs on
+#pragma opt_common_subs reset
 
 /* W322 rerun probe: func_002c65d0 with opt_loop_invariants on improved normalized_diff 191 -> 125 (object 1068/1072). */
 #pragma opt_loop_invariants on
@@ -7356,7 +7355,7 @@ u32 func_002c65d0(int param_1)
   uVar7 = 0;
   return uVar7;
 }
-#pragma opt_lifetimes off
+#pragma opt_lifetimes reset
 #pragma opt_loop_invariants off
 
 // FUN_002c6a00 NONMATCHING
@@ -13211,7 +13210,7 @@ u32 func_002d03e0(void)
   }
   return 1;
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 // FUN_002d05c0
 
