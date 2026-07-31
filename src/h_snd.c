@@ -403,7 +403,7 @@ void func_00108bc0(void)
         s32 status;
         s16* state;
 
-        for (i = 2; (s16)i < HSND_SLOT_COUNT; )
+        for (i = 2; i < HSND_SLOT_COUNT; )
         {
             channel = &sChannels[i];
             if (channel->active != false)
