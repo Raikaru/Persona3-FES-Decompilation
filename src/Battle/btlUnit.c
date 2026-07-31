@@ -808,7 +808,6 @@ f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
     return offset;
 }
 
-#pragma opt_lifetimes on
 // FUN_002826D0 NONMATCHING
 void func_002826d0(BtlUnit* unit)
 {
@@ -937,7 +936,6 @@ void func_002826d0(BtlUnit* unit)
     unit->unk_9cc &= (u16)~8;
 }
 
-#pragma opt_lifetimes reset
 // FUN_00282BC0
 void func_00282bc0(BtlUnit* unit)
 {
@@ -2114,6 +2112,7 @@ u32 btlUnit00282cd0(BtlUnit* unit)
     return 0;
 }
 
+#pragma opt_common_subs off
 // FUN_00282d40 NONMATCHING
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
@@ -2236,6 +2235,7 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_00283ba0
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {

@@ -45,7 +45,6 @@ static f32 sVPadMoveSpeed;
 
 // opt_dead_assignments off: normalized_diff 1663 -> 1636; object 3120 -> 3116 (window 3152)
 #pragma opt_dead_assignments off
-#pragma opt_common_subs off
 // FUN_001e05b0 NONMATCHING
 void* K_VPad_UpdateTask(KwlnTask* task)
 {
@@ -368,7 +367,6 @@ void* K_VPad_UpdateTask(KwlnTask* task)
 
 }
 // FUN_001e1200
-#pragma opt_common_subs reset
 #pragma opt_dead_assignments reset
 void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {

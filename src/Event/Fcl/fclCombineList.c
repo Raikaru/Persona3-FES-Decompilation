@@ -2404,7 +2404,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
 {
 
-  int iVar1;
+  u8 *iVar1;
 
   s32 sVar2;
 
@@ -2414,7 +2414,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
   
 
-  iVar1 = *(int *)(param_2 + 0x14);
+  iVar1 = *(u8 **)(param_2 + 0x14);
 
   switch(*(u32 *)(iVar1 + 0xc)) {
   case 0:

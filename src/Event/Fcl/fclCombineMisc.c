@@ -822,7 +822,6 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
-#pragma opt_propagation off
 // FUN_003D6200 NONMATCHING
 
 
@@ -972,7 +971,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
-#pragma opt_propagation reset
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1660,6 +1658,7 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
+#pragma opt_strength_reduction off
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 
@@ -1745,6 +1744,7 @@ LAB_003d7430:
 
 }
 
+#pragma opt_strength_reduction reset
 // FUN_003D74F0 NONMATCHING
 
 

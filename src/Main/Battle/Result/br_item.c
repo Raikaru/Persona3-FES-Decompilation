@@ -461,7 +461,9 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
  * The two geometry coordinates at the tail are integer-to-float conversions.
  * Ascending case labels preserve retail's case-0 body layout and dispatch order.
  * The expanded switch/tail reconstruction is intentional despite residual codegen differences.
- */
+*/
+/* W331: opt_propagation off shrinks FUN_0025DA30 4912 -> 4856 (window 4880); retained for window. */
+#pragma opt_propagation off
 // FUN_0025DA30 NONMATCHING
 void FUN_0025da30(void)
 
@@ -1036,6 +1038,7 @@ void FUN_0025da30(void)
   return;
 
 }
+#pragma opt_propagation reset
 
 // FUN_0025ED40 NONMATCHING
 

@@ -1998,7 +1998,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
                  (u8*)&camera->pos,
                  (u8*)camera + 0x100,
                  3);
-    radius1 = (radius1 > radius2) ? radius1 : radius2;
+    if (!(radius1 > radius2)) radius1 = radius2;
     FUN_002a3e80_side(camera->action, &center1, (f32*)&center2, radius1, 3);
 }
 
@@ -2216,7 +2216,6 @@ typedef struct BtlCameraTargetingWork
 } BtlCameraTargetingWork;
 
 
-#pragma opt_dead_assignments off
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
@@ -2411,7 +2410,6 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     FUN_002a3110((u16*)camera, 10.0f);
 }
 
-#pragma opt_dead_assignments reset
 // FUN_002a8150 NONMATCHING
 void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
                                  u32 useCurrentTarget)
@@ -3912,6 +3910,7 @@ void btlCameraNoOp(void)
 {
 }
 
+#pragma opt_dead_assignments off
 // FUN_002b1060 NONMATCHING
 
 void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
@@ -4101,6 +4100,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
     FUN_002a3110((u16*)camera, param_2);
 }
 
+#pragma opt_dead_assignments reset
 // FUN_002b17a0 NONMATCHING
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
@@ -9035,7 +9035,7 @@ void func_002acf90(BtlCamera* camera, long unused)
     } else {
         modeRaw = 3;
     }
-    mode = modeRaw & 0xffff;
+    mode = modeRaw;
     distance = FUN_00280870(mode, 1, (void*)&scratch.f140, (void*)&scratch.f14c, 0, 0);
     scratch.f144 = scratch.f14c * 0.75f;
     radius = distance /

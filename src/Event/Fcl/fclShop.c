@@ -3540,7 +3540,6 @@ u64 FUN_003e9a90(u64 param_1,u64 param_2)
 
 }
 
-#pragma opt_lifetimes on
 // FUN_003E9AF0 NONMATCHING
 
 
@@ -4116,7 +4115,6 @@ u8 * FUN_003e9af0(u32 param_1,u32 param_2)
 
 }
 
-#pragma opt_lifetimes reset
 // FUN_003EA4D0
 u64 FUN_003ea4d0(u64 unused, u64 handle)
 {
