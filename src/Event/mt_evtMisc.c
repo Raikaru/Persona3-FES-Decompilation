@@ -4557,6 +4557,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_common_subs off
 // FUN_0038B960 NONMATCHING
 
 
@@ -4721,6 +4722,7 @@ void FUN_0038b960(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0038BC70 NONMATCHING
 
 

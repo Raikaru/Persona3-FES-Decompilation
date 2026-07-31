@@ -4080,6 +4080,7 @@ u16 func_002bde10(int unit, u16* output)
 #pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants on
 // FUN_002bdfb0 NONMATCHING
 
 static u32 func_002bdfb0(int state)
@@ -4165,6 +4166,7 @@ static u32 func_002bdfb0(int state)
   return result;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002BE2E0
 void FUN_002BE2E0(void)
 {

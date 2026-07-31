@@ -2668,6 +2668,7 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
 }
 
+#pragma opt_common_subs off
 // FUN_003F2940 NONMATCHING
 
 
@@ -2873,6 +2874,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
 }
 
+#pragma opt_common_subs reset
 // FUN_003F2D60
 
 

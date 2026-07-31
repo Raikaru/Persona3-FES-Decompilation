@@ -1592,6 +1592,7 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
     }
 }
 
+#pragma opt_common_subs off
 // FUN_00126710 NONMATCHING
 #pragma push
 /* opt_loop_invariants on: nd281/620B off -> nd147/624B on; retained. */
@@ -1683,6 +1684,7 @@ static inline void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_001269A0 NONMATCHING
 void* h_campStatusUpdatePartsTask(KwlnTask* task)
 {
