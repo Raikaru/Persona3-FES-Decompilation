@@ -1516,6 +1516,7 @@ void* func_0018db20(KwlnTask* task)
             s16 pcId = object->pcId;
             GsTransition* transition = (GsTransition*)object->transition;
             void* atlas;
+            void* unused;
 
             if (datGetScenarioMode() != 0)
             {
@@ -1533,26 +1534,26 @@ void* func_0018db20(KwlnTask* task)
                 }
             }
             atlas = object->atlases[pcId];
-            gsDrawSprite(atlas, 3, transition->alpha,
-                         transition->position.valueF[0] + 20.0f,
-                         transition->position.valueF[1] + 18.0f,
-                         transition->depth);
-            gsDrawSprite(atlas, 1, transition->alpha,
-                         transition->position.valueF[0] + 20.0f,
-                         transition->position.valueF[1] + 18.0f,
-                         transition->depth);
-            gsDrawSprite(object->sprite2c, 0, transition->alpha,
-                         transition->position.valueF[0] + 44.0f,
-                         transition->position.valueF[1] + 39.0f,
-                         transition->depth);
-            gsDrawSprite(object->sprite2c, 3, transition->alpha,
-                         transition->position.valueF[0] + 50.0f,
-                         transition->position.valueF[1] + 51.0f,
-                         transition->depth);
-            gsDrawSprite(object->sprite34, 0, transition->alpha,
-                         transition->position.valueF[0] + 27.0f,
-                         transition->position.valueF[1] + 22.0f,
-                         transition->depth);
+            func_001159f0(unused, atlas, 3, *(u8*)&transition->alpha,
+                          transition->position.valueF[0] + 20.0f,
+                          transition->position.valueF[1] + 18.0f,
+                          transition->depth);
+            func_001159f0(unused, atlas, 1, *(u8*)&transition->alpha,
+                          transition->position.valueF[0] + 20.0f,
+                          transition->position.valueF[1] + 18.0f,
+                          transition->depth);
+            func_001159f0(unused, object->sprite2c, 0, *(u8*)&transition->alpha,
+                          transition->position.valueF[0] + 44.0f,
+                          transition->position.valueF[1] + 39.0f,
+                          transition->depth);
+            func_001159f0(unused, object->sprite2c, 3, *(u8*)&transition->alpha,
+                          transition->position.valueF[0] + 50.0f,
+                          transition->position.valueF[1] + 51.0f,
+                          transition->depth);
+            func_001159f0(unused, object->sprite34, 0, *(u8*)&transition->alpha,
+                          transition->position.valueF[0] + 27.0f,
+                          transition->position.valueF[1] + 22.0f,
+                          transition->depth);
             break;
         }
         case 2:
