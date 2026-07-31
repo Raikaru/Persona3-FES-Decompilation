@@ -3156,7 +3156,6 @@ void* func_00183410(KwlnTask* task)
 /* W357 measured opt_propagation off: without nd709/object920, with nd591/object916; window 928; retained. */
 #pragma opt_propagation off
 #pragma opt_common_subs off
-#pragma opt_common_subs off
 // FUN_00183840 NONMATCHING
 void func_00183840(void* resource,
                    s32 alpha,
@@ -3288,7 +3287,6 @@ void func_00183840(void* resource,
 #pragma opt_propagation reset
 /* W357 measured opt_propagation off: without nd462/object892, with nd420/object888; window 896; retained. */
 #pragma opt_propagation off
-#pragma opt_common_subs reset
 #pragma opt_common_subs reset
 // FUN_00183BE0 NONMATCHING
 void func_00183be0(void* resource,
@@ -7269,6 +7267,7 @@ void func_0018c780(KwlnTask* task)
 
 /* W357 measured opt_common_subs off: without nd815/object1152, with nd782/object1088; window 1232; retained. */
 #pragma opt_common_subs off
+#pragma opt_propagation off
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
@@ -7303,6 +7302,7 @@ void func_0018ce50(KwlnTask* task)
 #pragma opt_common_subs reset
 /* W357 measured opt_propagation off: without nd1487/object2016, with nd1359/object1884; window 2048; retained. */
 #pragma opt_propagation off
+#pragma opt_propagation reset
 // FUN_0018D320 NONMATCHING
 void func_0018d320(KwlnTask* task)
 {
