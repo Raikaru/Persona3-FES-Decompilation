@@ -200,7 +200,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
         } while (i != 0);
     }
     axisPtr = (RwV3d*)((u8*)&axis + 0);
-    axisPtr = (RwV3d*)((u8*)(uintptr_t)&axis + 0);
+    axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = D_00683AA0;
     *(u64*)axisPtr = axisXY;
     axisPtr->z = axisZ;
@@ -591,7 +591,7 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
     }
 }
 
-// FUN_001d6b10 NONMATCHING
+// FUN_001d6b10
 HCdvd* func_001d6b10(void)
 {
     char path[128];

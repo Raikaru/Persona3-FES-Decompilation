@@ -4303,7 +4303,7 @@ u32 FUN_00429d40(u32 param_1,u64 param_2)
       puVar4[0x9ff] = 0;
 
       puVar4[0xb28] = 7;
-      puVar4[0xb29] = 0x12;
+      puVar4[0xb29] = 0x7e / 7;
 
       *(s16 *)(puVar4 + 0xb90) = -1;
 
@@ -4895,7 +4895,6 @@ void FUN_0042ac60(int param_1,int param_2)
   int cVar2;
   u32 uVar3;
   int *piVar4;
-  u8 *puVar5;
   int iVar5;
   int iVar6;
   int iVar8;
@@ -4908,13 +4907,13 @@ void FUN_0042ac60(int param_1,int param_2)
   cVar2 = *(char *)((int)piVar4 + *(short *)(iVar1 + 0xb90) * 0x28 + 4);
   iVar8 = 0;
   iVar7 = 0;
-  for (; piVar4 = (int *)(iVar6 + iGpffffb5c0), iVar8 < *piVar4; iVar8 = iVar8 + 1) {
-    if (cVar2 == piVar4[iVar8 * 10 + 1]) {
-      puVar5 = DAT_0095bfe0_abs;
+  for (; iVar8 < *(int *)(iVar6 + iGpffffb5c0); iVar8 = iVar8 + 1) {
+    piVar4 = (int *)(iVar6 + iGpffffb5c0 + iVar8 * 0x28);
+    if (cVar2 == piVar4[1]) {
       for (iVar5 = 0; iVar5 < 0xff; iVar5 = iVar5 + 1) {
-        puVar5[iVar5] = 0;
+        DAT_0095bfe0_abs[iVar5] = 0;
       }
-      sprintf(DAT_0095bfe0_abs,DAT_006b44b0,param_2,*(u16 *)((int)piVar4 + iVar8 * 0x28 + 10));
+      sprintf(DAT_0095bfe0_abs,DAT_006b44b0,param_2,*(u16 *)((int)piVar4 + 10));
       uVar3 = FUN_004d1260(DAT_0095bfe0_abs,0);
       *(u32 *)(iVar1 + iVar7 * 4 + 0x28) = uVar3;
       iVar7 = iVar7 + 1;

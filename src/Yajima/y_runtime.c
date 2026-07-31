@@ -7644,14 +7644,14 @@ void FUN_00439520(int param_1)
 u64 FUN_00439f60(int param_1,char param_2)
 
 {
+  int iVar2;
   u32 lVar3;
   int iVar1;
-  int iVar2;
   u32 uVar4;
   u32 lVar5;
 
-  iVar2 = *(int *)(*(int *)(DAT_0087190c_abs + param_2 * 0x1c0) + 0x3c);
   iVar1 = iGpffffb5a0;
+  iVar2 = *(int *)(*(int *)(DAT_0087190c_abs + param_2 * 0x1c0) + 0x3c);
   lVar3 = FUN_001c6720_f32(*(u32 *)(iVar2 + 0x24),*(float *)(iVar1 + 0x14));
   if (*(char *)(iVar2 + 0x1216) == '\0') {
     if (lVar3 != 0) {
