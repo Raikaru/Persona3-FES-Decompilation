@@ -183,6 +183,9 @@ void FUN_00177d40(void)
     PTRP(0x00836798) = (u8*)(*allocator)(300, 2, 0x40000);
 }
 
+/* W357 measured opt_common_subs off: without nd3325/object4636, with nd3176/object4704; window 4736 (under). */
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_00177db0 NONMATCHING
 void* FUN_00177db0(u32 saveType, s32* saveSize)
 {
@@ -304,6 +307,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     printf("save image size %d\n", resultSize);
     return buffer;
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
 // FUN_00179030
 void FUN_00179030(u32 saveType, void* stream)
@@ -859,6 +864,9 @@ void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
     }
 }
 
+/* W357 measured opt_loop_invariants on: without nd121/object296, with nd55/object296; window 304 (under). */
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_0017ac60 NONMATCHING
 void FUN_0017ac60(u32 code)
 {
@@ -915,6 +923,8 @@ void FUN_0017ac60(u32 code)
         i++;
     }
 }
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 
 /* Removing this loses FUN_0017ad90 (MATCH nd0 -> MISMATCH nd5) - measured W161. */
 #pragma optimization_level 1
@@ -1453,7 +1463,9 @@ s32 FUN_0017c2f0(const u32* left, const u32* right)
     return FUN_00403740(*leftValue) - FUN_00403740(*rightValue);
 }
 
-// FUN_0017c350 NONMATCHING
+/* W357 measured opt_loop_invariants on: without nd23/object400, with nd0/object400; window 400 (exact MATCH). */
+#pragma opt_loop_invariants on
+// FUN_0017c350
 void FUN_0017c350(void)
 {
     void* (**allocator)(u32, u32);
@@ -1492,6 +1504,7 @@ void FUN_0017c350(void)
     (*releaser)(sorted);
     (*releaser)(source);
 }
+#pragma opt_loop_invariants reset
 
 /* Removing this loses FUN_0017c4e0 (MATCH nd0 -> MISMATCH nd22) - measured W161. */
 #pragma optimization_level 1
@@ -1656,6 +1669,7 @@ void FUN_0017c960(const void* record)
     memcpy(DAT_00836200 + *(const u16*)(source + 2) * 0x34 + 0xc1c, source, 0x34);
 }
 
+/* W357 measured opt_lifetimes on: without nd42/object796, with nd15/object796; window 800 (under). */
 #pragma opt_lifetimes on
 // FUN_0017ca10 NONMATCHING
 s32 FUN_0017ca10(const void* record)
@@ -1712,8 +1726,8 @@ s32 FUN_0017ca10(const void* record)
     }
     return 0;
 }
-
 #pragma opt_lifetimes reset
+
 // FUN_0017cd30
 void* FUN_0017cd30(void* record)
 {

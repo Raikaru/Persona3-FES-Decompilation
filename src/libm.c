@@ -32,14 +32,6 @@ extern u32 FUN_005318f8_u32(u64);
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
 extern u64 FUN_0052f7d0(u64, u64, u64 *);
-#pragma alias FUN_00531170_long FUN_00531170
-extern unsigned long FUN_00531170_long(unsigned long, unsigned long);
-#pragma alias FUN_00531230_long FUN_00531230
-extern unsigned long FUN_00531230_long(unsigned long, unsigned long);
-#pragma alias FUN_00531720_long FUN_00531720
-extern unsigned long FUN_00531720_long(u32);
-#pragma alias FUN_005318a0_long FUN_005318a0
-extern float FUN_005318a0_long(unsigned long);
 
 static const float sAtanHi[] = {
     0.463647603989f,
@@ -161,11 +153,15 @@ float atanf(float x)
 // FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
+    u32 ix;
     s32 n;
     float y[2];
-    if ((*(u32*)&x & 0x7FFFFFFF) <= 0x3F490FD8)
+
+    ix = *(u32*)&x;
+    ix &= 0x7FFFFFFF;
+    if (ix <= 0x3F490FD8)
     {
-        goto small_argument;
+        return func_0052d2d8(x, 0.0f);
     }
 
     n = func_0052c000(x, y);
@@ -177,11 +173,9 @@ float cosf(float x)
         return -func_0052dc48(y[0], y[1], 1);
     case 2:
         return -func_0052d2d8(y[0], y[1]);
+    default:
+        return func_0052dc48(y[0], y[1], 1);
     }
-    return func_0052dc48(y[0], y[1], 1);
-
-small_argument:
-    return func_0052d2d8(x, 0.0f);
 }
 #pragma optimization_level 2
 
