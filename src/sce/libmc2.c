@@ -6941,7 +6941,7 @@ void FUN_0051e118(u8 *param_1,int param_2)
     } while (param_2 != -1);
   }
 }
-#pragma opt_lifetimes off
+#pragma opt_lifetimes reset
 #pragma optimization_level 2
 #pragma schedule on
 #pragma tailcall on
