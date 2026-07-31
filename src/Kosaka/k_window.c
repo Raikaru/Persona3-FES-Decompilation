@@ -1549,13 +1549,16 @@ void func_001a4380(KwlnTask* task, s32 id)
     s32 oldCount;
     manager = KWindow_GetManager(task);
     entry = manager->entries;
-    if (id == -1)
+    if (id != -1)
     {
-        return;
+        while (entry->id != id)
+        {
+            entry = entry->next;
+        }
     }
-    while (entry->id != id)
+    else
     {
-        entry = entry->next;
+        entry = NULL;
     }
     if (entry == NULL)
     {

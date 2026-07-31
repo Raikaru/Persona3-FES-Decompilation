@@ -3499,16 +3499,16 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
         (param_4 != '\0')) {
       fVar6 = param_5[1];
       param_2 = fStack_4 + param_2;
-      uVar3 = func_0021c3f0(1);
-      uVar3 = func_0021cca0(uVar3,1);
+      uVar3 = func_0021c3f0_u32(1);
+      uVar3 = func_0021cca0_u32(uVar3,1);
       uVar4 = func_0021cce0(uVar3);
       iVar5 = (int)uVar3;
       fVar7 = (fStack_8 + param_1) - (float)(*(int *)(iVar5 + 0xc) >> 1);
       func_002bc9c0_long(fVar7,param_2,(float)*(int *)(iVar5 + 0xc),(float)*(int *)(iVar5 + 0x10),
                    (float)*(int *)(iVar5 + 0x14),(float)*(int *)(iVar5 + 0x18),0xffffffffffffffff,
                    uVar4);
-      uVar3 = func_0021c3f0(5);
-      uVar3 = func_0021cca0(uVar3,4);
+      uVar3 = func_0021c3f0_u32(5);
+      uVar3 = func_0021cca0_u32(uVar3,4);
       uVar4 = func_0021cce0(uVar3);
       iVar5 = (int)uVar3;
       func_002bc9c0_long(fVar7 + 8.0f,param_2 + 4.0f,(float)(int)((float)*(int *)(iVar5 + 0xc) * fVar6),

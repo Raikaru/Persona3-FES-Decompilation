@@ -311,7 +311,6 @@ u64 FUN_0052e9b8(u32 param_1)
   return FUN_00529578(param_1);
 }
 #pragma tailcall off
-#pragma opt_loop_invariants on
 // FUN_0052E9D0 NONMATCHING
 #pragma tailcall on
 u32 FUN_0052e9d0(u32 param_1, u32 param_2)
@@ -319,7 +318,7 @@ u32 FUN_0052e9d0(u32 param_1, u32 param_2)
   return FUN_005296f0(param_1, param_2);
 }
 #pragma tailcall off
-#pragma opt_loop_invariants reset
+#pragma opt_common_subs off
 // FUN_0052E9E8 NONMATCHING
 #pragma tailcall on
 float FUN_0052e9e8(float param_1)
@@ -327,6 +326,7 @@ float FUN_0052e9e8(float param_1)
   return FUN_0052abd8(param_1);
 }
 #pragma tailcall off
+#pragma opt_common_subs reset
 // FUN_0052EA00 NONMATCHING
 #pragma tailcall on
 float FUN_0052ea00(float param_1)
