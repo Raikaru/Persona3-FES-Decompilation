@@ -1781,9 +1781,8 @@ void FUN_001365b0(KwlnTask* task)
             }
             pending = *(void**)(slot + 0x16c);
             if (pending != NULL) {
-                slot = work + i * 4 + 0x16c;
                 FUN_004d0f00(pending);
-                *(void**)slot = NULL;
+                *(void**)(work + i * 4 + 0x16c) = NULL;
             }
         }
     }

@@ -4457,7 +4457,7 @@ void FUN_002d7560(BtlAction *action)
         if (unit->genus == 1)
         {
             s32 outFlag;
-            if (unit->charId > 0x14f)
+            if (unit->charId >= 0x150)
                 FUN_0019d3f0((const char *)DAT_00697880 + 0x60, 0x37e);
             if ((action->unk_1a & 0x20) == 0)
             {
@@ -4475,33 +4475,29 @@ void FUN_002d7560(BtlAction *action)
                 amount = (u32)(value * timeScale);
                 BTLT_B32(0xbfc) += amount;
 
-                personaId = FUN_0030bde0(unit->datUnit, &outFlag);
-                if ((outFlag != 1) && (action->target.rewardPersonaId != 0) &&
-                    ((u8)FUN_002ffbc0(100) < action->target.rewardPersonaChance))
-                    personaId = action->target.rewardPersonaId;
                 if (personaId != 0)
                 {
-                    struct BtlRewardPersona *rewards;
+                    u8 *rewards;
                     found = 0;
-                    rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
+                    rewards = DAT_007ce3ec;
                     for (i = 0; i < 3; i++)
                     {
-                        if (rewards[i].personaId == personaId)
+                        if (*(u16 *)(rewards + i * 8 + 0xbe0) == personaId)
                         {
-                            rewards[i].count++;
+                            (*(u32 *)(rewards + i * 8 + 0xbe4))++;
                             found = 1;
                             break;
                         }
                     }
                     if (found == 0)
                     {
-                        rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
+                        rewards = DAT_007ce3ec;
                         for (i = 0; i < 3; i++)
                         {
-                            if (rewards[i].personaId == 0)
+                            if (*(u16 *)(rewards + i * 8 + 0xbe0) == 0)
                             {
-                                rewards[i].personaId = personaId;
-                                rewards[i].count = 1;
+                                *(u16 *)(rewards + i * 8 + 0xbe0) = personaId;
+                                *(u32 *)(rewards + i * 8 + 0xbe4) = 1;
                                 BTLT_B32(0xbf8) = i + 1;
                                 break;
                             }
@@ -5060,24 +5056,24 @@ void FUN_002db2a0(u32 param_1)
     switch (index)
     {
     case 0:
-        threshold = btlTargetRandomDelay(2, 2);
+        threshold = (u16)(datCalcRand(2) + 2);
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         *(u32*)(iGpffffb6fc + 0xa10) = 0;
         break;
     case 1:
-        threshold = btlTargetRandomDelay(2, 1);
+        threshold = (u16)(datCalcRand(1) + 2);
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     case 2:
         if (datGetFlag(0x140) != 0)
         {
-            threshold = btlTargetRandomDelay(2, 2);
+            threshold = (u16)(datCalcRand(2) + 2);
         }
         else if (datGetFlag(0x141) != 0)
         {
-            threshold = btlTargetRandomDelay(3, 2);
+            threshold = (u16)(datCalcRand(2) + 3);
         }
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;

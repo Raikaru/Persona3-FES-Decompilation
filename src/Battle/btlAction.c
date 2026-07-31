@@ -6537,10 +6537,10 @@ void btlActionInitStateEscapeMes(BtlAction* action)
     action->unk_488 = 0;
     ACTION_U16(action, 0x48c) = 0xc;
 }
-// FUN_00296660 NONMATCHING
+// FUN_00296660
 void btlActionUpdateStateEscapeMes(BtlAction* action)
 {
-
+    BtlPacket* packet;
     if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) != NULL)
     {
         return;
@@ -6564,11 +6564,16 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
             *(s16*)action->unkData4 -= 1;
         }
     }
-    if (action->unk_488 == 0 &&
-        *(s16*)action->unkData4 == -1 &&
-        FUN_001ff2b0())
+    if (action->unk_488 == 0)
     {
-        BtlPacket* packet;
+        if (*(s16*)action->unkData4 != -1)
+        {
+            return;
+        }
+        if (FUN_001ff2b0() == 0)
+        {
+            return;
+        }
         FUN_001ff2f0();
         packet = FUN_002e41d0();
         packet->actionUID = action->uid;
@@ -6589,7 +6594,7 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
     {
         btlPacketRegister(btlVoice002e2be0(action, 3, 0, 0, 0), BTLPACKET_TYPE_1);
         action->unk_18 |= 0x80;
-        btlActionSetState(action, action->target.commandId);
+        btlActionSetState(action, action->unk_14);
     }
 }
 
@@ -7893,7 +7898,7 @@ void btlActionUpdateStateExit(BtlAction* action)
                     {
                         for (i = 0; i < 3; i++)
                         {
-                            group = *(DatUnitGenusBase**)((u8*)gBtl +
+                            group = *(DatUnitGenusBase**)(battleBase +
                                                           (u32)(u16)i * 8 +
                                                           0xbc4);
                             if (group != NULL &&
@@ -7923,12 +7928,12 @@ void btlActionUpdateStateExit(BtlAction* action)
                 if (datCalcIsDead(unit->datUnit, 0) != 0)
                 {
                     datUnitEcRemoveEnemy(gBtl->startInfo.enmUnits,
-                                         unit->datUnit);
+                                         action->unit->datUnit);
                 }
                 break;
         }
 
-        FUN_002878d0(unit);
+        FUN_002878d0(action->unit);
         action->unit = NULL;
         action->unk_1a &= ~1;
         FUN_001fdd40();
