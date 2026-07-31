@@ -6,6 +6,9 @@
 #include "h_maestro.h"
 #include "libm.h"
 
+
+
+
 typedef struct FadeDayEpl FadeDayEpl;
 typedef struct FadeDayTmx FadeDayTmx;
 typedef struct HSfdAsyncEntry HSfdAsyncEntry;
@@ -881,3 +884,457 @@ u32 H_Fade_IsFadeOutDone()
 
     return true;
 }
+
+
+#include "h_snd.h"
+#include "Kosaka/k_assert.h"
+#include "rw/rwplcore.h"
+#include "temporary.h"
+
+#define HSND_CHANNEL_COUNT 6
+#define HSND_SLOT_COUNT    6
+typedef struct HsndBackendControl
+{
+    u32 flags;               /* 0x00 */
+    u32 voiceCount;          /* 0x04 */
+    u32 timeout;             /* 0x08 */
+    u32 padC;                /* 0x0C */
+    u32 pending;             /* 0x10 */
+    u8 class;                /* 0x14 */
+    u8 pad15[3];
+    u32 data18;              /* 0x18 */
+    u32 data1C;              /* 0x1C */
+    u32 data20;              /* 0x20 */
+    u32 data24;              /* 0x24 */
+} HsndBackendControl;
+
+
+
+static HsndChannel sChannels[16];
+static HsndSlotWork sSlotWork[HSND_SLOT_COUNT];
+#pragma alias sSlotWork_alt sSlotWork
+extern u8 sSlotWork_alt[];
+static HsndBackendControl sBackendControls[HSND_CHANNEL_COUNT];
+static s16 sBgmRestartCountdown;
+ #pragma alias sBgmRestartCountdown_alt sBgmRestartCountdown
+ extern s16 sBgmRestartCountdown_alt[];
+static void* sChannelData0[HSND_CHANNEL_COUNT];
+static void* sChannelData1[HSND_CHANNEL_COUNT];
+static void* sChannelData2[HSND_CHANNEL_COUNT];
+static void* sChannelData3[HSND_CHANNEL_COUNT];
+static u8 sChannelMap[HSND_CHANNEL_COUNT][8];
+
+/* Retail D_005D4014: BGM id is the direct 12-byte-record index. */
+static const char* const sBgmAdxStrings[116][3] =
+{
+    {"01.ADX", NULL, NULL},
+    {"01.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"19.ADX", NULL, NULL},
+    {"20.ADX", NULL, NULL},
+    {"21.ADX", NULL, NULL},
+    {"22.ADX", NULL, NULL},
+    {"23.ADX", NULL, NULL},
+    {"24.ADX", NULL, NULL},
+    {"25.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"27.ADX", NULL, NULL},
+    {"28.ADX", NULL, NULL},
+    {"29.ADX", NULL, NULL},
+    {"30.ADX", NULL, NULL},
+    {"31.ADX", NULL, NULL},
+    {"32.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"35.ADX", NULL, NULL},
+    {"36.ADX", NULL, NULL},
+    {"37.ADX", NULL, NULL},
+    {"38.ADX", NULL, NULL},
+    {"39.ADX", NULL, NULL},
+    {"40.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"43.ADX", NULL, NULL},
+    {"44.ADX", NULL, NULL},
+    {"45.ADX", NULL, NULL},
+    {"46.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"50.ADX", NULL, NULL},
+    {"51.ADX", NULL, NULL},
+    {"52.ADX", NULL, NULL},
+    {"53.ADX", NULL, NULL},
+    {"54.ADX", NULL, NULL},
+    {"55.ADX", NULL, NULL},
+    {"56.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"60.ADX", NULL, NULL},
+    {"61.ADX", NULL, NULL},
+    {"62.ADX", NULL, NULL},
+    {"63.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"70.ADX", NULL, NULL},
+    {"71.ADX", NULL, NULL},
+    {"72.ADX", NULL, NULL},
+    {"73.ADX", NULL, NULL},
+    {"74.ADX", NULL, NULL},
+    {"75.ADX", NULL, NULL},
+    {"76.ADX", NULL, NULL},
+    {"77.ADX", NULL, NULL},
+    {"78.ADX", NULL, NULL},
+    {"79.ADX", NULL, NULL},
+    {"80.ADX", NULL, NULL},
+    {"81.ADX", NULL, NULL},
+    {"82.ADX", NULL, NULL},
+    {"83.ADX", NULL, NULL},
+    {"84.ADX", NULL, NULL},
+    {"85.ADX", NULL, NULL},
+    {"86.ADX", NULL, NULL},
+    {"87.ADX", NULL, NULL},
+    {"88.ADX", NULL, NULL},
+    {"89.ADX", NULL, NULL},
+    {"90.ADX", NULL, NULL},
+    {"91.ADX", NULL, NULL},
+    {"92.ADX", NULL, NULL},
+    {"93.ADX", NULL, NULL},
+    {"94.ADX", NULL, NULL},
+    {"95.ADX", NULL, NULL},
+    {"96.ADX", NULL, NULL},
+    {"97.ADX", NULL, NULL},
+    {"98.ADX", NULL, NULL},
+    {"99.ADX", NULL, NULL},
+    {"100.ADX", NULL, NULL},
+    {"101.ADX", NULL, NULL},
+    {"102.ADX", NULL, NULL},
+    {"103.ADX", NULL, NULL},
+    {"104.ADX", NULL, NULL},
+    {"105.ADX", NULL, NULL},
+    {"106.ADX", NULL, NULL},
+    {"107.ADX", NULL, NULL},
+    {"108.ADX", NULL, NULL},
+    {"109.ADX", NULL, NULL},
+    {"110.ADX", NULL, NULL},
+    {"111.ADX", NULL, NULL},
+    {"112.ADX", NULL, NULL},
+    {"113.ADX", NULL, NULL},
+    {"114.ADX", NULL, NULL},
+    {"115.ADX", NULL, NULL},
+};
+
+/* ACSSND entry points used by the retail sound state machine. */
+typedef struct HsndInitParams
+{
+    f32 outputLevel;
+    u32 enabled;
+    u32 initialized;
+    u32 reserved;
+} HsndInitParams;
+
+static HsndInitParams sSndInitParams;
+
+extern const f32 DAT_007cad28;
+extern void func_0057f768(void* params);
+extern void func_0054cfe8(void);
+extern void func_0054d468(void);
+extern void func_005497b0(s32 frames);
+extern void* func_0054d080(void* control);
+extern void func_0054d250(void* handle, s32 value);
+extern void func_0054d2e0(void* handle, s32 value);
+extern void func_0054d4b8(s32 value);
+extern void func_0054d4f0(s32 value);
+extern void func_0054d528(s32 value);
+extern void* func_0054d030(void* control, void* data0, void* data1);
+extern void func_0054d220(void* handle, s32 frames);
+extern void func_0054d238(void* handle, s32 value);
+extern void func_0054d2b0(void* handle, s32 parameter);
+extern u32 D_00960178[];
+ #pragma alias H_Snd_FUN_00109df0_s16 H_Snd_FUN_00109df0
+ extern u32 H_Snd_FUN_00109df0_s16(s16 slotIndex);
+
+#define HSND_BACKEND_ALLOC(context, flags) \
+    (*(void* (**)(void*, u32))D_00960178)((context), (flags))
+
+// opt_loop_invariants on: func_00108740 normalized_diff 472 -> 451, object 1080/1152; off restores 472.
+#pragma opt_loop_invariants on
+// FUN_00108740 NONMATCHING
+void func_00108740(void)
+{
+    void* context;
+    void* backendData;
+    void* (*backendAlloc)(void*, u32);
+    s32 i;
+    HsndSlotWork* slotWork;
+
+    sSndInitParams.outputLevel = DAT_007cad28;
+    sSndInitParams.enabled = true;
+    sSndInitParams.initialized = true;
+    sSndInitParams.reserved = 0;
+    func_0057f768(&sSndInitParams);
+    func_0054cfe8();
+    func_0054d468();
+    func_005497b0(30);
+
+    memset(&sBackendControls[0], 0, sizeof(HsndBackendControl));
+    sBackendControls[0].class = 1;
+    sBackendControls[0].data18 = 0;
+    sBackendControls[0].data1C = 0;
+    sBackendControls[0].data20 = 0;
+    sBackendControls[0].flags = 3;
+    sBackendControls[0].voiceCount = 2;
+    sBackendControls[0].timeout = 0xBB80;
+    sBackendControls[0].pending = 1;
+    context = func_0054d080(&sBackendControls[0]);
+    backendAlloc = (void* (*)(void*, u32))D_00960178;
+    backendData = backendAlloc(context, 0x40000);
+    sChannelData0[0] = backendData;
+    sChannelData1[0] = context;
+    sChannels[0].handle = func_0054d030(&sBackendControls[0], backendData, context);
+    func_0054d238(sChannels[0].handle, true);
+    func_0054d220(sChannels[0].handle, 30);
+    func_0054d2b0(sChannels[0].handle, 0x23);
+    func_0054d250(sChannels[0].handle, 0xF);
+    func_0054d528(0x3C);
+    func_0054d4b8(0xF);
+    func_0054d4f0(0xB4);
+    func_0054d2e0(sChannels[0].handle, 10);
+
+    memset(&sBackendControls[2], 0, sizeof(HsndBackendControl));
+    sBackendControls[2].class = 2;
+    sBackendControls[2].data18 = 0;
+    sBackendControls[2].data1C = 0;
+    sBackendControls[2].data20 = 0;
+    sBackendControls[2].flags = 3;
+    sBackendControls[2].voiceCount = 1;
+    sBackendControls[2].timeout = 0x5DC0;
+    sBackendControls[2].pending = 1;
+    context = func_0054d080(&sBackendControls[2]);
+    sChannelData0[2] = backendAlloc(context, 0x40000);
+    sChannelData1[2] = context;
+    sChannels[2].handle = NULL;
+
+    memset(&sBackendControls[3], 0, sizeof(HsndBackendControl));
+    sBackendControls[3].class = 3;
+    sBackendControls[3].data18 = 0;
+    sBackendControls[3].data1C = 0;
+    sBackendControls[3].data20 = 0;
+    sBackendControls[3].flags = 2;
+    sBackendControls[3].voiceCount = 2;
+    sBackendControls[3].timeout = 0x5DC0;
+    sBackendControls[3].pending = 1;
+    context = func_0054d080(&sBackendControls[3]);
+    sChannelData0[3] = backendAlloc(context, 0x40000);
+    sChannelData1[3] = context;
+
+    sChannels[3].handle = NULL;
+    memset(&sBackendControls[4], 0, sizeof(HsndBackendControl));
+    sBackendControls[4].class = 3;
+    sBackendControls[4].data18 = 0;
+    sBackendControls[4].data1C = 0;
+    sBackendControls[4].data20 = 0;
+    sBackendControls[4].flags = 2;
+    sBackendControls[4].voiceCount = 2;
+    sBackendControls[4].timeout = 0x5DC0;
+    sBackendControls[4].pending = 1;
+    context = func_0054d080(&sBackendControls[4]);
+    sChannelData0[4] = backendAlloc(context, 0x40000);
+    sChannelData1[4] = context;
+
+    sChannels[4].handle = NULL;
+    slotWork = sSlotWork;
+    for (i = 0; i < HSND_SLOT_COUNT; i++)
+    {
+        slotWork[i].state = 0;
+        slotWork[i].completed = false;
+    }
+    for (i = 0; i < 16; i++)
+    {
+        sChannels[i].active = false;
+        sChannels[i].previousId = 0;
+        sChannels[i].state = HSND_CHANNEL_INACTIVE;
+        sChannels[i].resetId = HSND_BGM_NONE;
+    }
+    sBgmRestartCountdown = 0;
+}
+#pragma opt_loop_invariants reset
+
+extern void func_00540ec0(void);
+extern void func_0051db00(s32 group, s32 left, s32 right, s32 rear);
+extern void func_0054d060(void* handle);
+extern void* func_0054d030(void* control, void* data0, void* data1);
+extern void func_0054d0a0(void* handle, const char* name);
+extern void func_0054d0b8(void* handle, void* data, s16 id);
+extern void func_0054d0d0(void* handle, void* data0, void* data1);
+extern void func_0054d0e8(void* handle, void* data, s32 parameter);
+extern void func_0054d100(void* handle);
+extern void func_0054d118(void* handle, s32 value);
+extern s32 func_0054d130(void* handle);
+extern s32 func_0054d148(void* handle);
+extern void func_0054d1a8(void* handle, s32 value);
+extern void func_0054d208(void* handle, s32 enabled);
+extern void func_0054d220(void* handle, s32 frames);
+extern void func_0054d238(void* handle, s32 value);
+extern void func_0054d2b0(void* handle, s32 parameter);
+extern void func_0054d328(void* handle);
+extern void func_0054d3a8(void* handle, s32 value);
+extern void func_00102530(void* handle, const char* name);
+extern void func_001025c0(void* handle, const char* name);
+extern void func_001024a0(void* source, const char* name, s32 flags, void* callback);
+extern s32 func_0053c268(void* source);
+extern void func_0010d6f0(s16 param1, s16 param2);
+extern void func_0010d7b0(s16 param1, s16 param2, void* data0, u32 data0Size,
+                           void* data1, u32 data1Size, void* data2, u32 data2Size);
+extern s32 func_0010d910(s16 param1);
+extern void func_0010da70(s16 bank, s16 cue);
+extern void func_0010db60(s32 bank, s32 cue, s32 variant, s32 pan);
+extern char D_007E39F0[];
+extern u32 D_00960184[];
+#define HSND_ALLOC(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags)
+
+static HsndChannel* H_Snd_GetChannel(s32 index)
+{
+    if (index < 0 || index >= HSND_CHANNEL_COUNT)
+    {
+        return NULL;
+    }
+
+    return &sChannels[index];
+}
+
+static void H_Snd_ClearChannel(HsndChannel* channel)
+{
+    channel->active = false;
+    channel->state = HSND_CHANNEL_INACTIVE;
+    channel->id = HSND_BGM_NONE;
+}
+
+static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
+{
+    if (channel->handle != NULL)
+    {
+        func_0054d220(channel->handle, frames);
+    }
+}
+
+// FUN_00108BC0 NONMATCHING
+void func_00108bc0(void)
+{
+    func_00540ec0();
+    func_0051db00(3, 0x80, 0x7F, 0x7F);
+
+    {
+        s16 i;
+
+        for (i = 0; i < HSND_SLOT_COUNT; i++)
+        {
+            func_00108e80(&sSlotWork[i]);
+        }
+    }
+
+    if (sChannels[0].active != false)
+    {
+        if (sChannels[0].gate != false && sBgmRestartCountdown_alt[0] != 0)
+        {
+            sBgmRestartCountdown_alt[0]--;
+            if (sBgmRestartCountdown_alt[0] == 0)
+            {
+                func_0054d118(sChannels[0].handle, true);
+            }
+        }
+
+        func_0054d3a8(sChannels[0].handle, false);
+        {
+            s32 status = func_0054d148(sChannels[0].handle);
+            if (status == 3)
+            {
+                sChannels[0].active = false;
+            }
+            else if (status == 4)
+            {
+                func_00109070(0);
+                H_Snd_00109180(0);
+                func_0054d208(sChannels[0].handle, true);
+            }
+        }
+    }
+
+    {
+        s32 i;
+        HsndChannel* channel;
+        void** handle;
+        s32 status;
+        s16* state;
+
+        for (i = 2; i < HSND_SLOT_COUNT; )
+        {
+            channel = &sChannels[i];
+            if (channel->active != false)
+            {
+                handle = &channel->handle;
+                status = func_0054d148(*handle);
+                if (status == 3)
+                {
+                    channel->active = false;
+                }
+                else if (status == 4)
+                {
+                    func_00109070((s16)i);
+                    H_Snd_00109180((s16)i);
+                    func_0054d208(*handle, true);
+                }
+                else
+                {
+                    state = &channel->state;
+                    switch (*state)
+                    {
+                        case HSND_CHANNEL_PLAYING:
+                            func_0054d100(*handle);
+                            *state = HSND_CHANNEL_STARTING;
+                            break;
+
+                        case HSND_CHANNEL_RELEASING:
+                            H_Snd_00109180((s16)i);
+                            *state = HSND_CHANNEL_STARTING;
+                            break;
+                    }
+                }
+            }
+            {
+                s16 next = (s16)(i + 1);
+                i = next;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. */

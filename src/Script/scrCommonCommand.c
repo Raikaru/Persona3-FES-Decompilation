@@ -9,6 +9,9 @@
 #include "datCalendar.h"
 #include "temporary.h"
 #include "dds3Process.h"
+
+#pragma alias scrSetIntReturnVal_y2 scrSetIntReturnVal
+
 #pragma alias scrCommand_GET_TRIGGERED_BUTTONS FUN_0035B1B0
 #pragma alias scrCommand_GET_HELD_BUTTONS FUN_0035B1F0
 #pragma alias scrCommand_NOOP3 FUN_0035B230
@@ -281,4 +284,103 @@ u32 scrCommand_NOOP3(void)
 u32 scrCommand_NOOP(void)
 {
   return 1;
+}
+
+
+
+#pragma alias scrCommand_RESOURCE_LOADED FUN_0035AEB0
+#pragma alias scrCommand_LOAD_RESOURCE FUN_0035AEF0
+#pragma alias scrCommand_UNLOAD_RESOURCE FUN_0035AF50
+#pragma alias scrGetResourceFlag FUN_003951d0
+#pragma alias scrSetResourceFlag FUN_00395170
+#pragma alias scrClearResourceFlag FUN_003951a0
+
+// 'unused1' and 'unused2' were probably 'runningDelay' and 'destroyDelay',
+// but instead of using 'kwlnTaskInitEx' they used the normal one for some reason
+
+
+
+
+
+
+
+/* ---- Recovered range 0x35AE50-0x35AFA0 (Ghidra reference, pending match) ---- */
+extern void scrSetIntReturnVal_y2(s32 value);
+extern s32 scrGetResourceFlag(s32 value);
+extern void scrSetResourceFlag(u32 value);
+extern void scrClearResourceFlag(u32 value);
+
+
+
+
+
+
+
+// FUN_0035AEB0
+
+
+u32 scrCommand_RESOURCE_LOADED(void)
+
+
+
+{
+
+  s32 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  uVar1 = scrGetResourceFlag(uVar1);
+
+  scrSetIntReturnVal_y2(uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035AEF0
+
+
+u32 scrCommand_LOAD_RESOURCE(void)
+
+
+
+{
+
+  u32 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  K_ASSERT(uVar1 < 0x1600, 0x75);
+
+  scrSetResourceFlag(uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035AF50
+
+
+u32 scrCommand_UNLOAD_RESOURCE(void)
+
+
+
+{
+
+  u32 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  K_ASSERT(uVar1 < 0x1600, 0x84);
+
+  scrClearResourceFlag(uVar1);
+
+  return 1;
+
 }

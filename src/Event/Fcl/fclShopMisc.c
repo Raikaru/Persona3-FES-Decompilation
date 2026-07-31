@@ -945,33 +945,6 @@ void fclShopMisc003fb290(void* param_1, void* param_2)
 
 // HARVESTED 3D-42FF
 
-// FUN_003EFF00
-
-
-void FUN_003eff00(u64 param_1,u8 *param_2)
-{
-  u8 *puVar1;
-  u8 *puVar2;
-  u32 uStack_20[4];
-  int iVar1;
-  int iStack_4;
-
-  puVar1 = FUN_003efff0_u64(param_1);
-  iStack_4 = 0;
-  while ((puVar2 = (u8 *)FUN_003f0350((int)puVar1,&iStack_4)) != 0) {
-    iVar1 = *(int *)puVar2;
-    if ((datGetLevel(1) & 0xff) < iVar1) {
-      iStack_4 = iStack_4 - 1;
-      break;
-    }
-  }
-  *param_2 = (u8)iStack_4;
-  param_2[1] = (u8)FUN_003f03e0_u64(param_1);
-  *(u16 *)(param_2 + 2) = (u16)FUN_003f2510();
-  iStack_4 = 0;
-  FUN_003f01d0((int)puVar1,0,&iStack_4);
-  *(u32 *)(param_2 + 4) = (u32)iStack_4;
-}
 
 // FUN_003EFFF0
 

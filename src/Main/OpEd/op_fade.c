@@ -72,32 +72,6 @@ void opFadeOut()
     work->state = OPFADE_STATE_OUT;
     work->timer = work->duration;
 }
-// FUN_00271CD0
-void func_00271cd0(OpFadeWork* work)
-{
-    f32 layout[8];
-
-    work->flags = 0;
-
-    layout[0] = 0.0f;
-    layout[1] = 0.0f;
-    layout[2] = 0.0f;
-    layout[3] = 0.0f;
-    func_0021eb80(&work->vertices[0], layout);
-    layout[0] = 0.0f;
-    layout[1] = 0.0f;
-    layout[2] = 640.0f;
-    layout[3] = 448.0f;
-    func_0021d8e0(&work->vertices[0], layout);
-    work->state = OPFADE_STATE_START;
-    work->timer = 0;
-    work->duration = 0;
-    work->color.r = 0;
-    work->color.g = 0;
-    work->color.b = 0;
-    work->color.a = 0xff;
-    sWork = work;
-}
 
 // FUN_00271D70
 void func_00271d70(void)
