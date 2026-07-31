@@ -1600,18 +1600,18 @@ void func_0010cac0(void)
     FUN_005129c0(1, 0x8010, 0x801, 0xFCC);
     FUN_0051db00(3, 0x80, 0x7F, 0x7F);
 
-    i = 0;
-    slots = &sSfdDecodeSlots_abs[0];
-    for (; i < HSFD_DECODE_SLOTS; i++)
-    {
-        slots[i].state = 0;
-        slots[i].request = NULL;
-        slots[i].status = 0;
-        slots[i].index = i;
-    }
     j = 0;
+    slots = sSfdDecodeSlots_abs;
+    for (; j < HSFD_DECODE_SLOTS; j++)
+    {
+        slots[j].state = 0;
+        slots[j].request = NULL;
+        slots[j].status = 0;
+        slots[j].index = j;
+    }
+    i = 0;
     *(s32*)sSfdFrameIndex_abs = 0;
-    for (; j < 16; j++)
+    for (; i < 16; i++)
         ;
 
     sSfdDecodeSlots[0].intermediate = (u8*)FUN_0051d6f8(0x96000);

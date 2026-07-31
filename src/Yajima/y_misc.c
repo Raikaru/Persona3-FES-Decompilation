@@ -6255,8 +6255,8 @@ void FUN_0042cd80(int param_1)
                      *(s8 *)offsetX, *(s8 *)offsetY, *counter);
         delay = (s8 *)(entry + 0x8e7);
         if (*delay < 1) {
-          count = *counter + 1;
-          *counter = count;
+          count = *(s8 *)(entry + 0x8d8) + 1;
+          *(s8 *)(entry + 0x8d8) = count;
           if (count > 20) {
             random = RpRandom();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));

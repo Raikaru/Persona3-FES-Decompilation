@@ -2608,7 +2608,7 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
 {
 
-  s32 bVar1;
+s32 iVar7;
 
   s32 sVar2;
 
@@ -2618,7 +2618,7 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
   int iVar5;
 
-  int iVar7;
+  s32 bVar1;
 
   float fVar8;
 

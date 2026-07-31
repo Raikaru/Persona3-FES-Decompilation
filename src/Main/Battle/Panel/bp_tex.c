@@ -3698,6 +3698,14 @@ bpTexSubAfter:
     }
 
     sub = *(u32*)(work + 0x463c);
+    if (sub == 3 ||
+        (sub == 0 && *(u32*)(work + 0x4640) == 3 &&
+         *(s32*)(work + 0x4650) < 3))
+    {
+        func_00224150();
+    }
+
+    sub = *(u32*)(work + 0x463c);
     if (sub == 3)
     {
         switch (*(u32*)(work + 0x4644))

@@ -488,7 +488,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
-    s32 id;
+    s16 id;
     s32 val;
     s32 hundreds;
     u32 parent;
