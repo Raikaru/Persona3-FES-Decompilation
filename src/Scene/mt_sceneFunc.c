@@ -3318,6 +3318,7 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #undef FUN_003bb450
 #undef FUN_003bb620
+/* W389 partial: `SceneVecBits` aggregate pointer copy reduced nd13 -> 6, object 376/384 -> 376/384. Remaining residual is compiler aggregate-copy width/temp coloring (retail ld/lwc1 then sd/swc1; this form emits ld/ld then sd/sd). */
 // FUN_003BB620 NONMATCHING
 
 
@@ -3413,8 +3414,7 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
 
     } while (0 < cnt);
 
-    *(u64 *)direction = dstbuf[0];
-    direction[2] = ((f32 *)dstbuf)[2];
+    *(SceneVecBits *)direction = *(SceneVecBits *)dstbuf;
     FUN_004c69f0(normal,direction);
 
     src1[0] = src1[0] - normal[0] * 15.0f;

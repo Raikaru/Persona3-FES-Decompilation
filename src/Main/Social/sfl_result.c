@@ -218,6 +218,9 @@ extern void FUN_001831e0_typed(s16 slot, u32 index, u8* dst);
 extern void FUN_0016da50_typed(s16 slot, s16 type, s16 index);
 
 
+/* W389 measured sflResult001f9170 opt_lifetimes on: nd 471 -> 465; object 1212/1216 -> 1212/1216. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_001f9170 NONMATCHING
 u32 sflResult001f9170(u32 player)
 {
@@ -338,6 +341,8 @@ u32 sflResult001f9170(u32 player)
     }
     return 0;
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 /* Removing this loses FUN_001f9680 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
 // FUN_001f9680
@@ -509,6 +514,9 @@ void sflResult001f9d70(u16 index)
     }
 }
 
+/* W389 measured sflResult001f9e90 opt_propagation off: nd 318 -> 317; object 572/576 -> 572/576. */
+#pragma push
+#pragma opt_propagation off
 // FUN_001f9e90 NONMATCHING
 void sflResult001f9e90(u16 owner, s32 exp)
 {
@@ -550,6 +558,8 @@ void sflResult001f9e90(u16 owner, s32 exp)
     FUN_005225a8(0x684bf8, owner, level);
     (void)level;
 }
+#pragma opt_propagation reset
+#pragma pop
 #define FUN_00182c50 FUN_00182c50_typed
 #define FUN_001831e0 FUN_001831e0_typed
 #define FUN_0016da50 FUN_0016da50_typed
@@ -1241,6 +1251,9 @@ void func_001fa4f0(u32 param_1)
   return;
 
 }
+/* W389 measured func_001faea0 opt_common_subs off: nd 325 -> 303; object 652/656 -> 656/656. */
+#pragma push
+#pragma opt_common_subs off
 // FUN_001FAEA0 NONMATCHING
 
 
@@ -1396,6 +1409,8 @@ u32 func_001faea0(void)
   return 1;
 
 }
+#pragma opt_common_subs reset
+#pragma pop
 
 
 // FUN_001fb130
@@ -1856,6 +1871,9 @@ LAB_001fb794:
 
 }
 #pragma optimization_level 2
+/* W389 measured func_001fba70 opt_loop_invariants on: nd 283 -> 280; object 556/560 -> 556/560. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_001FBA70 NONMATCHING
 
 
@@ -1952,6 +1970,8 @@ u32 func_001fba70(u16 param_1)
   return unaff_s7;
 
 }
+#pragma opt_loop_invariants reset
+#pragma pop
 
 
 // FUN_001fbca0
@@ -2017,6 +2037,7 @@ no_match:
   K_ASSERT(false, 0x1f3);
   return NULL;
 }
+// W389 residual nd2: the sole differing instruction is commutative mul.s operand order (retail f0*f1 vs. ours f1*f0); this is a documented compiler floor.
 // FUN_001FBDF0 NONMATCHING
 
 
@@ -2070,6 +2091,9 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
         result = 0xffff;
     return result;
 }
+/* W389 measured func_001fbfa0 opt_dead_assignments off: nd 260 -> 219; object 580/592 -> 584/592. */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_001FBFA0 NONMATCHING
 
 
@@ -2194,6 +2218,8 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   return iVar2;
 
 }
+#pragma opt_dead_assignments reset
+#pragma pop
 // FUN_001FC1F0
 
 

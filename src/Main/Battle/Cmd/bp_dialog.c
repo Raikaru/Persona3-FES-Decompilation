@@ -198,9 +198,10 @@ void FUN_0025be60(u32 param_1, u32 param_2, u32 param_3)
 
 }
 
-// Confirmed compiler floor (W203): the only non-relocation residual is the
-// commutative operand order of `mul.s $f20, $f20, $f0` versus retail's
-// `mul.s $f20, $f0, $f20`; MWCCPS2 b210 canonicalizes the source form.
+// W389 measured source regrouping plus six-knob singles/pairs: nd2/1940B
+// -> nd2/1940B (window 1952B). Residual is commutative operand order of
+// `mul.s $f20, $f20, $f0` versus retail's `mul.s $f20, $f0, $f20`;
+// MWCCPS2 b210 canonicalizes the source form.
 // FUN_0025C220 NONMATCHING
 void FUN_0025c220(void)
 {

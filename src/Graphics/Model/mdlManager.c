@@ -1394,6 +1394,10 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
 
 
 // Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
+/* W389 measured func_00311730 opt_loop_invariants on + opt_lifetimes on: nd 4296 -> 4240; object 5360/5440 -> 5328/5440. */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_00311730 NONMATCHING
 
 
@@ -2677,6 +2681,9 @@ special_matrix_done:
   return 1;
 
 }
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
+#pragma pop
 #undef fStack_210
 #undef fStack_20c
 #undef fStack_208
@@ -2955,6 +2962,7 @@ u32 func_00312f90(u32 param_1)
 
 
 
+// W389 residual nd1: the sole differing instruction is commutative addu operand order (retail v0=v0+v1 vs. ours v0=v1+v0); this is a documented compiler floor.
 // FUN_00313090 NONMATCHING
 
 
@@ -3224,6 +3232,9 @@ void func_003132c0(u8* param_1)
 
 
 
+/* W389 measured func_00313490 opt_propagation off: nd 746 -> 608; object 1104/1104 -> 1100/1104. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00313490 NONMATCHING
 
 
@@ -3398,6 +3409,8 @@ LAB_0031379c:
   return param_1;
 
 }
+#pragma opt_propagation reset
+#pragma pop
 
 
 
@@ -4189,6 +4202,9 @@ void func_00314730(u8* param_2,f32 param_1)
 
 
 
+/* W389 measured func_00314850 opt_lifetimes on: nd 729 -> 726; object 1208/1248 -> 1208/1248. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00314850 NONMATCHING
 
 
@@ -4432,10 +4448,15 @@ LAB_0031494c:
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 
 
+/* W389 measured func_00314d30 opt_lifetimes on: nd 446 -> 415; object 724/736 -> 720/736. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00314D30 NONMATCHING
 
 
@@ -4583,6 +4604,8 @@ void func_00314d30(void* param_1)
   return;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 
@@ -5418,6 +5441,9 @@ Model* func_00315ed0(Model* param_1)
 
 
 
+/* W389 measured func_00315f50 opt_dead_assignments off: nd 563 -> 559; object 892/976 -> 892/976. */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_00315F50 NONMATCHING
 u32 func_00315f50(void* param_1,u32 *param_2)
 
@@ -5506,6 +5532,8 @@ u32 func_00315f50(void* param_1,u32 *param_2)
   return (u32)param_1;
 
 }
+#pragma opt_dead_assignments reset
+#pragma pop
 
 
 
@@ -5879,6 +5907,9 @@ void func_003176c0(Model* mdl)
 
 
 
+/* W389 measured FUN_00317a20 opt_lifetimes on: nd 1381 -> 1367; object 2164/2224 -> 2164/2224. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00317A20 NONMATCHING
 void FUN_00317a20(Model* param_1)
 
@@ -6059,6 +6090,8 @@ void FUN_00317a20(Model* param_1)
   }
   return;
 }
+#pragma opt_lifetimes reset
+#pragma pop
 
 
 
@@ -6762,6 +6795,9 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
 /* W323 measured func_00319970 opt_loop_invariants on: nd3132 -> nd3045; object 4304/4448. */
 #pragma push
 #pragma opt_loop_invariants on
+/* W389 measured func_00319970 additional opt_lifetimes on: nd 3045 -> 3024; object 4304/4448 -> 4284/4448. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00319970 NONMATCHING
 
 
@@ -7490,11 +7526,16 @@ u32 func_00319970(Model* param_1)
   return 1;
 
 }
+#pragma opt_lifetimes reset
+#pragma pop
 #pragma pop
 
 
 
 
+/* W389 measured func_0031aad0 opt_propagation off: nd 1092 -> 1085; object 1832/1872 -> 1836/1872. */
+#pragma push
+#pragma opt_propagation off
 // FUN_0031AAD0 NONMATCHING
 
 
@@ -7913,6 +7954,8 @@ int func_0031aad0(Model* param_1)
   return iVar16;
 
 }
+#pragma opt_propagation reset
+#pragma pop
 
 
 

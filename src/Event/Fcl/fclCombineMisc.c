@@ -2733,6 +2733,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
 /* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
 #pragma opt_loop_invariants on
+#pragma opt_propagation on
 // FUN_003D8630 NONMATCHING
 
 
@@ -2873,6 +2874,7 @@ u32 FUN_003d8630(int param_1,int param_2)
 }
 #pragma opt_loop_invariants reset
 
+#pragma opt_propagation reset
 // FUN_003D8850
 void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)
 {

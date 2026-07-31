@@ -114,6 +114,9 @@ u32 FUN_003912f0(u32 param_1,u32 param_2);
 #define FUN_003912f0(...) ((u32 (*)(...))FUN_003912f0)(__VA_ARGS__)
 
 #undef FUN_0038dad0
+/* Measured W389: opt_lifetimes on, with/without nd 2054/1934, object 2948/2948 (window 2960). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0038DAD0 NONMATCHING
 
 
@@ -838,6 +841,8 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
   return;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
 
 
 #define FUN_0038dad0(...) ((void (*)(...))FUN_0038dad0)(__VA_ARGS__)
@@ -939,6 +944,10 @@ next_node:
 
 #define FUN_0038e660(...) ((void (*)(...))FUN_0038e660)(__VA_ARGS__)
 #undef FUN_0038e860
+/* Measured W389: opt_loop_invariants on + opt_lifetimes on, with/without nd 1424/1414, object 2132/2132 (window 2192). */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_0038E860 NONMATCHING
 
 
@@ -1346,10 +1355,16 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
   return 1;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 
 
 #define FUN_0038e860(...) ((u32 (*)(...))FUN_0038e860)(__VA_ARGS__)
 #undef FUN_0038f0f0
+/* Measured W389: opt_lifetimes on, with/without nd 499/98, object 848/840 (window 848). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_0038F0F0 NONMATCHING
 
 
@@ -1535,6 +1550,8 @@ void FUN_0038f0f0(u32 param_1)
   return;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
 
 
 #define FUN_0038f0f0(...) ((void (*)(...))FUN_0038f0f0)(__VA_ARGS__)
@@ -2205,7 +2222,9 @@ void FUN_0038fa10(int param_1,u32 param_2)
 #pragma opt_loop_invariants reset
 #undef FUN_0038ffb0
 /* Measured W327: opt_common_subs off, with/without nd 399/420, object 740/784. */
+#pragma push
 #pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_0038FFB0 NONMATCHING
 
 
@@ -2389,11 +2408,17 @@ void FUN_0038ffb0(int param_1,int param_2)
   return;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
 #define FUN_0038ffb0(...) ((void (*)(...))FUN_0038ffb0)(__VA_ARGS__)
-#pragma opt_common_subs reset
 #undef FUN_003902c0
  
+/* Measured W389: opt_loop_invariants on + opt_propagation off, with/without nd 586/518, object 776/784 (window 816). */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_003902C0 NONMATCHING
 
 
@@ -2581,6 +2606,9 @@ void FUN_003902c0(int param_1,int param_2)
   return;
 
 }
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 #define FUN_003902c0(...) ((void (*)(...))FUN_003902c0)(__VA_ARGS__)
 #undef FUN_003905f0
 // FUN_003905F0 NONMATCHING
@@ -3132,6 +3160,9 @@ void FUN_00390ef0(int param_1,int param_2)
 #define FUN_00390ef0(...) ((void (*)(...))FUN_00390ef0)(__VA_ARGS__)
 #undef FUN_00391080
 #undef FUN_00390ef0
+/* Measured W389: opt_lifetimes on, with/without nd 59/33, object 616/616 (window 624). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_00391080 NONMATCHING
 
 
@@ -3292,6 +3323,8 @@ LAB_00391290:
   }
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
 #define FUN_00391080(...) ((void (*)(...))FUN_00391080)(__VA_ARGS__)
 #undef FUN_003912f0
 #undef FUN_0038dad0

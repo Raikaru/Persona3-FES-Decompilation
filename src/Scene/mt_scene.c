@@ -581,6 +581,7 @@ void FUN_003b55d0(u32 param_1,u32 *param_2)
 }
 #define FUN_003b55d0(...) ((void (*)(...))FUN_003b55d0)(__VA_ARGS__)
 #undef FUN_003b5620
+/* W389 floor: baseline nd15 obj308/320; s0/s1 parameter colouring inversion (retail s0=a0,s1=a1; ours reversed) propagates into branches. First-use probes `first=(u32)param_1` and `second=param_2` hoisted/reused both measured nd15 obj308/320; reverted. */
 // FUN_003B5620 NONMATCHING
 
 
@@ -1236,6 +1237,9 @@ u16 FUN_003b6f50(u32 param_1,u32 param_5,float param_4,u32 *param_6,RwV3d *param
 }
 #define FUN_003b6f50(...) ((u32 (*)(...))FUN_003b6f50)(__VA_ARGS__)
 #undef FUN_003b7090
+/* Measured W389: opt_loop_invariants on, with/without nd 100/98, object 972/972 (window 976). */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_003B7090 NONMATCHING
 
 
@@ -1491,8 +1495,13 @@ void FUN_003b7090(u64 param_1)
   }
   return;
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 #define FUN_003b7090(...) ((void (*)(...))FUN_003b7090)(__VA_ARGS__)
 #undef FUN_003b7460
+/* Measured W389: opt_lifetimes on, with/without nd 648/642, object 1104/1104 (window 1104). */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_003B7460 NONMATCHING
 void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
 {
@@ -1599,6 +1608,8 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
         }
     }
 }
+#pragma pop
+#pragma opt_lifetimes reset
 #undef FUN_003b7460
 #undef FUN_003b78b0
 // FUN_003B78B0
@@ -1725,6 +1736,9 @@ void FUN_003b79a0(u32 *param_1, u64 param_2, u32 *param_3)
 }
 #define FUN_003b79a0(...) ((void (*)(...))FUN_003b79a0)(__VA_ARGS__)
 #undef FUN_003b7ac0
+/* Measured W389: opt_dead_assignments off, with/without nd 942/940, object 1868/1868 (window 1872). */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_003B7AC0 NONMATCHING
 
 
@@ -1926,6 +1940,8 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   param_2[1] = angle3;
   param_2[2] = angle1;
 }
+#pragma pop
+#pragma opt_dead_assignments reset
 #define FUN_003b7ac0(...) ((void (*)(...))FUN_003b7ac0)(__VA_ARGS__)
 #undef FUN_003b8210
 // FUN_003B8210
@@ -2140,6 +2156,10 @@ u32 FUN_003b8470(u16 param_1,u16 param_2)
 }
 #define FUN_003b8470(...) ((u32 (*)(...))FUN_003b8470)(__VA_ARGS__)
 #undef FUN_003b8540
+/* Measured W389: opt_common_subs off + opt_lifetimes on, with/without nd 197/190, object 312/308 (window 336). */
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_003B8540 NONMATCHING
 
 
@@ -2228,6 +2248,9 @@ u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4)
   return uVar1;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 #undef FUN_003b8540
 #undef FUN_003b8690
 // FUN_003B8690
