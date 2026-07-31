@@ -3712,21 +3712,20 @@ void FUN_003226b0(int *param_1,int param_2)
 
     if ((piVar3[4] & 0x10000000U) != 0) {
 
-      param_1[1] = piVar3[4] & 0x10000000U;
+      param_1[1] = 0x10000000;
 
       param_1[2] = param_2;
 
       param_1[3] = piVar3[3];
 
-      iVar5 = *piVar1;
+      iVar5 = *piVar1 + *piVar3;
 
-      iVar2 = *piVar3;
 
       for (uVar4 = 0; uVar4 < (u32)piVar3[3]; uVar4 = uVar4 + 1) {
 
         iVar9 = param_1[4] + uVar4 * 0x14;
 
-        psVar8 = (short *)(iVar5 + iVar2 + uVar4 * 0x18);
+        psVar8 = (short *)(iVar5 + uVar4 * 0x18);
 
         piVar7 = (int *)(piVar1[1] + *psVar8 * 0x14);
 

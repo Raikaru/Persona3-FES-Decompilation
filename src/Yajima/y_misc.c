@@ -307,9 +307,13 @@ extern YRuntimeUnitRow DAT_008717a0_unit_rows_abs[];
 u32 DAT_008717e8[];
 #pragma alias DAT_008717e8_abs DAT_008717e8
 extern u8 DAT_008717e8_abs[];
+#pragma alias DAT_008717e8_ptr DAT_008717e8
+extern u32 *DAT_008717e8_ptr;
 int DAT_008717f4[];
 #pragma alias DAT_008717f4_abs DAT_008717f4
 extern u8 DAT_008717f4_abs[];
+#pragma alias DAT_008717f4_ptr DAT_008717f4
+extern int *DAT_008717f4_ptr;
 u32 DAT_00871948;
 u32 DAT_008719a8;
 u32 DAT_008719b4;
@@ -7610,10 +7614,12 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
   (*DAT_00960090)(1, *raster);
   (*(code *)DAT_009600a0_abs)(4, vertices, 4);
 }
-#pragma opt_loop_invariants reset
 
+#pragma opt_loop_invariants reset
 #undef DAT_00960090
 
+#pragma opt_lifetimes on
+#pragma opt_loop_invariants off
 // FUN_004281F0 NONMATCHING
 
 
@@ -7774,7 +7780,7 @@ u32 FUN_004281f0(u32 param_1)
 
       }
 
-      if ((DAT_008717e8 != 0 && DAT_008717f4 != 0) && (*(int *)(pcVar1 + 0x898) != 0)) {
+      if ((DAT_008717e8_ptr != 0 && DAT_008717f4_ptr != 0) && (*(int *)(pcVar1 + 0x898) != 0)) {
 
         FUN_00456400(*(int *)(pcVar1 + 0x898),0);
 
@@ -8245,7 +8251,7 @@ u32 FUN_004281f0(u32 param_1)
 
     }
 
-    if (DAT_008717e8 != 0 && DAT_008717f4 != 0) {
+    if (DAT_008717e8_ptr != 0 && DAT_008717f4_ptr != 0) {
 
       FUN_00423fe0(&fStack_38,0,0x7e,0x7e,4,4);
 
@@ -8675,7 +8681,7 @@ u32 FUN_004281f0(u32 param_1)
 
     FUN_00422cd0(*(u32 *)(pcVar1 + 0xb20),1);
 
-    if (DAT_008717e8 != 0 && DAT_008717f4 != 0) {
+    if (DAT_008717e8_ptr != 0 && DAT_008717f4_ptr != 0) {
 
       FUN_00456400(*(u32 *)(pcVar1 + 0x898),1);
 
@@ -8720,6 +8726,8 @@ u32 FUN_004281f0(u32 param_1)
   return 0;
 
 }
+#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 
 // FUN_00429C60
 

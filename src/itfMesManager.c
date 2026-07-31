@@ -7636,7 +7636,6 @@ void FUN_003aa370(int param_1,u64 param_2)
 #define FUN_003aa370(...) ((void (*)(...))FUN_003aa370)(__VA_ARGS__)
 #undef FUN_003aa720
 
-#pragma opt_loop_invariants on
 // FUN_003AA720 NONMATCHING
 
 
@@ -7819,7 +7818,6 @@ void FUN_003aa720(int param_1)
 #define FUN_003aa720(...) ((void (*)(...))FUN_003aa720)(__VA_ARGS__)
 #undef FUN_003aaae0
 
-#pragma opt_loop_invariants reset
 // FUN_003AAAE0 NONMATCHING
 
 
@@ -9556,6 +9554,7 @@ u64 FUN_003ad380(u64 param_1,int param_2)
 }
 #undef FUN_003ad400
 
+#pragma opt_strength_reduction off
 // FUN_003AD400 NONMATCHING
 
 
@@ -9670,6 +9669,7 @@ u32 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 // measured: the fixed message buffer cuts nd157 to nd1; lint: allow S003
 #undef FUN_003ad640
 
+#pragma opt_strength_reduction reset
 // FUN_003AD640
 
 
