@@ -3079,14 +3079,13 @@ u32 func_002f6ab0(BtlAction* action);
 void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_3)
 
 {
-  u32 bVar1;
-  int iVar2;
   s32 hpDelta;
+  u32 bVar1;
   BtlUnit* sourceUnit;
+  int iVar2;
   u16 *puVar3;
   s32 lVar4;
   BtlAction* unaff_s0;
-  
   bVar1 = false;
   sourceUnit = param_1->unit;
   if (sourceUnit->genus == 1) {

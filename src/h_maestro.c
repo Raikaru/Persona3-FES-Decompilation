@@ -2768,7 +2768,13 @@ void func_00115350(f32 depth,
         case 2:
             v->u.els.scrVertex.z = z;
             v->u.els.recipZ = recipZ;
-            v->u.els.color.r = (f32)(u32)r;
+            if (r >= 0)
+                v->u.els.color.r = (f32)r;
+            else
+            {
+                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+                v->u.els.color.r = tmpR + tmpR;
+            }
             if (g >= 0)
                 v->u.els.color.g = (f32)g;
             else
@@ -2784,20 +2790,8 @@ void func_00115350(f32 depth,
         case 3:
             v->u.els.scrVertex.z = z;
             v->u.els.recipZ = recipZ;
-            if (r >= 0)
-                v->u.els.color.r = (f32)r;
-            else
-            {
-                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
-                v->u.els.color.r = tmpR + tmpR;
-            }
-            if (g >= 0)
-                v->u.els.color.g = (f32)g;
-            else
-            {
-                tmpG = (f32)(s32)(((u32)g >> 1) | g1);
-                v->u.els.color.g = tmpG + tmpG;
-            }
+            v->u.els.color.r = (f32)(u32)r;
+            v->u.els.color.g = (f32)(u32)g;
             v->u.els.color.b = blue;
             v->u.els.color.a = alpha3f;
             v->u.els.scrVertex.x = points[3][0];

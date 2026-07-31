@@ -435,7 +435,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, (void*)((u8*)savedRenderStates + i * sizeof(u32)));
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 
@@ -490,7 +490,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (j = 0; j < 6; j++)
         {
             renderState = &sEffRenderStates[j];
-            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)*((u32*)((u8*)savedRenderStates + j * sizeof(u32))));
+            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)savedRenderStates[j]);
         }
     }
 }

@@ -5468,12 +5468,10 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
+  int count;
   s16 *source;
   s16 *dest;
-  int count;
-  ItfMesAnim *anim;
 
-  anim = (ItfMesAnim *)(object + 0x1d4);
   source = DAT_006a1bd0_signed;
   dest = values;
   count = 3;
@@ -5488,14 +5486,15 @@ void FUN_003a7dd0(int object)
     dest += 2;
   } while (count > 0);
 
-  if (anim->active != 0) {
-    switch (anim->state) {
+  if (((ItfMesAnim *)(object + 0x1d4))->active != 0) {
+    switch (((ItfMesAnim *)(object + 0x1d4))->state) {
     case 0:
-      anim->index++;
-      anim->value = values[anim->index];
-      if (anim->index >= 5) {
-        anim->state = 1;
-        anim->index = 5;
+      ((ItfMesAnim *)(object + 0x1d4))->index++;
+      ((ItfMesAnim *)(object + 0x1d4))->value =
+          values[((ItfMesAnim *)(object + 0x1d4))->index];
+      if (((ItfMesAnim *)(object + 0x1d4))->index >= 5) {
+        ((ItfMesAnim *)(object + 0x1d4))->state = 1;
+        ((ItfMesAnim *)(object + 0x1d4))->index = 5;
       }
       break;
     case 1:
