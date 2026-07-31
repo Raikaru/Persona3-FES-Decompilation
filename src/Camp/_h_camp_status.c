@@ -115,8 +115,6 @@ extern void* DAT_00833B94;
 extern void* DAT_00833B98;
 #pragma alias DAT_00833B90_abs DAT_00833B90
 extern u8 DAT_00833B90_abs[];
-#pragma alias DAT_00833B94_abs DAT_00833B94
-extern u8 DAT_00833B94_abs[];
 #pragma alias DAT_00833B98_abs DAT_00833B98
 extern u8 DAT_00833B98_abs[];
 #pragma alias DAT_00833B88_abs DAT_00833B88
@@ -1908,50 +1906,50 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     left = position.x + 21.0f;
     right = position.x + 127.0f;
     top = position.y + 49.0f;
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
-                             drawAlpha, left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
-                             right, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
                              left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+                             right, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+                             left, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
                              right, top, 100.0f);
 
     count = (s16)FUN_00177280(FUN_0016c6f0(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count - 1,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count - 1, drawAlpha,
                              position.x + 129.0f, position.y + 72.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
                              right, position.y + 63.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x17,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x17, drawAlpha,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1a,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1a, drawAlpha,
                              right, position.y + 97.0f, 100.0f);
 
     count = (s16)FUN_001772F0(FUN_0016c740(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 6,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 6, drawAlpha,
                              position.x + 129.0f, position.y + 120.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
                              right, position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x18,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
                              left, position.y + 147.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1b,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
                              right, position.y + 147.0f, 100.0f);
 
     count = (s16)FUN_00177360(FUN_0016c790(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 13,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 13, drawAlpha,
                              position.x + 129.0f, position.y + 170.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
                              right, position.y + 161.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d,
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 161.0f, 100.0f);
@@ -1959,10 +1957,10 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     bottomPosition = position;
     footerAlpha = (s16)alpha;
     inverseAlpha = 0xff - footerAlpha;
-    campStatusDrawSpriteCall(drawParent, DAT_00833B90, 0x11,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B90_abs, 0x11,
                              (u8)footerAlpha, bottomPosition.x + 51.0f,
                              bottomPosition.y + 339.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B90, 0x22,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B90_abs, 0x22,
                              (u8)footerAlpha, bottomPosition.x + 305.0f,
                              bottomPosition.y + 339.0f, 100.0f);
     FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));

@@ -780,7 +780,9 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3);
 void FUN_0038b960(int param_1,int param_2,int param_3);
 void FUN_0038bc70(int param_1,int param_2,int param_3);
 void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4);
-void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4, u32 *param_5,u32 *param_6);
+#pragma alias FUN_0038c460_reordered FUN_0038c460
+extern void FUN_0038c460_reordered(int param_1,int param_2,u32 *param_3,u8 **param_4);
+void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038c830(int param_1,long param_2);
 void FUN_0038ca00(void);
 void FUN_0038ca80(int param_1);
@@ -5327,7 +5329,7 @@ void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4)
 // FUN_0038C540 NONMATCHING
 
 
-void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
+void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
                   u32 *param_5,u32 *param_6)
 
 
@@ -5366,9 +5368,8 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
   
 
-  FUN_0038c460(param_2,param_3,(u8 **)&puStack_4,(u32 *)&puStack_8);
+  FUN_0038c460_reordered(param_2,param_3,(u32 *)&puStack_8,(u8 **)&puStack_4);
 
-  uVar8 = DAT_007cadd0;
 
   if (puStack_4 != (u16 *)0x0) {
 
@@ -5426,6 +5427,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
       if ((iVar1 == 0) && (*(int *)(puStack_8 + 0x24) == 0)) {
 
+        uVar8 = DAT_007cadd0;
         *puVar7 = DAT_007cadd0;
 
         puVar7[1] = uVar8;
@@ -5518,6 +5520,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
   else {
 
+    uVar8 = DAT_007cadd0;
     *puVar7 = DAT_007cadd0;
 
     puVar7[1] = uVar8;
