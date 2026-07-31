@@ -2336,7 +2336,7 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
 typedef struct BtlUnitPacket002843e0
 {
     BtlUnit* unit; // 0x00
-    u16 unk_4;     // 0x04
+    s16 unk_4;     // 0x04
     u8 unkData[0x02];
 } BtlUnitPacket002843e0;
 

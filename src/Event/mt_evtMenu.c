@@ -5646,8 +5646,6 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-#pragma opt_common_subs off
-#pragma opt_lifetimes on
 // FUN_00374AF0 NONMATCHING
 
 
@@ -5694,8 +5692,6 @@ s32 FUN_00374af0(s32 param_1,s32 param_2,s32 param_3)
 }
 
 
-#pragma opt_lifetimes reset
-#pragma opt_common_subs reset
 // FUN_00374C90
 
 
@@ -8661,6 +8657,8 @@ void FUN_003797b0(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_003798F0 NONMATCHING
 
 
@@ -8864,6 +8862,8 @@ u32 FUN_003798f0(int param_1,int param_2,int param_3)
 /* opt_propagation off: default nd364/744B -> nd346/744B; retained. */
 #pragma push
 #pragma opt_propagation off
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 // FUN_00379C30 NONMATCHING
 
 
