@@ -3698,8 +3698,9 @@ bpTexSubAfter:
     }
 
     sub = *(u32*)(work + 0x463c);
-    if (sub == 3)
+    switch (sub)
     {
+    case 3:
         goto bpTexSub3Body;
     }
     if (sub != 0)
@@ -3720,22 +3721,27 @@ bpTexSub3Body:
 bpTexSub3After:
 
     sub = *(u32*)(work + 0x463c);
-    if (sub == 3)
+    switch (sub)
     {
-        switch (*(u32*)(work + 0x4644))
-        {
-        case 1:
-            func_002289b0();
-            break;
-        case 0:
-            if (*(u32*)(work + 0x4648) == 1 &&
-                *(u32*)(work + 0x4658) != 6)
-            {
-                func_002289b0();
-            }
-            break;
-        }
+    case 3:
+        goto bpTexMode3FrameBody;
     }
+    goto bpTexMode3FrameAfter;
+bpTexMode3FrameBody:
+    switch (*(u32*)(work + 0x4644))
+    {
+    case 1:
+        func_002289b0();
+        break;
+    case 0:
+        if (*(u32*)(work + 0x4648) == 1 &&
+            *(u32*)(work + 0x4658) != 6)
+        {
+            func_002289b0();
+        }
+        break;
+    }
+bpTexMode3FrameAfter:
 
     switch (*(u32*)(work + 0x463c))
     {

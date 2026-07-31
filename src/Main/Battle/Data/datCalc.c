@@ -6500,11 +6500,11 @@ int FUN_0030c0c0(void)
 {
   s32 outer;
   u16 currentValue;
+  u16 current;
   u16 inner;
   u16 raw;
   s32 target;
   u16 count;
-  u16 current;
   u32 offset;
   u8* entry;
   u8* member;

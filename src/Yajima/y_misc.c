@@ -6240,7 +6240,7 @@ void FUN_0042cd80(int param_1)
   s16 *offsetX;
   s16 *offsetY;
   u32 random;
-  s32 count;
+  s8 count;
   s32 outer;
   s32 inner;
   s32 end;
