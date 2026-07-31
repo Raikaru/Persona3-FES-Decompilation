@@ -2,6 +2,9 @@
 #include "sce/libmc2.h"
 #include "sce/libdbc.h"
 
+
+
+
 static SceMc2SocketParam sSocketParam; // 00846eb0
 static u_long128 sAddr[SCE_MC2_DMA_BUFFER_MAX] __attribute__((aligned(64))); // 00846b80
 
@@ -1737,3 +1740,175 @@ done:
     return 0;
 }
 
+
+
+#include "Kernel/h_malloc.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "h_cdvd.h"
+#include "Kosaka/k_assert.h"
+#include "temporary.h"
+
+extern s32 func_0050d3a0(void);
+extern void func_0050d3f0(void);
+extern void kwlnTaskPrintTrees(void);
+
+#define H_FREE_ERROR ((HFreeCallback*)0x0096017c)
+
+HHeapAlloc* gHeapAllocs; // 007ce04c
+u32 gHeapEnd;            // 007ce048
+u32 gHeapAllocCount;     // 007ce044
+u32 gHeapCursor;         // 007ce040
+
+
+
+// FUN_001919c0. Initialize the retail heap allocation table.
+void H_Malloc_Init(void* table, u32 size)
+{
+    u32 i;
+    HHeapAlloc* entries;
+
+    gHeapAllocs = (HHeapAlloc*)table;
+    gHeapEnd = (u32)table + size;
+    gHeapAllocCount = 500;
+    entries = (HHeapAlloc*)table;
+    for (i = 0; i < gHeapAllocCount; i++)
+    {
+        entries[i].memory = NULL;
+        entries[i].size = 0;
+    }
+    gHeapCursor = 0;
+}
+typedef void* (*HmallocAllocator)(u32, u32, u32);
+typedef void (*HmallocReleaser)(void*);
+typedef s32 (*HmallocStepCallback)(void);
+
+extern u8 D_00846F00[];
+extern u32 D_00960184[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u8 jtbl_0096017C_abs[];
+extern const char D_005E4C80[];
+extern const char D_005E4C60[];
+extern const char D_005E4CA0[];
+extern const char D_005E4CC0[];
+extern u8 D_0083BB30[];
+#pragma alias D_0083BB30_abs D_0083BB30
+extern u8 D_0083BB30_abs[];
+extern u8 D_0083AB30[];
+#pragma alias D_0083AB30_abs D_0083AB30
+extern u8 D_0083AB30_abs[];
+extern const char D_005E4CE0[];
+extern const f32 D_005E4D00;
+extern const f32 D_005E4D04;
+extern const f32 D_005E4D08;
+extern const f32 D_005E4D0C;
+extern const f32 D_005E4D20;
+extern const f32 D_005E4D24;
+extern const f32 D_005E4D28;
+extern const f32 D_005E4D2C;
+extern const char D_005E4D10[];
+extern const char D_005E4D30[];
+extern const char D_005E4D60[];
+extern const char D_005E4E20[];
+extern const char D_005E4E38[];
+extern const char D_005E4E48[];
+extern const char D_005E4E58[];
+extern const char D_005E4E70[];
+extern const u16 D_007E094E;
+extern const u16 D_007E0952;
+#define HMALLOC_ENGINE_ALLOC(count, size, flags) \
+    (*(HmallocAllocator*)D_00960184_abs)((count), (size), (flags))
+#define HMALLOC_ENGINE_FREE(memory) \
+    (*(HmallocReleaser*)jtbl_0096017C_abs)((memory))
+#define HMALLOC_STEP_TABLE ((HmallocStepCallback*)0x005e4d00)
+#define HMALLOC_GLOBAL_FLOAT_VALUES ((const f32*)0x007cc0d8)
+#define HMALLOC_GLOBAL_IMAGE_VALUES ((const f32*)0x007cc0e0)
+
+extern void func_004f1e20(u64 source, void* bytes, u16* header);
+extern void func_004d5000(void* packet, u32 size);
+extern void func_0016cfe0(s32 group, s32 value);
+extern void func_0016d090(s32 group, s32 value);
+extern void func_0016d160(s32 group, s32 value);
+extern void func_0016f1f0(u32 id, s32 enabled);
+extern void func_00521408(void* dst, u32 value, u32 size);
+extern void func_00176680(void* dst, u16 id);
+extern void func_0017cd30(void* entry);
+extern s32 func_001016b0(void* resource);
+extern void func_00521250(void* allocator, u32 width, u32 height);
+extern void func_0016c2f0(void);
+extern void* func_00100d80(void* descriptor, s32 flags);
+extern void func_0017d7f0(s32 mode);
+
+static u32 sHmallocInputWords[0x100];
+static u32 sHmallocInputBits[0x20];
+static u8 sHmallocInputRecords[0x34 * 0x100];
+static void* sHmallocResourceA;
+static void* sHmallocResourceB;
+static void* sHmallocResourceC;
+static void* sHmallocResourceD;
+static u32 sHmallocResourceReady;
+static u32 sHmallocResourceMode;
+static u32 sHmallocResourceFlag;
+static void* sHmallocControllerTask;
+
+extern void func_00104d10(u64 matrix, const f32* values, u32 value);
+extern u32 func_004214e0(void* task, s32 mode);
+extern void func_004215b0(u32 handle, u32 command);
+extern void func_00421650(u32 handle);
+extern s32 func_00510e30(void);
+extern s32 func_00509ed0(const char* path);
+extern s32 func_0050a100(s32 file, void* entry);
+extern void func_00509f98(s32 file);
+extern s32 func_00524128(const char* path, const char* name);
+extern s32 func_00420340(void* task, s32 flags);
+extern void func_0035f060();
+
+static void hmallocInitTilePacket(u32 texture, u32 packet, u32 source, s32 a3,
+                                   s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
+                                   s32 a9, s32 a10);
+static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
+                                    s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
+                                    s32 a8, s32 a9);
+static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
+                                 s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
+                                 s32 a9, s32 a10);
+static void hmallocPackHeader(u64* out, u32 a1, s32 a2, u32 a3, u32 a4,
+                              u32 a5, u32 a6);
+static void hmallocPackDescriptor(u32* out, u64 address, s32 a2, s32 a3,
+                                  s32 a4, s32 a5, s32 a6, u32 a7);
+static void hmallocWriteImage(u32* out, u32 image, u32 a2, u32 a3);
+static void hmallocWriteTile(u32* out, u32 a1, u32 image, u32 a3);
+static void hmallocWriteScale(u32* out, u32 x, u32 y);
+static void hmallocWriteSolid(u32* out, u32 value);
+
+
+
+static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
+                                    s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
+                                    s32 a8, s32 a9)
+{
+    hmallocInitTilePacket(texture, (u32)(uintptr_t)packet, source,
+                          a3, a4, a5, a6, a7, a8, a9, 0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern const u32 D_005E4D80[];
