@@ -34,6 +34,18 @@ typedef struct YajimaPackedEntry {
     u8 pad_8d9[0xe];
     s8 delay;
 } __attribute__((packed)) YajimaPackedEntry;
+typedef struct YVec3f { f32 x, y, z; } YVec3f;
+typedef struct YPositionWork {
+    u8 pad_000[4];
+    u32 resource;
+    u8 pad_008[0xe6];
+    s16 counter0;
+    u8 pad_0f0[4];
+    s16 counter1;
+} YPositionWork;
+typedef struct RwV2d { f32 x; f32 y; } RwV2d;
+typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
+typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;

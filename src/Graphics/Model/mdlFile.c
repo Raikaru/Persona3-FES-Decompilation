@@ -815,7 +815,7 @@ static u32 * FUN_0031fbd0(float param_1,int *param_2);
 #pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
 extern u32 *FUN_0031fbd0_noargs(void);
 u8 * FUN_0031fd00(float firstTime, int *track);
-void FUN_0031fde0(float param_1,u8 *param_2);
+void FUN_0031fde0(int *track,u8 *param_2,float frame,float factor);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
 void FUN_00320290(int param_1);
@@ -4411,7 +4411,7 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 
 
 
-void FUN_0031fde0(float param_1,u8 *param_2)
+void FUN_0031fde0(int *track,u8 *param_2,float frame,float factor)
 
 
 
@@ -4426,12 +4426,12 @@ void FUN_0031fde0(float param_1,u8 *param_2)
 
 
   *(float *)(iVar3 + 4) =
-       param_1 * ((float)*param_2 / 255.0f - *(float *)(iVar3 + 4)) +
+       factor * ((float)*param_2 / 255.0f - *(float *)(iVar3 + 4)) +
        *(float *)(iVar3 + 4) + 0.0f;
   *(float *)(iVar3 + 8) =
-       param_1 * ((float)param_2[1] / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
+       factor * ((float)param_2[1] / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
   *(float *)(iVar3 + 0xc) =
-       param_1 * ((float)param_2[2] / 255.0f - *(float *)(iVar3 + 0xc)) +
+       factor * ((float)param_2[2] / 255.0f - *(float *)(iVar3 + 0xc)) +
        *(float *)(iVar3 + 0xc) + 0.0f;
 
   return;

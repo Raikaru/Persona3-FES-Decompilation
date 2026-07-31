@@ -2403,7 +2403,6 @@ LAB_003d7f94:
 
 }
 
-#pragma opt_dead_assignments off
 // FUN_003D8080 NONMATCHING
 
 
@@ -2515,7 +2514,6 @@ s32 lVar6;
 
 
 
-#pragma opt_dead_assignments reset
 // FUN_003D8260
 u32 FUN_003d8260(int param_1,u32 param_2)
 

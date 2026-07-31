@@ -33,6 +33,8 @@ float fGpffff8204;
 float fGpffffad18;
 u32 uGpffff8208;
 u32 uGpffffad1c;
+#pragma alias fGpffffad1c uGpffffad1c
+extern float fGpffffad1c;
 #pragma alias sinf_fclShop sinf
 extern f32 sinf_fclShop(f32);
 #pragma alias cosf_fclShop cosf
@@ -3341,7 +3343,7 @@ u64 FUN_004138e0(u64 param_1,int param_2,int param_3)
 
   afStack_8[0] = fGpffffad18;
 
-  afStack_8[1] = (float)uGpffffad1c;
+  afStack_8[1] = fGpffffad1c;
 
   if ((param_3 != 0) && (sVar2 = *(short *)((int)param_3 + 6), sVar2 != 2)) {
 

@@ -444,7 +444,6 @@ long FUN_0052ec28(u64 param_1)
   return lVar4;
 }
 #pragma optimization_level 2
-#pragma opt_loop_invariants on
 // FUN_0052ED30 NONMATCHING
 long FUN_0052ed30(u64 param_1)
 {
@@ -465,7 +464,6 @@ long FUN_0052ed30(u64 param_1)
     lVar1 = FUN_0052ec28(uVar2);
     return -lVar1;
 }
-#pragma opt_loop_invariants reset
 // FUN_0052EDA0 NONMATCHING
 #pragma optimization_level 3
 long FUN_0052eda0(void)

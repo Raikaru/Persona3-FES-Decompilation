@@ -373,6 +373,8 @@ void FUN_003afc30(u32 param_1)
 }
 #define FUN_003afc30(...) ((void (*)(...))FUN_003afc30)(__VA_ARGS__)
 #undef FUN_003afc70
+/* W340 loop probe: opt_propagation off; without nd=279/object=392, with nd=247/object=400; window=448. */
+#pragma opt_propagation off
 // FUN_003AFC70 NONMATCHING
 
 
@@ -546,7 +548,10 @@ void FUN_003afc70(void)
 
 }
 #define FUN_003afc70(...) ((void (*)(...))FUN_003afc70)(__VA_ARGS__)
+#pragma opt_propagation reset
 #undef FUN_003afe30
+/* W340 loop probe: opt_loop_invariants on; without nd=61/object=284, with nd=2/object=288; window=288. */
+#pragma opt_loop_invariants on
 // FUN_003AFE30 NONMATCHING
 
 
@@ -583,6 +588,7 @@ void FUN_003afe30(void)
   }
 }
 #define FUN_003afe30(...) ((void (*)(...))FUN_003afe30)(__VA_ARGS__)
+#pragma opt_loop_invariants reset
 #undef FUN_003aff50
 // FUN_003AFF50 MATCHING
 
@@ -754,6 +760,10 @@ u64 FUN_003b0170(u64 param_1)
 }
 #define FUN_003b0170(...) ((u64 (*)(...))FUN_003b0170)(__VA_ARGS__)
 #undef FUN_003b01d0
+/* W340 loop probe: opt_lifetimes on; without nd=205/object=448, with nd=200/object=448; window=464. */
+#pragma opt_lifetimes on
+/* W340 loop probe: opt_propagation off; without nd=205/object=448, with nd=156/object=440; window=464. */
+#pragma opt_propagation off
 // FUN_003B01D0 NONMATCHING
 
 
@@ -884,6 +894,8 @@ void FUN_003b01d0(int param_1,int param_2)
 
 }
 #define FUN_003b01d0(...) ((void (*)(...))FUN_003b01d0)(__VA_ARGS__)
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 #undef FUN_003b03a0
 // FUN_003B03A0
 
@@ -1056,6 +1068,8 @@ void FUN_003b05c0(u16 *param_1)
 }
 #define FUN_003b05c0(...) ((void (*)(...))FUN_003b05c0)(__VA_ARGS__)
 #undef FUN_003b0620
+/* W340 loop probe: opt_common_subs off; without nd=276/object=496, with nd=264/object=524; window=544. */
+#pragma opt_common_subs off
 // FUN_003B0620 NONMATCHING
 
 int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
@@ -1118,6 +1132,7 @@ int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
   return (int)puVar7;
 }
 #define FUN_003b0620(...) ((long (*)(...))FUN_003b0620)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003b0840
 // FUN_003B0840
 
@@ -1184,6 +1199,10 @@ LAB_003b095c:
 }
 #define FUN_003b0840(...) ((int (*)(...))FUN_003b0840)(__VA_ARGS__)
 #undef FUN_003b0970
+/* W340 loop probe: opt_common_subs off; without nd=337/object=564, with nd=287/object=572; window=576. */
+#pragma opt_common_subs off
+/* W340 loop probe: opt_lifetimes on; without nd=337/object=564, with nd=336/object=564; window=576. */
+#pragma opt_lifetimes on
 // FUN_003B0970 NONMATCHING
 
 
@@ -1331,6 +1350,8 @@ processFont:
 
 }
 #define FUN_003b0970(...) ((long (*)(...))FUN_003b0970)(__VA_ARGS__)
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 #undef FUN_003b0bb0
 // FUN_003B0BB0
 
@@ -1885,6 +1906,8 @@ void FUN_003b1330(void *param_1,u32 param_2)
 #define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
 #define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
 #undef FUN_003b1360
+/* W340 loop probe: opt_common_subs off; without nd=378/object=936, with nd=375/object=944; window=944. */
+#pragma opt_common_subs off
 // FUN_003B1360 NONMATCHING
 
 
@@ -2110,6 +2133,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
 }
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003b1710
 // FUN_003B1710 NONMATCHING
 
@@ -2611,6 +2635,10 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 }
 #define FUN_003b1c90(...) ((void (*)(...))FUN_003b1c90)(__VA_ARGS__)
 #undef FUN_003b1d90
+/* W340 loop probe: opt_common_subs off; without nd=377/object=656, with nd=376/object=656; window=656. */
+#pragma opt_common_subs off
+/* W340 loop probe: opt_lifetimes on; without nd=377/object=656, with nd=376/object=656; window=656. */
+#pragma opt_lifetimes on
 // FUN_003B1D90 NONMATCHING
 
 
@@ -2788,7 +2816,11 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
 }
 #define FUN_003b1d90(...) ((void (*)(...))FUN_003b1d90)(__VA_ARGS__)
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 #undef FUN_003b2020
+/* W340 loop probe: opt_lifetimes on; without nd=363/object=636, with nd=362/object=636; window=640. */
+#pragma opt_lifetimes on
 // FUN_003B2020 NONMATCHING
 
 
@@ -2948,7 +2980,10 @@ void FUN_003b2020(int param_1,int param_2)
 
 }
 #define FUN_003b2020(...) ((void (*)(...))FUN_003b2020)(__VA_ARGS__)
+#pragma opt_lifetimes reset
 #undef FUN_003b22a0
+/* W340 loop probe: opt_common_subs off; without nd=113/object=352, with nd=52/object=352; window=352. */
+#pragma opt_common_subs off
 // FUN_003B22A0 NONMATCHING
 
 
@@ -3049,6 +3084,7 @@ void FUN_003b22a0(u32 *param_1)
 
 }
 #define FUN_003b22a0(...) ((void (*)(...))FUN_003b22a0)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003b2400
 // FUN_003B2400
 
@@ -3060,6 +3096,8 @@ void FUN_003b2400(FrFontState *state)
 }
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #undef FUN_003b2430
+/* W340 loop probe: opt_common_subs off; without nd=853/object=1168, with nd=841/object=1192; window=1232. */
+#pragma opt_common_subs off
 // FUN_003B2430 NONMATCHING
 
 
@@ -3371,6 +3409,7 @@ LAB_003b28b8:
 
 }
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
+#pragma opt_common_subs reset
 #undef FUN_003b2900
 // FUN_003B2900
 
