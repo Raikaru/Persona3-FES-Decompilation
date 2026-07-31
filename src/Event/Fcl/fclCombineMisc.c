@@ -825,8 +825,6 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
-#pragma opt_loop_invariants on
-#pragma opt_dead_assignments off
 // FUN_003D6200 NONMATCHING
 
 
@@ -976,8 +974,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
-#pragma opt_dead_assignments reset
-#pragma opt_loop_invariants reset
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1388,6 +1384,8 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
 }
 
+#pragma opt_strength_reduction off
+#pragma opt_dead_assignments off
 // FUN_003D6C90 NONMATCHING
 
 
@@ -1466,6 +1464,8 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
+#pragma opt_dead_assignments reset
+#pragma opt_strength_reduction reset
 // FUN_003D6E60
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {

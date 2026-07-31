@@ -2628,7 +2628,6 @@ u32 FUN_003baa70(char *param_1)
   }
 
   uVar4 = (u32)*(u8 *)(tbl + uVar3);
-
     for (; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
       txy = *(volatile u64 *)DAT_006a2da0_abs;
@@ -2646,9 +2645,9 @@ u32 FUN_003baa70(char *param_1)
 
       if (lVar2 == 1) {
 
-        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
-
-           (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
+        if (((fVar5 = *(float *)((int)param_1 + 4)) <
+             *(float *)(blk.addrs[0] + 4) + 100.0f) &&
+            (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
           uVar4 = *(u32 *)(iVar1 + 0x14c);
           break;
@@ -2667,9 +2666,9 @@ u32 FUN_003baa70(char *param_1)
 
       if (lVar2 == 1) {
 
-        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
-
-           (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
+        if (((fVar5 = *(float *)((int)param_1 + 4)) <
+             *(float *)(blk.addrs[0] + 4) + 100.0f) &&
+            (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
           uVar4 = *(u32 *)(iVar1 + 0x14c);
           break;

@@ -301,6 +301,7 @@ void h_campDrawStatusOverview(int param_1)
                   tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
 }
 #pragma opt_dead_assignments reset
+/* W389 residual: baseline nd18/object900/912. Six-knob singles and aggregate/load-order probes did not lower it; 389.0f operand reversal was neutral (grouping nd21, sequenced-temp nd51, local-offset nd16). The remaining words are the b210 FP scheduling order (retail converts 389 before loading y); retained NONMATCHING. */
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {

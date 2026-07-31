@@ -1,6 +1,20 @@
+/* W390 TU convergence: the 28 functions below moved here from y_runtime.c,
+ * which is now deleted -- upstream splat.yaml places 0x0045A430..0x0045E7B0 in
+ * Yajima/y_timeLimit and the rest of y_runtime in Yajima/y_misc.
+ *
+ * Measured trade, recorded so it is not mistaken for a regression to chase:
+ * every function is byte-identical in SOURCE to its y_runtime original (verified
+ * by diffing each block), and 265 of 378 Yajima markers still MATCH with none
+ * lost and nothing over window.  Three functions moved on normalized_diff --
+ * FUN_0045CE90 2022->2071, FUN_0045D990 900->947, FUN_0045E3E0 392->516 -- purely
+ * because a smaller translation unit assigns $gp/small-data slots differently.
+ * Adding y_timeLimit.h to the old y_runtime.c does NOT reproduce it, so it is the
+ * TU boundary itself, not an include or a lost pragma.  These numbers should
+ * settle once the remaining translation units converge on retail as well. */
 #include "Yajima/y_timeLimit.h"
 
-#pragma alias iGpffffba08_y2 iGpffffba08_y2
+#pragma alias iGpffffba08_y2 iGpffffba08
+
 
 
 /*
@@ -21,7 +35,7 @@ typedef struct YTimeLimitWork
     YTimeLimitInner* timeLimit;
 } YTimeLimitWork;
 
-extern YTimeLimitWork* iGpffffba08;
+extern YTimeLimitWork* iGpffffba08_y2;
 
 enum
 {
@@ -34,9 +48,9 @@ void Y_TimeLimit_Stop(void)
 {
     YTimeLimitInner* timeLimit;
 
-    if (iGpffffba08 != NULL)
+    if (iGpffffba08_y2 != NULL)
     {
-        timeLimit = iGpffffba08->timeLimit;
+        timeLimit = iGpffffba08_y2->timeLimit;
         timeLimit->transitionFrame = 0;
         timeLimit->lifecycleState = Y_TIME_LIMIT_STATE_FINISHED;
     }
@@ -490,7 +504,7 @@ extern u32 gp0xffffb9f7;
 extern u32 iGpffffb418;
 extern u32 iGpffffb5a0;
 extern u32 iGpffffb9fc;
-extern u32 iGpffffba08_y2;
+extern u32 iGpffffba08;
 extern u32 iGpffffba20;
 extern u32 iGpffffba24;
 extern float uGpffff82b8;
@@ -2073,7 +2087,7 @@ extern u32 gp0xffffb9f7;
 extern u32 iGpffffb418;
 extern u32 iGpffffb5a0;
 extern u32 iGpffffb9fc;
-extern u32 iGpffffba08_y2;
+extern u32 iGpffffba08;
 extern u32 iGpffffba20;
 extern u32 iGpffffba24;
 extern float uGpffff82b8;
@@ -3337,6 +3351,8 @@ void FUN_004ae940(u64 param_1);
 
 
 
+
+
 typedef struct {
   s16 x;
   s16 y;
@@ -3362,10 +3378,15 @@ typedef struct {
 
 
 
+#pragma opt_common_subs reset
 
 
 
 
+
+
+
+#pragma opt_loop_invariants reset
 
 
 
@@ -3413,11 +3434,14 @@ typedef struct {
 
 
 
+#pragma opt_dead_assignments reset
 
 
 
 
 
+
+#pragma opt_loop_invariants reset
 
 
 // The duration values selected by cases 0xc0 through 0xc5 are one contiguous
@@ -3430,6 +3454,29 @@ typedef struct {
 
 
 
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
+
+
+
+
+
+
+
+
+
+
+#pragma opt_propagation reset
+
+#pragma opt_common_subs reset
+
+
+
+#pragma opt_propagation reset
+
+
+
+#pragma opt_dead_assignments reset
 
 
 
@@ -3447,6 +3494,8 @@ typedef struct {
 
 
 
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 
 
 
@@ -3459,29 +3508,22 @@ typedef struct {
 
 
 
+#pragma opt_common_subs reset
 
 
 
 
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#pragma opt_propagation reset
+#pragma opt_dead_assignments reset
 
 
 /* measured opt_loop_invariants on: 880/864 nd650; off: 864/864 nd109; + opt_lifetimes on: 864/864 nd77; retained */
+
+#pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 
 
 
@@ -3499,6 +3541,8 @@ typedef struct {
 
 
 
+
+#pragma opt_propagation reset
 #undef fStack_20
 #undef fStack_1c
 #undef fStack_18
@@ -3510,12 +3554,19 @@ typedef struct {
 #undef fStack_88
 
 
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 
+#pragma opt_dead_assignments reset
 
 /* W212: hoisting the first-loop invariants and preserving its distinct one/five
  * values improved nd287 -> nd283 (340 -> 332 bytes).  The remaining offset-0
  * divergence is the combined retail preheader; no window growth was introduced. */
+#pragma opt_propagation reset
 
+
+#pragma opt_lifetimes reset
+#pragma opt_propagation reset
 
 
 // MWCC b210 floor: the mixed-ABI prologue preserves $f14 before $a1/$a2; retail preserves
@@ -3545,6 +3596,7 @@ typedef struct {
 // W295: retail reloads row+0x54/row+0x168 for the FUN_001adc20 call (no CSE from the
 // previous call) - three volatile-ordered loads reproduce it; not a scheduling floor.
 
+#pragma opt_dead_assignments reset
 
 
 
@@ -3569,8 +3621,12 @@ extern void FUN_003b7090_y2(u32 param_1);
 #pragma alias FUN_00195020_call2 FUN_00195020
 extern void FUN_00195020_call2(u32 param_1);
 
+#pragma opt_dead_assignments reset
 
 
+
+#pragma opt_loop_invariants off
+#pragma opt_loop_invariants reset
 
 
 
@@ -3587,8 +3643,8 @@ void FUN_0045a430(char param_1)
 {
   int iVar1;
   
-  if (iGpffffba08_y2 != 0) {
-    iVar1 = *(int *)(iGpffffba08_y2 + 0x3c);
+  if (iGpffffba08 != 0) {
+    iVar1 = *(int *)(iGpffffba08 + 0x3c);
     *(char *)(iVar1 + 0x4c) = param_1;
     if (param_1 == '\0') {
       *(int *)(iVar1 + 0x58) = iGpffffb418 - *(char *)(iVar1 + 0x5c);
@@ -3620,8 +3676,8 @@ void FUN_0045a490(void)
   float fVar7;
   float fVar8;
   
-  puVar1 = *(struct YRuntimeWork **)(iGpffffba08_y2 + 0x3c);
-  if (iGpffffba08_y2 != 0) {
+  puVar1 = *(struct YRuntimeWork **)(iGpffffba08 + 0x3c);
+  if (iGpffffba08 != 0) {
     uVar3 = FUN_001158b0(0,puVar1->data[0],0);
     iVar2 = (int)uVar3;
     *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
@@ -3812,8 +3868,8 @@ void FUN_0045ace0(void)
   u8 uVar7;
   float fVar8;
   
-  if (iGpffffba08_y2 != 0) {
-    puVar1 = *(u32 **)(iGpffffba08_y2 + 0x3c);
+  if (iGpffffba08 != 0) {
+    puVar1 = *(u32 **)(iGpffffba08 + 0x3c);
     if ((*(char *)(puVar1 + 0x13) == '\0') && (puVar1[0x14] != 0)) {
       *(char *)((int)puVar1 + 0x43) = uGpffffb418 - puVar1[0x16];
     }
@@ -3869,11 +3925,11 @@ u32 FUN_0045af40(void)
 {
   u32 uVar1;
   
-  if (iGpffffba08_y2 == 0) {
+  if (iGpffffba08 == 0) {
     uVar1 = 0xffffffff;
   }
   else {
-    uVar1 = *(u32 *)(*(int *)(iGpffffba08_y2 + 0x3c) + 0x50);
+    uVar1 = *(u32 *)(*(int *)(iGpffffba08 + 0x3c) + 0x50);
   }
   return uVar1;
 }
@@ -3883,8 +3939,8 @@ u32 FUN_0045af40(void)
 void FUN_0045af70(u8 param_1)
 
 {
-  if (iGpffffba08_y2 != 0) {
-    *(u8 *)(*(int *)(iGpffffba08_y2 + 0x3c) + 0x5d) = param_1;
+  if (iGpffffba08 != 0) {
+    *(u8 *)(*(int *)(iGpffffba08 + 0x3c) + 0x5d) = param_1;
   }
   return;
 }
