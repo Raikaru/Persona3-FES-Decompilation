@@ -4214,7 +4214,7 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
-  u32 currentAddress;
+  u8* iVar1;
   u16 uVar3;
   u16 uVar2;
   float fVar4;
@@ -4240,10 +4240,10 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   param_3[2] = fVar9;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
     fVar6 = afStack_10[uVar3];
-    currentAddress = (u32)param_2 + (u32)uVar2 * 0x1c;
-    fVar4 = *(float *)(currentAddress + 8) * fVar6;
-    fVar5 = *(float *)(currentAddress + 0xc) * fVar6;
-    fVar7 = *(float *)(currentAddress + 4);
+    iVar1 = param_2 + uVar2 * 0x1c;
+    fVar4 = *(float *)(iVar1 + 8) * fVar6;
+    fVar5 = *(float *)(iVar1 + 0xc) * fVar6;
+    fVar7 = *(float *)(iVar1 + 4);
     *param_3 = fVar7 * fVar6 + *param_3 + 0.0f;
     param_3[1] = param_3[1] + fVar4;
     param_3[2] = param_3[2] + fVar5;

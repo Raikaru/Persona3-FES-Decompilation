@@ -3304,7 +3304,7 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
   RwV3d output1;
   RwV3d output2;
 
-  camera = FUN_00198590();
+  camera = (u8 *)FUN_00198590();
 
   cursor = (u8 *)&output1;
   remaining = sizeof(RwV3d);

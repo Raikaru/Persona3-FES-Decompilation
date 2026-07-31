@@ -2803,15 +2803,11 @@ u64 FUN_00413010(u64 param_1,int param_2)
   s16 *puVar6;
 
   s16 *puVar7;
-  short *psVar9;
-
-  short *psVar8;
 
 
   int iVar10;
 
   int iVar11;
-  u8 bVar;
 
   FclShopBgLocal stack;
 
@@ -2889,21 +2885,22 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
-
-    psVar9 = (short *)(iVar4 + iVar11 * 0xc);
+    short *psVar9;
+    short *psVar8;
 
     psVar8 = (s16 *)(puVar6 + iVar11 * 4);
+
+    psVar9 = (short *)(iVar4 + iVar11 * 0xc);
 
     sVar3 = psVar8[2];
 
     iVar10 = (int)sVar3 >> 1;
 
-    bVar = (u8)psVar9[2];
     FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
 
                  ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
 
-                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,bVar,psVar8[3],0,iVar10,
+                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(char)psVar9[2],psVar8[3],0,iVar10,
 
                  iVar10);
 
