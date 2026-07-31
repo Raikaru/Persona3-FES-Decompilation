@@ -928,8 +928,8 @@ void func_0021e170(void* destination,
         rotatedX = x * cosine - y * sine;
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
-        *(volatile f32*)point = rotatedX;
         nextPoint[0] = x * sine + y * cosine;
+        point[0] = rotatedX;
     }
     j = 0;
     cx = center[0];
