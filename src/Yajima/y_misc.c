@@ -1,9 +1,5 @@
 #include "Yajima/y_misc.h"
 #include "Yajima/y_runtime.h"
-#if 0
-#include "temporary.h"
-#include "Main/Social/sfl_res.h"
-#endif
 typedef struct YajimaVec2 {
     f32 x;
     f32 y;
@@ -417,6 +413,8 @@ f32 K_View_GetFov_typed(RwCamera *camera);
 #pragma alias K_View_SetFov_typed K_View_SetFov
 void K_View_SetFov_typed(RwCamera *camera,f32 fov);
 #pragma alias mdlAnimSet_u32 mdlAnimSet
+extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
+                          u32 flags);
 #pragma alias FUN_004cb890_typed FUN_004cb890
 extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 mode);
 #pragma alias FUN_004cb750_typed FUN_004cb750

@@ -36245,7 +36245,7 @@ void FUN_00346530(int param_1)
 
   u8 uVar9;
 
-  u8 packed[4];
+  u32 packed;
   u32 c1s;
   u32 c2s;
 
@@ -36377,25 +36377,20 @@ void FUN_00346530(int param_1)
 
     c2s = (u32)(iStack_c);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
+    packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
-    uStack_10 = *(u32 *)packed;
+    uStack_10 = packed;
 
-    (*((u8 *)((u8 *)&uStack_4 + 3))) = packed[3];
+    uStack_4 = packed;
 
-    (*((u8 *)((u8 *)&uStack_4 + 0))) = packed[0];
+    uVar7 = (u8)packed;
 
-    uVar7 = (u8)uStack_4;
+    uVar8 = (u8)(packed >> 8);
 
-    (*((u8 *)((u8 *)&uStack_4 + 1))) = packed[1];
+    uVar9 = (u8)(packed >> 16);
 
-    uVar8 = (*((u8 *)((u8 *)&uStack_4 + 1)));
+    if (((u8)(packed >> 24)) == -1) {
 
-    (*((u8 *)((u8 *)&uStack_4 + 2))) = packed[2];
-
-    uVar9 = (*((u8 *)((u8 *)&uStack_4 + 2)));
-
-    if ((*((u8 *)((u8 *)&uStack_4 + 3))) == -1) {
 
       iVar3 = *(int *)(puVar2 + 10);
 

@@ -17484,8 +17484,8 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 }
 
-/* Measured: opt_common_subs on/off gives 3040B/3000B with schedule off; retained off. */
-#pragma opt_common_subs reset
+/* Measured with schedule on: opt_common_subs on/off gives 2772B/2748B (window 2992B); retained off. */
+#pragma opt_common_subs off
 /* Measured on FUN_0040A7F0: schedule off 3000B, schedule on 2748B (window 2992B). */
 #pragma schedule on
 // FUN_0040A7F0 NONMATCHING
