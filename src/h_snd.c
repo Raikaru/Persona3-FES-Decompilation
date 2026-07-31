@@ -193,6 +193,8 @@ extern u32 D_00960178[];
 #define HSND_BACKEND_ALLOC(context, flags) \
     (*(void* (**)(void*, u32))D_00960178)((context), (flags))
 
+// opt_loop_invariants on: func_00108740 normalized_diff 472 -> 451, object 1080/1152; off restores 472.
+#pragma opt_loop_invariants on
 // FUN_00108740 NONMATCHING
 void func_00108740(void)
 {
@@ -292,6 +294,7 @@ void func_00108740(void)
     }
     sBgmRestartCountdown = 0;
 }
+#pragma opt_loop_invariants reset
 
 extern void func_00540ec0(void);
 extern void func_0051db00(s32 group, s32 left, s32 right, s32 rear);
