@@ -6447,7 +6447,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   u32 uVar6;
 
   u32 uVar7;
-  u8 * result = (u8 *)0x0;
 
 
 
@@ -6470,10 +6469,12 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 == 0) {
+  if (lVar5 != 0) {
 
+    return (u8 *)&LAB_003c5170;
 
-    switch(*(u32 *)(iVar4 + 8)) {
+  }
+  switch(*(u32 *)(iVar4 + 8)) {
     case 0:
 
       FUN_003c9d00(*(u32 *)(iVar2 + 8),0x10);
@@ -6839,17 +6840,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
         *(u32 *)(iVar4 + 8) = 0;
 
         FUN_003c6f50(iVar1);
+      break;
 
   }
   }
-
-  }
-  else {
-    result = (u8 *)&LAB_003c5170;
-
-  }
-
-  return result;
+  return (u8 *)0x0;
 }
 
 // FUN_003EDD80

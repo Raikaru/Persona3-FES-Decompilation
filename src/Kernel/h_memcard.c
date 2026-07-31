@@ -92,6 +92,7 @@ extern u8 D_005E4B20[];
 extern u8 D_005E4B40[];
 extern u8 D_005E4B50[];
 extern u8 D_005E4B80[];
+extern u8 D_007CC0C8[];
 extern u8 D_00846780[];
 extern u8 D_00846790[];
 extern u8 D_00846800[];
@@ -758,6 +759,7 @@ state12_mode1:
                     }
                 }
             }
+            size = 0;
             FUN_00513cc8(sSocketNo, D_00846EA0, FUN_001021c0(D_005E4B40, &size), 0, size);
             goto state12_done;
 
@@ -792,7 +794,7 @@ state12_mode2:
                 }
             }
             FUN_00521408(D_00846780, 0, 0x3c4);
-            FUN_00524270(D_00846780, 0x7cc0c8);
+            FUN_00524270(D_00846780, D_007CC0C8);
             if (FUN_0017d800() == 0)
             {
                 if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))

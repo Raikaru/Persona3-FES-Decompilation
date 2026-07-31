@@ -292,6 +292,7 @@ u64 FUN_004101b0(u64 param_1,int param_2)
 }
 
 #pragma opt_loop_invariants on
+#pragma opt_loop_invariants on
 // FUN_004105E0 NONMATCHING
 
 
@@ -538,6 +539,7 @@ else {
 return uVar5; }
 #pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants reset
 // FUN_00410A10 NONMATCHING
 
 

@@ -4607,6 +4607,7 @@ void* func_00315010(void* object, void* data)
 /* W323 measured func_00315090 opt_loop_invariants on: nd195 -> nd188; object 292/320. */
 #pragma push
 #pragma opt_loop_invariants on
+/* W323 callback symbol literal nd188 -> nd185. */
 // FUN_00315090 NONMATCHING
 
 
