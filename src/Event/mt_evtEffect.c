@@ -1729,6 +1729,7 @@ u32 FUN_003965f0(int *param_1)
     if (iVar1 == param_1[1]) {
 
       *param_1 = 2;
+      return 1;
 
     }
 
@@ -1778,12 +1779,12 @@ u32 FUN_003965f0(int *param_1)
 
 
     }
+    return 0;
 
   }
     break;
   }
-  return 0;
-
+  return 1;
 }
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
 #undef FUN_00396760
