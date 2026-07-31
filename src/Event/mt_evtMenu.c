@@ -3258,6 +3258,7 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
 }
 
 
+#pragma opt_common_subs off
 // FUN_00371DD0 NONMATCHING
 
 
@@ -3493,6 +3494,7 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_00372260
 
 
@@ -6357,15 +6359,15 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
   goto done_75d70;
 process_75d70:
 
-    if ((DAT_007e094e & 0x40) == 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
 
-      if ((DAT_007e094e & 0x20) == 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x20) == 0) {
 
         iVar2 = 0;
 
-        if ((DAT_007e0952 & 0x8000) == 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) == 0) {
 
-          if ((DAT_007e0952 & 0x2000) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
 
             iVar2 = 1;
 
@@ -6379,9 +6381,9 @@ process_75d70:
 
         }
 
-        if ((DAT_007e0952 & 0x1000) == 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) {
 
-          if ((DAT_007e0952 & 0x4000) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
             iVar2 = 10;
 
@@ -6395,9 +6397,9 @@ process_75d70:
 
         }
 
-        if ((DAT_007e0952 & 4) == 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 4) == 0) {
 
-          if ((DAT_007e0952 & 8) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
 
             iVar2 = 100;
 
@@ -6411,7 +6413,7 @@ process_75d70:
 
         }
 
-        if ((DAT_007e094e & 0x80) != 0) {
+        if ((*(u16 *)DAT_007e094e_abs & 0x80) != 0) {
 
           iVar2 = *(int *)(iVar3 + 0x18) - *(int *)(iVar3 + 0x16c);
 

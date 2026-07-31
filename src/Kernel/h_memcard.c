@@ -722,7 +722,7 @@ state12_mode0:
                     }
                 }
             }
-            FUN_00513cc8(sSocketNo, D_00846DA0, sMemcardBuffer, 0, sMemcardBufferSize);
+            FUN_00513cc8(sSocketNo, D_00846EA0, sMemcardBuffer, 0, sMemcardBufferSize);
             goto state12_done;
 
 state12_mode1:
@@ -756,7 +756,7 @@ state12_mode1:
                 }
             }
             size = 0;
-            FUN_00513cc8(sSocketNo, D_00846DA0, FUN_001021c0(D_005E4B40, &size), 0, size);
+            FUN_00513cc8(sSocketNo, D_00846EA0, FUN_001021c0(D_005E4B40, &size), 0, size);
             goto state12_done;
 
 state12_mode2:
@@ -813,7 +813,7 @@ state12_mode2:
             FUN_00524270(D_00846884, D_005E4780);
             FUN_00524270(D_008468C4, D_005E4784);
             FUN_00524270(D_00846904, D_005E4788);
-            FUN_00513cc8(sSocketNo, D_00846DA0, D_00846780, 0, 0x3c4);
+            FUN_00513cc8(sSocketNo, D_00846EA0, D_00846780, 0, 0x3c4);
 
 state12_done:
             sMemcardSeqMode = 0xd;

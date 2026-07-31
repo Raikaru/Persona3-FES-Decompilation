@@ -3165,6 +3165,7 @@ LAB_00305784:
 
 
 
+#pragma opt_common_subs off
 // FUN_00305970 NONMATCHING
 
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3)
@@ -3356,6 +3357,7 @@ LAB_00305f20:
 
 
 
+#pragma opt_common_subs reset
 // FUN_00306020 NONMATCHING
 u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
@@ -6309,11 +6311,34 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
   u32 uVar2;
   u8 *pbVar4;
   
-  if (0x1cf < param_2) {
+  if (!(param_2 < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x160b);
   }
   pbVar4 = (u8 *)(iGpffffb708 + (u32)param_2 * 0x2c);
-  if ((*pbVar4 & 2) == 0) {
+  if ((*pbVar4 & 2) != 0) {
+    if ((*param_1 & 4) == 0) {
+      if ((*param_1 & 4) == 0) {
+        uVar1 = FUN_00308c60((u32)param_1);
+        uVar2 = (u32)(u8)(&gp0xffff9d08)[uVar1 & 0xff];
+      }
+      else {
+        uVar2 = 1;
+      }
+      uVar1 = 1;
+      if ((uVar2 != 1) && (uVar1 = uVar2, (param_3 & 6) == 0)) {
+        if (param_3 == 8) {
+          uVar1 = 2;
+        }
+        else {
+          uVar1 = 1;
+        }
+      }
+    }
+    else {
+      uVar1 = 1;
+    }
+  }
+  else {
     uVar1 = (u32)pbVar4[0xf];
     uVar2 = (u32)pbVar4[0x10];
     if ((pbVar4[0xf] == 0) || (uVar2 == 0)) {
@@ -6322,27 +6347,6 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
     if (uVar1 < uVar2) {
       uVar1 = uVar1 + FUN_002ffbc0(uVar2 - uVar1) & 0xff;
     }
-  }
-  else if ((*(u16 *)param_1 & 4) == 0) {
-    if ((*(u16 *)param_1 & 4) == 0) {
-      uVar1 = FUN_00308c60(param_1);
-      uVar2 = (u32)(u8)(&gp0xffff9d08)[uVar1 & 0xff];
-    }
-    else {
-      uVar2 = 1;
-    }
-    uVar1 = 1;
-    if ((uVar2 != 1) && (uVar1 = uVar2, (param_3 & 6) == 0)) {
-      if (param_3 == 8) {
-        uVar1 = 2;
-      }
-      else {
-        uVar1 = 1;
-      }
-    }
-  }
-  else {
-    uVar1 = 1;
   }
   return uVar1;
 }

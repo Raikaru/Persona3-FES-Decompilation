@@ -3308,6 +3308,7 @@ u8 FUN_002a1400(float *param_1)
   return 0;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002A1710 NONMATCHING
 
 
@@ -3389,6 +3390,7 @@ u32 FUN_002a1710(int *param_1)
   return uVar7;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_002A1B00
 
 

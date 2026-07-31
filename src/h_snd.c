@@ -416,8 +416,8 @@ void func_00108bc0(void)
             }
             else if (status == 4)
             {
-                func_00109070(i);
-                H_Snd_00109180(i);
+                func_00109070((s16)i);
+                H_Snd_00109180((s16)i);
                 func_0054d208(*handle, true);
             }
             else
@@ -425,14 +425,14 @@ void func_00108bc0(void)
                 state = &channel->state;
                 switch (*state)
                 {
-                    case HSND_CHANNEL_STARTING:
+                    case HSND_CHANNEL_PLAYING:
                         func_0054d100(*handle);
-                        *state = HSND_CHANNEL_PLAYING;
+                        *state = HSND_CHANNEL_STARTING;
                         break;
 
-                    case HSND_CHANNEL_PLAYING:
-                        H_Snd_00109180(i);
-                        *state = HSND_CHANNEL_PLAYING;
+                    case HSND_CHANNEL_RELEASING:
+                        H_Snd_00109180((s16)i);
+                        *state = HSND_CHANNEL_STARTING;
                         break;
                 }
             }
