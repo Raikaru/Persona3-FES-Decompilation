@@ -7491,19 +7491,7 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   case 0:
 
-    uVar1 = *(u32 *)(param_1 + 0x54);
-
-    uVar2 = *(u32 *)(param_1 + 0x58);
-
-    uVar3 = *(u32 *)(param_1 + 0x5c);
-
-    *(u32 *)*param_3 = *(u32 *)(param_1 + 0x50);
-
-    *(u32 *)(*param_3 + 4) = uVar1;
-
-    *(u32 *)(*param_3 + 8) = uVar2;
-
-    *(u32 *)(*param_3 + 0xc) = uVar3;
+    *(__int128 *)*param_3 = *(__int128 *)(param_1 + 0x50);
 
     break;
 

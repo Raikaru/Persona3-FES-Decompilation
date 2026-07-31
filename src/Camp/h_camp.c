@@ -1817,7 +1817,6 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
                   alpha, 0, 0xa);
 }
 
-#pragma opt_propagation off
 // FUN_0011ddb0 NONMATCHING
 void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 {
@@ -1853,7 +1852,6 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(work, alpha);
 }
 
-#pragma opt_propagation reset
 // FUN_0011dfe0 NONMATCHING
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {
@@ -5848,6 +5846,7 @@ void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
     }
 }
 
+#pragma opt_strength_reduction off
 // FUN_00124370 NONMATCHING
 void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                        s16 pcId, s32 phase)
@@ -6004,6 +6003,7 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     }
 }
 
+#pragma opt_strength_reduction reset
 // FUN_00124B30 NONMATCHING
 void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
                             f32 alpha, s16 pcId, s32 fade)

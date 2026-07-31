@@ -3251,7 +3251,6 @@ void btlUnitInit00285d30Packet(void* work)
 }
 
 // FUN_00285880 NONMATCHING
-#pragma optimization_level 3
 u32 btlUnitUpdate00285d30Packet(void* work)
 {
     BtlUnitPacket00285d30* packet;
@@ -3319,9 +3318,11 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     }
 
     {
-        u32 color;
+        RwRGBA color;
+        RwRGBA* targetColor;
 
-        color = packet->startCol;
+        color = *(RwRGBA*)&packet->startCol;
+        targetColor = (RwRGBA*)&packet->targetCol;
         if (counter >= rgbStart)
         {
             if (rgbDuration > 0 && counter < rgbStart + rgbDuration)
@@ -3332,13 +3333,12 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-            color = (color & 0xff000000) |
-                    ((u32)(s32)((1.0f - factor) * (u8)color +
-                               factor * (u8)packet->targetCol)) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 8) +
-                               factor * (u8)(packet->targetCol >> 8)) << 8) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 16) +
-                               factor * (u8)(packet->targetCol >> 16)) << 16);
+            color.r = (u8)(s32)((1.0f - factor) * color.r +
+                                factor * targetColor->r);
+            color.g = (u8)(s32)((1.0f - factor) * color.g +
+                                factor * targetColor->g);
+            color.b = (u8)(s32)((1.0f - factor) * color.b +
+                                factor * targetColor->b);
         }
 
         if (counter >= alphaStart)
@@ -3351,12 +3351,11 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-            color = (color & 0x00ffffff) |
-                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 24) +
-                               factor * (u8)(packet->targetCol >> 24)) << 24);
+            color.a = (u8)(s32)((1.0f - factor) * color.a +
+                                factor * targetColor->a);
         }
 
-        unit->cols[BTLUNIT_COL_MAIN] = *(RwRGBA*)&color;
+        unit->cols[BTLUNIT_COL_MAIN] = color;
     }
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 
@@ -3368,7 +3367,6 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     packet->counter = counter + 1;
     return 0;
 }
-#pragma optimization_level 2
 
 // FUN_00285d10
 void btlUnitDestroy00285d30Packet(void* work)
