@@ -4367,6 +4367,154 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
+extern void (*jtbl_0096017C)(void* memory);
+extern void (*jtbl_007B5AF0[6])();
+extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize,
+                             u32 heapFlags);
+extern s32 FUN_001159f0();
+#pragma alias campStatusDrawSpriteCall FUN_001159f0
+extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
+                                    u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campStatusDrawSpriteCallXY FUN_001159f0
+extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
+                                      f32 x, f32 y, u32 alpha, f32 scale);
+#pragma alias campStatusDrawFadeSprite FUN_001159f0
+extern s32 campStatusDrawFadeSprite(f32 x, f32 y, f32 alpha, void* resource,
+                                    s32 frame, s32 fade);
+#pragma alias campStatusDrawSpritePackedCall FUN_001159f0
+extern s32 campStatusDrawSpritePackedCall(f32 x, f32 y, u32 parent,
+                                          void* resource, s32 frame,
+                                          u8 alpha, f32 scale);
+#pragma alias campStatusDrawSprite3Call FUN_001159f0
+extern void campStatusDrawSprite3Call(f32 x, f32 y, u32 parent);
+#pragma alias campStatusDrawSprite4Call FUN_001159f0
+extern void campStatusDrawSprite4Call(f32 x, f32 y, f32 alpha, s32 digit);
+#pragma alias campStatusDrawSpriteFadeCall FUN_00115ad0
+extern void campStatusDrawSpriteFadeCall(u32 parent, void* resource, s32 frame,
+                                         u32 alpha, f32 x, f32 y, f32 scale,
+                                         u32 fade);
+/* Fade XY order: h_campStatusDrawSp nd637/1020B -> nd591/1024B. */
+#pragma alias campStatusDrawSpriteFadeXYCall FUN_00115ad0
+extern void campStatusDrawSpriteFadeXYCall(u32 parent, void* resource,
+                                           s32 frame, f32 x, f32 y,
+                                           u32 alpha, f32 scale, u32 fade);
+#pragma alias campStatusDrawGaugeCall FUN_00113a30
+extern void campStatusDrawGaugeCall(f32 scale, f32 x, f32 y, u32 color,
+                                    s32 width, s32 height);
+#pragma alias campStatusDrawTextCall FUN_003b32d0
+extern void campStatusDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
+                                   s32 font, s32 alignment, const char* text,
+                                   s32 maxWidth, s32 shadow);
+#pragma alias campStatusDrawFooterText FUN_0040eb50
+extern s32 campStatusDrawFooterText(f32 scale, s32 x, s32 y, u8 color,
+                                    s16 font, const char* text, s32 maxWidth);
+
+extern s32 FUN_001120a0();
+#pragma alias campStatusGetFont FUN_001120a0
+extern void* campStatusGetFont(s32 font);
+extern s32 FUN_00113a30();
+extern s32 FUN_00114450();
+extern s32 FUN_0011bba0();
+extern s32 FUN_0011e380();
+extern s32 FUN_0011d3a0();
+extern s32 FUN_0010a4e0();
+extern s32 FUN_0010c1a0();
+extern s32 FUN_0010c3a0();
+extern s32 FUN_00174800();
+extern s32 FUN_0016c860();
+extern s32 FUN_0016d2f0();
+extern s32 FUN_00177280();
+extern s32 FUN_001772f0();
+extern s32 FUN_00177360();
+extern s32 FUN_00173220();
+extern s32 FUN_00173280();
+extern s32 FUN_001733b0();
+extern s32 FUN_00173340();
+extern s32 FUN_00173330();
+extern s32 FUN_00173580();
+extern s32 FUN_00173660();
+extern s32 FUN_00198590();
+extern s32 FUN_00195290();
+extern s32 FUN_00194b20();
+extern s32 FUN_001158b0();
+extern s32 FUN_001127d0();
+extern s32 FUN_00115980();
+extern s32 FUN_001126b0();
+extern s32 FUN_00112740();
+extern s32 FUN_00128140();
+extern s32 FUN_001281e0();
+extern s32 FUN_00128480();
+extern s32 FUN_00128720();
+extern s32 FUN_00128c40();
+extern s32 FUN_00129160();
+extern s32 FUN_001293b0();
+extern s32 FUN_00129b30();
+extern s32 FUN_0012a560();
+extern s32 FUN_0012ac60();
+extern s32 FUN_001339a0();
+#pragma alias campStatusCreatePersonaChild FUN_001339a0
+extern KwlnTask* campStatusCreatePersonaChild(KwlnTask* parent,
+                                              u32 priority, u32 personaId,
+                                              u32 mode, f32 alpha);
+extern s32 FUN_00133a80();
+extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
+extern s32 FUN_00121de0();
+extern s32 FUN_00127af0(KwlnTask* task);
+extern KwlnTask* FUN_00127b00(KwlnTask* task, s32 resource, f32 unused,
+                              CampVec2 packed, s32 mode, s32 selected);
+extern s32 FUN_00127ad0(KwlnTask* task);
+extern s32 FUN_00128030(KwlnTask* task);
+extern KwlnTask* FUN_00128040(KwlnTask* task, s32 resource, f32 unused,
+                              CampVec2 packed, s32 mode, s32 selected);
+extern void FUN_00127ab0(KwlnTask* task);
+extern void FUN_00127ff0(KwlnTask* task);
+extern void FUN_00128010(KwlnTask* task);
+extern void FUN_003b32d0();
+extern void FUN_00523ac8();
+extern void* DAT_00833B90;
+extern void* DAT_00833B94;
+extern void* DAT_00833B98;
+#pragma alias DAT_00833B90_abs DAT_00833B90
+extern u8 DAT_00833B90_abs[];
+#pragma alias DAT_00833B98_abs DAT_00833B98
+extern u8 DAT_00833B98_abs[];
+#pragma alias DAT_00833B88_abs DAT_00833B88
+extern u8 DAT_00833B88_abs[];
+extern void* DAT_00833B74;
+extern void* DAT_00833BA0;
+extern char gp0xffff897c[];
+extern f32 DAT_007caf38;
+extern void* DAT_00833B88;
+extern void* FUN_00177790(s16 pcId);
+extern void* func_00112420(void* source);
+extern u32 FUN_001344B0();
+extern u32 FUN_00134900();
+extern void FUN_00124e60(CampVec2 position, f32 alpha, void* persona,
+                         s32 fade);
+extern void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona,
+                         s32 fade);
+extern const char D_005DB140[];
+extern const char D_005DB050[];
+extern const char D_005DB080[];
+extern const char D_005DB0A0[];
+extern const char D_005DB030[];
+extern void* FUN_00125d70(KwlnTask* task);
+void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha);
+extern const char D_005DB158[];
+extern const char D_005DACB0[];
+extern const char D_005DB170[];
+extern void* func_0010c1a0();
+extern void* func_0010c3a0();
+extern int printf(const char* format, ...);
+extern void FUN_00174c10();
+extern void FUN_00175200();
+extern u32 FUN_003c7430();
+extern u32 FUN_003c74e0();
+extern u32 FUN_003c7560();
+extern u32 FUN_003c7610();
+extern u32 FUN_003c7700();
+extern u32 FUN_003c7850();
+
 #pragma alias campStatusDrawSpriteCall FUN_001159f0
 #pragma alias campStatusDrawSpriteCallXY FUN_001159f0
 #pragma alias campStatusDrawFadeSprite FUN_001159f0
@@ -4710,6 +4858,33 @@ typedef struct CampStatusVertex
     RwV3d normal;
     f32 pad1;
 } CampStatusVertex;
+
+extern void (*DAT_00960090)(u32 state, u32 value);
+extern void (*DAT_009600A0)(u32 primitive, CampStatusVertex* vertices,
+                            s32 vertexCount);
+extern f32 DAT_00960088;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
+#pragma alias DAT_009600A0_abs DAT_009600A0
+extern u8 DAT_009600A0_abs[];
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
+extern s32 FUN_00198590();
+extern void (*jtbl_007B5B60[9])();
+extern void* DAT_00833B98;
+extern s32 iGpffffb7fc;
+extern const void* gp0xffff8980;
+extern s32 FUN_00100ec0();
+extern s32 FUN_004d0f00();
+extern s32 FUN_001fc230();
+extern s32 FUN_001fc3c0();
+extern s32 FUN_001fb1f0();
+extern void FUN_003b32d0();
+#pragma alias FUN_003b32d0_typed FUN_003b32d0
+extern void FUN_003b32d0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
+                                s32 alignment, const char* text, s32 maxWidth,
+                                s32 shadow);
+extern void FUN_00523ac8();
 
 #pragma alias DAT_00960090_abs DAT_00960090
 #pragma alias DAT_009600A0_abs DAT_009600A0

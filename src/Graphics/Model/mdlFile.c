@@ -4417,22 +4417,26 @@ void FUN_0031fde0(void)
 
 
 
-  f32 *result;
 
-  u8 *extraout_t1_lo;
 
   
   float extraout_f13;
-  result = (f32 *)FUN_0031fbd0_noargs();
+  u8 *extraout_t1_lo;
+  f32 red;
+  f32 green;
+  f32 blue;
+  FUN_0031fbd0_noargs();
 
-  result[1] =
-       extraout_f13 * ((float)*extraout_t1_lo / 255.0f - result[1]) + result[1] + 0.0f;
-  result[2] =
-       extraout_f13 * ((float)extraout_t1_lo[1] / 255.0f - result[2]) + result[2] + 0.0f;
-  result[3] =
-       extraout_f13 * ((float)extraout_t1_lo[2] / 255.0f - result[3]) + result[3] + 0.0f;
+  red = (f32)*extraout_t1_lo / 255.0f;
+  green = (f32)extraout_t1_lo[1] / 255.0f;
+  blue = (f32)extraout_t1_lo[2] / 255.0f;
 
-  return;
+  DAT_00957244_f32 =
+       extraout_f13 * (red - DAT_00957244_f32) + DAT_00957244_f32 + 0.0f;
+  DAT_00957248_f32 =
+       extraout_f13 * (green - DAT_00957248_f32) + DAT_00957248_f32 + 0.0f;
+  DAT_0095724c_f32 =
+       extraout_f13 * (blue - DAT_0095724c_f32) + DAT_0095724c_f32 + 0.0f;
 }
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1,u8 *param_2)

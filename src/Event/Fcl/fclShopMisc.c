@@ -1016,6 +1016,7 @@ s16 FUN_003f00b0(int param_1)
 
 }
 
+#pragma opt_lifetimes on
 // FUN_003F00D0 NONMATCHING
 
 
@@ -1073,6 +1074,7 @@ int FUN_003f00d0(int *param_1,int param_2,int *param_3)
 
 }
 
+#pragma opt_lifetimes reset
 // FUN_003F01D0
 
 

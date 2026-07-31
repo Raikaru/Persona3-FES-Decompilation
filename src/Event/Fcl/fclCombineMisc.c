@@ -9,7 +9,7 @@ extern u8 DAT_006a53d0[];
 extern int DAT_006a5fe0[];
 extern u32 DAT_006a6000[];
 extern char DAT_007cd790[];
-extern u8 DAT_007ce3f4[];
+extern u32 DAT_007ce3f4;
 extern u16 *PTR_DAT_006a5f40[];
 extern float DAT_007caf9c;
 extern float DAT_007cb000;
@@ -1823,7 +1823,7 @@ s8 *thresholds;
 
           }
 
-          lVar10 = (int)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
+          lVar10 = (int)*(char *)((u8 *)&DAT_007ce3f4 + (u32)uVar3 * 2);
 
           if (lVar10 == -1) {
 
@@ -1889,7 +1889,7 @@ s8 *thresholds;
     thresholds = D_006A48D0;
 
 
-    for (iVar5 = 8; -1 < iVar5; iVar5 = iVar5 + -1) {
+    for (iVar5 = 8; iVar5 >= 0; iVar5 = iVar5 + -1) {
 
       if (thresholds[iVar5 * 2] <= lVar12) {
         lVar10 = (int)thresholds[iVar5 * 2 + 1];
@@ -1940,7 +1940,7 @@ LAB_003d79d4:
 
           }
 
-          lVar12 = (int)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
+          lVar12 = (int)*(char *)((u8 *)&DAT_007ce3f4 + (u32)uVar3 * 2);
 
           if (lVar12 == -1) {
 
