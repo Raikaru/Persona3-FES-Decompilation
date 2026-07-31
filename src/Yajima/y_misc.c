@@ -7618,8 +7618,7 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
 #pragma opt_loop_invariants reset
 #undef DAT_00960090
 
-#pragma opt_lifetimes on
-#pragma opt_loop_invariants off
+#pragma opt_common_subs off
 // FUN_004281F0 NONMATCHING
 
 
@@ -8726,8 +8725,7 @@ u32 FUN_004281f0(u32 param_1)
   return 0;
 
 }
-#pragma opt_loop_invariants reset
-#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
 // FUN_00429C60
 
