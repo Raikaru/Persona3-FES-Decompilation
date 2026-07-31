@@ -4593,7 +4593,6 @@ LAB_003736a4:
 
 #pragma alias FUN_001a42f0_evt_f32 FUN_001a42f0
 extern f32 *FUN_001a42f0_evt_f32(int param_1,int param_2);
-#pragma opt_strength_reduction off
 // FUN_00373700 NONMATCHING
 
 
@@ -5431,7 +5430,6 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_strength_reduction reset
 // FUN_003747A0
 
 

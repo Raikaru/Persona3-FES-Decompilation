@@ -2749,7 +2749,6 @@ void func_001d2a10(void)
 
 /* Removing this worsens FUN_001d32a0 (nd588 -> nd637) - measured W161. */
 #pragma opt_loop_invariants on
-#pragma opt_propagation off
 // FUN_001d32a0 NONMATCHING
 void* func_001d32a0(KwlnTask* task)
 {
@@ -2869,7 +2868,6 @@ void* func_001d32a0(KwlnTask* task)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_propagation reset
 // FUN_001d36c0
 void func_001d36c0(KwlnTask* task)
 {

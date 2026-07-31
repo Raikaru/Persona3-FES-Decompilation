@@ -4609,7 +4609,6 @@ void* func_00315010(void* object, void* data)
 #pragma push
 #pragma opt_loop_invariants on
 /* W323 callback symbol literal nd188 -> nd185. */
-#pragma opt_strength_reduction off
 // FUN_00315090 NONMATCHING
 
 
@@ -4701,7 +4700,6 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
 
 
-#pragma opt_strength_reduction reset
 // FUN_003151D0 NONMATCHING
 
 

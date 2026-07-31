@@ -1539,9 +1539,7 @@ KWindowEntry* func_001a4330(KwlnTask* task, s32 id)
     return entry;
 }
 
-// opt_common_subs off: func_001a4380 normalized_diff 165 -> 145; object 288/288 (retained winner).
-#pragma opt_common_subs reset
-// FUN_001A4380 NONMATCHING
+// FUN_001A4380
 void func_001a4380(KwlnTask* task, s32 id)
 {
     KWindowManagerWork* manager;
@@ -1583,17 +1581,17 @@ check_entry:
         manager->firstVisible = 0;
         manager->cursor = 0;
     }
-    else if (manager->entryCount >= manager->visibleRows ||
-             manager->firstVisible + manager->cursor < manager->entryCount)
+    else if (manager->entryCount < manager->visibleRows)
     {
-        goto after_adjust;
+        if (manager->firstVisible + manager->cursor >=
+            manager->entryCount)
+        {
+            manager->firstVisible = manager->entryCount - 1;
+            manager->cursor = 0;
+        }
     }
-    manager->firstVisible = manager->entryCount - 1;
-    manager->cursor = 0;
-after_adjust:
     func_001a3c30(task);
 }
-#pragma opt_common_subs reset
 
 // FUN_001A44A0
 void func_001a44a0(KwlnTask* task)

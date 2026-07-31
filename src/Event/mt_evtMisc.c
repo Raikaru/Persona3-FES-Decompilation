@@ -5712,7 +5712,6 @@ void FUN_0038ca00(void)
 #pragma pop
 
 
-#pragma opt_strength_reduction off
 // FUN_0038CA80 NONMATCHING
 
 
@@ -5773,7 +5772,6 @@ matched:
 }
 
 
-#pragma opt_strength_reduction reset
 // FUN_0038CC10 NONMATCHING
 
 

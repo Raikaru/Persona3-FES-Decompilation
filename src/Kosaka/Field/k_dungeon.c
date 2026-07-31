@@ -1345,6 +1345,45 @@ typedef struct
 
 #define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4)) // 007ce26c
 
+// FUN_001c1e20
+void func_001c1e20(KwlnTask* transWallTask)
+{
+    ResrcModelFld* modelFld;
+    void* fadeWork;
+
+    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    while (modelFld != NULL)
+    {
+        if ((modelFld->base.flags & 2) == 0)
+        {
+            modelFld = (ResrcModelFld*)modelFld->base.next;
+            continue;
+        }
+
+        if (mdlGetColor(modelFld->mdl)->a == 0)
+        {
+            fadeWork = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, 0x14, rwMEMHINTDUR_GLOBAL);
+            if (fadeWork != NULL)
+            {
+                kwlnTaskCreateWithAutoPriority(transWallTask,
+                                               10,
+                                               "RMD fade CTL",
+                                               func_001c0960,
+                                               func_001c0d30,
+                                               fadeWork);
+                ((void**)fadeWork)[1] = modelFld;
+                ((u32*)fadeWork)[2] = 1;
+                ((f32*)fadeWork)[3] = 255.0f;
+            }
+        }
+
+        modelFld = (ResrcModelFld*)modelFld->base.next;
+    }
+
+    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(transWallTask->workData);
+}
+
+
 // FUN_001C1F30
 KwlnTask* FUN_001c1f30(KwlnTask* parentTask, KwlnTask* collisionTask)
 {

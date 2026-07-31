@@ -4249,7 +4249,6 @@ BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
     return packet;
 }
 
-#pragma opt_propagation off
 // FUN_002889c0 NONMATCHING
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
@@ -4321,7 +4320,6 @@ update:
     func_002bcde0(unit, &unit->unkData8);
 }
 
-#pragma opt_propagation reset
 // FUN_00288f80
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId)
 {

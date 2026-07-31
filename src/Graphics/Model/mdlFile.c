@@ -52744,7 +52744,6 @@ void FUN_00357930(u32 param_1)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_003579B0 NONMATCHING
 
 
@@ -52797,7 +52796,6 @@ u32 FUN_003579b0(u32 param_1)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00357BA0
 
 
