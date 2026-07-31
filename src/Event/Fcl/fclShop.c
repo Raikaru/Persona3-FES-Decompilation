@@ -6444,7 +6444,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   u32 uVar6;
 
   u32 uVar7;
-  u8 *result = (u8 *)&LAB_003c5170;
 
   
 
@@ -6837,9 +6836,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
       }
 
   }
-  result = (u8 *)0x0;
+  return (u8 *)0x0;
   }
-  return result;
+  return (u8 *)&LAB_003c5170;
 }
 
 // FUN_003EDD80

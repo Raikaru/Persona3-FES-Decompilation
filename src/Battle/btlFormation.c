@@ -8802,6 +8802,7 @@ undefined* func_002c6e30(int unit, u32 group)
   u16 unitId;
   u16 i1;
   u16 random;
+  u32 idx;
   u16 cumulative;
   u16 total;
   u16 i2;
@@ -8811,10 +8812,9 @@ undefined* func_002c6e30(int unit, u32 group)
   unitId = *(u16*)(*(int*)(unit + 0x30) + 0xa4);
   weights = DAT_007ce41c + (unitId * 0x29) * 4;
   total = 0;
-  i1 = 0;
-  weights += (group & 0xffff) * 0x28;
-  for (; i1 < 5; i1 = (i1 + 1) & 0xffff) {
-    total += weights[i1 * 8 + 0x2c];
+  for (i1 = 0; i1 < 5; i1 = (i1 + 1) & 0xffff) {
+    idx = i1;
+    total += weights[idx * 8 + 0x2c];
   }
   if (total == 0) {
     return &DAT_007cc740;

@@ -2459,9 +2459,12 @@ void FUN_00389b50(int *param_1)
   int iVar6;
 
 
+  u32 *puVar7;
+
   int iVar8;
 
   int iVar9;
+  int iVar10;
 
   
 
@@ -2505,8 +2508,6 @@ void FUN_00389b50(int *param_1)
       for (puVar1 = (u32 *)param_1[0x1b]; puVar1 != (u32 *)0x0;
 
           puVar1 = (u32 *)puVar1[0x13]) {
-        {
-          u32 *puVar7;
 
         puVar7 = (u32 *)(iVar8 + iVar9 * 0x54);
 
@@ -2527,10 +2528,8 @@ void FUN_00389b50(int *param_1)
           puVar7 = puVar7 + 1;
 
         } while (0 < iVar6);
-        }
 
         if (puVar1[0x10] != 0) {
-          u32 *puVar7;
 
           puVar4 = (u32 *)(*DAT_00960184)(1,0x130,0x40000);
 
@@ -2541,8 +2540,8 @@ void FUN_00389b50(int *param_1)
           }
 
           FUN_00386c40(10,0x130);
-
-          *(u32 **)(iVar8 + iVar9 * 0x54 + 0x40) = puVar4;
+          iVar10 = iVar8 + iVar9 * 0x54;
+          *(u32 **)(iVar10 + 0x40) = puVar4;
 
           puVar7 = (u32 *)puVar1[0x10];
 

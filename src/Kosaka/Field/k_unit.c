@@ -3211,7 +3211,6 @@ void func_001d4180(void)
     u32 hasResources;
     s32* work;
     u8* scene;
-
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         hasResources = false;
@@ -3241,8 +3240,12 @@ void func_001d4180(void)
                 }
                 if (*taskSlot != NULL)
                 {
-                    func_00195020(gFldUnitsPc[i].unk_180);
-                    gFldUnitsPc[i].unk_180 = NULL;
+                    u8* unitBase;
+
+                    unitBase = (u8*)gFldUnitsPc;
+                    unitBase += i * sizeof(FldUnit);
+                    func_00195020(*(KwlnTask**)(unitBase + 0x180));
+                    *(KwlnTask**)(unitBase + 0x180) = NULL;
                 }
             }
         }

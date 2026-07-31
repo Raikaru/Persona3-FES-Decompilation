@@ -3743,27 +3743,39 @@ bpTexMode3FrameBody:
     }
 bpTexMode3FrameAfter:
 
-    switch (*(u32*)(work + 0x463c))
+    sub = *(u32*)(work + 0x463c);
+    switch (sub)
     {
     case 3:
-        switch (*(u32*)(work + 0x4644))
-        {
-        case 0:
-            if ((*(u32*)(work + 0x4648) == 1 ||
-                 *(u32*)(work + 0x4648) == 2) &&
-                *(u32*)(work + 0x4658) < 6)
-            {
-                func_00226040();
-                return;
-            }
-            return;
-        case 1:
-        case 2:
-            func_00226040();
-            break;
-        }
-        break;
+        goto bpTexFinalSub3;
     default:
-        return;
+        goto bpTexFinalAfter;
     }
+bpTexFinalSub3:
+    switch (*(u32*)(work + 0x4644))
+    {
+    case 0:
+        goto bpTexFinalFrame0;
+    case 1:
+    case 2:
+        goto bpTexFinalFrame12;
+    default:
+        goto bpTexFinalAfter;
+    }
+bpTexFinalFrame0:
+    if (*(u32*)(work + 0x4648) != 1 &&
+        *(u32*)(work + 0x4648) != 2)
+    {
+        goto bpTexFinalAfter;
+    }
+    if (*(s32*)(work + 0x4658) >= 6)
+    {
+        goto bpTexFinalAfter;
+    }
+    func_00226040();
+    goto bpTexFinalAfter;
+bpTexFinalFrame12:
+    func_00226040();
+bpTexFinalAfter:
+    return;
 }

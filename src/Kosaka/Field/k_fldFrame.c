@@ -1613,6 +1613,7 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     FldFrameMoveWork* work;
     RwV3d line[2];
     RwV3d resolved;
+    f32 debugColor;
 
     work = (FldFrameMoveWork*)task->workData;
     line[1] = *position;
@@ -1630,7 +1631,7 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     {
         goto done;
     }
-    if (K_FldFrame_Raycast(line, &resolved) != false)
+    if (K_FldFrame_Raycast(line, &resolved) == true)
     {
         work->points[work->pointCount].position = resolved;
     }
@@ -1642,13 +1643,12 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     work->points[work->pointCount].kind = 3;
     if ((work->flags & 0x80000000) != 0)
     {
+        debugColor = *(f32*)&sDebugSphereColor;
         work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
-        if (work->points[work->pointCount].drawTask != NULL)
-        {
-            K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
-            K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
-                                  &work->points[work->pointCount].position);
-        }
+        K_Draw_SetPositionColor(work->points[work->pointCount].drawTask,
+                                (RwRGBA*)&debugColor);
+        K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
+                              &work->points[work->pointCount].position);
     }
     work->pointCount++;
     return true;
