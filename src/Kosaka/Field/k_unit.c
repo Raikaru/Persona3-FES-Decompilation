@@ -2307,7 +2307,10 @@ void func_001d1fa0(void)
     area = func_001bff20();
     memset(DAT_0086be80, 0, 0x2700);
     iGpffffb598 = 0;
-    count = func_001d77d0_u32(*puGpffffa850, puGpffffa850[2], area);
+    {
+        u16 minor = puGpffffa850[2];
+        count = func_001d77d0_u32(*puGpffffa850, minor, area);
+    }
     switch (func_001c0040())
     {
         case 0:
@@ -2352,7 +2355,11 @@ void func_001d1fa0(void)
         spawnId = model[1];
         if (spawnId < 5000)
         {
-            if (spawnId < 4000)
+            if (spawnId >= 4000)
+            {
+                func_001828d0(spawnId, record + 0x120);
+            }
+            else
             {
                 if (*(u8*)((u8*)model + 5) == 0)
                 {
@@ -2363,10 +2370,6 @@ void func_001d1fa0(void)
                     func_00182d90(spawnId, 2,
                                    *(u8*)((u8*)model + 5), record + 0x120);
                 }
-            }
-            else
-            {
-                func_001828d0(spawnId, record + 0x120);
             }
         }
         index++;

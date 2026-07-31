@@ -472,40 +472,44 @@ void* FUN_001675e0(KwlnTask* task)
             if (work->mode == 0) {
                 s16 screenMode0;
                 void* allocated0;
+                KwlnTask* nextTask0;
                 screenMode0 = (s16)work->screenMode;
                 allocated0 = (*DAT_00960184_abs)(1, 0x30, 0x40000);
                 if (allocated0 == 0) {
-                    work->activeTask = 0;
+                    nextTask0 = 0;
                 }
                 else {
-                    work->activeTask = (u32)kwlnTaskCreate(
+                    nextTask0 = (KwlnTask*)kwlnTaskCreate(
                         task, D_005DBD80, 0x18be,
                         func_001618a0,
                         func_00161d60,
                         allocated0);
-                    if (work->activeTask != 0) {
+                    if (nextTask0 != 0) {
                         *(u32*)((u8*)allocated0 + 0x0c) =
                             (u32)screenMode0;
                     }
                 }
+                work->activeTask = (u32)nextTask0;
             }
             else {
+                KwlnTask* nextTask1;
                 screenMode = (s16)work->screenMode;
                 allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
                 if (allocated == 0) {
-                    work->activeTask = 0;
+                    nextTask1 = 0;
                 }
                 else {
-                    work->activeTask = (u32)kwlnTaskCreate(
+                    nextTask1 = (KwlnTask*)kwlnTaskCreate(
                         task, D_005DBED0, 0x18be,
                         func_00166c70,
                         FUN_001675b0,
                         allocated);
-                    if (work->activeTask != 0) {
+                    if (nextTask1 != 0) {
                         *(u32*)((u8*)allocated + 0x0c) =
                             (u32)screenMode;
                     }
                 }
+                work->activeTask = (u32)nextTask1;
             }
             work->state = 2;
         }

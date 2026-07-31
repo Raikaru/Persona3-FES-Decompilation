@@ -4315,8 +4315,8 @@ void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1)
 void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
 {
   u8* iVar1;
-  u16 uVar3;
   u16 uVar2;
+  u16 uVar3;
   float fVar4;
   float fVar5;
   float fVar6;

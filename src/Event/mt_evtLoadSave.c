@@ -3159,28 +3159,24 @@ void FUN_00391080(u32 param_1,u32 param_2)
   u32 *puVar9;
 
   int iVar10;
-  u32 arg1;
-  u32 arg2;
 
 
 
   
 
 
-  arg1 = param_1;
-  arg2 = param_2;
   uVar12 = 0;
 
   while ((int)uVar12 < 8) {
 
 
-    uVar6 = FUN_00361ca0(0x30,arg2);
+    uVar6 = FUN_00361ca0(0x30,param_2);
 
     puVar5 = (u32 *)uVar6;
 
     puVar5[1] = uVar12;
 
-    for (iVar11 = 0; iVar10 = (int)arg1, iVar11 < *(int *)(iVar10 + 0xb0); iVar11 = iVar11 + 1) {
+    for (iVar11 = 0; iVar10 = (int)param_1, iVar11 < *(int *)(iVar10 + 0xb0); iVar11 = iVar11 + 1) {
 
       iVar3 = *(int *)(*(int *)(iVar10 + 0x84) + 0x14);
 
@@ -3224,9 +3220,9 @@ void FUN_00391080(u32 param_1,u32 param_2)
 
           }
 
-          uVar7 = FUN_00361350(uVar6,uVar2,arg2);
+          uVar7 = FUN_00361350(uVar6,uVar2,param_2);
 
-          FUN_0038f440_direct((u8 *)arg1,(void *)uVar7,iVar11);
+          FUN_0038f440_direct((u8 *)param_1,(void *)uVar7,iVar11);
 
         }
 
@@ -3283,7 +3279,7 @@ LAB_00391290:
 
     }
 
-    FUN_00390ef0(arg2,uVar6);
+    FUN_00390ef0(param_2,uVar6);
 
     uVar12 = uVar12 + 1;
 
