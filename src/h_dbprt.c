@@ -337,22 +337,14 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
 
     x = (s32)pos.x;
     y = (s32)posY;
-    character = 0;
     baseX = x;
-    while (character < HDBPRT_LOG_MAXCHAR)
+    for (character = 0;
+         character < HDBPRT_LOG_MAXCHAR &&
+             pos.x < HDBPRT_GRID_WIDTH && posY < HDBPRT_GRID_HEIGHT &&
+             x < HDBPRT_GRID_WIDTH && y < HDBPRT_GRID_HEIGHT &&
+             (glyph = buffer[character]) != '\0';
+         character++)
     {
-        if (pos.x >= HDBPRT_GRID_WIDTH || posY >= HDBPRT_GRID_HEIGHT ||
-            x >= HDBPRT_GRID_WIDTH || y >= HDBPRT_GRID_HEIGHT)
-        {
-            break;
-        }
-
-        glyph = buffer[character];
-        if (glyph == '\0')
-        {
-            break;
-        }
-
         if (glyph == '\n')
         {
             x = baseX;
@@ -370,7 +362,6 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
             }
             x++;
         }
-        character++;
     }
 }
 

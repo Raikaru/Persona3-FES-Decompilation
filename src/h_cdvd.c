@@ -1286,12 +1286,12 @@ void func_00101e30(void* requestData)
     u32 fileSize;
     u32 offset;
     u32 entryOffset;
+    s32 i;
     s32 scan;
+    s32 backslash;
     char c;
     char* cursor;
-    s32 backslash;
     s32 slash;
-    s32 i;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
     if (request->fileMode == 0)
@@ -1299,8 +1299,8 @@ void func_00101e30(void* requestData)
         u32 readByteSize;
         u8* fileMemory;
 
-        readByteSize = request->readByteSize;
         fileMemory = request->fileMemory;
+        readByteSize = *(volatile u32*)&request->readByteSize;
         func_00102030(requestData, fileMemory, readByteSize, request->path);
         request->archiveFileCount = 1;
         return;

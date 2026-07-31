@@ -88,7 +88,8 @@ extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
 extern s32 DAT_007cc148;
 extern s32 DAT_007ce13c;
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
-extern void (*jtbl_0096017C)(void* memory);
+ #pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 extern void* memset(void* dest, s32 value, u32 size);
 extern s32 K_Scene_001a0250(void);
 extern void* func_00491880(void);
@@ -1545,7 +1546,6 @@ void func_0019bcf0(KwlnTask* renderTexTask)
 {
     KwlnTask* task;
     FldShadowRenderTex* shadow;
-    FldShadowRingWork* ring;
     RwFrame* frame;
     RwCamera* camera;
     RwRaster* raster;
@@ -1562,8 +1562,8 @@ void func_0019bcf0(KwlnTask* renderTexTask)
         goto destroyRing;
     }
 destroyMode1:
+    func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
     camera = shadow->camera;
-    func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), camera);
     if (camera != NULL)
     {
         frame = (RwFrame*)camera->object.object.parent;
@@ -1590,31 +1590,25 @@ destroyMode1:
     func_004d0f00(shadow->texture);
     if (shadow->unk_48 != NULL)
     {
-        (*jtbl_0096017C)(shadow->unk_48);
+        (*(void (**)(void*))jtbl_0096017C_abs)(shadow->unk_48);
     }
     goto destroyRing;
 
 destroyRing:
-    ring = (FldShadowRingWork*)shadow->radius;
-    if (ring != NULL)
+    if (shadow->radius != NULL)
     {
-        if (ring->colorData != NULL)
+        if (((FldShadowRingWork*)shadow->radius)->colorData != NULL)
         {
-            func_00494cc0(ring->colorData);
+            func_00494cc0(((FldShadowRingWork*)shadow->radius)->colorData);
         }
-        if (ring->renderObject != NULL)
+        if (((FldShadowRingWork*)shadow->radius)->renderObject != NULL)
         {
-            frame = (RwFrame*)*(void**)((u8*)ring->renderObject + 4);
-            if (frame != NULL)
-            {
-                func_004caf80(frame);
-            }
-            func_00491a80(ring->renderObject);
-            (*jtbl_0096017C)(ring->renderObject);
+            frame = (RwFrame*)*(void**)((u8*)((FldShadowRingWork*)shadow->radius)->renderObject + 4);
+            func_004caf80(frame);
+            func_00491a80(((FldShadowRingWork*)shadow->radius)->renderObject);
         }
-        (*jtbl_0096017C)(ring);
-    }
-    (*jtbl_0096017C)(task->workData);
+        (*(void (**)(void*))jtbl_0096017C_abs)(shadow->radius);
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
 // FUN_0019c2f0

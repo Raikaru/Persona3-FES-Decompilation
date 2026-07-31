@@ -1294,13 +1294,20 @@ void bpTexBeginRender(void)
 {
     u32* work;
     u32* node;
-    f32 origin[3];
+    u64 xy;
+    f32 z;
+    struct
+    {
+        u64 xy;
+        f32 z;
+    } origin;
 
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
-    K_ASSERT(work != NULL, 0xbc);
-    origin[0] = *(f32*)0x0068ea30;
-    origin[1] = *(f32*)0x0068ea34;
-    origin[2] = *(f32*)0x0068ea38;
+    xy = *(volatile u64*)0x0068ea30;
+    z = *(volatile f32*)0x0068ea38;
+    origin.xy = xy;
+    origin.z = z;
     for (node = BP_TEX_PTR(work, 0x1265c);
          node != NULL;
          node = bpTexNodeNext(node))
@@ -1309,7 +1316,7 @@ void bpTexBeginRender(void)
     }
     BP_TEX_U32(work, 0x12680) = 0;
     func_0024fda0((u8*)work + 0x127d4);
-    func_0024faf0((u8*)work + 0x127d4, origin);
+    func_0024faf0((u8*)work + 0x127d4, &origin);
     func_0024da60((u8*)work + 0x127d4);
     func_0024f090((u8*)work + 0x127d4);
     func_0024fe00((u8*)work + 0x12800);

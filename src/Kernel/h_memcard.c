@@ -554,7 +554,6 @@ state5_done:
             switch (sMemcardMode)
             {
             case 0:
-            {
                 if (sMemcardAsync != 0)
                 {
                     FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
@@ -584,7 +583,6 @@ state5_done:
                         }
                     }
                 }
-            }
                 break;
             case 1:
             {
@@ -616,6 +614,7 @@ state5_done:
                             FUN_00523ac8(D_00846DA0, D_005E4A80, sMemcardFile);
                         }
                     }
+            }
             }
                 break;
             case 2:
@@ -650,7 +649,7 @@ state5_done:
                     }
                 }
             }
-                break;
+            break;
             default:
                 break;
             }
