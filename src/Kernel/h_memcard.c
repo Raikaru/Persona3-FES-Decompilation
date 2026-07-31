@@ -554,6 +554,7 @@ state5_done:
             switch (sMemcardMode)
             {
             case 0:
+            {
                 if (sMemcardAsync != 0)
                 {
                     FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);

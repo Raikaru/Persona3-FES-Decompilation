@@ -1267,7 +1267,6 @@ HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
                                s32 byteCount, const char* cacheName,
                                void* result2, void* result3, void* result4)
 {
-    HSfdPoolEntry* pool;
     HSfdAsyncEntry** link;
     HSfdAsyncEntry* entry;
     s16 index;
@@ -1281,13 +1280,12 @@ link_check:
         goto link_next;
     }
     index = 0;
-    pool = (HSfdPoolEntry*)sSfdEntries;
     goto pool_check;
 pool_body:
-    if (pool[index].state == 0)
+    if (((HSfdPoolEntry*)sSfdEntries)[index].state == 0)
     {
-        pool[index].state = 1;
-        entry = (HSfdAsyncEntry*)pool[index].entry;
+        ((HSfdPoolEntry*)sSfdEntries)[index].state = 1;
+        entry = (HSfdAsyncEntry*)((HSfdPoolEntry*)sSfdEntries)[index].entry;
         memset(entry, 0, 0x1d8);
         goto entry_found;
     }

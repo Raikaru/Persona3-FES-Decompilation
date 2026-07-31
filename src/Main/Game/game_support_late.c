@@ -1542,11 +1542,11 @@ void* func_0018db20(KwlnTask* task)
                 f32 y;
                 u32 alpha;
 
-                x = transition->position.valueF[0] + 20.0f;
-                y = transition->position.valueF[1] + 18.0f;
+                x = *(volatile f32*)&transition->position.valueF[0] + 20.0f;
+                y = *(volatile f32*)&transition->position.valueF[1] + 18.0f;
                 alpha = *(volatile u8*)&transition->alpha;
-                gsDrawSpritePositionFirst(x, y, unused, *atlas, 3, alpha,
-                                          transition->depth);
+                func_001159f0(unused, *atlas, 3, alpha, x, y,
+                              transition->depth);
             }
             func_001159f0(unused, *atlas, 1, *(u8*)&transition->alpha,
                           transition->position.valueF[0] + 20.0f,

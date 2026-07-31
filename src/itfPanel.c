@@ -1726,6 +1726,7 @@ void FUN_003aa720(int param_1)
 
 {
 
+  u32 *panel;
   int iVar6;
   short *psVar8;
   short *psVar7;
@@ -1740,7 +1741,7 @@ void FUN_003aa720(int param_1)
 
   
 
-  iVar4 = *(int *)(param_1 + 8);
+  panel = *(u32 **)(param_1 + 8);
   psVar8 = DAT_006a2060;
   psVar7 = asStack_20;
   iVar6 = 8;
@@ -1764,8 +1765,8 @@ void FUN_003aa720(int param_1)
 
   } while (0 < iVar6);
 
-  uVar3 = *(u32 *)(iVar4 + 0xc);
-  iVar6 = *(int *)(iVar4 + 4) + -5;
+  uVar3 = panel[3];
+  iVar6 = ((int *)panel)[1] + -5;
 
   uVar5 = FUN_001158b0(0,uGpffffb964,0);
 
