@@ -1009,11 +1009,6 @@ void h_campDestroyRootDrawTask(KwlnTask* task)
     sCampRootDrawTask = NULL;
 }
 
-// FUN_0011bba0_y5
-void h_campNoopRootDrawCallback(void)
-{
-}
-
 // FUN_0011bad0
 KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 menuMode)
 {
@@ -1033,6 +1028,11 @@ KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 men
     work->selectedCommand = -1;
     work->menuMode = menuMode;
     return task;
+}
+
+// FUN_0011bba0_y5
+void h_campNoopRootDrawCallback(void)
+{
 }
 // Reconstructed root UI rendering and data-driven date/currency draws.
 // Residual differences are compiler register allocation and switch layout.
@@ -24329,6 +24329,155 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
                         record->y);
 }
 
+// FUN_001617D0
+KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
+{
+    KwlnTask* task;
+    CampSkillOuterWork* work;
+
+    work = (CampSkillOuterWork*)RwCalloc(1, 0x50, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_NewCampSkillDraw", priority,
+                          FUN_00160800_y4,
+                          h_campSkillDestroySkillDrawTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    *(HCdvd**)((u8*)work + 0x30) =
+        H_Cdvd_Request("camp/camp_skil.pak", HCDVD_FILEARCHIVE);
+    return task;
+}
+
+/* opt_common_subs off: default/on nd646/1188B -> off nd530/1212B; retained. */
+#pragma opt_common_subs off
+// FUN_001618A0 NONMATCHING
+void* FUN_001618a0(KwlnTask* task)
+{
+    CampSkillOuterWork* work;
+    void* owner;
+    s32 command;
+    s32 alpha;
+
+    work = (CampSkillOuterWork*)task->workData;
+    switch (work->state) {
+    case 0:
+    {
+        CampPanelTransitionWork* panelWork;
+        u32* personaWork;
+        void* (**callocFunc)(u32, u32, u32);
+        s16 panelPcId;
+
+        panelPcId = work->pcId;
+        callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
+        panelWork = (CampPanelTransitionWork*)(*callocFunc)(
+            1, 0x18, 0x40000);
+        if (panelWork != NULL) {
+            DAT_007cdf54 = kwlnTaskCreate(task, "H_CampSkillPanel",
+                                          0x18c1, h_campUpdatePanelTransition,
+                                          FUN_00122630, panelWork);
+            if (DAT_007cdf54 != NULL) {
+                panelWork->unused_0c = 0;
+                panelWork->drawId = panelPcId;
+            } else {
+                RwFree(panelWork);
+        }
+        }
+        personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
+        if (personaWork != NULL) {
+            personaWork[4] = FUN_00174800_y4((u32)(u16)work->pcId);
+            DAT_007cdf58 = kwlnTaskCreate(task, "H_CampSkillPersona",
+                                          0x18c1, FUN_00122940,
+                                          h_campPersonaDestroyKaniControlTask,
+                                          personaWork);
+            if (DAT_007cdf58 != NULL) {
+                *(s16*)((u8*)personaWork + 0x18) = work->pcId;
+            } else {
+                RwFree(personaWork);
+            }
+        }
+        work->displayMode = 0;
+        work->child = FUN_00166a50(task, 0x18be, work->pcId, 0, 0);
+        work->scrollX = 320.0f;
+        work->scrollY = 0.0f;
+        work->state = 1;
+        break;
+    }
+    case 1:
+        if (DAT_007cdf88 != NULL && FUN_001685d0(DAT_007cdf88) != 0) {
+            work->frame = 0;
+            work->scrolling = 1;
+            work->state = 2;
+        }
+        break;
+    case 2:
+        command = work->displayMode == 0
+                      ? FUN_00166c00(work->child)
+                      : FUN_00167f30(work->child);
+        if (command == -1) {
+            if (work->displayMode == 0) {
+                FUN_00166c30(work->child);
+            } else {
+                FUN_00167ef0(work->child);
+            }
+            if (DAT_007cdf88 != NULL) {
+                FUN_001685e0(DAT_007cdf88, 3);
+            }
+            work->scrolling = 0;
+            work->state = 5;
+        } else if (command == 1) {
+            work->state = 3;
+        }
+        break;
+    case 3:
+        switch (work->displayMode) {
+        case 0:
+            FUN_00166c50(work->child);
+            work->displayMode = 1;
+            work->child = FUN_00167f40(task, 0x18be, 0,
+                                       work->pcId, 0, 0);
+            break;
+        case 1:
+            FUN_00167f10(work->child);
+            work->displayMode = 0;
+            work->child = FUN_00166a50(task, 0x18be, work->pcId, 0, 1);
+            break;
+        }
+        work->state = 2;
+        break;
+    case 5:
+        if (work->child != NULL && FUN_00195290_y4(work->child) == 3) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    }
+    if (work->scrolling != 0) {
+        work->frame++;
+        if (work->frame > 10) {
+            work->frame = 10;
+        }
+        alpha = 255 - (work->frame * 255) / 10;
+        FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
+                           work->scrollX, work->scrollY, 100.0f);
+        if (work->scrollX < 0.0f) {
+            FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
+                               work->scrollX + 640.0f, work->scrollY, 100.0f);
+        }
+        work->scrollX -= 1.0f;
+        if (work->scrollX < -640.0f) {
+            work->scrollX += 640.0f;
+        }
+    }
+    return KWLNTASK_CONTINUE;
+}
+#pragma opt_common_subs reset
+
+// FUN_00161D60
+void FUN_00161d60(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
 /* Retail: 9-case jump table (@542 = 0x7b6210); case bodies laid out 2,3,4,5,0,7,8
    with 1 and 6 empty. Reconstructed W297: object 4560B -> 5520B of a 5536B window.
    Residual (nd597) is one register-coloring artifact: MWCC coalesces the four
@@ -25429,155 +25578,6 @@ static void campSkillFinishChild(KwlnTask* child)
     }
 }
 
-// FUN_001617D0
-KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
-{
-    KwlnTask* task;
-    CampSkillOuterWork* work;
-
-    work = (CampSkillOuterWork*)RwCalloc(1, 0x50, 0x40000);
-    if (work == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "H_NewCampSkillDraw", priority,
-                          FUN_00160800_y4,
-                          h_campSkillDestroySkillDrawTask, work);
-    if (task == NULL) {
-        return NULL;
-    }
-    *(HCdvd**)((u8*)work + 0x30) =
-        H_Cdvd_Request("camp/camp_skil.pak", HCDVD_FILEARCHIVE);
-    return task;
-}
-
-/* opt_common_subs off: default/on nd646/1188B -> off nd530/1212B; retained. */
-#pragma opt_common_subs off
-// FUN_001618A0 NONMATCHING
-void* FUN_001618a0(KwlnTask* task)
-{
-    CampSkillOuterWork* work;
-    void* owner;
-    s32 command;
-    s32 alpha;
-
-    work = (CampSkillOuterWork*)task->workData;
-    switch (work->state) {
-    case 0:
-    {
-        CampPanelTransitionWork* panelWork;
-        u32* personaWork;
-        void* (**callocFunc)(u32, u32, u32);
-        s16 panelPcId;
-
-        panelPcId = work->pcId;
-        callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
-        panelWork = (CampPanelTransitionWork*)(*callocFunc)(
-            1, 0x18, 0x40000);
-        if (panelWork != NULL) {
-            DAT_007cdf54 = kwlnTaskCreate(task, "H_CampSkillPanel",
-                                          0x18c1, h_campUpdatePanelTransition,
-                                          FUN_00122630, panelWork);
-            if (DAT_007cdf54 != NULL) {
-                panelWork->unused_0c = 0;
-                panelWork->drawId = panelPcId;
-            } else {
-                RwFree(panelWork);
-        }
-        }
-        personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
-        if (personaWork != NULL) {
-            personaWork[4] = FUN_00174800_y4((u32)(u16)work->pcId);
-            DAT_007cdf58 = kwlnTaskCreate(task, "H_CampSkillPersona",
-                                          0x18c1, FUN_00122940,
-                                          h_campPersonaDestroyKaniControlTask,
-                                          personaWork);
-            if (DAT_007cdf58 != NULL) {
-                *(s16*)((u8*)personaWork + 0x18) = work->pcId;
-            } else {
-                RwFree(personaWork);
-            }
-        }
-        work->displayMode = 0;
-        work->child = FUN_00166a50(task, 0x18be, work->pcId, 0, 0);
-        work->scrollX = 320.0f;
-        work->scrollY = 0.0f;
-        work->state = 1;
-        break;
-    }
-    case 1:
-        if (DAT_007cdf88 != NULL && FUN_001685d0(DAT_007cdf88) != 0) {
-            work->frame = 0;
-            work->scrolling = 1;
-            work->state = 2;
-        }
-        break;
-    case 2:
-        command = work->displayMode == 0
-                      ? FUN_00166c00(work->child)
-                      : FUN_00167f30(work->child);
-        if (command == -1) {
-            if (work->displayMode == 0) {
-                FUN_00166c30(work->child);
-            } else {
-                FUN_00167ef0(work->child);
-            }
-            if (DAT_007cdf88 != NULL) {
-                FUN_001685e0(DAT_007cdf88, 3);
-            }
-            work->scrolling = 0;
-            work->state = 5;
-        } else if (command == 1) {
-            work->state = 3;
-        }
-        break;
-    case 3:
-        switch (work->displayMode) {
-        case 0:
-            FUN_00166c50(work->child);
-            work->displayMode = 1;
-            work->child = FUN_00167f40(task, 0x18be, 0,
-                                       work->pcId, 0, 0);
-            break;
-        case 1:
-            FUN_00167f10(work->child);
-            work->displayMode = 0;
-            work->child = FUN_00166a50(task, 0x18be, work->pcId, 0, 1);
-            break;
-        }
-        work->state = 2;
-        break;
-    case 5:
-        if (work->child != NULL && FUN_00195290_y4(work->child) == 3) {
-            return KWLNTASK_STOP;
-        }
-        break;
-    }
-    if (work->scrolling != 0) {
-        work->frame++;
-        if (work->frame > 10) {
-            work->frame = 10;
-        }
-        alpha = 255 - (work->frame * 255) / 10;
-        FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
-                           work->scrollX, work->scrollY, 100.0f);
-        if (work->scrollX < 0.0f) {
-            FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
-                               work->scrollX + 640.0f, work->scrollY, 100.0f);
-        }
-        work->scrollX -= 1.0f;
-        if (work->scrollX < -640.0f) {
-            work->scrollX += 640.0f;
-        }
-    }
-    return KWLNTASK_CONTINUE;
-}
-#pragma opt_common_subs reset
-
-// FUN_00161D60
-void FUN_00161d60(KwlnTask* task)
-{
-    RwFree(task->workData);
-}
 
 static inline void campSkillBuildAnimationPath(char* path, s32 pcId)
 {
@@ -26352,56 +26352,6 @@ typedef struct CampPersonaKaniWork
     s16 screen;
 } CampPersonaKaniWork;
 
-// FUN_00122fd0. Destroy callback of the "h_camp_persona_kani_control" task
-void h_campPersonaDestroyKaniControlTask(KwlnTask* task)
-{
-    RwFree(task->workData);
-}
-
-// FUN_00123000
-KwlnTask* h_campPersonaCreateKaniControlTask(KwlnTask* parent, u32 param_2)
-{
-    u32* workData;
-    KwlnTask* task;
-
-    workData = (u32*)RwCalloc(1, 0x1c, 0x40000);
-    if (workData == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "h_camp_persona_kani_control", 0x18c1, FUN_00122940_y5, h_campPersonaDestroyKaniControlTask, workData);
-    if (task == NULL) {
-        return NULL;
-    }
-    workData[3] = 0;
-    workData[4] = param_2;
-    *(u16*)((int)workData + 0x18) = 1;
-    return task;
-}
-
-// FUN_00133900. Destroy callback of the "CampPersonaDispCtlDraw" task
-void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
-{
-    int* workData;
-
-    workData = (int*)task->workData;
-    if (workData[8] != 0) {
-        FUN_00133d30_y5(workData[8], workData[9]);
-        workData[8] = 0;
-        workData[9] = 0;
-        workData[0xa] = 0;
-    } else {
-        if (workData[9] != 0) {
-            H_Cdvd_Destroy(workData[9]);
-            workData[9] = 0;
-        }
-        if (workData[0xa] != 0) {
-            FUN_004d0f00_y5(workData[0xa]);
-            workData[0xa] = 0;
-        }
-    }
-    RwFree(workData);
-}
-
 // FUN_00122630
 void FUN_00122630(KwlnTask* task)
 {
@@ -26762,6 +26712,33 @@ void* FUN_00122940_y5(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+// FUN_00122fd0. Destroy callback of the "h_camp_persona_kani_control" task
+void h_campPersonaDestroyKaniControlTask(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
+// FUN_00123000
+KwlnTask* h_campPersonaCreateKaniControlTask(KwlnTask* parent, u32 param_2)
+{
+    u32* workData;
+    KwlnTask* task;
+
+    workData = (u32*)RwCalloc(1, 0x1c, 0x40000);
+    if (workData == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "h_camp_persona_kani_control", 0x18c1, FUN_00122940_y5, h_campPersonaDestroyKaniControlTask, workData);
+    if (task == NULL) {
+        return NULL;
+    }
+    workData[3] = 0;
+    workData[4] = param_2;
+    *(u16*)((int)workData + 0x18) = 1;
+    return task;
+}
+
+
 typedef struct CampPersonaTransitionWork
 {
     s32 state;
@@ -27386,115 +27363,7 @@ extern u16 DAT_007e094e_y6;
 extern char DAT_007cb66c_scalar;
 
 void* FUN_0012c430(KwlnTask*);
-
-// FUN_00130e40. Destroy callback of the "H_CampSoubi1Draw" (equip screen) task
-void h_campEquipDestroySoubi1DrawTask(KwlnTask* task)
-{
-    int* workData;
-
-    workData = (int*)task->workData;
-    if (workData[0xae] != 0) {
-        RwFree((void*)workData[0xae]);
-    }
-    workData[0xae] = 0;
-    if (workData[0xaf] != 0) {
-        RwFree((void*)workData[0xaf]);
-    }
-    workData[0xaf] = 0;
-    if (workData[0xb0] != 0) {
-        RwFree((void*)workData[0xb0]);
-    }
-    workData[0xb0] = 0;
-    if (workData[0xac] != 0) {
-        FUN_001124b0(workData[0xac]);
-    }
-    workData[0xac] = 0;
-    if (workData[0xad] != 0) {
-        FUN_001124b0(workData[0xad]);
-    }
-    workData[0xad] = 0;
-    if (workData[0] != 0) {
-        H_Cdvd_Destroy(workData[0]);
-    }
-    workData[0] = 0;
-    RwFree(workData);
-}
-
-// FUN_00130f20
-KwlnTask* h_campEquipCreateSoubi1DrawTask(KwlnTask* parent, u32 priority, CampVec2 param_3, u16 param_4)
-{
-    u32* workData;
-    KwlnTask* task;
-
-    workData = (u32*)RwCalloc(1, 0x2c4, 0x40000);
-    if (workData == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "H_CampSoubi1Draw", priority, FUN_0012c430, h_campEquipDestroySoubi1DrawTask, workData);
-    if (task == NULL) {
-        return NULL;
-    }
-    *(CampVec2*)((int)workData + 8) = param_3;
-    workData[5] = 1;
-    *(u16*)((int)workData + 0x12) = param_4;
-    return task;
-}
-// FUN_00131000
-int FUN_00131000(const void* left, const void* right)
-{
-    u16 leftId;
-    u16 rightId;
-
-    leftId = datGetEquipmentId(1, *(const u16*)left);
-    rightId = datGetEquipmentId(1, *(const u16*)right);
-    if (leftId == rightId) {
-        return 0;
-    }
-    if (leftId < rightId) {
-        return -1;
-    }
-    return 1;
-}
-
-// FUN_00131090
-s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
-{
-    u16 indexes[300];
-    s32 index;
-    s32 count;
-    u16 equipmentId;
-    u16* outputIndexes;
-    s16 pcIdValue;
-    s32 categoryValue;
-    s32 copyIndex;
-
-    (void)unused;
-    outputIndexes = (u16*)output;
-    categoryValue = category;
-    count = 0;
-    index = 0;
-    pcIdValue = pcId;
-    for (; index < 300; index++) {
-        equipmentId = datGetEquipmentId(pcIdValue, index);
-        if (equipmentId == 0) {
-            continue;
-        }
-        if ((func_001712d0_y6((s16)equipmentId) & 0x20) == 0) {
-            continue;
-        }
-        if (func_00171250((s16)equipmentId) != categoryValue) {
-            continue;
-        }
-        indexes[count++] = (u16)index;
-    }
-    if (count > 1) {
-        qsort(indexes, count, sizeof(indexes[0]), campEquipComparatorCall);
-    }
-    for (copyIndex = 0; copyIndex < count; copyIndex++) {
-        outputIndexes[copyIndex] = indexes[copyIndex];
-    }
-    return count;
-}
+s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category);
 
 static inline CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
 {
@@ -27513,179 +27382,6 @@ static inline void campEquipDrawSprite(void* atlas, s32 tile, f32 scale,
     sprite->alpha = alpha;
     FUN_001127d0_y6(sprite, 1);
     FUN_00115980_y6(sprite);
-}
-
-// FUN_0012DC20
-u32 FUN_0012dc20(u32* work)
-{
-    s32 i;
-    u32 allFinished;
-    u8* records;
-
-    allFinished = 1;
-    i = 0;
-    while (i < 10) {
-        records = (u8*)work[0xae];
-        if (*(s32*)(records + i * 0x44 + 4) != 0) {
-            if (func_0018b700(records + i * 0x44) != 0) {
-                FUN_0012e3b0((void*)work, i,
-                             (u8*)work[0xae] + i * 0x44);
-            }
-            records = (u8*)work[0xae];
-            if (*(s32*)(records + i * 0x44 + 0x18) !=
-                *(s32*)(records + i * 0x44 + 0x20)) {
-                allFinished = 0;
-            }
-        }
-        i++;
-    }
-    return allFinished;
-}
-
-// FUN_0012DCF0
-u32 FUN_0012dcf0(u32* work)
-{
-    s32 i;
-    u32 allFinished;
-    u8* records;
-
-    allFinished = 1;
-    i = 0;
-    while (i < 10) {
-        records = (u8*)work[0xaf];
-        if (*(s32*)(records + i * 0x44 + 4) != 0) {
-            if (func_0018b700(records + i * 0x44) != 0) {
-                FUN_0012f6d0((void*)work, i,
-                             (u8*)work[0xaf] + i * 0x44);
-            }
-            records = (u8*)work[0xaf];
-            if (*(s32*)(records + i * 0x44 + 0x18) !=
-                *(s32*)(records + i * 0x44 + 0x20)) {
-                allFinished = 0;
-            }
-        }
-        i++;
-    }
-    return allFinished;
-}
-
-// FUN_0012DDC0
-void FUN_0012ddc0(void* arg)
-{
-    u32* work;
-    CampEquipSprite* sprite;
-
-    work = (u32*)arg;
-    if (func_0018b700((void*)work[0xb0]) == 0) {
-        return;
-    }
-    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
-    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
-    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f;
-    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
-    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
-    FUN_001127d0_y6(sprite, 1);
-    FUN_00115980_y6(sprite);
-    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
-    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
-    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f + 700.0f;
-    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
-    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
-    FUN_001127d0_y6(sprite, 1);
-    FUN_00115980_y6(sprite);
-    ((f32*)work[0xb0])[0xc] -= 1.0f;
-    if (((f32*)work[0xb0])[0xc] < -700.0f) {
-        ((f32*)work[0xb0])[0xc] += 700.0f;
-    }
-}
-
-// FUN_0012DF50
-s32 FUN_0012df50_y6(u32 mask)
-{
-    if ((mask & 0x000001) != 0) return 0;
-    if ((mask & 0x000002) != 0) return 1;
-    if ((mask & 0x000004) != 0) return 2;
-    if ((mask & 0x000008) != 0) return 3;
-    if ((mask & 0x000010) != 0) return 4;
-    if ((mask & 0x000020) != 0) return 5;
-    if ((mask & 0x000040) != 0) return 6;
-    if ((mask & 0x000080) != 0) return 7;
-    if ((mask & 0x000100) != 0) return 0;
-    if ((mask & 0x000200) != 0) return 1;
-    if ((mask & 0x000400) != 0) return 2;
-    if ((mask & 0x000800) != 0) return 3;
-    if ((mask & 0x001000) != 0) return 4;
-    if ((mask & 0x002000) != 0) return 5;
-    if ((mask & 0x004000) != 0) return 6;
-    if ((mask & 0x008000) != 0) return 7;
-    if ((mask & 0x010000) != 0) return 9;
-    if ((mask & 0x020000) != 0) return 10;
-    if ((mask & 0x040000) != 0) return 11;
-    if ((mask & 0x080000) != 0) return 13;
-    if ((mask & 0x100000) != 0) return 13;
-    return 0;
-}
-
-// FUN_0012E170
-void FUN_0012e170_equip(void* atlas, s32 baseTile, CampVec2 position,
-                  s32 scale, s32 red, s32 green, s32 blue, s32 alpha,
-                  s32 value, s32 digits)
-{
-    f32 x;
-
-    x = position.x;
-    if (digits == 3) {
-        if (value >= 100) {
-            CampEquipSprite* sprite;
-
-            sprite = (CampEquipSprite*)FUN_001158b0_y6(
-                0, atlas, baseTile + value / 100);
-            sprite->spriteScale = (f32)scale;
-            sprite->x = x;
-            sprite->y = position.y;
-            sprite->alpha = (u8)alpha;
-            sprite->red = (u8)red;
-            sprite->green = (u8)green;
-            sprite->blue = (u8)blue;
-            FUN_001127d0_y6(sprite, 1);
-            FUN_00115980_y6(sprite);
-        }
-        x += 16.0f;
-        digits--;
-    }
-    if (digits == 2) {
-        if (value >= 10) {
-            CampEquipSprite* sprite;
-
-            sprite = (CampEquipSprite*)FUN_001158b0_y6(
-                0, atlas, baseTile + (value / 10) % 10);
-            sprite->spriteScale = (f32)scale;
-            sprite->x = x;
-            sprite->y = position.y;
-            sprite->alpha = (u8)alpha;
-            sprite->red = (u8)red;
-            sprite->green = (u8)green;
-            sprite->blue = (u8)blue;
-            FUN_001127d0_y6(sprite, 1);
-            FUN_00115980_y6(sprite);
-        }
-        x += 16.0f;
-    }
-    {
-        CampEquipSprite* sprite;
-
-        sprite = (CampEquipSprite*)FUN_001158b0_y6(
-            0, atlas, baseTile + value % 10);
-        sprite->spriteScale = (f32)scale;
-        sprite->x = x;
-        sprite->y = position.y;
-        sprite->alpha = (u8)alpha;
-        sprite->red = (u8)red;
-        sprite->green = (u8)green;
-        sprite->blue = (u8)blue;
-        FUN_001127d0_y6(sprite, 1);
-        FUN_00115980_y6(sprite);
-    }
 }
 
 static inline void campEquipAnimateMain(u32* work, s32 mode)
@@ -28091,6 +27787,179 @@ void* FUN_0012c430(KwlnTask* task)
         break;
     }
     return NULL;
+}
+
+// FUN_0012DC20
+u32 FUN_0012dc20(u32* work)
+{
+    s32 i;
+    u32 allFinished;
+    u8* records;
+
+    allFinished = 1;
+    i = 0;
+    while (i < 10) {
+        records = (u8*)work[0xae];
+        if (*(s32*)(records + i * 0x44 + 4) != 0) {
+            if (func_0018b700(records + i * 0x44) != 0) {
+                FUN_0012e3b0((void*)work, i,
+                             (u8*)work[0xae] + i * 0x44);
+            }
+            records = (u8*)work[0xae];
+            if (*(s32*)(records + i * 0x44 + 0x18) !=
+                *(s32*)(records + i * 0x44 + 0x20)) {
+                allFinished = 0;
+            }
+        }
+        i++;
+    }
+    return allFinished;
+}
+
+// FUN_0012DCF0
+u32 FUN_0012dcf0(u32* work)
+{
+    s32 i;
+    u32 allFinished;
+    u8* records;
+
+    allFinished = 1;
+    i = 0;
+    while (i < 10) {
+        records = (u8*)work[0xaf];
+        if (*(s32*)(records + i * 0x44 + 4) != 0) {
+            if (func_0018b700(records + i * 0x44) != 0) {
+                FUN_0012f6d0((void*)work, i,
+                             (u8*)work[0xaf] + i * 0x44);
+            }
+            records = (u8*)work[0xaf];
+            if (*(s32*)(records + i * 0x44 + 0x18) !=
+                *(s32*)(records + i * 0x44 + 0x20)) {
+                allFinished = 0;
+            }
+        }
+        i++;
+    }
+    return allFinished;
+}
+
+// FUN_0012DDC0
+void FUN_0012ddc0(void* arg)
+{
+    u32* work;
+    CampEquipSprite* sprite;
+
+    work = (u32*)arg;
+    if (func_0018b700((void*)work[0xb0]) == 0) {
+        return;
+    }
+    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
+    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
+    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f;
+    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
+    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
+    FUN_001127d0_y6(sprite, 1);
+    FUN_00115980_y6(sprite);
+    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
+    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
+    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f + 700.0f;
+    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
+    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
+    FUN_001127d0_y6(sprite, 1);
+    FUN_00115980_y6(sprite);
+    ((f32*)work[0xb0])[0xc] -= 1.0f;
+    if (((f32*)work[0xb0])[0xc] < -700.0f) {
+        ((f32*)work[0xb0])[0xc] += 700.0f;
+    }
+}
+
+// FUN_0012DF50
+s32 FUN_0012df50_y6(u32 mask)
+{
+    if ((mask & 0x000001) != 0) return 0;
+    if ((mask & 0x000002) != 0) return 1;
+    if ((mask & 0x000004) != 0) return 2;
+    if ((mask & 0x000008) != 0) return 3;
+    if ((mask & 0x000010) != 0) return 4;
+    if ((mask & 0x000020) != 0) return 5;
+    if ((mask & 0x000040) != 0) return 6;
+    if ((mask & 0x000080) != 0) return 7;
+    if ((mask & 0x000100) != 0) return 0;
+    if ((mask & 0x000200) != 0) return 1;
+    if ((mask & 0x000400) != 0) return 2;
+    if ((mask & 0x000800) != 0) return 3;
+    if ((mask & 0x001000) != 0) return 4;
+    if ((mask & 0x002000) != 0) return 5;
+    if ((mask & 0x004000) != 0) return 6;
+    if ((mask & 0x008000) != 0) return 7;
+    if ((mask & 0x010000) != 0) return 9;
+    if ((mask & 0x020000) != 0) return 10;
+    if ((mask & 0x040000) != 0) return 11;
+    if ((mask & 0x080000) != 0) return 13;
+    if ((mask & 0x100000) != 0) return 13;
+    return 0;
+}
+
+// FUN_0012E170
+void FUN_0012e170_equip(void* atlas, s32 baseTile, CampVec2 position,
+                  s32 scale, s32 red, s32 green, s32 blue, s32 alpha,
+                  s32 value, s32 digits)
+{
+    f32 x;
+
+    x = position.x;
+    if (digits == 3) {
+        if (value >= 100) {
+            CampEquipSprite* sprite;
+
+            sprite = (CampEquipSprite*)FUN_001158b0_y6(
+                0, atlas, baseTile + value / 100);
+            sprite->spriteScale = (f32)scale;
+            sprite->x = x;
+            sprite->y = position.y;
+            sprite->alpha = (u8)alpha;
+            sprite->red = (u8)red;
+            sprite->green = (u8)green;
+            sprite->blue = (u8)blue;
+            FUN_001127d0_y6(sprite, 1);
+            FUN_00115980_y6(sprite);
+        }
+        x += 16.0f;
+        digits--;
+    }
+    if (digits == 2) {
+        if (value >= 10) {
+            CampEquipSprite* sprite;
+
+            sprite = (CampEquipSprite*)FUN_001158b0_y6(
+                0, atlas, baseTile + (value / 10) % 10);
+            sprite->spriteScale = (f32)scale;
+            sprite->x = x;
+            sprite->y = position.y;
+            sprite->alpha = (u8)alpha;
+            sprite->red = (u8)red;
+            sprite->green = (u8)green;
+            sprite->blue = (u8)blue;
+            FUN_001127d0_y6(sprite, 1);
+            FUN_00115980_y6(sprite);
+        }
+        x += 16.0f;
+    }
+    {
+        CampEquipSprite* sprite;
+
+        sprite = (CampEquipSprite*)FUN_001158b0_y6(
+            0, atlas, baseTile + value % 10);
+        sprite->spriteScale = (f32)scale;
+        sprite->x = x;
+        sprite->y = position.y;
+        sprite->alpha = (u8)alpha;
+        sprite->red = (u8)red;
+        sprite->green = (u8)green;
+        sprite->blue = (u8)blue;
+        FUN_001127d0_y6(sprite, 1);
+        FUN_00115980_y6(sprite);
+    }
 }
 
 static inline CampVec2 campEquipRecordPosition(const u8* record)
@@ -29089,6 +28958,115 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
 #undef posX
 #undef alpha
 #pragma pop
+// FUN_00130e40. Destroy callback of the "H_CampSoubi1Draw" (equip screen) task
+void h_campEquipDestroySoubi1DrawTask(KwlnTask* task)
+{
+    int* workData;
+
+    workData = (int*)task->workData;
+    if (workData[0xae] != 0) {
+        RwFree((void*)workData[0xae]);
+    }
+    workData[0xae] = 0;
+    if (workData[0xaf] != 0) {
+        RwFree((void*)workData[0xaf]);
+    }
+    workData[0xaf] = 0;
+    if (workData[0xb0] != 0) {
+        RwFree((void*)workData[0xb0]);
+    }
+    workData[0xb0] = 0;
+    if (workData[0xac] != 0) {
+        FUN_001124b0(workData[0xac]);
+    }
+    workData[0xac] = 0;
+    if (workData[0xad] != 0) {
+        FUN_001124b0(workData[0xad]);
+    }
+    workData[0xad] = 0;
+    if (workData[0] != 0) {
+        H_Cdvd_Destroy(workData[0]);
+    }
+    workData[0] = 0;
+    RwFree(workData);
+}
+
+// FUN_00130f20
+KwlnTask* h_campEquipCreateSoubi1DrawTask(KwlnTask* parent, u32 priority, CampVec2 param_3, u16 param_4)
+{
+    u32* workData;
+    KwlnTask* task;
+
+    workData = (u32*)RwCalloc(1, 0x2c4, 0x40000);
+    if (workData == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampSoubi1Draw", priority, FUN_0012c430, h_campEquipDestroySoubi1DrawTask, workData);
+    if (task == NULL) {
+        return NULL;
+    }
+    *(CampVec2*)((int)workData + 8) = param_3;
+    workData[5] = 1;
+    *(u16*)((int)workData + 0x12) = param_4;
+    return task;
+}
+// FUN_00131000
+int FUN_00131000(const void* left, const void* right)
+{
+    u16 leftId;
+    u16 rightId;
+
+    leftId = datGetEquipmentId(1, *(const u16*)left);
+    rightId = datGetEquipmentId(1, *(const u16*)right);
+    if (leftId == rightId) {
+        return 0;
+    }
+    if (leftId < rightId) {
+        return -1;
+    }
+    return 1;
+}
+
+// FUN_00131090
+s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
+{
+    u16 indexes[300];
+    s32 index;
+    s32 count;
+    u16 equipmentId;
+    u16* outputIndexes;
+    s16 pcIdValue;
+    s32 categoryValue;
+    s32 copyIndex;
+
+    (void)unused;
+    outputIndexes = (u16*)output;
+    categoryValue = category;
+    count = 0;
+    index = 0;
+    pcIdValue = pcId;
+    for (; index < 300; index++) {
+        equipmentId = datGetEquipmentId(pcIdValue, index);
+        if (equipmentId == 0) {
+            continue;
+        }
+        if ((func_001712d0_y6((s16)equipmentId) & 0x20) == 0) {
+            continue;
+        }
+        if (func_00171250((s16)equipmentId) != categoryValue) {
+            continue;
+        }
+        indexes[count++] = (u16)index;
+    }
+    if (count > 1) {
+        qsort(indexes, count, sizeof(indexes[0]), campEquipComparatorCall);
+    }
+    for (copyIndex = 0; copyIndex < count; copyIndex++) {
+        outputIndexes[copyIndex] = indexes[copyIndex];
+    }
+    return count;
+}
+
 
 
 
@@ -29236,6 +29214,67 @@ static inline void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spa
 /* The first callback is a small jump-table dispatcher in retail.  Keeping the
  * cases explicit makes the mode contract visible while preserving the same
  * draw helpers used by the screen callbacks below. */
+// FUN_00133900. Destroy callback of the "CampPersonaDispCtlDraw" task
+void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
+{
+    int* workData;
+
+    workData = (int*)task->workData;
+    if (workData[8] != 0) {
+        FUN_00133d30_y5(workData[8], workData[9]);
+        workData[8] = 0;
+        workData[9] = 0;
+        workData[0xa] = 0;
+    } else {
+        if (workData[9] != 0) {
+            H_Cdvd_Destroy(workData[9]);
+            workData[9] = 0;
+        }
+        if (workData[0xa] != 0) {
+            FUN_004d0f00_y5(workData[0xa]);
+            workData[0xa] = 0;
+        }
+    }
+    RwFree(workData);
+}
+// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
+void h_campItemDestroyNewItemTask(KwlnTask* task)
+{
+    int* workData;
+    int i;
+
+    workData = (int*)task->workData;
+    for (i = 0; i < 3; i++) {
+        if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
+            FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
+            *(int*)((int)workData + i * 4 + 0xb0) = 0;
+            DAT_00833a50[i] = 0;
+        }
+    }
+    if (workData[2] != 0) {
+        H_Cdvd_Destroy(workData[2]);
+        workData[2] = 0;
+    }
+    if (workData[0x29] != 0) {
+        RwFree((void*)workData[0x29]);
+    }
+    if (workData[0x2a] != 0) {
+        RwFree((void*)workData[0x2a]);
+    }
+    if (workData[0x2b] != 0) {
+        RwFree((void*)workData[0x2b]);
+    }
+    if (workData[0x2f] != 0) {
+        RwFree((void*)workData[0x2f]);
+    }
+    if (workData[0x30] != 0) {
+        RwFree((void*)workData[0x30]);
+    }
+    if (workData[0x31] != 0) {
+        RwFree((void*)workData[0x31]);
+    }
+    RwFree(workData);
+}
 // FUN_00154970 NONMATCHING
 void FUN_00154970(CampMenuDrawItem* item,
                   const char** labels, s32 mode, s32 first,
@@ -30818,41 +30857,3 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
 
 
 // workData[2] holds the "camp/camp_item.pak" cdvd handle.
-// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
-void h_campItemDestroyNewItemTask(KwlnTask* task)
-{
-    int* workData;
-    int i;
-
-    workData = (int*)task->workData;
-    for (i = 0; i < 3; i++) {
-        if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
-            FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
-            *(int*)((int)workData + i * 4 + 0xb0) = 0;
-            DAT_00833a50[i] = 0;
-        }
-    }
-    if (workData[2] != 0) {
-        H_Cdvd_Destroy(workData[2]);
-        workData[2] = 0;
-    }
-    if (workData[0x29] != 0) {
-        RwFree((void*)workData[0x29]);
-    }
-    if (workData[0x2a] != 0) {
-        RwFree((void*)workData[0x2a]);
-    }
-    if (workData[0x2b] != 0) {
-        RwFree((void*)workData[0x2b]);
-    }
-    if (workData[0x2f] != 0) {
-        RwFree((void*)workData[0x2f]);
-    }
-    if (workData[0x30] != 0) {
-        RwFree((void*)workData[0x30]);
-    }
-    if (workData[0x31] != 0) {
-        RwFree((void*)workData[0x31]);
-    }
-    RwFree(workData);
-}

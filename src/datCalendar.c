@@ -177,6 +177,1171 @@ void* clndUpdateTask(KwlnTask* clndTask);
 void clndDestroyTask(KwlnTask* clndTask);
 
  
+
+// W295: fell to volatile lhu arg pin + pointer-cast offset addu orientation; not a floor.
+
+
+
+
+
+#pragma push
+/* Removing this loses FUN_0017d830 (MATCH nd0 -> MISMATCH nd93) and 4 more - measured W161. */
+#pragma opt_loop_invariants on
+ 
+// FUN_0017d830 MATCHING
+s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
+{
+    s16 days;
+    s16 month;
+
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+
+    while (true)
+    {
+        if (days < ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
+        {
+            break;
+        }
+
+        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
+        month++;
+
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return month;
+}
+
+#pragma opt_propagation on
+// FUN_0017d8b0 MATCHING
+s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
+{
+    s32 dayAccumulator = 0;
+    s32 m = CALENDAR_MONTH_APRIL;
+    s32 monthEnd = CALENDAR_MONTH_MAX;
+    s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
+    s32 firstMonth = CALENDAR_MONTH_JANUARY;
+    s32 startMonth;
+    startMonth = m;
+
+    for (;;)
+    {
+        if (month == startMonth)
+        {
+            break;
+        }
+
+        dayAccumulator += ((const s16*)gNumOfDaysInMonths_abs)[m - 1];
+        m++;
+        month--;
+
+        if (month == 0)
+        {
+            month = monthsInYear;
+        }
+        if (m == monthEnd)
+        {
+            m = firstMonth;
+        }
+    }
+
+    return dayAccumulator + (day - 5); // - 5 because the game starts in april 5th
+}
+
+// FUN_0017d920 MATCHING
+u32 clndGetCurrentMonth()
+{
+    s16 daysSinceApr5;
+    s16 month;
+
+    daysSinceApr5 = datGetDaysSinceApr5();
+    month = CALENDAR_MONTH_APRIL;
+    daysSinceApr5 += 4;
+    while (true)
+    {
+        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
+        {
+            break;
+        }
+
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
+        month++;
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return month;
+}
+
+// FUN_0017d9c0 MATCHING
+s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
+{
+    s16 days;
+    s16 month;
+
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+
+    while (true)
+    {
+        if (days < gNumOfDaysInMonths[month - 1])
+        {
+            break;
+        }
+
+        days -= gNumOfDaysInMonths[month - 1];
+        month++;
+
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return days + 1;
+}
+
+// FUN_0017da40. Return the current day of the month MATCHING
+u32 clndGetCurrentDay()
+{
+    s16 daysSinceApr5;
+    s16 month;
+    daysSinceApr5 = datGetDaysSinceApr5();
+    month = CALENDAR_MONTH_APRIL;
+    daysSinceApr5 += 4;
+    while (true)
+    {
+        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
+        {
+            break;
+        }
+
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
+        month++;
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    return daysSinceApr5 + 1;
+}
+#pragma pop
+
+// FUN_0017dae0
+s32 clndGetWeekDay(s32 daysSinceApr5)
+{
+    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
+}
+
+// FUN_0017db00
+u32 clndGetCurrentWeekDay()
+{
+    s32 daysSinceApr5 = datGetDaysSinceApr5();
+
+    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
+}
+/* W357 measured opt_loop_invariants on: without nd273/object408, with nd268/object404; window 432; retained. */
+#pragma opt_loop_invariants on
+// FUN_0017DB40 NONMATCHING
+u32 func_0017db40(s16 daysSinceApr5)
+{
+    s16 month;
+    s16 day;
+    s16 days;
+    s16 i;
+
+    if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX ==
+        CALENDAR_DAY_SUNDAY)
+    {
+        return true;
+    }
+
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+    while (days >= ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
+    {
+        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
+        month++;
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    day = daysSinceApr5 + 4;
+    i = CALENDAR_MONTH_APRIL;
+    while (day >= gNumOfDaysInMonths[i - 1])
+    {
+        day -= gNumOfDaysInMonths[i - 1];
+        i++;
+        if (i > CALENDAR_MONTH_DECEMBER)
+        {
+            i = CALENDAR_MONTH_JANUARY;
+        }
+    }
+    day++;
+
+    for (i = 0; i < 0x164; i++)
+    {
+        if (sHolidays[i].month == -1)
+        {
+            break;
+        }
+        if (sHolidays[i].month == month && sHolidays[i].day == day)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+#pragma opt_loop_invariants reset
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0017dcf0
+u8 clndIsHolidayOrSunday()
+{
+    s16 daysSinceApr5;
+    s16 currDayOfMonth;
+    s16 currMonth;
+    s16 i;
+    s32 month;
+    const Holiday* holidays;
+    s32 day;
+    s16 sentinel;
+
+    daysSinceApr5 = datGetDaysSinceApr5();
+    if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
+    {
+        return true;
+    }
+
+    currMonth = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
+    currDayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+    i = 0;
+    month = currMonth;
+    day = currDayOfMonth;
+    holidays = sHolidays;
+    sentinel = -1;
+    for (; i < 0x164; i++)
+    {
+        if (holidays[i].month == sentinel)
+        {
+            break;
+        }
+        if (month == holidays[i].month && day == holidays[i].day)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+#pragma pop
+#pragma opt_loop_invariants on
+#pragma push
+#pragma opt_propagation off
+
+// Residual is limited to MWCC register coloring and branch layout; date and holiday logic matches retail.
+#pragma opt_loop_invariants reset
+/* W357 measured opt_lifetimes on: without nd290/object608, with nd288/object608; window 608; retained. */
+#pragma opt_lifetimes on
+// FUN_0017DDF0 NONMATCHING
+u32 func_0017ddf0(s16* monthOut, s16* dayOut)
+{
+    s16 month;
+    s16 currentDay;
+    s16 nextDay;
+    s16 day;
+    s16 i;
+    s16 days;
+    s16 remaining;
+    const s16* numOfDays;
+    s16 isHoliday;
+
+    currentDay = datGetDaysSinceApr5() + 1;
+    for (;;)
+    {
+        nextDay = currentDay;
+        if (nextDay >= 0x15f)
+        {
+            return false;
+        }
+
+        if ((nextDay + 7) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
+        {
+            isHoliday = true;
+            goto check;
+        }
+
+        month = clndGetMonthFromDaysSinceApr5(nextDay);
+        day = clndGetDayOfMonthFromDaysSinceApr5(nextDay);
+        isHoliday = false;
+        for (i = 0; i < 0x164; i++)
+        {
+            if (sHolidays[i].month == -1)
+            {
+                goto check;
+            }
+            if (month == sHolidays[i].month && day == sHolidays[i].day)
+            {
+                isHoliday = true;
+                goto check;
+            }
+        }
+
+check:
+        if (!isHoliday)
+        {
+            currentDay++;
+            continue;
+        }
+        month = CALENDAR_MONTH_APRIL;
+        days = nextDay + 4;
+        remaining = days;
+        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
+        while (remaining >= numOfDays[month - 1])
+        {
+            remaining -= numOfDays[month - 1];
+            month++;
+            if (month >= CALENDAR_MONTH_MAX)
+            {
+                month = CALENDAR_MONTH_JANUARY;
+            }
+        }
+
+        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
+        for (i = CALENDAR_MONTH_APRIL;;)
+        {
+            if (days < numOfDays[i - 1])
+            {
+                break;
+            }
+            days -= numOfDays[i - 1];
+            i++;
+            if (i >= CALENDAR_MONTH_MAX)
+            {
+                i = CALENDAR_MONTH_JANUARY;
+            }
+        }
+
+        *monthOut = month;
+        *dayOut = days + 1;
+        return true;
+
+    }
+}
+#pragma pop
+/* Reset the outer loop-invariant state restored by the 17DDF0 push/pop: without this, 185B40 is 1304/1296; with it, 1280/1296. */
+#pragma opt_loop_invariants reset
+
+#pragma opt_lifetimes reset
+// FUN_0017E050 NONMATCHING
+u32 func_0017e050(s32 category, s16 month, s32 day)
+{
+    s16 daysSinceApr5;
+    s16 daysBeforeMonth;
+    s16 currentMonth;
+    s16 dayOfWeek;
+    s16 week;
+    s16 i;
+
+    daysSinceApr5 = datGetDaysSinceApr5() + 4;
+    daysBeforeMonth = 0;
+    currentMonth = CALENDAR_MONTH_APRIL;
+    while (daysSinceApr5 >= gNumOfDaysInMonths[currentMonth - 1])
+    {
+        daysSinceApr5 -= gNumOfDaysInMonths[currentMonth - 1];
+        daysBeforeMonth += gNumOfDaysInMonths[currentMonth - 1];
+        currentMonth++;
+        if (currentMonth >= CALENDAR_MONTH_MAX)
+        {
+            currentMonth = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    dayOfWeek = (daysBeforeMonth + 3) % CALENDAR_DAY_MAX;
+    week = 0;
+    for (i = 0; i < daysSinceApr5; i++)
+    {
+        dayOfWeek++;
+        if (dayOfWeek == CALENDAR_DAY_MAX)
+        {
+            week++;
+            dayOfWeek = CALENDAR_DAY_SUNDAY;
+        }
+    }
+
+    switch (category)
+    {
+    case 0:
+        return currentMonth == month && daysSinceApr5 + 1 == day;
+    case 1:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY;
+    case 2:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_MONDAY;
+    case 3:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_TUESDAY;
+    case 4:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_WEDNESDAY;
+    case 5:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_THURSDAY;
+    case 6:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_FRIDAY;
+    case 7:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_SATURDAY;
+    case 100:
+        return func_0017db40(datGetDaysSinceApr5());
+    case 0x65:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX != CALENDAR_DAY_SUNDAY;
+    default:
+        return week == category / 10 - 1 &&
+               (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == category % 10 - 1;
+    }
+}
+// FUN_0017e480
+u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
+{
+    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
+
+    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
+    {
+        return true;
+    }
+
+    return false;
+}
+#define CLND_SKIP_TRANSITION_ACTIVE DAT_007cdffc
+extern u32 DAT_007cdffc;
+
+
+ 
+
+
+
+// FUN_0017e520
+u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
+                                  u32 startMonth, u32 startDay,
+                                  u32 endMonth, u32 endDay)
+{
+    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
+    s32 testDate = clndGetDaysSinceStartFromDate(monthToTest, dayToTest);
+
+    if (testDate >= startDate && testDate <= endDate)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// FUN_0017e5d0
+u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
+{
+    s32 startDate;
+    s32 endDate;
+
+    if (range == 0)
+    {
+        H_Dbprt_FmtLog("Calender chk range is 0");
+        return false;
+    }
+
+    startDate = clndGetDaysSinceStartFromDate(month, day);
+    endDate = startDate + (range - 1);
+
+    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+/* W357 measured opt_loop_invariants on: without nd2861/object4668, with nd2662/object4636; window 4688; retained. */
+#pragma opt_loop_invariants on
+// FUN_0017e680 NONMATCHING
+void* clndUpdateTask(KwlnTask* clndTask)
+{
+    CalendarTaskWork* work = clndTask->workData;
+    s16 daysSinceApr5;
+    s16 dayOfMonth;
+    s16 month;
+    s16 totalDaysBeforeMonth;
+    s16 dayOfWeek;
+    s16 i;
+    u16 padState;
+    u32 specialAction;
+    KwlnTask* actionTask;
+
+    switch (work->state)
+    {
+        case CLNDTASK_STATE_DEBUG_INIT:
+        {
+            struct
+            {
+                RwRect rect;
+                RwV2d pos;
+                RwRGBA color;
+            } debug;
+            debug.rect.x = 0;
+            debug.rect.y = 0;
+            debug.rect.w = 252;
+            debug.rect.h = 168;
+            debug.pos.x = 24.0f;
+            debug.pos.y = 84.0f;
+            debug.color.r = 0;
+            debug.color.g = 0;
+            debug.color.b = 100;
+            debug.color.a = 255;
+            work->debugCursorBg = H_Cursor_CreateTask(clndTask,
+                                                       2.0f,
+                                                       debug.pos,
+                                                       debug.rect,
+                                                       debug.color);
+            debug.rect.x = 0;
+            debug.rect.y = 0;
+            debug.rect.w = 36;
+            debug.rect.h = 12;
+            debug.color.r = 120;
+            debug.color.g = 0;
+            debug.color.b = 0;
+            debug.color.a = 255;
+            work->debugCursor = H_Cursor_CreateTask(clndTask,
+                                                     1.0f,
+                                                     debug.pos,
+                                                     debug.rect,
+                                                     debug.color);
+            work->state = CLNDTASK_STATE_DEBUG_UPDATE;
+            break;
+        }
+
+        case CLNDTASK_STATE_DEBUG_UPDATE:
+        {
+            RwV2d pos;
+            padState = *(u16*)0x007e0952;
+            if (padState & 0x8000)
+            {
+                daysSinceApr5 = datGetDaysSinceApr5() - 1;
+                datSetDaysSinceApr5(daysSinceApr5);
+                if (datGetDaysSinceApr5() < 0)
+                {
+                    datSetDaysSinceApr5(364);
+                }
+            }
+            else if (padState & 0x2000)
+            {
+                daysSinceApr5 = datGetDaysSinceApr5() + 1;
+                datSetDaysSinceApr5(daysSinceApr5);
+                if (datGetDaysSinceApr5() > 364)
+                {
+                    datSetDaysSinceApr5(0);
+                }
+            }
+            else if (padState & 0x1000)
+            {
+                daysSinceApr5 = datGetDaysSinceApr5() - 7;
+                datSetDaysSinceApr5(daysSinceApr5);
+                if (datGetDaysSinceApr5() < 0)
+                {
+                    datSetDaysSinceApr5(0);
+                }
+            }
+            else if (padState & 0x4000)
+            {
+                daysSinceApr5 = datGetDaysSinceApr5() + 7;
+                datSetDaysSinceApr5(daysSinceApr5);
+                if (datGetDaysSinceApr5() > 364)
+                {
+                    datSetDaysSinceApr5(364);
+                }
+            }
+            else if (padState & 0x4)
+            {
+                if (datGetTime() == CALENDAR_TIME_NULL)
+                {
+                    datSetTime(CALENDAR_TIME_DARK_HOUR);
+                    if (datGetDaysSinceApr5() != 0)
+                    {
+                        datSetDaysSinceApr5(datGetDaysSinceApr5() - 1);
+                    }
+                }
+                else
+                {
+                    datSetTime(datGetTime() - 1);
+                }
+            }
+            else if (padState & 0x8)
+            {
+                if (datGetTime() == CALENDAR_TIME_DARK_HOUR)
+                {
+                    datSetTime(CALENDAR_TIME_NULL);
+                    if (datGetDaysSinceApr5() != 0)
+                    {
+                        datSetDaysSinceApr5(datGetDaysSinceApr5() + 1);
+                    }
+                }
+                else
+                {
+                    datSetTime(datGetTime() + 1);
+                }
+            }
+            else if (padState & 0x1)
+            {
+                if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) != CALENDAR_MONTH_APRIL)
+                {
+                    month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+                    datSetDaysSinceApr5(datGetDaysSinceApr5() - gNumOfDaysInMonths[month - 1]);
+                    if (datGetDaysSinceApr5() < 0)
+                    {
+                        datSetDaysSinceApr5(0);
+                    }
+                }
+            }
+            else if (padState & 0x2)
+            {
+                if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) != CALENDAR_MONTH_MARCH)
+                {
+                    month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+                    datSetDaysSinceApr5(datGetDaysSinceApr5() + gNumOfDaysInMonths[month - 1]);
+                    if (datGetDaysSinceApr5() > 364)
+                    {
+                        datSetDaysSinceApr5(364);
+                    }
+                }
+            }
+            else if (*(u16*)0x007e094e & 0x40)
+            {
+                datSetFlag(0x141d, false);
+                work->state = CLNDTASK_STATE_DEBUG_WAIT_OPEN;
+            }
+
+            daysSinceApr5 = datGetDaysSinceApr5() + 4;
+            totalDaysBeforeMonth = 0;
+            month = CALENDAR_MONTH_APRIL;
+            while (daysSinceApr5 >= gNumOfDaysInMonths[month - 1])
+            {
+                daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
+                totalDaysBeforeMonth += gNumOfDaysInMonths[month - 1];
+                month++;
+                if (month >= CALENDAR_MONTH_MAX)
+                {
+                    month = CALENDAR_MONTH_JANUARY;
+                }
+            }
+
+            dayOfWeek = (totalDaysBeforeMonth + 3) % CALENDAR_DAY_MAX;
+            pos.x = dayOfWeek * 3.0f + 2.0f;
+            pos.y = 9.0f;
+            for (i = 0; i < gNumOfDaysInMonths[month - 1]; i++)
+            {
+                H_Dbprt_FmtAt(pos, "%3d", i + 1);
+                pos.x += 3.0f;
+                dayOfWeek++;
+                if (dayOfWeek >= CALENDAR_DAY_MAX)
+                {
+                    dayOfWeek -= CALENDAR_DAY_MAX;
+                    pos.x -= 21.0f;
+                    pos.y += 2.0f;
+                }
+            }
+
+            H_Dbprt_FmtAt((RwV2d){2.0f, 7.0f}, "%2d/%3d", month, daysSinceApr5 + 1, datGetTime());
+            switch (datGetTime())
+            {
+                case CALENDAR_TIME_NULL:          H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(SOUCHOU)"); break;
+                case CALENDAR_TIME_EARLY_MORNING: H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(ASA)"); break;
+                case CALENDAR_TIME_MORNING:       H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(GOZEN)"); break;
+                case CALENDAR_TIME_LUNCH:         H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(GOGO)"); break;
+                case CALENDAR_TIME_AFTERNOON:     H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(YORU)"); break;
+                case CALENDAR_TIME_AFTER_SCHOOL:  H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(SINYA)"); break;
+                case CALENDAR_TIME_EVENING:       H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(25)"); break;
+                case CALENDAR_TIME_LATE_NIGHT:    H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "NO."); break;
+                case CALENDAR_TIME_DARK_HOUR:     H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "PS2D"); break;
+            }
+
+            pos.x = dayOfWeek * 36.0f + 24.0f;
+            pos.y = 108.0f;
+            for (i = 0; i < daysSinceApr5; i++)
+            {
+                pos.x += 36.0f;
+                dayOfWeek++;
+                if (dayOfWeek == CALENDAR_DAY_MAX)
+                {
+                    dayOfWeek = CALENDAR_DAY_SUNDAY;
+                    pos.y += 24.0f;
+                    pos.x -= 252.0f;
+                }
+            }
+            H_Cursor_SetPos(work->debugCursor, pos);
+            break;
+        }
+
+        case CLNDTASK_STATE_DEBUG_WAIT_OPEN:
+            if (work->confirmationTask == NULL)
+            {
+                work->confirmationTask = func_00184db0(clndTask);
+            }
+            if (!clnd00184d90(work->confirmationTask))
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+            break;
+
+        case CLNDTASK_STATE_DEBUG_WAIT_CLOSE:
+            if (work->confirmationTask == NULL)
+            {
+                work->confirmationTask = func_00184db0(clndTask);
+            }
+            if (!clnd00184d90(work->confirmationTask))
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            if (datGetSkipToTarget() == 0)
+            {
+                func_00184c80(work->confirmationTask, true);
+            }
+            else
+            {
+                H_Dbprt_FmtLog("####  next time");
+            }
+            if (work->debugCursorBg != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(work->debugCursorBg);
+            }
+            if (work->debugCursor != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(work->debugCursor);
+            }
+            work->debugCursorBg = NULL;
+            work->debugCursor = NULL;
+            work->state = CLNDTASK_STATE_BEGIN_DAY_05;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_05;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_05:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_06;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_06:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_07;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_07:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_08;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_08:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_09;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_09:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_10;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_10:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_11;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_11:
+            work->state = CLNDTASK_STATE_BEGIN_DAY_12;
+            break;
+
+        case CLNDTASK_STATE_BEGIN_DAY_12:
+            work->state = CLNDTASK_STATE_SELECT_TIME_ACTION;
+            break;
+
+        case CLNDTASK_STATE_SELECT_TIME_ACTION:
+            actionTask = NULL;
+            specialAction = false;
+            work->validateSkipTarget = true;
+            datSetFlag(0x1410, true);
+            switch (datGetTime())
+            {
+                case CALENDAR_TIME_NULL:          actionTask = func_00180a20(clndTask); break;
+                case CALENDAR_TIME_EARLY_MORNING: actionTask = func_00180c40(clndTask); break;
+                case CALENDAR_TIME_MORNING:       actionTask = func_00180ee0(clndTask); break;
+                case CALENDAR_TIME_LUNCH:         actionTask = func_00181010(clndTask); break;
+                case CALENDAR_TIME_AFTERNOON:     actionTask = func_00181170(clndTask); break;
+                case CALENDAR_TIME_AFTER_SCHOOL:  actionTask = func_00181310(clndTask); break;
+                case CALENDAR_TIME_EVENING:       actionTask = func_00181430(clndTask); break;
+                case CALENDAR_TIME_LATE_NIGHT:    actionTask = func_0017fc70(clndTask); break;
+                case CALENDAR_TIME_DARK_HOUR:     actionTask = func_00181580(clndTask, &specialAction); break;
+            }
+            if (specialAction != 0)
+            {
+                work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
+            }
+            else if (actionTask != NULL)
+            {
+                work->actionTask = actionTask;
+                work->state = CLNDTASK_STATE_WAIT_ACTION_START;
+            }
+            else
+            {
+                work->state = CLNDTASK_STATE_SKIP;
+            }
+            break;
+
+        case CLNDTASK_STATE_WAIT_ACTION_START:
+            if (adminiGetNowSeqId() == ADMINI_SEQ_FIELD2 || adminiGetNowSeqId() == ADMINI_SEQ_FIELD)
+            {
+                if (datGetTime() == CALENDAR_TIME_NULL)
+                {
+                    func_00184c80(work->confirmationTask, true);
+                }
+                else
+                {
+                    func_001848f0(work->confirmationTask, true);
+                }
+                work->state = CLNDTASK_STATE_WAIT_ACTION_FINISH;
+            }
+            if (kwlnTaskGetState(work->actionTask) == KWLNTASK_STATE_DESTROY)
+            {
+                work->actionTask = NULL;
+                work->state = CLNDTASK_STATE_SKIP;
+            }
+            break;
+
+        case CLNDTASK_STATE_WAIT_ACTION_FINISH:
+            if (kwlnTaskGetState(work->actionTask) == KWLNTASK_STATE_DESTROY)
+            {
+                work->actionTask = NULL;
+                work->state = CLNDTASK_STATE_SKIP;
+            }
+            break;
+
+        case CLNDTASK_STATE_CONFIRM_DAY_CHANGE:
+            if (datGetTime() == CALENDAR_TIME_NULL)
+            {
+                func_00184c80(work->confirmationTask, true);
+            }
+            else
+            {
+                func_001848f0(work->confirmationTask, true);
+            }
+            work->state = CLNDTASK_STATE_WAIT_SKIP_CONFIRM;
+            break;
+
+        case CLNDTASK_STATE_WAIT_SKIP_CONFIRM:
+            break;
+
+        case CLNDTASK_STATE_REQSKIP:
+            if (adminiGetNowSeqId() == ADMINI_SEQ_NULL)
+            {
+                work->actionTask = NULL;
+                work->state = CLNDTASK_STATE_SKIP;
+            }
+            break;
+
+        case CLNDTASK_STATE_CREATE_SKIP_MESSAGE:
+            work->debugCursor = func_00188640_calendar();
+            work->state = CLNDTASK_STATE_WAIT_SKIP_MESSAGE;
+            break;
+
+        case CLNDTASK_STATE_WAIT_SKIP_MESSAGE:
+            if (kwlnTaskGetState(work->debugCursor) == KWLNTASK_STATE_DESTROY)
+            {
+                work->debugCursor = NULL;
+                work->state = CLNDTASK_STATE_APPLY_SKIP;
+            }
+            break;
+
+        case CLNDTASK_STATE_APPLY_SKIP:
+            if (CLND_SKIP_TRANSITION_ACTIVE == 0)
+            {
+                work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+            }
+            else
+            {
+                if (work->confirmationTask == NULL)
+                {
+                    work->confirmationTask = func_00184db0(clndTask);
+                }
+                if (!clnd00184d90(work->confirmationTask))
+                {
+                    return KWLNTASK_CONTINUE;
+                }
+                func_00184c80(work->confirmationTask, true);
+                func_00181b70();
+                work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
+                CLND_SKIP_TRANSITION_ACTIVE = 0;
+                work->validateSkipTarget = true;
+            }
+            break;
+
+        case CLNDTASK_STATE_SKIP:
+            if (work->confirmationTask == NULL)
+            {
+                work->confirmationTask = func_00184db0(clndTask);
+            }
+            if (!clnd00184d90(work->confirmationTask))
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            if (work->validateSkipTarget != 0)
+            {
+                if (datGetSkipToTarget() != 0)
+                {
+                    daysSinceApr5 = datGetDaysSinceApr5();
+                    dayOfMonth = datGetDaysSkipTarget();
+                    if (dayOfMonth - daysSinceApr5 > 5)
+                    {
+                        datSetDaysSinceApr5(dayOfMonth);
+                        datSetTime(datGetTimeSkipTarget());
+                        datSetSkipToTarget(false);
+                        work->state = CLNDTASK_STATE_BEGIN_DAY;
+                        return KWLNTASK_CONTINUE;
+                    }
+                    if (daysSinceApr5 == dayOfMonth && datGetTime() == datGetTimeSkipTarget())
+                    {
+                        datSetDaysSinceApr5(dayOfMonth);
+                        datSetTime(datGetTimeSkipTarget());
+                        datSetSkipToTarget(false);
+                        work->state = CLNDTASK_STATE_BEGIN_DAY;
+                        return KWLNTASK_CONTINUE;
+                    }
+                }
+
+                if (datGetTime() == CALENDAR_TIME_EARLY_MORNING)
+                {
+                    func_00180e60();
+                }
+                if (datGetTime() == CALENDAR_TIME_DARK_HOUR)
+                {
+                    datSetTime(CALENDAR_TIME_NULL);
+                    datSetDaysSinceApr5(datGetDaysSinceApr5() + 1);
+                }
+                else if (func_0017db40(datGetDaysSinceApr5()) == 0 &&
+                         clndGetWeekDay(datGetDaysSinceApr5()) == CALENDAR_DAY_SATURDAY &&
+                         datGetTime() == CALENDAR_TIME_MORNING)
+                {
+                    datSetTime(CALENDAR_TIME_AFTER_SCHOOL);
+                }
+                else if (func_0017db40(datGetDaysSinceApr5()) != 0 &&
+                         datGetTime() == CALENDAR_TIME_EARLY_MORNING)
+                {
+                    datSetTime(CALENDAR_TIME_AFTERNOON);
+                }
+                else if (func_0017db40(datGetDaysSinceApr5()) != 0 &&
+                         datGetTime() == CALENDAR_TIME_AFTERNOON)
+                {
+                    datSetTime(CALENDAR_TIME_EVENING);
+                }
+                else
+                {
+                    datSetTime(datGetTime() + 1);
+                }
+
+                if (datGetSkipToTarget() != 0 &&
+                    datGetDaysSinceApr5() == datGetDaysSkipTarget() &&
+                    datGetTime() == datGetTimeSkipTarget())
+                {
+                    datSetSkipToTarget(false);
+                }
+            }
+            work->state = CLNDTASK_STATE_BEGIN_DAY;
+            break;
+
+        case CLNDTASK_STATE_RESTART_SKIP:
+            if (work->confirmationTask == NULL)
+            {
+                work->confirmationTask = func_00184db0(clndTask);
+            }
+            if (!clnd00184d90(work->confirmationTask))
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            func_00184c80(work->confirmationTask, true);
+            func_00181b70();
+            work->validateSkipTarget = true;
+            work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
+            break;
+
+        case CLNDTASK_STATE_STOP_DELAY:
+            work->stopDelay--;
+            if (work->stopDelay == 0)
+            {
+                return KWLNTASK_STOP;
+            }
+            break;
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+
+#pragma opt_loop_invariants reset
+// FUN_0017F8D0
+void func_0017f8d0(void)
+{
+    CalendarTaskWork* work;
+
+    if (sClndTask == NULL)
+    {
+        return;
+    }
+
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        work = sClndTask->workData;
+        if (work->state != CLNDTASK_STATE_WAIT_SKIP_CONFIRM)
+        {
+            work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
+        }
+        if (work->actionTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(work->actionTask);
+            work->actionTask = NULL;
+        }
+    }
+    else
+    {
+        work = sClndTask->workData;
+        if (work->state != CLNDTASK_STATE_BEGIN_DAY)
+        {
+            work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+        }
+        if (work->actionTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(work->actionTask);
+            work->actionTask = NULL;
+        }
+    }
+}
+
+// FUN_0017F990
+u32 func_0017f990(void)
+{
+    CalendarTaskWork* work;
+
+    if (sClndTask == NULL)
+    {
+        return true;
+    }
+
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        work = sClndTask->workData;
+        work->stopDelay = 0x3c;
+        work->state = CLNDTASK_STATE_STOP_DELAY;
+    }
+    else
+    {
+        work = sClndTask->workData;
+        work->debugCursorBg = (KwlnTask*)(uintptr_t)0x3c;
+        work->state = CLNDTASK_STATE_BEGIN_DAY_08;
+    }
+
+    return true;
+}
+// FUN_0017fa10
+void clndReqSkip()
+{
+    if (sClndTask != NULL)
+    {
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        {
+            ((CalendarTaskWork*)sClndTask->workData)->state = CLNDTASK_STATE_REQSKIP;
+            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
+        }
+        else
+        {
+            ((CalendarTaskWork*)sClndTask->workData)->state = CLNDTASK_STATE_BEGIN_DAY_05;
+            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
+        }
+    }
+}
+
+// FUN_0017faa0
+void clndDestroyTask(KwlnTask* clndTask)
+{
+    RwFree(clndTask->workData);
+    sClndTask = NULL;
+}
+
+// FUN_0017FAD0
+KwlnTask* func_0017fad0(void)
+{
+    KwlnTask* task;
+    CalendarTaskWork* work;
+
+    work = RwCalloc(1, sizeof(CalendarTaskWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(NULL, 0x106f, "CalenderDraw",
+                                          clndUpdateTask, clndDestroyTask, work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+
+    sClndTask = task;
+    work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+    H_SfdPlay_CreateTaskIdle(task);
+    return task;
+}
+// FUN_0017fb90
+KwlnTask* clndCreateTask()
+{
+    KwlnTask* clndTask;
+    CalendarTaskWork* work;
+
+    work = RwCalloc(1, sizeof(CalendarTaskWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    clndTask = kwlnTaskCreateWithAutoPriority(NULL,
+                                              4207,
+                                              "CalenderDraw",
+                                              clndUpdateTask,
+                                              clndDestroyTask,
+                                              work);
+    if (clndTask == NULL)
+    {
+        return NULL;
+    }
+
+    sClndTask = clndTask;
+
+    work->state = CLNDTASK_STATE_RESTART_SKIP;
+    H_SfdPlay_CreateTaskIdle(clndTask);
+    if (datGetDaysSinceApr5() == 2)
+    {
+        work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+    }
+
+    return clndTask;
+}
+
+/* W212: first divergence is the prologue (ours 0x50-byte frame, retail 0x60).
+ * Delaying the event pointer and retaining startTime across its call reconciled
+ * the frame but regressed nd298 -> nd329 (512/560), so the probe was reverted. */
 // FUN_0017FC70
 KwlnTask* func_0017fc70(KwlnTask* clndTask)
 {
@@ -969,1212 +2134,6 @@ KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
 done:
     return result;
 }
-
-// W295: fell to volatile lhu arg pin + pointer-cast offset addu orientation; not a floor.
-// FUN_00181950
-KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
-{
-    CalendarTaskWork* work;
-    SiteibiEventTable* eventTable;
-    KwlnTask* actionTask;
-    volatile u16* sitePtr;
-
-    work = clndTask->workData;
-    eventTable = Comu_GetSiteibiEvtTable();
-    if (eventTable->events[eventIndex].unk_07 != 0xff)
-    {
-        H_Dbprt_FmtLog("calendar: siteibi event %d",
-                       eventTable->events[eventIndex].scrPrcdIdx);
-        actionTask = func_001ba5f0(
-            clndTask, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            eventTable->events[eventIndex].scrPrcdIdx,
-            eventTable->events[eventIndex].unk_06,
-            eventTable->events[eventIndex].unk_07, 0);
-        if (datGetTime() == CALENDAR_TIME_NULL)
-        {
-            func_00184c80(work->confirmationTask, true);
-        }
-        else
-        {
-            func_001848f0(work->confirmationTask, true);
-        }
-    }
-    else
-    {
-        H_Dbprt_FmtLog("calendar: siteibi procedure %d",
-                       eventTable->events[eventIndex].scrPrcdIdx);
-        sitePtr = (volatile u16 *)((u8 *)(eventIndex * (s32)sizeof(SiteibiEvent)) + (int)eventTable->events + 4);
-        actionTask = func_003bdd60(0xf, *sitePtr);
-    }
-
-    datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(
-        eventTable->events[eventIndex].endMonth,
-        eventTable->events[eventIndex].endDay));
-    datSetTimeSkipTarget_u8(eventTable->events[eventIndex].endTime);
-    datSetSkipToTarget(true);
-    return actionTask;
-}
-
-/* W357 measured opt_loop_invariants on: without nd273/object408, with nd268/object404; window 432; retained. */
-#pragma opt_loop_invariants on
-// FUN_0017DB40 NONMATCHING
-u32 func_0017db40(s16 daysSinceApr5)
-{
-    s16 month;
-    s16 day;
-    s16 days;
-    s16 i;
-
-    if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX ==
-        CALENDAR_DAY_SUNDAY)
-    {
-        return true;
-    }
-
-    month = CALENDAR_MONTH_APRIL;
-    days = daysSinceApr5 + 4;
-    while (days >= ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
-    {
-        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
-        month++;
-        if (month > CALENDAR_MONTH_DECEMBER)
-        {
-            month = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    day = daysSinceApr5 + 4;
-    i = CALENDAR_MONTH_APRIL;
-    while (day >= gNumOfDaysInMonths[i - 1])
-    {
-        day -= gNumOfDaysInMonths[i - 1];
-        i++;
-        if (i > CALENDAR_MONTH_DECEMBER)
-        {
-            i = CALENDAR_MONTH_JANUARY;
-        }
-    }
-    day++;
-
-    for (i = 0; i < 0x164; i++)
-    {
-        if (sHolidays[i].month == -1)
-        {
-            break;
-        }
-        if (sHolidays[i].month == month && sHolidays[i].day == day)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-#pragma push
-#pragma opt_propagation off
-
-// Residual is limited to MWCC register coloring and branch layout; date and holiday logic matches retail.
-#pragma opt_loop_invariants reset
-/* W357 measured opt_lifetimes on: without nd290/object608, with nd288/object608; window 608; retained. */
-#pragma opt_lifetimes on
-// FUN_0017DDF0 NONMATCHING
-u32 func_0017ddf0(s16* monthOut, s16* dayOut)
-{
-    s16 month;
-    s16 currentDay;
-    s16 nextDay;
-    s16 day;
-    s16 i;
-    s16 days;
-    s16 remaining;
-    const s16* numOfDays;
-    s16 isHoliday;
-
-    currentDay = datGetDaysSinceApr5() + 1;
-    for (;;)
-    {
-        nextDay = currentDay;
-        if (nextDay >= 0x15f)
-        {
-            return false;
-        }
-
-        if ((nextDay + 7) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
-        {
-            isHoliday = true;
-            goto check;
-        }
-
-        month = clndGetMonthFromDaysSinceApr5(nextDay);
-        day = clndGetDayOfMonthFromDaysSinceApr5(nextDay);
-        isHoliday = false;
-        for (i = 0; i < 0x164; i++)
-        {
-            if (sHolidays[i].month == -1)
-            {
-                goto check;
-            }
-            if (month == sHolidays[i].month && day == sHolidays[i].day)
-            {
-                isHoliday = true;
-                goto check;
-            }
-        }
-
-check:
-        if (!isHoliday)
-        {
-            currentDay++;
-            continue;
-        }
-        month = CALENDAR_MONTH_APRIL;
-        days = nextDay + 4;
-        remaining = days;
-        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
-        while (remaining >= numOfDays[month - 1])
-        {
-            remaining -= numOfDays[month - 1];
-            month++;
-            if (month >= CALENDAR_MONTH_MAX)
-            {
-                month = CALENDAR_MONTH_JANUARY;
-            }
-        }
-
-        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
-        for (i = CALENDAR_MONTH_APRIL;;)
-        {
-            if (days < numOfDays[i - 1])
-            {
-                break;
-            }
-            days -= numOfDays[i - 1];
-            i++;
-            if (i >= CALENDAR_MONTH_MAX)
-            {
-                i = CALENDAR_MONTH_JANUARY;
-            }
-        }
-
-        *monthOut = month;
-        *dayOut = days + 1;
-        return true;
-
-    }
-}
-#pragma pop
-/* Reset the outer loop-invariant state restored by the 17DDF0 push/pop: without this, 185B40 is 1304/1296; with it, 1280/1296. */
-#pragma opt_loop_invariants reset
-
-#pragma opt_lifetimes reset
-// FUN_0017E050 NONMATCHING
-u32 func_0017e050(s32 category, s16 month, s32 day)
-{
-    s16 daysSinceApr5;
-    s16 daysBeforeMonth;
-    s16 currentMonth;
-    s16 dayOfWeek;
-    s16 week;
-    s16 i;
-
-    daysSinceApr5 = datGetDaysSinceApr5() + 4;
-    daysBeforeMonth = 0;
-    currentMonth = CALENDAR_MONTH_APRIL;
-    while (daysSinceApr5 >= gNumOfDaysInMonths[currentMonth - 1])
-    {
-        daysSinceApr5 -= gNumOfDaysInMonths[currentMonth - 1];
-        daysBeforeMonth += gNumOfDaysInMonths[currentMonth - 1];
-        currentMonth++;
-        if (currentMonth >= CALENDAR_MONTH_MAX)
-        {
-            currentMonth = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    dayOfWeek = (daysBeforeMonth + 3) % CALENDAR_DAY_MAX;
-    week = 0;
-    for (i = 0; i < daysSinceApr5; i++)
-    {
-        dayOfWeek++;
-        if (dayOfWeek == CALENDAR_DAY_MAX)
-        {
-            week++;
-            dayOfWeek = CALENDAR_DAY_SUNDAY;
-        }
-    }
-
-    switch (category)
-    {
-    case 0:
-        return currentMonth == month && daysSinceApr5 + 1 == day;
-    case 1:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY;
-    case 2:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_MONDAY;
-    case 3:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_TUESDAY;
-    case 4:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_WEDNESDAY;
-    case 5:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_THURSDAY;
-    case 6:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_FRIDAY;
-    case 7:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_SATURDAY;
-    case 100:
-        return func_0017db40(datGetDaysSinceApr5());
-    case 0x65:
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX != CALENDAR_DAY_SUNDAY;
-    default:
-        return week == category / 10 - 1 &&
-               (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == category % 10 - 1;
-    }
-}
-
-// FUN_0017F8D0
-void func_0017f8d0(void)
-{
-    CalendarTaskWork* work;
-
-    if (sClndTask == NULL)
-    {
-        return;
-    }
-
-    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-    {
-        work = sClndTask->workData;
-        if (work->state != CLNDTASK_STATE_WAIT_SKIP_CONFIRM)
-        {
-            work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
-        }
-        if (work->actionTask != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(work->actionTask);
-            work->actionTask = NULL;
-        }
-    }
-    else
-    {
-        work = sClndTask->workData;
-        if (work->state != CLNDTASK_STATE_BEGIN_DAY)
-        {
-            work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-        }
-        if (work->actionTask != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(work->actionTask);
-            work->actionTask = NULL;
-        }
-    }
-}
-
-// FUN_0017F990
-u32 func_0017f990(void)
-{
-    CalendarTaskWork* work;
-
-    if (sClndTask == NULL)
-    {
-        return true;
-    }
-
-    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-    {
-        work = sClndTask->workData;
-        work->stopDelay = 0x3c;
-        work->state = CLNDTASK_STATE_STOP_DELAY;
-    }
-    else
-    {
-        work = sClndTask->workData;
-        work->debugCursorBg = (KwlnTask*)(uintptr_t)0x3c;
-        work->state = CLNDTASK_STATE_BEGIN_DAY_08;
-    }
-
-    return true;
-}
-
-// FUN_0017FAD0
-KwlnTask* func_0017fad0(void)
-{
-    KwlnTask* task;
-    CalendarTaskWork* work;
-
-    work = RwCalloc(1, sizeof(CalendarTaskWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    task = kwlnTaskCreateWithAutoPriority(NULL, 0x106f, "CalenderDraw",
-                                          clndUpdateTask, clndDestroyTask, work);
-    if (task == NULL)
-    {
-        return NULL;
-    }
-
-    sClndTask = task;
-    work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-    H_SfdPlay_CreateTaskIdle(task);
-    return task;
-}
-
-#define CLND_SKIP_TRANSITION_ACTIVE DAT_007cdffc
-extern u32 DAT_007cdffc;
-
-
- 
-#pragma push
-/* Removing this loses FUN_0017d830 (MATCH nd0 -> MISMATCH nd93) and 4 more - measured W161. */
-#pragma opt_loop_invariants on
- 
-// FUN_0017d830 MATCHING
-s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
-{
-    s16 days;
-    s16 month;
-
-    month = CALENDAR_MONTH_APRIL;
-    days = daysSinceApr5 + 4;
-
-    while (true)
-    {
-        if (days < ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
-        {
-            break;
-        }
-
-        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
-        month++;
-
-        if (month > CALENDAR_MONTH_DECEMBER)
-        {
-            month = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    return month;
-}
-
-#pragma opt_propagation on
-// FUN_0017d8b0 MATCHING
-s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
-{
-    s32 dayAccumulator = 0;
-    s32 m = CALENDAR_MONTH_APRIL;
-    s32 monthEnd = CALENDAR_MONTH_MAX;
-    s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
-    s32 firstMonth = CALENDAR_MONTH_JANUARY;
-    s32 startMonth;
-    startMonth = m;
-
-    for (;;)
-    {
-        if (month == startMonth)
-        {
-            break;
-        }
-
-        dayAccumulator += ((const s16*)gNumOfDaysInMonths_abs)[m - 1];
-        m++;
-        month--;
-
-        if (month == 0)
-        {
-            month = monthsInYear;
-        }
-        if (m == monthEnd)
-        {
-            m = firstMonth;
-        }
-    }
-
-    return dayAccumulator + (day - 5); // - 5 because the game starts in april 5th
-}
-
-// FUN_0017d920 MATCHING
-u32 clndGetCurrentMonth()
-{
-    s16 daysSinceApr5;
-    s16 month;
-
-    daysSinceApr5 = datGetDaysSinceApr5();
-    month = CALENDAR_MONTH_APRIL;
-    daysSinceApr5 += 4;
-    while (true)
-    {
-        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
-        {
-            break;
-        }
-
-        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
-        month++;
-        if (month > CALENDAR_MONTH_DECEMBER)
-        {
-            month = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    return month;
-}
-
-// FUN_0017d9c0 MATCHING
-s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
-{
-    s16 days;
-    s16 month;
-
-    month = CALENDAR_MONTH_APRIL;
-    days = daysSinceApr5 + 4;
-
-    while (true)
-    {
-        if (days < gNumOfDaysInMonths[month - 1])
-        {
-            break;
-        }
-
-        days -= gNumOfDaysInMonths[month - 1];
-        month++;
-
-        if (month > CALENDAR_MONTH_DECEMBER)
-        {
-            month = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    return days + 1;
-}
-
-// FUN_0017da40. Return the current day of the month MATCHING
-u32 clndGetCurrentDay()
-{
-    s16 daysSinceApr5;
-    s16 month;
-    daysSinceApr5 = datGetDaysSinceApr5();
-    month = CALENDAR_MONTH_APRIL;
-    daysSinceApr5 += 4;
-    while (true)
-    {
-        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
-        {
-            break;
-        }
-
-        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
-        month++;
-        if (month > CALENDAR_MONTH_DECEMBER)
-        {
-            month = CALENDAR_MONTH_JANUARY;
-        }
-    }
-
-    return daysSinceApr5 + 1;
-}
-#pragma pop
-
-// FUN_0017dae0
-s32 clndGetWeekDay(s32 daysSinceApr5)
-{
-    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
-}
-
-// FUN_0017db00
-u32 clndGetCurrentWeekDay()
-{
-    s32 daysSinceApr5 = datGetDaysSinceApr5();
-
-    return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
-}
-
-#pragma push
-#pragma opt_loop_invariants on
-// FUN_0017dcf0
-u8 clndIsHolidayOrSunday()
-{
-    s16 daysSinceApr5;
-    s16 currDayOfMonth;
-    s16 currMonth;
-    s16 i;
-    s32 month;
-    const Holiday* holidays;
-    s32 day;
-    s16 sentinel;
-
-    daysSinceApr5 = datGetDaysSinceApr5();
-    if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
-    {
-        return true;
-    }
-
-    currMonth = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
-    currDayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
-    i = 0;
-    month = currMonth;
-    day = currDayOfMonth;
-    holidays = sHolidays;
-    sentinel = -1;
-    for (; i < 0x164; i++)
-    {
-        if (holidays[i].month == sentinel)
-        {
-            break;
-        }
-        if (month == holidays[i].month && day == holidays[i].day)
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-#pragma pop
-
-// FUN_0017e480
-u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
-{
-    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
-    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
-
-    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-// FUN_0017e520
-u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
-                                  u32 startMonth, u32 startDay,
-                                  u32 endMonth, u32 endDay)
-{
-    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
-    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
-    s32 testDate = clndGetDaysSinceStartFromDate(monthToTest, dayToTest);
-
-    if (testDate >= startDate && testDate <= endDate)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-// FUN_0017e5d0
-u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
-{
-    s32 startDate;
-    s32 endDate;
-
-    if (range == 0)
-    {
-        H_Dbprt_FmtLog("Calender chk range is 0");
-        return false;
-    }
-
-    startDate = clndGetDaysSinceStartFromDate(month, day);
-    endDate = startDate + (range - 1);
-
-    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-/* W357 measured opt_loop_invariants on: without nd2861/object4668, with nd2662/object4636; window 4688; retained. */
-#pragma opt_loop_invariants on
-// FUN_0017e680 NONMATCHING
-void* clndUpdateTask(KwlnTask* clndTask)
-{
-    CalendarTaskWork* work = clndTask->workData;
-    s16 daysSinceApr5;
-    s16 dayOfMonth;
-    s16 month;
-    s16 totalDaysBeforeMonth;
-    s16 dayOfWeek;
-    s16 i;
-    u16 padState;
-    u32 specialAction;
-    KwlnTask* actionTask;
-
-    switch (work->state)
-    {
-        case CLNDTASK_STATE_DEBUG_INIT:
-        {
-            struct
-            {
-                RwRect rect;
-                RwV2d pos;
-                RwRGBA color;
-            } debug;
-            debug.rect.x = 0;
-            debug.rect.y = 0;
-            debug.rect.w = 252;
-            debug.rect.h = 168;
-            debug.pos.x = 24.0f;
-            debug.pos.y = 84.0f;
-            debug.color.r = 0;
-            debug.color.g = 0;
-            debug.color.b = 100;
-            debug.color.a = 255;
-            work->debugCursorBg = H_Cursor_CreateTask(clndTask,
-                                                       2.0f,
-                                                       debug.pos,
-                                                       debug.rect,
-                                                       debug.color);
-            debug.rect.x = 0;
-            debug.rect.y = 0;
-            debug.rect.w = 36;
-            debug.rect.h = 12;
-            debug.color.r = 120;
-            debug.color.g = 0;
-            debug.color.b = 0;
-            debug.color.a = 255;
-            work->debugCursor = H_Cursor_CreateTask(clndTask,
-                                                     1.0f,
-                                                     debug.pos,
-                                                     debug.rect,
-                                                     debug.color);
-            work->state = CLNDTASK_STATE_DEBUG_UPDATE;
-            break;
-        }
-
-        case CLNDTASK_STATE_DEBUG_UPDATE:
-        {
-            RwV2d pos;
-            padState = *(u16*)0x007e0952;
-            if (padState & 0x8000)
-            {
-                daysSinceApr5 = datGetDaysSinceApr5() - 1;
-                datSetDaysSinceApr5(daysSinceApr5);
-                if (datGetDaysSinceApr5() < 0)
-                {
-                    datSetDaysSinceApr5(364);
-                }
-            }
-            else if (padState & 0x2000)
-            {
-                daysSinceApr5 = datGetDaysSinceApr5() + 1;
-                datSetDaysSinceApr5(daysSinceApr5);
-                if (datGetDaysSinceApr5() > 364)
-                {
-                    datSetDaysSinceApr5(0);
-                }
-            }
-            else if (padState & 0x1000)
-            {
-                daysSinceApr5 = datGetDaysSinceApr5() - 7;
-                datSetDaysSinceApr5(daysSinceApr5);
-                if (datGetDaysSinceApr5() < 0)
-                {
-                    datSetDaysSinceApr5(0);
-                }
-            }
-            else if (padState & 0x4000)
-            {
-                daysSinceApr5 = datGetDaysSinceApr5() + 7;
-                datSetDaysSinceApr5(daysSinceApr5);
-                if (datGetDaysSinceApr5() > 364)
-                {
-                    datSetDaysSinceApr5(364);
-                }
-            }
-            else if (padState & 0x4)
-            {
-                if (datGetTime() == CALENDAR_TIME_NULL)
-                {
-                    datSetTime(CALENDAR_TIME_DARK_HOUR);
-                    if (datGetDaysSinceApr5() != 0)
-                    {
-                        datSetDaysSinceApr5(datGetDaysSinceApr5() - 1);
-                    }
-                }
-                else
-                {
-                    datSetTime(datGetTime() - 1);
-                }
-            }
-            else if (padState & 0x8)
-            {
-                if (datGetTime() == CALENDAR_TIME_DARK_HOUR)
-                {
-                    datSetTime(CALENDAR_TIME_NULL);
-                    if (datGetDaysSinceApr5() != 0)
-                    {
-                        datSetDaysSinceApr5(datGetDaysSinceApr5() + 1);
-                    }
-                }
-                else
-                {
-                    datSetTime(datGetTime() + 1);
-                }
-            }
-            else if (padState & 0x1)
-            {
-                if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) != CALENDAR_MONTH_APRIL)
-                {
-                    month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-                    datSetDaysSinceApr5(datGetDaysSinceApr5() - gNumOfDaysInMonths[month - 1]);
-                    if (datGetDaysSinceApr5() < 0)
-                    {
-                        datSetDaysSinceApr5(0);
-                    }
-                }
-            }
-            else if (padState & 0x2)
-            {
-                if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) != CALENDAR_MONTH_MARCH)
-                {
-                    month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-                    datSetDaysSinceApr5(datGetDaysSinceApr5() + gNumOfDaysInMonths[month - 1]);
-                    if (datGetDaysSinceApr5() > 364)
-                    {
-                        datSetDaysSinceApr5(364);
-                    }
-                }
-            }
-            else if (*(u16*)0x007e094e & 0x40)
-            {
-                datSetFlag(0x141d, false);
-                work->state = CLNDTASK_STATE_DEBUG_WAIT_OPEN;
-            }
-
-            daysSinceApr5 = datGetDaysSinceApr5() + 4;
-            totalDaysBeforeMonth = 0;
-            month = CALENDAR_MONTH_APRIL;
-            while (daysSinceApr5 >= gNumOfDaysInMonths[month - 1])
-            {
-                daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
-                totalDaysBeforeMonth += gNumOfDaysInMonths[month - 1];
-                month++;
-                if (month >= CALENDAR_MONTH_MAX)
-                {
-                    month = CALENDAR_MONTH_JANUARY;
-                }
-            }
-
-            dayOfWeek = (totalDaysBeforeMonth + 3) % CALENDAR_DAY_MAX;
-            pos.x = dayOfWeek * 3.0f + 2.0f;
-            pos.y = 9.0f;
-            for (i = 0; i < gNumOfDaysInMonths[month - 1]; i++)
-            {
-                H_Dbprt_FmtAt(pos, "%3d", i + 1);
-                pos.x += 3.0f;
-                dayOfWeek++;
-                if (dayOfWeek >= CALENDAR_DAY_MAX)
-                {
-                    dayOfWeek -= CALENDAR_DAY_MAX;
-                    pos.x -= 21.0f;
-                    pos.y += 2.0f;
-                }
-            }
-
-            H_Dbprt_FmtAt((RwV2d){2.0f, 7.0f}, "%2d/%3d", month, daysSinceApr5 + 1, datGetTime());
-            switch (datGetTime())
-            {
-                case CALENDAR_TIME_NULL:          H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(SOUCHOU)"); break;
-                case CALENDAR_TIME_EARLY_MORNING: H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(ASA)"); break;
-                case CALENDAR_TIME_MORNING:       H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(GOZEN)"); break;
-                case CALENDAR_TIME_LUNCH:         H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(GOGO)"); break;
-                case CALENDAR_TIME_AFTERNOON:     H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(YORU)"); break;
-                case CALENDAR_TIME_AFTER_SCHOOL:  H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(SINYA)"); break;
-                case CALENDAR_TIME_EVENING:       H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "(25)"); break;
-                case CALENDAR_TIME_LATE_NIGHT:    H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "NO."); break;
-                case CALENDAR_TIME_DARK_HOUR:     H_Dbprt_FmtAt((RwV2d){10.0f, 7.0f}, "PS2D"); break;
-            }
-
-            pos.x = dayOfWeek * 36.0f + 24.0f;
-            pos.y = 108.0f;
-            for (i = 0; i < daysSinceApr5; i++)
-            {
-                pos.x += 36.0f;
-                dayOfWeek++;
-                if (dayOfWeek == CALENDAR_DAY_MAX)
-                {
-                    dayOfWeek = CALENDAR_DAY_SUNDAY;
-                    pos.y += 24.0f;
-                    pos.x -= 252.0f;
-                }
-            }
-            H_Cursor_SetPos(work->debugCursor, pos);
-            break;
-        }
-
-        case CLNDTASK_STATE_DEBUG_WAIT_OPEN:
-            if (work->confirmationTask == NULL)
-            {
-                work->confirmationTask = func_00184db0(clndTask);
-            }
-            if (!clnd00184d90(work->confirmationTask))
-            {
-                return KWLNTASK_CONTINUE;
-            }
-            work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-            break;
-
-        case CLNDTASK_STATE_DEBUG_WAIT_CLOSE:
-            if (work->confirmationTask == NULL)
-            {
-                work->confirmationTask = func_00184db0(clndTask);
-            }
-            if (!clnd00184d90(work->confirmationTask))
-            {
-                return KWLNTASK_CONTINUE;
-            }
-            if (datGetSkipToTarget() == 0)
-            {
-                func_00184c80(work->confirmationTask, true);
-            }
-            else
-            {
-                H_Dbprt_FmtLog("####  next time");
-            }
-            if (work->debugCursorBg != NULL)
-            {
-                kwlnTaskDestroyWithHierarchy(work->debugCursorBg);
-            }
-            if (work->debugCursor != NULL)
-            {
-                kwlnTaskDestroyWithHierarchy(work->debugCursor);
-            }
-            work->debugCursorBg = NULL;
-            work->debugCursor = NULL;
-            work->state = CLNDTASK_STATE_BEGIN_DAY_05;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_05;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_05:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_06;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_06:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_07;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_07:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_08;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_08:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_09;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_09:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_10;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_10:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_11;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_11:
-            work->state = CLNDTASK_STATE_BEGIN_DAY_12;
-            break;
-
-        case CLNDTASK_STATE_BEGIN_DAY_12:
-            work->state = CLNDTASK_STATE_SELECT_TIME_ACTION;
-            break;
-
-        case CLNDTASK_STATE_SELECT_TIME_ACTION:
-            actionTask = NULL;
-            specialAction = false;
-            work->validateSkipTarget = true;
-            datSetFlag(0x1410, true);
-            switch (datGetTime())
-            {
-                case CALENDAR_TIME_NULL:          actionTask = func_00180a20(clndTask); break;
-                case CALENDAR_TIME_EARLY_MORNING: actionTask = func_00180c40(clndTask); break;
-                case CALENDAR_TIME_MORNING:       actionTask = func_00180ee0(clndTask); break;
-                case CALENDAR_TIME_LUNCH:         actionTask = func_00181010(clndTask); break;
-                case CALENDAR_TIME_AFTERNOON:     actionTask = func_00181170(clndTask); break;
-                case CALENDAR_TIME_AFTER_SCHOOL:  actionTask = func_00181310(clndTask); break;
-                case CALENDAR_TIME_EVENING:       actionTask = func_00181430(clndTask); break;
-                case CALENDAR_TIME_LATE_NIGHT:    actionTask = func_0017fc70(clndTask); break;
-                case CALENDAR_TIME_DARK_HOUR:     actionTask = func_00181580(clndTask, &specialAction); break;
-            }
-            if (specialAction != 0)
-            {
-                work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
-            }
-            else if (actionTask != NULL)
-            {
-                work->actionTask = actionTask;
-                work->state = CLNDTASK_STATE_WAIT_ACTION_START;
-            }
-            else
-            {
-                work->state = CLNDTASK_STATE_SKIP;
-            }
-            break;
-
-        case CLNDTASK_STATE_WAIT_ACTION_START:
-            if (adminiGetNowSeqId() == ADMINI_SEQ_FIELD2 || adminiGetNowSeqId() == ADMINI_SEQ_FIELD)
-            {
-                if (datGetTime() == CALENDAR_TIME_NULL)
-                {
-                    func_00184c80(work->confirmationTask, true);
-                }
-                else
-                {
-                    func_001848f0(work->confirmationTask, true);
-                }
-                work->state = CLNDTASK_STATE_WAIT_ACTION_FINISH;
-            }
-            if (kwlnTaskGetState(work->actionTask) == KWLNTASK_STATE_DESTROY)
-            {
-                work->actionTask = NULL;
-                work->state = CLNDTASK_STATE_SKIP;
-            }
-            break;
-
-        case CLNDTASK_STATE_WAIT_ACTION_FINISH:
-            if (kwlnTaskGetState(work->actionTask) == KWLNTASK_STATE_DESTROY)
-            {
-                work->actionTask = NULL;
-                work->state = CLNDTASK_STATE_SKIP;
-            }
-            break;
-
-        case CLNDTASK_STATE_CONFIRM_DAY_CHANGE:
-            if (datGetTime() == CALENDAR_TIME_NULL)
-            {
-                func_00184c80(work->confirmationTask, true);
-            }
-            else
-            {
-                func_001848f0(work->confirmationTask, true);
-            }
-            work->state = CLNDTASK_STATE_WAIT_SKIP_CONFIRM;
-            break;
-
-        case CLNDTASK_STATE_WAIT_SKIP_CONFIRM:
-            break;
-
-        case CLNDTASK_STATE_REQSKIP:
-            if (adminiGetNowSeqId() == ADMINI_SEQ_NULL)
-            {
-                work->actionTask = NULL;
-                work->state = CLNDTASK_STATE_SKIP;
-            }
-            break;
-
-        case CLNDTASK_STATE_CREATE_SKIP_MESSAGE:
-            work->debugCursor = func_00188640_calendar();
-            work->state = CLNDTASK_STATE_WAIT_SKIP_MESSAGE;
-            break;
-
-        case CLNDTASK_STATE_WAIT_SKIP_MESSAGE:
-            if (kwlnTaskGetState(work->debugCursor) == KWLNTASK_STATE_DESTROY)
-            {
-                work->debugCursor = NULL;
-                work->state = CLNDTASK_STATE_APPLY_SKIP;
-            }
-            break;
-
-        case CLNDTASK_STATE_APPLY_SKIP:
-            if (CLND_SKIP_TRANSITION_ACTIVE == 0)
-            {
-                work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-            }
-            else
-            {
-                if (work->confirmationTask == NULL)
-                {
-                    work->confirmationTask = func_00184db0(clndTask);
-                }
-                if (!clnd00184d90(work->confirmationTask))
-                {
-                    return KWLNTASK_CONTINUE;
-                }
-                func_00184c80(work->confirmationTask, true);
-                func_00181b70();
-                work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
-                CLND_SKIP_TRANSITION_ACTIVE = 0;
-                work->validateSkipTarget = true;
-            }
-            break;
-
-        case CLNDTASK_STATE_SKIP:
-            if (work->confirmationTask == NULL)
-            {
-                work->confirmationTask = func_00184db0(clndTask);
-            }
-            if (!clnd00184d90(work->confirmationTask))
-            {
-                return KWLNTASK_CONTINUE;
-            }
-            if (work->validateSkipTarget != 0)
-            {
-                if (datGetSkipToTarget() != 0)
-                {
-                    daysSinceApr5 = datGetDaysSinceApr5();
-                    dayOfMonth = datGetDaysSkipTarget();
-                    if (dayOfMonth - daysSinceApr5 > 5)
-                    {
-                        datSetDaysSinceApr5(dayOfMonth);
-                        datSetTime(datGetTimeSkipTarget());
-                        datSetSkipToTarget(false);
-                        work->state = CLNDTASK_STATE_BEGIN_DAY;
-                        return KWLNTASK_CONTINUE;
-                    }
-                    if (daysSinceApr5 == dayOfMonth && datGetTime() == datGetTimeSkipTarget())
-                    {
-                        datSetDaysSinceApr5(dayOfMonth);
-                        datSetTime(datGetTimeSkipTarget());
-                        datSetSkipToTarget(false);
-                        work->state = CLNDTASK_STATE_BEGIN_DAY;
-                        return KWLNTASK_CONTINUE;
-                    }
-                }
-
-                if (datGetTime() == CALENDAR_TIME_EARLY_MORNING)
-                {
-                    func_00180e60();
-                }
-                if (datGetTime() == CALENDAR_TIME_DARK_HOUR)
-                {
-                    datSetTime(CALENDAR_TIME_NULL);
-                    datSetDaysSinceApr5(datGetDaysSinceApr5() + 1);
-                }
-                else if (func_0017db40(datGetDaysSinceApr5()) == 0 &&
-                         clndGetWeekDay(datGetDaysSinceApr5()) == CALENDAR_DAY_SATURDAY &&
-                         datGetTime() == CALENDAR_TIME_MORNING)
-                {
-                    datSetTime(CALENDAR_TIME_AFTER_SCHOOL);
-                }
-                else if (func_0017db40(datGetDaysSinceApr5()) != 0 &&
-                         datGetTime() == CALENDAR_TIME_EARLY_MORNING)
-                {
-                    datSetTime(CALENDAR_TIME_AFTERNOON);
-                }
-                else if (func_0017db40(datGetDaysSinceApr5()) != 0 &&
-                         datGetTime() == CALENDAR_TIME_AFTERNOON)
-                {
-                    datSetTime(CALENDAR_TIME_EVENING);
-                }
-                else
-                {
-                    datSetTime(datGetTime() + 1);
-                }
-
-                if (datGetSkipToTarget() != 0 &&
-                    datGetDaysSinceApr5() == datGetDaysSkipTarget() &&
-                    datGetTime() == datGetTimeSkipTarget())
-                {
-                    datSetSkipToTarget(false);
-                }
-            }
-            work->state = CLNDTASK_STATE_BEGIN_DAY;
-            break;
-
-        case CLNDTASK_STATE_RESTART_SKIP:
-            if (work->confirmationTask == NULL)
-            {
-                work->confirmationTask = func_00184db0(clndTask);
-            }
-            if (!clnd00184d90(work->confirmationTask))
-            {
-                return KWLNTASK_CONTINUE;
-            }
-            func_00184c80(work->confirmationTask, true);
-            func_00181b70();
-            work->validateSkipTarget = true;
-            work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
-            break;
-
-        case CLNDTASK_STATE_STOP_DELAY:
-            work->stopDelay--;
-            if (work->stopDelay == 0)
-            {
-                return KWLNTASK_STOP;
-            }
-            break;
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-
-#pragma opt_loop_invariants reset
-// FUN_0017fa10
-void clndReqSkip()
-{
-    if (sClndTask != NULL)
-    {
-        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-        {
-            ((CalendarTaskWork*)sClndTask->workData)->state = CLNDTASK_STATE_REQSKIP;
-            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
-        }
-        else
-        {
-            ((CalendarTaskWork*)sClndTask->workData)->state = CLNDTASK_STATE_BEGIN_DAY_05;
-            adminiChangeSeq(ADMINI_SEQ_NULL, NULL, 0, false);
-        }
-    }
-}
-
-// FUN_0017faa0
-void clndDestroyTask(KwlnTask* clndTask)
-{
-    RwFree(clndTask->workData);
-    sClndTask = NULL;
-}
-
-// FUN_0017fb90
-KwlnTask* clndCreateTask()
-{
-    KwlnTask* clndTask;
-    CalendarTaskWork* work;
-
-    work = RwCalloc(1, sizeof(CalendarTaskWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    clndTask = kwlnTaskCreateWithAutoPriority(NULL,
-                                              4207,
-                                              "CalenderDraw",
-                                              clndUpdateTask,
-                                              clndDestroyTask,
-                                              work);
-    if (clndTask == NULL)
-    {
-        return NULL;
-    }
-
-    sClndTask = clndTask;
-
-    work->state = CLNDTASK_STATE_RESTART_SKIP;
-    H_SfdPlay_CreateTaskIdle(clndTask);
-    if (datGetDaysSinceApr5() == 2)
-    {
-        work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-    }
-
-    return clndTask;
-}
-
-/* W212: first divergence is the prologue (ours 0x50-byte frame, retail 0x60).
- * Delaying the event pointer and retaining startTime across its call reconciled
- * the frame but regressed nd298 -> nd329 (512/560), so the probe was reverted. */
 // FUN_00181720 NONMATCHING
 s32 clndFindAndExecSiteibiEvents()
 {
@@ -2248,6 +2207,49 @@ s32 clndFindAndExecSiteibiEvents()
     }
 }
 
+// FUN_00181950
+KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
+{
+    CalendarTaskWork* work;
+    SiteibiEventTable* eventTable;
+    KwlnTask* actionTask;
+    volatile u16* sitePtr;
+
+    work = clndTask->workData;
+    eventTable = Comu_GetSiteibiEvtTable();
+    if (eventTable->events[eventIndex].unk_07 != 0xff)
+    {
+        H_Dbprt_FmtLog("calendar: siteibi event %d",
+                       eventTable->events[eventIndex].scrPrcdIdx);
+        actionTask = func_001ba5f0(
+            clndTask, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            eventTable->events[eventIndex].scrPrcdIdx,
+            eventTable->events[eventIndex].unk_06,
+            eventTable->events[eventIndex].unk_07, 0);
+        if (datGetTime() == CALENDAR_TIME_NULL)
+        {
+            func_00184c80(work->confirmationTask, true);
+        }
+        else
+        {
+            func_001848f0(work->confirmationTask, true);
+        }
+    }
+    else
+    {
+        H_Dbprt_FmtLog("calendar: siteibi procedure %d",
+                       eventTable->events[eventIndex].scrPrcdIdx);
+        sitePtr = (volatile u16 *)((u8 *)(eventIndex * (s32)sizeof(SiteibiEvent)) + (int)eventTable->events + 4);
+        actionTask = func_003bdd60(0xf, *sitePtr);
+    }
+
+    datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(
+        eventTable->events[eventIndex].endMonth,
+        eventTable->events[eventIndex].endDay));
+    datSetTimeSkipTarget_u8(eventTable->events[eventIndex].endTime);
+    datSetSkipToTarget(true);
+    return actionTask;
+}
 // FUN_00181b10
 u8 clndGetCurrentMoonPhase()
 {
@@ -3703,45 +3705,11 @@ u32 clnd00184d90(KwlnTask* task)
     return ((CalendarTaskWork*)task->workData)->state == 2;
 }
 
-// FUN_00187520
-void clnd00187520(KwlnTask* task)
-{
-    CLND_FREE(task->workData);
-}
 
 void H_Free(void* memory);
 
-// FUN_00187df0
-void clnd00187df0(KwlnTask* task)
-{
-    H_Free(task->workData);
-}
 
-// FUN_00187ea0
-void clnd00187ea0(KwlnTask* task)
-{
-    ((CalendarTaskWork*)task->workData)->state = 3;
-}
 
-// FUN_00188510
-u32 clndScrCmd_SET_DATE()
-{
-    u32 month;
-    u32 day;
-    s32 time;
-    u32 daysSinceApr5;
-
-    month = scrGetIntPara(0);
-    day = scrGetIntPara(1);
-    time = scrGetIntPara(2);
-
-    daysSinceApr5 = clndGetDaysSinceStartFromDate(month, day);
-
-    datSetDaysSinceApr5(daysSinceApr5);
-    datSetTime(time);
-
-    return true;
-}
  
 #include "h_maestro.h"
 #include "h_fade.h"
@@ -5523,6 +5491,11 @@ draw:
     return KWLNTASK_STOP;
 }
 
+// FUN_00187520
+void clnd00187520(KwlnTask* task)
+{
+    CLND_FREE(task->workData);
+}
 // FUN_00187550
 KwlnTask* func_00187550(KwlnTask* parent)
 {
@@ -5726,6 +5699,11 @@ void* func_00187be0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+// FUN_00187df0
+void clnd00187df0(KwlnTask* task)
+{
+    H_Free(task->workData);
+}
 // FUN_00187E20
 KwlnTask* func_00187e20(void)
 {
@@ -5750,6 +5728,11 @@ KwlnTask* func_00187e20(void)
     return task;
 }
 
+// FUN_00187ea0
+void clnd00187ea0(KwlnTask* task)
+{
+    ((CalendarTaskWork*)task->workData)->state = 3;
+}
 // FUN_00187EC0
 void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
 {
@@ -6002,6 +5985,25 @@ typedef struct GameSupportLoadWork
     KwlnTask* transitionTask;
 } GameSupportLoadWork;
 
+// FUN_00188510
+u32 clndScrCmd_SET_DATE()
+{
+    u32 month;
+    u32 day;
+    s32 time;
+    u32 daysSinceApr5;
+
+    month = scrGetIntPara(0);
+    day = scrGetIntPara(1);
+    time = scrGetIntPara(2);
+
+    daysSinceApr5 = clndGetDaysSinceStartFromDate(month, day);
+
+    datSetDaysSinceApr5(daysSinceApr5);
+    datSetTime(time);
+
+    return true;
+}
 // FUN_001885A0
 u32 func_001885a0(void)
 {
@@ -6310,6 +6312,748 @@ u32 func_00188be0(void)
 
 
 
+#include "type.h"
+
+extern void func_001140d0(u32 rgba, s32 width, s32 height, const void* texture,
+                          f32 depthOffset, f32 x, f32 y);
+
+// FUN_00188C30 NONMATCHING
+void* func_00188c30(KwlnTask* task)
+{
+    s32 param_1 = (s32)(u32)task;
+    s32* puVar1;
+    s32 iVar2;
+    s32 iVar3;
+    f32 fVar1;
+    f32 fVar2;
+
+    puVar1 = *(s32**)(param_1 + 0x3c);
+    puVar1[1] = puVar1[1] + 1;
+    puVar1[2] = puVar1[2] + 1;
+    switch (puVar1[0])
+    {
+        case 0:
+            if (puVar1[1] == 3)
+            {
+                puVar1[1] = 0;
+                puVar1[2] = 0;
+                puVar1[0] = 1;
+            }
+            break;
+
+        case 1:
+            if (puVar1[1] == 5)
+            {
+                puVar1[0] = 2;
+            }
+            break;
+
+        case 2:
+            if (puVar1[1] == 8)
+            {
+                puVar1[0] = 3;
+            }
+            fVar1 = 190.0f - (f32)(puVar1[1] + -6) / 2.0f;
+            fVar2 = 20.0f - ((f32)(puVar1[1] + -6) * 4.0f) / 2.0f;
+            iVar2 = (((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100;
+            iVar2 = iVar2 * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 3:
+            if (puVar1[1] == 10)
+            {
+                puVar1[0] = 4;
+            }
+            fVar1 = 189.0f - (f32)(puVar1[1] + -8) / 2.0f;
+            fVar2 = ((f32)(puVar1[1] + -8) * 4.0f) / 2.0f + 16.0f;
+            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 4:
+            if (puVar1[1] == 0xe)
+            {
+                puVar1[0] = 5;
+            }
+            fVar1 = 185.0f - ((f32)(puVar1[1] + -10) * 3.0f) / 4.0f;
+            fVar2 = 20.0f - ((f32)(puVar1[1] + -10) * 11.0f) / 4.0f;
+            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 5:
+            if (puVar1[1] == 0x10)
+            {
+                puVar1[0] = 6;
+            }
+            fVar1 = 185.0f - ((f32)(puVar1[1] + -0xe) * 2.0f) / 2.0f;
+            fVar2 = ((f32)(puVar1[1] + -0xe) * 7.0f) / 2.0f + 9.0f;
+            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 6:
+            if (puVar1[1] == 0x27)
+            {
+                puVar1[0] = 7;
+            }
+            fVar1 = 183.0f - ((f32)(puVar1[1] + -0x10) * 41.0f) / 34.0f;
+            fVar2 = 16.0f - ((f32)(puVar1[1] + -0x10) * 50.0f) / 34.0f;
+            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 7:
+            iVar2 = puVar1[1];
+            if (iVar2 == 0x32)
+            {
+                return KWLNTASK_STOP;
+            }
+            iVar3 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            if (iVar3 < 0)
+            {
+                iVar3 = iVar3 + 0xfff;
+            }
+            func_001140d0(0xffffff00U |
+                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3], 0.0f,
+                          183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f,
+                          16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f);
+            break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00189230 NONMATCHING
+void* func_00189230(KwlnTask* task)
+{
+    s32 param_1 = (s32)(u32)task;
+    s32* puVar1;
+    s32 iVar2;
+    s32 iVar3;
+    f32 fVar1;
+    f32 fVar2;
+    f32 fVar4;
+    puVar1 = *(s32**)(param_1 + 0x3c);
+    puVar1[1] = puVar1[1] + 1;
+    puVar1[2] = puVar1[2] + 1;
+    switch (puVar1[0])
+    {
+        case 0:
+            if (puVar1[1] == 3)
+            {
+                puVar1[1] = 0;
+                puVar1[2] = 0;
+                puVar1[0] = 1;
+            }
+            break;
+
+        case 1:
+            if (puVar1[1] == 8)
+            {
+                puVar1[0] = 2;
+            }
+            break;
+
+        case 2:
+            if (puVar1[1] == 0xb)
+            {
+                puVar1[0] = 3;
+            }
+            fVar1 = 230.0f - ((f32)(puVar1[1] + -9) * 3.0f) / 2.0f;
+            fVar2 = 89.0f - ((f32)(puVar1[1] + -9) * 7.0f) / 2.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 3:
+            if (puVar1[1] == 0xd)
+            {
+                puVar1[0] = 4;
+            }
+            fVar1 = ((f32)(puVar1[1] + -0xb) * 2.0f) / 2.0f + 227.0f;
+            fVar2 = ((f32)(puVar1[1] + -0xb) * 6.0f) / 2.0f + 83.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 4:
+            if (puVar1[1] == 0x11)
+            {
+                puVar1[0] = 5;
+            }
+            fVar1 = 229.0f - ((f32)(puVar1[1] + -0xd) * 6.0f) / 4.0f;
+            fVar2 = 89.0f - ((f32)(puVar1[1] + -0xd) * 7.0f) / 4.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 5:
+            if (puVar1[1] == 0x13)
+            {
+                puVar1[0] = 6;
+            }
+            fVar1 = 223.0f - (f32)(puVar1[1] + -0x11) / 2.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x11) * 5.0f) / 2.0f + 82.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 6:
+            if (puVar1[1] == 0x27)
+            {
+                puVar1[0] = 7;
+            }
+            fVar4 = (17.0f * (f32)(puVar1[1] + -0x13)) / 31.0f;
+            fVar1 = 222.0f - fVar4;
+            fVar2 = 87.0f - fVar4;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 7:
+            iVar2 = puVar1[1];
+            if (iVar2 == 0x32)
+            {
+                return KWLNTASK_STOP;
+            }
+            fVar4 = (17.0f * (f32)(iVar2 + -0x13)) / 31.0f;
+            fVar1 = 222.0f - fVar4;
+            fVar2 = 87.0f - fVar4;
+            iVar2 = 0xff - ((iVar2 + -0x27) * 0xff) / 0xb;
+            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            if (iVar3 < 0)
+            {
+                iVar3 = iVar3 + 0xfff;
+            }
+            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00189810 NONMATCHING
+void* func_00189810(KwlnTask* task)
+{
+    s32 param_1 = (s32)(u32)task;
+    s32* puVar1;
+    s32 iVar2;
+    s32 iVar3;
+    f32 fVar1;
+    f32 fVar2;
+    f32 fVar4;
+
+    puVar1 = *(s32**)(param_1 + 0x3c);
+    puVar1[1] = puVar1[1] + 1;
+    puVar1[2] = puVar1[2] + 1;
+    switch (puVar1[0])
+    {
+        case 0:
+            if (puVar1[1] == 3)
+            {
+                puVar1[1] = 0;
+                puVar1[2] = 0;
+                puVar1[0] = 1;
+            }
+            break;
+
+        case 1:
+            if (puVar1[1] == 0xb)
+            {
+                puVar1[0] = 2;
+            }
+            break;
+
+        case 2:
+            if (puVar1[1] == 0xe)
+            {
+                puVar1[0] = 3;
+            }
+            fVar1 = (f32)(puVar1[1] + -0xc) / 2.0f;
+            fVar1 += 311.0f;
+            fVar2 = ((f32)(puVar1[1] + -0xc) * 7.0f) / 2.0f;
+            fVar2 += 125.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 3:
+            if (puVar1[1] == 0x10)
+            {
+                puVar1[0] = 4;
+            }
+            fVar1 = (f32)(puVar1[1] + -0xe) / 2.0f;
+            fVar1 = 312.0f - fVar1;
+            fVar2 = ((f32)(puVar1[1] + -0xe) * 10.0f) / 2.0f;
+            fVar2 = 132.0f - fVar2;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 4:
+            if (puVar1[1] == 0x14)
+            {
+                puVar1[0] = 5;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x10) / 4.0f;
+            fVar1 = 311.0f - fVar1;
+            fVar2 = ((f32)(puVar1[1] + -0x10) * 9.0f) / 4.0f;
+            fVar2 += 122.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 5:
+            if (puVar1[1] == 0x16)
+            {
+                puVar1[0] = 6;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x14) / 2.0f;
+            fVar1 += 310.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x14) * 6.0f) / 2.0f;
+            fVar2 = 131.0f - fVar2;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 6:
+            if (puVar1[1] == 0x27)
+            {
+                puVar1[0] = 7;
+            }
+            fVar4 = ((f32)(puVar1[1] + -0x16) * 4.0f) / 28.0f;
+            fVar1 = fVar4 + 311.0f;
+            fVar2 = 125.0f - fVar4;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 7:
+            iVar2 = puVar1[1];
+            if (iVar2 == 0x32)
+            {
+                return KWLNTASK_STOP;
+            }
+            fVar4 = ((f32)(iVar2 + -0x16) * 4.0f) / 28.0f;
+            fVar1 = fVar4 + 311.0f;
+            fVar2 = 125.0f - fVar4;
+            iVar2 = 0xff - ((iVar2 + -0x27) * 0xff) / 0xb;
+            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            if (iVar3 < 0)
+            {
+                iVar3 = iVar3 + 0xfff;
+            }
+            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00189DF0 NONMATCHING
+void* func_00189df0(KwlnTask* task)
+{
+    s32 param_1 = (s32)(u32)task;
+    s32* puVar1;
+    s32 iVar2;
+    s32 iVar3;
+    f32 fVar1;
+    f32 fVar2;
+
+    puVar1 = *(s32**)(param_1 + 0x3c);
+    puVar1[1] = puVar1[1] + 1;
+    puVar1[2] = puVar1[2] + 1;
+    switch (puVar1[0])
+    {
+        case 0:
+            if (puVar1[1] == 3)
+            {
+                puVar1[1] = 0;
+                puVar1[2] = 0;
+                puVar1[0] = 1;
+            }
+            break;
+
+        case 1:
+            if (puVar1[1] == 0xe)
+            {
+                puVar1[0] = 2;
+            }
+            break;
+
+        case 2:
+            if (puVar1[1] == 0x11)
+            {
+                puVar1[0] = 3;
+            }
+            fVar1 = (f32)(puVar1[1] + -0xf) / 2.0f + 351.0f;
+            fVar2 = ((f32)(puVar1[1] + -0xf) * 3.0f) / 2.0f + 207.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 3:
+            if (puVar1[1] == 0x13)
+            {
+                puVar1[0] = 4;
+            }
+            fVar1 = 352.0f - ((f32)(puVar1[1] + -0x11) * 2.0f) / 2.0f;
+            fVar2 = 204.0f - ((f32)(puVar1[1] + -0x11) * 9.0f) / 2.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 4:
+            if (puVar1[1] == 0x17)
+            {
+                puVar1[0] = 5;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x13) / 4.0f + 350.0f;
+            fVar2 = 213.0f - ((f32)(puVar1[1] + -0x13) * 8.0f) / 4.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 5:
+            if (puVar1[1] == 0x19)
+            {
+                puVar1[0] = 6;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x17) / 2.0f + 351.0f;
+            fVar2 = 205.0f - ((f32)(puVar1[1] + -0x17) * 9.0f) / 2.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 6:
+            if (puVar1[1] == 0x27)
+            {
+                puVar1[0] = 7;
+            }
+            fVar1 = ((f32)(puVar1[1] + -0x19) * 9.0f) / 25.0f + 352.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x19) * 3.0f) / 25.0f + 214.0f;
+            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 7:
+            iVar2 = puVar1[1];
+            if (iVar2 == 0x32)
+            {
+                return KWLNTASK_STOP;
+            }
+            fVar1 = ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f;
+            fVar2 = ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f;
+            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            if (iVar3 < 0)
+            {
+                iVar3 = iVar3 + 0xfff;
+            }
+            func_001140d0(0xffffff00U |
+                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3], 0.0f,
+                          ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f,
+                          ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f);
+            break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0018A3F0 NONMATCHING
+void* func_0018a3f0(KwlnTask* task)
+{
+    s32 param_1 = (s32)(u32)task;
+    s32* puVar1;
+    s32 iVar2;
+    s32 iVar3;
+    f32 fVar1;
+    f32 fVar2;
+    u32 rgba;
+    const void* pVar4;
+    puVar1 = *(s32**)(param_1 + 0x3c);
+    puVar1[1] = puVar1[1] + 1;
+    puVar1[2] = puVar1[2] + 1;
+    switch (puVar1[0])
+    {
+        case 0:
+            if (puVar1[1] == 3)
+            {
+                puVar1[1] = 0;
+                puVar1[2] = 0;
+                puVar1[0] = 1;
+            }
+            break;
+
+        case 1:
+            if (puVar1[1] == 0x11)
+            {
+                puVar1[0] = 2;
+            }
+            break;
+
+        case 2:
+            if (puVar1[1] == 0x14)
+            {
+                puVar1[0] = 3;
+            }
+            fVar1 = ((f32)(puVar1[1] + -0x12) * 0.0f) + 419.0f;
+            fVar2 = 273.0f - ((f32)(puVar1[1] + -0x12) * 2.0f) / 2.0f;
+            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            pVar4 = (const void*)(u32)puVar1[3];
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          pVar4, 0.0f, fVar1, fVar2);
+            break;
+
+        case 3:
+            if (puVar1[1] == 0x16)
+            {
+                puVar1[0] = 4;
+            }
+            fVar1 = ((f32)(puVar1[1] + -0x14) * 4.0f) / 2.0f + 419.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x14) * 9.0f) / 2.0f + 271.0f;
+            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 4:
+            if (puVar1[1] == 0x1a)
+            {
+                puVar1[0] = 5;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x16) / 4.0f + 423.0f;
+            fVar2 = 280.0f - ((f32)(puVar1[1] + -0x16) * 4.0f) / 4.0f;
+            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 5:
+            if (puVar1[1] == 0x1c)
+            {
+                puVar1[0] = 6;
+            }
+            fVar1 = (f32)(puVar1[1] + -0x1a) / 2.0f + 428.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x1a) * 10.0f) / 2.0f + 276.0f;
+            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 6:
+            if (puVar1[1] == 0x27)
+            {
+                puVar1[0] = 7;
+            }
+            fVar1 = ((f32)(puVar1[1] + -0x1c) * 22.0f) / 22.0f + 429.0f;
+            fVar2 = ((f32)(puVar1[1] + -0x1c) * 18.0f) / 22.0f + 286.0f;
+            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
+            if (iVar2 < 0)
+            {
+                iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
+            }
+            func_001140d0(0xffffffffU, iVar3, iVar3,
+                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            break;
+
+        case 7:
+            iVar2 = puVar1[1];
+            if (iVar2 == 0x32)
+            {
+                return KWLNTASK_STOP;
+            }
+            fVar1 = ((f32)(iVar2 + -0x1c) * 22.0f) / 22.0f + 429.0f;
+            fVar2 = ((f32)(iVar2 + -0x1c) * 18.0f) / 22.0f + 286.0f;
+            rgba = 0xffffff00U | (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb);
+            iVar3 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            if (iVar3 < 0)
+            {
+                iVar3 = iVar3 + 0xfff;
+            }
+            pVar4 = (const void*)(u32)puVar1[3];
+            func_001140d0(rgba, iVar3 >> 0xc, iVar3 >> 0xc,
+                          pVar4, 0.0f, fVar1, fVar2);
+            break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_0018A9C0
+void func_0018a9c0(KwlnTask* task)
+{
+    (*(void (**)(void*))0x0096017c)(task->workData);
+}
 // FUN_0018A9F0 NONMATCHING
 void* func_0018a9f0(KwlnTask* task)
 {
@@ -8160,745 +8904,3 @@ void func_0018f0e0(KwlnTask* task)
 #undef DAT_007caf38
 
 
-#include "type.h"
-
-extern void func_001140d0(u32 rgba, s32 width, s32 height, const void* texture,
-                          f32 depthOffset, f32 x, f32 y);
-
-// FUN_00188C30 NONMATCHING
-void* func_00188c30(KwlnTask* task)
-{
-    s32 param_1 = (s32)(u32)task;
-    s32* puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    f32 fVar1;
-    f32 fVar2;
-
-    puVar1 = *(s32**)(param_1 + 0x3c);
-    puVar1[1] = puVar1[1] + 1;
-    puVar1[2] = puVar1[2] + 1;
-    switch (puVar1[0])
-    {
-        case 0:
-            if (puVar1[1] == 3)
-            {
-                puVar1[1] = 0;
-                puVar1[2] = 0;
-                puVar1[0] = 1;
-            }
-            break;
-
-        case 1:
-            if (puVar1[1] == 5)
-            {
-                puVar1[0] = 2;
-            }
-            break;
-
-        case 2:
-            if (puVar1[1] == 8)
-            {
-                puVar1[0] = 3;
-            }
-            fVar1 = 190.0f - (f32)(puVar1[1] + -6) / 2.0f;
-            fVar2 = 20.0f - ((f32)(puVar1[1] + -6) * 4.0f) / 2.0f;
-            iVar2 = (((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100;
-            iVar2 = iVar2 * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 3:
-            if (puVar1[1] == 10)
-            {
-                puVar1[0] = 4;
-            }
-            fVar1 = 189.0f - (f32)(puVar1[1] + -8) / 2.0f;
-            fVar2 = ((f32)(puVar1[1] + -8) * 4.0f) / 2.0f + 16.0f;
-            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 4:
-            if (puVar1[1] == 0xe)
-            {
-                puVar1[0] = 5;
-            }
-            fVar1 = 185.0f - ((f32)(puVar1[1] + -10) * 3.0f) / 4.0f;
-            fVar2 = 20.0f - ((f32)(puVar1[1] + -10) * 11.0f) / 4.0f;
-            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 5:
-            if (puVar1[1] == 0x10)
-            {
-                puVar1[0] = 6;
-            }
-            fVar1 = 185.0f - ((f32)(puVar1[1] + -0xe) * 2.0f) / 2.0f;
-            fVar2 = ((f32)(puVar1[1] + -0xe) * 7.0f) / 2.0f + 9.0f;
-            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 6:
-            if (puVar1[1] == 0x27)
-            {
-                puVar1[0] = 7;
-            }
-            fVar1 = 183.0f - ((f32)(puVar1[1] + -0x10) * 41.0f) / 34.0f;
-            fVar2 = 16.0f - ((f32)(puVar1[1] + -0x10) * 50.0f) / 34.0f;
-            iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 7:
-            iVar2 = puVar1[1];
-            if (iVar2 == 0x32)
-            {
-                return KWLNTASK_STOP;
-            }
-            iVar3 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
-            if (iVar3 < 0)
-            {
-                iVar3 = iVar3 + 0xfff;
-            }
-            func_001140d0(0xffffff00U |
-                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
-                          iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f,
-                          183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f,
-                          16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f);
-            break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_00189230 NONMATCHING
-void* func_00189230(KwlnTask* task)
-{
-    s32 param_1 = (s32)(u32)task;
-    s32* puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    f32 fVar1;
-    f32 fVar2;
-    f32 fVar4;
-    puVar1 = *(s32**)(param_1 + 0x3c);
-    puVar1[1] = puVar1[1] + 1;
-    puVar1[2] = puVar1[2] + 1;
-    switch (puVar1[0])
-    {
-        case 0:
-            if (puVar1[1] == 3)
-            {
-                puVar1[1] = 0;
-                puVar1[2] = 0;
-                puVar1[0] = 1;
-            }
-            break;
-
-        case 1:
-            if (puVar1[1] == 8)
-            {
-                puVar1[0] = 2;
-            }
-            break;
-
-        case 2:
-            if (puVar1[1] == 0xb)
-            {
-                puVar1[0] = 3;
-            }
-            fVar1 = 230.0f - ((f32)(puVar1[1] + -9) * 3.0f) / 2.0f;
-            fVar2 = 89.0f - ((f32)(puVar1[1] + -9) * 7.0f) / 2.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 3:
-            if (puVar1[1] == 0xd)
-            {
-                puVar1[0] = 4;
-            }
-            fVar1 = ((f32)(puVar1[1] + -0xb) * 2.0f) / 2.0f + 227.0f;
-            fVar2 = ((f32)(puVar1[1] + -0xb) * 6.0f) / 2.0f + 83.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 4:
-            if (puVar1[1] == 0x11)
-            {
-                puVar1[0] = 5;
-            }
-            fVar1 = 229.0f - ((f32)(puVar1[1] + -0xd) * 6.0f) / 4.0f;
-            fVar2 = 89.0f - ((f32)(puVar1[1] + -0xd) * 7.0f) / 4.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 5:
-            if (puVar1[1] == 0x13)
-            {
-                puVar1[0] = 6;
-            }
-            fVar1 = 223.0f - (f32)(puVar1[1] + -0x11) / 2.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x11) * 5.0f) / 2.0f + 82.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 6:
-            if (puVar1[1] == 0x27)
-            {
-                puVar1[0] = 7;
-            }
-            fVar4 = (17.0f * (f32)(puVar1[1] + -0x13)) / 31.0f;
-            fVar1 = 222.0f - fVar4;
-            fVar2 = 87.0f - fVar4;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 7:
-            iVar2 = puVar1[1];
-            if (iVar2 == 0x32)
-            {
-                return KWLNTASK_STOP;
-            }
-            fVar4 = (17.0f * (f32)(iVar2 + -0x13)) / 31.0f;
-            fVar1 = 222.0f - fVar4;
-            fVar2 = 87.0f - fVar4;
-            iVar2 = 0xff - ((iVar2 + -0x27) * 0xff) / 0xb;
-            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
-            if (iVar3 < 0)
-            {
-                iVar3 = iVar3 + 0xfff;
-            }
-            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_00189810 NONMATCHING
-void* func_00189810(KwlnTask* task)
-{
-    s32 param_1 = (s32)(u32)task;
-    s32* puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    f32 fVar1;
-    f32 fVar2;
-    f32 fVar4;
-
-    puVar1 = *(s32**)(param_1 + 0x3c);
-    puVar1[1] = puVar1[1] + 1;
-    puVar1[2] = puVar1[2] + 1;
-    switch (puVar1[0])
-    {
-        case 0:
-            if (puVar1[1] == 3)
-            {
-                puVar1[1] = 0;
-                puVar1[2] = 0;
-                puVar1[0] = 1;
-            }
-            break;
-
-        case 1:
-            if (puVar1[1] == 0xb)
-            {
-                puVar1[0] = 2;
-            }
-            break;
-
-        case 2:
-            if (puVar1[1] == 0xe)
-            {
-                puVar1[0] = 3;
-            }
-            fVar1 = (f32)(puVar1[1] + -0xc) / 2.0f;
-            fVar1 += 311.0f;
-            fVar2 = ((f32)(puVar1[1] + -0xc) * 7.0f) / 2.0f;
-            fVar2 += 125.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 3:
-            if (puVar1[1] == 0x10)
-            {
-                puVar1[0] = 4;
-            }
-            fVar1 = (f32)(puVar1[1] + -0xe) / 2.0f;
-            fVar1 = 312.0f - fVar1;
-            fVar2 = ((f32)(puVar1[1] + -0xe) * 10.0f) / 2.0f;
-            fVar2 = 132.0f - fVar2;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 4:
-            if (puVar1[1] == 0x14)
-            {
-                puVar1[0] = 5;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x10) / 4.0f;
-            fVar1 = 311.0f - fVar1;
-            fVar2 = ((f32)(puVar1[1] + -0x10) * 9.0f) / 4.0f;
-            fVar2 += 122.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 5:
-            if (puVar1[1] == 0x16)
-            {
-                puVar1[0] = 6;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x14) / 2.0f;
-            fVar1 += 310.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x14) * 6.0f) / 2.0f;
-            fVar2 = 131.0f - fVar2;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 6:
-            if (puVar1[1] == 0x27)
-            {
-                puVar1[0] = 7;
-            }
-            fVar4 = ((f32)(puVar1[1] + -0x16) * 4.0f) / 28.0f;
-            fVar1 = fVar4 + 311.0f;
-            fVar2 = 125.0f - fVar4;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 7:
-            iVar2 = puVar1[1];
-            if (iVar2 == 0x32)
-            {
-                return KWLNTASK_STOP;
-            }
-            fVar4 = ((f32)(iVar2 + -0x16) * 4.0f) / 28.0f;
-            fVar1 = fVar4 + 311.0f;
-            fVar2 = 125.0f - fVar4;
-            iVar2 = 0xff - ((iVar2 + -0x27) * 0xff) / 0xb;
-            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
-            if (iVar3 < 0)
-            {
-                iVar3 = iVar3 + 0xfff;
-            }
-            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_00189DF0 NONMATCHING
-void* func_00189df0(KwlnTask* task)
-{
-    s32 param_1 = (s32)(u32)task;
-    s32* puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    f32 fVar1;
-    f32 fVar2;
-
-    puVar1 = *(s32**)(param_1 + 0x3c);
-    puVar1[1] = puVar1[1] + 1;
-    puVar1[2] = puVar1[2] + 1;
-    switch (puVar1[0])
-    {
-        case 0:
-            if (puVar1[1] == 3)
-            {
-                puVar1[1] = 0;
-                puVar1[2] = 0;
-                puVar1[0] = 1;
-            }
-            break;
-
-        case 1:
-            if (puVar1[1] == 0xe)
-            {
-                puVar1[0] = 2;
-            }
-            break;
-
-        case 2:
-            if (puVar1[1] == 0x11)
-            {
-                puVar1[0] = 3;
-            }
-            fVar1 = (f32)(puVar1[1] + -0xf) / 2.0f + 351.0f;
-            fVar2 = ((f32)(puVar1[1] + -0xf) * 3.0f) / 2.0f + 207.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 3:
-            if (puVar1[1] == 0x13)
-            {
-                puVar1[0] = 4;
-            }
-            fVar1 = 352.0f - ((f32)(puVar1[1] + -0x11) * 2.0f) / 2.0f;
-            fVar2 = 204.0f - ((f32)(puVar1[1] + -0x11) * 9.0f) / 2.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 4:
-            if (puVar1[1] == 0x17)
-            {
-                puVar1[0] = 5;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x13) / 4.0f + 350.0f;
-            fVar2 = 213.0f - ((f32)(puVar1[1] + -0x13) * 8.0f) / 4.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 5:
-            if (puVar1[1] == 0x19)
-            {
-                puVar1[0] = 6;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x17) / 2.0f + 351.0f;
-            fVar2 = 205.0f - ((f32)(puVar1[1] + -0x17) * 9.0f) / 2.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 6:
-            if (puVar1[1] == 0x27)
-            {
-                puVar1[0] = 7;
-            }
-            fVar1 = ((f32)(puVar1[1] + -0x19) * 9.0f) / 25.0f + 352.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x19) * 3.0f) / 25.0f + 214.0f;
-            iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 7:
-            iVar2 = puVar1[1];
-            if (iVar2 == 0x32)
-            {
-                return KWLNTASK_STOP;
-            }
-            fVar1 = ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f;
-            fVar2 = ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f;
-            iVar3 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
-            if (iVar3 < 0)
-            {
-                iVar3 = iVar3 + 0xfff;
-            }
-            func_001140d0(0xffffff00U |
-                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
-                          iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f,
-                          ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f,
-                          ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f);
-            break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_0018A3F0 NONMATCHING
-void* func_0018a3f0(KwlnTask* task)
-{
-    s32 param_1 = (s32)(u32)task;
-    s32* puVar1;
-    s32 iVar2;
-    s32 iVar3;
-    f32 fVar1;
-    f32 fVar2;
-    u32 rgba;
-    const void* pVar4;
-    puVar1 = *(s32**)(param_1 + 0x3c);
-    puVar1[1] = puVar1[1] + 1;
-    puVar1[2] = puVar1[2] + 1;
-    switch (puVar1[0])
-    {
-        case 0:
-            if (puVar1[1] == 3)
-            {
-                puVar1[1] = 0;
-                puVar1[2] = 0;
-                puVar1[0] = 1;
-            }
-            break;
-
-        case 1:
-            if (puVar1[1] == 0x11)
-            {
-                puVar1[0] = 2;
-            }
-            break;
-
-        case 2:
-            if (puVar1[1] == 0x14)
-            {
-                puVar1[0] = 3;
-            }
-            fVar1 = ((f32)(puVar1[1] + -0x12) * 0.0f) + 419.0f;
-            fVar2 = 273.0f - ((f32)(puVar1[1] + -0x12) * 2.0f) / 2.0f;
-            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            pVar4 = (const void*)(u32)puVar1[3];
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          pVar4, 0.0f, fVar1, fVar2);
-            break;
-
-        case 3:
-            if (puVar1[1] == 0x16)
-            {
-                puVar1[0] = 4;
-            }
-            fVar1 = ((f32)(puVar1[1] + -0x14) * 4.0f) / 2.0f + 419.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x14) * 9.0f) / 2.0f + 271.0f;
-            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 4:
-            if (puVar1[1] == 0x1a)
-            {
-                puVar1[0] = 5;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x16) / 4.0f + 423.0f;
-            fVar2 = 280.0f - ((f32)(puVar1[1] + -0x16) * 4.0f) / 4.0f;
-            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 5:
-            if (puVar1[1] == 0x1c)
-            {
-                puVar1[0] = 6;
-            }
-            fVar1 = (f32)(puVar1[1] + -0x1a) / 2.0f + 428.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x1a) * 10.0f) / 2.0f + 276.0f;
-            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 6:
-            if (puVar1[1] == 0x27)
-            {
-                puVar1[0] = 7;
-            }
-            fVar1 = ((f32)(puVar1[1] + -0x1c) * 22.0f) / 22.0f + 429.0f;
-            fVar2 = ((f32)(puVar1[1] + -0x1c) * 18.0f) / 22.0f + 286.0f;
-            iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            iVar3 = iVar2 >> 0xc;
-            if (iVar2 < 0)
-            {
-                iVar2 = iVar2 + 0xfff;
-                iVar3 = iVar2 >> 0xc;
-            }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
-            break;
-
-        case 7:
-            iVar2 = puVar1[1];
-            if (iVar2 == 0x32)
-            {
-                return KWLNTASK_STOP;
-            }
-            fVar1 = ((f32)(iVar2 + -0x1c) * 22.0f) / 22.0f + 429.0f;
-            fVar2 = ((f32)(iVar2 + -0x1c) * 18.0f) / 22.0f + 286.0f;
-            rgba = 0xffffff00U | (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb);
-            iVar3 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
-            if (iVar3 < 0)
-            {
-                iVar3 = iVar3 + 0xfff;
-            }
-            pVar4 = (const void*)(u32)puVar1[3];
-            func_001140d0(rgba, iVar3 >> 0xc, iVar3 >> 0xc,
-                          pVar4, 0.0f, fVar1, fVar2);
-            break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_0018A9C0
-void func_0018a9c0(KwlnTask* task)
-{
-    (*(void (**)(void*))0x0096017c)(task->workData);
-}
