@@ -2,6 +2,257 @@
 #include "Main/g_data.h"
 #include "Kosaka/k_assert.h"
 #include "Graphics/Effect/effMisc.h"
+
+extern f32 sqrtf(f32);
+extern u32 FUN_0016c5f0();
+extern u32 FUN_0016c670();
+extern u32 FUN_0016c920();
+extern u32 FUN_0016cb80();
+extern u32 FUN_0016ccb0();
+extern u32 FUN_0016cf40();
+extern u32 FUN_0016cf90();
+extern u32 FUN_0016d9d0();
+extern u32 FUN_0016f190();
+extern u32 FUN_0016f630();
+extern u32 FUN_0016f900();
+extern u32 FUN_0016f9f0();
+extern u32 FUN_0016f9f0_datcalc(s16 pcId, s32 equipmentIdx);
+extern u32 FUN_0016fae0();
+extern u32 FUN_0016fae0_datcalc(s16 pcId, s32 equipmentIdx);
+extern u32 FUN_0016fbd0();
+extern u32 FUN_0016fcc0();
+extern u32 FUN_00170760();
+extern u32 FUN_00170d60();
+extern u32 FUN_00170e40();
+extern u32 FUN_00170e90();
+extern u32 FUN_00173380();
+extern u32 FUN_00173460();
+extern u32 FUN_00173510();
+extern u8 FUN_00173510_u16(u16, u32);
+extern u32 FUN_001738d0();
+extern u32 FUN_00174960();
+extern u32 FUN_00174a90();
+extern u32 FUN_001752b0();
+extern u32 FUN_00175410();
+extern u32 FUN_0017d800();
+extern u32 FUN_00181b10();
+extern u32 FUN_0019d3f0();
+extern u32 FUN_002ffbc0();
+extern u32 FUN_002ffcc0();
+extern u32 FUN_002ffd70();
+extern u32 FUN_002ffdf0();
+extern u32 FUN_003004f0();
+extern u32 FUN_003004F0();
+extern u32 FUN_00300530();
+extern u32 FUN_00300550();
+extern u32 FUN_00300560();
+extern u32 FUN_00300580();
+extern u32 FUN_003005E0();
+extern u32 FUN_003005e0();
+extern u32 FUN_00300870();
+extern u32 FUN_003009a0();
+extern u32 FUN_003009A0();
+extern u32 FUN_00300D80();
+extern u32 FUN_00300d80();
+extern u32 FUN_00308ba0();
+extern u32 FUN_00308BA0();
+extern u32 FUN_00308C60();
+extern u32 FUN_00308c60();
+extern u32 FUN_0030B5A0();
+extern u32 FUN_0030b5a0();
+extern u32 FUN_0030b5e0();
+extern u32 FUN_0030B5E0();
+extern u32 FUN_00311190(int);
+extern void FUN_00311190_typed(u32);
+extern u32 FUN_003111f0();
+extern u32 FUN_00311250();
+extern void FUN_0035f080(float);
+extern u32 FUN_003951d0();
+u32 datCalcGetMaxSp(DatUnit* unit);
+s32 FUN_00300410(DatUnit *unit,s32 hpDelta);
+s32 FUN_00300480(DatUnit *unit,s32 spDelta);
+u32 FUN_003005a0(u16* param);
+u8 FUN_00300700(u16 *param_1,s16 param_2);
+s32 FUN_00300750(u16 param_1,u16 param_2);
+s32 FUN_00300af0(s32 param_1);
+u8 FUN_00300b60(u16 *param_1,u32 param_2);
+u8 FUN_00300c90(u32 param_1,u32 param_2);
+u32 FUN_00300e90(u32 param_1);
+s8 FUN_00300f60(int param_1,u32 param_2);
+void FUN_00301030(int param_1,u8 param_2,s8 param_3);
+void FUN_00301150(int param_1,u8 param_2,s8 param_3);
+u8 FUN_00301230(int param_1,u32 param_2,char param_3);
+extern u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3);
+void FUN_00301540(int param_1,u32 param_2);
+void FUN_00301690(u32 param_1);
+s8 FUN_00301750(int param_1,u32 param_2);
+void FUN_00301870(int param_1);
+float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
+u8 FUN_00301ca0(u32 param_1,u32 param_2);
+void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
+void FUN_00302c50(u32 param_1);
+void FUN_00302d40(u32 param_1);
+u8 FUN_00302f50(u32 param_1);
+u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
+                 short param_6,u32 param_7,u8 param_8);
+u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
+u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
+u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
+u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
+u32
+FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 param_6,
+            s32 param_7);
+u32 FUN_00306d90(u16 param_1,u32 param_2);
+u32 FUN_00306e80(s32 param_1,s32 param_2);
+int FUN_003080c0(short param_1);
+short FUN_00308120(short param_1,int param_2);
+s32 FUN_003082f0(s32 param_1,u32 param_2);
+extern s32 FUN_003082f0_u16(s32 param_1,u16 param_2);
+extern s32 FUN_003082f0_one(s32 param_1);
+u32 FUN_003083f0(u32 param_1,u32 param_2);
+u8 FUN_003086c0(void *param_1,u32 param_2);
+u32 FUN_003086f0(u32 param_1,u32 param_2);
+u32 FUN_00308860(u16 param_1);
+u8 FUN_003088b0(u16 param_1);
+u16 FUN_00308930(u16 *param_1);
+u8 FUN_00308a50(u16 param_1);
+u16 FUN_00308a80(u32 param_1);
+int FUN_00308bb0(u16 *param_1);
+u16 FUN_00308ed0(u16 *param_1);
+u8 FUN_00308f80(u16 *param_1);
+u8 FUN_00308fd0(u16 *param_1,u16 param_2);
+u32 FUN_00309080(u16 *param_1,u8 param_2);
+u32 FUN_00309250(u16 *param_1,u8 param_2);
+u8 FUN_003093a0(u16 *param_1);
+u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4);
+u32 FUN_0030a740(s32 param_1,u32 param_2,u32 param_3,short param_4);
+u32 FUN_0030af00(s32 param_1,u16 *param_2,u32 param_3,u32 param_4,u32 param_5);
+u32
+FUN_0030b130(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5);
+u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4);
+u32 FUN_0030b4b0(u32 param_1,u32 param_2);
+u32 FUN_0030b640(s32 param_1,u32 param_2);
+u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3);
+int FUN_0030bb40(u16 param_1);
+int FUN_0030bbb0(u8 param_1);
+u16 FUN_0030bc20(s16 param_1);
+extern short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2);
+u32 FUN_0030bc50(int param_1);
+short FUN_0030bde0(u16 *param_1,s32 param_2);
+int FUN_0030c0c0(void);
+s32 FUN_0030c220(s32 param_1);
+u8 FUN_0030c2a0(u32 param_1);
+u32 FUN_0030c3a0(u16 *param_1);
+void FUN_0030c440(void);
+void FUN_0030c490(u16 param_1);
+void FUN_0030c520(void);
+void FUN_0030c930(void);
+void FUN_0030cb90(void);
+void FUN_0030cc40(void);
+void FUN_0030cdb0(void);
+void FUN_0030cec0(void);
+void FUN_0030cf00(void);
+void FUN_0030d000(void);
+void FUN_0030d0e0(void);
+void FUN_0030d1c0(void);
+void FUN_0030d2a0(void);
+void FUN_0030d380(void);
+void FUN_0030d460(void);
+void FUN_0030d4a0(void);
+void FUN_0030d4e0(void);
+void FUN_0030d610(void);
+void FUN_0030d760(void);
+void FUN_0030db80(void);
+void FUN_0030ddf0(void);
+void FUN_0030dec0(void);
+void FUN_0030e030(void);
+void FUN_0030e140(void);
+void FUN_0030e180(void);
+void FUN_0030e280(void);
+void FUN_0030e360(void);
+void FUN_0030e440(void);
+void FUN_0030e520(void);
+void FUN_0030e600(void);
+void FUN_0030e6e0(void);
+void FUN_0030e720(void);
+void FUN_0030e760(void);
+void FUN_0030e8a0(void);
+void FUN_0030ea00(void);
+void FUN_0030ee10(void);
+void FUN_0030f070(void);
+void FUN_0030f120(void);
+void FUN_0030f290(void);
+void FUN_0030f3a0(void);
+void FUN_0030f3e0(void);
+void FUN_0030f4e0(void);
+void FUN_0030f5c0(void);
+void FUN_0030f6a0(void);
+void FUN_0030f780(void);
+void FUN_0030f860(void);
+void FUN_0030f940(void);
+void FUN_0030f980(void);
+void FUN_0030f9c0(void);
+void FUN_0030faf0(void);
+u32
+FUN_0030fc40(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
+            u32 param_5);
+u32 FUN_0030fdc0(void);
+float FUN_0030fdf0(int param_1,u32 param_2);
+extern f32 DAT_007cad74;
+extern f32 DAT_007cad8c;
+extern f32 DAT_007cadb4;
+extern f32 DAT_007cae84;
+extern f32 DAT_007caf8c;
+extern u32 DAT_007ce3ec;
+extern u32 DAT_007ce3f4;
+extern u32 DAT_007ce3f8;
+extern u32 DAT_007ce3fc;
+extern u32 DAT_007ce410;
+extern u32 DAT_007ce414;
+extern u32 DAT_007ce46c;
+extern u32 DAT_007ce470;
+extern u32 DAT_007ce478;
+extern u32 DAT_007ce47c;
+extern u32 DAT_00957190;
+extern u32 DAT_00957194;
+extern u32 DAT_00957198;
+extern u32 DAT_0095719c;
+extern u32 DAT_009571a0;
+extern u8 DAT_00957190_abs[];
+extern u8 DAT_00957194_abs[];
+extern u8 DAT_00957198_abs[];
+extern u8 DAT_0095719c_abs[];
+extern u8 DAT_009571a0_abs[];
+extern u32 DAT_009571a4;
+extern u8 DAT_009571a4_abs[];
+extern void (*PTR_LAB_0069aa90[])(void);
+extern void (*PTR_LAB_0069aae0[])(void);
+extern void (*PTR_LAB_0069ab30[])(void);
+extern f32 fGpffff8070;
+extern f32 fGpffff8084;
+extern f32 fGpffff8088;
+extern f32 fGpffff80a4;
+extern f32 fGpffff80c4;
+extern f32 fGpffff80e0;
+extern f32 fGpffff8194;
+extern f32 fGpffff8278;
+extern f32 fGpffff829c;
+extern f32 fGpffff82a0;
+extern f32 fGpffff82a4;
+extern f32 fGpffff82a8;
+extern f32 fGpffff82ac;
+extern u32 gp0xffff9d08;
+extern u32 iGpffffb704;
+extern u32 iGpffffb708;
+extern u32 iGpffffb720;
+extern u32 iGpffffb790;
+extern u32 iGpffffb79c;
+extern u32 iGpffffb7a4;
+extern u32 iGpffffb7a8;
+extern u32 iGpffffb7fc;
+extern u32 iGpffffb800;
+
 typedef struct DatCalcEnemy
 {
     u8 unk_00[4];
@@ -188,594 +439,6 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     return (u16)result;
 }
 
-// FUN_003004f0
-u32 datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
-{
-    u32 low;
-
-    low = badStatus & 0x000FFFFF;
-
-    if (low != 0)
-    {
-        unit->bad = (unit->bad & 0xFFF00000) | low;
-    }
-
-    return unit->bad |= (badStatus & 0xFFF00000);
-}
-
-// FUN_00300530
-u32 datCalcGetBadStatusNoDown(DatUnit* unit)
-{
-    return unit->bad & 0x000FFFFF;
-}
-
-// FUN_00300550
-u32 datCalcGetBadStatus(DatUnit* unit)
-{
-    return unit->bad;
-}
-
-// FUN_00300560
-u32 datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
-{
-    return unit->bad &= ~badStatus;
-}
-
-// FUN_00300580
-u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
-{
-    return (unit->bad & badStatus) != 0;
-}
-
-/* W323 measured: opt_loop_invariants on nd116 -> 93, object 280/288; reset nd116, object 284/288. */
-#pragma opt_loop_invariants on
-// FUN_003005e0 NONMATCHING
-u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
-{
-    DatCalcEquipmentEffect* accessoryEffect;
-    u16* skills;
-    u16 count;
-    u16 i;
-    s16 pcId;
-    s16 equipmentIdx;
-    u16 equipmentId;
-
-    count = (u16)datCalc00308ba0();
-    skills = func_00308bb0(unit);
-
-    for (i = 0; i < count; i++)
-    {
-        if (skills[i] == skillId)
-        {
-            return 1;
-        }
-    }
-
-    if (!(unit->flags & UNIT_FLAG_ENEMY))
-    {
-        pcId = (s16)unit->id;
-        equipmentIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_ACCESSORY);
-        if (equipmentIdx >= 0)
-        {
-            equipmentId = datGetEquipmentId(pcId, equipmentIdx);
-            accessoryEffect = func_00170e40((s16)equipmentId);
-
-            if (accessoryEffect != NULL && accessoryEffect->skillId == skillId)
-            {
-                return 1;
-            }
-        }
-    }
-
-    return 0;
-}
-#pragma opt_loop_invariants off
-
-// FUN_00300870
-u16 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
-{
-    u16 count;
-    s16 equipmentIdx;
-    u8 equipmentEffect;
-    u32 effectId;
-    s16 firstPcId;
-
-    K_ASSERT(pcId < PC_MAX, 646);
-
-    count = 0;
-    firstPcId = (s16)pcId;
-    effectId = effect;
-
-    equipmentIdx = datGetEquipmentIdx(firstPcId, EQUIPMENT_TYPE_WEAPON);
-    equipmentEffect = datGetEquipmentEffect(firstPcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_ARMOR);
-    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_BOOTS);
-    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    return count;
-}
-
-// FUN_003009a0
-u16 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
-{
-    u16 pcId;
-    u16 count;
-    s16 equipmentIdx;
-    u8 equipmentEffect;
-    u32 effectId;
-    s16 firstPcId;
-
-    if (unit->flags & UNIT_FLAG_ENEMY)
-    {
-        return 0;
-    }
-
-    pcId = unit->id;
-    K_ASSERT(pcId < PC_MAX, 646);
-
-    count = 0;
-    firstPcId = (s16)pcId;
-    effectId = effect;
-
-    equipmentIdx = datGetEquipmentIdx(firstPcId, EQUIPMENT_TYPE_WEAPON);
-    equipmentEffect = datGetEquipmentEffect(firstPcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_ARMOR);
-    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_BOOTS);
-    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
-    if (effectId == equipmentEffect)
-    {
-        count++;
-    }
-
-    return count;
-}
-
-// FUN_00300d80
-u32 datCalcGetPassiveSkillFlags(DatUnit* unit)
-{
-    u32 flags;
-
-    flags = 0;
-
-    if (datCalcHasSkill(unit, SKILL_REGENERATE1))
-    {
-        flags |= PASSIVESKILL_FLAG_REGENERATE1;
-    }
-    if (datCalcHasSkill(unit, SKILL_REGENERATE2))
-    {
-        flags |= PASSIVESKILL_FLAG_REGENERATE2;
-    }
-    if (datCalcHasSkill(unit, SKILL_REGENERATE3))
-    {
-        flags |= PASSIVESKILL_FLAG_REGENERATE3;
-    }
-
-    if (datCalcHasSkill(unit, SKILL_INVIGORATE1))
-    {
-        flags |= PASSIVESKILL_FLAG_INVIGORATE1;
-    }
-    if (datCalcHasSkill(unit, SKILL_INVIGORATE2))
-    {
-        flags |= PASSIVESKILL_FLAG_INVIGORATE2;
-    }
-    if (datCalcHasSkill(unit, SKILL_INVIGORATE3))
-    {
-        flags |= PASSIVESKILL_FLAG_INVIGORATE3;
-    }
-
-    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE1))
-    {
-        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE1;
-    }
-    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE2))
-    {
-        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE2;
-    }
-
-    return flags;
-}
-
-// FUN_00308ba0
-u32 datCalc00308ba0(void)
-{
-    return 8;
-}
-
-// FUN_00308c60
-u32 datCalcGetHeldWeaponType(DatUnit* unit)
-{
-    s16 weaponIdx;
-    u16 weaponId;
-    DatCalcWeapon* weapon;
-    u32 category;
-
-    if (unit->flags & UNIT_FLAG_ENEMY)
-    {
-        return WEAPON_TYPE_1H_SWORD;
-    }
-
-    switch (unit->id)
-    {
-        case PC_HERO:
-            weaponIdx = datGetEquipmentIdx(PC_HERO, EQUIPMENT_TYPE_WEAPON);
-            weaponId = datGetEquipmentId(PC_HERO, weaponIdx);
-            weapon = func_00170d60((s16)weaponId);
-            category = weapon->category;
-
-            switch (category)
-            {
-                case 0x1:
-                case 0x100:
-                    return WEAPON_TYPE_2H_SWORD;
-                case 0x2:
-                case 0x200:
-                    return WEAPON_TYPE_1H_SWORD;
-                case 0x4:
-                case 0x400:
-                    return WEAPON_TYPE_BOW;
-                case 0x8:
-                case 0x800:
-                    return WEAPON_TYPE_SPEAR;
-                case 0x10:
-                case 0x1000:
-                    return WEAPON_TYPE_AXE;
-                case 0x20:
-                case 0x2000:
-                    return WEAPON_TYPE_FIST;
-                case 0x40:
-                case 0x4000:
-                    return WEAPON_TYPE_GUN;
-                case 0x80:
-                case 0x8000:
-                    return WEAPON_TYPE_KNIFE;
-                default:
-                    K_ASSERT(false, 4237);
-                    goto default_weapon_type;
-            }
-        case PC_YUKARI:
-            return WEAPON_TYPE_BOW;
-        case PC_AIGIS:
-            return WEAPON_TYPE_GUN;
-        case PC_MITSURU:
-            return WEAPON_TYPE_1H_SWORD;
-        case PC_JUNPEI:
-            return WEAPON_TYPE_2H_SWORD;
-        case PC_FUUKA:
-            return WEAPON_TYPE_1H_SWORD;
-        case PC_AKIHIKO:
-            return WEAPON_TYPE_FIST;
-        case PC_KEN:
-            return WEAPON_TYPE_SPEAR;
-        case PC_SHINJIRO_OR_METIS:
-            return WEAPON_TYPE_AXE;
-        case PC_KOROMARU:
-            return WEAPON_TYPE_KNIFE;
-        default:
-            K_ASSERT(false, 4259);
-default_weapon_type:
-            return WEAPON_TYPE_1H_SWORD;
-    }
-}
-
-// FUN_0030b5a0
-u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
-{
-    if (unit->bad & UNIT_BADSTATUS_DEAD ? 1 : 0)
-    {
-        return true;
-    }
-
-    return (unit->hp + hpDelta) <= 0;
-}
-
-// FUN_0030b5e0
-u32 datCalcIsLowHp(DatUnit* unit)
-{
-    u16 hp;
-
-    hp = unit->hp;
-
-    return ((hp * 100) / datCalcGetMaxHp(unit)) < 26; // is hp below 26%
-}
-
-extern f32 sqrtf(f32);
-extern u32 FUN_0016c5f0();
-extern u32 FUN_0016c670();
-extern u32 FUN_0016c920();
-extern u32 FUN_0016cb80();
-extern u32 FUN_0016ccb0();
-extern u32 FUN_0016cf40();
-extern u32 FUN_0016cf90();
-extern u32 FUN_0016d9d0();
-extern u32 FUN_0016f190();
-extern u32 FUN_0016f630();
-extern u32 FUN_0016f900();
-extern u32 FUN_0016f9f0();
-#pragma alias FUN_0016f9f0_datcalc FUN_0016f9f0
-extern u32 FUN_0016f9f0_datcalc(s16 pcId, s32 equipmentIdx);
-extern u32 FUN_0016fae0();
-#pragma alias FUN_0016fae0_datcalc FUN_0016fae0
-extern u32 FUN_0016fae0_datcalc(s16 pcId, s32 equipmentIdx);
-extern u32 FUN_0016fbd0();
-extern u32 FUN_0016fcc0();
-extern u32 FUN_00170760();
-extern u32 FUN_00170d60();
-extern u32 FUN_00170e40();
-extern u32 FUN_00170e90();
-extern u32 FUN_00173380();
-extern u32 FUN_00173460();
-extern u32 FUN_00173510();
-#pragma alias FUN_00173510_u16 FUN_00173510
-extern u8 FUN_00173510_u16(u16, u32);
-extern u32 FUN_001738d0();
-extern u32 FUN_00174960();
-extern u32 FUN_00174a90();
-extern u32 FUN_001752b0();
-extern u32 FUN_00175410();
-extern u32 FUN_0017d800();
-extern u32 FUN_00181b10();
-extern u32 FUN_0019d3f0();
-extern u32 FUN_002ffbc0();
-extern u32 FUN_002ffcc0();
-extern u32 FUN_002ffd70();
-extern u32 FUN_002ffdf0();
-extern u32 FUN_003004f0();
-extern u32 FUN_003004F0();
-extern u32 FUN_00300530();
-extern u32 FUN_00300550();
-extern u32 FUN_00300560();
-extern u32 FUN_00300580();
-extern u32 FUN_003005E0();
-extern u32 FUN_003005e0();
-extern u32 FUN_00300870();
-extern u32 FUN_003009a0();
-extern u32 FUN_003009A0();
-extern u32 FUN_00300D80();
-extern u32 FUN_00300d80();
-extern u32 FUN_00308ba0();
-extern u32 FUN_00308BA0();
-extern u32 FUN_00308C60();
-extern u32 FUN_00308c60();
-extern u32 FUN_0030B5A0();
-extern u32 FUN_0030b5a0();
-extern u32 FUN_0030b5e0();
-extern u32 FUN_0030B5E0();
-extern u32 FUN_00311190(int);
-#pragma alias FUN_00311190_typed FUN_00311190
-extern void FUN_00311190_typed(u32);
-extern u32 FUN_003111f0();
-extern u32 FUN_00311250();
-extern void FUN_0035f080(float);
-extern u32 FUN_003951d0();
-#pragma alias datCalcGetMaxSp FUN_00300100
-u32 datCalcGetMaxSp(DatUnit* unit);
-s32 FUN_00300410(DatUnit *unit,s32 hpDelta);
-s32 FUN_00300480(DatUnit *unit,s32 spDelta);
-u32 FUN_003005a0(u16* param);
-u8 FUN_00300700(u16 *param_1,s16 param_2);
-s32 FUN_00300750(u16 param_1,u16 param_2);
-s32 FUN_00300af0(s32 param_1);
-u8 FUN_00300b60(u16 *param_1,u32 param_2);
-u8 FUN_00300c90(u32 param_1,u32 param_2);
-u32 FUN_00300e90(u32 param_1);
-s8 FUN_00300f60(int param_1,u32 param_2);
-void FUN_00301030(int param_1,u8 param_2,s8 param_3);
-void FUN_00301150(int param_1,u8 param_2,s8 param_3);
-u8 FUN_00301230(int param_1,u32 param_2,char param_3);
-#pragma alias FUN_00301230_narrow FUN_00301230
-extern u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3);
-void FUN_00301540(int param_1,u32 param_2);
-void FUN_00301690(u32 param_1);
-s8 FUN_00301750(int param_1,u32 param_2);
-void FUN_00301870(int param_1);
-
-float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
-u8 FUN_00301ca0(u32 param_1,u32 param_2);
-void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
-void FUN_00302c50(u32 param_1);
-
-void FUN_00302d40(u32 param_1);
-u8 FUN_00302f50(u32 param_1);
-
-u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
-                 short param_6,u32 param_7,u8 param_8);
-
-u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
-u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
-u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
-u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
-u32
-FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 param_6,
-            s32 param_7);
-u32 FUN_00306d90(u16 param_1,u32 param_2);
-u32 FUN_00306e80(s32 param_1,s32 param_2);
-int FUN_003080c0(short param_1);
-short FUN_00308120(short param_1,int param_2);
-s32 FUN_003082f0(s32 param_1,u32 param_2);
-#pragma alias FUN_003082f0_u16 FUN_003082f0
-extern s32 FUN_003082f0_u16(s32 param_1,u16 param_2);
-#pragma alias FUN_003082f0_one FUN_003082f0
-extern s32 FUN_003082f0_one(s32 param_1);
-u32 FUN_003083f0(u32 param_1,u32 param_2);
-u8 FUN_003086c0(void *param_1,u32 param_2);
-u32 FUN_003086f0(u32 param_1,u32 param_2);
-u32 FUN_00308860(u16 param_1);
-u8 FUN_003088b0(u16 param_1);
-u16 FUN_00308930(u16 *param_1);
-u8 FUN_00308a50(u16 param_1);
-u16 FUN_00308a80(u32 param_1);
-int FUN_00308bb0(u16 *param_1);
-u16 FUN_00308ed0(u16 *param_1);
-u8 FUN_00308f80(u16 *param_1);
-u8 FUN_00308fd0(u16 *param_1,u16 param_2);
-u32 FUN_00309080(u16 *param_1,u8 param_2);
-u32 FUN_00309250(u16 *param_1,u8 param_2);
-u8 FUN_003093a0(u16 *param_1);
-u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4);
-u32 FUN_0030a740(s32 param_1,u32 param_2,u32 param_3,short param_4);
-u32 FUN_0030af00(s32 param_1,u16 *param_2,u32 param_3,u32 param_4,u32 param_5);
-u32
-FUN_0030b130(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5);
-u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4);
-u32 FUN_0030b4b0(u32 param_1,u32 param_2);
-u32 FUN_0030b640(s32 param_1,u32 param_2);
-u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3);
-int FUN_0030bb40(u16 param_1);
-int FUN_0030bbb0(u8 param_1);
-u16 FUN_0030bc20(s16 param_1);
-
-#pragma alias FUN_0030bde0_narrow FUN_0030bde0
-extern short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2);
-u32 FUN_0030bc50(int param_1);
-short FUN_0030bde0(u16 *param_1,s32 param_2);
-int FUN_0030c0c0(void);
-s32 FUN_0030c220(s32 param_1);
-u8 FUN_0030c2a0(u32 param_1);
-u32 FUN_0030c3a0(u16 *param_1);
-void FUN_0030c440(void);
-void FUN_0030c490(u16 param_1);
-void FUN_0030c520(void);
-void FUN_0030c930(void);
-void FUN_0030cb90(void);
-void FUN_0030cc40(void);
-void FUN_0030cdb0(void);
-void FUN_0030cec0(void);
-void FUN_0030cf00(void);
-void FUN_0030d000(void);
-void FUN_0030d0e0(void);
-void FUN_0030d1c0(void);
-void FUN_0030d2a0(void);
-void FUN_0030d380(void);
-void FUN_0030d460(void);
-void FUN_0030d4a0(void);
-void FUN_0030d4e0(void);
-void FUN_0030d610(void);
-void FUN_0030d760(void);
-void FUN_0030db80(void);
-void FUN_0030ddf0(void);
-void FUN_0030dec0(void);
-void FUN_0030e030(void);
-void FUN_0030e140(void);
-void FUN_0030e180(void);
-void FUN_0030e280(void);
-void FUN_0030e360(void);
-void FUN_0030e440(void);
-void FUN_0030e520(void);
-void FUN_0030e600(void);
-void FUN_0030e6e0(void);
-void FUN_0030e720(void);
-void FUN_0030e760(void);
-void FUN_0030e8a0(void);
-void FUN_0030ea00(void);
-void FUN_0030ee10(void);
-void FUN_0030f070(void);
-void FUN_0030f120(void);
-void FUN_0030f290(void);
-void FUN_0030f3a0(void);
-void FUN_0030f3e0(void);
-void FUN_0030f4e0(void);
-void FUN_0030f5c0(void);
-void FUN_0030f6a0(void);
-void FUN_0030f780(void);
-void FUN_0030f860(void);
-void FUN_0030f940(void);
-void FUN_0030f980(void);
-void FUN_0030f9c0(void);
-void FUN_0030faf0(void);
-u32
-FUN_0030fc40(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
-            u32 param_5);
-u32 FUN_0030fdc0(void);
-
-float FUN_0030fdf0(int param_1,u32 param_2);
-extern f32 DAT_007cad74;
-extern f32 DAT_007cad8c;
-extern f32 DAT_007cadb4;
-extern f32 DAT_007cae84;
-extern f32 DAT_007caf8c;
-extern u32 DAT_007ce3ec;
-extern u32 DAT_007ce3f4;
-extern u32 DAT_007ce3f8;
-extern u32 DAT_007ce3fc;
-extern u32 DAT_007ce410;
-extern u32 DAT_007ce414;
-extern u32 DAT_007ce46c;
-extern u32 DAT_007ce470;
-extern u32 DAT_007ce478;
-extern u32 DAT_007ce47c;
-extern u32 DAT_00957190;
-extern u32 DAT_00957194;
-extern u32 DAT_00957198;
-extern u32 DAT_0095719c;
-extern u32 DAT_009571a0;
-#pragma alias DAT_00957190_abs DAT_00957190
-extern u8 DAT_00957190_abs[];
-#pragma alias DAT_00957194_abs DAT_00957194
-extern u8 DAT_00957194_abs[];
-#pragma alias DAT_00957198_abs DAT_00957198
-extern u8 DAT_00957198_abs[];
-#pragma alias DAT_0095719c_abs DAT_0095719c
-extern u8 DAT_0095719c_abs[];
-#pragma alias DAT_009571a0_abs DAT_009571a0
-extern u8 DAT_009571a0_abs[];
-
-extern u32 DAT_009571a4;
-#pragma alias DAT_009571a4_abs DAT_009571a4
-extern u8 DAT_009571a4_abs[];
-extern void (*PTR_LAB_0069aa90[])(void);
-extern void (*PTR_LAB_0069aae0[])(void);
-extern void (*PTR_LAB_0069ab30[])(void);
-extern f32 fGpffff8070;
-extern f32 fGpffff8084;
-extern f32 fGpffff8088;
-extern f32 fGpffff80a4;
-extern f32 fGpffff80c4;
-extern f32 fGpffff80e0;
-extern f32 fGpffff8194;
-extern f32 fGpffff8278;
-extern f32 fGpffff829c;
-extern f32 fGpffff82a0;
-extern f32 fGpffff82a4;
-extern f32 fGpffff82a8;
-extern f32 fGpffff82ac;
-extern u32 gp0xffff9d08;
-extern u32 iGpffffb704;
-extern u32 iGpffffb708;
-extern u32 iGpffffb720;
-extern u32 iGpffffb790;
-extern u32 iGpffffb79c;
-extern u32 iGpffffb7a4;
-extern u32 iGpffffb7a8;
-extern u32 iGpffffb7fc;
-extern u32 iGpffffb800;
-
 // FUN_00300100 NONMATCHING
 u32 datCalcGetMaxSp(DatUnit* unit)
 {
@@ -839,10 +502,6 @@ u32 datCalcGetMaxSp(DatUnit* unit)
     return (u16)sp;
 }
 
-
-
-
-
 // FUN_00300410
 s32 FUN_00300410(DatUnit *unit,s32 hpDelta)
 
@@ -861,10 +520,6 @@ s32 FUN_00300410(DatUnit *unit,s32 hpDelta)
   unit->hp = (u16)newHp;
   return newHp & 0xFFFF;
 }
-
-
-
-
 
 // FUN_00300480
 s32 FUN_00300480(DatUnit *unit,s32 spDelta)
@@ -885,9 +540,44 @@ s32 FUN_00300480(DatUnit *unit,s32 spDelta)
   return newSp & 0xFFFF;
 }
 
+// FUN_003004f0
+u32 datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
+{
+    u32 low;
 
+    low = badStatus & 0x000FFFFF;
 
+    if (low != 0)
+    {
+        unit->bad = (unit->bad & 0xFFF00000) | low;
+    }
 
+    return unit->bad |= (badStatus & 0xFFF00000);
+}
+
+// FUN_00300530
+u32 datCalcGetBadStatusNoDown(DatUnit* unit)
+{
+    return unit->bad & 0x000FFFFF;
+}
+
+/* W323 measured: opt_loop_invariants on nd116 -> 93, object 280/288; reset nd116, object 284/288. */
+// FUN_00300550
+u32 datCalcGetBadStatus(DatUnit* unit)
+{
+    return unit->bad;
+}
+// FUN_00300560
+u32 datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
+{
+    return unit->bad &= ~badStatus;
+}
+
+// FUN_00300580
+u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
+{
+    return (unit->bad & badStatus) != 0;
+}
 
 // FUN_003005a0
 u32 FUN_003005a0(u16* param)
@@ -900,9 +590,47 @@ u32 FUN_003005a0(u16* param)
     return FUN_0016c920(((s16*)param)[1]);
 }
 
+#pragma opt_loop_invariants on
+// FUN_003005e0 NONMATCHING
+u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
+{
+    DatCalcEquipmentEffect* accessoryEffect;
+    u16* skills;
+    u16 count;
+    u16 i;
+    s16 pcId;
+    s16 equipmentIdx;
+    u16 equipmentId;
 
+    count = (u16)datCalc00308ba0();
+    skills = func_00308bb0(unit);
 
+    for (i = 0; i < count; i++)
+    {
+        if (skills[i] == skillId)
+        {
+            return 1;
+        }
+    }
 
+    if (!(unit->flags & UNIT_FLAG_ENEMY))
+    {
+        pcId = (s16)unit->id;
+        equipmentIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_ACCESSORY);
+        if (equipmentIdx >= 0)
+        {
+            equipmentId = datGetEquipmentId(pcId, equipmentIdx);
+            accessoryEffect = func_00170e40((s16)equipmentId);
+
+            if (accessoryEffect != NULL && accessoryEffect->skillId == skillId)
+            {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
 
 // FUN_00300700
 u8 FUN_00300700(u16 *param_1,s16 param_2)
@@ -916,10 +644,6 @@ u8 FUN_00300700(u16 *param_1,s16 param_2)
   found = (u16)FUN_00170760(*(s16 *)(param_1 + 1),param_2);
   return found > 0;
 }
-
-
-
-
 
 // FUN_00300750
 s32 FUN_00300750(u16 param_1,u16 param_2)
@@ -948,6 +672,117 @@ s32 FUN_00300750(u16 param_1,u16 param_2)
   uVar3 = FUN_0016f900((s16)param_1,uVar2);
   return target == (uVar3 & 0xff);
 }
+
+#pragma opt_loop_invariants off
+
+// FUN_00300870
+u16 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
+{
+    u16 count;
+    s16 equipmentIdx;
+    u8 equipmentEffect;
+    u32 effectId;
+    s16 firstPcId;
+
+    K_ASSERT(pcId < PC_MAX, 646);
+
+    count = 0;
+    firstPcId = (s16)pcId;
+    effectId = effect;
+
+    equipmentIdx = datGetEquipmentIdx(firstPcId, EQUIPMENT_TYPE_WEAPON);
+    equipmentEffect = datGetEquipmentEffect(firstPcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_ARMOR);
+    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_BOOTS);
+    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    return count;
+}
+
+#pragma alias FUN_0016f9f0_datcalc FUN_0016f9f0
+#pragma alias FUN_0016fae0_datcalc FUN_0016fae0
+#pragma alias FUN_00173510_u16 FUN_00173510
+#pragma alias FUN_00311190_typed FUN_00311190
+#pragma alias datCalcGetMaxSp FUN_00300100
+#pragma alias FUN_00301230_narrow FUN_00301230
+
+
+
+
+#pragma alias FUN_003082f0_u16 FUN_003082f0
+#pragma alias FUN_003082f0_one FUN_003082f0
+
+#pragma alias FUN_0030bde0_narrow FUN_0030bde0
+
+#pragma alias DAT_00957190_abs DAT_00957190
+#pragma alias DAT_00957194_abs DAT_00957194
+#pragma alias DAT_00957198_abs DAT_00957198
+#pragma alias DAT_0095719c_abs DAT_0095719c
+#pragma alias DAT_009571a0_abs DAT_009571a0
+
+#pragma alias DAT_009571a4_abs DAT_009571a4
+
+// FUN_003009a0
+u16 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
+{
+    u16 pcId;
+    u16 count;
+    s16 equipmentIdx;
+    u8 equipmentEffect;
+    u32 effectId;
+    s16 firstPcId;
+
+    if (unit->flags & UNIT_FLAG_ENEMY)
+    {
+        return 0;
+    }
+
+    pcId = unit->id;
+    K_ASSERT(pcId < PC_MAX, 646);
+
+    count = 0;
+    firstPcId = (s16)pcId;
+    effectId = effect;
+
+    equipmentIdx = datGetEquipmentIdx(firstPcId, EQUIPMENT_TYPE_WEAPON);
+    equipmentEffect = datGetEquipmentEffect(firstPcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_ARMOR);
+    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    equipmentIdx = datGetEquipmentIdx((s16)pcId, EQUIPMENT_TYPE_BOOTS);
+    equipmentEffect = datGetEquipmentEffect((s16)pcId, equipmentIdx);
+    if (effectId == equipmentEffect)
+    {
+        count++;
+    }
+
+    return count;
+}
+
 
 
 
@@ -1052,6 +887,54 @@ u8 FUN_00300c90(u32 param_1,u32 param_2)
 
 
 
+// FUN_00300d80
+u32 datCalcGetPassiveSkillFlags(DatUnit* unit)
+{
+    u32 flags;
+
+    flags = 0;
+
+    if (datCalcHasSkill(unit, SKILL_REGENERATE1))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_REGENERATE2))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE2;
+    }
+    if (datCalcHasSkill(unit, SKILL_REGENERATE3))
+    {
+        flags |= PASSIVESKILL_FLAG_REGENERATE3;
+    }
+
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE1))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE2))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE2;
+    }
+    if (datCalcHasSkill(unit, SKILL_INVIGORATE3))
+    {
+        flags |= PASSIVESKILL_FLAG_INVIGORATE3;
+    }
+
+    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE1))
+    {
+        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE1;
+    }
+    if (datCalcHasSkill(unit, SKILL_SPRINGOFLIFE2))
+    {
+        flags |= PASSIVESKILL_FLAG_SPRINGOFLIFE2;
+    }
+
+    return flags;
+}
+
+
+
+
 
 // FUN_00300e90
 u32 FUN_00300e90(u32 param_1)
@@ -1082,7 +965,6 @@ u32 FUN_00300e90(u32 param_1)
 
 
 
-
 // FUN_00300f60
 s8 FUN_00300f60(int param_1,u32 param_2)
 {
@@ -1106,6 +988,10 @@ s8 FUN_00300f60(int param_1,u32 param_2)
   }
   return value;
 }
+
+
+
+
 
 // FUN_00301030
 void FUN_00301030(int param_1, u8 param_2, s8 param_3)
@@ -1169,7 +1055,7 @@ void FUN_00301150(int param_1,u8 param_2,s8 param_3)
 
 
 
-#pragma alias FUN_00301230_narrow FUN_00301230
+
 // FUN_00301230 NONMATCHING
 u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 
@@ -1254,7 +1140,6 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 
 
 
-/* W389 classification: register-colouring floor; baseline nd18/object324/336. Six singles and all 15 knob pairs were neutral; declaration-order swap stayed nd18. */
 // FUN_00301540 NONMATCHING
 void FUN_00301540(int param_1,u32 param_2)
 
@@ -1291,10 +1176,6 @@ void FUN_00301540(int param_1,u32 param_2)
   *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << uVar2);
   return;
 }
-
-
-
-
 
 // FUN_00301690
 void FUN_00301690(u32 param_1)
@@ -1359,6 +1240,8 @@ s8 FUN_00301750(int param_1,u32 param_2)
 
 
 
+
+#pragma alias FUN_00301230_narrow FUN_00301230
 // FUN_00301870
 void FUN_00301870(int param_1)
 
@@ -1371,6 +1254,7 @@ void FUN_00301870(int param_1)
 
 
 
+/* W389 classification: register-colouring floor; baseline nd18/object324/336. Six singles and all 15 knob pairs were neutral; declaration-order swap stayed nd18. */
 // FUN_00301880 NONMATCHING
 
 float FUN_00301880(u32 param_1,u32 param_2,u32 param_3)
@@ -1602,7 +1486,6 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
 
 
 
-/* W323 measured: opt_common_subs off nd1570 -> 1489, object 2252/2256; reset nd1570. */
 #pragma opt_common_subs off
 // FUN_00302380 NONMATCHING
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
@@ -1773,6 +1656,10 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
   }
   return;
 }
+
+
+
+
 #pragma opt_common_subs on
 
 
@@ -1928,7 +1815,7 @@ u8 FUN_00302f50(u32 param_1)
 
 
 
-/* W367 measured: opt_lifetimes on nd6788 -> 6786, object 10264/10304; baseline object 10264/10304. */
+/* W323 measured: opt_common_subs off nd1570 -> 1489, object 2252/2256; reset nd1570. */
 #pragma opt_lifetimes on
 // FUN_00303130 NONMATCHING
 
@@ -3169,13 +3056,6 @@ LAB_00305784:
   }
   return uVar15;
 }
-
-
-
-
-
-#pragma opt_lifetimes reset
-/* W367 measured: opt_lifetimes on nd1103 -> 1066, object 1708/1712; baseline object 1712/1712. */
 #pragma opt_lifetimes on
 // FUN_00305970 NONMATCHING
 
@@ -3368,8 +3248,6 @@ LAB_00305f20:
 
 
 
-#pragma opt_lifetimes reset
-/* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
 #pragma opt_lifetimes on
 // FUN_00306020 NONMATCHING
 u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
@@ -3539,6 +3417,7 @@ u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
 
 
+/* W367 measured: opt_lifetimes on nd6788 -> 6786, object 10264/10304; baseline object 10264/10304. */
 // FUN_00306610 NONMATCHING
 u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
 
@@ -3615,6 +3494,8 @@ u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
 
 
 
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1103 -> 1066, object 1708/1712; baseline object 1712/1712. */
 // FUN_003068d0 NONMATCHING
 u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
 
@@ -3699,6 +3580,8 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
 
 
 
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
 // FUN_00306bc0 NONMATCHING
 u32
 FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 param_6,
@@ -4526,7 +4409,6 @@ s32 FUN_003082f0(s32 param_1,u32 param_2)
 
 
 
-#pragma alias FUN_003083f0_narrow FUN_003083f0
 // FUN_003083f0 NONMATCHING
 u32 FUN_003083f0_narrow(u16 *param_1,u16 param_2)
 {
@@ -4707,6 +4589,7 @@ u32 FUN_00308860(u16 param_1)
 
 
 
+#pragma alias FUN_003083f0_narrow FUN_003083f0
 // FUN_003088b0
 u8 FUN_003088b0(u16 param_1)
 
@@ -4782,7 +4665,6 @@ done:
 
 
 
-/* W323 measured: opt_common_subs off nd152 -> 147, object 236/288; reset nd152. */
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
@@ -4831,6 +4713,16 @@ u16 FUN_00308a80(u32 param_1)
 
 
 
+// FUN_00308ba0
+u32 datCalc00308ba0(void)
+{
+    return 8;
+}
+
+
+
+
+
 // FUN_00308bb0
 int FUN_00308bb0(u16 *param_1)
 
@@ -4856,6 +4748,87 @@ int FUN_00308bb0(u16 *param_1)
 
 
 
+// FUN_00308c60
+u32 datCalcGetHeldWeaponType(DatUnit* unit)
+{
+    s16 weaponIdx;
+    u16 weaponId;
+    DatCalcWeapon* weapon;
+    u32 category;
+
+    if (unit->flags & UNIT_FLAG_ENEMY)
+    {
+        return WEAPON_TYPE_1H_SWORD;
+    }
+
+    switch (unit->id)
+    {
+        case PC_HERO:
+            weaponIdx = datGetEquipmentIdx(PC_HERO, EQUIPMENT_TYPE_WEAPON);
+            weaponId = datGetEquipmentId(PC_HERO, weaponIdx);
+            weapon = func_00170d60((s16)weaponId);
+            category = weapon->category;
+
+            switch (category)
+            {
+                case 0x1:
+                case 0x100:
+                    return WEAPON_TYPE_2H_SWORD;
+                case 0x2:
+                case 0x200:
+                    return WEAPON_TYPE_1H_SWORD;
+                case 0x4:
+                case 0x400:
+                    return WEAPON_TYPE_BOW;
+                case 0x8:
+                case 0x800:
+                    return WEAPON_TYPE_SPEAR;
+                case 0x10:
+                case 0x1000:
+                    return WEAPON_TYPE_AXE;
+                case 0x20:
+                case 0x2000:
+                    return WEAPON_TYPE_FIST;
+                case 0x40:
+                case 0x4000:
+                    return WEAPON_TYPE_GUN;
+                case 0x80:
+                case 0x8000:
+                    return WEAPON_TYPE_KNIFE;
+                default:
+                    K_ASSERT(false, 4237);
+                    goto default_weapon_type;
+            }
+        case PC_YUKARI:
+            return WEAPON_TYPE_BOW;
+        case PC_AIGIS:
+            return WEAPON_TYPE_GUN;
+        case PC_MITSURU:
+            return WEAPON_TYPE_1H_SWORD;
+        case PC_JUNPEI:
+            return WEAPON_TYPE_2H_SWORD;
+        case PC_FUUKA:
+            return WEAPON_TYPE_1H_SWORD;
+        case PC_AKIHIKO:
+            return WEAPON_TYPE_FIST;
+        case PC_KEN:
+            return WEAPON_TYPE_SPEAR;
+        case PC_SHINJIRO_OR_METIS:
+            return WEAPON_TYPE_AXE;
+        case PC_KOROMARU:
+            return WEAPON_TYPE_KNIFE;
+        default:
+            K_ASSERT(false, 4259);
+default_weapon_type:
+            return WEAPON_TYPE_1H_SWORD;
+    }
+}
+
+
+
+
+
+/* W323 measured: opt_common_subs off nd152 -> 147, object 236/288; reset nd152. */
 // FUN_00308ed0
 u16 FUN_00308ed0(u16 *param_1)
 {
@@ -5993,7 +5966,6 @@ LAB_0030a8c0:
 
 
 
-#pragma alias FUN_0030af00_narrow FUN_0030af00
 // FUN_0030af00 NONMATCHING
 u32 FUN_0030af00_narrow(u16 *param_1, u16 *param_2, u16 param_3,
                           u16 param_4, u32 param_5)
@@ -6089,6 +6061,7 @@ FUN_0030b130(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5)
 
 
 
+#pragma alias FUN_0030af00_narrow FUN_0030af00
 // FUN_0030b210 NONMATCHING
 u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4)
 
@@ -6216,6 +6189,35 @@ u32 FUN_0030b4b0(u32 param_1,u32 param_2)
     }
   }
   return uVar1;
+}
+
+
+
+
+
+// FUN_0030b5a0
+u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
+{
+    if (unit->bad & UNIT_BADSTATUS_DEAD ? 1 : 0)
+    {
+        return true;
+    }
+
+    return (unit->hp + hpDelta) <= 0;
+}
+
+
+
+
+
+// FUN_0030b5e0
+u32 datCalcIsLowHp(DatUnit* unit)
+{
+    u16 hp;
+
+    hp = unit->hp;
+
+    return ((hp * 100) / datCalcGetMaxHp(unit)) < 26; // is hp below 26%
 }
 
 

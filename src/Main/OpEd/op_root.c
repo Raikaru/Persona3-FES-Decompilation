@@ -3,6 +3,124 @@
 #include "Camp/h_camp.h"
 #include "Main/OpEd/op_res.h"
 
+extern u16 DAT_007e094e;
+extern u16 DAT_007e094c;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e0956;
+extern u16 DAT_007e095a;
+extern u32 DAT_007ce018;
+extern u8 DAT_007ce384;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e094c_abs DAT_007e094c
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0956_abs DAT_007e0956
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e094c_abs[];
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e0956_abs[];
+extern u8 DAT_007e095a_abs[];
+extern u32 FUN_00108710(void);
+extern u32 FUN_001938e0(u32 mode);
+extern u32 FUN_00195290(u32 handle);
+extern u32 FUN_00195460(u32 handle);
+extern u32 FUN_0010bc20(u32 value, u32 mode);
+extern u32 FUN_001928d0(void);
+extern u32 FUN_00192aa0(void);
+#include "Main/Game/gm_root.h"
+#include "rw/rwplcore.h"
+#pragma alias gmRootStartOpeningTask FUN_002663c0
+#pragma alias gmRootStartCalendarTask FUN_00266430
+#pragma alias opRootCreateTask FUN_00265c20
+#pragma alias gmRootSetResult FUN_00266660
+#pragma alias datGetAuxData FUN_0016f380
+#pragma alias datSetAuxData FUN_0016f3e0
+#pragma alias H_Malloc FUN_00191af0
+#pragma alias kwlnTaskCreateWithAutoPriority FUN_00194b80
+#pragma alias kwlnTaskInitEx FUN_00194e10
+#pragma alias kwlnTaskAddChild FUN_00195550
+#pragma alias kwlnSetClearColor FUN_001985b0
+#pragma alias opRootUpdateTask FUN_00265dc0
+#pragma alias opRootDrawTask FUN_00265e30
+#pragma alias opRootDestroyTask FUN_00265ef0
+#pragma alias opResInit FUN_00266670
+#pragma alias opLogoInit FUN_00269cc0
+#pragma alias opTitleInit FUN_002673a0
+#pragma alias opWaitInit FUN_0026dd10
+#pragma alias opMenuInit FUN_0026a230
+#pragma alias opFadeInit FUN_00271cd0
+#pragma alias opFadeSetColor FUN_00272220_y2
+#pragma alias opFadeIn FUN_00272290_y2
+#pragma alias opResRequestLogo_y2 FUN_00266cb0
+#pragma alias H_Fade_FadeIn FUN_001085c0_y2
+#pragma alias H_Fade_SetType FUN_00108670_y2
+#pragma alias H_Fade_SetDuration FUN_001086a0_y2
+void opRoot00265b30(void);
+void opRoot00265bb0(void);
+void opRoot00266060(void);
+static GmRootWork* sWork; // 007ce38c
+static u32 sResult; // 007ce390
+void gmRootStartOpeningTask(void);
+void gmRootStartCalendarTask(void);
+u32 datGetAuxData(u32 idx);
+void datSetAuxData(u32 idx, u32 value);
+u32 datGetFlag(s32 bit);
+u32 datGetScenarioMode(void);
+void func_0017d820(u32 arg);
+u32 func_00182750(u32 arg);
+void func_00188670(u32 arg);
+u32 func_0017fad0(void);
+u32 clndCreateTask(void);
+u64 func_00188660(void);
+void func_00188680(void);
+KwlnTask* func_00188860(KwlnTask* parent);
+void opRootUpdateTask(void);
+void opRootDrawTask(void);
+void opRootDestroyTask(int param_1);
+void* gmRootUpdateTask(KwlnTask* gmRootTask);
+void gmRootDestroyTask(KwlnTask* gmRootTask);
+void kwlnInitGameData(void);
+u32 opRootCreateTask(KwlnTask* task);
+extern u32 H_Malloc();
+extern u32 kwlnCreateTaskWithAutoPriority();
+extern u32 kwlnInitTaskEx();
+extern void kwlnAddTaskChild();
+extern void kwlnSetClearColor();
+extern void opResInit();
+extern void opLogoInit();
+extern void opTitleInit();
+extern void opWaitInit();
+extern void opMenuInit();
+extern void opFadeInit();
+extern void opFadeSetColor();
+extern void opFadeIn();
+extern void H_Fade_FadeIn();
+extern void H_Fade_SetType();
+extern void H_Fade_SetDuration();
+extern void opResRequestLogo_y2();
+
+static inline KwlnTask* createTask(KwlnTask* parent)
+{
+    GmRootWork* work;
+    KwlnTask* task;
+
+    work = RwMalloc(sizeof(GmRootWork), rwMEMHINTDUR_GLOBAL);
+    task = kwlnTaskCreateWithAutoPriority(parent,
+                                          10,
+                                          "game root",
+                                          gmRootUpdateTask,
+                                          gmRootDestroyTask,
+                                          work);
+
+    work->flags = 0;
+    work->task = task;
+
+    sWork = work;
+
+    return task;
+}
+
+
 #pragma alias opResRequestLogo_y2 opResRequestLogo_y2
 #pragma alias FUN_00272220_y2 FUN_00272220_y2
 #pragma alias FUN_00272290_y2 FUN_00272290_y2
@@ -55,138 +173,6 @@ void opTitle00267430(void);
 void opMenu0026a2c0(void);
 void opMenu0026d430(void);
 void opMenu0026dbd0(void);
-
-// FUN_00265b30
-void opRoot00265b30(void)
-{
-    u32* work;
-    u32 v;
-
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    work = sOpRoot;
-    D_007cdffc = 0;
-    D_007ce00c = 0;
-    v = FUN_00420340(work[2], 0);
-    work[4] = v;
-    *work |= 2;
-    work[1] = 0xb;
-}
-
-// FUN_00265bb0
-void opRoot00265bb0(void)
-{
-    u32* work;
-    u32 v;
-
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    work = sOpRoot;
-    v = (u32)FUN_0015C460((KwlnTask*)work[2]);
-    work[6] = v;
-    *work |= 4;
-    work[1] = 0xe;
-}
-
-// FUN_00265dc0
-u32 opRoot00265dc0(void)
-{
-    FUN_00265030();
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    if ((*sOpRoot & 1) != 0) {
-        return 0;
-    }
-    return -1;
-}
-
-// FUN_00266060
-void opRoot00266060(void)
-{
-    int base;
-
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    base = (int)sOpRoot;
-    if (H_Snd_GetCurrentBgmId() != 0x36) {
-        H_Snd_PlayBgm(0x36, 1);
-    }
-    *(u32*)(base + 0x4524) = 0;
-    *(u32*)(base + 4) = 9;
-}
-
-// FUN_002660d0
-void opRoot002660d0(void)
-{
-    int base;
-
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    base = (int)sOpRoot;
-    if (H_Snd_GetCurrentBgmId() != 0x36) {
-        H_Snd_PlayBgm(0x36, 1);
-    }
-    *(u32*)(base + 0x4524) = 0;
-    *(u32*)(base + 4) = 0x11;
-}
-
-// FUN_00265e30
-u32 opRoot00265e30(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    puVar1 = sOpRoot;
-    if (puVar1[1] != 5 && (~*puVar1 & 1) == 0)
-    {
-        FUN_00269f50();
-        if (puVar1[1] != 0xb)
-            opMenu0026c710();
-        opWait0026e000();
-        if (puVar1[1] != 0xb)
-        {
-            opMenu0026cc90();
-            opTitle00268e20();
-        }
-        FUN_002720c0();
-    }
-    return 0;
-}
- 
-// FUN_00265ef0
-void opRoot00265ef0(int param_1)
-{
-    K_ASSERT(sOpRoot != NULL, 0x9a);
-    opLogo00269d10();
-    opTitle002673f0();
-    opWait0026dd60();
-    opMenu0026a280();
-    FUN_00271d70();
-    opResDestroyTitle();
-    opResShutdown();
-    sOpRoot = NULL;
-    H_Free(*(void**)(param_1 + 0x3c));
-}
-
-extern u16 DAT_007e094e;
-extern u16 DAT_007e094c;
-extern u16 DAT_007e0952;
-extern u16 DAT_007e0956;
-extern u16 DAT_007e095a;
-extern u32 DAT_007ce018;
-extern u8 DAT_007ce384;
-#pragma alias DAT_007e094e_abs DAT_007e094e
-#pragma alias DAT_007e094c_abs DAT_007e094c
-#pragma alias DAT_007e0952_abs DAT_007e0952
-#pragma alias DAT_007e0956_abs DAT_007e0956
-#pragma alias DAT_007e095a_abs DAT_007e095a
-extern u8 DAT_007e094e_abs[];
-extern u8 DAT_007e094c_abs[];
-extern u8 DAT_007e0952_abs[];
-extern u8 DAT_007e0956_abs[];
-extern u8 DAT_007e095a_abs[];
-extern u32 FUN_00108710(void);
-extern u32 FUN_001938e0(u32 mode);
-extern u32 FUN_00195290(u32 handle);
-extern u32 FUN_00195460(u32 handle);
-extern u32 FUN_0010bc20(u32 value, u32 mode);
-extern u32 FUN_001928d0(void);
-extern u32 FUN_00192aa0(void);
 
 #pragma push
 /* Removing this worsens opRoot00265030 (nd1289 -> nd1679) - measured W161. */
@@ -515,139 +501,35 @@ void opRoot00265030(void)
 }
 #pragma pop
 
-// FUN_00265f80
-void opRoot00265f80(void)
+// FUN_00265b30
+void opRoot00265b30(void)
 {
-    u32* root;
-    s32 state;
+    u32* work;
+    u32 v;
 
     K_ASSERT(sOpRoot != NULL, 0x9a);
-    root = sOpRoot;
-    FUN_00108f70();
-    opResDestroyTitle();
-    state = (s32)root[0x4528 / 4];
-    switch (state)
-    {
-        case 8:
-            opWait0026ebf0();
-            opTitle002694b0();
-            break;
-        case 9:
-        case 0x11:
-            opWait0026ebf0();
-            opTitle002694b0();
-            opMenu0026da10();
-            break;
-        default:
-            K_ASSERT(false, 0x327);
-            break;
-    }
-    opResRequestLogo();
-    root[1] = 0;
+    work = sOpRoot;
+    D_007cdffc = 0;
+    D_007ce00c = 0;
+    v = FUN_00420340(work[2], 0);
+    work[4] = v;
+    *work |= 2;
+    work[1] = 0xb;
 }
 
-
-#include "Main/Game/gm_root.h"
-#include "rw/rwplcore.h"
-
-#pragma alias gmRootStartOpeningTask FUN_002663c0
-#pragma alias gmRootStartCalendarTask FUN_00266430
-#pragma alias opRootCreateTask FUN_00265c20
-#pragma alias gmRootSetResult FUN_00266660
-#pragma alias datGetAuxData FUN_0016f380
-#pragma alias datSetAuxData FUN_0016f3e0
-#pragma alias H_Malloc FUN_00191af0
-#pragma alias kwlnTaskCreateWithAutoPriority FUN_00194b80
-#pragma alias kwlnTaskInitEx FUN_00194e10
-#pragma alias kwlnTaskAddChild FUN_00195550
-#pragma alias kwlnSetClearColor FUN_001985b0
-#pragma alias opRootUpdateTask FUN_00265dc0
-#pragma alias opRootDrawTask FUN_00265e30
-#pragma alias opRootDestroyTask FUN_00265ef0
-#pragma alias opResInit FUN_00266670
-#pragma alias opLogoInit FUN_00269cc0
-#pragma alias opTitleInit FUN_002673a0
-#pragma alias opWaitInit FUN_0026dd10
-#pragma alias opMenuInit FUN_0026a230
-#pragma alias opFadeInit FUN_00271cd0
-#pragma alias opFadeSetColor FUN_00272220_y2
-#pragma alias opFadeIn FUN_00272290_y2
-#pragma alias opResRequestLogo_y2 FUN_00266cb0
-#pragma alias H_Fade_FadeIn FUN_001085c0_y2
-#pragma alias H_Fade_SetType FUN_00108670_y2
-#pragma alias H_Fade_SetDuration FUN_001086a0_y2
-
-static GmRootWork* sWork; // 007ce38c
-static u32 sResult; // 007ce390
-
-
-void gmRootStartOpeningTask(void);
-void gmRootStartCalendarTask(void);
-u32 datGetAuxData(u32 idx);
-void datSetAuxData(u32 idx, u32 value);
-u32 datGetFlag(s32 bit);
-u32 datGetScenarioMode(void);
-void func_0017d820(u32 arg);
-u32 func_00182750(u32 arg);
-void func_00188670(u32 arg);
-u32 func_0017fad0(void);
-u32 clndCreateTask(void);
-u64 func_00188660(void);
-void func_00188680(void);
-KwlnTask* func_00188860(KwlnTask* parent);
-void opRootUpdateTask(void);
-void opRootDrawTask(void);
-void opRootDestroyTask(int param_1);
-
-void* gmRootUpdateTask(KwlnTask* gmRootTask);
-void gmRootDestroyTask(KwlnTask* gmRootTask);
-
-static inline KwlnTask* createTask(KwlnTask* parent)
+// FUN_00265bb0
+void opRoot00265bb0(void)
 {
-    GmRootWork* work;
-    KwlnTask* task;
+    u32* work;
+    u32 v;
 
-    work = RwMalloc(sizeof(GmRootWork), rwMEMHINTDUR_GLOBAL);
-    task = kwlnTaskCreateWithAutoPriority(parent,
-                                          10,
-                                          "game root",
-                                          gmRootUpdateTask,
-                                          gmRootDestroyTask,
-                                          work);
-
-    work->flags = 0;
-    work->task = task;
-
-    sWork = work;
-
-    return task;
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    work = sOpRoot;
+    v = (u32)FUN_0015C460((KwlnTask*)work[2]);
+    work[6] = v;
+    *work |= 4;
+    work[1] = 0xe;
 }
-
-
-
-
-
-void kwlnInitGameData(void);
-u32 opRootCreateTask(KwlnTask* task);
-
-
-extern u32 H_Malloc();
-extern u32 kwlnCreateTaskWithAutoPriority();
-extern u32 kwlnInitTaskEx();
-extern void kwlnAddTaskChild();
-extern void kwlnSetClearColor();
-extern void opResInit();
-extern void opLogoInit();
-extern void opTitleInit();
-extern void opWaitInit();
-extern void opMenuInit();
-extern void opFadeInit();
-extern void opFadeSetColor();
-extern void opFadeIn();
-extern void H_Fade_FadeIn();
-extern void H_Fade_SetType();
-extern void H_Fade_SetDuration();
-extern void opResRequestLogo_y2();
 
 // FUN_00265c20
 u32 opRootCreateTask(KwlnTask* parent)
@@ -691,4 +573,128 @@ u32 opRootCreateTask(KwlnTask* parent)
     root[1] = 0;
     *root |= 1;
     return task;
+}
+
+// FUN_00265dc0
+u32 opRoot00265dc0(void)
+{
+    FUN_00265030();
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    if ((*sOpRoot & 1) != 0) {
+        return 0;
+    }
+    return -1;
+}
+
+// FUN_00265e30
+u32 opRoot00265e30(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    puVar1 = sOpRoot;
+    if (puVar1[1] != 5 && (~*puVar1 & 1) == 0)
+    {
+        FUN_00269f50();
+        if (puVar1[1] != 0xb)
+            opMenu0026c710();
+        opWait0026e000();
+        if (puVar1[1] != 0xb)
+        {
+            opMenu0026cc90();
+            opTitle00268e20();
+        }
+        FUN_002720c0();
+    }
+    return 0;
+}
+ 
+// FUN_00265ef0
+void opRoot00265ef0(int param_1)
+{
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    opLogo00269d10();
+    opTitle002673f0();
+    opWait0026dd60();
+    opMenu0026a280();
+    FUN_00271d70();
+    opResDestroyTitle();
+    opResShutdown();
+    sOpRoot = NULL;
+    H_Free(*(void**)(param_1 + 0x3c));
+}
+
+
+// FUN_00265f80
+void opRoot00265f80(void)
+{
+    u32* root;
+    s32 state;
+
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    root = sOpRoot;
+    FUN_00108f70();
+    opResDestroyTitle();
+    state = (s32)root[0x4528 / 4];
+    switch (state)
+    {
+        case 8:
+            opWait0026ebf0();
+            opTitle002694b0();
+            break;
+        case 9:
+        case 0x11:
+            opWait0026ebf0();
+            opTitle002694b0();
+            opMenu0026da10();
+            break;
+        default:
+            K_ASSERT(false, 0x327);
+            break;
+    }
+    opResRequestLogo();
+    root[1] = 0;
+}
+
+// FUN_00266060
+void opRoot00266060(void)
+{
+    int base;
+
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    base = (int)sOpRoot;
+    if (H_Snd_GetCurrentBgmId() != 0x36) {
+        H_Snd_PlayBgm(0x36, 1);
+    }
+    *(u32*)(base + 0x4524) = 0;
+    *(u32*)(base + 4) = 9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_002660d0
+void opRoot002660d0(void)
+{
+    int base;
+
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    base = (int)sOpRoot;
+    if (H_Snd_GetCurrentBgmId() != 0x36) {
+        H_Snd_PlayBgm(0x36, 1);
+    }
+    *(u32*)(base + 0x4524) = 0;
+    *(u32*)(base + 4) = 0x11;
 }

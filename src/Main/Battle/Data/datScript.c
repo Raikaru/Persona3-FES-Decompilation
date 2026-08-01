@@ -1,76 +1,13 @@
 #include "Main/Battle/Data/datScript.h"
 #include "Kosaka/k_assert.h"
 
-#pragma alias DAT_009571a4_y2 DAT_009571a4
-
-
-#pragma alias datScriptIsCurrent FUN_003112c0
-#pragma alias datScriptSetCalculationResult FUN_00311190
-#pragma alias datScriptReturnTrueCommand FUN_003111C0
-#pragma alias datScriptRestorePartyCommand FUN_003112E0
-
-
-static ScrData* sUnk_007ce514; // doesn't looks like it's used
-
-// FUN_003112c0
-u8 datScriptIsCurrent(ScrData* scr)
-{
-    return sUnk_007ce514 == scr;
-}
-
 extern u16* DAT_00957190[]; // 0x957190
-
-// FUN_003111f0
-u32 datScript003111f0(void)
-{
-    K_ASSERT(DAT_00957190[0] != NULL, 0x205);
-    return !(*DAT_00957190[0] & 4);
-}
-
 extern u16 DAT_0095719c[]; // 0x95719c
 static u8* sUnk_007ce3f8;  // iGpffffb708
-
-// FUN_00311250
-u32 datScript00311250(void)
-{
-    K_ASSERT(DAT_0095719c[0] < 0x1d0, 0x222);
-    return (sUnk_007ce3f8[DAT_0095719c[0] * 0x2c] & 2) != 0;
-}
-
-/* ---- Straggler recovery: 0x311190-0x3112E0 ---- */
 extern u16 DAT_009571a4_y2;
 extern u32 DAT_00957198;
 extern void FUN_0035f060(u32 value);
 extern void FUN_0030c440(void);
-/* Removing this loses datScriptSetCalculationResult (MATCH nd0 -> MISMATCH nd16) - measured W161. */
-#pragma optimization_level 1
-// FUN_00311190
-void datScriptSetCalculationResult(u32 param_1)
-
-{
-  *(u16*)0x009571a4 = *(u16*)0x009571a4 | 1;
-  *(u32*)0x00957198 = param_1;
-  return;
-}
-#pragma optimization_level 2
-
-// FUN_003111C0
-u32 datScriptReturnTrueCommand(void)
-
-{
-  FUN_0035f060(1);
-  return 1;
-}
-
-// FUN_003112E0
-u32 datScriptRestorePartyCommand(void)
-
-{
-  FUN_0030c440();
-  return 1;
-}
-
-
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/g_data.h"
 #include "Graphics/Effect/effMisc.h"
@@ -83,21 +20,18 @@ typedef struct DatCalcEnemy
     u16 skills[8];
     u8 unk_1e[0x20];
 } DatCalcEnemy;
-
 typedef struct DatCalcEquipmentEffect
 {
     u8 unk_00[0x1c];
     u32 skillId;
     u8 unk_20[4];
 } DatCalcEquipmentEffect;
-
 typedef struct DatCalcWeapon
 {
     u8 unk_00[4];
     u32 category;
     u8 unk_08[0x20];
 } DatCalcWeapon;
-
 extern DatCalcEnemy* D_007CE410;
 extern u16 func_0016cc00(s16 pcId);
 extern DatCalcWeapon* func_00170d60(s16 weaponId);
@@ -107,29 +41,7 @@ extern const char D_0069aa80[];
 extern u8 D_0069aa80_abs[];
 u32 datCalc00308ba0(void);
 u16* func_00308bb0(DatUnit* unit);
-
 static u32 sPrevPercentRand; // 007ce510
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W323 measured: opt_loop_invariants on nd116 -> 93, object 280/288; reset nd116, object 284/288. */
-
-
-
-
-
-
-
 extern f32 sqrtf(f32);
 extern u32 FUN_0016c5f0();
 extern u32 FUN_0016c670();
@@ -220,18 +132,14 @@ void FUN_00301540(int param_1,u32 param_2);
 void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
 void FUN_00301870(int param_1);
-
 float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
 u8 FUN_00301ca0(u32 param_1,u32 param_2);
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
 void FUN_00302c50(u32 param_1);
-
 void FUN_00302d40(u32 param_1);
 u8 FUN_00302f50(u32 param_1);
-
 u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,u8 param_8);
-
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
 u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
@@ -276,7 +184,6 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3);
 int FUN_0030bb40(u16 param_1);
 int FUN_0030bbb0(u8 param_1);
 u16 FUN_0030bc20(s16 param_1);
-
 #pragma alias FUN_0030bde0_narrow FUN_0030bde0
 extern short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2);
 u32 FUN_0030bc50(int param_1);
@@ -338,7 +245,6 @@ u32
 FUN_0030fc40(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
             u32 param_5);
 u32 FUN_0030fdc0(void);
-
 float FUN_0030fdf0(int param_1,u32 param_2);
 extern f32 DAT_007cad74;
 extern f32 DAT_007cad8c;
@@ -367,7 +273,6 @@ extern u8 DAT_00957198_abs[];
 extern u8 DAT_0095719c_abs[];
 #pragma alias DAT_009571a0_abs DAT_009571a0
 extern u8 DAT_009571a0_abs[];
-
 extern u32 DAT_009571a4;
 #pragma alias DAT_009571a4_abs DAT_009571a4
 extern u8 DAT_009571a4_abs[];
@@ -397,599 +302,27 @@ extern u32 iGpffffb7a4;
 extern u32 iGpffffb7a8;
 extern u32 iGpffffb7fc;
 extern u32 iGpffffb800;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma alias FUN_00301230_narrow FUN_00301230
-
-
-
-
-
-/* W389 classification: register-colouring floor; baseline nd18/object324/336. Six singles and all 15 knob pairs were neutral; declaration-order swap stayed nd18. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W323 measured: opt_common_subs off nd1570 -> 1489, object 2252/2256; reset nd1570. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W367 measured: opt_lifetimes on nd6788 -> 6786, object 10264/10304; baseline object 10264/10304. */
-
-
-
-
-
-#pragma opt_lifetimes reset
-/* W367 measured: opt_lifetimes on nd1103 -> 1066, object 1708/1712; baseline object 1712/1712. */
-
-
-
-
-
-#pragma opt_lifetimes reset
-/* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma alias FUN_003083f0_narrow FUN_003083f0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W323 measured: opt_common_subs off nd152 -> 147, object 236/288; reset nd152. */
-#pragma opt_common_subs on
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma alias FUN_0030af00_narrow FUN_0030af00
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W323 measured: opt_common_subs off nd166 -> 139, object 392/416; reset nd166. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #pragma alias FUN_0030bde0_narrow FUN_0030bde0
-/* W323 measured: opt_loop_invariants on nd407 -> 404, object 716/736; reset nd407. */
+#define DAT_00957190 (*(u32*)DAT_00957190_abs)
+#define DAT_00957194 (*(u32*)DAT_00957194_abs)
+#define DAT_00957198 (*(s16*)DAT_00957198_abs)
+#define DAT_0095719c (*(u16*)DAT_0095719c_abs)
+#define DAT_009571a0 (*(u32*)DAT_009571a0_abs)
 
 
+#pragma alias DAT_009571a4_y2 DAT_009571a4
 
 
+#pragma alias datScriptIsCurrent FUN_003112c0
+#pragma alias datScriptSetCalculationResult FUN_00311190
+#pragma alias datScriptReturnTrueCommand FUN_003111C0
+#pragma alias datScriptRestorePartyCommand FUN_003112E0
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+static ScrData* sUnk_007ce514; // doesn't looks like it's used
 
 // FUN_0030fc40
 u32
@@ -1035,9 +368,6 @@ FUN_0030fc40(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
 }
 
 
-
-
-
 // FUN_0030fdc0
 u32 FUN_0030fdc0(void)
 
@@ -1047,15 +377,6 @@ u32 FUN_0030fdc0(void)
 }
 
 
-
-
-
- 
-#define DAT_00957190 (*(u32*)DAT_00957190_abs)
-#define DAT_00957194 (*(u32*)DAT_00957194_abs)
-#define DAT_00957198 (*(s16*)DAT_00957198_abs)
-#define DAT_0095719c (*(u16*)DAT_0095719c_abs)
-#define DAT_009571a0 (*(u32*)DAT_009571a0_abs)
 // FUN_0030fdf0 NONMATCHING
 
 float FUN_0030fdf0(int param_1,u32 param_2)
@@ -1399,14 +720,695 @@ float FUN_0030fdf0(int param_1,u32 param_2)
 #undef DAT_0095719c
 #undef DAT_009571a0
 
-// Recovered sibling: FUN_0030fdf0's Ghidra window ran to 0x00311190, but its own
-// `jr $ra` is at 0x0031116c followed by four padding nops. A separate 16-byte
-// function begins at 0x00311180 (addiu $v0, $zero, 1 / jr $ra / nop / nop) and is
-// reached only through a raw pointer stored at ELF file offset 0x6b94b8, never by
-// a direct jal, which is why Ghidra never split it out.
+/* ---- Straggler recovery: 0x311190-0x3112E0 ---- */
+/* Removing this loses datScriptSetCalculationResult (MATCH nd0 -> MISMATCH nd16) - measured W161. */
 // FUN_00311180
 u32 FUN_00311180(void)
 {
   return 1;
 }
 #pragma opt_common_subs reset
+#pragma optimization_level 1
+// FUN_00311190
+void datScriptSetCalculationResult(u32 param_1)
+
+{
+  *(u16*)0x009571a4 = *(u16*)0x009571a4 | 1;
+  *(u32*)0x00957198 = param_1;
+  return;
+}
+
+#pragma optimization_level 2
+
+// FUN_003111C0
+u32 datScriptReturnTrueCommand(void)
+
+{
+  FUN_0035f060(1);
+  return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_loop_invariants on nd116 -> 93, object 280/288; reset nd116, object 284/288. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 classification: register-colouring floor; baseline nd18/object324/336. Six singles and all 15 knob pairs were neutral; declaration-order swap stayed nd18. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_common_subs off nd1570 -> 1489, object 2252/2256; reset nd1570. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W367 measured: opt_lifetimes on nd6788 -> 6786, object 10264/10304; baseline object 10264/10304. */
+
+
+
+
+
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1103 -> 1066, object 1708/1712; baseline object 1712/1712. */
+
+
+
+
+
+#pragma opt_lifetimes reset
+/* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_common_subs off nd152 -> 147, object 236/288; reset nd152. */
+#pragma opt_common_subs on
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_common_subs off nd166 -> 139, object 392/416; reset nd166. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_loop_invariants on nd407 -> 404, object 716/736; reset nd407. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_003111f0
+u32 datScript003111f0(void)
+{
+    K_ASSERT(DAT_00957190[0] != NULL, 0x205);
+    return !(*DAT_00957190[0] & 4);
+}
+
+
+
+
+
+// FUN_00311250
+u32 datScript00311250(void)
+{
+    K_ASSERT(DAT_0095719c[0] < 0x1d0, 0x222);
+    return (sUnk_007ce3f8[DAT_0095719c[0] * 0x2c] & 2) != 0;
+}
+
+
+
+
+
+ 
+// FUN_003112c0
+u8 datScriptIsCurrent(ScrData* scr)
+{
+    return sUnk_007ce514 == scr;
+}
+
+// Recovered sibling: FUN_0030fdf0's Ghidra window ran to 0x00311190, but its own
+// `jr $ra` is at 0x0031116c followed by four padding nops. A separate 16-byte
+// function begins at 0x00311180 (addiu $v0, $zero, 1 / jr $ra / nop / nop) and is
+// reached only through a raw pointer stored at ELF file offset 0x6b94b8, never by
+// a direct jal, which is why Ghidra never split it out.
+// FUN_003112E0
+u32 datScriptRestorePartyCommand(void)
+
+{
+  FUN_0030c440();
+  return 1;
+}

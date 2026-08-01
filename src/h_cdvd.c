@@ -4,6 +4,49 @@
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
+typedef struct HCdvdFileContext HCdvdFileContext;
+struct HCdvdFileContext
+{
+    u32 reserved00;
+    u32 count;
+    u8 reserved08[0x0c];
+    void* callback14;
+    void* callback18;
+    u8 reserved1c[0x0c];
+    void* callback28;
+    void* callback2c;
+    void* callback30;
+    void* callback34;
+    void* callback38;
+    u8 reserved3c[8];
+    void* callback44;
+    u8 reserved48[4];
+    void* callback4c;
+    u8 reserved50[8];
+    u8* slots;
+};
+typedef struct
+{
+    u8 reserved00[0x50];
+    HCdvdFileContext* context;
+    u8 reserved54[0x14];
+    u8* source;
+    u32 sourceStride;
+    u8 reserved70[0x20];
+} HCdvdFileSlot;
+typedef struct
+{
+    u8 reserved00[0x10];
+    s64 position;
+    u8 reserved18[0x18];
+    u32 state30;
+    u8 reserved34[8];
+    u32 state3c;
+    u8 reserved40[0x34];
+    s32 fd;
+} HCdvdOpenSlot;
+
+
 typedef struct HCdvdStreamContext HCdvdStreamContext;
 typedef struct HCdvdStreamSlot HCdvdStreamSlot;
 typedef struct HCdvdStreamPosition HCdvdStreamPosition;
@@ -720,138 +763,6 @@ advance:
 }
 #pragma pop
 
-// FUN_001016b0
-u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
-{
-    return cdvd->readState == 4;
-}
-
-// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
-void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
-{
-    ArchiveEntryHeader entryHeader;
-    uintptr_t fileMemoryAddr;
-    s32 alignedSize;
-    s32 i;
-
-    fileMemoryAddr = (uintptr_t)cdvd->fileMemory;
-    for (i = 0; i < fileIdx; i++)
-    {
-        memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
-
-        fileMemoryAddr += sizeof(ArchiveEntryHeader);
-
-        alignedSize = entryHeader.fileSize + 0x3f;
-        alignedSize /= 0x40;
-        
-        fileMemoryAddr += (alignedSize * 0x40);
-    }
-
-    memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
-    *fileSize = entryHeader.fileSize;
-
-    return (void*)(fileMemoryAddr + sizeof(ArchiveEntryHeader));
-}
-
-// FUN_001021c0
-void* H_Cdvd_CacheFindFile(const char* path, u32* fileSize)
-{
-    char uppercasePath[256];
-    char normalizedPath[256];
-    char cacheNormalizedPath[256];
-    s32 i;
-
-    if (path == (char*)1)
-    {
-        return NULL;
-    }
-
-    H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
-
-    for (i = 0; i < HCDVD_CACHE_MAX; i++)
-    {
-        if (sCdvdCache[i].isValid)
-        {
-            H_Cdvd_NormalizePath(sCdvdCache[i].path, cacheNormalizedPath);
-
-            if (strcmp(cacheNormalizedPath, normalizedPath) == 0)
-            {
-                *fileSize = sCdvdCache[i].fileSize;
-                return sCdvdCache[i].fileMemory;
-            }
-        }
-    }
-
-    return NULL;
-}
-
-// FUN_001023a0. Synchronous read
-void H_Cdvd_ReadSync(HCdvd* cdvd)
-{
-    while (true)
-    {
-        if (!H_Cdvd_IsFileLoaded(cdvd))
-        {
-            H_Cdvd_Read();
-        }
-        else
-        {
-            break;
-        }
-    }
-}
-
-#pragma push
-/* Removing this loses FUN_00102650 (MATCH nd0 -> MISMATCH nd32) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_00102650
-void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const char* path)
-{
-    s32 i;
-    HCdvdCache* curr;
-    u32 offset;
-
-    i = 0;
-    for (; i < HCDVD_CACHE_MAX; i++)
-    {
-        offset = i * sizeof(HCdvdCache);
-        curr = (HCdvdCache*)((u8*)sCdvdCache + offset);
-        if (!curr->isValid)
-        {
-            curr->isValid = true;
-            sCdvdCache[i].requestData = requestData;
-            sCdvdCache[i].fileMemory = fileMemory;
-            sCdvdCache[i].fileSize = fileSize;
-            sCdvdCache[i].unk_110 = 0;
-            memcpy(curr->path, path, 128);
-            return;
-        }
-    }
-}
-#pragma pop
-
-// FUN_00102870
-void H_Cdvd_CacheRemove(void* requestData)
-{
-    s32 i;
-    HCdvdCache* cache;
-    HCdvdCache* curr;
-
-    i = 0;
-    cache = sCdvdCache;
-    for (; i < HCDVD_CACHE_MAX; i++)
-    {
-        curr = &cache[i];
-
-        if (curr->isValid && curr->requestData == requestData)
-        {
-            curr->isValid = false;
-        }
-    }
-}
-
-
 // FUN_00101520
 void func_00101520(const char* dir)
 {
@@ -906,32 +817,11 @@ secondTable:
         i++;
     }
 }
-// FUN_001019A0
-static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, u32 index)
-{
-    HCdvdStreamSlot* result;
 
-    if (index < context->count)
-    {
-        result = &context->slots[index];
-    }
-    else
-    {
-        result = NULL;
-    }
-    return result;
-}
-
-// FUN_00101800
-static void H_Cdvd_StreamNoop(void)
+// FUN_001016b0
+u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
 {
-}
-
-// FUN_001018a0
-static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
-{
-    u8* data = (u8*)slot + 0x70;
-    return -(*(s32*)(data + 0x8c) <= *(s32*)(data + 0x90));
+    return cdvd->readState == 4;
 }
 
 // FUN_001016d0
@@ -974,6 +864,11 @@ s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
     return 2;
 }
 
+// FUN_00101800
+static void H_Cdvd_StreamNoop(void)
+{
+}
+
 // FUN_00101810
 u32 func_00101810(void* slotData, void* dst, u32 size)
 {
@@ -1006,52 +901,13 @@ read_file:
     return amount;
 }
 
-static void H_Cdvd_StreamSetPosition(HCdvdStreamPosition* result,
-                                     HCdvdStreamSlot* slot, u32 amount, s32 mode)
+// FUN_001018a0
+static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
 {
-    u32 position;
-
-    if (mode == 1)
-    {
-        position = slot->fileOffset + amount;
-        if (position > slot->fileSize)
-        {
-            position = slot->fileSize;
-        }
-    }
-    else if (mode == 2)
-    {
-        if (amount > slot->fileSize)
-        {
-            amount = slot->fileSize;
-        }
-        position = slot->fileOffset + amount;
-    }
-    else if (mode == 3)
-    {
-        position = slot->fileOffset + amount;
-        if (position > slot->fileSize)
-        {
-            position = slot->fileSize - 1;
-        }
-    }
-    else
-    {
-        position = 1;
-    }
-
-    slot->fileOffset = position;
-    result->position = position;
-    result->unused0 = 0;
-    result->unused1 = 0;
+    u8* data = (u8*)slot + 0x70;
+    return -(*(s32*)(data + 0x8c) <= *(s32*)(data + 0x90));
 }
 
-static void H_Cdvd_StreamSetPositionCallback(HCdvdStreamPosition* result,
-                                              HCdvdStreamSlot* slot,
-                                              u32 amount, s32 mode)
-{
-    H_Cdvd_StreamSetPosition(result, slot, amount, mode);
-}
 
 // FUN_001018c0
 void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
@@ -1112,6 +968,21 @@ void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
             : : "r"(value), "r"(resultData), "m"(position) : "$v1", "memory");
     }
 }
+// FUN_001019A0
+static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, u32 index)
+{
+    HCdvdStreamSlot* result;
+
+    if (index < context->count)
+    {
+        result = &context->slots[index];
+    }
+    else
+    {
+        result = NULL;
+    }
+    return result;
+}
 
 // FUN_001019e0
 void func_001019e0(void* contextData)
@@ -1143,12 +1014,6 @@ s32 func_00101a10(void* unused, const char* path)
         }
     }
     return 0;
-}
-
-static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
-                                     void* callback)
-{
-    *(void (**)(void))((u8*)context + offset) = (void (*)(void))callback;
 }
 
 // FUN_00101ad0
@@ -1246,36 +1111,8 @@ done:
     return;
 }
 
-static u32 H_Cdvd_Align64(u32 size)
-{
-    return (size + 0x3f) & ~0x3f;
-}
 
-static void H_Cdvd_CopyArchiveEntries(void* requestData, u8* archive,
-                                      u32 archiveSize, const char* basePath)
-{
-    u32 offset = 0;
-    char fullPath[256];
-    char entryName[256];
 
-    while (offset + sizeof(ArchiveEntryHeader) <= archiveSize)
-    {
-        ArchiveEntryHeader header;
-        memcpy(&header, archive + offset, sizeof(header));
-        if (header.fileName[0] == '\0')
-        {
-            break;
-        }
-        strcpy(fullPath, basePath);
-        strcat(fullPath, header.fileName);
-        H_Cdvd_BuildPathUppercase(fullPath, entryName);
-        H_Cdvd_CacheAdd(requestData, archive + offset + sizeof(header),
-                        header.fileSize, entryName);
-        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
-    }
-}
-
-/* opt_loop_invariants required: normalized_diff 121 without pragma, 0 with pragma (W310). */
 #pragma opt_loop_invariants on
 // FUN_00101e30
 void func_00101e30(void* requestData)
@@ -1422,6 +1259,67 @@ void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
 }
 #pragma pop
 
+// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
+void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
+{
+    ArchiveEntryHeader entryHeader;
+    uintptr_t fileMemoryAddr;
+    s32 alignedSize;
+    s32 i;
+
+    fileMemoryAddr = (uintptr_t)cdvd->fileMemory;
+    for (i = 0; i < fileIdx; i++)
+    {
+        memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
+
+        fileMemoryAddr += sizeof(ArchiveEntryHeader);
+
+        alignedSize = entryHeader.fileSize + 0x3f;
+        alignedSize /= 0x40;
+        
+        fileMemoryAddr += (alignedSize * 0x40);
+    }
+
+    memcpy(&entryHeader, (void*)fileMemoryAddr, sizeof(ArchiveEntryHeader));
+    *fileSize = entryHeader.fileSize;
+
+    return (void*)(fileMemoryAddr + sizeof(ArchiveEntryHeader));
+}
+
+
+// FUN_001021c0
+void* H_Cdvd_CacheFindFile(const char* path, u32* fileSize)
+{
+    char uppercasePath[256];
+    char normalizedPath[256];
+    char cacheNormalizedPath[256];
+    s32 i;
+
+    if (path == (char*)1)
+    {
+        return NULL;
+    }
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
+
+    for (i = 0; i < HCDVD_CACHE_MAX; i++)
+    {
+        if (sCdvdCache[i].isValid)
+        {
+            H_Cdvd_NormalizePath(sCdvdCache[i].path, cacheNormalizedPath);
+
+            if (strcmp(cacheNormalizedPath, normalizedPath) == 0)
+            {
+                *fileSize = sCdvdCache[i].fileSize;
+                return sCdvdCache[i].fileMemory;
+            }
+        }
+    }
+
+    return NULL;
+}
+
 // FUN_001022e0
 const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
 {
@@ -1445,6 +1343,29 @@ const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
         return NULL;
     }
     return (const char*)entry;
+}
+
+static u32 H_Cdvd_Align64(u32 size)
+{
+    return (size + 0x3f) & ~0x3f;
+}
+
+
+/* opt_loop_invariants required: normalized_diff 121 without pragma, 0 with pragma (W310). */
+// FUN_001023a0. Synchronous read
+void H_Cdvd_ReadSync(HCdvd* cdvd)
+{
+    while (true)
+    {
+        if (!H_Cdvd_IsFileLoaded(cdvd))
+        {
+            H_Cdvd_Read();
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
 // FUN_001023f0
@@ -1512,6 +1433,35 @@ void func_001025c0(void* handle, const char* path)
 }
 
 #pragma push
+/* Removing this loses FUN_00102650 (MATCH nd0 -> MISMATCH nd32) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_00102650
+void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const char* path)
+{
+    s32 i;
+    HCdvdCache* curr;
+    u32 offset;
+
+    i = 0;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        offset = i * sizeof(HCdvdCache);
+        curr = (HCdvdCache*)((u8*)sCdvdCache + offset);
+        if (!curr->isValid)
+        {
+            curr->isValid = true;
+            sCdvdCache[i].requestData = requestData;
+            sCdvdCache[i].fileMemory = fileMemory;
+            sCdvdCache[i].fileSize = fileSize;
+            sCdvdCache[i].unk_110 = 0;
+            memcpy(curr->path, path, 128);
+            return;
+        }
+    }
+}
+#pragma pop
+
+#pragma push
 /* Removing this loses FUN_00102720 (MATCH nd0 -> MISMATCH nd67) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00102720
@@ -1570,55 +1520,34 @@ void func_00102720(const char* path, const void* archive)
     }
 }
 #pragma pop
+
+// FUN_00102870
+void H_Cdvd_CacheRemove(void* requestData)
+{
+    s32 i;
+    HCdvdCache* cache;
+    HCdvdCache* curr;
+
+    i = 0;
+    cache = sCdvdCache;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        curr = &cache[i];
+
+        if (curr->isValid && curr->requestData == requestData)
+        {
+            curr->isValid = false;
+        }
+    }
+}
 // FUN_001028d0
 void func_001028d0(void)
 {
     func_00505e48("CDVD file context destroyed");
 }
 
-typedef struct HCdvdFileContext HCdvdFileContext;
 
-struct HCdvdFileContext
-{
-    u32 reserved00;
-    u32 count;
-    u8 reserved08[0x0c];
-    void* callback14;
-    void* callback18;
-    u8 reserved1c[0x0c];
-    void* callback28;
-    void* callback2c;
-    void* callback30;
-    void* callback34;
-    void* callback38;
-    u8 reserved3c[8];
-    void* callback44;
-    u8 reserved48[4];
-    void* callback4c;
-    u8 reserved50[8];
-    u8* slots;
-};
 
-typedef struct
-{
-    u8 reserved00[0x50];
-    HCdvdFileContext* context;
-    u8 reserved54[0x14];
-    u8* source;
-    u32 sourceStride;
-    u8 reserved70[0x20];
-} HCdvdFileSlot;
-typedef struct
-{
-    u8 reserved00[0x10];
-    s64 position;
-    u8 reserved18[0x18];
-    u32 state30;
-    u8 reserved34[8];
-    u32 state3c;
-    u8 reserved40[0x34];
-    s32 fd;
-} HCdvdOpenSlot;
 
 
 static s64* H_Cdvd_FilePosition(void* slot)
@@ -1861,4 +1790,77 @@ void* func_00102e50(s32 count, void* source, s32 stride,
         printf("CDVD file context registration failed: %d\n", i);
     }
     return context;
+}
+static void H_Cdvd_StreamSetPosition(HCdvdStreamPosition* result,
+                                     HCdvdStreamSlot* slot, u32 amount, s32 mode)
+{
+    u32 position;
+
+    if (mode == 1)
+    {
+        position = slot->fileOffset + amount;
+        if (position > slot->fileSize)
+        {
+            position = slot->fileSize;
+        }
+    }
+    else if (mode == 2)
+    {
+        if (amount > slot->fileSize)
+        {
+            amount = slot->fileSize;
+        }
+        position = slot->fileOffset + amount;
+    }
+    else if (mode == 3)
+    {
+        position = slot->fileOffset + amount;
+        if (position > slot->fileSize)
+        {
+            position = slot->fileSize - 1;
+        }
+    }
+    else
+    {
+        position = 1;
+    }
+
+    slot->fileOffset = position;
+    result->position = position;
+    result->unused0 = 0;
+    result->unused1 = 0;
+}
+static void H_Cdvd_StreamSetPositionCallback(HCdvdStreamPosition* result,
+                                              HCdvdStreamSlot* slot,
+                                              u32 amount, s32 mode)
+{
+    H_Cdvd_StreamSetPosition(result, slot, amount, mode);
+}
+static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
+                                     void* callback)
+{
+    *(void (**)(void))((u8*)context + offset) = (void (*)(void))callback;
+}
+static void H_Cdvd_CopyArchiveEntries(void* requestData, u8* archive,
+                                      u32 archiveSize, const char* basePath)
+{
+    u32 offset = 0;
+    char fullPath[256];
+    char entryName[256];
+
+    while (offset + sizeof(ArchiveEntryHeader) <= archiveSize)
+    {
+        ArchiveEntryHeader header;
+        memcpy(&header, archive + offset, sizeof(header));
+        if (header.fileName[0] == '\0')
+        {
+            break;
+        }
+        strcpy(fullPath, basePath);
+        strcat(fullPath, header.fileName);
+        H_Cdvd_BuildPathUppercase(fullPath, entryName);
+        H_Cdvd_CacheAdd(requestData, archive + offset + sizeof(header),
+                        header.fileSize, entryName);
+        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+    }
 }

@@ -4,6 +4,102 @@
 #include "Main/OpEd/op_res.h"
 #include "rw/rwcore.h"
 
+#pragma alias D_00960088_abs D_00960088
+extern u8 D_00960088_abs[];
+extern void func_0021d890(void* destination, const f32* layout);
+static inline void opWaitSetPoly(void* destination, f32* points, f32 x, f32 y,
+                                 f32 width, f32 height, f32 scaleX, f32 scaleY)
+{
+    f32 halfW = width * 0.5f;
+    f32 halfH = height * 0.5f;
+    f32 centerX = x + halfW;
+    f32 centerY = y + halfH;
+    s32 i;
+
+    points[0] = x;
+    points[1] = y;
+    points[2] = x + width;
+    points[3] = y;
+    points[4] = x + width;
+    points[5] = y + height;
+    points[6] = x;
+    points[7] = y + height;
+    for (i = 0; i < 4; i++)
+    {
+        points[i * 2] -= centerX;
+        points[i * 2 + 1] -= centerY;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        points[i * 2] *= scaleX;
+        points[i * 2 + 1] *= scaleY;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        points[i * 2] += centerX;
+        points[i * 2 + 1] += centerY;
+    }
+    func_0021d890(destination, points);
+}
+static inline void opWaitSetPolyPivot(void* destination, f32* points,
+                                      f32 width, f32 height, f32 pivotX,
+                                      f32 pivotY, f32 scaleX, f32 scaleY)
+{
+    s32 i;
+
+    points[0] = 0.0f;
+    points[1] = 0.0f;
+    points[2] = width;
+    points[3] = 0.0f;
+    points[4] = width;
+    points[5] = height;
+    points[6] = 0.0f;
+    points[7] = height;
+    for (i = 0; i < 4; i++)
+    {
+        points[i * 2] -= pivotX;
+        points[i * 2 + 1] -= pivotY;
+        points[i * 2] *= scaleX;
+        points[i * 2 + 1] *= scaleY;
+        points[i * 2] += pivotX;
+        points[i * 2 + 1] += pivotY;
+    }
+    func_0021d890(destination, points);
+}
+extern f32 func_00269c80(f32 value);
+extern f32 func_00269ca0(f32 value);
+extern f32 func_0052ea18(f32 y, f32 x);
+extern f32 sqrtf(f32 value);
+extern f32 D_00960088;
+extern u8* DAT_007ce420;
+static inline u8 opWaitColorByte(f32 value)
+{
+    return (u8)(u32)value;
+}
+static inline void opWaitSetVertex(RwIm2DVertex* vertex, f32 x, f32 y,
+                                   f32 u, f32 v, f32 alpha, f32 recipZ)
+{
+    vertex->u.els.scrVertex.x = x;
+    vertex->u.els.scrVertex.y = y;
+    vertex->u.els.scrVertex.z = *(f32*)D_00960088_abs;
+    vertex->u.els.camVertex_z = 0.0f;
+    vertex->u.els.u = u;
+    vertex->u.els.v = v;
+    vertex->u.els.recipZ = recipZ;
+    vertex->u.els.color.r = 255.0f;
+    vertex->u.els.color.g = 255.0f;
+    vertex->u.els.color.b = 255.0f;
+    vertex->u.els.color.a = (f32)opWaitColorByte(alpha);
+}
+#include "Main/OpEd/op_fade.h"
+typedef void (*OpFadeSetRenderState)(u32 state, u32 value);
+typedef void (*OpFadeRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern void func_0021d8e0_y2(void* destination, f32* layout);
+extern u32 D_00960090_y2[];
+extern u32 D_0096009C_y2[];
+static OpFadeWork* sWork; // 007ce3bc
+
+
 #pragma alias func_0021d8e0_y2 func_0021d8e0_y2
 #pragma alias func_00198590_y2 func_00198590_y2
 #pragma alias func_0021d3b0_y2 func_0021d3b0_y2
@@ -12,6 +108,8 @@
 #pragma alias func_0021eac0_y2 func_0021eac0_y2
 
 
+void opWait0026ec50(void);
+void opWait0026eca0(void);
 void opWait0026eed0(void);
 void opWait0026edd0(void);
 extern void opWait0026ed40(void);
@@ -19,7 +117,6 @@ extern void func_0021eae0(void* destination, const f32* layout);
 extern void func_0021eac0(void* destination, f32 value);
 extern void func_0021eb80(void* destination, const f32* layout);
 extern void func_0021d8e0(void* destination, const f32* layout);
-extern void func_0021d890(void* destination, const f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
 extern void* func_0021cca0(void* resource, u32 index);
 extern void* func_0021cce0(void* frame);
@@ -33,8 +130,6 @@ extern void func_004d7f60(s32 state, u32 value);
 #pragma alias opWaitGetTitleRasterU32 opResGetTitleRaster
 extern u32 opWaitGetTitleRasterU32(u32 id);
 extern u32 D_00960090[];
-#pragma alias D_00960088_abs D_00960088
-extern u8 D_00960088_abs[];
 extern u32 D_0096009C[];
 extern void func_00269a10(u32 id, void* callback);
 extern void func_00271230(u32* param);
@@ -132,73 +227,6 @@ void opWait0026dd60(void)
     sOpWait = NULL;
 }
 
-// FUN_0026ec50
-void opWait0026ec50(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    work = sOpWait;
-    work[2] = 0;
-    work[1] = 0;
-    *work |= 4;
-}
-
-// FUN_0026eca0
-void opWait0026eca0(void)
-{
-    u32* work;
-    u32 uVar2;
-
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    work = sOpWait;
-    if (*work & 2)
-        opWait0026ed40();
-    uVar2 = FUN_00269690(1, 0xc, 9);
-    work[0x45c] = uVar2;
-    uVar2 = FUN_00269690(1, 0xc, 9);
-    work[0x45d] = uVar2;
-    *work |= 2;
-}
-
-// FUN_0026ee80
-u32 opWait0026ee80(void)
-{
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    return *sOpWait & 8;
-}
-
-// FUN_0026ebf0
-void opWait0026ebf0(void)
-{
-    u32 uVar1;
-
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    uVar1 = *sOpWait & 0xfffffffe;
-    *sOpWait = uVar1;
-    if (uVar1 & 2)
-        opWait0026ed40();
-}
-
-// FUN_0026edd0
-void opWait0026edd0(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    puVar1 = sOpWait;
-    sOpWait[2] = 0;
-    puVar1[1] = 1;
-    *puVar1 |= 4;
-}
-
-// FUN_0026ee30
-u32 opWait0026ee30(void)
-{
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    return *sOpWait & 4;
-}
-
 // FUN_0026DDC0
 void opWait0026ddc0(void)
 {
@@ -255,24 +283,6 @@ void opWait0026ddc0(void)
         }
         opWait0026eed0();
     }
-}
-
-// FUN_0026ed40
-void opWait0026ed40(void)
-{
-    u8* work;
-
-    K_ASSERT(sOpWait != NULL, 0xdb);
-    work = (u8*)sOpWait;
-    func_002699a0(*(void**)(work + 0x1170));
-    func_002699a0(*(void**)(work + 0x1174));
-    opWaitPutU32(work, 0, opWaitU32(work, 0) & ~2u);
-}
-
-// FUN_0026edb0
-void opWait0026edb0(void)
-{
-    opWait0026edd0();
 }
 
 // FUN_0026E000 NONMATCHING
@@ -493,65 +503,91 @@ void opWait0026e780(void)
     *(u32*)work |= 1;
 }
 
-static inline void opWaitSetPoly(void* destination, f32* points, f32 x, f32 y,
-                                 f32 width, f32 height, f32 scaleX, f32 scaleY)
+// FUN_0026ebf0
+void opWait0026ebf0(void)
 {
-    f32 halfW = width * 0.5f;
-    f32 halfH = height * 0.5f;
-    f32 centerX = x + halfW;
-    f32 centerY = y + halfH;
-    s32 i;
+    u32 uVar1;
 
-    points[0] = x;
-    points[1] = y;
-    points[2] = x + width;
-    points[3] = y;
-    points[4] = x + width;
-    points[5] = y + height;
-    points[6] = x;
-    points[7] = y + height;
-    for (i = 0; i < 4; i++)
-    {
-        points[i * 2] -= centerX;
-        points[i * 2 + 1] -= centerY;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        points[i * 2] *= scaleX;
-        points[i * 2 + 1] *= scaleY;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        points[i * 2] += centerX;
-        points[i * 2 + 1] += centerY;
-    }
-    func_0021d890(destination, points);
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    uVar1 = *sOpWait & 0xfffffffe;
+    *sOpWait = uVar1;
+    if (uVar1 & 2)
+        opWait0026ed40();
 }
-static inline void opWaitSetPolyPivot(void* destination, f32* points,
-                                      f32 width, f32 height, f32 pivotX,
-                                      f32 pivotY, f32 scaleX, f32 scaleY)
+
+// FUN_0026ec50
+void opWait0026ec50(void)
 {
-    s32 i;
+    u32* work;
 
-    points[0] = 0.0f;
-    points[1] = 0.0f;
-    points[2] = width;
-    points[3] = 0.0f;
-    points[4] = width;
-    points[5] = height;
-    points[6] = 0.0f;
-    points[7] = height;
-    for (i = 0; i < 4; i++)
-    {
-        points[i * 2] -= pivotX;
-        points[i * 2 + 1] -= pivotY;
-        points[i * 2] *= scaleX;
-        points[i * 2 + 1] *= scaleY;
-        points[i * 2] += pivotX;
-        points[i * 2 + 1] += pivotY;
-    }
-    func_0021d890(destination, points);
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    work = sOpWait;
+    work[2] = 0;
+    work[1] = 0;
+    *work |= 4;
 }
+
+// FUN_0026eca0
+void opWait0026eca0(void)
+{
+    u32* work;
+    u32 uVar2;
+
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    work = sOpWait;
+    if (*work & 2)
+        opWait0026ed40();
+    uVar2 = FUN_00269690(1, 0xc, 9);
+    work[0x45c] = uVar2;
+    uVar2 = FUN_00269690(1, 0xc, 9);
+    work[0x45d] = uVar2;
+    *work |= 2;
+}
+
+// FUN_0026ed40
+void opWait0026ed40(void)
+{
+    u8* work;
+
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    work = (u8*)sOpWait;
+    func_002699a0(*(void**)(work + 0x1170));
+    func_002699a0(*(void**)(work + 0x1174));
+    opWaitPutU32(work, 0, opWaitU32(work, 0) & ~2u);
+}
+
+// FUN_0026edb0
+void opWait0026edb0(void)
+{
+    opWait0026edd0();
+}
+
+// FUN_0026edd0
+void opWait0026edd0(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    puVar1 = sOpWait;
+    sOpWait[2] = 0;
+    puVar1[1] = 1;
+    *puVar1 |= 4;
+}
+
+// FUN_0026ee30
+u32 opWait0026ee30(void)
+{
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    return *sOpWait & 4;
+}
+
+// FUN_0026ee80
+u32 opWait0026ee80(void)
+{
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    return *sOpWait & 8;
+}
+
 
 // Retail's frame-0x10 overlay uses a dynamic x offset and fixed 256/375/202 geometry.
 // Keep the explicit atlas lookup and default-mode alpha path even though this
@@ -1077,12 +1113,6 @@ void opWait0026eed0(void)
 #undef rect
 #undef points
 }
-extern f32 func_00269c80(f32 value);
-extern f32 func_00269ca0(f32 value);
-extern f32 func_0052ea18(f32 y, f32 x);
-extern f32 sqrtf(f32 value);
-extern f32 D_00960088;
-extern u8* DAT_007ce420;
 
 static inline RwIm2DVertex* opWaitVertex(u32* param)
 {
@@ -1092,26 +1122,7 @@ static inline RwIm2DVertex* opWaitVertex(u32* param)
     return (RwIm2DVertex*)(stream + param[4] * sizeof(RwIm2DVertex));
 }
 
-static inline u8 opWaitColorByte(f32 value)
-{
-    return (u8)(u32)value;
-}
 
-static inline void opWaitSetVertex(RwIm2DVertex* vertex, f32 x, f32 y,
-                                   f32 u, f32 v, f32 alpha, f32 recipZ)
-{
-    vertex->u.els.scrVertex.x = x;
-    vertex->u.els.scrVertex.y = y;
-    vertex->u.els.scrVertex.z = *(f32*)D_00960088_abs;
-    vertex->u.els.camVertex_z = 0.0f;
-    vertex->u.els.u = u;
-    vertex->u.els.v = v;
-    vertex->u.els.recipZ = recipZ;
-    vertex->u.els.color.r = 255.0f;
-    vertex->u.els.color.g = 255.0f;
-    vertex->u.els.color.b = 255.0f;
-    vertex->u.els.color.a = (f32)opWaitColorByte(alpha);
-}
 
 // FUN_00271230 NONMATCHING
 void func_00271230(u32* param)
@@ -1269,19 +1280,12 @@ void func_00271c10(void)
 }
 
 
-#include "Main/OpEd/op_fade.h"
 
 
 
 
-typedef void (*OpFadeSetRenderState)(u32 state, u32 value);
-typedef void (*OpFadeRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 
-extern void func_0021d8e0_y2(void* destination, f32* layout);
-extern u32 D_00960090_y2[];
-extern u32 D_0096009C_y2[];
 
-static OpFadeWork* sWork; // 007ce3bc
 
 
 
