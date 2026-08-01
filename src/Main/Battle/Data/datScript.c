@@ -1377,6 +1377,7 @@ u32 datScript003111f0(void)
     K_ASSERT(DAT_00957190[0] != NULL, 0x205);
     return !(*DAT_00957190[0] & 4);
 }
+#pragma opt_common_subs reset
 
 
 

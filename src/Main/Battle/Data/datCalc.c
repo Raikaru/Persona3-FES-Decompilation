@@ -3056,6 +3056,7 @@ LAB_00305784:
   }
   return uVar15;
 }
+#pragma opt_lifetimes reset
 #pragma opt_lifetimes on
 // FUN_00305970 NONMATCHING
 
@@ -3243,6 +3244,7 @@ LAB_00305f20:
   }
   return uVar9;
 }
+#pragma opt_lifetimes reset
 
 
 

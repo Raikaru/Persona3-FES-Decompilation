@@ -3105,6 +3105,7 @@ u64 FUN_00396a70(void)
 
   return 0;
 }
+#pragma opt_loop_invariants reset
 #undef FUN_00396ba0
 #define FUN_00396a70(...) ((u64 (*)(...))FUN_00396a70)(__VA_ARGS__)
 // FUN_00396BA0

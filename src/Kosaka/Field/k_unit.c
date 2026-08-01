@@ -440,6 +440,7 @@ void func_001cd8e0(void)
         gFldUnitsPcMdl[i].id = 0;
     }
 }
+#pragma opt_loop_invariants reset
 
 // FUN_001cd940
 FldUnit* K_FldUnit_FindFreePc()

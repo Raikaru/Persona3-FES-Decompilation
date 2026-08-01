@@ -10596,6 +10596,7 @@ u32 func_002f6ab0(BtlAction* action)
     }
     return result;
 }
+#pragma opt_loop_invariants reset
 
 // FUN_002f6bc0
 u32 func_002f6bc0(void)

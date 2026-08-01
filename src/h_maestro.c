@@ -3363,6 +3363,11 @@ void* func_001107d0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+/* Scope spans FUN_001105D0..FUN_001107D0. Closing it any earlier costs
+ * func_001107D0 nd1162 -> 1171, object 1548 -> 1560 (measured W404), so the
+ * knob is live across all four functions, not just the one it precedes. */
+#pragma opt_loop_invariants reset
+
 // FUN_00110E70 MATCHING
 void func_00110e70(KwlnTask* task)
 {
@@ -3962,6 +3967,7 @@ void func_00111f10(KwlnTask* task, u32 noDeltaTime)
 {
     ((HMaestro*)task->workData)->noDeltaTime = noDeltaTime;
 }
+#pragma opt_loop_invariants reset
 // FUN_00111f20
 void H_Maestro_00111f20(KwlnTask* hmaestroTask, u32 param_2)
 {
@@ -5494,6 +5500,7 @@ void func_00115350(f32 depth,
     (*setState)(1, 0);
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants reset
 // FUN_00115980
 
 
@@ -6239,6 +6246,7 @@ u32 func_00115f00(KwlnTask* param_1)
   return 0;
 
 }
+#pragma opt_loop_invariants reset
 
 #pragma opt_loop_invariants off
 // FUN_001165C0
