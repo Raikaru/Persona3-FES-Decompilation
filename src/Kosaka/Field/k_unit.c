@@ -2606,7 +2606,7 @@ void func_001d2610(void)
 }
 
 
-// Measured opt_dead_assignments off: nd1517 -> 1499, object 2116/2192; retained (under window).
+// Measured opt_dead_assignments off: nd1517 -> 1499, object 2116/2192; cached gFldUnitsEc base: nd1499 -> 1497, object 2060/2192; retained (under window).
 #pragma opt_dead_assignments off
 // FUN_001d2a10 NONMATCHING
 void func_001d2a10(void)
@@ -2628,7 +2628,9 @@ void func_001d2a10(void)
     u8* record;
     u8* reaper;
     void** cell;
+    FldUnit* ecUnits;
 
+    ecUnits = gFldUnitsEc;
     memset(DAT_0086b180, 0, 0xc40);
     if (piGpffffa850[0] == -1)
     {
@@ -2639,10 +2641,10 @@ void func_001d2a10(void)
         slot = 0;
         for (i = 0; i < FLDUNIT_EC_MAX; i++)
         {
-            if (gFldUnitsEc[i].genusBase != NULL)
+            if (ecUnits[i].genusBase != NULL)
             {
                 if (slot >= 0x18) { K_ASSERT(0, 0xa47); break; }
-                DAT_0086b180[slot++] = &gFldUnitsEc[i];
+                DAT_0086b180[slot++] = &ecUnits[i];
             }
         }
         slot = 0;
@@ -2670,15 +2672,15 @@ void func_001d2a10(void)
             slot = 0;
             for (k = 0; k < FLDUNIT_EC_MAX; k++)
             {
-                unit = (u8*)&gFldUnitsEc[k];
+                unit = (u8*)&ecUnits[k];
                 if (K_Scene_001a0250() != 0 &&
-                    gFldUnitsEc[k].genusBase != NULL)
+                    ecUnits[k].genusBase != NULL)
                 {
-                    kind = gFldUnitsEc[k].unk_18c;
+                    kind = ecUnits[k].unk_18c;
                     if (K_Scene_001a0250() != 0 && kind != 4)
                     {
                         extent = iGpffffb5a0[kind * 0x10] * (kind == 3 ? 3.0f : 2.0f);
-                        matrix = mdlGetMatrix(gFldUnitsEc[k].mdl);
+                        matrix = mdlGetMatrix(ecUnits[k].mdl);
                         x = matrix->pos.x - extent;
                         z = matrix->pos.z;
                         for (dir = 0; dir < 3; dir++)
@@ -2735,11 +2737,11 @@ void func_001d2a10(void)
             cell = &DAT_0086b180[j * 0xc4 / 4 + i * 0x310 / 4];
             for (k = 0; k < FLDUNIT_EC_MAX; k++)
             {
-                if (gFldUnitsEc[k].genusBase != NULL && gFldUnitsEc[k].unk_18c == 4)
+                if (ecUnits[k].genusBase != NULL && ecUnits[k].unk_18c == 4)
                 {
                     slot = 0;
                     while (slot < 0x18 && cell[slot] != NULL) slot++;
-                    if (slot < 0x18) cell[slot] = &gFldUnitsEc[k];
+                    if (slot < 0x18) cell[slot] = &ecUnits[k];
                     break;
                 }
             }
