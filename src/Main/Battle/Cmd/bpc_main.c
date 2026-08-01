@@ -4,11 +4,11 @@
 #include "Main/Battle/Cmd/bpp_main.h"
 #include "rw/rwplcore.h"
 
-#pragma alias D_00960090_y2 D_00960090_y2
-#pragma alias D_0096009C_y2 D_0096009C_y2
-#pragma alias func_003b1360_y2 func_003b1360_y2
-#pragma alias func_003b0e20_y2 func_003b0e20_y2
-#pragma alias func_001775a0_y2 func_001775a0_y2
+#pragma alias D_00960090_y2 D_00960090
+#pragma alias D_0096009C_y2 D_0096009C
+#pragma alias func_003b1360_y2 func_003b1360
+#pragma alias func_003b0e20_y2 func_003b0e20
+#pragma alias func_001775a0_y2 func_001775a0
 
 extern const char D_0068E880[];
 extern const char DAT_007cc468[];

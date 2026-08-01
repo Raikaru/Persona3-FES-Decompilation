@@ -2,9 +2,9 @@
 #include "Kosaka/k_assert.h"
 #include "Main/Battle/Result/bp_ifont.h"
 
-#pragma alias D_00960088_y2 D_00960088_y2
-#pragma alias kwlnGetMainCamera_y2 kwlnGetMainCamera_y2
-#pragma alias func_0021d8e0_y2 func_0021d8e0_y2
+#pragma alias D_00960088_y2 D_00960088
+#pragma alias kwlnGetMainCamera_y2 kwlnGetMainCamera
+#pragma alias func_0021d8e0_y2 func_0021d8e0
 
 
 extern void* H_Maestro_001120a0(s32 font);

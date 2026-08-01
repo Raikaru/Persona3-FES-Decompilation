@@ -2,18 +2,18 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwcore.h"
 
-#pragma alias sinf_y2 sinf_y2
-#pragma alias cosf_y2 cosf_y2
-#pragma alias D_00960090_y2 D_00960090_y2
-#pragma alias D_0096009C_y2 D_0096009C_y2
-#pragma alias func_0021c3f0_y2 func_0021c3f0_y2
-#pragma alias func_0021cca0_y2 func_0021cca0_y2
-#pragma alias func_0021cce0_y2 func_0021cce0_y2
-#pragma alias func_0021d3b0_y2 func_0021d3b0_y2
-#pragma alias func_0021d890_y2 func_0021d890_y2
-#pragma alias func_0021d8e0_y2 func_0021d8e0_y2
-#pragma alias func_0021d950_y2 func_0021d950_y2
-#pragma alias func_002d20a0_y2 func_002d20a0_y2
+#pragma alias sinf_y2 sinf
+#pragma alias cosf_y2 cosf
+#pragma alias D_00960090_y2 D_00960090
+#pragma alias D_0096009C_y2 D_0096009C
+#pragma alias func_0021c3f0_y2 func_0021c3f0
+#pragma alias func_0021cca0_y2 func_0021cca0
+#pragma alias func_0021cce0_y2 func_0021cce0
+#pragma alias func_0021d3b0_y2 func_0021d3b0
+#pragma alias func_0021d890_y2 func_0021d890
+#pragma alias func_0021d8e0_y2 func_0021d8e0
+#pragma alias func_0021d950_y2 func_0021d950
+#pragma alias func_002d20a0_y2 func_002d20a0
 
 
 /* bi_main.c owns 16 battle-information slots, each 0xF50 bytes. */
