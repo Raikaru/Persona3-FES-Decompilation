@@ -193,59 +193,12 @@ static void FldUnit_ClearPcMdlSlot(s32 index)
 
 
 /* Removing this loses FUN_001cd8e0 (MATCH nd0 -> MISMATCH nd82) - measured W161. */
-#pragma opt_loop_invariants on
 
-// FUN_001CD8E0
-void func_001cd8e0(void)
+typedef struct FldUnitNode
 {
-    s32 i;
-
-    for (i = 0; i < FLDUNIT_PC_MAX; i++)
-    {
-        gFldUnitsPc[i].unk_44 = 1;
-        gFldUnitsPcMdl[i].mdl = NULL;
-        gFldUnitsPcMdl[i].type = 0;
-        gFldUnitsPcMdl[i].id = 0;
-    }
-}
-#pragma opt_loop_invariants off
-
-// FUN_001cd870
-void K_FldUnit_DestroyPcMdl(s32 unitId)
-{
-    if (gFldUnitsPcMdl[unitId].mdl != NULL)
-    {
-        mdlDestroy(gFldUnitsPcMdl[unitId].mdl);
-        
-        gFldUnitsPcMdl[unitId].mdl = NULL;
-        gFldUnitsPcMdl[unitId].type = 0;
-        gFldUnitsPcMdl[unitId].id = 0;
-    }
-}
-
-// FUN_001cd940
-FldUnit* K_FldUnit_FindFreePc()
-{
-    FldUnit* units;
-    FldUnit* free;
-    FldUnit* curr;
-    s32 i;
-
-    free = NULL;
-    i = 0;
-    units = gFldUnitsPc;
-    for (; i < FLDUNIT_PC_MAX; i++)
-    {
-        curr = &units[i];
-        if (curr->genusBase == NULL)
-        {
-            free = curr;
-            break;
-        }
-    }
-
-    return free;
-}
+    Resrc base;
+    RwV3d pos;
+} FldUnitNode;
 
 static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 {
@@ -281,6 +234,237 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
     }
     return model;
 }
+static inline void FldUnit_SetPcFormationPosition(s32 index,
+                                                    FldUnit* unit,
+                                                    RwMatrix* reference,
+                                                    const RwV3d* fieldPosition)
+{
+    RwV3d offset;
+    RwV3d position;
+    KwlnTask* collisCtlTask;
+
+    collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
+    switch (index)
+    {
+    case 0:
+        func_001adc20(collisCtlTask, fieldPosition);
+        break;
+    case 1:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    case 2:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    case 3:
+        position = reference->pos;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 150.0f;
+        position.y += offset.y * 150.0f;
+        position.z += offset.z * 150.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    }
+}
+static inline void FldUnit_SetPcDungeonPosition(s32 index,
+                                                 FldUnit* unit,
+                                                 RwMatrix* reference,
+                                                 RwV3d* axis)
+{
+    RwV3d position;
+    RwV3d offset;
+    KwlnTask* task;
+    f32 angle;
+
+    task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
+    angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
+    switch (index)
+    {
+    case 0:
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
+        break;
+    case 1:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    case 2:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    case 3:
+        position = reference->pos;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 150.0f;
+        position.y += offset.y * 150.0f;
+        position.z += offset.z * 150.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    }
+}
+static u8* FldUnit_FindModelNode(u16 id)
+{
+    u8* node;
+
+    node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_14);
+    while (node != NULL && ((*(u16*)node & 0x3ff) != id))
+    {
+        node = *(u8**)(node + 0x1f0);
+    }
+    return node;
+}
+static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
+{
+    unit->genusBase = (DatUnitGenusBase*)datUnitCreatePc(charId);
+    unit->mdl = (Model*)func_001cd9a0(charId);
+    unit->charId = charId;
+    unit->unk_44 = 0;
+    unit->unk_184 = datPersonaGetLevelByPcId(charId) & 0xff;
+    unit->unk_168 = modelNode;
+    if (charId == 1)
+    {
+        unit->unk_188 = datGetLevel(1) & 0xff;
+        unit->unk_174 = (KwlnTask*)func_001dd460(0, 0, 0x106f);
+    }
+    else
+    {
+        unit->scrCdvd = (HCdvd*)func_00100d80(
+            s__field_script_reserve_xxx_006837af + charId * 0x20 + 1, 0);
+    }
+}
+static inline RwV3d* FldUnit_NodePos(u8* node)
+{
+    return &((FldUnitNode*)node)->pos;
+}
+static inline f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
+{
+    RwV3d delta;
+
+    delta.x = a->x - b->x;
+    delta.y = a->y - b->y;
+    delta.z = a->z - b->z;
+    return RwV3dLength(&delta);
+}
+static inline s32 FldUnit_GridCoord(f32 value)
+{
+    s32 cell;
+
+    cell = (s32)((s32)(value + 400.0f) / 800);
+    if (cell < 0)
+    {
+        return (cell + 3) >> 2;
+    }
+    return cell >> 2;
+}
+
+#pragma opt_loop_invariants off
+
+// FUN_001cd870
+void K_FldUnit_DestroyPcMdl(s32 unitId)
+{
+    if (gFldUnitsPcMdl[unitId].mdl != NULL)
+    {
+        mdlDestroy(gFldUnitsPcMdl[unitId].mdl);
+        
+        gFldUnitsPcMdl[unitId].mdl = NULL;
+        gFldUnitsPcMdl[unitId].type = 0;
+        gFldUnitsPcMdl[unitId].id = 0;
+    }
+}
+#pragma opt_loop_invariants on
+
+// FUN_001CD8E0
+void func_001cd8e0(void)
+{
+    s32 i;
+
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
+    {
+        gFldUnitsPc[i].unk_44 = 1;
+        gFldUnitsPcMdl[i].mdl = NULL;
+        gFldUnitsPcMdl[i].type = 0;
+        gFldUnitsPcMdl[i].id = 0;
+    }
+}
+
+// FUN_001cd940
+FldUnit* K_FldUnit_FindFreePc()
+{
+    FldUnit* units;
+    FldUnit* free;
+    FldUnit* curr;
+    s32 i;
+
+    free = NULL;
+    i = 0;
+    units = gFldUnitsPc;
+    for (; i < FLDUNIT_PC_MAX; i++)
+    {
+        curr = &units[i];
+        if (curr->genusBase == NULL)
+        {
+            free = curr;
+            break;
+        }
+    }
+
+    return free;
+}
+
 
 // Retail offsets 0x21c-0x464 expand the scenario dispatch; offsets 0x684-0xedc re-fetch each PC model cache field per case.
 // The remaining register coloring/layout differences are intentionally NONMATCHING.
@@ -494,129 +678,7 @@ void* func_001cd9a0(u32 charId)
 #pragma opt_propagation on
 #pragma opt_loop_invariants off
 
-static inline void FldUnit_SetPcFormationPosition(s32 index,
-                                                    FldUnit* unit,
-                                                    RwMatrix* reference,
-                                                    const RwV3d* fieldPosition)
-{
-    RwV3d offset;
-    RwV3d position;
-    KwlnTask* collisCtlTask;
 
-    collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    switch (index)
-    {
-    case 0:
-        func_001adc20(collisCtlTask, fieldPosition);
-        break;
-    case 1:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        position.x += offset.x * 120.0f;
-        position.y += offset.y * 120.0f;
-        position.z += offset.z * 120.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    case 2:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 120.0f;
-        position.y += offset.y * 120.0f;
-        position.z += offset.z * 120.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    case 3:
-        position = reference->pos;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 150.0f;
-        position.y += offset.y * 150.0f;
-        position.z += offset.z * 150.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    }
-}
-
-static inline void FldUnit_SetPcDungeonPosition(s32 index,
-                                                 FldUnit* unit,
-                                                 RwMatrix* reference,
-                                                 RwV3d* axis)
-{
-    RwV3d position;
-    RwV3d offset;
-    KwlnTask* task;
-    f32 angle;
-
-    task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
-    switch (index)
-    {
-    case 0:
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
-        break;
-    case 1:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        position.x += offset.x * 90.0f;
-        position.y += offset.y * 90.0f;
-        position.z += offset.z * 90.0f;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 70.0f;
-        position.y += offset.y * 70.0f;
-        position.z += offset.z * 70.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    case 2:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 90.0f;
-        position.y += offset.y * 90.0f;
-        position.z += offset.z * 90.0f;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 70.0f;
-        position.y += offset.y * 70.0f;
-        position.z += offset.z * 70.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    case 3:
-        position = reference->pos;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 150.0f;
-        position.y += offset.y * 150.0f;
-        position.z += offset.z * 150.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    }
-}
 
 // FUN_001CE880 NONMATCHING
 void func_001ce880(void)
@@ -1137,6 +1199,53 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
 #pragma opt_dead_assignments reset
 #pragma opt_propagation reset
 
+// FUN_001cfc50
+FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
+{
+    FldUnit* units;
+    FldUnit* curr;
+    FldUnit* unit;
+    s32 i;
+
+    unit = NULL;
+    i = 0;
+    units = gFldUnitsEc;
+    for (; i < FLDUNIT_EC_MAX; i++)
+    {
+        curr = &units[i];
+        if (curr->genusBase == NULL)
+        {
+            unit = curr;
+            break;
+        }
+    }
+
+    if (datGetFlag(5141) == true)
+    {
+        return NULL;
+    }
+    else if (unit == NULL)
+    {
+        return NULL;
+    }
+
+    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEc(BTLENCOUNT_REAPER);
+    unit->encount = &gEncountTbl[BTLENCOUNT_REAPER];
+    unit->unk_18c = 4;
+    unit->scaleIdx = 0;
+    unit->charId = 0;
+    unit->mdl = mdlCreateAndResolvePath(MODEL_TYPE_ENEMYSYMBOL, 3, MDL_READASYNC);
+    unit->spawnPos = *spawnPos;
+    unit->unk_168 = &unit->unk_58;
+    unit->xGrid = (spawnPos->x + 400.0f) / 800.0f;
+    unit->zGrid = (spawnPos->z + 400.0f) / 800.0f;
+    unit->unk_184 = 1000;
+
+    sFldUnitsEcCount++;
+
+    return unit;
+}
+
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
 {
@@ -1219,53 +1328,6 @@ u32 func_001d00b0(void)
         }
     }
     return true;
-}
-
-// FUN_001cfc50
-FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
-{
-    FldUnit* units;
-    FldUnit* curr;
-    FldUnit* unit;
-    s32 i;
-
-    unit = NULL;
-    i = 0;
-    units = gFldUnitsEc;
-    for (; i < FLDUNIT_EC_MAX; i++)
-    {
-        curr = &units[i];
-        if (curr->genusBase == NULL)
-        {
-            unit = curr;
-            break;
-        }
-    }
-
-    if (datGetFlag(5141) == true)
-    {
-        return NULL;
-    }
-    else if (unit == NULL)
-    {
-        return NULL;
-    }
-
-    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEc(BTLENCOUNT_REAPER);
-    unit->encount = &gEncountTbl[BTLENCOUNT_REAPER];
-    unit->unk_18c = 4;
-    unit->scaleIdx = 0;
-    unit->charId = 0;
-    unit->mdl = mdlCreateAndResolvePath(MODEL_TYPE_ENEMYSYMBOL, 3, MDL_READASYNC);
-    unit->spawnPos = *spawnPos;
-    unit->unk_168 = &unit->unk_58;
-    unit->xGrid = (spawnPos->x + 400.0f) / 800.0f;
-    unit->zGrid = (spawnPos->z + 400.0f) / 800.0f;
-    unit->unk_184 = 1000;
-
-    sFldUnitsEcCount++;
-
-    return unit;
 }
 
 // FUN_001d0110
@@ -1380,37 +1442,7 @@ void K_FldUnit_DestroyAllEc()
     }
 }
 
-static u8* FldUnit_FindModelNode(u16 id)
-{
-    u8* node;
 
-    node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_14);
-    while (node != NULL && ((*(u16*)node & 0x3ff) != id))
-    {
-        node = *(u8**)(node + 0x1f0);
-    }
-    return node;
-}
-
-static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
-{
-    unit->genusBase = (DatUnitGenusBase*)datUnitCreatePc(charId);
-    unit->mdl = (Model*)func_001cd9a0(charId);
-    unit->charId = charId;
-    unit->unk_44 = 0;
-    unit->unk_184 = datPersonaGetLevelByPcId(charId) & 0xff;
-    unit->unk_168 = modelNode;
-    if (charId == 1)
-    {
-        unit->unk_188 = datGetLevel(1) & 0xff;
-        unit->unk_174 = (KwlnTask*)func_001dd460(0, 0, 0x106f);
-    }
-    else
-    {
-        unit->scrCdvd = (HCdvd*)func_00100d80(
-            s__field_script_reserve_xxx_006837af + charId * 0x20 + 1, 0);
-    }
-}
 
 // Measured opt_common_subs off: nd506 -> 418, object 812/816; retained (under window).
 #pragma opt_common_subs off
@@ -1524,26 +1556,8 @@ void func_001d03f0(u16 charId)
 #pragma opt_loop_invariants off
 #pragma opt_common_subs reset
 
-typedef struct FldUnitNode
-{
-    Resrc base;
-    RwV3d pos;
-} FldUnitNode;
 
-static inline RwV3d* FldUnit_NodePos(u8* node)
-{
-    return &((FldUnitNode*)node)->pos;
-}
 
-static inline f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
-{
-    RwV3d delta;
-
-    delta.x = a->x - b->x;
-    delta.y = a->y - b->y;
-    delta.z = a->z - b->z;
-    return RwV3dLength(&delta);
-}
 
 // FUN_001d0720 NONMATCHING
 s32 func_001d0720(s32 targetCount)
@@ -2588,17 +2602,6 @@ void func_001d2610(void)
     }
 }
 
-static inline s32 FldUnit_GridCoord(f32 value)
-{
-    s32 cell;
-
-    cell = (s32)((s32)(value + 400.0f) / 800);
-    if (cell < 0)
-    {
-        return (cell + 3) >> 2;
-    }
-    return cell >> 2;
-}
 
 // Measured opt_dead_assignments off: nd1517 -> 1499, object 2116/2192; retained (under window).
 #pragma opt_dead_assignments off
