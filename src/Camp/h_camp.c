@@ -5,20 +5,32 @@
  * 64 foreign addresses fall inside run 1's span and 120 inside run 3's - so
  * reaching ORDERED needs a genuine three-way merge relocating ~64 blocks.
  *
- * Measured W405/W406, two independent attempts:
- *   - seven targeted group moves took it from 8 inversions to 2 with ZERO
- *     metric change (those are applied and retained);
- *   - the frozen m_link_order transform reaches ORDERED but does not compile,
- *     because declarations are scattered between definitions;
- *   - a fully ordered hand-built candidate compiled cleanly but measured 98
- *     metric diffs (168 MATCH -> 127 MATCH + 41 MISMATCH) and was rejected.
+ * This file is UNSOLVED, not unsolvable. A zero-loss ordering provably exists:
+ * retail's own source compiled in this exact order and produced these exact
+ * bytes. Reordering cannot change a function's codegen by itself - it changes
+ * bytes only when the function's DECLARATION AND PRAGMA ENVIRONMENT moves out
+ * from under it. Every one of the other 177 files reached ORDERED at exactly
+ * zero metric change, which is the expected result, not a lucky one.
  *
- * The two survivors are blocked by mid-file declaration bands, not by codegen:
- * FUN_0016AF90 vs h_campDrawStatusOverview across the status alias band, and
- * FUN_00166C70 vs FUN_00122630 across the Camp/_h_camp_persona.h include and
- * its y6/y7 alias prototypes. Physical order affects only a byte-identical
- * LINK, which verify.py does not measure, so do NOT trade any of the 168
- * matches for it. */
+ * Measured W405/W406, two attempts:
+ *   - seven targeted group moves took it from 8 inversions to 2 with ZERO
+ *     metric change (applied and retained);
+ *   - a fully ordered hand-built candidate compiled cleanly but measured 98
+ *     metric diffs (168 MATCH -> 127 MATCH + 41 MISMATCH). Those 41 are a
+ *     DEFECT IN THAT CANDIDATE, not the price of ordering: each one names a
+ *     declaration or pragma scope that the merge failed to carry along.
+ *
+ * The way in is to diagnose those 41 individually - for each, diff the set of
+ * declarations, prototypes, macros and active pragmas visible above it before
+ * and after the move, and restore it. That is mechanical and bounded. The two
+ * survivors sit across mid-file declaration bands: FUN_0016AF90 vs
+ * h_campDrawStatusOverview across the status alias band, and FUN_00166C70 vs
+ * FUN_00122630 across the Camp/_h_camp_persona.h include and its y6/y7 alias
+ * prototypes.
+ *
+ * Constraint, not excuse: never COMMIT an ordering that costs a match. Order
+ * and matches are both required for a byte-identical link, so a candidate that
+ * trades one for the other is simply wrong and must be fixed, not shipped. */
 #include "Camp/h_camp.h"
 extern int sprintf(char* buffer, const char* format, ...);
 #include "Camp/_h_camp_status.h"
