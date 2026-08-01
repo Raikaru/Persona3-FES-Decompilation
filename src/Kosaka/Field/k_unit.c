@@ -681,6 +681,17 @@ void* func_001cd9a0(u32 charId)
 
 
 
+/* W410: the lone residual is offset 128, ours `addu $v1,$v1,$a0` against retail
+ * `addu $v1,$a0,$v1` - the address of model->attachedWpns[j]. This IS a genuine
+ * compiler floor, not an untested assumption. The decisive measurement: writing
+ * the address base-first `*(Model**)((u8*)model + 0x3b8 + j*12)` and index-first
+ * `*(Model**)(j*12 + (u8*)model + 0x3b8)` compile to IDENTICAL bytes (both nd14),
+ * so source operand order does not propagate through MWCC's address folding.
+ * Note the compiler is not canonicalizing globally - offset 120's `addu $v1,$a1,$s1`
+ * matches retail exactly - it is specific to this fold.
+ * Eight spellings measured: struct index nd1 (best, current), inlined unit->mdl
+ * nd1, both explicit byte forms nd14, index-in-a-named-local nd14, model hoisted
+ * out of the inner loop nd163 at 228 bytes. A local AttachedWpn* does not compile. */
 // FUN_001CE880 NONMATCHING
 void func_001ce880(void)
 {
