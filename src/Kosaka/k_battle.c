@@ -163,6 +163,9 @@ static void K_Encount_CompactEc(EncounterWork* work)
 
 
 
+/* W423 probes: allocator global alias stayed nd55/object348/window352
+ * (0.157670); chained pc/ec count assignment was nd142/object344/window352
+ * (0.412791), both reverted. */
 // FUN_001d8b00 NONMATCHING
 KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
 {

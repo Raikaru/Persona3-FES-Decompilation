@@ -230,12 +230,14 @@ extern void func_00521250(void* destination, const void* source, u32 size);
  * scalar field-address helper stayed nd16/object356/window368 (0.044944);
  * parent-local materialization also stayed nd16/356/368. Direct frame-field
  * expressions worsened to nd188/object332/window368 (0.566265). */
+/* W423 retained parent/task local merge: nd16/object356/window368
+ * (0.044944) -> nd14/356/368 (0.039326); parentTask carries the created
+ * task through destruction, cylinder creation, and return. */
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
     RwFrame** slot0;
     RwFrame** slot1;
-    KwlnTask* task;
     FldFilterCameraWork* work;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
@@ -243,17 +245,17 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
     {
         return NULL;
     }
-    task = kwlnTaskCreateWithAutoPriority(parentTask,
-                                          10,
-                                          D_00683A60,
-                                          (KwlnTaskUpdateFunc)FUN_001d5220,
-                                          (KwlnTaskDestroyFunc)FUN_001d59e0,
-                                          work);
+    parentTask = kwlnTaskCreateWithAutoPriority(parentTask,
+                                                10,
+                                                D_00683A60,
+                                                (KwlnTaskUpdateFunc)FUN_001d5220,
+                                                (KwlnTaskDestroyFunc)FUN_001d59e0,
+                                                work);
     slot1 = &work->frame;
     *slot1 = func_004caf10();
     if (*slot1 == NULL)
     {
-        kwlnTaskDestroyWithHierarchy(task);
+        kwlnTaskDestroyWithHierarchy(parentTask);
         return NULL;
     }
     func_004cb930(*slot1);
@@ -269,8 +271,8 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
     {
         K_Assert(D_00683A78, 0x1b4);
     }
-    K_Draw_CreateCylinderTask(task);
-    return task;
+    K_Draw_CreateCylinderTask(parentTask);
+    return parentTask;
 }
 
 // FUN_001d5c00

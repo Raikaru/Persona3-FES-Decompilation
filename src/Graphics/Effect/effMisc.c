@@ -10,7 +10,7 @@ static EffRandState sRandState; // 00957bf0
 
 typedef struct EffRenderState
 {
-    u32 renderState;
+    RwRenderState renderState;
     u32 value;
 } EffRenderState;
 
@@ -424,17 +424,14 @@ void func_00358410(void)
     );
 }
 
-// Corrected SCE_GS_SET_TEST_1 afail argument to match retail's ATEST_1 constant.
-// Remaining residual is MWCC's fixed argument-register order for getRenderState/
-// setRenderState calls (simple-load arg vs computed-address arg); 2 independent
-// reorder attempts (temp var, syntactic variant) had zero effect on emitted code.
 
-// FUN_00358460 NONMATCHING
+// FUN_00358460
 void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;
     u32 j;
     const EffRenderState* renderState;
+    u32* savedRenderState;
     RwIm2DVertex vertices[4];
     u32 savedRenderStates[6];
     f32 zBufferNear;
@@ -445,7 +442,8 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
+            savedRenderState = &savedRenderStates[i];
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, savedRenderState);
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 
@@ -500,6 +498,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (j = 0; j < 6; j++)
         {
             renderState = &sEffRenderStates[j];
+            savedRenderState = &savedRenderStates[j];
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)savedRenderStates[j]);
         }
     }

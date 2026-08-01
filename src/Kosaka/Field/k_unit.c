@@ -3241,6 +3241,9 @@ KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit)
 /* W421 address-lifetime probes: direct task-slot check nd117/object256/window272
  * (0.457031); postUnit element local nd171/object244/window272 (0.700820);
  * both reverted; retained nd7/object260/window272 (0.026923). */
+/* W423 task-slot role probes: an outer FldUnit base local stayed
+ * nd7/object260/window272 (0.026923); a cached KwlnTask local worsened
+ * nd64/object240/window272 (0.266667), both reverted. */
 // FUN_001d4180 NONMATCHING
 void func_001d4180(void)
 {

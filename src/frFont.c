@@ -295,9 +295,14 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #undef FUN_003afad0
 /* W389 residual: register-coloring/address-expression floor after recovering the real block-pointer form (candidate id uses $a0 vs retail $a1; final slot/data temporaries also differ). Baseline nd=10/object=348/window=352; six-knob singles stayed nd=10 except common-subs off, which exceeded the window at nd=73/object=356; declaration swap was neutral; pair sweep had no win. */
 /* W421 operand-order probe retained: `frFontAddOffset(offset, glyph_count * 4)`
- * measures nd=7/object=348/window=352 (rate 0.020115), down from
- * nd=10/rate 0.028736. Remaining differences are register coloring/address
- * expression rows 80/84/100/296/300/312. */
+ * measured nd=7/object=348/window=352 (rate 0.020115), down from
+ * nd=10/rate 0.028736. At that stage the residual rows were register
+ * coloring/address-expression rows 80/84/100/296/300/312. */
+/* W423 source-base probe retained: using the original `font_data` for
+ * `slot->object` while retaining `slot->font_data` for the glyph-count load
+ * fixes retail's final three address-expression rows; verify normalized_diff
+ * is now 3/object=348/window=352. Remaining rows are the id register-coloring
+ * cycle at offsets 80/84/100. */
 static inline int frFontAddOffset(int offset, int glyph_count) {
   return offset + glyph_count;
 }
@@ -350,7 +355,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   slot->flags = (u32)(data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
-  slot->object = (u8 *)slot->font_data +
+  slot->object = (u8 *)font_data +
                  frFontAddOffset(offset,
                                  *(u16 *)((u8 *)slot->font_data + 0xe) * 4);
 }

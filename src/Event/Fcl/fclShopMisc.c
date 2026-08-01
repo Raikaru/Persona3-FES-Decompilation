@@ -6118,6 +6118,9 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
   int iVar6;
 
   int iVar5;
+  int cond2;
+  int cond1;
+  int cond3;
 
   
 
@@ -6135,24 +6138,26 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
   iVar5 = *(volatile int *)(iVar5 + 0xc) -
           *(volatile int *)(iVar6 + 0xc);
 
-  if ((iVar5 <= sVar1) && (iVar3 = sVar1 - iVar5, 4 < iVar3)) {
-
-    iVar3 = 5;
-
+  if (iVar5 <= sVar1) {
+    iVar3 = sVar1 - iVar5;
+    cond3 = iVar3 < 5;
+    if (cond3 == 0) {
+      iVar3 = 5;
+    }
   }
 
   iVar6 = param_1 - (0x1e - (iVar3 * 0x1e) / 5);
 
   iVar5 = (iVar3 * 0xff) / 5;
 
-  if (3 < sVar1) {
+  cond1 = sVar1 < 4;
+  if (cond1 == 0) {
 
     iVar3 = sVar1 + -4;
 
-    if (4 < iVar3) {
-
+    cond2 = iVar3 < 5;
+    if (cond2 == 0) {
       iVar3 = 5;
-
     }
 
     uVar4 = (iVar3 * 0xff) / 5;

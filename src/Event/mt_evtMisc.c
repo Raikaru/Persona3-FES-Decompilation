@@ -4217,8 +4217,8 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
         *(f32 *)(puVar2 + 3) = fVar12;
 
         puVar2 = (u32 *)FUN_001a0d80();
-        puVar5 = (u32 *)(puVar1 + 0xa8);
         iVar4 = 8;
+        puVar5 = (u32 *)(puVar1 + 0xa8);
         do {
 
           uVar6 = *puVar5;

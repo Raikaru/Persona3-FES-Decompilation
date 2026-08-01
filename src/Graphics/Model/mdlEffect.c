@@ -1121,6 +1121,10 @@ void FUN_00326740(int param_1);
 u32 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
 void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
+static inline u16 mdlEffectLoadType(u16 value)
+{
+  return value;
+}
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
 #pragma alias FUN_00326cf0_2 FUN_00326cf0
 extern void FUN_00326cf0_2(int param_1,u32 param_2);
@@ -7916,7 +7920,7 @@ void FUN_00326740(int param_1)
 
 
 
-// FUN_003268C0 NONMATCHING
+// FUN_003268C0
 
 
 u32 FUN_003268c0(u32 param_1)
@@ -7926,20 +7930,14 @@ u32 FUN_003268c0(u32 param_1)
 {
 
   int iVar1;
-
   u32 uVar2;
-
   u32 uVar3;
 
-
-  int iVar4;
   u32 *puVar5;
-
   
 
 
-  iVar4 = (int)param_1;
-  iVar1 = *(int *)(*(int *)(iVar4 + 0x4c) + 0x24);
+  iVar1 = *(int *)(*(int *)(param_1 + 0x4c) + 0x24);
   if (*(int *)(iVar1 + 0x20) == 0) {
 
     uVar2 = *(int *)(iVar1 + 0xb8) * *(int *)(iVar1 + 0x24);
@@ -7970,13 +7968,13 @@ u32 FUN_003268c0(u32 param_1)
 
   puVar5[2] = 0x3f800000;
 
-  FUN_00326c70((u32 *)(uVar3),(u16)(**(u16 **)(iVar4 + 0x4c)),(u32)(iVar1));
+  FUN_00326c70(puVar5,mdlEffectLoadType(**(u16 **)(param_1 + 0x4c)),(u32)(iVar1));
 
   if (*puVar5 == 0) {
     return uVar3;
   }
 
-  uVar2 = *(u32 *)(iVar4 + 0x50);
+  uVar2 = *(u32 *)(param_1 + 0x50);
   if (uVar2 != 0) {
 
     uVar2 = FUN_00323640((u16 *)uVar2);
@@ -18530,6 +18528,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
 {
 
+  u16 switchParam;
   int iVar1;
 
 
@@ -18547,7 +18546,8 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
 
 
-  switch(param_2) {
+  switchParam = param_2;
+  switch(switchParam) {
   case 1:
 
     FUN_00326cf0_2(param_1[0xb],*param_1);

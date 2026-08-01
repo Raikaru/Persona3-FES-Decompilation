@@ -1224,9 +1224,10 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
     f32 y;
 
     {
+        u32* out;
         s32 copy;
         const u32* in = (const u32*)D_0068E7C0;
-        u32* out = (u32*)transformed;
+        out = (u32*)transformed;
         for (copy = 8; copy > 0; copy--) {
             *out++ = *in++;
             *out++ = *in++;
