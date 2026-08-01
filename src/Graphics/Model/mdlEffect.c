@@ -1068,7 +1068,7 @@ void FUN_00324a90(int param_1);
 #pragma alias FUN_00324a90_f32 FUN_00324a90
 extern void FUN_00324a90_f32(float param_1,u32 param_2);
 void FUN_00324af0(int param_1, u32 param_2);
-void FUN_00324b50(u32 param_1);
+u32 FUN_00324b50(u32 param_1);
 #pragma alias FUN_00324bd0_passthru FUN_00324bd0
 extern u64 FUN_00324bd0_passthru(void);
 u32 FUN_00324bd0(u32 param_1);
@@ -5948,11 +5948,12 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 // FUN_00324B50 NONMATCHING
 
-void FUN_00324b50(u32 param_1)
+u32 FUN_00324b50(u32 param_1)
 
 {
 
   u8 *pauVar5;
+  u32 source;
 
   FUN_00521408(param_1,0,0x80);
 
@@ -5966,11 +5967,13 @@ void FUN_00324b50(u32 param_1)
 
   *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
-  *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)DAT_0069c4a0_abs;
+  source = (u32)DAT_0069c4a0_abs;
+  *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)(u8 *)source;
   *(u32 *)(pauVar5 + 0x60) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x74) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
   *(u32 *)(pauVar5 + 0x68) = 0x80;
+  return source;
 }
 
 

@@ -3240,7 +3240,7 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #undef FUN_003bb450
 #undef FUN_003bb620
-/* W389 partial: `SceneVecBits` aggregate pointer copy reduced nd13 -> 6, object 376/384 -> 376/384. Remaining residual is compiler aggregate-copy width/temp coloring (retail ld/lwc1 then sd/swc1; this form emits ld/ld then sd/sd). */
+/* W406 aggregate-width probes: the packed-pragma local aggregate measured normalized_diff 132 with object/window 384/384, while explicit no-local member-copy forms measured normalized_diff 13/14. The volatile scalar-source copy below is the best measured form (normalized_diff 4, object/window 376/384); do not alter the shared SceneVecBits typedef. */
 // FUN_003BB620 NONMATCHING
 
 
@@ -3277,6 +3277,10 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
   f32 direction[3];
 
   float normal[3];
+  u64 xy;
+  f32 z;
+  u8 *dest;
+
 
   float t0;
   float t1;
@@ -3336,7 +3340,11 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
 
     } while (0 < cnt);
 
-    *(SceneVecBits *)direction = *(SceneVecBits *)dstbuf;
+    dest = (u8 *)direction;
+    xy = *(volatile u64 *)dstbuf;
+    z = *(volatile f32 *)((u8 *)dstbuf + 8);
+    *(u64 *)dest = xy;
+    *(f32 *)(dest + 8) = z;
     FUN_004c69f0(normal,direction);
 
     src1[0] = src1[0] - normal[0] * 15.0f;
