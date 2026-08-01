@@ -157,6 +157,8 @@ void brItem0025d9e0(void)
 }
 
 #pragma opt_propagation off
+/* W422 sqrtf(2.0f) replacement at quad[7]: nd3352/4856B -> nd3363/4868B
+ * (window4880B), rate worsened from 0.690699 to 0.690748; reverted. */
 // FUN_0025DA30 NONMATCHING
 void FUN_0025da30(void)
 
@@ -1106,6 +1108,8 @@ void FUN_0025fb60(int contextAddress, int entryIndex, float* uv)
 
 
 
+/* W422 split reused iVar1 pointer local: nd938/2012B unchanged
+ * (window2016B); reverted. */
 // FUN_0025FC50 NONMATCHING
 void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 {

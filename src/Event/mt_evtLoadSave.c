@@ -3346,6 +3346,15 @@ LAB_00391290:
 #undef FUN_00391080
 /* Measured W327: opt_loop_invariants on, with/without nd 7848/7975, object 10720/11072. */
 #pragma opt_loop_invariants on
+/* FUN_003912f0 diagnosis: ours frame -0x90 versus retail -0x120, with an
+ * identical saved-register set; the 144-byte deficit is eighteen absent
+ * stack-local four-halfword aggregates. The 18-aggregate reconstruction
+ * reached nd7418 at object 11084 (12 bytes over the 11072-byte window), while
+ * removing the half4_2e barrier reached nd7486 at object 11056 (16 bytes
+ * under the window, the landable variant). Barrier locals cost real bytes.
+ * The tag2b index split and tag4 puVar16 direct rewrite were metric-neutral.
+ * Baseline is nd7848 at object 10720/11072.
+ */
 // FUN_003912F0 NONMATCHING
 
 

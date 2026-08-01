@@ -2980,8 +2980,7 @@ alpha_done:
     scaledAlphaColour = 0xffffff00u | scaledAlphaColour;
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
         u8* record = records + i * 0x420;
-        kind = *(u32*)record;
-        switch (kind) {
+        switch (*(u32*)record) {
         case 0:
         case 2:
             goto loop_kind02;
@@ -2997,17 +2996,17 @@ alpha_done:
         if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
             if (*(u32*)(record + 0x410) != 0) {
                 selColour = scaledAlphaColour;
-            } else if (kind == 2) {
+            } else if (*(u32*)record == 2) {
                 selColour = colours[1];
-            } else if (kind == 0) {
+            } else if (*(u32*)record == 0) {
                 selColour = colours[0];
             }
         } else {
             if (*(u32*)(record + 0x410) != 0) {
                 selColour = scaledAlphaColour;
-            } else if (kind == 2) {
+            } else if (*(u32*)record == 2) {
                 selColour = colours[3];
-            } else if (kind == 0) {
+            } else if (*(u32*)record == 0) {
                 selColour = colours[2];
             }
         }

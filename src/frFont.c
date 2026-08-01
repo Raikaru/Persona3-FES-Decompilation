@@ -294,12 +294,14 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003afa40(...) ((void (*)(...))FUN_003afa40)(__VA_ARGS__)
 #undef FUN_003afad0
 /* W389 residual: register-coloring/address-expression floor after recovering the real block-pointer form (candidate id uses $a0 vs retail $a1; final slot/data temporaries also differ). Baseline nd=10/object=348/window=352; six-knob singles stayed nd=10 except common-subs off, which exceeded the window at nd=73/object=356; declaration swap was neutral; pair sweep had no win. */
-/* W421 operand-order probe: `frFontAddOffset(offset, glyph_count * 4)` measured
- * nd=7/object=348/window=352 (rate 0.020115), down from nd=10/rate 0.028736,
- * but rows 80/84/100 still had `andi/sll/slti $a0` versus retail `$a1`, and
- * rows 296/300/312 still had `lw $a0,4($s0)`/`lhu $v1,0xe($a0)`/`addu
- * $v1,$a0,$v1` versus retail `$v1`-based forms. Reverted because it was not
- * a MATCH. */
+/* W421 operand-order probe retained: `frFontAddOffset(offset, glyph_count * 4)`
+ * measures nd=7/object=348/window=352 (rate 0.020115), down from
+ * nd=10/rate 0.028736. Remaining differences are register coloring/address
+ * expression rows 80/84/100/296/300/312. */
+static inline int frFontAddOffset(int offset, int glyph_count) {
+  return offset + glyph_count;
+}
+/* The helper parameter order presents the retail addu operand order. */
 // FUN_003AFAD0 NONMATCHING
 
 
@@ -348,8 +350,9 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   slot->flags = (u32)(data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
-  slot->object = (u8 *)slot->font_data + offset +
-                 *(u16 *)((u8 *)slot->font_data + 0xe) * 4;
+  slot->object = (u8 *)slot->font_data +
+                 frFontAddOffset(offset,
+                                 *(u16 *)((u8 *)slot->font_data + 0xe) * 4);
 }
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
 #undef FUN_003afc30
@@ -3030,7 +3033,7 @@ void FUN_003b22a0(u32 *param_1)
 
   u8 uVar1;
 
-  u16 uVar2;
+  s16 uVar2;
 
   u16 *puVar3;
 
@@ -3041,6 +3044,7 @@ void FUN_003b22a0(u32 *param_1)
   int iVar6;
 
   int lVar7;
+
 
   
 

@@ -3622,7 +3622,12 @@ void FUN_002a1db0(s32 param_1)
  * +368 ours madd.s $f20,$f1,$f0 versus retail madd.s $f20,$f0,$f1;
  * +428 ours madd.s $f21,$f1,$f0 versus retail madd.s $f21,$f0,$f1.
  * Both destinations match and both source pairs are swapped. */
-// FUN_002A1E00 NONMATCHING
+static inline f32 btlMainMulFirst(f32 left, f32 right)
+{
+    return left * right;
+}
+
+// FUN_002A1E00
 
 
 void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
@@ -3667,7 +3672,7 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
       fVar1 = fVar2 * fVar1 + fGpffff8050 + 0.0f;
       fVar1 = fVar2 * fVar1 + fGpffff8054 + 0.0f;
       fVar1 = fVar2 * fVar1 + fGpffff8058 + 0.0f;
-      fVar5 = fVar2 * fVar5 * fVar1 + fVar5 + 0.0f;
+      fVar5 = btlMainMulFirst(fVar2 * fVar5, fVar1) + fVar5 + 0.0f;
       param_1 = param_1 * interpolation.values[8];
       fVar2 = param_1 * param_1;
       fVar1 = fGpffff8044 * fVar2 + fGpffff8048 + 0.0f;
@@ -3675,7 +3680,7 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
       fVar1 = fVar2 * fVar1 + fGpffff8050 + 0.0f;
       fVar1 = fVar2 * fVar1 + fGpffff8054 + 0.0f;
       fVar1 = fVar2 * fVar1 + fGpffff8058 + 0.0f;
-      param_1 = fVar2 * param_1 * fVar1 + param_1 + 0.0f;
+      param_1 = btlMainMulFirst(fVar2 * param_1, fVar1) + param_1 + 0.0f;
     }
     out[3] = interpolation.values[0] * fVar5;
     out[4] = interpolation.values[1] * fVar5;

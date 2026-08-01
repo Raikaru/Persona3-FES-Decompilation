@@ -7501,6 +7501,12 @@ u16 func_002c6ba0(int param_1)
 #pragma opt_loop_invariants off
 
 /* BtlCore2 W419 negative: c6e30 direct loop-index/removal probes held nd46 at 288B; shared-counter variant failed compilation. */
+/* W422: static-inline base-first address helper on both weight loops preserved 288B and reduced nd46 -> 32; remaining rows are loop-index/register order and global-address floor. */
+/* W422 reverted probes: direct-index and first-loop-while forms held nd44/32; u8 weight held nd32; u16 weight nd86 at 292/288; second-index alias nd91 at 300/288. */
+static inline u8* btlEffectAddFirst(u8* base, u32 offset)
+{
+  return base + offset;
+}
 // FUN_002c6e30 NONMATCHING
 
 undefined* func_002c6e30(int unit, u32 group)
@@ -7508,8 +7514,8 @@ undefined* func_002c6e30(int unit, u32 group)
   extern u32 func_002ffbc0(u32);
   u16 unitId;
   u16 i1;
-  u16 random;
   u32 idx;
+  u16 random;
   u16 cumulative;
   u16 total;
   u16 i2;
@@ -7523,7 +7529,7 @@ undefined* func_002c6e30(int unit, u32 group)
   weights += (group & 0xffff) * 0x28;
   for (; i1 < 5; i1 = (i1 + 1) & 0xffff) {
     idx = i1;
-    total += weights[idx * 8 + 0x2c];
+    total += btlEffectAddFirst(weights, idx * 8)[0x2c];
   }
   if (total == 0) {
     return &DAT_007cc740;
@@ -7532,7 +7538,7 @@ undefined* func_002c6e30(int unit, u32 group)
   random = func_002ffbc0(total);
   cumulative = 0;
   for (i2 = 0; i2 < 5; i2 = (i2 + 1) & 0xffff) {
-    weight = weights[i2 * 8 + 0x2c];
+    weight = btlEffectAddFirst(weights, i2 * 8)[0x2c];
     cumulative += weight;
     if (random <= cumulative && weight > 0) {
       return weights + i2 * 8 + 0x2c;

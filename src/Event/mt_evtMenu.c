@@ -1485,7 +1485,8 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
 }
 
 
-/* W414: switch, while, explicit-else, and goto layout probes left the nd1 branch landing unchanged. */
+/* W414: switch, while, explicit-else, and goto layout probes left the nd1 branch landing unchanged.
+   W422 one-shot while callback probe produced nd32/object336/window320 and was reverted. */
 // FUN_0036F900 NONMATCHING
 
 
@@ -9456,6 +9457,7 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 /* W414: shared-value, parameter-return, and switch/goto layout probes did not improve nd4. */
 /* W419 return-value locals and one-argument variants stayed nd4/object324; retail's move v0,a2 remains unresolved. */
 /* W419 return-value negative: nd4/object324/window336/rate1.23% for all one-local and one-argument variants; retail move v0,a2 unresolved. */
+/* W422 negatives: literal return 1 and a static-inline three-argument return helper both stayed nd2/object324/window336; retail move v0,a2 remained. */
 // FUN_0037A640 NONMATCHING
 
 

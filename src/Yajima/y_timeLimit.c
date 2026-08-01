@@ -5420,8 +5420,8 @@ u8 FUN_0045e0c0(int param_1)
 /* W373 singles base 372/596; loop 372/596; common 55/616; life 373/596; propagation 372/596; strength 372/596; dead 372/596. */
 #pragma opt_common_subs off
 /* W419 DAT_007ce704 _abs probes: u32 alias nd48/616 changed signed slti to sltiu; s32 alias stayed nd55/616; retained original. */
-/* W420 negatives: direct integer-first FUN_0045afd0_call3 measured nd386/object688 against window624; an inline integer-first wrapper stayed nd55/object616; both reverted. */
-// FUN_0045E170 NONMATCHING
+/* W420 negative: direct integer-first FUN_0045afd0_call3 without loop-index splitting measured nd386/object688 against window624; an inline integer-first wrapper stayed nd55/object616. W422 split the three loop indices (tail declarations) and used the interleaved call3 prototype, producing nd0/object616 at window624. */
+// FUN_0045E170
 
 u8 FUN_0045e170(int param_1)
 {
@@ -5431,6 +5431,8 @@ u8 FUN_0045e170(int param_1)
   int result;
   int count;
   int entry;
+  int loop2;
+  int loop3;
 
   base = *(int *)(param_1 + 0x3c);
   if (*(int *)(base + 8) == 0) {
@@ -5441,25 +5443,24 @@ u8 FUN_0045e170(int param_1)
     for (loop = 0; loop < 4; loop++) {
       address = base + (DAT_007ce704 + loop * 6) * 0x98 + 0x340;
       FUN_0045af90(address);
-      FUN_0045afd0(DAT_007cafc0,address,0,0,0,0,0,0,6);
+      FUN_0045afd0_call3(address,0,0,0,0,DAT_007cafc0,0,0,6);
     }
-    FUN_0045afd0(DAT_007cafc0,
-                 base + DAT_007ce704 * 0x98 + 0x1180,
-                 0,-2,0,0,0,0,0xc);
+    FUN_0045afd0_call3(base + DAT_007ce704 * 0x98 + 0x1180,
+                       0,-2,0,0,DAT_007cafc0,0,0,0xc);
     DAT_007ce704++;
   }
-  for (loop = 0; loop < 0x18; loop++) {
-    address = base + loop * 0x98 + 0x340;
+  for (loop2 = 0; loop2 < 0x18; loop2++) {
+    address = base + loop2 * 0x98 + 0x340;
     result = FUN_0045b4b0(address);
     if (result == 0) {
       FUN_0045b190(address);
     }
   }
   count = 0;
-  for (loop = 0; loop < 6; loop++) {
-    result = FUN_0045b4b0(base + loop * 0x98 + 0x1180);
+  for (loop3 = 0; loop3 < 6; loop3++) {
+    result = FUN_0045b4b0(base + loop3 * 0x98 + 0x1180);
     if (result == 0) {
-      entry = base + loop * 0x98 + 0x1180;
+      entry = base + loop3 * 0x98 + 0x1180;
       FUN_0045b190(entry);
       result = FUN_0045b480(entry);
       if (result == 0) {

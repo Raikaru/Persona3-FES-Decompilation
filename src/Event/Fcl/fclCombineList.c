@@ -650,9 +650,9 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     return work;
 }
 
-// Confirmed cyclic saved-register floor: +32..+200 swaps $s1/$s2 throughout;
-// the loop bounds, node traversal, call arguments, and instruction sequence are identical.
-// FUN_003da2a0 NONMATCHING
+// Reuse the first-loop node register as the second-loop counter to match retail's
+// saved-register coloring; this preserves the pointer traversal in a separate scan local.
+// FUN_003da2a0
 void fclCombineList003da2a0(FclList* param_1)
 {
     FclNodeData* data;
@@ -671,18 +671,17 @@ void fclCombineList003da2a0(FclList* param_1)
     }
     data->record = 0;
     {
-        s32 j;
         FclTaskLink* scan;
 
-        j = 0;
+        node = (FclTaskLink*)0;
         scan = param_1->list->links;
         while (scan != 0) {
             data = scan->payload->data.node_data;
-            if (data->selection_detail != 0 && j != i)
-                data->record = (FclNodeData*)FUN_003d8370((s32)param_1->input_copy, i, j);
+            if (data->selection_detail != 0 && (s32)node != i)
+                data->record = (FclNodeData*)FUN_003d8370((s32)param_1->input_copy, i, (s32)node);
             else
                 data->record = 0;
-            j++;
+            node = (FclTaskLink*)((u8*)node + 1);
             scan = scan->next;
         }
     }

@@ -5412,7 +5412,9 @@ void FUN_00365b70(u32 param_1,u32 param_2)
    (object 644/688); an explicit 0..3 switch made nd 368 -> 376
    (object 652/688). Both probes were reverted.
    W417 negatives: switch-only nd 368 -> 376; untyped float locals exceeded
-   the window; vector aggregate form before width fixes exceeded the window. */
+   the window; vector aggregate form before width fixes exceeded the window.
+   W422 negative: changing the first state load cast from int to u32 stayed
+   nd2/object684/window688; the v1->a0 branch-load coloring was unchanged. */
 // FUN_00365CD0 NONMATCHING
 
 

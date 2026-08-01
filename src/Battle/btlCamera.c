@@ -7498,6 +7498,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
  * daddiu $s0,$zero,1).  Direct spelling was byte-neutral; static-inline
  * helper probes that were not inlined measured nd805 at 1044/1056
  * (rate 0.771073), so retain the baseline source. */
+/* W422 three static-inline scalar helper directions at +508 all measured nd805 at 1044/1056; reverted. */
 // FUN_002b17a0 NONMATCHING
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)

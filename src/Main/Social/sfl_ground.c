@@ -1215,7 +1215,7 @@ void func_0023c3a0(void* destination)
 void func_0023c520(void* destination, const SflGroundVec2* center,
                    const SflGroundVec2* direction, const SflGroundVec2* scale)
 {
-    SflGroundVec2 transformed[8];
+    SflGroundVec2 transformed[2][4];
     f32 length;
     f32 angle;
     f32 sine;
@@ -1225,8 +1225,11 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
 
     {
         s32 copy;
-        for (copy = 0; copy < 8; copy++) {
-            transformed[copy] = D_0068E7C0[copy];
+        const u32* in = (const u32*)D_0068E7C0;
+        u32* out = (u32*)transformed;
+        for (copy = 8; copy > 0; copy--) {
+            *out++ = *in++;
+            *out++ = *in++;
         }
     }
 
@@ -1238,8 +1241,8 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
         s32 col;
         for (row = 0; row < 2; row++) {
             for (col = 0; col < 4; col++) {
-                transformed[row * 4 + col].x -= 126.5f;
-                transformed[row * 4 + col].y -= 25.5f;
+                transformed[row][col].x -= 126.5f;
+                transformed[row][col].y -= 25.5f;
             }
         }
     }
@@ -1248,8 +1251,8 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
         s32 col;
         for (row = 0; row < 2; row++) {
             for (col = 0; col < 4; col++) {
-                transformed[row * 4 + col].x *= scale->x;
-                transformed[row * 4 + col].y *= scale->y;
+                transformed[row][col].x *= scale->x;
+                transformed[row][col].y *= scale->y;
             }
         }
     }
@@ -1260,14 +1263,14 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
         for (row = 0; row < 2; row++) {
             for (col = 0; col < 4; col++) {
                 sine = sinf(angle);
-                y = transformed[row * 4 + col].y;
+                y = transformed[row][col].y;
                 cosine = cosf(angle);
-                x = transformed[row * 4 + col].x;
-                transformed[row * 4 + col].x = x * cosine - y * sine;
+                x = transformed[row][col].x;
+                transformed[row][col].x = x * cosine - y * sine;
                 sine = sinf(angle);
                 cosine = cosf(angle);
-                y = transformed[row * 4 + col].y;
-                transformed[row * 4 + col].y = x * sine + y * cosine;
+                y = transformed[row][col].y;
+                transformed[row][col].y = x * sine + y * cosine;
             }
         }
     }
@@ -1276,15 +1279,15 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
         s32 col;
         for (row = 0; row < 2; row++) {
             for (col = 0; col < 4; col++) {
-                transformed[row * 4 + col].x += center->x;
-                transformed[row * 4 + col].y += center->y;
+                transformed[row][col].x += center->x;
+                transformed[row][col].y += center->y;
             }
         }
     }
     {
         s32 row;
         for (row = 0; row < 2; row++) {
-            func_0021d890((u8*)destination + row * 0x100, &transformed[row * 4]);
+            func_0021d890((u8*)destination + row * 0x100, &transformed[row][0]);
         }
     }
 }

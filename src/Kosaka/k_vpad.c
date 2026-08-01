@@ -1939,6 +1939,7 @@ HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant)
  * build model arrays, resolve both supplemental descriptor tables, and place
  * every field record. */
 
+/* W422 role-cycle: baseline 277/2800/2800 -> 234/2800/2800 by splitting async/cached modelIndex declarations at the declaration tail; a second tail model-pointer split stayed 234/2800. The composed tail record-pointer split regressed to 299/2800 and was reverted. Earlier tableIndex and recordIndex splits (1603/2784 and 2033/2808) were rejected. */
 // FUN_001E2E50 NONMATCHING
 u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                   u16 majorId, u16 minorId, s16 variant)
@@ -1953,10 +1954,8 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
         u8 reserved14[0x0c];
     } RuntimeSupplementalEntry;
 
-    u32 modelIndex;
     u8* record;
     FieldModelMetadata* metadata;
-    Model* model;
     u8* fileMemory;
     s32 tableFlag;
     u32 modelCount;
@@ -1971,6 +1970,10 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
     f32 asyncAngles[3];
     f32 cachedAngles[3];
     char path[64];
+    Model* asyncModelPtr;
+    Model* cachedModelPtr;
+    u32 asyncModelIndex;
+    u32 cachedModelIndex;
 
     D_007CE2C0 = 0;
     if (request == NULL)
@@ -1997,27 +2000,27 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
 
         record = fileMemory + 0x18;
         recordIndex = 0;
-        modelIndex = 0;
+        asyncModelIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 8))
         {
             if (*(u16*)(record + 4) == MODEL_TYPE_FLD && *(u16*)(record + 6) == 0xffff)
             {
                 if (D_007CE200 == 1)
                 {
-                    model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
-                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                    asyncModelPtr = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
+                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + asyncModelIndex * sizeof(Model*)) = asyncModelPtr;
                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
-                                          modelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
-                    modelIndex++;
+                                          asyncModelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
+                    asyncModelIndex++;
                 }
             }
             else
             {
-                model = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                asyncModelPtr = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
+                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + asyncModelIndex * sizeof(Model*)) = asyncModelPtr;
                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
-                                      modelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
-                modelIndex++;
+                                      asyncModelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
+                asyncModelIndex++;
             }
             recordIndex++;
             record += 0x70;
@@ -2056,17 +2059,17 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                     u32 metadataOffset;
 
                                     D_007CE2C0 = 1;
-                                    model = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
-                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
-                                        model;
-                                    metadataOffset = modelIndex * sizeof(FieldModelMetadata);
+                                    asyncModelPtr = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
+                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + asyncModelIndex * sizeof(Model*)) =
+                                        asyncModelPtr;
+                                    metadataOffset = asyncModelIndex * sizeof(FieldModelMetadata);
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->sourceType = 1;
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->source = table;
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->recordIndex = tableRecordIndex;
-                                    modelIndex++;
+                                    asyncModelIndex++;
                                 }
                                 break;
                             }
@@ -2105,11 +2108,11 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                 u32 metadataOffset;
 
                                 D_007CE2C0 = 1;
-                                model = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
+                                asyncModelPtr = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
                                                                 MDL_READASYNC);
-                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
-                                    model;
-                                metadataOffset = modelIndex * sizeof(FieldModelMetadata);
+                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + asyncModelIndex * sizeof(Model*)) =
+                                    asyncModelPtr;
+                                metadataOffset = asyncModelIndex * sizeof(FieldModelMetadata);
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                       metadataOffset))->sourceType = 2;
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
@@ -2118,7 +2121,7 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                                       metadataOffset))->recordIndex = sourceRecordIndex;
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                       metadataOffset))->sourceIndex = sourceIndex;
-                                modelIndex++;
+                                asyncModelIndex++;
                             }
                             break;
                         }
@@ -2128,7 +2131,7 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                 }
                 sourceIndex++;
             }
-            *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
+            *(u32*)(K_Field_Get() + 0x10c0) = asyncModelIndex;
         }
 
         recordIndex = 0;
@@ -2166,27 +2169,27 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
 
         record = fileMemory + 0x18;
         recordIndex = 0;
-        modelIndex = 0;
+        cachedModelIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 8))
         {
             if (*(u16*)(record + 4) == MODEL_TYPE_FLD && *(u16*)(record + 6) == 0xffff)
             {
                 if (D_007CE200 == 1)
                 {
-                    model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
-                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                    cachedModelPtr = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
+                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + cachedModelIndex * sizeof(Model*)) = cachedModelPtr;
                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
-                                          modelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
-                    modelIndex++;
+                                          cachedModelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
+                    cachedModelIndex++;
                 }
             }
             else
             {
-                model = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                cachedModelPtr = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
+                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + cachedModelIndex * sizeof(Model*)) = cachedModelPtr;
                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
-                                      modelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
-                modelIndex++;
+                                      cachedModelIndex * sizeof(FieldModelMetadata)))->recordIndex = recordIndex;
+                cachedModelIndex++;
             }
             recordIndex++;
             record += 0x70;
@@ -2225,17 +2228,17 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                     u32 metadataOffset;
 
                                     D_007CE2C0 = 1;
-                                    model = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
-                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
-                                        model;
-                                    metadataOffset = modelIndex * sizeof(FieldModelMetadata);
+                                    cachedModelPtr = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
+                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + cachedModelIndex * sizeof(Model*)) =
+                                        cachedModelPtr;
+                                    metadataOffset = cachedModelIndex * sizeof(FieldModelMetadata);
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->sourceType = 1;
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->source = table;
                                     ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                           metadataOffset))->recordIndex = tableRecordIndex;
-                                    modelIndex++;
+                                    cachedModelIndex++;
                                 }
                                 break;
                             }
@@ -2274,11 +2277,11 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                 u32 metadataOffset;
 
                                 D_007CE2C0 = 1;
-                                model = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
+                                cachedModelPtr = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
                                                                 MDL_READASYNC);
-                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
-                                    model;
-                                metadataOffset = modelIndex * sizeof(FieldModelMetadata);
+                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + cachedModelIndex * sizeof(Model*)) =
+                                    cachedModelPtr;
+                                metadataOffset = cachedModelIndex * sizeof(FieldModelMetadata);
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                       metadataOffset))->sourceType = 2;
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
@@ -2287,7 +2290,7 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                                                       metadataOffset))->recordIndex = sourceRecordIndex;
                                 ((FieldModelMetadata*)((u8*)*(FieldModelMetadata**)(K_Field_Get() + 0x10c8) +
                                                       metadataOffset))->sourceIndex = sourceIndex;
-                                modelIndex++;
+                                cachedModelIndex++;
                             }
                             break;
                         }
@@ -2297,7 +2300,7 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
                 }
                 sourceIndex++;
             }
-            *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
+            *(u32*)(K_Field_Get() + 0x10c0) = cachedModelIndex;
         }
 
         recordIndex = 0;
