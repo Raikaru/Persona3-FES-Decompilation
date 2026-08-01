@@ -602,49 +602,49 @@ u32 bpRoot_003c72d0_arg(u32);
 // these paths are reconstructed directly even though MWCC lays out the
 // resulting switch differently from the retail object.
 
+/* W420 verified: direct work indexing, D_00684F00-relative strings, and corrected flag masks nd619/976B -> nd0/964B, window976B; rate 63.42% -> 0%. */
 // W419 negative probe: FUN_001FF890 direct gBcmWork flag pointer nd521/988B, window976B (over window), rate52.73%; reverted.
-// FUN_001FF890 NONMATCHING
+// FUN_001FF890
 void FUN_001ff890(void)
 {
     u32* work;
-    u32 flags;
     void* message;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = (u32*)gBcmWork;
-    if (*(u32*)((u8*)work + 0x77a0) & 1)
-        FUN_005225a8((const char*)0x685058);
+    if (work[0x77a0 / 4] & 1)
+        FUN_005225a8((const char*)D_00684F00 + 0x58);
     else
-        FUN_005225a8((const char*)0x685068);
-    if (*(u32*)((u8*)work + 0x77a0) & 2)
-        FUN_005225a8((const char*)0x685078);
+        FUN_005225a8((const char*)D_00684F00 + 0x68);
+    if (work[0x77a0 / 4] & 2)
+        FUN_005225a8((const char*)D_00684F00 + 0x78);
     else
-        FUN_005225a8((const char*)0x685088);
-    if (*(u32*)((u8*)work + 0x77a0) & 4)
-        FUN_005225a8((const char*)0x685098);
+        FUN_005225a8((const char*)D_00684F00 + 0x88);
+    if (work[0x77a0 / 4] & 4)
+        FUN_005225a8((const char*)D_00684F00 + 0x98);
     else
-        FUN_005225a8((const char*)0x6850a8);
-    if (*(u32*)((u8*)work + 0x77a0) & 8)
-        FUN_005225a8((const char*)0x6850b8);
+        FUN_005225a8((const char*)D_00684F00 + 0xa8);
+    if (work[0x77a0 / 4] & 8)
+        FUN_005225a8((const char*)D_00684F00 + 0xb8);
     else
-        FUN_005225a8((const char*)0x6850c8);
-    if (*(u32*)((u8*)work + 0x77a0) & 0x10)
-        FUN_005225a8((const char*)0x6850d8);
+        FUN_005225a8((const char*)D_00684F00 + 0xc8);
+    if (work[0x77a0 / 4] & 0x10)
+        FUN_005225a8((const char*)D_00684F00 + 0xd8);
     else
-        FUN_005225a8((const char*)0x6850e8);
-    if (*(u32*)((u8*)work + 0x77a0) & 0x20)
-        FUN_005225a8((const char*)0x6850f8);
+        FUN_005225a8((const char*)D_00684F00 + 0xe8);
+    if (work[0x77a0 / 4] & 0x20)
+        FUN_005225a8((const char*)D_00684F00 + 0xf8);
     else
-        FUN_005225a8((const char*)0x685108);
-    if (*(u32*)((u8*)work + 0x77a0) & 0x40)
-        FUN_005225a8((const char*)0x685120);
+        FUN_005225a8((const char*)D_00684F00 + 0x108);
+    if (work[0x77a0 / 4] & 0x40)
+        FUN_005225a8((const char*)D_00684F00 + 0x120);
     else
-        FUN_005225a8((const char*)0x685140);
-    work[0] &= ~0x21u;
-    work[0] &= ~2u;
+        FUN_005225a8((const char*)D_00684F00 + 0x140);
+    work[0] &= ~0x20u;
+    work[0] &= ~1u;
     work[0] &= ~0x20000000u;
     work[0] &= ~0x02000000u;
-    work[0] &= ~0x00040000u;
+    work[0] &= ~0x04000000u;
     work[0] &= ~0x80u;
     work[0] &= ~0x100u;
     work[0] &= ~0x200u;

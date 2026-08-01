@@ -277,14 +277,15 @@ LAB_0024307c:
 
 
 /* W418 width negatives: FUN_00243150 iVar10 s16 nd2467/3996B -> 2559/4036B; iVar11 s16 -> 2574/4012B. FUN_002441B0 iVar10 s16 nd872/1464B -> 917/1512B (over 1472B), iVar4 s16 -> 965/1556B (over), iVar6 s16 -> 931/1500B (over). */
+/* W420 verified: swapping uVar3/uVar4 declarations reduced FUN_00243150 nd2467/3996B to nd2466/3996B, window4048B; rate61.74% to61.71%. */
 // FUN_00243150 NONMATCHING
 void FUN_00243150(void)
 
 {
   uint *puVar1;
   u32 uVar2;
-  u32 uVar3;
   u32 uVar4;
+  u32 uVar3;
   u32 uVar5;
   u32 uVar6;
   u32 uVar7;

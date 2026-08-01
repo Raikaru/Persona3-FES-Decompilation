@@ -692,7 +692,11 @@ void* func_001cd9a0(u32 charId)
  * Eight spellings measured: struct index nd1 (best, current), inlined unit->mdl
  * nd1, both explicit byte forms nd14, index-in-a-named-local nd14, model hoisted
  * out of the inner loop nd163 at 228 bytes. A local AttachedWpn* does not compile. */
-// FUN_001CE880 NONMATCHING
+/* W420: base-first inline helper fixes the sole operand swap at offset 128
+ * (nd1 -> nd0, object 220/224). */
+static inline u32 unitAddBaseFirst(u32 base, u32 offset) { return base + offset; }
+
+// FUN_001CE880
 void func_001ce880(void)
 {
     s32 i;
@@ -716,7 +720,7 @@ void func_001ce880(void)
             for (j = 0; j < 5; j++)
             {
                 model = unit->mdl;
-                weapon = model->attachedWpns[j].wpnMdl;
+                weapon = *(Model**)(unitAddBaseFirst((u32)model, j * 12) + 0x3b8);
                 if (weapon != NULL)
                 {
                     func_00319230(weapon,

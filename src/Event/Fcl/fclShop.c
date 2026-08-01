@@ -198,6 +198,8 @@ extern s16 DAT_006a7530[];
 extern s16 DAT_006a7550[];
 extern s16 DAT_006a7570[];
 extern u32 DAT_006a7590;
+#pragma alias DAT_006a7590_abs DAT_006a7590
+extern u8 DAT_006a7590_abs[];
 extern float DAT_007cad7c;
 extern float DAT_007cad84;
 extern float DAT_007cadd0;
@@ -7568,7 +7570,7 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   } while (0 < iVar7);
 
-  puVar11 = &DAT_006a7590;
+  puVar11 = (u32 *)DAT_006a7590_abs;
 
   groupDst = groups;
 

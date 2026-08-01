@@ -2451,6 +2451,7 @@ u32 FUN_00419790(int param_1,int param_2)
 #pragma push
 #pragma opt_loop_invariants on
 /* measured opt_loop_invariants: off nd11/obj308, on nd10/obj308; retained */
+/* W420 negative: fVar declaration/parameter-alias probes stayed nd10/object308/window320/rate0.032468; u16 probe nd15/object308/window320/rate0.048701 versus baseline nd10/object308/window320/rate0.032468; reverted. */
 
 // FUN_004198F0 NONMATCHING
 
@@ -3142,6 +3143,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 #pragma push
 #pragma opt_loop_invariants on
 /* measured opt_loop_invariants: off nd51/obj452, on nd49/obj452; retained */
+/* W420 negative: typed FUN_004bdde0_fcl probe nd174/object460/window464/rate0.378261; 3-argument alias probe nd161/object456/window464/rate0.353070 versus baseline nd49/object452/window464/rate0.108407; reverted. */
 
 // FUN_0041A730 NONMATCHING
 
@@ -4233,6 +4235,7 @@ void FUN_0041bf10(int param_1,u32 param_2)
 
 }
 
+/* W420 negative: post-match declaration/callback-order probes stayed nd7/object448/window448/rate0.015625; pointer declaration nd11/object448/window448/rate0.024554; iVar3 placement nd8/object448/window448/rate0.017857; while spelling grew nd86/object456/window448/rate0.188596; reverted. */
 // FUN_0041BF80 NONMATCHING
 
 
@@ -4253,36 +4256,47 @@ void FUN_0041bf80(u32 *param_1)
   u32 *puVar5;
 
   u32 *puVar6;
+  code *callback;
 
   u32 auStack_40 [16];
 
   
 
-  (*DAT_00960090)(9,2);
+  callback = (code *)&DAT_00960090_abs;
 
-  (*DAT_00960090)(0x14,2);
+  (*callback)(9,2);
 
-  (*DAT_00960090)(8,0);
+  (*callback)(0x14,2);
 
-  (*DAT_00960090)(6,0);
+  (*callback)(8,0);
 
-  (*DAT_00960090)(0xe,0);
+  (*callback)(6,0);
 
-  (*DAT_00960090)(0xc,1);
+  (*callback)(0xe,0);
 
-  (*DAT_00960090)(7,2);
+  (*callback)(0xc,1);
 
-  (*DAT_00960090)(10,5);
+  (*callback)(7,2);
 
-  (*DAT_00960090)(0xb,6);
+  (*callback)(10,5);
 
-  (*DAT_00960090)(1,*(u32 *)param_1[3]);
+  (*callback)(0xb,6);
+
+  (*callback)(1,*(u32 *)param_1[3]);
 
   RpSkyRenderStateSet(2,(void*)0x48);
 
   RpSkyRenderStateSet(3,(void*)0x71801);
 
-  if ((*param_1 & 1) == 0) {
+  if ((*param_1 & 1) != 0) {
+
+    iVar3 = kwlnGetMainCamera();
+
+    FUN_004c2f30(auStack_40,(const void *)param_1[4],(const void *)(*(int *)(iVar3 + 4) + 0x10));
+
+  }
+
+  else {
 
     puVar6 = (u32 *)param_1[4];
 
@@ -4310,15 +4324,7 @@ void FUN_0041bf80(u32 *param_1)
 
   }
 
-  else {
-
-    iVar3 = kwlnGetMainCamera();
-
-    FUN_004c2f30(auStack_40,(const void *)param_1[4],(const void *)(*(int *)(iVar3 + 4) + 0x10));
-
-  }
-
-  lVar4 = FUN_004f1ed0(param_1[1],(short)param_1[2],auStack_40,1);
+  lVar4 = FUN_004f1ed0(param_1[1],(u16)param_1[2],auStack_40,1);
 
   if (lVar4 != 0) {
 
@@ -21308,6 +21314,7 @@ void FUN_0043bf50(u64 param_1)
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
+/* W420 negative: declaration permutations stayed nd17/object436/window448/rate0.038991; player-character probe nd279/object444/window448/rate0.628378 versus baseline nd17/object436/window448/rate0.038991; reverted. */
 // FUN_0043C180 NONMATCHING
 
 short FUN_0043c180(char param_1)
@@ -28684,8 +28691,8 @@ void FUN_00452f70(u32 *param_1,int param_2)
   int iVar3;
   int iVar4;
   int columnOffset;
-  u32 uVar5;
   u32 uVar6;
+  u32 uVar5;
   u32 uVar7;
   u32 uVar8;
   YVec3f direction;

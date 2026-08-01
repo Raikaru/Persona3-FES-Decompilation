@@ -248,7 +248,7 @@ void func_001fc980(u8* event, u16* result, s32* count)
     DatPersonaWork* persona;
     u16* skills;
     u32 skillCount;
-    u16 skill;
+    s32 skill;
     u32 i;
     u32 resultCount;
     s32 hp;
@@ -266,7 +266,7 @@ void func_001fc980(u8* event, u16* result, s32* count)
             continue;
         if (FUN_0017b660(*(s16*)(event + 2), skill) != 0)
             continue;
-        if (skill != 0xc2 && skill != 0xc1 && skill != 0xc0)
+        if ((skill & 0xffff) != 0xc2 && (skill & 0xffff) != 0xc1 && (skill & 0xffff) != 0xc0)
             continue;
 
         FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2), skill, 0,

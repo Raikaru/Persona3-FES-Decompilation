@@ -1690,7 +1690,8 @@ u64 FUN_0041eb50(void)
 
     if (*(short *)(iVar1 + 0x3aa) != 0) {
 
-      func_00113a30(0,0,0,(long)*(short *)(iVar1 + 0x3aa) & 0xffU | 0xf1f2800,0x280,0x1c0);
+      func_00113a30(0, (long)*(short *)(iVar1 + 0x3aa) & 0xffU | 0xf1f2800,
+                    0, 0, 0x280, 0x1c0);
 
     }
 

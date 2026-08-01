@@ -758,6 +758,12 @@ void func_001a8b10(u32* entries)
     }
 }
 
+/* W420 operand-order probes for the loop address at offset 360:
+ * direct pointer, scalar base+offset, base/offset inline, adjacent inline,
+ * one-line inline, and opt_propagation-reset inline variants all grew the
+ * object to 576/560 with nd192-193; replacing all indexed accesses stayed
+ * nd143/560. The single-index helper was 576/560 nd193. Retain the nd2/552
+ * indexed form. */
 // FUN_001a8db0 NONMATCHING
 s32 func_001a8db0(KwlnTask* task)
 {

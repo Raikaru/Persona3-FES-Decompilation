@@ -30,9 +30,9 @@ extern void gsDrawSpritePositionFirst(f32 x, f32 y, void* unused,
                                       f32 depth);
 extern void func_00115ad0(void* unused, void* atlas, s32 tile,
                           f32 x, f32 y, u32 alpha, u32 extraAlpha, f32 depth);
-extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00113a30(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height);
-extern void func_00113d80(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00113d80(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height);
 extern void func_00114af0(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height, void* texture);
@@ -340,9 +340,9 @@ static inline void gsDrawStatusBars(void* object)
     if (width != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      GS_F32(transition, 0x3c) + 46.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
                  GS_F32(transition, 0x38) + 50.0f,
@@ -355,9 +355,9 @@ static inline void gsDrawStatusBars(void* object)
     if (width != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      GS_F32(transition, 0x3c) + 51.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
                  GS_F32(transition, 0x38) + 50.0f,

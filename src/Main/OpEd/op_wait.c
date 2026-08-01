@@ -1198,10 +1198,10 @@ void func_002716d0(u32* param)
     u8* context;
     RwIm2DVertex* vertex;
     f32 recipZ;
-    f32 width;
-    f32 height;
     f32 x;
     f32 y;
+    f32 width;
+    f32 height;
     f32 offsetX;
     f32 offsetY;
     f32 angle;

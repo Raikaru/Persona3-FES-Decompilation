@@ -4457,6 +4457,7 @@ void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 }
 
 // W418 negative: typed 11-arg callback measured nd241/336 -> nd236/328 (window 400); size rate worsened 71.73% -> 71.95%, reverted.
+// W420 negative: _sda aliases for PTR_FUN_007cda28/007cda30 changed FUN_00415c30 nd241/object336 to nd243/object328 (window 400); rate 71.73% -> 74.09%, reverted.
 // FUN_00415C30 NONMATCHING
 
 

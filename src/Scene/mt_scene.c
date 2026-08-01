@@ -91,7 +91,7 @@ extern f32 FUN_004c6ac0_mt_scene(const float *src);
 #pragma alias FUN_0052e9e8_mt_scene FUN_0052e9e8
 extern f32 FUN_0052e9e8_mt_scene(f32 param_1);
 #pragma alias FUN_004c31b0_mt_scene_f32 FUN_004c31b0
-extern void FUN_004c31b0_mt_scene_f32(f32 value, void *matrix, u32 resource, s32 mode);
+extern void FUN_004c31b0_mt_scene_f32(void *matrix, u32 resource, f32 value, s32 mode);
 
 
 
@@ -1188,6 +1188,7 @@ u16 FUN_003b6f50(u32 param_1,u32 param_5,float param_4,u32 *param_6,RwV3d *param
 /* Measured W389: opt_loop_invariants on, with/without nd 100/98, object 972/972 (window 976). */
 #pragma push
 #pragma opt_loop_invariants on
+/* W420 negative: swapping puVar4 and iVar6 declarations left nd 98, object 972/976 (window 976), rate 0.100823 unchanged. */
 // FUN_003B7090 NONMATCHING
 
 
@@ -1451,6 +1452,8 @@ void FUN_003b7090(u64 param_1)
 #pragma push
 #pragma opt_lifetimes on
 /* W415 probes: RwV3d/byte-vector rewrites exceeded the 1104-byte window (1156/1116); retained explicit aggregate layout. */
+/* W420 negative: caching the DAT_006a2d20/30/40/50_abs base through a local pointer left nd 643, object 1104/1104 (window 1104), rate 0.582428 unchanged. */
+/* W420 negative: changing the stack vector z field to f32 emitted an oversized 1160-byte object and nd701 against the 1104-byte window; reverted. */
 // FUN_003B7460 NONMATCHING
 void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
 {
@@ -1683,9 +1686,8 @@ void FUN_003b79a0(u32 *param_1, u64 param_2, u32 *param_3)
 
     return;
 }
-#define FUN_003b79a0(...) ((void (*)(...))FUN_003b79a0)(__VA_ARGS__)
 #undef FUN_003b7ac0
-/* Measured W389: opt_dead_assignments off, with/without nd 942/940, object 1868/1868 (window 1872). */
+/* Measured W389: opt_dead_assignments off, with/without nd 942/940, object 1868/1868 (window 1872). W420 integer-first FUN_004c31b0 arguments plus angle declaration order angle2, angle1, angle3: nd 940/object 1868/1872 (rate 0.503212) -> nd 913/object 1868/1872 (rate 0.488758; retained). */
 #pragma push
 #pragma opt_dead_assignments off
 // FUN_003B7AC0 NONMATCHING
@@ -1699,8 +1701,10 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   RwV3d *up;
   RwV3d *at;
   int count;
-  float angle1;
   float angle2;
+
+  float angle1;
+
   float angle3;
   RwMatrix inputMatrix;
   RwMatrix rotationMatrix;
@@ -1793,7 +1797,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   rotationMatrix.pos.y = 0.0f;
   rotationMatrix.pos.x = 0.0f;
   rotationMatrix.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
-  FUN_004c31b0_mt_scene_f32(angle1, &rotationMatrix, 0x6a2a80, 1);
+  FUN_004c31b0_mt_scene_f32(&rotationMatrix, 0x6a2a80, angle1, 1);
   FUN_004c32a0(&rotationRwMatrix, &rotationMatrix);
   FUN_004c2f30(&transformedMatrix, &rotationRwMatrix, &inputMatrix);
 
@@ -1837,7 +1841,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   rotationMatrix2.pos.y = 0.0f;
   rotationMatrix2.pos.x = 0.0f;
   rotationMatrix2.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
-  FUN_004c31b0_mt_scene_f32(angle1, &rotationMatrix2, 0x6a2a80, 1);
+  FUN_004c31b0_mt_scene_f32(&rotationMatrix2, 0x6a2a80, angle1, 1);
   FUN_004c32a0(&rotationRwMatrix2, &rotationMatrix2);
   FUN_004c2f30(&transformedMatrix2, &rotationRwMatrix2, &inputMatrix);
 
@@ -1854,7 +1858,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   rotationMatrix2.pos.y = 0.0f;
   rotationMatrix2.pos.x = 0.0f;
   rotationMatrix2.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
-  FUN_004c31b0_mt_scene_f32(angle2, &rotationMatrix2, 0x6a2a60, 1);
+  FUN_004c31b0_mt_scene_f32(&rotationMatrix2, 0x6a2a60, angle2, 1);
   FUN_004c32a0(&rotationRwMatrix2, &rotationMatrix2);
   FUN_004c2f30(&finalMatrix, &rotationRwMatrix2, &transformedMatrix2);
 

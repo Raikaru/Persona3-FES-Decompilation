@@ -1678,6 +1678,7 @@ u32 FUN_003b95a0(void)
 }
 #define FUN_003b95a0(...) ((u32 (*)(...))FUN_003b95a0)(__VA_ARGS__)
 #undef FUN_003b9610
+/* W420 negative: making FUN_003bc220's variadic alias fully typed left nd 3644, object 5116/5216 (window 5216), rate 0.712275 unchanged; reverted. */
 // FUN_003B9610 NONMATCHING
 
 
@@ -2618,6 +2619,7 @@ u32 FUN_003baa70(char *param_1)
 }
 #define FUN_003baa70(...) ((u32 (*)(...))FUN_003baa70)(__VA_ARGS__)
 #undef FUN_003bac40
+/* W420 negative: rewriting the outer if-chain as a switch raised nd 594/object 912 (window 976, rate 0.651316) to nd 624/object 928 (rate 0.672414); reverted. */
 // FUN_003BAC40 NONMATCHING
 
 
@@ -5383,6 +5385,7 @@ u16 FUN_003bdbb0(void)
 }
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)
 
+/* W420 negatives: a named call-result temporary left nd 41/object 360 (window 368, rate 0.113889) unchanged; a volatile s16 raised nd 41/object 360 (rate 0.113889) to nd 48/object 368 (rate 0.130435). */
 // FUN_003BDBD0 NONMATCHING
 
 
@@ -5636,6 +5639,7 @@ u8 FUN_003bdfc0(int param_1)
 #define FUN_003bdfc0(...) ((u8 (*)(...))FUN_003bdfc0)(__VA_ARGS__)
 #undef FUN_003be020
 
+/* W420 negative: all 720 permutations of the six scalar declarations stayed nd 199/object 384 (window 384, rate 0.518229); DAT_0095b6cc aliases exceeded the 384-byte window (nd 221/224, object 388, rates 0.569588/0.577320). */
 // FUN_003BE020 NONMATCHING
 
 u32 FUN_003be020(int param_1,int param_2,u32 param_3)
@@ -6451,6 +6455,7 @@ void FUN_003bec50(void)
 
 /* opt_common_subs off: measured nd 279 -> 238, object 472/480 -> 472/480. */
 #pragma opt_common_subs off
+/* W420 negative: reversing FUN_003c2b40's two stack-pointer arguments raised nd 238/object 472 (window 480, rate 0.504237) to nd 239/object 472 (rate 0.506356); reverted. */
 // FUN_003BECA0 NONMATCHING
 
 
@@ -6570,6 +6575,7 @@ int FUN_003beca0(int param_1)
 /* opt_loop_invariants on: measured nd 441 -> 420, object 664/688 -> 664/688; opt_lifetimes on alone: nd 441 -> 438, object 664/688 -> 668/688; stacked: nd 419, object 664/688 (retained). */
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
+/* W420 negative: routing all DAT_0095b730 table accesses through its absolute alias raised nd 419/object 664 (window 688, rate 0.631024) to nd 460/object 680 (rate 0.676471); reverted. */
 // FUN_003BEE80 NONMATCHING
 
 

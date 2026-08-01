@@ -569,6 +569,10 @@ u32 brPanel00236340(void)
         color[3] = (u8)(u32)(255.0f * (alpha)); \
         func_0021d950((dst), color); \
     } while (0)
+/* W420 declaration reorder plus explicit shift/alpha initialization: nd7004/8740B,
+ * window 9712B, rate 0.801373 unchanged; reverted. A root2-hoist variant also
+ * stayed nd7004/8740B, while removing branch root2 assignments gave nd6985/8636B,
+ * rate 0.808824; all reverted. */
 // FUN_00236390 NONMATCHING
 static void brPanel00236390(void)
 {
