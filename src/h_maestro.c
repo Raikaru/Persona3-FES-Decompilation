@@ -378,67 +378,6 @@ typedef struct MaestroCampSpriteSetupWork
     u32 initializeMessages;           /* +0x40 */
     void* ownerPool;                  /* +0x44 */
 } MaestroCampSpriteSetupWork;
-// FUN_001158B0
-void* func_001158b0(param_1,param_2,param_3)
-int param_1;
-int param_2;
-int param_3;
-{
-
-  int *piVar1;
-
-  int *piVar2;
-  int *piVar3;
-
-
-  
-
-  piVar2 = (int *)(*(void* (**)(u32,u32,u32))D_00960184_abs)(1,0x34,0x40000);
-
-  *(u8 *)(piVar2 + 0xc) = 0xff;
-
-  *(u8 *)((int)piVar2 + 0x31) = 0xff;
-
-  *(u8 *)((int)piVar2 + 0x32) = 0xff;
-
-  piVar2[2] = param_2;
-
-  piVar2[3] = param_3;
-
-  if (param_1 == 0) {
-
-    piVar1 = DAT_007cdf3c;
-
-    if (DAT_007cdf3c == (int *)0x0) {
-      DAT_007cdf3c = piVar2;
-
-      piVar2[1] = 0;
-
-    }
-
-    else {
-      while (1) {
-        piVar3 = (int *)*piVar1;
-        if (piVar3 == (int *)0x0) {
-          *piVar1 = (int)piVar2;
-          piVar2[1] = (int)piVar1;
-          break;
-        }
-        piVar1 = piVar3;
-      }
-    }
-
-  }
-
-  else {
-
-    *(u32 *)param_1 = (u32)piVar2;
-
-    piVar2[1] = (int)(u32 *)param_1;
-
-  }
-  return (void *)piVar2;
-}
 static void MaestroMarkSpriteDraw(MaestroMarkSpriteWork* work,
                                   s16 pivotX,
                                   s16 pivotY,
@@ -5503,6 +5442,67 @@ void func_00115350(f32 depth,
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 #pragma opt_loop_invariants reset
+// FUN_001158B0
+void* func_001158b0(param_1,param_2,param_3)
+int param_1;
+int param_2;
+int param_3;
+{
+
+  int *piVar1;
+
+  int *piVar2;
+  int *piVar3;
+
+
+  
+
+  piVar2 = (int *)(*(void* (**)(u32,u32,u32))D_00960184_abs)(1,0x34,0x40000);
+
+  *(u8 *)(piVar2 + 0xc) = 0xff;
+
+  *(u8 *)((int)piVar2 + 0x31) = 0xff;
+
+  *(u8 *)((int)piVar2 + 0x32) = 0xff;
+
+  piVar2[2] = param_2;
+
+  piVar2[3] = param_3;
+
+  if (param_1 == 0) {
+
+    piVar1 = DAT_007cdf3c;
+
+    if (DAT_007cdf3c == (int *)0x0) {
+      DAT_007cdf3c = piVar2;
+
+      piVar2[1] = 0;
+
+    }
+
+    else {
+      while (1) {
+        piVar3 = (int *)*piVar1;
+        if (piVar3 == (int *)0x0) {
+          *piVar1 = (int)piVar2;
+          piVar2[1] = (int)piVar1;
+          break;
+        }
+        piVar1 = piVar3;
+      }
+    }
+
+  }
+
+  else {
+
+    *(u32 *)param_1 = (u32)piVar2;
+
+    piVar2[1] = (int)(u32 *)param_1;
+
+  }
+  return (void *)piVar2;
+}
 // FUN_00115980
 
 
