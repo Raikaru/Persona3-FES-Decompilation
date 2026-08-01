@@ -94,6 +94,61 @@ void func_001a5cd0(void)
     }
 }
 
+// FUN_001a5de0
+void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
+{
+    DelayMdlFreeWork* work;
+
+    work = (DelayMdlFreeWork*)delayMdlFreeTask->workData;
+
+    switch (work->state)
+    {
+        case DELAYMDLFREE_STATE_WAITSTREAM:
+            if (mdlStreamRead(work->mdlToDestroy))
+            {
+                work->state++;
+            }
+            break;
+
+        case DELAYMDLFREE_STATE_DESTROYING:
+            mdlDestroy(work->mdlToDestroy);
+            return KWLNTASK_STOP;
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001a5e70
+void K_Misc_DestroyDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
+{
+    RwFree(delayMdlFreeTask->workData);
+}
+
+// FUN_001a5ea0
+KwlnTask* K_Misc_CreateDelayMdlFreeTask(Model* mdlToDestroy)
+{
+    DelayMdlFreeWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(DelayMdlFreeWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(NULL,
+                                          10,
+                                          "delay model free",
+                                          K_Misc_UpdateDelayMdlFreeTask,
+                                          K_Misc_DestroyDelayMdlFreeTask,
+                                          work);
+
+    work->mdlToDestroy = mdlToDestroy;
+
+    return task;
+}
+
+
 // FUN_001A5F30
 void* func_001a5f30(KwlnTask* rmdFadeTask)
 {
@@ -165,61 +220,6 @@ KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl, u32 targetAlpha, s32 f
         color.a = 0;
     }
     mdlSetColor(mdl, &color);
-
-    return task;
-}
-
-
-// FUN_001a5de0
-void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
-{
-    DelayMdlFreeWork* work;
-
-    work = (DelayMdlFreeWork*)delayMdlFreeTask->workData;
-
-    switch (work->state)
-    {
-        case DELAYMDLFREE_STATE_WAITSTREAM:
-            if (mdlStreamRead(work->mdlToDestroy))
-            {
-                work->state++;
-            }
-            break;
-
-        case DELAYMDLFREE_STATE_DESTROYING:
-            mdlDestroy(work->mdlToDestroy);
-            return KWLNTASK_STOP;
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001a5e70
-void K_Misc_DestroyDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
-{
-    RwFree(delayMdlFreeTask->workData);
-}
-
-// FUN_001a5ea0
-KwlnTask* K_Misc_CreateDelayMdlFreeTask(Model* mdlToDestroy)
-{
-    DelayMdlFreeWork* work;
-    KwlnTask* task;
-
-    work = RwCalloc(1, sizeof(DelayMdlFreeWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    task = kwlnTaskCreateWithAutoPriority(NULL,
-                                          10,
-                                          "delay model free",
-                                          K_Misc_UpdateDelayMdlFreeTask,
-                                          K_Misc_DestroyDelayMdlFreeTask,
-                                          work);
-
-    work->mdlToDestroy = mdlToDestroy;
 
     return task;
 }

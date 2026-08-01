@@ -174,92 +174,6 @@ extern s8 D_006A48D1[];
 extern s16 D_006A48F0[];
 extern u32 DAT_007ce420;
 
-// FUN_003d5850
-s32 fclCombineMisc003d5850(s32 param_1)
-{
-    s32 local[8];
-    s32* src;
-    s32* dst;
-    s32 count;
-    s32 temp;
-
-    src = DAT_006a5fc0;
-    dst = local;
-    count = 5;
-    do {
-        temp = *src;
-        src++;
-        count--;
-        *dst = temp;
-        dst++;
-    } while (count > 0);
-    return local[param_1];
-}
-
-// FUN_003d58a0
-void fclCombineMisc003d58a0(void)
-{
-    FUN_003c3f80();
-}
-
-// FUN_003d5c90
-char* fclCombineMisc003d5c90(void)
-{
-    if (FUN_0017d800() != 0) {
-        return DAT_006a4e10;
-    }
-    return DAT_006a4ba0;
-}
-
-
-// FUN_003d7180
-u32 fclCombineMisc003d7180(void)
-{
-    return (s32)(((FUN_00488f30() % 0xffff) * 1000) / 0xffff) < 500;
-}
-
-// FUN_003d74b0
-s32 fclCombineMisc003d74b0(u32 param_1)
-{
-    u8* base;
-
-    base = (u8*)DAT_007ce420;
-    return *(s32*)(DAT_006a5630 + (u32)base[(param_1 & 0xffff) * 0xe + 0xd] * 4);
-}
-// FUN_003d7a30
-s32 fclCombineMisc003d7a30(u32 *param_1, void *param_2, s32 param_3)
-{
-    s32 idx;
-    s32 link;
-
-    idx = (u32)*(u16 *)((u8 *)param_1 + 2) * 0xe;
-    link = func_0016deb0((*gp0xffffb730)[idx + 2]);
-    func_0016dba0(link);
-    FUN_003d74f0_i((int)param_1, (int)param_2, param_3);
-    return 0;
-}
-
-
-// FUN_003d8230
-u32 fclCombineMisc003d8230(s32 param_1)
-{
-    return FUN_001749a0(*(u16*)(param_1 + 6)) != 0;
-}
-
-// FUN_003d8830
-s32 fclCombineMisc003d8830(s32 param_1)
-{
-    return *(s32*)(DAT_006a5f44 + param_1 * 8);
-}
-
-// FUN_003d9c90
-void fclCombineMisc003d9c90(s32 param_1, s32 param_2)
-{
-    FUN_003dff00(*(s32*)(*(s32*)(*(s32*)(param_2 + 0x14) + 0x1c) + 0x60));
-}
-
-// HARVESTED 3D-42FF
-
 // FUN_003D5510 NONMATCHING
 
 
@@ -425,6 +339,35 @@ valid_index:
     return uVar1;
 }
 
+// FUN_003d5850
+s32 fclCombineMisc003d5850(s32 param_1)
+{
+    s32 local[8];
+    s32* src;
+    s32* dst;
+    s32 count;
+    s32 temp;
+
+    src = DAT_006a5fc0;
+    dst = local;
+    count = 5;
+    do {
+        temp = *src;
+        src++;
+        count--;
+        *dst = temp;
+        dst++;
+    } while (count > 0);
+    return local[param_1];
+}
+
+
+// FUN_003d58a0
+void fclCombineMisc003d58a0(void)
+{
+    FUN_003c3f80();
+}
+
 // FUN_003D58C0
 
 
@@ -438,8 +381,6 @@ int FUN_003d58c0(int param_1,int param_2)
                ((DAT_007cb004 + 0.0f) - DAT_007cb000 * (float)param_2) +
                15.0f);
 }
-
-/* W327 sweep: opt_common_subs off improves FUN_003d5a40 from nd231/obj324 to nd219/obj328 (window 368); retained. */
 #pragma opt_common_subs off
 // FUN_003D5A40 NONMATCHING
 
@@ -553,6 +494,7 @@ u32 FUN_003d5a40(u16 *param_1,u16 param_2,u16 *param_3,short param_4,void *param
 }
 #pragma opt_common_subs reset
 
+
 // FUN_003D5BB0
 
 
@@ -595,6 +537,15 @@ u64 FUN_003d5bb0(u32 param_1)
   return uVar5;
 }
 
+// FUN_003d5c90
+char* fclCombineMisc003d5c90(void)
+{
+    if (FUN_0017d800() != 0) {
+        return DAT_006a4e10;
+    }
+    return DAT_006a4ba0;
+}
+
 // FUN_003D5CD0 NONMATCHING
 // W389 hand tests: s16 loop/count widened nd10/obj236 -> nd143/obj244 (window 240); typed s16/u32 callee aliases gave nd132; both reverted.
 
@@ -623,6 +574,9 @@ s32 FUN_003d5cd0(u32 *param_1)
   }
   return (s64)sVar4;
 }
+
+// HARVESTED 3D-42FF
+
 // FUN_003D5DC0
 
 
@@ -975,6 +929,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
+/* W327 sweep: opt_common_subs off improves FUN_003d5a40 from nd231/obj324 to nd219/obj328 (window 368); retained. */
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1108,7 +1063,6 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 }
 
-/* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
 #pragma opt_common_subs off
 #pragma push
 /* W389 sweep: opt_propagation off measured nd283/obj448 -> nd281/obj448 (window 464). */
@@ -1213,7 +1167,6 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 #pragma pop
 #pragma opt_common_subs reset
 
-// W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
 // FUN_003D6910 NONMATCHING
 
 
@@ -1266,7 +1219,6 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
   FUN_00176ac0(param_1,param_3,iVar2);
   return cVar1;
 }
-
 // FUN_003D6AE0
 
 
@@ -1463,6 +1415,7 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
+
 // FUN_003D6E60
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {
@@ -1635,6 +1588,14 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
 }
 
+/* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
+// FUN_003d7180
+u32 fclCombineMisc003d7180(void)
+{
+    return (s32)(((FUN_00488f30() % 0xffff) * 1000) / 0xffff) < 500;
+}
+
+// W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
 // FUN_003D71D0
 
 
@@ -1667,6 +1628,7 @@ success:
   FUN_00176c80(param_1 + 1,param_2 + 4);
   return 1;
 }
+
 // FUN_003D72F0 NONMATCHING
 u64 FUN_003d72f0(u16 *param_1)
 
@@ -1752,6 +1714,14 @@ LAB_003d7430:
 
 }
 
+// FUN_003d74b0
+s32 fclCombineMisc003d74b0(u32 param_1)
+{
+    u8* base;
+
+    base = (u8*)DAT_007ce420;
+    return *(s32*)(DAT_006a5630 + (u32)base[(param_1 & 0xffff) * 0xe + 0xd] * 4);
+}
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd796/obj1344 -> nd788/obj1344 (window 1344). */
 #pragma opt_lifetimes on
@@ -2054,6 +2024,19 @@ LAB_003d79dc:
 #pragma opt_lifetimes reset
 #pragma pop
 
+// FUN_003d7a30
+s32 fclCombineMisc003d7a30(u32 *param_1, void *param_2, s32 param_3)
+{
+    s32 idx;
+    s32 link;
+
+    idx = (u32)*(u16 *)((u8 *)param_1 + 2) * 0xe;
+    link = func_0016deb0((*gp0xffffb730)[idx + 2]);
+    func_0016dba0(link);
+    FUN_003d74f0_i((int)param_1, (int)param_2, param_3);
+    return 0;
+}
+
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd341/obj720 -> nd338/obj720 (window 736). */
 #pragma opt_lifetimes on
@@ -2238,7 +2221,6 @@ LAB_003d7cb4:
 }
 #pragma opt_lifetimes reset
 #pragma pop
-
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd341/obj720 -> nd338/obj720 (window 736). */
 #pragma opt_lifetimes on
@@ -2533,7 +2515,11 @@ s32 lVar6;
 
 }
 
-
+// FUN_003d8230
+u32 fclCombineMisc003d8230(s32 param_1)
+{
+    return FUN_001749a0(*(u16*)(param_1 + 6)) != 0;
+}
 
 // FUN_003D8260
 u32 FUN_003d8260(int param_1,u32 param_2)
@@ -2592,8 +2578,6 @@ s32 lVar3;
   return uVar5;
 
 }
-
-
 
 // FUN_003D8370
 u32 FUN_003d8370(int param_1,u32 param_2,u32 param_3)
@@ -2658,6 +2642,8 @@ s32 lVar2;
   return uVar3;
 
 }
+
+
 
 #pragma push
 /* W389 pair sweep: opt_loop_invariants on + opt_common_subs off measured nd217/obj356 -> nd187/obj368 (window 368). */
@@ -2759,7 +2745,8 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 #pragma opt_loop_invariants reset
 #pragma pop
 
-/* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
+
+
 #pragma opt_loop_invariants on
 // FUN_003D8630 NONMATCHING
 
@@ -2901,6 +2888,13 @@ u32 FUN_003d8630(int param_1,int param_2)
 }
 #pragma opt_loop_invariants reset
 
+// FUN_003d8830
+s32 fclCombineMisc003d8830(s32 param_1)
+{
+    return *(s32*)(DAT_006a5f44 + param_1 * 8);
+}
+
+/* W327 sweep: opt_loop_invariants on improves FUN_003d8630 from nd338/obj500 to nd331/obj500 (window 512); retained. */
 // FUN_003D8850
 void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)
 {
@@ -3452,6 +3446,12 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
   }
 done:
   ;
+}
+
+// FUN_003d9c90
+void fclCombineMisc003d9c90(s32 param_1, s32 param_2)
+{
+    FUN_003dff00(*(s32*)(*(s32*)(*(s32*)(param_2 + 0x14) + 0x1c) + 0x60));
 }
 // FUN_003D9CC0
 

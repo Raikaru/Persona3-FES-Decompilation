@@ -53,25 +53,6 @@ void bpd00252ee0(void)
     *sBpd660 &= ~1;
 }
 
-// FUN_00253410
-void bpd00253410(void)
-{
-    u32* puVar1;
-    u32 uVar2;
-    int iVar3;
-
-    K_ASSERT(sBpd660 != NULL, 0x25);
-    puVar1 = sBpd660;
-    uVar2 = FUN_0021cca0(FUN_0021c3f0(1), 0x4c);
-    for (iVar3 = 0; iVar3 < 10; iVar3++) {
-        FUN_0021d3b0(puVar1 + iVar3 * 0x48 + 8, uVar2);
-    }
-    puVar1[0x2d4] = 0;
-    *puVar1 |= 2;
-}
-
-/* Recovered battle-misc harvest: 0x00252E80-0x002534D0 */
-
 // FUN_00252F30
 
 
@@ -165,6 +146,8 @@ void FUN_00252f30(void)
   return;
 }
 
+/* Recovered battle-misc harvest: 0x00252E80-0x002534D0 */
+
 // FUN_002532B0
 void FUN_002532b0(void)
 {
@@ -191,6 +174,23 @@ void FUN_002532b0(void)
             (*rasterShow)(entry + 4, 4, 0, 2, 3);
         }
     }
+}
+
+// FUN_00253410
+void bpd00253410(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+    int iVar3;
+
+    K_ASSERT(sBpd660 != NULL, 0x25);
+    puVar1 = sBpd660;
+    uVar2 = FUN_0021cca0(FUN_0021c3f0(1), 0x4c);
+    for (iVar3 = 0; iVar3 < 10; iVar3++) {
+        FUN_0021d3b0(puVar1 + iVar3 * 0x48 + 8, uVar2);
+    }
+    puVar1[0x2d4] = 0;
+    *puVar1 |= 2;
 }
 
 /* Removing this loses FUN_002534d0 (MATCH nd0 -> MISMATCH nd16) - measured W161. */

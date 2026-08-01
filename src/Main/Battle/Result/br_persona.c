@@ -36,24 +36,6 @@ void brPersonaShutdown(void)
     sBrPersona = NULL;
 }
 
-// FUN_00264f90
-void brPersonaDestroy(void)
-{
-    u32* work;
-
-    K_ASSERT(sBrPersona != NULL, 0x27);
-    work = sBrPersona;
-    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
-    *work &= 0xfffffffe;
-}
-
-// FUN_00264ff0
-u32 brPersonaGetResource(void)
-{
-    K_ASSERT(sBrPersona != NULL, 0x27);
-    return sBrPersona[1];
-}
-
 // FUN_00264e30
 void brPersonaLoad(int param_1)
 {
@@ -84,4 +66,22 @@ void brPersonaSetPersona(int param_1)
     K_ASSERT(*(u16*)((int)work + 8) != (u16)param_1, 0x59);
     uVar2 = FUN_001749a0(param_1);
     FUN_003c9b00(work[1], uVar2, 0);
+}
+
+// FUN_00264f90
+void brPersonaDestroy(void)
+{
+    u32* work;
+
+    K_ASSERT(sBrPersona != NULL, 0x27);
+    work = sBrPersona;
+    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
+    *work &= 0xfffffffe;
+}
+
+// FUN_00264ff0
+u32 brPersonaGetResource(void)
+{
+    K_ASSERT(sBrPersona != NULL, 0x27);
+    return sBrPersona[1];
 }
