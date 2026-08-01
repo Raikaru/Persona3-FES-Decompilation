@@ -903,7 +903,6 @@ void FUN_0031faf0(f32 *param_1,u32 param_2);
 static u32 * FUN_0031fbd0(float param_1,int *param_2);
 #pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
 extern u32 *FUN_0031fbd0_noargs(void);
-u8 * FUN_0031fd00(float firstTime, int *track);
 void FUN_0031fde0(void);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
@@ -4737,6 +4736,7 @@ int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
 
 
 
+// W414 failed constant-order probes: local u32/uVar2/node bindings stayed nd6; direct nesting regressed to nd7.
 // FUN_003234F0 NONMATCHING
 
 
@@ -5946,6 +5946,7 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 
 
+// W414 failed address-width probes: u8*/Qword128* aliases stayed nd2; direct-global addressing regressed to nd36.
 // FUN_00324B50 NONMATCHING
 
 u32 FUN_00324b50(u32 param_1)
@@ -7617,9 +7618,11 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   
 
-  switch (*(u32 *)(param_1 + 0x68) & 0x60) {
+  if ((*(u32 *)(param_1 + 0x68) & 0x60) == 0) {
+    *(u_long128 *)*param_3 = *(u_long128 *)(param_1 + 0x50);
 
-  default:
+  }
+  else {
 
     FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
 
@@ -7652,14 +7655,6 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
     }
 
     __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(param_3) : "memory");
-
-    break;
-
-  case 0:
-
-    *(u_long128 *)*param_3 = *(u_long128 *)(param_1 + 0x50);
-
-    break;
 
   }
 
@@ -8544,6 +8539,7 @@ void FUN_00327220(int param_1)
 
 
 
+// W417 negative: direct per-vector VU operands for FUN_00327250 grew to nd611, object 948B over the 896B retail window; the contiguous basis conversion below is the retained probe.
 // FUN_00327250 NONMATCHING
 
 
@@ -8555,159 +8551,28 @@ void FUN_00327250(float param_1,int param_2)
 
   int iVar1;
 
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  __int128 auVar4;
-
   u8 (*pauVar5) [16];
 
   int iVar6;
 
   u32 *puVar7;
 
-  __int128 in_vf0;
+  u8 auStack_10[16];
 
-  __int128 auVar8;
+  u8 auStack_20[16];
 
-  __int128 extraout_vf28;
+  u8 auStack_30[16];
 
-  __int128 auVar9;
+  u8 vuBasis[64];
 
-  __int128 extraout_vf28_00;
-
-  __int128 extraout_vf29;
-
-  __int128 auVar10;
-
-  __int128 extraout_vf29_00;
-
-  __int128 extraout_vf30;
-
-  __int128 auVar11;
-
-  __int128 extraout_vf30_00;
-
-  __int128 auVar12;
-
-  __int128 auVar13;
-
-  __int128 auStack_30;
-
-  __int128 auStack_20;
-
-  __int128 auStack_10;
 
   
 
   iVar6 = *(int *)(param_2 + 0x4c);
 
-  if (*(short *)(param_2 + 0xc) == 6) {
 
-    pauVar5 = *(u8 (**) [16])(iVar6 + 0x18);
-
-    puVar7 = *(u32 **)(param_2 + 0x3c);
-
-    iVar1 = *(int *)(iVar6 + 8);
-
-    if ((*(u32 *)(iVar6 + 0xc) & 1) == 0) {
-
-      for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
-
-        if (*(int *)pauVar5[1] == 0) {
-
-          FUN_00325b80((int)(*puVar7));
-
-        }
-
-        if (-1 < *(int *)pauVar5[1]) {
-
-          FUN_00325e40((float)(*(float *)(pauVar5[1] + 8) * param_1),(u8 (*) [16])(*puVar7));
-
-          FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(pauVar5));
-
-          FUN_003252a0((u64)(*puVar7));
-
-        }
-
-        pauVar5 = pauVar5 + 2;
-
-        puVar7 = puVar7 + 1;
-
-      }
-
-    }
-
-    else {
-
-      FUN_003322f0((int)(iVar6),(u32 *)(&auStack_30));
-
-      FUN_003322b0((int)(iVar6),(u32 *)(&auStack_20));
-
-      _lqc2(auStack_30);
-
-      FUN_00357e30();
-
-      auVar12 = _lqc2(auStack_20);
-
-      auVar2 = _sqc2(extraout_vf28_00);
-
-      auVar3 = _sqc2(extraout_vf29_00);
-
-      auVar4 = _sqc2(extraout_vf30_00);
-
-      auVar12 = _sqc2(auVar12);
-
-      for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
-
-        if (*(int *)pauVar5[1] == 0) {
-
-          FUN_00325b80((int)(*puVar7));
-
-        }
-
-        if (-1 < *(int *)pauVar5[1]) {
-
-          auVar9 = _lqc2(auVar2);
-
-          auVar10 = _lqc2(auVar3);
-
-          auVar11 = _lqc2(auVar4);
-
-          auVar13 = _lqc2(auVar12);
-
-          auVar8 = _lqc2(*pauVar5);
-
-          _vmulabc(auVar9,auVar8);
-
-          _vmaddabc(auVar10,auVar8);
-
-          _vmaddabc(auVar11,auVar8);
-
-          auVar8 = _vmaddbc(auVar13,in_vf0);
-
-          auStack_10 = _sqc2(auVar8);
-
-          FUN_00325e40((float)(*(float *)(pauVar5[1] + 8) * param_1),(u8 (*) [16])(*puVar7));
-
-          FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(&auStack_10));
-
-          FUN_003252a0((u64)(*puVar7));
-
-        }
-
-        pauVar5 = pauVar5 + 2;
-
-        puVar7 = puVar7 + 1;
-
-      }
-
-    }
-
-  }
-
-  else if (*(short *)(param_2 + 0xc) == 5) {
+  switch (*(u16 *)(param_2 + 0xc)) {
+  case 5: {
 
     pauVar5 = *(u8 (**) [16])(iVar6 + 0x18);
 
@@ -8725,7 +8590,7 @@ void FUN_00327250(float param_1,int param_2)
 
         }
 
-        if (-1 < *(int *)pauVar5[1]) {
+        if (*(int *)pauVar5[1] >= 0) {
 
           FUN_00324a90_f32(*(float *)(pauVar5[1] + 8) * param_1,*puVar7);
 
@@ -8749,47 +8614,46 @@ void FUN_00327250(float param_1,int param_2)
 
       FUN_003322b0((int)(iVar6),(u32 *)(&auStack_20));
 
-      _lqc2(auStack_30);
+      __asm__ volatile (
+          "lqc2 vf10, 0(%0)\n"
+          : : "r"(&auStack_30) : "vf10", "memory");
 
       FUN_00357e30();
 
-      auVar12 = _lqc2(auStack_20);
-
-      auVar2 = _sqc2(extraout_vf28);
-
-      auVar3 = _sqc2(extraout_vf29);
-
-      auVar4 = _sqc2(extraout_vf30);
-
-      auVar12 = _sqc2(auVar12);
+      __asm__ volatile (
+          "lqc2 vf31, 0(%0)\n"
+          "sqc2 vf28, 0(%1)\n"
+          "sqc2 vf29, 0x10(%1)\n"
+          "sqc2 vf30, 0x20(%1)\n"
+          "sqc2 vf31, 0x30(%1)\n"
+          : : "r"(&auStack_20), "r"(vuBasis)
+          : "vf28", "vf29", "vf30", "vf31", "memory");
 
       for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
 
-        if (-1 < *(int *)pauVar5[1]) {
+        if (*(int *)pauVar5[1] >= 0) {
 
-          auVar9 = _lqc2(auVar2);
+          __asm__ volatile (
+              "lqc2 vf28, 0(%0)\n"
+              "lqc2 vf29, 0x10(%0)\n"
+              "lqc2 vf30, 0x20(%0)\n"
+              "lqc2 vf31, 0x30(%0)\n"
+              "lqc2 vf10, 0(%1)\n"
+              "vmulax.xyzw ACC, vf28, vf10x\n"
+              "vmadday.xyzw ACC, vf29, vf10y\n"
+              "vmaddaz.xyzw ACC, vf30, vf10z\n"
+              "vmaddw.xyzw vf10, vf31, vf0w\n"
+              : : "r"(vuBasis), "r"(*pauVar5)
+              : "vf0", "vf10", "vf28", "vf29", "vf30", "vf31", "ACC", "memory");
 
-          auVar10 = _lqc2(auVar3);
-
-          auVar11 = _lqc2(auVar4);
-
-          auVar13 = _lqc2(auVar12);
-
-          auVar8 = _lqc2(*pauVar5);
-
-          _vmulabc(auVar9,auVar8);
-
-          _vmaddabc(auVar10,auVar8);
-
-          _vmaddabc(auVar11,auVar8);
-
-          auVar8 = _vmaddbc(auVar13,in_vf0);
-
-          auStack_10 = _sqc2(auVar8);
+          __asm__ volatile (
+              "sqc2 vf10, 0(%0)\n"
+              : : "r"(&auStack_10)
+              : "vf10", "memory");
 
           FUN_00324a90_f32(*(float *)(pauVar5[1] + 8) * param_1,*puVar7);
 
-          FUN_00324a30(*puVar7, auStack_10._0_4_);
+          FUN_00324a30(*puVar7, *(u32 *)auStack_10);
 
           FUN_00324990(*puVar7);
 
@@ -8804,7 +8668,113 @@ void FUN_00327250(float param_1,int param_2)
     }
 
   }
+  break;
 
+  case 6: {
+
+    pauVar5 = *(u8 (**) [16])(iVar6 + 0x18);
+
+    puVar7 = *(u32 **)(param_2 + 0x3c);
+
+    iVar1 = *(int *)(iVar6 + 8);
+
+    if ((*(u32 *)(iVar6 + 0xc) & 1) == 0) {
+
+      for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
+
+        if (*(int *)pauVar5[1] == 0) {
+
+          FUN_00325b80((int)(*puVar7));
+
+        }
+
+        if (*(int *)pauVar5[1] >= 0) {
+
+          FUN_00325e40((float)(*(float *)(pauVar5[1] + 8) * param_1),(u8 (*) [16])(*puVar7));
+
+          FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(pauVar5));
+
+          FUN_003252a0((u64)(*puVar7));
+
+        }
+
+        pauVar5 = pauVar5 + 2;
+
+        puVar7 = puVar7 + 1;
+
+      }
+
+    }
+
+    else {
+
+      FUN_003322f0((int)(iVar6),(u32 *)(&auStack_30));
+
+      FUN_003322b0((int)(iVar6),(u32 *)(&auStack_20));
+
+      __asm__ volatile (
+          "lqc2 vf10, 0(%0)\n"
+          : : "r"(&auStack_30) : "vf10", "memory");
+
+      FUN_00357e30();
+
+      __asm__ volatile (
+          "lqc2 vf31, 0(%0)\n"
+          "sqc2 vf28, 0(%1)\n"
+          "sqc2 vf29, 0x10(%1)\n"
+          "sqc2 vf30, 0x20(%1)\n"
+          "sqc2 vf31, 0x30(%1)\n"
+          : : "r"(&auStack_20), "r"(vuBasis)
+          : "vf28", "vf29", "vf30", "vf31", "memory");
+
+      for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
+
+        if (*(int *)pauVar5[1] == 0) {
+
+          FUN_00325b80((int)(*puVar7));
+
+        }
+
+        if (*(int *)pauVar5[1] >= 0) {
+
+          __asm__ volatile (
+              "lqc2 vf28, 0(%0)\n"
+              "lqc2 vf29, 0x10(%0)\n"
+              "lqc2 vf30, 0x20(%0)\n"
+              "lqc2 vf31, 0x30(%0)\n"
+              "lqc2 vf10, 0(%1)\n"
+              "vmulax.xyzw ACC, vf28, vf10x\n"
+              "vmadday.xyzw ACC, vf29, vf10y\n"
+              "vmaddaz.xyzw ACC, vf30, vf10z\n"
+              "vmaddw.xyzw vf10, vf31, vf0w\n"
+              : : "r"(vuBasis), "r"(*pauVar5)
+              : "vf0", "vf10", "vf28", "vf29", "vf30", "vf31", "ACC", "memory");
+
+          __asm__ volatile (
+              "sqc2 vf10, 0(%0)\n"
+              : : "r"(&auStack_10)
+              : "vf10", "memory");
+
+          FUN_00325e40((float)(*(float *)(pauVar5[1] + 8) * param_1),(u8 (*) [16])(*puVar7));
+
+          FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(&auStack_10));
+
+          FUN_003252a0((u64)(*puVar7));
+
+        }
+
+        pauVar5 = pauVar5 + 2;
+
+        puVar7 = puVar7 + 1;
+
+      }
+
+    }
+
+  }
+  break;
+
+  }
   return;
 
 }
@@ -9667,6 +9637,7 @@ void FUN_003275d0(float param_1,int param_2)
 
 
 /* Rebuilt the type-7 billboard color and packet paths; VU0 transform dataflow remains nonmatching. */
+// W417 probe note: FUN_003282e0 switch-only reached nd2997/object4200, while the retained VU-only conversion is nd3050/object4180 (window4208); do not combine the switch reorder with this VU result.
 // FUN_003282E0 NONMATCHING
 void FUN_003282e0(int param_1)
 
@@ -9678,13 +9649,11 @@ void FUN_003282e0(int param_1)
 
   u32 uVar2;
 
-  __int128 in_zero_qw;
 
   int iVar3;
 
   int iVar4;
 
-  __int128 auVar5;
 
   u32 uVar6;
 
@@ -9720,21 +9689,6 @@ void FUN_003282e0(int param_1)
 
   float fVar22;
 
-  __int128 in_vf0;
-
-  __int128 auVar23;
-
-  __int128 extraout_vf28;
-
-  __int128 extraout_vf29;
-
-  __int128 auVar24;
-
-  __int128 extraout_vf30;
-
-  __int128 auVar25;
-
-  __int128 auVar26;
 
   float fStack_1d0;
 
@@ -9746,13 +9700,7 @@ void FUN_003282e0(int param_1)
 
   u32 *puStack_1c0;
 
-  __int128 auStack_1b0;
-
-  __int128 auStack_1a0;
-
-  __int128 auStack_190;
-
-  __int128 auStack_180;
+  u8 vuBasis[64];
 
   __int128 auStack_170;
 
@@ -9812,19 +9760,20 @@ void FUN_003282e0(int param_1)
 
       FUN_003322b0((int)(iVar7),(u32 *)(&auStack_160));
 
-      _lqc2(auStack_170);
+      __asm__ volatile (
+          "lqc2 vf10, 0(%0)\n"
+          : : "r"(&auStack_170) : "vf10", "memory");
 
       FUN_00357e30();
 
-      auVar5 = _lqc2(auStack_160);
-
-      auStack_1b0 = _sqc2(extraout_vf28);
-
-      auStack_1a0 = _sqc2(extraout_vf29);
-
-      auStack_190 = _sqc2(extraout_vf30);
-
-      auStack_180 = _sqc2(auVar5);
+      __asm__ volatile (
+          "lqc2 vf31, 0(%0)\n"
+          "sqc2 vf28, 0(%1)\n"
+          "sqc2 vf29, 0x10(%1)\n"
+          "sqc2 vf30, 0x20(%1)\n"
+          "sqc2 vf31, 0x30(%1)\n"
+          : : "r"(&auStack_160), "r"(vuBasis)
+          : "vf28", "vf29", "vf30", "vf31", "memory");
 
 
       fVar22 = 1.0f;
@@ -9833,27 +9782,25 @@ void FUN_003282e0(int param_1)
       fVar16 = 32.0f;
       for (iVar7 = 0; iVar7 < iVar3; iVar7 = iVar7 + 1) {
 
-        if (-1 < *(int *)pauVar8[1]) {
+        if (*(int *)pauVar8[1] >= 0) {
 
-          auVar23 = _lqc2(auStack_1b0);
+          __asm__ volatile (
+              "lqc2 vf28, 0(%0)\n"
+              "lqc2 vf29, 0x10(%0)\n"
+              "lqc2 vf30, 0x20(%0)\n"
+              "lqc2 vf31, 0x30(%0)\n"
+              "lqc2 vf10, 0(%1)\n"
+              "vmulax.xyzw ACC, vf28, vf10x\n"
+              "vmadday.xyzw ACC, vf29, vf10y\n"
+              "vmaddaz.xyzw ACC, vf30, vf10z\n"
+              "vmaddw.xyzw vf10, vf31, vf0w\n"
+              : : "r"(vuBasis), "r"(*pauVar8)
+              : "vf0", "vf10", "vf28", "vf29", "vf30", "vf31", "ACC", "memory");
 
-          auVar24 = _lqc2(auStack_1a0);
-
-          auVar25 = _lqc2(auStack_190);
-
-          auVar26 = _lqc2(auStack_180);
-
-          auVar5 = _lqc2(*pauVar8);
-
-          _vmulabc(auVar23,auVar5);
-
-          _vmaddabc(auVar24,auVar5);
-
-          _vmaddabc(auVar25,auVar5);
-
-          auVar5 = _vmaddbc(auVar26,in_vf0);
-
-          _DAT_0069c4d0 = _sqc2(auVar5);
+          __asm__ volatile (
+              "sqc2 vf10, 0(%0)\n"
+              : : "r"(DAT_0069c4d0_abs)
+              : "vf10", "memory");
 
           uStack_28 = DAT_0069c4d0;
 
@@ -11393,7 +11340,7 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               auVar18 = _sqc2(auVar18);
 
-              memcpy(pauVar9[-2], &auVar18, 16);
+              *(Qword128 *)pauVar9[-2] = *(Qword128 *)&auVar18;
 
               *(float *)(pauVar9[-1] + 8) = (fVar12 - fVar15) * fVar17 + fVar15 + 0.0f;
 
@@ -11539,7 +11486,7 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               auVar18 = _sqc2(extraout_vf10);
 
-              memcpy(pauVar8[-2], &auVar18, 16);
+              *(Qword128 *)pauVar8[-2] = *(Qword128 *)&auVar18;
 
               *(float *)(pauVar8[-1] + 8) = (fVar12 - fVar13) * fVar14 + fVar13 + 0.0f;
 
@@ -16320,6 +16267,7 @@ void FUN_00330100(int param_1, float scale)
   *(float *)(dest + 0xe8) = *(float *)(source + 0xe8) * scale;
 }
 
+// W417 negative: replacing both FUN_00330190 normalization VU blocks with mdlVuNormalize3 worsened nd2860/object3480 to nd2997/object3580 over the 2592-byte retail window; retained fake VU code.
 // FUN_00330190 NONMATCHING
 
 
@@ -18520,7 +18468,7 @@ u32 FUN_00332370(int param_1)
   u32 *puVar4;
   u32 uVar5;
   u16 *indexBase;
-  u32 index;
+  u16 index;
   u32 uVar3;
   
 
@@ -20650,6 +20598,8 @@ void FUN_00334820(int param_1)
 
 
 
+// W414 12-byte copy probes: first-site scalar/struct copies regressed to nd1603/nd1601; replacing both sites regressed to nd1666/nd1664. Only the second-site field copy is retained.
+// W417 negative: direct conversion of the initial FUN_003348b0 matrix VU block regressed nd1503/object2192 to nd1647/object2232 (window2256); retained fake VU macros.
 // FUN_003348B0 NONMATCHING
 
 
@@ -21098,7 +21048,9 @@ LAB_003350f0:
 
                 puVar12 = puVar16 + iVar9 * 3;
 
-                memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar12 + -0xf), 12);
+                ((u32 *)&_DAT_0069c4d0)[0] = ((u32 *)(puVar12 + -0xf))[0];
+                ((u32 *)&_DAT_0069c4d0)[1] = ((u32 *)(puVar12 + -0xf))[1];
+                ((u32 *)&_DAT_0069c4d0)[2] = ((u32 *)(puVar12 + -0xf))[2];
 
                 auVar39 = _lqc2(_DAT_0069c4d0);
 
@@ -21602,6 +21554,7 @@ void FUN_003359e0(int param_1)
 
 
 
+// W417 negative: direct VU transform of the first FUN_00335a70 packet vector only changed nd2926/object3668 to nd2920/object3660 (rate 0.798 -> 0.797), so the size loophole rejects it.
 // FUN_00335A70 NONMATCHING
 
 
@@ -22384,17 +22337,22 @@ void FUN_00336630(int param_1)
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
+    __asm__ volatile (
+        ".set noreorder                      \n"
+        "sw %0, 0xd8($sp)                   \n"
+        "addiu $v0, $sp, 0xd8               \n"
+        ".set reorder"
+        : : "r"(modelAlpha)
+        : "$v0", "memory");
     inv255 = DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                      \n"
-        "sw %1, 0xd8($sp)                   \n"
-        "addiu $v0, $sp, 0xd8               \n"
         "lw $v0, 0($v0)                     \n"
         "pextlb $v0, $zero, $v0             \n"
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -22406,7 +22364,7 @@ void FUN_00336630(int param_1)
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -22414,9 +22372,8 @@ void FUN_00336630(int param_1)
         "addiu $v0, $sp, 0xb0               \n"
         "sqc2 vf10, 0($v0)                  \n"
         ".set reorder"
-        : : "r"(alpha), "r"(modelAlpha), "f"(inv255)
+        : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
-
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, param_1 + 0x10, *(f32 *)(param_1 + 0x20));
     for (index = 0; index < count; index++, entries += 12) {
       if (0 < (int)entries[5]) {
@@ -22721,6 +22678,7 @@ void FUN_00336df0(int param_1)
 
 // Genuine VU0 macro-mode asm: complete 190-operation retail graph reconstruction.
 // The aligned f32[4] buffers preserve the retail vector interfaces and ribbon-state flow.
+// W414 failed typed 12-byte copy probes: scalar/struct field copies regressed to nd1824/nd1823 (object 2364/2416); retain memcpy.
 // FUN_00336E80 NONMATCHING
 
 
@@ -23292,16 +23250,22 @@ void FUN_003377f0(u32 param_1)
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
+    __asm__ volatile (
+        ".set noreorder                      \n"
+        "sw %0, 0xd8($sp)                   \n"
+        "addiu $v0, $sp, 0xd8               \n"
+        ".set reorder"
+        : : "r"(modelAlpha)
+        : "$v0", "memory");
     inv255 = DAT_007cae4c;
     __asm__ volatile (
-        "sw %1, 0xd8($sp)                   \n"
-        "addiu $v0, $sp, 0xd8               \n"
+        ".set noreorder                      \n"
         "lw $v0, 0($v0)                     \n"
         "pextlb $v0, $zero, $v0             \n"
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -23313,7 +23277,7 @@ void FUN_003377f0(u32 param_1)
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -23321,9 +23285,8 @@ void FUN_003377f0(u32 param_1)
         "addiu $v0, $sp, 0xb0               \n"
         "sqc2 vf10, 0($v0)                  \n"
         ".set reorder"
-        : : "r"(alpha), "r"(modelAlpha), "f"(inv255)
+        : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
-
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
     for (index = 0; index < count; index++, entries += 3) {
       if (0 < (int)entries[1]) {
@@ -33131,6 +33094,7 @@ void FUN_00342a40(int param_1)
 
 
 
+// W417 negative: direct normalization VU asm for the FUN_00342a90 inner particle vector grew nd1585/object2188 to nd2205/object2912 over the 2432-byte retail window; retained fake VU code.
 // FUN_00342A90 NONMATCHING
 
 
@@ -38633,9 +38597,9 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
   FUN_003294d0();
 
-  RpSkyRenderStateSet(2,0x44);
+  RpSkyRenderStateSet_u32(2,0x44);
 
-  RpSkyRenderStateSet(3,0x31001);
+  RpSkyRenderStateSet_u32(3,0x31001);
 
   FUN_00348760((u8 *)(param_1 + 4),(float *)(&auStack_110));
 
@@ -38644,7 +38608,7 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
   FUN_00329550();
 
-  RpSkyRenderStateSet(2,uStack_4 | 0x10);
+  RpSkyRenderStateSet_u32(2,uStack_4 | 0x10);
 
   iVar1 = FUN_00348340((u8 *)(param_1 + 4),(float *)(auStack_210));
 
@@ -38652,7 +38616,7 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
     (*setState)(1,*(u32 *)DAT_00957ba8_abs);
 
-    RpSkyRenderStateSet(3,0x31001);
+    RpSkyRenderStateSet_u32(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);
 
@@ -38662,7 +38626,7 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
   }
 
-  RpSkyRenderStateSet(2,uStack_4);
+  RpSkyRenderStateSet_u32(2,uStack_4);
 
   return;
 
@@ -42143,6 +42107,7 @@ u64 FUN_0034d3a0(int param_1,int param_2,int param_3)
 }
 
 
+// W414 failed fidx-width/direct-expression probes: all stayed nd8 (object 340/352).
 // FUN_0034D510 NONMATCHING
 
 
@@ -42546,6 +42511,7 @@ void FUN_0034db30(int param_1)
 
 
 
+// W417 negative: direct VU matrix setup alone changed FUN_0034dc00 from nd1454/object1856 to nd1549/object1972 over its 1936-byte window; adding the loop VU block reached nd1605/object2000, so the fake VU path is retained.
 // FUN_0034DC00 NONMATCHING
 
 
@@ -49741,6 +49707,7 @@ void FUN_00357540(void)
 
 
 
+// W414 failed field-local probes: signed/unsigned locals stayed nd13; state-width probes stayed nd13/nd14.
 // FUN_00357550 NONMATCHING
 
 

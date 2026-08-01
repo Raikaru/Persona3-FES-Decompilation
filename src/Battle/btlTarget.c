@@ -4855,6 +4855,7 @@ void FUN_002D7970(void* arg)
     work->action->unit->packetCount++;
 }
 
+/* W415: swapped mutually exclusive low-HP branch layout; final call census matches retail (nd 374 -> 373, object 1100/1104). */
 // FUN_002d79a0 NONMATCHING
 u32 FUN_002d79a0(void *arg)
 {
@@ -4946,14 +4947,14 @@ u32 FUN_002d79a0(void *arg)
         else
         {
             u32 currentLowHp = datCalcIsLowHp(unit->datUnit);
-            if ((currentLowHp == 0) || (oldLowHp != 0))
+            if ((currentLowHp != 0) && (oldLowHp == 0))
+                FUN_002daa20(action, 0x1a, 0, 0, 0);
+            else
             {
                 u32 currentDown = datCalcChkBadStatus(unit->datUnit, 0x200);
                 if ((currentDown != 0) && (oldDown == 0))
                     FUN_002daa20(action, 0x1c, 0, 0, 0);
             }
-            else
-                FUN_002daa20(action, 0x1a, 0, 0, 0);
         }
     }
     func_002faa50(work->source, action, (BtlTargetResult*)work->data);

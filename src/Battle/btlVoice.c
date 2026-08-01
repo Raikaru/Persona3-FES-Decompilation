@@ -2338,6 +2338,7 @@ void func_002e5040(void)
 }
 
 #pragma opt_propagation off
+/* W417 negative: inverting func_002e5060 branch layout measured nd1395 -> 1400 at object 1924/2112; retained order. */
 // FUN_002e5060 NONMATCHING
 void func_002e5060(BtlCamera* camera)
 {
@@ -3125,11 +3126,6 @@ void func_002e6a20(BtlCamera* camera, float weight)
                (u8*)&work.target, mode);
 
   if (weight != 0.0f) {
-    work.temp3 = weight;
-    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
-    FUN_002a3110(camera, work.temp3);
-  }
-  else {
     FUN_002a44f0_6a20((f32*)&work.pose.pos, (f32*)&work.target);
     FUN_004be1e0_6a20(&work.rotated,
                       D_006978A0_abs, 1,
@@ -3146,6 +3142,11 @@ void func_002e6a20(BtlCamera* camera, float weight)
     work.temp2 = 2.0f;
     FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
     FUN_002a3110(camera, work.temp2);
+  }
+  else {
+    work.temp3 = weight;
+    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    FUN_002a3110(camera, work.temp3);
   }
 }
 #pragma opt_propagation reset
@@ -3246,10 +3247,7 @@ void func_002e7330(int param_1)
   
   iVar7 = param_1;
   lVar5 = FUN_002f8a40(*(u32 *)(*(int *)(*(int *)(iVar7 + 0xe0) + 0x38) + 0x30));
-  if (lVar5 == 0) {
-    FUN_002b1e00(param_1);
-  }
-  else {
+  if (lVar5 != 0) {
     *(u32 *)(iVar7 + 0x100) = *(u32 *)(*(int *)(iVar7 + 0xe0) + 0x38);
     iVar1 = *(int *)(*(int *)(iVar7 + 0xe0) + 0x30);
     if (*(char *)(iVar1 + 0xa2) != '\0') {
@@ -3328,6 +3326,8 @@ void func_002e7330(int param_1)
     }
     FUN_002b6bf0(iVar7 + 0xec,*(int *)(iVar7 + 0xe0),*(u32 *)(*(int *)(iVar7 + 0xe0) + 0x38),
                  unaff_s1_lo,uVar6);
+  } else {
+    FUN_002b1e00(param_1);
   }
   lVar5 = FUN_002b6cd0(iVar7 + 0xec);
   if (lVar5 != 0) {
@@ -4897,7 +4897,15 @@ void func_002eabf0(void)
     uVar4 = *(u16 *)((int)puVar2 + 0x1a);
     if (((uVar4 & 1) != 0) && (iVar3 = *(int *)(puVar2 + 6), *(char *)(iVar3 + 0xa2) == '\x01')) {
       sVar1 = *(short *)(iVar3 + 0xa4);
-      if ((sVar1 == 0x106) || (sVar1 == 0x105)) {
+      if ((sVar1 == 0x115) && (unaff_s2_lo = puVar2, (uVar4 & 8) != 0)) {
+        *(u32 *)(iVar3 + 0x9c) = *(u32 *)(iVar3 + 0x9c) & 0xfffffff7;
+        *(u16 *)((int)puVar2 + 0x1a) = *(u16 *)((int)puVar2 + 0x1a) & 0xfff7;
+        FUN_0029a320(puVar2);
+        FUN_002d3fe0(iVar3);
+        FUN_00300560(*(u32 *)(iVar3 + 0xa2c),0xffffff);
+        FUN_002831c0(iVar3,6);
+      }
+      else if ((sVar1 == 0x106) || (sVar1 == 0x105)) {
         if ((uVar4 & 8) == 0) {
           *(u32 *)(iVar3 + 0x9c) = *(u32 *)(iVar3 + 0x9c) | 8;
           *(u16 *)((int)puVar2 + 0x1a) = *(u16 *)((int)puVar2 + 0x1a) | 8;
@@ -4907,14 +4915,6 @@ void func_002eabf0(void)
           FUN_002831c0(iVar3,6);
         }
         aiStack_8[*(short *)(iVar3 + 0xa4) != 0x105] = iVar3;
-      }
-      else if ((sVar1 == 0x115) && (unaff_s2_lo = puVar2, (uVar4 & 8) != 0)) {
-        *(u32 *)(iVar3 + 0x9c) = *(u32 *)(iVar3 + 0x9c) & 0xfffffff7;
-        *(u16 *)((int)puVar2 + 0x1a) = *(u16 *)((int)puVar2 + 0x1a) & 0xfff7;
-        FUN_0029a320(puVar2);
-        FUN_002d3fe0(iVar3);
-        FUN_00300560(*(u32 *)(iVar3 + 0xa2c),0xffffff);
-        FUN_002831c0(iVar3,6);
       }
     }
   }
@@ -5086,7 +5086,15 @@ void func_002eb2c0(void)
     uVar1 = *(u16 *)((int)puVar3 + 0x1a);
     if (((uVar1 & 1) != 0) && (iVar4 = *(int *)(puVar3 + 6), *(char *)(iVar4 + 0xa2) == '\x01')) {
       sVar2 = *(short *)(iVar4 + 0xa4);
-      if ((sVar2 == 0x106) || (sVar2 == 0x105)) {
+      if ((sVar2 == 0x115) && (unaff_s4_lo = puVar3, (uVar1 & 8) == 0)) {
+        *(u32 *)(iVar4 + 0x9c) = *(u32 *)(iVar4 + 0x9c) | 8;
+        *(u16 *)((int)puVar3 + 0x1a) = *(u16 *)((int)puVar3 + 0x1a) | 8;
+        FUN_0029a2c0(puVar3);
+        FUN_002d3e00(iVar4,0);
+        FUN_00300560(*(u32 *)(iVar4 + 0xa2c),0xffffff);
+        FUN_002831c0(iVar4,6);
+      }
+      else if ((sVar2 == 0x106) || (sVar2 == 0x105)) {
         if ((uVar1 & 8) != 0) {
           *(u32 *)(iVar4 + 0x9c) = *(u32 *)(iVar4 + 0x9c) & 0xfffffff7;
           *(u16 *)((int)puVar3 + 0x1a) = *(u16 *)((int)puVar3 + 0x1a) & 0xfff7;
@@ -5096,14 +5104,6 @@ void func_002eb2c0(void)
           FUN_002831c0(iVar4,6);
         }
         aiStack_8[*(short *)(iVar4 + 0xa4) != 0x105] = iVar4;
-      }
-      else if ((sVar2 == 0x115) && (unaff_s4_lo = puVar3, (uVar1 & 8) == 0)) {
-        *(u32 *)(iVar4 + 0x9c) = *(u32 *)(iVar4 + 0x9c) | 8;
-        *(u16 *)((int)puVar3 + 0x1a) = *(u16 *)((int)puVar3 + 0x1a) | 8;
-        FUN_0029a2c0(puVar3);
-        FUN_002d3e00(iVar4,0);
-        FUN_00300560(*(u32 *)(iVar4 + 0xa2c),0xffffff);
-        FUN_002831c0(iVar4,6);
       }
     }
   }
@@ -6079,6 +6079,7 @@ void func_002ed350(void)
     *(u16*)((u8*)gBtl + 0xb58) = 0;
 }
 
+/* W415 negative: suffixing the divisor and adding an absolute global alias removed soft calls but measured nd3177/4856 and nd3175/4852 versus nd3006/4824. */
 // FUN_002ed360 NONMATCHING
 u32 func_002ed360(u64 *param_1)
 

@@ -246,6 +246,7 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
 // FUN_00359560 NONMATCHING
 void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, const RwMatrix* mat, u32 saveAndRestoreRenderState)
 {
+    f32 angle;
     u32 saveAndRestoreRenderState_p = saveAndRestoreRenderState;
     const RwMatrix* mat_p = mat;
     RwIm2DVertex vertices[21];
@@ -257,7 +258,6 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     RwV3d worldPoint;
     RwV3d cameraPoint;
     u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
-    f32 angle;
     f32 zBufferFar;
     u32 i;
     f32 farPlane;
@@ -446,9 +446,9 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
     RwV3d lineEnd;
     RwV3d lineStart;
     f32 heightStep;
-    f32 halfHeight;
-    f32 negHalfHeight;
     f32 angle;
+    f32 negHalfHeight;
+    f32 halfHeight;
 
     sphere.radius = (radius > height) ? radius : height;
     sphere.center.x = center->x;

@@ -1198,6 +1198,7 @@ ResrcModelNpc* K_FldEvent_FindInteractableNpc()
     return interactableNpc;
 }
 
+/* W415 negative probes: moving 001d8d60 ahead of 001d8d50 via found/sentinel/do-while loop forms raised nd 334 to 385, 391, 398, 434, 461, 482, 485, or 489; baseline retained. */
 // FUN_001c7830 NONMATCHING
 void func_001c7830(void* output, void* script)
 {
@@ -1403,6 +1404,7 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
     return true;
 }
 
+/* W415: retail has no zero comparison before either copy; both memcpy destinations are loaded through K_Field_Get, restoring the two 0x001b9120 calls (nd207->202). Direct/alias helper probes were nd207-neutral; retaining null guards was nd247/object432 over the 416-byte window. */
 // FUN_001c7f20 NONMATCHING
 u32 func_001c7f20(void* resource)
 {
@@ -1428,10 +1430,8 @@ u32 func_001c7f20(void* resource)
         allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
         destination = allocate(1, (u32)size, 0x40000);
         *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
-        if (destination != NULL)
-        {
-            memcpy(destination, ((HCdvd*)resource)->fileMemory, (u32)size);
-        }
+        memcpy(*(void**)((u8*)K_Field_Get() + 0x1148),
+               ((HCdvd*)resource)->fileMemory, (u32)size);
         H_Cdvd_Destroy((HCdvd*)resource);
     }
     else
@@ -1445,10 +1445,8 @@ u32 func_001c7f20(void* resource)
             allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
             destination = allocate(1, (u32)size, 0x40000);
             *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
-            if (destination != NULL)
-            {
-                memcpy(destination, source, (u32)size);
-            }
+            memcpy(*(void**)((u8*)K_Field_Get() + 0x1148),
+                   source, (u32)size);
         }
     }
     return true;

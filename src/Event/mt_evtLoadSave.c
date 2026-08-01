@@ -61,6 +61,8 @@ extern u32 DAT_006a0c00;
 #pragma alias DAT_006a0bf8_vec_abs DAT_006a0bf8
 extern MtEvtVec3 DAT_006a0bf8_vec_abs[];
 extern u32 LAB_00392bb0;
+extern u8 DAT_006a0bd0[];
+extern u8 DAT_006a0be0[];
 
 
 
@@ -854,6 +856,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 // A direct typed f32 source/destination indexing attempt regressed nd13 -> nd179
 // and size 504 -> 500, so it was reverted. The seven-word residual is confined
 // to the ten-float copy loop's equivalent index/base address-formation order.
+// W414 direct stack-array indexing probes regressed FUN_0038e660 nd13 -> nd178; retained computed-pointer form.
 // FUN_0038E660 NONMATCHING
 
 
@@ -949,6 +952,7 @@ next_node:
 #define FUN_0038e660(...) ((void (*)(...))FUN_0038e660)(__VA_ARGS__)
 #undef FUN_0038e860
 /* Measured W389: opt_loop_invariants on + opt_lifetimes on, with/without nd 1424/1414, object 2132/2132 (window 2192). */
+/* W417: moving 0x6a0bb0/0x6a0ba0 before their loops lowered nd1414 -> 1391; object 2132B unchanged (window 2192B). */
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
@@ -1020,6 +1024,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
       if (iVar9 == 0x1a) {
 
+        FUN_005225a8(0x6a0bb0);
         for (iVar5 = *(int *)(iVar7 + 0x84); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x94)) {
 
           for (iVar1 = *(int *)(iVar5 + 0x6c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4c)) {
@@ -1036,12 +1041,12 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
         }
 
-        FUN_005225a8(0x6a0bb0);
 
       }
 
       else if (iVar9 == 0x19) {
 
+        FUN_005225a8(0x6a0ba0);
         for (piVar6 = *(int **)(iVar7 + 0x84); piVar6 != (int *)0x0; piVar6 = (int *)piVar6[0x25]) {
 
           if (*piVar6 == 0x19) {
@@ -1056,7 +1061,6 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
         }
 
-        FUN_005225a8(0x6a0ba0);
 
       }
 
@@ -1367,6 +1371,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 #define FUN_0038e860(...) ((u32 (*)(...))FUN_0038e860)(__VA_ARGS__)
 #undef FUN_0038f0f0
 /* Measured W389: opt_lifetimes on, with/without nd 499/98, object 848/840 (window 848). */
+/* W417: typed DAT aliases, ordered byte loads, and puVar13/puVar14 declaration order lowered nd98 -> 42; object 840B unchanged (window 848B). */
 #pragma push
 #pragma opt_lifetimes on
 // FUN_0038F0F0 NONMATCHING
@@ -1401,9 +1406,9 @@ void FUN_0038f0f0(u32 param_1)
 
   u32 uVar12;
 
-  u32 *puVar13;
-
   u32 *puVar14;
+
+  u32 *puVar13;
 
   int iVar15;
   int copyCount;
@@ -1442,23 +1447,18 @@ void FUN_0038f0f0(u32 param_1)
       uVar11 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->y);
       uVar12 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->z);
 
-      FUN_005225a8(0x6a0bd0,uVar10,uVar11,uVar12);
+      FUN_005225a8(DAT_006a0bd0,uVar10,uVar11,uVar12);
 
       puVar4 = (u8 *)FUN_00318b00(*(u32 *)(iVar15 + 0x128));
 
-      uVar1 = puVar4[1];
-
-      uVar2 = puVar4[2];
-
-      uVar3 = puVar4[3];
-
-      *(u8 *)(iVar5 + 0x54) = *puVar4;
-
-      *(u8 *)(iVar5 + 0x55) = uVar1;
-
-      *(u8 *)(iVar5 + 0x56) = uVar2;
-
-      *(u8 *)(iVar5 + 0x57) = uVar3;
+      uVar1 = *puVar4;
+      uVar2 = puVar4[1];
+      uVar3 = puVar4[2];
+      uVar18 = puVar4[3];
+      *(u8 *)(iVar5 + 0x54) = uVar1;
+      *(u8 *)(iVar5 + 0x55) = uVar2;
+      *(u8 *)(iVar5 + 0x56) = uVar3;
+      *(u8 *)(iVar5 + 0x57) = uVar18;
 
     }
 
@@ -1474,7 +1474,7 @@ void FUN_0038f0f0(u32 param_1)
 
     puVar6 = (u16 *)FUN_003b5430(lVar8,3);
 
-    FUN_005225a8(0x6a0be0,iVar5);
+    FUN_005225a8(DAT_006a0be0,iVar5);
 
     for (iVar15 = 0; iVar15 < iVar5; iVar15 = iVar15 + 1) {
 
@@ -1492,23 +1492,18 @@ void FUN_0038f0f0(u32 param_1)
       uVar11 = FUN_00530da0_evt(((MtEvtVec3 *)(puVar6 + 2))->y);
       uVar12 = FUN_00530da0_evt(((MtEvtVec3 *)(puVar6 + 2))->z);
 
-      FUN_005225a8(0x6a0bd0,uVar10,uVar11,uVar12);
+      FUN_005225a8(DAT_006a0bd0,uVar10,uVar11,uVar12);
 
       puVar4 = (u8 *)FUN_00318b00(*(u32 *)(puVar6 + 0x94));
 
-      uVar1 = puVar4[1];
-
-      uVar2 = puVar4[2];
-
-      uVar3 = puVar4[3];
-
-      *(u8 *)(iVar7 + 0x54) = *puVar4;
-
-      *(u8 *)(iVar7 + 0x55) = uVar1;
-
-      *(u8 *)(iVar7 + 0x56) = uVar2;
-
-      *(u8 *)(iVar7 + 0x57) = uVar3;
+      uVar1 = *puVar4;
+      uVar2 = puVar4[1];
+      uVar3 = puVar4[2];
+      uVar18 = puVar4[3];
+      *(u8 *)(iVar7 + 0x54) = uVar1;
+      *(u8 *)(iVar7 + 0x55) = uVar2;
+      *(u8 *)(iVar7 + 0x56) = uVar3;
+      *(u8 *)(iVar7 + 0x57) = uVar18;
 
       puVar6 = *(u16 **)(puVar6 + 0x7c);
 
@@ -1561,6 +1556,7 @@ void FUN_0038f0f0(u32 param_1)
 #define FUN_0038f0f0(...) ((void (*)(...))FUN_0038f0f0)(__VA_ARGS__)
 #undef FUN_0038f440
 // FUN_0038F440 NONMATCHING
+/* W417 declaration/type/use-order probes stayed nd107; u32* param_1 worsened nd107 -> 176 and nested switch exceeded the window; reverted. */
 
 
 void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
@@ -3165,6 +3161,7 @@ void FUN_00390ef0(int param_1,int param_2)
 #undef FUN_00391080
 #undef FUN_00390ef0
 /* Measured W389: opt_lifetimes on, with/without nd 59/33, object 616/616 (window 624). */
+/* W417 declaration-order probe (uVar6 before uVar12) worsened nd33 -> 65; reverted. */
 #pragma push
 #pragma opt_lifetimes on
 // FUN_00391080 NONMATCHING

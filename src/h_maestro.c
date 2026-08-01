@@ -1499,6 +1499,7 @@ void func_0010d6f0(s16 index, s16 fileIndex)
     }
 }
 
+/* W418 rejected slot-pointer probe: nd214,obj324 -> nd145,obj204; rate 66.05% -> 71.08% (size loophole). */
 // FUN_0010D7B0 NONMATCHING
 void func_0010d7b0(s16 index, s16 fileIndex, void* data0, u32 data0Size,
                    void* data1, u32 data1Size, void* data2, u32 data2Size)
@@ -1735,8 +1736,9 @@ void func_0010dee0(HSfdImage* image, const u8* source)
     }
 }
 
+/* W414: hidden-return scan found no h_maestro candidate; materializing depth in count, then initializing i before the shift, reached nd14 -> 0 (obj 168/176). */
 #pragma opt_loop_invariants on
-// FUN_0010DF60 NONMATCHING
+// FUN_0010DF60
 void func_0010df60(HSfdImage* image, const u8* source)
 {
     u8* dst;
@@ -1746,9 +1748,11 @@ void func_0010df60(HSfdImage* image, const u8* source)
     s32 opaque;
 
     dst = image->palette;
-    count = 1 << image->depth;
+    count = image->depth;
+    i = 0;
+    count = 1 << count;
     opaque = 0xff;
-    for (i = 0; i < count; i++)
+    for (; i < count; i++)
     {
         dst[i * 4] = source[i * 4];
         dst[i * 4 + 1] = source[i * 4 + 1];
@@ -3061,12 +3065,14 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     } locals;
     void* texture;
     s32* dimensions;
+    void** effectResources;
 
     work = (MaestroResourceWork*)param_1;
     func_004ac120(work->parsedResources[sourceIndex], locals.source);
     func_004ac120(work->parsedResources[destinationIndex], locals.destination);
+    effectResources = work->effectResources;
 
-    texture = *(void**)((u8*)work->effectResources[destinationIndex] + 0x68);
+    texture = *(void**)((u8*)effectResources[destinationIndex] + 0x68);
     if (texture == NULL)
     {
         return;
@@ -3081,7 +3087,7 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     locals.uv[5] = ((448.0f - locals.destination[1]) - (448.0f - (locals.source[1] + locals.source[3]))) * (f32)dimensions[4] / locals.source[3] / locals.source[3];
     locals.uv[6] = locals.uv[0];
     locals.uv[7] = locals.uv[5];
-    func_004a6200(work->effectResources[destinationIndex], &locals.uv[0], &locals.uv[2], &locals.uv[4], &locals.uv[6]);
+    func_004a6200(effectResources[destinationIndex], &locals.uv[0], &locals.uv[2], &locals.uv[4], &locals.uv[6]);
 }
 
 // FUN_001107D0 NONMATCHING
@@ -4775,13 +4781,27 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 }
 #pragma opt_loop_invariants off
 
+/*
+ * W414 signature contract: the true EE declaration order for both helpers is
+ * (f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height, texture).
+ * Corrected declarations/call sites across all touched files:
+ *   src/h_maestro.c: func_001140d0 and func_00114af0 definitions.
+ *   src/datCalendar.c: func_001140d0 extern plus six calls each in
+ *       func_00188c30, func_00189230, func_00189810, func_00189df0, and
+ *       func_0018a3f0; func_00114af0 extern plus two calls in func_0018a9f0.
+ *   src/h_fade.c: func_001140d0 extern plus the H_Fade_Day call.
+ *   src/Camp/h_camp.c: hCampMainDrawQuad7/6 alias declarations, one
+ *       hCampMainDrawQuad7 call in FUN_00137300, and four hCampMainDrawQuad6
+ *       calls in FUN_00139FC0.
+ *   src/Main/Game/game_support_late.c: func_00114af0 extern (no call site).
+ */
 /* Scoped loop-invariant pragma measured W330: without nd342, with nd22 (obj 884/896). */
 #pragma opt_loop_invariants on
-// FUN_001140D0 NONMATCHING
+// FUN_001140D0
 void func_001140d0(f32 depth,
+                   u32 color,
                    f32 x,
                    f32 y,
-                   u32 color,
                    s32 width,
                    s32 height,
                    const u32* textureState)
@@ -4828,9 +4848,10 @@ void func_001140d0(f32 depth,
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
+    i = 0;
     z = *(f32*)D_00960088_abs - depth;
 
-    for (i = 0; i < 4; i++)
+    for (; i < 4; i++)
     {
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
@@ -4860,12 +4881,13 @@ void func_001140d0(f32 depth,
 
 /* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
 #pragma opt_loop_invariants on
+/* W418 rejected color-width probes: s32 nd864,obj1680 -> nd932,obj1624; u32 -> nd948,obj1672; u16/u8 object2320 nd1708/1699; declaration/mask permutations were neutral. */
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
-                   f32 x,
-                   f32 y,
                    u32 color,
                    u32 colorAlpha,
+                   f32 x,
+                   f32 y,
                    s32 ignoredWidth,
                    s32 height,
                    const u32* textureState)
@@ -5064,14 +5086,29 @@ void func_00114450(f32 depth,
 }
 #pragma opt_loop_invariants off
 
-// Same reconstruction pattern as func_001140d0 above.
+/*
+ * W414 signature contract: func_00114af0 uses the true EE declaration
+ * order (f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height,
+ * texture), matching func_001140d0 above.
+ * Corrected declarations/call sites across all touched files:
+ *   src/h_maestro.c: func_001140d0 and func_00114af0 definitions.
+ *   src/datCalendar.c: func_001140d0 extern plus six calls each in
+ *       func_00188c30, func_00189230, func_00189810, func_00189df0, and
+ *       func_0018a3f0; func_00114af0 extern plus two calls in func_0018a9f0.
+ *   src/h_fade.c: func_001140d0 extern plus the H_Fade_Day call.
+ *   src/Camp/h_camp.c: hCampMainDrawQuad7/6 alias declarations, one
+ *       hCampMainDrawQuad7 call in FUN_00137300, and four hCampMainDrawQuad6
+ *       calls in FUN_00139FC0.
+ *   src/Main/Game/game_support_late.c: func_00114af0 extern (no call site).
+ */
+/* W414: interleaving the integer color parameter between the float parameters, plus i = 0 before the absolute z load, reproduces the retail prologue and loop; nd22 -> 0 (obj 884/896). */
 /* Scoped loop-invariant pragma measured W330: without nd342, with nd22 (obj 884/896). */
 #pragma opt_loop_invariants on
-// FUN_00114AF0 NONMATCHING
+// FUN_00114AF0
 void func_00114af0(f32 depth,
+                   u32 color,
                    f32 x,
                    f32 y,
-                   u32 color,
                    s32 width,
                    s32 height,
                    const u32* textureState)
@@ -5118,9 +5155,10 @@ void func_00114af0(f32 depth,
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
+    i = 0;
     z = *(f32*)D_00960088_abs - depth;
 
-    for (i = 0; i < 4; i++)
+    for (; i < 4; i++)
     {
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
@@ -5152,13 +5190,13 @@ void func_00114af0(f32 depth,
 /* Scoped loop-invariant pragma measured W330: without nd741, with nd736 (obj 1196/1248). */
 #pragma opt_loop_invariants on
 // FUN_00114E70 NONMATCHING
-void func_00114e70(f32 depth,
+void func_00114e70(s32 orientation,
+                   f32 depth,
+                   u32 color,
                    f32 x,
                    f32 y,
                    f32 textureX,
                    f32 textureY,
-                   s32 orientation,
-                   u32 color,
                    s32 width,
                    s32 height,
                    const s32* textureDimensions)
@@ -5278,6 +5316,7 @@ void func_00114e70(f32 depth,
  * compiler frame/register layout across the same retail ranges. */
 /* Scoped loop-invariant pragma measured W330: without nd944, with nd911 (obj 1212/1376). */
 #pragma opt_loop_invariants on
+/* W417 signature-order negative: one float argument leaves no float/int class ordering; alpha permutation is semantically unsafe. */
 // FUN_00115350 NONMATCHING
 void func_00115350(f32 depth,
                    u32 color,

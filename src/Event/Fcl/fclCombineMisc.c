@@ -174,6 +174,8 @@ extern s8 D_006A48D1[];
 extern s16 D_006A48F0[];
 extern u32 DAT_007ce420;
 
+// W416 measured negative: retail offset 436 has a 0x10 extension, while ours already has matching 0x10 pairs nearby at 416/420 and 428/432; layout, not width.
+// W418 negative: explicit s16 casts at index/count/loop sites measured nd213/532 -> nd297/548 (window 544); rejected.
 // FUN_003D5510 NONMATCHING
 
 
@@ -382,6 +384,9 @@ int FUN_003d58c0(int param_1,int param_2)
                15.0f);
 }
 #pragma opt_common_subs off
+// W416 measured negative: retail offset 128's dsra32 0x1f is sign extraction; ours has the equivalent dsll32 0x19 plus sign branch, not a width defect.
+// Focused arithmetic sign-mask rewrite measured nd219/328 -> nd246/332; rejected.
+// W418 negative: broad s16 casts at loop/index/count sites measured nd219/328 -> nd321/408 (window 368); over-window and rejected.
 // FUN_003D5A40 NONMATCHING
 
 
@@ -546,7 +551,7 @@ char* fclCombineMisc003d5c90(void)
     return DAT_006a4ba0;
 }
 
-// FUN_003D5CD0 NONMATCHING
+// FUN_003D5CD0
 // W389 hand tests: s16 loop/count widened nd10/obj236 -> nd143/obj244 (window 240); typed s16/u32 callee aliases gave nd132; both reverted.
 
 
@@ -561,18 +566,18 @@ s32 FUN_003d5cd0(u32 *param_1)
 
   sVar4 = 0;
   memset(param_1,0,0x90);
-  for (sVar5 = 0; (s64)sVar5 < (s64)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = (s64)(sVar5 + 1)) {
+  for (sVar5 = 0; (s64)(s16)sVar5 < (s64)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = (s64)(s16)(sVar5 + 1)) {
     lVar1 = datPersonaGetHeroPersona(sVar5);
     if (lVar1 != 0) {
-      temp = (s64)sVar4;
+      temp = (s64)(s16)sVar4;
       puVar3 = (u32 *)((int)param_1 + (int)temp * 0xc);
       *puVar3 = 0;
       puVar3[1] = (int)lVar1;
       puVar3[2] = DAT_007ce420 + (u32)*(u16 *)((int)lVar1 + 2) * 0xe;
-      sVar4 = (s64)(sVar4 + 1);
+      sVar4 = (s64)(s16)(sVar4 + 1);
     }
   }
-  return (s64)sVar4;
+  return (s64)(s16)sVar4;
 }
 
 // HARVESTED 3D-42FF
@@ -2748,6 +2753,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
 
 #pragma opt_loop_invariants on
+// W416 measured negative: retail offset 180 has a 0x10 extension, while ours already has matching 0x10 pairs nearby at 148/152 and 160/164; layout, not width.
 // FUN_003D8630 NONMATCHING
 
 
@@ -2811,9 +2817,9 @@ u32 FUN_003d8630(int param_1,int param_2)
 
     sStack_2 = 0;
 
-    lVar4 = FUN_003d5a40(puVar9,(short)param_2 + 2,auStack_20,0xc,&sStack_2);
+    lVar4 = FUN_003d5a40(puVar9,(short)(param_2 + 2),auStack_20,0xc,&sStack_2);
 
-    if (sStack_2 < (short)((short)param_2 + 2)) {
+    if (sStack_2 < (short)(param_2 + 2)) {
 
       lVar4 = 0;
 

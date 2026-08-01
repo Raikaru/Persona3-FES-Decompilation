@@ -180,7 +180,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u32 param_2);
 static u32 * FUN_0031fbd0(float param_1,int *param_2);
-u8 * FUN_0031fd00(float firstTime, int *track);
+u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend);
 void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
@@ -3676,6 +3676,7 @@ u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
 
 }
 
+/* W414 probe: moving the copy-loop counter declaration after pointer locals worsened FUN_0031d9c0 nd27->28; reverted. */
 // FUN_0031D9C0 NONMATCHING
 
 
@@ -5335,50 +5336,73 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
 
 
 
+// SibMdl negatives: stackSpill volatile-cast removal nd14 -> nd43 (336/352); fraction-first interpolation in either branch nd14 -> nd16; direct final multiply operand swap and pointer argument cast stayed nd14; naming final difference wins nd14 -> nd12.
 // FUN_0031F870 NONMATCHING
 
 
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5)
 {
-  float fVar1;
   u32 uVar2;
-  float *pfVar3;
+  float saved;
+  float firstBlend;
+  float secondBlend;
+  float stackSpill[4];
+  float *key;
+  float fraction;
+  float start;
+  float output;
+  float difference;
   int data1;
   int data2;
 
   data1 = param_2[3];
-  data2 = param_4[3];
   uVar2 = FUN_0031f740(param_1,param_2);
-  if (uVar2 < *param_2 - 1U) {
-    pfVar3 = (float *)(data1 + uVar2 * 8);
-    *(float *)&DAT_007ce534 =
-        (pfVar3[3] - pfVar3[1]) * ((param_1 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
-        pfVar3[1] + 0.0f;
-  }
-  else {
+  if (uVar2 >= *param_2 - 1U) {
     *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data1 + 4);
   }
-  *(float *)&DAT_007ce530 = param_1;
-  fVar1 = *(float *)&DAT_007ce534;
-  uVar2 = FUN_0031f740(param_3,param_4);
-  if (uVar2 < *param_4 - 1U) {
-    pfVar3 = (float *)(data2 + uVar2 * 8);
-    *(float *)&DAT_007ce534 =
-        (pfVar3[3] - pfVar3[1]) * ((param_3 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
-        pfVar3[1] + 0.0f;
-  }
   else {
+    key = (float *)(data1 + uVar2 * 8);
+    start = key[0];
+    output = key[1];
+    fraction = param_1 - start;
+    fraction /= key[2] - start;
+    difference = key[3] - output;
+    *(float *)&DAT_007ce534 = difference * fraction + output + 0.0f;
+  }
+  *(float *)&DAT_007ce530 = param_1;
+  saved = *(float *)&DAT_007ce534;
+  *(volatile float *)&stackSpill[2] = param_1;
+  *(volatile float *)&stackSpill[3] = saved;
+  data2 = param_4[3];
+  uVar2 = FUN_0031f740(param_3,param_4);
+  if (uVar2 >= *param_4 - 1U) {
     *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data2 + 4);
   }
-  *(float *)&DAT_007ce53c =
-      (*(float *)&DAT_007ce534 - fVar1) * param_5 + fVar1 + 0.0f;
+  else {
+    key = (float *)(data2 + uVar2 * 8);
+    start = key[0];
+    output = key[1];
+    fraction = param_3 - start;
+    fraction /= key[2] - start;
+    difference = key[3] - output;
+    *(float *)&DAT_007ce534 = difference * fraction + output + 0.0f;
+  }
   *(float *)&DAT_007ce530 = param_3;
+  saved = *(float *)&DAT_007ce534;
+  *(volatile float *)&stackSpill[0] = param_3;
+  *(volatile float *)&stackSpill[1] = saved;
+  firstBlend = *(volatile float *)&stackSpill[3];
+  secondBlend = *(volatile float *)&stackSpill[1];
+  difference = secondBlend - firstBlend;
+  *(float *)&DAT_007ce53c =
+      difference * param_5 + firstBlend + 0.0f;
   return (u8 *)&DAT_007ce538;
 }
 
 
 
 
+// SibMdl negatives: fraction-first interpolation nd112 -> nd114; removing address local nd112 -> nd113; alpha-only after global-base nd89 -> nd89; pointer-style/base-load nd40 -> nd41; volatile global-address cast stayed nd40. Global-base plus ordered load reached nd89 (276/288), then ordered volatile output load reached nd40.
 // FUN_0031F9D0 NONMATCHING
 
 
@@ -5389,24 +5413,36 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 {
   u32 uVar1;
-  float *pfVar2;
+  float *key;
+  float fraction;
+  float start;
+  float output;
+  float difference;
+  u32 address;
   int data;
+  float alpha;
 
   data = param_2[3];
   uVar1 = FUN_0031f740(param_1,param_2);
-  if (uVar1 < *param_2 - 1U) {
-    pfVar2 = (float *)(data + uVar1 * 8);
-    *(float *)&DAT_007ce534 =
-        (pfVar2[3] - pfVar2[1]) * ((param_1 - *pfVar2) / (pfVar2[2] - *pfVar2)) +
-        pfVar2[1] + 0.0f;
+  if (uVar1 >= *param_2 - 1U) {
+    address = uVar1 * 8;
+    address += (u32)data;
+    *(float *)&DAT_007ce534 = *(float *)(address + 4);
   }
   else {
-    *(float *)&DAT_007ce534 = *(float *)(uVar1 * 8 + data + 4);
+    key = (float *)((u32)(uVar1 * 8) + (u32)data);
+    start = key[0];
+    output = key[1];
+    fraction = param_1 - start;
+    fraction /= key[2] - start;
+    difference = key[3] - output;
+    *(float *)&DAT_007ce534 = difference * fraction + output + 0.0f;
   }
   *(float *)&DAT_007ce530 = param_1;
+  alpha = 1.0f - (float)*(u8 *)((u8 *)param_4 + 3) / 255.0f;
+  output = *(volatile float *)&DAT_007ce534;
   *(float *)&DAT_007ce534 =
-      ((1.0f - (float)*(u8 *)((u8 *)param_4 + 3) / 255.0f) -
-       *(float *)&DAT_007ce534) * param_3 + *(float *)&DAT_007ce534 + 0.0f;
+      (alpha - output) * param_3 + output + 0.0f;
 }
 static inline u8 mdlFileToU8(f32 value)
 {
@@ -5435,109 +5471,83 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
   return;
 }
 
-// FUN_0031FBD0 NONMATCHING
+// FUN_0031FBD0
 
 
 static u32 * FUN_0031fbd0(float param_1,int *param_2)
-
-
-
 {
+  float *key;
+  float fraction;
+  float start;
+  float output;
+  float difference;
+  int high;
+  int low;
+  int stride;
+  u8 *data;
+  int mid;
+  u32 address;
 
-  int iVar1;
-
-  float *pfVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  float fVar7;
-
-  
-
-  iVar1 = param_2[3];
-
-  uVar4 = 0;
-
-  uVar6 = *param_2 - 1U;
-
+  data = (u8 *)param_2[3];
+  low = 0;
+  high = *param_2 - 1;
+  stride = param_2[2];
   do {
-
-    uVar3 = (int)(uVar4 + uVar6 + 1) >> 1;
-
-    uVar5 = uVar3;
-
-    if (param_1 < *(float *)(iVar1 + param_2[2] * uVar3)) {
-
-      uVar3 = uVar3 - 1;
-
-      uVar6 = uVar3;
-
-      uVar5 = uVar4;
-
+    mid = (low + high + 1) >> 1;
+    if (param_1 < *(float *)(data + stride * mid)) {
+      high = --mid;
     }
-
-    uVar4 = uVar5;
-
-  } while ((int)uVar5 < (int)uVar6);
-
-  if (uVar3 >= *param_2 - 1U) {
-
-    iVar1 = uVar3 * 0x10 + iVar1;
-
-    *(float *)(DAT_00957240_abs + 4) = *(float *)(iVar1 + 4);
-
-    *(float *)(DAT_00957240_abs + 8) = *(float *)(iVar1 + 8);
-
-    *(float *)(DAT_00957240_abs + 12) = *(float *)(iVar1 + 0xc);
-
+    else {
+      low = mid;
+    }
+  } while (low < high);
+  if ((u32)mid >= (u32)(*param_2 - 1)) {
+    address = mid * 0x10;
+    address += (u32)data;
+    *(float *)(DAT_00957240_abs + 4) = *(float *)(address + 4);
+    *(float *)(DAT_00957240_abs + 8) = *(float *)(address + 8);
+    *(float *)(DAT_00957240_abs + 12) = *(float *)(address + 0xc);
   }
-
   else {
-
-    pfVar2 = (float *)(iVar1 + uVar3 * 0x10);
-
-    fVar7 = (param_1 - *pfVar2) / (pfVar2[4] - *pfVar2);
-
-    *(float *)(DAT_00957240_abs + 4) = fVar7 * (pfVar2[5] - pfVar2[1]) + pfVar2[1];
-    *(float *)(DAT_00957240_abs + 8) = fVar7 * (pfVar2[6] - pfVar2[2]) + pfVar2[2];
-    *(float *)(DAT_00957240_abs + 12) = fVar7 * (pfVar2[7] - pfVar2[3]) + pfVar2[3];
-
+    key = (float *)((u32)(mid * 0x10) + (u32)data);
+    start = key[0];
+    fraction = param_1 - start;
+    fraction /= key[4] - start;
+    output = key[1];
+    difference = key[5] - output;
+    *(float *)(DAT_00957240_abs + 4) = fraction * difference + output;
+    output = key[2];
+    difference = key[6] - output;
+    *(float *)(DAT_00957240_abs + 8) = fraction * difference + output;
+    output = key[3];
+    difference = key[7] - output;
+    *(float *)(DAT_00957240_abs + 12) = fraction * difference + output;
   }
-
   *(float *)DAT_00957240_abs = param_1;
-
   return (u32 *)DAT_00957240_abs;
-
 }
 
+// SibMdl negatives: dummy-pointer signature nd9 -> nd125; reversed helper call cast nd8 -> nd176; explicit track/time temporaries and inline reversed-call wrapper stayed nd8; schedule-on nd8/216 -> nd122/200. Two-track/four-float signature measured nd101 -> nd8.
 // FUN_0031FD00 NONMATCHING
 
 
-u8 * FUN_0031fd00(float firstTime, int *track)
+u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend)
 {
   struct Float4 { float x, y, z, w; } first;
   struct Float4 second;
-  float extraout_f13;
-  float extraout_f14;
 
-  first = *(struct Float4 *)FUN_0031fbd0(firstTime, track);
-  second = *(struct Float4 *)FUN_0031fbd0(extraout_f13, track);
-  *(float *)DAT_00957254_abs = extraout_f14 * (second.y - first.y) + first.y;
-  *(float *)DAT_00957258_abs = extraout_f14 * (second.z - first.z) + first.z;
-  *(float *)DAT_0095725c_abs = extraout_f14 * (second.w - first.w) + first.w;
+  first = *(struct Float4 *)FUN_0031fbd0(firstTime, track1);
+  second = *(struct Float4 *)FUN_0031fbd0(secondTime, track2);
+  *(float *)DAT_00957254_abs = blend * (second.y - first.y) + first.y;
+  *(float *)DAT_00957258_abs = blend * (second.z - first.z) + first.z;
+  *(float *)DAT_0095725c_abs = blend * (second.w - first.w) + first.w;
   return DAT_00957250_abs;
 }
 
 
 
 
-// FUN_0031FDE0 NONMATCHING
+// FUN_0031FDE0
 
 
 
@@ -6394,6 +6404,7 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 
 
 
+/* W414 probes: declaration/type and geometry-alias variants left FUN_00320de0 at nd17/396/400; reverted. */
 // FUN_00320DE0 NONMATCHING
 
 

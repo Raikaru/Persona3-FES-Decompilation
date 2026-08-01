@@ -1171,6 +1171,16 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         FUN_0040e3c0(2.0f, x, y, alpha, 0x0b, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x0c, work->mode);
         return;
+    case 7:
+    case 8:
+    case 11:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+        if ((work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(1.0f, x, y, alpha, 0x0d, mode - 0x10);
+        return;
 
     case 20:
         if ((work->flags & 0x10000) != 0) return;
@@ -1209,16 +1219,6 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                       3, number_text, 1);
         return;
 
-    case 7:
-    case 8:
-    case 11:
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(1.0f, x, y, alpha, 0x0d, mode - 0x10);
-        return;
     default:
         return;
     }
@@ -1355,16 +1355,7 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         record = resource_data->item_records[i];
         row_y = base_y + i * 0x18;
 
-        if (record == 0) {
-            fallback_text_id = resource_data->fallback->fallback_text_ids[i];
-            definition = DAT_007ce420[fallback_text_id];
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
-                          (definition->field_02.variant_count - 1) * 2 + 1);
-            FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
-                          (s8)text_styles[selected_style + 2], 1,
-                          DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);
-            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24, i * 2 + 1);
-        } else {
+        if (record != 0) {
             definition = DAT_007ce420[record->text_id];
             FUN_00523ac8(&formatted_text, &DAT_007cd798.layout_template,
                           record->format_value);
@@ -1377,6 +1368,15 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                           (s16)text_styles[selected_style], &formatted_text, 1);
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24,
                           i * 2 + selected_style);
+        } else {
+            fallback_text_id = resource_data->fallback->fallback_text_ids[i];
+            definition = DAT_007ce420[fallback_text_id];
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
+                          (definition->field_02.variant_count - 1) * 2 + 1);
+            FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
+                          (s8)text_styles[selected_style + 2], 1,
+                          DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);
+            FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24, i * 2 + 1);
         }
     }
 
@@ -1472,7 +1472,15 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
             FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x39,
                           (draw_variant - 1) * 2 + selected);
 
-            if (((data->visual_flags & 2) == 0) && ((data->visual_flags & 1) != 0)) {
+            if (((data->visual_flags & 2) != 0) || ((data->visual_flags & 1) == 0)) {
+                FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
+                              (s32)((byte)alpha | 0xffffff00),
+                              (s8)text_shades[selected], 1,
+                              DAT_007ce4e4[text_id], 0x10, 0x6e);
+                FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
+                FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,
+                              text_palettes[selected], &layout, 1);
+            } else {
                 for (i = 0; i < 8; i++) {
                     FUN_0040e3c0(0.0f, x + 0x122 + i * 0x15, y, (byte)alpha,
                                   0x27, selected);
@@ -1481,14 +1489,6 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
                     FUN_0040e3c0(0.0f, x + 0x122 + i * 0x15, y, (byte)alpha,
                                   0x28, selected);
                 }
-            } else {
-                FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
-                              (s32)((byte)alpha | 0xffffff00),
-                              (s8)text_shades[selected], 1,
-                              DAT_007ce4e4[text_id], 0x10, 0x6e);
-                FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
-                FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,
-                              text_palettes[selected], &layout, 1);
             }
         }
     }
@@ -1570,16 +1570,16 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
             break;
 
         case 0:
-            if ((record->work->flags & 0x10000) == 0) {
-                fclCombineList003dc2d0(x, y, alpha, record->owner, record->candidate,
-                                        selected, alternate);
-            } else {
+            if ((record->work->flags & 0x10000) != 0) {
                 if (alternate != 0) {
                     FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x23, selected);
                 } else {
                     FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x22, selected);
                 }
                 FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x29, 0);
+            } else {
+                fclCombineList003dc2d0(x, y, alpha, record->owner, record->candidate,
+                                        selected, alternate);
             }
             break;
 
@@ -1600,25 +1600,25 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
 
         case 3:
             if (alternate == 0) {
-                if ((record->work->flags & 0x10000) == 0) {
-                    fclCombineList003dcc90(x, y, alpha, record->owner,
-                                            record->candidate, selected);
-                } else {
+                if ((record->work->flags & 0x10000) != 0) {
                     FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x37, 0);
                     FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x38, selected);
                     FUN_0040e3c0_i(x, y, 0.0f, (byte)alpha, 0x3a, 0);
+                } else {
+                    fclCombineList003dcc90(x, y, alpha, record->owner,
+                                            record->candidate, selected);
                 }
             }
             break;
 
         case 7:
-            if ((record->work->flags & 0x10000) == 0) {
-                fclCombineList003dcc90(x - 0x145, y, alpha, record->owner,
-                                        record->candidate, selected);
-            } else {
+            if ((record->work->flags & 0x10000) != 0) {
                 FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x37, 0);
                 FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x38, selected);
                 FUN_0040e3c0_i(x - 0x145, y, 0.0f, (byte)alpha, 0x3a, 0);
+            } else {
+                fclCombineList003dcc90(x - 0x145, y, alpha, record->owner,
+                                        record->candidate, selected);
             }
             break;
 
@@ -1822,39 +1822,6 @@ s32 fclCombineList003ddd20(FclSelection* selection)
     case FCL_SELECTION_STATE_FINISHED:
         break;
 
-    case FCL_SELECTION_STATE_INPUT:
-        if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_L1) != 0) ||
-            ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_L1) != 0)) {
-            FUN_0010a4e0(0, 0, 0, 5);
-            selection->current_choice_index--;
-            if (selection->current_choice_index < 0) {
-                selection->current_choice_index = selection->result_choice_index;
-            }
-        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_R1) != 0) ||
-                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_R1) != 0)) {
-            FUN_0010a4e0(0, 0, 0, 5);
-            selection->current_choice_index++;
-            if (selection->result_choice_index < selection->current_choice_index) {
-                selection->current_choice_index = 0;
-            }
-        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_CROSS) != 0) ||
-                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_CROSS) != 0)) {
-            FUN_0010a4e0(0, 0, 0, 1);
-            if (selection->current_choice_index == selection->result_choice_index) {
-                selection->state = FCL_SELECTION_STATE_ACTION_PENDING;
-            } else {
-                selection->current_choice_index = selection->result_choice_index;
-            }
-        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_CIRCLE) != 0) ||
-                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_CIRCLE) != 0)) {
-            FUN_0010a4e0(0, 0, 0, 2);
-            if (selection->current_choice_index == selection->result_choice_index) {
-                selection->state = FCL_SELECTION_STATE_FINISH;
-            } else {
-                selection->current_choice_index = selection->result_choice_index;
-            }
-        }
-        break;
 
     case FCL_SELECTION_STATE_ACTION_PENDING:
         selection->state = FCL_SELECTION_STATE_ACTION_START;
@@ -1901,6 +1868,39 @@ s32 fclCombineList003ddd20(FclSelection* selection)
                 selection->flags |= FCL_SELECTION_FLAG_CONFIRM;
             } else {
                 selection->state = FCL_SELECTION_STATE_INPUT;
+            }
+        }
+        break;
+    case FCL_SELECTION_STATE_INPUT:
+        if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_L1) != 0) ||
+            ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_L1) != 0)) {
+            FUN_0010a4e0(0, 0, 0, 5);
+            selection->current_choice_index--;
+            if (selection->current_choice_index < 0) {
+                selection->current_choice_index = selection->result_choice_index;
+            }
+        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_R1) != 0) ||
+                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_R1) != 0)) {
+            FUN_0010a4e0(0, 0, 0, 5);
+            selection->current_choice_index++;
+            if (selection->result_choice_index < selection->current_choice_index) {
+                selection->current_choice_index = 0;
+            }
+        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_CROSS) != 0) ||
+                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_CROSS) != 0)) {
+            FUN_0010a4e0(0, 0, 0, 1);
+            if (selection->current_choice_index == selection->result_choice_index) {
+                selection->state = FCL_SELECTION_STATE_ACTION_PENDING;
+            } else {
+                selection->current_choice_index = selection->result_choice_index;
+            }
+        } else if (((gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_CIRCLE) != 0) ||
+                   ((gPads[HPAD_PORT_1].btn[1].released & HPAD_BTN_CIRCLE) != 0)) {
+            FUN_0010a4e0(0, 0, 0, 2);
+            if (selection->current_choice_index == selection->result_choice_index) {
+                selection->state = FCL_SELECTION_STATE_FINISH;
+            } else {
+                selection->current_choice_index = selection->result_choice_index;
             }
         }
         break;
@@ -2805,6 +2805,7 @@ int FUN_003dff80(int* param_1, int param_2)
   return 0;
 }
 
+// W414 loop-shape probes: while/for and explicit goto variants changed nd15 to 104-113 (or over/under-filled the window); reverted.
 // FUN_003DFFC0 NONMATCHING
 
 

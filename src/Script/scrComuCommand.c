@@ -1750,6 +1750,7 @@ u32 scrComu00360d40(void)
 #pragma push
 /* Removing this worsens scrComu00360ed0 (nd67 -> nd113) - measured W161. */
 #pragma opt_common_subs off
+/* W415 census recheck: all six relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_00360ed0 NONMATCHING. Checks a comu event's availability condition ('objtype' 0..2)
 u32 scrComu00360ed0(int param_1)
 {

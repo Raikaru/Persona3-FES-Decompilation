@@ -71,9 +71,9 @@ static const float sAtanTerms[] = {
 #pragma optimization_level 2
 #pragma optimization_level 2
 #pragma optimization_level 3
+/* W416 negative: canonical s64 wrapper nd71/84 (85% differing) shrank from the 296-byte window versus baseline nd192/232 (83%); explicit half-negation nd181/224 (81%) also moved away. Retail therefore does not match a helper-call wrapper; no rewrite retained. */
 // FUN_0052EEB0 NONMATCHING
 u64 FUN_0052eeb0(long param_1,long param_2)
-
 {
   u64 uVar1;
   u32 uVar2;

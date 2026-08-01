@@ -655,6 +655,7 @@ const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
 }
 
 #pragma opt_loop_invariants on
+/* W414 floor: nd2 remains after confirming the only residual rows are addiu versus daddiu. */
 // FUN_002f88c0 NONMATCHING
 u64 func_002f88c0()
 {
@@ -1059,6 +1060,7 @@ return_result:
 
 #pragma opt_loop_invariants reset
 #pragma opt_loop_invariants on
+/* W414 switch probes: nested genus switches plus id/character variants regressed; retain the measured 823/1248 shape. */
 // FUN_002f8fd0 NONMATCHING
 s16 func_002f8fd0(BtlUnit* unit, s16 id)
 {
@@ -1071,47 +1073,80 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     switch (encounterId)
     {
     case 0x1a1:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if ((charId == 0x102 || charId == 0x101) && id == 0x170)
-            return 0x17;
+        switch (unit->genus)
+        {
+        case 1:
+            switch (id)
+            {
+            case 0x170:
+                if (unit->charId == 0x102 || unit->charId == 0x101)
+                    return 0x17;
+                break;
+            }
+            break;
+        }
         return -1;
     case 0x1a2:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0x103 && id == 0x163)
-            return 0x17;
+        switch (unit->genus)
+        {
+        case 1:
+            if (id == 0x163 && unit->charId == 0x103)
+                return 0x17;
+            break;
+        }
         return -1;
     case 0x1a3:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0x104 && func_002d6370(id) != 0)
-            return 0x18;
+        switch (unit->genus)
+        {
+        case 1:
+            if (unit->charId == 0x104 && func_002d6370(id) != 0)
+                return 0x18;
+            break;
+        }
         return -1;
     case 0x1a5:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0x107)
+        switch (unit->genus)
         {
-            if (id == 0x16b)
-                return 0x17;
-            if (id == 0x16c)
-                return 0x19;
+        case 1:
+            if (unit->charId == 0x107)
+            {
+                if (id == 0x16b)
+                    return 0x17;
+                if (id == 0x16c)
+                    return 0x19;
+            }
+            break;
         }
         return -1;
     case 0x1a6:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0x10a &&
-            (id == 0x90 || id == 0x8e || id == 0x8d || id == 0x83 ||
-             id == 0x80 || id == 0x7f || id == 0x77 || id == 0x75 || id == 0x73))
-            return 0x18;
+        switch (unit->genus)
+        {
+        case 1:
+            if (unit->charId == 0x10a &&
+                (id == 0x90 || id == 0x8e || id == 0x8d || id == 0x83 ||
+                 id == 0x80 || id == 0x7f || id == 0x77 || id == 0x75 || id == 0x73))
+                return 0x18;
+            break;
+        }
         return -1;
     case 0x1a8:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0x10d && id == 0x134)
-            return *(u32*)((u8*)gBtl + 0xb54) == 0 ? 7 : 0x15;
+        switch (unit->genus)
+        {
+        case 1:
+            if (unit->charId == 0x10d && id == 0x134)
+                return *(u32*)((u8*)gBtl + 0xb54) == 0 ? 7 : 0x15;
+            break;
+        }
         return -1;
     case 0x1b4:
-        charId = unit->genus == 1 ? unit->charId : 0;
-        if (charId == 0xf1 &&
-            (id == 0x126 || id == 0x128 || id == 0x127 || id == 0x125))
-            return 0;
+        switch (unit->genus)
+        {
+        case 1:
+            if (unit->charId == 0xf1 &&
+                (id == 0x126 || id == 0x128 || id == 0x127 || id == 0x125))
+                return 0;
+            break;
+        }
         return -1;
     default:
         break;
@@ -1535,21 +1570,20 @@ BtlPacket* btlBossCreateLoadPakPacket()
 #pragma alias func_0027f650_ptr func_0027f650
 #pragma alias DAT_00957180_boss DAT_00957180
 
+/* W414 negatives: per-case local copies worsened nd1022->1059 (1504B); direct field expansion exceeded the 1584B window (1644B). */
 // FUN_002f9c10 NONMATCHING
 u32 func_002f9c10(BtlAction* action)
 {
     BtlUnit* unit;
     u16 encounterId;
-    u16 charId;
 
     encounterId = btlBossGetEncounterId();
     unit = action->unit;
-    charId = unit->charId;
 
     switch (encounterId)
     {
         case 0x1a0:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x100)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x100)
             {
                 unit->flags3 |= 0x100;
                 unit->flags3 |= 0x40;
@@ -1558,14 +1592,14 @@ u32 func_002f9c10(BtlAction* action)
             return 1;
         case 0x1a1:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-                (charId == 0x102 || charId == 0x101))
+                (unit->charId == 0x102 || unit->charId == 0x101))
             {
                 *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
             }
             return 1;
         case 0x1a2:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x103)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x103)
             {
                 unit->flags3 |= 0x100;
                 unit->flags3 |= 0x40;
@@ -1573,7 +1607,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 1;
         case 0x1a3:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x104)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x104)
             {
                 unit->flags3 |= 0x100;
                 unit->flags3 |= 0x40;
@@ -1584,7 +1618,7 @@ u32 func_002f9c10(BtlAction* action)
             func_002ea780(action);
             return 1;
         case 0x1a5:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x107)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x107)
             {
                 unit->flags3 |= 0x100;
                 unit->flags3 |= 0x40;
@@ -1593,7 +1627,7 @@ u32 func_002f9c10(BtlAction* action)
             return 1;
         case 0x1a6:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-                (charId == 0x10a || charId == 0x109))
+                (unit->charId == 0x10a || unit->charId == 0x109))
             {
                 *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
@@ -1605,13 +1639,13 @@ u32 func_002f9c10(BtlAction* action)
         case 0x1a8:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1)
             {
-                if (charId == 0x118 || charId == 0x117 || charId == 0x116)
+                if (unit->charId == 0x118 || unit->charId == 0x117 || unit->charId == 0x116)
                 {
                     unit->flags3 |= 0x100;
                     unit->flags3 |= 0x40;
                     unit->flags3 |= 0x400;
                 }
-                else if (charId == 0x10d)
+                else if (unit->charId == 0x10d)
                 {
                     action->unk_1a &= ~8;
                     unit->flags3 |= 0x100;
@@ -1621,7 +1655,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 1;
         case 0x1a9:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x108)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x108)
             {
                 action->unk_1a |= 0x10;
                 unit->flags3 |= 0x100;
@@ -1631,7 +1665,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 0;
         case 0x1aa:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x10f)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x10f)
             {
                 action->unk_1a |= 0x10;
                 unit->flags3 |= 0x100;
@@ -1641,7 +1675,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 0;
         case 0x1ab:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x110)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x110)
             {
                 action->unk_1a |= 0x10;
                 unit->flags3 |= 0x100;
@@ -1651,7 +1685,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 0;
         case 0x1ac:
-            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x111)
+            if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0x111)
             {
                 unit->flags3 |= 0x100;
                 unit->flags3 |= 0x40;
@@ -1718,6 +1752,7 @@ u32 func_002fa240(void)
 
 /* W373 pragma sweep nd/obj: base 904/1228; singles LI=904/1228 CS=871/1304 LT=904/1228 PR=904/1228 SR=904/1228 DA=904/1228; retain CS off. */
 #pragma opt_common_subs off
+/* W414 negative: removing eager charId worsened nd871->943 (1300B); retain the baseline local. */
 // FUN_002fa510 NONMATCHING
 void func_002fa510(BtlAction* action, s32 mode)
 {
@@ -3816,6 +3851,7 @@ void FUN_002fe780(float param_1, u8* param_2, u8* param_3,
 /* W373 pragma sweep nd/obj: base 889/1356; singles LI=889/1356 CS=982/1444(over) LT=889/1356 PR=837/1348 SR=889/1356 DA=887/1356. */
 /* Pair nd/obj: LI+CS=982/1444 LI+LT=889/1356 LI+PR=837/1348 LI+SR=889/1356 LI+DA=887/1356 CS+LT=982/1444 CS+PR=982/1444 CS+SR=982/1444 CS+DA=982/1444 LT+PR=837/1348 LT+SR=889/1356 LT+DA=887/1356 PR+SR=837/1348 PR+DA=837/1348 SR+DA=887/1356; retain PR off. */
 #pragma opt_propagation off
+/* W414 negative: replacing the state-2 render-state pair with FUN_002fe780 worsened nd837->852 (1352B); retain baseline. */
 // FUN_002FED10 NONMATCHING
 u32 FUN_002fed10(int param_1)
 {

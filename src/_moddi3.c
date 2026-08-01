@@ -69,6 +69,7 @@ static const float sAtanTerms[] = {
 
 
 #pragma optimization_level 2
+/* W416 negative: canonical s64 sibling wrapper nd89/100 (89% differing) shrank from the 304-byte window versus baseline nd207/244 (85%); raw half-width form stayed nd207/244. Retail therefore does not match a helper-call wrapper; no rewrite retained. */
 // Reconstructed signed remainder wrapper; retail keeps a longer scheduled
 // 64-bit negate path that MWCCPS2 does not reproduce from equivalent C.
 // FUN_0052F6A0 NONMATCHING

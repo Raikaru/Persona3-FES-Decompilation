@@ -38,6 +38,8 @@ extern u8 DAT_006a2d50_abs[];
 extern void FUN_00318a50_typed(void *model, const RwV3d *axis, f32 angle, s32 mode);
 extern void FUN_00318a90_typed(void *model, const RwV3d *scale, s32 mode);
 extern void FUN_00318a30_typed(void *model, const RwV3d *translation, s32 mode);
+#pragma alias FUN_003b79a0_typed FUN_003b79a0
+extern void FUN_003b79a0_typed(u32 *param_1, u64 param_2, u32 *param_3);
 extern u32 DAT_006a2d28;
 extern u32 DAT_006a2d30;
 extern u32 DAT_006a2d38;
@@ -1448,6 +1450,7 @@ void FUN_003b7090(u64 param_1)
 /* Measured W389: opt_lifetimes on, with/without nd 648/642, object 1104/1104 (window 1104). */
 #pragma push
 #pragma opt_lifetimes on
+/* W415 probes: RwV3d/byte-vector rewrites exceeded the 1104-byte window (1156/1116); retained explicit aggregate layout. */
 // FUN_003B7460 NONMATCHING
 void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
 {
@@ -1505,7 +1508,7 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
             if (model == 0) {
                 FUN_005225a8(0x6a2d80);
             } else {
-                FUN_003b79a0(auStack_30, (u32 *)(param_1 + 4), (u32 *)(param_1 + 0x10));
+                FUN_003b79a0_typed(auStack_30, (u64)(param_1 + 4), (u32 *)(param_1 + 0x10));
                 src = auStack_30;
                 dst = auStack_70;
                 for (i = 8; i > 0; i--) {
@@ -2103,6 +2106,7 @@ u32 FUN_003b8470(u16 param_1,u16 param_2)
 #define FUN_003b8470(...) ((u32 (*)(...))FUN_003b8470)(__VA_ARGS__)
 #undef FUN_003b8540
 /* Measured W389: opt_common_subs off + opt_lifetimes on, with/without nd 197/190, object 312/308 (window 336). */
+/* W418 negative: changing the FUN_003b8540 stack assignment from 0.0 to 0.0f produced no metric changes; reverted. */
 #pragma push
 #pragma opt_common_subs off
 #pragma opt_lifetimes on

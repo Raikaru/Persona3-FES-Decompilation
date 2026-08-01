@@ -3396,7 +3396,7 @@ BtlPacket* FUN_002a1280(u32 param_1,u32 param_2)
 }
 
 #pragma opt_common_subs off
-// FUN_002A1400 NONMATCHING
+// FUN_002A1400
 u8 FUN_002a1400(float *param_1)
 {
   float fVar1;
@@ -3415,10 +3415,10 @@ u8 FUN_002a1400(float *param_1)
     *(RwRGBAReal *)param_1 = *(RwRGBAReal *)(iGpffffb6fc + 0x234);
   }
 
-  target.r = (float)bGpffffb808 * fGpffff8218;
-  target.g = (float)bGpffffb809 * fGpffff8218;
-  target.b = (float)bGpffffb80a * fGpffff8218;
-  target.a = (float)bGpffffb80b * fGpffff8218;
+  target.r = fGpffff8218 * (float)bGpffffb808;
+  target.g = fGpffff8218 * (float)bGpffffb809;
+  target.b = fGpffff8218 * (float)bGpffffb80a;
+  target.a = fGpffff8218 * (float)bGpffffb80b;
   duration = *(u32 *)(param_1 + 4);
   counter = *(u32 *)(param_1 + 5);
   if (counter < duration) {
@@ -3435,8 +3435,9 @@ u8 FUN_002a1400(float *param_1)
   }
   else {
     *(RwRGBAReal *)(iGpffffb6fc + 0x234) = target;
+    return 1;
   }
-  *(u32 *)(param_1 + 5) = counter + 1;
+  *(u32 *)(param_1 + 5) = *(u32 *)(param_1 + 5) + 1;
   return 0;
 }
 #pragma opt_common_subs reset
@@ -3613,6 +3614,12 @@ void FUN_002a1db0(s32 param_1)
     *(s32*)packet->workData = param_1;
 }
 
+/* W414 evidence: full fndiff was nd29 at 592/592.  The ordered jal sequence
+ * was identical on both sides: FUN_004be310 only; no missing/extra call was
+ * present.  Splitting each quintic into sequential Horner statements keeps
+ * the retail constant-load/accumulator order and measures nd4 at 592/592.
+ * The remaining rows (+368/+428) are the commutative accumulator operand
+ * swap (retail f0*f1, ours f1*f0), a confirmed compiler floor. */
 // FUN_002A1E00 NONMATCHING
 
 
@@ -3652,17 +3659,21 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
   else {
     if (interpolation.mode == 0) {
       fVar5 = fVar5 * interpolation.values[8];
-      fVar1 = fVar5 * fVar5;
-      fVar5 = fVar1 * fVar5 *
-              (fVar1 * (fVar1 * (fVar1 * (fVar1 * (fGpffff8044 * fVar1 + fGpffff8048 + 0.0f) +
-                                         fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) + fGpffff8054 + 0.0f
-                       ) + fGpffff8058 + 0.0f) + fVar5 + 0.0f;
+      fVar2 = fVar5 * fVar5;
+      fVar1 = fGpffff8044 * fVar2 + fGpffff8048 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff804c + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8050 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8054 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8058 + 0.0f;
+      fVar5 = fVar2 * fVar5 * fVar1 + fVar5 + 0.0f;
       param_1 = param_1 * interpolation.values[8];
-      fVar1 = param_1 * param_1;
-      param_1 = fVar1 * param_1 *
-                (fVar1 * (fVar1 * (fVar1 * (fVar1 * (fGpffff8044 * fVar1 + fGpffff8048 + 0.0f) +
-                                           fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) +
-                         fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + param_1 + 0.0f;
+      fVar2 = param_1 * param_1;
+      fVar1 = fGpffff8044 * fVar2 + fGpffff8048 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff804c + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8050 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8054 + 0.0f;
+      fVar1 = fVar2 * fVar1 + fGpffff8058 + 0.0f;
+      param_1 = fVar2 * param_1 * fVar1 + param_1 + 0.0f;
     }
     out[3] = interpolation.values[0] * fVar5;
     out[4] = interpolation.values[1] * fVar5;

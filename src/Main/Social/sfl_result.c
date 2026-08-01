@@ -979,6 +979,7 @@ u32 func_001f65e0(void)
 
 
 
+/* SocialA W417 negative: swapping work/i declarations in func_001f6630 was byte-identical (nd 586, object 1060/1072); retained source order. */
 /* W389 measured sflResult001f9170 opt_lifetimes on: nd 471 -> 465; object 1212/1216 -> 1212/1216. */
 // FUN_001f6630 NONMATCHING
 void func_001f6630(void)
@@ -2337,6 +2338,7 @@ void sflResult001f9100_y2(void)
     func_00216800();
 }
 
+/* W418 rate choice: direct-return rewrites for cases 8+12 improved 465/1212B (0.3837) to 400/1188B (0.3367); case 10 was reverted because its 444/1200B (0.3700) combination was worse. Cases 1/3 direct-return probes regressed to nd632/1168B and nd495/1168B. */
 #pragma push
 #pragma opt_lifetimes on
 // FUN_001f9170 NONMATCHING
@@ -2413,11 +2415,8 @@ u32 sflResult001f9170(u32 player)
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition == 3 || condition == 4 || condition == 5) {
-                    break;
+                    return 1;
                 }
-            }
-            if (j < memberCount) {
-                return 1;
             }
             break;
         case 9: {
@@ -2448,11 +2447,8 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetPhysicalCondition(members[j]) != 2) {
-                    break;
+                    return 1;
                 }
-            }
-            if (j < memberCount) {
-                return 1;
             }
             break;
         }
@@ -2600,6 +2596,7 @@ void sflResult001f99f0_y2(void)
     puVar1[1] = 2;
 }
 
+/* W415 census recheck: all eight relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_001f9a80 NONMATCHING
 void sflResult001f9a80(void)
 {

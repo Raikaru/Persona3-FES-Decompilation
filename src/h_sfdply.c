@@ -446,7 +446,9 @@ static void H_SfdPlay_BeginStream(HSfd* work)
 // config declaration, unused state local), and typed the render-state
 // function pointer table access explicitly. object_size grew toward the
 // retail window as genuine logic was restored; normalized_diff moved
-// slightly worse, which is expected for this class of fix.
+// slightly worse, which is expected for this class of fix. W415 removed the
+// retail-nonexistent default-state cleanup: calls 77 -> 73, nd 2966 -> 2921,
+// object 4768 -> 4600 within the 4768-byte window.
 // FUN_0010A860 NONMATCHING
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
@@ -968,33 +970,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             }
             break;
         default:
-            if (work->decoder != NULL)
-            {
-                if (work->streamAux != NULL)
-                    func_00584338(work->decoder);
-                func_0057db58(work->decoder);
-                work->decoder = NULL;
-            }
-            if (work->compressedFrameBuffer != NULL)
-            {
-                D_0096017c(work->compressedFrameBuffer);
-                work->compressedFrameBuffer = NULL;
-            }
-            if (work->displayBuffer != NULL)
-            {
-                D_0096017c(work->displayBuffer);
-                work->displayBuffer = NULL;
-                uGpffffb220 = NULL;
-            }
-            if (work->renderTarget != NULL)
-            {
-                func_004cde90(work->renderTarget);
-                work->renderTarget = NULL;
-            }
-            datSetFlag(0x1407, 0);
-            work->stateTimer = 0;
-            work->state = HSFD_STATE_IDLE;
-            return KWLNTASK_CONTINUE;
+            break;
     }
     return KWLNTASK_CONTINUE;
 
@@ -1496,6 +1472,7 @@ queue_done:
 }
 
 /* W318 measured: opt_common_subs off changes c7d0 nd406->385; object676/window752. */
+/* W418 six local declaration orders were neutral: nd385,obj676/window752. */
 #pragma opt_common_subs off
 // FUN_0010C7D0 NONMATCHING
 void func_0010c7d0(HSfdQueueSlot* slot)

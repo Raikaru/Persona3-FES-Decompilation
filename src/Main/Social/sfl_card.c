@@ -1234,6 +1234,7 @@ void FUN_00253a40(void)
             *puVar1 = uVar6 & 0xffffff7f;
 
             *puVar1 = uVar6 & 0xffffff3f;
+            FUN_00258b40();
 
           }
 
@@ -1858,6 +1859,7 @@ s32 bpTexGetNodeCount(void)
     return count;
 }
 
+/* SocialA W417 negatives: opt_common_subs on worsened bpTexQueueNodeRange (nd 407 -> 434, object 668 -> 648); node/selected, action/node, and i/total declaration permutations were byte-identical. */
 #pragma opt_common_subs off
 // FUN_00255570 NONMATCHING
 void bpTexQueueNodeRange(s32 start, s32 count)
@@ -1980,6 +1982,10 @@ void bpTexRemoveNodeAt_y2(s32 index)
         }
     }
 
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
     func_00259190(node, children, &childCount);
     for (i = 0; i < childCount; i++)
     {
@@ -1991,10 +1997,6 @@ void bpTexRemoveNodeAt_y2(s32 index)
             BP_TEX_PTR(work, 0x12664 + (i + 1) * 4);
     }
     BP_TEX_S32(work, 0x12684) = count - 1;
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
     action = (u32*)((u8*)work + 0x12688 +
                     BP_TEX_U32(work, 0x127a8) * 0x24);
     action[0] = 2;
@@ -2792,6 +2794,7 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 /* W389 measured opt_propagation off: nd2266/2908B -> nd2256/2920B (window 3024B). */
 #pragma push
 #pragma opt_propagation off
+/* W418 probe negative: ascending-switch rewrite of bpTexApplyActions was nd2306/2928B versus baseline nd2256/2920B; reverted. */
 // FUN_00257130 NONMATCHING
 void bpTexApplyActions(void)
 {
@@ -3520,6 +3523,7 @@ u32 sflCard00258af0(void)
     K_ASSERT(sSflCardB664 != NULL, 0xbc);
     return *sSflCardB664 & 0x80;
 }
+/* W414 named f32 90.0f local initialized before the pointer expression stayed nd13/1076B (window 1088B); reverted. Residual is the documented call-argument evaluation-order floor; no software-double calls were introduced. */
 // FUN_00258B40 NONMATCHING
 
 

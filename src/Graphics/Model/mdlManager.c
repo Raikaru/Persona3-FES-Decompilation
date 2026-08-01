@@ -2576,6 +2576,7 @@ void func_00313be0(MdlAnimEntryTable* table)
     }
 }
 
+/* W415 direct call census: CLEAN (12 calls, exact retail sequence); no missing callee. */
 // FUN_00313CA0 NONMATCHING
 
 
@@ -2659,40 +2660,23 @@ void func_00313ca0(int *param_1,u32 param_2)
 
           piVar4 = *(int **)(iVar7 + 0x2c);
 
-          if ((((piVar4 == (int *)0x0) || ((u32)*(u16 *)(piVar4 + 1) <= (u32)lVar6)) ||
-
+          if (!((((piVar4 == (int *)0x0) || ((u32)*(u16 *)(piVar4 + 1) <= (u32)lVar6)) ||
               (puVar5 = *(u8 **)(*piVar4 + 0x40 + (sVar1 * 4 + (int)sVar1) * 0x10),
-
-              puVar5 == (u8 *)0x0)) || (puVar5 == (u8 *)&DAT_009571d0)) {
-
-            func_00320380(*(u32 *)(iVar7 + 0xc),iVar3);
-
-            fVar8 = func_00320810((void*)iVar3);
-
-            if (fVar8 < *(float *)(iVar7 + 0xc)) {
-
-              func_00313090(0,param_2);
-
-            }
-
-          }
-
-          else {
-
+              puVar5 == (u8 *)0x0)) || (puVar5 == (u8 *)&DAT_009571d0))) {
             if (lVar6 < 0) {
-
               uVar9 = 0;
-
             }
-
             else {
-
               uVar9 = *(u32 *)(iVar7 + 0xc);
-
             }
-
             func_00320380(uVar9,iVar3);
-
+          }
+          else {
+            func_00320380(*(u32 *)(iVar7 + 0xc),iVar3);
+            fVar8 = func_00320810((void*)iVar3);
+            if (fVar8 < *(float *)(iVar7 + 0xc)) {
+              func_00313090(0,param_2);
+            }
           }
 
         }
@@ -3386,6 +3370,7 @@ LAB_0031494c:
 
 #pragma push
 #pragma opt_lifetimes on
+/* W415 reverted probe: swapping outer branches matched call order but regressed nd415 -> 456 (object 720/736); u8 flag variant unchanged. */
 // FUN_00314D30 NONMATCHING
 
 
@@ -6049,6 +6034,7 @@ u32 func_00318b90(u32 param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W415 reverted probe: swapping top-level branches matched call order but regressed nd266 -> 287 (object 420/448). */
 // FUN_00318D10 NONMATCHING
 
 
@@ -6523,6 +6509,7 @@ void func_00319390(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5,
 
 
 
+/* W415 reverted probe: swapping search/init branches matched call order but regressed nd217 -> 220 (object 348/352); u32 local variant nd252, object 356 > window. */
 // FUN_00319490 NONMATCHING
 
 

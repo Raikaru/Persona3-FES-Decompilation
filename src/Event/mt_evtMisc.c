@@ -4116,6 +4116,7 @@ void FUN_0038b140(int param_1)
 }
 
 
+/* W415 ORDER probes: explicit ascending switch plus f32 copy types lowered nd319 -> 12 (obj648/window656). The remaining five words are only post-call loop setup order at offsets 336/340/344 (move/addiu); no width-pair rows. Assignment reorder regressed to nd24; all six local declaration permutations were nd12,16,17,18,19,20; schedule-on was nd422/obj596. For-loop and while-loop rewrites of that setup both regressed to nd226/obj656 and nd227/obj656. */
 // FUN_0038B2C0 NONMATCHING
 
 
@@ -4129,11 +4130,11 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
 
   u16 *puVar1;
 
+  u32 *puVar5;
+
   u32 *puVar2;
 
   int iVar4;
-
-  u32 *puVar5;
 
   u32 uVar6;
 
@@ -4183,13 +4184,11 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
 
       FUN_0038b600((u32 *)(puVar1 + 0xa8),param_4);
 
-      if (param_5 == 3) {
+      switch (param_5) {
 
-        FUN_001a0430(*puVar1,1);
+      case 1:
 
-      }
-
-      else if (param_5 == 2 || param_5 == 1) {
+      case 2: {
 
         FUN_001a0430(*puVar1,0);
 
@@ -4239,27 +4238,41 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
 
         } while (0 < iVar4);
 
+        break;
+
+      }
+
+      case 3: {
+
+        FUN_001a0430(*puVar1,1);
+
+        break;
+
+      }
+
       }
 
     }
 
     else if (iVar4 == 1) {
 
-      uVar8 = param_2[1];
-      uVar6 = param_2[2];
-      uVar7 = param_2[3];
-      *(u32 *)(puVar1 + 0x96) = *param_2;
-      *(u32 *)(puVar1 + 0x98) = uVar8;
-      *(u32 *)(puVar1 + 0x9a) = uVar6;
-      *(u32 *)(puVar1 + 0x9c) = uVar7;
+      fVar9 = *(f32 *)param_2;
+      fVar10 = *(f32 *)(param_2 + 1);
+      fVar11 = *(f32 *)(param_2 + 2);
+      fVar12 = *(f32 *)(param_2 + 3);
+      *(f32 *)(puVar1 + 0x96) = fVar9;
+      *(f32 *)(puVar1 + 0x98) = fVar10;
+      *(f32 *)(puVar1 + 0x9a) = fVar11;
+      *(f32 *)(puVar1 + 0x9c) = fVar12;
 
-      uVar8 = param_3[1];
-      uVar6 = param_3[2];
-      uVar7 = param_3[3];
-      *(u32 *)(puVar1 + 0x9e) = *param_3;
-      *(u32 *)(puVar1 + 0xa0) = uVar8;
-      *(u32 *)(puVar1 + 0xa2) = uVar6;
-      *(u32 *)(puVar1 + 0xa4) = uVar7;
+      fVar9 = *(f32 *)param_3;
+      fVar10 = *(f32 *)(param_3 + 1);
+      fVar11 = *(f32 *)(param_3 + 2);
+      fVar12 = *(f32 *)(param_3 + 3);
+      *(f32 *)(puVar1 + 0x9e) = fVar9;
+      *(f32 *)(puVar1 + 0xa0) = fVar10;
+      *(f32 *)(puVar1 + 0xa2) = fVar11;
+      *(f32 *)(puVar1 + 0xa4) = fVar12;
 
       FUN_0038b600((u32 *)(puVar1 + 0xa8),param_4);
 
@@ -4330,6 +4343,8 @@ void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 extern u8 D_006A2A70[];
 extern u8 D_006A2A60[];
 extern int FUN_004c31b0();
+extern void FUN_004c31b0_cc10(void *matrix, void *axis, float angle, int mode);
+#pragma alias FUN_004c31b0_cc10 FUN_004c31b0
 extern void FUN_004c31b0_b600(void *matrix, void *axis, float angle, int mode);
 #pragma alias FUN_004c31b0_b600 FUN_004c31b0
 // FUN_0038B600
@@ -4375,7 +4390,7 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
 }
 
 
-/* opt_loop_invariants on: FUN_0038B6E0 nd403 -> nd388, object 620/640; measured W319. */
+/* opt_loop_invariants on: FUN_0038B6E0 nd403 -> nd388, object 620/640; measured W319. W416 width casts at the lVar8 and three boundary param_2 flows lowered nd388 -> 385 (object/window 620/640); the unsigned-u16-use variant regressed to nd401/object624. */
 #pragma push
 #pragma opt_loop_invariants on
 // FUN_0038B6E0 NONMATCHING
@@ -4460,7 +4475,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
         if (param_3 <= iVar4) {
 
-          lVar8 = param_2 + iVar4;
+          lVar8 = (short)param_2 + iVar4;
 
           if (lVar8 < sVar1) {
 
@@ -4496,7 +4511,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
               }
 
-              if (piVar8[3] < (short)puVar2[9] + param_2) {
+              if (piVar8[3] < (short)puVar2[9] + (short)param_2) {
 
                 puVar2[9] = piVar8[3] - 1;
 
@@ -4520,7 +4535,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
               }
 
-              if (piVar8[3] < (short)puVar2[8] + param_2) {
+              if (piVar8[3] < (short)puVar2[8] + (short)param_2) {
 
                 puVar2[8] = piVar8[3] - 1;
 
@@ -4542,7 +4557,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
             }
 
-            if (piVar8[3] < (short)puVar2[9] + param_2) {
+            if (piVar8[3] < (short)puVar2[9] + (short)param_2) {
 
               puVar2[9] = piVar8[3] - 1;
 
@@ -5712,6 +5727,7 @@ void FUN_0038ca00(void)
 #pragma pop
 
 
+/* W415 census recheck: all seven relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_0038CA80 NONMATCHING
 
 
@@ -6163,8 +6179,6 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         param_2[0xa5] = 0;
 
-        uVar13 = *(u32 *)(&DAT_009588c8 + iVar6);
-
         matrix_40[10] = 0x3f800000;
 
         matrix_40[5] = 0x3f800000;
@@ -6191,9 +6205,9 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_40[3] = matrix_40[3] | 0x20003;
 
-        FUN_004c31b0(*(u32 *)(&DAT_009588cc + iVar6),matrix_40,0x6a2a70,1);
+        FUN_004c31b0_cc10(matrix_40,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0(uVar13,matrix_40,0x6a2a60,1);
+        FUN_004c31b0_cc10(matrix_40,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
 
         puVar9 = matrix_40;
 
@@ -6305,8 +6319,6 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         param_2[0xa5] = 0;
 
-        uVar13 = *(u32 *)(&DAT_009588c8 + iVar6);
-
         matrix_80[10] = 0x3f800000;
 
         matrix_80[5] = 0x3f800000;
@@ -6333,9 +6345,9 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_80[3] = matrix_80[3] | 0x20003;
 
-        FUN_004c31b0(*(u32 *)(&DAT_009588cc + iVar6),matrix_80,0x6a2a70);
+        FUN_004c31b0_cc10(matrix_80,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0(uVar13,matrix_80,0x6a2a60,1);
+        FUN_004c31b0_cc10(matrix_80,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
 
         puVar12 = matrix_80;
 
@@ -6387,8 +6399,6 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         param_2[0x8f] = 0;
 
-        uVar13 = *(u32 *)(&DAT_009588c8 + iVar6);
-
         matrix_c0[10] = 0x3f800000;
 
         matrix_c0[5] = 0x3f800000;
@@ -6415,9 +6425,9 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_c0[3] = matrix_c0[3] | 0x20003;
 
-        FUN_004c31b0(*(u32 *)(&DAT_009588cc + iVar6),matrix_c0,0x6a2a70);
+        FUN_004c31b0_cc10(matrix_c0,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0(uVar13,matrix_c0,0x6a2a60,1);
+        FUN_004c31b0_cc10(matrix_c0,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
 
         puVar12 = matrix_c0;
 

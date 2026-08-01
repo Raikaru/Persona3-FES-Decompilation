@@ -289,6 +289,8 @@ void brHero002630e0(void)
     FUN_003b0170(work[0xad4]);
     *work &= 0xfffffffe;
 }
+/* W415 census negative: fresh R_MIPS_26 decode and the retail 0x00263170/3136-byte window both have 68 ordered calls, including 0x00264ca0; no missing or wrong-callee repair is justified. */
+/* W418 probe negative: 23 declaration permutations of text0/text1/w/resource held brHero00263170 at nd182/3128B (window3136B). */
 // FUN_00263170 NONMATCHING
 void brHero00263170(void)
 {

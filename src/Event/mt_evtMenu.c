@@ -1483,6 +1483,7 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
 }
 
 
+/* W414: switch, while, explicit-else, and goto layout probes left the nd1 branch landing unchanged. */
 // FUN_0036F900 NONMATCHING
 
 
@@ -1537,6 +1538,7 @@ s8 FUN_0036fa40(int object)
 
 
 // FUN_0036FA80 NONMATCHING
+/* W417 cVar1 declaration/width probes were neutral except char cVar1, which worsened nd54 -> 431; reverted. */
 
 
 void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
@@ -1951,6 +1953,7 @@ u32 FUN_00370230(int param_1,int param_2,int param_3)
 /* opt_lifetimes on: default nd274/1836B -> nd134/1836B; retained. */
 #pragma push
 #pragma opt_lifetimes on
+/* W414: scalar f32/pointer alias probes scored nd125; paired RwV2d accessors scored nd104. */
 // FUN_003702A0 NONMATCHING
 
 
@@ -1994,16 +1997,11 @@ void FUN_003702a0(int param_1,int param_2,int param_3,int param_4)
 
   iVar6 = 0;
 
-  apuStack_30[4] = PTR_s_REPEAT_007ccd88;
-  apuStack_30[5] = PTR_DAT_007ccd8c;
+  *(RwV2d *)&apuStack_30[4] = *(RwV2d *)&PTR_s_REPEAT_007ccd88;
 
-  apuStack_30[2] = PTR_s_DIRECT_007ccda0;
+  *(RwV2d *)&apuStack_30[2] = *(RwV2d *)&PTR_s_DIRECT_007ccda0;
 
-  apuStack_30[3] = PTR_DAT_007ccda4;
-
-  apuStack_30[0] = PTR_s_FALSE_007ccdb8;
-
-  apuStack_30[1] = PTR_DAT_007ccdbc;
+  *(RwV2d *)&apuStack_30[0] = *(RwV2d *)&PTR_s_FALSE_007ccdb8;
 
   iVar2 = (int)param_4;
 
@@ -3146,6 +3144,7 @@ u32 FUN_00371710(int param_1,int param_2,int param_3)
 }
 
 
+/* W416 ORDER probe rejected: inverted case-1 condition/body raised nd758 -> 801, object/window 1520/1600. */
 // FUN_00371790 NONMATCHING
 void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
@@ -4015,6 +4014,7 @@ int FUN_00372790(int param_1,int param_2,int param_3)
 
 
 // FUN_00372C40 NONMATCHING
+/* W417 adding the census-missing FUN_0019d3f0 assertion lowered nd1534 -> 1386 but grew 2372B -> 2408B past the 2384B window; reverted. */
 
 
 bool FUN_00372c40(int param_1)
@@ -4613,7 +4613,7 @@ LAB_003736a4:
 
 #pragma alias FUN_001a42f0_evt_f32 FUN_001a42f0
 extern f32 *FUN_001a42f0_evt_f32(int param_1,int param_2);
-/* opt_dead_assignments off: default nd3053/4240B -> nd3051/4240B; retained. */
+/* opt_dead_assignments off: default nd3053/4240B -> nd3051/4240B; retained. W416 ORDER call swap (case-4 integer fetch before the f32 fetches) lowered nd3051 -> 2969, object/window 4240/4256. */
 #pragma push
 #pragma opt_dead_assignments off
 // FUN_00373700 NONMATCHING
@@ -4788,6 +4788,9 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
   case 4:
 
+    *(float *)(param_3 + 0x1b0) =
+        (float)*(int *)FUN_001a41b0(*(u32 *)(param_3 + 0xe8),6);
+
     piVar4 = FUN_001a42f0_evt_f32(*(u32 *)(param_3 + 0xe8),0);
     *(float *)(param_3 + 0x198) = *piVar4;
 
@@ -4806,9 +4809,6 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
     piVar4 = FUN_001a42f0_evt_f32(*(u32 *)(param_3 + 0xe8),5);
 
     *(float *)(param_3 + 0x1ac) = *piVar4;
-
-    *(float *)(param_3 + 0x1b0) =
-        (float)*(int *)FUN_001a41b0(*(u32 *)(param_3 + 0xe8),6);
 
     *(float *)(param_3 + 0x1b4) =
         (float)*(int *)FUN_001a41b0(*(u32 *)(param_3 + 0xe8),7);
@@ -6361,6 +6361,7 @@ void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 
 // FUN_00375D70 NONMATCHING
+/* W417 direct state-update expression probe was neutral at nd113/object444; reverted. */
 
 
 u32 FUN_00375d70(int param_1,int param_2,int param_3)
@@ -8657,6 +8658,7 @@ void FUN_003797b0(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* W416 ORDER probe rejected: inverted flag condition/body left nd506 unchanged, object/window 784/832. */
 // FUN_003798F0 NONMATCHING
 
 
@@ -9439,6 +9441,7 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* W414: shared-value, parameter-return, and switch/goto layout probes did not improve nd4. */
 // FUN_0037A640 NONMATCHING
 
 
@@ -9675,6 +9678,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* W414: result/argument-local probes kept nd5; returning the call result or extraout exceeded the window. */
 // FUN_0037ABD0 NONMATCHING
 
 
@@ -9723,6 +9727,7 @@ u32 FUN_0037acc0(int param_1,int param_2,int param_3)
 }
 
 
+/* W416 ORDER shape probes rejected: ascending switch nd417 -> 427 and descending switch nd417 -> 389, both object 660/window656 (over-window); removing the final break did not reduce the descending 660-byte object. */
 // FUN_0037AD30 NONMATCHING
 
 
@@ -9774,6 +9779,7 @@ void FUN_0037ad30(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* W416 ORDER flag-branch swap lowered nd505 -> 503, object/window 800/800; ordered calls now match retail (b5d50 before b5da0). */
 // FUN_0037AFC0 NONMATCHING
 
 
@@ -9850,35 +9856,35 @@ u32 FUN_0037afc0(int param_1,int param_2,int param_3)
 
       puVar3 = (u16 *)FUN_003b5d10(((u16 *)&uStack_4)[1]);
 
-      if ((DAT_007e0952 & 0x2000) == 0) {
+      if ((DAT_007e0952 & 0x2000) != 0) {
 
-        if ((DAT_007e0952 & 0x8000) != 0) {
+        if (puVar3 == (u16 *)0x0) {
 
-          if (puVar3 != (u16 *)0x0) {
+          puVar3 = (u16 *)FUN_003b5d50(8);
 
-            puVar3 = *(u16 **)(puVar3 + 0x7e);
+        }
 
-          }
+        else {
 
-          else {
-
-            puVar3 = (u16 *)FUN_003b5da0(8);
-
-          }
+          puVar3 = *(u16 **)(puVar3 + 0x7c);
 
         }
 
       }
 
-      else if (puVar3 == (u16 *)0x0) {
+      else if ((DAT_007e0952 & 0x8000) != 0) {
 
-        puVar3 = (u16 *)FUN_003b5d50(8);
+        if (puVar3 != (u16 *)0x0) {
 
-      }
+          puVar3 = *(u16 **)(puVar3 + 0x7e);
 
-      else {
+        }
 
-        puVar3 = *(u16 **)(puVar3 + 0x7c);
+        else {
+
+          puVar3 = (u16 *)FUN_003b5da0(8);
+
+        }
 
       }
 
@@ -10045,6 +10051,7 @@ u32 FUN_0037b2e0(int param_1,int param_2,int param_3)
 #pragma push
 #pragma opt_common_subs off
 #pragma opt_propagation off
+/* W414: RwV3d table access scored nd307; absolute-array aliases grew past the 640-byte window. */
 // FUN_0037B350 NONMATCHING
 
 
@@ -10097,6 +10104,7 @@ void FUN_0037b350(int param_1,int param_2,int param_3,int param_4)
 #pragma pop
 
 
+/* W416 ORDER probe rejected: ascending switch cases 0..2 raised nd725 -> 774, object/window 1200/1200. */
 // FUN_0037B5D0 NONMATCHING
 
 
@@ -10803,6 +10811,7 @@ u32 FUN_0037c2e0(int param_1,int param_2,int param_3)
 }
 
 
+/* W416 ORDER probes rejected: inverted case-6 body nd1296 -> 1312 (obj1940/window1952); nested switch nd1296 -> 1300 (obj1948/window1952). */
 // FUN_0037C350 NONMATCHING
 
 
@@ -15766,6 +15775,7 @@ u32 FUN_00382ec0(int param_1,int param_2,int param_3)
 /* opt_lifetimes on: default nd364/1072B -> nd344/1072B; retained. */
 #pragma push
 #pragma opt_lifetimes on
+/* W416 width audit: retail offsets 0xfc/0x100 use 0x10 extension shifts; ours' corresponding pair is 0xf8/0xfc with the same 0x10 shifts. The existing (short)iVar1 use-site cast already supplies the candidate width; no edit was justified. */
 // FUN_00382F30 NONMATCHING
 
 
@@ -18285,6 +18295,7 @@ int FUN_003863c0(void)
   return iVar1;
 
 }
+/* W414: loop-local declaration-order probes left nd18 unchanged. */
 // FUN_00386430 NONMATCHING
 
 

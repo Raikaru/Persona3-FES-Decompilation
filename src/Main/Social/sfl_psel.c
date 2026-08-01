@@ -158,7 +158,8 @@ void func_00215aa0(void)
     sSflPsel = NULL;
 }
 
-/* opt_lifetimes on: func_00215b00 nd765 -> nd748, object 1216 -> 1212/1216; measured W328. */
+/* W418 probe negatives: func_00215b00 declaration permutations held nd762/1204B; signed-width permutations held nd762/1204B. func_002168f0 declaration permutations held nd716/1992B. func_00217780 color-width probes were nd1583/2320B or nd1582/2320B versus baseline nd1582/2320B. */
+/* opt_lifetimes on: func_00215b00 nd765 -> nd748, object 1216 -> 1212/1216; measured W328. W415 reused the cached texture for the final frame lookup (calls 48 -> 47, nd 748 -> 762, object 1212 -> 1204/1216). */
 #pragma opt_lifetimes on
 // FUN_00215B00 NONMATCHING
 void func_00215b00(void)
@@ -275,7 +276,7 @@ void func_00215b00(void)
     func_0021eac0(work + 0x5c90, func_0021ea00(0x28));
     func_0021e380(work + 0x5d90, texture, 2);
     func_0021eac0(work + 0x5d90, func_0021ea00(0x28));
-    texture = func_0021cca0(sflResGetPersonaChangeSprite(), 0x1f);
+    texture = func_0021cca0(texture, 0x1f);
     func_0021d3b0(work + 0x5e90, texture);
     func_0021eac0(work + 0x5e90, func_0021ea00(0x28));
     *(u32*)(work + 0x5334) = 0;
@@ -1410,6 +1411,7 @@ void func_00218b20(void* panel, const u32* entry, s32 selected,
 #undef color
 #undef rect
 }
+/* SocialA W417 negatives: callback declaration permutations were byte-identical (nd 688, object 1520/1536); direct callback-global forms failed MWCC type checking. */
 // FUN_00219370 NONMATCHING
 void func_00219370(void* panel, const u32* entry, s32 selected)
 {

@@ -1028,6 +1028,7 @@ void btlActionUpdateStateStandBy(BtlAction* action)
 /* Pair nd/obj: LI+CS=1377/2060 LI+LT=1339/1984 LI+PR=1392/2044 LI+SR=1392/2044 LI+DA=1392/2044 CS+LT=1334/2000 CS+PR=1377/2060 CS+SR=1377/2060 CS+DA=1377/2060 LT+PR=1339/1984 LT+SR=1339/1984 LT+DA=1339/1984 PR+SR=1392/2044 PR+DA=1392/2044 SR+DA=1392/2044; retain CS+LT. */
 #pragma opt_common_subs off
 #pragma opt_lifetimes on
+/* W415 negatives: restoring the three missing calls matched the census but measured 2068/2064; retained source stays within the retail window. */
 // FUN_0028aa20 NONMATCHING
 void btlActionInitStateStart(BtlAction* action)
 {
@@ -1603,6 +1604,7 @@ void btlActionInitStateCommand(BtlAction* action)
     ACTION_U16(action, 0x484) = 0;
     action->unk_488 = 0;
 }
+/* W417 negatives: command input-branch inversion measured nd512 -> 545, object 876/912; a boolean switch measured nd530, object 912/912; a flag switch measured nd582, object 936/912 (over window); retained source. */
 // FUN_0028bf80 NONMATCHING
 void btlActionUpdateStateCommand(BtlAction* action)
 {
@@ -1761,6 +1763,7 @@ void btlActionInitStateTarget(BtlAction* action)
         btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(scratch.selected->unit, 0), BTLPACKET_TYPE_1);
     }
 }
+/* W417 negative: target input-branch inversion measured nd666 -> 693, object 1084/1120; retained source. */
 // FUN_0028c590 NONMATCHING
 void btlActionUpdateStateTarget(BtlAction* action)
 {
@@ -1865,6 +1868,7 @@ void btlActionInitStateAnalyze(BtlAction* action)
 {
     action->movedAwayFromHome = true;
 }
+/* W415 negatives: moving the terminal state call before the two helpers measured nd229/896 and branch inversion nd234/896 versus nd227/896. */
 // FUN_0028ca00 NONMATCHING
 void btlActionUpdateStateAnalyze(BtlAction* action)
 {
@@ -2084,7 +2088,29 @@ void btlActionUpdateStateSupport(BtlAction* action)
         case 15: messageId = unit->genus == UNIT_GENUS_PC ? 0x5e : 0x5f; FUN_00301540(unit->datUnit, 15); break;
         case 16: messageId = unit->genus == UNIT_GENUS_PC ? 0x60 : 0x61; FUN_00301540(unit->datUnit, 16); break;
     }
-    if (messageId == 0)
+    if (messageId != 0)
+    {
+        btlAction0028a780(action);
+        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+        packet = FUN_002bd850(unit, messageId);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+        if (special)
+        {
+            FUN_002d5dc0(work);
+            work[0] = -((FUN_002ffd70(unit->datUnit) & 0xffff) - 1);
+            if (work[0] >= 0) work[0] = 0;
+            work[1] = -((FUN_002ffd80(unit->datUnit) & 0xffff) - 1);
+            if (work[1] >= 0) work[1] = 0;
+            packet = FUN_002d7e20(action, action, work, 1, 1);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            return;
+        }
+    }
+    else
     {
         if (FUN_002dc070(action))
         {
@@ -2094,25 +2120,6 @@ void btlActionUpdateStateSupport(BtlAction* action)
         {
             btlActionSetState(action, BTLACTION_STATE_STARTHOME);
         }
-        return;
-    }
-    btlAction0028a780(action);
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    packet = FUN_002bd850(unit, messageId);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    if (special)
-    {
-        FUN_002d5dc0(work);
-        work[0] = -((FUN_002ffd70(unit->datUnit) & 0xffff) - 1);
-        if (work[0] >= 0) work[0] = 0;
-        work[1] = -((FUN_002ffd80(unit->datUnit) & 0xffff) - 1);
-        if (work[1] >= 0) work[1] = 0;
-        packet = FUN_002d7e20(action, action, work, 1, 1);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return;
     }
 }
@@ -2128,6 +2135,7 @@ void btlActionInitStateBad(BtlAction* action)
 /* Retail reconstruction covers the guard, down-status packet sequence, result dispatch, and moved-home state paths at 0x28d5e8-0x28dbc0. */
 /* W373 pragma sweep nd/obj: base 338/1600; singles LI=338/1600 CS=273/1596 LT=338/1600 PR=338/1600 SR=338/1600 DA=338/1600; retain CS off. */
 #pragma opt_common_subs off
+/* W415 negative: reversing the moved-home branch reduced object 1596->1588 but raised nd273->274, so source order was retained. */
 // FUN_0028d5a0 NONMATCHING
 void btlActionUpdateStateBad(BtlAction* action)
 {

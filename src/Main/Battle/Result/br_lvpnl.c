@@ -204,10 +204,6 @@ static BrLvpnlWork* sBrLvpnl; // DAT_007ce3c8
 #define OP_WORKD ((u8 *)gOpWorkD0)
 
 
-static inline u8 opFadeColorByte(f32 value)
-{
-    return (u8)(u32)value;
-}
 
 // FUN_00275a90
 void func_00275a90(void)
@@ -332,14 +328,14 @@ void func_00275cb0(void)
 // FUN_002760f0 NONMATCHING
 void func_002760f0(void)
 {
+    f32 alphaScaled;
+    f32 offset;
+    f32 alpha;
+    u32 baseResource;
+    u32 resource;
     u32* work;
     f32 rect[4];
     u8 color[4];
-    f32 alpha;
-    f32 offset;
-    f32 alphaScaled;
-    u32 resource;
-    u32 baseResource;
 
     K_ASSERT(gOpWorkC8 != NULL, 0x3b);
     work = (u32*)OP_WORK8;
@@ -386,7 +382,7 @@ void func_002760f0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = opFadeColorByte(alphaScaled);
+    color[3] = (u8)(u32)(alpha * 255.0f);
     func_0021d950(work + 4, color);
 
     resource = func_0021cca0(baseResource, 1);
@@ -398,7 +394,7 @@ void func_002760f0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = opFadeColorByte(alphaScaled);
+    color[3] = (u8)(u32)(alpha * 255.0f);
     func_0021d950(work + 0x84, color);
 
     if ((OP_U32(work, 0) & 2) != 0)
@@ -448,7 +444,7 @@ void func_002760f0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = opFadeColorByte(alphaScaled);
+    color[3] = (u8)(u32)(alpha * 255.0f);
     func_0021d950(work + 0x44, color);
 
     resource = func_0021cca0(baseResource, 3);
@@ -460,7 +456,7 @@ void func_002760f0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = opFadeColorByte(alphaScaled);
+    color[3] = (u8)(u32)(alpha * 255.0f);
     func_0021d950(work + 0xc4, color);
 
     resource = func_0021cca0(baseResource, 0xb);

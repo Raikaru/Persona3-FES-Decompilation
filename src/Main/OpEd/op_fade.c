@@ -1517,6 +1517,8 @@ void func_002743e0(void* destination, s32* count)
     *count = outCount;
 }
 
+/* W418 cast probe: (u32)randomValue reduced nd689/1644B (0.4191) to nd688/1644B (0.4185); declaration move stayed nd689/1644B. */
+/* SocialA W417 negative: moving rankMap after skillCount was byte-identical (nd 689, object 1644/1648); retained source order. */
 // FUN_00274590 NONMATCHING
 void func_00274590(void)
 {
@@ -1563,7 +1565,7 @@ void func_00274590(void)
     FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_1);
     FUN_005225a8((u32)(uintptr_t)(&gp0xffff97d0_2 + 1),
                  randomValue, 0xc);
-    if (randomValue >= 0xc)
+    if ((u32)randomValue >= 0xc)
     {
         FUN_005225a8((u32)(uintptr_t)D_0068EE00);
         goto done;

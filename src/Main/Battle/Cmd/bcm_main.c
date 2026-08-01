@@ -701,7 +701,7 @@ void FUN_001FFC60(void)
 {
     u32* work;
     u8* record;
-    u32 i;
+    s16 i;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = (u32*)gBcmWork;
@@ -742,7 +742,6 @@ void FUN_001FFC60(void)
         else func_002db2a0(0);
     }
     if (*(u32*)work & 0x800000) func_002083d0();
-    if (*(u32*)work & 0x10000) func_002db2a0(0);
     if (*(u32*)work & 0x2000) FUN_00206EB0();
     if (*(u32*)work & 0x1000) FUN_00206310();
     if (*(u32*)work & 2) FUN_00202BC0();
@@ -909,12 +908,11 @@ void FUN_001FFF40(void)
                             {
                                 if (work[0] & 0x200)
                                 {
+                                    value = 0xd3;
                                     if (FUN_0016F190(0x1317) != 0)
-                                        bpRoot001fea10(
-                                            *(u32*)(DAT_007ce3ec + 0xba0), 0xd4);
-                                    else
-                                        bpRoot001fea10(
-                                            *(u32*)(DAT_007ce3ec + 0xba0), 0xd3);
+                                        value = 0xd4;
+                                    bpRoot001fea10(
+                                        *(u32*)(DAT_007ce3ec + 0xba0), value);
                                 }
                             }
                             else
@@ -1095,7 +1093,7 @@ void FUN_001FFF40(void)
             {
                 if ((*(u16*)0x007E094E) & 0x20)
                 {
-                    FUN_00204AF0();
+                    FUN_00203B70();
                     func_00208460();
                     renderFlags |= 1;
                 }
@@ -1255,7 +1253,7 @@ void FUN_001FFF40(void)
         }
         break;
     case 5:
-        if (!FUN_00201AF0() && !(flags & 0x40) && work[1] == 0)
+        if (!(flags & 0x40) && work[1] == 0)
         {
             substate = work[7];
             if (substate == 0)
@@ -1313,13 +1311,11 @@ void FUN_001FFF40(void)
         case 0:
             if ((*(u16*)0x007E0952) & 0x20)
             {
-                func_003c77a0();
                 FUN_00206E40();
                 renderFlags |= 1;
             }
             else if ((*(u16*)0x007E0952) & 0x40)
             {
-                func_003c77a0();
                 FUN_00207340();
                 renderFlags |= 1;
             }
@@ -1376,6 +1372,9 @@ void FUN_001FFF40(void)
                         work[0] |= 0x4000;
                         work[0] &= ~0x20001u;
                         func_002dbac0();
+                        func_002db9f0(0x20, 0x88);
+                        func_002db9f0(0x20, 0x87);
+                        FUN_00206E40();
                     }
                 }
             }
@@ -1417,7 +1416,10 @@ void FUN_001FFF40(void)
             }
             else if (effect == 1)
             {
-                func_003c7430(FUN_002D5550() == 0x1a1 ? 8 : 5);
+                if (FUN_002D5550() == 0x1a1)
+                    func_003c7430(8);
+                else
+                    func_003c7430(5);
             }
             else
             {
@@ -2366,7 +2368,7 @@ void FUN_00202D70(void)
     u8* rows;
     s32 scan;
     s32 out;
-    s32 i;
+    s16 i;
     s32 selected;
     s32 start;
     s32 visible;
@@ -2879,6 +2881,7 @@ void FUN_00203DE0(void)
     func_003b0e70(2);
 }
 
+// W418 negative probes: FUN_00204000 i s16 nd646/1140B -> 667/1180B (over 1152B); FUN_00204760 i s16 nd390/876B -> 532/900B (reverted).
 // FUN_00204000 NONMATCHING
 void FUN_00204000(void)
 {
@@ -3155,15 +3158,16 @@ void FUN_00204480(void)
 
 #pragma opt_loop_invariants off
 
+// W418 negative probe: FUN_00204760 i s16 nd390/876B -> 532/900B (reverted).
 // FUN_00204760 NONMATCHING
 void FUN_00204760(void)
 {
     u8* work;
     u8* row;
-    s32 i;
-    u32 type;
     u32 alpha;
+    s32 i;
     u32 handle;
+    u32 type;
     u16 id;
     u8* slot;
     extern void func_003b2c60(u32, f32);
@@ -3289,7 +3293,7 @@ void FUN_00204CC0(void)
     u8* rowBase;
     u8* entry;
     u8* row;
-    u32 i;
+    s16 i;
     u32 type;
     u32 handle;
     s32 color;
@@ -3366,6 +3370,7 @@ void FUN_00204CC0(void)
 
 
 /* Removing this loses FUN_00204480 (MATCH nd0 -> MISMATCH nd341) - measured W308. */
+// W418 negative probe: FUN_00205000 i s16 nd548/956B -> 663/1004B (over 960B); reverted.
 // FUN_00205000 NONMATCHING
 void FUN_00205000(void)
 {
@@ -3574,6 +3579,8 @@ void FUN_00205760(void)
         *(u32*)(gBcmWork + 0xc) |= 0x40;
 }
 
+// W415 negative probe: simple type==1/type==2 inversion preserved call order but raised nd 863->869; not retained.
+// W418 negative probe: narrowing i to s16 regressed nd852/1404B -> nd1032/1476B (over the 1440B window); reverted.
 // FUN_002057C0 NONMATCHING
 void FUN_002057C0(void)
 {
@@ -3618,17 +3625,20 @@ void FUN_002057C0(void)
         case 10:
             entry = work + work[0x7700 / 4] * 0x18 + 0x2e0;
             type = *(u32*)(entry + 4);
-            if (type == 2)
+            if (type != 2)
+            {
+                if (type == 1)
+                {
+                    if (*(u16*)(entry + 0xc) == 3)
+                        continue;
+                    if (datGetScenarioMode() != 0 && *(u16*)(entry + 0xc) == 9)
+                        continue;
+                }
+            }
+            else
             {
                 K_ASSERT(0, 0xec8);
                 break;
-            }
-            if (type == 1)
-            {
-                if (*(u16*)(entry + 0xc) == 3)
-                    continue;
-                if (datGetScenarioMode() != 0 && *(u16*)(entry + 0xc) == 9)
-                    continue;
             }
             break;
         default:
@@ -3729,6 +3739,7 @@ void FUN_002057C0(void)
     *(u32*)(work + 0x10) = 5;
 }
 
+// W418 negative probe: narrowing i to s16 regressed nd545/812B -> nd604/868B (over the 848B window); reverted.
 // FUN_00205D60 NONMATCHING
 void FUN_00205D60(void)
 {
@@ -4025,6 +4036,7 @@ void FUN_002065A0(void)
 }
 #pragma opt_loop_invariants reset
 
+// W418 negative probe: FUN_00206740 i s16 nd1200/1668B -> 1267/1748B (reverted).
 // FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {

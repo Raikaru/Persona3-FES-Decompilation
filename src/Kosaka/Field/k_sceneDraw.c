@@ -661,28 +661,27 @@ s32 func_0019e1f0(const void* charPtr1, const void* charPtr2)
 
 #pragma push
 /* Removing this worsens K_SceneDraw_UpdateDrwChrMdlTask (nd1774 -> nd1777) - measured W161. */
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 // FUN_0019e330 NONMATCHING
 void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 {
     ResrcModelChar* charRes;
+    ResrcModelChar* charList[SCENEDRAW_MAX_SORTED_MODELS] = { NULL };
     ResrcModelNpc* npcRes;
     ResrcModelNpc* npcList;
     Resrc* modelUnk;
-    ResrcLightChar* charLight;
     ResrcLightNpc* npcLight;
+    ResrcLightChar* charLight;
     RwRGBAReal ambientColor;
     RwRGBAReal directionalColor;
     RwMatrix directionalMatrix;
     RwRGBAReal secondaryDirectionalColor;
     RwMatrix secondaryDirectionalMatrix;
-    Model* slotMdl;
     RwV3d position;
     s32 charCount;
     s32 i;
     s32 slot;
     u32 flags;
-    ResrcModelChar* charList[SCENEDRAW_MAX_SORTED_MODELS];
 
     charRes = (ResrcModelChar*)MT_Scene_GetResListHead(RESRC_TYPE_MODELCHAR);
     npcList = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
@@ -695,7 +694,6 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
     directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
     secondaryDirectionalColor = func_00198580()->color;
     secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
-    func_00521408(charList, 0, sizeof(charList));
 
     charCount = 0;
     while (charRes != NULL)
@@ -944,7 +942,10 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 
     return KWLNTASK_CONTINUE;
 }
-#pragma opt_common_subs on
+/* Closes the `#pragma push` / `opt_common_subs on` opened above
+ * K_SceneDraw_UpdateDrwChrMdlTask.  Measured W418: closing here is metric-neutral
+ * for every other function in this file, while leaving the scope open let the knob
+ * govern the remaining 2603 lines of the translation unit. */
 #pragma pop
 
 // FUN_0019ee40
@@ -974,6 +975,7 @@ s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
     return (s32)(RwV3dLength(&diffToCam1) - RwV3dLength(&diffToCam2));
 }
 
+// W415 census negative: direct R_MIPS_26 calls are 50/50 with retail after resolving RwFrameTransform to 0x004cb7f0; the SDK symbol remains unmappable, so no call edit is justified.
 // FUN_0019ef80 NONMATCHING
 void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
@@ -2782,6 +2784,7 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     }
 }
 
+// W415 census negative: direct R_MIPS_26 calls are 10/10 with retail after resolving the H_Dbprt helpers; no wrong-callee edit is justified.
 // FUN_001A2720 NONMATCHING
 void func_001a2720(KwlnTask* task)
 {
@@ -2870,6 +2873,8 @@ void func_001a2720(KwlnTask* task)
     }
 }
 
+/* W417: moved the state-3 func_001a2720 call ahead of the flag branch to match retail call order; nd3046 -> nd3008 and object 4032/4064. */
+/* W417 negative: placing func_001a2720 after KWindow_DrawSelection yielded nd3020; the pre-branch placement above is nd3008. */
 // FUN_001A2A80 NONMATCHING
 void* func_001a2a80(KwlnTask* task)
 {
@@ -3020,6 +3025,7 @@ void* func_001a2a80(KwlnTask* task)
             }
 
             input = DAT_007e0952;
+            func_001a2720(task);
             if ((manager->flags & 1) == 0)
             {
                 KWindow_DrawSelection(manager);
@@ -3079,7 +3085,6 @@ void* func_001a2a80(KwlnTask* task)
             {
                 KWindow_MoveUp(manager);
             }
-            func_001a2720(task);
             break;
         }
 

@@ -2809,6 +2809,7 @@ s32 fclCombine003d3cd0(s32 param_1, s32 param_2)
 
 
 
+// W415 probes reverted: swapping lVar9==1/2 layout for fclCombineList003da700 or fclCombineList003de470 worsened nd 2513 -> 2518 (object 3880/window 3936).
 // FUN_003D3D20 NONMATCHING
 
 
@@ -2883,13 +2884,13 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     uVar5 = puVar4[2];
 
-    if (((uVar5 == 4) || (uVar5 == 3)) || (uVar5 == 2)) {
+    if ((uVar5 == 1) || (uVar5 == 0)) {
 
-      puVar4[1] = 5;
+      puVar4[1] = 3;
 
       FUN_003d5cd0(auStack_a0);
 
-      uVar5 = fclCombineList003de290(auStack_a0,puVar4[2],0);
+      uVar5 = fclCombineList003da0c0(auStack_a0,puVar4[2],0);
 
       puVar4[0xe7] = uVar5;
 
@@ -2897,13 +2898,13 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     }
 
-    else if ((uVar5 == 1) || (uVar5 == 0)) {
+    else if (((uVar5 == 4) || (uVar5 == 3)) || (uVar5 == 2)) {
 
-      puVar4[1] = 3;
+      puVar4[1] = 5;
 
       FUN_003d5cd0(auStack_a0);
 
-      uVar5 = fclCombineList003da0c0(auStack_a0,puVar4[2],0);
+      uVar5 = fclCombineList003de290(auStack_a0,puVar4[2],0);
 
       puVar4[0xe7] = uVar5;
 
@@ -3855,16 +3856,7 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   case 4:
       lVar4 = FUN_003c6c50(iVar1);
-      if (lVar4 == 0) {
-        lVar4 = FUN_003c6c80(iVar1);
-        if (lVar4 != 0) {
-          func_0010a4e0(0,0,0,2);
-          FUN_003c6f50(iVar1);
-          work[1] = 2;
-          FUN_0040c5b0(work[2]);
-        }
-      }
-      else {
+      if (lVar4 != 0) {
         func_0010a4e0(0,0,0,1);
         FUN_003c6ea0(iVar1);
         work[1] = 5;
@@ -3872,6 +3864,15 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
         uVar3 = FUN_003c5460(DAT_007ce684);
         FUN_003d06d0(uVar3,7,1);
         FUN_0040c650(work[2]);
+      }
+      else {
+        lVar4 = FUN_003c6c80(iVar1);
+        if (lVar4 != 0) {
+          func_0010a4e0(0,0,0,2);
+          FUN_003c6f50(iVar1);
+          work[1] = 2;
+          FUN_0040c5b0(work[2]);
+        }
       }
     }
     break;

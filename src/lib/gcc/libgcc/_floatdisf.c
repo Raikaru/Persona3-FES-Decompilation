@@ -14,6 +14,10 @@
 #pragma optimization_level 2
 // Scoped scheduler: level-2 target is 224B without schedule and 200B with schedule.
 #pragma schedule on
+/* W415 probe rejected: canonical u64 helper rewrite compiled to nd174
+ * with object 228/200, exceeding the retail window; baseline is nd141
+ * at 200/200.
+ */
 // FUN_0052EB60 NONMATCHING
 float FUN_0052eb60(s64 u)
 {

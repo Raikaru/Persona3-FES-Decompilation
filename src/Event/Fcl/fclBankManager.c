@@ -3541,6 +3541,8 @@ s32 fclCombine003d21d0(void)
     return 0;
 }
 
+/* W415: case-6 branch inversion closes the call-order defect at nd459->459 (object 956/window 960); compact else-if was also nd459/object956, while hoisting FUN_003c7430 worsened nd589/object948 and declaration/type probes nd460, so those alternatives were rejected. */
+/* W415: pointer alias plus s32 declaration order nd459->366; object956->948/window960. Negative loop register-order probe nd374->400 (object948) was reverted. */
 // FUN_003D2200 NONMATCHING
 
 
@@ -3558,17 +3560,15 @@ u32 FUN_003d2200(void)
 
 s32 lVar4;
 
-int iVar5;
-
 s32 lVar6;
+
+int iVar5;
 
   u8 auStack_90 [144];
 
   
 
-  uVar3 = FUN_003c5460();
-
-  puVar1 = (u32 *)uVar3;
+  puVar1 = (u32 *)FUN_003c5460();
 
   if ((*puVar1 & 1) == 0) {
 
@@ -3594,11 +3594,11 @@ s32 lVar6;
 
     puVar1[2] = 4;
 
-    FUN_003d25c0(uVar3);
+    FUN_003d25c0((u32)puVar1);
 
   case 4:
 
-    lVar4 = fclCombine003d2640(uVar3);
+    lVar4 = fclCombine003d2640((u32)puVar1);
 
     if (lVar4 != -1) {
 
@@ -3644,7 +3644,13 @@ s32 lVar6;
 
     }
 
-    if (lVar6 == 0) {
+    if (lVar6 != 0) {
+
+      FUN_003c7430(lVar6);
+
+    }
+
+    else {
 
       lVar4 = FUN_003f0830(7);
 
@@ -3657,12 +3663,6 @@ s32 lVar6;
       }
 
       FUN_003c7430(lVar4);
-
-    }
-
-    else {
-
-      FUN_003c7430(lVar6);
 
     }
 
@@ -3684,11 +3684,11 @@ s32 lVar6;
 
     puVar1[2] = 9;
 
-    FUN_003d2c10(uVar3);
+    FUN_003d2c10((u32)puVar1);
 
   case 9:
 
-    uVar2 = fclCombine003d2ce0(uVar3);
+    uVar2 = fclCombine003d2ce0((u32)puVar1);
 
     switch(uVar2) {
 
@@ -3754,11 +3754,11 @@ s32 lVar6;
 
     puVar1[2] = 0xd;
 
-    FUN_003d3b70(uVar3,puVar1[3]);
+    FUN_003d3b70((u32)puVar1,puVar1[3]);
 
   case 0xd:
 
-    lVar4 = fclCombine003d3c20(uVar3);
+    lVar4 = fclCombine003d3c20((u32)puVar1);
 
     if (lVar4 != -1) {
 
@@ -3804,11 +3804,11 @@ s32 lVar6;
 
     puVar1[2] = 0x11;
 
-    FUN_003d4de0(uVar3);
+    FUN_003d4de0((u32)puVar1);
 
   case 0x11:
 
-    lVar4 = fclCombine003d4e90(uVar3);
+    lVar4 = fclCombine003d4e90((u32)puVar1);
 
     if (lVar4 != -1) {
 

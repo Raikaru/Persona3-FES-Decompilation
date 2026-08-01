@@ -494,6 +494,7 @@ u32 FUN_003e6e20(u32 param_1)
 // localized type, signedness, addressing-mode, or operand-order mismatch.
 // No source-level experiment improved the authoritative normalized_diff (3396).
 /* Measured: opt_common_subs off gives FUN_003e6e80 nd3327/obj6208; reset gives nd3362/obj6208. */
+// W415 probe: adding retail-only FUN_003efde0(0,0) at state 0x3e raised nd 3327 -> 3711 and object 6208 -> 6224 (window 6208); reverted.
 #pragma opt_common_subs off
 // FUN_003E6E80 NONMATCHING
 
@@ -2199,6 +2200,8 @@ LAB_003e8b7c:
       case 6:
 
 
+        lVar7 = FUN_003efd70();
+
         if (lVar7 != 0) {
 
           bVar2 = 1;
@@ -2268,7 +2271,7 @@ LAB_003e8b7c:
       case 2:
 
 
-        FUN_0040e300(uVar6,piVar3[0x16]);
+        FUN_0040e300(FUN_003efed0(*(int *)(iVar4 + 4)),piVar3[0x16]);
 
         break;
 
@@ -2340,6 +2343,8 @@ LAB_003e8b7c:
 
       case 6:
 
+
+        FUN_003efce0();
 
         break;
 
@@ -5986,21 +5991,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
         lVar5 = FUN_003c6c80(iVar1);
 
-        if (lVar5 == 0) {
-
-          if (((DAT_007e094e[0] & 0x80) != 0) || ((DAT_007e0958[0] & 0x80) != 0)) {
-
-            func_0010a4e0(0,0,0,1);
-
-            FUN_003c6ea0(iVar1);
-
-            *(u32 *)(work + 8) = 0xb;
-
-          }
-
-        }
-
-        else {
+        if (lVar5 != 0) {
 
           *(u32 *)(work + 8) = 0;
 
@@ -6015,6 +6006,20 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
           FUN_003c73e0(0x100000);
 
           FUN_003c7700();
+
+        }
+
+        else {
+
+          if (((DAT_007e094e[0] & 0x80) != 0) || ((DAT_007e0958[0] & 0x80) != 0)) {
+
+            func_0010a4e0(0,0,0,1);
+
+            FUN_003c6ea0(iVar1);
+
+            *(u32 *)(work + 8) = 0xb;
+
+          }
 
         }
 
@@ -6043,9 +6048,31 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
     case 4:
 
-      if (((DAT_007e094e[0] & 0x40) == 0) && ((DAT_007e0958[0] & 0x40) == 0)) {
+      if (((DAT_007e094e[0] & 0x40) != 0) || ((DAT_007e0958[0] & 0x40) != 0)) {
 
-        if (((DAT_007e094e[0] & 0x20) == 0) && ((DAT_007e0958[0] & 0x20) == 0)) {
+        func_0010a4e0(0,0,0,1);
+
+        *(u32 *)(work + 8) = 5;
+
+      }
+
+      else {
+
+        if (((DAT_007e094e[0] & 0x20) != 0) || ((DAT_007e0958[0] & 0x20) != 0)) {
+
+          func_0010a4e0(0,0,0,2);
+
+          *(u32 *)(work + 8) = 1;
+
+          FUN_003c6ee0(iVar1);
+
+          uVar7 = FUN_003c5460(DAT_007ce688);
+
+          FUN_003e0c20(uVar7,0x10,1);
+
+        }
+
+        else {
 
           if (((DAT_007e094e[0] & 4) == 0) && ((DAT_007e0958[0] & 4) == 0)) {
 
@@ -6096,28 +6123,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
           }
 
         }
-
-        else {
-
-          func_0010a4e0(0,0,0,2);
-
-          *(u32 *)(work + 8) = 1;
-
-          FUN_003c6ee0(iVar1);
-
-          uVar7 = FUN_003c5460(DAT_007ce688);
-
-          FUN_003e0c20(uVar7,0x10,1);
-
-        }
-
-      }
-
-      else {
-
-        func_0010a4e0(0,0,0,1);
-
-        *(u32 *)(work + 8) = 5;
 
       }
 

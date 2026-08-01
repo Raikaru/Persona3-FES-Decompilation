@@ -63,6 +63,13 @@ extern void FUN_004d0f00(int param_1);
 extern void FUN_003b7090(u16 param_1);
 extern void FUN_00100ec0(int param_1);
 extern void FUN_00133d30(int param_1,int param_2);
+#pragma alias FUN_001021c0_evtmsg_typed FUN_001021c0
+extern u32 FUN_001021c0_evtmsg_typed(u8 *param_1, u8 *param_2);
+#pragma alias FUN_00195460_evtmsg_typed FUN_00195460
+extern s32 FUN_00195460_evtmsg_typed(u32 param_1);
+#pragma alias FUN_00194b20_evtmsg_typed FUN_00194b20
+extern u32 FUN_00194b20_evtmsg_typed(u64 param_1, const char *param_2, u32 param_3,
+                                      u64 (*param_4)(int), void *param_5, void *param_6);
 extern u32 FUN_001021c0();
 extern int FUN_00195460();
 extern int FUN_00194b20();
@@ -950,6 +957,7 @@ u8 FUN_0039f850(int param_1)
 }
 #define FUN_0039f850(...) ((u8 (*)(...))FUN_0039f850)(__VA_ARGS__)
 #undef FUN_0039f950
+/* W415 census recheck: all six relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_0039F950 NONMATCHING
 
 
@@ -1285,6 +1293,7 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
 }
 #define FUN_0039ffc0(...) ((void (*)(...))FUN_0039ffc0)(__VA_ARGS__)
 #undef FUN_003a0220
+/* W415 ORDER probe: invert the condition so the retail-sized body precedes the fallback call; nd595 -> 575 (obj892/window912). The ordered calls now follow retail; residual frame/local layout remains NONMATCHING. */
 // FUN_003A0220 NONMATCHING
 
 
@@ -1378,13 +1387,7 @@ u64 FUN_003a0220(int param_1)
     uStack_4 = *(u32 *)(iVar1 + 0xb0);
     ((u8 *)&uStack_4)[3] = *(u8 *)(iVar1 + 0x9c);
 
-    if ((float)*(int *)(iVar1 + 0xbc) != 0.0f) {
-
-      FUN_0039fbd0_call(iVar1);
-
-    }
-
-    else {
+    if ((float)*(int *)(iVar1 + 0xbc) == 0.0f) {
 
       uStack_20 = 0;
 
@@ -1481,6 +1484,12 @@ u64 FUN_003a0220(int param_1)
         }
 
       }
+
+    }
+
+    else {
+
+      FUN_0039fbd0_call(iVar1);
 
     }
 
@@ -1845,6 +1854,7 @@ u32 FUN_003a0e90(int param_1)
 
 
 {
+  /* W418 negative: duplicating FUN_00395270(0x27) in state 2/3 for the retail fifth target raised nd 2272 -> 2290 and object 3344 -> 3356 (window 3440); reverted. */
 
   int iVar1;
 
@@ -1885,7 +1895,7 @@ u32 FUN_003a0e90(int param_1)
 
   case 0:
 
-    FUN_00194b20(param_1,0x6a18c0,0x106f,0x3a0220,0,iVar1);
+    FUN_00194b20_evtmsg_typed(param_1,(const char *)0x6a18c0,0x106f,(u64 (*)(int))0x3a0220,0,(void *)iVar1);
 
     *puVar6 = 1;
 
@@ -2808,7 +2818,7 @@ void FUN_003a2090(u64 param_1,u16 param_2,u32 param_3,u16 param_4)
 
   *(u16 *)(iVar2 + 0xc) = param_4;
 
-  FUN_00194b20(param_1,DAT_006a0000 + 0x1a58,0x10,FUN_003a1c00,FUN_003a1f30,uVar1);
+  FUN_00194b20_evtmsg_typed(param_1,(const char *)(DAT_006a0000 + 0x1a58),0x10,(u64 (*)(int))FUN_003a1c00,FUN_003a1f30,(void *)uVar1);
 
   return;
 

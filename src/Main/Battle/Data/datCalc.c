@@ -591,6 +591,7 @@ u32 FUN_003005a0(u16* param)
 }
 
 #pragma opt_loop_invariants on
+// W415 census recheck: datCalcHasSkill direct call sequence matches retail; no call-census defect.
 // FUN_003005e0 NONMATCHING
 u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
 {
@@ -1487,6 +1488,7 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
 
 
 #pragma opt_common_subs off
+// W415 negative probe: adding FUN_00301230 calls for masks 0x2000000 and 0x4000000 grew this function to 2332 bytes (retail window 2256) and raised nd 1489->1569; not retained.
 // FUN_00302380 NONMATCHING
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
 
@@ -2230,7 +2232,15 @@ LAB_00303918:
   else {
     sVar5 = 0;
   }
-  if (sVar5 != 3) {
+  if (sVar5 == 3) {
+    lVar8 = FUN_0016f190(0x1319);
+    fVar13 = fGpffff80e0;
+    if (lVar8 == 0) {
+      fVar13 = fGpffff8084;
+    }
+    fVar16 = fVar16 * fVar13;
+  }
+  else {
     if ((*puVar10 & 4) == 0) {
       sVar5 = FUN_0016c920(puVar10[1]);
     }
@@ -2246,21 +2256,21 @@ LAB_00303918:
       fVar16 = fVar16 * fVar13;
     }
   }
-  else {
-    lVar8 = FUN_0016f190(0x1319);
-    fVar13 = fGpffff80e0;
-    if (lVar8 == 0) {
-      fVar13 = fGpffff8084;
-    }
-    fVar16 = fVar16 * fVar13;
-  }
   if ((*puVar9 & 4) == 0) {
     sVar5 = FUN_0016c920(puVar9[1]);
   }
   else {
     sVar5 = 0;
   }
-  if (sVar5 != 3) {
+  if (sVar5 == 3) {
+    lVar8 = FUN_0016f190(0x1319);
+    fVar13 = fGpffff82a4;
+    if (lVar8 == 0) {
+      fVar13 = 1.5f;
+    }
+    fVar16 = fVar16 * fVar13;
+  }
+  else {
     if ((*puVar9 & 4) == 0) {
       sVar5 = FUN_0016c920(puVar9[1]);
     }
@@ -2277,14 +2287,6 @@ LAB_00303918:
       }
       fVar16 = fVar16 * fVar13;
     }
-  }
-  else {
-    lVar8 = FUN_0016f190(0x1319);
-    fVar13 = fGpffff82a4;
-    if (lVar8 == 0) {
-      fVar13 = 1.5f;
-    }
-    fVar16 = fVar16 * fVar13;
   }
   switch(*(u8 *)(iVar11 + iGpffffb708 + 0x24)) {
   case 2:
@@ -3136,26 +3138,24 @@ u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3)
     else {
       sVar3 = FUN_0016c920(puVar10[1]);
     }
-    if (sVar3 == 5) {
-LAB_00305ccc:
-      lVar7 = FUN_0016f190(0x1319);
-      if (lVar7 != 0) {
-        fVar12 = 2.5f;
-      }
-      else {
-        fVar12 = 2.0f;
-      }
-      fVar13 = fVar13 * fVar12;
-    }
-    else {
+    if (sVar3 != 5) {
       if ((*puVar10 & 4) != 0) {
         sVar3 = 0;
       }
       else {
         sVar3 = FUN_0016c920(puVar10[1]);
       }
-      if (sVar3 == 4) goto LAB_00305ccc;
+      if (sVar3 != 4) goto LAB_00305ce8;
     }
+    lVar7 = FUN_0016f190(0x1319);
+    if (lVar7 != 0) {
+      fVar12 = 2.5f;
+    }
+    else {
+      fVar12 = 2.0f;
+    }
+    fVar13 = fVar13 * fVar12;
+LAB_00305ce8:
     cVar2 = FUN_00300f60(param_3,7);
     if ('\0' < cVar2) {
       fVar13 = fVar13 * 1.5f;
@@ -3269,13 +3269,7 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
   }
   else {
     cVar2 = *(u8 *)(((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8 + 0x18);
-    if ((cVar2 == '\x01') || (cVar2 == '\x03')) {
-      uVar4 = FUN_00305970(param_1,param_2,param_3);
-      if (((*(u32 *)((int)param_3 + 0xc) & 0xfffff) != 0) && ((uVar4 & 0x180000) == 0)) {
-        uVar4 = 0;
-      }
-    }
-    else {
+    if ((cVar2 != '\x01') && (cVar2 != '\x03')) {
       lVar5 = FUN_003088b0(param_1);
       if ((lVar5 != 0) && ((*(u32 *)((int)param_3 + 0xc) & 0xfffff) == 0)) {
         if ((*(u16 *)param_2 & 4) != 0) {
@@ -3375,6 +3369,14 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
         }
       }
       uVar4 = 0;
+    
+    }
+    else {
+      uVar4 = FUN_00305970(param_1,param_2,param_3);
+      if (((*(u32 *)((int)param_3 + 0xc) & 0xfffff) != 0) && ((uVar4 & 0x180000) == 0)) {
+        uVar4 = 0;
+      }
+    
     }
   }
   return uVar4;
@@ -4685,7 +4687,10 @@ u16 FUN_00308a80(u32 param_1)
   iVar4 = FUN_00308bb0((u16*)param_1);
   uVar6 = 0;
   uVar5 = 0;
-  while ((uVar5 < (uVar3 & 0xffff) && (uVar6 < 0x10))) {
+  while (uVar5 < (uVar3 & 0xffff)) {
+    if (uVar6 >= 0x10) {
+      break;
+    }
     uVar2 = *(u16 *)(iVar4 + uVar5 * 2);
     switch(uVar2) {
     case 0xc0:
@@ -5812,11 +5817,9 @@ LAB_0030a8c0:
             lVar14 = 100;
           }
           cVar1 = *(char *)(iVar16 + iGpffffb708 + 2);
-          if (cVar1 != '\x02') {
-            if (cVar1 != '\x01') {
-              FUN_0019d3f0((u32)D_0069aa80, 0x147e);
-            }
-            else {
+          switch (cVar1)
+          {
+            case '\x01':
               lVar9 = lVar14;
               if (lVar14 == 0) {
                 lVar9 = FUN_0030fc40(5,param_1,param_2,param_3,0);
@@ -5948,7 +5951,12 @@ LAB_0030a8c0:
                   }
                 }
               }
-            }
+                          break;
+            case '\x02':
+              break;
+            default:
+              FUN_0019d3f0((u32)D_0069aa80, 0x147e);
+              break;
           }
           uVar7 = 1;
         }

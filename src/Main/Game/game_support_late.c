@@ -34,7 +34,7 @@ extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
                           s32 width, s32 height);
 extern void func_00113d80(f32 depth, f32 x, f32 y, u32 color,
                           s32 width, s32 height);
-extern void func_00114af0(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00114af0(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height, void* texture);
 extern void func_003b2cb0(f32 depth, s32 x, s32 y, u32 color,
                           u32 font, u32 align, const void* text,
