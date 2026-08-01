@@ -10,6 +10,7 @@ static u32* sBpRes; // puGpffffb614 / DAT_007ce304
 void func_0021cc20(void* texture);
 void func_0021c7e0(void);
 void func_0021b940(void);
+void bpRes0021c930(void);
 extern char D_0068E2F0[];
 extern char D_0068E310[];
 extern char D_0068E330[];
@@ -27,76 +28,6 @@ typedef struct BpResWork
     s32 partyIdx;
     s32 partyIds[3];
 } BpResWork;
-
-// FUN_0021bab0
-u32 bpRes0021bab0(void)
-{
-    K_ASSERT(sBpRes != NULL, 0x59);
-    return *sBpRes & 1;
-}
-
-// FUN_0021bb00
-void bpRes0021bb00(u32 param_1)
-{
-    K_ASSERT(sBpRes != NULL, 0x59);
-    sBpRes[0x1b] = param_1;
-}
-
-// FUN_0021c860
-u32 bpRes0021c860(void)
-{
-    K_ASSERT(sBpRes != NULL, 0x59);
-    return *sBpRes & 4;
-}
-
-// FUN_0021c930
-void bpRes0021c930(void)
-{
-    int base;
-    int i;
-
-    K_ASSERT(sBpRes != NULL, 0x59);
-    base = (int)sBpRes;
-    K_ASSERT(*(u32*)(base + 4) & 0x100, 0x1f6);
-    for (i = 0; i < 3; i++) {
-        RwFree(*(void**)(base + i * 4 + 0x78));
-    }
-    *(u32*)(base + 4) &= 0xfffffeff;
-}
-
-// FUN_0021bb60
-void bpRes0021bb60(void)
-{
-    int iVar1;
-    int iVar2;
-
-    K_ASSERT(sBpRes != NULL, 0x59);
-    iVar1 = (int)sBpRes;
-    if ((*(u32*)(iVar1 + 4) & 1) != 0) {
-        for (iVar2 = 0; iVar2 < 7; iVar2++) {
-            func_0021cc20(*(void**)(iVar1 + iVar2 * 4 + 0x10));
-        }
-        for (iVar2 = 0; iVar2 < 6; iVar2++) {
-            RwFree(*(void**)(iVar1 + iVar2 * 4 + 0x54));
-        }
-    }
-    if ((*(u32*)(iVar1 + 4) & 0x80) != 0) {
-        func_0021c7e0();
-    }
-    if ((*(u32*)(iVar1 + 4) & 0x100) != 0) {
-        bpRes0021c930();
-    }
-    if ((*(u32*)(iVar1 + 4) & 0x10) != 0) {
-        func_0021cc20(*(void**)(iVar1 + 0x38));
-    }
-    if ((*(u32*)(iVar1 + 4) & 0x20) != 0) {
-        func_0021cc20(*(void**)(iVar1 + 0x3c));
-    }
-    if ((*(u32*)(iVar1 + 4) & 0x40) != 0) {
-        func_0021cc20(*(void**)(iVar1 + 0x40));
-    }
-    sBpRes = NULL;
-}
 
 // FUN_0021b940
 void func_0021b940(void)
@@ -144,13 +75,60 @@ void func_0021b940(void)
     work->requestFlags |= 1;
 }
 
+// FUN_0021bab0
+u32 bpRes0021bab0(void)
+{
+    K_ASSERT(sBpRes != NULL, 0x59);
+    return *sBpRes & 1;
+}
+
+// FUN_0021bb00
+void bpRes0021bb00(u32 param_1)
+{
+    K_ASSERT(sBpRes != NULL, 0x59);
+    sBpRes[0x1b] = param_1;
+}
+
 // FUN_0021bb50
 u64 func_0021bb50(void)
 {
     return 0;
 }
 
-/* Removing this loses FUN_0021bcb0 (MATCH nd0 -> MISMATCH nd17) - measured W161. */
+// FUN_0021bb60
+void bpRes0021bb60(void)
+{
+    int iVar1;
+    int iVar2;
+
+    K_ASSERT(sBpRes != NULL, 0x59);
+    iVar1 = (int)sBpRes;
+    if ((*(u32*)(iVar1 + 4) & 1) != 0) {
+        for (iVar2 = 0; iVar2 < 7; iVar2++) {
+            func_0021cc20(*(void**)(iVar1 + iVar2 * 4 + 0x10));
+        }
+        for (iVar2 = 0; iVar2 < 6; iVar2++) {
+            RwFree(*(void**)(iVar1 + iVar2 * 4 + 0x54));
+        }
+    }
+    if ((*(u32*)(iVar1 + 4) & 0x80) != 0) {
+        func_0021c7e0();
+    }
+    if ((*(u32*)(iVar1 + 4) & 0x100) != 0) {
+        bpRes0021c930();
+    }
+    if ((*(u32*)(iVar1 + 4) & 0x10) != 0) {
+        func_0021cc20(*(void**)(iVar1 + 0x38));
+    }
+    if ((*(u32*)(iVar1 + 4) & 0x20) != 0) {
+        func_0021cc20(*(void**)(iVar1 + 0x3c));
+    }
+    if ((*(u32*)(iVar1 + 4) & 0x40) != 0) {
+        func_0021cc20(*(void**)(iVar1 + 0x40));
+    }
+    sBpRes = NULL;
+}
+
 #pragma opt_loop_invariants on
 // FUN_0021bcb0
 void func_0021bcb0(void)
@@ -353,6 +331,7 @@ void func_0021bcb0(void)
         H_Cdvd_Destroy((HCdvd*)(uintptr_t)work[0x21]);
     }
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_0021c3f0
@@ -362,6 +341,7 @@ u32 func_0021c3f0(s32 param_1)
     return sBpRes[param_1 + 4];
 }
 
+/* Removing this loses FUN_0021bcb0 (MATCH nd0 -> MISMATCH nd17) - measured W161. */
 // FUN_0021c450
 u32 func_0021c450(u32 param_1)
 {
@@ -398,7 +378,6 @@ u32 func_0021c450(u32 param_1)
     }
     return result;
 }
-
 // FUN_0021c550
 u32 func_0021c550(s32 param_1)
 {
@@ -478,6 +457,13 @@ void func_0021c7f0(void)
     *work |= 4;
 }
 
+// FUN_0021c860
+u32 bpRes0021c860(void)
+{
+    K_ASSERT(sBpRes != NULL, 0x59);
+    return *sBpRes & 4;
+}
+
 // FUN_0021c8b0
 u32 func_0021c8b0(s32 param_1)
 {
@@ -487,4 +473,19 @@ u32 func_0021c8b0(s32 param_1)
     work = sBpRes;
     K_ASSERT((work[1] & 0x100) != 0, 0x1ec);
     return work[param_1 + 0x1e];
+}
+
+// FUN_0021c930
+void bpRes0021c930(void)
+{
+    int base;
+    int i;
+
+    K_ASSERT(sBpRes != NULL, 0x59);
+    base = (int)sBpRes;
+    K_ASSERT(*(u32*)(base + 4) & 0x100, 0x1f6);
+    for (i = 0; i < 3; i++) {
+        RwFree(*(void**)(base + i * 4 + 0x78));
+    }
+    *(u32*)(base + 4) &= 0xfffffeff;
 }

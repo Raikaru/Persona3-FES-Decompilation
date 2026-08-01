@@ -792,96 +792,8 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)
 
 
-#pragma push
-/* Removing this loses FUN_003bccb0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_003bccb0
-void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
-{
-    s32 i;
-    Resrc* res;
-    ResrcType7* type7Res;
-    s32 type7Status;
-
-    (FUN_003bc940)();
-    for (i = 1; i < RESRC_TYPE_MAX; i++)
-    {
-        for (res = MT_Scene_GetResListHead(i); res != NULL; res = res->next)
-        {
-            (FUN_003b9610)(res);
-        }
-    }
-
-    type7Res = (ResrcType7*)MT_Scene_GetResListHead(7);
-    type7Status = 1;
-    for (; type7Res != NULL; type7Res = (ResrcType7*)type7Res->base.next)
-    {
-        if (type7Res->unk_108 == type7Status)
-        {
-            (FUN_003bb7a0)((Resrc*)type7Res);
-            break;
-        }
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-#pragma pop
-
-// FUN_003bcd80
-void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
-{
-    (FUN_003bcc80)();
-}
-
-// FUN_003bd010
-void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask)
-{
-    Resrc* res;
-
-    res = MT_Scene_GetResListHead(6);
-    (FUN_003bceb0)((int)res);
-    for (; res != NULL; res = res->next)
-    {
-        if ((res->flags & 2) != 0 && *(Model**)((u8*)res + 0x104) != NULL)
-        {
-            switch (*(s8*)((u8*)res + 0x100))
-            {
-            case 0:
-                break;
-            case 1:
-                FUN_0034fd70(*(Model**)((u8*)res + 0x104), 6);
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_003bd0b0
-KwlnTask* MT_SceneFunc_CreateTasks()
-{
-    KwlnTask* sceneMngTask;
-
-    sceneMngTask = kwlnTaskCreate(NULL,
-                                  "SceneManager Task",
-                                  110,
-                                  MT_SceneFunc_UpdateSceneMngTask,
-                                  MT_SceneFunc_DestroySceneMngTask,
-                                  NULL);
 
 
-    kwlnTaskCreate(sceneMngTask,
-                   "SceneManager Draw",
-                   2109,
-                   MT_SceneFunc_UpdateSceneMngDrawTask,
-                   NULL,
-                   NULL);
-
-    return sceneMngTask;
-}
 
 #undef FUN_003b88c0
 // FUN_003B88C0
@@ -4502,6 +4414,46 @@ void FUN_003bcc80(void)
 
 }
 #define FUN_003bcc80(...) ((void (*)(...))FUN_003bcc80)(__VA_ARGS__)
+#pragma push
+/* Removing this loses FUN_003bccb0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_003bccb0
+void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
+{
+    s32 i;
+    Resrc* res;
+    ResrcType7* type7Res;
+    s32 type7Status;
+
+    (FUN_003bc940)();
+    for (i = 1; i < RESRC_TYPE_MAX; i++)
+    {
+        for (res = MT_Scene_GetResListHead(i); res != NULL; res = res->next)
+        {
+            (FUN_003b9610)(res);
+        }
+    }
+
+    type7Res = (ResrcType7*)MT_Scene_GetResListHead(7);
+    type7Status = 1;
+    for (; type7Res != NULL; type7Res = (ResrcType7*)type7Res->base.next)
+    {
+        if (type7Res->unk_108 == type7Status)
+        {
+            (FUN_003bb7a0)((Resrc*)type7Res);
+            break;
+        }
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+#pragma pop
+
+// FUN_003bcd80
+void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
+{
+    (FUN_003bcc80)();
+}
 #undef FUN_003bcda0
 // FUN_003BCDA0
 
@@ -4625,6 +4577,54 @@ void FUN_003bceb0(int param_1)
 
 }
 #define FUN_003bceb0(...) ((void (*)(...))FUN_003bceb0)(__VA_ARGS__)
+// FUN_003bd010
+void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask)
+{
+    Resrc* res;
+
+    res = MT_Scene_GetResListHead(6);
+    (FUN_003bceb0)((int)res);
+    for (; res != NULL; res = res->next)
+    {
+        if ((res->flags & 2) != 0 && *(Model**)((u8*)res + 0x104) != NULL)
+        {
+            switch (*(s8*)((u8*)res + 0x100))
+            {
+            case 0:
+                break;
+            case 1:
+                FUN_0034fd70(*(Model**)((u8*)res + 0x104), 6);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+// FUN_003bd0b0
+KwlnTask* MT_SceneFunc_CreateTasks()
+{
+    KwlnTask* sceneMngTask;
+
+    sceneMngTask = kwlnTaskCreate(NULL,
+                                  "SceneManager Task",
+                                  110,
+                                  MT_SceneFunc_UpdateSceneMngTask,
+                                  MT_SceneFunc_DestroySceneMngTask,
+                                  NULL);
+
+
+    kwlnTaskCreate(sceneMngTask,
+                   "SceneManager Draw",
+                   2109,
+                   MT_SceneFunc_UpdateSceneMngDrawTask,
+                   NULL,
+                   NULL);
+
+    return sceneMngTask;
+}
 #undef FUN_003bd130
 // FUN_003BD130
 

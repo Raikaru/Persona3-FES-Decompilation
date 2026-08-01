@@ -11,6 +11,61 @@ void FUN_0024d5e0();
 void FUN_0024d7d0();
 u32 FUN_0024d3b0();
 
+
+static u32* sSflCameraNodes; // DAT_007ce350
+extern void gcPose0024f090(void* pose);
+extern void gcPose002503f0(void* pose, s32 index, u32 value);
+extern void gcPose0024fd20(void* pose);
+extern void gcPose0024fd40(void* pose);
+extern void* func_004c38c0(void);
+extern void func_004c3880(void* matrix);
+extern void func_004cb750(void* matrix, const void* source, s32 mode);
+extern u32 RpRandom(void);
+extern void gcPose0024f960(void* pose, RwV3d* output);
+extern RwV3d* gcPose0024faa0(void* pose);
+extern void gcPose0024fba0(void* pose, RtQuat* output);
+extern void func_0024f7f0(void* pose, const RwV3d* offset);
+extern void func_00250280(void* pose, const RwV3d* offset);
+extern void FUN_004bdde0(f32 angle, f32* output, const f32* axis, s32 mode);
+extern void FUN_004c69f0(RwV3d* output, const RwV3d* input);
+extern f32 fGpffff81f8;
+extern RwV3d DAT_0068e9b0;
+void func_0024da60(void* camera);
+void func_0024dc90(void* camera);
+
+static u32* sflCameraNodeHead(void)
+{
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    return (u32*)sSflCamera[1];
+}
+static u32* sflCameraFindNode(u16 id)
+{
+    u32* node;
+
+    node = sflCameraNodeHead();
+    while (node != NULL) {
+        if (*(u16*)((u8*)node + 4) == id) {
+            return node;
+        }
+        node = (u32*)node[3];
+    }
+    return NULL;
+}
+static inline u32* sflCameraFindRequiredNode(u32* node, s32 id)
+{
+    u32 key;
+
+    key = (u16)id;
+    while (node != NULL) {
+        if (*(u16*)((u8*)node + 4) == key) {
+            return node;
+        }
+        node = (u32*)node[3];
+    }
+    K_ASSERT(0, 0xaf);
+    return NULL;
+}
+
 // FUN_0024d110
 void sflCamera0024d110(u32* param_1)
 {
@@ -28,31 +83,6 @@ void sflCamera0024d160(void)
     sSflCamera = NULL;
 }
 
-// FUN_0024d280
-void sflCamera0024d280(u32 param_1)
-{
-    u32* work;
-
-    K_ASSERT(sSflCamera != NULL, 0x3b);
-    work = sSflCamera;
-    work[4] = param_1;
-    *work |= 1;
-}
-
-// FUN_0024d940
-void sflCamera0024d940(int param_1, u32 param_2)
-{
-    K_ASSERT(*(int*)(param_1 + 0x2c) != 0, 0x124);
-    *(u32*)(param_1 + 0x34) = param_2;
-}
-
-// FUN_0024d9a0
-void sflCamera0024d9a0(int param_1, u32 param_2)
-{
-    K_ASSERT(*(int*)(param_1 + 0x2c) != 0, 0x129);
-    *(u32*)(param_1 + 0x3c) = param_2;
-}
-
 // FUN_0024d1c0
 void sflCamera0024d1c0(void)
 {
@@ -67,6 +97,17 @@ void sflCamera0024d1c0(void)
         FUN_0024d5e0(uVar2);
         FUN_0024d7d0(puVar1[4], uVar2);
     }
+}
+
+// FUN_0024d280
+void sflCamera0024d280(u32 param_1)
+{
+    u32* work;
+
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    work = sSflCamera;
+    work[4] = param_1;
+    *work |= 1;
 }
 
 // FUN_0024d2e0
@@ -127,62 +168,6 @@ int sflCamera0024d430(int param_1)
     }
     K_ASSERT(0, 0xaf);
     return 0;
-}
-static u32* sSflCameraNodes; // DAT_007ce350
-
-extern void gcPose0024f090(void* pose);
-extern void gcPose002503f0(void* pose, s32 index, u32 value);
-extern void gcPose0024fd20(void* pose);
-extern void gcPose0024fd40(void* pose);
-extern void* func_004c38c0(void);
-extern void func_004c3880(void* matrix);
-extern void func_004cb750(void* matrix, const void* source, s32 mode);
-extern u32 RpRandom(void);
-extern void gcPose0024f960(void* pose, RwV3d* output);
-extern RwV3d* gcPose0024faa0(void* pose);
-extern void gcPose0024fba0(void* pose, RtQuat* output);
-extern void func_0024f7f0(void* pose, const RwV3d* offset);
-extern void func_00250280(void* pose, const RwV3d* offset);
-extern void FUN_004bdde0(f32 angle, f32* output, const f32* axis, s32 mode);
-extern void FUN_004c69f0(RwV3d* output, const RwV3d* input);
-extern f32 fGpffff81f8;
-extern RwV3d DAT_0068e9b0;
-void func_0024da60(void* camera);
-
-void func_0024dc90(void* camera);
-static u32* sflCameraNodeHead(void)
-{
-    K_ASSERT(sSflCamera != NULL, 0x3b);
-    return (u32*)sSflCamera[1];
-}
-
-static u32* sflCameraFindNode(u16 id)
-{
-    u32* node;
-
-    node = sflCameraNodeHead();
-    while (node != NULL) {
-        if (*(u16*)((u8*)node + 4) == id) {
-            return node;
-        }
-        node = (u32*)node[3];
-    }
-    return NULL;
-}
-
-static inline u32* sflCameraFindRequiredNode(u32* node, s32 id)
-{
-    u32 key;
-
-    key = (u16)id;
-    while (node != NULL) {
-        if (*(u16*)((u8*)node + 4) == key) {
-            return node;
-        }
-        node = (u32*)node[3];
-    }
-    K_ASSERT(0, 0xaf);
-    return NULL;
 }
 
 // FUN_0024D4C0
@@ -260,6 +245,10 @@ void func_0024d5e0(u8* node)
     func_004c3880(matrix);
 }
 
+
+
+
+
 // FUN_0024D7D0 MATCHING
 void func_0024d7d0(void* camera, const RwV3d* position)
 {
@@ -336,6 +325,20 @@ void func_0024d8d0(void* camera)
     func_0024da60(work + 0xa8);
     gcPose0024fd40(work + 0x44);
     func_0024da60(work + 0x44);
+}
+
+// FUN_0024d940
+void sflCamera0024d940(int param_1, u32 param_2)
+{
+    K_ASSERT(*(int*)(param_1 + 0x2c) != 0, 0x124);
+    *(u32*)(param_1 + 0x34) = param_2;
+}
+
+// FUN_0024d9a0
+void sflCamera0024d9a0(int param_1, u32 param_2)
+{
+    K_ASSERT(*(int*)(param_1 + 0x2c) != 0, 0x129);
+    *(u32*)(param_1 + 0x3c) = param_2;
 }
 
 // FUN_0024DA00
