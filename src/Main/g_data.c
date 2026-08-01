@@ -232,84 +232,357 @@ f32 func_00171510(s16 row, s16 column);
 u8 func_00171550(s16 unused1, s16 unused2, u16 index);
 u32 func_001715f0(s16 id);
 
-// FUN_0016f3e0
-void FUN_0016f3e0(u32 idx, u32 value)
+
+void FUN_00300af0();
+void FUN_00403130();
+void FUN_00403220();
+void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
+void FUN_003d74b0();
+#include "Camp/h_camp.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "h_cdvd.h"
+#include "h_maestro.h"
+#include "h_snd.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Utils.h"
+typedef u8 undefined1;
+typedef u16 undefined2;
+typedef u32 undefined4;
+typedef u64 undefined8;
+typedef int bool;
+typedef unsigned long ulong;
+typedef struct CampFloatPair
 {
-    K_ASSERT((s32)idx < 128, 2007);
-
-    gGlobalWork.auxData[idx] = value;
-}
-
-// FUN_0016f380
-u32 FUN_0016f380(u32 idx)
+    f32 x;
+    f32 y;
+} CampFloatPair;
+typedef struct CampHelpPaths
 {
-    K_ASSERT((s32)idx < 128, 2001);
-
-    return gGlobalWork.auxData[idx];
-}
-
-// FUN_0016c860
-u16 datGetPersonaId(s16 pcId)
+    const char* paths[8];
+} CampHelpPaths;
+#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
+extern void (*DAT_0096017c[])(...);
+extern void (*DAT_0096017c_abs[])(...);
+extern void* (*DAT_00960184_abs[])(...);
+extern u64 scrGetIntPara_u64(s32);
+extern void* (*DAT_00960184)();
+extern void* (*DAT_00960178)();
+extern void* (*DAT_00960178_abs[])(...);
+extern f32 DAT_00960088;
+extern u8 DAT_00960088_abs[];
+extern void* DAT_007cdf48;
+extern void* DAT_007cdf54;
+extern void* DAT_007cdf58;
+extern void* DAT_007cdf84;
+extern void* DAT_007cdf88;
+extern s32 DAT_007e094e;
+extern s32 DAT_007e0958;
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e0958_abs[];
+extern u32 DAT_00833a50[];
+extern s32 iGpffffb258;
+extern s32 uGpffffb290;
+extern s32 uGpffffb28c;
+extern s32 iGpffffb28c;
+typedef struct CampDataBridgeRoot CampDataBridgeRoot;
+extern CampDataBridgeRoot* iGpffffb2c0;
+#define DAT_007cdfb0 iGpffffb2c0
+extern s32* DAT_007cdfb4;
+extern s32* DAT_007cdfb8;
+extern s32* DAT_007cdfbc;
+extern s32* DAT_007cdfc0;
+extern s32* DAT_007cdfc4;
+extern s32* DAT_007cdfc8;
+extern s32* DAT_007cdfcc;
+extern s32* DAT_007cdfd0;
+extern s32* DAT_007cdfd4;
+extern s32* DAT_007cdfd8;
+extern s32* DAT_007cdfdc;
+extern u8* DAT_007cdfe0;
+extern u8* DAT_007cdfe4;
+extern void* DAT_007cdfe8;
+extern u32 DAT_0083bb30[];
+extern u8 DAT_0083bb40;
+extern u32 DAT_0083aaa0[0x23];
+extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
+extern char DAT_005dc020[];
+extern char DAT_005dbc60[];
+extern const void* gp0xffff897c;
+extern const void* gp0xffff8998;
+extern u32 FUN_00100d80();
+extern u32 FUN_00100ec0();
+extern u32 FUN_001016b0();
+extern u64 FUN_00102100();
+extern u32 FUN_001021c0();
+extern u32 FUN_001023a0();
+extern u32 FUN_0010a4e0();
+extern u32 FUN_00111cb0();
+extern u32 FUN_00111d50();
+extern u32 FUN_00111dd0();
+extern u32 FUN_00111ec0();
+extern u32 FUN_00111ee0();
+extern u32 FUN_00111f20();
+extern u32 FUN_00111f30();
+extern u32 FUN_00112420();
+extern u32 FUN_001124b0();
+extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
+extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
+                                        f32 y, s32 width, s32 height);
+extern u32 FUN_00114450();
+extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
+                                      s32 mode, u32 color, u32 width,
+                                      u32 height, void* resource);
+extern void FUN_001159f0(f32 x, f32 y, ...);
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                f32 x, f32 y, f32 depth);
+extern u32 FUN_00115bc0();
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
+extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
+extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
+extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
+extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
+                                   void* atlas, s32 tile, s32 alpha);
+extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
+                                      void* atlas, s32 tile, s32 alpha,
+                                      s32 red, s32 green, s32 blue, s32 flags);
+extern u32 FUN_00115de0();
+extern u32 FUN_00119f10();
+extern void* campDataCreateTask(void* task, s32 mode);
+extern u32 FUN_0011abd0();
+extern u32 FUN_00122710();
+extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
+extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
+extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
+extern u32 FUN_0013c240();
+extern u32 FUN_0013c780();
+extern u32 FUN_0013cf80();
+extern u32 FUN_0013d1a0();
+extern u32 FUN_0013fca0();
+extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
+                                  void* work, s32 alpha);
+extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
+                                     void* work, s32 alpha);
+extern u32 FUN_0016f630();
+extern u32 FUN_0016f720();
+extern u32 FUN_0016f810();
+extern u32 FUN_0016f900();
+extern u32 FUN_0016f9f0();
+extern u32 FUN_0016fae0();
+extern u32 FUN_0016fbd0();
+extern u32 FUN_0016fcc0();
+extern u32 FUN_0016fea0();
+extern u32 FUN_0016ff90();
+extern u32 FUN_00170080();
+extern u32 FUN_00170170();
+extern u32 FUN_00170260();
+extern u32 FUN_00170350();
+extern u32 FUN_00170440();
+extern u32 FUN_00170530();
+extern u32 FUN_00170a40();
+extern u32 FUN_00170ab0();
+extern u32 FUN_00170b20();
+extern u32 FUN_00170b90();
+extern u32 FUN_00174800();
+extern u32 FUN_00177c10();
+extern u32 FUN_001830c0();
+extern u32 FUN_00194b20();
+extern u32 FUN_00195290();
+extern void FUN_0019d3f0(const char*, s32);
+extern f32 FUN_0021ea00(s32);
+extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
+extern u32 FUN_0025f570();
+extern u32 FUN_0035ed20();
+extern u32 FUN_003b2cb0();
+extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
+                               s32 font, s32 alignment, const char* text,
+                               s32 maxWidth, s32 shadow);
+extern u32 FUN_003c7430();
+extern u32 FUN_003c74e0();
+extern u32 FUN_003c7560();
+extern u32 FUN_003c7610();
+extern u32 FUN_003c7700();
+extern u32 FUN_003c7850();
+extern u32 FUN_003c7d80();
+extern u32 FUN_003c7e20();
+extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
+                               s32 style, s32 font, s32 alignment, u32 value);
+extern u32 FUN_0040eb50();
+extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
+                            const char* text, s32 maxWidth);
+extern u32 FUN_00521250();
+extern u32 FUN_00523ac8_y2();
+extern void* func_00133780(KwlnTask* task);
+extern void* func_001618a0(KwlnTask* task);
+extern void func_00161d60(KwlnTask* task);
+extern void* func_00166c70(KwlnTask* task);
+extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
+extern const char D_005DAC70[];
+extern const char D_005DAC90[];
+extern const char D_005DB190[];
+extern const char D_005DBD80[];
+extern const char D_005DBED0[];
+extern const char D_005DBEE8[];
+extern const char D_005DBF00[];
+extern const char D_005DBF20[];
+extern const char D_005DBF40[];
+extern const char D_005DBF70[];
+extern const char D_005DBFA0[];
+extern const char D_005DBFD0[];
+extern u8 D_005DBF20_abs[];
+extern u8 D_005DBF40_abs[];
+extern u8 D_005DBF70_abs[];
+extern u8 D_005DBFA0_abs[];
+extern u8 D_005DBFD0_abs[];
+extern const char D_005DC000[];
+extern const char D_005E30B0[];
+extern const char D_005E31F0[];
+extern const char D_005E3200[];
+void FUN_001675b0(KwlnTask*);
+void* FUN_001675e0(KwlnTask*);
+void FUN_001678e0(KwlnTask*);
+void* FUN_00167930(KwlnTask*);
+void FUN_00167ec0(KwlnTask*);
+void FUN_00167ef0(KwlnTask*);
+void FUN_00167f10(KwlnTask*);
+u32 FUN_00167f30(KwlnTask*);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
+u32 FUN_00168040(void);
+u32 FUN_00168100(void);
+bool FUN_001681d0(void);
+void* FUN_00168220(KwlnTask*);
+bool FUN_001685b0(KwlnTask*);
+u32 FUN_001685d0(KwlnTask*);
+void FUN_001685e0(KwlnTask*, s32);
+void FUN_00168720(KwlnTask*);
+KwlnTask* FUN_00168770(KwlnTask*, u32);
+u32 FUN_00168810(u32);
+void FUN_00169040(int);
+void FUN_00169110(u16, CampFloatPair, void*, s32);
+void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
+undefined4 FUN_00169330(void);
+bool FUN_00169420(void);
+undefined4 FUN_00169470(KwlnTask*);
+void FUN_00169AE0(int);
+void FUN_00169B90(void* resources, undefined8 coordinates,
+                  void* list, s32 alpha, undefined8 stackArg);
+undefined4 FUN_0016A030(void);
+undefined4 FUN_0016A6A0(void);
+f32 FUN_0016ba00(u32, u32);
+f32 FUN_0016ba80(u32, u32);
+f32 FUN_0016bb00(u32, u32);
+f32 FUN_0016bb80(u32, u32);
+f32 FUN_0016bc00(u32, u32);
+void FUN_0016bc80(u32, u32, f32*);
+void FUN_0016bdb0(u32, u32, f32*);
+void FUN_0016bee0(u32, u32, void*);
+void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
+void FUN_0016c010(void) __attribute__((aligned(16)));
+void FUN_0016c1d0(void);
+void FUN_0016c2f0(void);
+void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+typedef struct CampBridgeScreenWork
 {
-    DatPc* pc;
-    s16 equipped;
-
-    if (IS_HERO(pcId))
-    {
-        equipped = gGlobalWork.heroPersona.equippedPersona;
-
-        K_ASSERT(equipped < 12, 633);
-
-        return gGlobalWork.heroPersona.personas[equipped].id;
-    }
-
-    pc = &gPcs[2];
-
-    return pc[pcId - 2].persona.id;
-}
-
-// FUN_0016cd60
-DatUnit* datGetUnit(s16 pcId)
+    u32 state;          /* 0x00 */
+    u32 timer;          /* 0x04 */
+    u32 personaId;      /* 0x08 */
+    u32 opacity;        /* 0x0c (low halfword used by the fade) */
+    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
+    u32 command;        /* 0x14 */
+    u32 active;         /* 0x18 */
+    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
+    u32 reserved20;     /* 0x20 */
+    u32 reserved24;     /* 0x24 */
+    u32 childTask;      /* 0x28 */
+} CampBridgeScreenWork;
+typedef struct CampBridgeStateWork
 {
-    DatPc* pc;
-
-    if (IS_HERO(pcId))
-    {
-        return &gGlobalWork.heroUnit;
-    }
-
-    K_ASSERT(pcId < PC_MAX, 737);
-
-    pc = &gPcs[2];
-
-    return &pc[pcId - 2].unit;
-}
-
-// FUN_0016cdf0
-void datInitUnit(s16 pcId)
+    u32 state;          /* 0x00 */
+    u32 mode;           /* 0x04 */
+    u32 setupTask;      /* 0x08 */
+    u32 activeTask;     /* 0x0c */
+    u32 screenMode;     /* 0x10 */
+} CampBridgeStateWork;
+typedef struct CampBridgePersonaDispWork
 {
-    u32 idx;
-    DatPc* pcsNoReserved;
-
-    if (IS_HERO(pcId))
-    {
-        memset(&gGlobalWork.heroUnit, 0, sizeof(DatUnit));
-
-        gGlobalWork.heroUnit.id = pcId;
-        gGlobalWork.heroUnit.id2 = pcId;
-        gGlobalWork.heroUnit.aiTactic = AI_TACTIC_ACT_FREELY;
-
-        return;
-    }
-
-    idx = pcId - PC_YUKARI;
-    pcsNoReserved = &gPcs[PC_YUKARI];
-    memset(&pcsNoReserved[idx].unit, 0, sizeof(DatUnit));
-
-    gPcs[pcId].unit.id = pcId;
-    gPcs[pcId].unit.id2 = pcId;
-    gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
-}
+    u32 state;          /* 0x00 */
+    u32 personaId;      /* 0x04 */
+    u32 reserved08;     /* 0x08 */
+    u32 mode;           /* 0x0c */
+    f32 alpha;          /* 0x10 */
+    f32 slideStep;      /* 0x14 */
+    f32 slidePosition;  /* 0x18 */
+    f32 depth;          /* 0x1c */
+    void* parseRequest; /* 0x20 */
+    HCdvd* cdvd;        /* 0x24 */
+    void* resource;     /* 0x28 */
+} CampBridgePersonaDispWork;
+typedef struct CampBridgeBlendWork
+{
+    u32 state;       /* 0x00 */
+    s32 timer;       /* 0x04 */
+    u32 reserved08;  /* 0x08 */
+    u32 mode;        /* 0x0c */
+    u32 archive;     /* 0x10 */
+    u32 sourceTask;  /* 0x14 */
+    u32 targetTask;  /* 0x18 */
+} CampBridgeBlendWork;
+typedef struct CampTargetLoadWork
+{
+    u32 state;                 /* +0x00 */
+    u32 reserved04;            /* +0x04 */
+    s32 frame;                 /* +0x08 */
+    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
+    void* archive;             /* +0x10 */
+    void* resources[2];        /* +0x14 */
+    CampTargetList* listA;     /* +0x1c */
+    CampTargetList* listB;     /* +0x20 */
+    void* childTask;           /* +0x24 */
+} CampTargetLoadWork;
+typedef struct CampTargetMenuWork
+{
+    u32 state;                 /* +0x00 */
+    s32 frame;                 /* +0x04 */
+    u32 reserved08;            /* +0x08 */
+    void* archive;             /* +0x0c */
+    void* resources[2];        /* +0x10 */
+    CampTargetList* list;      /* +0x18 */
+    void* childTask;           /* +0x1c */
+    u32 result;                /* +0x20 */
+} CampTargetMenuWork;
+typedef struct CampDataBridgeRecord
+{
+    s16 axis0;                 /* +0x00 */
+    s16 axis1;                 /* +0x02 */
+    s16 axis2;                 /* +0x04 */
+    s16 axis3;                 /* +0x06 */
+    f32 value;                 /* +0x08 */
+    u32 reserved0c;            /* +0x0c */
+    u16 reserved10;            /* +0x10 */
+    s16 helpIndex;             /* +0x12 */
+    u32 color0;                /* +0x14 */
+    u32 color1;                /* +0x18 */
+    u32 reserved1c;            /* +0x1c */
+} CampDataBridgeRecord;
+typedef struct CampDataBridgeGroup
+{
+    s32 recordCount;           /* +0x00 */
+    s32 auxiliaryCount;        /* +0x04 */
+    CampDataBridgeRecord* records; /* +0x08 */
+    u8* auxiliaryData;         /* +0x0c */
+} CampDataBridgeGroup;
+typedef struct CampDataBridgeRoot
+{
+    CampDataBridgeGroup groups[2];
+} CampDataBridgeRoot;
 
 static inline u8 datGetLevel_impl(s16 pcId)
 {
@@ -322,6 +595,400 @@ static inline u8 datGetLevel_impl(s16 pcId)
 
     pc = &gPcs[2];
     return datCalcGetLevel(&pc[pcId - 2].unit);
+}
+static inline u32 datGetNextExp_impl(s16 pcId)
+{
+    DatPersonaWork* persona;
+
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.nextExp;
+    }
+
+    persona = datPersonaGetByPcId(pcId);
+    K_ASSERT(persona != NULL, 622);
+    return datPersonaGetNextExp(persona);
+}
+static inline u8 func_0016d280_impl(s32 exp)
+{
+    u8 index;
+    u8 level;
+    const u32* thresholds;
+
+    level = 0;
+    index = 0;
+    thresholds = sPlayerExpThreshold;
+    while (index < MAX_CHARACTER_LEVEL)
+    {
+        if (exp < (s32)thresholds[index])
+        {
+            return level;
+        }
+        level++;
+        index++;
+    }
+    return MAX_CHARACTER_LEVEL;
+}
+static inline u16 func_00170760_impl(s16 pcId, s16 index)
+{
+    u8* idBase;
+    u8* heroEquip;
+    s32 address;
+    s32 i;
+
+    if (pcId == PC_HERO)
+    {
+        heroEquip = *(u8* volatile /* Removing this inline-helper qualifier loses func_00170c00 (MATCH nd0 -> MISMATCH nd15, size 348 -> 348) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
+        address = index * 2;
+        address += (s32)heroEquip;
+        return *(u16*)(address - 8000);
+    }
+    if (pcId == -1)
+    {
+        return *(u16*)(D_00831CE0 + index * 2);
+    }
+    if (pcId < 0x100)
+    {
+        goto invalid;
+    }
+
+    i = 0;
+    idBase = (u8*)gPcs + pcId * 0x364;
+    for (; i < 20; i++)
+    {
+        if (*(u16*)(idBase + i * 4 - 0x367b8) == pcId)
+        {
+            return *(u16*)(D_007FD85A + pcId * 0x364 + i * 4);
+        }
+    }
+    return 0;
+invalid:
+    return 0;
+}
+static inline void* func_00170d60_impl(s16 id)
+{
+    if (id < 1000)
+    {
+        return D_007CDFE4 + id * 0x28;
+    }
+    return NULL;
+}
+static inline void* func_00170da0_impl(s16 id)
+{
+    if (id >= 1000 && id < 2000)
+    {
+        return D_007CDFDC + (id - 1000) * 0x20;
+    }
+    return NULL;
+}
+static inline void* func_00170df0_impl(s16 id)
+{
+    if (id >= 2000 && id < 3000)
+    {
+        return D_007CDFD8 + (id - 2000) * 0x20;
+    }
+    return NULL;
+}
+static inline void* func_00170e40_impl(s16 id)
+{
+    if (id >= 3000 && id < 4000)
+    {
+        return D_007CDFD4 + (id - 3000) * 0x24;
+    }
+    return NULL;
+}
+static inline void* func_00170e90_impl(s16 id)
+{
+    if (id >= 3000)
+    {
+        return D_007CDFCC + (id - 4000) * 0x1c;
+    }
+    return NULL;
+}
+static inline void* func_00170ed0_impl(s16 id, s32* category)
+{
+    if (id < 1000)
+    {
+        *category = 0;
+        return func_00170d60_impl(id);
+    }
+    if (id < 2000)
+    {
+        *category = 1;
+        return func_00170da0_impl(id);
+    }
+    if (id < 3000)
+    {
+        *category = 2;
+        return func_00170df0_impl(id);
+    }
+    if (id < 4000)
+    {
+        *category = 3;
+        return func_00170e40_impl(id);
+    }
+
+    *category = 4;
+    return func_00170e90_impl(id);
+}
+
+// FUN_0016BA00
+f32 FUN_0016ba00(u32 param_1, u32 param_2)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0x86);
+    }
+    return iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].value;
+}
+
+// FUN_0016BA80
+f32 FUN_0016ba80(u32 param_1, u32 param_2)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0x8b);
+    }
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis0;
+}
+
+// FUN_0016BB00
+f32 FUN_0016bb00(u32 param_1, u32 param_2)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0x90);
+    }
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis1;
+}
+
+// FUN_0016BB80
+f32 FUN_0016bb80(u32 param_1, u32 param_2)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0x95);
+    }
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis2;
+}
+
+// FUN_0016BC00
+f32 FUN_0016bc00(u32 param_1, u32 param_2)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0x9a);
+    }
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis3;
+}
+
+
+// FUN_0016BC80
+void FUN_0016bc80(u32 param_1, u32 param_2, f32* param_3)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0xa5);
+    }
+    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 24) & 0xff) / 255.0f;
+    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 16) & 0xff) / 255.0f;
+    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 8) & 0xff) / 255.0f;
+    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 & 0xff) / 255.0f;
+}
+
+// FUN_0016BDB0
+void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
+{
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0xaf);
+    }
+    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 24) & 0xff) / 255.0f;
+    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 16) & 0xff) / 255.0f;
+    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 8) & 0xff) / 255.0f;
+    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 & 0xff) / 255.0f;
+}
+
+// FUN_0016BEE0 MATCHING
+void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
+{
+    u32 groupOffset;
+    CampDataBridgeGroup* group;
+    CampDataBridgeRecord* record;
+    u32 recordOffset;
+
+    if (iGpffffb2c0 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0xb8);
+    }
+    groupOffset = (param_1 & 0xffff) * 0x10;
+    group = (CampDataBridgeGroup*)(groupOffset + (u32)(uintptr_t)iGpffffb2c0);
+    record = group->records;
+    recordOffset = (param_2 & 0xffff) * 0x20;
+    record = (CampDataBridgeRecord*)(recordOffset + (u32)(uintptr_t)record);
+    FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
+}
+
+// FUN_0016BF80
+void FUN_0016bf80(u32 param_1, u32 param_2, void* param_3)
+{
+    if (param_3 == NULL) {
+        FUN_0019d3f0(D_005E3098, 0xc3);
+    }
+    FUN_00521250(param_3, &iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff], 0x20);
+}
+
+// FUN_0016C010
+void FUN_0016c010(void)
+{
+    void* cdvd;
+    s32* descriptor;
+    u8* payload;
+
+    cdvd = (void*)(uintptr_t)FUN_00100d80(D_005E30B0, 0);
+    FUN_001023a0(cdvd);
+    descriptor = *(s32**)((u8*)cdvd + 0x110);
+    iGpffffb2c0 = (CampDataBridgeRoot*)DAT_00960178_abs[0](
+        (((descriptor[0] + descriptor[4]) << 5) + 0x20) +
+        ((descriptor[1] + descriptor[5]) << 4), 0x40000);
+    iGpffffb2c0->groups[0].recordCount = descriptor[0];
+    iGpffffb2c0->groups[0].auxiliaryCount = descriptor[1];
+    iGpffffb2c0->groups[0].records =
+        (CampDataBridgeRecord*)((u8*)iGpffffb2c0 + 0x20);
+    iGpffffb2c0->groups[0].auxiliaryData =
+        (u8*)iGpffffb2c0->groups[0].records +
+        (iGpffffb2c0->groups[0].recordCount << 5);
+    payload = (u8*)(descriptor + 8);
+    FUN_00521250(iGpffffb2c0->groups[0].records,
+                 payload, iGpffffb2c0->groups[0].recordCount << 5);
+    payload += iGpffffb2c0->groups[0].recordCount << 5;
+    FUN_00521250(iGpffffb2c0->groups[0].auxiliaryData,
+                 payload, iGpffffb2c0->groups[0].auxiliaryCount << 4);
+    iGpffffb2c0->groups[1].recordCount = descriptor[4];
+    iGpffffb2c0->groups[1].auxiliaryCount = descriptor[5];
+    iGpffffb2c0->groups[1].records =
+        (CampDataBridgeRecord*)(iGpffffb2c0->groups[0].auxiliaryData +
+            (iGpffffb2c0->groups[0].auxiliaryCount << 4));
+    iGpffffb2c0->groups[1].auxiliaryData =
+        (u8*)iGpffffb2c0->groups[1].records +
+        (iGpffffb2c0->groups[1].recordCount << 5);
+    payload += iGpffffb2c0->groups[0].auxiliaryCount << 4;
+    FUN_00521250(iGpffffb2c0->groups[1].records,
+                 payload, iGpffffb2c0->groups[1].recordCount << 5);
+    payload += iGpffffb2c0->groups[1].recordCount << 5;
+    FUN_00521250(iGpffffb2c0->groups[1].auxiliaryData,
+                 payload, iGpffffb2c0->groups[1].auxiliaryCount << 4);
+    FUN_00100ec0(cdvd);
+}
+
+// FUN_0016C1D0 MATCHING
+void FUN_0016c1d0(void)
+{
+    CampHelpPaths helpPaths;
+    u8 fileSizeScratch[4];
+    void* cdvd;
+    void* resource;
+    s32 i;
+    u32 copySize;
+
+    helpPaths = *(CampHelpPaths*)PTR_s_help_datWeaponHelp_bmd_005e31d0;
+    FUN_001023a0((void*)(uintptr_t)FUN_00100d80(D_005E31F0, 1));
+    for (i = 0; i < 8; i++) {
+        resource = (void*)(uintptr_t)FUN_001021c0(
+            helpPaths.paths[i], (u32*)fileSizeScratch);
+        FUN_003c7d80(i, resource);
+    }
+    FUN_0016c010();
+    FUN_001023a0(DAT_007cdfe8 =
+        (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
+    cdvd = DAT_007cdfe8;
+    copySize = *(volatile u32*)((u8*)cdvd + 0x118);
+    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110),
+                 copySize);
+    FUN_00100ec0(DAT_007cdfe8);
+    FUN_0016c2f0();
+}
+
+// FUN_0016C2F0
+void FUN_0016c2f0(void)
+{
+    u8* data;
+    u32 count;
+    s32 n;
+    s32 scaled;
+    u8* p;
+
+    data = (u8*)DAT_0083bb30;
+    count = *(u32*)data;
+    p = data + 0x10;
+    DAT_007cdfe4 = p;
+    p += count * 0x28;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfe0 = p;
+    p += n << 4;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfdc = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd8 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd4 = (s32*)p;
+    scaled = n << 3;
+    p += (scaled + n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd0 = (s32*)p;
+    p += ((n << 3) - n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfcc = (s32*)p;
+    p += ((n << 3) - n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc4 = (s32*)p;
+    p += n << 4;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc0 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfbc = (s32*)p;
+    scaled = n << 2;
+    p += (scaled + n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfb4 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc8 = (s32*)p;
+    p += n << 3;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfb8 = (s32*)p;
+    scaled = n << 1;
+    scaled += n;
+    p += scaled << 2;
+    {
+        s32* entry;
+        u32* output;
+        u32 i;
+
+        entry = (s32*)(p + 0x10);
+        i = 0;
+        output = DAT_0083aaa0;
+        for (; i < 0x23; i++) {
+            output[i] = (u32)entry;
+            entry += 8;
+        }
+    }
 }
 
 // FUN_0016c470
@@ -354,6 +1021,8 @@ u16 datGetHp(s16 pcId)
     return datCalcGetHp(&pc[pcId - 2].unit);
 }
 
+
+
 // FUN_0016c570
 u16 datGetSp(s16 pcId)
 {
@@ -384,10 +1053,101 @@ u16 datGetMaxHp(s16 pcId)
     return datCalcGetMaxHp(&pc[pcId - 2].unit);
 }
 
+// FUN_0016c670
+u16 func_0016c670(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return func_00300100(&gGlobalWork.heroUnit);
+    }
+
+    return func_00300100(&gPcs[pcId - 2].unit);
+}
+
+// FUN_0016c6f0
+s16 datGetAcademicPoint(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.socialStats.academicPoint;
+    }
+
+    return gPcs[pcId].socialStats.academicPoint;
+}
+
+// FUN_0016c740
+s16 datGetCharmPoint(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.socialStats.charmPoint;
+    }
+
+    return gPcs[pcId].socialStats.charmPoint;
+}
+
+// FUN_0016c790
+s16 datGetCouragePoint(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.socialStats.couragePoint;
+    }
+
+    return gPcs[pcId].socialStats.couragePoint;
+}
+
+// FUN_0016c7e0
+u32 datGetNextExp(s16 pcId)
+{
+    DatPersonaWork* persona; // per
+
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.nextExp;
+    }
+
+    persona = datPersonaGetByPcId(pcId);
+    K_ASSERT(persona != NULL, 622);
+
+    return datPersonaGetNextExp(persona);
+}
+
+// FUN_0016c860
+u16 datGetPersonaId(s16 pcId)
+{
+    DatPc* pc;
+    s16 equipped;
+
+    if (IS_HERO(pcId))
+    {
+        equipped = gGlobalWork.heroPersona.equippedPersona;
+
+        K_ASSERT(equipped < 12, 633);
+
+        return gGlobalWork.heroPersona.personas[equipped].id;
+    }
+
+    pc = &gPcs[2];
+
+    return pc[pcId - 2].persona.id;
+}
+
 // FUN_0016c910
 s16 datGetEquippedPersona()
 {
     return gGlobalWork.heroPersona.equippedPersona;
+}
+
+// FUN_0016c920
+u16 datGetPhysicalCondition(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.physicalState.physicalCondition;
+    }
+
+    return gPcs[pcId].physicalState.physicalCondition;
 }
 
 // FUN_0016c970
@@ -405,82 +1165,278 @@ u32 datGetBadStatusNoDown(s16 pcId)
     return datCalcGetBadStatusNoDown(&pc[pcId - 2].unit);
 }
 
-// FUN_0016d8b0
-void datSetBadStatus(s16 pcId, u32 flags)
+// FUN_0016c9f0
+u16 datGetFatigueCounter(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.physicalState.fatigueCounter;
+    }
+
+    return gPcs[pcId].physicalState.fatigueCounter;
+}
+
+// FUN_0016ca40
+u16 datGetOldFatigueCounter(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
+    }
+
+    return gPcs[pcId].physicalState.oldFatigueCounter;
+}
+
+// FUN_0016ca90
+void FUN_0016ca90(s16 pcId, s16 fatigueChange)
+{
+    extern void datSetFatigueCounter(s16, s16);
+    u16 rawFatigueCounter;
+    s32 fatigueCounter;
+    s32 oldFatigueCounter;
+    s32 newFatigueCounter;
+
+    if (IS_HERO(pcId))
+    {
+        rawFatigueCounter = gGlobalWork.heroStatus.physicalState.fatigueCounter;
+    }
+    else
+    {
+        rawFatigueCounter = gPcs[pcId].physicalState.fatigueCounter;
+    }
+    fatigueCounter = rawFatigueCounter;
+
+    if (IS_HERO(pcId))
+    {
+        rawFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
+    }
+    else
+    {
+        rawFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
+    }
+    oldFatigueCounter = rawFatigueCounter;
+
+    newFatigueCounter = fatigueCounter + fatigueChange;
+    if (newFatigueCounter < 0)
+    {
+        newFatigueCounter = 0;
+    }
+    else if (newFatigueCounter > oldFatigueCounter)
+    {
+        newFatigueCounter = oldFatigueCounter;
+    }
+
+    datSetFatigueCounter(pcId, newFatigueCounter);
+}
+
+// FUN_0016cb80
+s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
 {
     DatPc* pc;
 
     if (IS_HERO(pcId))
     {
-        datCalcSetBadStatus(&gGlobalWork.heroUnit, flags);
-        return;
+        return gGlobalWork.heroEquip.equipmentsIdx[equipmentType];
     }
 
     pc = &gPcs[2];
 
-    datCalcSetBadStatus(&pc[pcId - 2].unit, flags);
+    return pc[pcId - 2].equipmentsIdx[equipmentType];
 }
 
-// FUN_0016d980
-void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter)
+// FUN_0016cc00
+u16 func_0016cc00(s16 pcId)
 {
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroStatus.physicalState.oldFatigueCounter = oldFatigueCounter;
-        return;
-    }
-
-    gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
-}
-
-// FUN_0016d9d0
-void datClearBadStatus(s16 pcId, u32 flags)
-{
-    DatPc* pc;
-
-    if (IS_HERO(pcId))
-    {
-        datCalcClearBadStatus(&gGlobalWork.heroUnit, flags);
-        return;
-    }
-
-    pc = &gPcs[2];
-
-    datCalcClearBadStatus(&pc[pcId - 2].unit, flags);
-}
-
-static inline u32 datGetNextExp_impl(s16 pcId)
-{
-    DatPersonaWork* persona;
-
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.nextExp;
-    }
-
-    persona = datPersonaGetByPcId(pcId);
-    K_ASSERT(persona != NULL, 622);
-    return datPersonaGetNextExp(persona);
-}
-
-static inline u8 func_0016d280_impl(s32 exp)
-{
-    u8 index;
     u8 level;
-    const u32* thresholds;
 
-    level = 0;
-    index = 0;
-    thresholds = sPlayerExpThreshold;
+    if (IS_HERO(pcId))
+    {
+        level = datCalcGetLevel(&gGlobalWork.heroUnit);
+    }
+    else
+    {
+        DatPc* pc = &gPcs[2];
+        level = datCalcGetLevel(&pc[pcId - 2].unit);
+    }
+
+    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
+}
+
+// FUN_0016ccb0
+u16 func_0016ccb0(s16 pcId)
+{
+    u8 level;
+
+    if (IS_HERO(pcId))
+    {
+        level = datCalcGetLevel(&gGlobalWork.heroUnit);
+    }
+    else
+    {
+        DatPc* pc = &gPcs[2];
+        level = datCalcGetLevel(&pc[pcId - 2].unit);
+    }
+
+    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
+}
+
+// FUN_0016cd60
+DatUnit* datGetUnit(s16 pcId)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        return &gGlobalWork.heroUnit;
+    }
+
+    K_ASSERT(pcId < PC_MAX, 737);
+
+    pc = &gPcs[2];
+
+    return &pc[pcId - 2].unit;
+}
+
+/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
+// FUN_0016cdf0
+void datInitUnit(s16 pcId)
+{
+    u32 idx;
+    DatPc* pcsNoReserved;
+
+    if (IS_HERO(pcId))
+    {
+        memset(&gGlobalWork.heroUnit, 0, sizeof(DatUnit));
+
+        gGlobalWork.heroUnit.id = pcId;
+        gGlobalWork.heroUnit.id2 = pcId;
+        gGlobalWork.heroUnit.aiTactic = AI_TACTIC_ACT_FREELY;
+
+        return;
+    }
+
+    idx = pcId - PC_YUKARI;
+    pcsNoReserved = &gPcs[PC_YUKARI];
+    memset(&pcsNoReserved[idx].unit, 0, sizeof(DatUnit));
+
+    gPcs[pcId].unit.id = pcId;
+    gPcs[pcId].unit.id2 = pcId;
+    gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
+}
+// FUN_0016cef0
+void datSetLevel(s16 pcId, u8 level)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.level = level;
+    }
+    else
+    {
+        K_ASSERT(false, 770);
+    }
+}
+// FUN_0016cf40
+void datSetHp(s16 pcId, s16 hp)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.hp = hp;
+    }
+    else
+    {
+        gPcs[pcId].unit.hp = hp;
+    }
+}
+
+// FUN_0016cf90
+void datSetSp(s16 pcId, s16 sp)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.sp = sp;
+    }
+    else
+    {
+        gPcs[pcId].unit.sp = sp;
+    }
+}
+
+// FUN_0016cfe0
+void datSetAcademicPoint(s16 pcId, s16 academicPoint)
+{
+    K_ASSERT(academicPoint >= SOCIAL_STAT_MIN_POINT && academicPoint <= SOCIAL_STAT_MAX_POINT, 797);
+
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroStatus.socialStats.academicPoint = academicPoint;
+        return;
+    }
+
+    gPcs[pcId].socialStats.academicPoint = academicPoint;
+}
+
+// FUN_0016d090
+void datSetCharmPoint(s16 pcId, s16 charmPoint)
+{
+    K_ASSERT(charmPoint >= SOCIAL_STAT_MIN_POINT && charmPoint <= SOCIAL_STAT_MAX_POINT, 808);
+
+    if (IS_HERO(pcId))
+    {
+        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
+        gGlobalWork.heroStatus.socialStats.charmPoint = charmPoint;
+        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
+        return;
+    }
+
+    gPcs[pcId].socialStats.charmPoint = charmPoint;
+}
+
+// FUN_0016d160
+void datSetCouragePoint(s16 pcId, s16 couragePoint)
+{
+    K_ASSERT(couragePoint >= SOCIAL_STAT_MIN_POINT && couragePoint <= SOCIAL_STAT_MAX_POINT, 828);
+
+    if (IS_HERO(pcId))
+    {
+        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
+        gGlobalWork.heroStatus.socialStats.couragePoint = couragePoint;
+        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
+        return;
+    }
+
+    gPcs[pcId].socialStats.couragePoint = couragePoint;
+}
+
+// FUN_0016d230
+void datSetNextExp(s16 pcId, u32 nextExp)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroStatus.nextExp = nextExp;
+    }
+    else
+    {
+        K_ASSERT(false, 858);
+    }
+}
+
+// FUN_0016d280
+#pragma opt_loop_invariants on
+u8 func_0016d280(s32 exp)
+{
+    u8 level = 0;
+    u8 index = 0;
+
     while (index < MAX_CHARACTER_LEVEL)
     {
-        if (exp < (s32)thresholds[index])
+        if (exp < (s32)sPlayerExpThreshold[index])
         {
             return level;
         }
         level++;
         index++;
     }
+
     return MAX_CHARACTER_LEVEL;
 }
 
@@ -548,43 +1504,6 @@ getLevel:
     return false;
 }
 
-// FUN_0016dad0
-void datSetAiTactic(s16 pcId, s16 aiTacticId)
-{
-    K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
-
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroUnit.aiTactic = aiTacticId;
-        return;
-    }
-
-    gPcs[pcId].unit.aiTactic = aiTacticId;
-}
-
-// FUN_0016dd50
-s32 datGetMoney()
-{
-    return gGlobalWork.heroMoney;
-}
-
-// FUN_0016dd60
-s16 datGetPartyId(s32 idx)
-{
-    return gGlobalWork.partyIds[idx];
-}
-
-// FUN_0016dd80
-s32 datGetAiTactic(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroUnit.aiTactic;
-    }
-
-    return gPcs[pcId].unit.aiTactic;
-}
-
 // FUN_0016d6b0
 void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
 {
@@ -644,6 +1563,22 @@ void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
     }
 }
 
+// FUN_0016d8b0
+void datSetBadStatus(s16 pcId, u32 flags)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        datCalcSetBadStatus(&gGlobalWork.heroUnit, flags);
+        return;
+    }
+
+    pc = &gPcs[2];
+
+    datCalcSetBadStatus(&pc[pcId - 2].unit, flags);
+}
+
 // FUN_0016d930
 void datSetFatigueCounter(s16 pcId, u16 fatigueCounter)
 {
@@ -656,482 +1591,32 @@ void datSetFatigueCounter(s16 pcId, u16 fatigueCounter)
     gPcs[pcId].physicalState.fatigueCounter = fatigueCounter;
 }
 
-// FUN_0016cf40
-void datSetHp(s16 pcId, s16 hp)
+// FUN_0016d980
+void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter)
 {
     if (IS_HERO(pcId))
     {
-        gGlobalWork.heroUnit.hp = hp;
-    }
-    else
-    {
-        gPcs[pcId].unit.hp = hp;
-    }
-}
-
-// FUN_0016cf90
-void datSetSp(s16 pcId, s16 sp)
-{
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroUnit.sp = sp;
-    }
-    else
-    {
-        gPcs[pcId].unit.sp = sp;
-    }
-}
-
-// FUN_0016cef0
-void datSetLevel(s16 pcId, u8 level)
-{
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroUnit.level = level;
-    }
-    else
-    {
-        K_ASSERT(false, 770);
-    }
-}
-
-// FUN_0016d230
-void datSetNextExp(s16 pcId, u32 nextExp)
-{
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroStatus.nextExp = nextExp;
-    }
-    else
-    {
-        K_ASSERT(false, 858);
-    }
-}
-
-// FUN_0016c9f0
-u16 datGetFatigueCounter(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.physicalState.fatigueCounter;
-    }
-
-    return gPcs[pcId].physicalState.fatigueCounter;
-}
-
-// FUN_0016ca40
-u16 datGetOldFatigueCounter(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
-    }
-
-    return gPcs[pcId].physicalState.oldFatigueCounter;
-}
-
-// FUN_0016e920
-void datSetActiveSocialLink(u16 activeSocialLink)
-{
-    gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
-}
-
-// FUN_0016e930
-void datSetMoney(u32 money)
-{
-    K_ASSERT(money <= 9999999, 1674);
-
-    gGlobalWork.heroMoney = money;
-}
-
-// FUN_0016e990
-void datSetPartyId(s32 idx, s16 pcId)
-{
-    gGlobalWork.partyIds[idx] = pcId;
-}
-
-// FUN_0016e9b0
-u32 datAddMoney(s32 amount)
-{
-    s32 finalMoney;
-
-    finalMoney = amount + gGlobalWork.heroMoney;
-    if (finalMoney > 9999999)
-    {
-        finalMoney = 9999999;
-    }
-    else if (finalMoney < 0)
-    {
-        finalMoney = 0;
-    }
-
-    K_ASSERT((u32)finalMoney <= 9999999, 1674);
-
-    gGlobalWork.heroMoney = finalMoney;
-
-    return finalMoney;
-}
-
-/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
-// FUN_0016eb80
-#pragma optimization_level 1
-u32 datScrCmd_SAVE_PARTY()
-{
-    s16 i;
-    u32 offset;
-    DatGlobal* globalWork;
-    s16 value;
-    s16* savedIds;
-
-    i = 0;
-    globalWork = &gGlobalWork;
-    savedIds = sSavedPartyIds;
-    for (; i < 4; i++)
-    {
-        offset = (u32)(s16)i * 2;
-        value = *(s16*)((u8*)globalWork + 0x44e0 + offset);
-        *(s16*)((u8*)savedIds + offset) = value;
-    }
-
-    return true;
-}
-#pragma optimization_level 2
-
-/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
-// FUN_0016ebe0
-#pragma optimization_level 1
-u32 datScrCmd_RESTORE_PARTY()
-{
-    s16 i;
-    u32 offset;
-    s16* savedIds;
-    s16 value;
-    DatGlobal* globalWork;
-
-    i = 0;
-    savedIds = sSavedPartyIds;
-    globalWork = &gGlobalWork;
-    for (; i < 4; i++)
-    {
-        offset = (u32)(s16)i * 2;
-        value = *(s16*)((u8*)savedIds + offset);
-        *(s16*)((u8*)globalWork + 0x44e0 + offset) = value;
-    }
-    return true;
-}
-#pragma optimization_level 2
-
-// FUN_0016ec40
-u32 datScrCmd_CLEAR_PARTY_ID()
-{
-    gGlobalWork.partyIds[scrGetIntPara(0)] = PC_NONE;
-
-    return true;
-}
-
-// FUN_0016ec80
-u32 datScrCmd_GET_PARTY_ID()
-{
-    scrSetIntReturnVal(gGlobalWork.partyIds[scrGetIntPara(0)]);
-
-    return true;
-}
-
-// FUN_0016edd0
-u32 datScrCmd_GET_MONEY()
-{
-    scrSetIntReturnVal(gGlobalWork.heroMoney);
-
-    return true;
-}
-
-// FUN_0016ee00
-u32 datScrCmd_ADD_MONEY()
-{
-    s32 baseMoney;
-    s32 finalMoney;
-
-    baseMoney = gGlobalWork.heroMoney;
-    finalMoney = baseMoney + scrGetIntPara(0);
-    if (finalMoney > 9999999)
-    {
-        finalMoney = 9999999;
-    }
-
-    K_ASSERT((u32)finalMoney <= 9999999, 1674);
-
-    gGlobalWork.heroMoney = finalMoney;
-
-    return true;
-}
-
-// FUN_0016ee90
-u32 datScrCmd_REMOVE_MONEY()
-{
-    s32 baseMoney;
-    s32 finalMoney;
-
-    baseMoney = gGlobalWork.heroMoney;
-    if (baseMoney < scrGetIntPara(0))
-    {
-        finalMoney = 0;
-    }
-    else
-    {
-        finalMoney = baseMoney - scrGetIntPara(0);
-    }
-
-    K_ASSERT((u32)finalMoney <= 9999999, 1674);
-
-    gGlobalWork.heroMoney = finalMoney;
-
-    return true;
-}
-
-// FUN_0016ef20
-s16 datGetDaysSinceApr5()
-{
-    return gGlobalWork.calendarWork.daysSinceApr5;
-}
-
-// FUN_0016ef30
-u8 datGetTime()
-{
-    return gGlobalWork.calendarWork.time;
-}
-
-// FUN_0016ef40
-s16 datGetDaysSkipTarget()
-{
-    return gGlobalWork.calendarWork.daysSkipTarget;
-}
-
-// FUN_0016ef50
-u8 datGetTimeSkipTarget()
-{
-    return gGlobalWork.calendarWork.timeSkipTarget;
-}
-
-// FUN_0016ef60
-u32 datGetSkipToTarget()
-{
-    return gGlobalWork.calendarWork.skipToTarget;
-}
-
-// FUN_0016cfe0
-void datSetAcademicPoint(s16 pcId, s16 academicPoint)
-{
-    K_ASSERT(academicPoint >= SOCIAL_STAT_MIN_POINT && academicPoint <= SOCIAL_STAT_MAX_POINT, 797);
-
-    if (IS_HERO(pcId))
-    {
-        gGlobalWork.heroStatus.socialStats.academicPoint = academicPoint;
+        gGlobalWork.heroStatus.physicalState.oldFatigueCounter = oldFatigueCounter;
         return;
     }
 
-    gPcs[pcId].socialStats.academicPoint = academicPoint;
+    gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
-// FUN_0016d090
-void datSetCharmPoint(s16 pcId, s16 charmPoint)
-{
-    K_ASSERT(charmPoint >= SOCIAL_STAT_MIN_POINT && charmPoint <= SOCIAL_STAT_MAX_POINT, 808);
-
-    if (IS_HERO(pcId))
-    {
-        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
-        gGlobalWork.heroStatus.socialStats.charmPoint = charmPoint;
-        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
-        return;
-    }
-
-    gPcs[pcId].socialStats.charmPoint = charmPoint;
-}
-
-// FUN_0016d160
-void datSetCouragePoint(s16 pcId, s16 couragePoint)
-{
-    K_ASSERT(couragePoint >= SOCIAL_STAT_MIN_POINT && couragePoint <= SOCIAL_STAT_MAX_POINT, 828);
-
-    if (IS_HERO(pcId))
-    {
-        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
-        gGlobalWork.heroStatus.socialStats.couragePoint = couragePoint;
-        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
-        return;
-    }
-
-    gPcs[pcId].socialStats.couragePoint = couragePoint;
-}
-
-// FUN_0016c6f0
-s16 datGetAcademicPoint(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.socialStats.academicPoint;
-    }
-
-    return gPcs[pcId].socialStats.academicPoint;
-}
-
-// FUN_0016c740
-s16 datGetCharmPoint(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.socialStats.charmPoint;
-    }
-
-    return gPcs[pcId].socialStats.charmPoint;
-}
-
-// FUN_0016c790
-s16 datGetCouragePoint(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.socialStats.couragePoint;
-    }
-
-    return gPcs[pcId].socialStats.couragePoint;
-}
-
-// FUN_0016ca90
-void FUN_0016ca90(s16 pcId, s16 fatigueChange)
-{
-    extern void datSetFatigueCounter(s16, s16);
-    u16 rawFatigueCounter;
-    s32 fatigueCounter;
-    s32 oldFatigueCounter;
-    s32 newFatigueCounter;
-
-    if (IS_HERO(pcId))
-    {
-        rawFatigueCounter = gGlobalWork.heroStatus.physicalState.fatigueCounter;
-    }
-    else
-    {
-        rawFatigueCounter = gPcs[pcId].physicalState.fatigueCounter;
-    }
-    fatigueCounter = rawFatigueCounter;
-
-    if (IS_HERO(pcId))
-    {
-        rawFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
-    }
-    else
-    {
-        rawFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
-    }
-    oldFatigueCounter = rawFatigueCounter;
-
-    newFatigueCounter = fatigueCounter + fatigueChange;
-    if (newFatigueCounter < 0)
-    {
-        newFatigueCounter = 0;
-    }
-    else if (newFatigueCounter > oldFatigueCounter)
-    {
-        newFatigueCounter = oldFatigueCounter;
-    }
-
-    datSetFatigueCounter(pcId, newFatigueCounter);
-}
-
-// FUN_0016c7e0
-u32 datGetNextExp(s16 pcId)
-{
-    DatPersonaWork* persona; // per
-
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.nextExp;
-    }
-
-    persona = datPersonaGetByPcId(pcId);
-    K_ASSERT(persona != NULL, 622);
-
-    return datPersonaGetNextExp(persona);
-}
-
-// FUN_0016c920
-u16 datGetPhysicalCondition(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroStatus.physicalState.physicalCondition;
-    }
-
-    return gPcs[pcId].physicalState.physicalCondition;
-}
-
-// FUN_0016dd40
-s16 datGetActiveSocialLink()
-{
-    return gGlobalWork.heroStatus.activeSocialLink;
-}
-
-// FUN_00171360
-u32 dat00171360(u16 param_1)
-{
-    if (param_1 < 5000)
-    {
-        return 0;
-    }
-
-    return param_1 < 0x1408;
-}
-
-// FUN_001717b0
-s16 *datGetActiveSocialLinkPtr()
-{
-    return &gGlobalWork.heroStatus.activeSocialLink;
-}
-
-// FUN_0016dba0
-s8 datGetSocialLinkLevel(s16 socialLink)
-{
-    return gGlobalWork.heroStatus.socialLinkStat[socialLink];
-}
-
-// FUN_0016e100
-u32 datSocialLinkLevelIsNotZero(s16 socialLink)
-{
-    u32 isValidSocialLink;
-
-    if (socialLink < SOCIAL_LINK_SEES || socialLink >= 30)
-    {
-        isValidSocialLink = false;
-    }
-    else
-    {
-        isValidSocialLink = true;
-    }
-
-    K_ASSERT(isValidSocialLink, 1429);
-
-    if (gGlobalWork.heroStatus.socialLinkStat[socialLink] <= 0)
-    {
-        return false;
-    }
-
-    return true;
-}
-
-// FUN_0016cb80
-s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
+// FUN_0016d9d0
+void datClearBadStatus(s16 pcId, u32 flags)
 {
     DatPc* pc;
 
     if (IS_HERO(pcId))
     {
-        return gGlobalWork.heroEquip.equipmentsIdx[equipmentType];
+        datCalcClearBadStatus(&gGlobalWork.heroUnit, flags);
+        return;
     }
 
     pc = &gPcs[2];
 
-    return pc[pcId - 2].equipmentsIdx[equipmentType];
+    datCalcClearBadStatus(&pc[pcId - 2].unit, flags);
 }
 
 // FUN_0016da50
@@ -1147,696 +1632,32 @@ void datSetEquipmentIdx(s16 pcId, s16 equipmentType, s16 equipmentIdx)
     }
 }
 
-// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
-void datSetDaysSinceApr5(s16 daysSinceApr5)
+// FUN_0016dad0
+void datSetAiTactic(s16 pcId, s16 aiTacticId)
 {
-    u32 currentWeekDay;
+    K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
 
-    datSetFlag(FLG_DAY_IS_MONDAY, false);
-    datSetFlag(FLG_DAY_IS_TUESDAY, false);
-    datSetFlag(FLG_DAY_IS_WEDNESDAY, false);
-    datSetFlag(FLG_DAY_IS_THURSDAY, false);
-    datSetFlag(FLG_DAY_IS_FRIDAY, false);
-    datSetFlag(FLG_DAY_IS_SATURDAY, false);
-    datSetFlag(FLG_DAY_IS_SUNDAY, false);
-    datSetFlag(FLG_DAY_IS_DAYOFF, false);
-
-    if (daysSinceApr5 != gGlobalWork.calendarWork.daysSinceApr5)
+    if (IS_HERO(pcId))
     {
-        FUN_00172890(); 
-        FUN_00172e10();
-        datSetFlag(2444, false);
-    }
-
-    gGlobalWork.calendarWork.daysSinceApr5 = daysSinceApr5;
-
-    currentWeekDay = datGetCurrentWeekDay();
-    switch (currentWeekDay)
-    {
-        case CALENDAR_DAY_SUNDAY:    datSetFlag(FLG_DAY_IS_SUNDAY, true);    break;
-        case CALENDAR_DAY_MONDAY:    datSetFlag(FLG_DAY_IS_MONDAY, true);    break;
-        case CALENDAR_DAY_TUESDAY:   datSetFlag(FLG_DAY_IS_TUESDAY, true);   break;
-        case CALENDAR_DAY_WEDNESDAY: datSetFlag(FLG_DAY_IS_WEDNESDAY, true); break;
-        case CALENDAR_DAY_THURSDAY:  datSetFlag(FLG_DAY_IS_THURSDAY, true);  break;
-        case CALENDAR_DAY_FRIDAY:    datSetFlag(FLG_DAY_IS_FRIDAY, true);    break;
-        case CALENDAR_DAY_SATURDAY:  datSetFlag(FLG_DAY_IS_SATURDAY, true);  break;
-    }
-
-    if (clndIsHolidayOrSunday())
-    {
-        datSetFlag(FLG_DAY_IS_DAYOFF, true);
-    }
-}
-
-// FUN_0016f150
-void datSetTime(u8 time)
-{
-    gGlobalWork.calendarWork.time = time;
-}
-
-// FUN_0016f160
-void datSetDaysSkipTarget(s16 days)
-{
-    gGlobalWork.calendarWork.daysSkipTarget = days;
-}
-
-// FUN_0016f170
-void datSetTimeSkipTarget(s8 time)
-{
-    gGlobalWork.calendarWork.timeSkipTarget = time;
-}
-
-// FUN_0016f180
-void datSetSkipToTarget(u32 val)
-{
-    gGlobalWork.calendarWork.skipToTarget = val;
-}
-
-// FUN_0016f190
-u32 datGetFlag(s32 bit)
-{
-    s32 mask;
-    s32 idx;
-
-    idx = bit / 32;
-    mask = bit % 32;
-
-    return (gGlobalWork.flags[idx] & (1 << mask)) != 0;
-}
-
-// FUN_0016f1f0. See 'g_flags.h' !!!
-void datSetFlag(s32 bit, u8 enabled)
-{
-    s32 mask;
-    s32 idx;
-
-    K_ASSERT(bit >= 0 && bit < FLG_MAX, 1933);
-
-    if (bit == 4982)
-    {
-        printf("hit \n");
-    }
-
-    idx = bit / 32;
-    mask = bit % 32;
-    mask = 1 << mask;
-    
-    if (enabled)
-    {
-        gGlobalWork.flags[idx] |= mask;
+        gGlobalWork.heroUnit.aiTactic = aiTacticId;
         return;
     }
 
-    gGlobalWork.flags[idx] &= ~mask;
+    gPcs[pcId].unit.aiTactic = aiTacticId;
 }
 
-// FUN_0016f2e0
-void datClearFlagAll()
+// FUN_0016db70
+void datInitSocialLink()
 {
-    s32 i;
-    DatGlobal* work;
-    u32* p;
-
-    i = 0;
-    work = &gGlobalWork;
-    for (; i < FLG_ARR_SIZE; i++)
-    {
-        p = work->flags + i;
-        *p = 0;
-    }
+    memset(&gGlobalWork.heroStatus.activeSocialLink, 0, 0x508);
 }
 
-// FUN_0016f320
-void func_0016f320(void)
+// FUN_0016dba0
+s8 datGetSocialLinkLevel(s16 socialLink)
 {
-    gGlobalWork.flags[12] |= 0x8;
-    gGlobalWork.flags[12] |= 0x10;
-    gGlobalWork.flags[12] &= ~0x20;
-    gGlobalWork.flags[12] |= 0x40;
-    gGlobalWork.flags[12] &= ~0x80;
-    gGlobalWork.flags[12] &= ~0x100;
-    gGlobalWork.flags[12] &= ~0x200;
-
-    func_001754a0(1);
+    return gGlobalWork.heroStatus.socialLinkStat[socialLink];
 }
 
-// FUN_0016f450
-void dat0016f450(void)
-{
-    s32 i;
-    DatGlobal* work;
-    u32* p;
-
-    i = 0;
-    work = &gGlobalWork;
-    for (; i < 0x7f; i++)
-    {
-        p = work->auxData + i;
-        *p = 0;
-    }
-}
-
-// FUN_0016f490
-s32 func_0016f490(s16 pcId)
-{
-    s32 count;
-    s32 pcValue;
-
-    count = 0;
-    pcValue = pcId;
-    if (pcValue == -1)
-    {
-        s32 index;
-        DatEquipment* equipment;
-
-        index = 0;
-        equipment = (DatEquipment*)D_00833E80;
-        for (; index < 20; index++)
-        {
-            if (equipment[index].id != 0)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    if (pcValue == 1)
-    {
-        s32 index;
-        DatEquipment* equipment;
-
-        index = 0;
-        equipment = gGlobalWork.heroEquip.equipments;
-        for (; index < 300; index++)
-        {
-            if (equipment[index].id != 0)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    if (pcValue >= 0x100)
-    {
-        s32 index;
-        u8* equipment;
-
-        index = 0;
-        equipment = D_00834010 + pcValue * sizeof(DatPc);
-        for (; index < 4; index++)
-        {
-            if (*(u16*)(equipment + index * sizeof(DatEquipment) - 0x36948) != 0)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    {
-        s32 index;
-        u8* equipment;
-
-        index = 0;
-        equipment = D_00834010 + pcValue * sizeof(DatPc);
-        for (; index < 4; index++)
-        {
-            if (*(u16*)(equipment + index * sizeof(DatEquipment) - 0x66c) != 0)
-            {
-                count++;
-            }
-        }
-    }
-
-    return count;
-}
-
-// FUN_0016f630
-u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx)
-{
-    s32 offset;
-    u8* equipment;
-
-    if (pcId == -1)
-    {
-        offset = equipmentIdx * 0x14;
-        return *(u16*)(D_00833E80 + offset);
-    }
-    else if (IS_HERO(pcId))
-    {
-        offset = equipmentIdx * 0x14;
-        equipment = (u8*)gGlobalWork.heroEquip.equipments;
-        return *(u16*)(equipment + offset);
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u16*)(D_007FD6C8 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u16*)(D_008339A4 + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016f720
-u32 func_0016f720(s16 pcId, s32 equipmentIdx)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        return *(u32*)(D_00833E84 + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx].type;
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u32*)(D_007FD6CC + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u32*)(D_008339A8 + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016f810
-u8 func_0016f810(s16 pcId, s32 equipmentIdx)
-{
-    u8* base;
-
-    if (pcId == -1)
-    {
-        return *(u8*)(D_00833E88 + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = (u8*)gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx * 0x14 + 8];
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u8*)(D_007FD6D0 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u8*)(D_008339AC + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016f900
-u8 datGetEquipmentEffect(s16 pcId, s32 equipmentIdx)
-{
-    u8* base;
-
-    if (pcId == -1)
-    {
-        return *(u8*)(D_00833E89 + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = (u8*)gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx * 0x14 + 9];
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u8*)(D_007FD6D1 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u8*)(D_008339AD + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016f9f0
-u16 func_0016f9f0(s16 pcId, s32 equipmentIdx)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        return *(u16*)(D_00833E8A + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx].firstStat;
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u16*)(D_007FD6D2 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u16*)(D_008339AE + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016fae0
-u16 func_0016fae0(s16 pcId, s32 equipmentIdx)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        return *(u16*)(D_00833E8C + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx].secondStat;
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u16*)(D_007FD6D4 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u16*)(D_008339B0 + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016fbd0
-u16 func_0016fbd0(s16 pcId, s32 equipmentIdx)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        return *(u16*)(D_00833E8E + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx].unk_0e;
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u16*)(D_007FD6D6 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u16*)(D_008339B2 + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016fcc0
-u16 func_0016fcc0(s16 pcId, s32 equipmentIdx)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        return *(u16*)(D_00833E90 + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        return base[equipmentIdx].unk_10;
-    }
-    else if (pcId >= 0x100)
-    {
-        return *(u16*)(D_007FD6D8 + pcId * 0x364 + equipmentIdx * 0x14);
-    }
-
-    return *(u16*)(D_008339B4 + pcId * 0x364 + equipmentIdx * 0x14);
-}
-
-// FUN_0016fdb0
-DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx)
-{
-    s32 pcIndex;
-
-    if (pcId == -1)
-    {
-        return (DatEquipment*)(D_00833E80 + equipmentIdx * 0x14);
-    }
-    else if (IS_HERO(pcId))
-    {
-        return &gGlobalWork.heroEquip.equipments[equipmentIdx];
-    }
-    else if (pcId >= 0x100)
-    {
-        pcIndex = pcId - 0x102;
-        return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
-                               equipmentIdx * 0x14 + 0x180);
-    }
-
-    pcIndex = pcId - 2;
-    return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
-                           equipmentIdx * 0x14 + 0x5c);
-}
-
-// FUN_0016fea0
-void func_0016fea0(s16 pcId, s32 equipmentIdx, u16 id)
-{
-    u8* base;
-
-    if (pcId == -1)
-    {
-        *(u16*)(D_00833E80 + equipmentIdx * 0x14) = id;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = (u8*)gGlobalWork.heroEquip.equipments;
-        *(u16*)&base[equipmentIdx * 0x14] = id;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u16*)(D_007FD6C8 + pcId * 0x364 + equipmentIdx * 0x14) = id;
-    }
-    else
-    {
-        *(u16*)(D_008339A4 + pcId * 0x364 + equipmentIdx * 0x14) = id;
-    }
-}
-
-// FUN_0016ff90
-void func_0016ff90(s16 pcId, s32 equipmentIdx, u32 type)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        *(u32*)(D_00833E84 + equipmentIdx * 0x14) = type;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx].type = type;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u32*)(D_007FD6CC + pcId * 0x364 + equipmentIdx * 0x14) = type;
-    }
-    else
-    {
-        *(u32*)(D_008339A8 + pcId * 0x364 + equipmentIdx * 0x14) = type;
-    }
-}
-
-// FUN_00170080
-void func_00170080(s16 pcId, s32 equipmentIdx, u8 value)
-{
-    u8* base;
-
-    if (pcId == -1)
-    {
-        *(u8*)(D_00833E88 + equipmentIdx * 0x14) = value;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = (u8*)gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx * 0x14 + 8] = value;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u8*)(D_007FD6D0 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-    else
-    {
-        *(u8*)(D_008339AC + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-}
-
-// FUN_00170170
-void func_00170170(s16 pcId, s32 equipmentIdx, u8 effect)
-{
-    u8* base;
-
-    if (pcId == -1)
-    {
-        *(u8*)(D_00833E89 + equipmentIdx * 0x14) = effect;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = (u8*)gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx * 0x14 + 9] = effect;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u8*)(D_007FD6D1 + pcId * 0x364 + equipmentIdx * 0x14) = effect;
-    }
-    else
-    {
-        *(u8*)(D_008339AD + pcId * 0x364 + equipmentIdx * 0x14) = effect;
-    }
-}
-
-// FUN_00170260
-void func_00170260(s16 pcId, s32 equipmentIdx, u16 value)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        *(u16*)(D_00833E8A + equipmentIdx * 0x14) = value;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx].firstStat = value;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u16*)(D_007FD6D2 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-    else
-    {
-        *(u16*)(D_008339AE + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-}
-
-// FUN_00170350
-void func_00170350(s16 pcId, s32 equipmentIdx, u16 value)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        *(u16*)(D_00833E8C + equipmentIdx * 0x14) = value;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx].secondStat = value;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u16*)(D_007FD6D4 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-    else
-    {
-        *(u16*)(D_008339B0 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-}
-
-// FUN_00170440
-void func_00170440(s16 pcId, s32 equipmentIdx, u16 value)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        *(u16*)(D_00833E8E + equipmentIdx * 0x14) = value;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx].unk_0e = value;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u16*)(D_007FD6D6 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-    else
-    {
-        *(u16*)(D_008339B2 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-}
-
-// FUN_00170530
-void func_00170530(s16 pcId, s32 equipmentIdx, u16 value)
-{
-    DatEquipment* base;
-
-    if (pcId == -1)
-    {
-        *(u16*)(D_00833E90 + equipmentIdx * 0x14) = value;
-    }
-    else if (IS_HERO(pcId))
-    {
-        base = gGlobalWork.heroEquip.equipments;
-        base[equipmentIdx].unk_10 = value;
-    }
-    else if (pcId >= 0x100)
-    {
-        *(u16*)(D_007FD6D8 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-    else
-    {
-        *(u16*)(D_008339B4 + pcId * 0x364 + equipmentIdx * 0x14) = value;
-    }
-}
-
-// FUN_0016c670
-u16 func_0016c670(s16 pcId)
-{
-    if (IS_HERO(pcId))
-    {
-        return func_00300100(&gGlobalWork.heroUnit);
-    }
-
-    return func_00300100(&gPcs[pcId - 2].unit);
-}
-
-// FUN_0016cc00
-u16 func_0016cc00(s16 pcId)
-{
-    u8 level;
-
-    if (IS_HERO(pcId))
-    {
-        level = datCalcGetLevel(&gGlobalWork.heroUnit);
-    }
-    else
-    {
-        DatPc* pc = &gPcs[2];
-        level = datCalcGetLevel(&pc[pcId - 2].unit);
-    }
-
-    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
-}
-
-// FUN_0016ccb0
-u16 func_0016ccb0(s16 pcId)
-{
-    u8 level;
-
-    if (IS_HERO(pcId))
-    {
-        level = datCalcGetLevel(&gGlobalWork.heroUnit);
-    }
-    else
-    {
-        DatPc* pc = &gPcs[2];
-        level = datCalcGetLevel(&pc[pcId - 2].unit);
-    }
-
-    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
-}
-
-
-/* Removing this loses FUN_0016d280 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
-// FUN_0016d280
-#pragma opt_loop_invariants on
-u8 func_0016d280(s32 exp)
-{
-    u8 level = 0;
-    u8 index = 0;
-
-    while (index < MAX_CHARACTER_LEVEL)
-    {
-        if (exp < (s32)sPlayerExpThreshold[index])
-        {
-            return level;
-        }
-        level++;
-        index++;
-    }
-
-    return MAX_CHARACTER_LEVEL;
-}
 #pragma opt_loop_invariants off
 
 /* Removing this loses FUN_0016dbc0 (MATCH nd0 -> MISMATCH nd108) - measured W161. */
@@ -1882,6 +1703,7 @@ u8 func_0016dbc0(s16 socialLink, u32* personaId)
 
     return false;
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_0016dce0
@@ -1898,6 +1720,35 @@ u32 func_0016dce0(s16 socialLink)
 s8 func_0016dd20(s16 socialLink)
 {
     return gGlobalWork.heroStatus.socialLinkData[0x78 + socialLink];
+}
+
+// FUN_0016dd40
+s16 datGetActiveSocialLink()
+{
+    return gGlobalWork.heroStatus.activeSocialLink;
+}
+
+// FUN_0016dd50
+s32 datGetMoney()
+{
+    return gGlobalWork.heroMoney;
+}
+
+// FUN_0016dd60
+s16 datGetPartyId(s32 idx)
+{
+    return gGlobalWork.partyIds[idx];
+}
+
+// FUN_0016dd80
+s32 datGetAiTactic(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroUnit.aiTactic;
+    }
+
+    return gPcs[pcId].unit.aiTactic;
 }
 
 // FUN_0016ddd0
@@ -1925,7 +1776,6 @@ u8 func_0016de50(s32 index)
     return gGlobalWork.heroStatus.socialLinkData[0x4df + index];
 }
 
-/* Removing this loses FUN_0016deb0 (MATCH nd0 -> MISMATCH nd47) - measured W161. */
 // FUN_0016deb0
 #pragma opt_loop_invariants on
 s16 func_0016deb0(s16 arcana)
@@ -1948,6 +1798,7 @@ s16 func_0016deb0(s16 arcana)
 
     return bestLink;
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_0016df30
@@ -1972,6 +1823,7 @@ s8 func_0016df30(s16 socialLink)
 }
 
 #pragma opt_propagation off
+u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 // FUN_0016dfb0
 void func_0016dfb0(s16 socialLink)
 {
@@ -2006,6 +1858,31 @@ void func_0016dfb0(s16 socialLink)
         FUN_001724A0(finalSocialLink, 1, true);
     }
 }
+
+// FUN_0016e100
+u32 datSocialLinkLevelIsNotZero(s16 socialLink)
+{
+    u32 isValidSocialLink;
+
+    if (socialLink < SOCIAL_LINK_SEES || socialLink >= 30)
+    {
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    K_ASSERT(isValidSocialLink, 1429);
+
+    if (gGlobalWork.heroStatus.socialLinkStat[socialLink] <= 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 #pragma opt_propagation on
 
 // FUN_0016e190
@@ -2086,6 +1963,7 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     *progress = table[(u8)level - 1];
     FUN_001723A0(socialLink, level + 1, true);
 }
+
 #pragma opt_propagation off
 // FUN_0016e410
 void func_0016e410(s16 socialLink, s8 level)
@@ -2307,6 +2185,48 @@ s16 func_0016e850(s16 socialLink)
     return day;
 }
 
+// FUN_0016e920
+void datSetActiveSocialLink(u16 activeSocialLink)
+{
+    gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
+}
+
+// FUN_0016e930
+void datSetMoney(u32 money)
+{
+    K_ASSERT(money <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = money;
+}
+
+// FUN_0016e990
+void datSetPartyId(s32 idx, s16 pcId)
+{
+    gGlobalWork.partyIds[idx] = pcId;
+}
+
+// FUN_0016e9b0
+u32 datAddMoney(s32 amount)
+{
+    s32 finalMoney;
+
+    finalMoney = amount + gGlobalWork.heroMoney;
+    if (finalMoney > 9999999)
+    {
+        finalMoney = 9999999;
+    }
+    else if (finalMoney < 0)
+    {
+        finalMoney = 0;
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
+
+    return finalMoney;
+}
+
 // FUN_0016ea40
 s32 func_0016ea40(s32 amount)
 {
@@ -2319,7 +2239,6 @@ s32 func_0016ea40(s32 amount)
     return -(total < 0);
 }
 
-/* Removing this loses FUN_0016ea80 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0016ea80
 u32 func_0016ea80(void)
@@ -2355,6 +2274,72 @@ u32 func_0016ea80(void)
     {
         gGlobalWork.partyIds[3] = scrGetIntPara(1);
     }
+
+    return true;
+}
+
+// FUN_0016eb80
+#pragma optimization_level 1
+u32 datScrCmd_SAVE_PARTY()
+{
+    s16 i;
+    u32 offset;
+    DatGlobal* globalWork;
+    s16 value;
+    s16* savedIds;
+
+    i = 0;
+    globalWork = &gGlobalWork;
+    savedIds = sSavedPartyIds;
+    for (; i < 4; i++)
+    {
+        offset = (u32)(s16)i * 2;
+        value = *(s16*)((u8*)globalWork + 0x44e0 + offset);
+        *(s16*)((u8*)savedIds + offset) = value;
+    }
+
+    return true;
+}
+
+#pragma optimization_level 2
+
+/* W357 measured optimization_level 1: without nd8/object96 (MISMATCH), with nd0/object96 (MATCH); retained. */
+// FUN_0016ebe0
+#pragma optimization_level 1
+u32 datScrCmd_RESTORE_PARTY()
+{
+    s16 i;
+    u32 offset;
+    s16* savedIds;
+    s16 value;
+    DatGlobal* globalWork;
+
+    i = 0;
+    savedIds = sSavedPartyIds;
+    globalWork = &gGlobalWork;
+    for (; i < 4; i++)
+    {
+        offset = (u32)(s16)i * 2;
+        value = *(s16*)((u8*)savedIds + offset);
+        *(s16*)((u8*)globalWork + 0x44e0 + offset) = value;
+    }
+    return true;
+}
+
+#pragma optimization_level 2
+
+// FUN_0016ec40
+u32 datScrCmd_CLEAR_PARTY_ID()
+{
+    gGlobalWork.partyIds[scrGetIntPara(0)] = PC_NONE;
+
+    return true;
+}
+
+// FUN_0016ec80
+u32 datScrCmd_GET_PARTY_ID()
+{
+    scrSetIntReturnVal(gGlobalWork.partyIds[scrGetIntPara(0)]);
 
     return true;
 }
@@ -2396,6 +2381,732 @@ u32 func_0016ecd0(void)
 
     return true;
 }
+
+// FUN_0016edd0
+u32 datScrCmd_GET_MONEY()
+{
+    scrSetIntReturnVal(gGlobalWork.heroMoney);
+
+    return true;
+}
+
+// FUN_0016ee00
+u32 datScrCmd_ADD_MONEY()
+{
+    s32 baseMoney;
+    s32 finalMoney;
+
+    baseMoney = gGlobalWork.heroMoney;
+    finalMoney = baseMoney + scrGetIntPara(0);
+    if (finalMoney > 9999999)
+    {
+        finalMoney = 9999999;
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
+
+    return true;
+}
+
+// FUN_0016ee90
+u32 datScrCmd_REMOVE_MONEY()
+{
+    s32 baseMoney;
+    s32 finalMoney;
+
+    baseMoney = gGlobalWork.heroMoney;
+    if (baseMoney < scrGetIntPara(0))
+    {
+        finalMoney = 0;
+    }
+    else
+    {
+        finalMoney = baseMoney - scrGetIntPara(0);
+    }
+
+    K_ASSERT((u32)finalMoney <= 9999999, 1674);
+
+    gGlobalWork.heroMoney = finalMoney;
+
+    return true;
+}
+
+// FUN_0016ef20
+s16 datGetDaysSinceApr5()
+{
+    return gGlobalWork.calendarWork.daysSinceApr5;
+}
+
+// FUN_0016ef30
+u8 datGetTime()
+{
+    return gGlobalWork.calendarWork.time;
+}
+
+// FUN_0016ef40
+s16 datGetDaysSkipTarget()
+{
+    return gGlobalWork.calendarWork.daysSkipTarget;
+}
+
+// FUN_0016ef50
+u8 datGetTimeSkipTarget()
+{
+    return gGlobalWork.calendarWork.timeSkipTarget;
+}
+
+// FUN_0016ef60
+u32 datGetSkipToTarget()
+{
+    return gGlobalWork.calendarWork.skipToTarget;
+}
+
+
+/* Removing this loses FUN_0016d280 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
+// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
+void datSetDaysSinceApr5(s16 daysSinceApr5)
+{
+    u32 currentWeekDay;
+
+    datSetFlag(FLG_DAY_IS_MONDAY, false);
+    datSetFlag(FLG_DAY_IS_TUESDAY, false);
+    datSetFlag(FLG_DAY_IS_WEDNESDAY, false);
+    datSetFlag(FLG_DAY_IS_THURSDAY, false);
+    datSetFlag(FLG_DAY_IS_FRIDAY, false);
+    datSetFlag(FLG_DAY_IS_SATURDAY, false);
+    datSetFlag(FLG_DAY_IS_SUNDAY, false);
+    datSetFlag(FLG_DAY_IS_DAYOFF, false);
+
+    if (daysSinceApr5 != gGlobalWork.calendarWork.daysSinceApr5)
+    {
+        FUN_00172890(); 
+        FUN_00172e10();
+        datSetFlag(2444, false);
+    }
+
+    gGlobalWork.calendarWork.daysSinceApr5 = daysSinceApr5;
+
+    currentWeekDay = datGetCurrentWeekDay();
+    switch (currentWeekDay)
+    {
+        case CALENDAR_DAY_SUNDAY:    datSetFlag(FLG_DAY_IS_SUNDAY, true);    break;
+        case CALENDAR_DAY_MONDAY:    datSetFlag(FLG_DAY_IS_MONDAY, true);    break;
+        case CALENDAR_DAY_TUESDAY:   datSetFlag(FLG_DAY_IS_TUESDAY, true);   break;
+        case CALENDAR_DAY_WEDNESDAY: datSetFlag(FLG_DAY_IS_WEDNESDAY, true); break;
+        case CALENDAR_DAY_THURSDAY:  datSetFlag(FLG_DAY_IS_THURSDAY, true);  break;
+        case CALENDAR_DAY_FRIDAY:    datSetFlag(FLG_DAY_IS_FRIDAY, true);    break;
+        case CALENDAR_DAY_SATURDAY:  datSetFlag(FLG_DAY_IS_SATURDAY, true);  break;
+    }
+
+    if (clndIsHolidayOrSunday())
+    {
+        datSetFlag(FLG_DAY_IS_DAYOFF, true);
+    }
+}
+// FUN_0016f150
+void datSetTime(u8 time)
+{
+    gGlobalWork.calendarWork.time = time;
+}
+// FUN_0016f160
+void datSetDaysSkipTarget(s16 days)
+{
+    gGlobalWork.calendarWork.daysSkipTarget = days;
+}
+
+// FUN_0016f170
+void datSetTimeSkipTarget(s8 time)
+{
+    gGlobalWork.calendarWork.timeSkipTarget = time;
+}
+
+// FUN_0016f180
+void datSetSkipToTarget(u32 val)
+{
+    gGlobalWork.calendarWork.skipToTarget = val;
+}
+
+// FUN_0016f190
+u32 datGetFlag(s32 bit)
+{
+    s32 mask;
+    s32 idx;
+
+    idx = bit / 32;
+    mask = bit % 32;
+
+    return (gGlobalWork.flags[idx] & (1 << mask)) != 0;
+}
+
+/* Removing this loses FUN_0016deb0 (MATCH nd0 -> MISMATCH nd47) - measured W161. */
+// FUN_0016f1f0. See 'g_flags.h' !!!
+void datSetFlag(s32 bit, u8 enabled)
+{
+    s32 mask;
+    s32 idx;
+
+    K_ASSERT(bit >= 0 && bit < FLG_MAX, 1933);
+
+    if (bit == 4982)
+    {
+        printf("hit \n");
+    }
+
+    idx = bit / 32;
+    mask = bit % 32;
+    mask = 1 << mask;
+    
+    if (enabled)
+    {
+        gGlobalWork.flags[idx] |= mask;
+        return;
+    }
+
+    gGlobalWork.flags[idx] &= ~mask;
+}
+// FUN_0016f2e0
+void datClearFlagAll()
+{
+    s32 i;
+    DatGlobal* work;
+    u32* p;
+
+    i = 0;
+    work = &gGlobalWork;
+    for (; i < FLG_ARR_SIZE; i++)
+    {
+        p = work->flags + i;
+        *p = 0;
+    }
+}
+
+// FUN_0016f320
+void func_0016f320(void)
+{
+    gGlobalWork.flags[12] |= 0x8;
+    gGlobalWork.flags[12] |= 0x10;
+    gGlobalWork.flags[12] &= ~0x20;
+    gGlobalWork.flags[12] |= 0x40;
+    gGlobalWork.flags[12] &= ~0x80;
+    gGlobalWork.flags[12] &= ~0x100;
+    gGlobalWork.flags[12] &= ~0x200;
+
+    func_001754a0(1);
+}
+// FUN_0016f380
+u32 FUN_0016f380(u32 idx)
+{
+    K_ASSERT((s32)idx < 128, 2001);
+
+    return gGlobalWork.auxData[idx];
+}
+
+// FUN_0016f3e0
+void FUN_0016f3e0(u32 idx, u32 value)
+{
+    K_ASSERT((s32)idx < 128, 2007);
+
+    gGlobalWork.auxData[idx] = value;
+}
+// FUN_0016f450
+void dat0016f450(void)
+{
+    s32 i;
+    DatGlobal* work;
+    u32* p;
+
+    i = 0;
+    work = &gGlobalWork;
+    for (; i < 0x7f; i++)
+    {
+        p = work->auxData + i;
+        *p = 0;
+    }
+}
+
+// FUN_0016f490
+s32 func_0016f490(s16 pcId)
+{
+    s32 count;
+    s32 pcValue;
+
+    count = 0;
+    pcValue = pcId;
+    if (pcValue == -1)
+    {
+        s32 index;
+        DatEquipment* equipment;
+
+        index = 0;
+        equipment = (DatEquipment*)D_00833E80;
+        for (; index < 20; index++)
+        {
+            if (equipment[index].id != 0)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    if (pcValue == 1)
+    {
+        s32 index;
+        DatEquipment* equipment;
+
+        index = 0;
+        equipment = gGlobalWork.heroEquip.equipments;
+        for (; index < 300; index++)
+        {
+            if (equipment[index].id != 0)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    if (pcValue >= 0x100)
+    {
+        s32 index;
+        u8* equipment;
+
+        index = 0;
+        equipment = D_00834010 + pcValue * sizeof(DatPc);
+        for (; index < 4; index++)
+        {
+            if (*(u16*)(equipment + index * sizeof(DatEquipment) - 0x36948) != 0)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    {
+        s32 index;
+        u8* equipment;
+
+        index = 0;
+        equipment = D_00834010 + pcValue * sizeof(DatPc);
+        for (; index < 4; index++)
+        {
+            if (*(u16*)(equipment + index * sizeof(DatEquipment) - 0x66c) != 0)
+            {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+// FUN_0016f630
+u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx)
+{
+    s32 offset;
+    u8* equipment;
+
+    if (pcId == -1)
+    {
+        offset = equipmentIdx * 0x14;
+        return *(u16*)(D_00833E80 + offset);
+    }
+    else if (IS_HERO(pcId))
+    {
+        offset = equipmentIdx * 0x14;
+        equipment = (u8*)gGlobalWork.heroEquip.equipments;
+        return *(u16*)(equipment + offset);
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u16*)(D_007FD6C8 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u16*)(D_008339A4 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016f720
+u32 func_0016f720(s16 pcId, s32 equipmentIdx)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        return *(u32*)(D_00833E84 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx].type;
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u32*)(D_007FD6CC + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u32*)(D_008339A8 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016f810
+u8 func_0016f810(s16 pcId, s32 equipmentIdx)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        return *(u8*)(D_00833E88 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx * 0x14 + 8];
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u8*)(D_007FD6D0 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u8*)(D_008339AC + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016f900
+u8 datGetEquipmentEffect(s16 pcId, s32 equipmentIdx)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        return *(u8*)(D_00833E89 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx * 0x14 + 9];
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u8*)(D_007FD6D1 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u8*)(D_008339AD + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+/* Removing this loses FUN_0016ea80 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
+// FUN_0016f9f0
+u16 func_0016f9f0(s16 pcId, s32 equipmentIdx)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        return *(u16*)(D_00833E8A + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx].firstStat;
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u16*)(D_007FD6D2 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u16*)(D_008339AE + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016fae0
+u16 func_0016fae0(s16 pcId, s32 equipmentIdx)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        return *(u16*)(D_00833E8C + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx].secondStat;
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u16*)(D_007FD6D4 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u16*)(D_008339B0 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+// FUN_0016fbd0
+u16 func_0016fbd0(s16 pcId, s32 equipmentIdx)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        return *(u16*)(D_00833E8E + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx].unk_0e;
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u16*)(D_007FD6D6 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u16*)(D_008339B2 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016fcc0
+u16 func_0016fcc0(s16 pcId, s32 equipmentIdx)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        return *(u16*)(D_00833E90 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx].unk_10;
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u16*)(D_007FD6D8 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u16*)(D_008339B4 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016fdb0
+DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx)
+{
+    s32 pcIndex;
+
+    if (pcId == -1)
+    {
+        return (DatEquipment*)(D_00833E80 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        return &gGlobalWork.heroEquip.equipments[equipmentIdx];
+    }
+    else if (pcId >= 0x100)
+    {
+        pcIndex = pcId - 0x102;
+        return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
+                               equipmentIdx * 0x14 + 0x180);
+    }
+
+    pcIndex = pcId - 2;
+    return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
+                           equipmentIdx * 0x14 + 0x5c);
+}
+
+// FUN_0016fea0
+void func_0016fea0(s16 pcId, s32 equipmentIdx, u16 id)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        *(u16*)(D_00833E80 + equipmentIdx * 0x14) = id;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        *(u16*)&base[equipmentIdx * 0x14] = id;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u16*)(D_007FD6C8 + pcId * 0x364 + equipmentIdx * 0x14) = id;
+    }
+    else
+    {
+        *(u16*)(D_008339A4 + pcId * 0x364 + equipmentIdx * 0x14) = id;
+    }
+}
+
+
+// FUN_0016ff90
+void func_0016ff90(s16 pcId, s32 equipmentIdx, u32 type)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        *(u32*)(D_00833E84 + equipmentIdx * 0x14) = type;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx].type = type;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u32*)(D_007FD6CC + pcId * 0x364 + equipmentIdx * 0x14) = type;
+    }
+    else
+    {
+        *(u32*)(D_008339A8 + pcId * 0x364 + equipmentIdx * 0x14) = type;
+    }
+}
+
+
+// FUN_00170080
+void func_00170080(s16 pcId, s32 equipmentIdx, u8 value)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        *(u8*)(D_00833E88 + equipmentIdx * 0x14) = value;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx * 0x14 + 8] = value;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u8*)(D_007FD6D0 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+    else
+    {
+        *(u8*)(D_008339AC + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+}
+
+// FUN_00170170
+void func_00170170(s16 pcId, s32 equipmentIdx, u8 effect)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        *(u8*)(D_00833E89 + equipmentIdx * 0x14) = effect;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx * 0x14 + 9] = effect;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u8*)(D_007FD6D1 + pcId * 0x364 + equipmentIdx * 0x14) = effect;
+    }
+    else
+    {
+        *(u8*)(D_008339AD + pcId * 0x364 + equipmentIdx * 0x14) = effect;
+    }
+}
+
+// FUN_00170260
+void func_00170260(s16 pcId, s32 equipmentIdx, u16 value)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        *(u16*)(D_00833E8A + equipmentIdx * 0x14) = value;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx].firstStat = value;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u16*)(D_007FD6D2 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+    else
+    {
+        *(u16*)(D_008339AE + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+}
+
+// FUN_00170350
+void func_00170350(s16 pcId, s32 equipmentIdx, u16 value)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        *(u16*)(D_00833E8C + equipmentIdx * 0x14) = value;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx].secondStat = value;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u16*)(D_007FD6D4 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+    else
+    {
+        *(u16*)(D_008339B0 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+}
+
+// FUN_00170440
+void func_00170440(s16 pcId, s32 equipmentIdx, u16 value)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        *(u16*)(D_00833E8E + equipmentIdx * 0x14) = value;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx].unk_0e = value;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u16*)(D_007FD6D6 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+    else
+    {
+        *(u16*)(D_008339B2 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+}
+
+// FUN_00170530
+void func_00170530(s16 pcId, s32 equipmentIdx, u16 value)
+{
+    DatEquipment* base;
+
+    if (pcId == -1)
+    {
+        *(u16*)(D_00833E90 + equipmentIdx * 0x14) = value;
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = gGlobalWork.heroEquip.equipments;
+        base[equipmentIdx].unk_10 = value;
+    }
+    else if (pcId >= 0x100)
+    {
+        *(u16*)(D_007FD6D8 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+    else
+    {
+        *(u16*)(D_008339B4 + pcId * 0x364 + equipmentIdx * 0x14) = value;
+    }
+}
+
+
+
+
+
+
+
 #pragma opt_loop_invariants off
 
 // FUN_00170620
@@ -2420,43 +3131,6 @@ s16 func_001706c0(s16 pcId, s16 index)
 void func_00170710(s16 pcId, s16 index, u16 value)
 {
     *(u16*)(D_008339F6 + pcId * sizeof(DatPc) + index * 4) = value;
-}
-
-static inline u16 func_00170760_impl(s16 pcId, s16 index)
-{
-    u8* idBase;
-    u8* heroEquip;
-    s32 address;
-    s32 i;
-
-    if (pcId == PC_HERO)
-    {
-        heroEquip = *(u8* volatile /* Removing this inline-helper qualifier loses func_00170c00 (MATCH nd0 -> MISMATCH nd15, size 348 -> 348) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
-        address = index * 2;
-        address += (s32)heroEquip;
-        return *(u16*)(address - 8000);
-    }
-    if (pcId == -1)
-    {
-        return *(u16*)(D_00831CE0 + index * 2);
-    }
-    if (pcId < 0x100)
-    {
-        goto invalid;
-    }
-
-    i = 0;
-    idBase = (u8*)gPcs + pcId * 0x364;
-    for (; i < 20; i++)
-    {
-        if (*(u16*)(idBase + i * 4 - 0x367b8) == pcId)
-        {
-            return *(u16*)(D_007FD85A + pcId * 0x364 + i * 4);
-        }
-    }
-    return 0;
-invalid:
-    return 0;
 }
 
 // FUN_00170760
@@ -2496,7 +3170,6 @@ u16 func_00170760(s16 pcId, s16 index)
 invalid:
     return 0;
 }
-
 
 // FUN_00170860 NONMATCHING
 void func_00170860(s16 pcId, s16 index, u16 value)
@@ -2614,78 +3287,6 @@ u32 func_00170c00(s16 pcId, s16 index, s16 delta)
     return value;
 }
 
-static inline void* func_00170d60_impl(s16 id)
-{
-    if (id < 1000)
-    {
-        return D_007CDFE4 + id * 0x28;
-    }
-    return NULL;
-}
-
-static inline void* func_00170da0_impl(s16 id)
-{
-    if (id >= 1000 && id < 2000)
-    {
-        return D_007CDFDC + (id - 1000) * 0x20;
-    }
-    return NULL;
-}
-
-static inline void* func_00170df0_impl(s16 id)
-{
-    if (id >= 2000 && id < 3000)
-    {
-        return D_007CDFD8 + (id - 2000) * 0x20;
-    }
-    return NULL;
-}
-
-static inline void* func_00170e40_impl(s16 id)
-{
-    if (id >= 3000 && id < 4000)
-    {
-        return D_007CDFD4 + (id - 3000) * 0x24;
-    }
-    return NULL;
-}
-
-static inline void* func_00170e90_impl(s16 id)
-{
-    if (id >= 3000)
-    {
-        return D_007CDFCC + (id - 4000) * 0x1c;
-    }
-    return NULL;
-}
-
-static inline void* func_00170ed0_impl(s16 id, s32* category)
-{
-    if (id < 1000)
-    {
-        *category = 0;
-        return func_00170d60_impl(id);
-    }
-    if (id < 2000)
-    {
-        *category = 1;
-        return func_00170da0_impl(id);
-    }
-    if (id < 3000)
-    {
-        *category = 2;
-        return func_00170df0_impl(id);
-    }
-    if (id < 4000)
-    {
-        *category = 3;
-        return func_00170e40_impl(id);
-    }
-
-    *category = 4;
-    return func_00170e90_impl(id);
-}
-
 // FUN_00170d60
 void* func_00170d60(s16 id)
 {
@@ -2769,6 +3370,7 @@ s16 func_00171060(s16 id)
     return id - 5000;
 }
 
+#pragma alias datIncrementSocialLinkCounter FUN_001718b0
 // FUN_00171110
 const char* func_00171110(s16 id, s16 field)
 {
@@ -2797,6 +3399,7 @@ const char* func_00171110(s16 id, s16 field)
     return ((const char**)D_005DE040)[idValue];
 }
 
+#pragma alias datDecreaseSocialLinkPoints FUN_00171960
 // FUN_00171250
 u32 func_00171250(s16 id)
 {
@@ -2819,6 +3422,7 @@ u32 func_00171250(s16 id)
     return 4;
 }
 
+#pragma alias datGetSocialLinkPoints FUN_00171ac0
 // FUN_001712d0
 u16 func_001712d0(s16 id)
 {
@@ -2855,6 +3459,18 @@ category3:
     return *(u16*)(resource + 0x16);
 invalid:
     return 0;
+}
+
+#pragma alias datResetSocialLinkPoints FUN_00171b50
+// FUN_00171360
+u32 dat00171360(u16 param_1)
+{
+    if (param_1 < 5000)
+    {
+        return 0;
+    }
+
+    return param_1 < 0x1408;
 }
 
 // FUN_00171390
@@ -2895,6 +3511,7 @@ void func_00171390(u32 flag)
         1u << (((u16)flag - 0x1188) % 32);
 }
 
+#pragma alias datSetSocialLinkCounter FUN_00171e90
 // FUN_001714b0
 s32 func_001714b0(s32 index)
 {
@@ -2941,6 +3558,7 @@ u8 func_00171550(s16 unused1, s16 unused2, u16 index)
     return (D_007CDFB4 + index * 0x20)[0x1f];
 }
 
+#pragma alias datSetSocialLinkRankUnlocked FUN_001723a0
 // FUN_001715f0
 u32 func_001715f0(s16 id)
 {
@@ -2997,6 +3615,14 @@ u32 func_001715f0(s16 id)
     return resource[0] == 'd' ? resource[1] : 0xff;
 }
 
+#pragma alias datSetSocialLinkRankAcknowledged FUN_001724a0
+// FUN_001717b0
+s16 *datGetActiveSocialLinkPtr()
+{
+    return &gGlobalWork.heroStatus.activeSocialLink;
+}
+
+#pragma alias datApplyPendingSocialLinkRank FUN_001725a0
 // FUN_001717C0
 u8 FUN_001717c0(s32 socialLink)
 {
@@ -3034,7 +3660,7 @@ socialUnavailable:
     return false;
 }
 
-#pragma alias datIncrementSocialLinkCounter FUN_001718b0
+#pragma alias datSocialLinkHasPendingRank FUN_00172660
 // FUN_001718B0
 void datIncrementSocialLinkCounter(s32 socialLink)
 {
@@ -3062,7 +3688,7 @@ void datIncrementSocialLinkCounter(s32 socialLink)
     }
 }
 
-#pragma alias datDecreaseSocialLinkPoints FUN_00171960
+#pragma alias datSocialEventRecordHasData FUN_00172750
 // FUN_00171960
 void datDecreaseSocialLinkPoints(s32 socialLink, s32 points)
 {
@@ -3122,7 +3748,6 @@ void datDecreaseSocialLinkPoints(s32 socialLink, s32 points)
     }
 }
 
-#pragma alias datGetSocialLinkPoints FUN_00171ac0
 // FUN_00171AC0
 s16 datGetSocialLinkPoints(s32 socialLink)
 {
@@ -3141,7 +3766,6 @@ s16 datGetSocialLinkPoints(s32 socialLink)
     return ((s16*)(globalWork->heroStatus.socialLinkData + 0x5E))[socialLink];
 }
 
-#pragma alias datResetSocialLinkPoints FUN_00171b50
 // FUN_00171B50
 void datResetSocialLinkPoints(s32 socialLink)
 {
@@ -3174,6 +3798,8 @@ void datResetSocialLinkPoints(s32 socialLink)
     K_ASSERT(secondValid, 0xAF0);
     ((s16*)(globalWork->heroStatus.socialLinkData + 0x5E))[socialLink] = defaultPoints;
 }
+
+/* W357 measured optimization_level 0: without nd10/object24 (MISMATCH), with nd0/object44 (MATCH); window 48; retained. */
 
 // FUN_00171C40
 void FUN_00171c40(s32 socialLink, s32 enabled)
@@ -3261,7 +3887,6 @@ void FUN_00171c40(s32 socialLink, s32 enabled)
     }
 }
 
-#pragma alias datSetSocialLinkCounter FUN_00171e90
 // FUN_00171E90
 void datSetSocialLinkCounter(s32 socialLink, u16 value)
 {
@@ -3344,6 +3969,7 @@ void FUN_00171f50(s32 socialLink, s32 enabled)
     }
 }
 
+#pragma alias datGetSocialEventData FUN_00172990
 // FUN_001720C0
 u16 FUN_001720c0(s32 socialLink, s32* outDate)
 {
@@ -3370,6 +3996,7 @@ u16 FUN_001720c0(s32 socialLink, s32* outDate)
     return globalWork->status[socialLink];
 }
 
+#pragma alias datSocialEventDataIsLoaded FUN_001729a0
 // FUN_00172160
 u8 FUN_00172160(s32 socialLink)
 {
@@ -3391,6 +4018,7 @@ u8 FUN_00172160(s32 socialLink)
     return false;
 }
 
+#pragma alias datTryGetSocialEventValue FUN_001729d0
 // FUN_00172200
 void FUN_00172200(s32 socialLink, s32 enabled)
 {
@@ -3448,7 +4076,6 @@ void FUN_00172200(s32 socialLink, s32 enabled)
     globalWork->pointValues[socialLink] = defaultPoints;
 }
 
-#pragma alias datSetSocialLinkRankUnlocked FUN_001723a0
 // FUN_001723A0
 void datSetSocialLinkRankUnlocked(s32 socialLink, s32 rank, s32 enabled)
 {
@@ -3480,7 +4107,7 @@ void datSetSocialLinkRankUnlocked(s32 socialLink, s32 rank, s32 enabled)
     func_003951a0(resourceId);
 }
 
-#pragma alias datSetSocialLinkRankAcknowledged FUN_001724a0
+#pragma alias datSetSocialEventMode FUN_00172a20
 // FUN_001724A0
 void datSetSocialLinkRankAcknowledged(s32 socialLink, s32 rank, s32 enabled)
 {
@@ -3512,7 +4139,7 @@ void datSetSocialLinkRankAcknowledged(s32 socialLink, s32 rank, s32 enabled)
     func_003951a0(resourceId);
 }
 
-#pragma alias datApplyPendingSocialLinkRank FUN_001725a0
+#pragma alias datSocialEventModeIsActive FUN_00172a30
 // FUN_001725A0
 void datApplyPendingSocialLinkRank(s32 socialLink)
 {
@@ -3541,7 +4168,7 @@ void datApplyPendingSocialLinkRank(s32 socialLink)
     }
 }
 
-#pragma alias datSocialLinkHasPendingRank FUN_00172660
+#pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
 // FUN_00172660
 s32 datSocialLinkHasPendingRank(s32 socialLink)
 {
@@ -3580,7 +4207,6 @@ s32 datSocialLinkHasPendingRank(s32 socialLink)
     return false;
 }
 
-#pragma alias datSocialEventRecordHasData FUN_00172750
 // FUN_00172750
 u8 datSocialEventRecordHasData(const u8* data)
 {
@@ -3611,8 +4237,6 @@ void FUN_00172820(s16 pcId)
     (*(u32*)D_0083A34C) |= 0x400;
     datSetPhysicalCondition(1, pcId);
 }
-
-/* W357 measured optimization_level 0: without nd10/object24 (MISMATCH), with nd0/object44 (MATCH); window 48; retained. */
 
 #pragma optimization_level 0
 // FUN_00172860
@@ -3652,6 +4276,7 @@ void FUN_00172890()
     memset(D_00836458, 0, 0x38);
 }
 
+#pragma alias datRecordSocialLinkDate FUN_00172cc0
 // FUN_001728D0
 void FUN_001728d0(const u32* values)
 {
@@ -3691,21 +4316,34 @@ void FUN_001728d0(const u32* values)
     K_Assert(__FILE__, 0xC9C);
 }
 
-#pragma alias datGetSocialEventData FUN_00172990
+#pragma alias datGetSocialLinksForToday FUN_00172d70
 // FUN_00172990
 u32* datGetSocialEventData(void)
 {
     return (u32*)D_00836458;
 }
 
-#pragma alias datSocialEventDataIsLoaded FUN_001729a0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_001729A0
 u8 datSocialEventDataIsLoaded(void)
 {
     return func_003951d0(0x980) == 1;
 }
 
-#pragma alias datTryGetSocialEventValue FUN_001729d0
 // FUN_001729D0
 u8 datTryGetSocialEventValue(u32* outValue)
 {
@@ -3730,21 +4368,24 @@ u8 FUN_00172a10(void)
     return D_00836458[8];
 }
 
-#pragma alias datSetSocialEventMode FUN_00172a20
 // FUN_00172A20
 void datSetSocialEventMode(u32 value)
 {
     *(u32*)(D_00836458 + 0x10) = value;
 }
 
-#pragma alias datSocialEventModeIsActive FUN_00172a30
 // FUN_00172A30
 u8 datSocialEventModeIsActive(void)
 {
     return *(u32*)(D_00836458 + 0x10) == 1;
 }
 
-#pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
+
+
+
+
+
+
 // FUN_00172A50
 u8 datSocialLinkUsesRelationshipTable(s16 value)
 {
@@ -3763,6 +4404,141 @@ u8 datSocialLinkUsesRelationshipTable(s16 value)
     }
     return false;
 }
+
+/* Removing this loses FUN_00177280 (MATCH nd0 -> MISMATCH nd26) and 2 more - measured W161. */
+
+
+/* Removing this loses FUN_00177410 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
+
+
+/* Removing this worsens FUN_001779a0 (nd14 -> nd121) - measured W161. */
+/* W389 classification: register-colouring/loop-index allocation floor; six singles and all 15 knob pairs were neutral, declaration-order trial nd19 vs baseline nd14. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
+
+
+/* Retail globals shared by the Camp bridge state machines. */
+#pragma alias DAT_0096017c_abs DAT_0096017c
+#pragma alias DAT_00960184_abs DAT_00960184
+#pragma alias scrGetIntPara_u64 scrGetIntPara_y2
+#pragma alias DAT_00960178_abs DAT_00960178
+#pragma alias DAT_00960088_abs DAT_00960088
+/* Retail accesses these flag words by absolute address. */
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0958_abs DAT_007e0958
+
+/* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
+
+/* Unresolved retail helpers. Old-style declarations preserve the mixed-width
+ * call ABI recovered from the stripped executable. */
+#pragma alias FUN_00113a30_camp_reordered FUN_00113a30
+#pragma alias campDataDrawPersonaSprite FUN_00114450
+#pragma alias FUN_001159f0_typed FUN_001159f0
+#pragma alias FUN_00115bc0_typed FUN_00115bc0
+#pragma alias campDataDrawSpriteDirect FUN_001159f0
+#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0
+#pragma alias campDataDrawDigitsDirect FUN_00115de0
+#pragma alias campDataDrawSpriteFade FUN_001159f0
+#pragma alias campDataDrawSpriteAltFade FUN_00115bc0
+#pragma alias campDataCreateTask FUN_00119f10
+#pragma alias campDataDrawEquipment FUN_0013d1a0
+#pragma alias campDataDrawEquipmentAlt FUN_0013fca0
+#pragma alias campDataDrawTextRaw FUN_003b2cb0
+#pragma alias campDataDrawDigits FUN_003c7e20
+#pragma alias campDataDrawText FUN_0040eb50
+
+/* These task archive names are addressed absolutely by retail. */
+#pragma alias D_005DBF20_abs D_005DBF20
+#pragma alias D_005DBF40_abs D_005DBF40
+#pragma alias D_005DBF70_abs D_005DBF70
+#pragma alias D_005DBFA0_abs D_005DBFA0
+#pragma alias D_005DBFD0_abs D_005DBFD0
+
+/* Target entry prototypes keep all callbacks visible before their first use. */
+#pragma alias campDataDrawListA FUN_0016A700
+#pragma alias campDataDrawListB FUN_0016AF90
+
+
+
+/* Work area for the 0x14-byte state task (the first five words overlap the
+ * screen work above but carry different meanings). */
+
+/* Work area allocated by FUN_00167930 for the persona display child. */
+
+/* Work area allocated by FUN_00168770 (0x1c bytes). */
+
+
+/* Work area used by FUN_00168810/FUN_00169040. */
+
+/* Work area used by FUN_00169470/FUN_00169AE0. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
+
+#pragma opt_loop_invariants reset
+
+
+
+
+/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
+
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
+
+/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
+
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
+
+
+
+/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
+
+/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
+
 
 // FUN_00172AB0
 void FUN_00172ab0(s16 personaId)
@@ -3836,7 +4612,6 @@ u8* FUN_00172c50(s16* outValue)
     return NULL;
 }
 
-#pragma alias datRecordSocialLinkDate FUN_00172cc0
 // FUN_00172CC0
 void datRecordSocialLinkDate(s32 socialLink)
 {
@@ -3859,7 +4634,6 @@ void datRecordSocialLinkDate(s32 socialLink)
     D_00836752[(s16)socialLink] = (u8)day;
 }
 
-#pragma alias datGetSocialLinksForToday FUN_00172d70
 // FUN_00172D70
 s32 datGetSocialLinksForToday(s32* outSocialLinks)
 {
@@ -3885,21 +4659,6 @@ s32 datGetSocialLinksForToday(s32* outSocialLinks)
     }
     return count;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // FUN_00172e10
 void FUN_00172e10()
@@ -4018,761 +4777,6 @@ void FUN_00173040(s32 slot)
                 K_ASSERT(found != 0, 0xDE2);
                 amount++;
             }
-        }
-    }
-}
-
-
-
-
-
-
-
-// FUN_0016db70
-void datInitSocialLink()
-{
-    memset(&gGlobalWork.heroStatus.activeSocialLink, 0, 0x508);
-}
-
-/* Removing this loses FUN_00177280 (MATCH nd0 -> MISMATCH nd26) and 2 more - measured W161. */
-
-
-/* Removing this loses FUN_00177410 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
-
-
-/* Removing this worsens FUN_001779a0 (nd14 -> nd121) - measured W161. */
-/* W389 classification: register-colouring/loop-index allocation floor; six singles and all 15 knob pairs were neutral, declaration-order trial nd19 vs baseline nd14. */
-
-
-
-
-void FUN_00300af0();
-
-
-
-void FUN_00403130();
-
-
-void FUN_00403220();
-
-
-
-void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
-
-
-void FUN_003d74b0();
-
-
-
-
-
-/* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
-#include "Camp/h_camp.h"
-#include "Kernel/Kwln/kwlnTask.h"
-#include "h_cdvd.h"
-#include "h_maestro.h"
-#include "h_snd.h"
-#include "Main/Battle/Data/datPersona.h"
-#include "Utils.h"
-
-typedef u8 undefined1;
-typedef u16 undefined2;
-typedef u32 undefined4;
-typedef u64 undefined8;
-typedef int bool;
-typedef unsigned long ulong;
-typedef struct CampFloatPair
-{
-    f32 x;
-    f32 y;
-} CampFloatPair;
-typedef struct CampHelpPaths
-{
-    const char* paths[8];
-} CampHelpPaths;
-#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
-
-/* Retail globals shared by the Camp bridge state machines. */
-extern void (*DAT_0096017c[])(...);
-#pragma alias DAT_0096017c_abs DAT_0096017c
-extern void (*DAT_0096017c_abs[])(...);
-#pragma alias DAT_00960184_abs DAT_00960184
-extern void* (*DAT_00960184_abs[])(...);
-#pragma alias scrGetIntPara_u64 scrGetIntPara_y2
-extern u64 scrGetIntPara_u64(s32);
-extern void* (*DAT_00960184)();
-extern void* (*DAT_00960178)();
-#pragma alias DAT_00960178_abs DAT_00960178
-extern void* (*DAT_00960178_abs[])(...);
-extern f32 DAT_00960088;
-#pragma alias DAT_00960088_abs DAT_00960088
-extern u8 DAT_00960088_abs[];
-extern void* DAT_007cdf48;
-extern void* DAT_007cdf54;
-extern void* DAT_007cdf58;
-extern void* DAT_007cdf84;
-extern void* DAT_007cdf88;
-extern s32 DAT_007e094e;
-extern s32 DAT_007e0958;
-/* Retail accesses these flag words by absolute address. */
-#pragma alias DAT_007e094e_abs DAT_007e094e
-extern u8 DAT_007e094e_abs[];
-#pragma alias DAT_007e0958_abs DAT_007e0958
-extern u8 DAT_007e0958_abs[];
-extern u32 DAT_00833a50[];
-extern s32 iGpffffb258;
-extern s32 uGpffffb290;
-extern s32 uGpffffb28c;
-extern s32 iGpffffb28c;
-
-/* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
-typedef struct CampDataBridgeRoot CampDataBridgeRoot;
-extern CampDataBridgeRoot* iGpffffb2c0;
-#define DAT_007cdfb0 iGpffffb2c0
-extern s32* DAT_007cdfb4;
-extern s32* DAT_007cdfb8;
-extern s32* DAT_007cdfbc;
-extern s32* DAT_007cdfc0;
-extern s32* DAT_007cdfc4;
-extern s32* DAT_007cdfc8;
-extern s32* DAT_007cdfcc;
-extern s32* DAT_007cdfd0;
-extern s32* DAT_007cdfd4;
-extern s32* DAT_007cdfd8;
-extern s32* DAT_007cdfdc;
-extern u8* DAT_007cdfe0;
-extern u8* DAT_007cdfe4;
-extern void* DAT_007cdfe8;
-extern u32 DAT_0083bb30[];
-extern u8 DAT_0083bb40;
-extern u32 DAT_0083aaa0[0x23];
-extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
-extern char DAT_005dc020[];
-extern char DAT_005dbc60[];
-extern const void* gp0xffff897c;
-extern const void* gp0xffff8998;
-
-/* Unresolved retail helpers. Old-style declarations preserve the mixed-width
- * call ABI recovered from the stripped executable. */
-extern u32 FUN_00100d80();
-extern u32 FUN_00100ec0();
-extern u32 FUN_001016b0();
-extern u64 FUN_00102100();
-extern u32 FUN_001021c0();
-extern u32 FUN_001023a0();
-extern u32 FUN_0010a4e0();
-extern u32 FUN_00111cb0();
-extern u32 FUN_00111d50();
-extern u32 FUN_00111dd0();
-extern u32 FUN_00111ec0();
-extern u32 FUN_00111ee0();
-extern u32 FUN_00111f20();
-extern u32 FUN_00111f30();
-extern u32 FUN_00112420();
-extern u32 FUN_001124b0();
-extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
-#pragma alias FUN_00113a30_camp_reordered FUN_00113a30
-extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
-                                        f32 y, s32 width, s32 height);
-extern u32 FUN_00114450();
-#pragma alias campDataDrawPersonaSprite FUN_00114450
-extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
-                                      s32 mode, u32 color, u32 width,
-                                      u32 height, void* resource);
-extern void FUN_001159f0(f32 x, f32 y, ...);
-#pragma alias FUN_001159f0_typed FUN_001159f0
-extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                f32 x, f32 y, f32 depth);
-extern u32 FUN_00115bc0();
-#pragma alias FUN_00115bc0_typed FUN_00115bc0
-extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                u32 red, u32 green, u32 blue, f32 x, f32 y,
-                                f32 depth);
-#pragma alias campDataDrawSpriteDirect FUN_001159f0
-extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0
-extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawDigitsDirect FUN_00115de0
-extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteFade FUN_001159f0
-extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
-                                   void* atlas, s32 tile, s32 alpha);
-#pragma alias campDataDrawSpriteAltFade FUN_00115bc0
-extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
-                                      void* atlas, s32 tile, s32 alpha,
-                                      s32 red, s32 green, s32 blue, s32 flags);
-extern u32 FUN_00115de0();
-extern u32 FUN_00119f10();
-#pragma alias campDataCreateTask FUN_00119f10
-extern void* campDataCreateTask(void* task, s32 mode);
-extern u32 FUN_0011abd0();
-extern u32 FUN_00122710();
-extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
-extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
-extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
-extern u32 FUN_0013c240();
-extern u32 FUN_0013c780();
-extern u32 FUN_0013cf80();
-extern u32 FUN_0013d1a0();
-extern u32 FUN_0013fca0();
-#pragma alias campDataDrawEquipment FUN_0013d1a0
-extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
-                                  void* work, s32 alpha);
-#pragma alias campDataDrawEquipmentAlt FUN_0013fca0
-extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
-                                     void* work, s32 alpha);
-extern u32 FUN_0016f630();
-extern u32 FUN_0016f720();
-extern u32 FUN_0016f810();
-extern u32 FUN_0016f900();
-extern u32 FUN_0016f9f0();
-extern u32 FUN_0016fae0();
-extern u32 FUN_0016fbd0();
-extern u32 FUN_0016fcc0();
-extern u32 FUN_0016fea0();
-extern u32 FUN_0016ff90();
-extern u32 FUN_00170080();
-extern u32 FUN_00170170();
-extern u32 FUN_00170260();
-extern u32 FUN_00170350();
-extern u32 FUN_00170440();
-extern u32 FUN_00170530();
-extern u32 FUN_00170a40();
-extern u32 FUN_00170ab0();
-extern u32 FUN_00170b20();
-extern u32 FUN_00170b90();
-extern u32 FUN_00174800();
-extern u32 FUN_00177c10();
-extern u32 FUN_001830c0();
-extern u32 FUN_00194b20();
-extern u32 FUN_00195290();
-extern void FUN_0019d3f0(const char*, s32);
-extern f32 FUN_0021ea00(s32);
-extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
-extern u32 FUN_0025f570();
-extern u32 FUN_0035ed20();
-extern u32 FUN_003b2cb0();
-#pragma alias campDataDrawTextRaw FUN_003b2cb0
-extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
-                               s32 font, s32 alignment, const char* text,
-                               s32 maxWidth, s32 shadow);
-extern u32 FUN_003c7430();
-extern u32 FUN_003c74e0();
-extern u32 FUN_003c7560();
-extern u32 FUN_003c7610();
-extern u32 FUN_003c7700();
-extern u32 FUN_003c7850();
-extern u32 FUN_003c7d80();
-extern u32 FUN_003c7e20();
-#pragma alias campDataDrawDigits FUN_003c7e20
-extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
-                               s32 style, s32 font, s32 alignment, u32 value);
-extern u32 FUN_0040eb50();
-#pragma alias campDataDrawText FUN_0040eb50
-extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
-                            const char* text, s32 maxWidth);
-extern u32 FUN_00521250();
-extern u32 FUN_00523ac8_y2();
-
-extern void* func_00133780(KwlnTask* task);
-extern void* func_001618a0(KwlnTask* task);
-extern void func_00161d60(KwlnTask* task);
-extern void* func_00166c70(KwlnTask* task);
-extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
-extern const char D_005DAC70[];
-extern const char D_005DAC90[];
-extern const char D_005DB190[];
-extern const char D_005DBD80[];
-extern const char D_005DBED0[];
-extern const char D_005DBEE8[];
-extern const char D_005DBF00[];
-extern const char D_005DBF20[];
-extern const char D_005DBF40[];
-extern const char D_005DBF70[];
-extern const char D_005DBFA0[];
-extern const char D_005DBFD0[];
-/* These task archive names are addressed absolutely by retail. */
-#pragma alias D_005DBF20_abs D_005DBF20
-extern u8 D_005DBF20_abs[];
-#pragma alias D_005DBF40_abs D_005DBF40
-extern u8 D_005DBF40_abs[];
-#pragma alias D_005DBF70_abs D_005DBF70
-extern u8 D_005DBF70_abs[];
-#pragma alias D_005DBFA0_abs D_005DBFA0
-extern u8 D_005DBFA0_abs[];
-#pragma alias D_005DBFD0_abs D_005DBFD0
-extern u8 D_005DBFD0_abs[];
-extern const char D_005DC000[];
-extern const char D_005E30B0[];
-extern const char D_005E31F0[];
-extern const char D_005E3200[];
-
-/* Target entry prototypes keep all callbacks visible before their first use. */
-void FUN_001675b0(KwlnTask*);
-void* FUN_001675e0(KwlnTask*);
-void FUN_001678e0(KwlnTask*);
-void* FUN_00167930(KwlnTask*);
-void FUN_00167ec0(KwlnTask*);
-void FUN_00167ef0(KwlnTask*);
-void FUN_00167f10(KwlnTask*);
-u32 FUN_00167f30(KwlnTask*);
-KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
-u32 FUN_00168040(void);
-u32 FUN_00168100(void);
-bool FUN_001681d0(void);
-void* FUN_00168220(KwlnTask*);
-bool FUN_001685b0(KwlnTask*);
-u32 FUN_001685d0(KwlnTask*);
-void FUN_001685e0(KwlnTask*, s32);
-void FUN_00168720(KwlnTask*);
-KwlnTask* FUN_00168770(KwlnTask*, u32);
-u32 FUN_00168810(u32);
-void FUN_00169040(int);
-void FUN_00169110(u16, CampFloatPair, void*, s32);
-void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
-undefined4 FUN_00169330(void);
-bool FUN_00169420(void);
-undefined4 FUN_00169470(KwlnTask*);
-void FUN_00169AE0(int);
-void FUN_00169B90(void* resources, undefined8 coordinates,
-                  void* list, s32 alpha, undefined8 stackArg);
-undefined4 FUN_0016A030(void);
-undefined4 FUN_0016A6A0(void);
-f32 FUN_0016ba00(u32, u32);
-f32 FUN_0016ba80(u32, u32);
-f32 FUN_0016bb00(u32, u32);
-f32 FUN_0016bb80(u32, u32);
-f32 FUN_0016bc00(u32, u32);
-void FUN_0016bc80(u32, u32, f32*);
-void FUN_0016bdb0(u32, u32, f32*);
-void FUN_0016bee0(u32, u32, void*);
-void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
-void FUN_0016c010(void) __attribute__((aligned(16)));
-void FUN_0016c1d0(void);
-void FUN_0016c2f0(void);
-void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-#pragma alias campDataDrawListA FUN_0016A700
-extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
-#pragma alias campDataDrawListB FUN_0016AF90
-extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
-
-
-typedef struct CampBridgeScreenWork
-{
-    u32 state;          /* 0x00 */
-    u32 timer;          /* 0x04 */
-    u32 personaId;      /* 0x08 */
-    u32 opacity;        /* 0x0c (low halfword used by the fade) */
-    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
-    u32 command;        /* 0x14 */
-    u32 active;         /* 0x18 */
-    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
-    u32 reserved20;     /* 0x20 */
-    u32 reserved24;     /* 0x24 */
-    u32 childTask;      /* 0x28 */
-} CampBridgeScreenWork;
-
-/* Work area for the 0x14-byte state task (the first five words overlap the
- * screen work above but carry different meanings). */
-typedef struct CampBridgeStateWork
-{
-    u32 state;          /* 0x00 */
-    u32 mode;           /* 0x04 */
-    u32 setupTask;      /* 0x08 */
-    u32 activeTask;     /* 0x0c */
-    u32 screenMode;     /* 0x10 */
-} CampBridgeStateWork;
-
-/* Work area allocated by FUN_00167930 for the persona display child. */
-typedef struct CampBridgePersonaDispWork
-{
-    u32 state;          /* 0x00 */
-    u32 personaId;      /* 0x04 */
-    u32 reserved08;     /* 0x08 */
-    u32 mode;           /* 0x0c */
-    f32 alpha;          /* 0x10 */
-    f32 slideStep;      /* 0x14 */
-    f32 slidePosition;  /* 0x18 */
-    f32 depth;          /* 0x1c */
-    void* parseRequest; /* 0x20 */
-    HCdvd* cdvd;        /* 0x24 */
-    void* resource;     /* 0x28 */
-} CampBridgePersonaDispWork;
-
-/* Work area allocated by FUN_00168770 (0x1c bytes). */
-typedef struct CampBridgeBlendWork
-{
-    u32 state;       /* 0x00 */
-    s32 timer;       /* 0x04 */
-    u32 reserved08;  /* 0x08 */
-    u32 mode;        /* 0x0c */
-    u32 archive;     /* 0x10 */
-    u32 sourceTask;  /* 0x14 */
-    u32 targetTask;  /* 0x18 */
-} CampBridgeBlendWork;
-
-
-/* Work area used by FUN_00168810/FUN_00169040. */
-typedef struct CampTargetLoadWork
-{
-    u32 state;                 /* +0x00 */
-    u32 reserved04;            /* +0x04 */
-    s32 frame;                 /* +0x08 */
-    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
-    void* archive;             /* +0x10 */
-    void* resources[2];        /* +0x14 */
-    CampTargetList* listA;     /* +0x1c */
-    CampTargetList* listB;     /* +0x20 */
-    void* childTask;           /* +0x24 */
-} CampTargetLoadWork;
-
-/* Work area used by FUN_00169470/FUN_00169AE0. */
-typedef struct CampTargetMenuWork
-{
-    u32 state;                 /* +0x00 */
-    s32 frame;                 /* +0x04 */
-    u32 reserved08;            /* +0x08 */
-    void* archive;             /* +0x0c */
-    void* resources[2];        /* +0x10 */
-    CampTargetList* list;      /* +0x18 */
-    void* childTask;           /* +0x1c */
-    u32 result;                /* +0x20 */
-} CampTargetMenuWork;
-
-typedef struct CampDataBridgeRecord
-{
-    s16 axis0;                 /* +0x00 */
-    s16 axis1;                 /* +0x02 */
-    s16 axis2;                 /* +0x04 */
-    s16 axis3;                 /* +0x06 */
-    f32 value;                 /* +0x08 */
-    u32 reserved0c;            /* +0x0c */
-    u16 reserved10;            /* +0x10 */
-    s16 helpIndex;             /* +0x12 */
-    u32 color0;                /* +0x14 */
-    u32 color1;                /* +0x18 */
-    u32 reserved1c;            /* +0x1c */
-} CampDataBridgeRecord;
-
-typedef struct CampDataBridgeGroup
-{
-    s32 recordCount;           /* +0x00 */
-    s32 auxiliaryCount;        /* +0x04 */
-    CampDataBridgeRecord* records; /* +0x08 */
-    u8* auxiliaryData;         /* +0x0c */
-} CampDataBridgeGroup;
-
-typedef struct CampDataBridgeRoot
-{
-    CampDataBridgeGroup groups[2];
-} CampDataBridgeRoot;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
-
-#pragma opt_loop_invariants reset
-
-
-
-
-/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
-
-#pragma opt_propagation reset
-#pragma opt_loop_invariants reset
-/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
-
-/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
-
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
-/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
-
-
-
-/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
-
-/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
-
-
-// FUN_0016BA00
-f32 FUN_0016ba00(u32 param_1, u32 param_2)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0x86);
-    }
-    return iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].value;
-}
-
-// FUN_0016BA80
-f32 FUN_0016ba80(u32 param_1, u32 param_2)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0x8b);
-    }
-    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis0;
-}
-
-// FUN_0016BB00
-f32 FUN_0016bb00(u32 param_1, u32 param_2)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0x90);
-    }
-    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis1;
-}
-
-// FUN_0016BB80
-f32 FUN_0016bb80(u32 param_1, u32 param_2)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0x95);
-    }
-    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis2;
-}
-
-// FUN_0016BC00
-f32 FUN_0016bc00(u32 param_1, u32 param_2)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0x9a);
-    }
-    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis3;
-}
-
-// FUN_0016BC80
-void FUN_0016bc80(u32 param_1, u32 param_2, f32* param_3)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0xa5);
-    }
-    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color0 >> 24) & 0xff) / 255.0f;
-    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color0 >> 16) & 0xff) / 255.0f;
-    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color0 >> 8) & 0xff) / 255.0f;
-    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color0 & 0xff) / 255.0f;
-}
-
-// FUN_0016BDB0
-void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
-{
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0xaf);
-    }
-    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color1 >> 24) & 0xff) / 255.0f;
-    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color1 >> 16) & 0xff) / 255.0f;
-    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color1 >> 8) & 0xff) / 255.0f;
-    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
-        .records[param_2 & 0xffff].color1 & 0xff) / 255.0f;
-}
-
-// FUN_0016BEE0 MATCHING
-void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
-{
-    u32 groupOffset;
-    CampDataBridgeGroup* group;
-    CampDataBridgeRecord* record;
-    u32 recordOffset;
-
-    if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0xb8);
-    }
-    groupOffset = (param_1 & 0xffff) * 0x10;
-    group = (CampDataBridgeGroup*)(groupOffset + (u32)(uintptr_t)iGpffffb2c0);
-    record = group->records;
-    recordOffset = (param_2 & 0xffff) * 0x20;
-    record = (CampDataBridgeRecord*)(recordOffset + (u32)(uintptr_t)record);
-    FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
-}
-
-// FUN_0016BF80
-void FUN_0016bf80(u32 param_1, u32 param_2, void* param_3)
-{
-    if (param_3 == NULL) {
-        FUN_0019d3f0(D_005E3098, 0xc3);
-    }
-    FUN_00521250(param_3, &iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff], 0x20);
-}
-
-// FUN_0016C010
-void FUN_0016c010(void)
-{
-    void* cdvd;
-    s32* descriptor;
-    u8* payload;
-
-    cdvd = (void*)(uintptr_t)FUN_00100d80(D_005E30B0, 0);
-    FUN_001023a0(cdvd);
-    descriptor = *(s32**)((u8*)cdvd + 0x110);
-    iGpffffb2c0 = (CampDataBridgeRoot*)DAT_00960178_abs[0](
-        (((descriptor[0] + descriptor[4]) << 5) + 0x20) +
-        ((descriptor[1] + descriptor[5]) << 4), 0x40000);
-    iGpffffb2c0->groups[0].recordCount = descriptor[0];
-    iGpffffb2c0->groups[0].auxiliaryCount = descriptor[1];
-    iGpffffb2c0->groups[0].records =
-        (CampDataBridgeRecord*)((u8*)iGpffffb2c0 + 0x20);
-    iGpffffb2c0->groups[0].auxiliaryData =
-        (u8*)iGpffffb2c0->groups[0].records +
-        (iGpffffb2c0->groups[0].recordCount << 5);
-    payload = (u8*)(descriptor + 8);
-    FUN_00521250(iGpffffb2c0->groups[0].records,
-                 payload, iGpffffb2c0->groups[0].recordCount << 5);
-    payload += iGpffffb2c0->groups[0].recordCount << 5;
-    FUN_00521250(iGpffffb2c0->groups[0].auxiliaryData,
-                 payload, iGpffffb2c0->groups[0].auxiliaryCount << 4);
-    iGpffffb2c0->groups[1].recordCount = descriptor[4];
-    iGpffffb2c0->groups[1].auxiliaryCount = descriptor[5];
-    iGpffffb2c0->groups[1].records =
-        (CampDataBridgeRecord*)(iGpffffb2c0->groups[0].auxiliaryData +
-            (iGpffffb2c0->groups[0].auxiliaryCount << 4));
-    iGpffffb2c0->groups[1].auxiliaryData =
-        (u8*)iGpffffb2c0->groups[1].records +
-        (iGpffffb2c0->groups[1].recordCount << 5);
-    payload += iGpffffb2c0->groups[0].auxiliaryCount << 4;
-    FUN_00521250(iGpffffb2c0->groups[1].records,
-                 payload, iGpffffb2c0->groups[1].recordCount << 5);
-    payload += iGpffffb2c0->groups[1].recordCount << 5;
-    FUN_00521250(iGpffffb2c0->groups[1].auxiliaryData,
-                 payload, iGpffffb2c0->groups[1].auxiliaryCount << 4);
-    FUN_00100ec0(cdvd);
-}
-
-// FUN_0016C1D0 MATCHING
-void FUN_0016c1d0(void)
-{
-    CampHelpPaths helpPaths;
-    u8 fileSizeScratch[4];
-    void* cdvd;
-    void* resource;
-    s32 i;
-    u32 copySize;
-
-    helpPaths = *(CampHelpPaths*)PTR_s_help_datWeaponHelp_bmd_005e31d0;
-    FUN_001023a0((void*)(uintptr_t)FUN_00100d80(D_005E31F0, 1));
-    for (i = 0; i < 8; i++) {
-        resource = (void*)(uintptr_t)FUN_001021c0(
-            helpPaths.paths[i], (u32*)fileSizeScratch);
-        FUN_003c7d80(i, resource);
-    }
-    FUN_0016c010();
-    FUN_001023a0(DAT_007cdfe8 =
-        (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
-    cdvd = DAT_007cdfe8;
-    copySize = *(volatile u32*)((u8*)cdvd + 0x118);
-    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110),
-                 copySize);
-    FUN_00100ec0(DAT_007cdfe8);
-    FUN_0016c2f0();
-}
-
-// FUN_0016C2F0
-void FUN_0016c2f0(void)
-{
-    u8* data;
-    u32 count;
-    s32 n;
-    s32 scaled;
-    u8* p;
-
-    data = (u8*)DAT_0083bb30;
-    count = *(u32*)data;
-    p = data + 0x10;
-    DAT_007cdfe4 = p;
-    p += count * 0x28;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfe0 = p;
-    p += n << 4;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfdc = (s32*)p;
-    p += n << 5;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfd8 = (s32*)p;
-    p += n << 5;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfd4 = (s32*)p;
-    scaled = n << 3;
-    p += (scaled + n) << 2;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfd0 = (s32*)p;
-    p += ((n << 3) - n) << 2;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfcc = (s32*)p;
-    p += ((n << 3) - n) << 2;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfc4 = (s32*)p;
-    p += n << 4;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfc0 = (s32*)p;
-    p += n << 5;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfbc = (s32*)p;
-    scaled = n << 2;
-    p += (scaled + n) << 2;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfb4 = (s32*)p;
-    p += n << 5;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfc8 = (s32*)p;
-    p += n << 3;
-    n = *(s32*)p;
-    p += 0x10;
-    DAT_007cdfb8 = (s32*)p;
-    scaled = n << 1;
-    scaled += n;
-    p += scaled << 2;
-    {
-        s32* entry;
-        u32* output;
-        u32 i;
-
-        entry = (s32*)(p + 0x10);
-        i = 0;
-        output = DAT_0083aaa0;
-        for (; i < 0x23; i++) {
-            output[i] = (u32)entry;
-            entry += 8;
         }
     }
 }
