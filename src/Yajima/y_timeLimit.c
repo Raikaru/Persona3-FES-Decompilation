@@ -4000,16 +4000,17 @@ void FUN_0045a490(void)
 /* W380 measured: without 632/608 nd408 (OVER window); opt_loop_invariants off 608/608 nd284.
    Restores the setting this function previously received from a leaked file-scope pragma. */
 #pragma opt_loop_invariants off
+/* W419 declaration-order probe: lVar5-first lowers FUN_0045ACE0 from nd284/object608 to nd274/object608; retained. */
 // FUN_0045ACE0 NONMATCHING
 
 void FUN_0045ace0(void)
 
 {
-  u32 *puVar1;
+  int lVar5;
   u32 uVar2;
   char cVar3;
   u32 iVar4;
-  int lVar5;
+  u32 *puVar1;
   int iVar6;
   u8 uVar7;
   float fVar8;
@@ -5413,6 +5414,7 @@ u8 FUN_0045e0c0(int param_1)
 #pragma opt_loop_invariants on
 /* W373 singles base 372/596; loop 372/596; common 55/616; life 373/596; propagation 372/596; strength 372/596; dead 372/596. */
 #pragma opt_common_subs off
+/* W419 DAT_007ce704 _abs probes: u32 alias nd48/616 changed signed slti to sltiu; s32 alias stayed nd55/616; retained original. */
 // FUN_0045E170 NONMATCHING
 
 u8 FUN_0045e170(int param_1)

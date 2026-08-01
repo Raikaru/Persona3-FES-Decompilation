@@ -223,6 +223,7 @@ static void sflResCopyFile(u32 request, s32 fileIndex, u32* destination)
     *destination = (u32)copy;
 }
 
+/* W419 probes: first alpha casts `(u8)(u32)` gave nd2486/4136B (window4304, rate .601064) and a direct first-block cast nd2483/4060B (rate .611576); `<=`, schedule toggles, and D_0068E0A0_abs all stayed nd2420/4064B (rate .595472), reverted. */
 // FUN_0020b250 NONMATCHING
 void func_0020b250(void* work)
 {
@@ -958,6 +959,7 @@ void func_0020cd50(void* work, void* resource)
 #pragma opt_loop_invariants on
 /* W389 preheader direct-global rewrite nd12/384B -> nd12/384B (neutral); reverted, residual is hoist order. */
 /* W414 full fndiff/JAL review: retail and candidate each call K_ASSERT once; direct-global/preheader probes stayed nd12/384B (window 384B), reverted. Remaining rows are preheader hoist-order differences. */
+/* W419 static-inline gcMul(rowStep, row) operand-order probe stayed nd12/384B (window384, rate .031250), reverted. */
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {

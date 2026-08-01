@@ -635,7 +635,6 @@ static void brPanel00236390(void)
     func_0021d8e0(work + 0x10, rect);
     BR_PANEL_ANIMATE(work + 0x10, 0x28);
     BR_PANEL_SET_COLOR(work + 0x10, alpha);
-    frame = func_0021cca0(brRes00234570(0), 5);
     if ((*(s32*)(work + 0x266c)) == 0) {
         shift = 0.0f;
         alpha = 0.0f;
@@ -659,13 +658,13 @@ static void brPanel00236390(void)
             alpha = 1.0f - scale;
         }
     }
+    frame = func_0021cca0(brRes00234570(0), 5);
     BR_PANEL_SET_RECT(work + 0x110, 397.0f + shift, 342.0f,
                       (f32)*(s32*)((u8*)frame + 0xc),
                       (f32)*(s32*)((u8*)frame + 0x10));
     BR_PANEL_ANIMATE(work + 0x110, 0x28);
     BR_PANEL_SET_COLOR(work + 0x110, alpha);
 
-    frame = func_0021cca0(brRes00234570(0), 3);
     if ((*(s32*)(work + 0x266c)) == 0) {
         shift = 0.0f;
         alpha = 0.0f;
@@ -689,6 +688,7 @@ static void brPanel00236390(void)
             alpha = 1.0f - scale;
         }
     }
+    frame = func_0021cca0(brRes00234570(0), 3);
     BR_PANEL_SET_RECT(work + 0x210, 413.0f + shift, 372.0f,
                       (f32)*(s32*)((u8*)frame + 0xc),
                       (f32)*(s32*)((u8*)frame + 0x10));
@@ -720,6 +720,7 @@ static void brPanel00236390(void)
             alpha = 1.0f - scale;
         }
     }
+
 
     if (value < 10) {
         rect[0] = 465.0f + shift;
@@ -788,13 +789,13 @@ static void brPanel00236390(void)
     BR_PANEL_SET_COLOR(work + 0xc20, alpha);
 
 
-    frame = func_0021cca0(brRes00234570(0), 6);
     scale = 1.0f;
     if ((*(s32*)(work + 0x266c)) == 1 && (*(s32*)(work + 0x2668)) < 8) {
         scale = (f32)(*(s32*)(work + 0x2668)) / 8.0f;
     } else if ((*(s32*)(work + 0x266c)) == 2 && (*(s32*)(work + 0x2668)) < 10) {
         scale = (f32)(*(s32*)(work + 0x2668)) / 10.0f;
     }
+    frame = func_0021cca0(brRes00234570(0), 6);
     rect[0] = 0.0f;
     rect[1] = 169.0f;
     rect[2] = 640.0f * scale;

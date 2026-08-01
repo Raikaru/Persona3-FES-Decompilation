@@ -2994,7 +2994,7 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     {
         return NULL;
     }
-    copy = (u32*)(*DAT_00960184)(1, 0xa4c, 0x40000);
+    copy = (u32*)(*(void* (**)(u32, ...))DAT_00960184_abs)(1, 0xa4c, 0x40000);
     copy[0] = resource[0] | 2;
     copy[1] = resource[1];
     *(u16*)((u8*)copy + 6) = *(u16*)((u8*)resource + 6);

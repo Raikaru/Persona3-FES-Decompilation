@@ -4221,6 +4221,7 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 // FUN_002A2A20 NONMATCHING
 
 
+/* BtlCore2 W419 negative: 2a2a20 _abs address spellings held nd63 at 296B; scalar direct spelling worsened nd63->151 and shrank to 284B. */
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
   u32 currentAddress;

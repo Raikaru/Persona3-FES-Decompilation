@@ -2396,6 +2396,8 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
 #pragma pop
 #define FUN_003cb050(...) ((void (*)(...))FUN_003cb050)(__VA_ARGS__)
 #undef FUN_003cb100
+// W419 negative: inlining the flags expressions into all three Ca780 calls left FUN_003cb100/FUN_003cb960 at nd144/obj236 (baseline nd132/obj236, window240); reverted.
+// W419 negative: exact FUN_003ca780 definition-order alias + reordered twin calls gave cb100/cb960 nd94/object236 (baseline nd132/object236; window240) but wrong f12-f15 class mapping; exact alias alone nd354/object412 over-window. Keep the retail ABI-order alias.
 // FUN_003CB100 NONMATCHING
 
 
@@ -5027,6 +5029,7 @@ s16 fclCombine003cf8f0(s32 param_1)
     return -1;
 }
 // W414 MIXED probes: sVar2 u8/u16/s32 widened nd26 -> nd121; direct byte/cast and named-OR assignments measured nd118/119 or unchanged; reverted.
+// W419 negative: DAT_007ce680_y2 array/absolute alias changed FUN_003cf960 nd26/object340 to nd210/object344 (window352); reverted.
 // FUN_003CF960 NONMATCHING
 
 

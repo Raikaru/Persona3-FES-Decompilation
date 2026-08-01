@@ -1791,6 +1791,8 @@ void func_001f0ab0_y2(KwlnTask *task)
 
 /* W414 full fndiff/JAL review: retail and candidate both call printf twice in order; sentinel local, hoisted-id, and scoped-j probes all stayed nd23/368B (window 368B), reverted. */
 /* W418 declaration/width and loop-shape probes stayed nd23/368B; unsigned variants regressed nd24-25 and wider locals exceeded the window. */
+/* SocialBig W419 negative: direct no-local loop rewrite stayed nd23/368B; reverted. */
+/* W419 static-inline brRootAdd(offset, base) address-order probe stayed nd23/368B (window368, rate .062500), reverted. */
 // FUN_001f0ad0 NONMATCHING
 void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 {
@@ -2273,6 +2275,8 @@ u8 *brRoot001f1c50(void)
     return sBrRoot;
 }
 
+/* W419 retail loop-branch reconstruction with conditional stores grew to nd237/328B (window352, rate .722561) versus landed nd216/300B; reverted. */
+/* W419 target setup reorder/removal of non-retail flag bit: nd239/324B -> nd216/300B, window352; rates .737654 -> .720000. */
 // FUN_001f1c90 NONMATCHING
 void func_001f1c90_y2(KwlnTask *task)
 {
@@ -2282,14 +2286,11 @@ void func_001f1c90_y2(KwlnTask *task)
 
     func_001f1240(task);
     BR_U32(params, 0) = 0;
-    if (BR_U32(work, 0x2a5c) >= 0x65) {
-        BR_U32(params, 0) |= 1;
-    }
-    if (BR_U32(work, 0xb0) != 0) {
-        BR_U32(params, 0) |= 2;
-    }
     BR_U32(params, 0x2c) = BR_U32(work, 0x2a50);
     BR_U32(params, 0x28) = BR_U32(work, 0xb0);
+    if (BR_S32(work, 0x2a5c) >= 0x65) {
+        BR_U32(params, 0) |= 1;
+    }
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
         u8 *entry = (u8 *)work + i * 8 + 0x98;
         ((u32 *)params)[i * 3 + 1] = dat00171360(BR_U16(entry, 0)) != 0;

@@ -345,26 +345,24 @@ void sflPsel00261480(void)
     f32 alpha;
     s32 channel;
     f32 channelFloat;
-    s32 frame;
     s32 mode;
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
     texture = sflResGetPersonaChangeSprite();
     resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x34);
-    frame = (s32)work[2];
     mode = (s32)work[1];
     diagonal = 1.4142135f;
 
     switch (mode) {
     case 0:
         alpha = 1.0f;
-        if (frame < 5) {
+        if ((s32)work[2] < 5) {
             points[0] = -(6.0f + (f32)sflPselReadS32(resource34, 0x10)) +
-                        ((f32)frame / 10.0f) *
+                        ((f32)(s32)work[2] / 10.0f) *
                         (12.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 6.0f + (f32)sflPselReadS32(resource34, 0x10) -
-                        ((f32)frame / 10.0f) *
+                        ((f32)(s32)work[2] / 10.0f) *
                         (f32)sflPselReadS32(resource34, 0x10);
         } else {
             points[0] = 6.0f;
@@ -372,7 +370,7 @@ void sflPsel00261480(void)
         }
         break;
     case 1:
-        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        channelFloat = (s32)work[2] < 3 ? (f32)(s32)work[2] / 3.0f : 1.0f;
         points[0] = channelFloat * 150.0f + 6.0f;
         points[1] = points[0];
         alpha = 1.0f - channelFloat;
@@ -387,15 +385,15 @@ void sflPsel00261480(void)
     switch (mode) {
     case 0:
         alpha = 1.0f;
-        if (frame < 6) {
+        if ((s32)work[2] < 6) {
             points[0] =
                 -(109.0f +
                   (f32)sflPselReadS32(
                       (u8*)(uintptr_t)FUN_0021cca0(texture, 0x35), 0x10)) +
-                        ((f32)frame / 6.0f) *
+                        ((f32)(s32)work[2] / 6.0f) *
                         (225.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -
-                        ((f32)frame / 6.0f) *
+                        ((f32)(s32)work[2] / 6.0f) *
                         (87.0f + (f32)sflPselReadS32(resource34, 0x10));
         } else {
             points[0] = 116.0f;
@@ -403,7 +401,7 @@ void sflPsel00261480(void)
         }
         break;
     case 1:
-        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        channelFloat = (s32)work[2] < 3 ? (f32)(s32)work[2] / 3.0f : 1.0f;
         points[0] = channelFloat * 150.0f + 23.0f;
         points[1] = channelFloat * 150.0f + 109.0f;
         alpha = 1.0f - channelFloat;
@@ -418,15 +416,15 @@ void sflPsel00261480(void)
     switch (mode) {
     case 0:
         alpha = 1.0f;
-        if (frame < 6) {
+        if ((s32)work[2] < 6) {
             points[0] =
                 -(109.0f +
                   (f32)sflPselReadS32(
                       (u8*)(uintptr_t)FUN_0021cca0(texture, 0x36), 0x10)) +
-                        ((f32)frame / 6.0f) *
+                        ((f32)(s32)work[2] / 6.0f) *
                         (225.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -
-                        ((f32)frame / 6.0f) *
+                        ((f32)(s32)work[2] / 6.0f) *
                         (87.0f + (f32)sflPselReadS32(resource34, 0x10));
         } else {
             points[0] = 116.0f;
@@ -434,7 +432,7 @@ void sflPsel00261480(void)
         }
         break;
     case 1:
-        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        channelFloat = (s32)work[2] < 3 ? (f32)(s32)work[2] / 3.0f : 1.0f;
         points[0] = channelFloat * 150.0f + 116.0f;
         points[1] = channelFloat * 150.0f + 22.0f;
         alpha = 1.0f - channelFloat;
@@ -447,8 +445,8 @@ void sflPsel00261480(void)
 
     switch (mode) {
     case 0:
-        if (frame < 8) {
-            channelFloat = (f32)frame / 8.0f;
+        if ((s32)work[2] < 8) {
+            channelFloat = (f32)(s32)work[2] / 8.0f;
             points[0] = 320.0f;
             points[1] = -320.0f;
             points[2] = -224.0f;
@@ -469,8 +467,8 @@ void sflPsel00261480(void)
         }
         break;
     case 1:
-        if (frame < 10) {
-            channelFloat = (f32)frame / 10.0f;
+        if ((s32)work[2] < 10) {
+            channelFloat = (f32)(s32)work[2] / 10.0f;
             points[0] = 320.0f - (1.0f - channelFloat) *
                         (544.0f - (256.0f - fGpffff8300) / diagonal);
             points[1] = 768.0f - (1.0f - channelFloat) *
@@ -517,8 +515,8 @@ void sflPsel00261480(void)
         alpha = 1.0f;
         break;
     case 1:
-        if (frame < 10) {
-            channelFloat = (f32)frame / 10.0f;
+        if ((s32)work[2] < 10) {
+            channelFloat = (f32)(s32)work[2] / 10.0f;
             points[0] = 320.0f - 40.0f / diagonal +
                         channelFloat * (544.0f -
                         (256.0f - fGpffff8300) / diagonal);
@@ -570,8 +568,8 @@ void sflPsel00261480(void)
         points[7] = -320.0f + channelFloat;
         break;
     case 1:
-        if (frame < 10) {
-            channelFloat = (f32)frame / 10.0f;
+        if ((s32)work[2] < 10) {
+            channelFloat = (f32)(s32)work[2] / 10.0f;
             points[0] = 320.0f - 40.0f / diagonal +
                         channelFloat * (544.0f -
                         (256.0f / diagonal - fGpffff8300) / diagonal);

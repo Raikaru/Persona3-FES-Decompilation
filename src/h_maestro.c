@@ -805,7 +805,7 @@ extern s8 fGpffff7788[];
 extern void* func_0050B690(s32 arg1, u32 size, s32 arg3);
 extern void func_0050B710(void* ptr);
 extern void func_00521250(void* dst, const void* src, u32 size);
-extern void func_8051DBC0(s32 a0, void* a1, void* a2, u32 a3);
+extern void func_0051DBC0(s32 a0, void* a1, void* a2, u32 a3);
 extern s32 func_0051DC70(s32 a0, s32 a1, ...);
 extern s32 func_0051DDF0(s32 a0, s32 a1, ...);
 extern u8 D_00823650[];
@@ -1235,6 +1235,7 @@ s32 func_0010cce0(void* dst, const void* src, s32 size)
 }
 
 #pragma opt_loop_invariants on
+/* W419 scalar-size probe was unchanged at nd1332, object 2032/window2336. */
 // FUN_0010CDD0 NONMATCHING
 void func_0010cdd0(void)
 {
@@ -1320,7 +1321,7 @@ void func_0010cdd0(void)
                             remaining = 0;
                         }
                         func_0010cce0(chunkBuf, fileData, chunkSize);
-                        func_8051DBC0(1, chunkBuf, intermediate, chunkSize);
+                        func_0051DBC0(1, chunkBuf, intermediate, chunkSize);
                         fileData = (void*)((u8*)fileData + chunkSize);
                         intermediate = (void*)((u8*)intermediate + chunkSize);
                     } while (remaining != 0);
@@ -1450,7 +1451,7 @@ void func_0010cdd0(void)
                         remaining = 0;
                     }
                     func_0010cce0(auxBuf, auxData, chunkSize);
-                    func_8051DBC0(1, auxBuf, outputData, chunkSize);
+                    func_0051DBC0(1, auxBuf, outputData, chunkSize);
                     auxData = (void*)((u8*)auxData + chunkSize);
                     outputData = (void*)((u8*)outputData + chunkSize);
                 } while (remaining != 0);
@@ -3090,6 +3091,7 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     func_004a6200(effectResources[destinationIndex], &locals.uv[0], &locals.uv[2], &locals.uv[4], &locals.uv[6]);
 }
 
+/* W419 GP scalar alias for D_005D58A8 was unchanged: nd1162, object1548/window1696. */
 // FUN_001107D0 NONMATCHING
 void* func_001107d0(KwlnTask* task)
 {
@@ -4645,6 +4647,7 @@ void func_001127d0(void* param_1, u32 enabled)
     }
 }
 #pragma opt_loop_invariants on
+/* W419 mask-then-shift color extraction probe for both 00113A30/00113D80 worsened nd434,obj808 to nd549,obj816; reverted. */
 // FUN_00113A30 NONMATCHING
 void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 {
@@ -4934,13 +4937,13 @@ void func_00114450(f32 depth,
     corners[0][0] = x;
     corners[0][1] = y;
     farX = x + 320.0f;
+    corners[3][0] = farX;
     farY = y + (f32)height;
+    corners[3][1] = farY;
     corners[1][0] = farX;
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    corners[3][0] = farX;
-    corners[3][1] = farY;
     corners[4][0] = farX;
     corners[4][1] = y;
     corners[5][0] = farX + 320.0f;
@@ -5204,7 +5207,10 @@ void func_00114e70(s32 orientation,
     RwIm2DVertex vertices[4];
     f32 corners[4][2];
     f32 textureCoordinates[4][2];
-    u64 swap;
+    struct {
+        u64 swap0;
+        u64 swap1;
+    } swaps;
     f32 farX;
     f32 farY;
     f32 recipZ;
@@ -5273,30 +5279,30 @@ void func_00114e70(s32 orientation,
 
     if (orientation == 2)
     {
-        swap = *(u64*)&textureCoordinates[0][0];
+        swaps.swap0 = *(u64*)&textureCoordinates[0][0];
         textureCoordinates[0][0] = textureCoordinates[2][0];
         textureCoordinates[0][1] = textureCoordinates[2][1];
-        textureCoordinates[2][0] = ((f32*)&swap)[0];
-        textureCoordinates[2][1] = ((f32*)&swap)[1];
-        swap = *(u64*)&textureCoordinates[1][0];
+        textureCoordinates[2][0] = ((f32*)&swaps.swap0)[0];
+        textureCoordinates[2][1] = ((f32*)&swaps.swap0)[1];
+        swaps.swap0 = *(u64*)&textureCoordinates[1][0];
         textureCoordinates[1][0] = textureCoordinates[3][0];
         textureCoordinates[1][1] = textureCoordinates[3][1];
-        textureCoordinates[3][0] = ((f32*)&swap)[0];
-        textureCoordinates[3][1] = ((f32*)&swap)[1];
+        textureCoordinates[3][0] = ((f32*)&swaps.swap0)[0];
+        textureCoordinates[3][1] = ((f32*)&swaps.swap0)[1];
     }
 
     if (orientation == 1)
     {
-        swap = *(u64*)&textureCoordinates[0][0];
+        swaps.swap1 = *(u64*)&textureCoordinates[0][0];
         textureCoordinates[0][0] = textureCoordinates[1][0];
         textureCoordinates[0][1] = textureCoordinates[1][1];
-        textureCoordinates[1][0] = ((f32*)&swap)[0];
-        textureCoordinates[1][1] = ((f32*)&swap)[1];
-        swap = *(u64*)&textureCoordinates[2][0];
+        textureCoordinates[1][0] = ((f32*)&swaps.swap1)[0];
+        textureCoordinates[1][1] = ((f32*)&swaps.swap1)[1];
+        swaps.swap1 = *(u64*)&textureCoordinates[2][0];
         textureCoordinates[2][0] = textureCoordinates[3][0];
         textureCoordinates[2][1] = textureCoordinates[3][1];
-        textureCoordinates[3][0] = ((f32*)&swap)[0];
-        textureCoordinates[3][1] = ((f32*)&swap)[1];
+        textureCoordinates[3][0] = ((f32*)&swaps.swap1)[0];
+        textureCoordinates[3][1] = ((f32*)&swaps.swap1)[1];
     }
 
     for (i = 0; i < 4; i++)
@@ -5317,6 +5323,7 @@ void func_00114e70(s32 orientation,
 /* Scoped loop-invariant pragma measured W330: without nd944, with nd911 (obj 1212/1376). */
 #pragma opt_loop_invariants on
 /* W417 signature-order negative: one float argument leaves no float/int class ordering; alpha permutation is semantically unsafe. */
+/* W419 adding explicit final 0xff masks to the extracted channels was neutral: nd877, object1232/window1376. */
 // FUN_00115350 NONMATCHING
 void func_00115350(f32 depth,
                    u32 color,
@@ -5352,9 +5359,9 @@ void func_00115350(f32 depth,
     RwIm2DVertex* v;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-    r = color >> 24;
-    g = color >> 16;
-    b = color >> 8;
+    r = (color & 0xff000000) >> 24;
+    g = (color & 0x00ff0000) >> 16;
+    b = (color & 0x0000ff00) >> 8;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -5857,6 +5864,7 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 
 }
 
+/* W419 probes: direct pointer-return use, pointer-return alias, and matching sibling local order all stayed nd16,obj280/window288. */
 // FUN_00115DE0 NONMATCHING
 
 
@@ -5940,6 +5948,7 @@ u32 func_00115f00(KwlnTask* param_1)
   int lVar4;
 
   int iVar5;
+  void (**renderState)(u32, u32);
 
   u8 auStack_110 [256];
 
@@ -5954,19 +5963,14 @@ u32 func_00115f00(KwlnTask* param_1)
 
   FUN_00198590();
 
-  (*D_00960090)(6,1);
-
-  (*D_00960090)(7,2);
-
-  (*D_00960090)(8,1);
-
-  (*D_00960090)(9,1);
-
-  (*D_00960090)(0xc,1);
-
-  (*D_00960090)(0xb,6);
-
-  (*D_00960090)(10,5);
+  renderState = (void (**)(u32, u32))D_00960090_abs;
+  (*renderState)(6,1);
+  (*renderState)(7,2);
+  (*renderState)(8,1);
+  (*renderState)(9,1);
+  (*renderState)(0xc,1);
+  (*renderState)(0xb,6);
+  (*renderState)(10,5);
 
   switch(*puVar1) {
 
@@ -6463,6 +6467,7 @@ u32 func_001167f0(u32 param_1)
   int lVar4;
 
   int iVar5;
+  void (**renderState)(u32, u32);
 
   u8 auStack_110 [256];
 
@@ -6482,19 +6487,14 @@ u32 func_001167f0(u32 param_1)
 
   FUN_00198590();
 
-  (*D_00960090)(6,1);
-
-  (*D_00960090)(7,2);
-
-  (*D_00960090)(8,1);
-
-  (*D_00960090)(9,1);
-
-  (*D_00960090)(0xc,1);
-
-  (*D_00960090)(0xb,6);
-
-  (*D_00960090)(10,5);
+  renderState = (void (**)(u32, u32))D_00960090_abs;
+  (*renderState)(6,1);
+  (*renderState)(7,2);
+  (*renderState)(8,1);
+  (*renderState)(9,1);
+  (*renderState)(0xc,1);
+  (*renderState)(0xb,6);
+  (*renderState)(10,5);
 
   switch(*puVar1) {
 

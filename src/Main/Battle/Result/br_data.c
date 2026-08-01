@@ -753,8 +753,14 @@ no_match:
   K_ASSERT(false, 0x1f3);
   return NULL;
 }
+static inline f32 brDataMul(f32 left, f32 right)
+{
+    return left * right;
+}
+
 // W389 residual nd2: the sole differing instruction is commutative mul.s operand order (retail f0*f1 vs. ours f1*f0); this is a documented compiler floor.
-// FUN_001FBDF0 NONMATCHING
+// W419 measured: brDataMul((f32)amount, value) with a volatile load flips mul.s to retail order; nd2/432 -> nd0/432.
+// FUN_001FBDF0
 
 
 int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
@@ -799,8 +805,8 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
         else
             i += 10;
         K_ASSERT(i >= 0 && i < 0x15, 0x20b);
-        value = *(f32*)(iGpffffb7ac + i * 4);
-        value *= (f32)amount;
+        value = *(volatile f32*)(iGpffffb7ac + i * 4);
+        value = brDataMul((f32)amount, value);
         result = (s32)(factor * value);
     }
     if (result > 0xffff)
@@ -912,17 +918,17 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
     break;
   }
 
-  if ((*puVar1 & 0x80) == 0) {
+  if ((*puVar1 & 0x80) != 0) {
 
-    fVar4 = (float)param_3 * fVar4;
-    iVar2 = (int)(fVar5 * fVar4 * fVar3);
+    fVar4 = (float)param_3;
+    iVar2 = (int)(fVar3 * fVar4 * fVar5);
 
   }
 
   else {
 
-    fVar4 = (float)param_3;
-    iVar2 = (int)(fVar3 * fVar4 * fVar5);
+    fVar4 = (float)param_3 * fVar4;
+    iVar2 = (int)(fVar5 * fVar4 * fVar3);
 
   }
 

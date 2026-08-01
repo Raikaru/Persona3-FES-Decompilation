@@ -932,6 +932,7 @@ int FUN_003b03a0(void)
 #define FUN_003b03a0(...) ((int (*)(...))FUN_003b03a0)(__VA_ARGS__)
 #undef FUN_003b0430
 /* W415 typed-call census closure: nd 230 -> 211, object 396/400 -> 372/400. */
+/* W419 declaration sweep negative: 21 pair swaps; 18 stayed nd211/object372/window400/rate0.567204 and 3 reached nd212/object372/window400/rate0.569892. */
 // FUN_003B0430 NONMATCHING
 
 
@@ -1200,6 +1201,7 @@ LAB_003b095c:
 /* W340 loop probe: opt_lifetimes on; without nd=337/object=564, with nd=336/object=564; window=576. */
 #pragma opt_lifetimes on
 /* W417 CONCAT11 probes: direct, whole-cast, second-operand-cast, first-operand-cast, and multiply forms regressed nd=285/object=572 to nd=289/object=572; shift-cast form regressed to nd=306/object=576. Declaration orders J-M with plain arithmetic reached nd=284/object=572; the J order is retained below. */
+/* W419 declaration sweep negative: 28 pair swaps; baseline/min nd284/object572/window576/rate0.496503 and 7 reached nd289/object572/window576/rate0.505245. */
 // FUN_003B0970 NONMATCHING
 
 
@@ -2600,15 +2602,15 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 }
 #define FUN_003b1c40(...) ((void (*)(...))FUN_003b1c40)(__VA_ARGS__)
 #undef FUN_003b1c90
-// FUN_003B1C90 NONMATCHING
+// FUN_003B1C90
 
 
 void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 {
   int yDelta;
+  int scan;
   int totalWidth;
   FrFontGlyphLayout *glyph;
-  int scan;
   int firstY;
   int limit;
   int secondLimit;
@@ -3010,6 +3012,7 @@ void FUN_003b2020(int param_1,int param_2)
 #undef FUN_003b22a0
 /* W340 loop probe: opt_common_subs off; without nd=113/object=352, with nd=52/object=352; window=352. */
 #pragma opt_common_subs off
+/* W419 declaration sweep negative: all 21 pair swaps stayed nd51/object352/window352/rate0.144886. */
 // FUN_003B22A0 NONMATCHING
 
 

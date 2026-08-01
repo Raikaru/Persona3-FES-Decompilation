@@ -82,6 +82,14 @@ extern u32 uRam80074778;
 extern u32 uRam80076750;
 extern u64 uRam80076748;
 extern u32 *puRam8007472c;
+#pragma alias uRam80074780_abs uRam80074780
+extern u8 uRam80074780_abs[];
+extern u32 uRam80074780;
+#pragma alias uRam800747a8_abs uRam800747a8
+extern u8 uRam800747a8_abs[];
+extern u32 uRam800747a8;
+extern void func_0x000741e8(void *,u32);
+
 extern u32 _mips_gp0_value;
 extern int func_0x00075158();
 extern int func_0x000743c8();
@@ -91,10 +99,14 @@ extern int func_0x00076160();
 extern int func_0x00076460();
 extern int func_0x00076680();
 
-// Retail's 304-byte TLB routine is followed by an embedded kernel image at
-// 0x77fbd8 (loaded by FUN_0050d780); the generated 1712-byte window includes
-// that non-function payload, so normalized_diff is zero but the status remains
-// NONMATCHING. This accepted boundary-data floor is intentional.
+// Retail's 304-byte TLB routine is followed at 0x77f840 by an embedded data
+// table, not a callable function.  A whole-image scan found no jal/j target or
+// jump-table word for 0x77f840 or any address in 0x77f840..0x77fbd7.  The only
+// address materializations in this span point into the data table itself
+// (0x77f8a0 and 0x77f9f0); 0x77fbd8 is separately materialized by the loader
+// as the source of the copied kernel image.  No marker is therefore added at
+// 0x77f840: its 1408-byte tail is a permanent Ghidra-window data artifact,
+// and FUN_0077f710 remains normalized_diff 0 but NONMATCHING by design.
 // COP0/TLB instructions below are genuine kernel hardware operations.
 // FUN_0077F710 NONMATCHING
 asm int FUN_0077f710(u32 param_1)
@@ -182,6 +194,96 @@ epilogue:
   jr $ra
   addiu $sp,$sp,0x30
 }
+
+#pragma push
+/* #pragma schedule on: measured nd117/object156 -> nd95/object136; without it nd117/object156. */
+#pragma schedule on
+// FUN_0077FBD8 NONMATCHING
+int FUN_0077fbd8(u32 param_1)
+{
+  u32 *table;
+  u32 value;
+  u32 special;
+  u32 mask;
+  u32 base;
+  u32 i;
+
+  func_0x000741e8((void *)uRam80074700_abs,0x26);
+  special = 0xffffc402;
+  mask = 0x3ffffff;
+  base = 0xc000000;
+  table = (u32 *)uRam80074780_abs;
+  i = 0;
+  for (;;) {
+    value = table[0];
+    if (param_1 != value) {
+      i = i + 1;
+      if (i >= 5) goto ret0;
+      table = table + 2;
+      continue;
+    }
+    if (param_1 == special) goto ret0;
+    value = table[1];
+    return ((value >> 2) & mask) | base;
+  }
+ret0:
+  return 0;
+}
+#pragma pop
+
+#pragma push
+/* #pragma schedule on: measured nd133/object176 -> nd116/object172; without it nd135/object176. */
+#pragma schedule on
+// FUN_0077FC60 NONMATCHING
+void FUN_0077fc60(u32 *param_1)
+{
+  u32 *reg;
+  u32 value;
+
+  reg = (u32 *)uRam800747a8_abs;
+  value = *param_1;
+  value = (value & ~2U) | (*reg & 1);
+  *param_1 = value;
+  value = (value & ~7U) | (*reg & 6);
+  *param_1 = value;
+  value = (value & ~8U) | (*reg & 8);
+  *param_1 = value;
+  value = (value & ~0x10U) | (*reg & 0x10);
+  *param_1 = value;
+  value = (value & ~0x1fe0U) | (*reg & 0x1fe0);
+  *param_1 = value;
+  value = (value & ~0xe000U) | (*reg & 0xe000);
+  *param_1 = value;
+  *(u16 *)((u8 *)param_1 + 2) = *(u16 *)((u8 *)reg + 2);
+}
+ #pragma pop
+
+#pragma push
+/* #pragma schedule on: measured nd113/object136 -> nd109/object132; without it nd113/object136. */
+#pragma schedule on
+// FUN_0077FD10 NONMATCHING
+void FUN_0077fd10(u32 *param_1)
+{
+  u32 *reg;
+  u32 value;
+
+  reg = (u32 *)uRam800747a8_abs;
+  value = (*reg & ~2U) | (*param_1 & 1);
+  *reg = value;
+  value = (value & ~7U) | (*param_1 & 6);
+  *reg = value;
+  value = (value & ~8U) | (*param_1 & 8);
+  *reg = value;
+  value = (value & ~0x10U) | (*param_1 & 0x10);
+  *reg = value;
+  value = (value & ~0x1fe0U) | (*param_1 & 0x1fe0);
+  *reg = value;
+  value = (value & ~0xe000U) | (*param_1 & 0xe000);
+  *reg = value;
+  *(u16 *)((u8 *)reg + 2) = *(u16 *)((u8 *)param_1 + 2);
+}
+#pragma pop
+
 
 // FUN_0077FDC0 NONMATCHING
 void FUN_0077fdc0(void)
@@ -296,6 +398,11 @@ void FUN_0077ffa0(void)
 /* Removing this worsens FUN_00780070 (nd342 -> nd358) - measured W161. */
 #pragma schedule on
 #pragma optimization_level 3
+// The 0x00780070 function's real body ends at 0x78024C (delay slot 0x780250).
+// The rest of its 868-byte window is mostly zero/data. Coherent code at
+// 0x7803A0 is an unreferenced table loop whose final jr at 0x7803D0 uses
+// 0x7803D4 (the next marked entry) as its delay slot; no independent marker
+// is added because that would overlap the real 0x7803D4 entry.
  
 // FUN_00780070 NONMATCHING
 int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
@@ -613,6 +720,12 @@ void FUN_00780828(void)
     EI();
     return;
 }
+// The handler's code ends at 0x780A84 (the jr $ra delay-slot load). The
+// following 88 bytes, 0x780A88..0x780ADF, are ten nop words followed by six
+// data-table pairs at 0x780AB0..0x780ADC. A whole-image reference scan found
+// no code or data reference into this tail, so FUN_00780A20's nd0
+// SIZE_MISMATCH (104-byte object versus 192-byte window) is a permanent
+// padding/data-window artifact.
 // Retail kernel handler recovered from 0x00780A20-0x00780A84.
 // FUN_00780A20
 asm void FUN_00780a20(void)
@@ -645,6 +758,11 @@ asm void FUN_00780a20(void)
   .word 0x03e00008
   .word 0x8f5d6c50
 }
+// 0x780AE0..0x780AF3 is a 20-byte syscall trampoline; the remaining bytes in
+// its 1312-byte Ghidra window are zero/data payload and contain no jr $ra.
+// The only address materialization is the loader's pointer to 0x780AE0, with
+// no jal/jump-table references into the window. Its nd0 NONMATCHING status is
+// therefore a permanent boundary-data artifact, not missing C logic.
 // Separate syscall trampoline at 0x00780AE0.
 // FUN_00780AE0 NONMATCHING
 asm void FUN_00780ae0(void)

@@ -1964,6 +1964,7 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
+/* BtlCore2 W419 negative: DAT_00960088 array-alias spelling was byte-identical (nd508, 784B); cached DAT_00960090/a4 absolute pointers worsened nd508->511 and grew 784->804B over the 784B window. */
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
@@ -3319,6 +3320,7 @@ void func_002bf370(u64 param_1)
 }
 
 /* W415: inverted both mutually exclusive helper branches; each isolated inversion kept nd 230, final call census matches retail (object 588/608). */
+/* BtlCore2 W419 negative: inverting either bf3f0 helper branch kept nd230 (588/608B); retain baseline. */
 // FUN_002bf3f0 NONMATCHING
 
 u32 func_002bf3f0(int param_1)
@@ -3822,6 +3824,7 @@ u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
 #pragma opt_loop_invariants on
 /* W357 measured func_002c0070: opt_lifetimes on stacked with existing opt_loop_invariants on, nd1570/1988B -> nd1565/1988B; window 2064B. */
 #pragma opt_lifetimes on
+/* BtlCore2 W419 negative: absolute aliases for c0070 DAT_007e095{2,4,8,a} worsened nd1565->1604 and grew 1988->2028B (window2064); per-symbol probes also worsened nd1577-1588. */
 // FUN_002c0070 NONMATCHING
 
 void func_002c0070(int param_1,int param_2)
@@ -6478,8 +6481,9 @@ void func_002c4860(u64 param_1,u64 param_2)
 }
 
 /* W322 probe: func_002c48a0 with opt_loop_invariants on improved normalized_diff 206 -> 48 (object 484/496). */
+/* BtlCore2 W419 negative: swapping uVar7/iVar8 declarations worsened func_002c48a0 nd39->42 (484/496B); retain baseline. */
 #pragma opt_loop_invariants on
-// FUN_002c48a0 NONMATCHING
+// FUN_002c48a0
 
 u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
 
@@ -6489,9 +6493,9 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
   u32 uVar3 = 0;
   int iVar4 = 0;
   u16 *puVar5;
-  u16 uVar6 = 0;
-  u32 uVar7 = 0;
   int iVar8 = 0;
+  u32 uVar7 = 0;
+  u16 uVar6 = 0;
   int iVar9 = 0;
   
   uVar3 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
@@ -6512,13 +6516,13 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
       iVar4 = func_00303130_s32(uVar1,*(volatile u32 *)(iVar9 + 0xa2c),
                            *(u32 *)(iVar4 + 0xa2c),1,1,1,0,1);
       iVar4 = uVar3 + iVar4;
-      if ((iVar4 < 1) || (iVar8 < 1)) {
-        if ((iVar4 < 1) && ((0 < iVar8 || (iVar8 < iVar4)))) {
+      if ((iVar4 > 0) && (iVar8 > 0)) {
+        if (iVar4 < iVar8) {
           uVar7 = (u32)*puVar5;
           iVar8 = iVar4;
         }
       }
-      else if (iVar4 < iVar8) {
+      else if ((iVar4 <= 0) && ((iVar8 > 0) || (iVar8 < iVar4))) {
         uVar7 = (u32)*puVar5;
         iVar8 = iVar4;
       }
@@ -6532,7 +6536,7 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
 
 /* W322 probe: func_002c4a90 with opt_loop_invariants on improved normalized_diff 206 -> 56 (object 492/496). */
 #pragma opt_loop_invariants on
-// FUN_002c4a90 NONMATCHING
+// FUN_002c4a90
 
 u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5)
 
@@ -6542,18 +6546,19 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   u16 uVar3 = 0;
   int iVar4 = 0;
   u16 *puVar5;
-  u16 uVar6 = 0;
-  u32 uVar7 = 0;
   int iVar8 = 0;
+  u32 uVar7 = 0;
+  u16 uVar6 = 0;
   u16 mode;
   int iVar9 = 0;
   
   uVar2 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar7 = 0xffffffff;
   iVar8 = 0xffffff;
+  uVar6 = 0;
   mode = (u16)param_5;
   param_4 &= 0xffff;
-  for (uVar6 = 0; uVar6 < param_4; uVar6++) {
+  for (; uVar6 < (s32)param_4; uVar6++) {
     puVar5 = param_3 + uVar6;
     uVar3 = func_0030bc20_u32(*puVar5);
     if ((uVar3 != 0) && (uVar3 < 0x1d0)) {
@@ -6564,13 +6569,13 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
       iVar4 = func_00303130_s32(uVar3,*(volatile u32 *)(iVar9 + 0xa2c),
                            *(u32 *)(iVar4 + 0xa2c),1,1,1,1,1);
       iVar4 = uVar2 + iVar4;
-      if ((iVar4 < 1) || (iVar8 < 1)) {
-        if ((iVar4 < 1) && ((0 < iVar8 || (iVar8 < iVar4)))) {
+      if ((iVar4 > 0) && (iVar8 > 0)) {
+        if (iVar4 < iVar8) {
           uVar7 = (u32)*puVar5;
           iVar8 = iVar4;
         }
       }
-      else if (iVar4 < iVar8) {
+      else if ((iVar4 <= 0) && ((iVar8 > 0) || (iVar8 < iVar4))) {
         uVar7 = (u32)*puVar5;
         iVar8 = iVar4;
       }
@@ -7495,6 +7500,7 @@ u16 func_002c6ba0(int param_1)
 }
 #pragma opt_loop_invariants off
 
+/* BtlCore2 W419 negative: c6e30 direct loop-index/removal probes held nd46 at 288B; shared-counter variant failed compilation. */
 // FUN_002c6e30 NONMATCHING
 
 undefined* func_002c6e30(int unit, u32 group)

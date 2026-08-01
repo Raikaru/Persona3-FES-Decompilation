@@ -785,6 +785,7 @@ da570_found:
 }
 
 /* Removing this worsens FUN_003da700 (nd2097 -> nd2101) - measured W161. */
+/* Array declaration orders selected_ids/list/transformed: nd1960-1968, object3740/window3712 (all over by28); no win - measured W419. */
 #pragma opt_loop_invariants on
 // FUN_003da700 NONMATCHING
 s32 fclCombineList003da700(FclList* param_1)

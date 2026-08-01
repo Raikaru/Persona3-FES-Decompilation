@@ -722,6 +722,13 @@ done:
     return result;
 }
 #pragma pop
+// W419: moving z initialization after viewer-position setup improved
+// func_001c6720 from 260/744 to 245/744; the base-pointer form reached
+// 244/744. Explicit pointer-entry/while and do-while probes regressed to
+// 300/748 and 285/748 respectively; rejected.
+// W419: the same z setup reorder improved func_001c6a20 from 350/820 to
+// 336/820; explicit do-while and declaration permutations made no further
+// improvement.
 // FUN_001c6720 NONMATCHING
 void* func_001c6720(const FldUnit* unit, f32 maxDist)
 {
@@ -741,6 +748,7 @@ void* func_001c6720(const FldUnit* unit, f32 maxDist)
     s32 rawZ;
     s32 z;
     u8* cell;
+    u8* base;
 
     result = NULL;
     nearest = DAT_007caefc;
@@ -756,8 +764,8 @@ void* func_001c6720(const FldUnit* unit, f32 maxDist)
         }
     }
 
-    z = 0;
     viewerPosZ = &mdlGetMatrix(unit->mdl)->pos;
+    z = 0;
     if (K_Scene_001a0250() != false)
     {
         rawZ = (s32)((s32)(viewerPosZ->z + 400.0f) / 800.0f);
@@ -769,8 +777,8 @@ void* func_001c6720(const FldUnit* unit, f32 maxDist)
     }
 
     i = 0;
-    cell = DAT_0086b180_abs + z * 0x310;
-    cell += x * 0xc4;
+    base = DAT_0086b180_abs + z * 0x310;
+    cell = base + x * 0xc4;
     for (; ; i++)
     {
         candidate = *(FldUnit**)(cell + i * 4);
@@ -840,8 +848,8 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
         }
     }
 
-    z = 0;
     viewerPos = &mdlGetMatrix(unit->mdl)->pos;
+    z = 0;
     if (K_Scene_001a0250() != false)
     {
         rawZ = (s32)((s32)(viewerPos->z + 400.0f) / 800.0f);
@@ -1405,51 +1413,53 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
 }
 
 /* W415: retail has no zero comparison before either copy; both memcpy destinations are loaded through K_Field_Get, restoring the two 0x001b9120 calls (nd207->202). Direct/alias helper probes were nd207-neutral; retaining null guards was nd247/object432 over the 416-byte window. */
-// FUN_001c7f20 NONMATCHING
+/* W419: outer/cache gotos plus direct allocator stores and volatile cache-size dereferences reduce 001c7f20 to nd66/object416 (previous nd202/object416); residual is confined to the CDVD path. */
+/* W419 MATCH: CDVD field alias plus volatile allocator/memcpy size loads reproduce the retail CDVD path at 416/416 (nd0). */
+// FUN_001c7f20
 u32 func_001c7f20(void* resource)
 {
     char path[76];
-    s32 size;
     void* source;
-    void* destination;
-    void* (*allocate)(u32 count, u32 size, u32 flags);
+    u32 size;
+    HCdvd* cdvd = (HCdvd*)resource;
 
-    if (resource == NULL)
+    if (cdvd == NULL)
     {
         return true;
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded((HCdvd*)resource) == false)
+        if (H_Cdvd_IsFileLoaded(cdvd) == false)
         {
-            return false;
+            goto failed;
         }
         func_001c80c0();
-        size = ((HCdvd*)resource)->fileSize;
-        *(s32*)((u8*)K_Field_Get() + 0x1144) = size / 0x2c;
-        allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
-        destination = allocate(1, (u32)size, 0x40000);
-        *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
+        *(s32*)((u8*)K_Field_Get() + 0x1144) = cdvd->fileSize / 0x2c;
+        *(void**)((u8*)K_Field_Get() + 0x1148) =
+            ((void* (*)(u32, u32, u32))DAT_00960184[0])(
+                1, *(volatile u32*)&cdvd->fileSize, 0x40000);
         memcpy(*(void**)((u8*)K_Field_Get() + 0x1148),
-               ((HCdvd*)resource)->fileMemory, (u32)size);
-        H_Cdvd_Destroy((HCdvd*)resource);
+               cdvd->fileMemory, *(volatile u32*)&cdvd->fileSize);
+        H_Cdvd_Destroy(cdvd);
+        return true;
     }
-    else
+    sprintf(path, D_00683710, gMtScene->fldMajorId, gMtScene->fldMinorId);
+    source = H_Cdvd_CacheFindFile(path, (u32*)&size);
+    if (source == NULL)
     {
-        sprintf(path, D_00683710, gMtScene->fldMajorId, gMtScene->fldMinorId);
-        source = H_Cdvd_CacheFindFile(path, (u32*)&size);
-        if (source != NULL)
-        {
-            func_001c80c0();
-            *(s32*)((u8*)K_Field_Get() + 0x1144) = size / 0x2c;
-            allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
-            destination = allocate(1, (u32)size, 0x40000);
-            *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
-            memcpy(*(void**)((u8*)K_Field_Get() + 0x1148),
-                   source, (u32)size);
-        }
+        goto success;
     }
+    func_001c80c0();
+    *(s32*)((u8*)K_Field_Get() + 0x1144) = size / 0x2c;
+    *(void**)((u8*)K_Field_Get() + 0x1148) =
+        ((void* (*)(u32, u32, u32))DAT_00960184[0])(
+            1, *(volatile u32*)&size, 0x40000);
+    memcpy(*(void**)((u8*)K_Field_Get() + 0x1148),
+           source, *(volatile u32*)&size);
+success:
     return true;
+failed:
+    return false;
 }
 
 // FUN_001c80c0

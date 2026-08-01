@@ -122,6 +122,10 @@ typedef struct MdlFrameDispatch {
     code apply;
 } MdlFrameDispatch;
 typedef u32 (*MdlCreate2FloatFn)(float, int, float);
+static inline uintptr_t MdlFile_AddOffsetFirst(uintptr_t offset, uintptr_t base)
+{
+  return offset + base;
+}
 static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStack_90, auStack_a0;
 static Vec128 _DAT_0069c4d0;
 static u64 _DAT_0069c4a0;
@@ -2905,6 +2909,7 @@ u32 func_0031c7e0(int param_1)
 
 
 
+/* W419 dispatch-shape negative: explicit default grouping stayed nd1877/object3092/window3280/rate0.607050. */
 // FUN_0031C820 NONMATCHING
 
 
@@ -5337,6 +5342,8 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
 
 
 // SibMdl negatives: stackSpill volatile-cast removal nd14 -> nd43 (336/352); fraction-first interpolation in either branch nd14 -> nd16; direct final multiply operand swap and pointer argument cast stayed nd14; naming final difference wins nd14 -> nd12.
+// W419 inline address helper fixes both direct-load addu orientations: nd12 -> nd8 (340/352); residual call setup order remains.
+/* W419 rejected forms: stackSpill nd43/object336/window352/rate0.127976; fraction-first nd16/object340/window352/rate0.047059; final multiply/pointer cast nd14/object340/window352/rate0.041176; naming variant nd12/object340/window352/rate0.035294. */
 // FUN_0031F870 NONMATCHING
 
 
@@ -5358,7 +5365,9 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
   data1 = param_2[3];
   uVar2 = FUN_0031f740(param_1,param_2);
   if (uVar2 >= *param_2 - 1U) {
-    *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data1 + 4);
+    *(float *)&DAT_007ce534 =
+        *(float *)((u8 *)(uintptr_t)MdlFile_AddOffsetFirst(
+            (uintptr_t)(uVar2 * 8), (uintptr_t)data1) + 4);
   }
   else {
     key = (float *)(data1 + uVar2 * 8);
@@ -5376,7 +5385,9 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
   data2 = param_4[3];
   uVar2 = FUN_0031f740(param_3,param_4);
   if (uVar2 >= *param_4 - 1U) {
-    *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data2 + 4);
+    *(float *)&DAT_007ce534 =
+        *(float *)((u8 *)(uintptr_t)MdlFile_AddOffsetFirst(
+            (uintptr_t)(uVar2 * 8), (uintptr_t)data2) + 4);
   }
   else {
     key = (float *)(data2 + uVar2 * 8);

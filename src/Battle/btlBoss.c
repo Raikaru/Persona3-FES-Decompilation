@@ -1757,26 +1757,27 @@ u32 func_002fa240(void)
 void func_002fa510(BtlAction* action, s32 mode)
 {
     u16 encounterId;
-    BtlUnit* unit;
-    u16 charId;
     u16 slot;
 
     encounterId = btlBossGetEncounterId();
-    unit = action->unit;
-    charId = unit->charId;
     switch (encounterId)
     {
     case 0x1a1:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x102 || charId == 0x101) && mode == 1)
+            (unit->charId == 0x102 || unit->charId == 0x101) && mode == 1)
         {
             func_002e4220(0x2e9c20, 0x2e9f10, action);
         }
         break;
+    }
     case 0x1a4:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1)
         {
-            if (charId == 0x106 || charId == 0x105)
+            if (unit->charId == 0x106 || unit->charId == 0x105)
             {
                 if (mode == 0)
                 {
@@ -1787,31 +1788,40 @@ void func_002fa510(BtlAction* action, s32 mode)
                     func_002e4220(0x2eba50, 0x2ebec0, action);
                 }
             }
-            else if (charId == 0x115 && mode == 1)
+            else if (unit->charId == 0x115 && mode == 1)
             {
                 func_002e4220(0x2eabf0, 0x2eb250, action);
             }
         }
         break;
+    }
     case 0x1a6:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x10a || charId == 0x109) &&
+            (unit->charId == 0x10a || unit->charId == 0x109) &&
             mode == 1 && func_002e4250() == 0)
         {
             func_002e4220(0x2ee640, 0x2eea10, action);
         }
         break;
+    }
     case 0x1a7:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x10c || charId == 0x10b) &&
+            (unit->charId == 0x10c || unit->charId == 0x10b) &&
             mode != 0 && func_002e4250() == 0)
         {
             func_002e4220(0x2ef000, 0x2ef250, action);
         }
         break;
+    }
     case 0x1a8:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x118 || charId == 0x117 || charId == 0x116) && mode == 1)
+            (unit->charId == 0x118 || unit->charId == 0x117 || unit->charId == 0x116) && mode == 1)
         {
             slot = *(u16*)((u8*)gBtl + 0xb50);
             *(BtlAction**)((u8*)gBtl + 0xb44 + slot * 4) = action;
@@ -1819,7 +1829,10 @@ void func_002fa510(BtlAction* action, s32 mode)
             func_002e4220(0x2f0ea0, 0x2f14a0, action);
         }
         break;
+    }
     case 0x1ac:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
             func_002e4250() == 0)
         {
@@ -1833,12 +1846,15 @@ void func_002fa510(BtlAction* action, s32 mode)
             }
         }
         break;
+    }
     case 0x1b1:
     case 0x1b2:
     case 0x1b3:
+    {
+        BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1)
         {
-            switch (charId)
+            switch (unit->charId)
             {
             case 0xeb:
             case 0xec:
@@ -1854,14 +1870,18 @@ void func_002fa510(BtlAction* action, s32 mode)
             }
         }
         break;
+    }
     case 0x1b4:
-        if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0xf1 &&
+    {
+        BtlUnit* unit = action->unit;
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1 && unit->charId == 0xf1 &&
             mode != 0 && func_002e4250() == 0)
         {
             *(void**)((u8*)gBtl + 0xb4c) = NULL;
             func_002e4220(0x2f6840, 0x2f6ab0, action);
         }
         break;
+    }
     }
 }
 #pragma opt_common_subs reset
@@ -3201,6 +3221,7 @@ void FUN_002fd820(void)
     }
 }
 
+/* BtlCore2 W419 negative: fd8a0 direct action->unit expressions held nd43 at 716/720B; retain cached data local. */
 // FUN_002FD8A0 NONMATCHING
 void FUN_002fd8a0(BtlAction* action)
 {

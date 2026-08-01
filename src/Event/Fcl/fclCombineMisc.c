@@ -1172,6 +1172,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 #pragma pop
 #pragma opt_common_subs reset
 
+// W419 negative: DAT_006a5fe0 array/absolute alias left FUN_003d6910 nd168/object396 (baseline nd168/object396, window464); reverted.
 // FUN_003D6910 NONMATCHING
 
 

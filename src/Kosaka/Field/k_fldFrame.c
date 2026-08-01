@@ -1496,10 +1496,16 @@ void func_001aaac0(KwlnTask* task, u32 value)
     *(u32*)((u8*)task->workData + 4) = value;
 }
 
+/* W419: case-local i0/i1/i2 declarations reduce K_FldFrame_IsPointInTriangle nd85 -> 1 at object 832/832; one axis-selection branch target remains for follow-up. */
+/* W419 failed shape probes from nd1: axis-shape nd6/832, inner-invert nd10/832, condexpr nd9/832; single-case-switch variants nd643/856 and nd627/872 (over 832-byte window); explicit join-goto stayed nd1/832. */
+/* W419 failed exact tail-out probe: moving the axis-1/axis-0 tail outside the absZ/absY guard gave nd608/object772/window832, so it was reverted. */
+/* W419 failed mirrored outer-condition probe (absZ <= absY with original body): nd2/object832/window832, semantically reverses the axis choice, so it was reverted. */
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
-    s32 i;
+    s32 i0;
+    s32 i1;
+    s32 i2;
     s32 axis;
     s32 previous;
     u32 inside;
@@ -1540,57 +1546,57 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
         switch (axis)
         {
         case 0:
-            i = 0;
+            i0 = 0;
             primary0 = point->y;
-            for (; i < 3; i++)
+            for (; i0 < 3; i0++)
             {
-                if (((tri[i]->y <= primary0) && (primary0 < tri[previous]->y)) ||
-                    ((tri[previous]->y <= primary0) && (primary0 < tri[i]->y)))
+                if (((tri[i0]->y <= primary0) && (primary0 < tri[previous]->y)) ||
+                    ((tri[previous]->y <= primary0) && (primary0 < tri[i0]->y)))
                 {
-                    if (point->z < tri[i]->z +
-                        ((primary0 - tri[i]->y) * (tri[previous]->z - tri[i]->z)) /
-                        (tri[previous]->y - tri[i]->y))
+                    if (point->z < tri[i0]->z +
+                        ((primary0 - tri[i0]->y) * (tri[previous]->z - tri[i0]->z)) /
+                        (tri[previous]->y - tri[i0]->y))
                     {
                         inside = !inside;
                     }
                 }
-                previous = i;
+                previous = i0;
             }
             break;
         case 1:
-            i = 0;
+            i1 = 0;
             primary1 = point->z;
-            for (; i < 3; i++)
+            for (; i1 < 3; i1++)
             {
-                if (((tri[i]->z <= primary1) && (primary1 < tri[previous]->z)) ||
-                    ((tri[previous]->z <= primary1) && (primary1 < tri[i]->z)))
+                if (((tri[i1]->z <= primary1) && (primary1 < tri[previous]->z)) ||
+                    ((tri[previous]->z <= primary1) && (primary1 < tri[i1]->z)))
                 {
-                    if (point->x < tri[i]->x +
-                        ((primary1 - tri[i]->z) * (tri[previous]->x - tri[i]->x)) /
-                        (tri[previous]->z - tri[i]->z))
+                    if (point->x < tri[i1]->x +
+                        ((primary1 - tri[i1]->z) * (tri[previous]->x - tri[i1]->x)) /
+                        (tri[previous]->z - tri[i1]->z))
                     {
                         inside = !inside;
                     }
                 }
-                previous = i;
+                previous = i1;
             }
             break;
         case 2:
-            i = 0;
+            i2 = 0;
             primary2 = point->y;
-            for (; i < 3; i++)
+            for (; i2 < 3; i2++)
             {
-                if (((tri[i]->y <= primary2) && (primary2 < tri[previous]->y)) ||
-                    ((tri[previous]->y <= primary2) && (primary2 < tri[i]->y)))
+                if (((tri[i2]->y <= primary2) && (primary2 < tri[previous]->y)) ||
+                    ((tri[previous]->y <= primary2) && (primary2 < tri[i2]->y)))
                 {
-                    if (point->x < tri[i]->x +
-                        ((primary2 - tri[i]->y) * (tri[previous]->x - tri[i]->x)) /
-                        (tri[previous]->y - tri[i]->y))
+                    if (point->x < tri[i2]->x +
+                        ((primary2 - tri[i2]->y) * (tri[previous]->x - tri[i2]->x)) /
+                        (tri[previous]->y - tri[i2]->y))
                     {
                         inside = !inside;
                     }
                 }
-                previous = i;
+                previous = i2;
             }
             break;
         default:

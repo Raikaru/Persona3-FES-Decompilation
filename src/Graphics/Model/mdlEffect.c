@@ -33095,6 +33095,9 @@ void FUN_00342a40(int param_1)
 
 
 // W417 negative: direct normalization VU asm for the FUN_00342a90 inner particle vector grew nd1585/object2188 to nd2205/object2912 over the 2432-byte retail window; retained fake VU code.
+// W419 retail-tail decode: `sqc2 $vf10, 0($v1)` with `$v1 = 0x0069c4d0` (lui 0x6a; addiu -0x3b30), then scalar `lwc1`/`swc1` copies to output +0x24/+0x28/+0x2c. Packed output+global candidate nd1635/object2420/window2432 (rate 0.67562) fit but had a semantically non-retail tail; scalar global-copy candidate nd1644/object2444/window2432 (rate 0.67267) exceeded the window.
+// W419 VU census (retail ops/ours ops; nd/object/window; rate): 003348b0 51/0; 1503/2192/2256; 0.68568. 00335a70 90/4; 2926/3668/3008; 0.79771 (660 over). 00342a90 22/0; 1585/2188/2432; 0.72441. 003450d0 37/0; 1562/2096/2208; 0.74523. 00330190 61/0; 2868/3488/2592; 0.82225 (896 over). 0034dc00 47/0; 1454/1856/1936; 0.78341.
+
 // FUN_00342A90 NONMATCHING
 
 
@@ -45432,6 +45435,11 @@ bool FUN_00351290(int param_1)
 
 
 
+static inline f32 mdlEffectMulFirst(f32 lhs, f32 rhs)
+{
+  return lhs * rhs;
+}
+
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {
@@ -45454,7 +45462,7 @@ void FUN_00351510(int param_1)
     widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
-    ratio = 255.0f * ratio;
+    ratio = mdlEffectMulFirst(255.0f, ratio);
     if (2147483648.0f > ratio) {
       alphaByte = (s32)ratio & 0xff;
     } else {

@@ -3551,6 +3551,15 @@ void* func_001e6030(void* parent)
 // Best W418 reconstruction probe reduced func_001e60b0 from 1522/2240
 // (rate 67.95%) to 1333/2364 (rate 56.39%), still NONMATCHING and 84 bytes
 // below the 2448-byte retail window.
+// W419 mixed-axis probe: firstAxis field tests/abs improved 1333/2364 to
+// 1316/2380 (rate 55.29%); using firstAxis for distance regressed to
+// 1453/2376 (z) or 1452/2376 (x), full-field distance to 1558/2372,
+// and adding missing func_00195020 to 1542/2392; rejected.
+// W419 retail decode: multiply-by-negative-one abs forms and x-before-z
+// absolute-value order reduce this function to 1258/2408 (52.24% rate);
+// rotate input is reused through firstAxis.x to preserve retail stack liveness.
+// Direct firstAxis input reconstruction measured 1485/2424 and distance
+// field loads measured 1419/2144; both are rejected despite retail loads.
 // FUN_001E60B0 NONMATCHING
 s32 func_001e60b0(RuntimeTask* task)
 {
@@ -3577,8 +3586,8 @@ s32 func_001e60b0(RuntimeTask* task)
     RuntimeVec3 direction;
     RuntimeVec3 firstAxis;
     RuntimeVec3 axis;
-    RuntimeVec3 center;
     RuntimeVec3 adjusted;
+    RuntimeVec3 center;
     RuntimeTransitionAngles angles;
     char text[112];
     u16 input;
@@ -3733,8 +3742,8 @@ s32 func_001e60b0(RuntimeTask* task)
             firstAxis.x = y;
             firstAxis.z = x;
 
-            if (x < -48.0f || x > 48.0f ||
-                y < -48.0f || y > 48.0f)
+            if (firstAxis.z < -48.0f || firstAxis.z > 48.0f ||
+                firstAxis.x < -48.0f || firstAxis.x > 48.0f)
             {
                 matrixFlags = *(u32*)&rotation.values[3];
                 rotation.values[0] = 1.0f;
@@ -3757,24 +3766,26 @@ s32 func_001e60b0(RuntimeTask* task)
                 direction.y = -direction.y;
                 direction.z = -direction.z;
                 func_004c6be0(&direction, &direction, &rotation);
-                if (x < 1.0f)
+                if (firstAxis.x < 1.0f)
                 {
-                    x = -x;
+                    firstAxis.x *= -1.0f;
                 }
-                if (y < 1.0f)
+                if (firstAxis.z < 1.0f)
                 {
-                    y = -y;
+                    firstAxis.z *= -1.0f;
                 }
                 distance = (x + y) * D_007CB118[0] / 2.0f;
                 K_Draw_MovePositionInDir(
                     distance, work->positionTask, &direction);
             }
             input = *(u8*)(&DAT_007e0960[0]);
-            y = (f32)input * 2.0f - 128.0f;
-            if (y < -48.0f || y > 48.0f)
+            firstAxis.x = (f32)input;
+            firstAxis.x += firstAxis.x;
+            firstAxis.x -= 128.0f;
+            if (firstAxis.x < -48.0f || firstAxis.x > 48.0f)
             {
                 K_Draw_RotatePosition(work->positionTask, &axis,
-                                       y * D_007CB118[1]);
+                                       firstAxis.x * D_007CB118[1]);
             }
             input = DAT_007e094c;
             if ((input & 6) != 0)
@@ -7263,6 +7274,8 @@ void func_001eda90(RuntimeWork* work)
     func_004c3880(secondMatrix);
 }
 
+/* W419 accepted: reversing the four scalar declarations and deferring activeEntry assignment reduced func_001edbe0 from nd464/object752/window752 (61.70%) to nd461/object752/window752 (61.30%); no size change. */
+/* W419 rejected: direct command/offset expressions were nd439/object756/window752 (58.07%, over window), and direct entry expressions were nd577/object768/window752 (75.13%, over window). */
 // FUN_001EDBE0 NONMATCHING
 void func_001edbe0(RuntimeRenderCollection* work)
 {
@@ -7279,10 +7292,10 @@ void func_001edbe0(RuntimeRenderCollection* work)
     void* material;
     RuntimeVec3 first;
     RuntimeVec3 second;
+    u32 frameValue;
+    u32 commandResult;
     f32 delta;
     RuntimeColor color;
-    u32 commandResult;
-    u32 frameValue;
     s32 index;
     s32 active;
 
@@ -7297,16 +7310,16 @@ void func_001edbe0(RuntimeRenderCollection* work)
 
         if (active != 0)
         {
-        u8* command;
-        u8* activeEntry;
-        activeEntry = work->entries + index * 0x4c;
-        command = work->commands + index * 0x20;
+            u8* command;
+            u8* activeEntry;
+            command = work->commands + index * 0x20;
             func_001eba80(
                 (RuntimeCommandWork*)command,
                 &commandResult);
             if ((~work->flags & 8) != 0 &&
                 (*(u32*)command & 2) != 0)
             {
+                activeEntry = work->entries + index * 0x4c;
                 if ((*(u32*)command & 8) != 0)
                 {
                     func_001eb920(

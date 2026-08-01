@@ -1607,6 +1607,10 @@ void func_0021f3c0(void)
     words[0] &= ~1;
 }
 
+/* W419 prologue diagnosis: ours frame 0x1f0/496B saves s0-s7 and f20-f27;
+ * retail frame 0xd0/208B saves s0-s4 and f20-f31. Whole-body
+ * reconstruction; scoped-temporary probe stayed nd7333/10000B, window
+ * 10064B, rate 0.733300 (no code change). */
 // FUN_0021f410 NONMATCHING
 void func_0021f410(void)
 {
@@ -2792,7 +2796,10 @@ void FUN_002230e0(void)
 #pragma optimization_level 2
 
 /* W357 measured FUN_00223290: opt_propagation off nd2166/3392B -> nd2127/3224B,
- * window 3776B. */
+ * window 3776B. W419 coordinate-store recovery: nd2127/3224B ->
+ * nd2128/3240B, window 3776B, rate 0.659739 -> 0.656790. Moving
+ * coordinates plus colours before the frame call was rejected: nd2148/3268B,
+ * window 3776B, rate 0.657895. */
 #pragma opt_propagation off
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
@@ -2940,10 +2947,12 @@ alpha_done:
         handle = (u32)*(void**)(selRecord + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
-        frame = (void*)FUN_0021cca0(table0, 0x2f);
-        FUN_0021d3b0(records + 0x18f0, frame);
         layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
+        *(f32*)(records + 0x18d0) = layout[0];
+        *(f32*)(records + 0x18d4) = layout[1];
+        frame = (void*)FUN_0021cca0(table0, 0x2f);
+        FUN_0021d3b0(records + 0x18f0, frame);
         layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
         layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
         FUN_0021d8e0(records + 0x18f0, layout);
@@ -3291,12 +3300,16 @@ void FUN_00224940(void)
     records = work + 0x4660;
     weight = *(f32*)(work + 0x7214);
 
-    if (*(u32*)(work + 0x463c) == 0) {
+    switch (*(u32*)(work + 0x463c)) {
+    case 0:
         alphaF = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
-    } else if (*(u32*)(work + 0x463c) == 4) {
+        break;
+    case 4:
         alphaF = (f32)*(s32*)(work + 0x4650) / 3.0f;
-    } else {
+        break;
+    default:
         K_ASSERT(0, 0x8b3);
+        break;
     }
     alphaByte = (u8)(u32)(255.0f * alphaF * weight);
 
@@ -3614,12 +3627,13 @@ void FUN_002257F0(void)
     u8 color[4];
     void* frame;
     f32 rect[4];
+    f32 baseX;
+    u32 resource1;
     u32 colour0;
     u32 colour1;
     u32 colour2;
     u32 colour3;
     u32 colour4;
-    u32 resource1;
     u32 obj1;
     u32 obj2;
     s32 i;
@@ -3661,7 +3675,9 @@ void FUN_002257F0(void)
     FUN_0021d8e0(work + 0x4430, rect);
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
-    rect[0] = 47.0f + posB[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    baseX = 47.0f + posB[0];
+    baseX += (f32)*(s32*)((u8*)frame + 0xc);
+    rect[0] = baseX;
     rect[1] = 19.0f + posB[1] +
               (f32)((*(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558)) * 26);
     rect[2] = 276.0f;
@@ -3675,32 +3691,37 @@ void FUN_002257F0(void)
     FUN_0021d950(work + 0x4430, color);
     FUN_0021d950(work + 0x4530, color);
 
+    i = 0;
     colour0 = (u32)alphaByte | 0xffffff00u;
     colour1 = (u32)alphaByte | 0xcccccc00u;
     colour2 = (u32)alphaByte | 0xbeffd200u;
     colour3 = (u32)alphaByte | 0x64cc6400u;
-    colour4 = ((u32)alphaByte * 50 / 100) | 0xffffff00u;
+    colour4 = ((s32)((u32)alphaByte * 50) / 100) | 0xffffff00u;
 
-    for (i = 0; i < *(s32*)(overlay0 + 0x55c); ++i) {
+    for (; i < *(s32*)(overlay0 + 0x55c); ++i) {
         overlayI = overlay0 + i * 0x110;
         resource1 = *(u32*)(overlayI + 4);
 
-        diffY = i * 26;
         rect[0] = 103.0f + posB[0];
+        diffY = i * 26;
         rect[1] = 19.0f + posB[1] + (f32)diffY;
         FUN_003b0d70(resource1, (s32)rect[0] << 4, (s32)rect[1] << 3);
 
         state = *(u32*)overlayI;
         switch (state) {
         case 0:
-            colour = (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558))
-                         ? colour0
-                         : colour1;
+            if (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558)) {
+                colour = colour0;
+            } else {
+                colour = colour1;
+            }
             break;
         case 2:
-            colour = (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558))
-                         ? colour2
-                         : colour3;
+            if (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558)) {
+                colour = colour2;
+            } else {
+                colour = colour3;
+            }
             break;
         case 1:
             colour = colour4;
@@ -3751,8 +3772,8 @@ void FUN_002257F0(void)
                 }
             }
             break;
-        case 2:
         case 1:
+        case 2:
             obj1 = *(u32*)(overlay0 + 0x560);
             colour = (u32)alphaByte | 0xff9d9d00u;
             FUN_003b0e20(obj1, colour);
@@ -4228,7 +4249,7 @@ void FUN_00227800(void)
     (*setQuad2)((u32*)(work + 0x2030), 4, 0, 1, 2);
     (*setQuad2)((u32*)(work + 0x2030), 4, 0, 2, 3);
 
-    if (*(u32*)(work + 0x463c) == 3 && *(s32*)(work + 0x6074) < 5) {
+    if (*(u32*)(work + 0x463c) != 3 && *(s32*)(work + 0x6074) >= 5) {
         resource = FUN_0021cca0(table0, 0x1d);
         (*setState2)(1, FUN_0021cce0(resource));
         (*setQuad2)((u32*)(work + 0x2130), 4, 0, 1, 2);
@@ -4954,10 +4975,10 @@ void FUN_0022A2B0(void)
     u32 table6;
     void* frame;
     f32* basePos;
-    f32 weight;
     f32 alpha1;
     f32 alpha2;
     f32 blend;
+    f32 weight;
     f32 scaled;
     u8 alphaByte;
     u32 whiteColour;
@@ -4977,12 +4998,16 @@ void FUN_0022A2B0(void)
     basePos = (f32*)(work + 0x6050);
     weight = *(f32*)(work + 0x7214);
 
-    if (*(u32*)(work + 0x463c) == 0) {
+    switch (*(u32*)(work + 0x463c)) {
+    case 0:
         alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
-    } else if (*(u32*)(work + 0x463c) == 1) {
+        break;
+    case 1:
         alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
-    } else {
+        break;
+    default:
         K_ASSERT(0, 0xfb4);
+        break;
     }
 
     switch (*(u32*)(work + 0x4644)) {

@@ -8,6 +8,7 @@
 #include "libm.h"
 typedef int (*code)(...);
 extern void* opRes00266c50(u32 id);
+#pragma alias opRes00266c50 opResGetTitleSprite
 extern void* func_0021cca0_u32(void* resource, u32 index);
 #pragma alias func_0021cca0_u32 func_0021cca0
 extern void* func_0021cce0_ptr(void* frame);
@@ -251,6 +252,7 @@ void opTitle002673f0(void)
     sOpTitle = NULL;
 }
 
+// W419 negative probe: DAT_007cb164 float-array .sdata alias left opTitle00267430 at nd3280/6340B, window6640B, rate51.74%; reverted.
 // FUN_00267430 NONMATCHING
 void opTitle00267430(void)
 {

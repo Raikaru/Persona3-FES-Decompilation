@@ -30,9 +30,9 @@ static HsndSlotWork sSlotWork[HSND_SLOT_COUNT];
 #pragma alias sSlotWork_alt sSlotWork
 extern u8 sSlotWork_alt[];
 static HsndBackendControl sBackendControls[HSND_CHANNEL_COUNT];
-static s16 sBgmRestartCountdown;
- #pragma alias sBgmRestartCountdown_alt sBgmRestartCountdown
- extern s16 sBgmRestartCountdown_alt[];
+static s32 sBgmRestartCountdown;
+#pragma alias sBgmRestartCountdown_alt sBgmRestartCountdown
+extern s32 sBgmRestartCountdown_alt[];
 static void* sChannelData0[HSND_CHANNEL_COUNT];
 static void* sChannelData1[HSND_CHANNEL_COUNT];
 static void* sChannelData2[HSND_CHANNEL_COUNT];
@@ -369,7 +369,7 @@ u8 func_00109170(void)
     return false;
 }
 
-/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. W415 swapped the non-CDVD branch bodies to emit 0x001025c0 before 0x00102530 (nd 1202 -> 1202, object 1852/2080). */
+/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. W415 swapped the non-CDVD branch bodies to emit 0x001025c0 before 0x00102530 (nd 1202 -> 1202, object 1852/2080). W419 permuted all 24 declarations of name/handle/channelOffset/channel; every result stayed nd 796, object 1764. W419 ascending switch-case group order regressed to nd 828, object 1764; a scoped case-local index stayed nd 795, object 1764, while volatile indexing regressed to nd 939, object 1852. */
 // FUN_00109180 NONMATCHING
 void H_Snd_00109180(s32 channelIndex)
 {

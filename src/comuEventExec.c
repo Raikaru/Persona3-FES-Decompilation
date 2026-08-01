@@ -39,6 +39,7 @@ u8 * FUN_003c3fe0(int param_1);
 
 #undef FUN_003c33c0
 #pragma push
+// W419 state-2 switch-shaped dispatch probe worsened 1436/2516 to 1466/2540 (rate 57.07% to 57.72%); if/else form retained.
 // FUN_003C33C0 NONMATCHING
 
 u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)

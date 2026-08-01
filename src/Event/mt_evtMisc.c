@@ -5788,6 +5788,7 @@ matched:
 }
 
 
+/* W419 address-mode probe: all DAT_009588*_abs aliases overran (2396/2384); retained b4+bc+d8+e0 subset (nd1723/object2324). */
 // FUN_0038CC10 NONMATCHING
 
 
@@ -5857,7 +5858,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
       if ((*(int *)(&DAT_009588b0 + iVar7 * 0x40) == 3) &&
 
-         (*(u16 **)(&DAT_009588b4 + iVar7 * 0x40) == param_2)) {
+         (*(u16 **)(DAT_009588b4_abs + iVar7 * 0x40) == param_2)) {
 
         iVar6 = iVar7;
 
@@ -6159,11 +6160,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         iVar6 = iVar6 * 0x40;
 
-        *(u32 *)(param_2 + 0x96) = *(u32 *)(&DAT_009588d8 + iVar6);
+        *(u32 *)(param_2 + 0x96) = *(u32 *)(DAT_009588d8_abs + iVar6);
 
         *(u32 *)(param_2 + 0x98) = *(u32 *)(&DAT_009588dc + iVar6);
 
-        *(u32 *)(param_2 + 0x9a) = *(u32 *)(&DAT_009588e0 + iVar6);
+        *(u32 *)(param_2 + 0x9a) = *(u32 *)(DAT_009588e0_abs + iVar6);
 
         param_2[0x9c] = 0;
 
@@ -6171,7 +6172,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         *(u32 *)(param_2 + 0x9e) = *(u32 *)(&DAT_009588b8 + iVar6);
 
-        *(u32 *)(param_2 + 0xa0) = *(u32 *)(&DAT_009588bc + iVar6);
+        *(u32 *)(param_2 + 0xa0) = *(u32 *)(DAT_009588bc_abs + iVar6);
 
         *(u32 *)(param_2 + 0xa2) = *(u32 *)(&DAT_009588c0 + iVar6);
 
@@ -6299,11 +6300,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         iVar6 = iVar6 * 0x40;
 
-        *(u32 *)(param_2 + 0x96) = *(u32 *)(&DAT_009588d8 + iVar6);
+        *(u32 *)(param_2 + 0x96) = *(u32 *)(DAT_009588d8_abs + iVar6);
 
         *(u32 *)(param_2 + 0x98) = *(u32 *)(&DAT_009588dc + iVar6);
 
-        *(u32 *)(param_2 + 0x9a) = *(u32 *)(&DAT_009588e0 + iVar6);
+        *(u32 *)(param_2 + 0x9a) = *(u32 *)(DAT_009588e0_abs + iVar6);
 
         param_2[0x9c] = 0;
 
@@ -6311,7 +6312,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         *(u32 *)(param_2 + 0x9e) = *(u32 *)(&DAT_009588b8 + iVar6);
 
-        *(u32 *)(param_2 + 0xa0) = *(u32 *)(&DAT_009588bc + iVar6);
+        *(u32 *)(param_2 + 0xa0) = *(u32 *)(DAT_009588bc_abs + iVar6);
 
         *(u32 *)(param_2 + 0xa2) = *(u32 *)(&DAT_009588c0 + iVar6);
 
@@ -6379,11 +6380,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         iVar6 = iVar6 * 0x40;
 
-        *(u32 *)(param_2 + 0x80) = *(u32 *)(&DAT_009588d8 + iVar6);
+        *(u32 *)(param_2 + 0x80) = *(u32 *)(DAT_009588d8_abs + iVar6);
 
         *(u32 *)(param_2 + 0x82) = *(u32 *)(&DAT_009588dc + iVar6);
 
-        *(u32 *)(param_2 + 0x84) = *(u32 *)(&DAT_009588e0 + iVar6);
+        *(u32 *)(param_2 + 0x84) = *(u32 *)(DAT_009588e0_abs + iVar6);
 
         param_2[0x86] = 0;
 
@@ -6391,7 +6392,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         *(u32 *)(param_2 + 0x88) = *(u32 *)(&DAT_009588b8 + iVar6);
 
-        *(u32 *)(param_2 + 0x8a) = *(u32 *)(&DAT_009588bc + iVar6);
+        *(u32 *)(param_2 + 0x8a) = *(u32 *)(DAT_009588bc_abs + iVar6);
 
         *(u32 *)(param_2 + 0x8c) = *(u32 *)(&DAT_009588c0 + iVar6);
 

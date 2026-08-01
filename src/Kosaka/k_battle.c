@@ -501,24 +501,25 @@ u32 func_001d94d0(EncounterRecord* out)
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
+        u16* charId = &unit->charId;
         s32 maxHp;
         s32 hp;
         f32 maxValue;
         f32 hpValue;
 
         if (unit->genusBase == NULL || unit->resrc == NULL ||
-            (datGetBadStatusNoDown((s16)unit->charId) & UNIT_BADSTATUS_POISON) == 0)
+            (datGetBadStatusNoDown((s16)*charId) & UNIT_BADSTATUS_POISON) == 0)
         {
             continue;
         }
-        maxHp = datGetMaxHp((s16)unit->charId);
+        maxHp = datGetMaxHp((s16)*charId);
         if (maxHp < 0)
         {
             continue;
         }
         maxValue = (f32)(u32)maxHp;
         maxValue += maxValue;
-        hp = datGetHp((s16)unit->charId);
+        hp = datGetHp((s16)*charId);
         if (hp < 0)
         {
             continue;
@@ -591,3 +592,7 @@ static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u3
     }
     return child;
 }
+// W419 rejected probes (verify.py; nd/object/window and nd/object rate):
+// func_001d8b00 ecCount literal: 55/348/352 (0.1580) -> 137/344/352 (0.3983); bound-first or explicit-loop shape: 56/348/352 (0.1609); combined: 139/344/352 (0.4041).
+// func_001d9310 charId pointer: 203/436/448 (0.4656) -> 272/448/448 (0.6071).
+// dataGetMaxHp u16 declaration variants: func_001d9310 203/436 (0.4656) -> 220/440 (0.5000), func_001d94d0 280/416 (0.6731) -> 294/420 (0.7000), func_001d96a0 208/440 (0.4727) -> 273/444 (0.6149).

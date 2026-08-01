@@ -2806,7 +2806,7 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
         if ((((uVar7 & 0xff) != 6) || (lVar8 = datGetScenarioMode(), lVar8 == 0)) &&
 
-           ((*(short *)(&DAT_006acc60 + (uVar7 & 0xff) * 2) != -1 &&
+           ((*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1 &&
 
             (lVar8 = datGetFlag(), lVar8 == 0)))) {
 
@@ -2977,7 +2977,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
         if (((((uVar7 & 0xff) != 6) || (lVar8 = datGetScenarioMode(), lVar8 == 0)) &&
 
-            (*(short *)(&DAT_006acc60 + (uVar7 & 0xff) * 2) != -1)) &&
+            (*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1)) &&
 
            (lVar8 = datGetFlag(), lVar8 == 0)) {
 
@@ -3001,7 +3001,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
           }
 
-          if (((uVar7 != 0xffffffff) && (*(short *)(&DAT_006acc60 + (uVar7 & 0xff) * 2) != -1)) &&
+          if (((uVar7 != 0xffffffff) && (*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1)) &&
 
              (lVar8 = datGetFlag(), lVar8 == 0)) {
 
@@ -3025,7 +3025,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
               (((uVar7 & 0xff) != 6 || (lVar8 = datGetScenarioMode(), lVar8 == 0)))) &&
 
-             ((*(short *)(&DAT_006acc60 + (uVar7 & 0xff) * 2) != -1 &&
+             ((*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1 &&
 
               (lVar8 = datGetFlag(), lVar8 == 0)))) {
 
@@ -3583,6 +3583,7 @@ u64 FUN_003f3970(long param_1,u32 param_2)
 
 #pragma opt_loop_invariants reset
 // W415 ORDER fix: switch case 0/default restores the retail dat0017d6d0 -> FUN_0017d700 call order; nd687/988 -> 681/996, window1056.
+// W419 global-mode probe negative: DAT_006acc60_abs for all 9 uses worsened nd681 -> 704 and object996 -> 1008 (window1056); retained the GP-relative form.
 // FUN_003F39A0 NONMATCHING
 
 
@@ -3862,6 +3863,7 @@ u32 FUN_003f3f00(u64 param_1)
   return uVar1;
 }
 
+// W419 ORDER layout probe negative: swapping the mutually exclusive 61d0/5ab0 branch bodies left nd618 (object880/window912); reverted.
 // FUN_003F3FC0 NONMATCHING
 
 
@@ -5800,6 +5802,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 }
 
 // W415 ORDER probe negative: ascending switch measured nd577/856 -> nd602/896; rejected.
+// W419 ORDER layout probes negative: loop-before-case4 measured nd577 -> 582 (object856/window928), explicit switch 0-3 then4 measured nd577 -> 602 (object896/window928); reverted.
 // FUN_003F7390 NONMATCHING
 
 
@@ -7228,6 +7231,8 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 // W414 probes: lVar5 as s16 measured nd152, iVar6 as s16 measured nd134 with obj404
 // over the 400-byte window, early iVar6 zero-init measured nd26, and direct-short use
 // measured nd166; baseline nd7 is retained.
+// W419 probe negative: deriving lVar5 directly from *(short *)(iVar2 + 4) worsened nd7 -> 158 and object 388 -> 384 (window 400); retained the local copy.
+// W419 exhaustive permutation probe: all 120 orders of sVar1/sVar3/uVar4/lVar5/iVar6 remained nd7 (obj388/window400); no declaration-order gain.
 // FUN_003F9B20 NONMATCHING
 
 
@@ -11023,6 +11028,7 @@ u32 FUN_003fef30(int param_1,int param_2)
     if (lVar4 != 0) {
 
 
+      FUN_003ff460((int)uVar3,lVar4);
       FUN_003c5a20(lVar4);
 
     }
@@ -14575,6 +14581,7 @@ u32 FUN_004026b0(int param_1,int param_2,u32 param_3)
   return 1;
 }
 
+// W419 probe negative: hoisting the cVar1==0 func_00171110 call before the dispatch grew object1120 -> 1156 beyond the 1152-byte window; reversed chain measured nd697 -> 706.
 // FUN_00402800 NONMATCHING
 
 
@@ -17034,14 +17041,7 @@ void FUN_00406ca0(int param_1,int param_2,int *param_3)
 
     case 0:
 
-      if ((*puVar2 & 1) == 0) {
-
-        FUN_00405f70_i(iVar6,iVar5,uVar7,iVar3,iVar4,iVar1,
-                       (*(u16 *)((int)param_3 + 10) & 1) != 0);
-
-      }
-
-      else {
+      if ((*puVar2 & 1) != 0) {
 
         iVar3 = *(int *)(*(int *)(param_3[4] + 0x14) + 0x1c);
 
@@ -17050,6 +17050,13 @@ void FUN_00406ca0(int param_1,int param_2,int *param_3)
         FUN_0040e3c0(0,iVar6,iVar5,uVar7 & 0xff,*(short *)(iVar3 + 6) + iVar4 + 0x2c,0);
 
         FUN_0040e3c0(0,iVar6,iVar5,uVar7 & 0xff,*(short *)(iVar3 + 6) + iVar4 + 0x34,0);
+
+      }
+
+      else {
+
+        FUN_00405f70_i(iVar6,iVar5,uVar7,iVar3,iVar4,iVar1,
+                       (*(u16 *)((int)param_3 + 10) & 1) != 0);
 
       }
 
@@ -19323,6 +19330,7 @@ void FUN_0040cad0(int param_1)
 
 }
 
+// W419 probe negative: restoring retail FUN_00406aa0 in case 6 reduced nd1213 -> 1210 but grew the object 1772 -> 1800, exceeding the 1792-byte window by 8; reverted.
 // FUN_0040CC30 NONMATCHING
 
 
