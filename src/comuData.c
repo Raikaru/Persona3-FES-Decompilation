@@ -96,7 +96,146 @@ u64 FUN_003c4420(void);
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
 #define FUN_003c4390(...) ((u8 * (*)(...))FUN_003c4390)(__VA_ARGS__)
 #define FUN_003c43f0(...) ((u8 * (*)(...))FUN_003c43f0)(__VA_ARGS__)
+typedef int (*code)(...);
+typedef u32 undefined3;
+typedef u32 int3;
+#define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
+typedef struct NmlistNode {
+    u32 unk0[3];
+    struct NmlistNode *prev;
+    struct NmlistNode *next;
+} NmlistNode;
+typedef struct NmlistList {
+    NmlistNode *head;
+    NmlistNode *tail;
+    NmlistNode *cursor;
+    u16 count;
+} NmlistList;
+extern code DAT_00960178;
+extern code DAT_00960178_abs[];
+extern code DAT_0096017c;
+extern code DAT_0096017c_abs[];
+extern u8 LAB_003c4400[];
+extern u8 LAB_003c4410[];
+extern u8 LAB_003c4420[];
+extern u8 LAB_003c5210[];
+extern u8 LAB_003c57e0[];
+extern u8 LAB_003c5810[];
+extern u8 LAB_003c5840[];
+extern void K_Assert(const char *file, s32 line);
+extern const char D_006A3DE8[];
+extern u8 D_006A3DE8_abs[];
+extern void FUN_00521408(u32 dest, int value, u32 size);
+#define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
+int *FUN_003c4430(int *param_1);
+int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
+void FUN_003c45f0(int param_1);
+int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
+void FUN_003c4710(int *param_1, int *param_2, int *param_3);
+NmlistNode *FUN_003c4820(int *param_1, int *param_2);
+int *FUN_003c4910(int *param_1, int *param_2, int *param_3);
+NmlistNode *FUN_003c49e0(NmlistList *param_1, NmlistList *param_2, int *param_3);
+extern int *FUN_003c4430_typed(int *param_1);
+extern void FUN_003c4710_typed(int *param_1, int *param_2, int *param_3);
+extern NmlistNode *FUN_003c4820_typed(int *param_1, int *param_2);
+extern void FUN_003c4f30_typed(int param_1);
+void FUN_003c4a90(int param_1,int param_2);
+int * FUN_003c4b50(int *param_1,int *param_2,int param_3);
+int FUN_003c4bf0(int *param_1,int *param_2,int param_3);
+u32 FUN_003c4c80(int *param_1,int *param_2);
+u32 FUN_003c4d20(int *param_1,int *param_2);
+void FUN_003c4dc0(u64 param_1,u32 param_2);
+u64 FUN_003c4de0(u64 param_1,int param_2,u32 param_3);
+int FUN_003c4df0(u64 param_1,int *param_2,int param_3);
+u32 FUN_003c4e50(u64 param_1, u32* param_2);
+u32 FUN_003c4e60(u64 param_1, int param_2);
+int *FUN_003c4e70(int *param_1);
+void FUN_003c4f30(int param_1);
+void FUN_003c4fc0(int param_1, int *param_2);
+int FUN_003c50b0(int param_1,u32 param_2,int param_3);
+void FUN_003c5180(int param_1, int param_2);
+int FUN_003c5210(void);
+void FUN_003c5220(void);
+void FUN_003c45f0_typed(void);
 
+const char* ComuData_GetUltSLPersonasString(u32 idx)
+{
+    idx--;
+    K_ASSERT(idx > 0 && idx < ARRAY_SIZE(ultSLPersonasStrings) - 1, 198);
+
+    return ultSLPersonasStrings[idx];
+}
+static inline uintptr_t ComuData_AddOffsetFirst(uintptr_t offset, uintptr_t base)
+{
+    return offset + base;
+}
+
+#pragma push
+#pragma opt_propagation off
+#undef FUN_003c4040
+// FUN_003C4040
+
+
+u8 * comuDataGetLinkPairEntry(int secondLink,int firstLink)
+{
+  int valid;
+  int firstSocialLink;
+  int secondSocialLink;
+  u8 *relationshipTable;
+  int rowOffset;
+
+  firstSocialLink = firstLink;
+  secondSocialLink = secondLink;
+  valid = FUN_00172a50((short)secondSocialLink);
+  if (valid == 0) {
+    FUN_0019d3f0("comuData.c",0x30);
+  }
+  valid = FUN_00172a50((short)firstSocialLink);
+  if (valid == 0) {
+    FUN_0019d3f0("comuData.c",0x32);
+  }
+  rowOffset = firstSocialLink * 0x18;
+  relationshipTable = PTR_DAT_006a38e8_abs;
+  relationshipTable += rowOffset;
+  return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(secondSocialLink * 4),
+                                                     (uintptr_t)relationshipTable);
+}
+#define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
+#pragma pop
+
+#undef FUN_003c40f0
+// FUN_003C40F0
+
+
+s8 comuDataGetLinkType(int socialLink)
+
+
+
+{
+
+  return *(s8 *)(DAT_006a3d70 + socialLink * 4);
+
+}
+#define FUN_003c40f0(...) ((s8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
+
+
+
+#pragma alias comuDataGetLinkPairEntry FUN_003c4040
+#undef FUN_003c4110
+// FUN_003C4110
+
+
+u16 comuDataGetLinkResourceId(int socialLink)
+
+
+
+{
+
+  return DAT_006a3d72[socialLink * 2];
+
+}
+#define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)
+#pragma alias comuDataGetLinkType FUN_003c40f0
 // FUN_003c4130
 const char* Day_GetCurrentDayString(u32 month, u32 day)
 {
@@ -136,7 +275,7 @@ const char* Day_GetCurrentDayString(u32 month, u32 day)
 
     return dayString;
 }
-
+#pragma alias comuDataGetLinkResourceId FUN_003c4110
 // FUN_003c4210
 const char* ComuData_FUN_003c4210(s32 idx)
 {
@@ -144,85 +283,8 @@ const char* ComuData_FUN_003c4210(s32 idx)
 
     return unkStrings1[idx];
 }
-
-const char* ComuData_GetUltSLPersonasString(u32 idx)
-{
-    idx--;
-    K_ASSERT(idx > 0 && idx < ARRAY_SIZE(ultSLPersonasStrings) - 1, 198);
-
-    return ultSLPersonasStrings[idx];
-}
-
-static inline uintptr_t ComuData_AddOffsetFirst(uintptr_t offset, uintptr_t base)
-{
-    return offset + base;
-}
-
-#undef FUN_003c4040
-#pragma push
-#pragma opt_propagation off
-#pragma alias comuDataGetLinkPairEntry FUN_003c4040
-// FUN_003C4040
-
-
-u8 * comuDataGetLinkPairEntry(int secondLink,int firstLink)
-{
-  int valid;
-  int firstSocialLink;
-  int secondSocialLink;
-  u8 *relationshipTable;
-  int rowOffset;
-
-  firstSocialLink = firstLink;
-  secondSocialLink = secondLink;
-  valid = FUN_00172a50((short)secondSocialLink);
-  if (valid == 0) {
-    FUN_0019d3f0("comuData.c",0x30);
-  }
-  valid = FUN_00172a50((short)firstSocialLink);
-  if (valid == 0) {
-    FUN_0019d3f0("comuData.c",0x32);
-  }
-  rowOffset = firstSocialLink * 0x18;
-  relationshipTable = PTR_DAT_006a38e8_abs;
-  relationshipTable += rowOffset;
-  return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(secondSocialLink * 4),
-                                                     (uintptr_t)relationshipTable);
-}
-#define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
-#pragma pop
-#undef FUN_003c40f0
-#pragma alias comuDataGetLinkType FUN_003c40f0
-// FUN_003C40F0
-
-
-s8 comuDataGetLinkType(int socialLink)
-
-
-
-{
-
-  return *(s8 *)(DAT_006a3d70 + socialLink * 4);
-
-}
-#define FUN_003c40f0(...) ((s8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
-#undef FUN_003c4110
-#pragma alias comuDataGetLinkResourceId FUN_003c4110
-// FUN_003C4110
-
-
-u16 comuDataGetLinkResourceId(int socialLink)
-
-
-
-{
-
-  return DAT_006a3d72[socialLink * 2];
-
-}
-#define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)
-#undef FUN_003c4270
 #pragma alias comuDataGetNextMeetingDayString FUN_003c4270
+#undef FUN_003c4270
 // FUN_003C4270
 
 
@@ -273,8 +335,8 @@ ReturnResult:
   return dayString;
 }
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
-#undef FUN_003c4390
 #pragma alias comuDataGetUltimatePersonaName FUN_003c4390
+#undef FUN_003c4390
 // FUN_003C4390
 
 
@@ -308,6 +370,7 @@ u8 * FUN_003c43f0(void)
   return PTR_DAT_007cd6ec;
 
 }
+#define FUN_003c43f0(...) ((u8 * (*)(...))FUN_003c43f0)(__VA_ARGS__)
 
 // FUN_003C4400
 u64 FUN_003c4400(void)
@@ -326,109 +389,23 @@ u64 FUN_003c4420(void)
 {
     return 0;
 }
-#define FUN_003c43f0(...) ((u8 * (*)(...))FUN_003c43f0)(__VA_ARGS__)
 
 
-typedef int (*code)(...);
-typedef u32 undefined3;
-typedef u32 int3;
-#define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
-typedef struct NmlistNode {
-    u32 unk0[3];
-    struct NmlistNode *prev;
-    struct NmlistNode *next;
-} NmlistNode;
-typedef struct NmlistList {
-    NmlistNode *head;
-    NmlistNode *tail;
-    NmlistNode *cursor;
-    u16 count;
-} NmlistList;
 
-extern code DAT_00960178;
 #pragma alias DAT_00960178_abs DAT_00960178
-extern code DAT_00960178_abs[];
-extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
-extern code DAT_0096017c_abs[];
-extern u8 LAB_003c4400[];
-extern u8 LAB_003c4410[];
-extern u8 LAB_003c4420[];
-extern u8 LAB_003c5210[];
-extern u8 LAB_003c57e0[];
-extern u8 LAB_003c5810[];
-extern u8 LAB_003c5840[];
-extern void K_Assert(const char *file, s32 line);
-extern const char D_006A3DE8[];
 #pragma alias D_006A3DE8_abs D_006A3DE8
-extern u8 D_006A3DE8_abs[];
-extern void FUN_00521408(u32 dest, int value, u32 size);
 
 #ifndef CONCAT44
-#define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-int *FUN_003c4430(int *param_1);
-int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
-void FUN_003c45f0(int param_1);
-int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
-void FUN_003c4710(int *param_1, int *param_2, int *param_3);
-NmlistNode *FUN_003c4820(int *param_1, int *param_2);
-int *FUN_003c4910(int *param_1, int *param_2, int *param_3);
-NmlistNode *FUN_003c49e0(NmlistList *param_1, NmlistList *param_2, int *param_3);
 #pragma alias FUN_003c4430_typed FUN_003c4430
-extern int *FUN_003c4430_typed(int *param_1);
 #pragma alias FUN_003c4710_typed FUN_003c4710
-extern void FUN_003c4710_typed(int *param_1, int *param_2, int *param_3);
 #pragma alias FUN_003c4820_typed FUN_003c4820
-extern NmlistNode *FUN_003c4820_typed(int *param_1, int *param_2);
 #pragma alias FUN_003c4f30_typed FUN_003c4f30
-extern void FUN_003c4f30_typed(int param_1);
-void FUN_003c4a90(int param_1,int param_2);
-int * FUN_003c4b50(int *param_1,int *param_2,int param_3);
-int FUN_003c4bf0(int *param_1,int *param_2,int param_3);
-u32 FUN_003c4c80(int *param_1,int *param_2);
-u32 FUN_003c4d20(int *param_1,int *param_2);
-void FUN_003c4dc0(u64 param_1,u32 param_2);
-u64 FUN_003c4de0(u64 param_1,int param_2,u32 param_3);
-int FUN_003c4df0(u64 param_1,int *param_2,int param_3);
-u32 FUN_003c4e50(u64 param_1, u32* param_2);
-u32 FUN_003c4e60(u64 param_1, int param_2);
-int *FUN_003c4e70(int *param_1);
-void FUN_003c4f30(int param_1);
-void FUN_003c4fc0(int param_1, int *param_2);
-int FUN_003c50b0(int param_1,u32 param_2,int param_3);
-void FUN_003c5180(int param_1, int param_2);
-int FUN_003c5210(void);
-void FUN_003c5220(void);
 
 /* Region call-cast macros */
-#define FUN_003c4430(...) ((int * (*)(...))FUN_003c4430)(__VA_ARGS__)
-#define FUN_003c44d0(...) ((int * (*)(...))FUN_003c44d0)(__VA_ARGS__)
-#define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
-#define FUN_003c4650(...) ((int * (*)(...))FUN_003c4650)(__VA_ARGS__)
-#define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
-#define FUN_003c4820(...) ((NmlistNode * (*)(...))FUN_003c4820)(__VA_ARGS__)
-#define FUN_003c4910(...) ((int * (*)(...))FUN_003c4910)(__VA_ARGS__)
-#define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
-#define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
-#define FUN_003c4b50(...) ((int * (*)(...))FUN_003c4b50)(__VA_ARGS__)
-#define FUN_003c4bf0(...) ((int (*)(...))FUN_003c4bf0)(__VA_ARGS__)
-#define FUN_003c4c80(...) ((u32 (*)(...))FUN_003c4c80)(__VA_ARGS__)
-#define FUN_003c4d20(...) ((u32 (*)(...))FUN_003c4d20)(__VA_ARGS__)
-#define FUN_003c4dc0(...) ((void (*)(...))FUN_003c4dc0)(__VA_ARGS__)
-#define FUN_003c4de0(...) ((u64 (*)(...))FUN_003c4de0)(__VA_ARGS__)
-#define FUN_003c4df0(...) ((int (*)(...))FUN_003c4df0)(__VA_ARGS__)
-#define FUN_003c4e50(...) ((u32 (*)(...))FUN_003c4e50)(__VA_ARGS__)
-#define FUN_003c4e60(...) ((u32 (*)(...))FUN_003c4e60)(__VA_ARGS__)
-#define FUN_003c4e70(...) ((int * (*)(...))FUN_003c4e70)(__VA_ARGS__)
-#define FUN_003c4f30(...) ((void (*)(...))FUN_003c4f30)(__VA_ARGS__)
-#define FUN_003c4f80(...) ((int (*)(...))FUN_003c4f80)(__VA_ARGS__)
-#define FUN_003c4fc0(...) ((void (*)(...))FUN_003c4fc0)(__VA_ARGS__)
-#define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
-#define FUN_003c5180(...) ((void (*)(...))FUN_003c5180)(__VA_ARGS__)
-#define FUN_003c5220(...) ((void (*)(...))FUN_003c5220)(__VA_ARGS__)
 
 #undef FUN_003c4430
 // FUN_003C4430
@@ -488,7 +465,6 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4)
 }
 #define FUN_003c44d0(...) ((int * (*)(...))FUN_003c44d0)(__VA_ARGS__)
 #undef FUN_003c45f0
-#undef FUN_003c4a90
 // FUN_003C45F0
 
 
@@ -503,7 +479,6 @@ void FUN_003c45f0(int param_1)
     DAT_0096017c_abs[0](param_1);
 }
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
-#define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #undef FUN_003c4650
 // FUN_003C4650
 
@@ -713,8 +688,8 @@ NmlistNode *FUN_003c49e0(NmlistList *param_1,NmlistList *param_2,int *param_3)
   }
   return next;
 }
-
 #define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
+
 #undef FUN_003c4a90
 // FUN_003C4A90
 void FUN_003c4a90(int param_1, int param_2)
@@ -1059,7 +1034,6 @@ int FUN_003c4f80(int param_1)
 }
 #define FUN_003c4f80(...) ((int (*)(...))FUN_003c4f80)(__VA_ARGS__)
 #undef FUN_003c4fc0
-#undef FUN_003c50b0
 // FUN_003C4FC0
 
 
@@ -1104,10 +1078,9 @@ void FUN_003c4fc0(int param_1,int *param_2)
 
   return;
 }
-
 #define FUN_003c4fc0(...) ((void (*)(...))FUN_003c4fc0)(__VA_ARGS__)
+
 #undef FUN_003c50b0
-#undef FUN_003c4710
 // FUN_003C50B0
 int FUN_003c50b0(int param_1, u32 param_2, int param_3)
 {
@@ -1134,13 +1107,12 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
     }
     return index;
 }
+#define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
 // FUN_003C5170
 int FUN_003c5170(void)
 {
     return 0;
 }
-#define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
-#define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
 #undef FUN_003c5180
 #undef FUN_003c44d0
 // FUN_003C5180
@@ -1182,9 +1154,8 @@ int FUN_003c5210(void)
 {
     return 0;
 }
-#undef FUN_003c5220
 #pragma alias FUN_003c45f0_typed FUN_003c45f0
-void FUN_003c45f0_typed(void);
+#undef FUN_003c5220
 // FUN_003C5220
 
 
