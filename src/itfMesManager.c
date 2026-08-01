@@ -50,6 +50,18 @@ extern u32 DAT_00959eec;
 extern u32 itfMesEntries[];
 #pragma alias DAT_00959eec_abs DAT_00959eec
 extern u32 DAT_00959eec_abs[];
+#pragma alias DAT_0095abf0_abs DAT_0095abf0
+extern u8 DAT_0095abf0_abs[];
+#pragma alias DAT_006a1ae0_abs DAT_006a1ae0
+extern u8 DAT_006a1ae0_abs[];
+#pragma alias DAT_006a1b00_abs DAT_006a1b00
+extern u8 DAT_006a1b00_abs[];
+#pragma alias DAT_006a1ba0_abs DAT_006a1ba0
+extern u8 DAT_006a1ba0_abs[];
+#pragma alias DAT_006a1bc0_abs DAT_006a1bc0
+extern u8 DAT_006a1bc0_abs[];
+#pragma alias DAT_006a20c0_abs DAT_006a20c0
+extern u8 DAT_006a20c0_abs[];
 extern code DAT_00960178;
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
@@ -1254,6 +1266,7 @@ void itfMesMngDestroyHandle(s32 mesHandleIdx)
         FUN_003a4dd0_typed(mesHandleIdx);
     }
 }
+// W409 addressing/raw-literal fixes: NONMATCHING nd 546 -> 539, object 844/864 -> 844/864.
 // FUN_003A30C0 NONMATCHING
 
 
@@ -1417,7 +1430,7 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
     else {
 
-      FUN_005225a8(0x6a1ae0);
+      FUN_005225a8(DAT_006a1ae0_abs);
 
       FUN_003a6520_typed(puVar2);
 
@@ -1435,7 +1448,7 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
     *puVar2 = *puVar2 | 0x1000000;
 
-    FUN_005225a8(0x6a1b00,*(u16 *)((int)puVar2 + 0x12));
+    FUN_005225a8(DAT_006a1b00_abs,*(u16 *)((int)puVar2 + 0x12));
 
     uVar5 = 1;
 
@@ -2178,6 +2191,7 @@ u32 FUN_003a42c0(int param_1,u32 param_2)
 #undef FUN_003a4360
 /* opt_common_subs off: measured nd 1076 -> 1075, object 1536/1584 -> 1536/1584. */
 #pragma opt_common_subs off
+// W409 addressing: NONMATCHING nd 1075 -> 954, object 1536/1584 -> 1512/1584.
 // FUN_003A4360 NONMATCHING
 
 
@@ -2201,7 +2215,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 
     FUN_003a4990(param_1,7,0);
 
-    piVar2 = (int *)(DAT_00959eec_abs + iVar3 * 0xd);
+    piVar2 = (int *)(((u8 *)&DAT_00959eec) + iVar3 * 0xd);
 
     puVar1 = (u32 *)*piVar2;
 
@@ -2249,7 +2263,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 
     FUN_003a4990(param_1,6,0);
 
-    piVar2 = (int *)(DAT_00959eec_abs + iVar3 * 0xd);
+    piVar2 = (int *)(((u8 *)&DAT_00959eec) + iVar3 * 0xd);
 
     puVar1 = (u32 *)*piVar2;
 
@@ -2295,7 +2309,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 
   else if (param_2 == 5) {
 
-    piVar2 = (int *)(DAT_00959eec_abs + iVar3 * 0xd);
+    piVar2 = (int *)(((u8 *)&DAT_00959eec) + iVar3 * 0xd);
 
     iVar3 = *piVar2;
 
@@ -3160,6 +3174,7 @@ u32 FUN_003a5940(int param_1,int param_2)
 }
 #define FUN_003a5940(...) ((u32 (*)(...))FUN_003a5940)(__VA_ARGS__)
 #undef FUN_003a5980
+// W409 addressing/raw-literal fixes: NONMATCHING nd 364 -> 202, object 796/800 -> 800/800.
 // FUN_003A5980 NONMATCHING
 
 
@@ -3265,7 +3280,7 @@ void FUN_003a5980(u32 *param_1)
 
   }
 
-  if (((*puVar9 & 0x400000) == 0) && ((DAT_00959ecc & 1) != 0)) {
+  if (((*puVar9 & 0x400000) == 0) && (((*(u16 *)DAT_00959ecc_abs & 1) != 0))) {
 
     FUN_003a64c0_typed(uVar4);
 
@@ -3337,7 +3352,7 @@ void FUN_003a5980(u32 *param_1)
 
   if (lVar5 != 0) {
 
-    FUN_003a6060_typed(param_1,(u8 *)0x95abf0);
+    FUN_003a6060_typed(param_1,DAT_0095abf0_abs);
 
   }
 
@@ -4765,6 +4780,7 @@ void FUN_003a6e30(u32 *param_1)
 #undef FUN_003a7120
 /* opt_lifetimes on: measured nd 539 -> 536, object 876/880 -> 876/880. */
 #pragma opt_lifetimes on
+// W409 raw-literal relocation: NONMATCHING nd 536 -> 532, object 876/880 -> 876/880.
 // FUN_003A7120 NONMATCHING
 
 
@@ -4818,7 +4834,7 @@ void FUN_003a7120(u32 *param_1)
 
            (((*puVar4 & 0x8000000) != 0 && (lVar2 = FUN_003b1710(puVar4[0xc]), lVar2 != 0)))) {
 
-          FUN_005225a8(0x6a1ba0);
+          FUN_005225a8(DAT_006a1ba0_abs);
 
           FUN_00521250(auStack_10,puVar4 + 0x75,0x10);
 
@@ -5250,6 +5266,7 @@ void FUN_003a7940(int param_1,int param_2)
 #undef FUN_003a7a40
 /* opt_lifetimes on: measured nd 408 -> 407, object 600/624 -> 600/624. */
 #pragma opt_lifetimes on
+// W409 addressing/raw-literal fixes: NONMATCHING nd 407 -> 373, object 600/624 -> 612/624.
 // FUN_003A7A40 NONMATCHING
 
 
@@ -5279,7 +5296,7 @@ u32 FUN_003a7a40(int param_1)
 
       if (*(short *)(param_1 + 0x56) == *(short *)(param_1 + 0x5a) + -1) {
 
-        if (((DAT_007e094e & 0x4000) != 0) || ((DAT_007e0958 & 0x4000) != 0)) {
+        if ((((*(u16 *)DAT_007e094e_abs) & 0x4000) != 0) || ((DAT_007e0958 & 0x4000) != 0)) {
 
           lVar5 = 1;
 
@@ -5299,7 +5316,7 @@ u32 FUN_003a7a40(int param_1)
 
   else if (*(short *)(param_1 + 0x56) == 0) {
 
-    if (((DAT_007e094e & 0x1000) != 0) || ((DAT_007e0958 & 0x1000) != 0)) {
+    if ((((*(u16 *)DAT_007e094e_abs) & 0x1000) != 0) || ((DAT_007e0958 & 0x1000) != 0)) {
 
       lVar5 = -1;
 
@@ -5315,7 +5332,7 @@ u32 FUN_003a7a40(int param_1)
 
   if (lVar5 == 0) {
 
-    if ((DAT_007e094e & 0x40) == 0) {
+    if (((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
 
       if ((*(short *)(param_1 + 0x66) < 1) || (sVar1 = FUN_003a7d60(param_1 + 0x40), sVar1 < 0)) {
 
@@ -5351,7 +5368,7 @@ u32 FUN_003a7a40(int param_1)
 
       FUN_0010a4e0(0,0,0,1);
 
-      FUN_005225a8(0x6a1bc0);
+      FUN_005225a8(DAT_006a1bc0_abs);
 
       uVar4 = *(u32 *)(param_1 + 0x50);
 
@@ -8299,6 +8316,7 @@ void FUN_003ab320(int param_1)
 /* opt_lifetimes on: measured nd 1270 -> 1264, object 1796/1824 -> 1796/1824; opt_dead_assignments off alone: nd 1270 -> 1268, object 1796/1824 -> 1796/1824; stacked: nd 1262, object 1796/1824 (retained). */
 #pragma opt_lifetimes on
 #pragma opt_dead_assignments off
+// W409 addressing: NONMATCHING nd 1262 -> 1239, object 1796/1824 -> 1800/1824.
 // FUN_003ABB10 NONMATCHING
 
 
@@ -8368,7 +8386,7 @@ void FUN_003abb10(int param_1)
 
   } while (0 < iVar7);
 
-  puVar9 = &DAT_006a20c0;
+  puVar9 = (u32 *)DAT_006a20c0_abs;
 
   puVar8 = auStack_40;
 
