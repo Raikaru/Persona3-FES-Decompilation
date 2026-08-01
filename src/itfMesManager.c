@@ -5332,7 +5332,7 @@ u32 FUN_003a7a40(int param_1)
 
   if (lVar5 == 0) {
 
-    if (((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
+    if (((*(u16 *)DAT_007e094e_abs) & 0x40) == 0) {
 
       if ((*(short *)(param_1 + 0x66) < 1) || (sVar1 = FUN_003a7d60(param_1 + 0x40), sVar1 < 0)) {
 

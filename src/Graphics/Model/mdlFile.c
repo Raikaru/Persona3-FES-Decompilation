@@ -2872,8 +2872,8 @@ u32 func_0031c1d0(int param_1)
 #pragma alias DAT_00960178_u32 DAT_00960178
 #pragma alias DAT_00960178_abs DAT_00960178
 #pragma alias DAT_0069baf0_abs DAT_0069baf0
-#pragma alias FUN_001a6400_ptr FUN_001a6400
 #pragma alias DAT_0096017c_abs DAT_0096017c
+#pragma alias FUN_001a6400_ptr FUN_001a6400
 #pragma alias PTR_FUN_0069bb14_abs PTR_FUN_0069bb14
 #pragma alias PTR_FUN_0069bb18_abs PTR_FUN_0069bb18
 #pragma alias PTR_FUN_0069bb1c_abs PTR_FUN_0069bb1c
@@ -5413,6 +5413,7 @@ static inline u8 mdlFileToU8(f32 value)
   return (u8)value;
 }
 
+/* W409 measured FUN_0031faf0: NONMATCHING 204/224 nd74 -> MATCH 216/224 nd0. */
 // FUN_0031FAF0
 void FUN_0031faf0(f32 *param_1,u32 param_2)
 {
