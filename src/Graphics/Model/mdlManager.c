@@ -21,6 +21,7 @@ void mdlStreamRequestCdvd(Model* mdl, const char* path);
 void mdlStreamDestroy(Model* mdl);
 void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
 void mdl00319900(Model* mdl, u32 value);
+void mdl003164c0(void* param_1);
 extern RtAnimAnimation DAT_009571d0;
 #pragma alias DAT_009571d0_abs DAT_009571d0
 extern u8 DAT_009571d0_abs[];
@@ -97,1052 +98,26 @@ extern void func_004916d0_callback(RpClump* object, void (*callback)(void), void
 void func_0031f5c0(void* data);
 
 /* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_00311310
-MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
-{
-    MdlAnimEntryTable* table;
-    u32 size;
-    u32 i;
-    f32 one;
-    u32 matrixFlags;
-
-    size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
-    table = (MdlAnimEntryTable*)RwMalloc(size, rwMEMHINTDUR_GLOBAL);
-    memset(table, 0, size);
-
-    table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
-    table->count = animCount;
-
-    one = 1.0f;
-    matrixFlags = rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
-    for (i = 0; i < table->count; i++)
-    {
-        table->entries[i].identityMat.right.x = table->entries[i].identityMat.up.y =
-            table->entries[i].identityMat.at.z = one;
-        table->entries[i].identityMat.right.y = table->entries[i].identityMat.right.z =
-            table->entries[i].identityMat.up.x = 0.0f;
-        table->entries[i].identityMat.up.z = table->entries[i].identityMat.at.x =
-            table->entries[i].identityMat.at.y = 0.0f;
-        table->entries[i].identityMat.pos.x = table->entries[i].identityMat.pos.y =
-            table->entries[i].identityMat.pos.z = 0.0f;
-        table->entries[i].identityMat.flags |= matrixFlags;
-    }
-
-    table->unk_06 = 1;
-
-    return table;
-}
-#pragma opt_loop_invariants reset
 
 void FUN_0048a2a0(void);
-
-// FUN_00311610
-void* mdl00311610(void* param_1)
-{
-    FUN_0048a2a0();
-    return param_1;
-}
-
 void FUN_004916d0();
 u64 FUN_00316410(u64 param_1);
-
-// FUN_003164c0
-void mdl003164c0(void* param_1)
-{
-    FUN_004916d0(param_1, (void(*)())FUN_00316410, 0);
-}
-
-// FUN_00316690
-Model* mdlInit(u16 type, u16 id)
-{
-    Model* mdl;
-    u32 i;
-    volatile /* Removing this qualifier loses mdlInit (MATCH nd0 -> MISMATCH nd8, size 628 -> 628) - measured W170. */ RwRGBA* color;
-    u8 red;
-    u8 green;
-    u8 blue;
-    u8 alpha;
-    Model* tail;
-
-    mdl = ((void* (*)(u32, u32))jtbl_00960178[0])(sizeof(Model), rwMEMHINTDUR_GLOBAL);
-    memset(mdl, 0, sizeof(Model));
-
-    mdl->flags = MDL_FLAG_FOG | MDL_FLAG_ZTEST | MDL_FLAG_ZWRITE;
-    mdl->color.r = 0xff;
-    mdl->color.g = 0xff;
-    mdl->color.b = 0xff;
-    mdl->color.a = 0xff;
-    color = &mdl->color;
-    red = color->r;
-    green = color->g;
-    blue = color->b;
-    alpha = color->a;
-    mdl->runtimeData.animationData[0x22] = red;
-    mdl->runtimeData.animationData[0x23] = green;
-    mdl->runtimeData.animationData[0x24] = blue;
-    mdl->runtimeData.animationData[0x25] = alpha;
-    mdl->type = type;
-    mdl->id = id;
-    mdl->gsAlpha1Reg = 0x44;
-    mdl->gsTest1Reg = 0x717fb;
-
-    RwMatrixSetIdentity(&mdl->mat);
-    RwMatrixSetIdentity(&mdl->identityMat);
-    mdl->scale.x = 1.0f;
-    mdl->scale.y = 1.0f;
-    mdl->scale.z = 1.0f;
-    *(u16*)((u8*)mdl + 0x418) = 2;
-
-    for (i = 0; i < 4; i++)
-    {
-        func_00313230(&mdl->animSlots[i]);
-    }
-    *(u32*)((u8*)mdl + 0x360) = 0;
-
-    *(u8*)((u8*)mdl + 0x366) = 1;
-    *(s16*)((u8*)mdl + 0x368) = -1;
-    *(f32*)((u8*)mdl + 0x36c) = 1.0f;
-    memset((u8*)mdl + 0x380, 0, 8);
-    *(u8*)((u8*)mdl + 0x382) = 1;
-    *(f32*)((u8*)mdl + 0x384) = 1.0f;
-    *(u8*)((u8*)mdl + 0x388) = 0;
-    *(u32*)((u8*)mdl + 0x39c) = 0;
-    *(u32*)((u8*)mdl + 0x3a0) = 0;
-    *(u32*)((u8*)mdl + 0x3a4) = 0;
-    *(u8*)((u8*)mdl + 0x3a8) = 0xa0;
-    *(u8*)((u8*)mdl + 0x3a9) = 0xa0;
-    *(u8*)((u8*)mdl + 0x3aa) = 0;
-
-    func_0031eeb0(mdl->runtimeData.animationData);
-
-    for (i = 0; i < 5; i++)
-    {
-        mdl003196d0(mdl, i, -1);
-    }
-
-    tail = sMdlListTails[type];
-    mdl->next = NULL;
-    if (tail != NULL)
-    {
-        tail->next = mdl;
-        mdl->prev = tail;
-    }
-    else
-    {
-        mdl->prev = NULL;
-    }
-    sMdlListTails[type] = mdl;
-
-    return mdl;
-}
-
-#pragma push
-/* Removing this loses FUN_00316910 (MATCH nd0 -> MISMATCH nd26) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
-Model* mdlSearch(u16 type, u16 id, u16 flags)
-{
-    Model* mdl;
-    u16 modelType;
-    u16 modelId;
-    u16 modelFlags;
-
-    modelType = type;
-    modelId = id;
-    modelFlags = flags;
-    mdl = sMdlListTails[modelType];
-
-    while (mdl != NULL)
-    {
-        if (mdl->id == modelId)
-        {
-            if (modelFlags == 0 || (mdl->flags & modelFlags) != 0)
-            {
-                break;
-            }
-        }
-
-        mdl = mdl->prev;
-    }
-
-    return mdl;
-}
-#pragma pop
-
-// FUN_00316b40
-Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
-{
-    Model* mdl;
-
-    mdl = mdlInit(type, id);
-
-    if (readMode & MDL_READSYNC)
-    {
-        mdl->flags |= MDL_FLAG_STREAMSYNC;
-    }
-
-    mdlStreamInit(mdl);
-    mdlStreamRequestCdvd(mdl, path);
-
-    mdlStreamRead(mdl);
-
-    return mdl;
-}
-
-// FUN_00316bd0. Create a model with a loaded .RMD file in memory
-Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
-{
-    Model* mdl;
-    MdlRmdFileMemory rmd;
-
-    mdl = mdlInit(type, id);
-
-    if (readMode & MDL_READSYNC)
-    {
-        mdl->flags |= MDL_FLAG_STREAMSYNC;
-    }
-
-    mdlStreamInit(mdl);
-
-    rmd.memory = rmdMemory;
-    rmd.size = rmdSize;
-    mdlStreamSetRmdFileMemory(mdl, &rmd);
-
-    mdlStreamRead(mdl);
-
-    return mdl;
-}
-
-/* W323 measured mdlCreateAndResolvePath opt_loop_invariants on: nd202 -> nd191; object 356/368. */
-#pragma push
-#pragma opt_loop_invariants on
-// FUN_00316e00 NONMATCHING
-Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
-{
-    Model* mdl;
-    char path[0x100];
-
-    mdl = sMdlListTails[type];
-    while (mdl != NULL && mdl->id != id)
-    {
-        mdl = mdl->prev;
-    }
-    if (mdl == NULL)
-    {
-        mdlFileResolvePackPath(type, id, path);
-        mdl = mdlInit(type, id);
-
-        if (readMode & MDL_READSYNC)
-        {
-            mdl->flags |= MDL_FLAG_STREAMSYNC;
-        }
-
-        mdlStreamInit(mdl);
-        mdlStreamRequestCdvd(mdl, path);
-        mdlStreamRead(mdl);
-
-        if (mdlFileIsTypePac(type))
-        {
-            mdl00319900(mdl, true);
-        }
-    }
-    else
-    {
-        mdl = mdlInit(type, id);
-
-        if (readMode & MDL_READSYNC)
-        {
-            mdl->flags |= MDL_FLAG_STREAMSYNC;
-        }
-
-        mdl->flags |= MDL_FLAG_STREAMUNK1;
-        mdlStreamRead(mdl);
-    }
-
-    return mdl;
-}
-#pragma pop
-
-// FUN_00316f70
-u32 mdlStreamRead(Model* mdl)
-{
-    Model* source;
-    u32 modelId;
-    if (mdl->flags & MDL_FLAG_STREAMDONE)
-    {
-        return true;
-    }
-
-    if ((mdl->flags & MDL_FLAG_STREAMUNK1) == 0)
-    {
-        if (!func_0031b220(mdl))
-        {
-            return false;
-        }
-
-        if (!func_0031ebe0(mdl->runtimeData.animationData))
-        {
-            return false;
-        }
-
-        mdlStreamDestroy(mdl);
-        func_00316970(mdl);
-    }
-    else
-    {
-        if (!func_0031ebe0(mdl->runtimeData.animationData))
-        {
-            return false;
-        }
-        modelId = mdl->id;
-        source = sMdlListTails[mdl->type];
-        while (source != NULL)
-        {
-            if (source->id == modelId)
-            {
-                if (source->flags & MDL_FLAG_STREAMDONE)
-                {
-                    break;
-                }
-            }
-
-            source = source->prev;
-        }
-        if (source == NULL)
-        {
-            return false;
-        }
-
-        mdlCopy(source, mdl);
-        mdl->flags &= ~MDL_FLAG_STREAMUNK1;
-    }
-
-    mdl->flags |= MDL_FLAG_STREAMDONE;
-    return true;
-}
-
-// FUN_003170c0 NONMATCHING
-void mdlCopy(const Model* src, Model* dst)
-{
-    const MdlAnim* srcAnim;
-    MdlAnim* dstAnim;
-    MdlAnimResourceSet* resources;
-    MdlAnimResourceSet* clonedResources;
-    void* data;
-    u32 i;
-    u32 j;
-    RpHAnimHierarchy* hierarchy;
-    RpClump* clump;
-
-    if (src->clump != NULL)
-    {
-        dst->clump = FUN_00491cc0(src->clump);
-        dst->unk_e0 = FUN_001a7570(dst->clump);
-    }
-
-    for (i = 0; i < 4; i++)
-    {
-        if (mdlAnim003185b0((Model*)src, i))
-        {
-            srcAnim = &src->animSlots[i].anim;
-            dstAnim = &dst->animSlots[i].anim;
-            srcAnim->table->unk_06++;
-            dstAnim->table = srcAnim->table;
-
-            if ((srcAnim->flags & 2) == 0)
-            {
-                clump = dst->clump;
-                hierarchy = NULL;
-                FUN_004cb6e0(*(void**)((u8*)clump + 4), (void(*)())func_003115a0,
-                              &hierarchy);
-                dst->animSlots[i].anim.hierarchy = hierarchy;
-                FUN_004916d0(clump, mdl00311610, 0);
-                FUN_001a7170(clump, dst->animSlots[i].anim.hierarchy);
-                dst->animSlots[i].anim.hierarchy->flags |= 0x3000;
-            }
-            else
-            {
-                dstAnim->flags |= 2;
-                dstAnim->hierarchy = FUN_00466480(dst->animSlots[0].anim.hierarchy, 0,
-                                                   dst->animSlots[0].anim.hierarchy->flags, -1);
-            }
-        }
-
-        resources = src->animSlots[i].anim.resources;
-        if (resources != NULL)
-        {
-            clonedResources = RwMalloc(resources->count * 8 + 0x34, rwMEMHINTDUR_GLOBAL);
-            memset(clonedResources, 0, resources->count * 8 + 0x34);
-            clonedResources->count = resources->count;
-            clonedResources->primary = (void**)((u8*)clonedResources + 0x34);
-            clonedResources->secondary = clonedResources->primary + resources->count;
-
-            for (j = 0; j < resources->count; j++)
-            {
-                if (resources->primary[j] != NULL)
-                {
-                    clonedResources->primary[j] = func_0031d700(resources->primary[j]);
-                }
-
-                if (resources->secondary[j] != NULL)
-                {
-                    clonedResources->secondary[j] = func_0031e0b0(resources->secondary[j]);
-                }
-            }
-
-            dst->animSlots[i].anim.resources = clonedResources;
-        }
-    }
-
-    if (src->unk_35c != NULL)
-    {
-        (*(u16*)((u8*)src->unk_35c + 6))++;
-        dst->unk_35c = src->unk_35c;
-    }
-
-    data = *(void**)((u8*)src + 0x37c);
-    if (data != NULL)
-    {
-        (*(u16*)((u8*)data + 0xe))++;
-        *(void**)((u8*)dst + 0x37c) = data;
-        func_003143c0((u8*)dst + 0x364, dst->clump);
-        *(u8*)((u8*)dst + 0x366) = 1;
-    }
-
-    data = src->runtimeData.refCountedData;
-    if (data != NULL)
-    {
-        (*(u16*)((u8*)data + 2))++;
-        dst->runtimeData.refCountedData = data;
-    }
-
-    if (src->runtimeData.motionData != NULL)
-    {
-        dst->runtimeData.motionData = func_0031d700(src->runtimeData.motionData);
-        func_0031ded0(dst->runtimeData.motionData);
-    }
-
-    func_0031ee80(dst->runtimeData.animationData, src->runtimeData.animationData);
-
-    if (mdlAnim003185b0(dst, 0))
-    {
-        mdlAnimSet(dst, 0, 0, 0, MDLANIM_FLAG_LOOP);
-    }
-}
-
-// FUN_00317450
-Model* mdlClone(const Model* mdl)
-{
-    Model* clone;
-
-    clone = mdlInit(mdl->type, mdl->id);
-
-    if (mdl->flags & MDL_FLAG_STREAMDONE)
-    {
-        mdlCopy(mdl, clone);
-
-        clone->flags |= MDL_FLAG_STREAMDONE;
-    }
-    else
-    {
-        clone->flags |= MDL_FLAG_STREAMUNK1;
-    }
-
-    return clone;
-}
-
-// FUN_003174e0
-void mdlDestroy(Model* mdl)
-{
-    void* data;
-    u32 i;
-
-    if (mdl->clump != NULL)
-    {
-        FUN_00491ea0(mdl->clump);
-    }
-
-    for (i = 0; i < 4; i++)
-    {
-        func_003132c0((u8*)&mdl->animSlots[i]);
-    }
-
-    if (mdl->unk_35c != NULL)
-    {
-        func_00313be0(mdl->unk_35c);
-        mdl->unk_35c = NULL;
-    }
-
-    data = *(void**)((u8*)mdl + 0x37c);
-    if (data != NULL)
-    {
-        func_00313e60(data);
-        *(u32*)&mdl->unkData2[0x1c] = 0;
-    }
-
-    data = mdl->runtimeData.refCountedData;
-    if (data != NULL)
-    {
-        *(u16*)((u8*)data + 2) = *(u16*)((u8*)data + 2) - 1;
-        if (*(u16*)((u8*)data + 2) == 0)
-        {
-            RwFree(*(void**)((u8*)data + 4));
-        }
-    }
-    if (mdl->unk_e0 != NULL)
-    {
-        FUN_001a7710(mdl->unk_e0);
-    }
-
-    for (i = 0; i < 5; i++)
-    {
-        if ((*(u8*)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b4) & 1) != 0 &&
-            *(Model**)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b8) != NULL)
-        {
-            func_003196f0(mdl, i);
-        }
-    }
-
-    FUN_001ef340(mdl);
-
-    if (mdl->runtimeData.motionData != NULL)
-    {
-        func_0031d790(mdl->runtimeData.motionData);
-    }
-    func_0031eee0(mdl->runtimeData.animationData);
-
-    if (mdl->prev != NULL)
-    {
-        mdl->prev->next = mdl->next;
-    }
-    if (mdl->next != NULL)
-    {
-        mdl->next->prev = mdl->prev;
-    }
-    else
-    {
-        sMdlListTails[mdl->type] = mdl->prev;
-    }
-
-    RwFree(mdl);
-}
-
-// FUN_00317730 NONMATCHING
-void mdl00317730(Model* mdl)
-{
-    RwMatrix matrix;
-    void* hierarchy;
-    Model* wpnMdl;
-    MdlAnimResourceSet* resources;
-    RwFrame* frame;
-    u32 i;
-
-    if (mdl->flags & MDL_FLAG_STREAMDONE)
-    {
-        frame = *(RwFrame**)((u8*)mdl->clump + 4);
-        FUN_004c2f30(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
-        FUN_004cb7f0(frame, &matrix, 0);
-        func_003197c0(mdl, &matrix);
-
-        hierarchy = NULL;
-        if (mdlLookAtIsActive(mdl))
-        {
-            mdlLookAtSetTargetScale(mdl, &mdl->scale);
-        }
-        for (i = 0; i < 4; i++)
-        {
-            if (mdlAnim003185b0(mdl, i))
-            {
-                hierarchy = func_00313490(&mdl->animSlots[i], hierarchy);
-            }
-        }
-
-        func_00314d30((u8*)mdl + 0x364);
-        if (mdl->runtimeData.motionData != NULL)
-        {
-            func_0031dda0(mdl->runtimeData.motionData, &mdl->scale);
-            func_0031d9c0(mdl->runtimeData.motionData, mdl);
-        }
-        for (i = 0; i < 4; i++)
-        {
-            resources = mdl->animSlots[i].anim.resources;
-            if (resources != NULL)
-            {
-                func_00311480(resources, mdl);
-            }
-        }
-        func_0031f5c0(mdl->runtimeData.animationData);
-
-        for (i = 0; i < 5; i++)
-        {
-            wpnMdl = mdl->attachedWpns[i].wpnMdl;
-            if ((mdl->attachedWpns[i].flags & 1) != 0 && wpnMdl != NULL &&
-                mdl00319770(mdl, i))
-            {
-                *(RwMatrix*)((u8*)wpnMdl + 0x40) = mdl->identityMat;
-                if (mdl->attachedWpns[i].unk_08 == -1)
-                {
-                    wpnMdl->mat = mdl->mat;
-                }
-                else
-                {
-                    func_00318d10((u8*)mdl, mdl->attachedWpns[i].unk_08, (u32*)mdlGetMatrix(wpnMdl));
-                }
-
-                mdlAnimSetSpeed(wpnMdl, 0, mdl->animSlots[0].anim.speed);
-                mdl00317730(wpnMdl);
-            }
-        }
-    }
-}
-
-// FUN_003182d0 NONMATCHING
-u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
-{
-    MdlAnim* anim;
-    MdlAnimEntry* entry;
-    u32 i;
-
-    if (!func_00318620(mdl, slotIdx, id))
-    {
-        return true;
-    }
-
-    anim = &mdl->animSlots[slotIdx].anim;
-    if (slotIdx == 0)
-    {
-        if (id < 0 || anim->table == NULL || id >= anim->table->count ||
-            anim->table->entries[id].rtAnim == NULL ||
-            anim->table->entries[id].rtAnim == &DAT_009571d0)
-        {
-            RwMatrixSetIdentity(&mdl->identityMat);
-        }
-        else
-        {
-            entry = &anim->table->entries[id];
-            mdl->identityMat = entry->identityMat;
-        }
-
-        func_00314850(mdl->clump, (u8*)mdl + 0x364, id, blendFrameCount, flags);
-    }
-
-    func_003138e0(anim, id, blendFrameCount, flags);
-
-    if (*(void**)mdl->runtimeData.animationData != NULL && (flags & 0x40) == 0 && slotIdx == 0)
-    {
-        func_0031ef80(mdl->runtimeData.animationData, id, blendFrameCount);
-    }
-
-    for (i = 0; i < 5; i++)
-    {
-        if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
-            mdl00319770(mdl, i))
-        {
-            mdlAnimSet(mdl->attachedWpns[i].wpnMdl, 0, id, blendFrameCount, flags);
-        }
-    }
-
-    return true;
-}
-
-// FUN_00318540
-s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
-{
-    if (mdlAnim003185b0(mdl, slotIdx))
-    {
-        return mdl->animSlots[slotIdx].anim.id;
-    }
-
-    return -1;
-}
-
-// FUN_003185b0
-u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
-{
-    if (slotIdx == 0)
-    {
-        if (mdl->animSlots[0].anim.table == NULL && mdl->unk_35c == NULL)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        if (mdl->animSlots[slotIdx].anim.table == NULL)
-        {
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-// FUN_00318770
-void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
-{
-    MdlAnimEntryTable* table;
-    RpHAnimHierarchy* hierarchy;
-    s16 id;
-    f32 scaledFrame;
-    u8* state;
-
-    scaledFrame = gFrameDuration * frame;
-    id = mdl->animSlots[slotIdx].anim.id;
-    if (id >= 0)
-    {
-        table = mdl->animSlots[slotIdx].anim.table;
-        if (table != NULL && id < table->count &&
-            table->entries[id].rtAnim != NULL &&
-            table->entries[id].rtAnim != (RtAnimAnimation*)DAT_009571d0_abs)
-        {
-            hierarchy = mdl->animSlots[slotIdx].anim.hierarchy;
-            FUN_004b74c0(scaledFrame, ((volatile /* Removing this qualifier loses mdlAnim00318770 (MATCH nd0 -> MISMATCH nd8, size 256 -> 256) - measured W170. */ RpHAnimHierarchy*)hierarchy)->currentAnim);
-            mdl->animSlots[slotIdx].anim.flags |= MDLANIM_FLAG_FRAMESET;
-        }
-    }
-
-    if (slotIdx == 0)
-    {
-        state = (u8*)mdl + 0x364;
-        func_00314730_ptrfirst(state, scaledFrame);
-    }
-}
-
-// FUN_00318870
-f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
-{
-    f32 duration;
-
-    if (mdl->animSlots[slotIdx].anim.id < 0)
-    {
-        duration = 0.0f;
-    }
-    else
-    {
-        if (mdl->animSlots[slotIdx].anim.hierarchy == NULL ||
-           (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim == NULL))
-        {
-            duration = 0.0f;
-        }
-        else
-        {
-            if (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim == NULL)
-            {
-                duration = 0.0f;
-            }
-            else
-            {
-                duration = mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim->duration;
-            }
-        }
-    }
-
-    return duration / gFrameDuration;
-}
-
-// FUN_00318910
-f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
-{
-    f32 duration;
-
-    if (mdl->animSlots[slotIdx].anim.hierarchy == NULL)
-    {
-        duration = 0.0f;
-    }
-    else
-    {
-        duration = mdl->animSlots[slotIdx].anim.table->entries[animId].rtAnim->duration;
-    }
-
-    return duration / gFrameDuration;
-}
-
-// FUN_00318990
-f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
-{
-    f32 currTime;
-
-    if (mdl->animSlots[slotIdx].anim.id < 0)
-    {
-        currTime = 0.0f;
-    }
-    else
-    {
-        currTime = mdl->animSlots[slotIdx].anim.currTime;
-    }
-
-    return currTime / gFrameDuration;
-}
-
-// FUN_003189f0
-void mdlAnimSetSpeed(Model* mdl, u16 slotIdx, f32 speed)
-{
-    mdl->animSlots[slotIdx].anim.speed = speed;
-
-    if (slotIdx == 0)
-    {
-        *(f32*)((u8*)mdl + 0x36c) = speed;
-    }
-}
-
-// FUN_00318a30
-void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
-{
-    RwMatrixTranslate(&mdl->mat, translation, combineOp);
-}
-
-// FUN_00318a50
-void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp)
-{
-    RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
-}
-
 void FUN_004c3760(void);
-
-// FUN_00318a70
-void mdl00318a70(void)
-{
-    FUN_004c3760();
-}
-
-// FUN_00318a90
-void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
-{
-    mdl->scale = *scale;
-
-    RwMatrixScale(&mdl->mat, scale, combineOp);
-}
-
-// FUN_00318ad0
-void mdlSetColor(Model* mdl, const RwRGBA* color)
-{
-    mdl->color = *color;
-}
-
-// FUN_00318b00
-RwRGBA* mdlGetColor(Model* mdl)
-{
-    return &mdl->color;
-}
-
-// FUN_00318b60
-RwMatrix* mdlGetMatrix(Model* mdl)
-{
-    return &mdl->mat;
-}
-
-// FUN_00318b70
-RwFrame* mdlGetClumpFrame(Model* mdl)
-{
-    return (RwFrame*)mdl->clump->object.parent;
-}
-
-// FUN_00318b80
-RpClump* mdlGetClump(Model* mdl)
-{
-    return mdl->clump;
-}
-
-// FUN_00319010
-void mdlEnableFullShadow(Model* mdl)
-{
-    mdl->flags |= MDL_FLAG_FULLSHADOW;
-}
-
-// FUN_00319030
-void mdlDisableFullShadow(Model* mdl)
-{
-    mdl->flags &= ~MDL_FLAG_FULLSHADOW;
-}
-
-// FUN_00319050
-void mdl00319050(Model* mdl)
-{
-    mdl->flags |= MDL_FLAG_UNK20;
-}
-
-// FUN_00319070
-void mdl00319070(Model* mdl)
-{
-    mdl->flags &= ~MDL_FLAG_UNK20;
-}
-
-// FUN_00319090
-void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor)
-{
-    mdl->animSlots[0].lookAt.blendRotFactor = blendRotFactor;
-}
-
-// FUN_003190a0
-void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
-{
-    mdl->animSlots[0].lookAt.maxPitchAngle = maxPitchAngle;
-    mdl->animSlots[0].lookAt.maxYawAngle = maxYawAngle;
-}
-
-// FUN_003190b0
-void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target)
-{
-    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZ;
-    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XY);
-    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
-
-    mdl->animSlots[0].lookAt.targetPos = *target;
-}
-
-// FUN_00319100
-void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target)
-{
-    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZCS;
-    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZ | MDLLOOKAT_FLAG_XY);
-    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
-
-    mdl->animSlots[0].lookAt.targetPos = *target;
-}
-
-// FUN_00319150
-void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
-{
-    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XY;
-    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XYZ);
-    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
-
-    mdl->animSlots[0].lookAt.targetPos.x = xTarget;
-    mdl->animSlots[0].lookAt.targetPos.y = yTarget;
-}
-
-// FUN_00319190
-void mdlLookAtDisableTarget(Model* mdl)
-{
-    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_NOTARGET;
-}
-
-// FUN_003191b0
-void mdl003191b0(Model* mdl)
-{
-    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_UNK200;
-}
-
-// FUN_003191d0
-u8 mdlLookAtIsActive(Model* mdl)
-{
-    return (mdl->animSlots[0].lookAt.flags & (MDLLOOKAT_FLAG_XYZCS |
-                                              MDLLOOKAT_FLAG_XYZ   |
-                                              MDLLOOKAT_FLAG_XY    | 
-                                              MDLLOOKAT_FLAG_NOTARGET)) != 0;
-}
-
-// FUN_003191f0
-void mdlLookAtSetFlags(Model* mdl, u16 flags)
-{
-    mdl->animSlots[0].lookAt.flags = flags;
-}
-
-// FUN_00319200
-u16 mdlLookAtGetFlags(Model* mdl)
-{
-    return mdl->animSlots[0].lookAt.flags;
-}
-
-// FUN_00319210
-void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
-{
-    mdl->animSlots[0].lookAt.targetScale = *scale;
-}
-
-// FUN_003196d0
-void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value)
-{
-    mdl->attachedWpns[wpnIdx].unk_08 = value;
-}
-
-// FUN_00319770
-u32 mdl00319770(Model* mdl, u16 wpnIdx)
-{
-    Model* wpnMdl;
-
-    wpnMdl = mdl->attachedWpns[wpnIdx].wpnMdl;
-    if (wpnMdl == NULL)
-    {
-        return true;
-    }
-
-    return mdlStreamRead(wpnMdl);
-}
-
-// FUN_00319840
-void mdlStreamInit(Model* mdl)
-{
-    MdlStream* stream;
-
-    stream = RwMalloc(sizeof(MdlStream), rwMEMHINTDUR_GLOBAL);
-    mdl->stream = stream;
-    memset(stream, 0, sizeof(MdlStream));
-}
-
-// FUN_003198a0
-void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd)
-{
-    MdlStream* stream;
-    stream = mdl->stream;
-
-    stream->rmd.memory = rmd->memory;
-    stream->rmd.size = rmd->size;
-}
-
-// FUN_003198c0
-void mdlStreamRequestCdvd(Model* mdl, const char* path)
-{
-    MdlStream* stream;
-    stream = mdl->stream;
-
-    stream->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
-    stream->rws = NULL;
-}
-
-// FUN_00319900
-void mdl00319900(Model* mdl, u32 value)
-{
-    mdl->stream->isInPacFile = value;
-}
-
-// FUN_00319910
-void mdlStreamDestroy(Model* mdl)
-{
-    if (mdl->stream->unk_0c != NULL)
-    {
-        RwFree(mdl->stream->unk_0c);
-    }
-
-    RwFree(mdl->stream);
-    mdl->stream = NULL;
-}
-
-
-/* ---- Recovered range 0x311480-0x31D4F0 (Ghidra reference, pending match) ---- */
 typedef struct MdlAnimResourceEntry
 {
     void* resource;
     u8 flags;
     u8 unk_05[3];
 } MdlAnimResourceEntry;
-
 typedef int (*code)(...);
 typedef u8 bool;
-#ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
-#ifndef CONCAT11
 #define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
-#endif
 extern s32 DAT_0096012c;
 extern u8 LAB_00464760;
 extern f32 DAT_009571c0;
 extern f32 DAT_009571c4;
-#pragma alias DAT_009571c0_abs DAT_009571c0
 extern u8 DAT_009571c0_abs[];
-#pragma alias DAT_009571c4_abs DAT_009571c4
 extern u8 DAT_009571c4_abs[];
 extern float fGpffff80d0;
 extern float fGpffff80f4;
@@ -1159,13 +134,9 @@ extern s32 DAT_009571b8;
 extern float* DAT_009571bc;
 extern code DAT_009571b0;
 extern s32 DAT_009571b4;
-#pragma alias DAT_009571b0_abs DAT_009571b0
 extern code DAT_009571b0_abs[];
-#pragma alias DAT_009571b4_abs DAT_009571b4
 extern u8 DAT_009571b4_abs[];
-#pragma alias DAT_009571b8_abs DAT_009571b8
 extern u8 DAT_009571b8_abs[];
-#pragma alias DAT_009571bc_abs DAT_009571bc
 extern u8 DAT_009571bc_abs[];
 extern float fGpffff80e4;
 extern char gp0xffff9d10;
@@ -1177,16 +148,12 @@ extern u8 LAB_00313790;
 extern u8 LAB_00313b48;
 extern u8 LAB_00314020;
 extern u8 LAB_00314060;
-#pragma alias LAB_00314020_abs LAB_00314020
 extern u8 LAB_00314020_abs[];
-#pragma alias LAB_00314060_abs LAB_00314060
 extern u8 LAB_00314060_abs[];
 extern u8 LAB_0031494c;
 extern u8 LAB_003140a0;
 extern u8 LAB_003140b0;
-#pragma alias LAB_003140a0_abs LAB_003140a0
 extern u8 LAB_003140a0_abs[];
-#pragma alias LAB_003140b0_abs LAB_003140b0
 extern u8 LAB_003140b0_abs[];
 extern f32 DAT_007cadd4;
 extern f32 DAT_007caf0c;
@@ -1198,7 +165,6 @@ extern f32 DAT_007cad44;
 extern f32 DAT_007caed0;
 extern u32 DAT_007cada0;
 extern void (*DAT_00960090[])(...);
- #pragma alias DAT_00960090_abs DAT_00960090
  extern u8 DAT_00960090_abs[];
 extern void (*DAT_00960094[])(...);
 extern u32 DAT_00960070;
@@ -1211,30 +177,23 @@ extern u8 LAB_0031b594;
 extern u8 gp0xffff9d20;
 extern u32 DAT_0069af00;
 extern u32 DAT_0069b190;
-#pragma alias DAT_0069b190_abs DAT_0069b190
 extern u8 DAT_0069b190_abs[];
 extern u8 LAB_0031bfb8;
 extern u32 DAT_0069b1b0;
-#pragma alias DAT_0069b1b0_abs DAT_0069b1b0
 extern u8 DAT_0069b1b0_abs[];
 extern u32 DAT_0069b0d0;
-#pragma alias DAT_0069b0d0_abs DAT_0069b0d0
 extern u8 DAT_0069b0d0_abs[];
 extern u32 DAT_0069b1c0;
-#pragma alias DAT_0069b1c0_abs DAT_0069b1c0
 extern u8 DAT_0069b1c0_abs[];
 extern u32 DAT_0069b1d0;
-#pragma alias DAT_0069b1d0_abs DAT_0069b1d0
 extern u8 DAT_0069b1d0_abs[];
 extern u32 DAT_0069b1e0;
-#pragma alias DAT_0069b1e0_abs DAT_0069b1e0
 extern u8 DAT_0069b1e0_abs[];
 extern void* PTR_PTR_0069ae80[];
 extern void* RpMaterialGetUserDataArray(void* material,int data);
 extern char* RpUserDataArrayGetName(void* userData);
 extern int RpUserDataArrayGetFormat(void* userData);
 extern f32 func_0052e9e8(f32 value);
-#pragma alias func_0052ea18_typed func_0052ea18
 extern f32 func_0052ea18_typed(f32 x, f32 y);
 u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1);
@@ -1279,7 +238,6 @@ void func_0031b470(void);
 void func_0031b4a0(char* param_1,u16 param_2);
 u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
 void func_0031b820(u32 param_1,u32 param_2);
-#pragma alias func_0031b680_u32ptr func_0031b680
 extern u32 func_0031b680_u32ptr(int param_1,int param_2,u32 *param_3,u32 *param_4);
 u32 func_0031be80(u32 param_1);
 void func_0031c000(char* param_1,u32 param_2);
@@ -1287,6 +245,45 @@ u32 func_0031c1d0(int param_1);
 u32 func_0031c7e0(int param_1);
 u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
 void FUN_0031e4d0(int *param_1,u16 param_2,u16 param_3);
+
+#pragma opt_loop_invariants on
+// FUN_00311310
+MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
+{
+    MdlAnimEntryTable* table;
+    u32 size;
+    u32 i;
+    f32 one;
+    u32 matrixFlags;
+
+    size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
+    table = (MdlAnimEntryTable*)RwMalloc(size, rwMEMHINTDUR_GLOBAL);
+    memset(table, 0, size);
+
+    table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
+    table->count = animCount;
+
+    one = 1.0f;
+    matrixFlags = rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
+    for (i = 0; i < table->count; i++)
+    {
+        table->entries[i].identityMat.right.x = table->entries[i].identityMat.up.y =
+            table->entries[i].identityMat.at.z = one;
+        table->entries[i].identityMat.right.y = table->entries[i].identityMat.right.z =
+            table->entries[i].identityMat.up.x = 0.0f;
+        table->entries[i].identityMat.up.z = table->entries[i].identityMat.at.x =
+            table->entries[i].identityMat.at.y = 0.0f;
+        table->entries[i].identityMat.pos.x = table->entries[i].identityMat.pos.y =
+            table->entries[i].identityMat.pos.z = 0.0f;
+        table->entries[i].identityMat.flags |= matrixFlags;
+    }
+
+    table->unk_06 = 1;
+
+    return table;
+}
+#pragma opt_loop_invariants reset
+
 
 // FUN_00311480
 
@@ -1335,8 +332,6 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
 }
 
 
-
-
 // FUN_003115A0
 
 
@@ -1356,8 +351,12 @@ store_value:
     return 0;
 }
 
-
-
+// FUN_00311610
+void* mdl00311610(void* param_1)
+{
+    FUN_0048a2a0();
+    return param_1;
+}
 
 // FUN_00311640
 u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
@@ -1390,11 +389,6 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
     return 1;
 }
 
-
-
-
-// Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
-/* W389 measured func_00311730 opt_loop_invariants on + opt_lifetimes on: nd 4296 -> 4240; object 5360/5440 -> 5328/5440. */
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
@@ -2752,9 +1746,6 @@ special_matrix_done:
 #undef uStack_c
 #undef uStack_8
 
-
-
-
 // FUN_00312C70
 
 
@@ -2786,9 +1777,7 @@ void func_00312c70(u8* param_1,int param_2)
 
 }
 
-
-
-
+/* W323 measured mdlCreateAndResolvePath opt_loop_invariants on: nd202 -> nd191; object 356/368. */
 // FUN_00312D40
 
 
@@ -2860,9 +1849,6 @@ void func_00312d40(u8* param_1,u8* param_2)
 
 }
 
-
-
-
 // FUN_00312E80
 
 
@@ -2914,9 +1900,6 @@ void func_00312e80(int param_1)
 
 }
 
-
-
-
 // FUN_00312F90
 
 
@@ -2959,10 +1942,6 @@ u32 func_00312f90(u32 param_1)
     return param_1;
 }
 
-
-
-
-// W389 residual nd1: the sole differing instruction is commutative addu operand order (retail v0=v0+v1 vs. ours v0=v1+v0); this is a documented compiler floor.
 // FUN_00313090 NONMATCHING
 
 
@@ -3067,9 +2046,6 @@ LAB_003131f8:
 
 }
 
-
-
-
 // FUN_00313230
 
 
@@ -3121,9 +2097,6 @@ void func_00313230(MdlAnimSlot* param_1)
   return;
 
 }
-
-
-
 
 // FUN_003132C0 NONMATCHING
 
@@ -3229,10 +2202,6 @@ void func_003132c0(u8* param_1)
 
 }
 
-
-
-
-/* W389 measured func_00313490 opt_propagation off: nd 746 -> 608; object 1104/1104 -> 1100/1104. */
 #pragma push
 #pragma opt_propagation off
 // FUN_00313490 NONMATCHING
@@ -3412,9 +2381,6 @@ LAB_0031379c:
 #pragma opt_propagation reset
 #pragma pop
 
-
-
-
 // FUN_003138E0 NONMATCHING
 
 
@@ -3586,8 +2552,6 @@ LAB_00313b48:
 
 }
 
-
-
 // FUN_00313BE0
 
 
@@ -3611,9 +2575,6 @@ void func_00313be0(MdlAnimEntryTable* table)
         (*DAT_0096017c)(table);
     }
 }
-
-
-
 
 // FUN_00313CA0 NONMATCHING
 
@@ -3748,9 +2709,6 @@ void func_00313ca0(int *param_1,u32 param_2)
 
 }
 
-
-
-
 // FUN_00313E60
 
 
@@ -3790,9 +2748,6 @@ void func_00313e60(void* param_1)
   return;
 }
 
-
-
-
 #pragma push
 #pragma opt_propagation off
 // FUN_00313F40
@@ -3815,9 +2770,6 @@ int func_00313f40(int param_1, void* param_2)
   return param_1;
 }
 #pragma pop
-
-
-
 
 // FUN_00313FE0
 
@@ -3855,6 +2807,7 @@ void FUN_003140a0(void)
 {
 }
 
+
 // FUN_003140B0
 void FUN_003140b0(void)
 {
@@ -3889,8 +2842,6 @@ void* func_003140c0(void* param_1,u16 *param_2)
   return param_1;
 
 }
-
-
 
 // FUN_00314170 NONMATCHING
 
@@ -3951,8 +2902,6 @@ void* func_00314170(void* param_1, void* param_2)
 
 }
 
-
-
 // FUN_003142B0
 u32 func_003142b0(void* param_1)
 {
@@ -3988,9 +2937,6 @@ u32 func_003142b0(void* param_1)
     }
     return 0;
 }
-
-
-
 
 // FUN_003143C0
 
@@ -4055,9 +3001,6 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
 }
 
-
-
-
 // FUN_00314510
 void* func_00314510(void* param_1)
 {
@@ -4099,9 +3042,6 @@ void* func_00314510(void* param_1)
   return param_1;
 }
 
-
-
-
 // FUN_00314650
 
 
@@ -4135,9 +3075,6 @@ u32 func_00314650(u32 param_1)
 
     return param_1;
 }
-
-
-
 
 // FUN_00314730
 
@@ -4199,10 +3136,6 @@ void func_00314730(u8* param_2,f32 param_1)
 
 }
 
-
-
-
-/* W389 measured func_00314850 opt_lifetimes on: nd 729 -> 726; object 1208/1248 -> 1208/1248. */
 #pragma push
 #pragma opt_lifetimes on
 // FUN_00314850 NONMATCHING
@@ -4451,10 +3384,6 @@ LAB_0031494c:
 #pragma opt_lifetimes reset
 #pragma pop
 
-
-
-
-/* W389 measured func_00314d30 opt_lifetimes on: nd 446 -> 415; object 724/736 -> 720/736. */
 #pragma push
 #pragma opt_lifetimes on
 // FUN_00314D30 NONMATCHING
@@ -4607,9 +3536,6 @@ void func_00314d30(void* param_1)
 #pragma opt_lifetimes reset
 #pragma pop
 
-
-
-
 // FUN_00315010
 
 
@@ -4624,10 +3550,6 @@ void* func_00315010(void* object, void* data)
     return object;
 }
 
-
-
-
-/* W323 measured func_00315090 opt_loop_invariants on: nd195 -> nd188; object 292/320. */
 #pragma push
 #pragma opt_loop_invariants on
 /* W323 callback symbol literal nd188 -> nd185. */
@@ -4718,9 +3640,6 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
 }
 #pragma pop
-
-
-
 
 // FUN_003151D0 NONMATCHING
 
@@ -5288,9 +4207,6 @@ void func_003151d0(Model* param_1)
 
 }
 
-
-
-
 // FUN_00315C20 NONMATCHING
 
 
@@ -5410,9 +4326,6 @@ void func_00315c20(int param_1)
 
 }
 
-
-
-
 // FUN_00315ED0
 
 
@@ -5439,9 +4352,6 @@ Model* func_00315ed0(Model* param_1)
 
 }
 
-
-
-/* W389 measured func_00315f50 opt_dead_assignments off: nd 563 -> 559; object 892/976 -> 892/976. */
 #pragma push
 #pragma opt_dead_assignments off
 // FUN_00315F50 NONMATCHING
@@ -5535,9 +4445,6 @@ u32 func_00315f50(void* param_1,u32 *param_2)
 #pragma opt_dead_assignments reset
 #pragma pop
 
-
-
-
 // FUN_00316320
 
 
@@ -5558,9 +4465,6 @@ void func_00316320(u64 param_1,u32* param_2,u16 param_3)
   return;
 
 }
-
-
-
 
 // FUN_00316360
 
@@ -5590,9 +4494,6 @@ u32 func_00316360(void* param_1,u32 *param_2)
     return (u32)param_1;
 }
 
-
-
-
 // FUN_00316410
 
 
@@ -5616,8 +4517,11 @@ u32 func_00316410(void* param_1)
   return (u32)param_1;
 }
 
-
-
+// FUN_003164c0
+void mdl003164c0(void* param_1)
+{
+    FUN_004916d0(param_1, (void(*)())FUN_00316410, 0);
+}
 
 #pragma push
 #pragma opt_loop_invariants on
@@ -5686,9 +4590,6 @@ void func_003164f0(int param_1,int param_2)
 }
 #pragma pop
 
-
-
-
 #pragma push
 /* Removing this loses FUN_003165e0 (MATCH nd0 -> MISMATCH nd51) - measured W161. */
 #pragma opt_loop_invariants on
@@ -5750,10 +4651,123 @@ done:
 }
 #pragma pop
 
+// FUN_00316690
+Model* mdlInit(u16 type, u16 id)
+{
+    Model* mdl;
+    u32 i;
+    volatile /* Removing this qualifier loses mdlInit (MATCH nd0 -> MISMATCH nd8, size 628 -> 628) - measured W170. */ RwRGBA* color;
+    u8 red;
+    u8 green;
+    u8 blue;
+    u8 alpha;
+    Model* tail;
 
+    mdl = ((void* (*)(u32, u32))jtbl_00960178[0])(sizeof(Model), rwMEMHINTDUR_GLOBAL);
+    memset(mdl, 0, sizeof(Model));
 
+    mdl->flags = MDL_FLAG_FOG | MDL_FLAG_ZTEST | MDL_FLAG_ZWRITE;
+    mdl->color.r = 0xff;
+    mdl->color.g = 0xff;
+    mdl->color.b = 0xff;
+    mdl->color.a = 0xff;
+    color = &mdl->color;
+    red = color->r;
+    green = color->g;
+    blue = color->b;
+    alpha = color->a;
+    mdl->runtimeData.animationData[0x22] = red;
+    mdl->runtimeData.animationData[0x23] = green;
+    mdl->runtimeData.animationData[0x24] = blue;
+    mdl->runtimeData.animationData[0x25] = alpha;
+    mdl->type = type;
+    mdl->id = id;
+    mdl->gsAlpha1Reg = 0x44;
+    mdl->gsTest1Reg = 0x717fb;
 
-/* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
+    RwMatrixSetIdentity(&mdl->mat);
+    RwMatrixSetIdentity(&mdl->identityMat);
+    mdl->scale.x = 1.0f;
+    mdl->scale.y = 1.0f;
+    mdl->scale.z = 1.0f;
+    *(u16*)((u8*)mdl + 0x418) = 2;
+
+    for (i = 0; i < 4; i++)
+    {
+        func_00313230(&mdl->animSlots[i]);
+    }
+    *(u32*)((u8*)mdl + 0x360) = 0;
+
+    *(u8*)((u8*)mdl + 0x366) = 1;
+    *(s16*)((u8*)mdl + 0x368) = -1;
+    *(f32*)((u8*)mdl + 0x36c) = 1.0f;
+    memset((u8*)mdl + 0x380, 0, 8);
+    *(u8*)((u8*)mdl + 0x382) = 1;
+    *(f32*)((u8*)mdl + 0x384) = 1.0f;
+    *(u8*)((u8*)mdl + 0x388) = 0;
+    *(u32*)((u8*)mdl + 0x39c) = 0;
+    *(u32*)((u8*)mdl + 0x3a0) = 0;
+    *(u32*)((u8*)mdl + 0x3a4) = 0;
+    *(u8*)((u8*)mdl + 0x3a8) = 0xa0;
+    *(u8*)((u8*)mdl + 0x3a9) = 0xa0;
+    *(u8*)((u8*)mdl + 0x3aa) = 0;
+
+    func_0031eeb0(mdl->runtimeData.animationData);
+
+    for (i = 0; i < 5; i++)
+    {
+        mdl003196d0(mdl, i, -1);
+    }
+
+    tail = sMdlListTails[type];
+    mdl->next = NULL;
+    if (tail != NULL)
+    {
+        tail->next = mdl;
+        mdl->prev = tail;
+    }
+    else
+    {
+        mdl->prev = NULL;
+    }
+    sMdlListTails[type] = mdl;
+
+    return mdl;
+}
+
+#pragma push
+/* Removing this loses FUN_00316910 (MATCH nd0 -> MISMATCH nd26) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
+Model* mdlSearch(u16 type, u16 id, u16 flags)
+{
+    Model* mdl;
+    u16 modelType;
+    u16 modelId;
+    u16 modelFlags;
+
+    modelType = type;
+    modelId = id;
+    modelFlags = flags;
+    mdl = sMdlListTails[modelType];
+
+    while (mdl != NULL)
+    {
+        if (mdl->id == modelId)
+        {
+            if (modelFlags == 0 || (mdl->flags & modelFlags) != 0)
+            {
+                break;
+            }
+        }
+
+        mdl = mdl->prev;
+    }
+
+    return mdl;
+}
+#pragma pop
+
 #pragma push
 #pragma opt_common_subs off
 /* W323 followups: base pointer nd197 -> nd184; callback symbols nd184 -> nd168; -1 width nd168 -> nd122; hierarchy local nd122 -> nd107; stack-init order nd107 -> nd101. */
@@ -5847,8 +4861,49 @@ void func_00316970(Model* param_1)
 }
 #pragma pop
 
+// FUN_00316b40
+Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
+{
+    Model* mdl;
 
+    mdl = mdlInit(type, id);
 
+    if (readMode & MDL_READSYNC)
+    {
+        mdl->flags |= MDL_FLAG_STREAMSYNC;
+    }
+
+    mdlStreamInit(mdl);
+    mdlStreamRequestCdvd(mdl, path);
+
+    mdlStreamRead(mdl);
+
+    return mdl;
+}
+
+// FUN_00316bd0. Create a model with a loaded .RMD file in memory
+Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
+{
+    Model* mdl;
+    MdlRmdFileMemory rmd;
+
+    mdl = mdlInit(type, id);
+
+    if (readMode & MDL_READSYNC)
+    {
+        mdl->flags |= MDL_FLAG_STREAMSYNC;
+    }
+
+    mdlStreamInit(mdl);
+
+    rmd.memory = rmdMemory;
+    rmd.size = rmdSize;
+    mdlStreamSetRmdFileMemory(mdl, &rmd);
+
+    mdlStreamRead(mdl);
+
+    return mdl;
+}
 
 // FUN_00316C70 NONMATCHING
 
@@ -5887,6 +4942,357 @@ Model* func_00316c70(u16 modelType,u16 id,void* archive,u32 readMode)
   return mdl;
 }
 
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00316e00 NONMATCHING
+Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
+{
+    Model* mdl;
+    char path[0x100];
+
+    mdl = sMdlListTails[type];
+    while (mdl != NULL && mdl->id != id)
+    {
+        mdl = mdl->prev;
+    }
+    if (mdl == NULL)
+    {
+        mdlFileResolvePackPath(type, id, path);
+        mdl = mdlInit(type, id);
+
+        if (readMode & MDL_READSYNC)
+        {
+            mdl->flags |= MDL_FLAG_STREAMSYNC;
+        }
+
+        mdlStreamInit(mdl);
+        mdlStreamRequestCdvd(mdl, path);
+        mdlStreamRead(mdl);
+
+        if (mdlFileIsTypePac(type))
+        {
+            mdl00319900(mdl, true);
+        }
+    }
+    else
+    {
+        mdl = mdlInit(type, id);
+
+        if (readMode & MDL_READSYNC)
+        {
+            mdl->flags |= MDL_FLAG_STREAMSYNC;
+        }
+
+        mdl->flags |= MDL_FLAG_STREAMUNK1;
+        mdlStreamRead(mdl);
+    }
+
+    return mdl;
+}
+#pragma pop
+
+
+/* ---- Recovered range 0x311480-0x31D4F0 (Ghidra reference, pending match) ---- */
+
+#ifndef CONCAT44
+#endif
+#ifndef CONCAT11
+#endif
+#pragma alias DAT_009571c0_abs DAT_009571c0
+#pragma alias DAT_009571c4_abs DAT_009571c4
+#pragma alias DAT_009571b0_abs DAT_009571b0
+#pragma alias DAT_009571b4_abs DAT_009571b4
+#pragma alias DAT_009571b8_abs DAT_009571b8
+#pragma alias DAT_009571bc_abs DAT_009571bc
+#pragma alias LAB_00314020_abs LAB_00314020
+#pragma alias LAB_00314060_abs LAB_00314060
+#pragma alias LAB_003140a0_abs LAB_003140a0
+#pragma alias LAB_003140b0_abs LAB_003140b0
+ #pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_0069b190_abs DAT_0069b190
+#pragma alias DAT_0069b1b0_abs DAT_0069b1b0
+#pragma alias DAT_0069b0d0_abs DAT_0069b0d0
+#pragma alias DAT_0069b1c0_abs DAT_0069b1c0
+#pragma alias DAT_0069b1d0_abs DAT_0069b1d0
+#pragma alias DAT_0069b1e0_abs DAT_0069b1e0
+#pragma alias func_0052ea18_typed func_0052ea18
+#pragma alias func_0031b680_u32ptr func_0031b680
+
+// FUN_00316f70
+u32 mdlStreamRead(Model* mdl)
+{
+    Model* source;
+    u32 modelId;
+    if (mdl->flags & MDL_FLAG_STREAMDONE)
+    {
+        return true;
+    }
+
+    if ((mdl->flags & MDL_FLAG_STREAMUNK1) == 0)
+    {
+        if (!func_0031b220(mdl))
+        {
+            return false;
+        }
+
+        if (!func_0031ebe0(mdl->runtimeData.animationData))
+        {
+            return false;
+        }
+
+        mdlStreamDestroy(mdl);
+        func_00316970(mdl);
+    }
+    else
+    {
+        if (!func_0031ebe0(mdl->runtimeData.animationData))
+        {
+            return false;
+        }
+        modelId = mdl->id;
+        source = sMdlListTails[mdl->type];
+        while (source != NULL)
+        {
+            if (source->id == modelId)
+            {
+                if (source->flags & MDL_FLAG_STREAMDONE)
+                {
+                    break;
+                }
+            }
+
+            source = source->prev;
+        }
+        if (source == NULL)
+        {
+            return false;
+        }
+
+        mdlCopy(source, mdl);
+        mdl->flags &= ~MDL_FLAG_STREAMUNK1;
+    }
+
+    mdl->flags |= MDL_FLAG_STREAMDONE;
+    return true;
+}
+
+
+
+
+// FUN_003170c0 NONMATCHING
+void mdlCopy(const Model* src, Model* dst)
+{
+    const MdlAnim* srcAnim;
+    MdlAnim* dstAnim;
+    MdlAnimResourceSet* resources;
+    MdlAnimResourceSet* clonedResources;
+    void* data;
+    u32 i;
+    u32 j;
+    RpHAnimHierarchy* hierarchy;
+    RpClump* clump;
+
+    if (src->clump != NULL)
+    {
+        dst->clump = FUN_00491cc0(src->clump);
+        dst->unk_e0 = FUN_001a7570(dst->clump);
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        if (mdlAnim003185b0((Model*)src, i))
+        {
+            srcAnim = &src->animSlots[i].anim;
+            dstAnim = &dst->animSlots[i].anim;
+            srcAnim->table->unk_06++;
+            dstAnim->table = srcAnim->table;
+
+            if ((srcAnim->flags & 2) == 0)
+            {
+                clump = dst->clump;
+                hierarchy = NULL;
+                FUN_004cb6e0(*(void**)((u8*)clump + 4), (void(*)())func_003115a0,
+                              &hierarchy);
+                dst->animSlots[i].anim.hierarchy = hierarchy;
+                FUN_004916d0(clump, mdl00311610, 0);
+                FUN_001a7170(clump, dst->animSlots[i].anim.hierarchy);
+                dst->animSlots[i].anim.hierarchy->flags |= 0x3000;
+            }
+            else
+            {
+                dstAnim->flags |= 2;
+                dstAnim->hierarchy = FUN_00466480(dst->animSlots[0].anim.hierarchy, 0,
+                                                   dst->animSlots[0].anim.hierarchy->flags, -1);
+            }
+        }
+
+        resources = src->animSlots[i].anim.resources;
+        if (resources != NULL)
+        {
+            clonedResources = RwMalloc(resources->count * 8 + 0x34, rwMEMHINTDUR_GLOBAL);
+            memset(clonedResources, 0, resources->count * 8 + 0x34);
+            clonedResources->count = resources->count;
+            clonedResources->primary = (void**)((u8*)clonedResources + 0x34);
+            clonedResources->secondary = clonedResources->primary + resources->count;
+
+            for (j = 0; j < resources->count; j++)
+            {
+                if (resources->primary[j] != NULL)
+                {
+                    clonedResources->primary[j] = func_0031d700(resources->primary[j]);
+                }
+
+                if (resources->secondary[j] != NULL)
+                {
+                    clonedResources->secondary[j] = func_0031e0b0(resources->secondary[j]);
+                }
+            }
+
+            dst->animSlots[i].anim.resources = clonedResources;
+        }
+    }
+
+    if (src->unk_35c != NULL)
+    {
+        (*(u16*)((u8*)src->unk_35c + 6))++;
+        dst->unk_35c = src->unk_35c;
+    }
+
+    data = *(void**)((u8*)src + 0x37c);
+    if (data != NULL)
+    {
+        (*(u16*)((u8*)data + 0xe))++;
+        *(void**)((u8*)dst + 0x37c) = data;
+        func_003143c0((u8*)dst + 0x364, dst->clump);
+        *(u8*)((u8*)dst + 0x366) = 1;
+    }
+
+    data = src->runtimeData.refCountedData;
+    if (data != NULL)
+    {
+        (*(u16*)((u8*)data + 2))++;
+        dst->runtimeData.refCountedData = data;
+    }
+
+    if (src->runtimeData.motionData != NULL)
+    {
+        dst->runtimeData.motionData = func_0031d700(src->runtimeData.motionData);
+        func_0031ded0(dst->runtimeData.motionData);
+    }
+
+    func_0031ee80(dst->runtimeData.animationData, src->runtimeData.animationData);
+
+    if (mdlAnim003185b0(dst, 0))
+    {
+        mdlAnimSet(dst, 0, 0, 0, MDLANIM_FLAG_LOOP);
+    }
+}
+
+
+
+
+// FUN_00317450
+Model* mdlClone(const Model* mdl)
+{
+    Model* clone;
+
+    clone = mdlInit(mdl->type, mdl->id);
+
+    if (mdl->flags & MDL_FLAG_STREAMDONE)
+    {
+        mdlCopy(mdl, clone);
+
+        clone->flags |= MDL_FLAG_STREAMDONE;
+    }
+    else
+    {
+        clone->flags |= MDL_FLAG_STREAMUNK1;
+    }
+
+    return clone;
+}
+
+
+
+
+// Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
+/* W389 measured func_00311730 opt_loop_invariants on + opt_lifetimes on: nd 4296 -> 4240; object 5360/5440 -> 5328/5440. */
+// FUN_003174e0
+void mdlDestroy(Model* mdl)
+{
+    void* data;
+    u32 i;
+
+    if (mdl->clump != NULL)
+    {
+        FUN_00491ea0(mdl->clump);
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        func_003132c0((u8*)&mdl->animSlots[i]);
+    }
+
+    if (mdl->unk_35c != NULL)
+    {
+        func_00313be0(mdl->unk_35c);
+        mdl->unk_35c = NULL;
+    }
+
+    data = *(void**)((u8*)mdl + 0x37c);
+    if (data != NULL)
+    {
+        func_00313e60(data);
+        *(u32*)&mdl->unkData2[0x1c] = 0;
+    }
+
+    data = mdl->runtimeData.refCountedData;
+    if (data != NULL)
+    {
+        *(u16*)((u8*)data + 2) = *(u16*)((u8*)data + 2) - 1;
+        if (*(u16*)((u8*)data + 2) == 0)
+        {
+            RwFree(*(void**)((u8*)data + 4));
+        }
+    }
+    if (mdl->unk_e0 != NULL)
+    {
+        FUN_001a7710(mdl->unk_e0);
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        if ((*(u8*)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b4) & 1) != 0 &&
+            *(Model**)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b8) != NULL)
+        {
+            func_003196f0(mdl, i);
+        }
+    }
+
+    FUN_001ef340(mdl);
+
+    if (mdl->runtimeData.motionData != NULL)
+    {
+        func_0031d790(mdl->runtimeData.motionData);
+    }
+    func_0031eee0(mdl->runtimeData.animationData);
+
+    if (mdl->prev != NULL)
+    {
+        mdl->prev->next = mdl->next;
+    }
+    if (mdl->next != NULL)
+    {
+        mdl->next->prev = mdl->prev;
+    }
+    else
+    {
+        sMdlListTails[mdl->type] = mdl->prev;
+    }
+
+    RwFree(mdl);
+}
+
 
 
 
@@ -5907,7 +5313,78 @@ void func_003176c0(Model* mdl)
 
 
 
-/* W389 measured FUN_00317a20 opt_lifetimes on: nd 1381 -> 1367; object 2164/2224 -> 2164/2224. */
+// FUN_00317730 NONMATCHING
+void mdl00317730(Model* mdl)
+{
+    RwMatrix matrix;
+    void* hierarchy;
+    Model* wpnMdl;
+    MdlAnimResourceSet* resources;
+    RwFrame* frame;
+    u32 i;
+
+    if (mdl->flags & MDL_FLAG_STREAMDONE)
+    {
+        frame = *(RwFrame**)((u8*)mdl->clump + 4);
+        FUN_004c2f30(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
+        FUN_004cb7f0(frame, &matrix, 0);
+        func_003197c0(mdl, &matrix);
+
+        hierarchy = NULL;
+        if (mdlLookAtIsActive(mdl))
+        {
+            mdlLookAtSetTargetScale(mdl, &mdl->scale);
+        }
+        for (i = 0; i < 4; i++)
+        {
+            if (mdlAnim003185b0(mdl, i))
+            {
+                hierarchy = func_00313490(&mdl->animSlots[i], hierarchy);
+            }
+        }
+
+        func_00314d30((u8*)mdl + 0x364);
+        if (mdl->runtimeData.motionData != NULL)
+        {
+            func_0031dda0(mdl->runtimeData.motionData, &mdl->scale);
+            func_0031d9c0(mdl->runtimeData.motionData, mdl);
+        }
+        for (i = 0; i < 4; i++)
+        {
+            resources = mdl->animSlots[i].anim.resources;
+            if (resources != NULL)
+            {
+                func_00311480(resources, mdl);
+            }
+        }
+        func_0031f5c0(mdl->runtimeData.animationData);
+
+        for (i = 0; i < 5; i++)
+        {
+            wpnMdl = mdl->attachedWpns[i].wpnMdl;
+            if ((mdl->attachedWpns[i].flags & 1) != 0 && wpnMdl != NULL &&
+                mdl00319770(mdl, i))
+            {
+                *(RwMatrix*)((u8*)wpnMdl + 0x40) = mdl->identityMat;
+                if (mdl->attachedWpns[i].unk_08 == -1)
+                {
+                    wpnMdl->mat = mdl->mat;
+                }
+                else
+                {
+                    func_00318d10((u8*)mdl, mdl->attachedWpns[i].unk_08, (u32*)mdlGetMatrix(wpnMdl));
+                }
+
+                mdlAnimSetSpeed(wpnMdl, 0, mdl->animSlots[0].anim.speed);
+                mdl00317730(wpnMdl);
+            }
+        }
+    }
+}
+
+
+
+
 #pragma push
 #pragma opt_lifetimes on
 // FUN_00317A20 NONMATCHING
@@ -6096,22 +5573,93 @@ void FUN_00317a20(Model* param_1)
 
 
 
+// FUN_003182d0 NONMATCHING
+u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
+{
+    MdlAnim* anim;
+    MdlAnimEntry* entry;
+    u32 i;
+
+    if (!func_00318620(mdl, slotIdx, id))
+    {
+        return true;
+    }
+
+    anim = &mdl->animSlots[slotIdx].anim;
+    if (slotIdx == 0)
+    {
+        if (id < 0 || anim->table == NULL || id >= anim->table->count ||
+            anim->table->entries[id].rtAnim == NULL ||
+            anim->table->entries[id].rtAnim == &DAT_009571d0)
+        {
+            RwMatrixSetIdentity(&mdl->identityMat);
+        }
+        else
+        {
+            entry = &anim->table->entries[id];
+            mdl->identityMat = entry->identityMat;
+        }
+
+        func_00314850(mdl->clump, (u8*)mdl + 0x364, id, blendFrameCount, flags);
+    }
+
+    func_003138e0(anim, id, blendFrameCount, flags);
+
+    if (*(void**)mdl->runtimeData.animationData != NULL && (flags & 0x40) == 0 && slotIdx == 0)
+    {
+        func_0031ef80(mdl->runtimeData.animationData, id, blendFrameCount);
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
+            mdl00319770(mdl, i))
+        {
+            mdlAnimSet(mdl->attachedWpns[i].wpnMdl, 0, id, blendFrameCount, flags);
+        }
+    }
+
+    return true;
+}
 
 
 
 
+// W389 residual nd1: the sole differing instruction is commutative addu operand order (retail v0=v0+v1 vs. ours v0=v1+v0); this is a documented compiler floor.
+// FUN_00318540
+s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
+{
+    if (mdlAnim003185b0(mdl, slotIdx))
+    {
+        return mdl->animSlots[slotIdx].anim.id;
+    }
+
+    return -1;
+}
 
 
 
 
-
-
-
-
-
-
-
-
+// FUN_003185b0
+u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
+{
+    if (slotIdx == 0)
+    {
+        if (mdl->animSlots[0].anim.table == NULL && mdl->unk_35c == NULL)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (mdl->animSlots[slotIdx].anim.table == NULL)
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
 
 
 
@@ -6147,7 +5695,7 @@ u32 func_00318620(Model* param_1, u16 param_2, s16 param_3)
 
 
 
-
+/* W389 measured func_00313490 opt_propagation off: nd 746 -> 608; object 1104/1104 -> 1100/1104. */
 // FUN_003186E0
 
 
@@ -6182,6 +5730,168 @@ u32 func_003186e0(int param_1, u32 param_2, s16 param_3)
     return result;
 }
 
+
+
+
+// FUN_00318770
+void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
+{
+    MdlAnimEntryTable* table;
+    RpHAnimHierarchy* hierarchy;
+    s16 id;
+    f32 scaledFrame;
+    u8* state;
+
+    scaledFrame = gFrameDuration * frame;
+    id = mdl->animSlots[slotIdx].anim.id;
+    if (id >= 0)
+    {
+        table = mdl->animSlots[slotIdx].anim.table;
+        if (table != NULL && id < table->count &&
+            table->entries[id].rtAnim != NULL &&
+            table->entries[id].rtAnim != (RtAnimAnimation*)DAT_009571d0_abs)
+        {
+            hierarchy = mdl->animSlots[slotIdx].anim.hierarchy;
+            FUN_004b74c0(scaledFrame, ((volatile /* Removing this qualifier loses mdlAnim00318770 (MATCH nd0 -> MISMATCH nd8, size 256 -> 256) - measured W170. */ RpHAnimHierarchy*)hierarchy)->currentAnim);
+            mdl->animSlots[slotIdx].anim.flags |= MDLANIM_FLAG_FRAMESET;
+        }
+    }
+
+    if (slotIdx == 0)
+    {
+        state = (u8*)mdl + 0x364;
+        func_00314730_ptrfirst(state, scaledFrame);
+    }
+}
+
+
+
+// FUN_00318870
+f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
+{
+    f32 duration;
+
+    if (mdl->animSlots[slotIdx].anim.id < 0)
+    {
+        duration = 0.0f;
+    }
+    else
+    {
+        if (mdl->animSlots[slotIdx].anim.hierarchy == NULL ||
+           (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim == NULL))
+        {
+            duration = 0.0f;
+        }
+        else
+        {
+            if (mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim == NULL)
+            {
+                duration = 0.0f;
+            }
+            else
+            {
+                duration = mdl->animSlots[slotIdx].anim.hierarchy->currentAnim->pCurrentAnim->duration;
+            }
+        }
+    }
+
+    return duration / gFrameDuration;
+}
+
+
+
+
+// FUN_00318910
+f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
+{
+    f32 duration;
+
+    if (mdl->animSlots[slotIdx].anim.hierarchy == NULL)
+    {
+        duration = 0.0f;
+    }
+    else
+    {
+        duration = mdl->animSlots[slotIdx].anim.table->entries[animId].rtAnim->duration;
+    }
+
+    return duration / gFrameDuration;
+}
+
+
+
+
+// FUN_00318990
+f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
+{
+    f32 currTime;
+
+    if (mdl->animSlots[slotIdx].anim.id < 0)
+    {
+        currTime = 0.0f;
+    }
+    else
+    {
+        currTime = mdl->animSlots[slotIdx].anim.currTime;
+    }
+
+    return currTime / gFrameDuration;
+}
+
+
+
+
+// FUN_003189f0
+void mdlAnimSetSpeed(Model* mdl, u16 slotIdx, f32 speed)
+{
+    mdl->animSlots[slotIdx].anim.speed = speed;
+
+    if (slotIdx == 0)
+    {
+        *(f32*)((u8*)mdl + 0x36c) = speed;
+    }
+}
+
+
+
+
+// FUN_00318a30
+void mdlTranslate(Model* mdl, const RwV3d* translation, RwOpCombineType combineOp)
+{
+    RwMatrixTranslate(&mdl->mat, translation, combineOp);
+}
+
+// FUN_00318a50
+void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combineOp)
+{
+    RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
+}
+
+// FUN_00318a70
+void mdl00318a70(void)
+{
+    FUN_004c3760();
+}
+
+// FUN_00318a90
+void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
+{
+    mdl->scale = *scale;
+
+    RwMatrixScale(&mdl->mat, scale, combineOp);
+}
+
+// FUN_00318ad0
+void mdlSetColor(Model* mdl, const RwRGBA* color)
+{
+    mdl->color = *color;
+}
+
+// FUN_00318b00
+RwRGBA* mdlGetColor(Model* mdl)
+{
+    return &mdl->color;
+}
 
 
 
@@ -6222,6 +5932,32 @@ void func_00318b10(u32 *param_1)
 
   return;
 
+}
+
+
+
+// FUN_00318b60
+RwMatrix* mdlGetMatrix(Model* mdl)
+{
+    return &mdl->mat;
+}
+
+
+
+
+// FUN_00318b70
+RwFrame* mdlGetClumpFrame(Model* mdl)
+{
+    return (RwFrame*)mdl->clump->object.parent;
+}
+
+
+
+
+// FUN_00318b80
+RpClump* mdlGetClump(Model* mdl)
+{
+    return mdl->clump;
 }
 
 
@@ -6311,9 +6047,6 @@ u32 func_00318b90(u32 param_1)
 
 
 
-// Template probe: reversing the two top-level branches to match func_00318ed0
-// retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
-/* W323 measured func_00318d10 opt_loop_invariants on: nd268 -> nd266; object 420/448. */
 #pragma push
 #pragma opt_loop_invariants on
 // FUN_00318D10 NONMATCHING
@@ -6395,6 +6128,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
 
 
+/* W389 measured func_00314850 opt_lifetimes on: nd 729 -> 726; object 1208/1248 -> 1208/1248. */
 // FUN_00318ED0
 
 
@@ -6480,6 +6214,7 @@ bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3)
 
 
 
+/* W389 measured func_00314d30 opt_lifetimes on: nd 446 -> 415; object 724/736 -> 720/736. */
 // FUN_00318FC0
 
 
@@ -6497,6 +6232,181 @@ u32 func_00318fc0(int param_1)
   }
   return func_001a6c00(*(void **)(param_1 + 0xdc), (const char *)DAT_0069abb8);
 }
+
+
+
+
+// FUN_00319010
+void mdlEnableFullShadow(Model* mdl)
+{
+    mdl->flags |= MDL_FLAG_FULLSHADOW;
+}
+
+
+
+
+/* W323 measured func_00315090 opt_loop_invariants on: nd195 -> nd188; object 292/320. */
+// FUN_00319030
+void mdlDisableFullShadow(Model* mdl)
+{
+    mdl->flags &= ~MDL_FLAG_FULLSHADOW;
+}
+
+
+
+
+// FUN_00319050
+void mdl00319050(Model* mdl)
+{
+    mdl->flags |= MDL_FLAG_UNK20;
+}
+
+
+
+
+// FUN_00319070
+void mdl00319070(Model* mdl)
+{
+    mdl->flags &= ~MDL_FLAG_UNK20;
+}
+
+
+
+
+// FUN_00319090
+void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor)
+{
+    mdl->animSlots[0].lookAt.blendRotFactor = blendRotFactor;
+}
+
+
+
+/* W389 measured func_00315f50 opt_dead_assignments off: nd 563 -> 559; object 892/976 -> 892/976. */
+// FUN_003190a0
+void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle)
+{
+    mdl->animSlots[0].lookAt.maxPitchAngle = maxPitchAngle;
+    mdl->animSlots[0].lookAt.maxYawAngle = maxYawAngle;
+}
+
+
+
+
+// FUN_003190b0
+void mdlLookAtSetTargetPosXYZ(Model* mdl, const RwV3d* target)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZ;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
+
+    mdl->animSlots[0].lookAt.targetPos = *target;
+}
+
+
+
+
+// FUN_00319100
+void mdlLookAtSetTargetPosXYZCS(Model* mdl, const RwV3d* target)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XYZCS;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZ | MDLLOOKAT_FLAG_XY);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
+
+    mdl->animSlots[0].lookAt.targetPos = *target;
+}
+
+
+
+
+// FUN_00319150
+void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_XY;
+    mdl->animSlots[0].lookAt.flags &= ~(MDLLOOKAT_FLAG_XYZCS | MDLLOOKAT_FLAG_XYZ);
+    mdl->animSlots[0].lookAt.flags &= ~MDLLOOKAT_FLAG_NOTARGET;
+
+    mdl->animSlots[0].lookAt.targetPos.x = xTarget;
+    mdl->animSlots[0].lookAt.targetPos.y = yTarget;
+}
+
+
+
+
+// FUN_00319190
+void mdlLookAtDisableTarget(Model* mdl)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_NOTARGET;
+}
+
+
+
+
+// FUN_003191b0
+void mdl003191b0(Model* mdl)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_UNK200;
+}
+
+
+
+
+/* W323 measured func_00316970 opt_common_subs off: nd259 -> nd197; object 456/464. */
+// FUN_003191d0
+u8 mdlLookAtIsActive(Model* mdl)
+{
+    return (mdl->animSlots[0].lookAt.flags & (MDLLOOKAT_FLAG_XYZCS |
+                                              MDLLOOKAT_FLAG_XYZ   |
+                                              MDLLOOKAT_FLAG_XY    | 
+                                              MDLLOOKAT_FLAG_NOTARGET)) != 0;
+}
+
+
+
+
+// FUN_003191f0
+void mdlLookAtSetFlags(Model* mdl, u16 flags)
+{
+    mdl->animSlots[0].lookAt.flags = flags;
+}
+
+
+
+
+// FUN_00319200
+u16 mdlLookAtGetFlags(Model* mdl)
+{
+    return mdl->animSlots[0].lookAt.flags;
+}
+
+
+
+
+/* W389 measured FUN_00317a20 opt_lifetimes on: nd 1381 -> 1367; object 2164/2224 -> 2164/2224. */
+// FUN_00319210
+void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
+{
+    mdl->animSlots[0].lookAt.targetScale = *scale;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6520,6 +6430,7 @@ void func_00319230(int param_1, u16 param_2)
         }
     }
 }
+
 
 
 
@@ -6688,6 +6599,9 @@ void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5)
 
 
 
+// Template probe: reversing the two top-level branches to match func_00318ed0
+// retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
+/* W323 measured func_00318d10 opt_loop_invariants on: nd268 -> nd266; object 420/448. */
 // FUN_003195F0
 
 
@@ -6739,6 +6653,15 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
 
 
 
+// FUN_003196d0
+void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value)
+{
+    mdl->attachedWpns[wpnIdx].unk_08 = value;
+}
+
+
+
+
 // FUN_003196F0
 
 
@@ -6765,7 +6688,23 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 
 
-/* Required for Mdl matrix aggregate copy under MWCCPS2 b210 (without: nd32). */
+// FUN_00319770
+u32 mdl00319770(Model* mdl, u16 wpnIdx)
+{
+    Model* wpnMdl;
+
+    wpnMdl = mdl->attachedWpns[wpnIdx].wpnMdl;
+    if (wpnMdl == NULL)
+    {
+        return true;
+    }
+
+    return mdlStreamRead(wpnMdl);
+}
+
+
+
+
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_propagation off
@@ -6788,6 +6727,70 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
     }
 }
 #pragma pop
+
+
+
+
+// FUN_00319840
+void mdlStreamInit(Model* mdl)
+{
+    MdlStream* stream;
+
+    stream = RwMalloc(sizeof(MdlStream), rwMEMHINTDUR_GLOBAL);
+    mdl->stream = stream;
+    memset(stream, 0, sizeof(MdlStream));
+}
+
+
+
+
+// FUN_003198a0
+void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd)
+{
+    MdlStream* stream;
+    stream = mdl->stream;
+
+    stream->rmd.memory = rmd->memory;
+    stream->rmd.size = rmd->size;
+}
+
+
+
+
+// FUN_003198c0
+void mdlStreamRequestCdvd(Model* mdl, const char* path)
+{
+    MdlStream* stream;
+    stream = mdl->stream;
+
+    stream->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+    stream->rws = NULL;
+}
+
+
+
+
+// FUN_00319900
+void mdl00319900(Model* mdl, u32 value)
+{
+    mdl->stream->isInPacFile = value;
+}
+
+
+
+
+/* Required for Mdl matrix aggregate copy under MWCCPS2 b210 (without: nd32). */
+// FUN_00319910
+void mdlStreamDestroy(Model* mdl)
+{
+    if (mdl->stream->unk_0c != NULL)
+    {
+        RwFree(mdl->stream->unk_0c);
+    }
+
+    RwFree(mdl->stream);
+    mdl->stream = NULL;
+}
     
 
 
