@@ -65,7 +65,7 @@ extern u32 FUN_00112370_fmgsl(void*);
 u32  FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 u8 FUN_003b44a0(void);
 int * FUN_003b4520(void);
-void FUN_003b4580(int param_1);
+s32 FUN_003b4580(int param_1);
 int * FUN_003b45f0(int param_1,int param_2);
 int * FUN_003b46b0(int param_1);
 u32 FUN_003b46f0(int *param_1,int param_2);
@@ -89,7 +89,7 @@ void FUN_003b4ee0(void);
 #define FUN_003b41a0(...) ((u32 (*)(...))FUN_003b41a0)(__VA_ARGS__)
 #define FUN_003b44a0(...) ((u8 (*)(...))FUN_003b44a0)(__VA_ARGS__)
 #define FUN_003b4520(...) ((int * (*)(...))FUN_003b4520)(__VA_ARGS__)
-#define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
+#define FUN_003b4580(...) ((s32 (*)(...))FUN_003b4580)(__VA_ARGS__)
 #define FUN_003b45f0(...) ((int * (*)(...))FUN_003b45f0)(__VA_ARGS__)
 #define FUN_003b46b0(...) ((int * (*)(...))FUN_003b46b0)(__VA_ARGS__)
 #define FUN_003b46f0(...) ((u32 (*)(...))FUN_003b46f0)(__VA_ARGS__)
@@ -292,9 +292,11 @@ int * FUN_003b4520(void)
 }
 #define FUN_003b4520(...) ((int * (*)(...))FUN_003b4520)(__VA_ARGS__)
 #undef FUN_003b4580
-// FUN_003B4580 NONMATCHING
-
-void FUN_003b4580(int param_1)
+// FUN_003B4580
+/* Returns the incremented node count. Retail leaves it live in $v0 at the jr,
+ * which is why every void form colours the whole global-load chain $v1/$a0
+ * instead of retail's $v0/$v1 (nd11 floor). Callers discard the result. */
+s32 FUN_003b4580(int param_1)
 {
   typedef struct GslListNode {
     int data[6];
@@ -304,6 +306,7 @@ void FUN_003b4580(int param_1)
   GslListNode *node = (GslListNode *)param_1;
   GslListNode *head;
   GslListNode *next;
+  s32 count;
 
   if (node == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
@@ -314,9 +317,11 @@ void FUN_003b4580(int param_1)
   node->next = next;
   head->next = node;
   next->prev = node;
-  DAT_0095aeb8_sc[0] = DAT_0095aeb8_sc[0] + 1;
+  count = DAT_0095aeb8_sc[0] + 1;
+  DAT_0095aeb8_sc[0] = count;
+  return count;
 }
-#define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
+#define FUN_003b4580(...) ((s32 (*)(...))FUN_003b4580)(__VA_ARGS__)
 #undef FUN_003b45f0
 // FUN_003B45F0
 
