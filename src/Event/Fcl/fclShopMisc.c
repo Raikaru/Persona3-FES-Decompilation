@@ -711,6 +711,8 @@ u32 DAT_006aedc4[];
 u32 DAT_006aee60;
 u32 DAT_006aeea0;
 u32 DAT_006aeee0;
+#pragma alias DAT_006aeee0_abs DAT_006aeee0
+extern u8 DAT_006aeee0_abs[];
 u32 DAT_006aef00;
 #pragma alias DAT_006aef00_abs DAT_006aef00
 extern u8 DAT_006aef00_abs[];
@@ -6246,6 +6248,7 @@ void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
+// Address-mode probe: DAT_006aeee0 absolute array alias improved nd716 -> 439; object 1048/1056 -> 1052/1056.
 // FUN_003F8180 NONMATCHING
 
 
@@ -6281,7 +6284,7 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
   if (*(int *)(param_4 + 0xc) == param_5) {
 
-    puVar9 = (u16 *)(&DAT_006aeee0);
+    puVar9 = (u16 *)DAT_006aeee0_abs;
 
     puVar8 = auStack_20;
 
