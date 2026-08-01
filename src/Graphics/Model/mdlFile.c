@@ -858,6 +858,7 @@ extern void func_001a13b0(void);
 extern void FUN_001a14c0(u32 param_1);
 extern u64 FUN_001a4b70();
 extern u32 FUN_001a6400();
+extern u32 FUN_001a6400_ptr(u32 param_1,u8 *param_2);
 extern u64 FUN_001b5ae0();
 extern u64 FUN_001eda00();
 extern u32 FUN_001eda00_u32(u64 param_1, u64 param_2);
@@ -1208,6 +1209,7 @@ extern u32 DAT_007caea4;
 extern u32 DAT_007caf08;
 extern float DAT_007caf14;
 extern u8 DAT_0069baf0[];
+extern u8 DAT_0069baf0_abs[];
 extern f32 DAT_007caf84;
 extern u8 DAT_007cca38;
 extern u8 DAT_007cca39;
@@ -2869,6 +2871,8 @@ u32 func_0031c1d0(int param_1)
 #pragma alias DAT_009600a4_abs DAT_009600a4
 #pragma alias DAT_00960178_u32 DAT_00960178
 #pragma alias DAT_00960178_abs DAT_00960178
+#pragma alias DAT_0069baf0_abs DAT_0069baf0
+#pragma alias FUN_001a6400_ptr FUN_001a6400
 #pragma alias DAT_0096017c_abs DAT_0096017c
 #pragma alias PTR_FUN_0069bb14_abs PTR_FUN_0069bb14
 #pragma alias PTR_FUN_0069bb18_abs PTR_FUN_0069bb18
@@ -5404,23 +5408,29 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
       ((1.0f - (float)*(u8 *)((u8 *)param_4 + 3) / 255.0f) -
        *(float *)&DAT_007ce534) * param_3 + *(float *)&DAT_007ce534 + 0.0f;
 }
-// FUN_0031FAF0 NONMATCHING
+static inline u8 mdlFileToU8(f32 value)
+{
+  return (u8)value;
+}
+
+// FUN_0031FAF0
 void FUN_0031faf0(f32 *param_1,u32 param_2)
 {
   u32 uVar1;
   float fVar2;
   u8 rgba[4];
-  uVar1 = FUN_001a6400(param_2,(u32)DAT_0069baf0);
+  u32 alpha;
+  uVar1 = FUN_001a6400_ptr(param_2,DAT_0069baf0_abs);
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  rgba[3] = (u8)(u32)fVar2;
-
+  alpha = mdlFileToU8(fVar2);
   rgba[2] = (u8)uVar1;
   rgba[1] = (u8)((u32)uVar1 >> 8);
   rgba[0] = (u8)((u32)uVar1 >> 0x10);
-  FUN_001b5ae0(param_2,rgba);
+  rgba[3] = (u8)alpha;
 
+  FUN_001b5ae0(param_2,rgba);
   return;
 }
 
