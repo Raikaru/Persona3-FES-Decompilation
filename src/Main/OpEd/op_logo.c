@@ -165,13 +165,6 @@ void opLogo00269f50(void)
     }
 }
 
-// FUN_0026a1e0
-u32 opLogo0026a1e0(void)
-{
-    K_ASSERT(sOpLogo != NULL, 0x2c);
-    return sOpLogo->flags & 1;
-}
-
 // FUN_0026A0F0
 void opLogo0026a0f0(void)
 {
@@ -202,4 +195,11 @@ void opLogo0026a0f0(void)
     puVar1[0x45] = 0;
     puVar1[1] = 0;
     *puVar1 |= 1;
+}
+
+// FUN_0026a1e0
+u32 opLogo0026a1e0(void)
+{
+    K_ASSERT(sOpLogo != NULL, 0x2c);
+    return sOpLogo->flags & 1;
 }

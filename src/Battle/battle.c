@@ -177,6 +177,30 @@ void btlDestroyTask(KwlnTask* btlTask)
     btlDestroy();
 }
 
+// FUN_0027ce10
+void btlStop()
+{
+    if (kwlnTaskGetTaskByName("battle") != NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(gBtl->btlTask);
+    }
+}
+
+// FUN_0027CE50
+void func_0027ce50(void)
+{
+    s32 i;
+
+    for (i = 0x1540; i <= 0x15bf; i++)
+    {
+        btlLoadResource(i);
+    }
+    for (i = 0x15c0; i <= 0x15ff; i++)
+    {
+        btlLoadResource(i);
+    }
+}
+
 // FUN_0027ced0
 void btlCreate()
 {
@@ -281,15 +305,6 @@ u32 btlDestroy()
     return false;
 }
 
-// FUN_0027ce10
-void btlStop()
-{
-    if (kwlnTaskGetTaskByName("battle") != NULL)
-    {
-        kwlnTaskDestroyWithHierarchy(gBtl->btlTask);
-    }
-}
-
 // FUN_0027d1d0
 KwlnTask* btlStart(BtlStartInfo* startInfo)
 {
@@ -358,184 +373,7 @@ KwlnTask* btlStart(BtlStartInfo* startInfo)
     return btlTask;
 }
 
-// FUN_0027d5e0
-u32 btlScrCmd_CALL_BATTLE()
-{
-    BtlEncountTable* encount;
-    BtlStartInfo startInfo;
-    u16 i;
-    u16 currPcId;
-    u16 encountId;
-
-    btlFadeCreateTask(1);
-
-    encountId = scrGetIntPara(0);
-    encount = &gEncountTbl[encountId];
-
-    memset(&startInfo, 0, sizeof(BtlStartInfo));
-
-    startInfo.partyUnits[0] = datUnitCreatePc(PC_HERO);
-    for (i = 0; i < 4; i++)
-    {
-        currPcId = datGetPartyId(i);
-        if (currPcId != PC_NONE)
-        {
-            startInfo.partyUnits[i + 1] = datUnitCreatePc(currPcId);
-        }
-    }
-
-    startInfo.enmUnits = datUnitCreateEc(encountId);
-    
-    if (encount->fldMajorId == 0 && encount->fldMinorId == 0)
-    {
-        startInfo.fldMajorId = 221;
-        startInfo.fldMinorId = 1;
-    }
-    else
-    {
-        startInfo.fldMajorId = encount->fldMajorId;
-        startInfo.fldMinorId = encount->fldMinorId;
-    }
-
-    adminiChangeSeq(ADMINI_SEQ_BATTLE, &startInfo, sizeof(BtlStartInfo), false);
-
-    return true;
-}
-
 /* Removing this loses btlScrCmd_CHK_HERO_DIED_TARTAROS (MATCH nd0 -> MISMATCH nd7) - measured W161. */
-// FUN_0027d730
-#pragma optimization_level 1
-u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
-{
-    u32 scrSize;
-    if ((s32)scrGetCmdTimer() > 10)
-    {
-        if (gBtl != NULL)
-        {
-            sIsDead = false;
-            return false;
-        }
-
-        if (!sIsDead)
-        {
-            if (datCalcIsDead(datGetUnit(PC_HERO), 0))
-            {
-                datSetFlag(FLG_HERO_DIED, true);
-
-                Y_TimeLimit_Stop();
-
-                scrCreateTaskFromScriptMemory((scrSize = gFldScrSize, 10), gFldScrMemory, scrSize, FLDSCR_DIED_IN_TARTAROS);
-                K_Misc_CreateScrShutdownTask(scrGetCurrent()->task);
-
-                sIsDead = true;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-#pragma optimization_level 2
-
-// FUN_0027d810
-u32 btlScrCommand_ENCOUNT_FADE()
-{
-    btlFadeCreateTask(1);
-
-    return true;
-}
-
-// FUN_0027d880
-KwlnTask* btlGetTask()
-{
-    if (gBtl != NULL)
-    {
-        return gBtl->btlTask;
-    }
-
-    return NULL;
-}
-
-// FUN_0027d8b0
-void btl0027d8b0()
-{
-    gBtl->flags |= BTL_FLAG_UNK8000;
-}
-
-// FUN_0027dbe0
-u32 btlUpdateSetFlagsPacket(void* work)
-{
-    BtlBattleFlagPacket* packet;
-
-    packet = (BtlBattleFlagPacket*)work;
-
-    gBtl->flags |= packet->flags;
-
-    return true;
-}
-
-// FUN_0027dc00
-BtlPacket* btlCreateSetFlagsPacket(u32 flags)
-{
-    BtlPacket* packet;
-
-    packet = btlPacketCreate(BTLBATTLE_PACKET_SETFLAGS, sizeof(BtlBattleFlagPacket));
-
-    packet->updateFunc = btlUpdateSetFlagsPacket;
-
-    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
-
-    return packet;
-}
-
-/* Removing this loses btlUpdateRemoveFlagsPacket (MATCH nd0 -> MISMATCH nd13) - measured W161. */
-// FUN_0027dc50
-#pragma optimization_level 1
-u32 btlUpdateRemoveFlagsPacket(void* work)
-{
-    BtlBattleFlagPacket* packet;
-    Battle* btl;
-
-    btl = gBtl;
-    packet = (BtlBattleFlagPacket*)work;
-
-    btl->flags &= ~packet->flags;
-
-    return true;
-}
-#pragma optimization_level 2
-
-// FUN_0027dc80
-BtlPacket* btlCreateRemoveFlagsPacket(u32 flags)
-{
-    BtlPacket* packet;
-
-    packet = btlPacketCreate(BTLBATTLE_PACKET_REMOVEFLAGS, sizeof(BtlBattleFlagPacket));
-
-    packet->updateFunc = btlUpdateRemoveFlagsPacket;
-
-    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
-
-    return packet;
-}
-// FUN_0027CE50
-void func_0027ce50(void)
-{
-    s32 i;
-
-    for (i = 0x1540; i <= 0x15bf; i++)
-    {
-        btlLoadResource(i);
-    }
-    for (i = 0x15c0; i <= 0x15ff; i++)
-    {
-        btlLoadResource(i);
-    }
-}
-
 // FUN_0027D380
 u32 func_0027d380(void)
 {
@@ -613,7 +451,6 @@ u32 func_0027d380(void)
 
     return false;
 }
-
 // FUN_0027D560
 u32 func_0027d560(void)
 {
@@ -634,6 +471,96 @@ can_check:
     return func_00300700(gBtl->actionList.head->unit->datUnit, 0xfc8);
 }
 
+// FUN_0027d5e0
+u32 btlScrCmd_CALL_BATTLE()
+{
+    BtlEncountTable* encount;
+    BtlStartInfo startInfo;
+    u16 i;
+    u16 currPcId;
+    u16 encountId;
+
+    btlFadeCreateTask(1);
+
+    encountId = scrGetIntPara(0);
+    encount = &gEncountTbl[encountId];
+
+    memset(&startInfo, 0, sizeof(BtlStartInfo));
+
+    startInfo.partyUnits[0] = datUnitCreatePc(PC_HERO);
+    for (i = 0; i < 4; i++)
+    {
+        currPcId = datGetPartyId(i);
+        if (currPcId != PC_NONE)
+        {
+            startInfo.partyUnits[i + 1] = datUnitCreatePc(currPcId);
+        }
+    }
+
+    startInfo.enmUnits = datUnitCreateEc(encountId);
+    
+    if (encount->fldMajorId == 0 && encount->fldMinorId == 0)
+    {
+        startInfo.fldMajorId = 221;
+        startInfo.fldMinorId = 1;
+    }
+    else
+    {
+        startInfo.fldMajorId = encount->fldMajorId;
+        startInfo.fldMinorId = encount->fldMinorId;
+    }
+
+    adminiChangeSeq(ADMINI_SEQ_BATTLE, &startInfo, sizeof(BtlStartInfo), false);
+
+    return true;
+}
+
+// FUN_0027d730
+#pragma optimization_level 1
+u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
+{
+    u32 scrSize;
+    if ((s32)scrGetCmdTimer() > 10)
+    {
+        if (gBtl != NULL)
+        {
+            sIsDead = false;
+            return false;
+        }
+
+        if (!sIsDead)
+        {
+            if (datCalcIsDead(datGetUnit(PC_HERO), 0))
+            {
+                datSetFlag(FLG_HERO_DIED, true);
+
+                Y_TimeLimit_Stop();
+
+                scrCreateTaskFromScriptMemory((scrSize = gFldScrSize, 10), gFldScrMemory, scrSize, FLDSCR_DIED_IN_TARTAROS);
+                K_Misc_CreateScrShutdownTask(scrGetCurrent()->task);
+
+                sIsDead = true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+#pragma optimization_level 2
+
+// FUN_0027d810
+u32 btlScrCommand_ENCOUNT_FADE()
+{
+    btlFadeCreateTask(1);
+
+    return true;
+}
+
 // FUN_0027D840
 u32 func_0027d840(void)
 {
@@ -644,6 +571,22 @@ u32 func_0027d840(void)
     return false;
 }
 
+/* Removing this loses btlUpdateRemoveFlagsPacket (MATCH nd0 -> MISMATCH nd13) - measured W161. */
+// FUN_0027d880
+KwlnTask* btlGetTask()
+{
+    if (gBtl != NULL)
+    {
+        return gBtl->btlTask;
+    }
+
+    return NULL;
+}
+// FUN_0027d8b0
+void btl0027d8b0()
+{
+    gBtl->flags |= BTL_FLAG_UNK8000;
+}
 // FUN_0027D8D0
 void func_0027d8d0(void)
 {
@@ -714,6 +657,63 @@ void func_0027d8d0(void)
         datSetFatigueCounter((s16)i, result);
         datSetOldFatigueCounter((s16)i, result);
     }
+}
+
+// FUN_0027dbe0
+u32 btlUpdateSetFlagsPacket(void* work)
+{
+    BtlBattleFlagPacket* packet;
+
+    packet = (BtlBattleFlagPacket*)work;
+
+    gBtl->flags |= packet->flags;
+
+    return true;
+}
+
+// FUN_0027dc00
+BtlPacket* btlCreateSetFlagsPacket(u32 flags)
+{
+    BtlPacket* packet;
+
+    packet = btlPacketCreate(BTLBATTLE_PACKET_SETFLAGS, sizeof(BtlBattleFlagPacket));
+
+    packet->updateFunc = btlUpdateSetFlagsPacket;
+
+    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
+
+    return packet;
+}
+
+// FUN_0027dc50
+#pragma optimization_level 1
+u32 btlUpdateRemoveFlagsPacket(void* work)
+{
+    BtlBattleFlagPacket* packet;
+    Battle* btl;
+
+    btl = gBtl;
+    packet = (BtlBattleFlagPacket*)work;
+
+    btl->flags &= ~packet->flags;
+
+    return true;
+}
+
+#pragma optimization_level 2
+
+// FUN_0027dc80
+BtlPacket* btlCreateRemoveFlagsPacket(u32 flags)
+{
+    BtlPacket* packet;
+
+    packet = btlPacketCreate(BTLBATTLE_PACKET_REMOVEFLAGS, sizeof(BtlBattleFlagPacket));
+
+    packet->updateFunc = btlUpdateRemoveFlagsPacket;
+
+    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
+
+    return packet;
 }
 // FUN_0027DCD0
 u32 func_0027dcd0(u32* descriptor, u32 synchronous)
