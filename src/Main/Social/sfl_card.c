@@ -1605,6 +1605,11 @@ void FUN_00258140(void)
 #include "rw/rwplcore.h"
 #include "rw/rwcore.h"
 
+#pragma alias bpTexRemoveNodeAt_y2 bpTexRemoveNodeAt
+#pragma alias bpTexHasPendingNode_y2 bpTexHasPendingNode
+#pragma alias FUN_005225a8_y2 FUN_005225a8
+
+
 static u32* sBcmPanel;
 extern u8 D_00960090_abs[];
 extern u8 D_0096009C_abs[];
@@ -2579,7 +2584,7 @@ void bpTexQueueNodeRange(s32 start, s32 count)
 /* W310 measured: opt_common_subs off nd477->392, object 776/784; reset nd477. */
 #pragma opt_common_subs off
 // FUN_00255810 NONMATCHING
-void bpTexRemoveNodeAt(s32 index)
+void bpTexRemoveNodeAt_y2(s32 index)
 {
     u32* work;
     u32* node;
@@ -2864,7 +2869,7 @@ void bpTexApplyGlobalAlpha(f32 amount, void* node)
 }
 
 // FUN_00256430
-u32 bpTexHasPendingNode(void)
+u32 bpTexHasPendingNode_y2(void)
 {
     u32* node;
 
@@ -3889,3 +3894,141 @@ static void bpPanelDrawBridgeQuad(u8* work, u32 offset, void* texture, s32 frame
     frame = func_0021cca0(texture, frameId);
     bpPanelBindAndDraw(work, offset, frame);
 }
+
+
+#include "Main/Social/sfl_script.h"
+
+#pragma alias sflScriptInit FUN_00259610
+#pragma alias sflScriptClearWork FUN_00259630
+#pragma alias sflScriptStartQueuedCommands FUN_00259640
+#pragma alias sflScriptConfigureCommandBuffer FUN_00259690
+#pragma alias sflScriptIsRunning FUN_002596f0
+#pragma alias sflScriptDispatchCommands FUN_00259740
+#pragma alias sflScriptAppendCommand FUN_00259850
+#pragma alias sflScriptQueueEndCommand FUN_00259970
+#pragma alias sflScriptQueueSwapCommand FUN_002599C0
+#pragma alias sflScriptQueueCloseCommand FUN_00259A60
+#pragma alias sflScriptQueueWaitCommand FUN_00259b00
+#pragma alias sflScriptQueueOpenCommand FUN_00259b60
+#pragma alias sflScriptQueueWaitForActionsCommand FUN_00259bc0
+#pragma alias sflScriptQueueStartActionsCommand FUN_00259c10
+#pragma alias sflScriptQueueSetCardValueCommand FUN_00259c60
+#pragma alias sflScriptQueueShuffleCommand FUN_00259cc0
+#pragma alias sflScriptHandleEndCommand FUN_00259D10
+#pragma alias sflScriptHandleSwapCommand FUN_00259D80
+#pragma alias sflScriptHandleWaitForActionsCommand FUN_00259e00
+#pragma alias sflScriptHandleStartActionsCommand FUN_00259E60
+#pragma alias sflScriptHandleSetCardValueCommand FUN_00259EA0
+#pragma alias sflScriptHandleShuffleCommand FUN_00259ED0
+#pragma alias sflScriptHandleCloseCommand FUN_00259F40
+#pragma alias sflScriptHandleOpenCommand FUN_00259FC0
+#pragma alias sflScriptHandleWaitCommand FUN_0025A030
+#pragma alias K_Assert FUN_0019d3f0
+#pragma alias copyMemory FUN_00521250
+#pragma alias debugPrintf FUN_005225a8_y2
+#pragma alias bpTexQueueNodePair FUN_002551d0
+#pragma alias bpTexQueueNodeRange FUN_00255570
+#pragma alias bpTexRemoveNodeAt FUN_00255810
+#pragma alias bpTexShuffleNodes FUN_00255b20
+#pragma alias bpTexIsShuffleActive FUN_00255f30
+#pragma alias bpTexHasPendingNode FUN_00256430
+#pragma alias bpTexApplyActions FUN_00257130
+#pragma alias sflCardSetScriptValue FUN_002584e0
+#pragma alias gSflScriptCommandTableWords D_0068EAD0
+#pragma alias gSflScriptCommandParamSizes D_0068EAD4
+#pragma alias sSflScriptWorkAddress iGpffffb668
+#pragma alias sSflScriptShuffleStarted iGpffffb66c
+#pragma alias sSflScriptWorkWord uGpffffb668
+#pragma alias sSflScriptStartActionsTrace D_0068EB60
+#pragma alias sSflScriptSourceFile D_0068eb18
+#pragma alias sSflScriptEndTrace D_0068eb28
+#pragma alias sSflScriptOpenTrace D_0068eb98
+#pragma alias sSflScriptSwapTrace D_0068eb40
+#pragma alias sSflScriptCloseTrace D_0068eb80
+#pragma alias sSflScriptWaitTrace D_0068eba8
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void sflScriptClearWork(void);
+void sflScriptDispatchCommands(void);
+void sflScriptAppendCommand(int param_1,const void* param_2);
+void sflScriptQueueSwapCommand(u16 param_1,u16 param_2);
+void sflScriptQueueCloseCommand(u16 param_1,u16 param_2);
+u64 sflScriptHandleEndCommand(void);
+u32 sflScriptHandleSwapCommand(s16 *param_1);
+u32 sflScriptHandleStartActionsCommand(void);
+u32 sflScriptHandleSetCardValueCommand(u16 *param_1);
+u32 sflScriptHandleShuffleCommand(void);
+u32 sflScriptHandleCloseCommand(s16 *param_1);
+u32 sflScriptHandleOpenCommand(s16 *param_1);
+u32 sflScriptHandleWaitCommand(s16 *param_1);
+extern u16 gSflScriptCommandTableWords[];
+extern u16 gSflScriptCommandParamSizes[];
+extern SflScriptWork* sSflScriptWorkAddress;
+extern u32 sSflScriptShuffleStarted;
+extern u32 sSflScriptWorkWord;
+extern const char sSflScriptStartActionsTrace[];
+extern const char sSflScriptSourceFile[];
+extern const char sSflScriptEndTrace[];
+extern const char sSflScriptOpenTrace[];
+extern const char sSflScriptSwapTrace[];
+extern const char sSflScriptCloseTrace[];
+void copyMemory(void* destination, const void* source, u32 size);
+extern const char sSflScriptWaitTrace[];
+
+void debugPrintf(const char* message, ...);
+
+
+static SflScriptWork* sSflScript; // puGpffffb668
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_00259610
+void sflScriptInit(SflScriptWork* work)
+{
+    work->flags = 0;
+    work->waitCounter = 0;
+    sSflScript = work;
+}
+
+/* Recovered battle-misc harvest: 0x00259630-0x0025A030 */
+// FUN_00259630
+
+
+void sflScriptClearWork(void)
+
+
+
+{
+
+  sSflScriptWorkWord = 0;
+
+  return;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Recovered battle-misc harvest: 0x00259850-0x00259850 */

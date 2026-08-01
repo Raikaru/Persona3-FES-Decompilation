@@ -3,6 +3,9 @@
 #include "h_cdvd.h"
 #include "Main/Battle/Panel/bp_tex.h"
 
+
+
+
 extern int sprintf(char* buffer, const char* format, ...);
 extern char* strcpy(char* destination, const char* source);
 extern void func_004cde90(void* raster);
@@ -772,3 +775,33 @@ void func_0021b4a0(u8* resource)
     work->loadedFlags |= 8;
 }
 #pragma opt_loop_invariants reset
+
+
+#pragma alias bseInit FUN_0021b650
+#pragma alias bseShutdown FUN_0021b660
+#pragma alias bseRequestSelection FUN_0021b670
+#pragma alias bseIsSelectionPending FUN_0021b6f0
+#pragma alias bseWasSelectionCancelled FUN_0021b740
+#pragma alias bseGetSelectionResult FUN_0021b7c0
+#pragma alias bseCancelSelection FUN_0021b830
+#pragma alias bseCompleteSelection FUN_0021b8b0
+
+
+static u32* sBseWork; // DAT_007ce300
+
+extern void bpRoot001fe510(u32 request);
+extern void FUN_0010a4e0(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+extern int printf(const char* format, ...);
+
+// FUN_0021b650
+void bseInit(u32* param_1)
+{
+    *param_1 = 0;
+    sBseWork = param_1;
+}
+
+// FUN_0021b660
+void bseShutdown(void)
+{
+    sBseWork = NULL;
+}

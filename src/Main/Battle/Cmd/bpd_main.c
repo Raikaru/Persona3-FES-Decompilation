@@ -38,13 +38,6 @@ extern f32 FUN_0052e878(f32 param_1);
 extern void FUN_0021d8e0(void *destination, const RwV4d *rect);
 extern void FUN_0021d950(void *destination, const RwRGBA *color);
 
-// FUN_00252e60
-void bpd00252e60(u32* param_1)
-{
-    *param_1 = 0;
-    param_1[0x2d5] = 0;
-    sBpd660 = param_1;
-}
 
 // FUN_00252e90
 void bpd00252e90(void)
@@ -78,20 +71,6 @@ void bpd00253410(void)
 }
 
 /* Recovered battle-misc harvest: 0x00252E80-0x002534D0 */
-// FUN_00252E80
-
-
-void FUN_00252e80(void)
-
-
-
-{
-
-  uGpffffb660 = 0;
-
-  return;
-
-}
 
 // FUN_00252F30
 

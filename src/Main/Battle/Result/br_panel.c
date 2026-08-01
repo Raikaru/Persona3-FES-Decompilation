@@ -75,36 +75,6 @@ static void brPanelSetColor(void* quad, u8 red, u8 green, u8 blue, u8 alpha)
     func_0021d950(quad, color);
 }
 
-// FUN_00234820
-void brPanel00234820(u32* work)
-{
-    float rect[4];
-    u8 color[4];
-
-    work[0] = 0;
-    work[0x1d50 / 4] = 0;
-    func_003b0e70(1);
-    func_003b0e90(2);
-    work[0x310 / 4] = func_003b0970(func_00177790(1), 1, 6, 0, 0);
-    func_003b0e90(1);
-    func_003b0e70(2);
-    func_003b0e20(work[0x310 / 4], 0xffffff);
-    func_003b2c60(work[0x310 / 4],
-                  *(f32*)(uintptr_t)0x00960088 - func_0021ea00(0x28));
-    rect[0] = 0.0f;
-    rect[1] = 0.0f;
-    rect[2] = 640.0f;
-    rect[3] = 448.0f;
-    func_0021d8e0((u8*)work + 0x2560, rect);
-    func_0021eac0(work + 0x958, func_0021ea00(10));
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = 0;
-    func_0021d950((void*)((uintptr_t)work + 0x2560), color);
-    work[0x2660 / 4] = datGetLevel(1) & 0xff;
-    sBrPanel = work;
-}
 
 // FUN_00234960
 void brPanel00234960(void)

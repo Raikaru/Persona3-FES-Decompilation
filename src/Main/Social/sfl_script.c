@@ -2,6 +2,9 @@
 #include "Kosaka/k_assert.h"
 #include "Main/Social/sfl_script.h"
 
+
+
+
 #pragma alias sflScriptInit FUN_00259610
 #pragma alias sflScriptClearWork FUN_00259630
 #pragma alias sflScriptStartQueuedCommands FUN_00259640
@@ -187,29 +190,8 @@ u32 sflScriptHandleWaitForActionsCommand(void)
     return 1;
 }
 
-// FUN_00259610
-void sflScriptInit(SflScriptWork* work)
-{
-    work->flags = 0;
-    work->waitCounter = 0;
-    sSflScript = work;
-}
 
 /* Recovered battle-misc harvest: 0x00259630-0x0025A030 */
-// FUN_00259630
-
-
-void sflScriptClearWork(void)
-
-
-
-{
-
-  sSflScriptWorkWord = 0;
-
-  return;
-
-}
 
 // FUN_00259740
 
@@ -518,3 +500,97 @@ void sflScriptAppendCommand(int param_1,const void* param_2)
     work->appendCursor = work->appendCursor + 1;
   }
 }
+
+
+#ifndef SQRT
+#define SQRT(x) sqrtf(x)
+#endif
+float sqrtf(float x);
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_0025a120(void);
+void FUN_0025a130(void);
+void FUN_0025a440(void);
+void FUN_0025a7d0(void);
+void FUN_0025aad0(void);
+void FUN_0025b440(void);
+extern code DAT_00960090;
+extern code DAT_0096009c;
+#pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern code DAT_00960090_abs[];
+extern code DAT_0096009c_abs[];
+#define DAT_00960090 DAT_00960090_abs
+#define DAT_0096009c DAT_0096009c_abs
+extern f32 fGpffff8088;
+extern f32 fGpffff8248;
+extern f32 fGpffff82ac;
+extern f32 fGpffff83b8;
+extern f32 fGpffff83bc;
+extern f32 fGpffff82fc;
+extern f32 FUN_0052e878(f32 angle);
+extern u32 uGpffffb670;
+
+typedef struct { f32 a; f32 b; f32 c; } SflVec3;
+typedef struct {
+  u32 flags;
+  f32 from[3];
+  f32 to[3];
+  f32 position[3];
+  u32 frame;
+  u32 previous;
+  u32 active;
+  u32 timer;
+  u8 padding[0xc68];
+  u32 state;
+} SflCursorWork;
+
+
+static u32* sSflCursor; // puGpffffb670
+
+void FUN_00258540(u32 param_1, void* param_2);
+extern u32 FUN_0020e510(s32 index);
+extern void FUN_0021eb80(void* work, const f32* values);
+extern void FUN_00250f80(f32* output, const void* input);
+extern u32* FUN_00256110(u32 id);
+extern void FUN_002561e0(f32 amount, void* node);
+
+// FUN_0025a110
+void sflCursor0025a110(u32* param_1)
+{
+    *param_1 = 0;
+    sSflCursor = param_1;
+}
+
+
+
+
+/* Recovered battle-misc harvest: 0x0025A120-0x0025B440 */
+// FUN_0025A120
+
+
+void FUN_0025a120(void)
+
+
+
+{
+
+  uGpffffb670 = 0;
+
+  return;
+
+}
+
+/* Reconstructed the state dispatch, interpolation, and six-slot alpha update.
+ * The remaining differences are MWCC register allocation and floating-point
+ * spill placement; object size now exactly matches the retail function window.
+ */
+/* Removing this worsens FUN_0025a130 (nd185 -> nd295) - measured W161. */
+
+#pragma opt_loop_invariants reset
+
+
+
+/* Recovered battle-misc harvest: 0x0025AAD0-0x0025AAD0 */

@@ -31,7 +31,7 @@ void bpmUpdate(void)
 
 #include "Utils.h"
 
-#pragma alias datGetFlag_y2 datGetFlag_y2
+#pragma alias datGetFlag_y2 datGetFlag
 
 
 /* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
@@ -382,3 +382,12 @@ void FUN_002491f0(void)
 
 
 
+
+static u32* sBpeWork;
+
+// FUN_00249240
+void bpe00249240(u32* param_1)
+{
+    *param_1 = 0;
+    sBpeWork = param_1;
+}

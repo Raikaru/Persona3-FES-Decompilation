@@ -6,6 +6,12 @@
 #include "rw/rprandom.h"
 #include "rw/rwplcore.h"
 #include "rw/rtquat.h"
+void bpTut00251010();
+void bpTut00251030();
+void bpTut00251050();
+
+
+
 
 #pragma alias gcPose0024f960_y2 gcPose0024f960
 #pragma alias gcPose0024faa0_y2 gcPose0024faa0
@@ -1309,3 +1315,63 @@ void func_0024dc90(void* camera)
         }
     }
 }
+
+
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_00251060(void);
+void FUN_002510d0(void);
+void FUN_002518b0(s32 param_1);
+u32 FUN_002519d0(void);
+void FUN_00251a20(void);
+extern int iGpffffb654;
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern const char DAT_0068e9c0[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
+
+static u32* sBpTut654; // puGpffffb654
+typedef struct BpTutWork
+{
+    u32 flags;
+    u32 phase;
+    s32 type;
+    u32 step;
+    KwlnTask* task;
+} BpTutWork;
+
+s32 FUN_0021c8b0(s32 param_1);
+u32 FUN_001114b0(KwlnTask* task);
+void FUN_00111500(KwlnTask* task);
+void FUN_00111530(KwlnTask* task);
+u32 FUN_00195460(KwlnTask* task);
+void FUN_003c72d0(s32 handle);
+void FUN_003c7560(s32 param_1);
+u32 FUN_003c7610(void);
+u32 FUN_003c7650(s32 param_1);
+void FUN_003c77a0(void);
+u32 FUN_003c7850(void);
+void FUN_003c7990(s32 param_1);
+
+// FUN_00251010
+void bpTut00251010(void* param_1, s32 param_2)
+{
+    *(s32*)((u8*)param_1 + 0x10) += param_2;
+    *(u32*)((u8*)param_1 + 8) |= 2;
+}
+
+// FUN_00251030
+void bpTut00251030(void* param_1)
+{
+    *(u32*)((u8*)param_1 + 8) |= 2;
+}
+
+// FUN_00251050
+void bpTut00251050(u32* param_1)
+{
+    *param_1 = 0;
+    sBpTut654 = param_1;
+}
+
+/* Recovered battle-misc harvest: 0x00251060-0x00251A20 */

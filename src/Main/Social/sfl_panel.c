@@ -40,12 +40,6 @@ float sinf(float);
 float cosf(float);
 void func_0023dac0(void);
 
-// FUN_0023D7A0
-void func_0023d7a0(u32* work)
-{
-    work[0] = 0;
-    sSflPanel = work;
-}
 
 // FUN_0023D7B0
 void func_0023d7b0(void)

@@ -55,12 +55,6 @@ u32 bpDialog0025c1e0(void)
 
 void FUN_003b0170();
 
-// FUN_0025bdf0
-void bpDialog0025bdf0(u32* param_1)
-{
-    *param_1 = 0;
-    sBpDialog368 = param_1;
-}
 
 // FUN_0025be00
 void bpDialog0025be00(void)
@@ -594,36 +588,3 @@ void FUN_0025cf10(void)
 
 }
 
-// FUN_0025CF20
-
-
-void FUN_0025cf20(void)
-{
-    u32 flags;
-    u32* dialog;
-    int i;
-    int resource;
-    int image;
-
-    if (sBpDialog36c == NULL)
-    {
-        FUN_0019d3f0(DAT_0068ebe8, 0x32);
-    }
-    dialog = sBpDialog36c;
-    resource = FUN_00267390();
-    image = FUN_0021cca0(resource, 0);
-    FUN_0021d3b0(dialog + 4, image);
-    resource = FUN_0021cca0(resource, 1);
-    for (i = 0; i < 7; i++)
-    {
-        FUN_0021d3b0(dialog + i * 0x40 + 0x44, resource);
-    }
-    dialog[0x204] = 0;
-    dialog[0x205] = 0;
-    dialog[0x206] = 0;
-    flags = *dialog;
-    *dialog = flags & 0xfffffffd;
-    *dialog = flags & 0xfffffffd | 4;
-    FUN_0025d130();
-    *dialog |= 1;
-}

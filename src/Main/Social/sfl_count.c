@@ -1,6 +1,10 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+#pragma alias DAT_00960090_abs_y2 DAT_00960090_abs
+#pragma alias DAT_0096009c_abs_y2 DAT_0096009c_abs
+
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -38,12 +42,6 @@ typedef struct {
 } SflCountStack;
 static u32* sSflCount; // puGpffffb674
 
-// FUN_0025b4a0
-void sflCount0025b4a0(u32* param_1)
-{
-    *param_1 = 0;
-    sSflCount = param_1;
-}
 
 // FUN_0025b5f0
 void sflCount0025b5f0(void)
@@ -291,3 +289,59 @@ void FUN_0025bbf0(void)
         }
     }
 }
+
+
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_0025be60(u32 param_1, u32 param_2, u32 param_3);
+void FUN_0025c220(void);
+void FUN_0025c9c0(void);
+void FUN_0025cd30(void);
+void FUN_0025cdb0(float param_1,float param_2,int param_3);
+void FUN_0025ce30(float param_1,float param_2,int param_3);
+int FUN_0025ceb0(int param_1);
+s32 FUN_0021c3f0();
+#pragma alias FUN_0021c3f0_u64 FUN_0021c3f0
+extern u64 FUN_0021c3f0_u64(u32 param_1);
+extern u32 FUN_003a52c0(float param_1, s32 param_2, s32 param_3,
+                        s32 param_4, s32 param_5, s32 param_6,
+                        u32 param_7, u32 param_8);
+extern void func_003b0e20(u32 resource, u32 color);
+void FUN_0025cf00(u32 *param_1);
+void FUN_0025cf10(void);
+void FUN_0025cf20(void);
+static u32* sBpDialog678;
+static u32* sBpDialog36c;
+static u32* sBpDialog368; // 007ce368
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u16 DAT_007e094e_abs[];
+extern code DAT_00960090_abs_y2[];
+extern code DAT_0096009c_abs_y2[];
+extern int iGpffffb6fc;
+
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern const char DAT_0068ebd8[];
+extern const char DAT_0068ebe8[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
+
+
+
+void FUN_003b0170();
+
+// FUN_0025bdf0
+void bpDialog0025bdf0(u32* param_1)
+{
+    *param_1 = 0;
+    sBpDialog368 = param_1;
+}
+
+
+
+/* Recovered battle-misc harvest: 0x0025BE60-0x0025CF20 */
+
+// W389 measured source regrouping plus six-knob singles/pairs: nd2/1940B
+// -> nd2/1940B (window 1952B). Residual is commutative operand order of
+// `mul.s $f20, $f20, $f0` versus retail's `mul.s $f20, $f0, $f20`;
+// MWCCPS2 b210 canonicalizes the source form.

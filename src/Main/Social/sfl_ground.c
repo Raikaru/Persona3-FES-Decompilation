@@ -1,6 +1,32 @@
 #include "Main/Social/sfl_res.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+typedef struct SflGroundRwObject
+{
+    u8 type;
+    u8 subType;
+    u8 flags;
+    u8 privateFlags;
+    void* parent;
+} SflGroundRwObject;
+typedef struct SflGroundRwObjectHasFrame
+{
+    SflGroundRwObject object;
+} SflGroundRwObjectHasFrame;
+typedef struct SflGroundRwCamera
+{
+    SflGroundRwObjectHasFrame object;
+} SflGroundRwCamera;
+extern SflGroundRwCamera* kwlnGetMainCamera();
+
+#pragma alias func_0021d890_y2 func_0021d890
+#pragma alias func_0021d8e0_y2 func_0021d8e0
+#pragma alias func_0021d950_y2 func_0021d950
+#pragma alias func_0021e170_y2 func_0021e170
+#pragma alias func_0021eb80_y2 func_0021eb80
+#pragma alias sinf_y2 sinf
+#pragma alias cosf_y2 cosf
+
 
 /* The Ground task owns this 0x8780-byte Social work area. */
 static u32* sSflGround; // puGpffffb624 / DAT_007ce314
@@ -118,7 +144,7 @@ void func_002496e0();
 void func_00249c10();
 void func_0024a180();
 void func_0024a230();
-void* kwlnGetMainCamera();
+SflGroundRwCamera* kwlnGetMainCamera();
 void func_0021d890(void* destination, const void* layout);
 void func_0021d8e0(void* destination, const void* rect);
 void func_0021d950(void* destination, const void* color);
@@ -1593,3 +1619,54 @@ void func_0023d650(void)
     }
 }
 #pragma opt_loop_invariants reset
+
+
+
+static u32* sSflPanel; // DAT_007ce318
+/* This owner begins at 0x0023D7A0; 0x0023F480 switches to bi_main.c/DAT_007CE31C. */
+
+extern int DAT_0068e800[];
+extern float DAT_0068e810[];
+extern float DAT_0068e820[];
+extern int DAT_0068e830[];
+extern int DAT_0068e834[];
+extern float DAT_0068e840[];
+extern float DAT_0068e844[];
+extern float DAT_0068e850[];
+extern float DAT_0068e854[];
+extern float DAT_0068e858;
+extern float DAT_007cad78;
+extern float DAT_007cae0c;
+extern float DAT_007caf38;
+extern float DAT_007cb034;
+typedef int (*code)(...);
+extern code DAT_00960090[];
+extern code DAT_0096009c[];
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern u8 DAT_0096009c_abs[];
+void func_0021d890_y2();
+void func_0021d8e0_y2();
+void func_0021d950_y2();
+void func_0021e170_y2();
+void func_0021eb80_y2();
+void func_004cb750();
+u32 func_00255130();
+void scrClearTextBox();
+float sinf_y2(float);
+float cosf_y2(float);
+void func_0023dac0(void);
+
+// FUN_0023D7A0
+void func_0023d7a0(u32* work)
+{
+    work[0] = 0;
+    sSflPanel = work;
+}
+
+
+
+
+
+ 

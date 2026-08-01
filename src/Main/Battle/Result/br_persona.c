@@ -85,23 +85,3 @@ void brPersonaSetPersona(int param_1)
     uVar2 = FUN_001749a0(param_1);
     FUN_003c9b00(work[1], uVar2, 0);
 }
-// FUN_00264ca0
-u32 brPersonaGetPortraitFrame(u32 personaId)
-{
-    u32 table;
-    u32 resource;
-
-    table = FUN_00233d70(1);
-    switch (personaId)
-    {
-        case 0: resource = 0x0b; break;
-        case 1: resource = 0x0d; break;
-        case 2: resource = 0x0c; break;
-        case 3: resource = 0x10; break;
-        case 4: resource = 0x0e; break;
-        case 5: resource = 0x0f; break;
-        default:
-            K_ASSERT(false, 0x4a4);
-    }
-    return FUN_0021cca0(table, resource);
-}

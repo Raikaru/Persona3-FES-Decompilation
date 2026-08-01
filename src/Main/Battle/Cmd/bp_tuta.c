@@ -1,6 +1,9 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+
+
+
 #pragma alias bpTutaInit FUN_00251a70
 #pragma alias bpTutaUpdate FUN_00251A80
 #pragma alias bpTutaStart FUN_00251E10
@@ -31,12 +34,6 @@ typedef struct BpTutaWork
 
 static BpTutaWork* sBpTutaWork;
 
-// FUN_00251a70
-void bpTutaInit(BpTutaWork* work)
-{
-    work->flags = 0;
-    sBpTutaWork = work;
-}
 
 /* Recovered battle-misc harvest: 0x00251A80-0x00251ED0 */
 // FUN_00251A80
@@ -210,3 +207,37 @@ void bpTutaClose(void)
     FUN_003c77a0();
     FUN_0021c930();
 }
+
+
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_00251f40(s32 param_1);
+void FUN_002520f0(void);
+void FUN_00252340(void);
+extern code DAT_00960090[];
+extern code DAT_0096009c[];
+extern f32 fGpffff8070;
+extern f32 fGpffff8248;
+extern f32 fGpffff83e0;
+
+static u32* sBpo65c; // puGpffffb65c
+
+void func_00252340(void);
+
+// FUN_00251f20
+void bpo00251f20(u32* param_1)
+{
+    *param_1 = 0;
+    sBpo65c = param_1;
+}
+
+// FUN_00251f30
+void bpo00251f30(void)
+{
+    sBpo65c = NULL;
+}
+
+
+/* Recovered battle-misc harvest: 0x00251F40-0x00252340 */
