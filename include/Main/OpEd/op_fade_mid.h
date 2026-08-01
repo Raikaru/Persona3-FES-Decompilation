@@ -12,7 +12,7 @@
 #define gOpWorkCC (*(u32 **)(uintptr_t)0x007ce3cc)
 #define gOpWorkD0 (*(u32 **)(uintptr_t)0x007ce3d0)
 
-void func_00275050(s32 index);
+u8* func_00275050(s32 index);
 s32 func_002751e0(void);
 u32 func_00275370(void);
 void func_002753c0(void);

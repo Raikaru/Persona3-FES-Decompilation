@@ -164,8 +164,8 @@ u8 func_00109170(void);
 void H_Snd_00109180(s32 channelIndex);
 s16 func_001099a0(void);
 u8 H_Snd_PlayBgm(s16 id, s32 unused);
-void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
-                         u32 data1Size, void* data2, u32 data2Size);
+u8 H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
+                      u32 data1Size, void* data2, u32 data2Size);
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter);
 u32 H_Snd_FUN_00109df0(s32 slotIndex);
 void func_00109e30(s16 channelIndex);

@@ -189,7 +189,7 @@ void FUN_00320380(float param_1,int *param_2);
 void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3);
 void FUN_00320640(f32 param_1,f32 param_2,int *param_3);
 void FUN_00320770(int *param_1);
-void FUN_00320810(int *param_1);
+s32 FUN_00320810(int *param_1);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
 u32 FUN_00320ba0(u32 param_1,u32 *param_2);
 u32 FUN_00320cf0(u32 param_1,u32 param_2);
@@ -6018,33 +6018,29 @@ void FUN_00320770(int *param_1)
 #pragma optimization_level 1
 
 
-void FUN_00320810(int *param_1)
-
-
-
+s32 FUN_00320810(int *param_1)
 {
   u32 *iVar1;
   int iVar3;
   u32 uVar2;
+  s32 value;
   float fVar4;
   float fVar5;
-
 
   fVar5 = 0.0f;
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
       iVar1 = (u32 *)(iVar3 + uVar2 * 0x10);
-      if (*(int *)((u8 *)iVar1 + 0xc) != 0) {
+      value = *(s32 *)((u8 *)iVar1 + 0xc);
+      if (value != 0) {
         fVar4 = *(float *)((u8 *)iVar1 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
         }
       }
     }
-
   }
-  return;
-
+  return value;
 }
 
 

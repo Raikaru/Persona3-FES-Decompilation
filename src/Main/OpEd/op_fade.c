@@ -1857,8 +1857,8 @@ s32 func_00274f00(void)
 
 
 
-// FUN_00275050 NONMATCHING
-void func_00275050(s32 index)
+// FUN_00275050
+u8* func_00275050(s32 index)
 {
     u32 *work;
     u16 *skills;
@@ -1902,18 +1902,14 @@ loop:
     }
     if (skillIndex != skillCount)
         goto next;
-    if (unavailable != index)
-        goto unavailableSkill;
-    goto done;
-unavailableSkill:
+    if (unavailable == index)
+        return entry;
     unavailable++;
 next:
     slot++;
     if ((s32)work[0x78 / 4] + slot >= 0x10)
         K_Assert(D_0068ED88, 0x65b);
     goto loop;
-    done:
-    return;
 }
 
 // FUN_002751e0

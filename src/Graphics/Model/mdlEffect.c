@@ -912,7 +912,7 @@ void FUN_00320380(float param_1,int *param_2);
 void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3);
 void FUN_00320640(u32 param_1,u32 param_2,int *param_3);
 void FUN_00320770(int *param_1);
-void FUN_00320810(int *param_1);
+s32 FUN_00320810(int *param_1);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
 u32 FUN_00320ba0(u32 param_1,u32 *param_2);
 u32 FUN_00320cf0(u32 param_1,u32 param_2);

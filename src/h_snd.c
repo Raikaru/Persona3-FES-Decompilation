@@ -609,10 +609,12 @@ done:
     return true;
 }
 
-// FUN_00109AE0 NONMATCHING
-void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
-                         u32 data1Size, void* data2, u32 data2Size)
+// FUN_00109AE0
+u8 H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
+                      u32 data1Size, void* data2, u32 data2Size)
 {
+    u8 callbackMode;
+
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
         sSlotWork[(s16)slotIndex].param2 = 0x3E7;
@@ -625,7 +627,8 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
         }
     }
 
-    sSlotWork[(s16)slotIndex].callbackMode = true;
+    callbackMode = true;
+    sSlotWork[(s16)slotIndex].callbackMode = callbackMode;
     sSlotWork[(s16)slotIndex].completed = false;
     sSlotWork[(s16)slotIndex].param1 = slotIndex;
     sSlotWork[(s16)slotIndex].param2 = 0x3E7;
@@ -636,6 +639,7 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
     sSlotWork[(s16)slotIndex].data3 = data0Size;
     sSlotWork[(s16)slotIndex].data4 = data1Size;
     sSlotWork[(s16)slotIndex].data5 = data2Size;
+    return callbackMode;
 }
 // FUN_00109CA0
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)
