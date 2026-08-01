@@ -18,6 +18,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "tools"))
 import build as B  # noqa: E402
+import build_cache as BC  # noqa: E402
 import asm as A  # noqa: E402
 
 TARGET = REPO / "build" / "objdiff" / "target"
@@ -50,7 +51,8 @@ def main():
     gp, defs = B.load_lcf_symbols()
     resolvable = set(defs) | B.load_symbol_names()
     boundaries = B.load_windows()
-    cobjs = B.eligible_c_objects(c, resolvable, boundaries, gp)
+    cache = BC.ObjectCache(REPO / "build" / "cache" / "c", REPO)
+    cobjs = B.eligible_c_objects(c, resolvable, boundaries, gp, cache)
 
     TARGET.mkdir(parents=True, exist_ok=True)
     BASE.mkdir(parents=True, exist_ok=True)
@@ -69,7 +71,7 @@ def main():
         tgt_final = TARGET / f"{stem}.o"
         tgt.replace(tgt_final)
         base = BASE / f"{stem}.o"
-        B.compile_c(c, o["src"], base)
+        B.compile_c(c, o["src"], base, cache)
         units.append({
             "name": rel,
             "target_path": f"build/objdiff/target/{stem}.o",
