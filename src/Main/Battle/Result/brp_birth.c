@@ -3,6 +3,9 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+#pragma alias func_0010a4e0_y2 func_0010a4e0
+
+
 static u32* sBrpBirthWork; // puGpffffb640
 
 typedef struct BrpBirthVec
@@ -93,20 +96,6 @@ extern u32 D_00960178[];
 #define BRP_BIRTH_ALLOC(size, flags) \
     (*(void* (**)(u32, u32))D_00960178)((size), (flags))
 
-// FUN_0024A7F0
-void func_0024a7f0(void)
-{
-    u32* work;
-
-    work = (u32*)BRP_BIRTH_ALLOC(0xC570, 0x40000);
-    func_00219c90((u8*)work + 0xFD4);
-    sflResInit((SflResourceManager*)((u8*)work + 0x3730));
-    brpRes0024ba30((u32*)((u8*)work + 0x3704));
-    func_00239170((u8*)work + 0x37C0);
-    work[1] = 0;
-    work[2] = 0;
-    sBrpBirthWork = work;
-}
 
 // FUN_0024A870
 void func_0024a870(void)
@@ -624,3 +613,58 @@ void func_0024b8a0(void)
         }
     }
 }
+
+
+#include "h_cdvd.h"
+
+
+
+
+extern void func_0021b4a0(void* resource);
+extern void* memcpy(void* destination, const void* source, u32 size);
+static const char sBrpBirthArchivePath[] = "battle/result/brp_birth.bin";
+static const char sBrpCombineMessagePath[] = "facility/msg/msg_combine.bmd";
+
+#define BRP_RES_ALLOC(size, flags) \
+    (*(void* (**)(u32, u32))D_00960178)((size), (flags))
+static u32* sBrpResWork; // puGpffffb644
+
+// FUN_0024ba30
+void brpRes0024ba30(u32* param_1)
+{
+    *param_1 = 0;
+    param_1[1] = 0;
+    sBrpResWork = param_1;
+}
+
+
+
+
+
+static u32* sBrpRes334; // 007ce334
+
+
+
+
+
+
+#include "Utils.h"
+
+/* DAT_007CE348: panel effect work installed by FUN_0024C100. */
+static u32* sBpEffect;
+
+extern void func_0010a4e0_y2(s32, s32, s32, s32);
+extern void* func_0021c790(void* frame);
+extern void func_0021d890(void* destination, const f32* vertices);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021eac0(void* destination, f32 value);
+extern void func_0021eb80(void* destination, const f32* layout);
+extern f32 DAT_007cad60;
+extern f32 DAT_007cafec;
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 D_00960090[];
+extern u32 D_0096009c[];
+
+typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
+typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);

@@ -4,6 +4,9 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
+
+
+
 #pragma alias sflResDrawIndexedMesh FUN_0020d500
 #pragma alias sflResSetSpriteScale FUN_0020D630
 #pragma alias sflResSetSpritePosition FUN_0020D650
@@ -643,3 +646,131 @@ void sflResRequestPersonaChangeSprite(void)
         (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
     work->requestFlags |= 0x10;
 }
+
+
+#include "Main/Battle/Panel/bpp_panel.h"
+#include "Main/Battle/Cmd/bpp_main.h"
+static u32* sBppMain; // DAT_007ce2f4
+void bppMain0020f680(void);
+u8* bppMain0020f720(s16 pcId);
+#pragma alias bppMain0020f720_u16 bppMain0020f720
+extern u8* bppMain0020f720_u16(u16 pcId);
+
+extern void* btlOrderGetActionPlaying(void);
+extern u32 func_0029b0c0(void* action);
+extern s32 bpMisc001ff5b0(void);
+extern s16 func_001ff630(s32 index);
+extern void* func_001ff430(u32 id);
+extern u16 datGetHp(s16 pcId);
+extern u16 datGetMaxHp(s16 pcId);
+extern u32 datGetBadStatusNoDown(s16 pcId);
+extern u16 datGetSp(s16 pcId);
+extern u16 func_0016c670(s16 pcId);
+extern u16 datGetPhysicalCondition(s16 pcId);
+extern void func_0022c720(void* panel, u16 pcId);
+extern void func_0022c850(void* panel);
+extern void func_0022c8a0(void* panel);
+extern void func_0022df10(void* panel);
+extern void func_0022e780(void* panel);
+extern void func_0022e900(void* panel, u32 value);
+extern void func_0022e9a0(void* panel, u32 value);
+extern void func_0022f1c0(void* panel, u32 value);
+
+#define BPP_MAIN_ENTRY_STRIDE 0x1690
+#define BPP_MAIN_ENTRY_BASE 0x10
+
+static u8* bppMainEntry(s32 index)
+{
+    return (u8*)sBppMain + index * BPP_MAIN_ENTRY_STRIDE;
+}
+
+static u8* bppMainFindEntry(s16 pcId)
+{
+    s32 i;
+    u8* entry;
+
+    K_ASSERT(sBppMain != NULL, 0x43);
+    for (i = 0; i < (s32)sBppMain[0x1694]; i++) {
+        entry = bppMainEntry(i);
+        if (*(s16*)(entry + 0x14) == pcId) {
+            return entry + BPP_MAIN_ENTRY_BASE;
+        }
+    }
+    K_ASSERT(0, 0x19c);
+    return NULL;
+}
+
+static void bppMainSetDetailForUnit(u32* work, void* unit)
+{
+    s16 pcId;
+    u8* entry;
+
+    if (unit == NULL || *(u8*)((u8*)unit + 0xa2) != 0) {
+        return;
+    }
+    pcId = *(s16*)((u8*)unit + 0xa2c + 2);
+    entry = bppMainFindEntry(pcId);
+    bppPanelActivateDetail((BppPanelWork*)(entry + 0x20));
+    work[0x1696] = (u32)(u16)pcId;
+    *work |= 4;
+}
+
+static void bppMainClearDetailForUnit(u32* work, void* unit)
+{
+    s16 pcId;
+    u8* entry;
+
+    if (unit == NULL || *(u8*)((u8*)unit + 0xa2) != 0) {
+        return;
+    }
+    pcId = *(s16*)((u8*)unit + 0xa2c + 2);
+    entry = bppMainFindEntry(pcId);
+    bppPanelDeactivateDetail((BppPanelWork*)(entry + 0x20));
+    *work &= ~4u;
+}
+
+// FUN_0020ed50
+void bppMain0020ed50(u32* work)
+{
+    work[0] = 0;
+    work[0x1694] = 0;
+    work[0x1697] = 0;
+    work[0x1698] = 0;
+    sBppMain = work;
+}
+
+
+
+/* Removing this worsens bppMain0020edf0 (nd135 -> nd794) - measured W161. */
+
+
+
+
+static inline u8* bppMainLookupEntry(s16 pcId)
+{
+    s32 i;
+    u8* entry;
+    u32* work;
+    u32 id;
+    u8* result;
+    s32 count;
+    s32 stride;
+
+    K_ASSERT(sBppMain != NULL, 0x43);
+    work = sBppMain;
+    i = 0;
+    id = (u16)pcId;
+    count = (s32)work[0x1694];
+    stride = BPP_MAIN_ENTRY_STRIDE;
+    for (; i < count; i++) {
+        entry = (u8*)work + i * stride;
+        result = entry + BPP_MAIN_ENTRY_BASE;
+        if (*(u16*)(entry + 0x14) == id) {
+            return result;
+        }
+    }
+    K_ASSERT(0, 0x19c);
+    return NULL;
+}
+
+/* Removing this loses bppMain0020f720 (MATCH nd0 -> MISMATCH nd23); loses bppMain0020f7d0 (MATCH nd0 -> MISMATCH nd28); loses bppMain0020f8b0 (MATCH nd0 -> MISMATCH nd28); loses bppMain0020f9a0 (MATCH nd0 -> MISMATCH nd24); loses bppMain0020fa80 (MATCH nd0 -> MISMATCH nd24); loses bppMain0020fb60 (MATCH nd0 -> MISMATCH nd24) - measured W161. */

@@ -1,5 +1,11 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+
+#pragma alias DAT_00960090_abs_y2 DAT_00960090_abs
+#pragma alias DAT_0096009c_abs_y2 DAT_0096009c_abs
+#pragma alias FUN_0021d8e0_y2 FUN_0021d8e0
+#pragma alias FUN_0021d950_y2 FUN_0021d950
+
 #ifndef SQRT
 #define SQRT(x) sqrtf(x)
 #endif
@@ -55,12 +61,6 @@ extern void FUN_00250f80(f32* output, const void* input);
 extern u32* FUN_00256110(u32 id);
 extern void FUN_002561e0(f32 amount, void* node);
 
-// FUN_0025a110
-void sflCursor0025a110(u32* param_1)
-{
-    *param_1 = 0;
-    sSflCursor = param_1;
-}
 
 // FUN_0025b300
 void sflCursor0025b300(u32 param_1)
@@ -109,20 +109,6 @@ void sflCursor0025aa70(void)
 }
 
 /* Recovered battle-misc harvest: 0x0025A120-0x0025B440 */
-// FUN_0025A120
-
-
-void FUN_0025a120(void)
-
-
-
-{
-
-  uGpffffb670 = 0;
-
-  return;
-
-}
 
 /* Reconstructed the state dispatch, interpolation, and six-slot alpha update.
  * The remaining differences are MWCC register allocation and floating-point
@@ -731,3 +717,53 @@ void FUN_0025aad0(void)
   return;
 
 }
+
+
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_0025b4f0(void);
+void FUN_0025b690(void);
+void FUN_0025bbf0(void);
+extern u8 DAT_00960090_abs_y2[];
+extern u8 DAT_0096009c_abs_y2[];
+extern f32 fGpffff83c4;
+extern void* FUN_0020e610(s32 index);
+extern void FUN_0010a4e0(s32, s32, s32, s32);
+extern void FUN_0021d890(void* work, const f32* values);
+extern void FUN_0021d8e0_y2(void* work, const f32* values);
+extern void FUN_0021d950_y2(void* work, const u8* color);
+
+typedef struct {
+    f32 sp80;
+    f32 sp84;
+    f32 sp88;
+    f32 sp8C;
+    f32 sp90;
+    f32 sp94;
+    f32 sp98;
+    f32 sp9C;
+    u8 padA0[0xc];
+    u8 spAC;
+    u8 spAD;
+    u8 spAE;
+    u8 spAF;
+} SflCountStack;
+static u32* sSflCount; // puGpffffb674
+
+// FUN_0025b4a0
+void sflCount0025b4a0(u32* param_1)
+{
+    *param_1 = 0;
+    sSflCount = param_1;
+}
+
+
+
+
+/* Recovered battle-misc harvest: 0x0025B4F0-0x0025BBF0 */
+
+/* Removing this worsens FUN_0025b690 (nd14 -> nd133) - measured W161. */
+
+#pragma opt_loop_invariants reset

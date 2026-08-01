@@ -1,6 +1,10 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+#pragma alias FUN_003c7990_y2 FUN_003c7990
+#pragma alias FUN_003c7650_y2 FUN_003c7650
+
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -37,25 +41,8 @@ void FUN_003c77a0(void);
 u32 FUN_003c7850(void);
 void FUN_003c7990(s32 param_1);
 
-// FUN_00251010
-void bpTut00251010(void* param_1, s32 param_2)
-{
-    *(s32*)((u8*)param_1 + 0x10) += param_2;
-    *(u32*)((u8*)param_1 + 8) |= 2;
-}
 
-// FUN_00251030
-void bpTut00251030(void* param_1)
-{
-    *(u32*)((u8*)param_1 + 8) |= 2;
-}
 
-// FUN_00251050
-void bpTut00251050(u32* param_1)
-{
-    *param_1 = 0;
-    sBpTut654 = param_1;
-}
 
 /* Recovered battle-misc harvest: 0x00251060-0x00251A20 */
 // FUN_00251060
@@ -412,3 +399,42 @@ void FUN_00251a20(void)
   return;
 
 }
+
+
+
+#pragma alias bpTutaInit FUN_00251a70
+#pragma alias bpTutaUpdate FUN_00251A80
+#pragma alias bpTutaStart FUN_00251E10
+#pragma alias bpTutaIsActive FUN_00251E80
+#pragma alias bpTutaClose FUN_00251ED0
+#pragma alias datSetFlag FUN_0016f1f0
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void bpTutaUpdate(void);
+void bpTutaStart(void);
+u32 bpTutaIsActive(void);
+void bpTutaClose(void);
+void FUN_003c7990_y2(s32 mode);
+u32 FUN_003c7650_y2(s32 close);
+extern const char DAT_0068e9d0[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
+
+typedef struct BpTutaWork
+{
+    u32 flags;
+    u32 phase;
+    u32 step;
+} BpTutaWork;
+
+static BpTutaWork* sBpTutaWork;
+
+// FUN_00251a70
+void bpTutaInit(BpTutaWork* work)
+{
+    work->flags = 0;
+    sBpTutaWork = work;
+}
+
+/* Recovered battle-misc harvest: 0x00251A80-0x00251ED0 */

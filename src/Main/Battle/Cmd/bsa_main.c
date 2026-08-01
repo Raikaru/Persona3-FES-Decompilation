@@ -114,11 +114,6 @@ static inline s32 bsaSkillCategory(u32 flags)
     return 5;
 }
 
-// FUN_0020FE20
-void bsaMain0020fe20(BsaWork* work)
-{
-    work->words[1] = 0;
-}
 
 #pragma optimization_level 2
 // FUN_0020FE30 NONMATCHING

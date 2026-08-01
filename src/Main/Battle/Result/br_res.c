@@ -3,6 +3,11 @@
 #include "Main/Battle/Result/br_res.h"
 #include "rw/rwplcore.h"
 
+#pragma alias brRes00234570_y2 brRes00234570
+
+#pragma alias datGetScenarioMode_y2 datGetScenarioMode
+
+
 extern int H_Cdvd_IsFileLoaded(u32 request);
 extern void H_Cdvd_Destroy(u32 request);
 extern void* H_Cdvd_ArchiveGetFile(u32 archive, s32 index, u32* size);
@@ -291,7 +296,7 @@ void brRes00234070(void)
 }
 
 // FUN_00234570
-u32 brRes00234570(s32 index)
+u32 brRes00234570_y2(s32 index)
 {
     K_ASSERT(sBrRes != NULL, 0x52);
     return sBrRes[index + 7];
@@ -345,3 +350,156 @@ u32 brRes002347e0(void)
     K_ASSERT(sBrRes != NULL, 0x52);
     return sBrRes[11];
 }
+
+
+#include "Main/Battle/Result/br_panel.h"
+
+#define BR_PANEL_WORD(offset) (*(u32*)((u8*)sBrPanel + (offset)))
+#define BR_PANEL_ENTRY(index) ((u8*)sBrPanel + 0xe20 + (index) * 0x510)
+
+static u32* sBrPanel; // puGpffffb620
+
+extern void func_003b0170(u32 resource);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 state);
+extern void func_003b0e90(s32 state);
+extern u32 func_003b0970(u32 type, s32 a, s32 b, s32 c, s32 d);
+extern u32 func_00177790(s16 pcId);
+extern u8 datGetLevel(s16 pcId);
+extern const char* func_00171110(s16 id, s16 field);
+extern void bpIFont00238980(void* glyphs, s32 capacity, s32 value, s32 style);
+extern void func_003b1360(u32 resource, s32 visible, s32 flags);
+extern void func_003b2c60(u32 resource, float value);
+extern float func_0021ea00(s32 duration);
+extern void func_0021eac0(void* animation, float value);
+extern void* func_0021cca0(u32 texture, s32 frame);
+extern void func_0021d3b0(void* panel, void* source);
+extern void func_0021e380(void* panel, void* source, s32 mode);
+extern void func_0021d8e0(void* panel, const float* rect);
+extern void func_0021d950(void* panel, const u8* color);
+extern int sprintf(char* buffer, const char* format, ...);
+extern u32 strlen(const char* string);
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_0096009C)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
+/* Retail +0x84/+0x114 materialize the state/quad callback-table addresses. */
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+#pragma alias brPanelSetStateRaw D_00960090
+#pragma alias brPanelSetQuadRaw D_0096009C
+extern void (*brPanelSetStateRaw)(u32 state, u32 value);
+extern void (*brPanelSetQuadRaw)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 func_0021cce0(void* frame);
+extern u32 func_00239140(s32 index);
+#pragma alias brPanelResRaw brRes00234570
+extern u32 brPanelResRaw(s32 type);
+extern void func_003b0d70(u32 resource, s32 offset, s32 flags);
+extern u32 datGetScenarioMode_y2(void);
+extern f32 sqrtf(f32 value);
+extern f32 DAT_007caff0;
+extern void bpIFont00238a50(void* glyphs, s32 capacity, s32 value, s32 style, const float* origin);
+
+static void brPanel002361d0(void* glyph, s32 digit, s32 style);
+static void brPanel00236390(void);
+
+static void brPanelSetQuad(void* quad, float x, float y, float width, float height)
+{
+    float rect[4];
+
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = width;
+    rect[3] = height;
+    func_0021d8e0(quad, rect);
+}
+
+static void brPanelSetColor(void* quad, u8 red, u8 green, u8 blue, u8 alpha)
+{
+    u8 color[4];
+
+    color[0] = red;
+    color[1] = green;
+    color[2] = blue;
+    color[3] = alpha;
+    func_0021d950(quad, color);
+}
+
+// FUN_00234820
+void brPanel00234820(u32* work)
+{
+    float rect[4];
+    u8 color[4];
+
+    work[0] = 0;
+    work[0x1d50 / 4] = 0;
+    func_003b0e70(1);
+    func_003b0e90(2);
+    work[0x310 / 4] = func_003b0970(func_00177790(1), 1, 6, 0, 0);
+    func_003b0e90(1);
+    func_003b0e70(2);
+    func_003b0e20(work[0x310 / 4], 0xffffff);
+    func_003b2c60(work[0x310 / 4],
+                  *(f32*)(uintptr_t)0x00960088 - func_0021ea00(0x28));
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    func_0021d8e0((u8*)work + 0x2560, rect);
+    func_0021eac0(work + 0x958, func_0021ea00(10));
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0;
+    func_0021d950((void*)((uintptr_t)work + 0x2560), color);
+    work[0x2660 / 4] = datGetLevel(1) & 0xff;
+    sBrPanel = work;
+}
+
+
+
+
+/* Retail +0x84 and +0x114 reload these callback tables before their jalr sites. */
+#define D_00960090 (*brPanelSetState)
+#define D_0096009C (*brPanelSetQuad)
+#pragma opt_loop_invariants off
+#undef D_00960090
+#undef D_0096009C
+#pragma optimization_level 2
+
+
+
+
+
+
+
+#pragma optimization_level 3
+#define brRes00234570(x) ((x) == 0 ? texture : digitTexture)
+#define BR_PANEL_SET_RECT(dst, x, y, w, h) \
+    do { \
+        rect[0] = (x); \
+        rect[1] = (y); \
+        rect[2] = (w); \
+        rect[3] = (h); \
+        func_0021d8e0((dst), rect); \
+    } while (0)
+#define BR_PANEL_SET_VERTICES(dst) \
+    do { func_0021d890((dst), rect); } while (0)
+#define BR_PANEL_ANIMATE(dst, duration) \
+    do { anim = func_0021ea00((duration)); \
+         func_0021eac0((dst), anim); } while (0)
+#define BR_PANEL_SET_COLOR(dst, alpha) \
+    do { \
+        color[0] = 0xff; \
+        color[1] = 0xff; \
+        color[2] = 0xff; \
+        color[3] = (u8)(u32)(255.0f * (alpha)); \
+        func_0021d950((dst), color); \
+    } while (0)
+#undef brRes00234570
+#undef BR_PANEL_SET_RECT
+#undef BR_PANEL_SET_VERTICES
+#undef BR_PANEL_ANIMATE
+#undef BR_PANEL_SET_COLOR
+#pragma optimization_level 2

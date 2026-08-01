@@ -1,6 +1,9 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+
+
+
 static u32* sBrHero; // puGpffffb68c
 
 void FUN_002630e0();
@@ -696,3 +699,53 @@ void brHero00263db0(void)
 }
 #undef setRenderState
 #undef renderQuad
+
+
+#pragma alias brPersonaInit FUN_00264d80
+#pragma alias brPersonaShutdown FUN_00264dd0
+#pragma alias brPersonaDestroy FUN_00264f90
+#pragma alias brPersonaGetResource FUN_00264ff0
+#pragma alias brPersonaLoad FUN_00264e30
+#pragma alias brPersonaSetPersona FUN_00264ef0
+#pragma alias brPersonaGetPortraitFrame FUN_00264ca0
+#pragma alias brPersonaGetPortraitFrame_y2 FUN_00264ca0
+#pragma alias FUN_00233d70_u32 FUN_00233d70
+extern u32 FUN_00233d70_u32(s32);
+#pragma alias FUN_0021cca0_u32 FUN_0021cca0
+extern u32 FUN_0021cca0_u32(u32, u32);
+
+
+static u32* sBrPersona; // DAT_007ce380
+
+void brPersonaDestroy();
+u32 FUN_001749a0();
+u32 FUN_003c9850();
+void FUN_003c9b00();
+void FUN_003c9cd0();
+void FUN_003c9d00();
+
+
+
+
+
+
+// FUN_00264ca0
+u32 brPersonaGetPortraitFrame_y2(u32 personaId)
+{
+    u32 table;
+    u32 resource;
+
+    table = FUN_00233d70_u32(1);
+    switch (personaId)
+    {
+        case 0: resource = 0x0b; break;
+        case 1: resource = 0x0d; break;
+        case 2: resource = 0x0c; break;
+        case 3: resource = 0x10; break;
+        case 4: resource = 0x0e; break;
+        case 5: resource = 0x0f; break;
+        default:
+            K_ASSERT(false, 0x4a4);
+    }
+    return FUN_0021cca0_u32(table, resource);
+}

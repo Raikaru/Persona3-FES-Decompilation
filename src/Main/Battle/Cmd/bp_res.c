@@ -97,13 +97,6 @@ void bpRes0021bb60(void)
     }
     sBpRes = NULL;
 }
-// FUN_0021b920
-void func_0021b920(u32* param_1)
-{
-    *param_1 = 0;
-    param_1[1] = 0;
-    sBpRes = param_1;
-}
 
 // FUN_0021b940
 void func_0021b940(void)

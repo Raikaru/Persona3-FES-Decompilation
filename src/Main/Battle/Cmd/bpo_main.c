@@ -1,6 +1,16 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+#pragma alias FUN_0021cce0_y2 FUN_0021cce0
+#pragma alias DAT_00960090_y2 DAT_00960090
+#pragma alias DAT_0096009c_y2 DAT_0096009c
+#pragma alias FUN_0021c3f0_y2 FUN_0021c3f0
+#pragma alias FUN_0021cca0_y2 FUN_0021cca0
+#pragma alias FUN_0052e878_y2 FUN_0052e878
+#pragma alias FUN_0021d8e0_y2 FUN_0021d8e0
+#pragma alias FUN_0021d950_y2 FUN_0021d950
+
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -17,18 +27,7 @@ static u32* sBpo65c; // puGpffffb65c
 
 void func_00252340(void);
 
-// FUN_00251f20
-void bpo00251f20(u32* param_1)
-{
-    *param_1 = 0;
-    sBpo65c = param_1;
-}
 
-// FUN_00251f30
-void bpo00251f30(void)
-{
-    sBpo65c = NULL;
-}
 
 // FUN_00252060
 void bpo00252060(void)
@@ -117,7 +116,7 @@ void FUN_002520f0(void)
             iVar4 = FUN_0021cca0(iVar3, 0x3a);
             break;
         }
-        (*ppVar5)(1, FUN_0021cce0(iVar4));
+        (*ppVar5)(1, FUN_0021cce0_y2(iVar4));
         FUN_004d7f60(3, 0x71801);
         FUN_004d7f60(2, 0x48);
         ppVar5 = DAT_0096009c;
@@ -348,3 +347,73 @@ void FUN_00252340(void)
     FUN_0021d950(puVar2 + 0x84, auStack_20);
     *puVar2 = *puVar2 & 0xfffffffd;
 }
+
+
+#include "Battle/btlUnit.h"
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_00252e80(void);
+void FUN_00252f30(void);
+void FUN_002532b0(void);
+void FUN_002534d0(void *param_1);
+extern code DAT_00960090_y2;
+extern code DAT_0096009c_y2;
+#pragma alias DAT_00960090_abs DAT_00960090_y2
+#pragma alias DAT_0096009c_abs DAT_0096009c_y2
+extern code DAT_00960090_abs[];
+extern code DAT_0096009c_abs[];
+extern int iGpffffb6fc;
+extern u32 uGpffffb660;
+
+static u32* sBpd660; // puGpffffb660
+static u32* sBpd664;
+s32 FUN_0021c3f0_y2();
+#pragma alias FUN_0021c3f0_u64 FUN_0021c3f0_y2
+extern u64 FUN_0021c3f0_u64(u32 param_1);
+s32 FUN_0021cca0_y2();
+s32 FUN_0021cce0();
+#pragma alias FUN_0021cce0_u32 FUN_0021cce0
+#pragma alias FUN_0021cca0_u64_u32 FUN_0021cca0_y2
+extern u32 FUN_0021cca0_u64_u32(u64 param_1, u32 param_2);
+extern u32 FUN_0021cce0_u32(u32 param_1);
+extern void FUN_002807a0(u32 param_1, RwV3d *position);
+extern u32 FUN_002d20a0(const RwV3d *projected, RwV2d *screen);
+extern u32 FUN_00300580(u32 param_1, u32 param_2);
+extern s32 FUN_0027f930(s32 param_1);
+extern f32 FUN_0052e878_y2(f32 param_1);
+extern void FUN_0021d8e0_y2(void *destination, const RwV4d *rect);
+extern void FUN_0021d950_y2(void *destination, const RwRGBA *color);
+
+// FUN_00252e60
+void bpd00252e60(u32* param_1)
+{
+    *param_1 = 0;
+    param_1[0x2d5] = 0;
+    sBpd660 = param_1;
+}
+
+
+
+
+/* Recovered battle-misc harvest: 0x00252E80-0x002534D0 */
+// FUN_00252E80
+
+
+void FUN_00252e80(void)
+
+
+
+{
+
+  uGpffffb660 = 0;
+
+  return;
+
+}
+
+
+
+/* Removing this loses FUN_002534d0 (MATCH nd0 -> MISMATCH nd16) - measured W161. */
+#pragma opt_loop_invariants off
