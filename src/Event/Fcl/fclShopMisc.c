@@ -11015,6 +11015,7 @@ u32 FUN_003fef30(int param_1,int param_2)
 
 }
 
+// Address-mode probe: PTR_DAT_006ad4a0 + 0x8 absolute array reference improved nd480 -> 477; object 756/784 unchanged.
 // FUN_003FF150 NONMATCHING
 
 
@@ -11106,7 +11107,7 @@ u64 FUN_003ff150(int param_1,int param_2)
 
     *(u16 *)(iVar6 + 6) = 0xfffd;
 
-    ppuVar5 = (u8 **)0x6ad4a8;
+    ppuVar5 = (u8 **)&PTR_DAT_006ad4a0[2];
 
   }
 
