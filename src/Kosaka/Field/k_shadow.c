@@ -552,6 +552,7 @@ static void K_FldShadow_SubmitFieldGeometry(const RwV3d* position,
 
 #pragma opt_loop_invariants reset
 #pragma opt_lifetimes reset
+/* W417 negative: rewriting the mode if-chain as a switch grew this object to 1092 bytes beyond its 1088-byte window (nd747); rejected. */
 // FUN_0019beb0 NONMATCHING
 KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
 {
@@ -560,31 +561,28 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
     Resrc* source;
     RwV3d sourcePosition;
     s32 sourceIndex;
-    void* (**allocator)(u32 count, u32 size, u32 flags);
 
-    allocator = (void* (**)(u32, u32, u32))D_00960184_abs;
-    shadow = (FldShadowRenderTex*)(*allocator)(1, 0x8C, rwMEMHINTDUR_GLOBAL);
+    shadow = (FldShadowRenderTex*)RwCalloc(1, sizeof(FldShadowRenderTex), rwMEMHINTDUR_GLOBAL);
     if (shadow == NULL)
     {
         return NULL;
     }
 
-    task = kwlnTaskCreate(parent, FLDSHADOW_TASK_NAME, 0x104B,
-                          func_0019b2b0, func_0019bcf0, shadow);
+    task = kwlnTaskCreate(parent, "renderTex for shadow", 4171, func_0019b2b0, func_0019bcf0, shadow);
     shadow->resTypeId = resTypeId;
     shadow->mode = (u16)param_3;
+
     sourceIndex = 0;
-
-
     source = MT_Scene_GetResListHead(RESRC_TYPE_19);
     while (source != NULL)
     {
-        sourcePosition = *(const RwV3d*)((const u8*)source + 0x100);
+        sourcePosition = *(const RwV3d*)((const u8*)source + sizeof(Resrc));
+
         if (sourceIndex == 0)
         {
             shadow->sourcePosition = sourcePosition;
         }
-        if (sourceIndex == 1)
+        else if (sourceIndex == 1)
         {
             f32 xDistance;
             f32 zDistance;
@@ -594,12 +592,14 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
             {
                 xDistance = -xDistance;
             }
+
             zDistance = shadow->sourcePosition.z - sourcePosition.z;
             if (zDistance < 0.0f)
             {
                 zDistance = -zDistance;
             }
-            if (xDistance <= zDistance)
+
+            if (xDistance > zDistance)
             {
                 shadow->projectionAxis.x = 0.0f;
                 shadow->projectionAxis.y = 0.0f;
@@ -611,57 +611,64 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
                 shadow->projectionAxis.y = 0.0f;
                 shadow->projectionAxis.z = 0.0f;
             }
+
             shadow->mode = 4;
         }
+
         sourceIndex++;
         source = source->next;
     }
 
-    if (shadow->mode == 1)
+    switch (shadow->mode)
     {
-        shadow->texture = func_004d0e40(NULL);
-        if (shadow->texture == NULL)
-        {
-            K_Assert(FLDSHADOW_SOURCE_FILE, 0x5ED);
-        }
-
-        *(u32*)((u8*)shadow->texture + 0x50) =
-            (*(u32*)((u8*)shadow->texture + 0x50) & ~0x000000FF) | 0x00000002;
-        *(u32*)((u8*)shadow->texture + 0x50) =
-            (*(u32*)((u8*)shadow->texture + 0x50) & ~0x0000FF00) | 0x00003300;
-
-        shadow->raster = func_004ce0f0(0x80, 0x80, 0x20, 0x505);
-        if (shadow->raster != NULL)
-        {
-            func_004f1780(shadow->raster, true);
-        }
-        func_004d0be0(shadow->texture, shadow->raster);
-
-        shadow->camera = func_004ca090();
-        if (shadow->camera != NULL)
-        {
-            func_004d1840(shadow->camera, func_004caf10());
-            func_004cb930_one((RwFrame*)shadow->camera->object.object.parent);
-            func_004cb750((RwFrame*)shadow->camera->object.object.parent,
-                          FLDSHADOW_CAMERA_OFFSET, rwCOMBINEREPLACE);
-            if (shadow->camera->object.object.parent != NULL)
+        case 1:
+            shadow->texture = func_004d0e40(NULL);
+            if (shadow->texture == NULL)
             {
-                shadow->camera->zBuffer = func_004ce0f0(0x80, 0x80, 0, 1);
-                RwCameraSetProjectionType(shadow->camera, (RwCameraProjection)2);
+                K_Assert("k_shadow.c", 1517);
             }
-        }
-        else
-        {
-            func_00199c60(shadow->camera);
-        }
-        func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
-        shadow->camera->frameBuffer = shadow->raster;
-        shadow->unk_48 = (*allocator)(1, 0x54D0, rwMEMHINTDUR_GLOBAL);
-    }
-    else if (shadow->mode == 3 || shadow->mode == 4)
-    {
-        shadow->radius = (f32*)(*allocator)(1, 0x0C, rwMEMHINTDUR_GLOBAL);
-        shadow->radius[0] = 30.0f;
+
+            *(u32*)((u8*)shadow->texture + 0x50) =
+                (*(u32*)((u8*)shadow->texture + 0x50) & ~0x000000ff) | 0x00000002;
+            *(u32*)((u8*)shadow->texture + 0x50) =
+                (*(u32*)((u8*)shadow->texture + 0x50) & ~0x0000ff00) | 0x00003300;
+
+            shadow->raster = RwRasterCreate(128, 128, 32, rwRASTERTYPECAMERATEXTURE | rwRASTERFORMAT8888);
+            if (shadow->raster != NULL)
+            {
+                func_004f1780(shadow->raster, true);
+            }
+
+            func_004d0be0(shadow->texture, shadow->raster);
+            shadow->camera = func_004ca090();
+            if (shadow->camera != NULL)
+            {
+                func_004d1840(shadow->camera, func_004caf10());
+                func_004cb930((RwFrame*)shadow->camera->object.object.parent,
+                              FLDSHADOW_CAMERA_OFFSET,
+                              rwCOMBINEREPLACE);
+
+                if (shadow->camera->object.object.parent != NULL)
+                {
+                    shadow->camera->zBuffer = RwRasterCreate(128, 128, 0, rwRASTERTYPEZBUFFER);
+                    RwCameraSetProjectionType(shadow->camera, (RwCameraProjection)2);
+                }
+            }
+            else
+            {
+                func_00199c60(shadow->camera);
+            }
+
+            func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
+            shadow->camera->frameBuffer = shadow->raster;
+            shadow->unk_48 = RwCalloc(1, 0x54d0, rwMEMHINTDUR_GLOBAL);
+            break;
+
+        case 4:
+        case 3:
+            shadow->radius = (f32*)RwCalloc(1, sizeof(RwV3d), rwMEMHINTDUR_GLOBAL);
+            shadow->radius[0] = 30.0f;
+            break;
     }
 
     if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELCHAR)
@@ -670,8 +677,9 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         shadow->res = source;
         if (source == NULL)
         {
-            K_Assert(FLDSHADOW_SOURCE_FILE, 0x60A);
+            K_Assert("k_shadow.c", 1546);
         }
+
         shadow->model = ((ResrcModelChar*)source)->mdl;
     }
     else if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELNPC)
@@ -680,8 +688,9 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         shadow->res = source;
         if (source == NULL)
         {
-            K_Assert(FLDSHADOW_SOURCE_FILE, 0x613);
+            K_Assert("k_shadow.c", 1555);
         }
+
         shadow->model = ((ResrcModelChar*)source)->mdl;
     }
 

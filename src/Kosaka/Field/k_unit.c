@@ -1120,6 +1120,10 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     DatUnitEc* enemy;
     const u8* spawn;
     char message[0x100];
+    typedef struct
+    {
+        u32 data[0x44];
+    } KFldUnitSpawnData;
 
     unit = NULL;
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
@@ -1185,7 +1189,8 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     unit->mdl = mdlCreateAndResolvePath(MODEL_TYPE_FLDCHAR,
                                         enemyId, MDL_READASYNC);
     spawn = (const u8*)unitData;
-    memcpy((u8*)unit + 0x58, spawn, 0x110);
+    *(KFldUnitSpawnData*)(void*)&unit->unk_58 =
+        *(const KFldUnitSpawnData*)unitData;
     unit->unk_168 = &unit->unk_58;
     unit->xGrid = (s16)((*(const f32*)(spawn + 0x100) + 400.0f) /
                         800.0f);
@@ -2817,14 +2822,15 @@ void* func_001d32a0(KwlnTask* task)
         switch (encounterMode)
         {
         case 0:
-            available = 0;
-            func_001d38d0(task, 1);
             break;
         case 1:
-        case 2:
         case 3:
             available <<= 1;
             if (available > 0x12) available = 0x12;
+            func_001d38d0(task, 2);
+            break;
+        case 2:
+            available = 0;
             func_001d38d0(task, 2);
             break;
         case 4:

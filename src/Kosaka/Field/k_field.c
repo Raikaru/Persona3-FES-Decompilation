@@ -399,10 +399,14 @@ void func_001b9140(u16 majorId, u16 minorId)
 // State 11 also queues the special zero-minor resource request path.
 // This restores the missing state-machine work; residual differences are
 // primarily compiler layout and register-allocation choices.
+// W415 six bb40->bc00 call substitutions raised object size to 3968 (>3920)
+// and normalized_diff to 2552; retained source is negative.
+// W417 census closure: baseline 2283/3920 (58.24%) -> 2393/3908 (61.24%);
+// exact 124/124 calls, with FUN_0035bc00 corrected from 1 call to 7.
 // FUN_001b9480 NONMATCHING
 void* func_001b9480(KwlnTask* fldRootTask)
 {
-    u8* work;
+    FldRootWork* work;
     u32 state;
     s32 id;
     u32 value;
@@ -414,7 +418,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
     u32 list;
     u32 list2;
 
-    work = (u8*)fldRootTask->workData;
+    work = (FldRootWork*)fldRootTask->workData;
     state = ROOT_U32(work, 0);
 
     switch (state)
@@ -428,11 +432,11 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 {
                     FUN_0019d3f0((const char*)0x0067f578, 0x125);
                 }
-                ROOT_U16(work, 0x10) = (u16)id;
-                ROOT_U16(work, 0x12) = aux0;
+                work->majorId = (u16)id;
+                work->minorId = aux0;
                 ROOT_U16(work, 0x18) = aux1;
                 ROOT_U16(work, 0x1a) = value;
-                K_Fldrc_RequestFldPac((s16)ROOT_U16(work, 0x10), (s16)aux0);
+                K_Fldrc_RequestFldPac((s16)work->majorId, (s16)aux0);
                 for (id = 0; id < 4; id++)
                 {
                     K_FldUnit_DestroyPcMdl(id);
@@ -457,42 +461,42 @@ void* func_001b9480(KwlnTask* fldRootTask)
         case 2:
             if (K_Fldrc_IsFldPacLoaded() != 0)
             {
-                ROOT_U32(work, 0x28) = FUN_001e7200((s16)ROOT_U16(work, 0x10));
+                ROOT_U32(work, 0x28) = FUN_001e7200((s16)work->majorId);
                 ROOT_U32(work, 0) = 3;
             }
             break;
 
         case 3:
             if (FUN_001e7290(ROOT_U32(work, 0x28),
-                             (s16)ROOT_U16(work, 0x10)) != 0)
+                             (s16)work->majorId) != 0)
             {
                 ROOT_U32(work, 0x28) = 0;
                 FIELD_U32(0x007ce24c) = 0;
                 if (ROOT_U32(work, 0x38) == 0 &&
                     FIELD_U32(0x0086afa8) != 0)
                 {
-                    if ((ROOT_U16(work, 0x10) < 0x14 ||
-                         ROOT_U16(work, 0x10) > 0x1c ||
-                         ROOT_U16(work, 0x12) < 0x32) &&
-                        (ROOT_U16(work, 0x10) < 0x28 ||
-                         ROOT_U16(work, 0x10) > 0x30 ||
-                         ROOT_U16(work, 0x12) < 0x32))
+                    if ((work->majorId < 0x14 ||
+                         work->majorId > 0x1c ||
+                         work->minorId < 0x32) &&
+                        (work->majorId < 0x28 ||
+                         work->majorId > 0x30 ||
+                         work->minorId < 0x32))
                     {
-                        if (ROOT_U16(work, 0x10) < 0x14 ||
-                            (ROOT_U16(work, 0x10) > 0x1c &&
-                             ROOT_U16(work, 0x10) < 0x28) ||
-                            ROOT_U16(work, 0x10) > 0x30)
+                        if (work->majorId < 0x14 ||
+                            (work->majorId > 0x1c &&
+                             work->majorId < 0x28) ||
+                            work->majorId > 0x30)
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                             (s32)ROOT_U16(work, 0x12) - 1);
+                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                             (s32)work->minorId - 1);
                         }
                     }
                     else
                     {
                         ROOT_U32(work, 0x40) =
-                            FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                         (s32)ROOT_U16(work, 0x12) - 0x32);
+                            FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                         (s32)work->minorId - 0x32);
                     }
                 }
                 ROOT_U32(work, 0) = 4;
@@ -505,13 +509,13 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 kwlnTaskExists((KwlnTask*)request) != 1)
             {
                 ROOT_U32(work, 0x24) =
-                    FUN_001c7e70((s16)ROOT_U16(work, 0x10), ROOT_U16(work, 0x12));
-                MT_Scene_Load((s32)ROOT_U16(work, 0x10), (s32)ROOT_U16(work, 0x12));
+                    FUN_001c7e70((s16)work->majorId, work->minorId);
+                MT_Scene_Load((s32)work->majorId, (s32)work->minorId);
                 FUN_003b58c0(ROOT_U16(work, 0x18));
                 if (ROOT_U16(work, 0x1a) == 0)
                 {
                     ROOT_U16(work, 0x1a) =
-                        FUN_001b6eb0((s16)ROOT_U16(work, 0x10), ROOT_U16(work, 0x12));
+                        FUN_001b6eb0((s16)work->majorId, work->minorId);
                     FUN_003b5980(ROOT_U16(work, 0x1a));
                 }
                 else
@@ -534,28 +538,28 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     if (ROOT_U32(work, 0x38) == 0 &&
                         FIELD_U32(0x0086afa8) != 0)
                     {
-                        if ((ROOT_U16(work, 0x10) < 0x14 ||
-                             ROOT_U16(work, 0x10) > 0x1c ||
-                             ROOT_U16(work, 0x12) < 0x32) &&
-                            (ROOT_U16(work, 0x10) < 0x28 ||
-                             ROOT_U16(work, 0x10) > 0x30 ||
-                             ROOT_U16(work, 0x12) < 0x32))
+                        if ((work->majorId < 0x14 ||
+                             work->majorId > 0x1c ||
+                             work->minorId < 0x32) &&
+                            (work->majorId < 0x28 ||
+                             work->majorId > 0x30 ||
+                             work->minorId < 0x32))
                         {
-                            if (ROOT_U16(work, 0x10) < 0x14 ||
-                                (ROOT_U16(work, 0x10) > 0x1c &&
-                                 ROOT_U16(work, 0x10) < 0x28) ||
-                                ROOT_U16(work, 0x10) > 0x30)
+                            if (work->majorId < 0x14 ||
+                                (work->majorId > 0x1c &&
+                                 work->majorId < 0x28) ||
+                                work->majorId > 0x30)
                             {
                                 ROOT_U32(work, 0x40) =
-                                    FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                                 (s32)ROOT_U16(work, 0x12) - 1);
+                                    FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                                 (s32)work->minorId - 1);
                             }
                         }
                         else
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                             (s32)ROOT_U16(work, 0x12) - 0x32);
+                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                             (s32)work->minorId - 0x32);
                         }
                     }
                     ROOT_U32(work, 0) = 6;
@@ -607,23 +611,23 @@ void* func_001b9480(KwlnTask* fldRootTask)
             FIELD_U32(0x007ce24c) = 1;
             if (ROOT_U32(work, 0x38) == 0 && FIELD_U32(0x0086afa8) != 0)
             {
-                if ((ROOT_U16(work, 0x10) < 0x14 ||
-                     ROOT_U16(work, 0x10) > 0x1c ||
-                     ROOT_U16(work, 0x12) < 0x32) &&
-                    (ROOT_U16(work, 0x10) < 0x28 ||
-                     ROOT_U16(work, 0x10) > 0x30 ||
-                     ROOT_U16(work, 0x12) < 0x32))
+                if ((work->majorId < 0x14 ||
+                     work->majorId > 0x1c ||
+                     work->minorId < 0x32) &&
+                    (work->majorId < 0x28 ||
+                     work->majorId > 0x30 ||
+                     work->minorId < 0x32))
                 {
-                    if (ROOT_U16(work, 0x10) < 0x14 ||
-                        (ROOT_U16(work, 0x10) > 0x1c &&
-                         ROOT_U16(work, 0x10) < 0x28) ||
-                        ROOT_U16(work, 0x10) > 0x30)
+                    if (work->majorId < 0x14 ||
+                        (work->majorId > 0x1c &&
+                         work->majorId < 0x28) ||
+                        work->majorId > 0x30)
                     {
                         ROOT_U32(work, 0x40) =
                             FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                         (s32)ROOT_U16(work, 0x12) - 1);
+                                         (s32)work->minorId - 1);
                     }
-                    else if (ROOT_U16(work, 0x12) == 0)
+                    else if (work->minorId == 0)
                     {
                         if (FUN_001bffe0() != 0)
                         {
@@ -641,7 +645,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 {
                     ROOT_U32(work, 0x40) =
                         FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                     (s32)ROOT_U16(work, 0x12) - 0x32);
+                                     (s32)work->minorId - 0x32);
                 }
             }
             ROOT_U32(work, 0) = 9;
@@ -664,13 +668,13 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     FIELD_U32(0x00869f88) = (u32)FUN_0018bff0(fldRootTask);
                     FUN_0018c0c0(FIELD_U32(0x00869f88), 0);
                 }
-                if (ROOT_U16(work, 0x10) < 200)
+                if (work->majorId < 200)
                 {
                     FIELD_U32(0x00869f8c) = FUN_0018e820(fldRootTask);
                     FUN_001ddca0(-1);
                     FUN_0018eb30(FIELD_U32(0x00869f8c), 0);
                 }
-                if (ROOT_U16(work, 0x10) == 0x0e && ROOT_U16(work, 0x12) == 5)
+                if (work->majorId == 0x0e && work->minorId == 5)
                 {
                     ROOT_U32(work, 0x48) = FUN_004579b0(fldRootTask);
                 }
@@ -697,8 +701,8 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         }
                         FUN_001dd8e0();
                     }
-                    if ((!(ROOT_U16(work, 0x10) == 0x0e &&
-                           ROOT_U16(work, 0x12) == 5) ||
+                    if ((!(work->majorId == 0x0e &&
+                           work->minorId == 5) ||
                          kwlnTaskExists((KwlnTask*)ROOT_U32(work, 0x48)) != 1) &&
                         (FIELD_U32(0x00869f78) == 0 || FUN_0042ba30() != 0) &&
                         FUN_0016f190(0x1410) != 1 && ROOT_U32(work, 4) != 1)
@@ -706,18 +710,18 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         FUN_001d2a10();
                         FUN_001a9850();
                         FUN_001aa1b0();
-                        if (ROOT_U16(work, 0x10) == 0x20 &&
-                            ROOT_U16(work, 0x12) == 2)
+                        if (work->majorId == 0x20 &&
+                            work->minorId == 2)
                         {
                             FUN_00188650();
                         }
-                        func_001b9140(ROOT_U16(work, 0x10),
-                                      ROOT_U16(work, 0x12));
+                        func_001b9140(work->majorId,
+                                      work->minorId);
                         FUN_00187ea0();
                         ROOT_U32(work, 0x44) = 0;
                         FUN_001085c0();
-                        if (ROOT_U16(work, 0x10) == 0x20 &&
-                            ROOT_U16(work, 0x12) == 2)
+                        if (work->majorId == 0x20 &&
+                            work->minorId == 2)
                         {
                             FUN_001086a0(0x28);
                         }
@@ -733,23 +737,23 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 FIELD_U32(0x007ce24c) = 2;
                 if (FIELD_U32(0x0086afa8) != 0)
                 {
-                    if ((ROOT_U16(work, 0x10) < 0x14 ||
-                         ROOT_U16(work, 0x10) > 0x1c ||
-                         ROOT_U16(work, 0x12) < 0x32) &&
-                        (ROOT_U16(work, 0x10) < 0x28 ||
-                         ROOT_U16(work, 0x10) > 0x30 ||
-                         ROOT_U16(work, 0x12) < 0x32))
+                    if ((work->majorId < 0x14 ||
+                         work->majorId > 0x1c ||
+                         work->minorId < 0x32) &&
+                        (work->majorId < 0x28 ||
+                         work->majorId > 0x30 ||
+                         work->minorId < 0x32))
                     {
-                        if (ROOT_U16(work, 0x10) < 0x14 ||
-                            (ROOT_U16(work, 0x10) > 0x1c &&
-                             ROOT_U16(work, 0x10) < 0x28) ||
-                            ROOT_U16(work, 0x10) > 0x30)
+                        if (work->majorId < 0x14 ||
+                            (work->majorId > 0x1c &&
+                             work->majorId < 0x28) ||
+                            work->majorId > 0x30)
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                             (s32)ROOT_U16(work, 0x12) - 1);
+                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                             (s32)work->minorId - 1);
                         }
-                        else if (ROOT_U16(work, 0x12) == 0)
+                        else if (work->minorId == 0)
                         {
                             resource = ROOT_U32(work, 0x2c);
                             ROOT_U32(work, 0x40) =
@@ -760,17 +764,16 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         {
                             ROOT_U32(work, 0x40) =
                                 FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                             (s32)ROOT_U16(work, 0x12) - 1);
+                                             (s32)work->minorId - 1);
                         }
                     }
                     else
                     {
                         ROOT_U32(work, 0x40) =
-                            FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                         (s32)ROOT_U16(work, 0x12) - 0x32);
+                            FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                         (s32)work->minorId - 0x32);
                     }
                 }
-                FUN_0027c080(2, work + 0x4c, 0x1c, 0);
                 ROOT_U32(work, 0) = 0x0c;
             }
             break;
@@ -839,7 +842,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     ROOT_U16(work, 0x14) = FUN_0036f4c0();
                     FUN_001d03f0(ROOT_U16(work, 0x14));
                     FUN_001d70a0();
-                    if (ROOT_U16(work, 0x10) < 200)
+                    if (work->majorId < 200)
                     {
                         FIELD_U32(0x00869f8c) = FUN_0018e820(fldRootTask);
                         FUN_001ddca0(-1);
@@ -861,7 +864,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 {
                     ROOT_U32(work, 0x40) =
                         FUN_0035bb40(10, FIELD_U32(0x0086afa8),
-                                     (s32)ROOT_U16(work, 0x12) - 1);
+                                     (s32)work->minorId - 1);
                 }
                 ROOT_U32(work, 0) = 0x10;
             }
@@ -874,7 +877,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 camera = FIELD_U32(0x008717f4);
                 FIELD_U32(0x00869f7c) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0x1e0));
-                func_001b9140(ROOT_U16(work, 0x10), ROOT_U16(work, 0x12));
+                func_001b9140(work->majorId, work->minorId);
                 FUN_001085c0();
                 ROOT_U32(work, 0) = 0x0b;
             }

@@ -1877,24 +1877,7 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
       bVar2 = true;
     }
     pcVar12 = (char *)param_2;
-    if (bVar2) {
-      if ((uVar4 < 0xc0) || (0xdf < uVar4)) {
-        K_ASSERT(false,0x4f3);
-      }
-      iVar8 = (int)DAT_007ce430 + (uVar4 - 0xc0) * 0x26e;
-      if (1 < uVar5) {
-        for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-          uVar4 = auStack_10[uVar6];
-          if ((u32)(u8)pcVar12[uVar6 + 0x22] + (u32)uVar4 < 99) {
-            pcVar12[uVar6 + 0x22] =
-                 pcVar12[uVar6 + 0x22] + *(char *)(iVar8 + uVar5 * 5 + uVar6 + 0x7a);
-            if (99 < (u32)(u8)pcVar12[uVar6 + 0x22] + (u32)uVar4) {
-              pcVar12[uVar6 + 0x22] = 'c' - (char)uVar4;
-            }
-          }
-        }
-      }
-    } else {
+    if (!bVar2) {
       for (uVar4 = 0; uVar4 < 3; uVar4 = uVar4 + 1) {
         sVar3 = 0;
         for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
@@ -1912,6 +1895,23 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
                 pcVar12[uVar6 + 0x22] = pcVar12[uVar6 + 0x22] + 1;
                 break;
               }
+            }
+          }
+        }
+      }
+    } else {
+      if ((uVar4 < 0xc0) || (0xdf < uVar4)) {
+        K_ASSERT(false,0x4f3);
+      }
+      iVar8 = (int)DAT_007ce430 + (uVar4 - 0xc0) * 0x26e;
+      if (1 < uVar5) {
+        for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
+          uVar4 = auStack_10[uVar6];
+          if ((u32)(u8)pcVar12[uVar6 + 0x22] + (u32)uVar4 < 99) {
+            pcVar12[uVar6 + 0x22] =
+                 pcVar12[uVar6 + 0x22] + *(char *)(iVar8 + uVar5 * 5 + uVar6 + 0x7a);
+            if (99 < (u32)(u8)pcVar12[uVar6 + 0x22] + (u32)uVar4) {
+              pcVar12[uVar6 + 0x22] = 'c' - (char)uVar4;
             }
           }
         }
@@ -1967,6 +1967,7 @@ u8 func_001761b0(DatPersonaWork* param_1)
 
 }
 
+/* W414 full fndiff/JAL review: retail and candidate call K_ASSERT x3 then FUN_0017d800 once in order; global-first expression and cached-base probes stayed nd24/668B (window 672B), reverted. Remaining rows are commutative products plus address/scheduling differences. */
 // FUN_00176210 NONMATCHING
 
 

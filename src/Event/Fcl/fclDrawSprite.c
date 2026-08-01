@@ -38,7 +38,9 @@ void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u6
 void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
 
                   int param_6);
-u32 FUN_0040ec50();
+u32 FUN_0040ec50(float param_1,int param_2,u32 param_3,u32 param_4,
+                 u32 param_5,u8 *param_6,u32 param_7,int param_8,code param_9,
+                 u32 param_10);
 u32 FUN_0040f030(int param_1,int param_2,int param_3);
 u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
@@ -109,12 +111,15 @@ extern code DAT_0096017c_abs[];
 
 
 
+// W418 negative: float-only signature without direct callback typing measured nd467/obj652 -> nd483/obj680 (window672), over-window; reverted.
+// W418 negative: fully typed draw callback measured nd411/obj664 -> nd430/obj644 (window672); nd increased and was reverted.
+// W418 probe setup: float+pointer with code* and direct-pointer signature with an uncast callback literal failed compilation; no measurement.
 // FUN_0040EC50 NONMATCHING
 
 
-u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
+u32 FUN_0040ec50(float param_1,int param_2,u32 param_3,u32 param_4,
 
-                 u32 param_5,u64 param_6,u32 param_7,int param_8,code *param_9,
+                 u32 param_5,u8 *param_6,u32 param_7,int param_8,code param_9,
 
                  u32 param_10)
 
@@ -224,7 +229,7 @@ u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
 
     if (cVar1 != -1) {
 
-      (*param_9)(param_1,param_2 + iVar6,param_3,param_4,param_5,cVar1,iVar5,iVar7,param_10);
+      param_9(param_1,param_2 + iVar6,param_3,param_4,param_5,cVar1,iVar5,iVar7,param_10);
 
     }
 
@@ -1830,6 +1835,10 @@ else {
 
   if ((sVar4 == 6) || (sVar4 == 5)) {
 
+    iVar7 = *(short *)((int)param_3 + 6) + -4;
+
+    memcpy(puVar1,asStack_50 + iVar7 * 6,0xc);
+
     lVar6 = FUN_003c4b50(*(int *)(param_1 + 8),*(int *)(param_1 + 8) + 4,4);
 
     if (lVar6 != 0) {
@@ -1837,10 +1846,6 @@ else {
       unaff_s2_lo = *(int *)((int)lVar6 + 0x14);
 
     }
-
-    iVar7 = *(short *)((int)param_3 + 6) + -4;
-
-    memcpy(puVar1,asStack_50 + iVar7 * 6,0xc);
 
     puVar1[6] = 0;
 

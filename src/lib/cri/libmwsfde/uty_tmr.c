@@ -188,12 +188,16 @@ void FUN_0077fdc0(void)
 {
   int iVar3;
   int iVar4;
-  
+  u8 *src;
+  u8 *dst;
+
   if (*(int *)iRambc0003c0_abs != 0) {
     iVar4 = *(int *)iRambc0003c0_abs + -0x43fffff1;
+    src = (u8 *)iVar4;
+    dst = uRam80074700_abs;
     iVar3 = 0;
     do {
-      *(u8 *)(uRam80074700_abs + iVar3) = *(u8 *)(iVar4 + iVar3);
+      dst[iVar3] = src[iVar3];
       iVar3 = iVar3 + 1;
     } while (iVar3 < 0x26);
   }

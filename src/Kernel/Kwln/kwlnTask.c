@@ -774,6 +774,7 @@ KwlnTask* kwlnTaskCreate(KwlnTask* parentTask,
     return task;
 }
 
+/* W415 census recheck: both relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_00194b80 NONMATCHING. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
 KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
                                          u32 priority,

@@ -330,9 +330,11 @@ void func_00208b30(void)
 void func_00208f60(void)
 {
     u8* work;
+    s32 i;
+    u8* slot;
+    s32 j;
     u32 texture1;
     u32 texture5;
-    u8* slot;
     BtlUnit* unit;
     void* frame;
     RwV3d position;
@@ -349,8 +351,6 @@ void func_00208f60(void)
     f32 originX2;
     f32 scale;
     f32 fullAlpha;
-    s32 i;
-    s32 j;
 
     K_ASSERT(gBattlePanelWork != NULL, 0x47);
     work = (u8*)gBattlePanelWork;

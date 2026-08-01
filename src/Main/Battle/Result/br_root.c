@@ -1789,6 +1789,8 @@ void func_001f0ab0_y2(KwlnTask *task)
 }
 
 
+/* W414 full fndiff/JAL review: retail and candidate both call printf twice in order; sentinel local, hoisted-id, and scoped-j probes all stayed nd23/368B (window 368B), reverted. */
+/* W418 declaration/width and loop-shape probes stayed nd23/368B; unsigned variants regressed nd24-25 and wider locals exceeded the window. */
 // FUN_001f0ad0 NONMATCHING
 void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 {
@@ -2660,10 +2662,10 @@ void *func_001f2300(KwlnTask *task)
     case 21:
         func_003c7650(1);
         temp = func_003c7610();
-        if (temp == 1) {
-            func_001f53a0();
-        } else if (temp == 0) {
+        if (temp == 0) {
             func_001f5650();
+        } else if (temp == 1) {
+            func_001f53a0();
         }
         break;
     case 25:
@@ -2686,11 +2688,11 @@ void *func_001f2300(KwlnTask *task)
             func_003c7650(0);
             printf((const char *)0x006846A0);
             temp = func_003c7610();
-            if (temp == 1) {
-                func_001f4750(task);
-            } else if (temp == 0) {
+            if (temp == 0) {
                 func_002594c0();
                 BR_U32(work, 8) = 0x10;
+            } else if (temp == 1) {
+                func_001f4750(task);
             }
         }
         break;

@@ -550,12 +550,12 @@ static inline void K_FldShadow_EmitProjectedTriangle(
     FldShadowProjectionWork* work,
     const u8* workFields,
     const RwV3d* clipVertices,
-    const RwV3d* outputVertices)
+    const RwV3d* outputVertices,
+    RwV3d* outputCopies)
 {
     RwIm3DVertex* output;
     s32 vertexCount;
     u8 alpha;
-    RwV3d outputCopies[3];
 
     if (clipVertices[0].z < 0.0f &&
         clipVertices[1].z < 0.0f &&
@@ -1208,6 +1208,7 @@ void* func_00199d90(void* ignored1,
                     const FldShadowTriangle* triangle,
                     FldShadowProjectionWork* work)
 {
+    RwV3d outputCopies[3];
     RwV3d sourceVertices[3];
     RwV3d vertices[3];
     const RwV3d* projectionNormal;
@@ -1226,7 +1227,8 @@ void* func_00199d90(void* ignored1,
     sourceVertices[0] = *triangle->vertices[0];
     sourceVertices[1] = *triangle->vertices[1];
     sourceVertices[2] = *triangle->vertices[2];
-    func_004c6c20(vertices, sourceVertices, 3, &work->projectionMatrix);
+    func_004c6c20(vertices, sourceVertices, 3,
+                  (RwMatrix*)((u8*)projectionNormal + 0x10));
 
     normalX = triangle->normal.x * 1.5f;
     normalY = triangle->normal.y * 1.5f;
@@ -1241,7 +1243,8 @@ void* func_00199d90(void* ignored1,
     sourceVertices[2].y += normalY;
     sourceVertices[2].z += normalZ;
     K_FldShadow_EmitProjectedTriangle(
-        work, (const u8*)projectionNormal, vertices, sourceVertices);
+        work, (const u8*)projectionNormal, vertices, sourceVertices,
+        outputCopies);
     return (void*)triangle;
 }
 
@@ -1267,6 +1270,7 @@ void* func_0019a420(void* ignored,
                     FldShadowAtomicContext* context)
 {
     RwV3d normal;
+    RwV3d intermediate[3];
     RwV3d sourceVertices[3];
     RwV3d projected[3];
     s32 i;
@@ -1275,8 +1279,8 @@ void* func_0019a420(void* ignored,
     const RwV3d* projectionNormal;
 
     (void)ignored;
-    normal = triangle->normal;
     projectionNormal = &context->work->projectionNormal;
+    normal = triangle->normal;
     for (i = 0; i < 3; i++)
     {
         func_004c6c20(&sourceVertices[i], triangle->vertices[i], 1,
@@ -1291,11 +1295,11 @@ void* func_0019a420(void* ignored,
         return (void*)triangle;
     }
 
-    projected[0] = sourceVertices[0];
-    projected[1] = sourceVertices[1];
-    projected[2] = sourceVertices[2];
-    func_004c6c20(projected, projected, 3,
-                  &context->work->projectionMatrix);
+    intermediate[0] = sourceVertices[0];
+    intermediate[1] = sourceVertices[1];
+    intermediate[2] = sourceVertices[2];
+    func_004c6c20(projected, intermediate, 3,
+                  (RwMatrix*)((u8*)projectionNormal + 0x10));
     sourceVertices[0].x += normal.x * 1.5f;
     sourceVertices[0].y += normalY * 1.5f;
     sourceVertices[0].z += normalZ * 1.5f;
@@ -1332,13 +1336,15 @@ void* func_0019ab30(void* atomic, FldShadowAtomicContext* context)
 #pragma opt_loop_invariants on
 /* W377: adding opt_lifetimes on to the existing opt_loop_invariants scope improves func_0019ab80 (nd1126 -> nd1115; object 1820/1840). */
 #pragma opt_lifetimes on
+/* W417: kept the mixed float/integer declaration order used by the two calls in func_0019b2b0; this reduces func_0019ab80 nd1115 -> nd1101 without changing its 1820/1840-byte size. */
+/* W417 negative: adding a local projectionMatrix assignment to this interleaved candidate raised nd to 1131; rejected. */
 // FUN_0019ab80 NONMATCHING
-u32 func_0019ab80(f32 alpha,
-                  f32 projectionHalf,
-                  RwCamera* camera,
+u32 func_0019ab80(RwCamera* camera,
                   RwRaster* raster,
                   s32 drawField,
                   const RwV3d* position,
+                  f32 alpha,
+                  f32 projectionHalf,
                   u32 depthAlpha,
                   FldShadowProjectionWork* work)
 {
@@ -1747,16 +1753,16 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
                         mdlGetMatrix(shadow->model)->pos.z -
                         shadow->projectionDistance;
                     func_0019ab80(
-                        1.0f, shadow->projectionDistance / 2.0f,
-                        shadow->camera, shadow->raster, 0, projectionBounds, 0,
+                        shadow->camera, shadow->raster, 0, projectionBounds,
+                        1.0f, shadow->projectionDistance / 2.0f, 0,
                         (FldShadowProjectionWork*)shadow->unk_48);
                 }
                 else
                 {
                     position = mdlGetMatrix(shadow->model)->pos;
                     func_0019ab80(
-                        1.0f, shadow->projectionDistance / 2.0f,
-                        shadow->camera, shadow->raster, 1, &position, 0,
+                        shadow->camera, shadow->raster, 1, &position,
+                        1.0f, shadow->projectionDistance / 2.0f, 0,
                         (FldShadowProjectionWork*)shadow->unk_48);
                 }
             }

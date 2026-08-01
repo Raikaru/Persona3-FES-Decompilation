@@ -2,6 +2,9 @@
 /* FUSION_GLOBALS */
 extern int *piGpffffb98c;
 typedef int (*code)(...);
+u32 FUN_0040ec50(float param_1,int param_2,u32 param_3,u32 param_4,
+                 u32 param_5,u8 *param_6,u32 param_7,int param_8,code param_9,
+                 u32 param_10);
 /* FUSION_EXACT_PROTOS */
 u32 FUN_003c8b50();
 extern void FUN_003c9240(int *);
@@ -2031,6 +2034,7 @@ scale_y_done_ca780:
 #pragma pop
 #define FUN_003ca780(...) fclMiscCa780Call(__VA_ARGS__)
 #undef FUN_003ca960
+// W418 negative: 24 declaration/prototype permutation probes left nd438/obj856 unchanged (window 864); neutral and rejected.
 // FUN_003CA960 NONMATCHING
 
 
@@ -2060,9 +2064,9 @@ void FUN_003ca960(int param_1)
 
   
 
-  pfVar2 = (float *)0x8;
-
   pfVar3 = &stackPair.vec.x;
+
+  pfVar2 = (float *)0x8;
 
   if (pfVar3 != (float *)0x0) {
 
@@ -2100,7 +2104,7 @@ void FUN_003ca960(int param_1)
     iVar8 = (int)(fGpffff80e0 * fVar7);
     if (*(char *)(param_1 + 0xe8) == '\0') {
 
-      lVar5 = (int)*(short *)(param_1 + 0x14) - (int)*(short *)(param_1 + 0x16);
+      lVar5 = (s16)(*(short *)(param_1 + 0x14) - *(short *)(param_1 + 0x16));
 
       iVar6 = param_1 + 0x70;
 
@@ -2550,15 +2554,15 @@ void FUN_003cb1f0(u64 param_1)
 
       FUN_00523ac8(auStack_18,&gp0xffffaa10,uVar4);
 
-      FUN_0040ec50(0,0x20e,199,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0,auStack_18,0,0x17,0x3cb050
+      FUN_0040ec50(0.0f,0x20e,199,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0,auStack_18,0,0x17,(code)0x3cb050,
 
-                  );
+                   (u32)piVar8);
 
       FUN_00523ac8(auStack_18,&gp0xffffaa14,piVar8[0x1b]);
 
-      FUN_0040ec50(0,0x264,0xfc,*(u16 *)((int)piVar8 + 0x12) | 0xff00,1,auStack_18,1,0x1b,
+      FUN_0040ec50(0.0f,0x264,0xfc,*(u16 *)((int)piVar8 + 0x12) | 0xff00,1,auStack_18,1,0x1b,
 
-                   0x3cb050);
+                   (code)0x3cb050,(u32)piVar8);
 
     }
 
@@ -2619,15 +2623,15 @@ void FUN_003cb1f0(u64 param_1)
 
       FUN_00523ac8(auStack_10,&gp0xffffaa10,uVar4);
 
-      FUN_0040ec50(0,0x20e,199,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0,auStack_10,0,0x17,0x3cb050
+      FUN_0040ec50(0.0f,0x20e,199,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0,auStack_10,0,0x17,(code)0x3cb050,
 
-                  );
+                   (u32)piVar8);
 
       FUN_00523ac8(auStack_10,&gp0xffffaa14,piVar8[0x1b]);
 
-      FUN_0040ec50(0,0x264,0xfc,*(u16 *)((int)piVar8 + 0x12) | 0xff00,1,auStack_10,1,0x1b,
+      FUN_0040ec50(0.0f,0x264,0xfc,*(u16 *)((int)piVar8 + 0x12) | 0xff00,1,auStack_10,1,0x1b,
 
-                   0x3cb050);
+                   (code)0x3cb050,(u32)piVar8);
 
     }
 
@@ -3104,6 +3108,8 @@ void FUN_003ccc30(void)
 #pragma push
 /* W389 sweep: opt_propagation off measured nd799/obj1112 -> nd720/obj1108 (window 1120). */
 #pragma opt_propagation off
+// W418 negative: switch shape for the flags&2 dispatch measured nd720/1108 -> nd808/1128 (window 1120); over-window and rejected.
+// W418 negative: branch inversion for the flags&2 dispatch was nd720/1108 -> nd720/1108; neutral and rejected.
 // FUN_003CCC40 NONMATCHING
 
 
@@ -3187,6 +3193,7 @@ void FUN_003cd0a0(void)
 #pragma push
 /* W389 sweep: opt_propagation off measured nd916/obj1248 -> nd800/obj1244 (window 1248). */
 #pragma opt_propagation off
+// W418 negative: branch inversion for the flags&2 dispatch was nd800/1244 -> nd800/1244; neutral and rejected.
 // FUN_003CD0B0 NONMATCHING
 
 
@@ -3286,6 +3293,7 @@ void FUN_003cd590(void)
 #pragma push
 /* W389 sweep: opt_propagation off measured nd799/obj1112 -> nd720/obj1108 (window 1120). */
 #pragma opt_propagation off
+// W418 negative: branch inversion for the flags&2 dispatch was nd720/1108 -> nd720/1108; neutral and rejected.
 // FUN_003CD5A0 NONMATCHING
 
 
@@ -3390,6 +3398,7 @@ u32 FUN_003cda00(void)
 // Residual +48..+60 is aggregate load/store scheduling; +216..+244 is JAL setup order.
 // Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
 // W389 hand tests: translation z volatile load held nd12; volatile handle sequencing regressed nd12 -> nd16; both reverted.
+// W414 argument-order probes: hoisting arg3 pointer before/after argument locals left nd12 unchanged; explicit handle/pointer locals regressed nd12 -> nd16; reverted.
 #pragma push
 /* W389 sweep: opt_propagation off measured nd20/obj320 -> nd12/obj320 (window 320). */
 #pragma opt_propagation off
@@ -3816,6 +3825,8 @@ void FUN_003ce180(u64 param_1, f32 *param_2, int param_3)
 
 
 
+// W418 negative: appending direct FUN_003cea50((u16 *)iVar9) measured nd1233/obj1956 -> nd1240/obj1968 (window1968); worsened and filled the window, reverted.
+// W418 probe setup: appended call without a forward declaration failed undefined-identifier compilation; macro-active prototype failed declaration syntax; no measurement.
 // FUN_003CE2A0 NONMATCHING
 u64 FUN_003ce2a0(u64 param_1)
 
@@ -4863,6 +4874,7 @@ s32 fclCombine003cf630(void)
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd378/obj524 -> nd339/obj520 (window 560). */
 #pragma opt_lifetimes on
+/* W416 width audit: retail offsets 0x40/0x68/0x6c use 0x10 extension shifts; ours' corresponding pairs are at 0x48/0x4c and 0x70/0x74 with the same 0x10 shifts. Existing s16 sVar4 and (short)iVar6 casts already encode the candidate width; no edit was justified. */
 // FUN_003CF6C0 NONMATCHING
 
 
@@ -5014,6 +5026,7 @@ s16 fclCombine003cf8f0(s32 param_1)
     }
     return -1;
 }
+// W414 MIXED probes: sVar2 u8/u16/s32 widened nd26 -> nd121; direct byte/cast and named-OR assignments measured nd118/119 or unchanged; reverted.
 // FUN_003CF960 NONMATCHING
 
 

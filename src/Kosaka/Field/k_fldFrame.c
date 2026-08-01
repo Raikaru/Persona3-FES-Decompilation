@@ -2139,11 +2139,11 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
                 dist = func_004c69f0(&diff, &diff);
                 if (dist >= 97.0f) continue;
-                if (func_002ff790_k_fldFrame_void(*(void**)((u8*)gridEntry + 0x48)) != NULL)
-                    continue;
-
                 moveCount = func_001b0220(*(void**)((u8*)gridEntry + 0x170));
                 if (moveCount != 0) continue;
+
+                if (func_002ff790_k_fldFrame_void(*(void**)((u8*)gridEntry + 0x48)) != NULL)
+                    continue;
                 if (*(u32*)((u8*)gridEntry + 0x48) == 0) continue;
 
                 {
@@ -3931,6 +3931,7 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
     return task;
 }
 
+// Replacing both 12-byte typed memcpy calls with direct RwV3d stores removes the retail-extra calls but worsens normalized_diff 363 -> 379 (object 784 -> 792, window 800); retain typed helpers (measured W414).
 // FUN_001AFA20 NONMATCHING
 u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 {

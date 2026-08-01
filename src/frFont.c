@@ -168,6 +168,12 @@ extern u64 FUN_003b0030_u64(u64 param_1);
 u64 FUN_003b0170(u64 param_1);
 void FUN_003b01d0(int param_1,int param_2);
 int FUN_003b03a0(void);
+#pragma alias FUN_003b03a0_typed FUN_003b03a0
+extern u16 *FUN_003b03a0_typed(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
+#pragma alias FUN_003b1a10_typed FUN_003b1a10
+extern u32 FUN_003b1a10_typed(u32 param_1);
+#pragma alias FUN_003b1a40_typed FUN_003b1a40
+extern u32 FUN_003b1a40_typed(u32 param_1);
 void FUN_003b0430(int param_1,u32 param_2);
 #pragma alias FUN_003b0430_typed FUN_003b0430
 extern void FUN_003b0430_typed(int param_1,u32 param_2);
@@ -925,6 +931,7 @@ int FUN_003b03a0(void)
 }
 #define FUN_003b03a0(...) ((int (*)(...))FUN_003b03a0)(__VA_ARGS__)
 #undef FUN_003b0430
+/* W415 typed-call census closure: nd 230 -> 211, object 396/400 -> 372/400. */
 // FUN_003B0430 NONMATCHING
 
 
@@ -980,11 +987,11 @@ void FUN_003b0430(int param_1,u32 param_2)
 
     }
 
-    uVar5 = FUN_003b1a10(*(u8 *)(param_1 + 0x15));
+    uVar5 = FUN_003b1a10_typed(*(u8 *)(param_1 + 0x15));
 
-    uVar6 = FUN_003b1a40(*(u8 *)(param_1 + 0x15));
+    uVar6 = FUN_003b1a40_typed(*(u8 *)(param_1 + 0x15));
 
-    puVar3 = (u16 *)FUN_003b03a0(uVar5,uVar6,unaff_s3,1);
+    puVar3 = FUN_003b03a0_typed(uVar5,uVar6,unaff_s3,1);
 
     *puVar3 = (short)param_2;
 
@@ -1192,6 +1199,7 @@ LAB_003b095c:
 #pragma opt_common_subs off
 /* W340 loop probe: opt_lifetimes on; without nd=337/object=564, with nd=336/object=564; window=576. */
 #pragma opt_lifetimes on
+/* W417 CONCAT11 probes: direct, whole-cast, second-operand-cast, first-operand-cast, and multiply forms regressed nd=285/object=572 to nd=289/object=572; shift-cast form regressed to nd=306/object=576. Declaration orders J-M with plain arithmetic reached nd=284/object=572; the J order is retained below. */
 // FUN_003B0970 NONMATCHING
 
 
@@ -1204,6 +1212,8 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
   u32 uVar2;
 
+  u32 uVar7;
+
   int iVar3;
 
   int lVar4;
@@ -1211,8 +1221,6 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
   u16 uVar5;
 
   int iVar6;
-
-  u32 uVar7;
 
   int iVar8;
 
@@ -1274,7 +1282,7 @@ processFont:
 
         uVar7 = uVar7 + 1;
 
-        uVar5 = CONCAT11(bVar1,*(u8 *)((int)param_1 + uVar7));
+        uVar5 = ((u16)bVar1 << 8) | *(u8 *)((int)param_1 + uVar7);
 
       }
 
@@ -1903,6 +1911,12 @@ void FUN_003b1330(void *param_1,u32 param_2)
 /* W389 pragma: opt_loop_invariants on; without nd=375/object=944, with nd=364/object=936; window=944. */
 #pragma push
 #pragma opt_loop_invariants on
+/* W415 typed and pointer-typed probes for FUN_003b0f50 both regressed nd 364 -> 470; old-style direct alias retained at nd 364 -> 467, object 928/944. */
+// W417 rejected census closure: adding 0x003b0f50 before 0x003b38f0 closed 5 -> 6 calls,
+// but baseline nd 364/object 936/window 944 (38.9%) -> direct-alias closure nd 467/object 928/window 944 (50.3%).
+// The 8-byte shrink shows the alias replaced the compiler-inlined body with an out-of-line call;
+// reverted to the old-style call until the frame or shape is fixed.
+/* W417 switch probe: ascending cases 0xf214, 0xf215, 0xf246, 0xf247 matched retail body layout and improved nd=364/object=936 to nd=310/object=944; swapping bVar5/iVar9 declarations reached nd=305/object=944. Other declaration orders stayed at or above nd=305; parameter-width probes were unchanged or regressed (u8/char param_2 exceeded the 944-byte window). */
 // FUN_003B1360 NONMATCHING
 
 
@@ -1920,7 +1934,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
   int iVar4;
 
-  u8 bVar5;
+  int iVar9;
 
   int iVar6;
 
@@ -1930,7 +1944,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
   int iVar8;
 
-  int iVar9;
+  u8 bVar5;
 
   
 
@@ -2024,7 +2038,21 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
         iVar8 = *(int *)(puVar2 + 0x30);
 
-        if (iVar8 == 0xf247) {
+        switch (iVar8) {
+
+        case 0xf214:
+          if (bVar5 && (0 < *(int *)(puVar2 + 0x3c))) {
+
+          *(int *)(puVar2 + 0x3c) = *(int *)(puVar2 + 0x3c) + -1;
+
+          bVar5 = 0;
+
+        
+          }
+
+          break;
+
+        case 0xf215:
 
           lVar7 = FUN_0010a500(2);
 
@@ -2048,9 +2076,10 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
           }
 
-        }
+        
+          break;
 
-        else if (iVar8 == 0xf246) {
+        case 0xf246:
 
           iVar8 = *(int *)(puVar2 + 0x3c);
 
@@ -2062,9 +2091,10 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
           }
 
-        }
+        
+          break;
 
-        else if (iVar8 == 0xf215) {
+        case 0xf247:
 
           lVar7 = FUN_0010a500(2);
 
@@ -2088,13 +2118,8 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
           }
 
-        }
-
-        else if (((iVar8 == 0xf214) && (bVar5)) && (0 < *(int *)(puVar2 + 0x3c))) {
-
-          *(int *)(puVar2 + 0x3c) = *(int *)(puVar2 + 0x3c) + -1;
-
-          bVar5 = 0;
+        
+          break;
 
         }
 
@@ -2586,9 +2611,11 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
   int scan;
   int firstY;
   int limit;
+  int secondLimit;
   int lineWidth;
   int xDelta;
   int halfWidth;
+  int scaledHalfWidth;
 
   if (line == NULL) {
     return;
@@ -2619,12 +2646,14 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 
     xDelta = x - line->x;
     halfWidth = totalWidth / 2;
+    scaledHalfWidth = halfWidth * 0x10;
+    secondLimit = firstY + 100;
     while (line != NULL) {
-      if (line->y >= limit) {
+      if (line->y >= secondLimit) {
         break;
       }
       line->x += xDelta;
-      line->x -= halfWidth * 0x10;
+      line->x -= scaledHalfWidth;
       line->y += yDelta;
       line = line->next;
     }
@@ -3006,7 +3035,7 @@ void FUN_003b22a0(u32 *param_1)
 
   
 
-  if ((param_1[5] != 0) && (*(int *)(param_1[5] + 0x1c) == 0)) {
+  if ((param_1[5] == 0) || (*(int *)(param_1[5] + 0x1c) == 0)) {
 
     *(u8 *)(param_1 + 7) = 0;
 

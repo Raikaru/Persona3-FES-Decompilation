@@ -23,6 +23,10 @@ extern u32 FUN_005318f8_u32(u64);
 
 
 #pragma optimization_level 2
+/* W415 probes rejected: signed-high/rounded correction variants compiled
+ * to nd211-222 with objects 296-320/264, exceeding the retail window;
+ * baseline remains nd176 at 248/264.
+ */
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)
 

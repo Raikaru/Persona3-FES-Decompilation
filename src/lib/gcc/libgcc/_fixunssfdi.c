@@ -23,6 +23,10 @@ extern u64 FUN_00530da0_u64(u32);
 
 
 
+/* W415 probes rejected: typed f32 input plus canonical signed-high/rounded
+ * correction compiled to nd126 (188/272), worse than baseline nd116
+ * (192/272); signed/rounded variants reached nd149-163 without a win.
+ */
 // FUN_0052EDA0 NONMATCHING
 #pragma optimization_level 3
 long FUN_0052eda0(void)

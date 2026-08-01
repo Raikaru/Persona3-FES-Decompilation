@@ -183,7 +183,7 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     work->ec[0] = ec;
     work->ecCount = work->pcCount;
     tasks = D_00875A40;
-    for (i = 0; i < 3 && tasks[i] != NULL; ++i)
+    for (i = 0; tasks[i] != NULL && i < 3; ++i)
     {
     }
     if (i >= 3)

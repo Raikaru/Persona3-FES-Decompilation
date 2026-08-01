@@ -494,6 +494,8 @@ KwlnTask* bpRootCreateTasks(KwlnTask* parent)
     return task;
 }
 
+/* W415 census negative: corrected full-project census is UNRESOLVED (retail-only 0x001FFF40; candidate extra K_Assert plus unmappable static panelMiscWork); no safe call-target edit was established. */
+/* W418 negative probe: replacing extra K_Assert with retail-only FUN_001FFF40 call gave nd326/556B -> 322/532B; rate worsened, so reverted. */
 // FUN_001FD890 NONMATCHING
 void* FUN_001fd890(KwlnTask* task)
 {

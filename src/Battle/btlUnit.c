@@ -15,7 +15,7 @@
 typedef struct BtlUnitPacket002843e0
 {
     BtlUnit* unit; // 0x00
-    s16 unk_4;     // 0x04
+    u16 unk_4;     // 0x04
     u8 unkData[0x02];
 } BtlUnitPacket002843e0;
 extern const u8 DAT_00693290[];
@@ -1517,6 +1517,7 @@ void btlUnitInitMoveToUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
+/* W415: swapped mutually exclusive no-rotation branch layout; final call census matches retail (nd 392 -> 396, object 872/912; offset movement raises nd). */
 // FUN_00281ad0 NONMATCHING
 u32 btlUnitUpdateMoveToUnitPacket(void* work)
 {
@@ -1567,7 +1568,17 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
         }
         else
         {
-            if (packet->move.flags & 0x40)
+            if ((packet->move.flags & 0x40) == 0)
+            {
+                scaledCenterD.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenterD.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenterD.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenterD, &scaledCenterD, 1, &targetUnit->rot);
+                targetPos.x = targetUnit->pos.x + rotatedCenterD.x;
+                targetPos.y = targetUnit->pos.y + rotatedCenterD.y;
+                targetPos.z = targetUnit->pos.z + rotatedCenterD.z;
+            }
+            else
             {
                 bounds = func_00288da0(targetUnit, 0);
                 scaledCenterC.x = bounds->centerX * targetUnit->scale;
@@ -1577,16 +1588,6 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
                 targetPos.x = targetUnit->pos.x + rotatedCenterC.x;
                 targetPos.y = targetUnit->pos.y + rotatedCenterC.y;
                 targetPos.z = targetUnit->pos.z + rotatedCenterC.z;
-            }
-            else
-            {
-                scaledCenterD.x = targetUnit->sphereCenter.x * targetUnit->scale;
-                scaledCenterD.y = targetUnit->sphereCenter.y * targetUnit->scale;
-                scaledCenterD.z = targetUnit->sphereCenter.z * targetUnit->scale;
-                RtQuatTransformVectors(&rotatedCenterD, &scaledCenterD, 1, &targetUnit->rot);
-                targetPos.x = targetUnit->pos.x + rotatedCenterD.x;
-                targetPos.y = targetUnit->pos.y + rotatedCenterD.y;
-                targetPos.z = targetUnit->pos.z + rotatedCenterD.z;
             }
         }
 
@@ -2654,6 +2655,7 @@ void func_00283c50(f32 speed, BtlUnit* unit)
     }
 }
 
+/* W416 width audit: retail offset 0x98 has a 0x10 extension pair; ours has no extension pair at 0x98 (the candidate is a layout mismatch, not a confirmed ours shift-width disagreement). Category's s32 declaration is therefore retained: retyping to s16 measured nd263/object476 (window464, rate 0.552521 vs baseline 0.513043), u16 measured nd276/object476 (rate 0.579832), and complete (s16) casts at compare/index uses measured nd275/object468 (rate 0.587607); all moved away from the window/regressed, so the width is already correct for the retained source. */
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
@@ -2906,16 +2908,19 @@ void btlUnitInit002843e0Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284350 NONMATCHING
+/* W414: packet->unk_4 is an unsigned halfword (retail lhu at +0x04), and
+ * loading it only at the call keeps packet in v1 while unit stays in a0;
+ * this yields nd0 at 108/112.  The BtlUnit field at 0x9e8 is already s8,
+ * matching retail's signed lb; changing it was unnecessary. */
+// FUN_00284350
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
     BtlUnitPacket002843e0* packet;
-    s16 frame;
+    u16 frame;
     BtlUnit* unit;
     s16 activeAnimation;
 
     packet = (BtlUnitPacket002843e0*)work;
-    frame = packet->unk_4;
     unit = packet->unit;
 
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
@@ -2929,6 +2934,7 @@ u32 btlUnitUpdate002843e0Packet(void* work)
 
     if (unit->unk_9e0 != activeAnimation)
     {
+        frame = packet->unk_4;
         btlUnitAnimate(unit, unit->unk_9e0, frame,
                        unit->unk_9e4, unit->unk_9e8);
     }

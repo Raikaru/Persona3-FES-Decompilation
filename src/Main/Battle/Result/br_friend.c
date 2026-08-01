@@ -232,12 +232,12 @@ void sflResult001f9e90(u16 owner, s32 exp)
     for (i = 0; i < skillCount; i++) {
         u8* skill = iGpffffb740 + (persona->id - 0xc0) * 0x26e +
                     4 + skillOffset * 4 + i * 4;
-        if (skill[1] == 2) {
-            FUN_005225a8(0x684be0, *(u16*)(skill + 2));
-            func_001768e0(persona, *(u16*)(skill + 2));
-        } else if (skill[1] == 1) {
+        if (skill[1] == 1) {
             FUN_005225a8(0x684bc8, *(u16*)(skill + 2));
             func_00176840(persona, *(u16*)(skill + 2));
+        } else if (skill[1] == 2) {
+            FUN_005225a8(0x684be0, *(u16*)(skill + 2));
+            func_001768e0(persona, *(u16*)(skill + 2));
         }
     }
     FUN_005225a8(0x684bf8, owner, level);
@@ -943,156 +943,79 @@ void func_001fa4f0(u32 param_1)
 
 
 u32 func_001faea0(void)
-
-
-
 {
-
   u8 uVar1;
-
   u16 uVar2;
-
   int lVar3;
-
   int lVar4;
-
   int iVar5;
-
   u32 uVar6;
-
-  u8 auStack_8 [8];
-
-  
+  u8 auStack_8[8];
 
   uVar2 = FUN_0035ed20(0);
-
   lVar3 = FUN_00174800(uVar2);
-
   lVar4 = FUN_0017d800();
-
   if ((lVar4 == 0) && (lVar3 != 0)) {
-
     for (uVar6 = 0; (int)uVar6 < 5; uVar6 = uVar6 + 1) {
-
       uVar1 = FUN_00173b00(lVar3,uVar6 & 0xffff);
-
       auStack_8[uVar6] = uVar1;
-
     }
-
   }
-
   iVar5 = (int)lVar3;
-
   switch(uVar2) {
-
-  default:
-
-    FUN_0019d3f0(0x684ba8,0x2ca);
-
-    break;
-
-
   case 1:
-
     lVar4 = FUN_0017d800();
-
     if ((lVar4 != 0) && (*(u16 *)(iVar5 + 2) == 0xc3)) {
-
       FUN_00174e20(1);
-
       FUN_00175130(1);
-
       FUN_00174b40(*(u16 *)(iVar5 + 2));
-
     }
-
     break;
-
   case 2:
-
     if (*(u16 *)(iVar5 + 2) == 0xc0) {
-
       func_001fb130(uVar2,0xc1);
-
     }
-
     break;
-
   case 3:
-
     if (*(u16 *)(iVar5 + 2) == 0xc2) {
-
       func_001fb130(uVar2,0xc3);
-
     }
-
     break;
-
   case 4:
-
     if (*(u16 *)(iVar5 + 2) == 0xc4) {
-
       func_001fb130(uVar2,0xc5);
-
     }
-
     break;
-
   case 5:
-
     if (*(u16 *)(iVar5 + 2) == 0xc6) {
-
       func_001fb130(uVar2,199);
-
     }
-
     break;
-
   case 6:
-
     if (*(u16 *)(iVar5 + 2) == 200) {
-
       func_001fb130(uVar2,0xc9);
-
     }
-
     break;
-
   case 7:
-
     if (*(u16 *)(iVar5 + 2) == 0xca) {
-
       func_001fb130(uVar2,0xcb);
-
     }
-
     break;
-
   case 8:
-
     if (*(u16 *)(iVar5 + 2) == 0xcc) {
-
       func_001fb130(uVar2,0xcd);
-
     }
-
+  default:
+    FUN_0019d3f0(0x684ba8,0x2ca);
+    break;
   }
-
   lVar4 = FUN_0017d800();
-
   if ((lVar4 == 0) && (lVar3 != 0)) {
-
     for (uVar6 = 0; (int)uVar6 < 5; uVar6 = uVar6 + 1) {
-
       FUN_00173b60(uVar2,uVar6 & 0xffff,auStack_8[uVar6]);
-
     }
-
   }
-
   return 1;
-
 }
 #pragma opt_common_subs reset
 #pragma pop

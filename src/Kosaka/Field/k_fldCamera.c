@@ -815,6 +815,7 @@ request:
     return (HCdvd*)(uintptr_t)1;
 }
 
+// Negative probe: all 24 permutations of cmr/fldCamera/camera/cameraFrame declarations were neutral at nd211, object 1212/1248 (W418).
 // FUN_001d6bc0 NONMATCHING
 u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
                   RwV3d* posOffset, f32* xzDeadZone, f32* yDeadZone)
@@ -834,11 +835,9 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(cmrRequest) == false)
+        if (H_Cdvd_IsFileLoaded(cmrRequest))
         {
-            return false;
-        }
-        cmr = (CmrFile*)cmrRequest->fileMemory;
+            cmr = (CmrFile*)cmrRequest->fileMemory;
         if (matrix != NULL)
         {
             *matrix = cmr->mat;
@@ -881,18 +880,17 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
         }
         H_Cdvd_Destroy(cmrRequest);
         return true;
+        }
+        return false;
     }
 
     fieldIds = PTR_DAT_007cd540;
     sprintf(path, "field/pack/f%03d_%03d.CMR",
             (s32)fieldIds[0], (s32)fieldIds[1]);
     cmr = (CmrFile*)H_Cdvd_CacheFindFile(path, &fileSize);
-    if (cmr == NULL)
+    if (cmr != NULL)
     {
-        return true;
-    }
-
-    if (matrix != NULL)
+        if (matrix != NULL)
     {
         *matrix = cmr->mat;
         *fov = cmr->fov;
@@ -932,6 +930,7 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
         }
     }
 
+    }
     return true;
 }
 
@@ -1329,15 +1328,15 @@ block_33:
 // FUN_001d7b70 NONMATCHING
 DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 {
-    s32 temp_3;
-    s32 temp_6;
+    void* temp_8;
     s32 var_10;
-    s32 var_11;
     s32 var_4;
-    s32 var_9;
     s32 pcCount;
     s32 ecCount;
-    void* temp_8;
+    s32 var_9;
+    s32 var_11;
+    s32 temp_3;
+    s32 temp_6;
     void* ecBase;
 
     temp_8 = task->workData;

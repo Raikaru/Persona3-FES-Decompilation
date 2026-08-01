@@ -73,8 +73,12 @@ extern void FUN_003196f0_ea20(int,u32);
 extern void FUN_005225a8_eaa0(const char *,...);
 #pragma alias FUN_00388000_d1c0 FUN_00388000
 extern void FUN_00388000_d1c0();
+#pragma alias FUN_00388000_d1c0_typed FUN_00388000
+extern void FUN_00388000_d1c0_typed(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 param_6,u32 *param_7,u32 param_8);
 #pragma alias FUN_003b91c0_a5c0 FUN_003b91c0
 extern u64 FUN_003b91c0_a5c0(float,u16,u32,u32,u32,u32,u32);
+#pragma alias FUN_003b89f0_evt_f32 FUN_003b89f0
+extern u32 FUN_003b89f0_evt_f32(f32 param_1,u16 param_2,char *param_3,u32 param_4);
 
 extern char DAT_006a1820[];
 #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
@@ -96,6 +100,8 @@ extern u32 kwlnTaskExists_d010(u32);
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 int FUN_003983e0(int param_1,int param_2);
+#pragma alias FUN_003983e0_call FUN_003983e0
+extern int FUN_003983e0_call(int param_1,int param_2);
 u32 FUN_00398530(int param_1);
 void FUN_00399830(int param_1);
 u32 FUN_003998b0(int param_1);
@@ -501,7 +507,7 @@ u32 FUN_00398530(int param_1)
 
         FUN_003bb1d0(*(u16 *)(puVar3 + 0x25),1,1,0xd,6);
 
-        FUN_003b89f0(fVar20,*(u16 *)(puVar3 + 0x25),acStack_140,0);
+        FUN_003b89f0_evt_f32(fVar20,*(u16 *)(puVar3 + 0x25),acStack_140,0);
 
         FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 0x25),0,1,0,1,0);
 
@@ -599,7 +605,7 @@ u32 FUN_00398530(int param_1)
 
   case 0xb:
 
-    uVar9 = FUN_003983e0(0,*(u8 *)(puVar3 + 4));
+    uVar9 = FUN_003983e0_call(0,*(u8 *)(puVar3 + 4));
 
     FUN_0039f210(puVar15,uVar9,0xffffffffffffffff,0xffffffffffffffff);
 
@@ -709,7 +715,7 @@ LAB_00398d80:
 
     if (iVar12 == 2) {
 
-      unaff_s1 = FUN_003983e0(3,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(3,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,5,0,0,0);
 
@@ -723,7 +729,7 @@ LAB_00398d80:
 
     else if (iVar12 == 1) {
 
-      unaff_s1 = FUN_003983e0(2,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(2,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,5,0,0,0);
 
@@ -739,7 +745,7 @@ LAB_00398d80:
 
       puVar3[0x20] = 1;
 
-      unaff_s1 = FUN_003983e0(1,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(1,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,7,0,0,0);
 
@@ -951,7 +957,7 @@ LAB_00398d80:
 
   case 0x1f:
 
-    uVar9 = FUN_003983e0(0,*(u8 *)(puVar3 + 4));
+    uVar9 = FUN_003983e0_call(0,*(u8 *)(puVar3 + 4));
 
     FUN_0039f210(puVar15,uVar9,0xffffffffffffffff,0xffffffffffffffff);
 
@@ -1057,7 +1063,7 @@ LAB_00399518:
 
     if (iVar12 == 2) {
 
-      unaff_s1 = FUN_003983e0(3,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(3,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,5,0,0,0);
 
@@ -1067,7 +1073,7 @@ LAB_00399518:
 
     else if (iVar12 == 1) {
 
-      unaff_s1 = FUN_003983e0(2,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(2,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,5,0,0,0);
 
@@ -1079,7 +1085,7 @@ LAB_00399518:
 
       puVar3[0x20] = 1;
 
-      unaff_s1 = FUN_003983e0(1,*(u8 *)(puVar3 + 4));
+      unaff_s1 = FUN_003983e0_call(1,*(u8 *)(puVar3 + 4));
 
       FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 2),0,7,0,0,0);
 
@@ -4435,8 +4441,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.515625f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 137.0f;
     size.x = 367.0f;
@@ -4445,8 +4451,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.515625f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 504.0f;
     size.x = 10.0f;
@@ -4455,8 +4461,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.578125f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 0) {
       color.bytes[1] = 0;
@@ -4475,8 +4481,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.0078125f;
     uv1.x = 0.83203125f;
     uv1.y = 0.2109375f;
-    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 1) {
       color.bytes[1] = 0;
@@ -4495,8 +4501,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.21875f;
     uv1.x = 0.625f;
     uv1.y = 0.421875f;
-    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 341.0f;
     position.y = 214.0f;
@@ -4506,8 +4512,8 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.46484375f;
     uv1.y = 0.6328125f;
-    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
-                      *(u32 *)(param_1 + 0x14), &color.value, 0);
+    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+                            *(u32 *)(param_1 + 0x14), &color.value, 0);
   }
 }
 #define FUN_0039d1c0(...) ((void (*)(...))FUN_0039d1c0)(__VA_ARGS__)
@@ -5453,6 +5459,7 @@ u32 FUN_0039e6f0(void)
 }
 #define FUN_0039e6f0(...) ((u32 (*)(...))FUN_0039e6f0)(__VA_ARGS__)
 #undef FUN_0039e700
+// W414 direct iVar1->entries[i] loop probes raised FUN_0039e700 nd17 -> nd37; retained cached entries form.
 // FUN_0039E700 NONMATCHING
 
 
@@ -5562,6 +5569,7 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
   int iVar4;
 
   u16 *puVar5;
+  u16 item;
 
   u8 auStack_40 [64];
 
@@ -5612,16 +5620,17 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
         iVar4 = param_4 * 2 + param_1;
 
         puVar5 = (u16 *)(iVar4 + 0x7b8);
+        item = *(u16 *)(iVar4 + 0x7b8);
 
-        lVar3 = FUN_00316910(5,*(u16 *)(iVar4 + 0x7b8),0);
+        lVar3 = FUN_00316910(5,item,0);
 
         if (lVar3 == 0) {
           iVar4 = param_4 * 4 + param_1;
-          FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(iVar4 + 0x790),
+          FUN_00319390(param_2,param_3 & 0xffff,5,item,*(u32 *)(iVar4 + 0x790),
                        *(u32 *)(iVar4 + 0x7cc),1);
         }
         else {
-          FUN_00319490(param_2,param_3 & 0xffff,5,*puVar5,0);
+          FUN_00319490(param_2,param_3 & 0xffff,5,item,0);
         }
 
         FUN_003196d0(param_2,param_3 & 0xffff,param_5);
@@ -5678,6 +5687,7 @@ done:
 }
 #define FUN_0039ea20(...) ((void (*)(...))FUN_0039ea20)(__VA_ARGS__)
 #undef FUN_0039eaa0
+// W414 direct base->entries[index] loop probe raised FUN_0039eaa0 nd19 -> nd32; retained cached entries form.
 // FUN_0039EAA0 NONMATCHING
 
 

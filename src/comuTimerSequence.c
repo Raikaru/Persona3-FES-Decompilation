@@ -2006,9 +2006,9 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
   s32 lVar4;
 
-  u32 uVar1;
-
   u32 uVar2;
+
+  u32 uVar1;
 
   s32 lVar3;
 

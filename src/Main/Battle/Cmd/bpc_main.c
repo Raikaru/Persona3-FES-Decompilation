@@ -274,6 +274,7 @@ LAB_0024307c:
 
 
 
+/* W418 width negatives: FUN_00243150 iVar10 s16 nd2467/3996B -> 2559/4036B; iVar11 s16 -> 2574/4012B. FUN_002441B0 iVar10 s16 nd872/1464B -> 917/1512B (over 1472B), iVar4 s16 -> 965/1556B (over), iVar6 s16 -> 931/1500B (over). */
 // FUN_00243150 NONMATCHING
 void FUN_00243150(void)
 
@@ -1070,6 +1071,7 @@ void FUN_002453d0(u16 param_1)
 /* W389 volatile staging of calc/skill and mode/skill loads was neutral at nd8/1264B; reverted. */
 #pragma push
 #pragma opt_dead_assignments off
+/* W414 argument-order probes: literal-first call stayed nd8/1264B; typed prototype regressed nd601/1268B (over window); schedule-on regressed nd736/1076B (over window). Reverted; residual is the two-argument evaluation-order floor. */
 // FUN_00245420 NONMATCHING
 void FUN_00245420(uint *param_1,uint param_2)
 
@@ -1390,6 +1392,7 @@ void FUN_00245e50(void)
 
 
 /* W389 measured opt_propagation off: nd7126/9636B -> nd6938/9468B (window 9712B). */
+/* W418 width negatives: FUN_00245EA0 iVar5 s16 nd6938/9468B -> 7152/9636B; iVar12 s16 -> 7325/9876B (over 9712B). */
 #pragma push
 #pragma opt_propagation off
 // FUN_00245EA0 NONMATCHING

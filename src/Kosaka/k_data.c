@@ -252,6 +252,7 @@ u32 K_Data_ChkFldBaseMdlStream()
     return mdlStreamRead(gFldBaseMdl) != false;
 }
 
+/* W415 census recheck: all nine relocations resolve to the same ordered retail targets; the reported callee discrepancy is an offset shift, not a wrong callee. */
 // FUN_001b7e60 NONMATCHING
 void* func_001b7e60(KwlnTask* task)
 {

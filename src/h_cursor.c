@@ -42,12 +42,12 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            globals = (f32*)DAT_00960088_abs;
+            globals = (f32*)rwGlobals_abs;
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
 
-                vertex->u.els.scrVertex.z = *globals - work->zOffset;
+                vertex->u.els.scrVertex.z = globals[0x22] - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
                 indexedWork = (HCursorWork*)((RwRGBA*)work + i);
                 vertex->u.els.color.r = (f32)indexedWork->colors[0].r;

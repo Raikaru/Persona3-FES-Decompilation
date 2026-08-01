@@ -340,6 +340,8 @@ void FUN_003a69d0(u32 *param_1);
 void FUN_003a6a10(int param_1);
 void FUN_003a6a40(u8 *param_1,long param_2);
 void FUN_003a6a80(int param_1,u16 param_2,u16 param_3);
+#pragma alias FUN_003a6a80_typed FUN_003a6a80
+extern void FUN_003a6a80_typed(int param_1,u16 param_2,u16 param_3);
 void FUN_003a6b00(u32 *param_1);
 void FUN_003a6b90(int param_1);
 #pragma alias FUN_003a6b90_direct FUN_003a6b90
@@ -352,7 +354,11 @@ void FUN_003a6e30(u32 *param_1);
 void FUN_003a7120(u32 *param_1);
 void FUN_003a7490(u32 *param_1);
 void FUN_003a7940(int param_1,int param_2);
+#pragma alias FUN_003a7940_typed FUN_003a7940
+extern void FUN_003a7940_typed(u32 *param_1,int param_2);
 u32 FUN_003a7a40(int param_1);
+#pragma alias FUN_003a7a40_typed FUN_003a7a40
+extern u32 FUN_003a7a40_typed(void);
 void FUN_003a7cb0(int param_1,int param_2);
 s16 FUN_003a7d60(int param_1);
 void FUN_003a7dd0(int param_1);
@@ -1267,6 +1273,7 @@ void itfMesMngDestroyHandle(s32 mesHandleIdx)
     }
 }
 // W409 addressing/raw-literal fixes: NONMATCHING nd 546 -> 539, object 844/864 -> 844/864.
+// W415 branch inversion restores retail call layout; nd 539 -> 539, object 844/864 -> 844/864.
 // FUN_003A30C0 NONMATCHING
 
 
@@ -1388,15 +1395,15 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
         lVar7 = FUN_003b1b00(0,puVar2[7]);
 
-        if (lVar7 < 0x69) {
+        if (lVar7 >= 0x69) {
 
-          FUN_003b1c90(0x5c0,puVar2[6],puVar2[7]);
+          FUN_003b0d70(puVar2[7],*puVar8,puVar2[6]);
 
         }
 
         else {
 
-          FUN_003b0d70(puVar2[7],*puVar8,puVar2[6]);
+          FUN_003b1c90(0x5c0,puVar2[6],puVar2[7]);
 
         }
 
@@ -2192,6 +2199,9 @@ u32 FUN_003a42c0(int param_1,u32 param_2)
 /* opt_common_subs off: measured nd 1076 -> 1075, object 1536/1584 -> 1536/1584. */
 #pragma opt_common_subs off
 // W409 addressing: NONMATCHING nd 1075 -> 954, object 1536/1584 -> 1512/1584.
+// W415 typed prototype closes the missing call; nd 954 -> 951, object 1512/1584 -> 1504/1584.
+// W417 rejected switch conversion for the param_2 7/6/5/4 chain; nd 951/object 1504 -> 1071/object 1512.
+// All six tested local declaration permutations stayed at nd 1071/object 1512, so the probe was reverted.
 // FUN_003A4360 NONMATCHING
 
 
@@ -2473,7 +2483,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 
     *puVar1 = *puVar1 & 0xff7fffff;
 
-    FUN_003a6a80(param_1,0x231,0x18b);
+    FUN_003a6a80_typed(param_1,0x231,0x18b);
 
   }
 
@@ -4781,6 +4791,10 @@ void FUN_003a6e30(u32 *param_1)
 /* opt_lifetimes on: measured nd 539 -> 536, object 876/880 -> 876/880. */
 #pragma opt_lifetimes on
 // W409 raw-literal relocation: NONMATCHING nd 536 -> 532, object 876/880 -> 876/880.
+// W417 rejected typed-call census closure: adding 0x003a5980 and 0x003a67e0 closed 12 -> 14 calls,
+// but baseline nd 532/object 876/window 880 (60.7%) -> closure nd 590/object 860/window 880 (68.6%).
+// The 16-byte shrink shows the aliases replaced compiler-inlined bodies with out-of-line calls;
+// reverted to old-style calls until the frame or shape is fixed.
 // FUN_003A7120 NONMATCHING
 
 
@@ -4954,6 +4968,8 @@ void FUN_003a7120(u32 *param_1)
 #define FUN_003a7120(...) ((void (*)(...))FUN_003a7120)(__VA_ARGS__)
 #pragma opt_lifetimes reset
 #undef FUN_003a7490
+// W415 typed-call census closure: nd 862 -> 857, object 1168/1200 -> 1144/1200.
+// W415 failed probe: FUN_003a7940_typed(int param_1, ...) rejected pointer argument; u32 * alias retained.
 // FUN_003A7490 NONMATCHING
 
 
@@ -4963,13 +4979,15 @@ void FUN_003a7490(u32 *param_1)
 
 {
 
-  int sVar1;
+  u32 *puVar11;
 
   u32 uVar2;
 
-  int lVar3;
-
   int sVar4;
+
+  int sVar1;
+
+  int lVar3;
 
   int iVar5;
 
@@ -4983,8 +5001,6 @@ void FUN_003a7490(u32 *param_1)
 
   u32 *puVar10;
 
-  u32 *puVar11;
-
   
 
   puVar11 = (u32 *)param_1;
@@ -4993,121 +5009,8 @@ void FUN_003a7490(u32 *param_1)
 
   sVar4 = puVar11[0x15] & 0xffff;
 
-  if (sVar4 == 4) {
-
-    if ((puVar11[0xc] == 0) || (0xb17 < (int)puVar11[10])) {
-
-      *(u16 *)(puVar11 + 0x15) = 0xffff;
-
-    }
-
-    else {
-
-      FUN_003a7940(param_1,0x40);
-
-    }
-
-  }
-
-  else if (sVar4 == 3) {
-
-    sVar4 = (puVar11[0x19] & 0xffff) + -0x10;
-
-    *(short *)(puVar11 + 0x19) = sVar4;
-
-    if (sVar4 < 1) {
-
-      *(u16 *)(puVar11 + 0x19) = 0;
-
-      *(u16 *)(puVar11 + 0x15) = 4;
-
-      *(u8 *)(puVar11 + 0x75) = 0;
-
-      *(u16 *)((int)puVar11 + 0x1d6) = 0;
-
-      *(u16 *)(puVar11 + 0x76) = 0;
-
-      *(u16 *)((int)puVar11 + 0x1da) = 0;
-
-      puVar11[0x77] = 0;
-
-      *(u16 *)(puVar11 + 0x78) = 0x238;
-
-      *(u16 *)((int)puVar11 + 0x1e2) = 0x18b;
-
-    }
-
-  }
-
-  else if (sVar4 == 2) {
-
-    if (((uVar2 & 0x38) == 0x20) && (lVar3 = FUN_003a7a40(), lVar3 == 1)) {
-
-      if (puVar11[0x13] != 0) {
-
-        FUN_003affd0();
-
-        puVar11[0x13] = 0;
-
-      }
-
-      iVar5 = *(int *)(puVar11[0x12] * 8 + puVar11[1] + 0x24);
-
-      sVar4 = *(short *)((int)puVar11 + 0x56);
-
-      sVar1 = *(short *)(iVar5 + 0x1a);
-
-      puVar10 = (u32 *)(iVar5 + 0x20);
-
-      for (lVar3 = 0; lVar3 < sVar1; lVar3++) {
-
-        if (lVar3 == sVar4) {
-
-          FUN_003b0e70(0x80);
-
-          FUN_003b2bf0(*puVar10,0,0xf541);
-
-          FUN_003b0e90(0x80);
-
-        }
-
-        puVar10 = puVar10 + 1;
-
-      }
-
-      if ((uVar2 & 0xc00) == 0x800) {
-
-        uVar2 = *puVar11;
-
-        *puVar11 = uVar2 & 0xfffff3ff;
-
-        *puVar11 = uVar2 & 0xfffff3ff | 0xc00;
-
-      }
-
-      *(u16 *)((int)puVar11 + 0x66) = 0;
-
-      *(u16 *)((int)puVar11 + 0x1d6) = 1;
-
-      *(u16 *)(puVar11 + 0x76) = 0x7f;
-
-      *(u16 *)((int)puVar11 + 0x1da) = 0;
-
-      uVar2 = *puVar11;
-
-      *puVar11 = uVar2 & 0xffffffc7;
-
-      *puVar11 = uVar2 & 0xffffffc7 | 0x28;
-
-      *(u16 *)(puVar11 + 0x19) = 0x80;
-
-      *(u16 *)(puVar11 + 0x15) = 3;
-
-    }
-
-  }
-
-  else if (sVar4 == 1) {
+  switch (sVar4) {
+  case 1:
 
     sVar4 = *(short *)((int)puVar11 + 0x12);
 
@@ -5173,7 +5076,7 @@ void FUN_003a7490(u32 *param_1)
 
       else {
 
-        FUN_003a7940(param_1,-0x40);
+        FUN_003a7940_typed(param_1,-0x40);
 
       }
 
@@ -5227,6 +5130,122 @@ void FUN_003a7490(u32 *param_1)
 
     }
 
+  
+    break;
+  case 2:
+
+    if (((uVar2 & 0x38) == 0x20) && (lVar3 = FUN_003a7a40_typed(), lVar3 == 1)) {
+
+      if (puVar11[0x13] != 0) {
+
+        FUN_003affd0();
+
+        puVar11[0x13] = 0;
+
+      }
+
+      iVar5 = *(int *)(puVar11[0x12] * 8 + puVar11[1] + 0x24);
+
+      sVar4 = *(short *)((int)puVar11 + 0x56);
+
+      sVar1 = *(short *)(iVar5 + 0x1a);
+
+      puVar10 = (u32 *)(iVar5 + 0x20);
+
+      for (lVar3 = 0; lVar3 < sVar1; lVar3++) {
+
+        if (lVar3 == sVar4) {
+
+          FUN_003b0e70(0x80);
+
+          FUN_003b2bf0(*puVar10,0,0xf541);
+
+          FUN_003b0e90(0x80);
+
+        }
+
+        puVar10 = puVar10 + 1;
+
+      }
+
+      if ((uVar2 & 0xc00) == 0x800) {
+
+        uVar2 = *puVar11;
+
+        *puVar11 = uVar2 & 0xfffff3ff;
+
+        *puVar11 = uVar2 & 0xfffff3ff | 0xc00;
+
+      }
+
+      *(u16 *)((int)puVar11 + 0x66) = 0;
+
+      *(u16 *)((int)puVar11 + 0x1d6) = 1;
+
+      *(u16 *)(puVar11 + 0x76) = 0x7f;
+
+      *(u16 *)((int)puVar11 + 0x1da) = 0;
+
+      uVar2 = *puVar11;
+
+      *puVar11 = uVar2 & 0xffffffc7;
+
+      *puVar11 = uVar2 & 0xffffffc7 | 0x28;
+
+      *(u16 *)(puVar11 + 0x19) = 0x80;
+
+      *(u16 *)(puVar11 + 0x15) = 3;
+
+    }
+
+  
+    break;
+  case 3:
+
+    sVar4 = (puVar11[0x19] & 0xffff) + -0x10;
+
+    *(short *)(puVar11 + 0x19) = sVar4;
+
+    if (sVar4 < 1) {
+
+      *(u16 *)(puVar11 + 0x19) = 0;
+
+      *(u16 *)(puVar11 + 0x15) = 4;
+
+      *(u8 *)(puVar11 + 0x75) = 0;
+
+      *(u16 *)((int)puVar11 + 0x1d6) = 0;
+
+      *(u16 *)(puVar11 + 0x76) = 0;
+
+      *(u16 *)((int)puVar11 + 0x1da) = 0;
+
+      puVar11[0x77] = 0;
+
+      *(u16 *)(puVar11 + 0x78) = 0x238;
+
+      *(u16 *)((int)puVar11 + 0x1e2) = 0x18b;
+
+    }
+
+  
+    break;
+  case 4:
+
+    if ((puVar11[0xc] == 0) || (0xb17 < (int)puVar11[10])) {
+
+      *(u16 *)(puVar11 + 0x15) = 0xffff;
+
+    }
+
+    else {
+
+      FUN_003a7940_typed(param_1,0x40);
+
+    }
+
+  
+    break;
   }
 
   return;
@@ -5267,6 +5286,10 @@ void FUN_003a7940(int param_1,int param_2)
 /* opt_lifetimes on: measured nd 408 -> 407, object 600/624 -> 600/624. */
 #pragma opt_lifetimes on
 // W409 addressing/raw-literal fixes: NONMATCHING nd 407 -> 373, object 600/624 -> 612/624.
+// W417 rejected typed-call census closure: adding 0x003a7d60 at the front and 0x003a7cb0 at the end
+// closed 5 -> 7 calls, but baseline nd 373/object 612/window 624 (60.9%) -> closure nd 392/object 600/window 624 (65.3%).
+// The 12-byte shrink shows the aliases replaced compiler-inlined bodies with out-of-line calls;
+// reverted to old-style calls until the frame or shape is fixed.
 // FUN_003A7A40 NONMATCHING
 
 

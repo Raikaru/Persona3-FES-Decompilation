@@ -300,7 +300,7 @@ void func_001fcb30(u8* event, u32* result, s32* count)
         if (skill != 0)
         {
             skill = FUN_00170670(*(s16*)(event + 2), (s16)i);
-            skillId = FUN_00170e90(skill);
+            skillId = FUN_00170e90((u16)skill);
             if (FUN_0017b4e0(*(u16*)(skillId + 8)) != 0)
             {
                 FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2),

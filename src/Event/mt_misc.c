@@ -2841,6 +2841,7 @@ void FUN_003965d0(u32 *param_1)
 
 #undef FUN_003965f0
 #define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
+// W414 direct parameter pointer probes regressed FUN_003965f0 nd4 -> nd20/51; retained entryResult form.
 // FUN_003965F0 NONMATCHING
 
 

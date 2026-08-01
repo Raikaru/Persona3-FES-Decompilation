@@ -152,12 +152,12 @@ extern void* D_00833B70[14];
 extern void* func_001158b0(s32, void*, s32);
 extern void func_001127d0(void*, u32);
 extern void func_00115980(void*);
-extern void func_00114450(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
-                          s32 ignoredWidth, s32 height,
+extern void func_00114450(f32 depth, u32 color, u32 colorAlpha,
+                          f32 x, f32 y, s32 ignoredWidth, s32 height,
                           const u32* textureState);
 #pragma alias func_00114450_7arg func_00114450
-extern void func_00114450_7arg(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
-                               s32 ignoredWidth, s32 height);
+extern void func_00114450_7arg(f32 depth, u32 color, u32 colorAlpha,
+                               f32 x, f32 y, s32 ignoredWidth, s32 height);
 extern void func_00115ad0(void* parent, void* resource, s32 frame,
                           u32 alpha, u32 extraAlpha, f32 x, f32 y, f32 depth);
 extern u32 func_0018b700(void* animation);
@@ -962,13 +962,13 @@ void* h_campUpdateRootDrawTask(KwlnTask* task)
                         work->drawChild = NULL;
                     }
                 } else {
-                    func_0010a4e0(0, 0, 0, 0);
                     work->transitionKind = 5;
                     work->selectedEntry++;
                     if (func_0017d800() != 0 &&
                         work->selectedEntry == 5) {
                         work->selectedEntry = 6;
                     }
+                    func_0010a4e0(0, 0, 0, 0);
                     work->timer = 1;
                     work->drawChild = NULL;
                 }
@@ -984,7 +984,6 @@ void* h_campUpdateRootDrawTask(KwlnTask* task)
                         work->drawChild = NULL;
                     }
                 } else {
-                    func_0010a4e0(0, 0, 0, 0);
                     work->transitionKind = 5;
                     work->timer = 1;
                     work->drawChild = NULL;
@@ -993,6 +992,7 @@ void* h_campUpdateRootDrawTask(KwlnTask* task)
                         work->selectedEntry == 5) {
                         work->selectedEntry = 4;
                     }
+                    func_0010a4e0(0, 0, 0, 0);
                 }
             }
             *(f32*)(iGpffffb25c + 0x320) =
@@ -1421,8 +1421,8 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
                 color = (u32)fade | ~0xffu;
                 colorAlpha = (u32)(fade >= 0x19 ? 0x19 : fade) |
                              0x4fa4ff00;
-                func_00114450(5.0f + alpha, 0.0f, -87.0f,
-                              color, colorAlpha, 0x280, 0x280,
+                func_00114450(5.0f + alpha, color, colorAlpha,
+                              0.0f, -87.0f, 0x280, 0x280,
                               (const u32*)textureState);
             }
             h_campNoopRootDrawCallback_5((s32)(s16)fade, 0x1000,
@@ -1447,9 +1447,8 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
                 half = (particleHeight + 1) >> 1;
             }
             offset = half;
-            func_00114450(4.0f + alpha, 0.0f,
-                          -87.0f + (f32)offset,
-                          0xffffff7f, 0x4fa4ff19, 0x280, 0x280,
+            func_00114450(4.0f + alpha, 0xffffff7f, 0x4fa4ff19,
+                          0.0f, -87.0f + (f32)offset, 0x280, 0x280,
                           (const u32*)textureState);
         }
     }
@@ -1619,8 +1618,8 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
         if (temp_3_2 >= 0x19u) {
             var_5 = 0x19;
         }
-        func_00114450(4.0f + alpha, 0.0f, -87.0f,
-                      temp_3_2 | ~0xffu, var_5 | 0x4fa4ff00,
+        func_00114450(4.0f + alpha, temp_3_2 | ~0xffu,
+                      var_5 | 0x4fa4ff00, 0.0f, -87.0f,
                       0x280, 0x280, (const u32*)var_8);
     }
     h_campNoopRootDrawCallback_5((s32)(s16)temp_16, 0, 0.0f, 0.0f,
@@ -1783,8 +1782,8 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
         color = (u32)remaining | ~0xffu;
         colorAlpha = (u32)(overlayAlpha >= 0x19 ? 0x19 : overlayAlpha) |
                      0x4fa4ff00;
-        func_00114450(2.0f + alpha, 0.0f, -87.0f,
-                      color, colorAlpha, 0x280, 0x280,
+        func_00114450(2.0f + alpha, color, colorAlpha,
+                      0.0f, -87.0f, 0x280, 0x280,
                       (const u32*)textureState);
     }
 
@@ -1961,7 +1960,8 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
         }
     }
     if (textureState != NULL) {
-        func_00114450_7arg(2.0f + alpha, 0.0f, -87.0f, -1, 0x4fa4ff19, 0x280, 0x280);
+        func_00114450_7arg(2.0f + alpha, -1, 0x4fa4ff19,
+                           0.0f, -87.0f, 0x280, 0x280);
     }
     h_campNoopRootDrawCallback_5(0, 0x1000, 0.0f, 0.0f, 2.0f + alpha);
 
@@ -12993,10 +12993,10 @@ extern void hCampMainDrawSpriteFade(void* parent, void* resource, s32 frame,
 #pragma alias hCampMainDrawSpriteAlt3 FUN_00115BC0
 extern void hCampMainDrawSpriteAlt3(f32 x, f32 y, f32 scale);
 #pragma alias hCampMainDrawQuad7 FUN_001140D0
-extern void hCampMainDrawQuad7(f32 depth, f32 x, f32 y, u32 color,
+extern void hCampMainDrawQuad7(f32 depth, u32 color, f32 x, f32 y,
                                s32 width, s32 height, const void* textureState);
 #pragma alias hCampMainDrawQuad6 FUN_001140D0
-extern void hCampMainDrawQuad6(f32 depth, f32 x, f32 y, u32 color,
+extern void hCampMainDrawQuad6(f32 depth, u32 color, f32 x, f32 y,
                                s32 width, s32 height);
 #pragma alias hCampMainDrawTexQuadPtr FUN_00114E70
 extern void hCampMainDrawTexQuadPtr(f32 depth, f32 x, f32 y,
@@ -13178,6 +13178,7 @@ void FUN_001365b0(KwlnTask* task)
 }
 #pragma opt_dead_assignments reset
 #pragma opt_propagation reset
+/* W414 HCamp frame probes: task/work arrays and one-field/aggregate wrappers all retained object 204B, nd2 (task[1] worsened nd11); retail alone has the 0x50 frame. */
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
@@ -13454,8 +13455,8 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     }
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
     if (FUN_001717C0(id) == NULL) {
-        hCampMainDrawQuad7(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
-                     color, 0x40, 0x40, resource);
+        hCampMainDrawQuad7(alpha, color, p.value.x + 24.0f, p.value.y + 23.0f,
+                     0x40, 0x40, resource);
     } else {
         hCampMainDrawTexQuadPtr(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
@@ -14540,7 +14541,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         {
             textAlpha = 0xB2;
         }
-        hCampMainDrawQuad6(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, textAlpha, 300, 300);
+        hCampMainDrawQuad6(param_1, textAlpha, 434.0f + position.x - 60.0f, position.y + 109.0f, 300, 300);
     }
 
     if (param_9 < 5)
@@ -14554,10 +14555,15 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     id = *item;
     if (iGpffffb280 != 0)
     {
-        hCampMainDrawQuad6(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
-                     (0xFF - alpha) | 0xFFFFFF00, 300, 300);
+        hCampMainDrawQuad6(param_1, (0xFF - alpha) | 0xFFFFFF00,
+                     420.0f + position.x - 60.0f, position.y + 114.0f, 300, 300);
         hasResource = FUN_00172160(id);
-        if (hasResource == 0)
+        if (hasResource != 0)
+        {
+            campDrawSprite(D_00833B64, 2, (u8)alpha,
+                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
+        }
+        else
         {
             hasResource = FUN_001717C0(id);
             if (hasResource != 0)
@@ -14565,11 +14571,6 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                 campDrawSprite(D_00833B64, 3, (u8)alpha,
                                579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
             }
-        }
-        else
-        {
-            campDrawSprite(D_00833B64, 2, (u8)alpha,
-                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
         }
     }
 
@@ -14620,7 +14621,13 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         if (mark != 0)
         {
             hasResource = FUN_001717C0(id);
-            if (hasResource == 0)
+            if (hasResource != 0)
+            {
+                hCampMainDrawValue(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                             (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
+                             1, 10, 7, D_005D7004[id * 0x0C]);
+            }
+            else
             {
                 hasResource = FUN_00172160(id);
                 if (hasResource == 0)
@@ -14635,12 +14642,6 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                                  (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
                                  1, 10, 7, D_005D7006[id * 0x0C]);
                 }
-            }
-            else
-            {
-                hCampMainDrawValue(param_1 - 2.0f, (s32)(position.x + 129.0f),
-                             (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
-                             1, 10, 7, D_005D7004[id * 0x0C]);
             }
         }
     }
@@ -14769,15 +14770,20 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     if (iGpffffb280 != 0)
     {
-        hCampMainDrawQuad6(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, 0xB2, 300, 300);
+        hCampMainDrawQuad6(param_1, 0xB2, 434.0f + position.x - 60.0f, position.y + 109.0f, 300, 300);
     }
     id = *item;
     if (iGpffffb280 != 0)
     {
-        hCampMainDrawQuad6(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
-                     0xFFFFFF00, 300, 300);
+        hCampMainDrawQuad6(param_1, 0xFFFFFF00,
+                     420.0f + position.x - 60.0f, position.y + 114.0f, 300, 300);
         hasResource = FUN_00172160(id);
-        if (hasResource == 0)
+        if (hasResource != 0)
+        {
+            campDrawSprite(D_00833B64, 2, 0,
+                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
+        }
+        else
         {
             hasResource = FUN_001717C0(id);
             if (hasResource != 0)
@@ -14785,11 +14791,6 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                 campDrawSprite(D_00833B64, 3, 0,
                                579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
             }
-        }
-        else
-        {
-            campDrawSprite(D_00833B64, 2, 0,
-                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
         }
     }
 
@@ -14827,7 +14828,13 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     if (mark != 0)
     {
         hasResource = FUN_001717C0(id);
-        if (hasResource == 0)
+        if (hasResource != 0)
+        {
+            hCampMainDrawValue(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
+                         (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
+                         D_005D7004[id * 0x0C]);
+        }
+        else
         {
             hasResource = FUN_00172160(id);
             if (hasResource == 0)
@@ -14842,12 +14849,6 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                              (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                              D_005D7006[id * 0x0C]);
             }
-        }
-        else
-        {
-            hCampMainDrawValue(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
-                         (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
-                         D_005D7004[id * 0x0C]);
         }
     }
 
@@ -14990,11 +14991,10 @@ s32 FUN_0013BE50(u8* param_1, s32 param_2)
             {
                 if (K_FldEvent_IsCharNearHeroBeforeBtl(datGetPartyId(i)) != 0)
                 {
-                    partyId = (u16)datGetPartyId(i);
-                    if (FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1) == 0)
+                    if (FUN_0017BC20(1, datGetPartyId(i), *(u16*)((u8*)item + 8), 1) == 0)
                     {
                         changed = 1;
-                        FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
+                        FUN_0017B860(1, datGetPartyId(i), *(u16*)((u8*)item + 8), 1);
                     }
                 }
             }
@@ -15020,11 +15020,10 @@ s32 FUN_0013BE50(u8* param_1, s32 param_2)
                 {
                     if (K_FldEvent_IsCharNearHeroBeforeBtl(datGetPartyId(j)) != 0)
                     {
-                        partyId = (u16)datGetPartyId(j);
-                        if (FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1) == 0)
+                        if (FUN_0017BC20(1, (u16)datGetPartyId(j), *(u16*)((u8*)item + 8), 1) == 0)
                         {
                             changed = 1;
-                            FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
+                            FUN_0017B860(1, (u16)datGetPartyId(j), *(u16*)((u8*)item + 8), 1);
                         }
                     }
                     break;
@@ -15041,7 +15040,8 @@ s32 FUN_0013BE50(u8* param_1, s32 param_2)
             func_00170860(1, (s16)itemId, 0);
             for (i = total; i < *(s32*)((u8*)param_1 + 0x96C) - 1; i++)
             {
-                entries[i] = entries[i + 1];
+                CampMainListEntry* entry = &entries[i];
+                *entry = *(entry + 1);
             }
             entries[*(s32*)(param_1 + 0x96C)].itemId = -1;
             entries[*(s32*)(param_1 + 0x96C)].cursor = 0;
@@ -19119,6 +19119,7 @@ void h_campDrawStatusOverview(int param_1)
                   tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
 }
 #pragma opt_dead_assignments reset
+/* W414 HCamp residual: retail converts the +389.0f y offset before loading the y field; the candidate's sole residual is this b210 FP scheduling order. */
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
@@ -23566,6 +23567,12 @@ static void campDrawSkillDescription(CampMenuDrawItem* item, s32 skillId, s32 se
 }
 
 
+/* W418 negative: retail mode 6 has one category<10 FUN_001159f0 call.
+ * Baseline 6444/6464 nd4103; the cheapest verified closure was
+ * 6484/6464 nd4209 (+40B), exceeding the 20B headroom. Tried direct,
+ * inverted, shared/reused, and hoisted catY/digitY case-6 shapes, plus
+ * s16 loop-index probes (j and i; 6512/4370 and 6616/4536); no closure
+ * fit the window. */
 // FUN_001599F0 NONMATCHING
 void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 category,
                   s32 selected)
@@ -29024,6 +29031,8 @@ static s32 campSkillSelectorCommand(CampSkillSelectorWork* work)
 void* FUN_00166c70(KwlnTask* task)
 {
     /* Retail preserves and reads this uninitialized owner register here. */
+    /* W415 negative: moving FUN_00174800_y4 before each persona kwlnTaskCreate
+     * fixed the retail call order but measured nd1505->1511; not retained. */
     void* owner;
     CampSkillSelectorWork* work;
     s32 command;
@@ -30454,6 +30463,13 @@ void FUN_00169AE0(int param_1)
 /* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+/* W418 negative: retail 0x115de0 uses 11 mixed arguments, but correcting
+ * only digits produced 920/1184 nd656 (baseline 808/1184 nd551); full
+ * typed sprite/alt calls produced 1116/1184 nd784; adding retail count
+ * modulo/hasHundreds structure produced 1152/1184 nd799. These all
+ * worsened nd and rate: the arity diagnosis is right, but argument source
+ * values/data flow remain unidentified; retail leaves the owner register
+ * uninitialized, so do not fabricate a value or keep permuting prototypes. */
 // FUN_00169B90 NONMATCHING
 void FUN_00169B90(void* param_1, undefined8 param_2,
                   void* param_3, s32 param_4, undefined8 param_5)

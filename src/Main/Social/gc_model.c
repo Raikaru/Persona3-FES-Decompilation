@@ -957,6 +957,7 @@ void func_0020cd50(void* work, void* resource)
 /* Removing this worsens FUN_0020cda0 (nd12 -> nd259) and 1 more - measured W161. */
 #pragma opt_loop_invariants on
 /* W389 preheader direct-global rewrite nd12/384B -> nd12/384B (neutral); reverted, residual is hoist order. */
+/* W414 full fndiff/JAL review: retail and candidate each call K_ASSERT once; direct-global/preheader probes stayed nd12/384B (window 384B), reverted. Remaining rows are preheader hoist-order differences. */
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {

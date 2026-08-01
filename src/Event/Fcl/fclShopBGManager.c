@@ -2699,6 +2699,7 @@ else {
 return uVar4; }
 
 #pragma opt_loop_invariants reset
+// W415 census: 8 calls exactly match retail; cosf/sinf aliases resolve to 0x0052e6d8/0x0052e878, so no source defect was found.
 // FUN_00413680 NONMATCHING
 
 
@@ -2816,6 +2817,7 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
 }
 
+// W418 negative: declaring fGpffffad18 extern instead of defining it left nd356/obj532 unchanged (window 560); neutral and rejected.
 // FUN_004138E0 NONMATCHING
 
 
@@ -3874,8 +3876,8 @@ u64 FUN_00414e10(int param_1,int param_2)
 
     puVar5 = (u16 *)(iVar1 + iVar6 * 0xc);
 
-    (*(code *)ppuVar8[iVar6])
-              (0,*(u32 *)(puVar5 + 4),*(u32 *)(puVar5 + 4),param_1,param_2,*puVar5,
+    (*(void (*)(f32,f32,f32,s32,s32,s32,s32,s32,s32,s32,s32))ppuVar8[iVar6])
+              (0.0f,*(f32 *)(puVar5 + 4),*(f32 *)(puVar5 + 4),param_1,param_2,*puVar5,
                puVar5[1],0,puVar5[2],0,0);
 
   }
@@ -4436,6 +4438,7 @@ void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 }
 
+// W418 negative: typed 11-arg callback measured nd241/336 -> nd236/328 (window 400); size rate worsened 71.73% -> 71.95%, reverted.
 // FUN_00415C30 NONMATCHING
 
 
@@ -5084,6 +5087,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
 }
 
+// W415 probes (all reverted): direct arithmetic for CONCAT12 gave nd 199 -> 209, obj 388 -> 384; masked composition gave nd 199 -> 216, obj 396; typed f32 alias plus masked composition gave nd 199 -> 207, obj 384.
 // FUN_00416B90 NONMATCHING
 
 

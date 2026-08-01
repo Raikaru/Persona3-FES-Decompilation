@@ -2699,6 +2699,7 @@ u16 func_002bde10(int unit, u16* output)
 #pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 
+/* W416 triage: retail offset 0x240 has a 0x10 extension pair already present at ours 0x230; layout-only, no width edit retained. */
 /* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
 #pragma opt_loop_invariants on
 /* W357 measured func_002bdfb0: opt_lifetimes on stacked with existing opt_loop_invariants on, nd373/796B -> nd360/796B; window 816B. */
@@ -2820,6 +2821,7 @@ u32 func_002be2f0(int param_1)
   return 0;
 }
 
+/* W416 triage: retail offsets 0xD0/0xD4 and ours 0xC8/0xCC use the same 0x10 extension; s16-parameter probe nd272/object500 exceeded the 496-byte window (single-parameter nd343/object496), reverted. */
 /* W357 measured func_002be390: opt_propagation off nd299/492B -> nd298/492B; window 496B. */
 #pragma opt_propagation off
 // FUN_002be390 NONMATCHING
@@ -3154,6 +3156,7 @@ void func_002bedd0(int param_1)
   }
 }
 
+/* W416 shape probe: update.state if/else chain converted to ascending switch cases; nd550/object892 -> nd537/object900, window912. */
 // FUN_002bef20 NONMATCHING
 
 u64 func_002bef20(u64 param_1)
@@ -3178,22 +3181,23 @@ u64 func_002bef20(u64 param_1)
         if (result != 0) {
           func_001fdf10_btlFormation_result(&update);
           *(short *)(work + 0x6c) = (short)update.state;
-          if (update.state == 0xd) {
-            *menu = 8;
-          }
-          else if ((update.state == 7) || (update.state == 6)) {
+          switch (update.state) {
+          case 1:
+            value = func_00308930(*(u32 *)(*(int *)(work + 0x30) + 0xa2c));
+            *(u16 *)(work + 0x6e) = value;
+            *menu = 3;
+            break;
+          case 2:
             *(u16 *)(work + 0x6e) = update.value1;
-            *menu = 5;
-          }
-          else if (update.state == 10) {
-            func_002db650(update.value4);
-            *menu = 7;
-          }
-          else if (update.state == 5) {
-            *(u16 *)(work + 0x74) = update.value2;
-            *menu = 5;
-          }
-          else if (update.state == 4) {
+            *menu = 3;
+            break;
+          case 3:
+            *(u16 *)(work + 0x70) = update.value0;
+            value = func_0030bc20(update.value0);
+            *(u16 *)(work + 0x6e) = value;
+            *menu = 3;
+            break;
+          case 4:
             if (((update.flags & 1) == 0) && ((update.flags & 2) == 0)) {
               *menu = 5;
             }
@@ -3201,21 +3205,25 @@ u64 func_002bef20(u64 param_1)
               *(u16 *)(work + 0x6e) = update.value1;
               *menu = 3;
             }
-          }
-          else if (update.state == 3) {
-            *(u16 *)(work + 0x70) = update.value0;
-            value = func_0030bc20(update.value0);
-            *(u16 *)(work + 0x6e) = value;
-            *menu = 3;
-          }
-          else if (update.state == 2) {
+            break;
+          case 5:
+            *(u16 *)(work + 0x74) = update.value2;
+            *menu = 5;
+            break;
+          case 6:
+          case 7:
             *(u16 *)(work + 0x6e) = update.value1;
-            *menu = 3;
-          }
-          else if (update.state == 1) {
-            value = func_00308930(*(u32 *)(*(int *)(work + 0x30) + 0xa2c));
-            *(u16 *)(work + 0x6e) = value;
-            *menu = 3;
+            *menu = 5;
+            break;
+          case 10:
+            func_002db650(update.value4);
+            *menu = 7;
+            break;
+          case 13:
+            *menu = 8;
+            break;
+          default:
+            break;
           }
         }
       }
@@ -3310,6 +3318,7 @@ void func_002bf370(u64 param_1)
   return;
 }
 
+/* W415: inverted both mutually exclusive helper branches; each isolated inversion kept nd 230, final call census matches retail (object 588/608). */
 // FUN_002bf3f0 NONMATCHING
 
 u32 func_002bf3f0(int param_1)
@@ -3356,11 +3365,11 @@ u32 func_002bf3f0(int param_1)
       func_001fed00();
     }
     lVar2 = func_002c1ce0(param_1,0);
-    if (lVar2 != 0) {
-      func_001fee00();
+    if (lVar2 == 0) {
+      func_001fede0();
     }
     else {
-      func_001fede0();
+      func_001fee00();
     }
     if ((uVar5 & 0x80274) != 0) {
       func_001fed20();
@@ -3374,11 +3383,11 @@ u32 func_002bf3f0(int param_1)
     else {
       func_001fed80();
     }
-    if ((*(u16 *)(iVar7 + 0x18) & 0x400) != 0) {
-      func_001fedc0();
+    if ((*(u16 *)(iVar7 + 0x18) & 0x400) == 0) {
+      func_001feda0();
     }
     else {
-      func_001feda0();
+      func_001fedc0();
     }
     func_001fee80();
     func_001fee40();
@@ -5568,6 +5577,7 @@ u32 func_002c2d00(int param_1,u32 param_2)
   return uVar6;
 }
 
+/* W416 triage: retail offsets 0xF4/0xF8 and ours have the same 0x18 extension pair; layout-only, no width edit retained. */
 /* W322 probe: func_002c2ed0 with opt_loop_invariants on improved normalized_diff 178 -> 158 (object 540/544). */
 #pragma opt_loop_invariants on
 // FUN_002c2ed0 NONMATCHING
@@ -7205,6 +7215,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
 
 /* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
 #pragma opt_common_subs off
+/* W415: corrected the param_3 comparison to emit the required helper; call census now matches retail (nd 456 -> 454, object 720/720). */
 // FUN_002c6300 NONMATCHING
 
 s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
@@ -7221,7 +7232,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
   u16 uVar9 = 0;
   u16 auStack_20 [16];
   
-  if ((long)((u32)param_3 << 0x30) >> 0x30 == 0x10) {
+  if (param_3 == 0x10) {
     lVar7 = func_002c59d0(0,0,0,0);
   }
   else {

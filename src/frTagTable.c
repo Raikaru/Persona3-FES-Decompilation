@@ -506,6 +506,7 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 }
 #define FUN_003ae9b0(...) ((u64 (*)(...))FUN_003ae9b0)(__VA_ARGS__)
 #undef FUN_003aea50
+/* W416 triage: retail offsets 0x178-0x18C have 0x10 pairs already emitted nearby in ours; value locals are already s16/u16, so no width edit retained. */
 /* W389 pragma pair: opt_lifetimes on + opt_dead_assignments off; without nd=288/object=432, with nd=274/object=432; window=464. */
 #pragma push
 #pragma opt_lifetimes on

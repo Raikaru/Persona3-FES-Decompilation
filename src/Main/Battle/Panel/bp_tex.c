@@ -2013,11 +2013,10 @@ void func_0021f410(void)
     case 0:
         break;
     case 3:
-        if (*(u32*)(work + 0x4650) != 3)
+        if (*(u32*)(work + 0x4650) == 3)
         {
-            func_002265d0();
+            break;
         }
-        break;
     case 4:
     case 1:
     case 2:
@@ -3071,6 +3070,7 @@ alpha_done:
 }
 #pragma opt_propagation reset
 
+/* W414 named D_0096009C_abs alias-placement probes (top-level and secondary declaration sites) stayed nd11/1292B (window 1296B); reverted. Residual is the documented slot0/setQuad register-bank floor. */
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -4164,15 +4164,15 @@ void FUN_002265D0(void)
 // FUN_00227800 NONMATCHING
 void FUN_00227800(void)
 {
-    u8* work;
+    void (**setState)(u32, u32);
     u32 table0;
-    u32 resource;
+    u8* work;
     u32 texture;
-    u8* record;
+    u32 resource;
     s32 i;
     s32 j;
     s32 loopCount;
-    void (**setState)(u32, u32);
+    u8* record;
     void (**setQuad)(u32*, u32, u32, u32, u32);
     void (**setState2)(u32, u32);
     void (**setQuad2)(u32*, u32, u32, u32, u32);

@@ -1133,6 +1133,7 @@ u32 FUN_001C4080()
     return true;
 }
 
+/* W417 negative: swapping the requestedId/state declarations left FUN_001C4120 at nd518; rejected. */
 // FUN_001C4120 NONMATCHING
 u32 FUN_001C4120()
 {
@@ -1975,6 +1976,7 @@ u32 func_001c5900()
     return true;
 }
 
+/* W417 negative: swapping the requestedId/state declarations left func_001c5980 at nd503; rejected. */
 // FUN_001c5980 NONMATCHING
 u32 func_001c5980()
 {

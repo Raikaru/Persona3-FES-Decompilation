@@ -44,6 +44,8 @@ extern u32 FUN_003be1c0_typed(long param_1,s32 param_2);
 extern u32 FUN_003be1c0_wide(long param_1,long param_2);
 #pragma alias FUN_003be2a0_typed FUN_003be2a0
 extern u32 FUN_003be2a0_typed(...);
+#pragma alias FUN_003be020_typed FUN_003be020
+extern u32 FUN_003be020_typed(u32 param_1, u8 *param_2, u32 param_3);
 extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
 extern void FUN_0016f1f0(int param_1,int param_2);
 #pragma alias FUN_0016f190_comu FUN_0016f190
@@ -663,6 +665,7 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
 extern void FUN_003bbaa0_scene_typed(float *param_1, float *param_2, float *param_3);
 #pragma alias FUN_003baa70_scene_typed FUN_003baa70
 extern u32 FUN_003baa70_scene_typed(char *param_1);
+/* W418 negative: routing raw FUN_004c69f0/FUN_004c6ac0 calls through typed float aliases in FUN_003b9610/FUN_003bc220 produced no metric changes; reverted. */
 void FUN_003bbb90(const float *param_1,float *param_2);
 void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
 void FUN_003bbd40(float param_1,char *param_2,float *param_3);
@@ -3185,6 +3188,14 @@ void FUN_003bb400(u32 param_1)
  * `xy`/`z` loads that used to feed axis2 were deleted with no nd change.
  * Residual nd 4 is the same b210 aggregate-copy WIDTH floor as FUN_003BAA70:
  * retail moves the tail via lwc1/swc1 (12 bytes), b210 blits ld/sd (16). */
+/* W414 direct-width probes: replacing the aggregate with
+ * `axis2.raw.xy = *(u64 *)DAT_006a2ef8_abs; axis2.raw.z =
+ * *(f32 *)(DAT_006a2ef8_abs + 8);` emits the right lwc1/swc1 width but
+ * reorders the surrounding load/store schedule (nd 68, 460/464). A byte
+ * destination-pointer split reduces this only to nd 10 (460/464) but emits
+ * indirect stores through the materialized stack pointer. RwV3d aggregate
+ * and memcpy(12) forms exceed the 464-byte window (nd255/472 and nd302/472).
+ * All were reverted; the existing nd4 aggregate copy remains the best form. */
 // FUN_003BB450 NONMATCHING
 
 
@@ -3253,6 +3264,9 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 #undef FUN_003bb450
 #undef FUN_003bb620
 /* W406 aggregate-width probes: the packed-pragma local aggregate measured normalized_diff 132 with object/window 384/384, while explicit no-local member-copy forms measured normalized_diff 13/14. The volatile scalar-source copy below is the best measured form (normalized_diff 4, object/window 376/384); do not alter the shared SceneVecBits typedef. */
+/* W414 direct stack-store negative: removing the `dest` pointer and writing
+ * `direction` directly emits stack-addressed stores but reorders the local
+ * aggregate staging, measuring nd17 (376/384) versus retained nd4. Reverted. */
 // FUN_003BB620 NONMATCHING
 
 
@@ -5795,6 +5809,7 @@ u32 FUN_003be1c0(u32 param_1,s32 param_2)
 /* opt_loop_invariants on: measured nd 928 -> 876, object 1588/1600 -> 1588/1600; opt_lifetimes on alone: nd 928 -> 926, object 1588/1600 -> 1584/1600; stacked: nd 874, object 1584/1600 (retained). */
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
+/* W415 probes: two-argument aliases regressed nd874 -> 999 (object 1576/1600); retail passes the guarded byte as a third argument, retained below (nd888, object 1584/1600). */
 // FUN_003BE2A0 NONMATCHING
 u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u8 *param_5)
 
@@ -5910,7 +5925,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u8 *param_5)
 
         if ((*(char *)(iVar12 + 0x14) != '\0') &&
 
-           (lVar6 = FUN_003be020(param_3,param_5), lVar6 == 1)) {
+           (lVar6 = FUN_003be020_typed(param_3,param_5,(u32)*(u8 *)(iVar12 + 0x14)), lVar6 == 1)) {
 
           uVar13 = 3;
 

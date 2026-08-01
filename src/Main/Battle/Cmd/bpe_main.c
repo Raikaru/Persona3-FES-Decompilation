@@ -487,6 +487,7 @@ void func_002496e0(void* work)
 
 #pragma opt_loop_invariants off
 
+/* W418 width negative: func_00249C10 i s16 nd68/1384B -> 653/1408B (over 1392B). */
 // FUN_00249C10 NONMATCHING
 void func_00249c10(void* work)
 {
@@ -574,7 +575,7 @@ void func_00249c10(void* work)
                 particleZ[0] -= 300.0f;
             }
             position[0] = local.transformed.data[0] + *(f32*)(base + i * 0xc);
-            position[1] = local.transformed.data[1] + *(f32*)(base + i * 0xc + 4);
+            position[1] = local.transformed.data[1] + particleY[0];
             position[2] = local.transformed.data[2] + *(f32*)(base + i * 0xc + 8);
             RwV3dTransformPoint(local.point, position, matrix);
 

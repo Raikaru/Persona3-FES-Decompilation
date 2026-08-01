@@ -1255,6 +1255,8 @@ s16 FUN_003f00b0(int param_1)
 
 }
 
+// W414 probes: explicit levelReq, block-scoped s16, u8 result, and direct short-load
+// forms all remained nd22 (obj248/window256); no source-shape improvement found.
 // FUN_003F00D0 NONMATCHING
 
 
@@ -1430,6 +1432,7 @@ char FUN_003f03e0(int param_1)
   return level;
 }
 
+// W416 measured negative: retail offset 280 has a 0x18/0x1c extension pair, while ours already has the same pair nearby at 260/264; layout, not width.
 // FUN_003F04F0 NONMATCHING
 
 
@@ -1715,6 +1718,8 @@ not_found:
   return -1;
 }
 
+// W414 probe: explicit inner-join gotos left nd5 (obj340/window352) and the same
+// five early-vs-late shared-branch target rows; the nested-switch shape is retained.
 // FUN_003F0D60 NONMATCHING
 
 
@@ -3577,6 +3582,7 @@ u64 FUN_003f3970(long param_1,u32 param_2)
 }
 
 #pragma opt_loop_invariants reset
+// W415 ORDER fix: switch case 0/default restores the retail dat0017d6d0 -> FUN_0017d700 call order; nd687/988 -> 681/996, window1056.
 // FUN_003F39A0 NONMATCHING
 
 
@@ -3616,17 +3622,22 @@ u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3)
 
   uVar8 = 0;
 
-  if (param_2 != 0) {
+  switch (param_2) {
 
-    FUN_0017d700(param_1,0,&bStack_10);
-
-  }
-
-  else {
+  case 0:
 
     dat0017d6d0(param_1,&bStack_10);
 
+    break;
+
+  default:
+
+    FUN_0017d700(param_1,0,&bStack_10);
+
+    break;
+
   }
+
 
   uVar1 = 0;
 
@@ -5788,6 +5799,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 }
 
+// W415 ORDER probe negative: ascending switch measured nd577/856 -> nd602/896; rejected.
 // FUN_003F7390 NONMATCHING
 
 
@@ -6054,6 +6066,8 @@ void FUN_003f7a80(int param_1,int param_2,u32 param_3,int param_4,int param_5)
   FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00U,1,5,0,*(short *)(iVar1 + 4));
 }
 
+// W417 probe negative: reversing the packed uVar2/byte expression operands raised nd74 -> 75 (object 232/window240); reverted.
+// W417 probe negative: explicit uVar3 temporary for packed-load order raised nd74 -> 86 (object 232/window240); reverted.
 // FUN_003F7C60 NONMATCHING
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 {
@@ -6075,6 +6089,8 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
   FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00,1,5,0,*(short *)(iVar1 + 4));
 }
 
+// W414: swapping the iVar3/uVar4 declaration order drops nd27 -> nd11 (obj644/window656);
+// the remaining rows are register-coloring residuals.
 // FUN_003F7D50 NONMATCHING
 
 
@@ -6090,9 +6106,9 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
   int iVar2;
 
-  int iVar3;
-
   u32 uVar4;
+
+  int iVar3;
 
   int iVar6;
 
@@ -6472,6 +6488,9 @@ void FUN_003f85a0(int param_1,int param_2,u32 param_3,int param_4,
 // (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
 // Residual: case 0x14's two adds route through a scratch reg instead of
 // landing directly in $a0/$a1 - compiler scheduling floor.
+// W418 switch [0xc,0x14,1] improved nd 596 -> 543 but grew object 864 -> 872 (window 864); rejected.
+// Removing its final break and adding a case return left nd/object unchanged at 543/872.
+
 // FUN_003F86A0 NONMATCHING
 
 
@@ -6562,6 +6581,8 @@ void FUN_003f86a0(int param_1,int param_2,u32 param_3,int param_4,int param_5
   }
   return;
 }
+
+// W418 rejected switch [0xc,0x14,1]: nd 733 -> 773, object 1040 -> 1048 (window 1040).
 
 // FUN_003F8A00 NONMATCHING
 
@@ -6695,6 +6716,8 @@ void FUN_003f8a00(int param_1,int param_2,u32 param_3,int param_4,int param_5
   return;
 
 }
+
+// W418 rejected switch [0xc,0x14,1]: nd 733 -> 773, object 1040 -> 1048 (window 1040).
 
 // FUN_003F8E10 NONMATCHING
 
@@ -7202,6 +7225,9 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
 }
 
+// W414 probes: lVar5 as s16 measured nd152, iVar6 as s16 measured nd134 with obj404
+// over the 400-byte window, early iVar6 zero-init measured nd26, and direct-short use
+// measured nd166; baseline nd7 is retained.
 // FUN_003F9B20 NONMATCHING
 
 
@@ -10138,6 +10164,7 @@ u64 FUN_003fd990(int *param_1)
 
 }
 
+// W417 probe negative: moving the 0x51 sprite call after the 003fcbe0 loop raised nd357 -> 373 (object 692/window704); reverted.
 // FUN_003FDCC0 NONMATCHING
 
 
@@ -10697,6 +10724,8 @@ u32 FUN_003fe950(u64 param_1)
   return uVar1;
 }
 
+// W414 probe: hoisting iVar2+4 into a named callAddress local left nd10 (obj288/window288);
+// pre-JAL argument setup order remains a compiler floor.
 // Confirmed pre-JAL setup-order floor: +160/+164/+168 contain the same address
 // computation and signed extension, with retail materializing $a1 before $a0.
 // FUN_003FEA10 NONMATCHING
@@ -12284,7 +12313,8 @@ void FUN_004003a0(int param_1)
 
 }
 
-// FUN_004003F0 NONMATCHING
+// W417 failed shape probes: top-level inversion nd342, direct sentinel return nd340, nested branch restructure nd291, flag/inner reorder nd207, direct zero return nd205, branch return nd31 (obj664), and final direct return nd137 (obj668); reverted. The explicit branch return 4 is exact.
+// FUN_004003F0
 
 
 u32 FUN_004003f0(int *param_1)
@@ -12313,23 +12343,83 @@ u32 FUN_004003f0(int *param_1)
 
   lVar7 = FUN_003c6270(iVar6);
 
-  if (lVar7 != 2) {
+  if (lVar7 == 2) {
+
+    return 0xffffffff;
+
+  }
+
+  else {
 
     puVar1 = *(u32 **)(iVar6 + 0xc);
 
     lVar7 = FUN_003c6c50(iVar6);
 
-    if (lVar7 == 0) {
+    if (lVar7 != 0) {
+      if ((**(u32 **)(((u32 *)lVar7)[5] + 0x1c) & 1) != 0) {
 
-      lVar7 = FUN_003c6c80(iVar6);
 
-      if (lVar7 == 0) {
+        func_0010a4e0(0,0,0,8);
 
-        lVar7 = FUN_003c6ce0(iVar6);
+        return 0;
 
-        if ((lVar7 != 0) || (lVar7 = FUN_003c6d10(iVar6), lVar7 != 0)) {
+      
+      }
 
-          func_0010a4e0(0,0,0,0);
+      else {
+
+
+        FUN_003c6ea0(iVar6);
+
+        func_0010a4e0(0,0,0,1);
+
+        uVar5 = *(u32 *)lVar7;
+
+        FUN_003c6f10(iVar6);
+
+        uVar2 = *puVar1;
+
+        uVar3 = ((u32 *)puVar1[5])[1];
+
+        uVar4 = *(u32 *)puVar1[5];
+
+        iVar6 = param_1[1];
+
+        puVar1 = *(u32 **)(iVar6 + 0x24);
+
+        iVar6 = FUN_003c4910(iVar6,*(u16 *)(iVar6 + 0x10) + 1,0x14);
+
+        iVar6 = *(int *)(iVar6 + 0x14);
+
+        *(short *)(iVar6 + 4) = (short)uVar4;
+
+        *(short *)(iVar6 + 6) = (short)uVar3;
+
+        *(short *)(iVar6 + 8) = (short)uVar2;
+
+        *(u16 *)(iVar6 + 0xe) = 0;
+
+        *(u32 *)(iVar6 + 0x10) = *puVar1;
+
+        *(u16 *)(iVar6 + 0xc) = 5;
+
+      
+        return uVar5;
+      }
+    }
+
+    else {
+
+
+        lVar7 = FUN_003c6c80(iVar6);
+
+        if (lVar7 != 0) {
+
+          FUN_003c6ea0(iVar6);
+
+          func_0010a4e0(0,0,0,2);
+
+          FUN_003c6f10(iVar6);
 
           uVar5 = *puVar1;
 
@@ -12351,109 +12441,59 @@ u32 FUN_004003f0(int *param_1)
 
           *(short *)(iVar6 + 8) = (short)uVar5;
 
-          *(u16 *)(iVar6 + 0xe) = 1;
+          *(u16 *)(iVar6 + 0xe) = 0;
 
           *(u32 *)(iVar6 + 0x10) = *puVar1;
 
-          *(u16 *)(iVar6 + 0xc) = 7;
+          *(u16 *)(iVar6 + 0xc) = 5;
+
+          return 4;
 
         }
 
-        uVar5 = 0;
+        else {
 
-      }
+          lVar7 = FUN_003c6ce0(iVar6);
 
-      else {
+          if ((lVar7 != 0) || (lVar7 = FUN_003c6d10(iVar6), lVar7 != 0)) {
 
-        FUN_003c6ea0(iVar6);
+            func_0010a4e0(0,0,0,0);
 
-        func_0010a4e0(0,0,0,2);
+            uVar5 = *puVar1;
 
-        FUN_003c6f10(iVar6);
+            uVar2 = ((u32 *)puVar1[5])[1];
 
-        uVar5 = *puVar1;
+            uVar3 = *(u32 *)puVar1[5];
 
-        uVar2 = ((u32 *)puVar1[5])[1];
+            iVar6 = param_1[1];
 
-        uVar3 = *(u32 *)puVar1[5];
+            puVar1 = *(u32 **)(iVar6 + 0x24);
 
-        iVar6 = param_1[1];
+            iVar6 = FUN_003c4910(iVar6,*(u16 *)(iVar6 + 0x10) + 1,0x14);
 
-        puVar1 = *(u32 **)(iVar6 + 0x24);
+            iVar6 = *(int *)(iVar6 + 0x14);
 
-        iVar6 = FUN_003c4910(iVar6,*(u16 *)(iVar6 + 0x10) + 1,0x14);
+            *(short *)(iVar6 + 4) = (short)uVar3;
 
-        iVar6 = *(int *)(iVar6 + 0x14);
+            *(short *)(iVar6 + 6) = (short)uVar2;
 
-        *(short *)(iVar6 + 4) = (short)uVar3;
+            *(short *)(iVar6 + 8) = (short)uVar5;
 
-        *(short *)(iVar6 + 6) = (short)uVar2;
+            *(u16 *)(iVar6 + 0xe) = 1;
 
-        *(short *)(iVar6 + 8) = (short)uVar5;
+            *(u32 *)(iVar6 + 0x10) = *puVar1;
 
-        *(u16 *)(iVar6 + 0xe) = 0;
+            *(u16 *)(iVar6 + 0xc) = 7;
 
-        *(u32 *)(iVar6 + 0x10) = *puVar1;
+          }
 
-        *(u16 *)(iVar6 + 0xc) = 5;
+          uVar5 = 0;
 
-        uVar5 = 4;
+        }
 
-      }
-
+      
     }
 
-    else if ((**(u32 **)(((u32 *)lVar7)[5] + 0x1c) & 1) == 0) {
-
-      FUN_003c6ea0(iVar6);
-
-      func_0010a4e0(0,0,0,1);
-
-      uVar5 = *(u32 *)lVar7;
-
-      FUN_003c6f10(iVar6);
-
-      uVar2 = *puVar1;
-
-      uVar3 = ((u32 *)puVar1[5])[1];
-
-      uVar4 = *(u32 *)puVar1[5];
-
-      iVar6 = param_1[1];
-
-      puVar1 = *(u32 **)(iVar6 + 0x24);
-
-      iVar6 = FUN_003c4910(iVar6,*(u16 *)(iVar6 + 0x10) + 1,0x14);
-
-      iVar6 = *(int *)(iVar6 + 0x14);
-
-      *(short *)(iVar6 + 4) = (short)uVar4;
-
-      *(short *)(iVar6 + 6) = (short)uVar3;
-
-      *(short *)(iVar6 + 8) = (short)uVar2;
-
-      *(u16 *)(iVar6 + 0xe) = 0;
-
-      *(u32 *)(iVar6 + 0x10) = *puVar1;
-
-      *(u16 *)(iVar6 + 0xc) = 5;
-
-    }
-
-    else {
-
-      func_0010a4e0(0,0,0,8);
-
-      uVar5 = 0;
-
-    }
-
-  }
-
-  else {
-
-    uVar5 = 0xffffffff;
 
   }
 
@@ -12607,6 +12647,7 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
 
 }
 
+// W417 probe negative: removing the drawAlpha copy produced nd77 (baseline nd75, object 240/window256); declaration-order permutations were no better.
 // FUN_00400A90 NONMATCHING
 
 
@@ -14400,6 +14441,7 @@ u32 FUN_00402480(u16 *param_1)
 
 }
 
+// W416 measured negative: retail offset 64 has a 0x10 extension, while ours already has the same pair nearby at 52/56; layout, not width.
 // FUN_00402510 NONMATCHING
 
 
@@ -17271,6 +17313,8 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
 }
 }
 
+// W414 fresh probes: direct clamp-if measured nd73 (obj508/window528), and the
+// single-case clamp switch measured nd78 (obj516/window528); both were rejected.
 // Confirmed control-flow placement floor: +400 through +444 booleanizes the clamp
 // switch here; a direct if/else measured worse (nd16 -> nd19) and was reverted.
 // FUN_00409C80 NONMATCHING

@@ -369,14 +369,14 @@ u8 func_00109170(void)
     return false;
 }
 
-/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. */
+/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. W415 swapped the non-CDVD branch bodies to emit 0x001025c0 before 0x00102530 (nd 1202 -> 1202, object 1852/2080). */
 // FUN_00109180 NONMATCHING
 void H_Snd_00109180(s32 channelIndex)
 {
     char name[0x100];
     void** handle;
     s32 channelOffset;
-    s16* requestType;
+    HsndChannel* channel;
 
     if (channelIndex == 0)
     {
@@ -411,6 +411,7 @@ void H_Snd_00109180(s32 channelIndex)
         sChannels[channelIndex].state = HSND_CHANNEL_STARTING;
         return;
     }
+    channel = &sChannels[channelIndex];
 
     channelOffset = channelIndex * sizeof(HsndChannel);
     handle = (void**)((char*)sChannels + channelOffset + 0x10);
@@ -428,8 +429,7 @@ void H_Snd_00109180(s32 channelIndex)
     sBackendControls[channelIndex].voiceCount = 2;
     sBackendControls[channelIndex].timeout = 0x5DC0;
 
-    requestType = (s16*)((char*)sChannels + channelOffset + 0x14);
-    switch (*requestType)
+    switch (channel->requestType)
     {
         case HSND_START_NAMED_STREAM:
             sBackendControls[channelIndex].data20 = 0;
@@ -446,7 +446,7 @@ void H_Snd_00109180(s32 channelIndex)
             {
                 func_0054d220(*handle, 0);
             }
-            func_0054d0a0(*handle, (char*)(requestType + 1));
+            func_0054d0a0(*handle, channel->name);
             func_0054d208(*handle, 1);
             break;
 
@@ -455,7 +455,7 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_CDVD:
             if (channelIndex >= 2)
             {
-                if (*requestType == HSND_START_CDVD)
+                if (channel->requestType == HSND_START_CDVD)
                 {
                     sBackendControls[channelIndex].data20 = 0;
                 }
@@ -477,18 +477,18 @@ void H_Snd_00109180(s32 channelIndex)
                     func_0054d220(*handle, 0);
                 }
             }
-            if (*requestType == HSND_START_CDVD)
+            if (channel->requestType == HSND_START_CDVD)
             {
-                func_0054d0b8(*handle, sChannels[channelIndex].modeArg.data,
-                              sChannels[channelIndex].id);
+                func_0054d0b8(*handle, channel->modeArg.data,
+                              channel->id);
             }
-            else if (channelIndex == 0)
+            else if (channelIndex != 0)
             {
-                func_00102530(*handle, (char*)(requestType + 1));
+                func_001025c0(*handle, channel->name);
             }
             else
             {
-                func_001025c0(*handle, (char*)(requestType + 1));
+                func_00102530(*handle, channel->name);
             }
             func_0054d208(*handle, 1);
             break;
@@ -500,7 +500,7 @@ void H_Snd_00109180(s32 channelIndex)
                 sBackendControls[channelIndex].class =
                     channelIndex == 2 ? 2 : 3;
                 sBackendControls[channelIndex].pending = 1;
-                if (*requestType == HSND_START_STREAM_FADE)
+                if (channel->requestType == HSND_START_STREAM_FADE)
                 {
                     sBackendControls[channelIndex].data20 = 0;
                     sBackendControls[channelIndex].pending = 2;
@@ -549,8 +549,8 @@ void H_Snd_00109180(s32 channelIndex)
                     func_0054d220(*handle, 0);
                 }
             }
-            func_0054d0e8(*handle, sChannels[channelIndex].modeData,
-                          sChannels[channelIndex].modeArg.parameter);
+            func_0054d0e8(*handle, channel->modeData,
+                          channel->modeArg.parameter);
             break;
 
         default:

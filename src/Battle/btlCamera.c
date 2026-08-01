@@ -6141,6 +6141,7 @@ typedef struct BtlCameraFramingWork {
 /* W367 measured: opt_lifetimes on + opt_propagation off nd1499 -> 1485, object 2060/2160; baseline object 2100/2160. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+/* W417 negative: moving FUN_002a4470 after the initial scalar helpers left nd1485 unchanged at object 2060/2160; retained order. */
 // FUN_002AEF80 NONMATCHING
 
 void func_002aef80(BtlCamera* camera, int param_2)
@@ -7486,6 +7487,9 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
 }
 
 #pragma opt_dead_assignments reset
+/* W414 negative: fndiff's nd3 consists of the documented addiu/daddiu floor
+ * at +716 and a commutative mul.s operand swap at +508.  Swapping the C
+ * spelling of 0.5f * distance was byte-neutral; retain the original source. */
 // FUN_002b17a0 NONMATCHING
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
@@ -8094,19 +8098,14 @@ void FUN_002b2880(int param_1)
   return;
 }
 
-/* W383 floor, measured.  The whole nd12 residual is three adjacent lwc1 pairs at
- * +284/+300/+316: retail loads the SUBTRAHEND (scratch.targetCenter, sp+0xF0) before
- * the minuend (scratch.sourceCenter, sp+0xE0) in each component; we emit them the
- * other way round.  Registers and every other word are identical, so this is the
- * classic reordered-adjacent-loads case.  The volatile-cast technique needs a staging
- * temporary to express the order, and that temporary costs 12 bytes: both variants
- * (subtrahend-only volatile, and both-operands volatile) measured 1384/1376 nd653 --
- * OVER the 1376-byte window.  Plain non-volatile temporaries are byte-neutral (the
- * load sinks back to its use), a whole-vector temp gives 1408/1376 nd782, and all of
- * scheduling on/off, optimize_for_size and the six opt_* knobs are neutral or worse
- * (common_subs off 1616/nd1145, propagation off and dead_assignments off both nd796).
- * Window-blocked: there is no room to buy the ordering.  Keep 1372/1376 nd12. */
-// FUN_002b2940 NONMATCHING
+/* W414: this is a genuine adjacent stack-load order residual, not independent
+ * call-argument scheduling: retail reads targetCenter.x/y/z (sp+0xf0/f4/f8)
+ * before sourceCenter.x/y/z (sp+0xe0/e4/e8).  Staging each target component
+ * through the existing targetHeight local before the corresponding source
+ * read produces 1372/1376 and normalized_diff 0.  Volatile-cast staging was
+ * also tested (1384/1376, normalized_diff 653) and is over-window; do not
+ * reintroduce it. */
+// FUN_002b2940
 
 void FUN_002b2940(void *arg0)
 {
@@ -8176,9 +8175,12 @@ void FUN_002b2940(void *arg0)
     {
         scratch.targetCenter.y = 65.0f;
     }
-    scratch.direction.x = scratch.sourceCenter.x - scratch.targetCenter.x;
-    scratch.direction.y = scratch.sourceCenter.y - scratch.targetCenter.y;
-    scratch.direction.z = scratch.sourceCenter.z - scratch.targetCenter.z;
+    targetHeight = scratch.targetCenter.x;
+    scratch.direction.x = scratch.sourceCenter.x - targetHeight;
+    targetHeight = scratch.targetCenter.y;
+    scratch.direction.y = scratch.sourceCenter.y - targetHeight;
+    targetHeight = scratch.targetCenter.z;
+    scratch.direction.z = scratch.sourceCenter.z - targetHeight;
     scratch.direction.x = scratch.direction.x * fGpffff8088;
     scratch.direction.y = scratch.direction.y * fGpffff8088;
     scratch.direction.z = scratch.direction.z * fGpffff8088;

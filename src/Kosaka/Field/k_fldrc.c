@@ -495,9 +495,9 @@ static inline void fldrc_apply_field_config(u32 config)
 
     if (version > 0x10002)
     {
+        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
         listA = FUN_003b5d50(1);
         listB = FUN_003b5d50(3);
-        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
         K_Field_Get_A();
         for (i = 0; i < count; i++)
         {
@@ -1235,9 +1235,15 @@ init_phase8:
     {
         for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            func_001e6ea0(
-                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
-                          0xa3c));
+            if (func_001e6d50(
+                    *(HCdvd**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                              0xa38),
+                    (void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                             0xa3c),
+                    (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId) == false)
+            {
+                return false;
+            }
             *(HCdvd**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
                        0xa38) = NULL;
         }
@@ -1511,32 +1517,38 @@ init_phase1f:
 
 init_phase20:
     node = *(u8**)((u8*)K_Field_Get() + 0x116c);
-    for (i = 0; i < *(u32*)(node + 0x118); i++)
+    errors = 0;
+    if (func_001a02c0() == 1)
     {
-        u8* record;
-        u16 recordType;
-
-        record = node + i * 0x18;
-        recordType = *(u16*)(record + 0x11c);
-        if (recordType == 1)
+        if (func_001e3940(*(void**)(node + 0xa44),
+                          (void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0xa48)) == false)
         {
-            handle = func_003b66b0(*(u16*)(record + 0x120),
-                                   *(void**)(record + 0x12c));
-            if (handle == 0)
+            errors++;
+        }
+        else
+        {
+            *(void**)(node + 0xa44) = NULL;
+        }
+    }
+    else
+    {
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
+        {
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
+            if (func_001e3940(*(void**)(node + 0xa44),
+                              (void**)(node + 0xa48)) == false)
             {
-                K_Assert(D_00678DF8, 0x305);
+                errors++;
             }
-            *(void**)(record + 0x12c) = NULL;
+            else
             {
-                Resrc* res;
-
-                res = MT_Scene_GetRes(handle);
-                if (res != NULL)
-                {
-                    res->flags |= 2;
-                }
+                *(void**)(node + 0xa44) = NULL;
             }
         }
+    }
+    if (errors != 0)
+    {
+        return false;
     }
     *(u32*)(node + 0x118) = 0;
     func_0019ff10();
@@ -1586,22 +1598,25 @@ void* FUN_001b2780(s16 majorId, s16 minorId)
     return FUN_001b2860(path);
 }
 
+/* W418 negative: aliasing end directly onto path shrank nd348/object712 to nd360/object660 (rate 48.88% -> 54.55%); rejected. */
 // FUN_001b2860 NONMATCHING
 void* FUN_001b2860(char* path)
 {
-    u32 resource;
+    void* (*alloc)(u32, ...);
     u32 payload;
     char* end;
+    u32 resource;
     char digits[4];
     u32 valid;
 
     valid = 1;
-    resource = (u32)(*DAT_00960184)(1, 0xa4c, 0x40000);
+    alloc = DAT_00960184;
+    resource = (u32)(*alloc)(1, 0xa4c, 0x40000);
     if (resource == 0)
     {
         return NULL;
     }
-    payload = (u32)(*DAT_00960184)(1, 0x124, 0x40000);
+    payload = (u32)(*alloc)(1, 0x124, 0x40000);
     *(u32*)(resource + 0xa40) = payload;
     if (payload == 0)
     {
@@ -2160,6 +2175,7 @@ void FUN_001b3480(u32 resource)
 #pragma opt_dead_assignments reset
 #pragma pop
 
+/* W418 negative: all 24 permutations of firstIndex/secondIndex/record/type were neutral at nd343/object652. */
 // FUN_001b39e0 NONMATCHING
 u32 FUN_001b39e0(u32 resource)
 {
@@ -2175,16 +2191,7 @@ u32 FUN_001b39e0(u32 resource)
 first_body:
     record = (u8*)resource + firstIndex * 0x18;
     type = *(u16*)(record + 0x11c);
-    if (type == 0)
-    {
-        object = *(u32*)(record + 0x128);
-        if (FUN_00316f70(object) == 0)
-        {
-            return 0;
-        }
-        goto first_increment;
-    }
-    if (type == 2)
+    if ((type == 0) || (type == 2))
     {
         object = *(u32*)(record + 0x128);
         if (FUN_00316f70(object) == 0)
@@ -2243,17 +2250,17 @@ second_body:
     if (iGpffffb470 == 0)
     {
         object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
+        *(u32*)(record + 0x12c) = object;
+        matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+        FUN_0034fdf0(object, matrix + 0x30);
+        FUN_00100ec0(*(u32*)(record + 0x130));
     }
     else
     {
         object = FUN_0034fcd0();
-    }
-    *(u32*)(record + 0x12c) = object;
-    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-    FUN_0034fdf0(object, matrix + 0x30);
-    if (iGpffffb470 == 0)
-    {
-        FUN_00100ec0(*(u32*)(record + 0x130));
+        *(u32*)(record + 0x12c) = object;
+        matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+        FUN_0034fdf0(object, matrix + 0x30);
     }
     *(u32*)(record + 0x130) = 0;
     goto second_increment;
@@ -2349,6 +2356,10 @@ void FUN_001b3c90(void* resource)
     }
     (*(void (**)(void*))DAT_0096017c_abs)(resource);
 }
+// W417 census: call multiset is exact (94/94), but ORDER remains divergent at index 43:
+// ours 0x004c9d10,0x0019d3f0,0x00198610,0x00198610 versus retail
+// 0x004c9d10,0x00198610,0x00198610,0x0049a250. nd1255, object2256/window2256;
+// zero headroom means any repair must be size-neutral.
 // FUN_001b3e50 NONMATCHING
 void FUN_001b3e50(void* camera, u32* resource)
 {
@@ -2449,7 +2460,7 @@ void FUN_001b3e50(void* camera, u32* resource)
     {
         light = FUN_00198540(uGpffffb3dc);
         value = FUN_00198580();
-        FUN_0049c3d0(light, value);
+        FUN_0049c480(light, value);
     }
 
     if ((*resource & 1) == 0)
@@ -2694,13 +2705,34 @@ void FUN_001b4720(void* camera, u32* resource)
         }
     }
 
-    world = FUN_004c9d10((u32)camera);
-    if (world == 0)
+    if ((*resource & 1) == 0)
     {
-        FUN_0019d3f0(D_00678DF8, 0x82d);
+        world = FUN_004c9d10((u32)camera);
+        if (world == 0)
+        {
+            FUN_0019d3f0(D_00678DF8, 0x82d);
+        }
+    }
+    else
+    {
+        world = FUN_004c9d10((u32)camera);
     }
     FUN_00198610(2, 0);
     FUN_00198610(2, 1);
+    if ((*resource & 1) != 0)
+    {
+        FUN_001a8140(resource[3], 1);
+        if (((*resource & 0x80000000) == 0) &&
+            ((*resource & 0x40000000) != 0) &&
+            (resource[4] != 0))
+        {
+            FUN_001a88e0(resource[4]);
+        }
+        if (world == 0)
+        {
+            FUN_0019d3f0(D_00678DF8, 0x846);
+        }
+    }
     if ((*resource & 0xc0000000) == 0)
     {
         count = resource[5];
@@ -3348,6 +3380,10 @@ done:
 /* W389: baseline obj 3244/3264, nd 2138; opt_lifetimes on + opt_propagation off -> obj 3244/3264, nd 2127. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+/* W417 failed probe: moving K_Field_Get_A with listA/listB before the list
+ * calls gave nd2127->2112 at object3244/3264, but left call order divergent
+ * (an extra K_Field_Get_A before 0x003b5d50 at index 28). The retained
+ * three-statement permutation closes the 76-call order at nd2116. */
 // FUN_001b61f0 NONMATCHING
 u32 FUN_001b61f0(void* resource, u32 archiveEntry)
 {

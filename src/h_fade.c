@@ -38,8 +38,8 @@ extern void func_0034ff70(FadeDayEpl* epl, f32 scalar);
 extern void func_0034ff90(FadeDayEpl* epl, const RwRGBA* color);
 extern void* func_0010c1a0(void* param_1, const char* path, ...);
 extern void* func_0010c3a0(void* stream, u32* finished, u32 param_3);
-extern void func_001140d0(u32 rgba, s32 width, s32 height, const FadeDayTmx* texture,
-                           f32 depthOffset, f32 x, f32 y);
+extern void func_001140d0(f32 depthOffset, u32 rgba, f32 x, f32 y,
+                           s32 width, s32 height, const FadeDayTmx* texture);
 extern void func_004d0f00(void* resource);
 
 static s16 sFadeType;                  // 007cdf08
@@ -679,8 +679,8 @@ static void H_Fade_Day()
 
         travel = ((sFadeDuration - sFadeCounter) * 5000) / sFadeDuration;
         halfTravel = travel / 2;
-        func_001140d0(packedColor, travel + 640, travel + 640, sFadeDayTmx,
-                       99.0f, (f32)-halfTravel, (f32)(-96 - halfTravel));
+        func_001140d0(99.0f, packedColor, (f32)-halfTravel,
+                       (f32)(-96 - halfTravel), travel + 640, travel + 640, sFadeDayTmx);
     }
     }
 }

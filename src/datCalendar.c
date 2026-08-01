@@ -349,6 +349,7 @@ u32 clndGetCurrentWeekDay()
 }
 /* W357 measured opt_loop_invariants on: without nd273/object408, with nd268/object404; window 432; retained. */
 #pragma opt_loop_invariants on
+/* W416 width audit: retail candidate offsets 0xd4/0xf8/0x120/0x128/0x12c all use 0x10 extension shifts; ours' corresponding pairs also use 0x10 (layout differs), so no shift-width defect was confirmed. A complete explicit s16 cast probe measured nd301/object444 (window432), rejected vs nd268/object404 (rates 0.677928 vs 0.663366). */
 // FUN_0017DB40 NONMATCHING
 u32 func_0017db40(s16 daysSinceApr5)
 {
@@ -452,6 +453,8 @@ u8 clndIsHolidayOrSunday()
 #pragma opt_loop_invariants reset
 /* W357 measured opt_lifetimes on: without nd290/object608, with nd288/object608; window 608; retained. */
 #pragma opt_lifetimes on
+/* W416 width audit: retail candidate offsets 0x104/0x108/0x188/0x1e8 all use 0x10 extension shifts; ours' corresponding pairs also use 0x10. Complete explicit s16 increment/subtraction casts measured nd392/object624 (window608), rejected vs nd288/object608 (rates 0.628205 vs 0.473684). */
+/* Preserve the scoped opt_lifetimes/opt_loop_invariants state below; this probe did not justify changing it. */
 // FUN_0017DDF0 NONMATCHING
 u32 func_0017ddf0(s16* monthOut, s16* dayOut)
 {
@@ -2134,6 +2137,7 @@ KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
 done:
     return result;
 }
+/* W416 width audit: retail candidate offsets 0x40/0x74/0x78 all use 0x10 extension shifts; ours' corresponding date-value pairs also use 0x10 at different layout offsets. No width edit was justified. */
 // FUN_00181720 NONMATCHING
 s32 clndFindAndExecSiteibiEvents()
 {
@@ -3163,6 +3167,7 @@ void* func_00183410(KwlnTask* task)
 /* W357 measured opt_propagation off: without nd709/object920, with nd591/object916; window 928; retained. */
 #pragma opt_propagation off
 #pragma opt_common_subs off
+/* W414: y57-only hoist reached nd597/object924 but did not grow the frame; y67-only reached nd681. */
 // FUN_00183840 NONMATCHING
 void func_00183840(void* resource,
                    s32 alpha,
@@ -3176,12 +3181,15 @@ void func_00183840(void* resource,
     s32 blink;
     s32 blinkAlpha;
     s32 frame;
+    void* unused;
+    f32 drawY;
+    f32 drawY80;
 
     days = clndGetDaysSinceStartFromDate(month, day);
     phase = daysMoonPhases[days];
     if (phase != 0x1d)
     {
-        func_001159f0(NULL, resource, 0x2e, alpha & 0xff,
+        func_001159f0(unused, resource, 0x2e, alpha & 0xff,
                       baseX + 584.0f, baseY + 57.0f, 50.0f);
     }
 
@@ -3253,8 +3261,9 @@ void func_00183840(void* resource,
             frame = 0;
             break;
     }
-    func_001159f0(NULL, resource, frame, alpha & 0xff,
-                  baseX + 595.0f, baseY + 67.0f, 50.0f);
+    drawY = baseY + 67.0f;
+    func_001159f0(unused, resource, frame, alpha & 0xff,
+                  baseX + 595.0f, drawY, 50.0f);
 
     if (phase >= 0 && phase < 15)
     {
@@ -3269,25 +3278,26 @@ void func_00183840(void* resource,
             blink = 0x28 - blink;
         }
         blinkAlpha = (blink * 0xff) / 0x14;
-        func_00115ad0(NULL, resource, frame + 0x39, alpha & 0xff,
+        func_00115ad0(unused, resource, frame + 0x39, alpha & 0xff,
                       blinkAlpha,
                       baseX + 584.0f, baseY + 57.0f, 50.0f);
     }
 
+    drawY80 = baseY + 80.0f;
     if (phase == 0x1d)
     {
-        func_001159f0(NULL, resource, 2, alpha & 0xff,
-                      baseX + 540.0f, baseY + 80.0f, 50.0f);
+        func_001159f0(unused, resource, 2, alpha & 0xff,
+                      baseX + 540.0f, drawY80, 50.0f);
     }
     else if (phase == 6 || phase == 0x16)
     {
-        func_001159f0(NULL, resource, 0, alpha & 0xff,
-                      baseX + 540.0f, baseY + 80.0f, 50.0f);
+        func_001159f0(unused, resource, 0, alpha & 0xff,
+                      baseX + 540.0f, drawY80, 50.0f);
     }
     else if (phase == 0x0e)
     {
-        func_001159f0(NULL, resource, 1, alpha & 0xff,
-                      baseX + 540.0f, baseY + 67.0f, 50.0f);
+        func_001159f0(unused, resource, 1, alpha & 0xff,
+                      baseX + 540.0f, drawY, 50.0f);
     }
 }
 
@@ -3295,6 +3305,7 @@ void func_00183840(void* resource,
 /* W357 measured opt_propagation off: without nd462/object892, with nd420/object888; window 896; retained. */
 #pragma opt_propagation off
 #pragma opt_common_subs reset
+/* W414 negative: pre-call y15 hoist worsened nd420->588; assigning after the second draw reached nd418/object888. */
 // FUN_00183BE0 NONMATCHING
 void func_00183be0(void* resource,
                    s32 alpha,
@@ -3309,6 +3320,7 @@ void func_00183be0(void* resource,
     s32 weekday;
     s32 days;
     void* unused;
+    f32 drawY15;
 
     if (alpha < 0x28)
     {
@@ -3323,18 +3335,19 @@ void func_00183be0(void* resource,
     func_00115bc0(unused, resource, (month % 10) + 0x23, alpha & 0xff,
                   0, 0x0e, 2,
                   baseX + 532.0f, baseY + 15.0f, 50.0f);
+    drawY15 = baseY + 15.0f;
     func_00115bc0(unused, resource, 0x2d, alpha & 0xff,
                   0, 0x0e, 2,
-                  baseX + 548.0f, baseY + 15.0f, 50.0f);
+                  baseX + 548.0f, drawY15, 50.0f);
     if (day >= 10)
     {
         func_00115bc0(unused, resource, day / 10 + 0x23, alpha & 0xff,
                       0, 0x0e, 2,
-                      baseX + 557.0f, baseY + 15.0f, 50.0f);
+                      baseX + 557.0f, drawY15, 50.0f);
     }
     func_00115bc0(unused, resource, day % 10 + 0x23, alpha & 0xff,
                   0, 0x0e, 2,
-                  baseX + 574.0f, baseY + 15.0f, 50.0f);
+                  baseX + 574.0f, drawY15, 50.0f);
 
     days = clndGetDaysSinceStartFromDate(month, day);
     if (func_0017db40(days) == 1)
@@ -3386,7 +3399,7 @@ void func_00183f60(void* resource,
     void* unused;
 
     days = clndGetDaysSinceStartFromDate(month, day);
-    if (func_0017db40(days) == 1 && time >= 2 && time <= 5)
+    if (func_0017db40(days) == 1 && (u32)(time - 2) < 4)
     {
         func_001159f0(unused, resource, 0x36, alpha & 0xff,
                       baseX + 525.0f, baseY + 29.0f, 50.0f);
@@ -3764,7 +3777,7 @@ extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
                           s32 width, s32 height);
 extern void func_00113d80(f32 depth, f32 x, f32 y, u32 color,
                           s32 width, s32 height);
-extern void func_00114af0(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00114af0(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height, void* texture);
 extern void func_003b2cb0(f32 depth, s32 x, s32 y, u32 color,
                           u32 font, u32 align, const void* text,
@@ -4346,6 +4359,7 @@ static s32 clndNormalizeAngle(s32 angle)
     return angle;
 }
 
+/* W414 negative: clnd global-store and union probes stayed nd29/object324; no retained change. */
 // FUN_00184DB0 NONMATCHING
 KwlnTask* func_00184db0(KwlnTask* parent)
 {
@@ -4802,7 +4816,7 @@ void func_00185b40(void* resource,
     dayIndex = firstDay - 3;
     x = clndPackedX(*(u64*)&position) + 17.0f;
     y = clndPackedY(*(u64*)&position) + 213.0f;
-    for (i = 0; i < 8; i++, dayIndex++)
+    for (i = 0; i < 8; dayIndex++, i++)
     {
         if (dayIndex < 0)
         {
@@ -6331,8 +6345,8 @@ u32 func_00188be0(void)
 
 #include "type.h"
 
-extern void func_001140d0(u32 rgba, s32 width, s32 height, const void* texture,
-                          f32 depthOffset, f32 x, f32 y);
+extern void func_001140d0(f32 depthOffset, u32 rgba, f32 x, f32 y,
+                          s32 width, s32 height, const void* texture);
 
 // FUN_00188C30 NONMATCHING
 void* func_00188c30(KwlnTask* task)
@@ -6381,8 +6395,8 @@ void* func_00188c30(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 3:
@@ -6399,8 +6413,8 @@ void* func_00188c30(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 4:
@@ -6417,8 +6431,8 @@ void* func_00188c30(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 5:
@@ -6435,8 +6449,8 @@ void* func_00188c30(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 6:
@@ -6453,8 +6467,8 @@ void* func_00188c30(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 7:
@@ -6468,12 +6482,12 @@ void* func_00188c30(KwlnTask* task)
             {
                 iVar3 = iVar3 + 0xfff;
             }
-            func_001140d0(0xffffff00U |
-                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
-                          iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f,
+            func_001140d0(0.0f, 0xffffff00U |
+                          (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
                           183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f,
-                          16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f);
+                          16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f,
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6524,8 +6538,8 @@ void* func_00189230(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 3:
@@ -6542,8 +6556,8 @@ void* func_00189230(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 4:
@@ -6560,8 +6574,8 @@ void* func_00189230(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 5:
@@ -6578,8 +6592,8 @@ void* func_00189230(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 6:
@@ -6597,8 +6611,8 @@ void* func_00189230(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 7:
@@ -6616,8 +6630,9 @@ void* func_00189230(KwlnTask* task)
             {
                 iVar3 = iVar3 + 0xfff;
             }
-            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffff00U | iVar2, fVar1, fVar2,
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6671,8 +6686,8 @@ void* func_00189810(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 3:
@@ -6691,8 +6706,8 @@ void* func_00189810(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 4:
@@ -6711,8 +6726,8 @@ void* func_00189810(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 5:
@@ -6731,8 +6746,8 @@ void* func_00189810(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 6:
@@ -6750,8 +6765,8 @@ void* func_00189810(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 7:
@@ -6769,8 +6784,9 @@ void* func_00189810(KwlnTask* task)
             {
                 iVar3 = iVar3 + 0xfff;
             }
-            func_001140d0(0xffffff00U | iVar2, iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffff00U | iVar2, fVar1, fVar2,
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6821,8 +6837,8 @@ void* func_00189df0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 3:
@@ -6839,8 +6855,8 @@ void* func_00189df0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 4:
@@ -6857,8 +6873,8 @@ void* func_00189df0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 5:
@@ -6875,8 +6891,8 @@ void* func_00189df0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 6:
@@ -6893,8 +6909,8 @@ void* func_00189df0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 7:
@@ -6910,12 +6926,12 @@ void* func_00189df0(KwlnTask* task)
             {
                 iVar3 = iVar3 + 0xfff;
             }
-            func_001140d0(0xffffff00U |
-                              (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
-                          iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f,
+            func_001140d0(0.0f, 0xffffff00U |
+                          (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
                           ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f,
-                          ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f);
+                          ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f,
+                          iVar3 >> 0xc, iVar3 >> 0xc,
+                          (const void*)(u32)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6968,8 +6984,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             pVar4 = (const void*)(u32)puVar1[3];
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          pVar4, 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, pVar4);
             break;
 
         case 3:
@@ -6986,8 +7002,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 4:
@@ -7004,8 +7020,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 5:
@@ -7022,8 +7038,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 6:
@@ -7040,8 +7056,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar2 = iVar2 + 0xfff;
                 iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar3, iVar3,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
+                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
             break;
 
         case 7:
@@ -7059,8 +7075,8 @@ void* func_0018a3f0(KwlnTask* task)
                 iVar3 = iVar3 + 0xfff;
             }
             pVar4 = (const void*)(u32)puVar1[3];
-            func_001140d0(rgba, iVar3 >> 0xc, iVar3 >> 0xc,
-                          pVar4, 0.0f, fVar1, fVar2);
+            func_001140d0(0.0f, rgba, fVar1, fVar2,
+                          iVar3 >> 0xc, iVar3 >> 0xc, pVar4);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -7294,7 +7310,7 @@ void* func_0018a9f0(KwlnTask* task)
         }
         if (((struct GsLateTimerWork*)work)->timer > 5 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
-            func_00114af0(99.0f, 0.0f, 0.0f, 0xffffffff,
+            func_00114af0(99.0f, 0xffffffff, 0.0f, 0.0f,
                           0x280, 0x1c0, GS_PTR(work, 0x34));
         }
         if (GS_TASK(work, 0x1c) != NULL && kwlnTaskGetState(GS_TASK(work, 0x1c)) == 3)
@@ -7309,9 +7325,8 @@ void* func_0018a9f0(KwlnTask* task)
         if (((struct GsLateTimerWork*)work)->timer > 0x31 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
             alpha = (u32)(((((struct GsLateTimerWork*)work)->timer - 0x32) * 0xff) / 0xf);
-            func_00114af0(98.0f, 0.0f, 0.0f,
-                          alpha | 0xffffff00, 0x280, 0x1c0,
-                          GS_PTR(work, 0x30));
+            func_00114af0(98.0f, alpha | 0xffffff00, 0.0f, 0.0f,
+                          0x280, 0x1c0, GS_PTR(work, 0x30));
         }
         if (((struct GsLateTimerWork*)work)->timer > 0x36 && ((struct GsLateTimerWork*)work)->timer < 0x50)
         {

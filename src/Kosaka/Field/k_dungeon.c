@@ -570,6 +570,12 @@ static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
     }
 }
 
+/* W417 failed probe: a switch around only the occupied test (assignment
+ * left outside) was byte-identical at nd401/object612; wrapping the normal
+ * assignment in case 0 and the assert/continue in default gave nd375/object620
+ * and the exact 13-call order. */
+/* W418 negatives: removing either/both startX/startY u16 casts was neutral at nd375/object620; changing both locals to u16 regressed nd399/object656 and exceeded the 624-byte window. */
+/* W418 accepted: u8 directionLocal assigned from direction before the loops and used for cell->direction; nd375/object620 -> nd301/object624 (rate 60.48% -> 48.24%). */
 // FUN_001bb090 NONMATCHING
 void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
 {
@@ -579,6 +585,7 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     s32 row;
     FieldDungeonCell* cell;
     const u8* patternCell;
+    u8 directionLocal;
 
     if ((u16)x + pattern->raw[1] - 1 >= 0x10)
     {
@@ -591,6 +598,7 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
 
     startX = (u16)x;
     startY = (u16)y;
+    directionLocal = direction;
 
     cell = &K_Field_Get()->dungeonCells[startY][startX];
     cell->placed = 1;
@@ -599,34 +607,42 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
         for (col = 0; col < pattern->raw[1]; col++)
         {
             cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            if (cell->occupied != 0)
+            switch (cell->occupied)
             {
+            case 0:
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->occupied = 1;
+                patternCell = pattern->raw + row * 0x18 + col * 8;
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->connections = patternCell[0x0e];
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->width = pattern->raw[1];
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->height = pattern->raw[2];
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->patternId = pattern->raw[0];
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->direction = directionLocal;
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->elevation = patternCell[0x0f];
+                cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+                cell->roomId = sDungeonRoomCounter;
+                break;
+            default:
                 K_Assert((const char*)D_006833A0, 0x124);
                 continue;
             }
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->occupied = 1;
-            patternCell = pattern->raw + row * 0x18 + col * 8;
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->connections = patternCell[0x0e];
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->width = pattern->raw[1];
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->height = pattern->raw[2];
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->patternId = pattern->raw[0];
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->direction = direction;
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->elevation = patternCell[0x0f];
-            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
-            cell->roomId = sDungeonRoomCounter;
         }
     }
     sDungeonRoomCounter++;
 }
 
 #pragma opt_propagation off
+// W415 census negative: adding the missing K_Field_Get before func_001b5380 (direction-expression and no-op probes) changed nd3024->3559/3561 and object4780->4788 against the 4912-byte window; the exact target call was present but the +535 nd rise for +8 bytes was non-proportional, so the probe was reverted.
+// Direct census: ours omits one 0x001b9120 (K_Field_Get) immediately before
+// 0x001b5380; retail has it there. Baseline 3024/4780 = 63.26% wrong;
+// direction-expression probe 3559/4788 = 74.31%, no-op probe 3561/4788 =
+// 74.35%. Both add 8 bytes without real code recovery, so retain baseline.
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
@@ -1506,7 +1522,6 @@ generate:
     } while (*(u8*)((u8*)K_Field_Get() +
                      startY * 0x100 + startX * 0x10 + 0x48) != 0);
     *(u8*)((u8*)K_Field_Get() + 0x40) = (u8)(RpRandom() & 3);
-    func_001bcac0(patternId, (u32)startX, (u32)startY, 0, 0);
 
     do
     {
