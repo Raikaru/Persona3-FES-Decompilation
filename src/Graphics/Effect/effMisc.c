@@ -247,8 +247,8 @@ void func_00358160(f32 angle)
 }
 
 /* W389: baseline nd 14, obj 328/336; assignment split was neutral, while right.y temporary/operand probes worsened to nd118/25 and were reverted. Residual is prologue argument-save order plus FPU multiply/add scheduling. */
-// FUN_003581f0 NONMATCHING
-void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
+// FUN_003581f0
+void func_003581f0(f32 angle, const RwV3d* axis, RwMatrix* matrix)
 {
     f32 angle_p;
     f32 xSquared;
@@ -260,6 +260,9 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     RwV3d normalizedAxis;
     f32 cosine;
     f32 sine;
+    f32 oneMinusCosine;
+    f32 xy;
+    f32 zSine;
     f32 x;
     f32 y;
     f32 z;
@@ -298,12 +301,16 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     z = normalizedAxis.z;
     xSquared = x * x;
     matrix_p->right.x = xSquared + (1.0f - xSquared) * cosine;
-    matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
+    xy = x * y;
+    oneMinusCosine = 1.0f - cosine;
+    zSine = z * sine;
+    xy = xy * oneMinusCosine;
+    matrix_p->right.y = zSine + xy;
     xz = x * z;
     matrix_p->right.z = xz * (1.0f - cosine) - y * sine;
     matrix_p->flags = 0;
 
-    matrix_p->up.x = z * sine - x * y * (1.0f - cosine);
+    matrix_p->up.x = xy - zSine;
     ySquared = y * y;
     matrix_p->up.y = ySquared + (1.0f - ySquared) * cosine;
     xSquared = y * z;
@@ -332,7 +339,7 @@ void func_00358340(const RwV3d* axis, f32 angle)
 {
     RwMatrix matrix;
 
-    func_003581f0(axis, &matrix, angle);
+    func_003581f0(angle, axis, &matrix);
     __asm__ volatile (
         ".set noreorder          \n"
         "lqc2 vf28, 0(%0)        \n"

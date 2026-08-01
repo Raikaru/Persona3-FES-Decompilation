@@ -1568,6 +1568,15 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 
 #pragma opt_common_subs reset
 /* W419 probes: all six declaration orders of i/slots/j, plus absolute aliases on every sSfdDecodeSlots use, stayed nd8,obj532/window544. */
+/* W421 row classification: verify nd8, object532/window544, rate0.015038.
+ * Offsets 0xe8/0xec are lui $a0,0 / lui $v1,0x83 and
+ * addiu $a0,$a0,0 / addiu $v1,$v1,0x3710; 0xf8/0xfc are
+ * dsll32 $v1,$a1,0x10 / dsll32 $a0,$a1,0x10 and
+ * dsra32 $v1,$v1,0x10 / dsra32 $a0,$a0,0x10; 0x100/0x104 are
+ * sll $v0,$v1,4 / sll $v0,$a0,4 and addu $v0,$v0,$v1 / addu $v0,$v0,$a0;
+ * 0x10c is addu $v0,$a0,$v0 / addu $v0,$v1,$v0 (candidate / retail):
+ * global-base/index register colouring. */
+
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {

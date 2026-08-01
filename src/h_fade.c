@@ -462,6 +462,18 @@ static void H_Fade_White()
 }
 
 /* W420 sine temporary plus mixed-order mulFirst: nd30,obj1728/window1728 (rate 0.017361) -> nd28,obj1728/window1728 (rate 0.016204). */
+/* W421 row classification: verify nd28, object1728/window1728, rate0.016204.
+ * Offsets 0x650/0x654/0x658/0x660/0x664/0x668 are
+ * mflo $a1 / mflo $a2; sra $v1,$a1,1 / sra $a1,$a2,1;
+ * bgez $a1,0x108188 / bgez $a2,0x108188; addiu $v0,$a1,1 / addiu $v0,$a2,1;
+ * sra $v1,$v0,1 / sra $a1,$v0,1; and negu $v0,$v1 / negu $v1,$a1.
+ * Offsets 0x66c/0x670/0x674/0x678/0x67c are
+ * mtc1 $v0,$f0 / addiu $v0,$zero,-0x60; nop / subu $v0,$v0,$a1;
+ * cvt.s.w $f13,$f0 / mtc1 $v1,$f0; addiu $v0,$zero,-0x60 / nop;
+ * subu $v0,$v0,$v1 / cvt.s.w $f13,$f0. Offset 0x694 is
+ * addiu $a1,$a1,0x280 / addiu $a1,$a2,0x280 (candidate / retail):
+ * travel/halfTravel register colouring and argument setup. */
+
 // FUN_00107b20 NONMATCHING
 static void H_Fade_Day()
 {
@@ -656,10 +668,10 @@ static void H_Fade_Day()
     {
 
     {
+
         u32 packedColor;
         s32 halfTravel;
         s32 travel;
-
         if (sFadeState == HFADE_STATE_IN)
         {
             f32 degrees;

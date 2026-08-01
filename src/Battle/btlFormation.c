@@ -4846,6 +4846,14 @@ void func_002bacb0(u32 *param_1)
   return;
 }
 
+/* W421 classification: baseline verify nd3 at 344/352 (rate 0.008721).
+ * At +180 ours lw $v0,0x1c($s3) versus retail lw $t0,0x1c($s3);
+ * at +184 ours andi $v1,$v0,0xc00 versus retail andi $v1,$t0,0xc00.
+ * These are load-destination/register-role differences, not an operand
+ * swap.  Flag aliases measured nd11 at 344/352 (rate 0.031977);
+ * pointer/volatile variants measured nd126 at 348/352 (rate 0.362069)
+ * and nd127 at 352/352 (rate 0.360795); declaration-only variants stayed
+ * nd3. */
 // FUN_002bad60 NONMATCHING
 
 u32 func_002bad60(u32 *param_1)

@@ -261,7 +261,13 @@ void FUN_0029a570(void)
 
 #pragma opt_loop_invariants on
 /* Removing this worsens FUN_0029a690 (nd5 -> nd109) - measured W161. */
-// The residual is limited to MWCCPS2 register coloring/scheduling; logical control flow and object size match retail.
+/* W421 classification: baseline verify nd5 at 192/192 (rate 0.026042).
+ * Residual rows are role coloring: +52 ours andi $t1,$a0,0xffff versus
+ * retail andi $t3,$a0,0xffff; +76 move $t3,$zero versus move $t1,$zero;
+ * +136 beq $a2,$t1 versus beq $a2,$t3; +156 addiu $t3,$t3,1 versus
+ * addiu $t1,$t1,1; +164 sltu $v1,$t3,$a0 versus sltu $v1,$t1,$a0.
+ * Comparison reversal measured nd6 at 192/192 (rate 0.031250); u32/cast
+ * aliases measured nd68 at 192/192 (rate 0.354167). */
 // FUN_0029a690 NONMATCHING
 void FUN_0029a690(u16 genus)
 {

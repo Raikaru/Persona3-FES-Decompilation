@@ -4649,7 +4649,7 @@ void func_001127d0(void* param_1, u32 enabled)
 #pragma opt_loop_invariants on
 /* W419 mask-then-shift color extraction probe for both 00113A30/00113D80 worsened nd434,obj808 to nd549,obj816; reverted. */
 /* W420 mixed int/float parameter order: nd434,obj808/window848 (rate 0.537129) -> nd424,obj808/window848 (rate 0.524752); retained. */
-// FUN_00113A30 NONMATCHING
+// FUN_00113A30
 void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
@@ -4659,17 +4659,17 @@ void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    u32 r;
-    u32 g;
-    u32 b;
-    u32 a;
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (color >> 24) & 0xff;
-    g = (color >> 16) & 0xff;
-    b = (color >> 8) & 0xff;
+    r = ((color & 0xff000000) >> 24) & 0xff;
+    g = ((color & 0x00ff0000) >> 16) & 0xff;
+    b = ((color & 0x0000ff00) >> 8) & 0xff;
     a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
@@ -4694,9 +4694,10 @@ void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    z = D_00960088 - depth;
+    i = 0;
+    z = *(f32*)D_00960088_abs - depth;
 
-    for (i = 0; i < 4; i++)
+    for (; i < 4; i++)
     {
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
@@ -4711,7 +4712,7 @@ void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 
     (*setState)(1, 0);
 
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 #pragma opt_loop_invariants off
@@ -4720,7 +4721,7 @@ void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 /* Scoped loop-invariant pragma measured W330: without nd438, with nd434 (obj 808/848). */
 #pragma opt_loop_invariants on
 /* W420 mixed int/float parameter order: nd434,obj808/window848 (rate 0.537129) -> nd424,obj808/window848 (rate 0.524752); retained. */
-// FUN_00113D80 NONMATCHING
+// FUN_00113D80
 void func_00113d80(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
@@ -4730,17 +4731,17 @@ void func_00113d80(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    u32 r;
-    u32 g;
-    u32 b;
-    u32 a;
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (color >> 24) & 0xff;
-    g = (color >> 16) & 0xff;
-    b = (color >> 8) & 0xff;
+    r = ((color & 0xff000000) >> 24) & 0xff;
+    g = ((color & 0x00ff0000) >> 16) & 0xff;
+    b = ((color & 0x0000ff00) >> 8) & 0xff;
     a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
@@ -4765,9 +4766,10 @@ void func_00113d80(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    z = D_00960088 - depth;
+    i = 0;
+    z = *(f32*)D_00960088_abs - depth;
 
-    for (i = 0; i < 4; i++)
+    for (; i < 4; i++)
     {
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
@@ -4782,7 +4784,7 @@ void func_00113d80(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 
     (*setState)(1, 0);
 
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 #pragma opt_loop_invariants off
 
@@ -5867,6 +5869,18 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 }
 
 /* W419 probes: direct pointer-return use, pointer-return alias, and matching sibling local order all stayed nd16,obj280/window288. */
+/* W421 row classification: verify nd16, object280/window288, rate0.057143.
+ * Offsets 0x34/0x38/0x3c/0x40 are move $s4,$a3 / move $s3,$a3;
+ * move $s3,$t0 / move $s2,$t0; move $s2,$t1 / move $s1,$t1; and
+ * move $s1,$t2 / move $s0,$t2. Offset 0x58 is move $s0,$v0 / move $s4,$v0.
+ * Offsets 0x68/0x6c/0x70 are sb $s3,0x18($v0) / sb $s2,0x18($v0);
+ * sb $s2,0x30($v0) / sb $s1,0x30($v0); and sb $s1,0x31($v0) / sb $s0,0x31($v0).
+ * Offsets 0x78/0x7c are sh $s4,0x28($v0) / sh $s3,0x28($v0) and
+ * sh $s4,0x2a($v0) / sh $s3,0x2a($v0); 0x80 is move $a0,$s0 / move $a0,$s4.
+ * Offsets 0x90/0x9c/0xb8/0xc0 are lw $v1,4($s0) / lw $v1,4($s4) and
+ * lw $v0,($s0) / lw $v0,($s4) at each offset; 0xd0 is move $a0,$s0 / move $a0,$s4
+ * (candidate / retail): saved-register colouring from the extra u16 argument. */
+
 // FUN_00115DE0 NONMATCHING
 
 
@@ -5876,15 +5890,10 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
 
 {
+  int *piVar2;
   int *piVar1;
 
-  void* uVar3;
-
-  int *piVar2;
-
-
-  uVar3 = func_001158b0(0);
-  piVar2 = (int *)uVar3;
+  piVar2 = (int *)func_001158b0(0);
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;

@@ -8696,7 +8696,7 @@ void FUN_003ac230(void)
 #undef FUN_003ac240
 
 // W383 residual: s0/s1 upper/lower color swap; declaration permutation was neutral, lower-before-upper first-use was worse, and ABI/full-prototype probes were neutral or worse.
-// FUN_003AC240 NONMATCHING
+// FUN_003AC240
 
 
 void FUN_003ac240(int param_1,u64 param_2)
@@ -8704,7 +8704,7 @@ void FUN_003ac240(int param_1,u64 param_2)
   u8 *base;
   u32 *panel;
   int upper;
-  int lower;
+  u32 lower;
   u32 bounds[4];
 
   base = (u8 *)(uintptr_t)param_1;
@@ -9449,12 +9449,16 @@ u32 FUN_003acf80(u32 param_1,int param_2)
 }
 #define FUN_003acf80(...) ((u64 (*)(...))FUN_003acf80)(__VA_ARGS__)
 #undef FUN_003ad030
+static inline u32 itfMesAddOffsetFirst(u32 offset, u32 base)
+{
+  return offset + base;
+}
 
 // W212: transferring FUN_003ACDA0's two-step pointer construction
 // regressed nd 104 -> 110 (240/256) and was reverted. The first residual
 // remains +0x18, where ours retains the pointer in a1 and retail in v1;
 // this is the closed commutative-addu operand/allocation floor.
-// FUN_003AD030 NONMATCHING
+// FUN_003AD030
 
 
 u32 FUN_003ad030(u64 param_1,int param_2)
@@ -9466,7 +9470,8 @@ u32 FUN_003ad030(u64 param_1,int param_2)
   u32 packed2;
   u8 *data;
 
-  data = (u8 *)(*(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10));
+  data = (u8 *)itfMesAddOffsetFirst(*(volatile int *)(param_2 + 0x10),
+                                    *(volatile int *)(param_2 + 0x18));
   low = data[0] - 1;
   high = data[1];
   if (high == 0xff) {
@@ -10372,15 +10377,20 @@ u64 FUN_003ade60(u64 param_1,int param_2)
   return 0;
 }
 #undef FUN_003ade70
+static inline u8 *itfMesAddSecondFirst(int first, int second)
+{
+  return (u8 *)(second + first);
+}
 
 // W383 residual: commutative addu operand order at off92; declaration, first-use, ABI-alias, and full-prototype levers left this instruction-order floor unchanged.
-// FUN_003ADE70 NONMATCHING
+// FUN_003ADE70
 u32 FUN_003ade70(int param_1,int param_2)
 {
   u8 bVar1;
   u8 bVar2;
   u8 bVar3;
   u8 bVar4;
+  u8 *data2;
   u32 uVar5;
   u32 uVar6;
   u32 uVar7;
@@ -10395,9 +10405,11 @@ u32 FUN_003ade70(int param_1,int param_2)
     uVar6 = (u8)(bVar2 - 1);
   }
   uVar5 = (u8)uVar6 << 8 | uVar5 & 0xff;
-  bVar3 = ((u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[2];
+  data2 = itfMesAddSecondFirst(*(volatile int *)(param_2 + 0x10),
+                               *(volatile int *)(param_2 + 0x18));
+  bVar3 = data2[2];
   uVar7 = (u8)(bVar3 - 1);
-  bVar4 = ((u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[3];
+  bVar4 = data2[3];
   if (bVar4 == 0xff) {
     uVar8 = 0;
   } else {

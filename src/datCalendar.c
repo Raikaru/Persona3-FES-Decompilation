@@ -4362,8 +4362,9 @@ static s32 clndNormalizeAngle(s32 angle)
     return angle;
 }
 
+
 /* W414 negative: clnd global-store and union probes stayed nd29/object324; no retained change. */
-// FUN_00184DB0 NONMATCHING
+// FUN_00184DB0
 KwlnTask* func_00184db0(KwlnTask* parent)
 {
     u8* work;
@@ -4371,6 +4372,7 @@ KwlnTask* func_00184db0(KwlnTask* parent)
     KwlnTask* child;
     u8* childWork;
     void* (**allocator)(u32, u32, u32);
+    f32 calendarX;
 
     allocator = (void* (**)(u32, u32, u32))D_00960184;
     work = (*allocator)(1, 0x1a0, 0x40000);
@@ -4405,9 +4407,10 @@ KwlnTask* func_00184db0(KwlnTask* parent)
                                childWork);
         if (child != NULL)
         {
-            CLND_CALENDAR_X = 400.0f;
             *(f32*)(childWork + 0x10) = 400.0f;
+            calendarX = *(f32*)(childWork + 0x10);
             *(f32*)(childWork + 0x08) = 400.0f;
+            CLND_CALENDAR_X = calendarX;
         }
     }
 

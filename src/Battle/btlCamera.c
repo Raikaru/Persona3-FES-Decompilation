@@ -7491,9 +7491,13 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
 }
 
 #pragma opt_dead_assignments reset
-/* W414 negative: fndiff's nd3 consists of the documented addiu/daddiu floor
- * at +716 and a commutative mul.s operand swap at +508.  Swapping the C
- * spelling of 0.5f * distance was byte-neutral; retain the original source. */
+/* W414/W421 classification: baseline verify nd3 at 1052/1056 (rate
+ * 0.002852).  The +508 residual is the commutative swap
+ * (ours mul.s $f1,$f20,$f0; retail mul.s $f1,$f0,$f20).  The +716
+ * residual is the literal-width floor (ours addiu $s0,$zero,1; retail
+ * daddiu $s0,$zero,1).  Direct spelling was byte-neutral; static-inline
+ * helper probes that were not inlined measured nd805 at 1044/1056
+ * (rate 0.771073), so retain the baseline source. */
 // FUN_002b17a0 NONMATCHING
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)

@@ -248,6 +248,8 @@ void FUN_0077fc60(u32 *param_1)
 
 #pragma push
 /* #pragma schedule on: measured nd113/object136 -> nd109/object132; without it nd113/object136. */
+/* Direct constant-address volatile casts preserve all six hardware-register writes (nd114/object172, rate .663); pointer-variable casts collapsed them (nd107/object132), so optimiser suppression was rejected as fake window fill. */
+/* Row-level residual: at +0x30 candidate `sw $t3,0x47a8($v1)` replaces retail `and $v1,$v1,$a3`; at +0x40 candidate `lui $a1,0xffff` replaces retail `sw $v1,0x47a8($a1)`, then the same store cadence remains shifted. */
 #pragma schedule on
 // FUN_0077FD10 NONMATCHING
 void FUN_0077fd10(u32 *param_1)
@@ -257,18 +259,18 @@ void FUN_0077fd10(u32 *param_1)
 
   reg = (u32 *)uRam800747a8_abs;
   value = (*reg & ~2U) | (*param_1 & 1);
-  *reg = value;
+  *(volatile u32 *)0x800747a8 = value;
   value = (value & ~7U) | (*param_1 & 6);
-  *reg = value;
+  *(volatile u32 *)0x800747a8 = value;
   value = (value & ~8U) | (*param_1 & 8);
-  *reg = value;
+  *(volatile u32 *)0x800747a8 = value;
   value = (value & ~0x10U) | (*param_1 & 0x10);
-  *reg = value;
+  *(volatile u32 *)0x800747a8 = value;
   value = (value & ~0x1fe0U) | (*param_1 & 0x1fe0);
-  *reg = value;
+  *(volatile u32 *)0x800747a8 = value;
   value = (value & ~0xe000U) | (*param_1 & 0xe000);
-  *reg = value;
-  *(u16 *)((u8 *)reg + 2) = *(u16 *)((u8 *)param_1 + 2);
+  *(volatile u32 *)0x800747a8 = value;
+  *(volatile u16 *)0x800747aa = *(u16 *)((u8 *)param_1 + 2);
 }
 #pragma pop
 

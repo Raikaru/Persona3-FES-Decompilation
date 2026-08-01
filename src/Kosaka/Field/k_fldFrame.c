@@ -350,6 +350,14 @@ extern void func_001a7910(void* object, f32* scale);
 extern void func_001a8920(u32* entries, const u32* source);
 extern s32 func_001a8db0(KwlnTask* task);
 extern s32 func_001a91b0(KwlnTask* task, void* data);
+static inline u32 fldFrameAddOffset(u32 offset, u32 base)
+{
+    return offset + base;
+}
+static inline u32 fldFrameIndexedAddress(u32 index, u32 base)
+{
+    return index * 4 + base;
+}
 
 static inline FldFrameMoveWork* fldFrameMoveWork(KwlnTask* task)
 {
@@ -764,7 +772,7 @@ void func_001a8b10(u32* entries)
  * object to 576/560 with nd192-193; replacing all indexed accesses stayed
  * nd143/560. The single-index helper was 576/560 nd193. Retain the nd2/552
  * indexed form. */
-// FUN_001a8db0 NONMATCHING
+// FUN_001a8db0
 s32 func_001a8db0(KwlnTask* task)
 {
     u32* work;
@@ -823,7 +831,7 @@ s32 func_001a8db0(KwlnTask* task)
             }
             for (i = 0; i < 8; i++)
             {
-                if (work[9 + i] != 0)
+                if (*(u32*)(fldFrameIndexedAddress((u32)i, (u32)work) + 36) != 0)
                 {
                     if (work[0x11 + i] < work[2])
                     {
@@ -1506,6 +1514,18 @@ void func_001aaac0(KwlnTask* task, u32 value)
 /* W419 failed shape probes from nd1: axis-shape nd6/832, inner-invert nd10/832, condexpr nd9/832; single-case-switch variants nd643/856 and nd627/872 (over 832-byte window); explicit join-goto stayed nd1/832. */
 /* W419 failed exact tail-out probe: moving the axis-1/axis-0 tail outside the absZ/absY guard gave nd608/object772/window832, so it was reverted. */
 /* W419 failed mirrored outer-condition probe (absZ <= absY with original body): nd2/object832/window832, semantically reverses the axis choice, so it was reverted. */
+/* W421 probes: fldFrameIndexedAddress(index, base) reduced func_001a8db0
+ * nd2/object552/window560 (0.003623) to nd0/object552/window560 (0.000000),
+ * and the MATCH was banked. Axis nested-tail stayed nd1/832/832 (0.001202);
+ * inner conditional nd9/832/832 (0.010817); full conditional nd600/828/832
+ * (0.712919); unguarded tail
+ * nd608/772/832 (0.787565). */
+/* W421 collision address probes: fldFrameAddOffset(offset, base) in one
+ * loop gave nd9/object524/window528 (0.017176), both loops nd8/524/528
+ * (0.015267), while base-first helper order returned nd10/524/528
+ * (0.019084). Remaining register-role rows are offsets 236, 280, 348, 392:
+ * candidate index uses $a2 where retail uses $a3 (offset 236 sll, 280 addu,
+ * 348 sll, 392 addu). */
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
@@ -2932,7 +2952,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         unitsBase = gFldUnitsPc;
         for (; i < FLDUNIT_PC_MAX; i++)
         {
-            units = &unitsBase[i];
+            units = (FldUnit*)fldFrameAddOffset((u32)(i * sizeof(FldUnit)), (u32)unitsBase);
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
@@ -2949,7 +2969,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         unitsBase = gFldUnitsEc;
         for (; i < FLDUNIT_EC_MAX; i++)
         {
-            units = &unitsBase[i];
+            units = (FldUnit*)fldFrameAddOffset((u32)(i * sizeof(FldUnit)), (u32)unitsBase);
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {

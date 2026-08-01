@@ -15890,6 +15890,7 @@ void FUN_00404470(short param_1)
   }
 }
 
+
 // Confirmed b210 floor: only +0xd0 differs in commutative addu operand order
 // (`addu $v0,$v1,$v0` versus `$v0,$v0,$v1`); all table loads and remaining words match.
 // FUN_004044C0 NONMATCHING
@@ -20310,6 +20311,8 @@ FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int pa
 
 }
 
+static inline f32 fclShopMulFirst(f32 left, f32 right) { return left * right; }
+
 #pragma push
 /* Removing this worsens FUN_0040e710 (nd14 -> nd76) - measured W161. */
 #pragma opt_rebuildconditionals off
@@ -20325,11 +20328,8 @@ FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, 
 {
 
   int iVar1;
-
   u32 uVar2;
-
   char *pcVar3;
-
   u16 uVar4;
 
   
@@ -20355,7 +20355,7 @@ FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, 
 
   *(float *)(iVar1 + 0x20) = param_2;
 
-  param_3 = 4096.0f * param_3;
+  param_3 = fclShopMulFirst(4096.0f, param_3);
 
   if (2147483648.0f <= param_3) goto scale_x_high;
   uVar4 = (u16)(int)param_3;
@@ -20366,7 +20366,7 @@ scale_x_done:
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
 
-  param_4 = 4096.0f * param_4;
+  param_4 = fclShopMulFirst(4096.0f, param_4);
 
   if (2147483648.0f <= param_4) goto scale_y_high;
   uVar4 = (u16)(int)param_4;
@@ -20430,7 +20430,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
 
   *(float *)(iVar1 + 0x20) = param_2;
 
-  param_3 = 4096.0f * param_3;
+  param_3 = fclShopMulFirst(4096.0f, param_3);
 
   if (2147483648.0f > param_3) {
     uVar4 = (u16)(int)param_3;
@@ -20441,7 +20441,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
 
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
-  param_4 = 4096.0f * param_4;
+  param_4 = fclShopMulFirst(4096.0f, param_4);
 
   if (2147483648.0f > param_4) {
     uVar4 = (u16)(int)param_4;

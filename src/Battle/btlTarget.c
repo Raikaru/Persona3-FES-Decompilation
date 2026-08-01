@@ -2538,6 +2538,19 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
 }
 
 /* W419 negative: split/reordered the second-loop index declaration in FUN_002d2c10; nd15 -> 22/23 at object 712/720. */
+/* W421 classification: baseline verify nd15 at 712/720 (rate 0.021067).
+ * The second-loop residual is saved-register role coloring, not argument
+ * setup or a commutative swap: +376 ours lw $s5,0x2cc($v0) versus retail
+ * lw $s1,0x2cc($v0); +388 move $s1,$zero versus move $s0,$zero;
+ * +400 sll $v0,$s1,3 versus sll $v0,$s0,3; +404 and +412 addu
+ * $v0,$v0,$s1 versus addu $v0,$v0,$s0; +420 addu $v0,$s5,$v0 versus
+ * addu $v0,$s1,$v0; +472 lw $s0,0x18($v0) versus lw $s5,0x18($v0);
+ * +476 beqz $s0 versus beqz $s5; +488/+512 move $a1,$s0 versus move
+ * $a1,$s5; +568 move $a2,$s0 versus move $a2,$s5; +636 addiu $s1,$s1,1
+ * versus addiu $s0,$s0,1; +640 slti uses $s1 versus $s0; +652 lw
+ * $s5,0x4cc($s5) versus lw $s1,0x4cc($s1); +656 bnez $s5 versus bnez
+ * $s1.  Declaration reorder measured nd22 at 712/720 (rate 0.030899);
+ * formal-parameter flip measured nd34 at 712/720 (rate 0.047753). */
 // FUN_002d2c10 NONMATCHING
 int FUN_002d2c10(float *param_1, float *param_2)
 {
@@ -7557,6 +7570,16 @@ u32 FUN_002db450(u32 param_1)
 }
 
 /* W419 negative: moved FUN_002db480 partySlot before the other u16 locals; nd7 -> 15 at object 456/464 (rate .015351 -> .032895). */
+/* W421 classification: baseline verify nd7 at 456/464 (rate 0.015351).
+ * These are saved-register role differences, not a commutative swap:
+ * +220 ours move $s1,$zero versus retail move $s0,$zero; +232 move
+ * $a0,$s0 versus move $a0,$s1; +356 addiu $v0,$s1,1 versus addiu
+ * $v0,$s0,1; +360 andi $s1,$v0,0xffff versus andi $s0,$v0,0xffff;
+ * +364 andi $s0,$s1,0xffff versus andi $s1,$s0,0xffff; +368 slti
+ * $v0,$s0,4 versus slti $v0,$s1,4; +396 bne $s0,$v0 versus bne
+ * $s1,$v0.  Scope reorder measured nd16 at 456/464 (rate 0.035088);
+ * party-first declaration measured nd15 at 456/464 (rate 0.032895);
+ * unit-first variant measured nd118 at 432/464 (rate 0.273148). */
 // FUN_002db480 NONMATCHING
 u32 FUN_002db480(void)
 {

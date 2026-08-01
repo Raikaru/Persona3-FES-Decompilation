@@ -5423,6 +5423,7 @@ void FUN_00365cd0(u32 param_1,int param_2)
 {
 
   char cVar1;
+  u8 mode;
 
   short uVar2;
 
@@ -5443,15 +5444,13 @@ void FUN_00365cd0(u32 param_1,int param_2)
   RwV3d pos1;
 
   RwV3d pos2;
-
   RwV3d pos3;
 
   
 
+
   if (*(int *)(param_2 + 0x710) != 0) {
-
     if (param_1 == *(u32 *)(param_2 + 0x10)) {
-
       FUN_003969b0();
 
     }
@@ -5509,7 +5508,9 @@ switch (cVar1) {
                 break;
               case 3:
                 uVar5 = FUN_003968a0(*(u32 *)(param_2 + 0x710),lVar7);
-                FUN_003b8e10(uVar5,*(u8 *)((int)puVar3 + 0x12),*(short *)((int)puVar3 + 0x14),0);
+                uVar2 = *(short *)((int)puVar3 + 0x14);
+                mode = *(u8 *)((int)puVar3 + 0x12);
+                FUN_003b8e10(uVar5,mode,uVar2,0);
                 break;
               }
             }
@@ -5521,8 +5522,8 @@ switch (cVar1) {
       }
 
     }
-
   }
+
 
   return;
 

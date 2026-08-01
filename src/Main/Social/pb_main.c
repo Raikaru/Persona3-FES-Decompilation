@@ -245,15 +245,19 @@ int func_001fc870(u8* event, void* target)
 
 void func_001fc980(u8* event, u16* result, s32* count)
 {
+    extern void FUN_0017be10(int param_1, int param_2, u16 param_3, int param_4,
+                             void* param_5, void* param_6, void* param_7);
+    extern u8 FUN_0017bb40(s32 id);
     DatPersonaWork* persona;
     u16* skills;
     u32 skillCount;
     s32 skill;
-    u32 i;
     u32 resultCount;
+    u32 i;
     s32 hp;
     u32 sp;
     u32 status;
+    s16 id;
 
     persona = datPersonaGetByPcId(*(u16*)(event + 2));
     skills = datPersonaGetSkills(persona);
@@ -266,18 +270,24 @@ void func_001fc980(u8* event, u16* result, s32* count)
             continue;
         if (FUN_0017b660(*(s16*)(event + 2), skill) != 0)
             continue;
-        if ((skill & 0xffff) != 0xc2 && (skill & 0xffff) != 0xc1 && (skill & 0xffff) != 0xc0)
+        switch ((u16)skill)
+        {
+        case 0xc0:
+        case 0xc1:
+        case 0xc2:
+            id = *(s16*)(event + 2);
+            FUN_0017be10(id, id, skill, 0,
+                         &hp, &sp, &status);
+            FUN_005225a8(0x684dd0, hp, sp, status);
+            if (hp > 0 && FUN_0017bb40(skill) == 0)
+            {
+                result[resultCount] = skill;
+                resultCount++;
+            }
+            break;
+        default:
             continue;
-
-        FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2), skill, 0,
-                     &hp, &sp, &status);
-        FUN_005225a8(0x684dd0, hp, sp, status);
-        if (hp <= 0)
-            continue;
-        if (FUN_0017bb40(skill) != 0)
-            continue;
-        result[resultCount] = skill;
-        resultCount++;
+        }
     }
     *count = resultCount;
     FUN_005225a8(0x684df0, resultCount);
@@ -586,6 +596,8 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
 
 {
+  extern void FUN_0017be10(int param_1, int param_2, u16 param_3, int param_4,
+                           void* param_5, void* param_6, void* param_7);
 
   u16 uVar1;
 
@@ -593,9 +605,9 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   int iVar3;
 
-  u32 uVar4;
+  u16 uVar4;
 
-  u32 uVar5;
+  u16 uVar5;
 
   int iVar6;
 
@@ -625,7 +637,7 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   if (param_3 == 0) {
 
-    FUN_0019d3f0(0x684d60,0x2fa);
+    FUN_0019d3f0((u32)DAT_00684d60, 0x2fa);
 
   }
 

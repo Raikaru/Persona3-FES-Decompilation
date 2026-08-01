@@ -5947,6 +5947,9 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 
 // W414 failed address-width probes: u8*/Qword128* aliases stayed nd2; direct-global addressing regressed to nd36.
+// W421 row classification: nd2, object 120/128 (rate 0.015625); first
+// reloc-masked difference +0x40 is andi.b $w0,$w0,0x43 vs $w0,$w0,0x42
+// (raw 0x78430000 vs 0x78420000), a VU aggregate-copy register encoding.
 // FUN_00324B50 NONMATCHING
 
 u32 FUN_00324b50(u32 param_1)
@@ -7591,6 +7594,9 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 
+// W421 row classification after branch-layout fix: nd5, object 224/224
+// (rate 0.022321); first remaining +0x1c is lw $v1,0x68($a0) vs
+// lw $v0,0x68($a0), a scalar register-colouring residual.
 // FUN_003263B0 NONMATCHING
 void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
@@ -7609,9 +7615,6 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   float fVar6;
 
-
-
-
   f32 v[3];
 
 
@@ -7626,18 +7629,12 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
     FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
 
-    if ((*(u32 *)(param_1 + 0x68) & 0x40) == 0) {
-
-      fVar4 = FUN_0052e9e8_f32(-v[1]);
-
-      fVar4 = -fVar4;
-
-    }
-
-    else {
-
+    if ((*(u32 *)(param_1 + 0x68) & 0x40) != 0) {
       fVar4 = 0.0f;
-
+    }
+    else {
+      fVar4 = FUN_0052e9e8_f32(-v[1]);
+      fVar4 = -fVar4;
     }
 
     fVar6 = FUN_0052ea18_2f(v[0],v[2]);
@@ -32472,8 +32469,10 @@ void FUN_00341ba0(int param_1)
 
 
 // Genuine VU0 asm; removing the typed colour-address local regresses size.
-// Confirmed operand-register floor (W211): +112..124 use v1 vs retail v0,
-// and +136 loads via v0 vs retail s2 (five differing words total).
+// Confirmed operand-register floor (W211): +112/+116 are relocations; first
+// non-reloc +120 is 0x78630000 (andi.b $w0,$w0,0x63) vs 0x78420000
+// (andi.b $w0,$w0,0x42), with +124 following the same vf3/vf2 role; +136
+// is lw $a0,0x40($v0) vs lw $a0,0x40($s2) (five differing words total).
 // FUN_00341F10 NONMATCHING
 
 
@@ -35898,8 +35897,10 @@ void FUN_00345970(int param_1)
 
 
 
-// Genuine VU0 asm. Confirmed operand-register floor (W211): +112..124 use
-// v1 vs retail v0, and +136 loads via v0 vs retail s2 (five words total).
+// Genuine VU0 asm. Confirmed operand-register floor (W211): +112/+116 are
+// relocations; first non-reloc +120 is 0x78630000 (andi.b $w0,$w0,0x63) vs
+// 0x78420000 (andi.b $w0,$w0,0x42), +124 follows vf3/vf2; +136 is lw
+// $a0,0x40($v0) vs lw $a0,0x40($s2) (five words total).
 // FUN_00345CF0 NONMATCHING
 
 
@@ -45440,6 +45441,9 @@ static inline f32 mdlEffectMulFirst(f32 lhs, f32 rhs)
   return lhs * rhs;
 }
 
+// W421 row classification: nd5, object 1068/1072 (rate 0.004673); first
+// reloc-masked difference +0xf8 is mfc1 $v0,$f0 vs mfc1 $v1,$f0, followed
+// by the corresponding alpha-mask register colouring.
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {

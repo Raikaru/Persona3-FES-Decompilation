@@ -3580,6 +3580,7 @@ FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
   u32 uVar2;
 
   u32 *puVar3;
+
   u32 (**allocator)(...);
 
   
@@ -5802,8 +5803,6 @@ void FUN_00320380(float param_1,int *param_2)
 
   u32 uVar1;
 
-
-
   int iVar6;
 
   u32 uVar4;
@@ -5814,8 +5813,6 @@ void FUN_00320380(float param_1,int *param_2)
 
   u32 uVar3;
 
-
-  
 
   for (iVar6 = *param_2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x54)) {
     u32 *piVar2 = *(u32 **)(iVar6 + 0x50);
@@ -6433,7 +6430,6 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
   char *name;
   char *data;
   u32 geometry;
-
   geometry = *(u32 *)((u32)param_1 + 0x18);
   materialCount = *(s32 *)(geometry + 0x24);
   materialIndex = 0;

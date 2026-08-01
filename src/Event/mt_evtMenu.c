@@ -9484,7 +9484,7 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
   FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
   buttons = *(u16 *)DAT_007e094e_abs;
   if ((buttons & 0x40) != 0) {
-    return 1;
+    return param_3;
   }
   if ((buttons & 0x20) != 0) {
     return -1;

@@ -720,3 +720,7 @@ void FUN_001d59e0(KwlnTask* cameraTask)
 // K_FldFilter_Main stateFunc/vertices declaration swap: 1769/2732/2736 (0.6475) -> 1769/2732/2736 (no change).
 // filter camera task state guard: 1230/1656/1984 (0.7428) -> 1232/1672/1984 (0.7368); aggregate-line local: 1254/1716/1984 (0.7308); both rejected.
 // W420 state guard reconstruction: 1230/1656/1984 (0.7428) -> 1244/1680/1984 (0.7405), verified rate improvement.
+/* W421 K_FldFilter_InitQuads probes: top/bottom materialization order
+ * nd24/object252/window256 (0.095238); float declaration order
+ * nd17/252/256 (0.067460); float locals first nd31/252/256 (0.123016);
+ * integer declaration order stayed nd16/252/256 (0.063492). */

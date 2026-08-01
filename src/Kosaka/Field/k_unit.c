@@ -3238,6 +3238,9 @@ KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit)
 }
 
 // Address-expression probe floor: retained nd7 form; typed byte/base-local and postTask shapes measured worse (nd23, nd62-64, nd171). Residuals are offsets 164/168 (task load/branch register) and 196/200 (clear-address addu/reload versus retail base addu/addiu).
+/* W421 address-lifetime probes: direct task-slot check nd117/object256/window272
+ * (0.457031); postUnit element local nd171/object244/window272 (0.700820);
+ * both reverted; retained nd7/object260/window272 (0.026923). */
 // FUN_001d4180 NONMATCHING
 void func_001d4180(void)
 {

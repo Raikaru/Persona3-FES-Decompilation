@@ -65,6 +65,11 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 
 #undef FUN_003b35e0
 /* W389 residual: register-coloring cycle in the loop (retail keeps limit in $a0 and node in $a1; candidate swaps them) plus commutative addu. Six-knob singles left nd=7/object=344 unchanged for lifetimes, propagation, strength-reduction, and dead-assignments; loop-invariants/common-subs worsened nd to 81/151; pair sweep had no win; declaration swaps were neutral. */
+/* W421 row classification: baseline nd=7/object=344/window=352 (rate
+ * 0.020349). Offsets 172/188/192/196/200/204/212 are a register-role cycle:
+ * candidate uses `$a1,$a0,$a0,$a0,$a0,$a0,$a1` where retail uses
+ * `$a0,$a1,$a1,$a1,$a1,$a1,$a0` for the loop limit/node pair. Declaration
+ * permutations and bound helpers stayed nd=7/344 and were reverted. */
 // FUN_003B35E0 NONMATCHING
 void FUN_003b35e0(int count)
 {
