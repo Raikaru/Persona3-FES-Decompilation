@@ -2500,7 +2500,19 @@ void FUN_003b9610(Resrc* param_1)
  * Residual nd 4 is a b210 aggregate-copy WIDTH floor: retail moves the
  * tail as ld + lwc1/swc1 (12 bytes exactly), while b210 blits the packed
  * 12-byte struct as ld/sd + ld/sd (16 bytes, over-reading 4). No natural
- * 12-byte struct with a u64 member exists - alignment forces 16. */
+ * 12-byte struct with a u64 member exists - alignment forces 16.
+ *
+ * W408 re-probed the split five more ways; the nd4 aggregate copy still wins
+ * and every alternative is worse. Measured, all at 464/464 unless noted:
+ *   8-byte {u64} aggregate + separate f32 assignment          nd 8
+ *   same, with the f32 load through a volatile cast           nd 8
+ *   same, sourcing the f32 from the DAT_006a2da8_abs alias    nd 8
+ *   12-byte {u32,u32,f32} aggregate (dodges u64 alignment)    nd 241, 476B
+ *   u64 field assignment + aggregate f32 assignment           nd 45
+ * `opt_common_subs off` was tried to stop the two global addresses being
+ * merged: it makes this function nd 327 at 508B, over its window. The two
+ * separate lui/LO16 materializations retail needs are produced by the
+ * aggregate copy itself, not by defeating CSE. Treat nd4 as final. */
 // FUN_003BAA70 NONMATCHING
 
 
