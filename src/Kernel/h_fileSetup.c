@@ -4,6 +4,9 @@
 #include "Kosaka/k_assert.h"
 #include "temporary.h"
 
+extern const u32 D_005E4D80[];
+
+
 
 
 
@@ -382,7 +385,31 @@ static s32 hmallocTaskUpdateE(void* task)
     }
     return 0;
 }
-extern const u32 D_005E4D80[];
+
+// FUN_00192DB0
+static void hmallocTaskDestroyE(void* task)
+{
+    HMALLOC_ENGINE_FREE(*(void**)((u8*)task + 0x3c));
+}
+
+// FUN_00192DE0
+void* hmallocCreateTaskE(void)
+{
+    void* work;
+    void* task;
+
+    work = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    task = kwlnTaskCreateWithAutoPriority(NULL, 0x106f, D_005E4D60, (KwlnTaskUpdateFunc)hmallocTaskUpdateE, (KwlnTaskDestroyFunc)hmallocTaskDestroyE, work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+    return task;
+}
 
 // FUN_00192E70 NONMATCHING
 static void hmallocApplyInputTable(void)
@@ -449,31 +476,6 @@ static void hmallocApplyInputTable(void)
             func_0017cd30(entry);
         }
     }
-}
-
-// FUN_00192DB0
-static void hmallocTaskDestroyE(void* task)
-{
-    HMALLOC_ENGINE_FREE(*(void**)((u8*)task + 0x3c));
-}
-
-// FUN_00192DE0
-void* hmallocCreateTaskE(void)
-{
-    void* work;
-    void* task;
-
-    work = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-    task = kwlnTaskCreateWithAutoPriority(NULL, 0x106f, D_005E4D60, (KwlnTaskUpdateFunc)hmallocTaskUpdateE, (KwlnTaskDestroyFunc)hmallocTaskDestroyE, work);
-    if (task == NULL)
-    {
-        return NULL;
-    }
-    return task;
 }
 
 

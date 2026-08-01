@@ -1,6 +1,15 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+#include "Utils.h"
+extern const u16 D_007E094C;
+extern const u16 D_007E0952;
+extern const u16 D_007E0956;
+extern const u16 D_007E095A;
+extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+void func_0024a630(s32* state, s32 mode);
+
+
 
 
 
@@ -22,33 +31,6 @@ typedef struct
 static BasWork* sBasWork; // puGpffffb63c
 
 void bpRootRequestAnalyze(u32 unitId); // bp_root.c
-
-// FUN_0024a6c0
-void basInit(BasWork* work)
-{
-    work->flags = 0;
-    sBasWork = work;
-}
-
-// FUN_0024a6d0
-void basShutdown(void)
-{
-    sBasWork = NULL;
-}
-
-
-
-
-
-#include "Utils.h"
-
-extern const u16 D_007E094C;
-extern const u16 D_007E0952;
-extern const u16 D_007E0956;
-extern const u16 D_007E095A;
-extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
-
-void func_0024a630(s32* state, s32 mode);
 
 // FUN_0024A260
 #pragma tailcall off
@@ -188,6 +170,7 @@ void func_0024a260(s32* state)
         }
     }
 }
+
 #pragma tailcall on
 // FUN_0024A630
 void func_0024a630(s32* state, s32 mode)
@@ -209,4 +192,23 @@ void func_0024a630(s32* state, s32 mode)
         func_0010a4e0(1, sound[1], sound[2], sound[3]);
         break;
     }
+}
+
+
+
+
+
+
+
+
+// FUN_0024a6c0
+void basInit(BasWork* work)
+{
+    work->flags = 0;
+    sBasWork = work;
+}
+// FUN_0024a6d0
+void basShutdown(void)
+{
+    sBasWork = NULL;
 }

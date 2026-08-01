@@ -3,6 +3,33 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+#include "h_cdvd.h"
+extern void func_0021b4a0(void* resource);
+extern void* memcpy(void* destination, const void* source, u32 size);
+static const char sBrpBirthArchivePath[] = "battle/result/brp_birth.bin";
+static const char sBrpCombineMessagePath[] = "facility/msg/msg_combine.bmd";
+#define BRP_RES_ALLOC(size, flags) \
+    (*(void* (**)(u32, u32))D_00960178)((size), (flags))
+static u32* sBrpResWork; // puGpffffb644
+static u32* sBrpRes334; // 007ce334
+#include "Utils.h"
+static u32* sBpEffect;
+extern void func_0010a4e0_y2(s32, s32, s32, s32);
+extern void* func_0021c790(void* frame);
+extern void func_0021d890(void* destination, const f32* vertices);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021eac0(void* destination, f32 value);
+extern void func_0021eb80(void* destination, const f32* layout);
+extern f32 DAT_007cad60;
+extern f32 DAT_007cafec;
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 D_00960090[];
+extern u32 D_0096009c[];
+typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
+typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);
+
+
 #pragma alias func_0010a4e0_y2 func_0010a4e0
 
 
@@ -177,6 +204,23 @@ void brpBirth0024aa90(void)
     work[2] = 8;
 }
 
+// FUN_0024AB10
+void func_0024ab10(s32 date)
+{
+    u32* work;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    *(s16*)((u8*)work + 0x0C) = (s16)date;
+    work[0x3158] = (u32)func_003cda60(0, 1);
+    work[1] |= 0x80;
+    func_003cdba0(work[0x3158], *(u16*)((u8*)work + 0x0C));
+    func_0024be40();
+    func_0021ab80(date);
+    work[0] = 0;
+    work[1] |= 2;
+}
+
 // FUN_0024abd0
 void brpBirth0024abd0(void)
 {
@@ -195,30 +239,6 @@ u32 brpBirth0024ac40(void)
 {
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     return sBrpBirthWork[1] & 2;
-}
-
-// FUN_0024b9e0
-u32 brpBirth0024b9e0(void)
-{
-    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
-    return sBrpBirthWork[1] & 1;
-}
-
-// FUN_0024AB10
-void func_0024ab10(s32 date)
-{
-    u32* work;
-
-    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
-    work = sBrpBirthWork;
-    *(s16*)((u8*)work + 0x0C) = (s16)date;
-    work[0x3158] = (u32)func_003cda60(0, 1);
-    work[1] |= 0x80;
-    func_003cdba0(work[0x3158], *(u16*)((u8*)work + 0x0C));
-    func_0024be40();
-    func_0021ab80(date);
-    work[0] = 0;
-    work[1] |= 2;
 }
 
 // FUN_0024AC90
@@ -259,27 +279,6 @@ void func_0024ac90(void)
     }
     RwFree(work);
     sBrpBirthWork = NULL;
-}
-
-static void brpBirthSetColor(void* resource, u8 r, u8 g, u8 b, u8 a)
-{
-    BrpBirthColor color;
-
-    color.r = r;
-    color.g = g;
-    color.b = b;
-    color.a = a;
-    func_0034ff90(resource, &color);
-}
-
-static void brpBirthSetOrigin(void* resource, f32 x, f32 y, f32 z)
-{
-    BrpBirthVec origin;
-
-    origin.x = x;
-    origin.y = y;
-    origin.z = z;
-    func_0034fdf0(resource, &origin);
 }
 
 // FUN_0024ADF0 NONMATCHING
@@ -575,6 +574,27 @@ void func_0024adf0(void)
     }
 }
 
+static void brpBirthSetColor(void* resource, u8 r, u8 g, u8 b, u8 a)
+{
+    BrpBirthColor color;
+
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    color.a = a;
+    func_0034ff90(resource, &color);
+}
+
+static void brpBirthSetOrigin(void* resource, f32 x, f32 y, f32 z)
+{
+    BrpBirthVec origin;
+
+    origin.x = x;
+    origin.y = y;
+    origin.z = z;
+    func_0034fdf0(resource, &origin);
+}
+
 // FUN_0024B8A0
 void func_0024b8a0(void)
 {
@@ -614,20 +634,19 @@ void func_0024b8a0(void)
     }
 }
 
+// FUN_0024b9e0
+u32 brpBirth0024b9e0(void)
+{
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    return sBrpBirthWork[1] & 1;
+}
 
-#include "h_cdvd.h"
 
 
 
 
-extern void func_0021b4a0(void* resource);
-extern void* memcpy(void* destination, const void* source, u32 size);
-static const char sBrpBirthArchivePath[] = "battle/result/brp_birth.bin";
-static const char sBrpCombineMessagePath[] = "facility/msg/msg_combine.bmd";
 
-#define BRP_RES_ALLOC(size, flags) \
-    (*(void* (**)(u32, u32))D_00960178)((size), (flags))
-static u32* sBrpResWork; // puGpffffb644
+
 
 // FUN_0024ba30
 void brpRes0024ba30(u32* param_1)
@@ -641,30 +660,13 @@ void brpRes0024ba30(u32* param_1)
 
 
 
-static u32* sBrpRes334; // 007ce334
 
 
 
 
 
 
-#include "Utils.h"
 
 /* DAT_007CE348: panel effect work installed by FUN_0024C100. */
-static u32* sBpEffect;
 
-extern void func_0010a4e0_y2(s32, s32, s32, s32);
-extern void* func_0021c790(void* frame);
-extern void func_0021d890(void* destination, const f32* vertices);
-extern void func_0021d8e0(void* destination, const f32* layout);
-extern void func_0021d950(void* destination, const u8* color);
-extern void func_0021eac0(void* destination, f32 value);
-extern void func_0021eb80(void* destination, const f32* layout);
-extern f32 DAT_007cad60;
-extern f32 DAT_007cafec;
-extern void RpSkyRenderStateSet(s32 state, u32 value);
-extern u32 D_00960090[];
-extern u32 D_0096009c[];
 
-typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
-typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);

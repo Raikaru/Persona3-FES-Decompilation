@@ -14,6 +14,291 @@
 #include "h_cdvd.h"
 #include "Main/Game/game_support.h"
 
+#include "Kosaka/k_misc.h"
+#include "Kosaka/Field/k_encount.h"
+extern void func_001956d0(void* resource, u32 flags, u32 value);
+extern void* DAT_0096017c_y2[];
+extern u32* PTR_DAT_007cd540;
+extern u16* puGpffffa850;
+extern s32* piGpffffa850;
+extern u32 uGpffffb59c;
+extern s32 iGpffffb598;
+extern f32* iGpffffb5a0;
+extern void* uGpffffb52c;
+extern void* uGpffffb590;
+extern f32 fGpffff8248;
+extern u8 gp0xffff95d0[8];
+extern u8* DAT_007ce290;
+extern u32 DAT_007ce280;
+extern u32 DAT_007ce284;
+extern u32 DAT_007ce288;
+extern u8* DAT_007ce294_y2;
+extern void* DAT_0086b180[0x310];
+extern u32 DAT_0086e690;
+extern u32 DAT_0086e694;
+extern u8 DAT_00871ec0[0x200];
+extern char s__field_script_reserve_xxx_006837af[];
+extern RwV3d DAT_00683780[];
+extern RwV3d DAT_00683910;
+extern RwV3d DAT_00683920;
+extern const char D_00683930[];
+extern const char D_00683940[];
+extern u64 DAT_00683960;
+extern u32 DAT_00683968;
+extern u64 DAT_00683970;
+extern u32 DAT_00683978;
+extern u64 DAT_00683980;
+extern u32 DAT_00683988;
+extern u64 DAT_00683990;
+extern u32 DAT_00683998;
+extern const char DAT_006839a0[];
+extern const char DAT_006839c0[];
+extern const char DAT_006839d8[];
+extern const char DAT_006839f0[];
+extern const char DAT_00683a10[];
+extern void* DAT_0086bdc0[0x10];
+extern u32 func_001a02c0(void);
+extern u32 func_001a0310(void);
+extern u8* func_001b9120_y2(void);
+extern u32 func_001bff20(void);
+extern u32 func_001d7300(u32 major, u16 minor, u32 area);
+extern u16 func_001d75f0(u32 major, u16 minor, u32 area);
+extern u16 func_001d76e0(u32 major, u16 minor, u32 area);
+extern u16 func_001d77d0(u32 major, u16 minor, u16 area);
+#pragma alias func_001d77d0_u32 func_001d77d0
+extern u32 func_001d77d0_u32(u32 major, u32 minor, u16 area);
+#pragma alias func_001d1db0_u32 func_001d1db0
+extern void func_001d1db0_u32(void* work, const void* source, u32 resourceId);
+extern u16* func_001d78c0(u32 major, u32 minor, u16 area);
+extern FldUnit* func_001cf940(u32 encounter, void* unit);
+extern u32 func_001cfdd0(u32 index);
+extern void* func_001cd9a0(u32 charId);
+extern u16 func_003b65d0(u16 id, void* table);
+extern void* func_00318b60(void* model);
+extern s32 func_00318ed0(void* model, s32 index, RwV3d* position);
+extern u64 func_00318b70(void* model);
+extern void func_00318a30(void* dst, void* src, u32 count);
+extern void func_00318a50(void* src, void* dst, void* value, u32 count);
+extern void func_00318a90(void* model, void* value, u32 count);
+extern void func_00319230(void* model, u32 value);
+extern void func_00318ad0(void* model, void* value);
+extern void* func_00318b00(void* model);
+extern void func_003174e0(void* model);
+extern void* func_00317450(void* value);
+extern void func_00317730(void* model);
+extern void func_003182d0(void* model, u32 slot, u32 anim, u32 blend, u32 flags);
+extern f32 func_00318910(void* model, u32 slot, u32 anim);
+extern void func_00318770(void* model, u32 slot, f32 value);
+extern void func_0031c1d0(void* model);
+extern void func_00319190(void* model);
+extern u32 func_0016f190(u32 flag);
+extern u32 func_0016ef30(void);
+extern u32 func_0017d920(void);
+extern u32 func_0017da40(void);
+extern u32 func_0017e480(u32 a, u32 b, u32 c, u32 d);
+extern void func_003b7090(u16 resourceId);
+extern void func_004c2f10(u64 value);
+extern f32 RwV3dLength_y2(const RwV3d* value);
+extern u32 func_00488f30(void);
+extern void* func_00431670(u32 parent, s32 index, void* unit);
+extern void* func_0044ad20(u32 parent, s32 index);
+extern void func_00434f60();
+extern void func_00452010(RwV3d* value);
+extern f32 func_004c6ac0_y2(const RwV3d* value);
+extern void func_004cb420(u64 left, u64 right);
+extern f32 func_0052e878(f32 value);
+extern u32 func_00523ac8_y2(char* buffer, const char* path, ...);
+extern void func_0019d400(const char* file, s32 line, s32 value);
+extern void func_00521250_y2(void* dst, const void* src, u32 size);
+extern void func_00100ec0_y2(void* object);
+extern void func_001023a0(void* object);
+extern u32 func_001016b0_y2(void);
+extern u32 func_0017d800(void);
+extern void func_00195020(void* task);
+extern void func_0019c2f0(void* task, u32 value);
+extern KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl,
+                               u32 targetAlpha, s32 frames);
+extern u32 func_00195460(void);
+#pragma alias func_00195460_marker func_00195460
+extern u32 func_00195460_marker(u32 marker);
+extern void func_001ad870(void* task, u32 flags);
+extern void func_001add40(void* task);
+extern void func_001ad8c0(f32 value, void* task);
+#pragma alias func_001ad8c0_reordered func_001ad8c0
+extern void func_001ad8c0_reordered(KwlnTask* task, f32 value);
+extern f32 func_001ad8b0(void* task);
+extern u32 func_001ad930(void* task);
+extern void* func_001a91b0(void* task, const RwV3d* pos);
+extern void func_001a92d0(void* task, void* handle, const RwV3d* pos);
+extern void func_001a9390(void* task, void* handle, u32 value);
+extern void func_001a9400(void* task, void* handle);
+extern void func_001a0150(u16 resourceId, u32 value);
+extern void* func_001dd460(u32 parent, u32 mode, u32 id);
+extern void func_001dd5f0(void* task, void* model);
+extern void func_001dd5e0(void* task, u32 value);
+extern void* func_001af930(u32 parent, void* resource);
+extern KwlnTask* func_00194b80(KwlnTask* parent, u32 priority,
+                               const char* name, void* update,
+                               void* destroy, void* work);
+extern void* func_001828d0(s16 id, void* dst);
+extern void* func_00182d90(s16 id, u32 mode, u8 value, void* dst);
+extern u32 func_00316f70(void* model);
+extern u32 func_001c65e0_y2(FldUnit* unit);
+extern void func_001d0bc0(void* output, u32 count);
+extern void* func_004c38c0(void);
+extern void func_004c3880(void* matrix);
+extern u32 func_00319770(Model* model, u16 slot);
+extern u32 func_001c0040(void);
+extern void func_001a0dc0(u16 resourceId, u32 value);
+extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
+#pragma alias func_001d3c40_ptr func_001d3c40
+extern KwlnTask* func_001d3c40_ptr(KwlnTask* parent, Model* model);
+extern KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit);
+extern u32 func_0016c970(s16 pcId);
+extern u16 func_0016c4f0(s16 pcId);
+extern u32 func_0016c5f0(s16 pcId);
+extern void func_0016cf40(s16 pcId, s64 value);
+extern void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position);
+extern s32 func_001dde00(s32 value);
+extern u32 func_001a01c0(void);
+extern void func_004350e0(s32 parent, s32 enabled);
+extern void func_001adff0(KwlnTask* collisCtlTask,
+                          const RwV3d* axis,
+                          f32 angle);
+extern void K_Assert(const char* file, s32 line);
+FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
+FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0
+FldUnit gFldUnitsEc[FLDUNIT_EC_MAX];  // 0086eda0. Enemies
+static u32 sFldUnitsEcCount;          // 007ce28c
+static inline void FldUnit_SetPcFormationPosition(s32 index,
+                                                    FldUnit* unit,
+                                                    RwMatrix* reference,
+                                                    const RwV3d* fieldPosition)
+{
+    RwV3d offset;
+    RwV3d position;
+    KwlnTask* collisCtlTask;
+
+    collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
+    switch (index)
+    {
+    case 0:
+        func_001adc20(collisCtlTask, fieldPosition);
+        break;
+    case 1:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    case 2:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    case 3:
+        position = reference->pos;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 150.0f;
+        position.y += offset.y * 150.0f;
+        position.z += offset.z * 150.0f;
+        func_001adc20(collisCtlTask, &position);
+        break;
+    }
+}
+static inline void FldUnit_SetPcDungeonPosition(s32 index,
+                                                 FldUnit* unit,
+                                                 RwMatrix* reference,
+                                                 RwV3d* axis)
+{
+    RwV3d position;
+    RwV3d offset;
+    KwlnTask* task;
+    f32 angle;
+
+    task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
+    angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
+    switch (index)
+    {
+    case 0:
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
+        break;
+    case 1:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    case 2:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    case 3:
+        position = reference->pos;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 150.0f;
+        position.y += offset.y * 150.0f;
+        position.z += offset.z * 150.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    }
+}
+typedef struct FldUnitNode
+{
+    Resrc base;
+    RwV3d pos;
+} FldUnitNode;
+
+
 #pragma alias DAT_0086b180_y2 DAT_0086b180
 #pragma alias DAT_0096017c_y2 DAT_0096017c
 #pragma alias DAT_007ce294_y2 DAT_007ce294
@@ -153,6 +438,59 @@ static u32 FldEvent_IsSceneBlocked(void)
     return false;
 }
 
+// FUN_001c5ee0
+u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
+{
+    u16 resTypeId;
+    ResrcFldHit* hit;
+    const RwV3d* tri[3];
+    RwV3d normal;
+    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836c0
+
+    resTypeId = -1;
+    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
+
+    if (K_Scene_001a0250() == true)
+    {
+        return -1;
+    }
+
+    while (hit != NULL)
+    {
+        normal = sFldHitNormal;
+
+        tri[0] = &hit->vertices[0];
+        tri[1] = &hit->vertices[1];
+        tri[2] = &hit->vertices[2];
+        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
+        {
+            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
+            {
+                resTypeId = hit->base.resTypeId;
+                *fldHitDst = hit;
+                break;
+            }
+        }
+
+        tri[0] = &hit->vertices[1];
+        tri[1] = &hit->vertices[2];
+        tri[2] = &hit->vertices[3];
+        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
+        {
+            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
+            {
+                resTypeId = hit->base.resTypeId;
+                *fldHitDst = hit;
+                break;
+            }
+        }
+
+        hit = (ResrcFldHit*)hit->base.next;
+    }  
+
+    return resTypeId;
+}
+
 // FUN_001c6080
 u32 func_001c6080(void)
 {
@@ -209,6 +547,72 @@ done:
     return result;
 }
 
+// FUN_001c6200
+u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos, f32 fov)
+{
+    u32 isWithinFov;
+    RwV3d viewDir;
+    RwV3d targetDir;
+    RwV3d forward = {0.0f, 0.0f, 1.0f};
+    f32 viewAngle;
+    f32 halfFov;
+    f32 targetAngle;
+
+    isWithinFov = false;
+    halfFov = fov / 2.0f;
+
+    RwV3dNormalize(&viewDir, &viewerMat->at);
+
+    targetDir.x = targetPos->x - viewerMat->pos.x;
+    targetDir.y = targetPos->y - viewerMat->pos.y;
+    targetDir.z = targetPos->z - viewerMat->pos.z;
+    RwV3dNormalize(&targetDir, &targetDir);
+
+    viewAngle = sDegreesPerRadian * acosf((viewDir.x * forward.x) +
+                                         (viewDir.y * forward.y) +
+                                         (viewDir.z * forward.z));
+    if (viewDir.x < 0.0f)
+    {
+        viewAngle *= -1.0f;
+    }
+    viewAngle += 180.0f;
+
+    targetAngle = sDegreesPerRadian * acosf((targetDir.x * forward.x) +
+                                           (targetDir.y * forward.y) +
+                                           (targetDir.z * forward.z));
+    if (targetDir.x < 0.0f)
+    {
+        targetAngle *= -1.0f;
+    }
+    targetAngle += 180.0f;
+
+    if (!(viewAngle + halfFov <= 360.0f))
+    {
+        if ((viewAngle - halfFov <= targetAngle) || !((viewAngle + halfFov) - 360.0f < targetAngle))
+        {
+            isWithinFov = true;
+        }
+    }
+    else
+    {
+        if (viewAngle - halfFov < 0.0f)
+        {
+            if (!(viewAngle + halfFov < targetAngle) || ((viewAngle - halfFov) + 360.0f <= targetAngle))
+            {
+                isWithinFov = true;
+            }
+        }
+        else if (!(viewAngle + halfFov < targetAngle) && (viewAngle - halfFov <= targetAngle))
+        {
+            isWithinFov = true;
+        }
+    }
+
+    return isWithinFov;
+}
+
+// Reconstructed cell search, nearest-distance filtering, and collision raycast.
+// Residual MWCC register/control-flow ordering remains; 744B object vs 768B retail window.
 // FUN_001c6450
 u32 func_001c6450(const RwMatrix* viewerMat,
                   const RwV3d* targetPos,
@@ -318,9 +722,6 @@ done:
     return result;
 }
 #pragma pop
-
-// Reconstructed cell search, nearest-distance filtering, and collision raycast.
-// Residual MWCC register/control-flow ordering remains; 744B object vs 768B retail window.
 // FUN_001c6720 NONMATCHING
 void* func_001c6720(const FldUnit* unit, f32 maxDist)
 {
@@ -492,6 +893,7 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
     }
     return result;
 }
+
 // FUN_001c6d70
 FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
 {
@@ -611,6 +1013,47 @@ FldUnit* func_001c6f50(const FldUnit* unit, f32 fov, f32 maxDist)
     return nearestUnit;
 }
 
+// FUN_001c7130
+u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist)
+{
+    return K_FldEvent_AreUnitsWithinDist(fldUnit, &gFldUnitsPc[FLDUNIT_PC_HERO], maxDist);
+}
+// FUN_001c7160
+u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist)
+{
+    u32 withinDist;
+
+    withinDist = false;
+    if (fldUnitA->genusBase != NULL && fldUnitB->genusBase != NULL)
+    {
+        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->mdl)->pos,
+                                                 &mdlGetMatrix(fldUnitB->mdl)->pos,
+                                                 maxDist);
+    }
+
+    return withinDist;
+}
+
+// FUN_001c71f0
+u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist)
+{
+    RwV3d diff;
+    u32 withinDist;
+
+    withinDist = false;
+
+    diff.x = posA->x - posB->x;
+    diff.y = posA->y - posB->y;
+    diff.z = posA->z - posB->z;
+
+    if (RwV3dLength(&diff) < maxDist)
+    {
+        withinDist = true;
+    }
+
+    return withinDist;
+}
+
 // FUN_001c7270 NONMATCHING
 void* func_001c7270(const FldUnit* unit, f32 maxDist)
 {
@@ -665,6 +1108,94 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
         i++;
     }
     return NULL;
+}
+
+// FUN_001c74c0
+ResrcModelNpc* K_FldEvent_FindInteractableNpc()
+{
+    ResrcModelNpc* npc;
+    ResrcModelNpc* interactableNpc;
+    RwV3d lookAtPos;
+    RwV3d distDiff;
+    u32 isWithinFov;
+    s32 currAnimId;
+
+    npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    interactableNpc = NULL;
+    while (npc != NULL)
+    {
+        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl),
+                                                &mdlGetMatrix(npc->mdl)->pos,
+                                                120.0f);
+        if (isWithinFov == true)
+        {
+            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.x;
+            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.y;
+            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.z;
+
+            if (RwV3dLength(&distDiff) < 200.0f)
+            {
+                lookAtPos = mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos;
+                lookAtPos.y += 140.0f;
+
+                mdlLookAtSetTargetPosXYZ(npc->mdl, &lookAtPos);
+                mdlLookAtSetFlags(npc->mdl, mdlLookAtGetFlags(npc->mdl) | MDLLOOKAT_FLAG_UNK1000);
+
+                if (interactableNpc == NULL)
+                {
+                    interactableNpc = npc;
+                }
+
+                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
+                {
+                    currAnimId = mdlAnimGetId(npc->mdl, 0);
+                    if (currAnimId >= 4)
+                    {
+                        if (currAnimId % 2 == 0)
+                        {
+                            mdlAnimSet(npc->mdl, 0, currAnimId + 1, 7, MDLANIM_FLAG_LOOP);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                mdlLookAtDisableTarget(npc->mdl);
+
+                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
+                {
+                    currAnimId = mdlAnimGetId(npc->mdl, 0);
+                    if (currAnimId >= 4)
+                    {
+                        if (currAnimId % 2 == 1)
+                        {
+                            mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            mdlLookAtDisableTarget(npc->mdl);
+
+            if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
+            {
+                currAnimId = mdlAnimGetId(npc->mdl, 0);
+                if (currAnimId >= 4)
+                {
+                    if (currAnimId % 2 == 1)
+                    {
+                        mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
+                    }
+                }
+            }
+        }
+
+        npc = (ResrcModelNpc*)npc->base.next;
+    }
+
+    return interactableNpc;
 }
 
 // FUN_001c7830 NONMATCHING
@@ -741,6 +1272,114 @@ void func_001c7830(void* output, void* script)
     }
 }
 
+// FUN_001c7b10
+u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit)
+{
+    return fldUnit == &gFldUnitsPc[FLDUNIT_PC_HERO];
+}
+
+// FUN_001c7b30. Temp name ? First condition is weird
+u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
+{
+    u32 isNear;
+    ResrcFldHit* hit;
+    RwV3d unitPos;
+    const RwV3d* tri[3];
+    RwV3d normal;
+    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836e0
+
+    isNear = false;
+    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
+
+    if (!K_Scene_001a0250())
+    {
+        return false;
+    }
+
+    unitPos = mdlGetMatrix(unit->mdl)->pos;
+    while (hit != NULL)
+    {
+        normal = sFldHitNormal;
+
+        tri[0] = &hit->vertices[0];
+        tri[1] = &hit->vertices[1];
+        tri[2] = &hit->vertices[2];
+        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
+        {
+            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
+            {
+                isNear = true;
+                break;
+            }
+        }
+
+        tri[0] = &hit->vertices[1];
+        tri[1] = &hit->vertices[2];
+        tri[2] = &hit->vertices[3];
+        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
+        {
+            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
+            {
+                isNear = true;
+                break;
+            }
+        }
+
+        hit = (ResrcFldHit*)hit->base.next;
+    }  
+
+    return isNear;
+}
+
+// FUN_001c7ce0. Temp name maybe
+u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
+{
+    u32 ret;
+    s32 i;
+    FldUnit* currUnit;
+    RwV3d distDiff;
+    u32 isNear;
+    u32 fldMajor;
+
+    ret = false;
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
+    {
+        currUnit = &gFldUnitsPc[i];
+
+        if (currUnit->genusBase != NULL &&
+           (charId == currUnit->charId))
+        {
+            isNear = false;
+
+            distDiff.x = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.x - currUnit->matBeforeBtl.pos.x;
+            distDiff.y = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.y - currUnit->matBeforeBtl.pos.y;
+            distDiff.z = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.z - currUnit->matBeforeBtl.pos.z;
+
+            if (RwV3dLength(&distDiff) < 1600.0f)
+            {
+                isNear = true;
+            }
+
+            if (isNear == true)
+            {
+                ret = true;
+                break;
+            }
+        }
+    }
+
+    fldMajor = gMtScene->fldMajorId;
+    if (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x33  ||
+       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x34) ||
+       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x35) ||
+       (fldMajor == FLD_MAJOR_DUNGEON && gMtScene->fldMinorId == FLD_MINOR_DUNGEON_FIRST_FLOOR))
+    {
+        ret = true;
+    }
+
+    return ret;
+}
+
 // FUN_001c7e70
 u32 func_001c7e70(u16 resourceId, u16 variant)
 {
@@ -763,6 +1402,7 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
     }
     return true;
 }
+
 // FUN_001c7f20 NONMATCHING
 u32 func_001c7f20(void* resource)
 {
@@ -974,361 +1614,6 @@ void func_001c8120(void* work)
         }
         targetUnit->matBeforeBtl.pos = candidates[i];
     }
-}
-
-// FUN_001c5ee0
-u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
-{
-    u16 resTypeId;
-    ResrcFldHit* hit;
-    const RwV3d* tri[3];
-    RwV3d normal;
-    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836c0
-
-    resTypeId = -1;
-    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
-
-    if (K_Scene_001a0250() == true)
-    {
-        return -1;
-    }
-
-    while (hit != NULL)
-    {
-        normal = sFldHitNormal;
-
-        tri[0] = &hit->vertices[0];
-        tri[1] = &hit->vertices[1];
-        tri[2] = &hit->vertices[2];
-        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
-        {
-            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
-            {
-                resTypeId = hit->base.resTypeId;
-                *fldHitDst = hit;
-                break;
-            }
-        }
-
-        tri[0] = &hit->vertices[1];
-        tri[1] = &hit->vertices[2];
-        tri[2] = &hit->vertices[3];
-        if (K_FldFrame_IsPointInTriangle(heroPos, tri, &normal) == true)
-        {
-            if ((heroPos->y < tri[0]->y + 100.0f) && (heroPos->y > tri[0]->y - 100.0f))
-            {
-                resTypeId = hit->base.resTypeId;
-                *fldHitDst = hit;
-                break;
-            }
-        }
-
-        hit = (ResrcFldHit*)hit->base.next;
-    }  
-
-    return resTypeId;
-}
-
-// FUN_001c7b30. Temp name ? First condition is weird
-u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
-{
-    u32 isNear;
-    ResrcFldHit* hit;
-    RwV3d unitPos;
-    const RwV3d* tri[3];
-    RwV3d normal;
-    static const RwV3d sFldHitNormal = {0.0f, 1.0f, 0.0f}; // 006836e0
-
-    isNear = false;
-    hit = (ResrcFldHit*)MT_Scene_GetResListHead(RESRC_TYPE_FLDHIT);
-
-    if (!K_Scene_001a0250())
-    {
-        return false;
-    }
-
-    unitPos = mdlGetMatrix(unit->mdl)->pos;
-    while (hit != NULL)
-    {
-        normal = sFldHitNormal;
-
-        tri[0] = &hit->vertices[0];
-        tri[1] = &hit->vertices[1];
-        tri[2] = &hit->vertices[2];
-        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
-        {
-            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
-            {
-                isNear = true;
-                break;
-            }
-        }
-
-        tri[0] = &hit->vertices[1];
-        tri[1] = &hit->vertices[2];
-        tri[2] = &hit->vertices[3];
-        if (K_FldFrame_IsPointInTriangle(&unitPos, tri, &normal) == true)
-        {
-            if ((unitPos.y < tri[0]->y + 100.0f) && (unitPos.y > tri[0]->y - 100.0f))
-            {
-                isNear = true;
-                break;
-            }
-        }
-
-        hit = (ResrcFldHit*)hit->base.next;
-    }  
-
-    return isNear;
-}
-
-// FUN_001c6200
-u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos, f32 fov)
-{
-    u32 isWithinFov;
-    RwV3d viewDir;
-    RwV3d targetDir;
-    RwV3d forward = {0.0f, 0.0f, 1.0f};
-    f32 viewAngle;
-    f32 halfFov;
-    f32 targetAngle;
-
-    isWithinFov = false;
-    halfFov = fov / 2.0f;
-
-    RwV3dNormalize(&viewDir, &viewerMat->at);
-
-    targetDir.x = targetPos->x - viewerMat->pos.x;
-    targetDir.y = targetPos->y - viewerMat->pos.y;
-    targetDir.z = targetPos->z - viewerMat->pos.z;
-    RwV3dNormalize(&targetDir, &targetDir);
-
-    viewAngle = sDegreesPerRadian * acosf((viewDir.x * forward.x) +
-                                         (viewDir.y * forward.y) +
-                                         (viewDir.z * forward.z));
-    if (viewDir.x < 0.0f)
-    {
-        viewAngle *= -1.0f;
-    }
-    viewAngle += 180.0f;
-
-    targetAngle = sDegreesPerRadian * acosf((targetDir.x * forward.x) +
-                                           (targetDir.y * forward.y) +
-                                           (targetDir.z * forward.z));
-    if (targetDir.x < 0.0f)
-    {
-        targetAngle *= -1.0f;
-    }
-    targetAngle += 180.0f;
-
-    if (!(viewAngle + halfFov <= 360.0f))
-    {
-        if ((viewAngle - halfFov <= targetAngle) || !((viewAngle + halfFov) - 360.0f < targetAngle))
-        {
-            isWithinFov = true;
-        }
-    }
-    else
-    {
-        if (viewAngle - halfFov < 0.0f)
-        {
-            if (!(viewAngle + halfFov < targetAngle) || ((viewAngle - halfFov) + 360.0f <= targetAngle))
-            {
-                isWithinFov = true;
-            }
-        }
-        else if (!(viewAngle + halfFov < targetAngle) && (viewAngle - halfFov <= targetAngle))
-        {
-            isWithinFov = true;
-        }
-    }
-
-    return isWithinFov;
-}
-
-// FUN_001c7130
-u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist)
-{
-    return K_FldEvent_AreUnitsWithinDist(fldUnit, &gFldUnitsPc[FLDUNIT_PC_HERO], maxDist);
-}
-
-// FUN_001c7160
-u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist)
-{
-    u32 withinDist;
-
-    withinDist = false;
-    if (fldUnitA->genusBase != NULL && fldUnitB->genusBase != NULL)
-    {
-        withinDist = K_FldEvent_ArePosWithinDist(&mdlGetMatrix(fldUnitA->mdl)->pos,
-                                                 &mdlGetMatrix(fldUnitB->mdl)->pos,
-                                                 maxDist);
-    }
-
-    return withinDist;
-}
-
-// FUN_001c71f0
-u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist)
-{
-    RwV3d diff;
-    u32 withinDist;
-
-    withinDist = false;
-
-    diff.x = posA->x - posB->x;
-    diff.y = posA->y - posB->y;
-    diff.z = posA->z - posB->z;
-
-    if (RwV3dLength(&diff) < maxDist)
-    {
-        withinDist = true;
-    }
-
-    return withinDist;
-}
-
-// FUN_001c74c0
-ResrcModelNpc* K_FldEvent_FindInteractableNpc()
-{
-    ResrcModelNpc* npc;
-    ResrcModelNpc* interactableNpc;
-    RwV3d lookAtPos;
-    RwV3d distDiff;
-    u32 isWithinFov;
-    s32 currAnimId;
-
-    npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
-    interactableNpc = NULL;
-    while (npc != NULL)
-    {
-        isWithinFov = K_FldEvent_IsPosWithinFov(mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl),
-                                                &mdlGetMatrix(npc->mdl)->pos,
-                                                120.0f);
-        if (isWithinFov == true)
-        {
-            distDiff.x = mdlGetMatrix(npc->mdl)->pos.x - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.x;
-            distDiff.y = mdlGetMatrix(npc->mdl)->pos.y - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.y;
-            distDiff.z = mdlGetMatrix(npc->mdl)->pos.z - mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos.z;
-
-            if (RwV3dLength(&distDiff) < 200.0f)
-            {
-                lookAtPos = mdlGetMatrix(gFldUnitsPc[FLDUNIT_PC_HERO].mdl)->pos;
-                lookAtPos.y += 140.0f;
-
-                mdlLookAtSetTargetPosXYZ(npc->mdl, &lookAtPos);
-                mdlLookAtSetFlags(npc->mdl, mdlLookAtGetFlags(npc->mdl) | MDLLOOKAT_FLAG_UNK1000);
-
-                if (interactableNpc == NULL)
-                {
-                    interactableNpc = npc;
-                }
-
-                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
-                {
-                    currAnimId = mdlAnimGetId(npc->mdl, 0);
-                    if (currAnimId >= 4)
-                    {
-                        if (currAnimId % 2 == 0)
-                        {
-                            mdlAnimSet(npc->mdl, 0, currAnimId + 1, 7, MDLANIM_FLAG_LOOP);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                mdlLookAtDisableTarget(npc->mdl);
-
-                if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
-                {
-                    currAnimId = mdlAnimGetId(npc->mdl, 0);
-                    if (currAnimId >= 4)
-                    {
-                        if (currAnimId % 2 == 1)
-                        {
-                            mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            mdlLookAtDisableTarget(npc->mdl);
-
-            if (gMtScene->fldMajorId == FLD_MAJOR_DORM)
-            {
-                currAnimId = mdlAnimGetId(npc->mdl, 0);
-                if (currAnimId >= 4)
-                {
-                    if (currAnimId % 2 == 1)
-                    {
-                        mdlAnimSet(npc->mdl, 0, currAnimId - 1, 7, MDLANIM_FLAG_LOOP);
-                    }
-                }
-            }
-        }
-
-        npc = (ResrcModelNpc*)npc->base.next;
-    }
-
-    return interactableNpc;
-}
-
-// FUN_001c7b10
-u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit)
-{
-    return fldUnit == &gFldUnitsPc[FLDUNIT_PC_HERO];
-}
-
-// FUN_001c7ce0. Temp name maybe
-u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
-{
-    u32 ret;
-    s32 i;
-    FldUnit* currUnit;
-    RwV3d distDiff;
-    u32 isNear;
-    u32 fldMajor;
-
-    ret = false;
-    for (i = 0; i < FLDUNIT_PC_MAX; i++)
-    {
-        currUnit = &gFldUnitsPc[i];
-
-        if (currUnit->genusBase != NULL &&
-           (charId == currUnit->charId))
-        {
-            isNear = false;
-
-            distDiff.x = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.x - currUnit->matBeforeBtl.pos.x;
-            distDiff.y = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.y - currUnit->matBeforeBtl.pos.y;
-            distDiff.z = gFldUnitsPc[FLDUNIT_PC_HERO].matBeforeBtl.pos.z - currUnit->matBeforeBtl.pos.z;
-
-            if (RwV3dLength(&distDiff) < 1600.0f)
-            {
-                isNear = true;
-            }
-
-            if (isNear == true)
-            {
-                ret = true;
-                break;
-            }
-        }
-    }
-
-    fldMajor = gMtScene->fldMajorId;
-    if (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x33  ||
-       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x34) ||
-       (fldMajor == FLD_MAJOR_ADAMAH && gMtScene->fldMinorId == 0x35) ||
-       (fldMajor == FLD_MAJOR_DUNGEON && gMtScene->fldMinorId == FLD_MINOR_DUNGEON_FIRST_FLOOR))
-    {
-        ret = true;
-    }
-
-    return ret;
 }
 
 // Retail routes the camera aggregate through an aligned 0x60-byte scratch area before copying six quadwords back; this preserves that real data flow even though the wider function remains NONMATCHING.
@@ -2847,168 +3132,12 @@ void func_001cd790(KwlnTask* task, u32 value)
     *(u32*)task->workData = value;
 }
 
-#include "Kosaka/k_misc.h"
-#include "Kosaka/Field/k_encount.h"
  
  
 
-extern void func_001956d0(void* resource, u32 flags, u32 value);
-extern void* DAT_0096017c_y2[];
-extern u32* PTR_DAT_007cd540;
-extern u16* puGpffffa850;
-extern s32* piGpffffa850;
-extern u32 uGpffffb59c;
-extern s32 iGpffffb598;
-extern f32* iGpffffb5a0;
-extern void* uGpffffb52c;
-extern void* uGpffffb590;
-extern f32 fGpffff8248;
-extern u8 gp0xffff95d0[8];
-extern u8* DAT_007ce290;
-extern u32 DAT_007ce280;
-extern u32 DAT_007ce284;
-extern u32 DAT_007ce288;
-extern u8* DAT_007ce294_y2;
-extern void* DAT_0086b180[0x310];
-extern u32 DAT_0086e690;
-extern u32 DAT_0086e694;
-extern u8 DAT_00871ec0[0x200];
-extern char s__field_script_reserve_xxx_006837af[];
-extern RwV3d DAT_00683780[];
-extern RwV3d DAT_00683910;
-extern RwV3d DAT_00683920;
-extern const char D_00683930[];
-extern const char D_00683940[];
-extern u64 DAT_00683960;
-extern u32 DAT_00683968;
-extern u64 DAT_00683970;
-extern u32 DAT_00683978;
-extern u64 DAT_00683980;
-extern u32 DAT_00683988;
-extern u64 DAT_00683990;
-extern u32 DAT_00683998;
-extern const char DAT_006839a0[];
-extern const char DAT_006839c0[];
-extern const char DAT_006839d8[];
-extern const char DAT_006839f0[];
-extern const char DAT_00683a10[];
-extern void* DAT_0086bdc0[0x10];
 
-extern u32 func_001a02c0(void);
-extern u32 func_001a0310(void);
-extern u8* func_001b9120_y2(void);
-extern u32 func_001bff20(void);
-extern u32 func_001d7300(u32 major, u16 minor, u32 area);
-extern u16 func_001d75f0(u32 major, u16 minor, u32 area);
-extern u16 func_001d76e0(u32 major, u16 minor, u32 area);
-extern u16 func_001d77d0(u32 major, u16 minor, u16 area);
-#pragma alias func_001d77d0_u32 func_001d77d0
-extern u32 func_001d77d0_u32(u32 major, u32 minor, u16 area);
-#pragma alias func_001d1db0_u32 func_001d1db0
-extern void func_001d1db0_u32(void* work, const void* source, u32 resourceId);
-extern u16* func_001d78c0(u32 major, u32 minor, u16 area);
-extern FldUnit* func_001cf940(u32 encounter, void* unit);
-extern u32 func_001cfdd0(u32 index);
-extern void* func_001cd9a0(u32 charId);
-extern u16 func_003b65d0(u16 id, void* table);
-extern void* func_00318b60(void* model);
-extern s32 func_00318ed0(void* model, s32 index, RwV3d* position);
-extern u64 func_00318b70(void* model);
-extern void func_00318a30(void* dst, void* src, u32 count);
-extern void func_00318a50(void* src, void* dst, void* value, u32 count);
-extern void func_00318a90(void* model, void* value, u32 count);
-extern void func_00319230(void* model, u32 value);
-extern void func_00318ad0(void* model, void* value);
-extern void* func_00318b00(void* model);
-extern void func_003174e0(void* model);
-extern void* func_00317450(void* value);
-extern void func_00317730(void* model);
-extern void func_003182d0(void* model, u32 slot, u32 anim, u32 blend, u32 flags);
-extern f32 func_00318910(void* model, u32 slot, u32 anim);
-extern void func_00318770(void* model, u32 slot, f32 value);
-extern void func_0031c1d0(void* model);
-extern void func_00319190(void* model);
-extern u32 func_0016f190(u32 flag);
-extern u32 func_0016ef30(void);
-extern u32 func_0017d920(void);
-extern u32 func_0017da40(void);
-extern u32 func_0017e480(u32 a, u32 b, u32 c, u32 d);
-extern void func_003b7090(u16 resourceId);
-extern void func_004c2f10(u64 value);
-extern f32 RwV3dLength_y2(const RwV3d* value);
-extern u32 func_00488f30(void);
-extern void* func_00431670(u32 parent, s32 index, void* unit);
-extern void* func_0044ad20(u32 parent, s32 index);
-extern void func_00434f60();
-extern void func_00452010(RwV3d* value);
-extern f32 func_004c6ac0_y2(const RwV3d* value);
-extern void func_004cb420(u64 left, u64 right);
-extern f32 func_0052e878(f32 value);
-extern u32 func_00523ac8_y2(char* buffer, const char* path, ...);
-extern void func_0019d400(const char* file, s32 line, s32 value);
-extern void func_00521250_y2(void* dst, const void* src, u32 size);
-extern void func_00100ec0_y2(void* object);
-extern void func_001023a0(void* object);
-extern u32 func_001016b0_y2(void);
-extern u32 func_0017d800(void);
-extern void func_00195020(void* task);
-extern void func_0019c2f0(void* task, u32 value);
-extern KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl,
-                               u32 targetAlpha, s32 frames);
-extern u32 func_00195460(void);
-#pragma alias func_00195460_marker func_00195460
-extern u32 func_00195460_marker(u32 marker);
-extern void func_001ad870(void* task, u32 flags);
-extern void func_001add40(void* task);
-extern void func_001ad8c0(f32 value, void* task);
-#pragma alias func_001ad8c0_reordered func_001ad8c0
-extern void func_001ad8c0_reordered(KwlnTask* task, f32 value);
-extern f32 func_001ad8b0(void* task);
-extern u32 func_001ad930(void* task);
-extern void* func_001a91b0(void* task, const RwV3d* pos);
-extern void func_001a92d0(void* task, void* handle, const RwV3d* pos);
-extern void func_001a9390(void* task, void* handle, u32 value);
-extern void func_001a9400(void* task, void* handle);
-extern void func_001a0150(u16 resourceId, u32 value);
-extern void* func_001dd460(u32 parent, u32 mode, u32 id);
-extern void func_001dd5f0(void* task, void* model);
-extern void func_001dd5e0(void* task, u32 value);
-extern void* func_001af930(u32 parent, void* resource);
-extern KwlnTask* func_00194b80(KwlnTask* parent, u32 priority,
-                               const char* name, void* update,
-                               void* destroy, void* work);
-extern void* func_001828d0(s16 id, void* dst);
-extern void* func_00182d90(s16 id, u32 mode, u8 value, void* dst);
-extern u32 func_00316f70(void* model);
-extern u32 func_001c65e0_y2(FldUnit* unit);
-extern void func_001d0bc0(void* output, u32 count);
-extern void* func_004c38c0(void);
-extern void func_004c3880(void* matrix);
-extern u32 func_00319770(Model* model, u16 slot);
-extern u32 func_001c0040(void);
-extern void func_001a0dc0(u16 resourceId, u32 value);
-extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
-#pragma alias func_001d3c40_ptr func_001d3c40
-extern KwlnTask* func_001d3c40_ptr(KwlnTask* parent, Model* model);
-extern KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit);
-extern u32 func_0016c970(s16 pcId);
-extern u16 func_0016c4f0(s16 pcId);
-extern u32 func_0016c5f0(s16 pcId);
-extern void func_0016cf40(s16 pcId, s64 value);
-extern void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position);
-extern s32 func_001dde00(s32 value);
-extern u32 func_001a01c0(void);
-extern void func_004350e0(s32 parent, s32 enabled);
-extern void func_001adff0(KwlnTask* collisCtlTask,
-                          const RwV3d* axis,
-                          f32 angle);
-extern void K_Assert(const char* file, s32 line);
 
-FldUnitMdl gFldUnitsPcMdl[FLDUNIT_PC_MAX]; // 00871ea0
-FldUnit gFldUnitsPc[FLDUNIT_PC_MAX];       // 008717a0
 
-FldUnit gFldUnitsEc[FLDUNIT_EC_MAX];  // 0086eda0. Enemies
-static u32 sFldUnitsEcCount;          // 007ce28c
 
 static void FldUnit_ClearPcMdlSlot(s32 index)
 {
@@ -3082,129 +3211,7 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 #pragma opt_propagation on
 #pragma opt_loop_invariants off
 
-static inline void FldUnit_SetPcFormationPosition(s32 index,
-                                                    FldUnit* unit,
-                                                    RwMatrix* reference,
-                                                    const RwV3d* fieldPosition)
-{
-    RwV3d offset;
-    RwV3d position;
-    KwlnTask* collisCtlTask;
 
-    collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    switch (index)
-    {
-    case 0:
-        func_001adc20(collisCtlTask, fieldPosition);
-        break;
-    case 1:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        position.x += offset.x * 120.0f;
-        position.y += offset.y * 120.0f;
-        position.z += offset.z * 120.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    case 2:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 120.0f;
-        position.y += offset.y * 120.0f;
-        position.z += offset.z * 120.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    case 3:
-        position = reference->pos;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 150.0f;
-        position.y += offset.y * 150.0f;
-        position.z += offset.z * 150.0f;
-        func_001adc20(collisCtlTask, &position);
-        break;
-    }
-}
-
-static inline void FldUnit_SetPcDungeonPosition(s32 index,
-                                                 FldUnit* unit,
-                                                 RwMatrix* reference,
-                                                 RwV3d* axis)
-{
-    RwV3d position;
-    RwV3d offset;
-    KwlnTask* task;
-    f32 angle;
-
-    task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
-    switch (index)
-    {
-    case 0:
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
-        break;
-    case 1:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        position.x += offset.x * 90.0f;
-        position.y += offset.y * 90.0f;
-        position.z += offset.z * 90.0f;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 70.0f;
-        position.y += offset.y * 70.0f;
-        position.z += offset.z * 70.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    case 2:
-        position = reference->pos;
-        offset = reference->right;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 90.0f;
-        position.y += offset.y * 90.0f;
-        position.z += offset.z * 90.0f;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 70.0f;
-        position.y += offset.y * 70.0f;
-        position.z += offset.z * 70.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    case 3:
-        position = reference->pos;
-        offset = reference->at;
-        RwV3dNormalize(&offset, &offset);
-        offset.x = -offset.x;
-        offset.y = -offset.y;
-        offset.z = -offset.z;
-        position.x += offset.x * 150.0f;
-        position.y += offset.y * 150.0f;
-        position.z += offset.z * 150.0f;
-        func_001adff0(task, axis, angle);
-        func_001adc20(task, &position);
-        break;
-    }
-}
 
 
 /* Removing this worsens FUN_001ce960 (nd2894 -> nd3129) - measured W161. */
@@ -3251,11 +3258,6 @@ static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
 // Measured opt_common_subs off: nd506 -> 418, object 812/816; retained (under window).
 #pragma opt_common_subs reset
 
-typedef struct FldUnitNode
-{
-    Resrc base;
-    RwV3d pos;
-} FldUnitNode;
 
 static inline RwV3d* FldUnit_NodePos(u8* node)
 {

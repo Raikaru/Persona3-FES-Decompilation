@@ -7,6 +7,402 @@
 #include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
 
+u32 func_002519d0(void);
+u32 func_00251e80(void);
+u32 bcmPanel0022b4e0(void);
+u32 bcmPanel0022b530(void);
+void bcmPanel00222870(void);
+void bcmPanel002226f0(u32);
+void bcmPanel002227b0(u32);
+void func_002bf850(void);
+void func_002bf8b0(void);
+void func_002bf8e0(void);
+void func_002bf910(void);
+void func_002bf880(void);
+void func_002bf940(void);
+u32 func_002d1a70(void);
+void bpPersonaLoad(u32);
+void func_00208630(void);
+u32 basRequestAnalyze(u32);
+u32 basIsAnalyzePending(void);
+u32 func_0021b6f0(void);
+u32 func_0021b740(void);
+u32 func_0021b7c0(void);
+void func_002dbac0(void);
+u32 func_003c7990(u32);
+u32 func_003c7850(void);
+u32 func_003c7650(u32);
+u32 func_003c7610(u32);
+void func_003c77a0(void);
+u32 func_003c72d0(void);
+u32 func_003c7430(u32);
+u32 func_003c74e0(u32);
+void func_0024a260(void*);
+u32 func_0024a6e0(u32);
+u32 func_0024a750(void);
+u32 bpPersonaIsLoading(void);
+void bpPersonaDestroy(void);
+void bpPersonaSetPersona(u32);
+void bcmDestroyOwnedResource();
+void FUN_003b0170();
+extern u8* DAT_007ce3f8;
+extern u32 D_00684F00[];
+extern u8 gp0xffff972c;
+extern u8* gp0xffffb708;
+u32 FUN_002055F0(u32 id);
+void FUN_00207B50_y2(void);
+void FUN_00207BA0_y2(void);
+void FUN_002082C0(void* context);
+void FUN_00208360(void);
+void FUN_00208570(void* descriptor);
+void FUN_002085E0(void);
+void FUN_00208790(void);
+void FUN_00208860(u16 id);
+void FUN_002094F0(void);
+void FUN_0020FC40_y2(void);
+void FUN_0020FC90(void);
+void FUN_0020FE30(void*, u32, void*);
+void FUN_00222A60(void);
+void FUN_00222B90(void);
+void FUN_00222D60(void);
+void FUN_00229300(void);
+void FUN_00224660(void);
+void FUN_00224860(void);
+void FUN_0022BF60(void);
+void FUN_0022C0E0(void);
+void FUN_002230E0(void);
+void FUN_002254A0(void);
+void FUN_002255F0(void);
+void FUN_00225670(void);
+void FUN_002DB450(u32);
+void FUN_002DB480(void);
+void FUN_002DB9F0(u32, u32);
+void FUN_002DBA80(u32);
+void FUN_003A5540(u32, u32, s32, u32, u32, void*);
+void FUN_003B0170(u32);
+void FUN_003B0970(u32, u32, s32, u32, u32, u32, u32, u32);
+void FUN_003B0D70(u32, u32, u32);
+void FUN_003B0E20(u32, s32);
+void FUN_003B0E70(u32);
+void FUN_003B0E90(u32);
+void FUN_003B2C60(u32);
+void FUN_003C72D0(void);
+void FUN_003C7430(u32);
+void FUN_003C74E0(u32);
+void FUN_003C7D60(u32);
+u32 FUN_0030C0C0(void);
+u32 FUN_003086F0(u32, u16);
+u32 FUN_003083F0(u32, u16);
+u32 FUN_0030BB40(u16);
+u32 FUN_0030BC20(u16);
+u32 FUN_00173220(u16);
+u32 FUN_001775A0(u32);
+u32 FUN_00177790(u32);
+u32 FUN_001756F0(void);
+u32 FUN_0016F380(u32);
+void FUN_0016F3E0(u32, u32);
+u32 FUN_0016F190_y2(u32);
+void FUN_005225a8_y2(const char*, ...);
+void FUN_0021B670(u32);
+void FUN_0021C720(void);
+u32 FUN_0022D5550(void);
+u32 FUN_002D5550_y2(void);
+u32 FUN_001FF430_y2(u32);
+void FUN_002C0A50(u32, u32);
+void datSetAiTactic(s16, s16);
+u32 datGetScenarioMode(void);
+void datSetScenarioMode(u32);
+u32 datGetFlag(s32);
+int printf(const char*, ...);
+void* func_0021f410_y2(void);
+void func_00221b60_y2(void);
+void func_0021f140(void);
+void func_0021f150(u32);
+void func_0022c0a0(void);
+void func_0022c0e0(void);
+void func_0022c1d0(void);
+void func_002230e0(void);
+void func_00224660(void);
+void func_00224860(void);
+void func_002254a0(void);
+void func_002255f0(void);
+void func_00225670(void);
+void func_002082c0(u32);
+void func_00208360(void);
+void func_00208570(void*);
+void func_002085e0(void);
+void func_00208790(void);
+void func_00208860_y2(u16);
+void func_0022bf60(void);
+void func_0023c0a0(void);
+void func_003b0170(u32);
+u32 func_003b0970(u32, ...);
+void func_003b0d70(u32, ...);
+void func_003b0e20(u32, s32);
+void func_003b0e70(u32);
+void func_003b0e90(u32);
+void func_003b2c60(u32, ...);
+u32 func_003a5540(u32, ...);
+#pragma alias bpRoot_003a5540_typed func_003a5540
+extern u32 bpRoot_003a5540_typed(u32 p1, u32 p2, s32 p3, f32 angle,
+                                  u32 p4, u32 p5, void* p6, u32 p7);
+extern u32 D_007CC418;
+void* func_0030c0c0(void);
+u32 func_003086f0(u32, u16);
+u32 func_003083f0(u32, u16);
+u32 func_0030bb40(u16);
+u32 func_0030bc20(u16);
+u16 func_00170760(s16, s16);
+const char* func_00171110(s16, s16);
+u32 func_00173220(u16);
+u32 func_001775a0(u32, ...);
+u32 func_00177790(s16);
+u32 func_001756f0(void);
+u32 func_002db450(u32);
+u32 func_002db480(void);
+u32 func_002db9f0(u32, u32);
+u32 func_002dba80(u32);
+u32 func_002d5550(void);
+u32 func_003c7d60(u32);
+void FUN_0010a4e0(u32, u32, u32, u32);
+u32 FUN_0017d2e0(u16);
+u32 func_00249420(u16, u16, u16);
+void FUN_0025d760();
+void FUN_001FDDA0(void);
+u32 FUN_001FDDF0(void);
+void FUN_001FDF10(void*);
+u32 FUN_001FE220(void);
+void FUN_001FE650(void*);
+void FUN_001FE810(s32);
+void FUN_001FEAB0(void);
+u32 FUN_001FEEC0(void);
+void FUN_001FEF90(u32);
+void FUN_001FF160(u32);
+void FUN_001FF370(void);
+void FUN_001FF390(void);
+void FUN_001FF3B0(void);
+void FUN_001FF3D0(void);
+void FUN_001FF3F0(void);
+void FUN_001FF410(void);
+u32 FUN_001FF630(u32);
+void FUN_001ff890_y2(void);
+void FUN_001FFC60_y2(void);
+void FUN_001FFF40_y2(void);
+static KwlnTask* sBtlPanelTask; // 007ce2e4
+void* FUN_001fd890(KwlnTask*);
+void* FUN_001fdac0(KwlnTask*);
+void FUN_00208ad0(void*);
+void FUN_00201730_y2(void*);
+void bppMain0020ed50(u32*);
+void FUN_0020fe20(void*);
+void FUN_0021b650(void*);
+void FUN_0021b920(void*);
+void FUN_0023f480(void*);
+void FUN_00242c40(void*);
+void FUN_00248490(void*);
+void FUN_00249240(void*);
+void FUN_0024a6c0(void*);
+void FUN_0024c100(void*);
+void FUN_00251050(void*);
+void FUN_00251a70(void*);
+void FUN_00251f20(void*);
+void FUN_00252e60(void*);
+void FUN_0025bdf0(void*);
+void FUN_0025cf00(void*);
+void FUN_00266eb0(void*);
+void FUN_0027b5b0(void*);
+void bppMain0020ed70(void);
+void FUN_0025cf20(void);
+void bpRootDestroyTask(KwlnTask*);
+void FUN_00266f00();
+void FUN_0025cf10();
+void FUN_0025be00();
+void FUN_00252e80();
+void FUN_00251f30();
+void FUN_002484a0();
+void FUN_00251060();
+void FUN_0021b660();
+void basShutdown(void); // bas_main.c
+void FUN_00249250();
+void FUN_00242c60();
+void FUN_0023f500();
+void FUN_00208b20();
+void FUN_00201780();
+void bppMain0020edc0();
+void FUN_00215770();
+void FUN_0021bb60();
+void FUN_0027b5d0();
+void FUN_0021b940();
+void FUN_00215a30();
+void FUN_00201d10();
+void FUN_00205410();
+void FUN_00244a00();
+void FUN_002086d0();
+void FUN_0020fce0();
+void FUN_00208680();
+void FUN_0020fe30();
+void FUN_002449d0();
+void FUN_00215a40();
+void FUN_00248500();
+void FUN_00245e00();
+void FUN_00248580();
+void FUN_0021bb00();
+void FUN_0020fd30();
+void FUN_00210d60();
+void FUN_00201c30();
+void bppMain0020fc40_y2();
+void FUN_002085e0();
+void FUN_00208b30();
+void FUN_0021b830();
+void basClearAnalyzePending(void); // bas_main.c
+void FUN_0021b8b0();
+void FUN_00201e00();
+void bppMain0020fc90_y2();
+void FUN_00208630_y2();
+void FUN_002094f0();
+void FUN_0024cf00();
+void bppMain0020f3b0();
+void bppMain0020f570();
+void FUN_00244120();
+void FUN_00244a40();
+void FUN_00249180();
+void FUN_0021bb50();
+u32 baiMainIsActive(void);
+void FUN_00207bf0();
+void FUN_002079c0();
+void FUN_00207a10();
+void FUN_00207c40();
+void FUN_00207a60();
+void FUN_00207c90();
+void FUN_00207ab0();
+void FUN_00207ce0();
+void FUN_00207d30();
+void FUN_00207b00();
+void FUN_00207b50();
+void FUN_00207d80();
+void FUN_00207ba0();
+void FUN_00207dd0();
+void FUN_0025c190();
+void FUN_0025d800();
+void FUN_00242b80();
+void FUN_00251f40();
+void FUN_00252e90();
+void FUN_00252ee0();
+void FUN_0025c190();
+void FUN_0025c1e0();
+void FUN_0025c110();
+void FUN_0025d850();
+void FUN_00244e10();
+void FUN_00208010();
+void FUN_00242ae0();
+u32 bpMisc001ff500(u32);
+u32 bpMisc001ff740_y2(void);
+void bcmPanel00222a60(void);
+void bcmPanel00222b90(void);
+void bcmPanel00222930(void);
+void bcmPanel00222d60(void);
+void bcmPanel0022bf60(void);
+void FUN_00222d60(void);
+void func_0021f0c0_y2(void*);
+void func_0021bcb0(void);
+void func_0024c110(void);
+u32 bpRushUpdate(void);
+u32 bpRes0021bab0(void);
+void bpd00253410(void);
+void func_00210d90(void*);
+void func_002510d0(void);
+void func_00251a80(void);
+void bppMain0020edf0(void);
+u32 baiMainIsActive(void);
+void func_0021c7e0(void);
+void bpo00252060(void);
+void func_002492b0(void);
+void func_00248620(void);
+void func_00242cc0(void);
+void func_0025c220(void);
+void bpPersonaUpdate(void);
+void func_0027b610(void);
+u32 func_00249130(void);
+void func_00245e50(void);
+void func_00213e80(void*);
+void func_00252f30(void);
+void func_00209540(void);
+void func_0023f540(void);
+void func_0024cca0(void);
+void func_002095a0(void);
+void func_002532b0(void);
+void func_0020f260(void);
+void func_00243150(void);
+void func_00241910(void);
+void func_00248bb0(void);
+void func_002520f0(void);
+void func_0025c9c0(void);
+void func_0025d470(void);
+void func_0027b880(void);
+u32 func_00208720(void);
+void* btlUnitFindFromId(u16);
+u32 func_00242a60(void);
+void* func_00242260(void);
+void func_00242320(void*, u32);
+void func_00242a50(void*, u32);
+void func_00242600(void*, u32);
+void func_00242720(void*, u32);
+void func_00242a30(void*);
+void func_00242c20(void*, u32, u32);
+void func_00242540(void*);
+void func_002453d0(s32);
+void func_002441b0(s32);
+u32 func_00207f70(void);
+u32 func_00207fc0(void);
+u32 func_00208010_y2(void);
+u32 func_00208050_y2(void);
+u32 func_00208130_y2(void);
+void func_0025be60(u32, u32, u32);
+void bpRush0025d7b0(void);
+void func_0020fd80(void);
+void func_0020fdd0(void);
+void func_0027b9f0(void);
+void func_0027ba90(void);
+void func_0027bae0(void);
+#include "Battle/battle.h"
+#pragma alias bcmStartTacticsTutorial FUN_00207e20
+#pragma alias bcmStartBasicTutorial FUN_00207f10
+#pragma alias bcmIsCurrentUnitTutorialPending FUN_00208010
+#pragma alias bcmIsTacticsTutorialPending FUN_00208050
+#pragma alias bcmCanStartBasicTutorial FUN_00208130
+#pragma alias bcmStoreOwnedResource FUN_002082c0
+#pragma alias bcmDestroyOwnedResource FUN_00208360
+#pragma alias bcmDestroyOwnedResourceImpl FUN_002083d0
+#pragma alias bcmFinishPanelTransition FUN_00208460
+#pragma alias bcmInitCommandPanelEntries FUN_00208570
+#pragma alias bcmIsCommandInputReady FUN_00208720
+#pragma alias bcmPlayRandomPartyVoice FUN_00208790
+extern u8* gBcmWork;
+extern void func_002518b0(u32 mode);
+extern void func_00251e10(void);
+extern void bppMain0020fc40(void);
+extern u32 func_00249650(u16 id);
+extern u32 datGetFlag_y2(u16 id);
+extern u32 bpMisc001ff7f0(u32 id);
+extern u32 datGetBadStatusNoDown(s16 unitId);
+extern void bcmPanel00222ed0(void);
+extern void func_003b0170_y2(u32 value);
+extern u32 datCalcIsDead(void* calc, u32 mode);
+extern u32 func_002ddc10(u32 unitId);
+extern void func_002ddba0(u32 id);
+extern u32 RpRandom(void);
+static void bcmDestroyOwnedResourceImpl(void);
+static void func_00208860(u32 unitId);
+#define BCM_WORD(off) (*(u32*)((u8*)gBcmWork + (off)))
+typedef struct BcmCommandEntry
+{
+    u32 flags;
+    u32 type;
+    u32 icon;
+    u16 id;
+} BcmCommandEntry;
+
+
 #pragma alias bppMain0020fc40_y2 bppMain0020fc40
 #pragma alias func_00208860_y2 func_00208860
 #pragma alias datGetFlag_y2 datGetFlag_y2
@@ -360,42 +756,6 @@ void FUN_001FFC60(void)
     bpRushClearHideRequest();
 }
 
-u32 func_002519d0(void);
-u32 func_00251e80(void);
-u32 bcmPanel0022b4e0(void);
-u32 bcmPanel0022b530(void);
-void bcmPanel00222870(void);
-void bcmPanel002226f0(u32);
-void bcmPanel002227b0(u32);
-void func_002bf850(void);
-void func_002bf8b0(void);
-void func_002bf8e0(void);
-void func_002bf910(void);
-void func_002bf880(void);
-void func_002bf940(void);
-u32 func_002d1a70(void);
-void bpPersonaLoad(u32);
-void func_00208630(void);
-u32 basRequestAnalyze(u32);
-u32 basIsAnalyzePending(void);
-u32 func_0021b6f0(void);
-u32 func_0021b740(void);
-u32 func_0021b7c0(void);
-void func_002dbac0(void);
-u32 func_003c7990(u32);
-u32 func_003c7850(void);
-u32 func_003c7650(u32);
-u32 func_003c7610(u32);
-void func_003c77a0(void);
-u32 func_003c72d0(void);
-u32 func_003c7430(u32);
-u32 func_003c74e0(u32);
-void func_0024a260(void*);
-u32 func_0024a6e0(u32);
-u32 func_0024a750(void);
-u32 bpPersonaIsLoading(void);
-void bpPersonaDestroy(void);
-void bpPersonaSetPersona(u32);
 
 static inline u16 panelRootInputFlags(void)
 {
@@ -1228,463 +1588,6 @@ void FUN_00201730(void* work)
 
 
 
-// FUN_00207930
-u32 bcmIsItemUsable(u16 param_1)
-{
-    return FUN_0017d2e0_y2(param_1) != 0xc;
-}
-
-// FUN_00207a10
-void bcm00207a10(void)
-{
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    *(u32*)(gBcmWork + 0x77a0) |= 2;
-}
-
-// FUN_00207B50
-void FUN_00207B50(void)
-{
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    *(u32*)(gBcmWork + 0x77a0) |= 0x20;
-}
-
-
-// FUN_00207BA0
-void FUN_00207BA0(void)
-{
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    *(u32*)(gBcmWork + 0x77a0) |= 0x40;
-}
-
-
-// FUN_00207bf0
-void bcm00207bf0(void)
-{
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    *(u32*)(gBcmWork + 0x77a0) &= ~1;
-}
-
-void bcmDestroyOwnedResource();
-
-// FUN_00201ad0
-void bcmDestroyOwnedResourceCallback(void)
-{
-    bcmDestroyOwnedResource();
-}
-
-void FUN_003b0170();
-
-// FUN_00203360
-void bcmDestroyCommandResources(void)
-{
-    u32* puVar1;
-    int iVar2;
-
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    puVar1 = (u32*)gBcmWork;
-    for (iVar2 = 0; iVar2 < (int)puVar1[0x97]; iVar2++) {
-        FUN_003b0170(*(u32*)((int)puVar1 + iVar2 * 4 + 0x8c));
-    }
-    if ((*puVar1 & 0x20) != 0) {
-        FUN_003b0170(puVar1[0x99]);
-    }
-    *puVar1 &= 0xfffffffb;
-}
-
-
-
-
-
-extern u8* DAT_007ce3f8;
-extern u32 D_00684F00[];
-extern u8 gp0xffff972c;
-extern u8* gp0xffffb708;
-
-
-u32 FUN_002055F0(u32 id);
-void FUN_00207B50_y2(void);
-void FUN_00207BA0_y2(void);
-
-void FUN_002082C0(void* context);
-void FUN_00208360(void);
-void FUN_00208570(void* descriptor);
-void FUN_002085E0(void);
-void FUN_00208790(void);
-void FUN_00208860(u16 id);
-void FUN_002094F0(void);
-void FUN_0020FC40_y2(void);
-void FUN_0020FC90(void);
-void FUN_0020FE30(void*, u32, void*);
-void FUN_00222A60(void);
-void FUN_00222B90(void);
-void FUN_00222D60(void);
-void FUN_00229300(void);
-void FUN_00224660(void);
-void FUN_00224860(void);
-void FUN_0022BF60(void);
-void FUN_0022C0E0(void);
-void FUN_002230E0(void);
-void FUN_002254A0(void);
-void FUN_002255F0(void);
-void FUN_00225670(void);
-void FUN_002DB450(u32);
-void FUN_002DB480(void);
-void FUN_002DB9F0(u32, u32);
-void FUN_002DBA80(u32);
-void FUN_003A5540(u32, u32, s32, u32, u32, void*);
-void FUN_003B0170(u32);
-void FUN_003B0970(u32, u32, s32, u32, u32, u32, u32, u32);
-void FUN_003B0D70(u32, u32, u32);
-void FUN_003B0E20(u32, s32);
-void FUN_003B0E70(u32);
-void FUN_003B0E90(u32);
-void FUN_003B2C60(u32);
-void FUN_003C72D0(void);
-void FUN_003C7430(u32);
-void FUN_003C74E0(u32);
-void FUN_003C7D60(u32);
-u32 FUN_0030C0C0(void);
-u32 FUN_003086F0(u32, u16);
-u32 FUN_003083F0(u32, u16);
-u32 FUN_0030BB40(u16);
-u32 FUN_0030BC20(u16);
-u32 FUN_00173220(u16);
-u32 FUN_001775A0(u32);
-u32 FUN_00177790(u32);
-u32 FUN_001756F0(void);
-u32 FUN_0016F380(u32);
-void FUN_0016F3E0(u32, u32);
-u32 FUN_0016F190_y2(u32);
-void FUN_005225a8_y2(const char*, ...);
-void FUN_0021B670(u32);
-void FUN_0021C720(void);
-u32 FUN_0022D5550(void);
-u32 FUN_002D5550_y2(void);
-u32 FUN_001FF430_y2(u32);
-void FUN_002C0A50(u32, u32);
-void datSetAiTactic(s16, s16);
-u32 datGetScenarioMode(void);
-void datSetScenarioMode(u32);
-u32 datGetFlag(s32);
-int printf(const char*, ...);
-void* func_0021f410_y2(void);
-void func_00221b60_y2(void);
-void func_0021f140(void);
-void func_0021f150(u32);
-void func_0022c0a0(void);
-void func_0022c0e0(void);
-void func_0022c1d0(void);
-void func_002230e0(void);
-void func_00224660(void);
-void func_00224860(void);
-void func_002254a0(void);
-void func_002255f0(void);
-void func_00225670(void);
-void func_002082c0(u32);
-void func_00208360(void);
-void func_00208570(void*);
-void func_002085e0(void);
-void func_00208790(void);
-void func_00208860_y2(u16);
-void func_0022bf60(void);
-void func_0023c0a0(void);
-void func_003b0170(u32);
-u32 func_003b0970(u32, ...);
-void func_003b0d70(u32, ...);
-void func_003b0e20(u32, s32);
-void func_003b0e70(u32);
-void func_003b0e90(u32);
-void func_003b2c60(u32, ...);
-u32 func_003a5540(u32, ...);
-#pragma alias bpRoot_003a5540_typed func_003a5540
-extern u32 bpRoot_003a5540_typed(u32 p1, u32 p2, s32 p3, f32 angle,
-                                  u32 p4, u32 p5, void* p6, u32 p7);
-extern u32 D_007CC418;
-void* func_0030c0c0(void);
-u32 func_003086f0(u32, u16);
-u32 func_003083f0(u32, u16);
-u32 func_0030bb40(u16);
-u32 func_0030bc20(u16);
-u16 func_00170760(s16, s16);
-const char* func_00171110(s16, s16);
-u32 func_00173220(u16);
-u32 func_001775a0(u32, ...);
-u32 func_00177790(s16);
-u32 func_001756f0(void);
-u32 func_002db450(u32);
-u32 func_002db480(void);
-u32 func_002db9f0(u32, u32);
-u32 func_002dba80(u32);
-u32 func_002d5550(void);
-u32 func_003c7d60(u32);
-void FUN_0010a4e0(u32, u32, u32, u32);
-u32 FUN_0017d2e0(u16);
-u32 func_00249420(u16, u16, u16);
-
-void FUN_0025d760();
-
-void FUN_001FDDA0(void);
-u32 FUN_001FDDF0(void);
-void FUN_001FDF10(void*);
-u32 FUN_001FE220(void);
-void FUN_001FE650(void*);
-void FUN_001FE810(s32);
-void FUN_001FEAB0(void);
-u32 FUN_001FEEC0(void);
-void FUN_001FEF90(u32);
-void FUN_001FF160(u32);
-void FUN_001FF370(void);
-void FUN_001FF390(void);
-void FUN_001FF3B0(void);
-void FUN_001FF3D0(void);
-void FUN_001FF3F0(void);
-void FUN_001FF410(void);
-u32 FUN_001FF630(u32);
-void FUN_001ff890_y2(void);
-void FUN_001FFC60_y2(void);
-void FUN_001FFF40_y2(void);
-
-static u8* panelMiscWork(void)
-{
-    return *(u8**)0x007CE3EC;
-}
-static KwlnTask* sBtlPanelTask; // 007ce2e4
-
-void* FUN_001fd890(KwlnTask*);
-void* FUN_001fdac0(KwlnTask*);
-void FUN_00208ad0(void*);
-void FUN_00201730_y2(void*);
-void bppMain0020ed50(u32*);
-void FUN_0020fe20(void*);
-void FUN_0021b650(void*);
-void FUN_0021b920(void*);
-void FUN_0023f480(void*);
-void FUN_00242c40(void*);
-void FUN_00248490(void*);
-void FUN_00249240(void*);
-void FUN_0024a6c0(void*);
-void FUN_0024c100(void*);
-void FUN_00251050(void*);
-void FUN_00251a70(void*);
-void FUN_00251f20(void*);
-void FUN_00252e60(void*);
-void FUN_0025bdf0(void*);
-void FUN_0025cf00(void*);
-void FUN_00266eb0(void*);
-void FUN_0027b5b0(void*);
-void bppMain0020ed70(void);
-void FUN_0025cf20(void);
-void bpRootDestroyTask(KwlnTask*);
-
-
-void FUN_00266f00();
-void FUN_0025cf10();
-void FUN_0025be00();
-void FUN_00252e80();
-void FUN_00251f30();
-void FUN_002484a0();
-void FUN_00251060();
-void FUN_0021b660();
-void basShutdown(void); // bas_main.c
-void FUN_00249250();
-void FUN_00242c60();
-void FUN_0023f500();
-void FUN_00208b20();
-void FUN_00201780();
-void bppMain0020edc0();
-void FUN_00215770();
-void FUN_0021bb60();
-void FUN_0027b5d0();
-
-
-
-
-
-
-void FUN_0021b940();
-
-
-void FUN_00215a30();
-
-
-void FUN_00201d10();
-void FUN_00205410();
-
-
-void FUN_00244a00();
-void FUN_002086d0();
-
-
-void FUN_0020fce0();
-void FUN_00208680();
-void FUN_0020fe30();
-
-
-
-void FUN_002449d0();
-
-
-void FUN_00215a40();
-
-
-void FUN_00248500();
-void FUN_00245e00();
-
-
-void FUN_00248580();
-
-
-void FUN_0021bb00();
-
-
-void FUN_0020fd30();
-void FUN_00210d60();
-
-
-void FUN_00201c30();
-void bppMain0020fc40_y2();
-void FUN_002085e0();
-void FUN_00208b30();
-
-
-void FUN_0021b830();
-
-
-void basClearAnalyzePending(void); // bas_main.c
-
-
-
-
-void FUN_0021b8b0();
-
-
-void FUN_00201e00();
-void bppMain0020fc90_y2();
-void FUN_00208630_y2();
-void FUN_002094f0();
-
-
-void FUN_0024cf00();
-
-
-void bppMain0020f3b0();
-
-
-void bppMain0020f570();
-
-
-void FUN_00244120();
-
-
-void FUN_00244a40();
-
-
-void FUN_00249180();
-
-
-void FUN_0021bb50();
-
-
-u32 baiMainIsActive(void);
-
-
-void FUN_00207bf0();
-
-
-void FUN_002079c0();
-
-
-void FUN_00207a10();
-
-
-void FUN_00207c40();
-
-
-void FUN_00207a60();
-
-
-void FUN_00207c90();
-
-
-void FUN_00207ab0();
-
-
-void FUN_00207ce0();
-
-
-void FUN_00207d30();
-
-
-void FUN_00207b00();
-
-
-void FUN_00207b50();
-
-
-void FUN_00207d80();
-
-
-void FUN_00207ba0();
-
-
-void FUN_00207dd0();
-
-
-
-void FUN_0025c190();
-
-
-void FUN_0025d800();
-
-
-void FUN_00242b80();
-
-
-void FUN_00251f40();
-
-
-void FUN_00252e90();
-
-
-void FUN_00252ee0();
-
-
-void FUN_0025c190();
-
-
-void FUN_0025c1e0();
-
-
-void FUN_0025c110();
-
-
-
-
-void FUN_0025d850();
-
-
-void FUN_00244e10();
-
-
-void FUN_00208010();
-
-
-void FUN_00242ae0();
-
-
-
-u32 bpMisc001ff500(u32);
-u32 bpMisc001ff740_y2(void);
-void bcmPanel00222a60(void);
-void bcmPanel00222b90(void);
-void bcmPanel00222930(void);
-void bcmPanel00222d60(void);
-void bcmPanel0022bf60(void);
-void FUN_00222d60(void);
-void func_0021f0c0_y2(void*);
-
-
-
 // FUN_00201780
 void FUN_00201780(void)
 {
@@ -1724,7 +1627,6 @@ void FUN_00201780(void)
     gBcmWork = NULL;
 }
 
-/* Removing this loses FUN_00201880 (MATCH nd0 -> MISMATCH nd307) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00201880
 void FUN_00201880(void)
@@ -1785,6 +1687,7 @@ void FUN_00201880(void)
     func_002082c0(request);
     *(u32*)(work + 0x6d28) = 0;
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_00201A50
@@ -1801,6 +1704,14 @@ void FUN_00201A50(void)
     *(u32*)(work + 0x10) = 0;
 }
 
+
+// FUN_00201ad0
+void bcmDestroyOwnedResourceCallback(void)
+{
+    bcmDestroyOwnedResource();
+}
+
+
 // FUN_00201AF0
 u32 FUN_00201AF0(void)
 {
@@ -1810,6 +1721,7 @@ u32 FUN_00201AF0(void)
     flags = *(u32*)gBcmWork;
     return ((flags & 1) != 0 || (flags & 0x20000000) != 0);
 }
+
 
 // FUN_00201B50
 void FUN_00201B50(void)
@@ -1827,6 +1739,7 @@ void FUN_00201B50(void)
     if (*work & 0x10) FUN_00204CC0();
 }
 
+
 // FUN_00201C30
 void FUN_00201C30(void)
 {
@@ -1842,6 +1755,141 @@ void FUN_00201C30(void)
     if (*work & 8) FUN_00203C30();
     if (*work & 0x10) FUN_00204CC0();
 }
+
+
+
+
+
+
+
+
+
+
+
+static u8* panelMiscWork(void)
+{
+    return *(u8**)0x007CE3EC;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FUN_00201D10
 void FUN_00201D10(void)
@@ -1861,7 +1909,7 @@ void FUN_00201D10(void)
     if (work[0] & 0x10) FUN_00204CC0();
 }
 
-
+/* Removing this loses FUN_00201880 (MATCH nd0 -> MISMATCH nd307) - measured W161. */
 // FUN_00201E00
 void FUN_00201E00(void)
 {
@@ -1879,9 +1927,6 @@ void FUN_00201E00(void)
     if (work[0] & 8) FUN_00203C30();
     if (work[0] & 0x10) FUN_00204CC0();
 }
-
-
-
 // FUN_00201EF0
 void FUN_00201EF0(void)
 {
@@ -1914,7 +1959,6 @@ void FUN_00201EF0(void)
         work[3] |= 1;
     }
 }
-
 
 // FUN_00202010
 void FUN_00202010(void)
@@ -2266,6 +2310,8 @@ void FUN_00202A10(void)
     func_003b0e70(2);
 }
 
+
+
 // FUN_00202BC0
 void FUN_00202BC0(void)
 {
@@ -2285,6 +2331,8 @@ void FUN_00202BC0(void)
     }
     *(u32*)work &= ~2u;
 }
+
+
 // FUN_00202C90
 void FUN_00202C90(void)
 {
@@ -2310,6 +2358,7 @@ void FUN_00202C90(void)
         *(u32*)(p + 0xc) |= 2;
     }
 }
+
 // FUN_00202D70 NONMATCHING
 void FUN_00202D70(void)
 {
@@ -2494,6 +2543,24 @@ void FUN_002031C0(void)
     FUN_00222d60();
 }
 
+
+// FUN_00203360
+void bcmDestroyCommandResources(void)
+{
+    u32* puVar1;
+    int iVar2;
+
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    puVar1 = (u32*)gBcmWork;
+    for (iVar2 = 0; iVar2 < (int)puVar1[0x97]; iVar2++) {
+        FUN_003b0170(*(u32*)((int)puVar1 + iVar2 * 4 + 0x8c));
+    }
+    if ((*puVar1 & 0x20) != 0) {
+        FUN_003b0170(puVar1[0x99]);
+    }
+    *puVar1 &= 0xfffffffb;
+}
+
 // FUN_00203410
 void FUN_00203410(void)
 {
@@ -2548,7 +2615,6 @@ void FUN_00203410(void)
     func_003b0e90(1);
     func_003b0e70(2);
 }
-
 // FUN_00203630
 void FUN_00203630(void)
 {
@@ -2579,7 +2645,6 @@ void FUN_00203630(void)
         0x32, *(u16*)((u8*)(uintptr_t)(*(u32*)(work + 0x7698) * 2) +
                      (uintptr_t)work + 0x9c));
 }
-
 // FUN_00203760
 void FUN_00203760(void)
 {
@@ -2813,6 +2878,7 @@ void FUN_00203DE0(void)
     func_003b0e90(1);
     func_003b0e70(2);
 }
+
 // FUN_00204000 NONMATCHING
 void FUN_00204000(void)
 {
@@ -2966,8 +3032,6 @@ void FUN_00204000(void)
     }
 }
 
-
-/* Removing this loses FUN_00204480 (MATCH nd0 -> MISMATCH nd341) - measured W308. */
 #pragma opt_loop_invariants on
 // FUN_00204480
 void FUN_00204480(void)
@@ -3088,6 +3152,7 @@ void FUN_00204480(void)
     FUN_0010a4e0(0, 0, 0, 3);
     *(u32*)(work + 0x10) = 4;
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_00204760 NONMATCHING
@@ -3217,7 +3282,6 @@ void FUN_00204BE0(void)
     }
     *(u32*)work &= ~0x10u;
 }
-
 // FUN_00204CC0 NONMATCHING
 void FUN_00204CC0(void)
 {
@@ -3300,6 +3364,8 @@ void FUN_00204CC0(void)
     func_002230e0();
 }
 
+
+/* Removing this loses FUN_00204480 (MATCH nd0 -> MISMATCH nd341) - measured W308. */
 // FUN_00205000 NONMATCHING
 void FUN_00205000(void)
 {
@@ -3383,13 +3449,13 @@ void FUN_00205000(void)
     func_003b0e90(1);
     func_003b0e70(2);
 }
-
 // FUN_002053C0
 u32 FUN_002053C0(void)
 {
     K_ASSERT(gBcmWork != NULL, 0x164);
     return *(u32*)gBcmWork & 0x20;
 }
+
 // FUN_00205410
 void FUN_00205410(void)
 {
@@ -3456,7 +3522,6 @@ u16 FUN_002055A0(void)
     base = work + 0x268;
     return *(u16*)(base + *(u32*)(work + 0x76cc) * 8);
 }
-
 // FUN_002055F0
 u32 FUN_002055F0(u32 id)
 {
@@ -3508,6 +3573,7 @@ void FUN_00205760(void)
     if ((*(u32*)(gBcmWork + 0x77a0) & 0x20) == 0)
         *(u32*)(gBcmWork + 0xc) |= 0x40;
 }
+
 // FUN_002057C0 NONMATCHING
 void FUN_002057C0(void)
 {
@@ -3834,8 +3900,6 @@ void FUN_00206310(void)
     }
     *(u32*)work &= ~0x1000u;
 }
-
-/* Removing this loses FUN_002063F0 (MATCH nd0 -> MISMATCH nd128) - measured W308. */
 #pragma opt_loop_invariants on
 // FUN_002063F0
 void FUN_002063F0(void)
@@ -3900,6 +3964,7 @@ void FUN_002063F0(void)
         break;
     }
 }
+
 #pragma opt_loop_invariants off
 
 /* Removing this loses FUN_002065A0 (MATCH nd0 -> MISMATCH nd159) - measured W308. */
@@ -3959,6 +4024,7 @@ void FUN_002065A0(void)
     FUN_00205D60();
 }
 #pragma opt_loop_invariants reset
+
 // FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {
@@ -4170,6 +4236,7 @@ void FUN_00206EB0(void)
     *(u32*)work &= ~0x2000u;
 }
 
+/* Removing this loses FUN_002063F0 (MATCH nd0 -> MISMATCH nd128) - measured W308. */
 // FUN_00206F70
 void FUN_00206F70(void)
 {
@@ -4188,9 +4255,6 @@ void FUN_00206F70(void)
     *(u32*)(p + 0x6a08) = 0;
     func_00225670();
 }
-
-
-
 // FUN_00207010
 void FUN_00207010(void)
 {
@@ -4278,7 +4342,6 @@ void FUN_00207010(void)
     func_003b0e90(1);
     func_003b0e70(2);
 }
-
 // FUN_00207340 NONMATCHING
 void FUN_00207340(void)
 {
@@ -4456,6 +4519,12 @@ void FUN_002078A0(void)
     *(u32*)(work + 0x10) = 9;
 }
 
+// FUN_00207930
+u32 bcmIsItemUsable(u16 param_1)
+{
+    return FUN_0017d2e0_y2(param_1) != 0xc;
+}
+
 // FUN_00207960
 u32 FUN_00207960(u32 id)
 {
@@ -4468,11 +4537,20 @@ u32 FUN_00207960(u32 id)
     return FUN_0017d2e0((u16)id);
 }
 
+
+
 // FUN_002079C0
 void FUN_002079C0(void)
 {
     K_ASSERT(gBcmWork != NULL, 0x164);
     *(u32*)(gBcmWork + 0x77a0) |= 1;
+}
+
+// FUN_00207a10
+void bcm00207a10(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) |= 2;
 }
 
 // FUN_00207A60
@@ -4489,61 +4567,32 @@ void FUN_00207AB0(void)
     *(u32*)(gBcmWork + 0x77a0) |= 8;
 }
 
-void func_0021bcb0(void);
-void func_0024c110(void);
-u32 bpRushUpdate(void);
-u32 bpRes0021bab0(void);
-void bpd00253410(void);
-void func_00210d90(void*);
-void func_002510d0(void);
-void func_00251a80(void);
-void bppMain0020edf0(void);
-u32 baiMainIsActive(void);
-void func_0021c7e0(void);
-void bpo00252060(void);
-void func_002492b0(void);
-void func_00248620(void);
-void func_00242cc0(void);
-void func_0025c220(void);
-void bpPersonaUpdate(void);
-void func_0027b610(void);
-u32 func_00249130(void);
-void func_00245e50(void);
-void func_00213e80(void*);
-void func_00252f30(void);
-void func_00209540(void);
-void func_0023f540(void);
-void func_0024cca0(void);
-void func_002095a0(void);
-void func_002532b0(void);
-void func_0020f260(void);
-void func_00243150(void);
-void func_00241910(void);
-void func_00248bb0(void);
-void func_002520f0(void);
-void func_0025c9c0(void);
-void func_0025d470(void);
-void func_0027b880(void);
-u32 func_00208720(void);
-void* btlUnitFindFromId(u16);
-u32 func_00242a60(void);
-void* func_00242260(void);
-void func_00242320(void*, u32);
-void func_00242a50(void*, u32);
-void func_00242600(void*, u32);
-void func_00242720(void*, u32);
-void func_00242a30(void*);
-void func_00242c20(void*, u32, u32);
-void func_00242540(void*);
-void func_002453d0(s32);
-void func_002441b0(s32);
-u32 func_00207f70(void);
-u32 func_00207fc0(void);
 // FUN_00207B00
 void FUN_00207B00(void)
 {
     K_ASSERT(gBcmWork != NULL, 0x164);
     *(u32*)(gBcmWork + 0x77a0) |= 0x10;
+}
+
+// FUN_00207B50
+void FUN_00207B50(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) |= 0x20;
+}
+
+// FUN_00207BA0
+void FUN_00207BA0(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) |= 0x40;
+}
+
+// FUN_00207bf0
+void bcm00207bf0(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) &= ~1;
 }
 
 
@@ -4559,61 +4608,14 @@ void FUN_00207B00(void)
 
 
 
-u32 func_00208010_y2(void);
-u32 func_00208050_y2(void);
-u32 func_00208130_y2(void);
-void func_0025be60(u32, u32, u32);
-void bpRush0025d7b0(void);
-void func_0020fd80(void);
-void func_0020fdd0(void);
-void func_0027b9f0(void);
-void func_0027ba90(void);
-void func_0027bae0(void);
 
 
-#include "Battle/battle.h"
-#pragma alias bcmStartTacticsTutorial FUN_00207e20
-#pragma alias bcmStartBasicTutorial FUN_00207f10
-#pragma alias bcmIsCurrentUnitTutorialPending FUN_00208010
-#pragma alias bcmIsTacticsTutorialPending FUN_00208050
-#pragma alias bcmCanStartBasicTutorial FUN_00208130
-#pragma alias bcmStoreOwnedResource FUN_002082c0
-#pragma alias bcmDestroyOwnedResource FUN_00208360
-#pragma alias bcmDestroyOwnedResourceImpl FUN_002083d0
-#pragma alias bcmFinishPanelTransition FUN_00208460
-#pragma alias bcmInitCommandPanelEntries FUN_00208570
-#pragma alias bcmIsCommandInputReady FUN_00208720
-#pragma alias bcmPlayRandomPartyVoice FUN_00208790
 
 
 /* Shared command work is owned by bcm_main.c. */
-extern u8* gBcmWork;
 
-extern void func_002518b0(u32 mode);
-extern void func_00251e10(void);
-extern void bppMain0020fc40(void);
-extern u32 func_00249650(u16 id);
-extern u32 datGetFlag_y2(u16 id);
-extern u32 bpMisc001ff7f0(u32 id);
-extern u32 datGetBadStatusNoDown(s16 unitId);
-extern void bcmPanel00222ed0(void);
-extern void func_003b0170_y2(u32 value);
-extern u32 datCalcIsDead(void* calc, u32 mode);
-extern u32 func_002ddc10(u32 unitId);
-extern void func_002ddba0(u32 id);
-extern u32 RpRandom(void);
 
-static void bcmDestroyOwnedResourceImpl(void);
-static void func_00208860(u32 unitId);
 
-#define BCM_WORD(off) (*(u32*)((u8*)gBcmWork + (off)))
-typedef struct BcmCommandEntry
-{
-    u32 flags;
-    u32 type;
-    u32 icon;
-    u16 id;
-} BcmCommandEntry;
 
 // FUN_00207c40
 void func_00207c40(void)

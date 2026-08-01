@@ -27,6 +27,11 @@ extern void datSetFlag(s32 bit, u32 value);
 #include "h_dbprt.h"
 #include "h_fade.h"
 
+#undef preservedFlagIds
+#undef preservedFlagValues
+#undef preservedFlags
+
+
 #define KWLN_COMMON_RENDERSTATES (rwRENDERSTATEFOGDENSITY + 1)
 
 #define LOAD_IOP_MODULE(fileName, args, argp)                   \
@@ -570,6 +575,17 @@ void kwlnInitGameData()
     datInitSocialLink();
 }
 
+// FUN_00196770
+void kwlnPushCommonRenderStates()
+{
+    s32 i;
+
+    for (i = 0; i < KWLN_COMMON_RENDERSTATES; i++)
+    {
+        RwRenderStateGet(i, &sPushedRenderStates[i]);
+    }
+}
+
 // FUN_001967d0
 void func_001967d0(void)
 {
@@ -751,20 +767,6 @@ void func_001967d0(void)
     datSetFlag(0x1310, 1);
     datSetFlag(0x141d, 1);
     FUN_0016f3e0(0x2f, initialAuxValue);
-}
-#undef preservedFlagIds
-#undef preservedFlagValues
-#undef preservedFlags
-
-// FUN_00196770
-void kwlnPushCommonRenderStates()
-{
-    s32 i;
-
-    for (i = 0; i < KWLN_COMMON_RENDERSTATES; i++)
-    {
-        RwRenderStateGet(i, &sPushedRenderStates[i]);
-    }
 }
 
 // FUN_00196fe0

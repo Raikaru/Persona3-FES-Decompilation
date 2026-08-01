@@ -14,6 +14,125 @@
 #include "Kernel/Kwln/kwln.h"
 #include "rw/rwcore.h"
 
+typedef struct
+{
+    u32 state;
+    u32 mode;
+
+    s32 timer;
+    KwlnTask* eplTask;
+} FldEffectWork;
+typedef struct
+{
+    u32 state;
+    u32 mode;
+    u32 kind;
+    f32 screenX;
+    f32 screenY;
+    f32 depth;
+    u8 data[0x218];
+} FldEffectDrawWork;
+typedef struct
+{
+    u32 state;
+    u8 data[0x4c];
+    void* resource;
+    u8 padding[0xc];
+} FldEffectResourceWork;
+typedef struct
+{
+    RwMatrix cameraMatrix;
+    f32 translation[4];
+    f32 rotationAxis[4];
+    f32 inverse[4];
+    f32 position[4];
+} FootstepEffectScratch;
+extern void* func_001a9080(KwlnTask* parent, const char* name, u32 priority, u32 flags);
+extern u32 func_001a01c0(void);
+extern u32 func_001a0310(void);
+extern void* func_0018e5c0(void* owner, const void* data);
+extern void* func_001a9180(KwlnTask* task);
+extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
+extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
+extern u32 func_002ff790(DatUnitGenusBase* genus);
+extern void func_0018bee0(void* owner, s32 charId, u32 variant);
+extern u8 datPersonaGetLevelByPcId(u16 pcId);
+extern void func_0035bc00(s32 arg0, u32 arg1, u32 arg2, u32 arg3);
+extern u8 D_006792E0[];
+extern u8 D_006799FC[];
+extern u8 D_00679A16[];
+extern u8 D_00679A30[];
+extern u8 D_00679A4A[];
+extern u32 datGetMaxHp(s16 pcId);
+#include "Kosaka/Field/k_encount.h"
+#include "Main/Battle/Data/datUnit.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Kosaka/k_assert.h"
+#include "Script/scrScriptProcess.h"
+#include "libm.h"
+extern s32 func_001c0040(void);
+extern u8* DAT_007ce4ac;
+extern u8* DAT_007ce4b0;
+extern u8* DAT_007ce4b4;
+extern u8* DAT_007ce4b8;
+extern u32 iGpffffb418;
+extern s32* PTR_DAT_007cd540;
+extern RwMatrix* func_004c38c0(void);
+extern void func_004c3880(RwMatrix* matrix);
+extern f32 acosf(f32 value);
+#pragma alias sDegreesPerRadian D_007CAFA0
+extern f32 sDegreesPerRadian;
+#pragma alias sEncountAxis D_00683B78
+extern RwV3d sEncountAxis;
+#pragma alias sEncountForward D_00683B88
+extern RwV3d sEncountForward;
+extern void* func_001d7d40(KwlnTask* task);
+extern void func_001d89b0(KwlnTask* task);
+typedef struct EncounterWork
+{
+    u32 state;
+    u32 taskSlot;
+    u32 paused;
+    void* effectHandle;
+    u32 pcCount;
+    u32 ecCount;
+    FldUnit* pc[4];
+    FldUnit* ec[4];
+    u32 progress;
+    u32 duration;
+    u32 reaperFlag;
+    u32 totalActive;
+    u32 pcTotal;
+    u32 ecTotal;
+    u32 selectedFlatIndex;
+} EncounterWork;
+typedef struct EncounterRecord
+{
+    u32 count;
+    u32 ids[3];
+} EncounterRecord;
+typedef struct PeriodicWork
+{
+    u32 state;
+    u32 disabled;
+    u32 initialGate;
+    u32 timestamp;
+    KwlnTask* scriptTask[16];
+    EncounterRecord records[16];
+} PeriodicWork;
+extern KwlnTask* D_00875A40[3];
+extern void func_001a9400(KwlnTask* task, void* handle);
+extern void func_00434f70(void);
+extern u32 func_001fc720(DatUnit* unit);
+extern void func_001fc590(DatUnit* src, DatUnit* dst);
+#pragma alias func_002ffb00_u32 func_002ffb00
+extern u32 func_002ffb00_u32(DatUnitGenusBase* genus);
+extern u16 func_002ffb00(DatUnitGenusBase* genus);
+extern void func_0035c1a0(KwlnTask* task, int record);
+extern ScrHeader* D_007CE220;
+extern void func_001b00c0(KwlnTask* task);
+
+
 
 
 extern void* memset(void* dst, int value, u32 count);
@@ -205,6 +324,201 @@ static s32 K_Footstep_Surface(Model* mdl, RwV3d* position)
 // Recovered the scene-hit material fallback path and signed 16-bit sound-call arguments.
 // Recovered the model-id 4 fallback and the model-id 6 legacy selector paths.
 // The remaining case dispatch/code layout still differs from retail.
+// FUN_001d9860 NONMATCHING
+void* func_001d9860(KwlnTask* task)
+{
+    PeriodicWork* work;
+    u32 i;
+    u32 j;
+    u32 found;
+    u32 valid;
+    FldUnit* pc;
+    EncounterRecord* rec;
+    KwlnTask* child;
+
+    work = (PeriodicWork*)task->workData;
+    if (work->disabled == 1)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    switch (work->state)
+    {
+    case 4:
+        return KWLNTASK_STOP;
+    case 3:
+        for (i = 0; i < 16; i++)
+        {
+            if (kwlnTaskExists(work->scriptTask[i]) == 1)
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            work->scriptTask[i] = NULL;
+        }
+        work->timestamp = iGpffffb418;
+        work->state = 1;
+        return KWLNTASK_CONTINUE;
+    case 0:
+        work->timestamp = iGpffffb418;
+        work->state++;
+        /* fallthrough */
+    case 1:
+        if (work->initialGate == 0)
+        {
+            for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+            K_ASSERT(i < 16, 0x72);
+            if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 2)
+            {
+                child = scrCreateTaskFromHeader(10, D_007CE220, 2);
+                work->scriptTask[i] = child;
+                func_0035c1a0(child, (int)&work->records[i]);
+                work->initialGate = 1;
+                work->state = 3;
+            }
+        }
+        if (iGpffffb418 - work->timestamp < 0x385)
+        {
+            return KWLNTASK_CONTINUE;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        found = 0;
+        rec = &work->records[i];
+        memset(rec, 0, 16);
+        for (j = 1; j < 4; j++)
+        {
+            pc = &gFldUnitsPc[j];
+            valid = 0;
+            if (pc->genusBase != NULL && pc->resrc != NULL)
+            {
+                valid = 1;
+            }
+            if (valid != 0 && func_002ff790(pc->genusBase) == 1)
+            {
+                rec->ids[rec->count] = pc->charId;
+                rec->count++;
+                found = 1;
+            }
+        }
+        if (found != 0)
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 0);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)rec);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 1)
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 1);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d9310(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 4);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d94d0(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 5);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d96a0(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 6);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        work->timestamp = iGpffffb418;
+        return KWLNTASK_CONTINUE;
+    default:
+        return KWLNTASK_CONTINUE;
+    }
+}
+
+
+
+
+
+static u32 K_Footstep_GameState(void)
+{
+    return func_001a01c0();
+}
+
+// FUN_001d9ee0
+void func_001d9ee0(KwlnTask* task)
+{
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
+}
+
+// FUN_001d9f10
+KwlnTask* func_001d9f10(KwlnTask* parent)
+{
+    PeriodicWork* work;
+    if (func_001a01c0() == 0)
+    {
+        return NULL;
+    }
+    if (PTR_DAT_007cd540[0] == 0x21)
+    {
+        return NULL;
+    }
+    work = (PeriodicWork*)RwCalloc(1, sizeof(PeriodicWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    return kwlnTaskCreateWithAutoPriority(parent, 10, "field periodic",
+                                          func_001d9860, func_001d9ee0, work);
+}
+// FUN_001d9fd0
+u32 func_001d9fd0(KwlnTask* task)
+{
+    if (task == NULL)
+    {
+        return true;
+    }
+    return (s32)((PeriodicWork*)task->workData)->state > 0;
+}
+
+// FUN_001da000
+void func_001da000(KwlnTask* task, u32 disabled)
+{
+    PeriodicWork* work;
+
+    if (task == NULL)
+    {
+        return;
+    }
+    work = (PeriodicWork*)task->workData;
+    work->disabled = disabled;
+    work->timestamp = iGpffffb418;
+}
+
+// Reconstructed from the retail window: this is a billboard quad builder,
+// not the screen-projection stub that previously stood here. Retail builds
+// two 4-vertex quads (stride 0x40) at work+0x20 and work+0x120 with unit UVs
+// and per-vertex colour, driven by a 6-entry jump table on work+8 whose case
+// mapping was decoded from the retail table at 0x7b6d10 = cases 0/3/5 fade
+// (work+0x220 -= 10, alpha from the byte), case 1 wraps at 9 using count>>1,
+// cases 2/4 wrap at 5. Still short of the window: retail keeps eight floats
+// (f20-f27) live giving a -0x70 frame, and has a second work+8 dispatch near
+// offset 1896 that is not yet reconstructed.
 // FUN_001da020 NONMATCHING
 void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
 {
@@ -553,65 +867,6 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
 
     }
 }
-typedef struct
-{
-    u32 state;
-    u32 mode;
-
-    s32 timer;
-    KwlnTask* eplTask;
-} FldEffectWork;
-
-typedef struct
-{
-    u32 state;
-    u32 mode;
-    u32 kind;
-    f32 screenX;
-    f32 screenY;
-    f32 depth;
-    u8 data[0x218];
-} FldEffectDrawWork;
-
-typedef struct
-{
-    u32 state;
-    u8 data[0x4c];
-    void* resource;
-    u8 padding[0xc];
-} FldEffectResourceWork;
-typedef struct
-{
-    RwMatrix cameraMatrix;
-    f32 translation[4];
-    f32 rotationAxis[4];
-    f32 inverse[4];
-    f32 position[4];
-} FootstepEffectScratch;
-
-
-extern void* func_001a9080(KwlnTask* parent, const char* name, u32 priority, u32 flags);
-extern u32 func_001a01c0(void);
-extern u32 func_001a0310(void);
-extern void* func_0018e5c0(void* owner, const void* data);
-extern void* func_001a9180(KwlnTask* task);
-extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
-extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
-extern u32 func_002ff790(DatUnitGenusBase* genus);
-extern void func_0018bee0(void* owner, s32 charId, u32 variant);
-extern u8 datPersonaGetLevelByPcId(u16 pcId);
-extern void func_0035bc00(s32 arg0, u32 arg1, u32 arg2, u32 arg3);
-extern u8 D_006792E0[];
-extern u8 D_006799FC[];
-extern u8 D_00679A16[];
-extern u8 D_00679A30[];
-extern u8 D_00679A4A[];
-extern u32 datGetMaxHp(s16 pcId);
-
-static u32 K_Footstep_GameState(void)
-{
-    return func_001a01c0();
-}
 
 // FUN_001dc6f0 NONMATCHING
 void* func_001dc6f0(KwlnTask* task)
@@ -672,6 +927,7 @@ void func_001dc8e0(KwlnTask* task)
 {
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
+
 // FUN_001dc910
 KwlnTask* func_001dc910(KwlnTask* parent, u32 mode)
 {
@@ -716,15 +972,6 @@ void func_001dca10(void)
     H_Cdvd_Destroy(cdvd);
 }
 
-// Reconstructed from the retail window: this is a billboard quad builder,
-// not the screen-projection stub that previously stood here. Retail builds
-// two 4-vertex quads (stride 0x40) at work+0x20 and work+0x120 with unit UVs
-// and per-vertex colour, driven by a 6-entry jump table on work+8 whose case
-// mapping was decoded from the retail table at 0x7b6d10 = cases 0/3/5 fade
-// (work+0x220 -= 10, alpha from the byte), case 1 wraps at 9 using count>>1,
-// cases 2/4 wrap at 5. Still short of the window: retail keeps eight floats
-// (f20-f27) live giving a -0x70 frame, and has a second work+8 dispatch near
-// offset 1896 that is not yet reconstructed.
 // FUN_001dcb60 NONMATCHING
 void* func_001dcb60(KwlnTask* task)
 {
@@ -971,6 +1218,7 @@ void func_001dd430(KwlnTask* task)
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
+/* W328 hand probe: valid=0 before unit pointer plus opt_loop_invariants on; off nd278/obj524, on nd273/obj516 (original order off nd295/obj524). */
 // FUN_001dd460
 KwlnTask* func_001dd460(KwlnTask* parent, void* data, u32 kind)
 {
@@ -1019,6 +1267,32 @@ void func_001dd5e0(KwlnTask* task, u32 value)
 void func_001dd5f0(KwlnTask* task, u32 value)
 {
     *(u32*)((u8*)task->workData + 0x224) = value;
+}
+
+static u32 K_Footstep_StatusResult(u32 mode)
+{
+    u32 state = K_Footstep_GameState();
+    if (mode == 1)
+    {
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY && (state == 4 || state == 5))
+        {
+            return datGetFlag(0xC35) == 0;
+        }
+        return func_001a0310() == 1 && datGetFlag(0xC35) == 0;
+    }
+    if (mode == 2)
+    {
+        return state != 6 && state != 7 && datGetBadStatusNoDown(1) != UNIT_BADSTATUS_POISON;
+    }
+    if (mode == 5)
+    {
+        return datGetFlag(0xC2F) == 0 && state != 0x21;
+    }
+    if (mode == 7 || mode == 10 || mode == 13)
+    {
+        return datGetBadStatusNoDown(1) == UNIT_BADSTATUS_POISON;
+    }
+    return datGetFlag(0xC35) == 0;
 }
 
 // FUN_001dd600
@@ -1075,7 +1349,6 @@ u32 func_001dd600(void)
     return result;
 }
 
-/* W328 hand probe: valid=0 before unit pointer plus opt_loop_invariants on; off nd278/obj524, on nd273/obj516 (original order off nd295/obj524). */
 #pragma opt_loop_invariants on
 // FUN_001dd8e0 NONMATCHING
 void func_001dd8e0(void)
@@ -1201,6 +1474,8 @@ void func_001ddca0(s32 index)
     func_0018e5c0(*(void**)((u8*)field + 0x2C), data);
 }
 
+// Reconstructed controller input, camera diagnostics, and frame transforms from retail.
+// Remaining differences are compiler scheduling/register allocation in the large state-1 path.
 // FUN_001ddd30
 u32 func_001ddd30(void)
 {
@@ -1228,32 +1503,6 @@ footstep_ddd30_false:
     result = 0;
 footstep_ddd30_success:
     return result;
-}
-
-static u32 K_Footstep_StatusResult(u32 mode)
-{
-    u32 state = K_Footstep_GameState();
-    if (mode == 1)
-    {
-        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY && (state == 4 || state == 5))
-        {
-            return datGetFlag(0xC35) == 0;
-        }
-        return func_001a0310() == 1 && datGetFlag(0xC35) == 0;
-    }
-    if (mode == 2)
-    {
-        return state != 6 && state != 7 && datGetBadStatusNoDown(1) != UNIT_BADSTATUS_POISON;
-    }
-    if (mode == 5)
-    {
-        return datGetFlag(0xC2F) == 0 && state != 0x21;
-    }
-    if (mode == 7 || mode == 10 || mode == 13)
-    {
-        return datGetBadStatusNoDown(1) == UNIT_BADSTATUS_POISON;
-    }
-    return datGetFlag(0xC35) == 0;
 }
 
 // FUN_001dde00
@@ -1927,6 +2176,128 @@ footstep_case1_default_e630:
     return result;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+static u32 K_Encount_Now(KwlnTask* task)
+{
+    return task != NULL ? kwlnTaskGetTimer(task) : 0;
+}
+
+static void* K_Encount_FieldWord(u32 offset)
+{
+    Field* field = K_Field_Get();
+    return field != NULL ? *(void**)((u8*)field + offset) : NULL;
+}
+
+static void K_Encount_Face(FldUnit* unit, FldUnit* target)
+{
+    RwMatrix matrix;
+    RwV3d axis = {0.0f, 1.0f, 0.0f};
+    RwV3d delta;
+    f32 heading;
+
+    if (unit == NULL || target == NULL || unit->mdl == NULL || target->mdl == NULL ||
+        unit->resrc == NULL)
+    {
+        return;
+    }
+    delta = mdlGetMatrix(target->mdl)->pos;
+    delta.x -= mdlGetMatrix(unit->mdl)->pos.x;
+    delta.y = 0.0f;
+    delta.z -= mdlGetMatrix(unit->mdl)->pos.z;
+    heading = atan2f(delta.x, delta.z) * (180.0f / 3.14159265f);
+    memset(&matrix, 0, sizeof(matrix));
+    matrix.right.x = 1.0f;
+    matrix.up.y = 1.0f;
+    matrix.at.z = 1.0f;
+    matrix.pos = mdlGetMatrix(unit->mdl)->pos;
+    matrix.flags = 0x20003;
+    RwMatrixRotate(&matrix, &axis, heading, rwCOMBINEPRECONCAT);
+    K_FldFrame_CtlUpdateMdlMat(unit->resrc->collisCtlTask, &matrix);
+}
+
+
+
+
+static void K_Encount_CompactEc(EncounterWork* work)
+{
+    u32 i;
+    u32 out = 0;
+    for (i = 0; i < work->ecCount && i < 4; ++i)
+    {
+        if (work->ec[i] != NULL)
+        {
+            work->ec[out++] = work->ec[i];
+        }
+    }
+    while (out < 4)
+    {
+        work->ec[out++] = NULL;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+// Retail offsets 0x00-0x4a8 reconstruct unit registration, facing rotation,
+// field updates, and active-count aggregation; 1196 of 1200 bytes are implemented.
+
+static u32 K_Encount_AppendRecord(EncounterRecord* out, u16 id)
+{
+    if (out->count >= 3)
+    {
+        return 0;
+    }
+    out->ids[out->count++] = id;
+    return 1;
+}
+
+static u32 K_Encount_HpRatio(u16 id, f32* ratio)
+{
+    u32 maxHp = datGetMaxHp((s16)id);
+    if (maxHp == 0)
+    {
+        return 0;
+    }
+    *ratio = (f32)datGetHp((s16)id) / (f32)maxHp;
+    return 1;
+}
+
+
+
+
+
+static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u32 procedure)
+{
+    KwlnTask* child;
+    if (slot >= 16)
+    {
+        return NULL;
+    }
+    child = scrCreateTaskFromHeader(10, D_007CE220, procedure);
+    work->scriptTask[slot] = child;
+    if (child != NULL)
+    {
+        func_0035c1a0(child, (int)&work->records[slot]);
+    }
+    return child;
+}
+
 // FUN_001ded40 NONMATCHING
 s32 func_001ded40(s32 charId)
 {
@@ -2496,8 +2867,6 @@ footstep_target_done:
     return (s32)result;
 }
 
-// Reconstructed controller input, camera diagnostics, and frame transforms from retail.
-// Remaining differences are compiler scheduling/register allocation in the large state-1 path.
 // FUN_001dfa70 NONMATCHING
 void* func_001dfa70(KwlnTask* task)
 {
@@ -2790,371 +3159,4 @@ KwlnTask* func_001e0510(KwlnTask* parent, void* resource)
                                           func_001dfa70, func_001e04e0, work);
     work->resource = resource;
     return task;
-}
-
-#include "Kosaka/Field/k_encount.h"
-#include "Main/Battle/Data/datUnit.h"
-#include "Main/Battle/Data/datPersona.h"
-#include "Kosaka/k_assert.h"
-#include "Script/scrScriptProcess.h"
-#include "libm.h"
-
-extern s32 func_001c0040(void);
-
-extern u8* DAT_007ce4ac;
-extern u8* DAT_007ce4b0;
-extern u8* DAT_007ce4b4;
-extern u8* DAT_007ce4b8;
-extern u32 iGpffffb418;
-extern s32* PTR_DAT_007cd540;
-extern RwMatrix* func_004c38c0(void);
-extern void func_004c3880(RwMatrix* matrix);
-extern f32 acosf(f32 value);
-#pragma alias sDegreesPerRadian D_007CAFA0
-extern f32 sDegreesPerRadian;
-#pragma alias sEncountAxis D_00683B78
-extern RwV3d sEncountAxis;
-#pragma alias sEncountForward D_00683B88
-extern RwV3d sEncountForward;
-extern void* func_001d7d40(KwlnTask* task);
-extern void func_001d89b0(KwlnTask* task);
-
-
-
-
-
-typedef struct EncounterWork
-{
-    u32 state;
-    u32 taskSlot;
-    u32 paused;
-    void* effectHandle;
-    u32 pcCount;
-    u32 ecCount;
-    FldUnit* pc[4];
-    FldUnit* ec[4];
-    u32 progress;
-    u32 duration;
-    u32 reaperFlag;
-    u32 totalActive;
-    u32 pcTotal;
-    u32 ecTotal;
-    u32 selectedFlatIndex;
-} EncounterWork;
-
-typedef struct EncounterRecord
-{
-    u32 count;
-    u32 ids[3];
-} EncounterRecord;
-
-typedef struct PeriodicWork
-{
-    u32 state;
-    u32 disabled;
-    u32 initialGate;
-    u32 timestamp;
-    KwlnTask* scriptTask[16];
-    EncounterRecord records[16];
-} PeriodicWork;
-
-extern KwlnTask* D_00875A40[3];
-extern void func_001a9400(KwlnTask* task, void* handle);
-extern void func_00434f70(void);
-extern u32 func_001fc720(DatUnit* unit);
-extern void func_001fc590(DatUnit* src, DatUnit* dst);
-#pragma alias func_002ffb00_u32 func_002ffb00
-extern u32 func_002ffb00_u32(DatUnitGenusBase* genus);
-extern u16 func_002ffb00(DatUnitGenusBase* genus);
-extern void func_0035c1a0(KwlnTask* task, int record);
-extern ScrHeader* D_007CE220;
-extern void func_001b00c0(KwlnTask* task);
-
-static u32 K_Encount_Now(KwlnTask* task)
-{
-    return task != NULL ? kwlnTaskGetTimer(task) : 0;
-}
-
-static void* K_Encount_FieldWord(u32 offset)
-{
-    Field* field = K_Field_Get();
-    return field != NULL ? *(void**)((u8*)field + offset) : NULL;
-}
-
-static void K_Encount_Face(FldUnit* unit, FldUnit* target)
-{
-    RwMatrix matrix;
-    RwV3d axis = {0.0f, 1.0f, 0.0f};
-    RwV3d delta;
-    f32 heading;
-
-    if (unit == NULL || target == NULL || unit->mdl == NULL || target->mdl == NULL ||
-        unit->resrc == NULL)
-    {
-        return;
-    }
-    delta = mdlGetMatrix(target->mdl)->pos;
-    delta.x -= mdlGetMatrix(unit->mdl)->pos.x;
-    delta.y = 0.0f;
-    delta.z -= mdlGetMatrix(unit->mdl)->pos.z;
-    heading = atan2f(delta.x, delta.z) * (180.0f / 3.14159265f);
-    memset(&matrix, 0, sizeof(matrix));
-    matrix.right.x = 1.0f;
-    matrix.up.y = 1.0f;
-    matrix.at.z = 1.0f;
-    matrix.pos = mdlGetMatrix(unit->mdl)->pos;
-    matrix.flags = 0x20003;
-    RwMatrixRotate(&matrix, &axis, heading, rwCOMBINEPRECONCAT);
-    K_FldFrame_CtlUpdateMdlMat(unit->resrc->collisCtlTask, &matrix);
-}
-
-
-
-
-static void K_Encount_CompactEc(EncounterWork* work)
-{
-    u32 i;
-    u32 out = 0;
-    for (i = 0; i < work->ecCount && i < 4; ++i)
-    {
-        if (work->ec[i] != NULL)
-        {
-            work->ec[out++] = work->ec[i];
-        }
-    }
-    while (out < 4)
-    {
-        work->ec[out++] = NULL;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-// Retail offsets 0x00-0x4a8 reconstruct unit registration, facing rotation,
-// field updates, and active-count aggregation; 1196 of 1200 bytes are implemented.
-
-static u32 K_Encount_AppendRecord(EncounterRecord* out, u16 id)
-{
-    if (out->count >= 3)
-    {
-        return 0;
-    }
-    out->ids[out->count++] = id;
-    return 1;
-}
-
-static u32 K_Encount_HpRatio(u16 id, f32* ratio)
-{
-    u32 maxHp = datGetMaxHp((s16)id);
-    if (maxHp == 0)
-    {
-        return 0;
-    }
-    *ratio = (f32)datGetHp((s16)id) / (f32)maxHp;
-    return 1;
-}
-
-
-
-
-
-static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u32 procedure)
-{
-    KwlnTask* child;
-    if (slot >= 16)
-    {
-        return NULL;
-    }
-    child = scrCreateTaskFromHeader(10, D_007CE220, procedure);
-    work->scriptTask[slot] = child;
-    if (child != NULL)
-    {
-        func_0035c1a0(child, (int)&work->records[slot]);
-    }
-    return child;
-}
-
-// FUN_001d9860 NONMATCHING
-void* func_001d9860(KwlnTask* task)
-{
-    PeriodicWork* work;
-    u32 i;
-    u32 j;
-    u32 found;
-    u32 valid;
-    FldUnit* pc;
-    EncounterRecord* rec;
-    KwlnTask* child;
-
-    work = (PeriodicWork*)task->workData;
-    if (work->disabled == 1)
-    {
-        return KWLNTASK_CONTINUE;
-    }
-    switch (work->state)
-    {
-    case 4:
-        return KWLNTASK_STOP;
-    case 3:
-        for (i = 0; i < 16; i++)
-        {
-            if (kwlnTaskExists(work->scriptTask[i]) == 1)
-            {
-                return KWLNTASK_CONTINUE;
-            }
-            work->scriptTask[i] = NULL;
-        }
-        work->timestamp = iGpffffb418;
-        work->state = 1;
-        return KWLNTASK_CONTINUE;
-    case 0:
-        work->timestamp = iGpffffb418;
-        work->state++;
-        /* fallthrough */
-    case 1:
-        if (work->initialGate == 0)
-        {
-            for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-            K_ASSERT(i < 16, 0x72);
-            if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 2)
-            {
-                child = scrCreateTaskFromHeader(10, D_007CE220, 2);
-                work->scriptTask[i] = child;
-                func_0035c1a0(child, (int)&work->records[i]);
-                work->initialGate = 1;
-                work->state = 3;
-            }
-        }
-        if (iGpffffb418 - work->timestamp < 0x385)
-        {
-            return KWLNTASK_CONTINUE;
-        }
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        found = 0;
-        rec = &work->records[i];
-        memset(rec, 0, 16);
-        for (j = 1; j < 4; j++)
-        {
-            pc = &gFldUnitsPc[j];
-            valid = 0;
-            if (pc->genusBase != NULL && pc->resrc != NULL)
-            {
-                valid = 1;
-            }
-            if (valid != 0 && func_002ff790(pc->genusBase) == 1)
-            {
-                rec->ids[rec->count] = pc->charId;
-                rec->count++;
-                found = 1;
-            }
-        }
-        if (found != 0)
-        {
-            child = scrCreateTaskFromHeader(10, D_007CE220, 0);
-            work->scriptTask[i] = child;
-            func_0035c1a0(child, (int)rec);
-            work->state = 3;
-        }
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 1)
-        {
-            child = scrCreateTaskFromHeader(10, D_007CE220, 1);
-            work->scriptTask[i] = child;
-            func_0035c1a0(child, (int)&work->records[i]);
-            work->state = 3;
-        }
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        if (func_001d9310(&work->records[i]))
-        {
-            child = scrCreateTaskFromHeader(10, D_007CE220, 4);
-            work->scriptTask[i] = child;
-            func_0035c1a0(child, (int)&work->records[i]);
-            work->state = 3;
-        }
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        if (func_001d94d0(&work->records[i]))
-        {
-            child = scrCreateTaskFromHeader(10, D_007CE220, 5);
-            work->scriptTask[i] = child;
-            func_0035c1a0(child, (int)&work->records[i]);
-            work->state = 3;
-        }
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
-        K_ASSERT(i < 16, 0x72);
-        if (func_001d96a0(&work->records[i]))
-        {
-            child = scrCreateTaskFromHeader(10, D_007CE220, 6);
-            work->scriptTask[i] = child;
-            func_0035c1a0(child, (int)&work->records[i]);
-            work->state = 3;
-        }
-        work->timestamp = iGpffffb418;
-        return KWLNTASK_CONTINUE;
-    default:
-        return KWLNTASK_CONTINUE;
-    }
-}
-
-// FUN_001d9ee0
-void func_001d9ee0(KwlnTask* task)
-{
-    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
-}
-
-// FUN_001d9f10
-KwlnTask* func_001d9f10(KwlnTask* parent)
-{
-    PeriodicWork* work;
-    if (func_001a01c0() == 0)
-    {
-        return NULL;
-    }
-    if (PTR_DAT_007cd540[0] == 0x21)
-    {
-        return NULL;
-    }
-    work = (PeriodicWork*)RwCalloc(1, sizeof(PeriodicWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-    return kwlnTaskCreateWithAutoPriority(parent, 10, "field periodic",
-                                          func_001d9860, func_001d9ee0, work);
-}
-
-// FUN_001d9fd0
-u32 func_001d9fd0(KwlnTask* task)
-{
-    if (task == NULL)
-    {
-        return true;
-    }
-    return (s32)((PeriodicWork*)task->workData)->state > 0;
-}
-
-// FUN_001da000
-void func_001da000(KwlnTask* task, u32 disabled)
-{
-    PeriodicWork* work;
-
-    if (task == NULL)
-    {
-        return;
-    }
-    work = (PeriodicWork*)task->workData;
-    work->disabled = disabled;
-    work->timestamp = iGpffffb418;
 }

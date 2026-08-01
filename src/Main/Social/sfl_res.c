@@ -5,6 +5,37 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+void FUN_0021cc20();
+#include "Main/Battle/Panel/bpp_panel.h"
+#include "Main/Battle/Cmd/bpp_main.h"
+static u32* sBppMain; // DAT_007ce2f4
+void bppMain0020f680(void);
+u8* bppMain0020f720(s16 pcId);
+#pragma alias bppMain0020f720_u16 bppMain0020f720
+extern u8* bppMain0020f720_u16(u16 pcId);
+extern void* btlOrderGetActionPlaying(void);
+extern u32 func_0029b0c0(void* action);
+extern s32 bpMisc001ff5b0(void);
+extern s16 func_001ff630(s32 index);
+extern void* func_001ff430(u32 id);
+extern u16 datGetHp(s16 pcId);
+extern u16 datGetMaxHp(s16 pcId);
+extern u32 datGetBadStatusNoDown(s16 pcId);
+extern u16 datGetSp(s16 pcId);
+extern u16 func_0016c670(s16 pcId);
+extern u16 datGetPhysicalCondition(s16 pcId);
+extern void func_0022c720(void* panel, u16 pcId);
+extern void func_0022c850(void* panel);
+extern void func_0022c8a0(void* panel);
+extern void func_0022df10(void* panel);
+extern void func_0022e780(void* panel);
+extern void func_0022e900(void* panel, u32 value);
+extern void func_0022e9a0(void* panel, u32 value);
+extern void func_0022f1c0(void* panel, u32 value);
+#define BPP_MAIN_ENTRY_STRIDE 0x1690
+#define BPP_MAIN_ENTRY_BASE 0x10
+
+
 
 
 #pragma alias sflResDrawIndexedMesh FUN_0020d500
@@ -553,6 +584,27 @@ void sflResLoadGroundRasters(void* resource)
     work->loadedFlags |= 1;
 }
 
+// FUN_0020e8f0
+void sflResRequestTutorialArchive(void)
+{
+    SflResourceManager* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((~work->loadedFlags & 8) != 0, 0x1f2);
+    K_ASSERT((~work->requestFlags & 8) != 0, 0x1f3);
+    work->tutorialRequest =
+        (u32)(uintptr_t)H_Cdvd_Request(sSflTutorialArchivePath, 1);
+    work->requestFlags |= 8;
+}
+
+// FUN_0020e9b0
+u32 sflResIsTutorialArchivePending(void)
+{
+    K_ASSERT(sSflRes != NULL, 0x65);
+    return (sSflRes)->requestFlags & 8;
+}
+
 // FUN_0020ea00
 void* sflResGetTutorialFile(s32 index)
 {
@@ -562,13 +614,6 @@ void* sflResGetTutorialFile(s32 index)
     work = sSflRes;
     K_ASSERT((work->loadedFlags & 8) != 0, 0x203);
     return (void*)work->tutorialFiles[index];
-}
-
-// FUN_0020e9b0
-u32 sflResIsTutorialArchivePending(void)
-{
-    K_ASSERT(sSflRes != NULL, 0x65);
-    return (sSflRes)->requestFlags & 8;
 }
 
 // FUN_0020ea80
@@ -587,14 +632,27 @@ void sflResDestroyTutorialFiles(void)
     work->loadedFlags &= 0xfffffff7;
 }
 
+
+// FUN_0020eb40
+void sflResRequestPersonaChangeSprite(void)
+{
+    SflResourceManager* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((~work->requestFlags & 0x10) != 0, 0x218);
+    K_ASSERT((~work->loadedFlags & 0x10) != 0, 0x219);
+    work->personaChangeRequest =
+        (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
+    work->requestFlags |= 0x10;
+}
+
 // FUN_0020ec00
 u32 sflResIsPersonaChangeSpritePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);
     return (sSflRes)->requestFlags & 0x10;
 }
-
-void FUN_0021cc20();
 
 // FUN_0020ec50
 u32 sflResGetPersonaChangeSprite(void)
@@ -619,65 +677,9 @@ void sflResDestroyPersonaChangeSprite(void)
     work->loadedFlags &= 0xffffffef;
 }
 
-// FUN_0020e8f0
-void sflResRequestTutorialArchive(void)
-{
-    SflResourceManager* work;
-
-    K_ASSERT(sSflRes != NULL, 0x65);
-    work = sSflRes;
-    K_ASSERT((~work->loadedFlags & 8) != 0, 0x1f2);
-    K_ASSERT((~work->requestFlags & 8) != 0, 0x1f3);
-    work->tutorialRequest =
-        (u32)(uintptr_t)H_Cdvd_Request(sSflTutorialArchivePath, 1);
-    work->requestFlags |= 8;
-}
-
-// FUN_0020eb40
-void sflResRequestPersonaChangeSprite(void)
-{
-    SflResourceManager* work;
-
-    K_ASSERT(sSflRes != NULL, 0x65);
-    work = sSflRes;
-    K_ASSERT((~work->requestFlags & 0x10) != 0, 0x218);
-    K_ASSERT((~work->loadedFlags & 0x10) != 0, 0x219);
-    work->personaChangeRequest =
-        (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
-    work->requestFlags |= 0x10;
-}
 
 
-#include "Main/Battle/Panel/bpp_panel.h"
-#include "Main/Battle/Cmd/bpp_main.h"
-static u32* sBppMain; // DAT_007ce2f4
-void bppMain0020f680(void);
-u8* bppMain0020f720(s16 pcId);
-#pragma alias bppMain0020f720_u16 bppMain0020f720
-extern u8* bppMain0020f720_u16(u16 pcId);
 
-extern void* btlOrderGetActionPlaying(void);
-extern u32 func_0029b0c0(void* action);
-extern s32 bpMisc001ff5b0(void);
-extern s16 func_001ff630(s32 index);
-extern void* func_001ff430(u32 id);
-extern u16 datGetHp(s16 pcId);
-extern u16 datGetMaxHp(s16 pcId);
-extern u32 datGetBadStatusNoDown(s16 pcId);
-extern u16 datGetSp(s16 pcId);
-extern u16 func_0016c670(s16 pcId);
-extern u16 datGetPhysicalCondition(s16 pcId);
-extern void func_0022c720(void* panel, u16 pcId);
-extern void func_0022c850(void* panel);
-extern void func_0022c8a0(void* panel);
-extern void func_0022df10(void* panel);
-extern void func_0022e780(void* panel);
-extern void func_0022e900(void* panel, u32 value);
-extern void func_0022e9a0(void* panel, u32 value);
-extern void func_0022f1c0(void* panel, u32 value);
-
-#define BPP_MAIN_ENTRY_STRIDE 0x1690
-#define BPP_MAIN_ENTRY_BASE 0x10
 
 static u8* bppMainEntry(s32 index)
 {

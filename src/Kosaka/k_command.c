@@ -19,6 +19,35 @@
 #include "h_snd.h"
 #include "temporary.h"
 #include "Kernel/Kwln/kwlnTask.h"
+
+void FUN_001d0270();
+void FUN_001bfcc0();
+void FUN_00103cb0();
+u32 FUN_001b9130();
+void FUN_003c8f70();
+void FUN_003c8f20();
+u32* FUN_0035f160();
+u32 FUN_0016f380(u32 idx);
+u32 FUN_001c0040();
+u8 clndGetCurrentMoonPhase();
+extern u32 D_007CE284;
+extern void* func_00177a40(u16 type, s32 slot);
+extern void* func_00177a90(u16 type, s32 slot);
+extern void func_00177b50(s32 value, s32 slot);
+extern void* func_00177ca0(u16 type, s32 slot);
+extern DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx);
+extern KwlnTask* func_001dc910(s32 mode, s32 value);
+extern void func_003bb010(u16 resourceId, u8 value);
+extern u8 func_0010a370(s16 channelIndex, const char* name);
+extern void func_00455b50(void);
+extern void Y_TimeLimit_Stop(void);
+extern u32 D_007CE278;
+extern u32 D_007CE274;
+extern s32 D_007CE270;
+#define K_CMD_GLOBAL_STATE      D_007CE278
+#define K_CMD_GLOBAL_STAGE      D_007CE274
+#define K_CMD_GLOBAL_FRAME      D_007CE270
+
 /*
  * Retail k_command passes the resource ID untruncated and narrows the second
  * argument. The mt_scene definition uses the opposite source widths, so keep
@@ -94,6 +123,17 @@ u32 K_Cmd_SKIP_TO_DARK_HOUR()
     return true;
 }
 
+// FUN_001C2500
+u32 K_Cmd_SET_CALENDAR_SEQUENCE()
+{
+    s32 resourceId;
+
+    resourceId = scrGetIntPara(0);
+    func_001a0150((u16)resourceId, scrGetIntPara(1));
+    return true;
+}
+
+
 // FUN_001c2550
 u32 K_Cmd_REQ_CLND_SKIP()
 {
@@ -101,9 +141,6 @@ u32 K_Cmd_REQ_CLND_SKIP()
 
     return true;
 }
-
-void FUN_001d0270();
-void FUN_001bfcc0();
 
 // FUN_001c2580
 u32 K_Cmd_001c2580()
@@ -187,6 +224,7 @@ u32 K_Cmd_GET_TIME()
     return true;
 }
 
+
 // FUN_001c2780
 u32 K_Cmd_DATE_IN_RANGE()
 {
@@ -212,7 +250,21 @@ u32 K_Cmd_DATE_IN_RANGE()
     return true;
 }
 
-void FUN_00103cb0();
+// FUN_001C2830
+u32 K_Cmd_SET_EVENT_CAMERA()
+{
+    s32 arg0;
+    s32 arg1;
+    s32 arg2;
+    s32 arg3;
+
+    arg0 = scrGetIntPara(0);
+    arg1 = scrGetIntPara(1);
+    arg2 = scrGetIntPara(2);
+    arg3 = scrGetIntPara(3);
+    func_00103c30((s16)arg0, (s16)arg1, (s16)arg2, (s16)arg3);
+    return true;
+}
 
 // FUN_001c28d0
 u32 K_Cmd_001c28d0()
@@ -382,359 +434,6 @@ u32 K_Cmd_RESRC_MODEL_SCALE()
     return true;
 }
 
-// FUN_001c2ea0
-u32 K_Cmd_GET_DUNGEON_FLOOR()
-{
-    scrSetIntReturnVal(K_FldDungeon_GetCurrentFloor());
-
-    return true;
-}
-
-// FUN_001c2ed0
-u32 K_Cmd_001c2ed0()
-{
-    scrSetIntReturnVal(datGetLevel(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c2fa0
-u32 K_Cmd_001c2fa0()
-{
-    scrSetIntReturnVal(datGetHp(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c30a0
-u32 K_Cmd_001c30a0()
-{
-    scrSetIntReturnVal(datGetSp(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c3370
-u32 K_Cmd_001c3370()
-{
-    scrSetIntReturnVal(datGetFatigueCounter(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c33c0
-u32 K_Cmd_001c33c0()
-{
-    scrSetIntReturnVal(datGetOldFatigueCounter(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c3410
-u32 K_Cmd_001c3410()
-{
-    scrSetIntReturnVal(datGetNextExp(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c3460
-u32 K_Cmd_001c3460()
-{
-    scrSetIntReturnVal(datGetPhysicalCondition(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c3540
-u32 K_Cmd_001c3540()
-{
-    scrSetIntReturnVal(datGetBadStatusNoDown(scrGetIntPara(0)));
-
-    return true;
-}
-
-u32 FUN_001b9130();
-
-// FUN_001c3790
-u32 K_Cmd_001c3790()
-{
-    scrSetIntReturnVal(FUN_001b9130());
-
-    return true;
-}
-
-void FUN_003c8f70();
-void FUN_003c8f20();
-
-// FUN_001c3dc0
-u32 K_Cmd_001c3dc0()
-{
-    FUN_003c8f70();
-    FUN_003c8f20();
-
-    return true;
-}
-
-u32* FUN_0035f160();
-
-// FUN_001c3f60
-u32 K_Cmd_001c3f60()
-{
-    scrSetIntReturnVal(*FUN_0035f160());
-
-    return true;
-}
-
-// FUN_001c3f90
-u32 K_Cmd_001c3f90()
-{
-    s32 idx;
-    u32* arr;
-
-    idx = scrGetIntPara(0);
-    arr = FUN_0035f160();
-    scrSetIntReturnVal(arr[idx + 1]);
-
-    return true;
-}
-
-u32 FUN_0016f380(u32 idx);
-
-// FUN_001c3c40
-u32 K_Cmd_001c3c40()
-{
-    scrSetIntReturnVal(FUN_0016f380(scrGetIntPara(0)));
-
-    return true;
-}
-
-// FUN_001c3c80
-u32 K_Cmd_001c3c80()
-{
-    FUN_0016f3e0(scrGetIntPara(0), scrGetIntPara(1));
-
-    return true;
-}
-
-// FUN_001c45e0
-u32 K_Cmd_CREATE_FLD_MDL()
-{
-    char path[64];
-    char buff[64];
-    s32 majorId;
-    u32 minorId;
-    Model* mdl;
-
-    majorId = scrGetIntPara(0);
-    minorId = scrGetIntPara(1);
-
-    if (majorId > -1)
-    {
-        strcpy(path, "field/rmd/m");
-
-        sprintf(buff, "%03d_", majorId);
-        strcat(path, buff);
-
-        sprintf(buff, "%03d.RMD", minorId);
-        strcat(path, buff);
-    }
-    else
-    {
-        strcpy(path, "field/grmd/fobj");
-        sprintf(buff, "%03d.RMD", minorId);
-        strcat(path, buff);
-    }
-
-    mdl = mdlCreateFromPath(MODEL_TYPE_FLD,
-                            minorId,
-                            path,
-                            MDL_READASYNC);
-    scrSetIntReturnVal((s32)mdl);
-
-    return true;
-}
-
-// FUN_001c4a00
-u32 K_Cmd_CREATE_MDL()
-{
-    s32 type;
-    s32 id;
-    Model* mdl;
-
-    type = scrGetIntPara(0);
-    id = scrGetIntPara(1);
-
-    mdl = mdlCreateAndResolvePath(type, id, MDL_READASYNC);
-
-    scrSetIntReturnVal((s32)mdl);
-
-    return true;
-}
-
-// FUN_001c4a60
-u32 K_Cmd_CREATE_NPC_SYNC()
-{
-    Model* mdl;
-    s32 resTypeId;
-    u32 isNpcCreated;
-    s32 param2;
-    ResrcModelNpc* npc;
-
-    mdl = (Model*)scrGetIntPara(0);
-    param2 = scrGetIntPara(1);
-
-    resTypeId = 0;
-    isNpcCreated = false;
-
-    if (mdlStreamRead(mdl) == true)
-    {
-        resTypeId = MT_Scene_CreateResModelNpc(
-            K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC), param2, mdl);
-
-        npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
-        npc->baseMdl = mdlClone(gFldBaseMdl);
-
-        isNpcCreated = true;
-    }
-
-    scrSetIntReturnVal(resTypeId);
-
-    return isNpcCreated;
-}
-
-// FUN_001c4b30
-u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
-{
-    s32 resTypeId;
-    f32 sphereCollisRadius;
-    ResrcModelChar* character;
-    ResrcModelNpc* npc;
-    RwV3d baseMdlScale;
-
-    resTypeId = scrGetIntPara(0);
-    sphereCollisRadius = scrGetFloatPara(1);
-
-    switch (RESRC_GET_TYPE(resTypeId))
-    {
-        case RESRC_TYPE_MODELCHAR:
-            character = (ResrcModelChar*)MT_Scene_GetRes(resTypeId);
-            if (character != NULL)
-            {
-                K_FldFrame_CtlSetSphereCollisRadius(character->collisCtlTask, sphereCollisRadius);
-            }
-            break;
-
-        case RESRC_TYPE_MODELNPC:
-            npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
-            if (npc != NULL)
-            {
-                K_FldFrame_CtlSetSphereCollisRadius(npc->collisCtlTask, sphereCollisRadius);
-
-                if (npc->baseMdl != NULL)
-                {
-                    baseMdlScale.z = sphereCollisRadius;
-                    baseMdlScale.y = sphereCollisRadius;
-                    baseMdlScale.x = sphereCollisRadius;
-
-                    mdlScale(npc->baseMdl, &baseMdlScale, rwCOMBINEPOSTCONCAT);
-                    mdl00317730(npc->baseMdl);
-                }
-            }
-            break;
-
-        default: K_ASSERT(false, 1598);
-    }
-
-    return true;
-}
-
-// FUN_001c5460
-u32 K_Cmd_GET_BGM()
-{
-    scrSetIntReturnVal(H_Snd_GetCurrentBgmId());
-
-    return true;
-}
-
-// FUN_001c54a0
-u32 K_Cmd_PLAY_BGM()
-{
-    s16 currBgm;
-    s32 reqBgm;
-
-    currBgm = H_Snd_GetCurrentBgmId();
-
-    if (currBgm != scrGetIntPara(0))
-    {
-        H_Snd_PlayBgm(scrGetIntPara(0), 1);
-    }
-
-    return true;
-}
-
-// FUN_001c5510
-u32 K_Cmd_STOP_BGM_FADE()
-{
-    H_Snd_StopBgmFade(scrGetIntPara(0));
-
-    return true;
-}
-
-u32 FUN_001c0040();
-
-// FUN_001c5670
-u32 K_Cmd_001c5670()
-{
-    scrSetIntReturnVal(FUN_001c0040());
-
-    return true;
-}
-
-// FUN_001c56a0
-u32 K_Cmd_GET_NPC_COUNT()
-{
-    ResrcModelNpc* npc;
-    s32 count;
-
-    npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
-    count = 0;
-    while (npc != NULL)
-    {
-        count++;
-        npc = (ResrcModelNpc*)npc->base.next;
-    }
-
-    scrSetIntReturnVal(count);
-
-    return true;
-}
-
-u8 clndGetCurrentMoonPhase();
-
-// FUN_001c58d0
-u32 K_Cmd_001c58d0()
-{
-    scrSetIntReturnVal(clndGetCurrentMoonPhase());
-
-    return true;
-}
-
-// FUN_001c5e60
-u32 K_Cmd_CHK_SCENARIO_ANSWER()
-{
-    s32 isAnswer;
-
-    isAnswer = false;
-    if (datGetScenarioMode() == SCENARIO_MODE_ANSWER)
-    {
-        isAnswer = true;
-    }
-
-    scrSetIntReturnVal(isAnswer);
-
-    return true;
-}
 // FUN_001C2DD0
 u32 K_Cmd_SET_NPC_SHADOW()
 {
@@ -763,29 +462,20 @@ u32 K_Cmd_SET_NPC_SHADOW()
 
     return true;
 }
-// FUN_001C2500
-u32 K_Cmd_SET_CALENDAR_SEQUENCE()
-{
-    s32 resourceId;
 
-    resourceId = scrGetIntPara(0);
-    func_001a0150((u16)resourceId, scrGetIntPara(1));
+// FUN_001c2ea0
+u32 K_Cmd_GET_DUNGEON_FLOOR()
+{
+    scrSetIntReturnVal(K_FldDungeon_GetCurrentFloor());
+
     return true;
 }
 
-// FUN_001C2830
-u32 K_Cmd_SET_EVENT_CAMERA()
+// FUN_001c2ed0
+u32 K_Cmd_001c2ed0()
 {
-    s32 arg0;
-    s32 arg1;
-    s32 arg2;
-    s32 arg3;
+    scrSetIntReturnVal(datGetLevel(scrGetIntPara(0)));
 
-    arg0 = scrGetIntPara(0);
-    arg1 = scrGetIntPara(1);
-    arg2 = scrGetIntPara(2);
-    arg3 = scrGetIntPara(3);
-    func_00103c30((s16)arg0, (s16)arg1, (s16)arg2, (s16)arg3);
     return true;
 }
 
@@ -800,6 +490,14 @@ u32 K_Cmd_REVIVE_FROM_DOWN()
         datSetHp((s16)pcId, 1);
         datClearBadStatus((s16)pcId, 0x80000);
     }
+
+    return true;
+}
+
+// FUN_001c2fa0
+u32 K_Cmd_001c2fa0()
+{
+    scrSetIntReturnVal(datGetHp(scrGetIntPara(0)));
 
     return true;
 }
@@ -825,6 +523,16 @@ u32 K_Cmd_GET_MAX_HP()
     return true;
 }
 
+
+// FUN_001c30a0
+u32 K_Cmd_001c30a0()
+{
+    scrSetIntReturnVal(datGetSp(scrGetIntPara(0)));
+
+    return true;
+}
+
+
 // FUN_001C30F0
 u32 K_Cmd_SET_SP()
 {
@@ -836,6 +544,7 @@ u32 K_Cmd_SET_SP()
     datSetSp((s16)pcId, (s16)sp);
     return true;
 }
+
 
 // FUN_001C3150
 u32 K_Cmd_GET_MAX_SP()
@@ -876,6 +585,7 @@ u32 K_Cmd_GET_SOCIAL_STAT()
     return true;
 }
 
+
 // FUN_001C3270
 u32 K_Cmd_GET_SOCIAL_LEVEL()
 {
@@ -908,6 +618,38 @@ u32 K_Cmd_GET_SOCIAL_LEVEL()
     return true;
 }
 
+// FUN_001c3370
+u32 K_Cmd_001c3370()
+{
+    scrSetIntReturnVal(datGetFatigueCounter(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c33c0
+u32 K_Cmd_001c33c0()
+{
+    scrSetIntReturnVal(datGetOldFatigueCounter(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c3410
+u32 K_Cmd_001c3410()
+{
+    scrSetIntReturnVal(datGetNextExp(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c3460
+u32 K_Cmd_001c3460()
+{
+    scrSetIntReturnVal(datGetPhysicalCondition(scrGetIntPara(0)));
+
+    return true;
+}
+
 // FUN_001C34B0
 u32 K_Cmd_SET_PHYSICAL_CONDITION()
 {
@@ -918,6 +660,14 @@ u32 K_Cmd_SET_PHYSICAL_CONDITION()
     condition = scrGetIntPara(1);
     scrSetIntReturnVal(datGetPhysicalCondition((s16)pcId));
     datSetPhysicalCondition((s16)pcId, (s16)condition);
+    return true;
+}
+
+// FUN_001c3540
+u32 K_Cmd_001c3540()
+{
+    scrSetIntReturnVal(datGetBadStatusNoDown(scrGetIntPara(0)));
+
     return true;
 }
 
@@ -957,6 +707,7 @@ u32 K_Cmd_SET_FIELD_VALUE()
     return true;
 }
 
+
 // FUN_001C3690
 u32 K_Cmd_GET_EQUIPMENT_VALUE()
 {
@@ -987,6 +738,15 @@ u32 K_Cmd_SET_EQUIPMENT_INDEX()
     return true;
 }
 
+
+// FUN_001c3790
+u32 K_Cmd_001c3790()
+{
+    scrSetIntReturnVal(FUN_001b9130());
+
+    return true;
+}
+
 // FUN_001C37C0
 u32 K_Cmd_SET_CAMERA_FOCUS()
 {
@@ -996,7 +756,6 @@ u32 K_Cmd_SET_CAMERA_FOCUS()
     func_001d6270(NULL, scrGetIntPara(1), value);
     return true;
 }
-
 // FUN_001C3820
 u32 K_Cmd_SET_CAMERA_HEADING()
 {
@@ -1006,13 +765,6 @@ u32 K_Cmd_SET_CAMERA_HEADING()
     func_001d6630(NULL, scrGetIntPara(1), value);
     return true;
 }
-
-extern u32 D_007CE284;
-static inline u8* K_Cmd_GetCurrentFieldObject()
-{
-    return *(u8**)&D_007CE284;
-}
-
 // FUN_001C3880
 u32 K_Cmd_GET_FIELD_OBJECT_ID()
 {
@@ -1193,6 +945,22 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
 }
 #pragma pop
 
+// FUN_001c3c40
+u32 K_Cmd_001c3c40()
+{
+    scrSetIntReturnVal(FUN_0016f380(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c3c80
+u32 K_Cmd_001c3c80()
+{
+    FUN_0016f3e0(scrGetIntPara(0), scrGetIntPara(1));
+
+    return true;
+}
+
 // FUN_001C3CD0
 u32 FUN_001C3CD0()
 {
@@ -1222,6 +990,15 @@ u32 FUN_001C3D60()
     return func_003c8ec0(resourceId, value) == 0;
 }
 
+// FUN_001c3dc0
+u32 K_Cmd_001c3dc0()
+{
+    FUN_003c8f70();
+    FUN_003c8f20();
+
+    return true;
+}
+
 // FUN_001C3DF0
 u32 FUN_001C3DF0()
 {
@@ -1242,6 +1019,11 @@ u32 FUN_001C3DF0()
         *(u32*)((u8*)K_Field_Get() + 0x14) = 0;
     }
     return true;
+}
+
+static inline u8* K_Cmd_GetCurrentFieldObject()
+{
+    return *(u8**)&D_007CE284;
 }
 
 // FUN_001C3EB0
@@ -1271,6 +1053,27 @@ u32 FUN_001C3F10()
     value = scrGetIntPara(0);
     func_00435370((s8)value);
     scrSetIntReturnVal(value);
+
+    return true;
+}
+
+// FUN_001c3f60
+u32 K_Cmd_001c3f60()
+{
+    scrSetIntReturnVal(*FUN_0035f160());
+
+    return true;
+}
+
+// FUN_001c3f90
+u32 K_Cmd_001c3f90()
+{
+    s32 idx;
+    u32* arr;
+
+    idx = scrGetIntPara(0);
+    arr = FUN_0035f160();
+    scrSetIntReturnVal(arr[idx + 1]);
 
     return true;
 }
@@ -1441,6 +1244,44 @@ u32 FUN_001C4120()
 
 }
 
+// FUN_001c45e0
+u32 K_Cmd_CREATE_FLD_MDL()
+{
+    char path[64];
+    char buff[64];
+    s32 majorId;
+    u32 minorId;
+    Model* mdl;
+
+    majorId = scrGetIntPara(0);
+    minorId = scrGetIntPara(1);
+
+    if (majorId > -1)
+    {
+        strcpy(path, "field/rmd/m");
+
+        sprintf(buff, "%03d_", majorId);
+        strcat(path, buff);
+
+        sprintf(buff, "%03d.RMD", minorId);
+        strcat(path, buff);
+    }
+    else
+    {
+        strcpy(path, "field/grmd/fobj");
+        sprintf(buff, "%03d.RMD", minorId);
+        strcat(path, buff);
+    }
+
+    mdl = mdlCreateFromPath(MODEL_TYPE_FLD,
+                            minorId,
+                            path,
+                            MDL_READASYNC);
+    scrSetIntReturnVal((s32)mdl);
+
+    return true;
+}
+
 // FUN_001C4700
 u32 FUN_001C4700()
 {
@@ -1523,27 +1364,6 @@ u32 FUN_001C48F0()
 
     return created;
 }
-/* Late field-command helpers use the same typed script/resource APIs as the command table. */
-extern void* func_00177a40(u16 type, s32 slot);
-extern void* func_00177a90(u16 type, s32 slot);
-extern void func_00177b50(s32 value, s32 slot);
-extern void* func_00177ca0(u16 type, s32 slot);
-extern DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx);
-extern KwlnTask* func_001dc910(s32 mode, s32 value);
-extern void func_003bb010(u16 resourceId, u8 value);
-extern u8 func_0010a370(s16 channelIndex, const char* name);
-extern void func_00455b50(void);
-extern void Y_TimeLimit_Stop(void);
-
-/* These are the retail GP-backed command state words.  They are shared with the
- * field script task; preserve their GP relocation form. */
-extern u32 D_007CE278;
-extern u32 D_007CE274;
-extern s32 D_007CE270;
-#define K_CMD_GLOBAL_STATE      D_007CE278
-#define K_CMD_GLOBAL_STAGE      D_007CE274
-#define K_CMD_GLOBAL_FRAME      D_007CE270
-
 
 // FUN_001c4990
 u32 func_001c4990()
@@ -1558,6 +1378,100 @@ u32 func_001c4990()
     if (resource != NULL)
     {
         *(u32*)((u8*)resource + 0x110) = (u32)value;
+    }
+
+    return true;
+}
+
+// FUN_001c4a00
+u32 K_Cmd_CREATE_MDL()
+{
+    s32 type;
+    s32 id;
+    Model* mdl;
+
+    type = scrGetIntPara(0);
+    id = scrGetIntPara(1);
+
+    mdl = mdlCreateAndResolvePath(type, id, MDL_READASYNC);
+
+    scrSetIntReturnVal((s32)mdl);
+
+    return true;
+}
+
+// FUN_001c4a60
+u32 K_Cmd_CREATE_NPC_SYNC()
+{
+    Model* mdl;
+    s32 resTypeId;
+    u32 isNpcCreated;
+    s32 param2;
+    ResrcModelNpc* npc;
+
+    mdl = (Model*)scrGetIntPara(0);
+    param2 = scrGetIntPara(1);
+
+    resTypeId = 0;
+    isNpcCreated = false;
+
+    if (mdlStreamRead(mdl) == true)
+    {
+        resTypeId = MT_Scene_CreateResModelNpc(
+            K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC), param2, mdl);
+
+        npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+        npc->baseMdl = mdlClone(gFldBaseMdl);
+
+        isNpcCreated = true;
+    }
+
+    scrSetIntReturnVal(resTypeId);
+
+    return isNpcCreated;
+}
+
+// FUN_001c4b30
+u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
+{
+    s32 resTypeId;
+    f32 sphereCollisRadius;
+    ResrcModelChar* character;
+    ResrcModelNpc* npc;
+    RwV3d baseMdlScale;
+
+    resTypeId = scrGetIntPara(0);
+    sphereCollisRadius = scrGetFloatPara(1);
+
+    switch (RESRC_GET_TYPE(resTypeId))
+    {
+        case RESRC_TYPE_MODELCHAR:
+            character = (ResrcModelChar*)MT_Scene_GetRes(resTypeId);
+            if (character != NULL)
+            {
+                K_FldFrame_CtlSetSphereCollisRadius(character->collisCtlTask, sphereCollisRadius);
+            }
+            break;
+
+        case RESRC_TYPE_MODELNPC:
+            npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+            if (npc != NULL)
+            {
+                K_FldFrame_CtlSetSphereCollisRadius(npc->collisCtlTask, sphereCollisRadius);
+
+                if (npc->baseMdl != NULL)
+                {
+                    baseMdlScale.z = sphereCollisRadius;
+                    baseMdlScale.y = sphereCollisRadius;
+                    baseMdlScale.x = sphereCollisRadius;
+
+                    mdlScale(npc->baseMdl, &baseMdlScale, rwCOMBINEPOSTCONCAT);
+                    mdl00317730(npc->baseMdl);
+                }
+            }
+            break;
+
+        default: K_ASSERT(false, 1598);
     }
 
     return true;
@@ -1690,6 +1604,11 @@ u32 func_001c4f70()
     scrSetIntReturnVal(count);
     return true;
 }
+/* Late field-command helpers use the same typed script/resource APIs as the command table. */
+
+/* These are the retail GP-backed command state words.  They are shared with the
+ * field script task; preserve their GP relocation form. */
+
 
 // FUN_001c5040
 u32 func_001c5040()
@@ -1858,6 +1777,38 @@ u32 func_001c5400()
     return true;
 }
 
+// FUN_001c5460
+u32 K_Cmd_GET_BGM()
+{
+    scrSetIntReturnVal(H_Snd_GetCurrentBgmId());
+
+    return true;
+}
+
+// FUN_001c54a0
+u32 K_Cmd_PLAY_BGM()
+{
+    s16 currBgm;
+    s32 reqBgm;
+
+    currBgm = H_Snd_GetCurrentBgmId();
+
+    if (currBgm != scrGetIntPara(0))
+    {
+        H_Snd_PlayBgm(scrGetIntPara(0), 1);
+    }
+
+    return true;
+}
+
+// FUN_001c5510
+u32 K_Cmd_STOP_BGM_FADE()
+{
+    H_Snd_StopBgmFade(scrGetIntPara(0));
+
+    return true;
+}
+
 // FUN_001c5550
 u32 func_001c5550()
 {
@@ -1896,6 +1847,33 @@ u32 func_001c5600()
     {
         scrSetIntReturnVal(true);
     }
+    return true;
+}
+
+// FUN_001c5670
+u32 K_Cmd_001c5670()
+{
+    scrSetIntReturnVal(FUN_001c0040());
+
+    return true;
+}
+
+// FUN_001c56a0
+u32 K_Cmd_GET_NPC_COUNT()
+{
+    ResrcModelNpc* npc;
+    s32 count;
+
+    npc = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    count = 0;
+    while (npc != NULL)
+    {
+        count++;
+        npc = (ResrcModelNpc*)npc->base.next;
+    }
+
+    scrSetIntReturnVal(count);
+
     return true;
 }
 
@@ -1969,6 +1947,14 @@ u32 func_001c5870()
     value = scrGetIntPara(1);
     resourceId = (u16)(rawResourceId & 0x3FF) | 0x400;
     func_003bb010(resourceId, (u8)value);
+    return true;
+}
+
+// FUN_001c58d0
+u32 K_Cmd_001c58d0()
+{
+    scrSetIntReturnVal(clndGetCurrentMoonPhase());
+
     return true;
 }
 
@@ -2174,6 +2160,22 @@ u32 func_001c5d80()
     }
 
     scrSetIntReturnVal(1);
+    return true;
+}
+
+// FUN_001c5e60
+u32 K_Cmd_CHK_SCENARIO_ANSWER()
+{
+    s32 isAnswer;
+
+    isAnswer = false;
+    if (datGetScenarioMode() == SCENARIO_MODE_ANSWER)
+    {
+        isAnswer = true;
+    }
+
+    scrSetIntReturnVal(isAnswer);
+
     return true;
 }
 

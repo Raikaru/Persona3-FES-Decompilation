@@ -5,116 +5,6 @@
 #include "Main/g_data.h"
 #include "Main/Social/sfl_psel.h"
 
-#pragma alias func_0020c500_y2 func_0020c500
-#pragma alias func_0020c400_y2 func_0020c400
-#pragma alias sflResSetSpriteScale_y2 sflResSetSpriteScale
-#pragma alias sflResSetSpriteRotation_y2 sflResSetSpriteRotation
-#pragma alias sflResult001f99f0_y2 sflResult001f99f0
-#pragma alias sflResult001f9100_y2 sflResult001f9100
-#pragma alias sflResSetSpritePosition_y2 sflResSetSpritePosition
-#pragma alias func_00175ce0_y2 func_00175ce0_y2
-#pragma alias func_001761b0_y2 func_001761b0_y2
-#pragma alias func_00176100_y2 func_00176100_y2
-#pragma alias func_001fbdf0_y2 func_001fbdf0_y2
-#pragma alias func_001fbfa0_y2 func_001fbfa0_y2
-#pragma alias func_001fb4b0_y2 func_001fb4b0_y2
-#pragma alias DAT_007ce430_y2 DAT_007ce430_y2
-#pragma alias sflResult001f9770_y2 sflResult001f9770_y2
-#pragma alias sflResult001f9800_y2 sflResult001f9800_y2
-#pragma alias sflResult001f9890_y2 sflResult001f9890_y2
-#pragma alias sflResult001f9630_y2 sflResult001f9630_y2
-#pragma alias func_00209d00_y2 func_00209d00_y2
-#pragma alias func_004bdde0_y2 func_004bdde0_y2
-#pragma alias datGetMaxHp_y2 datGetMaxHp_y2
-
-
-static u32* sSflResult; // iGpffffb5f0 / puGpffffb5f0
-
-extern void brRoot001f1df0(u16* members, s32* count);
-extern u16 datGetHp(s16 pcId);
-extern u16 datGetMaxHp(s16 pcId);
-extern u16 datGetSp(s16 pcId);
-extern u16 func_0016c670(s16 pcId);
-extern void FUN_001f6e80(void);
-
-// FUN_001f9630
-void sflResult001f9630(void)
-{
-    u32* p;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    p = sSflResult;
-    *(u32*)((int)p + 0x341c) = 0;
-    *(u32*)((int)p + 0x3418) = 0;
-}
-
-// FUN_001f9800
-void sflResult001f9800(int param_1, int* param_2)
-{
-    int i;
-    u8* p;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    p = (u8*)sSflResult;
-    for (i = 0; i < *(s32*)(p + 0x3404); i++) {
-        *(u16*)(param_1 + i * 2) = *(u16*)(p + i * 2 + 0x33f0);
-    }
-    *param_2 = *(s32*)(p + 0x3404);
-}
-
-// FUN_001f9890
-u32 sflResult001f9890(void)
-{
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    return *(u32*)((u8*)sSflResult + 0x18);
-}
-
-// FUN_001f99f0
-void sflResult001f99f0_y2(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    puVar1 = sSflResult;
-    puVar1[0xd03] = 0;
-    switch (puVar1[2]) {
-    case 1:
-        puVar1[0xd33] = 0;
-        puVar1[0xd34] = 0;
-        puVar1[0xd32] = 0;
-        *puVar1 |= 0x100;
-        break;
-    }
-    FUN_001f6e80();
-    puVar1[1] = 2;
-}
-
-// FUN_001f9100
-void sflResult001f9100_y2(void)
-{
-    u8* p;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    p = (u8*)sSflResult;
-    func_00217410((u16*)(p + 0x33f0), (s32*)(p + 0x3404));
-    func_002174d0((u16*)(p + 0x33e0), (s32*)(p + 0x3400));
-    func_00216800();
-}
-
-// FUN_001f9770
-void sflResult001f9770(int param_1, int* param_2)
-{
-    int i;
-    u8* p;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    p = (u8*)sSflResult;
-    for (i = 0; i < *(s32*)(p + 0x3400); i++) {
-        *(u16*)(param_1 + i * 2) = *(u16*)(p + i * 2 + 0x33e0);
-    }
-    *param_2 = *(s32*)(p + 0x3400);
-}
-
 extern u8* func_00209d00(void);
 extern void func_0021a670(u32, u32);
 extern void func_0021a760(u16);
@@ -138,7 +28,6 @@ extern u32 func_001fba70(u16);
 extern void func_00176840(DatPersonaWork*, u16);
 extern void func_001768e0(DatPersonaWork*, u16);
 extern u8* iGpffffb740;
-
 extern u8* iGpffffb730;
 void func_001fa0d0(void);
 void func_001fa450(void);
@@ -177,7 +66,6 @@ extern char gp0xffff9710[];
 extern u8* DAT_007ce420;
 extern u8* DAT_007ce428;
 extern u8* DAT_007ce430;
-
 extern u8* iGpffffb738;
 extern int iGpffffb75c;
 extern int iGpffffb760;
@@ -236,315 +124,14 @@ extern u8 DAT_00684d60[];
 #pragma alias FUN_00182c50_typed FUN_00182c50
 extern void FUN_00182c50_typed(s16 skill, u8* dst);
 extern void FUN_001831e0_typed(s16 slot, u32 index, u8* dst);
-
 #pragma alias FUN_0016da50_typed FUN_0016da50
 extern void FUN_0016da50_typed(s16 slot, s16 type, s16 index);
-
-
-/* W389 measured sflResult001f9170 opt_lifetimes on: nd 471 -> 465; object 1212/1216 -> 1212/1216. */
-#pragma push
-#pragma opt_lifetimes on
-// FUN_001f9170 NONMATCHING
-u32 sflResult001f9170(u32 player)
-{
-    s32 j;
-    char* flags;
-    s32 i;
-    s16 members[6];
-    s32 memberCount;
-    flags = (char*)func_00209d00() + player * 0x1a;
-    i = 0;
-    for (; i <= 0xc; i++) {
-        if (flags[i * 2] == 0) {
-            continue;
-        }
-        switch (i) {
-        case 0:
-            if (datGetHp(1) < datGetMaxHp(1)) {
-                return 1;
-            }
-            break;
-        case 1:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                if (datGetHp(members[j]) < datGetMaxHp(members[j])) {
-                    break;
-                }
-            }
-            if (j < memberCount) {
-                return 1;
-            }
-            break;
-        case 2:
-            if (datGetSp(1) < func_0016c670(1)) {
-                return 1;
-            }
-            break;
-        case 3:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                if (datGetSp(members[j]) < func_0016c670(members[j])) {
-                    break;
-                }
-            }
-            if (j < memberCount) {
-                return 1;
-            }
-            break;
-        case 4:
-            if ((datGetBadStatusNoDown(1) & 0x80) != 0) {
-                return 1;
-            }
-            break;
-        case 5:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
-                    return 1;
-                }
-            }
-            break;
-        case 6:
-            break;
-        case 7: {
-            u16 condition = datGetPhysicalCondition(1);
-            if ((u32)(u16)(condition - 3) < 3) {
-                return 1;
-            }
-            break;
-        }
-        case 8:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                u16 condition = datGetPhysicalCondition(members[j]);
-                if (condition == 3 || condition == 4 || condition == 5) {
-                    break;
-                }
-            }
-            if (j < memberCount) {
-                return 1;
-            }
-            break;
-        case 9: {
-            u16 condition = datGetPhysicalCondition(1);
-            if (condition != 1 && condition != 2) {
-                return 1;
-            }
-            break;
-        }
-        case 10:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                u16 condition = datGetPhysicalCondition(members[j]);
-                if (condition != 1 && condition != 2) {
-                    break;
-                }
-            }
-            if (j < memberCount) {
-                return 1;
-            }
-            break;
-        case 11:
-            if (datGetPhysicalCondition(1) != 2) {
-                return 1;
-            }
-            break;
-        case 12:
-            brRoot001f1df0((u16*)members, &memberCount);
-            for (j = 0; j < memberCount; j++) {
-                if (datGetPhysicalCondition(members[j]) != 2) {
-                    break;
-                }
-            }
-            if (j < memberCount) {
-                return 1;
-            }
-            break;
-        }
-    }
-    return 0;
-}
-#pragma opt_lifetimes reset
-#pragma pop
-
-/* Removing this loses FUN_001f9680 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
-// FUN_001f9680
-#pragma opt_loop_invariants on
-u32 sflResult001f9680(const s32* request)
-{
-    u8* base;
-    s32* entry;
-    s32 i;
-    s32 count;
-    s32 stride;
-    u32 result;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    base = (u8*)sSflResult;
-    i = 0;
-    count = *(s32*)(base + 0x33dc);
-    result = 1;
-    stride = 0x670;
-    while (i < count)
-    {
-        entry = (s32*)(base + i * stride + 0x5c);
-        if (entry[0] == request[0])
-        {
-            switch (request[0])
-            {
-            case 0:
-                if (*(u16*)&entry[1] == *(u16*)&request[1])
-                    return result;
-                break;
-            case 1:
-                if (entry[1] == request[1] || entry[2] == request[2])
-                    return result;
-                break;
-            }
-        }
-        i++;
-    }
-    return 0;
-}
-#pragma opt_loop_invariants reset
-
-// FUN_001f98d0
-void sflResult001f98d0(void)
-{
-    u8* base;
-    s32 i;
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    base = (u8*)sSflResult;
-    if ((*(u32*)base & 0x80) != 0) {
-        switch (*(u32*)(base + 8)) {
-        case 1:
-            for (i = 0; i < *(s32*)(base + 0x33dc); i++) {
-                s32* entry = (s32*)(base + i * 0x670 + 0x5c);
-                switch (entry[0]) {
-                case 0:
-                    func_0021a760(*(u16*)(entry + 1));
-                    break;
-                case 1:
-                    func_0021a670(entry[1], entry[2]);
-                    break;
-                }
-            }
-            *(u32*)base |= 0x80;
-            *(u32*)(base + 4) = 0;
-            break;
-        case 0:
-            func_001f6630();
-            break;
-        }
-        *(u32*)base &= ~0x80;
-    }
-}
-
-// FUN_001f9a80 NONMATCHING
-void sflResult001f9a80(void)
-{
-    u8* base;
-    s32 i;
-
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    base = (u8*)sSflResult;
-    *(u32*)(base + 0x3408) = 0;
-    if (*(u32*)(base + 8) == 1) {
-        for (i = 0; i < *(s32*)(base + 0x3418); i++) {
-            u32 index = *(u32*)(base + 0x1c + i * 4);
-            u8* entry = base + index * 0x670 + 0x68;
-            float scale[3];
-            float origin[2] = {(float)i * 220.0f + 320.0f, 184.0f};
-            float rect[4];
-            float quad[3];
-            u32 frame;
-
-            scale[0] = 10.0f;
-            scale[1] = 10.0f;
-            scale[2] = 10.0f;
-            sflResSetSpriteScale_y2(entry, scale);
-            frame = func_0020c500_y2(200.0f, entry);
-            func_0020c400_y2(frame, entry, origin, rect);
-            rect[1] += 100.0f;
-            sflResSetSpritePosition_y2(entry, rect);
-            quad[0] = 0.0f;
-            quad[1] = 1.0f;
-            quad[2] = 0.0f;
-            func_004bdde0(180.0f, quad, quad, 0);
-            sflResSetSpriteRotation_y2(entry, quad);
-        }
-        *(u32*)(base + 0x36d8) = 0;
-        *(u32*)(base + 0x36dc) = 0;
-        *(u32*)(base + 0x36d4) = 0;
-        *(u32*)base |= 0x200;
-        if (*(u32*)(base + 0x341c) != 0) {
-            *(u32*)(base + 0x34d0) = 0;
-            *(u32*)(base + 0x34c8) = 1;
-            *(u32*)base |= 0x100;
-        }
-    }
-    func_001f7210();
-    *(u32*)(base + 4) = 7;
-}
-
-// FUN_001f9c60
-void sflResult001f9c60(void)
-{
-    struct Vector3 {
-        float x;
-        float y;
-        float z;
-    };
-    u8* base;
-    u8 color[4];
-    struct Vector3 position;
-    u32 index;
-    K_ASSERT(sSflResult != NULL, 0x8c);
-    base = (u8*)sSflResult;
-    index = *(u32*)(base + 0x3408);
-    index *= 4;
-    index += (u32)base;
-    index = *(u32*)(index + 0x1c);
-    position = *(struct Vector3*)(base + index * 0x670 + 0x88);
-    position.x = 0.0f;
-    position.y = 120.0f;
-    position.z = 200.0f;
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = 0xff;
-    func_0034ff90(*(u32*)(base + 0x34e0), color);
-    func_0034ff70(*(u32*)(base + 0x34e0), fGpffff8070);
-    func_0034fdf0(*(u32*)(base + 0x34e0), (float*)&position);
-    func_0034fe30(0.0f, *(u32*)(base + 0x34e0), 0.0f, 0.0f);
-    func_0034fd30(*(u32*)(base + 0x34e0));
-    func_0034fd70(*(u32*)(base + 0x34e0), 7);
-}
-
-
-/* W389 measured sflResult001f9e90 opt_propagation off: nd 318 -> 317; object 572/576 -> 572/576. */
 #define FUN_00182c50 FUN_00182c50_typed
 #define FUN_001831e0 FUN_001831e0_typed
 #define FUN_0016da50 FUN_0016da50_typed
 #undef FUN_00182c50
 #undef FUN_001831e0
 #undef FUN_0016da50
-
-
-/* W389 measured func_001faea0 opt_common_subs off: nd 325 -> 303; object 652/656 -> 656/656. */
-
-
-
-
-
-
-// W389 residual nd2: the sole differing instruction is commutative mul.s operand order (retail f0*f1 vs. ours f1*f0); this is a documented compiler floor.
-/* W389 measured func_001fbfa0 opt_dead_assignments off: nd 260 -> 219; object 580/592 -> 584/592. */
-
-
-
-
-
 #include "Main/Battle/Result/br_panel.h"
 #include "Main/Battle/Result/br_res.h"
 #include "Main/Social/sfl_script.h"
@@ -553,13 +140,6 @@ void sflResult001f9c60(void)
 #include "rw/rprandom.h"
 #pragma alias sflResGetTutorialFileUnchecked FUN_0020ea00
 extern void* sflResGetTutorialFileUnchecked();
-
-
-/*
- * Battle-result tasks deliberately use byte offsets.  The retail work areas
- * are private to the result system and are shared by several child tasks;
- * keeping the offsets here avoids inventing public layouts for those areas.
- */
 #define BR_U32(p, o) (*(u32 *)((u8 *)(p) + (o)))
 #define BR_S32(p, o) (*(s32 *)((u8 *)(p) + (o)))
 #define BR_U16(p, o) (*(u16 *)((u8 *)(p) + (o)))
@@ -570,22 +150,17 @@ extern void* sflResGetTutorialFileUnchecked();
 #define BR_SET_STATE(p, s) (BR_U32((p), 0x0c) = (u32)(s))
 #define BR_ALLOC2(n, f) (*(void *(**)(u32, u32))jtbl_00960178_abs)((n), (f))
 #define BR_FREE(p) (*(void (**)(void *))jtbl_0096017C)((p))
-
 static u8 *sBrRoot;       /* GP-relative -0x4a18 */
 static u8 *sBrCard;       /* GP-relative -0x4a14 */
 static u8 *sBrReward;     /* GP-relative -0x4a10 */
-
 extern u32 jtbl_00960178[];
 #pragma alias jtbl_00960178_abs jtbl_00960178
 extern u8 jtbl_00960178_abs[];
 extern u32 jtbl_0096017C[];
-
-/* Result-resource and data helpers not yet described by public headers. */
 extern s32 printf(const char *, ...);
 extern const char D_006845c0[];
 extern const char D_006845d0[];
 extern const char D_006845f0[];
- 
 extern void func_002350f0(void);
 extern void func_00278550(void);
 extern void func_00275cb0(void);
@@ -631,7 +206,6 @@ extern void sflResult001f9800_y2(u16 *, s32 *);
 extern u32 sflResult001f9890_y2(void);
 extern void sflResult001f9630_y2(void);
 extern void *func_001ef500(void *);
-
 extern void func_00219c90(void *);
 extern void func_00239170(void *);
 extern void func_0023d7a0(void *);
@@ -693,7 +267,6 @@ extern void sflCamera0024d1c0(void);
 extern void func_00253a40(void);
 extern void func_002392d0(void);
 extern void sflPersonaUpdate(void);
-
 extern void func_0023b990(void);
 extern void func_00254b90(void);
 extern void func_0025bbf0(void);
@@ -714,7 +287,6 @@ extern void sflPanel0023d870(void);
 extern void func_0023d7b0(void);
 extern void sflGround00239280(void);
 extern void func_0021a1b0(void);
-
 extern void func_004c9d70(void *, float);
 extern void func_0021a840(void);
 extern void func_0024fd10(void *);
@@ -892,8 +464,6 @@ extern void func_00174650(u32, u32, u32);
 extern void func_0016cfe0(u32, u32);
 extern void func_0016d090(u32, u32);
 extern void func_0016d160(u32, u32);
-
-
 void func_001f0990(KwlnTask *);
 void func_001f0f40(KwlnTask *);
 void func_001f0ff0(void);
@@ -938,37 +508,6 @@ void func_001f2fd0(KwlnTask *);
 void func_001f2ff0(KwlnTask *);
 u32 func_001f30b0(KwlnTask *);
 void *func_001f2300(KwlnTask *);
-
-static void brCopyWords(u8 *dst, const u8 *src, u32 count)
-{
-    u32 i;
-    for (i = 0; i < count; i++) {
-        dst[i] = src[i];
-    }
-}
-
-static u32 brRootFlags(void)
-{
-    return sBrRoot != NULL ? BR_U32(sBrRoot, 0) : 0;
-}
-
-static u32 brCardFlags(void)
-{
-    return sBrCard != NULL ? BR_U32(sBrCard, 4) : 0;
-}
-
-static u32 brRewardFlags(void)
-{
-    return sBrReward != NULL ? BR_U32(sBrReward, 0) : 0;
-}
-
-
-
-
-
-
-
-
 typedef struct BrRootSetupParams {
     u32 flags;
     struct {
@@ -986,61 +525,42 @@ typedef struct BrRootSetupParams {
     u32 field3c;
     u32 field40;
 } BrRootSetupParams;
+#pragma alias brRewardAdvanceState func_001f6a60
+#pragma alias brRewardRegisterEntry func_001f6d20
+#pragma alias brRewardAnimateCurrentEntry func_001f6e80
 
 
+#pragma alias func_0020c500_y2 func_0020c500
+#pragma alias func_0020c400_y2 func_0020c400
+#pragma alias sflResSetSpriteScale_y2 sflResSetSpriteScale
+#pragma alias sflResSetSpriteRotation_y2 sflResSetSpriteRotation
+#pragma alias sflResult001f99f0_y2 sflResult001f99f0
+#pragma alias sflResult001f9100_y2 sflResult001f9100
+#pragma alias sflResSetSpritePosition_y2 sflResSetSpritePosition
+#pragma alias func_00175ce0_y2 func_00175ce0_y2
+#pragma alias func_001761b0_y2 func_001761b0_y2
+#pragma alias func_00176100_y2 func_00176100_y2
+#pragma alias func_001fbdf0_y2 func_001fbdf0_y2
+#pragma alias func_001fbfa0_y2 func_001fbfa0_y2
+#pragma alias func_001fb4b0_y2 func_001fb4b0_y2
+#pragma alias DAT_007ce430_y2 DAT_007ce430_y2
+#pragma alias sflResult001f9770_y2 sflResult001f9770_y2
+#pragma alias sflResult001f9800_y2 sflResult001f9800_y2
+#pragma alias sflResult001f9890_y2 sflResult001f9890_y2
+#pragma alias sflResult001f9630_y2 sflResult001f9630_y2
+#pragma alias func_00209d00_y2 func_00209d00_y2
+#pragma alias func_004bdde0_y2 func_004bdde0_y2
+#pragma alias datGetMaxHp_y2 datGetMaxHp_y2
 
 
+static u32* sSflResult; // iGpffffb5f0 / puGpffffb5f0
 
-
-
-
-
-
-
-
-
-/* Retail 0x1f13f0-0x1f1a64: level-up propagation, hero/party EXP, and
- * newly learned-skill collection. */
-
-
-
-
-
-
-
-
-
-
-#pragma opt_propagation reset
-
-
-
-
-
-
-
-
-
-
-
-
-/* Retail 0x1f3270-0x1f4648: reconstructed result-card selection and reward dispatch. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+extern void brRoot001f1df0(u16* members, s32* count);
+extern u16 datGetHp(s16 pcId);
+extern u16 datGetMaxHp(s16 pcId);
+extern u16 datGetSp(s16 pcId);
+extern u16 func_0016c670(s16 pcId);
+extern void FUN_001f6e80(void);
 
 // FUN_001f58f0
 void func_001f58f0(u8 *work)
@@ -1446,6 +966,7 @@ void func_001f64c0(void)
         }
     }
 }
+
 // FUN_001f65e0
 u32 func_001f65e0(void)
 {
@@ -1453,7 +974,12 @@ u32 func_001f65e0(void)
     return BR_U32(sBrReward, 0) & 1;
 }
 
-/* Retail reconstruction spans 0x001f6630-0x001f6a5c: reward reset, card setup, and two indexed animation passes. */
+
+
+
+
+
+/* W389 measured sflResult001f9170 opt_lifetimes on: nd 471 -> 465; object 1212/1216 -> 1212/1216. */
 // FUN_001f6630 NONMATCHING
 void func_001f6630(void)
 {
@@ -1556,7 +1082,7 @@ void func_001f6630(void)
     brRewardAdvanceState();
 }
 
-#pragma alias brRewardAdvanceState func_001f6a60
+/* Removing this loses FUN_001f9680 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
 // FUN_001f6a60
 void brRewardAdvanceState(void)
 {
@@ -1644,7 +1170,6 @@ void brRewardAdvanceState(void)
     }
 }
 
-#pragma alias brRewardRegisterEntry func_001f6d20
 // FUN_001f6d20
 void brRewardRegisterEntry(const f32 *entry)
 {
@@ -1678,7 +1203,6 @@ void brRewardRegisterEntry(const f32 *entry)
     words[0xcf7]++;
 }
 
-#pragma alias brRewardAnimateCurrentEntry func_001f6e80
 // FUN_001f6e80
 void brRewardAnimateCurrentEntry(void)
 {
@@ -1733,6 +1257,128 @@ void func_001f7030(void)
     func_003c7430(14);
     BR_U32(work, 4) = 5;
 }
+
+
+/* W389 measured sflResult001f9e90 opt_propagation off: nd 318 -> 317; object 572/576 -> 572/576. */
+
+
+/* W389 measured func_001faea0 opt_common_subs off: nd 325 -> 303; object 652/656 -> 656/656. */
+
+
+
+
+
+
+// W389 residual nd2: the sole differing instruction is commutative mul.s operand order (retail f0*f1 vs. ours f1*f0); this is a documented compiler floor.
+/* W389 measured func_001fbfa0 opt_dead_assignments off: nd 260 -> 219; object 580/592 -> 584/592. */
+
+
+
+
+
+
+
+/*
+ * Battle-result tasks deliberately use byte offsets.  The retail work areas
+ * are private to the result system and are shared by several child tasks;
+ * keeping the offsets here avoids inventing public layouts for those areas.
+ */
+
+
+
+/* Result-resource and data helpers not yet described by public headers. */
+ 
+
+
+
+
+
+
+static void brCopyWords(u8 *dst, const u8 *src, u32 count)
+{
+    u32 i;
+    for (i = 0; i < count; i++) {
+        dst[i] = src[i];
+    }
+}
+
+static u32 brRootFlags(void)
+{
+    return sBrRoot != NULL ? BR_U32(sBrRoot, 0) : 0;
+}
+
+static u32 brCardFlags(void)
+{
+    return sBrCard != NULL ? BR_U32(sBrCard, 4) : 0;
+}
+
+static u32 brRewardFlags(void)
+{
+    return sBrReward != NULL ? BR_U32(sBrReward, 0) : 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Retail 0x1f13f0-0x1f1a64: level-up propagation, hero/party EXP, and
+ * newly learned-skill collection. */
+
+
+
+
+
+
+
+
+
+
+#pragma opt_propagation reset
+
+
+
+
+
+
+
+
+
+
+
+
+/* Retail 0x1f3270-0x1f4648: reconstructed result-card selection and reward dispatch. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FUN_001f70d0
 void func_001f70d0(void)
@@ -2677,4 +2323,360 @@ animation_tail:
             BR_U32(work, 0x34e4) = 0;
         }
     }
+}
+
+// FUN_001f9100
+void sflResult001f9100_y2(void)
+{
+    u8* p;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    p = (u8*)sSflResult;
+    func_00217410((u16*)(p + 0x33f0), (s32*)(p + 0x3404));
+    func_002174d0((u16*)(p + 0x33e0), (s32*)(p + 0x3400));
+    func_00216800();
+}
+
+#pragma push
+#pragma opt_lifetimes on
+// FUN_001f9170 NONMATCHING
+u32 sflResult001f9170(u32 player)
+{
+    s32 j;
+    char* flags;
+    s32 i;
+    s16 members[6];
+    s32 memberCount;
+    flags = (char*)func_00209d00() + player * 0x1a;
+    i = 0;
+    for (; i <= 0xc; i++) {
+        if (flags[i * 2] == 0) {
+            continue;
+        }
+        switch (i) {
+        case 0:
+            if (datGetHp(1) < datGetMaxHp(1)) {
+                return 1;
+            }
+            break;
+        case 1:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                if (datGetHp(members[j]) < datGetMaxHp(members[j])) {
+                    break;
+                }
+            }
+            if (j < memberCount) {
+                return 1;
+            }
+            break;
+        case 2:
+            if (datGetSp(1) < func_0016c670(1)) {
+                return 1;
+            }
+            break;
+        case 3:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                if (datGetSp(members[j]) < func_0016c670(members[j])) {
+                    break;
+                }
+            }
+            if (j < memberCount) {
+                return 1;
+            }
+            break;
+        case 4:
+            if ((datGetBadStatusNoDown(1) & 0x80) != 0) {
+                return 1;
+            }
+            break;
+        case 5:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
+                    return 1;
+                }
+            }
+            break;
+        case 6:
+            break;
+        case 7: {
+            u16 condition = datGetPhysicalCondition(1);
+            if ((u32)(u16)(condition - 3) < 3) {
+                return 1;
+            }
+            break;
+        }
+        case 8:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                u16 condition = datGetPhysicalCondition(members[j]);
+                if (condition == 3 || condition == 4 || condition == 5) {
+                    break;
+                }
+            }
+            if (j < memberCount) {
+                return 1;
+            }
+            break;
+        case 9: {
+            u16 condition = datGetPhysicalCondition(1);
+            if (condition != 1 && condition != 2) {
+                return 1;
+            }
+            break;
+        }
+        case 10:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                u16 condition = datGetPhysicalCondition(members[j]);
+                if (condition != 1 && condition != 2) {
+                    break;
+                }
+            }
+            if (j < memberCount) {
+                return 1;
+            }
+            break;
+        case 11:
+            if (datGetPhysicalCondition(1) != 2) {
+                return 1;
+            }
+            break;
+        case 12:
+            brRoot001f1df0((u16*)members, &memberCount);
+            for (j = 0; j < memberCount; j++) {
+                if (datGetPhysicalCondition(members[j]) != 2) {
+                    break;
+                }
+            }
+            if (j < memberCount) {
+                return 1;
+            }
+            break;
+        }
+    }
+    return 0;
+}
+#pragma opt_lifetimes reset
+#pragma pop
+// FUN_001f9630
+void sflResult001f9630(void)
+{
+    u32* p;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    p = sSflResult;
+    *(u32*)((int)p + 0x341c) = 0;
+    *(u32*)((int)p + 0x3418) = 0;
+}
+
+/* Retail reconstruction spans 0x001f6630-0x001f6a5c: reward reset, card setup, and two indexed animation passes. */
+// FUN_001f9680
+#pragma opt_loop_invariants on
+u32 sflResult001f9680(const s32* request)
+{
+    u8* base;
+    s32* entry;
+    s32 i;
+    s32 count;
+    s32 stride;
+    u32 result;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    base = (u8*)sSflResult;
+    i = 0;
+    count = *(s32*)(base + 0x33dc);
+    result = 1;
+    stride = 0x670;
+    while (i < count)
+    {
+        entry = (s32*)(base + i * stride + 0x5c);
+        if (entry[0] == request[0])
+        {
+            switch (request[0])
+            {
+            case 0:
+                if (*(u16*)&entry[1] == *(u16*)&request[1])
+                    return result;
+                break;
+            case 1:
+                if (entry[1] == request[1] || entry[2] == request[2])
+                    return result;
+                break;
+            }
+        }
+        i++;
+    }
+    return 0;
+}
+#pragma opt_loop_invariants reset
+
+// FUN_001f9770
+void sflResult001f9770(int param_1, int* param_2)
+{
+    int i;
+    u8* p;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    p = (u8*)sSflResult;
+    for (i = 0; i < *(s32*)(p + 0x3400); i++) {
+        *(u16*)(param_1 + i * 2) = *(u16*)(p + i * 2 + 0x33e0);
+    }
+    *param_2 = *(s32*)(p + 0x3400);
+}
+
+// FUN_001f9800
+void sflResult001f9800(int param_1, int* param_2)
+{
+    int i;
+    u8* p;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    p = (u8*)sSflResult;
+    for (i = 0; i < *(s32*)(p + 0x3404); i++) {
+        *(u16*)(param_1 + i * 2) = *(u16*)(p + i * 2 + 0x33f0);
+    }
+    *param_2 = *(s32*)(p + 0x3404);
+}
+
+// FUN_001f9890
+u32 sflResult001f9890(void)
+{
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    return *(u32*)((u8*)sSflResult + 0x18);
+}
+
+// FUN_001f98d0
+void sflResult001f98d0(void)
+{
+    u8* base;
+    s32 i;
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    base = (u8*)sSflResult;
+    if ((*(u32*)base & 0x80) != 0) {
+        switch (*(u32*)(base + 8)) {
+        case 1:
+            for (i = 0; i < *(s32*)(base + 0x33dc); i++) {
+                s32* entry = (s32*)(base + i * 0x670 + 0x5c);
+                switch (entry[0]) {
+                case 0:
+                    func_0021a760(*(u16*)(entry + 1));
+                    break;
+                case 1:
+                    func_0021a670(entry[1], entry[2]);
+                    break;
+                }
+            }
+            *(u32*)base |= 0x80;
+            *(u32*)(base + 4) = 0;
+            break;
+        case 0:
+            func_001f6630();
+            break;
+        }
+        *(u32*)base &= ~0x80;
+    }
+}
+
+// FUN_001f99f0
+void sflResult001f99f0_y2(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    puVar1 = sSflResult;
+    puVar1[0xd03] = 0;
+    switch (puVar1[2]) {
+    case 1:
+        puVar1[0xd33] = 0;
+        puVar1[0xd34] = 0;
+        puVar1[0xd32] = 0;
+        *puVar1 |= 0x100;
+        break;
+    }
+    FUN_001f6e80();
+    puVar1[1] = 2;
+}
+
+// FUN_001f9a80 NONMATCHING
+void sflResult001f9a80(void)
+{
+    u8* base;
+    s32 i;
+
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    base = (u8*)sSflResult;
+    *(u32*)(base + 0x3408) = 0;
+    if (*(u32*)(base + 8) == 1) {
+        for (i = 0; i < *(s32*)(base + 0x3418); i++) {
+            u32 index = *(u32*)(base + 0x1c + i * 4);
+            u8* entry = base + index * 0x670 + 0x68;
+            float scale[3];
+            float origin[2] = {(float)i * 220.0f + 320.0f, 184.0f};
+            float rect[4];
+            float quad[3];
+            u32 frame;
+
+            scale[0] = 10.0f;
+            scale[1] = 10.0f;
+            scale[2] = 10.0f;
+            sflResSetSpriteScale_y2(entry, scale);
+            frame = func_0020c500_y2(200.0f, entry);
+            func_0020c400_y2(frame, entry, origin, rect);
+            rect[1] += 100.0f;
+            sflResSetSpritePosition_y2(entry, rect);
+            quad[0] = 0.0f;
+            quad[1] = 1.0f;
+            quad[2] = 0.0f;
+            func_004bdde0(180.0f, quad, quad, 0);
+            sflResSetSpriteRotation_y2(entry, quad);
+        }
+        *(u32*)(base + 0x36d8) = 0;
+        *(u32*)(base + 0x36dc) = 0;
+        *(u32*)(base + 0x36d4) = 0;
+        *(u32*)base |= 0x200;
+        if (*(u32*)(base + 0x341c) != 0) {
+            *(u32*)(base + 0x34d0) = 0;
+            *(u32*)(base + 0x34c8) = 1;
+            *(u32*)base |= 0x100;
+        }
+    }
+    func_001f7210();
+    *(u32*)(base + 4) = 7;
+}
+
+// FUN_001f9c60
+void sflResult001f9c60(void)
+{
+    struct Vector3 {
+        float x;
+        float y;
+        float z;
+    };
+    u8* base;
+    u8 color[4];
+    struct Vector3 position;
+    u32 index;
+    K_ASSERT(sSflResult != NULL, 0x8c);
+    base = (u8*)sSflResult;
+    index = *(u32*)(base + 0x3408);
+    index *= 4;
+    index += (u32)base;
+    index = *(u32*)(index + 0x1c);
+    position = *(struct Vector3*)(base + index * 0x670 + 0x88);
+    position.x = 0.0f;
+    position.y = 120.0f;
+    position.z = 200.0f;
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0034ff90(*(u32*)(base + 0x34e0), color);
+    func_0034ff70(*(u32*)(base + 0x34e0), fGpffff8070);
+    func_0034fdf0(*(u32*)(base + 0x34e0), (float*)&position);
+    func_0034fe30(0.0f, *(u32*)(base + 0x34e0), 0.0f, 0.0f);
+    func_0034fd30(*(u32*)(base + 0x34e0));
+    func_0034fd70(*(u32*)(base + 0x34e0), 7);
 }

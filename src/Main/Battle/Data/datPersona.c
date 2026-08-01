@@ -3,29 +3,6 @@
 #include "temporary.h"
 #include "Kosaka/k_assert.h"
 
-#pragma alias FUN_00175ca0_y2 FUN_00175ca0
-
-
-
-// FUN_001732f0
-u8 datPersonaGetLevel(DatPersonaWork* persona)
-{
-    return persona->level;
-}
-
-// FUN_00173300
-u8 datPersonaGetLevelByPcId(u16 pcId)
-{
-    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
-    return persona->level;
-}
-
-// FUN_00173330
-u32 datPersonaGetNextExp(DatPersonaWork* persona)
-{
-    return persona->nextExp;
-}
-
 #pragma alias func_00176210_u16 func_00176210
 extern u32 func_00176210_u16(DatPersonaWork* persona, u16 level);
 u32 FUN_00175410(void);
@@ -41,7 +18,6 @@ extern f32 DAT_007cada8;
 extern void FUN_00521408(void* destination, s32 value, u32 size);
 extern void func_00175ce0(DatPersonaWork* persona, u8* result);
 extern void* FUN_0017cd30(void* persona);
-
 u32 FUN_00176600(DatPersonaWork* persona);
 void FUN_00176680(DatPersonaWork* persona, u16 personaId);
 void FUN_00176da0(DatPersonaWork* persona);
@@ -53,6 +29,684 @@ u32 FUN_00174c10(s16 heroPersonaIdx);
 DatPersonaWork* FUN_00174e70(u16 personaId);
 u8 FUN_00175200(s16 heroPersonaIdx);
 u16 FUN_001752b0(void);
+static inline void datPersonaCollectValidSkills(u8* skillData, u16* skills,
+                                                s32* validSkills, s32 skillLimit)
+{
+    s32 skillIdx;
+
+    for (skillIdx = 0; skillIdx < skillLimit; skillIdx++)
+    {
+        if (skillData[skillIdx * 4] == 0 &&
+            ((s8*)skillData)[skillIdx * 4 + 1] == 1)
+        {
+            skills[*validSkills] = *(u16*)(skillData + skillIdx * 4 + 2);
+            (*validSkills)++;
+        }
+    }
+}
+#include "Main/Battle/Data/datCalc.h"
+#pragma alias func_001754a0_y2 func_001754a0
+#pragma alias FUN_00173280_y2 FUN_00173280
+extern u8* iGpffffb7f4;
+extern u8* iGpffffb730;
+extern u8* iGpffffb734;
+extern u8* iGpffffb740;
+extern u8* iGpffffb2e4;
+extern u8 D_007FD6C8[];
+extern u8 D_00833E80[];
+extern void func_00306d90(s32 channel, u16 skillId);
+extern s32 FUN_00175ca0(DatPersonaWork* persona);
+extern s8 FUN_00173c60(DatPersonaWork* persona, u16 statId);
+#include "Script/scrTraceCode.h"
+#include "datCalendar.h"
+#pragma alias FUN_0019d3f0_y2 FUN_0019d3f0
+#pragma alias FUN_00521250_y2 FUN_00521250
+#pragma alias FUN_00523ac8_y2 FUN_00523ac8
+#pragma alias scrGetIntPara_y2 scrGetIntPara
+#define SOCIAL_LINK_COUNT 30
+#define SOCIAL_DATA_POINTS_OFFSET 0xD2
+#define SOCIAL_DATA_COUNTER_OFFSET 0xD6
+extern u8* FUN_00172c50(s16* outValue);
+extern s32 FUN_00172660(s32 socialLink);
+extern void FUN_00172a20(u32 value);
+extern u8 D_008364BC[];
+extern s32 D_008364F4[];
+extern s32 D_008365F4[];
+extern u8 D_008366F4[];
+extern u8 D_00836734[];
+extern u8 D_00836752[];
+extern s16 D_0083679C[];
+extern u8 D_0083A34C[];
+extern s32 func_003951d0(s32 resourceId);
+extern void func_00395170(s32 resourceId);
+extern void func_003951a0(s32 resourceId);
+extern s16* func_003bddd0(void);
+extern u8* func_003beb10(s32 socialLink);
+extern void func_0017ad90(void);
+extern void func_0017ac60(u32 packedData);
+extern void func_001828d0(s16 itemId, void* itemData);
+extern void func_001831e0(s16 pcId, s16 slot, const void* itemData);
+static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] = 
+{
+    0, 20, 47, 99, 185, 312, 490, 726, 1030,
+    1410, 1873, 2429, 3085, 3851, 4735, 5744, 6888, 8174,
+    9612, 11210, 12975, 14917, 17043, 19363, 21885, 24616, 27566,
+    30742, 34154, 37810, 41717, 45885, 50321, 55035, 60035, 65328,
+    70924, 76830, 83056, 89610, 96499, 103733, 111319, 119267, 127585,
+    136280, 145362, 154838, // ! 005dc110 !
+};
+static const s16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
+static const s16 charmLevelThreshold[6] =    { 0, 15, 30, 45, 65, 80 };    // 005e3078
+static const s16 courageLevelThreshold[6] =  { 0, 15, 30, 45, 65, 80 };    // 005e3088
+static const char* physicalConditionsString[13] = 
+{
+    "You recovered from your cold.",
+    "Your cold is not gone yet...",
+    "Your cold worsened because you're tired.",
+    "You've caught a cold.",
+    "You've become tired.",
+    "You're not tired anymore.",
+    "Your condition improved because you rested.",
+    "Your condition has improved.",
+    "You are no longer in great condition.",
+    "You're still tired",
+    "You're no longer sick because you rested.",
+    "You're no longer tired because you rested.",
+    "The medicine cured your illness."
+};
+static s16 sSavedPartyIds[4]; // 007cdfa8
+static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
+DatGlobal gGlobalWork; // 00836200
+DatPc gPcs[PC_MAX];    // 00833948
+void func_00177410(u8*, u8*);
+void func_001774e0(void);
+extern const char D_005E3098[];
+extern const char D_005E3260[];
+extern u32 gSpecialStatusMessage;
+extern u8 DAT_00833bb0[];
+extern u8 DAT_00833bd0[];
+extern u8 DAT_00833bf0[];
+extern u8 DAT_00836200[];
+#pragma alias DAT_00836200_u32 DAT_00836200
+extern u32 DAT_00836200_u32;
+extern u8 DAT_00836212[];
+extern u8* PTR_s_Aigis_005e35ec;
+extern u8* PTR_s_Aigis_005e379c;
+extern u8* PTR_s_Aigis_005e37dc;
+extern u8* PTR_s_Metis_005e3790;
+extern u8* PTR_s_Metis_005e37d0;
+extern u8* PTR_s_Metis_005e35e0;
+extern u8* D_005E35E0[];
+extern u8* D_005E35EC[];
+extern u8* D_005E3790[];
+extern u8* D_005E379C[];
+extern u8* D_005E37D0[];
+extern u8* D_005E37DC[];
+extern u8 D_007FD6CC[];
+extern u8 D_007FD6D0[];
+extern u8 D_007FD6D1[];
+extern u8 D_007FD6D2[];
+extern u8 D_007FD6D4[];
+extern u8 D_007FD6D6[];
+extern u8 D_007FD6D8[];
+extern u8 D_008339A4[];
+extern u8 D_008339A8[];
+extern u8 D_008339AC[];
+extern u8 D_008339AD[];
+extern u8 D_008339AE[];
+extern u8 D_008339B0[];
+extern u8 D_008339B2[];
+extern u8 D_008339B4[];
+extern u8 D_008339F4[];
+extern u8 D_00834010[];
+extern u8 D_00834120[];
+extern u8 DAT_00830000_a[];
+extern u8 DAT_00830000_b[];
+extern u8 DAT_00830000_c[];
+extern u8 D_007CBFA0;
+extern u8 D_008339F6[];
+extern u8 D_00833A78[];
+extern u8 D_00833C58[];
+extern u8 D_00833C5A[];
+extern u8 D_00833E84[];
+extern u8 D_00833E88[];
+extern u8 D_00833E89[];
+extern u8 D_00833E8A[];
+extern u8 D_00833E8C[];
+extern u8 D_00833E8E[];
+extern u8 D_00833E90[];
+extern u8 D_00836458[];
+extern u8 D_00836498[];
+extern void func_001754a0_y2(u32 value);
+void FUN_00172890(void);
+void FUN_00172e10(void);
+extern u8 D_005DC1B4[];
+extern s8 D_005E3220[];
+extern s16 D_005E3240[];
+extern u8 D_00831CE0[];
+extern u8 D_007FD858[];
+extern u8 D_007FD85A[];
+extern u8 D_005DDDC0[];
+extern u8 D_005DABF0[];
+extern u8 D_005D6C70[];
+extern u8 D_005D6C80[];
+extern u8 D_005DE8E0[];
+extern u8 D_005DE880[];
+extern u8 D_005DE040[];
+extern u8 D_00836773[];
+extern u8* D_007CDFB4;
+extern u8* D_007CDFBC;
+extern u8* D_007CDFC0;
+extern u8* D_007CDFC4;
+extern u8* D_007CDFC8;
+extern u8* D_007CDFCC;
+extern u8* D_007CDFD0;
+extern u8* D_007CDFD4;
+extern u8* D_007CDFD8;
+extern u8* D_007CDFDC;
+extern u8* D_007CDFE4;
+extern u16 func_00300100(DatUnit* unit);
+extern u32 FUN_00173280_y2(u16 personaId);
+extern void FUN_00171B50(s16 socialLink);
+extern void FUN_00171C40(s16 socialLink, s32 value);
+extern void FUN_00171E90(s16 socialLink, s32 value);
+extern void FUN_00172200(s32 socialLink, s32 value);
+#pragma alias FUN_00172200_s16 FUN_00172200
+extern void FUN_00172200_s16(s16 socialLink, s32 value);
+extern void FUN_001723A0(s16 socialLink, s32 rank, s32 enabled);
+extern void FUN_001724A0(s16 socialLink, s32 rank, s32 enabled);
+extern f32 FUN_003BDB80(void);
+extern u8* FUN_003BDD90();
+extern u32 FUN_00488F30(void);
+extern void FUN_005225A8();
+extern s16 func_00171060(s16 id);
+u16 func_0016cc00(s16 pcId);
+u16 func_0016ccb0(s16 pcId);
+u8 func_0016d280(s32 exp);
+u32 func_0016dce0(s16 socialLink);
+s8 func_0016dd20(s16 socialLink);
+void func_0016ddd0(s32 index);
+u8 func_0016de50(s32 index);
+s16 func_0016deb0(s16 arcana);
+void func_0016dfb0(s16 socialLink);
+s16 func_0016e190(s32 socialLink);
+void func_0016e2b0(s16 socialLink, s32 amount);
+void func_0016e410(s16 socialLink, s8 level);
+void func_0016e5f0(s32 socialLink, s8 progress);
+#pragma alias func_0016e5f0_call func_0016e5f0
+extern void func_0016e5f0_call(s16 socialLink, s8 progress);
+void func_0016e670(s16 socialLink);
+void func_0016e7a0(s16 socialLink, s16 day);
+s16 func_0016e850(s16 socialLink);
+s32 func_0016ea40(s32 amount);
+u32 func_0016ea80(void);
+u32 func_0016ecd0(void);
+u8* func_00170620(s16 pcId, s16 index);
+u16 func_00170670(s16 pcId, s16 index);
+s16 func_001706c0(s16 pcId, s16 index);
+void func_00170710(s16 pcId, s16 index, u16 value);
+u16 func_00170a40(s16 pcId, s16 index);
+s16 func_00170ab0(s16 pcId, s16 index);
+void func_00170b20(s16 pcId, s16 index, u16 value);
+void func_00170b90(s16 pcId, s16 index, u16 value);
+u32 func_00170c00(s16 pcId, s16 index, s16 delta);
+void* func_00170d60(s16 id);
+void* func_00170da0(s16 id);
+void* func_00170df0(s16 id);
+void* func_00170e40(s16 id);
+u32 func_00171250(s16 id);
+u16 func_001712d0(s16 id);
+void func_00171390(u32 flag);
+s32 func_001714b0(s32 index);
+s32 func_001714d0(s32 index);
+s32 func_001714f0(s32 index);
+f32 func_00171510(s16 row, s16 column);
+u8 func_00171550(s16 unused1, s16 unused2, u16 index);
+u32 func_001715f0(s16 id);
+#pragma alias datIncrementSocialLinkCounter FUN_001718b0
+#pragma alias datDecreaseSocialLinkPoints FUN_00171960
+#pragma alias datGetSocialLinkPoints FUN_00171ac0
+#pragma alias datResetSocialLinkPoints FUN_00171b50
+#pragma alias datSetSocialLinkCounter FUN_00171e90
+#pragma alias datSetSocialLinkRankUnlocked FUN_001723a0
+#pragma alias datSetSocialLinkRankAcknowledged FUN_001724a0
+#pragma alias datApplyPendingSocialLinkRank FUN_001725a0
+#pragma alias datSocialLinkHasPendingRank FUN_00172660
+#pragma alias datSocialEventRecordHasData FUN_00172750
+#pragma alias datGetSocialEventData FUN_00172990
+#pragma alias datSocialEventDataIsLoaded FUN_001729a0
+#pragma alias datTryGetSocialEventValue FUN_001729d0
+#pragma alias datSetSocialEventMode FUN_00172a20
+#pragma alias datSocialEventModeIsActive FUN_00172a30
+#pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
+#pragma alias datRecordSocialLinkDate FUN_00172cc0
+#pragma alias datGetSocialLinksForToday FUN_00172d70
+void FUN_00300af0();
+void FUN_00403130();
+void FUN_00403220();
+void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
+void FUN_003d74b0();
+#include "Camp/h_camp.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "h_cdvd.h"
+#include "h_maestro.h"
+#include "h_snd.h"
+#include "Utils.h"
+typedef u8 undefined1;
+typedef u16 undefined2;
+typedef u32 undefined4;
+typedef u64 undefined8;
+typedef int bool;
+typedef unsigned long ulong;
+typedef struct CampFloatPair
+{
+    f32 x;
+    f32 y;
+} CampFloatPair;
+typedef struct CampHelpPaths
+{
+    const char* paths[8];
+} CampHelpPaths;
+#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
+extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
+#pragma alias scrGetIntPara_u64 scrGetIntPara_y2
+extern u64 scrGetIntPara_u64(s32);
+extern void* (*DAT_00960184)();
+extern void* (*DAT_00960178)();
+#pragma alias DAT_00960178_abs DAT_00960178
+extern void* (*DAT_00960178_abs[])(...);
+extern f32 DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
+extern void* DAT_007cdf48;
+extern void* DAT_007cdf54;
+extern void* DAT_007cdf58;
+extern void* DAT_007cdf84;
+extern void* DAT_007cdf88;
+extern s32 DAT_007e094e;
+extern s32 DAT_007e0958;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e094e_abs[];
+#pragma alias DAT_007e0958_abs DAT_007e0958
+extern u8 DAT_007e0958_abs[];
+extern u32 DAT_00833a50[];
+extern s32 iGpffffb258;
+extern s32 uGpffffb290;
+extern s32 uGpffffb28c;
+extern s32 iGpffffb28c;
+typedef struct CampDataBridgeRoot CampDataBridgeRoot;
+extern CampDataBridgeRoot* iGpffffb2c0;
+#define DAT_007cdfb0 iGpffffb2c0
+extern s32* DAT_007cdfb4;
+extern s32* DAT_007cdfb8;
+extern s32* DAT_007cdfbc;
+extern s32* DAT_007cdfc0;
+extern s32* DAT_007cdfc4;
+extern s32* DAT_007cdfc8;
+extern s32* DAT_007cdfcc;
+extern s32* DAT_007cdfd0;
+extern s32* DAT_007cdfd4;
+extern s32* DAT_007cdfd8;
+extern s32* DAT_007cdfdc;
+extern u8* DAT_007cdfe0;
+extern u8* DAT_007cdfe4;
+extern void* DAT_007cdfe8;
+extern u32 DAT_0083bb30[];
+extern u8 DAT_0083bb40;
+extern u32 DAT_0083aaa0[0x23];
+extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
+extern char DAT_005dc020[];
+extern char DAT_005dbc60[];
+extern const void* gp0xffff897c;
+extern const void* gp0xffff8998;
+extern u32 FUN_00100d80();
+extern u32 FUN_00100ec0();
+extern u32 FUN_001016b0();
+extern u64 FUN_00102100();
+extern u32 FUN_001021c0();
+extern u32 FUN_001023a0();
+extern u32 FUN_0010a4e0();
+extern u32 FUN_00111cb0();
+extern u32 FUN_00111d50();
+extern u32 FUN_00111dd0();
+extern u32 FUN_00111ec0();
+extern u32 FUN_00111ee0();
+extern u32 FUN_00111f20();
+extern u32 FUN_00111f30();
+extern u32 FUN_00112420();
+extern u32 FUN_001124b0();
+extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
+#pragma alias FUN_00113a30_camp_reordered FUN_00113a30
+extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
+                                        f32 y, s32 width, s32 height);
+extern u32 FUN_00114450();
+#pragma alias campDataDrawPersonaSprite FUN_00114450
+extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
+                                      s32 mode, u32 color, u32 width,
+                                      u32 height, void* resource);
+extern void FUN_001159f0(f32 x, f32 y, ...);
+#pragma alias FUN_001159f0_typed FUN_001159f0
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                f32 x, f32 y, f32 depth);
+extern u32 FUN_00115bc0();
+#pragma alias FUN_00115bc0_typed FUN_00115bc0
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
+#pragma alias campDataDrawSpriteDirect FUN_001159f0
+extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0
+extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawDigitsDirect FUN_00115de0
+extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteFade FUN_001159f0
+extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
+                                   void* atlas, s32 tile, s32 alpha);
+#pragma alias campDataDrawSpriteAltFade FUN_00115bc0
+extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
+                                      void* atlas, s32 tile, s32 alpha,
+                                      s32 red, s32 green, s32 blue, s32 flags);
+extern u32 FUN_00115de0();
+extern u32 FUN_00119f10();
+#pragma alias campDataCreateTask FUN_00119f10
+extern void* campDataCreateTask(void* task, s32 mode);
+extern u32 FUN_0011abd0();
+extern u32 FUN_00122710();
+extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
+extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
+extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
+extern u32 FUN_0013c240();
+extern u32 FUN_0013c780();
+extern u32 FUN_0013cf80();
+extern u32 FUN_0013d1a0();
+extern u32 FUN_0013fca0();
+#pragma alias campDataDrawEquipment FUN_0013d1a0
+extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
+                                  void* work, s32 alpha);
+#pragma alias campDataDrawEquipmentAlt FUN_0013fca0
+extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
+                                     void* work, s32 alpha);
+extern u32 FUN_0016f630();
+extern u32 FUN_0016f720();
+extern u32 FUN_0016f810();
+extern u32 FUN_0016f900();
+extern u32 FUN_0016f9f0();
+extern u32 FUN_0016fae0();
+extern u32 FUN_0016fbd0();
+extern u32 FUN_0016fcc0();
+extern u32 FUN_0016fea0();
+extern u32 FUN_0016ff90();
+extern u32 FUN_00170080();
+extern u32 FUN_00170170();
+extern u32 FUN_00170260();
+extern u32 FUN_00170350();
+extern u32 FUN_00170440();
+extern u32 FUN_00170530();
+extern u32 FUN_00170a40();
+extern u32 FUN_00170ab0();
+extern u32 FUN_00170b20();
+extern u32 FUN_00170b90();
+extern u32 FUN_00174800();
+extern u32 FUN_00177c10();
+extern u32 FUN_001830c0();
+extern u32 FUN_00194b20();
+extern u32 FUN_00195290();
+extern void FUN_0019d3f0(const char*, s32);
+extern f32 FUN_0021ea00(s32);
+extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
+extern u32 FUN_0025f570();
+extern u32 FUN_0035ed20();
+extern u32 FUN_003b2cb0();
+#pragma alias campDataDrawTextRaw FUN_003b2cb0
+extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
+                               s32 font, s32 alignment, const char* text,
+                               s32 maxWidth, s32 shadow);
+extern u32 FUN_003c7430();
+extern u32 FUN_003c74e0();
+extern u32 FUN_003c7560();
+extern u32 FUN_003c7610();
+extern u32 FUN_003c7700();
+extern u32 FUN_003c7850();
+extern u32 FUN_003c7d80();
+extern u32 FUN_003c7e20();
+#pragma alias campDataDrawDigits FUN_003c7e20
+extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
+                               s32 style, s32 font, s32 alignment, u32 value);
+extern u32 FUN_0040eb50();
+#pragma alias campDataDrawText FUN_0040eb50
+extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
+                            const char* text, s32 maxWidth);
+extern u32 FUN_00521250();
+extern u32 FUN_00523ac8_y2();
+extern void* func_00133780(KwlnTask* task);
+extern void* func_001618a0(KwlnTask* task);
+extern void func_00161d60(KwlnTask* task);
+extern void* func_00166c70(KwlnTask* task);
+extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
+extern const char D_005DAC70[];
+extern const char D_005DAC90[];
+extern const char D_005DB190[];
+extern const char D_005DBD80[];
+extern const char D_005DBED0[];
+extern const char D_005DBEE8[];
+extern const char D_005DBF00[];
+extern const char D_005DBF20[];
+extern const char D_005DBF40[];
+extern const char D_005DBF70[];
+extern const char D_005DBFA0[];
+extern const char D_005DBFD0[];
+#pragma alias D_005DBF20_abs D_005DBF20
+extern u8 D_005DBF20_abs[];
+#pragma alias D_005DBF40_abs D_005DBF40
+extern u8 D_005DBF40_abs[];
+#pragma alias D_005DBF70_abs D_005DBF70
+extern u8 D_005DBF70_abs[];
+#pragma alias D_005DBFA0_abs D_005DBFA0
+extern u8 D_005DBFA0_abs[];
+#pragma alias D_005DBFD0_abs D_005DBFD0
+extern u8 D_005DBFD0_abs[];
+extern const char D_005DC000[];
+extern const char D_005E30B0[];
+extern const char D_005E31F0[];
+extern const char D_005E3200[];
+void FUN_001675b0(KwlnTask*);
+void* FUN_001675e0(KwlnTask*);
+void FUN_001678e0(KwlnTask*);
+void* FUN_00167930(KwlnTask*);
+void FUN_00167ec0(KwlnTask*);
+void FUN_00167ef0(KwlnTask*);
+void FUN_00167f10(KwlnTask*);
+u32 FUN_00167f30(KwlnTask*);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
+u32 FUN_00168040(void);
+u32 FUN_00168100(void);
+bool FUN_001681d0(void);
+void* FUN_00168220(KwlnTask*);
+bool FUN_001685b0(KwlnTask*);
+u32 FUN_001685d0(KwlnTask*);
+void FUN_001685e0(KwlnTask*, s32);
+void FUN_00168720(KwlnTask*);
+KwlnTask* FUN_00168770(KwlnTask*, u32);
+u32 FUN_00168810(u32);
+void FUN_00169040(int);
+void FUN_00169110(u16, CampFloatPair, void*, s32);
+void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
+undefined4 FUN_00169330(void);
+bool FUN_00169420(void);
+undefined4 FUN_00169470(KwlnTask*);
+void FUN_00169AE0(int);
+void FUN_00169B90(void* resources, undefined8 coordinates,
+                  void* list, s32 alpha, undefined8 stackArg);
+undefined4 FUN_0016A030(void);
+undefined4 FUN_0016A6A0(void);
+f32 FUN_0016ba00(u32, u32);
+f32 FUN_0016ba80(u32, u32);
+f32 FUN_0016bb00(u32, u32);
+f32 FUN_0016bb80(u32, u32);
+f32 FUN_0016bc00(u32, u32);
+void FUN_0016bc80(u32, u32, f32*);
+void FUN_0016bdb0(u32, u32, f32*);
+void FUN_0016bee0(u32, u32, void*);
+void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
+void FUN_0016c010(void) __attribute__((aligned(16)));
+void FUN_0016c1d0(void);
+void FUN_0016c2f0(void);
+void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+#pragma alias campDataDrawListA FUN_0016A700
+extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+#pragma alias campDataDrawListB FUN_0016AF90
+extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+typedef struct CampBridgeScreenWork
+{
+    u32 state;          /* 0x00 */
+    u32 timer;          /* 0x04 */
+    u32 personaId;      /* 0x08 */
+    u32 opacity;        /* 0x0c (low halfword used by the fade) */
+    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
+    u32 command;        /* 0x14 */
+    u32 active;         /* 0x18 */
+    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
+    u32 reserved20;     /* 0x20 */
+    u32 reserved24;     /* 0x24 */
+    u32 childTask;      /* 0x28 */
+} CampBridgeScreenWork;
+typedef struct CampBridgeStateWork
+{
+    u32 state;          /* 0x00 */
+    u32 mode;           /* 0x04 */
+    u32 setupTask;      /* 0x08 */
+    u32 activeTask;     /* 0x0c */
+    u32 screenMode;     /* 0x10 */
+} CampBridgeStateWork;
+typedef struct CampBridgePersonaDispWork
+{
+    u32 state;          /* 0x00 */
+    u32 personaId;      /* 0x04 */
+    u32 reserved08;     /* 0x08 */
+    u32 mode;           /* 0x0c */
+    f32 alpha;          /* 0x10 */
+    f32 slideStep;      /* 0x14 */
+    f32 slidePosition;  /* 0x18 */
+    f32 depth;          /* 0x1c */
+    void* parseRequest; /* 0x20 */
+    HCdvd* cdvd;        /* 0x24 */
+    void* resource;     /* 0x28 */
+} CampBridgePersonaDispWork;
+typedef struct CampBridgeBlendWork
+{
+    u32 state;       /* 0x00 */
+    s32 timer;       /* 0x04 */
+    u32 reserved08;  /* 0x08 */
+    u32 mode;        /* 0x0c */
+    u32 archive;     /* 0x10 */
+    u32 sourceTask;  /* 0x14 */
+    u32 targetTask;  /* 0x18 */
+} CampBridgeBlendWork;
+typedef struct CampTargetLoadWork
+{
+    u32 state;                 /* +0x00 */
+    u32 reserved04;            /* +0x04 */
+    s32 frame;                 /* +0x08 */
+    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
+    void* archive;             /* +0x10 */
+    void* resources[2];        /* +0x14 */
+    CampTargetList* listA;     /* +0x1c */
+    CampTargetList* listB;     /* +0x20 */
+    void* childTask;           /* +0x24 */
+} CampTargetLoadWork;
+typedef struct CampTargetMenuWork
+{
+    u32 state;                 /* +0x00 */
+    s32 frame;                 /* +0x04 */
+    u32 reserved08;            /* +0x08 */
+    void* archive;             /* +0x0c */
+    void* resources[2];        /* +0x10 */
+    CampTargetList* list;      /* +0x18 */
+    void* childTask;           /* +0x1c */
+    u32 result;                /* +0x20 */
+} CampTargetMenuWork;
+typedef struct CampDataBridgeRecord
+{
+    s16 axis0;                 /* +0x00 */
+    s16 axis1;                 /* +0x02 */
+    s16 axis2;                 /* +0x04 */
+    s16 axis3;                 /* +0x06 */
+    f32 value;                 /* +0x08 */
+    u32 reserved0c;            /* +0x0c */
+    u16 reserved10;            /* +0x10 */
+    s16 helpIndex;             /* +0x12 */
+    u32 color0;                /* +0x14 */
+    u32 color1;                /* +0x18 */
+    u32 reserved1c;            /* +0x1c */
+} CampDataBridgeRecord;
+typedef struct CampDataBridgeGroup
+{
+    s32 recordCount;           /* +0x00 */
+    s32 auxiliaryCount;        /* +0x04 */
+    CampDataBridgeRecord* records; /* +0x08 */
+    u8* auxiliaryData;         /* +0x0c */
+} CampDataBridgeGroup;
+typedef struct CampDataBridgeRoot
+{
+    CampDataBridgeGroup groups[2];
+} CampDataBridgeRoot;
+
+
+#pragma alias FUN_00175ca0_y2 FUN_00175ca0
+
+
+
+// FUN_00173220
+u8* FUN_00173220(s32 personaId)
+{
+    u16 id;
+
+    K_ASSERT((personaId & 0xffff) < 0x100, 0x18);
+    id = personaId;
+    return iGpffffb7f4 + id * 0x11;
+}
+
+// FUN_00173280
+u8 FUN_00173280(s32 personaId)
+{
+    u8* table;
+    u16 id;
+
+    K_ASSERT((personaId & 0xffff) < 0x100, 0x26);
+    table = iGpffffb730;
+    id = personaId;
+    return table[id * 0xE + 2];
+}
+
+// FUN_001732f0
+u8 datPersonaGetLevel(DatPersonaWork* persona)
+{
+    return persona->level;
+}
+
+
+
+// FUN_00173300
+u8 datPersonaGetLevelByPcId(u16 pcId)
+{
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
+    return persona->level;
+}
+
+// FUN_00173330
+u32 datPersonaGetNextExp(DatPersonaWork* persona)
+{
+    return persona->nextExp;
+}
 
 // FUN_00173340
 void datPersona00173340(DatPersonaWork* persona)
@@ -66,12 +720,52 @@ u16* datPersonaGetSkills(DatPersonaWork* persona)
     return persona->skills;
 }
 
+// was probably inlined
+u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId)
+{
+    K_ASSERT(statId < PERSONA_STAT_MAX, 316);
+
+    return persona->naturalStats[statId];
+}
+
 // FUN_00173380
 u16* datPersonaGetSkillsByPcId(u16 pcId)
 {
     DatPersonaWork* persona = datPersonaGetByPcId(pcId);
 
     return persona->skills;
+}
+
+#pragma optimization_level 1
+// FUN_001733B0
+void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx)
+{
+    K_ASSERT(persona->id < 0x100, 0x115);
+    K_ASSERT((u16)skillIdx < 0x10, 0x116);
+    {
+        u8* skillTable = iGpffffb734 + persona->id * 0x20;
+        func_00306d90(0, *(u16*)(skillTable + (u16)skillIdx * 2));
+    }
+}
+
+#pragma optimization_level 2
+// FUN_00173460
+void FUN_00173460(u16 pcId, s32 skillIdx)
+{
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
+
+    K_ASSERT(persona->id < 0x100, 0x115);
+    K_ASSERT((u16)skillIdx < 0x10, 0x116);
+    func_00306d90(0, ((struct { u16 skills[0x10]; }*)iGpffffb734)[persona->id].skills[(u16)skillIdx]);
+}
+
+// FUN_00173510
+u8 FUN_00173510(u16 pcId, u16 statId)
+{
+    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
+
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    return persona->naturalStats[statId];
 }
 
 // FUN_00173580
@@ -97,12 +791,108 @@ u16 datPersonaGetTotalStat(DatPersonaWork* persona, u16 statId)
     return (u8)total;
 }
 
-// was probably inlined
-u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId)
+// FUN_00173660
+u8 FUN_00173660(DatPersonaWork* persona, u16 statId)
 {
-    K_ASSERT(statId < PERSONA_STAT_MAX, 316);
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
 
-    return persona->naturalStats[statId];
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
+    {
+        total = 99;
+    }
+    else if (total < 0)
+    {
+        total = 0;
+    }
+    return (u8)total;
+}
+
+// FUN_00173780
+u8 FUN_00173780(u16 heroPersonaIdx, u16 statId)
+{
+    DatPersonaWork* persona;
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
+
+    persona = datPersonaGetHeroPersona(heroPersonaIdx);
+    K_ASSERT(persona != NULL, 0x192);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
+    {
+        total = 99;
+    }
+    else if (total < 0)
+    {
+        total = 0;
+    }
+    return (u8)total;
+}
+
+// FUN_001738D0
+u8 FUN_001738d0(u16 pcId, u16 statId)
+{
+    DatPersonaWork* persona;
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
+
+    persona = datPersonaGetByPcId(pcId);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
+    {
+        total = 99;
+    }
+    else if (total < 0)
+    {
+        total = 0;
+    }
+    return (u8)total;
+}
+
+// FUN_00173A00
+s16 FUN_00173a00(DatPersonaWork* persona, u16 statId)
+{
+    s16 natural;
+    s16 bonus;
+    s8 third;
+    s16 total;
+
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x1A7);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    total = natural + bonus + third;
+    if (total >= 99)
+    {
+        total = 99;
+    }
+    return total;
 }
 
 // FUN_00173b00
@@ -120,7 +910,6 @@ void datPersonaSetBonusStatByPcId(u16 pcId, u16 statId, u8 amount)
 
     persona->bonusStats[statId] = amount;
 }
-
 // FUN_00173bb0
 void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount)
 {
@@ -128,13 +917,141 @@ void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount)
 
     persona->bonusStats[statId] += amount;
 }
-
 // FUN_00173c00
 s8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId)
 {
     K_ASSERT(statId < PERSONA_STAT_MAX, 503);
 
     return persona->stats3[statId];
+}
+
+// FUN_00173C60 NONMATCHING
+s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
+{
+    s16 total;
+    s16 equipmentIdx;
+    u16 owner;
+
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x22D);
+    total = 0;
+    if (FUN_00175ca0(persona) != 0)
+    {
+        owner = persona->id;
+        K_ASSERT(owner >= 0xC0 && owner <= 0xDF, 0x234);
+        owner = *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
+    }
+    else
+    {
+        owner = 1;
+    }
+    K_ASSERT(owner < 0xB, 0x239);
+    if (owner == 1)
+    {
+        equipmentIdx = gGlobalWork.heroEquip.equipmentsIdx[3];
+    }
+    else if (owner < PC_MAX)
+    {
+        equipmentIdx = gPcs[owner].equipmentsIdx[3];
+    }
+    else
+    {
+        equipmentIdx = -1;
+    }
+    if (equipmentIdx >= 0)
+    {
+        u16 itemId = 0;
+        u8* itemTable = NULL;
+
+        if (owner == 0xFFFF)
+        {
+            itemId = *(u16*)(D_00833E80 + equipmentIdx * sizeof(DatEquipment));
+        }
+        else if (owner == 1)
+        {
+            itemId = gGlobalWork.heroEquip.equipments[equipmentIdx].id;
+        }
+        else if (owner < 0x100)
+        {
+            itemId = gPcs[owner].equipments[equipmentIdx].id;
+        }
+        else
+        {
+            itemTable = D_007FD6C8 + owner * sizeof(DatPc);
+            itemId = *(u16*)(itemTable + equipmentIdx * sizeof(DatEquipment));
+        }
+        if (itemId >= 3000 && itemId <= 3999)
+        {
+            itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
+            switch (statId)
+            {
+            case 0:
+                total += *(s16*)(itemTable + 4);
+                break;
+            case 1:
+                total += *(s16*)(itemTable + 6);
+                break;
+            case 2:
+                total += *(s16*)(itemTable + 8);
+                break;
+            case 3:
+                total += *(s16*)(itemTable + 0xA);
+                break;
+            case 4:
+                total += *(s16*)(itemTable + 0xC);
+                break;
+            }
+        }
+    }
+    switch (statId)
+    {
+    case 0:
+        total += datCalcCountEquipmentWithEffectById(owner, 0);
+        total += datCalcCountEquipmentWithEffectById(owner, 2) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 3) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 4) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 5) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x83) * 10;
+        break;
+    case 1:
+        total += datCalcCountEquipmentWithEffectById(owner, 0xB);
+        total += datCalcCountEquipmentWithEffectById(owner, 0xC) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xD) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xE) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xF) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x85) * 10;
+        break;
+    case 2:
+        total += datCalcCountEquipmentWithEffectById(owner, 6);
+        total += datCalcCountEquipmentWithEffectById(owner, 7) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 8) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 9) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xA) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x84) * 10;
+        break;
+    case 3:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x10);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x11) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x12) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x13) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x14) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x86) * 10;
+        break;
+    case 4:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x15);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x16) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x17) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x18) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x19) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x87) * 10;
+        break;
+    }
+    total += datCalcCountEquipmentWithEffectById(owner, 0x88);
+    total += datCalcCountEquipmentWithEffectById(owner, 0x89) * 2;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8A) * 3;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8B) * 4;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8C) * 5;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8D) * 10;
+    return total;
 }
 
 // FUN_00174650
@@ -214,28 +1131,6 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
     return persona;
 }
 
-// FUN_00174960
-u8 datPersonaHeroPersonaValid(s16 heroPersonaIdx)
-{
-    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) != 0;
-}
-
-// FUN_00174a90
-DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx)
-{
-    if (heroPersonaIdx < 0 || heroPersonaIdx >= (u16)FUN_00175410())
-    {
-        K_ASSERT(0, 848);
-    }
-
-    if ((gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) == 0)
-    {
-        return NULL;
-    }
-
-    return &gGlobalWork.heroPersona.personas[heroPersonaIdx];
-}
-
 // FUN_001748c0
 s16 FUN_001748c0(void)
 {
@@ -255,6 +1150,12 @@ s16 FUN_001748c0(void)
     }
 
     return -1;
+}
+
+// FUN_00174960
+u8 datPersonaHeroPersonaValid(s16 heroPersonaIdx)
+{
+    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) != 0;
 }
 
 // FUN_001749a0
@@ -290,6 +1191,23 @@ found:
 
     return datPersonaGetHeroPersona(foundIdx);
 }
+
+// FUN_00174a90
+DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx)
+{
+    if (heroPersonaIdx < 0 || heroPersonaIdx >= (u16)FUN_00175410())
+    {
+        K_ASSERT(0, 848);
+    }
+
+    if ((gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) == 0)
+    {
+        return NULL;
+    }
+
+    return &gGlobalWork.heroPersona.personas[heroPersonaIdx];
+}
+
 // FUN_00174b40
 void FUN_00174b40(s16 personaId)
 {
@@ -318,6 +1236,7 @@ void FUN_00174b40(s16 personaId)
 found:
     FUN_00174c10(foundPersonaId);
 }
+
 // FUN_00174c10
 u32 FUN_00174c10(s16 heroPersonaIdx)
 {
@@ -371,6 +1290,7 @@ selected_persona_found:
     return 1;
 }
 
+/* Removing this loses FUN_001756f0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
 // FUN_00174e20
 DatPersonaWork* FUN_00174e20(u16 personaId)
 {
@@ -384,7 +1304,6 @@ DatPersonaWork* FUN_00174e20(u16 personaId)
 
     return persona;
 }
-
 // FUN_00174e70
 DatPersonaWork* FUN_00174e70(u16 personaId)
 {
@@ -421,7 +1340,6 @@ found:
     FUN_0017cd30(persona);
     return persona;
 }
-
 // FUN_00174fb0
 u8 FUN_00174fb0(DatPersonaWork* source)
 {
@@ -461,7 +1379,6 @@ found:
     FUN_0017cd30(persona);
     return 1;
 }
-
 // FUN_00175130
 void FUN_00175130(s16 personaId)
 {
@@ -490,7 +1407,6 @@ void FUN_00175130(s16 personaId)
 found:
     FUN_00175200(foundPersonaId);
 }
-
 // FUN_00175200
 u8 FUN_00175200(s16 heroPersonaIdx)
 {
@@ -511,7 +1427,6 @@ u8 FUN_00175200(s16 heroPersonaIdx)
     gGlobalWork.heroPersona.equippedPersona = heroPersonaIdx;
     return 1;
 }
-
 // FUN_001752b0
 u16 FUN_001752b0(void)
 {
@@ -533,7 +1448,6 @@ u16 FUN_001752b0(void)
 
     return gGlobalWork.heroPersona.personas[heroPersonaIdx].id;
 }
-
 // FUN_00175360
 s16 FUN_00175360(void)
 {
@@ -555,7 +1469,6 @@ s16 FUN_00175360(void)
 
     return heroPersonaIdx;
 }
-
 // FUN_00175410
 u32 FUN_00175410(void)
 {
@@ -586,6 +1499,7 @@ u32 FUN_00175410(void)
     return 4;
 }
 
+/* Removing this loses FUN_00176510 (MATCH nd0 -> MISMATCH nd76) - measured W161. */
 // FUN_001754a0
 void func_001754a0(u16 mode)
 {
@@ -630,7 +1544,6 @@ void func_001754a0(u16 mode)
             break;
     }
 }
-
 // FUN_001755c0
 u32 func_001755c0(void)
 {
@@ -683,7 +1596,7 @@ u32 func_001755c0(void)
     }
 }
 
-/* Removing this loses FUN_001756f0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
+/* Removing this loses FUN_001768e0 (MATCH nd0 -> MISMATCH nd28) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001756f0
 u16 FUN_001756f0(void)
@@ -867,6 +1780,50 @@ selected_idx_valid:
 
     return 1;
 }
+
+// FUN_00175be0
+void datInitPersona(s16 pcId)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroPersona.equippedPersona = -1;
+        memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
+
+        return;
+    }
+
+    pc = &gPcs[2];
+
+    memset(&pc[pcId - 2].persona, 0, sizeof(DatPersonaWork));
+}
+
+// FUN_00175c70
+void datCompendiumInit()
+{
+    memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
+}
+
+#pragma opt_loop_invariants off
+
+// FUN_00175ca0_y2
+s32 FUN_00175ca0_y2(DatPersonaWork* persona)
+{
+    s32 result;
+
+    if (persona->id >= 0xc0 && persona->id <= 0xdf)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+
+    return result;
+}
+
 #pragma push
 /* Removing this worsens FUN_00175ce0 (nd675 -> nd724) - measured W161. */
 #pragma opt_loop_invariants on
@@ -964,6 +1921,7 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
   }
 }
 #pragma pop
+
 // FUN_00176100
 
 
@@ -991,6 +1949,7 @@ void func_00176100(DatPersonaWork* persona, u8* result)
         *naturalStat += *growthStat;
     }
 }
+
 // FUN_001761B0
 
 
@@ -1006,6 +1965,7 @@ u8 func_001761b0(DatPersonaWork* param_1)
     return func_00176210_u16(param_1, (u16)(param_1->level + 1)) <= param_1->nextExp;
 
 }
+
 // FUN_00176210 NONMATCHING
 
 
@@ -1077,6 +2037,10 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
 
     return result;
 }
+
+/* Removing this loses FUN_00176fb0 (MATCH nd0 -> MISMATCH nd62) - measured W161. */
+#pragma opt_loop_invariants on
+
 // FUN_001764b0
 void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
 {
@@ -1084,8 +2048,6 @@ void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
 
     persona->nextExp += exp;
 }
-
-/* Removing this loses FUN_00176510 (MATCH nd0 -> MISMATCH nd76) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00176510
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
@@ -1135,110 +2097,6 @@ void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
         nextSkillIdx++;
     }
 }
-#pragma opt_loop_invariants off
-
-// FUN_00176840
-u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
-{
-    s32 skillIdx;
-    u16* skillSlot;
-
-    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1546);
-
-    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
-    {
-        skillSlot = &persona->skills[skillIdx];
-        if (*skillSlot == SKILL_SLASH_ATTACK)
-        {
-            *skillSlot = skillId;
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/* Removing this loses FUN_001768e0 (MATCH nd0 -> MISMATCH nd28) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_001768e0
-u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
-{
-    u16 skillId_p = skillId;
-    DatPersonaWork* personaWork = persona;
-    s32 skillIdx;
-
-    K_ASSERT(personaWork != NULL && skillId_p != SKILL_SLASH_ATTACK, 1560);
-
-    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
-    {
-        if (personaWork->skills[skillIdx] == skillId)
-        {
-            personaWork->skills[skillIdx] = SKILL_SLASH_ATTACK;
-            datPersonaMoveValidSkillsOnTop(personaWork);
-            return true;
-        }
-    }
-
-    return false;
-}
-#pragma opt_loop_invariants off
-
-/* Removing this loses FUN_00176990 (MATCH nd0 -> MISMATCH nd25) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_00176990
-s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
-{
-    s32 skillIdx;
-
-    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1588);
-
-    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
-    {
-        if (persona->skills[skillIdx] == skillId)
-        {
-            return skillIdx;
-        }
-    }
-
-    return -1;
-}
-#pragma opt_loop_invariants off
-
-// FUN_00175ca0_y2
-s32 FUN_00175ca0_y2(DatPersonaWork* persona)
-{
-    s32 result;
-
-    if (persona->id >= 0xc0 && persona->id <= 0xdf)
-    {
-        result = 1;
-    }
-    else
-    {
-        result = 0;
-    }
-
-    return result;
-}
-
-// FUN_00176a30
-u32 datPersonaCountValidSkills(DatPersonaWork* persona)
-{
-    s32 skillIdx;
-    u16* skillSlot;
-    u32 validSkills = 0;
-
-    K_ASSERT(persona != NULL, 1601);
-
-    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
-    {
-        skillSlot = &persona->skills[skillIdx];
-        if (*skillSlot != SKILL_SLASH_ATTACK)
-            validSkills++;
-    }
-
-    return validSkills;
-}
 
 // FUN_00176600
 u32 FUN_00176600(DatPersonaWork* persona)
@@ -1254,6 +2112,138 @@ u32 FUN_00176600(DatPersonaWork* persona)
         return 1;
     }
     return 0;
+}
+
+
+
+
+
+/* GP-relative data pointers used by the retail Persona tables. */
+
+
+static inline void assertStat(u16 statId, s32 line)
+{
+    K_ASSERT(statId < PERSONA_STAT_MAX, line);
+}
+
+static inline s16 personaEquipmentBonus(u16 owner, s16 equipmentIdx, u16 statId)
+{
+    u16 itemId = 0;
+    u8* itemTable = NULL;
+
+    if (equipmentIdx < 0)
+    {
+        return 0;
+    }
+    if (owner == 0xFFFF)
+    {
+        itemId = *(u16*)(D_00833E80 + equipmentIdx * sizeof(DatEquipment));
+    }
+    else if (owner == 1)
+    {
+        itemId = gGlobalWork.heroEquip.equipments[equipmentIdx].id;
+    }
+    else if (owner < 0x100)
+    {
+        itemId = gPcs[owner].equipments[equipmentIdx].id;
+    }
+    else
+    {
+        itemTable = D_007FD6C8 + owner * sizeof(DatPc);
+        itemId = *(u16*)(itemTable + equipmentIdx * sizeof(DatEquipment));
+    }
+
+    if (itemId < 3000 || itemId > 3999)
+    {
+        return 0;
+    }
+
+    itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
+    return *(s16*)(itemTable + 4 + statId * 2);
+}
+
+static inline u16 personaEquipmentOwner(DatPersonaWork* persona)
+{
+    u16 owner;
+
+    if (FUN_00175ca0(persona) == 0)
+    {
+        return 1;
+    }
+
+    owner = persona->id;
+    K_ASSERT(owner >= 0xC0 && owner <= 0xDF, 0x234);
+    return *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
+}
+
+static inline s16 personaEquipmentIndex(u16 owner)
+{
+    if (owner == 1)
+    {
+        return gGlobalWork.heroEquip.equipmentsIdx[3];
+    }
+    if (owner < PC_MAX)
+    {
+        return gPcs[owner].equipmentsIdx[3];
+    }
+    return -1;
+}
+
+static inline s16 personaEquipmentEffects(u16 owner, u16 statId)
+{
+    s16 total = 0;
+
+    switch (statId)
+    {
+    case 0:
+        total += datCalcCountEquipmentWithEffectById(owner, 0);
+        total += datCalcCountEquipmentWithEffectById(owner, 2) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 3) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 4) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 5) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x83) * 10;
+        break;
+    case 1:
+        total += datCalcCountEquipmentWithEffectById(owner, 0xB);
+        total += datCalcCountEquipmentWithEffectById(owner, 0xC) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xD) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xE) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xF) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x85) * 10;
+        break;
+    case 2:
+        total += datCalcCountEquipmentWithEffectById(owner, 6);
+        total += datCalcCountEquipmentWithEffectById(owner, 7) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 8) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 9) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xA) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x84) * 10;
+        break;
+    case 3:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x10);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x11) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x12) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x13) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x14) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x86) * 10;
+        break;
+    case 4:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x15);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x16) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x17) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x18) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x19) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x87) * 10;
+        break;
+    }
+
+    total += datCalcCountEquipmentWithEffectById(owner, 0x88);
+    total += datCalcCountEquipmentWithEffectById(owner, 0x89) * 2;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8A) * 3;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8B) * 4;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8C) * 5;
+    total += datCalcCountEquipmentWithEffectById(owner, 0x8D) * 10;
+    return total;
 }
 
 // FUN_00176680
@@ -1298,6 +2288,93 @@ void FUN_00176680(DatPersonaWork* persona, u16 personaId)
     }
 
     FUN_00176da0(persona);
+}
+
+#pragma opt_loop_invariants off
+
+// FUN_00176840
+u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
+{
+    s32 skillIdx;
+    u16* skillSlot;
+
+    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1546);
+
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
+    {
+        skillSlot = &persona->skills[skillIdx];
+        if (*skillSlot == SKILL_SLASH_ATTACK)
+        {
+            *skillSlot = skillId;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/* Removing this loses FUN_001733b0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_001768e0
+u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
+{
+    u16 skillId_p = skillId;
+    DatPersonaWork* personaWork = persona;
+    s32 skillIdx;
+
+    K_ASSERT(personaWork != NULL && skillId_p != SKILL_SLASH_ATTACK, 1560);
+
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
+    {
+        if (personaWork->skills[skillIdx] == skillId)
+        {
+            personaWork->skills[skillIdx] = SKILL_SLASH_ATTACK;
+            datPersonaMoveValidSkillsOnTop(personaWork);
+            return true;
+        }
+    }
+
+    return false;
+}
+#pragma opt_loop_invariants off
+
+/* Removing this loses FUN_00176990 (MATCH nd0 -> MISMATCH nd25) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_00176990
+s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
+{
+    s32 skillIdx;
+
+    K_ASSERT(persona != NULL && skillId != SKILL_SLASH_ATTACK, 1588);
+
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
+    {
+        if (persona->skills[skillIdx] == skillId)
+        {
+            return skillIdx;
+        }
+    }
+
+    return -1;
+}
+
+// FUN_00176a30
+u32 datPersonaCountValidSkills(DatPersonaWork* persona)
+{
+    s32 skillIdx;
+    u16* skillSlot;
+    u32 validSkills = 0;
+
+    K_ASSERT(persona != NULL, 1601);
+
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
+    {
+        skillSlot = &persona->skills[skillIdx];
+        if (*skillSlot != SKILL_SLASH_ATTACK)
+            validSkills++;
+    }
+
+    return validSkills;
 }
 
 // FUN_00176ac0
@@ -1447,24 +2524,6 @@ void FUN_00176da0(DatPersonaWork* persona)
     }
 }
 
-/* Removing this loses FUN_00176fb0 (MATCH nd0 -> MISMATCH nd62) - measured W161. */
-#pragma opt_loop_invariants on
-static inline void datPersonaCollectValidSkills(u8* skillData, u16* skills,
-                                                s32* validSkills, s32 skillLimit)
-{
-    s32 skillIdx;
-
-    for (skillIdx = 0; skillIdx < skillLimit; skillIdx++)
-    {
-        if (skillData[skillIdx * 4] == 0 &&
-            ((s8*)skillData)[skillIdx * 4 + 1] == 1)
-        {
-            skills[*validSkills] = *(u16*)(skillData + skillIdx * 4 + 2);
-            (*validSkills)++;
-        }
-    }
-}
-
 // FUN_00176FB0
 void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 {
@@ -1485,745 +2544,24 @@ void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 
     *skillCount = validSkills;
 }
-#pragma opt_loop_invariants off
-
-/* Removing this loses FUN_001770d0 (MATCH nd0 -> MISMATCH nd84) - measured W161. */
-#pragma opt_loop_invariants on
-// FUN_001770D0 MATCHING
-s32 FUN_001770D0(u16 personaId, u16 skillId)
-{
-    u8* skillData;
-    s32 skillIdx;
-    s32 skillOffset;
-    s32 skillOrder;
-
-    skillOrder = 0;
-    if (personaId >= 0xc0 && personaId <= 0xdf)
-    {
-        skillData = DAT_007ce430 + (personaId - 0xc0) * 0x26e + 4;
-        for (skillIdx = 0; skillIdx < 0x20; skillIdx++)
-        {
-            if (skillData[skillIdx * 4] != 0 &&
-                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
-            {
-                if ((u16)skillId == *(u16*)(skillData + skillIdx * 4 + 2))
-                {
-                    break;
-                }
-                skillOrder++;
-            }
-        }
-
-        if (skillIdx >= 0x10)
-        {
-            goto firstAssert;
-        }
-        skillOffset = skillIdx * 4;
-        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
-        {
-            goto firstAssertDone;
-        }
-firstAssert:
-        K_Assert(__FILE__, 1829);
-firstAssertDone:
-        ;
-    }
-    else
-    {
-        skillData = DAT_007ce428 + (u32)personaId * 0x46 + 6;
-        for (skillIdx = 0; skillIdx < 0x10; skillIdx++)
-        {
-            if (skillData[skillIdx * 4] != 0 &&
-                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
-            {
-                if ((u16)skillId == *(u16*)(skillData + skillIdx * 4 + 2))
-                {
-                    break;
-                }
-                skillOrder++;
-            }
-        }
-
-        if (skillIdx >= 0x10)
-        {
-            goto secondAssert;
-        }
-        skillOffset = skillIdx * 4;
-        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
-        {
-            goto secondAssertDone;
-        }
-secondAssert:
-        K_Assert(__FILE__, 1848);
-secondAssertDone:
-        ;
-    }
-
-    return skillOrder;
-}
-#pragma opt_loop_invariants reset
-
-// FUN_00177270
-void FUN_00177270(void)
-{
-    return;
-}
 
 
-#include "Main/Battle/Data/datCalc.h"
-
-#pragma alias func_001754a0_y2 func_001754a0
-#pragma alias FUN_00173280_y2 FUN_00173280
 
 
-/* GP-relative data pointers used by the retail Persona tables. */
-extern u8* iGpffffb7f4;
-extern u8* iGpffffb730;
-extern u8* iGpffffb734;
-extern u8* iGpffffb740;
-extern u8* iGpffffb2e4;
-extern u8 D_007FD6C8[];
-extern u8 D_00833E80[];
 
-extern void func_00306d90(s32 channel, u16 skillId);
-extern s32 FUN_00175ca0(DatPersonaWork* persona);
-extern s8 FUN_00173c60(DatPersonaWork* persona, u16 statId);
-
-static inline void assertStat(u16 statId, s32 line)
-{
-    K_ASSERT(statId < PERSONA_STAT_MAX, line);
-}
-
-static inline s16 personaEquipmentBonus(u16 owner, s16 equipmentIdx, u16 statId)
-{
-    u16 itemId = 0;
-    u8* itemTable = NULL;
-
-    if (equipmentIdx < 0)
-    {
-        return 0;
-    }
-    if (owner == 0xFFFF)
-    {
-        itemId = *(u16*)(D_00833E80 + equipmentIdx * sizeof(DatEquipment));
-    }
-    else if (owner == 1)
-    {
-        itemId = gGlobalWork.heroEquip.equipments[equipmentIdx].id;
-    }
-    else if (owner < 0x100)
-    {
-        itemId = gPcs[owner].equipments[equipmentIdx].id;
-    }
-    else
-    {
-        itemTable = D_007FD6C8 + owner * sizeof(DatPc);
-        itemId = *(u16*)(itemTable + equipmentIdx * sizeof(DatEquipment));
-    }
-
-    if (itemId < 3000 || itemId > 3999)
-    {
-        return 0;
-    }
-
-    itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
-    return *(s16*)(itemTable + 4 + statId * 2);
-}
-
-static inline u16 personaEquipmentOwner(DatPersonaWork* persona)
-{
-    u16 owner;
-
-    if (FUN_00175ca0(persona) == 0)
-    {
-        return 1;
-    }
-
-    owner = persona->id;
-    K_ASSERT(owner >= 0xC0 && owner <= 0xDF, 0x234);
-    return *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
-}
-
-static inline s16 personaEquipmentIndex(u16 owner)
-{
-    if (owner == 1)
-    {
-        return gGlobalWork.heroEquip.equipmentsIdx[3];
-    }
-    if (owner < PC_MAX)
-    {
-        return gPcs[owner].equipmentsIdx[3];
-    }
-    return -1;
-}
-
-static inline s16 personaEquipmentEffects(u16 owner, u16 statId)
-{
-    s16 total = 0;
-
-    switch (statId)
-    {
-    case 0:
-        total += datCalcCountEquipmentWithEffectById(owner, 0);
-        total += datCalcCountEquipmentWithEffectById(owner, 2) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 3) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 4) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 5) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x83) * 10;
-        break;
-    case 1:
-        total += datCalcCountEquipmentWithEffectById(owner, 0xB);
-        total += datCalcCountEquipmentWithEffectById(owner, 0xC) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xD) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xE) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xF) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x85) * 10;
-        break;
-    case 2:
-        total += datCalcCountEquipmentWithEffectById(owner, 6);
-        total += datCalcCountEquipmentWithEffectById(owner, 7) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 8) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 9) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xA) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x84) * 10;
-        break;
-    case 3:
-        total += datCalcCountEquipmentWithEffectById(owner, 0x10);
-        total += datCalcCountEquipmentWithEffectById(owner, 0x11) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x12) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x13) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x14) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x86) * 10;
-        break;
-    case 4:
-        total += datCalcCountEquipmentWithEffectById(owner, 0x15);
-        total += datCalcCountEquipmentWithEffectById(owner, 0x16) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x17) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x18) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x19) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x87) * 10;
-        break;
-    }
-
-    total += datCalcCountEquipmentWithEffectById(owner, 0x88);
-    total += datCalcCountEquipmentWithEffectById(owner, 0x89) * 2;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8A) * 3;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8B) * 4;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8C) * 5;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8D) * 10;
-    return total;
-}
-
-// FUN_00173220
-u8* FUN_00173220(s32 personaId)
-{
-    u16 id;
-
-    K_ASSERT((personaId & 0xffff) < 0x100, 0x18);
-    id = personaId;
-    return iGpffffb7f4 + id * 0x11;
-}
-
-// FUN_00173280
-u8 FUN_00173280(s32 personaId)
-{
-    u8* table;
-    u16 id;
-
-    K_ASSERT((personaId & 0xffff) < 0x100, 0x26);
-    table = iGpffffb730;
-    id = personaId;
-    return table[id * 0xE + 2];
-}
-
-/* Removing this loses FUN_001733b0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
-#pragma optimization_level 1
-// FUN_001733B0
-void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx)
-{
-    K_ASSERT(persona->id < 0x100, 0x115);
-    K_ASSERT((u16)skillIdx < 0x10, 0x116);
-    {
-        u8* skillTable = iGpffffb734 + persona->id * 0x20;
-        func_00306d90(0, *(u16*)(skillTable + (u16)skillIdx * 2));
-    }
-}
-#pragma optimization_level 2
-// FUN_00173460
-void FUN_00173460(u16 pcId, s32 skillIdx)
-{
-    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
-
-    K_ASSERT(persona->id < 0x100, 0x115);
-    K_ASSERT((u16)skillIdx < 0x10, 0x116);
-    func_00306d90(0, ((struct { u16 skills[0x10]; }*)iGpffffb734)[persona->id].skills[(u16)skillIdx]);
-}
-
-// FUN_00173510
-u8 FUN_00173510(u16 pcId, u16 statId)
-{
-    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
-
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
-    return persona->naturalStats[statId];
-}
-
-// FUN_00173660
-u8 FUN_00173660(DatPersonaWork* persona, u16 statId)
-{
-    s16 natural;
-    s16 bonus;
-    s16 third;
-    s16 total;
-    s8 equipment;
-
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
-    natural = persona->naturalStats[statId];
-    bonus = datPersonaGetBonusStat(persona, statId);
-    third = datPersonaGetStat3(persona, statId);
-    equipment = FUN_00173c60(persona, statId);
-    total = natural + bonus + third + equipment;
-    if (total > 99)
-    {
-        total = 99;
-    }
-    else if (total < 0)
-    {
-        total = 0;
-    }
-    return (u8)total;
-}
-
-// FUN_00173780
-u8 FUN_00173780(u16 heroPersonaIdx, u16 statId)
-{
-    DatPersonaWork* persona;
-    s16 natural;
-    s16 bonus;
-    s16 third;
-    s16 total;
-    s8 equipment;
-
-    persona = datPersonaGetHeroPersona(heroPersonaIdx);
-    K_ASSERT(persona != NULL, 0x192);
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
-    natural = persona->naturalStats[statId];
-    bonus = datPersonaGetBonusStat(persona, statId);
-    third = datPersonaGetStat3(persona, statId);
-    equipment = FUN_00173c60(persona, statId);
-    total = natural + bonus + third + equipment;
-    if (total > 99)
-    {
-        total = 99;
-    }
-    else if (total < 0)
-    {
-        total = 0;
-    }
-    return (u8)total;
-}
-
-// FUN_001738D0
-u8 FUN_001738d0(u16 pcId, u16 statId)
-{
-    DatPersonaWork* persona;
-    s16 natural;
-    s16 bonus;
-    s16 third;
-    s16 total;
-    s8 equipment;
-
-    persona = datPersonaGetByPcId(pcId);
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
-    natural = persona->naturalStats[statId];
-    bonus = datPersonaGetBonusStat(persona, statId);
-    third = datPersonaGetStat3(persona, statId);
-    equipment = FUN_00173c60(persona, statId);
-    total = natural + bonus + third + equipment;
-    if (total > 99)
-    {
-        total = 99;
-    }
-    else if (total < 0)
-    {
-        total = 0;
-    }
-    return (u8)total;
-}
-
-// FUN_00173A00
-s16 FUN_00173a00(DatPersonaWork* persona, u16 statId)
-{
-    s16 natural;
-    s16 bonus;
-    s8 third;
-    s16 total;
-
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x1A7);
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
-    natural = persona->naturalStats[statId];
-    bonus = datPersonaGetBonusStat(persona, statId);
-    third = datPersonaGetStat3(persona, statId);
-    total = natural + bonus + third;
-    if (total >= 99)
-    {
-        total = 99;
-    }
-    return total;
-}
-
-// FUN_00173C60 NONMATCHING
-s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
-{
-    s16 total;
-    s16 equipmentIdx;
-    u16 owner;
-
-    K_ASSERT(statId < PERSONA_STAT_MAX, 0x22D);
-    total = 0;
-    if (FUN_00175ca0(persona) != 0)
-    {
-        owner = persona->id;
-        K_ASSERT(owner >= 0xC0 && owner <= 0xDF, 0x234);
-        owner = *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
-    }
-    else
-    {
-        owner = 1;
-    }
-    K_ASSERT(owner < 0xB, 0x239);
-    if (owner == 1)
-    {
-        equipmentIdx = gGlobalWork.heroEquip.equipmentsIdx[3];
-    }
-    else if (owner < PC_MAX)
-    {
-        equipmentIdx = gPcs[owner].equipmentsIdx[3];
-    }
-    else
-    {
-        equipmentIdx = -1;
-    }
-    if (equipmentIdx >= 0)
-    {
-        u16 itemId = 0;
-        u8* itemTable = NULL;
-
-        if (owner == 0xFFFF)
-        {
-            itemId = *(u16*)(D_00833E80 + equipmentIdx * sizeof(DatEquipment));
-        }
-        else if (owner == 1)
-        {
-            itemId = gGlobalWork.heroEquip.equipments[equipmentIdx].id;
-        }
-        else if (owner < 0x100)
-        {
-            itemId = gPcs[owner].equipments[equipmentIdx].id;
-        }
-        else
-        {
-            itemTable = D_007FD6C8 + owner * sizeof(DatPc);
-            itemId = *(u16*)(itemTable + equipmentIdx * sizeof(DatEquipment));
-        }
-        if (itemId >= 3000 && itemId <= 3999)
-        {
-            itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
-            switch (statId)
-            {
-            case 0:
-                total += *(s16*)(itemTable + 4);
-                break;
-            case 1:
-                total += *(s16*)(itemTable + 6);
-                break;
-            case 2:
-                total += *(s16*)(itemTable + 8);
-                break;
-            case 3:
-                total += *(s16*)(itemTable + 0xA);
-                break;
-            case 4:
-                total += *(s16*)(itemTable + 0xC);
-                break;
-            }
-        }
-    }
-    switch (statId)
-    {
-    case 0:
-        total += datCalcCountEquipmentWithEffectById(owner, 0);
-        total += datCalcCountEquipmentWithEffectById(owner, 2) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 3) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 4) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 5) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x83) * 10;
-        break;
-    case 1:
-        total += datCalcCountEquipmentWithEffectById(owner, 0xB);
-        total += datCalcCountEquipmentWithEffectById(owner, 0xC) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xD) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xE) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xF) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x85) * 10;
-        break;
-    case 2:
-        total += datCalcCountEquipmentWithEffectById(owner, 6);
-        total += datCalcCountEquipmentWithEffectById(owner, 7) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 8) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 9) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0xA) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x84) * 10;
-        break;
-    case 3:
-        total += datCalcCountEquipmentWithEffectById(owner, 0x10);
-        total += datCalcCountEquipmentWithEffectById(owner, 0x11) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x12) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x13) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x14) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x86) * 10;
-        break;
-    case 4:
-        total += datCalcCountEquipmentWithEffectById(owner, 0x15);
-        total += datCalcCountEquipmentWithEffectById(owner, 0x16) * 2;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x17) * 3;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x18) * 4;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x19) * 5;
-        total += datCalcCountEquipmentWithEffectById(owner, 0x87) * 10;
-        break;
-    }
-    total += datCalcCountEquipmentWithEffectById(owner, 0x88);
-    total += datCalcCountEquipmentWithEffectById(owner, 0x89) * 2;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8A) * 3;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8B) * 4;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8C) * 5;
-    total += datCalcCountEquipmentWithEffectById(owner, 0x8D) * 10;
-    return total;
-}
-
-
-#include "Script/scrTraceCode.h"
-#include "datCalendar.h"
-
-#pragma alias FUN_0019d3f0_y2 FUN_0019d3f0
-#pragma alias FUN_00521250_y2 FUN_00521250
-#pragma alias FUN_00523ac8_y2 FUN_00523ac8
-#pragma alias scrGetIntPara_y2 scrGetIntPara
-
-
-#define SOCIAL_LINK_COUNT 30
-#define SOCIAL_DATA_POINTS_OFFSET 0xD2
-#define SOCIAL_DATA_COUNTER_OFFSET 0xD6
-extern u8* FUN_00172c50(s16* outValue);
-extern s32 FUN_00172660(s32 socialLink);
-extern void FUN_00172a20(u32 value);
-extern u8 D_008364BC[];
-extern s32 D_008364F4[];
-extern s32 D_008365F4[];
-extern u8 D_008366F4[];
-extern u8 D_00836734[];
-extern u8 D_00836752[];
-extern s16 D_0083679C[];
-extern u8 D_0083A34C[];
-extern s32 func_003951d0(s32 resourceId);
-extern void func_00395170(s32 resourceId);
-extern void func_003951a0(s32 resourceId);
-extern s16* func_003bddd0(void);
-extern u8* func_003beb10(s32 socialLink);
-extern void func_0017ad90(void);
-extern void func_0017ac60(u32 packedData);
-extern void func_001828d0(s16 itemId, void* itemData);
-extern void func_001831e0(s16 pcId, s16 slot, const void* itemData);
 
 
 // 005dc050
-static const u32 sPlayerExpThreshold[MAX_CHARACTER_LEVEL] = 
-{
-    0, 20, 47, 99, 185, 312, 490, 726, 1030,
-    1410, 1873, 2429, 3085, 3851, 4735, 5744, 6888, 8174,
-    9612, 11210, 12975, 14917, 17043, 19363, 21885, 24616, 27566,
-    30742, 34154, 37810, 41717, 45885, 50321, 55035, 60035, 65328,
-    70924, 76830, 83056, 89610, 96499, 103733, 111319, 119267, 127585,
-    136280, 145362, 154838, // ! 005dc110 !
-};
 
-static const s16 academicLevelThreshold[6] = { 0, 20, 80, 140, 200, 260 }; // 005e3068
-static const s16 charmLevelThreshold[6] =    { 0, 15, 30, 45, 65, 80 };    // 005e3078
-static const s16 courageLevelThreshold[6] =  { 0, 15, 30, 45, 65, 80 };    // 005e3088
 
 // 005e4150
-static const char* physicalConditionsString[13] = 
-{
-    "You recovered from your cold.",
-    "Your cold is not gone yet...",
-    "Your cold worsened because you're tired.",
-    "You've caught a cold.",
-    "You've become tired.",
-    "You're not tired anymore.",
-    "Your condition improved because you rested.",
-    "Your condition has improved.",
-    "You are no longer in great condition.",
-    "You're still tired",
-    "You're no longer sick because you rested.",
-    "You're no longer tired because you rested.",
-    "The medicine cured your illness."
-};
 
-static s16 sSavedPartyIds[4]; // 007cdfa8
-static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
 
-DatGlobal gGlobalWork; // 00836200
-DatPc gPcs[PC_MAX];    // 00833948
 
-void func_00177410(u8*, u8*);
-void func_001774e0(void);
-extern const char D_005E3098[];
-extern const char D_005E3260[];
-extern u32 gSpecialStatusMessage;
-extern u8 DAT_00833bb0[];
-extern u8 DAT_00833bd0[];
-extern u8 DAT_00833bf0[];
-extern u8 DAT_00836200[];
-#pragma alias DAT_00836200_u32 DAT_00836200
-extern u32 DAT_00836200_u32;
-extern u8 DAT_00836212[];
-extern u8* PTR_s_Aigis_005e35ec;
-extern u8* PTR_s_Aigis_005e379c;
-extern u8* PTR_s_Aigis_005e37dc;
-extern u8* PTR_s_Metis_005e3790;
-extern u8* PTR_s_Metis_005e37d0;
-extern u8* PTR_s_Metis_005e35e0;
-extern u8* D_005E35E0[];
-extern u8* D_005E35EC[];
-extern u8* D_005E3790[];
-extern u8* D_005E379C[];
-extern u8* D_005E37D0[];
-extern u8* D_005E37DC[];
-extern u8 D_007FD6CC[];
-extern u8 D_007FD6D0[];
-extern u8 D_007FD6D1[];
-extern u8 D_007FD6D2[];
-extern u8 D_007FD6D4[];
-extern u8 D_007FD6D6[];
-extern u8 D_007FD6D8[];
-extern u8 D_008339A4[];
-extern u8 D_008339A8[];
-extern u8 D_008339AC[];
-extern u8 D_008339AD[];
-extern u8 D_008339AE[];
-extern u8 D_008339B0[];
-extern u8 D_008339B2[];
-extern u8 D_008339B4[];
-extern u8 D_008339F4[];
-extern u8 D_00834010[];
-extern u8 D_00834120[];
-extern u8 DAT_00830000_a[];
-extern u8 DAT_00830000_b[];
-extern u8 DAT_00830000_c[];
-extern u8 D_007CBFA0;
-extern u8 D_008339F6[];
-extern u8 D_00833A78[];
-extern u8 D_00833C58[];
-extern u8 D_00833C5A[];
-extern u8 D_00833E84[];
-extern u8 D_00833E88[];
-extern u8 D_00833E89[];
-extern u8 D_00833E8A[];
-extern u8 D_00833E8C[];
-extern u8 D_00833E8E[];
-extern u8 D_00833E90[];
-extern u8 D_00836458[];
-extern u8 D_00836498[];
 
-extern void func_001754a0_y2(u32 value);
 
-void FUN_00172890(void);
-void FUN_00172e10(void);
-extern u8 D_005DC1B4[];
-extern s8 D_005E3220[];
-extern s16 D_005E3240[];
-extern u8 D_00831CE0[];
-extern u8 D_007FD858[];
-extern u8 D_007FD85A[];
-extern u8 D_005DDDC0[];
-extern u8 D_005DABF0[];
-extern u8 D_005D6C70[];
-extern u8 D_005D6C80[];
-extern u8 D_005DE8E0[];
-extern u8 D_005DE880[];
-extern u8 D_005DE040[];
-extern u8 D_00836773[];
-extern u8* D_007CDFB4;
-extern u8* D_007CDFBC;
-extern u8* D_007CDFC0;
-extern u8* D_007CDFC4;
-extern u8* D_007CDFC8;
-extern u8* D_007CDFCC;
-extern u8* D_007CDFD0;
-extern u8* D_007CDFD4;
-extern u8* D_007CDFD8;
-extern u8* D_007CDFDC;
-extern u8* D_007CDFE4;
 
-extern u16 func_00300100(DatUnit* unit);
-extern u32 FUN_00173280_y2(u16 personaId);
-extern void FUN_00171B50(s16 socialLink);
-extern void FUN_00171C40(s16 socialLink, s32 value);
-extern void FUN_00171E90(s16 socialLink, s32 value);
-extern void FUN_00172200(s32 socialLink, s32 value);
-#pragma alias FUN_00172200_s16 FUN_00172200
-extern void FUN_00172200_s16(s16 socialLink, s32 value);
-extern void FUN_001723A0(s16 socialLink, s32 rank, s32 enabled);
-extern void FUN_001724A0(s16 socialLink, s32 rank, s32 enabled);
-extern f32 FUN_003BDB80(void);
-extern u8* FUN_003BDD90();
-extern u32 FUN_00488F30(void);
-extern void FUN_005225A8();
-extern s16 func_00171060(s16 id);
 
-u16 func_0016cc00(s16 pcId);
-u16 func_0016ccb0(s16 pcId);
-u8 func_0016d280(s32 exp);
-u32 func_0016dce0(s16 socialLink);
-s8 func_0016dd20(s16 socialLink);
-void func_0016ddd0(s32 index);
-u8 func_0016de50(s32 index);
-s16 func_0016deb0(s16 arcana);
-void func_0016dfb0(s16 socialLink);
-s16 func_0016e190(s32 socialLink);
-void func_0016e2b0(s16 socialLink, s32 amount);
-void func_0016e410(s16 socialLink, s8 level);
-void func_0016e5f0(s32 socialLink, s8 progress);
-#pragma alias func_0016e5f0_call func_0016e5f0
-extern void func_0016e5f0_call(s16 socialLink, s8 progress);
-void func_0016e670(s16 socialLink);
-void func_0016e7a0(s16 socialLink, s16 day);
-s16 func_0016e850(s16 socialLink);
-s32 func_0016ea40(s32 amount);
-u32 func_0016ea80(void);
-u32 func_0016ecd0(void);
-u8* func_00170620(s16 pcId, s16 index);
-u16 func_00170670(s16 pcId, s16 index);
-s16 func_001706c0(s16 pcId, s16 index);
-void func_00170710(s16 pcId, s16 index, u16 value);
-u16 func_00170a40(s16 pcId, s16 index);
-s16 func_00170ab0(s16 pcId, s16 index);
-void func_00170b20(s16 pcId, s16 index, u16 value);
-void func_00170b90(s16 pcId, s16 index, u16 value);
-u32 func_00170c00(s16 pcId, s16 index, s16 delta);
-void* func_00170d60(s16 id);
-void* func_00170da0(s16 id);
-void* func_00170df0(s16 id);
-void* func_00170e40(s16 id);
-u32 func_00171250(s16 id);
-u16 func_001712d0(s16 id);
-void func_00171390(u32 flag);
-s32 func_001714b0(s32 index);
-s32 func_001714d0(s32 index);
-s32 func_001714f0(s32 index);
-f32 func_00171510(s16 row, s16 column);
-u8 func_00171550(s16 unused1, s16 unused2, u16 index);
-u32 func_001715f0(s16 id);
 
 
 
@@ -2519,30 +2857,20 @@ static inline void* func_00170ed0_impl(s16 id, s32* category)
 
 
 
-#pragma alias datIncrementSocialLinkCounter FUN_001718b0
-
-#pragma alias datDecreaseSocialLinkPoints FUN_00171960
-
-#pragma alias datGetSocialLinkPoints FUN_00171ac0
-
-#pragma alias datResetSocialLinkPoints FUN_00171b50
-
-
-#pragma alias datSetSocialLinkCounter FUN_00171e90
 
 
 
 
 
-#pragma alias datSetSocialLinkRankUnlocked FUN_001723a0
 
-#pragma alias datSetSocialLinkRankAcknowledged FUN_001724a0
 
-#pragma alias datApplyPendingSocialLinkRank FUN_001725a0
 
-#pragma alias datSocialLinkHasPendingRank FUN_00172660
 
-#pragma alias datSocialEventRecordHasData FUN_00172750
+
+
+
+
+
 
 
 
@@ -2551,27 +2879,6 @@ static inline void* func_00170ed0_impl(s16 id, s32* category)
 
 
 
-#pragma alias datGetSocialEventData FUN_00172990
-
-#pragma alias datSocialEventDataIsLoaded FUN_001729a0
-
-#pragma alias datTryGetSocialEventValue FUN_001729d0
-
-
-#pragma alias datSetSocialEventMode FUN_00172a20
-
-#pragma alias datSocialEventModeIsActive FUN_00172a30
-
-#pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
-
-
-
-
-
-
-#pragma alias datRecordSocialLinkDate FUN_00172cc0
-
-#pragma alias datGetSocialLinksForToday FUN_00172d70
 
 
 
@@ -2597,28 +2904,101 @@ static inline void* func_00170ed0_impl(s16 id, s32* category)
 
 
 
-// FUN_00175be0
-void datInitPersona(s16 pcId)
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma opt_loop_invariants off
+
+/* Removing this loses FUN_001770d0 (MATCH nd0 -> MISMATCH nd84) - measured W161. */
+#pragma opt_loop_invariants on
+// FUN_001770D0 MATCHING
+s32 FUN_001770D0(u16 personaId, u16 skillId)
 {
-    DatPc* pc;
+    u8* skillData;
+    s32 skillIdx;
+    s32 skillOffset;
+    s32 skillOrder;
 
-    if (IS_HERO(pcId))
+    skillOrder = 0;
+    if (personaId >= 0xc0 && personaId <= 0xdf)
     {
-        gGlobalWork.heroPersona.equippedPersona = -1;
-        memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
+        skillData = DAT_007ce430 + (personaId - 0xc0) * 0x26e + 4;
+        for (skillIdx = 0; skillIdx < 0x20; skillIdx++)
+        {
+            if (skillData[skillIdx * 4] != 0 &&
+                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
+            {
+                if ((u16)skillId == *(u16*)(skillData + skillIdx * 4 + 2))
+                {
+                    break;
+                }
+                skillOrder++;
+            }
+        }
 
-        return;
+        if (skillIdx >= 0x10)
+        {
+            goto firstAssert;
+        }
+        skillOffset = skillIdx * 4;
+        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
+        {
+            goto firstAssertDone;
+        }
+firstAssert:
+        K_Assert(__FILE__, 1829);
+firstAssertDone:
+        ;
+    }
+    else
+    {
+        skillData = DAT_007ce428 + (u32)personaId * 0x46 + 6;
+        for (skillIdx = 0; skillIdx < 0x10; skillIdx++)
+        {
+            if (skillData[skillIdx * 4] != 0 &&
+                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
+            {
+                if ((u16)skillId == *(u16*)(skillData + skillIdx * 4 + 2))
+                {
+                    break;
+                }
+                skillOrder++;
+            }
+        }
+
+        if (skillIdx >= 0x10)
+        {
+            goto secondAssert;
+        }
+        skillOffset = skillIdx * 4;
+        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
+        {
+            goto secondAssertDone;
+        }
+secondAssert:
+        K_Assert(__FILE__, 1848);
+secondAssertDone:
+        ;
     }
 
-    pc = &gPcs[2];
-
-    memset(&pc[pcId - 2].persona, 0, sizeof(DatPersonaWork));
+    return skillOrder;
 }
+#pragma opt_loop_invariants reset
 
-// FUN_00175c70
-void datCompendiumInit()
+// FUN_00177270
+void FUN_00177270(void)
 {
-    memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
+    return;
 }
 
 
@@ -2957,430 +3337,52 @@ u8 func_00177a40(u32 param_1,int param_2)
 
 
 
-void FUN_00300af0();
 
 
 
-void FUN_00403130();
-
-
-void FUN_00403220();
 
 
 
-void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
 
 
-void FUN_003d74b0();
+
+
 
 
 
 
 
 /* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
-#include "Camp/h_camp.h"
-#include "Kernel/Kwln/kwlnTask.h"
-#include "h_cdvd.h"
-#include "h_maestro.h"
-#include "h_snd.h"
-#include "Utils.h"
 
-typedef u8 undefined1;
-typedef u16 undefined2;
-typedef u32 undefined4;
-typedef u64 undefined8;
-typedef int bool;
-typedef unsigned long ulong;
-typedef struct CampFloatPair
-{
-    f32 x;
-    f32 y;
-} CampFloatPair;
-typedef struct CampHelpPaths
-{
-    const char* paths[8];
-} CampHelpPaths;
-#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
 
 /* Retail globals shared by the Camp bridge state machines. */
-extern void (*DAT_0096017c[])(...);
-#pragma alias DAT_0096017c_abs DAT_0096017c
-extern void (*DAT_0096017c_abs[])(...);
-#pragma alias DAT_00960184_abs DAT_00960184
-extern void* (*DAT_00960184_abs[])(...);
-#pragma alias scrGetIntPara_u64 scrGetIntPara_y2
-extern u64 scrGetIntPara_u64(s32);
-extern void* (*DAT_00960184)();
-extern void* (*DAT_00960178)();
-#pragma alias DAT_00960178_abs DAT_00960178
-extern void* (*DAT_00960178_abs[])(...);
-extern f32 DAT_00960088;
-#pragma alias DAT_00960088_abs DAT_00960088
-extern u8 DAT_00960088_abs[];
-extern void* DAT_007cdf48;
-extern void* DAT_007cdf54;
-extern void* DAT_007cdf58;
-extern void* DAT_007cdf84;
-extern void* DAT_007cdf88;
-extern s32 DAT_007e094e;
-extern s32 DAT_007e0958;
 /* Retail accesses these flag words by absolute address. */
-#pragma alias DAT_007e094e_abs DAT_007e094e
-extern u8 DAT_007e094e_abs[];
-#pragma alias DAT_007e0958_abs DAT_007e0958
-extern u8 DAT_007e0958_abs[];
-extern u32 DAT_00833a50[];
-extern s32 iGpffffb258;
-extern s32 uGpffffb290;
-extern s32 uGpffffb28c;
-extern s32 iGpffffb28c;
 
 /* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
-typedef struct CampDataBridgeRoot CampDataBridgeRoot;
-extern CampDataBridgeRoot* iGpffffb2c0;
-#define DAT_007cdfb0 iGpffffb2c0
-extern s32* DAT_007cdfb4;
-extern s32* DAT_007cdfb8;
-extern s32* DAT_007cdfbc;
-extern s32* DAT_007cdfc0;
-extern s32* DAT_007cdfc4;
-extern s32* DAT_007cdfc8;
-extern s32* DAT_007cdfcc;
-extern s32* DAT_007cdfd0;
-extern s32* DAT_007cdfd4;
-extern s32* DAT_007cdfd8;
-extern s32* DAT_007cdfdc;
-extern u8* DAT_007cdfe0;
-extern u8* DAT_007cdfe4;
-extern void* DAT_007cdfe8;
-extern u32 DAT_0083bb30[];
-extern u8 DAT_0083bb40;
-extern u32 DAT_0083aaa0[0x23];
-extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
-extern char DAT_005dc020[];
-extern char DAT_005dbc60[];
-extern const void* gp0xffff897c;
-extern const void* gp0xffff8998;
 
 /* Unresolved retail helpers. Old-style declarations preserve the mixed-width
  * call ABI recovered from the stripped executable. */
-extern u32 FUN_00100d80();
-extern u32 FUN_00100ec0();
-extern u32 FUN_001016b0();
-extern u64 FUN_00102100();
-extern u32 FUN_001021c0();
-extern u32 FUN_001023a0();
-extern u32 FUN_0010a4e0();
-extern u32 FUN_00111cb0();
-extern u32 FUN_00111d50();
-extern u32 FUN_00111dd0();
-extern u32 FUN_00111ec0();
-extern u32 FUN_00111ee0();
-extern u32 FUN_00111f20();
-extern u32 FUN_00111f30();
-extern u32 FUN_00112420();
-extern u32 FUN_001124b0();
-extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
-#pragma alias FUN_00113a30_camp_reordered FUN_00113a30
-extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
-                                        f32 y, s32 width, s32 height);
-extern u32 FUN_00114450();
-#pragma alias campDataDrawPersonaSprite FUN_00114450
-extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
-                                      s32 mode, u32 color, u32 width,
-                                      u32 height, void* resource);
-extern void FUN_001159f0(f32 x, f32 y, ...);
-#pragma alias FUN_001159f0_typed FUN_001159f0
-extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                f32 x, f32 y, f32 depth);
-extern u32 FUN_00115bc0();
-#pragma alias FUN_00115bc0_typed FUN_00115bc0
-extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                u32 red, u32 green, u32 blue, f32 x, f32 y,
-                                f32 depth);
-#pragma alias campDataDrawSpriteDirect FUN_001159f0
-extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0
-extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawDigitsDirect FUN_00115de0
-extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteFade FUN_001159f0
-extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
-                                   void* atlas, s32 tile, s32 alpha);
-#pragma alias campDataDrawSpriteAltFade FUN_00115bc0
-extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
-                                      void* atlas, s32 tile, s32 alpha,
-                                      s32 red, s32 green, s32 blue, s32 flags);
-extern u32 FUN_00115de0();
-extern u32 FUN_00119f10();
-#pragma alias campDataCreateTask FUN_00119f10
-extern void* campDataCreateTask(void* task, s32 mode);
-extern u32 FUN_0011abd0();
-extern u32 FUN_00122710();
-extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
-extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
-extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
-extern u32 FUN_0013c240();
-extern u32 FUN_0013c780();
-extern u32 FUN_0013cf80();
-extern u32 FUN_0013d1a0();
-extern u32 FUN_0013fca0();
-#pragma alias campDataDrawEquipment FUN_0013d1a0
-extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
-                                  void* work, s32 alpha);
-#pragma alias campDataDrawEquipmentAlt FUN_0013fca0
-extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
-                                     void* work, s32 alpha);
-extern u32 FUN_0016f630();
-extern u32 FUN_0016f720();
-extern u32 FUN_0016f810();
-extern u32 FUN_0016f900();
-extern u32 FUN_0016f9f0();
-extern u32 FUN_0016fae0();
-extern u32 FUN_0016fbd0();
-extern u32 FUN_0016fcc0();
-extern u32 FUN_0016fea0();
-extern u32 FUN_0016ff90();
-extern u32 FUN_00170080();
-extern u32 FUN_00170170();
-extern u32 FUN_00170260();
-extern u32 FUN_00170350();
-extern u32 FUN_00170440();
-extern u32 FUN_00170530();
-extern u32 FUN_00170a40();
-extern u32 FUN_00170ab0();
-extern u32 FUN_00170b20();
-extern u32 FUN_00170b90();
-extern u32 FUN_00174800();
-extern u32 FUN_00177c10();
-extern u32 FUN_001830c0();
-extern u32 FUN_00194b20();
-extern u32 FUN_00195290();
-extern void FUN_0019d3f0(const char*, s32);
-extern f32 FUN_0021ea00(s32);
-extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
-extern u32 FUN_0025f570();
-extern u32 FUN_0035ed20();
-extern u32 FUN_003b2cb0();
-#pragma alias campDataDrawTextRaw FUN_003b2cb0
-extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
-                               s32 font, s32 alignment, const char* text,
-                               s32 maxWidth, s32 shadow);
-extern u32 FUN_003c7430();
-extern u32 FUN_003c74e0();
-extern u32 FUN_003c7560();
-extern u32 FUN_003c7610();
-extern u32 FUN_003c7700();
-extern u32 FUN_003c7850();
-extern u32 FUN_003c7d80();
-extern u32 FUN_003c7e20();
-#pragma alias campDataDrawDigits FUN_003c7e20
-extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
-                               s32 style, s32 font, s32 alignment, u32 value);
-extern u32 FUN_0040eb50();
-#pragma alias campDataDrawText FUN_0040eb50
-extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
-                            const char* text, s32 maxWidth);
-extern u32 FUN_00521250();
-extern u32 FUN_00523ac8_y2();
 
-extern void* func_00133780(KwlnTask* task);
-extern void* func_001618a0(KwlnTask* task);
-extern void func_00161d60(KwlnTask* task);
-extern void* func_00166c70(KwlnTask* task);
-extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
-extern const char D_005DAC70[];
-extern const char D_005DAC90[];
-extern const char D_005DB190[];
-extern const char D_005DBD80[];
-extern const char D_005DBED0[];
-extern const char D_005DBEE8[];
-extern const char D_005DBF00[];
-extern const char D_005DBF20[];
-extern const char D_005DBF40[];
-extern const char D_005DBF70[];
-extern const char D_005DBFA0[];
-extern const char D_005DBFD0[];
 /* These task archive names are addressed absolutely by retail. */
-#pragma alias D_005DBF20_abs D_005DBF20
-extern u8 D_005DBF20_abs[];
-#pragma alias D_005DBF40_abs D_005DBF40
-extern u8 D_005DBF40_abs[];
-#pragma alias D_005DBF70_abs D_005DBF70
-extern u8 D_005DBF70_abs[];
-#pragma alias D_005DBFA0_abs D_005DBFA0
-extern u8 D_005DBFA0_abs[];
-#pragma alias D_005DBFD0_abs D_005DBFD0
-extern u8 D_005DBFD0_abs[];
-extern const char D_005DC000[];
-extern const char D_005E30B0[];
-extern const char D_005E31F0[];
-extern const char D_005E3200[];
 
 /* Target entry prototypes keep all callbacks visible before their first use. */
-void FUN_001675b0(KwlnTask*);
-void* FUN_001675e0(KwlnTask*);
-void FUN_001678e0(KwlnTask*);
-void* FUN_00167930(KwlnTask*);
-void FUN_00167ec0(KwlnTask*);
-void FUN_00167ef0(KwlnTask*);
-void FUN_00167f10(KwlnTask*);
-u32 FUN_00167f30(KwlnTask*);
-KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
-u32 FUN_00168040(void);
-u32 FUN_00168100(void);
-bool FUN_001681d0(void);
-void* FUN_00168220(KwlnTask*);
-bool FUN_001685b0(KwlnTask*);
-u32 FUN_001685d0(KwlnTask*);
-void FUN_001685e0(KwlnTask*, s32);
-void FUN_00168720(KwlnTask*);
-KwlnTask* FUN_00168770(KwlnTask*, u32);
-u32 FUN_00168810(u32);
-void FUN_00169040(int);
-void FUN_00169110(u16, CampFloatPair, void*, s32);
-void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
-undefined4 FUN_00169330(void);
-bool FUN_00169420(void);
-undefined4 FUN_00169470(KwlnTask*);
-void FUN_00169AE0(int);
-void FUN_00169B90(void* resources, undefined8 coordinates,
-                  void* list, s32 alpha, undefined8 stackArg);
-undefined4 FUN_0016A030(void);
-undefined4 FUN_0016A6A0(void);
-f32 FUN_0016ba00(u32, u32);
-f32 FUN_0016ba80(u32, u32);
-f32 FUN_0016bb00(u32, u32);
-f32 FUN_0016bb80(u32, u32);
-f32 FUN_0016bc00(u32, u32);
-void FUN_0016bc80(u32, u32, f32*);
-void FUN_0016bdb0(u32, u32, f32*);
-void FUN_0016bee0(u32, u32, void*);
-void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
-void FUN_0016c010(void) __attribute__((aligned(16)));
-void FUN_0016c1d0(void);
-void FUN_0016c2f0(void);
-void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-#pragma alias campDataDrawListA FUN_0016A700
-extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
-#pragma alias campDataDrawListB FUN_0016AF90
-extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
 
 
-typedef struct CampBridgeScreenWork
-{
-    u32 state;          /* 0x00 */
-    u32 timer;          /* 0x04 */
-    u32 personaId;      /* 0x08 */
-    u32 opacity;        /* 0x0c (low halfword used by the fade) */
-    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
-    u32 command;        /* 0x14 */
-    u32 active;         /* 0x18 */
-    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
-    u32 reserved20;     /* 0x20 */
-    u32 reserved24;     /* 0x24 */
-    u32 childTask;      /* 0x28 */
-} CampBridgeScreenWork;
 
 /* Work area for the 0x14-byte state task (the first five words overlap the
  * screen work above but carry different meanings). */
-typedef struct CampBridgeStateWork
-{
-    u32 state;          /* 0x00 */
-    u32 mode;           /* 0x04 */
-    u32 setupTask;      /* 0x08 */
-    u32 activeTask;     /* 0x0c */
-    u32 screenMode;     /* 0x10 */
-} CampBridgeStateWork;
 
 /* Work area allocated by FUN_00167930 for the persona display child. */
-typedef struct CampBridgePersonaDispWork
-{
-    u32 state;          /* 0x00 */
-    u32 personaId;      /* 0x04 */
-    u32 reserved08;     /* 0x08 */
-    u32 mode;           /* 0x0c */
-    f32 alpha;          /* 0x10 */
-    f32 slideStep;      /* 0x14 */
-    f32 slidePosition;  /* 0x18 */
-    f32 depth;          /* 0x1c */
-    void* parseRequest; /* 0x20 */
-    HCdvd* cdvd;        /* 0x24 */
-    void* resource;     /* 0x28 */
-} CampBridgePersonaDispWork;
 
 /* Work area allocated by FUN_00168770 (0x1c bytes). */
-typedef struct CampBridgeBlendWork
-{
-    u32 state;       /* 0x00 */
-    s32 timer;       /* 0x04 */
-    u32 reserved08;  /* 0x08 */
-    u32 mode;        /* 0x0c */
-    u32 archive;     /* 0x10 */
-    u32 sourceTask;  /* 0x14 */
-    u32 targetTask;  /* 0x18 */
-} CampBridgeBlendWork;
 
 
 /* Work area used by FUN_00168810/FUN_00169040. */
-typedef struct CampTargetLoadWork
-{
-    u32 state;                 /* +0x00 */
-    u32 reserved04;            /* +0x04 */
-    s32 frame;                 /* +0x08 */
-    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
-    void* archive;             /* +0x10 */
-    void* resources[2];        /* +0x14 */
-    CampTargetList* listA;     /* +0x1c */
-    CampTargetList* listB;     /* +0x20 */
-    void* childTask;           /* +0x24 */
-} CampTargetLoadWork;
 
 /* Work area used by FUN_00169470/FUN_00169AE0. */
-typedef struct CampTargetMenuWork
-{
-    u32 state;                 /* +0x00 */
-    s32 frame;                 /* +0x04 */
-    u32 reserved08;            /* +0x08 */
-    void* archive;             /* +0x0c */
-    void* resources[2];        /* +0x10 */
-    CampTargetList* list;      /* +0x18 */
-    void* childTask;           /* +0x1c */
-    u32 result;                /* +0x20 */
-} CampTargetMenuWork;
 
-typedef struct CampDataBridgeRecord
-{
-    s16 axis0;                 /* +0x00 */
-    s16 axis1;                 /* +0x02 */
-    s16 axis2;                 /* +0x04 */
-    s16 axis3;                 /* +0x06 */
-    f32 value;                 /* +0x08 */
-    u32 reserved0c;            /* +0x0c */
-    u16 reserved10;            /* +0x10 */
-    s16 helpIndex;             /* +0x12 */
-    u32 color0;                /* +0x14 */
-    u32 color1;                /* +0x18 */
-    u32 reserved1c;            /* +0x1c */
-} CampDataBridgeRecord;
 
-typedef struct CampDataBridgeGroup
-{
-    s32 recordCount;           /* +0x00 */
-    s32 auxiliaryCount;        /* +0x04 */
-    CampDataBridgeRecord* records; /* +0x08 */
-    u8* auxiliaryData;         /* +0x0c */
-} CampDataBridgeGroup;
 
-typedef struct CampDataBridgeRoot
-{
-    CampDataBridgeGroup groups[2];
-} CampDataBridgeRoot;
 
 
 

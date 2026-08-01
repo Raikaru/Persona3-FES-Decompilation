@@ -1,32 +1,8 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
-
-
-
-#define BAI_MAIN_ACTIVE 1
-
-typedef struct
-{
-    u32 unk0;  // 0x00
-    u32 flags; // 0x04. See BAI_MAIN_*
-} BaiMainWork;
-
-static BaiMainWork* sBaiMain; // DAT_007ce338
-
-// FUN_0024d0c0
-u32 baiMainIsActive(void)
-{
-    K_ASSERT(sBaiMain != NULL, 0x37);
-    return sBaiMain->flags & BAI_MAIN_ACTIVE;
-}
-
-
 #include "Utils.h"
-
-/* DAT_007CE348: panel effect work installed by FUN_0024C100. */
 static u32* sBpEffect;
-
 extern void func_0010a4e0(s32, s32, s32, s32);
 extern void* func_0021c790(void* frame);
 extern void func_0021d890(void* destination, const f32* vertices);
@@ -39,10 +15,22 @@ extern f32 DAT_007cafec;
 extern void RpSkyRenderStateSet(s32 state, u32 value);
 extern u32 D_00960090[];
 extern u32 D_0096009c[];
-
 typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
 typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);
 
+
+
+
+
+#define BAI_MAIN_ACTIVE 1
+
+typedef struct
+{
+    u32 unk0;  // 0x00
+    u32 flags; // 0x04. See BAI_MAIN_*
+} BaiMainWork;
+
+static BaiMainWork* sBaiMain; // DAT_007ce338
 
 // FUN_0024C110 NONMATCHING
 void FUN_0024c110(void)
@@ -253,6 +241,14 @@ void FUN_0024c110(void)
     *(f32*)(work + 0x3b8) = (f32)color[2];
     *(f32*)(work + 0x3bc) = (f32)color[3];
 }
+
+
+
+/* DAT_007CE348: panel effect work installed by FUN_0024C100. */
+
+
+
+
 // FUN_0024CCA0
 
 void FUN_0024cca0(void)
@@ -293,7 +289,6 @@ void FUN_0024cca0(void)
     (*renderQuad)(work + 0x210, 4, 0, 1, 2);
     (*renderQuad)(work + 0x210, 4, 0, 2, 3);
 }
-
 // FUN_0024CF00
 void FUN_0024cf00(s32 mode)
 {
@@ -336,4 +331,11 @@ void FUN_0024cf00(s32 mode)
     *(u32*)(work + 8) = 0;
     *(u32*)(work + 0xc) = 0;
     *(u32*)(work + 4) |= 1;
+}
+
+// FUN_0024d0c0
+u32 baiMainIsActive(void)
+{
+    K_ASSERT(sBaiMain != NULL, 0x37);
+    return sBaiMain->flags & BAI_MAIN_ACTIVE;
 }

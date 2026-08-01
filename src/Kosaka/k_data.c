@@ -12,6 +12,33 @@
 #include "Kosaka/Field/k_fldrc.h"
 #include "Script/scr.h"
 
+static void fieldReplaceBuffer(void** destination, u32* destinationSize,
+                               const void* source, u32 sourceSize)
+{
+    void* buffer;
+
+    if (*destination != NULL)
+    {
+        RwFree(*destination);
+        *destination = NULL;
+    }
+    if (destinationSize != NULL)
+    {
+        *destinationSize = sourceSize;
+    }
+    if (source == NULL || sourceSize == 0)
+    {
+        return;
+    }
+    buffer = RwCalloc(1, sourceSize, rwMEMHINTDUR_GLOBAL);
+    if (buffer != NULL)
+    {
+        memcpy(buffer, source, sourceSize);
+        *destination = buffer;
+    }
+}
+
+
 /*
  * The field data helpers below share the root-field scratch area.  The
  * retail layout keeps these values in the tail of Field; using offsets here
@@ -134,6 +161,22 @@ void K_Data_LoadFldMainScript()
     H_Cdvd_Destroy(cdvd);
 }
 
+// FUN_001b7bb0
+void func_001b7bb0(void)
+{
+    HCdvd* request;
+    u32 fileSize;
+    void* memory;
+
+    request = H_Cdvd_Request("field/script/fuka.bf", HCDVD_FILENORMAL);
+    H_Cdvd_ReadSync(request);
+    fileSize = request->fileSize;
+    memory = D_007CE220 = RwCalloc(1, fileSize, rwMEMHINTDUR_GLOBAL);
+    fileSize = request->fileSize;
+    memcpy(memory, request->fileMemory, (s32)fileSize);
+    H_Cdvd_Destroy(request);
+}
+
 // FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData'
 void K_Data_LoadDngFloorsData(u32 scenarioMode)
 {
@@ -163,6 +206,29 @@ void K_Data_LoadDngFloorsData(u32 scenarioMode)
     H_Cdvd_Destroy(cdvd);
 }
 
+// FUN_001b7d00
+void func_001b7d00(void)
+{
+    D_007CE218 = RwCalloc(1, 0x34c, rwMEMHINTDUR_GLOBAL);
+    D_007CE214 = (s32)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
+}
+
+
+// FUN_001b7d60
+u32 func_001b7d60(void)
+{
+    if (D_007CE214 == 0)
+    {
+        return true;
+    }
+    if (func_0010a720(D_007CE214) == 0)
+    {
+        return false;
+    }
+    D_007CE214 = 0;
+    return true;
+}
+
 // FUN_001b7dc0
 void K_Data_CreateFldBaseMdl()
 {
@@ -184,70 +250,6 @@ void K_Data_CreateFldBaseMdl()
 u32 K_Data_ChkFldBaseMdlStream()
 {
     return mdlStreamRead(gFldBaseMdl) != false;
-}
-
-static void fieldReplaceBuffer(void** destination, u32* destinationSize,
-                               const void* source, u32 sourceSize)
-{
-    void* buffer;
-
-    if (*destination != NULL)
-    {
-        RwFree(*destination);
-        *destination = NULL;
-    }
-    if (destinationSize != NULL)
-    {
-        *destinationSize = sourceSize;
-    }
-    if (source == NULL || sourceSize == 0)
-    {
-        return;
-    }
-    buffer = RwCalloc(1, sourceSize, rwMEMHINTDUR_GLOBAL);
-    if (buffer != NULL)
-    {
-        memcpy(buffer, source, sourceSize);
-        *destination = buffer;
-    }
-}
-
-// FUN_001b7bb0
-void func_001b7bb0(void)
-{
-    HCdvd* request;
-    u32 fileSize;
-    void* memory;
-
-    request = H_Cdvd_Request("field/script/fuka.bf", HCDVD_FILENORMAL);
-    H_Cdvd_ReadSync(request);
-    fileSize = request->fileSize;
-    memory = D_007CE220 = RwCalloc(1, fileSize, rwMEMHINTDUR_GLOBAL);
-    fileSize = request->fileSize;
-    memcpy(memory, request->fileMemory, (s32)fileSize);
-    H_Cdvd_Destroy(request);
-}
-
-// FUN_001b7d00
-void func_001b7d00(void)
-{
-    D_007CE218 = RwCalloc(1, 0x34c, rwMEMHINTDUR_GLOBAL);
-    D_007CE214 = (s32)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
-}
-
-// FUN_001b7d60
-u32 func_001b7d60(void)
-{
-    if (D_007CE214 == 0)
-    {
-        return true;
-    }
-    if (func_0010a720(D_007CE214) == 0)
-    {
-        return false;
-    }
-    D_007CE214 = 0;
-    return true;
 }
 
 // FUN_001b7e60 NONMATCHING

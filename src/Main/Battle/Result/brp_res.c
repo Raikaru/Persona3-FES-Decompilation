@@ -4,6 +4,25 @@
 #include "h_cdvd.h"
 #include "rw/rwplcore.h"
 
+static u32* sBrpRes334; // 007ce334
+#include "Utils.h"
+static u32* sBpEffect;
+extern void func_0010a4e0(s32, s32, s32, s32);
+extern void* func_0021c790(void* frame);
+extern void func_0021d890(void* destination, const f32* vertices);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021eac0(void* destination, f32 value);
+extern void func_0021eb80(void* destination, const f32* layout);
+extern f32 DAT_007cad60;
+extern f32 DAT_007cafec;
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 D_00960090[];
+extern u32 D_0096009c[];
+typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
+typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);
+
+
 
 
 
@@ -142,6 +161,21 @@ void func_0024be40(void)
     work[0] |= 1;
 }
 
+// FUN_0024bed0
+u32 brpRes0024bed0(void)
+{
+    K_ASSERT(sBrpResWork != NULL, 0x39);
+    return *sBrpResWork & 1;
+}
+
+
+// FUN_0024bf20
+u32 brpRes0024bf20(s32 param_1)
+{
+    K_ASSERT(sBrpResWork != NULL, 0x39);
+    return sBrpResWork[param_1 + 4];
+}
+
 // FUN_0024BF80
 void func_0024bf80(void)
 {
@@ -154,22 +188,6 @@ void func_0024bf80(void)
     work[3] = (u32)(uintptr_t)H_Cdvd_Request(sBrpCombineMessagePath,
                                              HCDVD_FILENORMAL);
     work[0] |= 2;
-}
-
-static u32* sBrpRes334; // 007ce334
-
-// FUN_0024bed0
-u32 brpRes0024bed0(void)
-{
-    K_ASSERT(sBrpResWork != NULL, 0x39);
-    return *sBrpResWork & 1;
-}
-
-// FUN_0024bf20
-u32 brpRes0024bf20(s32 param_1)
-{
-    K_ASSERT(sBrpResWork != NULL, 0x39);
-    return sBrpResWork[param_1 + 4];
 }
 
 // FUN_0024c040
@@ -191,26 +209,10 @@ u32 brpRes0024c090(void)
 }
 
 
-#include "Utils.h"
 
 /* DAT_007CE348: panel effect work installed by FUN_0024C100. */
-static u32* sBpEffect;
 
-extern void func_0010a4e0(s32, s32, s32, s32);
-extern void* func_0021c790(void* frame);
-extern void func_0021d890(void* destination, const f32* vertices);
-extern void func_0021d8e0(void* destination, const f32* layout);
-extern void func_0021d950(void* destination, const u8* color);
-extern void func_0021eac0(void* destination, f32 value);
-extern void func_0021eb80(void* destination, const f32* layout);
-extern f32 DAT_007cad60;
-extern f32 DAT_007cafec;
-extern void RpSkyRenderStateSet(s32 state, u32 value);
-extern u32 D_00960090[];
-extern u32 D_0096009c[];
 
-typedef void (*BpEffectSetRenderState)(s32 state, u32 value);
-typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);
 
 // FUN_0024C100
 void FUN_0024c100(u32* work)

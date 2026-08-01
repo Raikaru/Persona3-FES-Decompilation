@@ -11,6 +11,198 @@
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
+#include "Kosaka/k_window.h"
+#include "h_dbprt.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
+extern u32 D_00960184_y2[];
+extern void (*D_0096017c)(void* memory);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+extern u16 DAT_007e094c;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u32 uGpffffb450;
+extern u32 uGpffffb454;
+extern u32 gp0xffff9460;
+extern u32 gp0xffff9464;
+extern u32 gp0xffff9468;
+extern u32 gp0xffff946c;
+extern u32 gp0xffff9470;
+extern u32 gp0xffff9474;
+extern u32 gp0xffff9478;
+extern u32 gp0xffff947c;
+extern u32 gp0xffff9480;
+extern u8 gp0xffff9484;
+extern const char gp0xffff9488[];
+extern const char gp0xffff9490[];
+extern const char gp0xffff9498[];
+extern const char gp0xffff94a0[];
+extern const char gp0xffff94a8[];
+extern const char gp0xffff94b0[];
+extern const char gp0xffff94b8[];
+extern u32 uGpffff94c4;
+extern void func_00524270_y2(void* destination, const void* source);
+extern s32 func_00524388(const char* text);
+extern f32 func_00530da0(f32 value);
+extern void func_0019d3f0(const char* file, s32 line);
+extern void func_00494cc0(void* colorData);
+extern void func_001e7a60(void* renderData);
+extern void* func_001a1550(KwlnTask* task);
+extern f32 func_001e7c20(s32 scale);
+extern void func_001e7b10(void* quad, f32 scale);
+extern void func_004933d0(void* renderLayout);
+extern void func_00493370(void* renderLayout, s32 state);
+extern f32 func_001a4600(void* camera);
+extern u32 func_00195790(void);
+extern void func_004d7f60(s32 state, u32 value);
+extern void (*D_00960090)(u32 state, u32 value);
+extern RwCamera* kwlnGetMainCamera_y2(void);
+typedef struct KWindowQuad
+{
+    RwV3d vertex[4];
+} KWindowQuad;
+typedef struct KWindowQuadStore
+{
+    u8 unknown00[0x14];
+    KWindowQuad* quad;
+} KWindowQuadStore;
+typedef struct KWindowRenderLayout
+{
+    u8 unknown00[0x30];
+    RwRGBA* tileColors;
+    u8 unknown34[0x28];
+    KWindowQuadStore* quadStore;
+} KWindowRenderLayout;
+typedef struct KWindowRenderData
+{
+    u8 unknown00[0x18];
+    KWindowRenderLayout* layout;
+} KWindowRenderData;
+typedef void (*KWindowEntryCallback)(void* value);
+typedef struct KWindowEntry
+{
+    s32 id;                         /* 0x000 */
+    s32 type;                       /* 0x004 */
+    char name[0x100];               /* 0x008 */
+    char text[0x100];               /* 0x108 */
+    s32 intValue;                   /* 0x208 */
+    f32 floatValue;                 /* 0x20c */
+    s32 minValue;                   /* 0x210 */
+    s32 maxValue;                   /* 0x214 */
+    s32 flags;                      /* 0x218 */
+    KWindowEntryCallback callback;  /* 0x21c */
+    void* callbackValue;            /* 0x220 */
+    struct KWindowEntry* previous;  /* 0x224 */
+    struct KWindowEntry* next;      /* 0x228 */
+} KWindowEntry;
+typedef struct KWindowManagerWork
+{
+    s32 state;                      /* 0x00 */
+    u32 flags;                      /* 0x04 */
+    s32 mode;                       /* 0x08 */
+    u32 request;                    /* 0x0c */
+    s32 x;                          /* 0x10 */
+    s32 y;                          /* 0x14 */
+    s32 width;                      /* 0x18 */
+    s32 height;                     /* 0x1c */
+    void* renderData;               /* 0x20 */
+    void* colorData;                /* 0x24 */
+    KwlnTask* windowTask;           /* 0x28 */
+    s32 firstVisible;               /* 0x2c */
+    s32 cursor;                     /* 0x30 */
+    s32 visibleRows;                /* 0x34 */
+    s32 entryCount;                 /* 0x38 */
+    KWindowEntry* entries;          /* 0x3c */
+    s32 nextId;                     /* 0x40 */
+} KWindowManagerWork;
+typedef struct KWindowEntryDescriptor
+{
+    const char* name;
+    s32 type;
+    const char* text;
+    s32 value0;
+    s32 value1;
+    s32 value2;
+    s32 value3;
+    KWindowEntryCallback callback;
+} KWindowEntryDescriptor;
+extern void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...);
+extern void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
+#pragma alias H_Dbprt_FmtCol3D_f32 H_Dbprt_FmtCol3D
+extern void H_Dbprt_FmtCol3D_f32(RwV2d pos, RwRGBA color, const char* fmt, f32 value);
+extern void func_00524270_y2(void* destination, const void* source);
+extern void (*D_0096017c)(void* object);
+#pragma alias D_0096017c_abs D_0096017c
+extern u32 D_0096017c_abs[];
+extern const char D_00678AF8[];
+extern const char D_00678B08[];
+extern const char D_00678B18[];
+extern const char D_00678B30[];
+static const char sKWindowValueLabel[] = "%s";
+static const char sKWindowType2Label[] = "off";
+static const char sKWindowType3Label[] = "%d";
+static const char sKWindowType4Label[] = "%.2f";
+static const char sKWindowTextLabel[] = "%s";
+void* func_001a2a80(KwlnTask* task);
+void func_001a3a60(KwlnTask* task);
+void func_001a44a0(KwlnTask* task);
+KwlnTask* func_001a3b10(KwlnTask* parent, u32 width, u32 height, u32 mode);
+void func_001a3c30(KwlnTask* task);
+u32 func_001a3f20(KwlnTask* task, const char* name);
+char* func_001a4010(KwlnTask* task, s32 id);
+void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback);
+void func_001a4090(KwlnTask* task, u32 id, const char* text);
+void func_001a4110(KwlnTask* task, u32 id, s32 value, s32 minValue,
+                   s32 maxValue, s32 flags);
+s32* func_001a41b0(KwlnTask* task, u32 id);
+void func_001a41f0(KwlnTask* task, u32 id, s32 value);
+void func_001a4260(KwlnTask* task, u32 id, s32 value, s32 minValue,
+                   s32 maxValue);
+KWindowEntry* func_001a4330(KwlnTask* task, s32 id);
+s32 func_001a4510(KwlnTask* task);
+static inline void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
+                                    f32 floatDelta)
+{
+    f32 value;
+
+    if (entry == NULL)
+    {
+        return;
+    }
+
+    if (entry->type == 4)
+    {
+        value = entry->floatValue + floatDelta;
+        if (value < (f32)entry->minValue)
+        {
+            value = (f32)entry->maxValue;
+        }
+        else if (value > (f32)entry->maxValue)
+        {
+            value = (f32)entry->minValue;
+        }
+        entry->floatValue = value;
+    }
+    else if (entry->type == 3)
+    {
+        entry->intValue += delta;
+        if (entry->intValue < entry->minValue)
+        {
+            entry->intValue = entry->maxValue;
+        }
+        else if (entry->intValue > entry->maxValue)
+        {
+            entry->intValue = entry->minValue;
+        }
+    }
+    else if (entry->type == 2)
+    {
+        entry->intValue = (entry->intValue == 1) ? 0 : 1;
+    }
+}
+
+
 #pragma alias D_0096017c_y2 D_0096017c
 #pragma alias D_00960184_y2 D_00960184_y2
 #pragma alias func_00524270_y2 func_00524270_y2
@@ -979,56 +1171,6 @@ KwlnTask* K_SceneDraw_CreateTasks(KwlnTask* rootProcTask)
     return sceneDrawTask;
 }
 
-// FUN_0019fd40
-RwRGBAReal* K_Scene_GetFldAmbLightColor()
-{
-    ResrcFld* res;
-
-    res = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    return &res->ambLightColor;
-}
-
-// FUN_001a0a10
-RwRGBAReal* K_Scene_GetCharAmbLightColor()
-{
-    ResrcLightChar* res;
-
-    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
-    if (res != NULL)
-    {
-        return &res->directionalColor;
-    }
-
-    return NULL;
-}
-
-// FUN_001a0250
-u32 K_Scene_001a0250()
-{
-    s32 fldMajor;
-
-    fldMajor = gMtScene->fldMajorId;
-
-    if ((fldMajor >= 21 && fldMajor <= 28 && gMtScene->fldMinorId == 0) ||
-        (fldMajor >= 41 && fldMajor <= 48 && gMtScene->fldMinorId == 0))
-    {
-        return true;
-    }
-
-    return false;
-}
-
-// FUN_001a0410
-void K_Scene_SetShouldSortChars(u32 shouldSortChars)
-{
-    gMtScene->shouldSortChars = shouldSortChars;
-}
-
-// FUN_001a0420
-void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
-{
-    gMtScene->shouldSortNpcs = shouldSortNpcs;
-}
 // FUN_0019f8f0
 void func_0019f8f0(const RwRGBAReal* color)
 {
@@ -1092,6 +1234,15 @@ void func_0019f8f0(const RwRGBAReal* color)
     gFogAlpha = (u8)fogAlpha;
 }
 
+// FUN_0019fd40
+RwRGBAReal* K_Scene_GetFldAmbLightColor()
+{
+    ResrcFld* res;
+
+    res = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    return &res->ambLightColor;
+}
+
 // FUN_0019fd70
 RwRGBAReal* func_0019fd70()
 {
@@ -1116,7 +1267,6 @@ void func_0019fdd0(const void* position)
     MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     func_001b5950(gMtScene->fldFilterTask, position);
 }
-
 // FUN_0019fe20
 void func_0019fe20(const void* position)
 {
@@ -1257,6 +1407,22 @@ u32 func_001a01c0()
     return false;
 }
 
+// FUN_001a0250
+u32 K_Scene_001a0250()
+{
+    s32 fldMajor;
+
+    fldMajor = gMtScene->fldMajorId;
+
+    if ((fldMajor >= 21 && fldMajor <= 28 && gMtScene->fldMinorId == 0) ||
+        (fldMajor >= 41 && fldMajor <= 48 && gMtScene->fldMinorId == 0))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 // FUN_001a02c0
 u32 func_001a02c0()
 {
@@ -1289,6 +1455,19 @@ u32 func_001a0310()
 
     return false;
 }
+
+// FUN_001a0410
+void K_Scene_SetShouldSortChars(u32 shouldSortChars)
+{
+    gMtScene->shouldSortChars = shouldSortChars;
+}
+
+// FUN_001a0420
+void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
+{
+    gMtScene->shouldSortNpcs = shouldSortNpcs;
+}
+
 // FUN_001a0430
 void func_001a0430(u16 resTypeId, u32 customLight)
 {
@@ -1334,7 +1513,6 @@ void func_001a0430(u16 resTypeId, u32 customLight)
         else res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
     }
 }
-
 // FUN_001a0590
 void func_001a0590(u16 resTypeId, u32 directionalOnly)
 {
@@ -1466,6 +1644,20 @@ RwRGBAReal* func_001a09d0()
     {
         return (RwRGBAReal*)((u8*)res + 0x100);
     }
+    return NULL;
+}
+
+// FUN_001a0a10
+RwRGBAReal* K_Scene_GetCharAmbLightColor()
+{
+    ResrcLightChar* res;
+
+    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        return &res->directionalColor;
+    }
+
     return NULL;
 }
 
@@ -1902,80 +2094,12 @@ void* func_001a1540()
 }
 
 
-#include "Kosaka/k_window.h"
-#include "h_dbprt.h"
-#pragma alias rwGlobals_abs rwGlobals
-extern u8 rwGlobals_abs[];
 
-extern u32 D_00960184_y2[];
-extern void (*D_0096017c)(void* memory);
-#pragma alias D_00960090_abs D_00960090
-extern u8 D_00960090_abs[];
-extern u16 DAT_007e094c;
-extern u16 DAT_007e094e;
-extern u16 DAT_007e0952;
-extern u32 uGpffffb450;
-extern u32 uGpffffb454;
-extern u32 gp0xffff9460;
-extern u32 gp0xffff9464;
-extern u32 gp0xffff9468;
-extern u32 gp0xffff946c;
-extern u32 gp0xffff9470;
-extern u32 gp0xffff9474;
-extern u32 gp0xffff9478;
-extern u32 gp0xffff947c;
-extern u32 gp0xffff9480;
-extern u8 gp0xffff9484;
-extern const char gp0xffff9488[];
-extern const char gp0xffff9490[];
-extern const char gp0xffff9498[];
-extern const char gp0xffff94a0[];
-extern const char gp0xffff94a8[];
-extern const char gp0xffff94b0[];
-extern const char gp0xffff94b8[];
-extern u32 uGpffff94c4;
-extern void func_00524270_y2(void* destination, const void* source);
-extern s32 func_00524388(const char* text);
-extern f32 func_00530da0(f32 value);
-extern void func_0019d3f0(const char* file, s32 line);
 
-extern void func_00494cc0(void* colorData);
-extern void func_001e7a60(void* renderData);
-extern void* func_001a1550(KwlnTask* task);
-extern f32 func_001e7c20(s32 scale);
-extern void func_001e7b10(void* quad, f32 scale);
-extern void func_004933d0(void* renderLayout);
-extern void func_00493370(void* renderLayout, s32 state);
-extern f32 func_001a4600(void* camera);
-extern u32 func_00195790(void);
-extern void func_004d7f60(s32 state, u32 value);
-extern void (*D_00960090)(u32 state, u32 value);
-extern RwCamera* kwlnGetMainCamera_y2(void);
 
-typedef struct KWindowQuad
-{
-    RwV3d vertex[4];
-} KWindowQuad;
 
-typedef struct KWindowQuadStore
-{
-    u8 unknown00[0x14];
-    KWindowQuad* quad;
-} KWindowQuadStore;
 
-typedef struct KWindowRenderLayout
-{
-    u8 unknown00[0x30];
-    RwRGBA* tileColors;
-    u8 unknown34[0x28];
-    KWindowQuadStore* quadStore;
-} KWindowRenderLayout;
 
-typedef struct KWindowRenderData
-{
-    u8 unknown00[0x18];
-    KWindowRenderLayout* layout;
-} KWindowRenderData;
 // FUN_001a1550 NONMATCHING
 void* func_001a1550(KwlnTask* task)
 {
@@ -2453,95 +2577,13 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
  * the retail task stores the manager at KwlnTask::workData and all offsets
  * below are relative to that manager block.
  */
-typedef void (*KWindowEntryCallback)(void* value);
 
-typedef struct KWindowEntry
-{
-    s32 id;                         /* 0x000 */
-    s32 type;                       /* 0x004 */
-    char name[0x100];               /* 0x008 */
-    char text[0x100];               /* 0x108 */
-    s32 intValue;                   /* 0x208 */
-    f32 floatValue;                 /* 0x20c */
-    s32 minValue;                   /* 0x210 */
-    s32 maxValue;                   /* 0x214 */
-    s32 flags;                      /* 0x218 */
-    KWindowEntryCallback callback;  /* 0x21c */
-    void* callbackValue;            /* 0x220 */
-    struct KWindowEntry* previous;  /* 0x224 */
-    struct KWindowEntry* next;      /* 0x228 */
-} KWindowEntry;
 
-typedef struct KWindowManagerWork
-{
-    s32 state;                      /* 0x00 */
-    u32 flags;                      /* 0x04 */
-    s32 mode;                       /* 0x08 */
-    u32 request;                    /* 0x0c */
-    s32 x;                          /* 0x10 */
-    s32 y;                          /* 0x14 */
-    s32 width;                      /* 0x18 */
-    s32 height;                     /* 0x1c */
-    void* renderData;               /* 0x20 */
-    void* colorData;                /* 0x24 */
-    KwlnTask* windowTask;           /* 0x28 */
-    s32 firstVisible;               /* 0x2c */
-    s32 cursor;                     /* 0x30 */
-    s32 visibleRows;                /* 0x34 */
-    s32 entryCount;                 /* 0x38 */
-    KWindowEntry* entries;          /* 0x3c */
-    s32 nextId;                     /* 0x40 */
-} KWindowManagerWork;
 
-typedef struct KWindowEntryDescriptor
-{
-    const char* name;
-    s32 type;
-    const char* text;
-    s32 value0;
-    s32 value1;
-    s32 value2;
-    s32 value3;
-    KWindowEntryCallback callback;
-} KWindowEntryDescriptor;
 
-extern void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...);
-extern void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
-#pragma alias H_Dbprt_FmtCol3D_f32 H_Dbprt_FmtCol3D
-extern void H_Dbprt_FmtCol3D_f32(RwV2d pos, RwRGBA color, const char* fmt, f32 value);
-extern void func_00524270_y2(void* destination, const void* source);
-extern void (*D_0096017c)(void* object);
-#pragma alias D_0096017c_abs D_0096017c
-extern u32 D_0096017c_abs[];
-extern const char D_00678AF8[];
-extern const char D_00678B08[];
-extern const char D_00678B18[];
-extern const char D_00678B30[];
 
-static const char sKWindowValueLabel[] = "%s";
-static const char sKWindowType2Label[] = "off";
-static const char sKWindowType3Label[] = "%d";
-static const char sKWindowType4Label[] = "%.2f";
-static const char sKWindowTextLabel[] = "%s";
 
-void* func_001a2a80(KwlnTask* task);
-void func_001a3a60(KwlnTask* task);
-void func_001a44a0(KwlnTask* task);
 
-KwlnTask* func_001a3b10(KwlnTask* parent, u32 width, u32 height, u32 mode);
-void func_001a3c30(KwlnTask* task);
-u32 func_001a3f20(KwlnTask* task, const char* name);
-char* func_001a4010(KwlnTask* task, s32 id);
-void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback);
-void func_001a4090(KwlnTask* task, u32 id, const char* text);
-void func_001a4110(KwlnTask* task, u32 id, s32 value, s32 minValue,
-                   s32 maxValue, s32 flags);
-s32* func_001a41b0(KwlnTask* task, u32 id);
-void func_001a41f0(KwlnTask* task, u32 id, s32 value);
-void func_001a4260(KwlnTask* task, u32 id, s32 value, s32 minValue,
-                   s32 maxValue);
-KWindowEntry* func_001a4330(KwlnTask* task, s32 id);
-s32 func_001a4510(KwlnTask* task);
 
 static inline KWindowManagerWork* KWindow_GetManager(KwlnTask* task)
 {
@@ -2602,46 +2644,6 @@ static inline void KWindow_InvokeEntryCallback(KWindowEntry* entry)
     }
 }
 
-static inline void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
-                                    f32 floatDelta)
-{
-    f32 value;
-
-    if (entry == NULL)
-    {
-        return;
-    }
-
-    if (entry->type == 4)
-    {
-        value = entry->floatValue + floatDelta;
-        if (value < (f32)entry->minValue)
-        {
-            value = (f32)entry->maxValue;
-        }
-        else if (value > (f32)entry->maxValue)
-        {
-            value = (f32)entry->minValue;
-        }
-        entry->floatValue = value;
-    }
-    else if (entry->type == 3)
-    {
-        entry->intValue += delta;
-        if (entry->intValue < entry->minValue)
-        {
-            entry->intValue = entry->maxValue;
-        }
-        else if (entry->intValue > entry->maxValue)
-        {
-            entry->intValue = entry->minValue;
-        }
-    }
-    else if (entry->type == 2)
-    {
-        entry->intValue = (entry->intValue == 1) ? 0 : 1;
-    }
-}
 
 static inline void KWindow_MoveDown(KWindowManagerWork* manager)
 {

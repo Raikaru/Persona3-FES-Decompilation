@@ -3,6 +3,66 @@
 #include "h_cdvd.h"
 #include "rw/rwcore.h"
 
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Kosaka/k_assert.h"
+#include "libm.h"
+typedef int (*code)(...);
+extern void* opRes00266c50(u32 id);
+extern void* func_0021cca0_u32(void* resource, u32 index);
+#pragma alias func_0021cca0_u32 func_0021cca0
+extern void* func_0021cce0_ptr(void* frame);
+#pragma alias func_0021cce0_ptr func_0021cce0
+extern void func_0021d3b0(void* destination, void* source);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d890(void* destination, const f32* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+extern void func_004d7f60(s32 state, u32 value);
+extern u32 (*DAT_00960178_abs[])(u32 size, u32 heap);
+extern void (*DAT_0096017c[])(void* memory);
+extern void (*D_009600A4[])(u32, u32, u32, u32, u32);
+extern u32 FUN_00488f30(void);
+extern f32 DAT_007cb164;
+extern f32 DAT_007cad78;
+extern f32 DAT_007cb08c;
+void opTitle00269500(void);
+static u32* sOpTitle; // DAT_007ce3ac / puGpffffb6bc
+typedef struct OpTitleMesh
+{
+    s32 unk0;
+    s32 unk4;
+    s32 width;
+    s32 height;
+    s32 unk10;
+    s32 unk14;
+    s32 mode;
+} OpTitleMesh;
+#pragma alias bpPersonaInit FUN_00266eb0
+#pragma alias bpPersonaShutdown FUN_00266f00
+#pragma alias bpPersonaLoad FUN_00266F60
+#pragma alias bpPersonaDestroy FUN_00267120
+#pragma alias bpPersonaUpdate FUN_00267180
+#pragma alias bpPersonaIsLoading FUN_00267210
+#pragma alias bpPersonaSetPersona FUN_00267070
+static u32* sBpPersona; // DAT_007ce398
+void bpPersonaDestroy();
+long FUN_003c9ab0();
+u32 FUN_001749a0(u32 param_1);
+u32 FUN_003c9850(u32 param_1, u32 param_2, u32 param_3, u32 param_4);
+void FUN_003c9b00(u32 param_1, u32 param_2, u32 param_3);
+void FUN_003c9cd0(u32 param_1, s64 param_2);
+void FUN_003c9d00(u32 param_1, u32 param_2);
+s32 FUN_001756f0(void);
+void FUN_003c9e00(u32 param_1, u32 param_2);
+u32 FUN_001749a0();
+void FUN_003c9b00();
+
+
 
 
 
@@ -12,6 +72,125 @@
 static void* sRushRaster;                        // 007ce3a8
 static RwRaster* sRasters[BSROOT_INIT_TMXCOUNT]; // 007ce3a0
 
+// FUN_00266eb0
+void bpPersonaInit(u32* param_1)
+{
+    K_ASSERT(sBpPersona == NULL, 0x2b);
+    *param_1 = 0;
+    sBpPersona = param_1;
+}
+
+// FUN_00266f00
+void bpPersonaShutdown(void)
+{
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    if (*sBpPersona & 1) {
+        bpPersonaDestroy();
+    }
+    sBpPersona = NULL;
+}
+
+// FUN_00266F60
+void bpPersonaLoad(u32 param_1)
+{
+    u32* work;
+    u32 persona;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    *(u16*)(work + 2) = (u16)param_1;
+    persona = FUN_001749a0(param_1);
+    work[1] = FUN_003c9850(0, 0, 5, 0);
+    FUN_003c9b00(work[1], persona, 0);
+    FUN_003c9cd0(work[1], (s64)-1);
+    FUN_003c9d00(work[1], 8);
+    if ((u16)FUN_001756f0() > 1)
+    {
+        FUN_003c9e00(work[1], 1);
+    }
+    else
+    {
+        FUN_003c9e00(work[1], 0);
+    }
+    *work |= 2;
+    *work |= 1;
+}
+
+
+
+
+
+
+
+
+
+static inline void opTitleSetPoly(void* destination, f32* layout, f32 scaleX, f32 scaleY)
+{
+    s32 i;
+
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] -= 320.0f;
+        layout[i * 2 + 1] -= 224.0f;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] *= scaleX;
+        layout[i * 2 + 1] *= scaleY;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] += 320.0f;
+        layout[i * 2 + 1] += 224.0f;
+    }
+    func_0021d890(destination, layout);
+}
+
+// FUN_00267070
+void bpPersonaSetPersona(u32 param_1)
+{
+    u32* work;
+    u32 uVar2;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    K_ASSERT((u16)sBpPersona[2] != (u16)param_1, 0x5c);
+    *(u16*)(work + 2) = param_1;
+    uVar2 = FUN_001749a0(param_1);
+    FUN_003c9b00(work[1], uVar2, 0);
+    *work |= 2;
+}
+
+// FUN_00267120
+void bpPersonaDestroy(void)
+{
+    u32* work;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
+    *work &= 0xfffffffe;
+}
+
+// FUN_00267180
+void bpPersonaUpdate(void)
+{
+    u32* work;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    if ((~*work & 1) == 0 && (*work & 2) != 0 && FUN_003c9ab0(work[1]) != 0) {
+        *work &= 0xfffffffd;
+    }
+}
+
+
+// FUN_00267210
+u32 bpPersonaIsLoading(void)
+{
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    return *sBpPersona & 2;
+}
 // FUN_00267260
 void bsRootInit(void)
 {
@@ -57,65 +236,6 @@ void* bsRootGetRushRaster(void)
     return sRushRaster;
 }
 
-
-#include "Kernel/Kwln/kwlnTask.h"
-#include "Kosaka/k_assert.h"
-
-#include "libm.h"
-
-
-
-
-typedef int (*code)(...);
-extern void* opRes00266c50(u32 id);
-extern void* func_0021cca0_u32(void* resource, u32 index);
-#pragma alias func_0021cca0_u32 func_0021cca0
-extern void* func_0021cce0_ptr(void* frame);
-#pragma alias func_0021cce0_ptr func_0021cce0
-extern void func_0021d3b0(void* destination, void* source);
-extern void func_0021d8e0(void* destination, const f32* layout);
-extern void func_0021d890(void* destination, const f32* layout);
-extern void func_0021d950(void* destination, const u8* color);
-extern void (*D_00960090)(u32 state, u32 value);
-#pragma alias D_00960090_abs D_00960090
-extern u8 D_00960090_abs[];
-extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
-#pragma alias D_0096009C_abs D_0096009C
-extern u8 D_0096009C_abs[];
-extern void func_004d7f60(s32 state, u32 value);
-extern u32 (*DAT_00960178_abs[])(u32 size, u32 heap);
-extern void (*DAT_0096017c[])(void* memory);
-extern void (*D_009600A4[])(u32, u32, u32, u32, u32);
-extern u32 FUN_00488f30(void);
-extern f32 DAT_007cb164;
-extern f32 DAT_007cad78;
-extern f32 DAT_007cb08c;
-void opTitle00269500(void);
-
-
-static u32* sOpTitle; // DAT_007ce3ac / puGpffffb6bc
-static inline void opTitleSetPoly(void* destination, f32* layout, f32 scaleX, f32 scaleY)
-{
-    s32 i;
-
-    for (i = 0; i < 4; i++)
-    {
-        layout[i * 2] -= 320.0f;
-        layout[i * 2 + 1] -= 224.0f;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        layout[i * 2] *= scaleX;
-        layout[i * 2 + 1] *= scaleY;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        layout[i * 2] += 320.0f;
-        layout[i * 2 + 1] += 224.0f;
-    }
-    func_0021d890(destination, layout);
-}
-
 // FUN_002673a0
 void opTitle002673a0(u32* param_1)
 {
@@ -130,14 +250,6 @@ void opTitle002673f0(void)
     K_ASSERT(sOpTitle != NULL, 0x8e);
     sOpTitle = NULL;
 }
-
-// FUN_002694b0
-void opTitle002694b0(void)
-{
-    K_ASSERT(sOpTitle != NULL, 0x8e);
-    *sOpTitle &= 0xfffffffe;
-}
-
 
 // FUN_00267430 NONMATCHING
 void opTitle00267430(void)
@@ -755,6 +867,7 @@ void opTitle00267430(void)
         }
     }
 }
+
 // FUN_00268E20
 void opTitle00268e20(void)
 {
@@ -873,6 +986,14 @@ void opTitle002692d0(void)
     *work |= 1;
 }
 
+// FUN_002694b0
+void opTitle002694b0(void)
+{
+    K_ASSERT(sOpTitle != NULL, 0x8e);
+    *sOpTitle &= 0xfffffffe;
+}
+
+
 // FUN_00269500
 void opTitle00269500(void)
 {
@@ -897,13 +1018,6 @@ void opTitle00269550(void)
     *work |= 4;
 }
 
-// FUN_00269640
-u32 opTitle00269640(void)
-{
-    K_ASSERT(sOpTitle != NULL, 0x8e);
-    return *sOpTitle & 4;
-}
-
 // FUN_002695b0
 void opTitle002695b0(void)
 {
@@ -914,6 +1028,19 @@ void opTitle002695b0(void)
     K_ASSERT((*sOpTitle & 4) != 0, 0x4bc);
     K_ASSERT(puVar1[2] == 0, 0x4bd);
     puVar1[1] = 200;
+}
+
+
+
+
+
+
+
+// FUN_00269640
+u32 opTitle00269640(void)
+{
+    K_ASSERT(sOpTitle != NULL, 0x8e);
+    return *sOpTitle & 4;
 }
 
 // FUN_00269690 NONMATCHING
@@ -1055,7 +1182,6 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
     mesh[5] = (u32)vertexCount;
     return mesh;
 }
-
 // FUN_002699A0
 void opTitle002699a0(void* memory)
 {
@@ -1067,17 +1193,6 @@ void opTitle002699d0(u32* vertex)
 {
     (*D_009600A4)(3, vertex[0], vertex[4], vertex[1], vertex[5]);
 }
-
-typedef struct OpTitleMesh
-{
-    s32 unk0;
-    s32 unk4;
-    s32 width;
-    s32 height;
-    s32 unk10;
-    s32 unk14;
-    s32 mode;
-} OpTitleMesh;
 
 // FUN_00269A10
 void opTitle00269a10(OpTitleMesh* mesh, u32* callback)
@@ -1172,122 +1287,9 @@ f32 opTitle00269c80(f32 value)
     return sinf(value);
 }
 
+
 // FUN_00269CA0
 f32 opTitle00269ca0(f32 value)
 {
     return cosf(value);
-}
-
-
-#pragma alias bpPersonaInit FUN_00266eb0
-#pragma alias bpPersonaShutdown FUN_00266f00
-#pragma alias bpPersonaLoad FUN_00266F60
-#pragma alias bpPersonaDestroy FUN_00267120
-#pragma alias bpPersonaUpdate FUN_00267180
-#pragma alias bpPersonaIsLoading FUN_00267210
-#pragma alias bpPersonaSetPersona FUN_00267070
-
-
-static u32* sBpPersona; // DAT_007ce398
-
-void bpPersonaDestroy();
-long FUN_003c9ab0();
-u32 FUN_001749a0(u32 param_1);
-u32 FUN_003c9850(u32 param_1, u32 param_2, u32 param_3, u32 param_4);
-void FUN_003c9b00(u32 param_1, u32 param_2, u32 param_3);
-void FUN_003c9cd0(u32 param_1, s64 param_2);
-void FUN_003c9d00(u32 param_1, u32 param_2);
-s32 FUN_001756f0(void);
-void FUN_003c9e00(u32 param_1, u32 param_2);
-
-
-// FUN_00266eb0
-void bpPersonaInit(u32* param_1)
-{
-    K_ASSERT(sBpPersona == NULL, 0x2b);
-    *param_1 = 0;
-    sBpPersona = param_1;
-}
-
-// FUN_00266f00
-void bpPersonaShutdown(void)
-{
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    if (*sBpPersona & 1) {
-        bpPersonaDestroy();
-    }
-    sBpPersona = NULL;
-}
-// FUN_00266F60
-void bpPersonaLoad(u32 param_1)
-{
-    u32* work;
-    u32 persona;
-
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    work = sBpPersona;
-    *(u16*)(work + 2) = (u16)param_1;
-    persona = FUN_001749a0(param_1);
-    work[1] = FUN_003c9850(0, 0, 5, 0);
-    FUN_003c9b00(work[1], persona, 0);
-    FUN_003c9cd0(work[1], (s64)-1);
-    FUN_003c9d00(work[1], 8);
-    if ((u16)FUN_001756f0() > 1)
-    {
-        FUN_003c9e00(work[1], 1);
-    }
-    else
-    {
-        FUN_003c9e00(work[1], 0);
-    }
-    *work |= 2;
-    *work |= 1;
-}
-
-// FUN_00267120
-void bpPersonaDestroy(void)
-{
-    u32* work;
-
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    work = sBpPersona;
-    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
-    *work &= 0xfffffffe;
-}
-
-// FUN_00267180
-void bpPersonaUpdate(void)
-{
-    u32* work;
-
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    work = sBpPersona;
-    if ((~*work & 1) == 0 && (*work & 2) != 0 && FUN_003c9ab0(work[1]) != 0) {
-        *work &= 0xfffffffd;
-    }
-}
-
-// FUN_00267210
-u32 bpPersonaIsLoading(void)
-{
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    return *sBpPersona & 2;
-}
-
-u32 FUN_001749a0();
-void FUN_003c9b00();
-
-// FUN_00267070
-void bpPersonaSetPersona(u32 param_1)
-{
-    u32* work;
-    u32 uVar2;
-
-    K_ASSERT(sBpPersona != NULL, 0x24);
-    work = sBpPersona;
-    K_ASSERT((u16)sBpPersona[2] != (u16)param_1, 0x5c);
-    *(u16*)(work + 2) = param_1;
-    uVar2 = FUN_001749a0(param_1);
-    FUN_003c9b00(work[1], uVar2, 0);
-    *work |= 2;
 }

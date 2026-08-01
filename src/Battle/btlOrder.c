@@ -506,6 +506,59 @@ void FUN_0029ac70(BtlAction* action)
         gBtl->order.flags |= 8;
     }
 }
+// FUN_0029ad20
+BtlAction* btlOrderGetActionPlaying()
+{
+    BtlAction** actions;
+
+    actions = gBtl->order.actions2;
+    if (actions[BTLORDER_CURRENT] == NULL)
+    {
+        actions = gBtl->order.actions;
+    }
+
+    return *actions;
+}
+
+// FUN_0029ad50
+BtlAction* btlOrderGetPrevActionPlaying()
+{
+    return gBtl->order.prevActionPlaying;
+}
+
+// FUN_0029ad60
+BtlAction* btlOrderGetActionByIdx(u16 idx)
+{
+    if (idx >= BTL_MAXACTIONS)
+    {
+        return NULL;
+    }
+
+    return gBtl->order.actions[idx];
+}
+
+// FUN_0029ada0
+BtlUnit* btlOrderGetUnitByIdx(u16 idx)
+{
+    BtlAction* action;
+
+    if (idx >= BTL_MAXACTIONS)
+    {
+        action = NULL;
+    }
+    else
+    {
+        action = gBtl->order.actions[idx];
+    }
+
+    if (action == NULL)
+    {
+        return NULL;
+    }
+
+    return action->unit;
+}
+
 // FUN_0029adf0
 u32 FUN_0029adf0(BtlAction* action)
 {
@@ -626,59 +679,6 @@ void FUN_0029b040(void)
 void FUN_0029b070(void)
 {
     gBtl->order.flags &= ~1;
-}
-
-// FUN_0029ad20
-BtlAction* btlOrderGetActionPlaying()
-{
-    BtlAction** actions;
-
-    actions = gBtl->order.actions2;
-    if (actions[BTLORDER_CURRENT] == NULL)
-    {
-        actions = gBtl->order.actions;
-    }
-
-    return *actions;
-}
-
-// FUN_0029ad50
-BtlAction* btlOrderGetPrevActionPlaying()
-{
-    return gBtl->order.prevActionPlaying;
-}
-
-// FUN_0029ad60
-BtlAction* btlOrderGetActionByIdx(u16 idx)
-{
-    if (idx >= BTL_MAXACTIONS)
-    {
-        return NULL;
-    }
-
-    return gBtl->order.actions[idx];
-}
-
-// FUN_0029ada0
-BtlUnit* btlOrderGetUnitByIdx(u16 idx)
-{
-    BtlAction* action;
-
-    if (idx >= BTL_MAXACTIONS)
-    {
-        action = NULL;
-    }
-    else
-    {
-        action = gBtl->order.actions[idx];
-    }
-
-    if (action == NULL)
-    {
-        return NULL;
-    }
-
-    return action->unit;
 }
 
 // FUN_0029b090
