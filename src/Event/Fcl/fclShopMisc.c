@@ -158,6 +158,7 @@ extern u32 fclCombineList003df100();
 #define FCL_SHOP_MISC_AT(OFFSET) \
     ((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ FclShopDispatchResult *)((u8 *)source + (OFFSET)))
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
+extern char DAT_007cd954;
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
 extern u8 DAT_006aede8_abs[];
@@ -5961,7 +5962,7 @@ void FUN_003f7730(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 2],0);
 
-  sprintf((char *)auStack_10,0x7cd954,*(u16 *)(iVar2 + 0xe));
+  sprintf((char *)auStack_10,&DAT_007cd954,*(u16 *)(iVar2 + 0xe));
 
   FUN_0040eb50(0,(int)param_1 + 0x8b,(int)param_2 + 0xc,param_3,1,auStack_10,1);
 
@@ -6002,13 +6003,13 @@ void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int
     FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[0],0);
     FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[1],0);
     FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[2],0);
-    sprintf((char *)text,0x7cd954,*(u16 *)(data + 0xe));
+    sprintf((char *)text,&DAT_007cd954,*(u16 *)(data + 0xe));
     FUN_0040eb50(0,param_1 + 0x95,param_2 + 0x99,param_3,3,text,1);
     break;
   case 1:
     FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[3],0);
     FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[5],0);
-    sprintf((char *)text,0x7cd954,*(u16 *)(data + 0xe));
+    sprintf((char *)text,&DAT_007cd954,*(u16 *)(data + 0xe));
     FUN_0040eb50(0,param_1 + 0x223,param_2 + 0xa2,param_3,3,text,1);
     break;
   }

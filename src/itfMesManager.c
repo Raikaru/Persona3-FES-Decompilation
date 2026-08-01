@@ -72,6 +72,14 @@ extern code DAT_00960178;
 extern u8 DAT_006a1be0_abs[];
 #pragma alias DAT_006a1a70_abs DAT_006a1a70
 extern u8 DAT_006a1a70_abs[];
+#pragma alias DAT_00959ed8_abs DAT_00959ed8
+extern u8 DAT_00959ed8_abs[];
+#pragma alias DAT_006a1b58_abs DAT_006a1b58
+extern u8 DAT_006a1b58_abs[];
+#pragma alias DAT_006a1b68_abs DAT_006a1b68
+extern u8 DAT_006a1b68_abs[];
+#pragma alias DAT_006a1b80_abs DAT_006a1b80
+extern u8 DAT_006a1b80_abs[];
 
 extern void thunk_FUN_003a6334();
 #pragma alias thunk_FUN_003a6334_typed thunk_FUN_003a6334
@@ -2607,7 +2615,7 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
 }
 #define FUN_003a4b90(...) ((u64 (*)(...))FUN_003a4b90)(__VA_ARGS__)
 #undef FUN_003a4ce0
-// FUN_003A4CE0 NONMATCHING
+// FUN_003A4CE0
 
 
 void FUN_003a4ce0(void)
@@ -2620,25 +2628,22 @@ void FUN_003a4ce0(void)
 
   
 
-  DAT_00959ec0 = 0;
+  *(u32 *)DAT_00959ec0_abs = 0;
+  *(u32 *)DAT_00959ec8_abs = 0;
+  *(u16 *)DAT_00959ecc_abs = 0;
+  FUN_003b4920(DAT_00959ed0_abs,DAT_00959ee0_abs,0x40,0x34);
+  for (iVar1 = *(int *)DAT_00959ed8_abs; iVar1 != 0; iVar1 = *(int *)(iVar1 + 4)) {
 
-  DAT_00959ec8 = 0;
-
-  DAT_00959ecc = 0;
-
-  FUN_003b4920(0x959ed0,0x959ee0,0x40,0x34);
-
-  for (iVar1 = DAT_00959ed8; iVar1 != 0; iVar1 = *(int *)(iVar1 + 4)) {
 
     *(u32 *)(iVar1 + 0xc) = 0;
 
   }
 
-  FUN_0035ad80(0x6a1b58,0x106f,0,0,0x3a8440,0x3a8530,0);
+  FUN_0035ad80(DAT_006a1b58_abs,0x106f,0,0,FUN_003a8440,FUN_003a8530,0);
 
-  FUN_00194c50(0x6a1b68,0x1cbf,0x3a84c0,0x3a8530,0);
+  FUN_00194c50(DAT_006a1b68_abs,0x1cbf,FUN_003a84c0,FUN_003a8530,0);
 
-  FUN_005225a8(0x6a1b80,0x6a1a70);
+  FUN_005225a8(DAT_006a1b80_abs,DAT_006a1a70_abs);
 
   return;
 
