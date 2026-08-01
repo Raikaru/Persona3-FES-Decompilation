@@ -5,43 +5,15 @@
 
 
 
-// FUN_001a4580
-void K_View_SetFov(RwCamera* camera, f32 fov)
-{
-    RwV2d viewWindow;
-
-    viewWindow.y = tanf(DEG_TO_RAD(fov) / 2.0f);
-    viewWindow.x = gAspectRatio * viewWindow.y;
-
-    RwCameraSetViewWindow(camera, &viewWindow);
-}
-
-// FUN_001a4600
-f32 K_View_GetFov(RwCamera* camera)
-{
-    f32 x;
-    RwV2d* viewWindow;
-
-    viewWindow = &camera->viewWindow;
-
-    // Retained unused retail call; removing it changes the matched instruction sequence.
-    atanf(viewWindow->x);
-    x = atanf(viewWindow->y) * 2.0f;
-
-    return RAD_TO_DEG(x);
-}
 
 #include "Kosaka/k_window.h"
 #include "rw/rwcore.h"
 #include "h_dbprt.h"
 #include "Kosaka/k_assert.h"
-#pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
-
 #include "Kernel/Kwln/kwlnTask.h"
 extern u32 D_00960184[];
 extern void (*D_0096017c)(void* memory);
-#pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
@@ -70,7 +42,6 @@ extern void func_00524270(void* destination, const void* source);
 extern s32 func_00524388(const char* text);
 extern f32 func_00530da0(f32 value);
 extern void func_0019d3f0(const char* file, s32 line);
-
 extern void func_00494cc0(void* colorData);
 extern void func_001e7a60(void* renderData);
 extern void* func_001a1550(KwlnTask* task);
@@ -86,18 +57,15 @@ extern u32 func_00195790(void);
 extern void func_004d7f60(s32 state, u32 value);
 extern void (*D_00960090)(u32 state, u32 value);
 extern RwCamera* kwlnGetMainCamera(void);
-
 typedef struct KWindowQuad
 {
     RwV3d vertex[4];
 } KWindowQuad;
-
 typedef struct KWindowQuadStore
 {
     u8 unknown00[0x14];
     KWindowQuad* quad;
 } KWindowQuadStore;
-
 typedef struct KWindowRenderLayout
 {
     u8 unknown00[0x30];
@@ -105,28 +73,12 @@ typedef struct KWindowRenderLayout
     u8 unknown34[0x28];
     KWindowQuadStore* quadStore;
 } KWindowRenderLayout;
-
 typedef struct KWindowRenderData
 {
     u8 unknown00[0x18];
     KWindowRenderLayout* layout;
 } KWindowRenderData;
-
-
- 
-
-
-
-
-
-/*
- * The task below owns the small text/value editor used by the debug window.
- * Its work area is deliberately kept separate from KWindowTaskWork above:
- * the retail task stores the manager at KwlnTask::workData and all offsets
- * below are relative to that manager block.
- */
 typedef void (*KWindowEntryCallback)(void* value);
-
 typedef struct KWindowEntry
 {
     s32 id;                         /* 0x000 */
@@ -143,7 +95,6 @@ typedef struct KWindowEntry
     struct KWindowEntry* previous;  /* 0x224 */
     struct KWindowEntry* next;      /* 0x228 */
 } KWindowEntry;
-
 typedef struct KWindowManagerWork
 {
     s32 state;                      /* 0x00 */
@@ -164,7 +115,6 @@ typedef struct KWindowManagerWork
     KWindowEntry* entries;          /* 0x3c */
     s32 nextId;                     /* 0x40 */
 } KWindowManagerWork;
-
 typedef struct KWindowEntryDescriptor
 {
     const char* name;
@@ -176,31 +126,25 @@ typedef struct KWindowEntryDescriptor
     s32 value3;
     KWindowEntryCallback callback;
 } KWindowEntryDescriptor;
-
 extern void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...);
 extern void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
-#pragma alias H_Dbprt_FmtCol3D_f32 H_Dbprt_FmtCol3D
 extern void H_Dbprt_FmtCol3D_f32(RwV2d pos, RwRGBA color, const char* fmt, f32 value);
 extern s32 strlen(const char* text);
 extern void func_00524270(void* destination, const void* source);
 extern void (*D_0096017c)(void* object);
-#pragma alias D_0096017c_abs D_0096017c
 extern u32 D_0096017c_abs[];
 extern const char D_00678AF8[];
 extern const char D_00678B08[];
 extern const char D_00678B18[];
 extern const char D_00678B30[];
-
 static const char sKWindowValueLabel[] = "%s";
 static const char sKWindowType2Label[] = "off";
 static const char sKWindowType3Label[] = "%d";
 static const char sKWindowType4Label[] = "%.2f";
 static const char sKWindowTextLabel[] = "%s";
-
 void* func_001a2a80(KwlnTask* task);
 void func_001a3a60(KwlnTask* task);
 void func_001a44a0(KwlnTask* task);
-
 KwlnTask* func_001a3b10(KwlnTask* parent, u32 width, u32 height, u32 mode);
 void func_001a3c30(KwlnTask* task);
 u32 func_001a3f20(KwlnTask* task, const char* name);
@@ -220,7 +164,6 @@ static inline KWindowManagerWork* KWindow_GetManager(KwlnTask* task)
 {
     return (KWindowManagerWork*)task->workData;
 }
-
 static KWindowEntry* KWindow_GetCurrentEntry(KWindowManagerWork* manager)
 {
     KWindowEntry* entry;
@@ -241,7 +184,6 @@ static KWindowEntry* KWindow_GetCurrentEntry(KWindowManagerWork* manager)
 
     return entry;
 }
-
 static inline void KWindow_InvokeEntryCallback(KWindowEntry* entry)
 {
     void* value;
@@ -274,7 +216,6 @@ static inline void KWindow_InvokeEntryCallback(KWindowEntry* entry)
         entry->callback(value);
     }
 }
-
 static inline void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
                                     f32 floatDelta)
 {
@@ -315,7 +256,6 @@ static inline void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
         entry->intValue = (entry->intValue == 1) ? 0 : 1;
     }
 }
-
 static inline void KWindow_MoveDown(KWindowManagerWork* manager)
 {
     s32 visible;
@@ -342,7 +282,6 @@ static inline void KWindow_MoveDown(KWindowManagerWork* manager)
         }
     }
 }
-
 static inline void KWindow_MoveUp(KWindowManagerWork* manager)
 {
     s32 visible;
@@ -368,7 +307,6 @@ static inline void KWindow_MoveUp(KWindowManagerWork* manager)
         }
     }
 }
-
 static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
 {
     KWindowRenderData* renderData;
@@ -404,7 +342,6 @@ static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
     func_001e7b10(quad, func_001e7c20(-16));
     func_004933d0(layout);
 }
-
 static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
 {
     KWindowRenderData* renderData;
@@ -453,15 +390,6 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     }
 }
 
-
- 
-
-
-
-
-
-
-
 // FUN_001A3F20
 u32 func_001a3f20(KwlnTask* task, const char* name)
 {
@@ -492,6 +420,7 @@ u32 func_001a3f20(KwlnTask* task, const char* name)
     func_001a3c30(task);
     return (u32)entry->id;
 }
+
 // FUN_001A4010
 char* func_001a4010(KwlnTask* task, s32 id)
 {
@@ -507,6 +436,55 @@ found:
     return entry->name;
 }
 
+#pragma alias rwGlobals_abs rwGlobals
+
+#pragma alias D_00960090_abs D_00960090
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+/*
+ * The task below owns the small text/value editor used by the debug window.
+ * Its work area is deliberately kept separate from KWindowTaskWork above:
+ * the retail task stores the manager at KwlnTask::workData and all offsets
+ * below are relative to that manager block.
+ */
+
+
+
+
+#pragma alias H_Dbprt_FmtCol3D_f32 H_Dbprt_FmtCol3D
+#pragma alias D_0096017c_abs D_0096017c
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 // FUN_001A4050
 void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback)
 {
@@ -518,7 +496,6 @@ void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback)
         entry->callback = callback;
     }
 }
-
 // FUN_001A4090
 void func_001a4090(KwlnTask* task, u32 id, const char* text)
 {
@@ -732,4 +709,30 @@ s32 func_001a4510(KwlnTask* task)
         entry = entry->next;
     }
     return entry->id;
+}
+
+// FUN_001a4580
+void K_View_SetFov(RwCamera* camera, f32 fov)
+{
+    RwV2d viewWindow;
+
+    viewWindow.y = tanf(DEG_TO_RAD(fov) / 2.0f);
+    viewWindow.x = gAspectRatio * viewWindow.y;
+
+    RwCameraSetViewWindow(camera, &viewWindow);
+}
+
+// FUN_001a4600
+f32 K_View_GetFov(RwCamera* camera)
+{
+    f32 x;
+    RwV2d* viewWindow;
+
+    viewWindow = &camera->viewWindow;
+
+    // Retained unused retail call; removing it changes the matched instruction sequence.
+    atanf(viewWindow->x);
+    x = atanf(viewWindow->y) * 2.0f;
+
+    return RAD_TO_DEG(x);
 }
