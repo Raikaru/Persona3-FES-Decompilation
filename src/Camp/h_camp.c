@@ -11393,6 +11393,42 @@ extern s32 printf(const char* format, ...);
 extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
 
 
+#pragma push
+#pragma schedule off
+#define FUN_00125b40 FUN_00125b40_persona
+#define DAT_00960090 DAT_00960090_persona
+#define FUN_00114450 FUN_00114450_persona
+#define H_Cdvd_Destroy H_Cdvd_Destroy_persona
+#define RpSkyRenderStateSet RpSkyRenderStateSet_persona
+// FUN_00133900. Destroy callback of the "CampPersonaDispCtlDraw" task
+void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
+{
+    int* workData;
+
+    workData = (int*)task->workData;
+    if (workData[8] != 0) {
+        FUN_00133d30_y5(workData[8], workData[9]);
+        workData[8] = 0;
+        workData[9] = 0;
+        workData[0xa] = 0;
+    } else {
+        if (workData[9] != 0) {
+            H_Cdvd_Destroy(workData[9]);
+            workData[9] = 0;
+        }
+        if (workData[0xa] != 0) {
+            FUN_004d0f00_y5(workData[0xa]);
+            workData[0xa] = 0;
+        }
+    }
+    RwFree(workData);
+}
+#undef FUN_00125b40
+#undef DAT_00960090
+#undef FUN_00114450
+#undef H_Cdvd_Destroy
+#undef RpSkyRenderStateSet
+#pragma pop
 // FUN_001339A0
 KwlnTask* FUN_001339a0_y2(KwlnTask* parent, u32 priority, f32 alpha,
                        u32 personaId, u32 mode)
@@ -29136,29 +29172,6 @@ static inline void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spa
 /* The first callback is a small jump-table dispatcher in retail.  Keeping the
  * cases explicit makes the mode contract visible while preserving the same
  * draw helpers used by the screen callbacks below. */
-// FUN_00133900. Destroy callback of the "CampPersonaDispCtlDraw" task
-void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
-{
-    int* workData;
-
-    workData = (int*)task->workData;
-    if (workData[8] != 0) {
-        FUN_00133d30_y5(workData[8], workData[9]);
-        workData[8] = 0;
-        workData[9] = 0;
-        workData[0xa] = 0;
-    } else {
-        if (workData[9] != 0) {
-            H_Cdvd_Destroy(workData[9]);
-            workData[9] = 0;
-        }
-        if (workData[0xa] != 0) {
-            FUN_004d0f00_y5(workData[0xa]);
-            workData[0xa] = 0;
-        }
-    }
-    RwFree(workData);
-}
 // FUN_00154970 NONMATCHING
 void FUN_00154970(CampMenuDrawItem* item,
                   const char** labels, s32 mode, s32 first,
