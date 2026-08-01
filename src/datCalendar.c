@@ -2998,6 +2998,9 @@ extern void func_001842c0(KwlnTask* task,
 
 /* W357 measured opt_common_subs off: without nd707/object1052, with nd633/object1068; window 1072; retained. */
 #pragma opt_common_subs off
+/* W363 callback-address probe: direct D_00960090/D_00960094 calls 1068/1072 nd633;
+ * cached absolute aliases improve this to 1088/1072 nd608, but exceed the window, so
+ * this sibling remains on the GP form.  The same family is fixed in 001842C0/001875F0. */
 // FUN_00183410 NONMATCHING
 void* func_00183410(KwlnTask* task)
 {
@@ -3435,6 +3438,12 @@ void func_00183f60(void* resource,
  * a tail defect.  func_00187ec0 does not share this draw/phase loop structure. */
 /* W357 measured opt_loop_invariants on: without nd947/object1440, with nd945/object1440; window 1488; retained. */
 #pragma opt_loop_invariants on
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+
+/* W363 callback-address probe: cached D_00960090_abs setState before each branch
+ * changes 1440/1488 nd945 to 1456/1488 nd789; the result remains under the window.
+ * The same family covers 00183410, but its absolute-alias probe is 1088/1072 and blocked. */
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,
@@ -3453,6 +3462,7 @@ void func_001842c0(KwlnTask* task,
     u32 red;
     u32 green;
     u32 blue;
+    void (**setState)(u32, u32);
 
     (void)context;
     work = (CalendarConfirmWork*)task->workData;
@@ -3508,15 +3518,16 @@ void func_001842c0(KwlnTask* task,
     {
         func_001159f0(NULL, resource, 0x4c, 0,
                       CLND_CALENDAR_X + 497.0f, 66.0f, 50.0f);
-        D_00960090(6, 1);
-        D_00960090(7, 2);
-        D_00960090(8, 1);
-        D_00960090(9, 2);
-        D_00960090(0xc, 1);
-        D_00960090(0xb, 6);
-        D_00960090(0xa, 5);
-        D_00960090(2, 4);
-        D_00960090(0xe, 0);
+        setState = (void (**)(u32, u32))D_00960090_abs;
+        (*setState)(6, 1);
+        (*setState)(7, 2);
+        (*setState)(8, 1);
+        (*setState)(9, 2);
+        (*setState)(0xc, 1);
+        (*setState)(0xb, 6);
+        (*setState)(0xa, 5);
+        (*setState)(2, 4);
+        (*setState)(0xe, 0);
         RpSkyRenderStateSet(2, (void*)0x48);
         RpSkyRenderStateSet(3, (void*)0x71801);
         func_00115cd0(NULL, resource, moonOffset / 10 + 0x23, 0,
@@ -3530,15 +3541,16 @@ void func_001842c0(KwlnTask* task,
     {
         func_001159f0(NULL, resource, 0x4c, 0,
                       CLND_CALENDAR_X + 514.0f, 66.0f, 50.0f);
-        D_00960090(6, 1);
-        D_00960090(7, 2);
-        D_00960090(8, 1);
-        D_00960090(9, 2);
-        D_00960090(0xc, 1);
-        D_00960090(0xb, 6);
-        D_00960090(0xa, 5);
-        D_00960090(2, 4);
-        D_00960090(0xe, 0);
+        setState = (void (**)(u32, u32))D_00960090_abs;
+        (*setState)(6, 1);
+        (*setState)(7, 2);
+        (*setState)(8, 1);
+        (*setState)(9, 2);
+        (*setState)(0xc, 1);
+        (*setState)(0xb, 6);
+        (*setState)(0xa, 5);
+        (*setState)(2, 4);
+        (*setState)(0xe, 0);
         RpSkyRenderStateSet(2, (void*)0x48);
         RpSkyRenderStateSet(3, (void*)0x71801);
         func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
@@ -5522,6 +5534,9 @@ KwlnTask* func_00187550(KwlnTask* parent)
 
 /* W357 measured opt_dead_assignments off: without nd1107/object1440, with nd1100/object1436; window 1520; retained. */
 #pragma opt_dead_assignments off
+/* W363 callback-address probe: cached D_00960090_abs setState once
+ * changes 1436/1520 nd1100 to 1452/1520 nd935; the result remains under the window.
+ * The same family covers 00183410, but its absolute-alias probe is 1088/1072 and blocked. */
 // FUN_001875F0 NONMATCHING
 void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
 {
@@ -5536,18 +5551,20 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     f32 scale;
     f32 radians;
     s32 i;
+    void (**setState)(u32, u32);
 
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / camera->nearPlane;
-    D_00960090(6, 1);
-    D_00960090(7, 2);
-    D_00960090(8, 1);
-    D_00960090(9, 2);
-    D_00960090(0xc, 1);
-    D_00960090(0xb, 6);
-    D_00960090(10, 5);
-    D_00960090(2, 4);
-    D_00960090(0xe, 0);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(9, 2);
+    (*setState)(0xc, 1);
+    (*setState)(0xb, 6);
+    (*setState)(10, 5);
+    (*setState)(2, 4);
+    (*setState)(0xe, 0);
 
     local[0] = (RwV3d){-15.0f, -22.0f, 0.0f};
     local[1] = (RwV3d){15.0f, -22.0f, 0.0f};
@@ -5598,7 +5615,7 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
         vertices[i].u.els.color.b = 236.0f;
         vertices[i].u.els.color.a = (f32)alpha;
     }
-    D_00960090(1, 0);
+    (*setState)(1, 0);
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     if (scaleAngle > 180)
     {
@@ -5625,7 +5642,7 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
         vertices[i].u.els.color.b = 236.0f;
         vertices[i].u.els.color.a = (f32)alpha;
     }
-    D_00960090(1, 0);
+    (*setState)(1, 0);
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
