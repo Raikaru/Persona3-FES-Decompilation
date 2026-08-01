@@ -1,4 +1,5 @@
 #include "Kosaka/k_assert.h"
+void fclCombine003d4cd0(u32* param_1, u32* param_2);
 
 extern void (*PTR_LAB_007bb510[])();
 extern u32 uGpffffb994;
@@ -189,391 +190,10 @@ void fclCombine003d3760(s32 param_1, s32 param_2, s32 param_3);
 
 
 
-// FUN_003d2ce0
-s32 fclCombine003d2ce0(s32 param_1)
-{
-    s32 task;
-    s32 temp;
-
-    task = *(s32*)(param_1 + 0x14);
-    if (task == 0 || *(s32*)(task + 0x14) == 0) {
-        return -1;
-    }
-    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
-        temp = FUN_003c5460(DAT_007ce684);
-        FUN_003d06d0(temp, 4, 1);
-        temp = FUN_003c5470(task);
-        *(s32*)(param_1 + 0x14) = 0;
-        return *(s32*)temp;
-    }
-    return -1;
-}
-
-// FUN_003d2d80
-s32 fclCombine003d2d80(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    FUN_003c5460();
-    temp = FUN_003c5470(param_2);
-    *(s32*)(temp + 8) = FUN_003d2f00_result();
-    return 0;
-}
-
-// FUN_003d2dd0
-s32 fclCombine003d2dd0(s32 param_1, s32 param_2)
-{
-    FUN_003c5470(param_2);
-    return 0;
-}
-
-// FUN_003d2e00
-s32 fclCombine003d2e00(s32 param_1, s32 param_2)
-{
-    s32* work;
-    s32 temp;
-
-    work = (s32*)FUN_003c5470(param_2);
-    if (fclCombine003d3010(work[2]) != 0) {
-        return (s32)LAB_003c5170;
-    }
-    temp = fclCombine003d3050(work[2]);
-    if (temp != -1) {
-        *work = temp - 1;
-        fclCombine003d3280(work[2]);
-        temp = FUN_003c5460(DAT_007ce684);
-        FUN_003d06d0(temp, 10, 1);
-    } else if (fclCombine003d3170(work[2]) != 0) {
-        *work = 6;
-        temp = FUN_003c5460(DAT_007ce684);
-        FUN_003d06d0(temp, 10, 1);
-    }
-    return 0;
-}
-// FUN_003d2ef0
-s32 fclCombine003d2ef0(void)
-{
-    return 0;
-}
-
-
-// FUN_003d3050
-s32 fclCombine003d3050(s32 param_1)
-{
-    s32 item;
-    s32* result;
-    s32 value;
-
-    if (param_1 == 0 || (item = *(s32*)param_1) == 0) {
-        return 0;
-    }
-    result = (s32*)FUN_003c6c50(*(s32*)(item + 8));
-    if (result != 0) {
-        if (FUN_003df010(*(s32*)(item + 0x10)) == 0) {
-            return -1;
-        }
-        FUN_003def80(*(s32*)(item + 0x10));
-        if ((*result - 1) != 6) {
-            value = FUN_003c5460(DAT_007ce684);
-            FUN_003d06d0(value, 0, 0);
-        }
-        fclCombine003d3760(item, 0, 1);
-
-        value = *(s32*)(result[5] + 0xc);
-        *(s32*)(FUN_003c5460(DAT_007ce684) + 0x10) = value;
-        FUN_0010a4e0(0, 0, 0, 1);
-        return *result;
-    }
-    return -1;
-}
-
-// FUN_003d3170
-s32 fclCombine003d3170(s32 param_1)
-{
-    s32* temp;
-    s32 value;
-    s32 item;
-
-    if (param_1 == 0 || (item = *(s32*)param_1) == 0) {
-        return 0;
-    }
-    temp = (s32*)*(s32*)(item + 8);
-    if (FUN_003c6c80((s32)temp) != 0) {
-        if (FUN_003df010(*(s32*)(item + 0x10)) == 0) {
-            return 0;
-        }
-        value = temp[3];
-        FUN_003c4e60(temp, temp + 1);
-        FUN_003def80(*(s32*)(item + 0x10));
-        FUN_003c4de0(temp, temp + 1, value);
-        fclCombine003d3760(item, 0, 1);
-        FUN_0010a4e0(0, 0, 0, 2);
-        FUN_003c6f50((s32)temp);
-        return 1;
-    }
-    return 0;
-}
-
-// FUN_003d3010
-s32 fclCombine003d3010(s32 param_1)
-{
-    if (param_1 == 0 || *(s32*)param_1 == 0) {
-        return 1;
-    }
-    return (*(u32*)(*(s32*)param_1 + 4) & 1) != 0;
-}
-
-// FUN_003d3280
-void fclCombine003d3280(s32 param_1)
-{
-    s32 temp;
-
-    if (param_1 == 0) {
-        goto end;
-    }
-    temp = *(s32*)param_1;
-    if (temp != 0) {
-        goto body;
-    }
-end:
-    return;
-body:
-    temp = *(s32*)(temp + 8);
-    FUN_003c6f10(temp);
-    FUN_003c6f50(temp);
-}
-
-// FUN_003d35c0
-s32 fclCombine003d35c0(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    temp = FUN_003c5470(param_2);
-    FUN_003ded40(*(s32*)(temp + 0x10));
-    FUN_003dff00(*(s32*)(temp + 0x14));
-    FUN_003c5a20(*(s32*)(temp + 8));
-    return 0;
-}
-
-// FUN_003d3ca0
-s32 fclCombine003d3ca0(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    temp = FUN_003c5470(param_2);
-    *(s32*)(temp + 4) = 1;
-    return 0;
-}
-
-// FUN_003d3cd0
-s32 fclCombine003d3cd0(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    FUN_003c5470(param_2);
-    temp = FUN_003c5460(DAT_007ce684);
-    FUN_003d06d0(temp, 0, 1);
-    return 0;
-}
-
-// FUN_003d3620
-s32 fclCombine003d3620(s32 param_1, s32 param_2)
-{
-    s32 temp;
-    s32 item;
-    s32 state;
-
-    temp = FUN_003c5470(param_2);
-    item = *(s32*)(temp + 8);
-    FUN_003e0650(*(s32*)(temp + 0x14));
-    FUN_003ded70(*(s32*)(temp + 0x10));
-    state = FUN_003c6270(item);
-    switch (state) {
-    case 3:
-        if (FUN_003df010(*(s32*)(temp + 0x10)) != 0) {
-            return (s32)LAB_003c5170;
-        }
-        break;
-    case 2:
-        FUN_003c6f10(item);
-        FUN_003c6f50(item);
-        break;
-    }
-afterState:
-    if (FUN_003c6ce0(item) != 0 || FUN_003c6d10(item) != 0) {
-        FUN_0010a4e0(0, 0, 0, 0);
-    }
-    if (FUN_003c6ca0(item) != 0 || FUN_003c6cc0(item) != 0) {
-        FUN_0010a4e0(0, 0, 0, 5);
-    }
-    return 0;
-}
-
-// FUN_003d3b00
-s32 fclCombine003d3b00(s32 param_1, s32 param_2)
-{
-    s32 temp;
-    s32 ret;
-
-    temp = FUN_003c5470(param_2);
-    FUN_003deda0(*(s32*)(temp + 0x10));
-    ret = FUN_003dfac0(*(s32*)(temp + 0x10));
-    FUN_003e0680(*(s32*)(temp + 0x14), func_003d38b0, ret);
-    return 0;
-}
-
-// FUN_003d3c20
-s32 fclCombine003d3c20(s32 param_1)
-{
-    s32 task;
-    s32 temp;
-
-    task = *(s32*)(param_1 + 0x18);
-    if (task == 0 || *(s32*)(task + 0x14) == 0) {
-        return -1;
-    }
-    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
-        temp = FUN_003c5470(task);
-        *(s32*)(param_1 + 0x18) = 0;
-        return *(s32*)temp;
-    }
-    return -1;
-}
-
-// FUN_003d4c80
-s32 fclCombine003d4c80(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    FUN_003c5460();
-    temp = FUN_003c5470(param_2);
-    FUN_003db580(*(s32*)(temp + 0x39c));
-    return 0;
-}
-// FUN_003d4cd0
-void fclCombine003d4cd0(u32* param_1, u32* param_2)
-{
-    s32 i;
-    u32* out;
-
-    if (param_2 == 0) {
-        FUN_0019d3f0((s32)DAT_006a4648, 0x82f);
-    }
-    FUN_00521408((s32)param_2, 0, 0x18);
-    out = (u32*)param_2;
-    if ((*param_1 & 2) != 0) {
-        *out |= 1;
-    }
-    *(s16*)(out + 1) = (s16)param_1[2];
-    *(u16*)((s32)out + 6) = *(u16*)(param_1[0xe7] + 0x22);
-    for (i = 0; i < *(s32*)(param_1[0xe7] + 0xc); i++) {
-        if (*(s32*)(*(s32*)(param_1[0xe7] + 0x18) + i * 4) == 0) {
-            FUN_0019d3f0((s32)DAT_006a4648, 0x836);
-        }
-        *(u16*)((s32)out + i * 2 + 8) = *(u16*)(*(s32*)(*(s32*)(param_1[0xe7] + 0x18) + i * 4) + 2);
-    }
-}
-
-
-// FUN_003d4f30
-s32 fclCombine003d4f30(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    FUN_003c5460();
-    temp = FUN_003c5470(param_2);
-    *(s32*)(temp + 8) = FUN_0040c6f0(0);
-    *(s32*)(temp + 4) = 1;
-    return 0;
-}
-
-// FUN_003d4e90
-s32 fclCombine003d4e90(s32 param_1)
-{
-    s32 task;
-    s32 temp;
-
-    task = *(s32*)(param_1 + 0x20);
-    if (task == 0 || *(s32*)(task + 0x14) == 0) {
-        return -1;
-    }
-    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
-        temp = FUN_003c5470(task);
-        *(s32*)(param_1 + 0x20) = 0;
-        task = FUN_003c5460(DAT_007ce684);
-        FUN_003d06d0(task, 7, 1);
-        return *(s32*)temp;
-    }
-    return -1;
-}
-
-// FUN_003d4f90
-s32 fclCombine003d4f90(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    temp = FUN_003c5470(param_2);
-    FUN_0040c9a0(*(s32*)(temp + 8));
-    temp = FUN_003c5460(DAT_007ce684);
-    FUN_003d06d0(temp, 0, 1);
-    return 0;
-}
-
-// FUN_003d53e0
-s32 fclCombine003d53e0(s32 param_1, s32 param_2)
-{
-    s32 temp;
-
-    temp = FUN_003c5470(param_2);
-    FUN_0040cad0(*(s32*)(temp + 8));
-    return 0;
-}
-
-// FUN_003d5420
-s32 fclCombine003d5420(int unused)
-{
-    s32 temp;
-    s32 task;
-
-    task = 0;
-    temp = FUN_003c5460(DAT_007ce684);
-    if (temp != 0) {
-        task = *(s32*)(temp + 0x24);
-    }
-    if (task != 0) {
-        goto body;
-    }
-    return 0;
-body:
-    temp = FUN_003c5470(task);
-    FUN_00401420(*(s32*)(temp + 8), DAT_006b1fa0);
-    return 0;
-}
-
-// FUN_003d54a0
-s32 fclCombine003d54a0(int unused)
-{
-    s32 temp;
-    s32 task;
-
-    task = 0;
-    temp = FUN_003c5460(DAT_007ce684);
-    if (temp != 0) {
-        task = *(s32*)(temp + 0x24);
-    }
-    if (task == 0) {
-        return 1;
-    }
-    temp = FUN_003c5470(task);
-    return FUN_004014e0(*(s32*)(temp + 8)) != 0;
-}
-
-// HARVESTED 3D-42FF
 
 extern s32 DAT_006a43e0[];
 extern s32 FUN_003dffc0(s32 param_1, s32 param_2, s32 param_3);
 extern u32 fclCombineList003df100();
-
 struct _m2c_stack_func_003d06d0 {
     /* 0x0030 */ s32 sp30;                          /* inferred */
     /* 0x0034 */ char pad34[0x14];                  /* maybe part of sp30[6]s32 */
@@ -2237,10 +1857,6 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x2E58 */ char pad2E58[0x18];
 };                                                  /* size = 0x2E70 */
 
-
-
-
-
 // FUN_003D2740 NONMATCHING
 
 
@@ -2478,6 +2094,74 @@ u32 FUN_003d2c10(s32 param_1)
   return uVar1;
 }
 
+// FUN_003d2ce0
+s32 fclCombine003d2ce0(s32 param_1)
+{
+    s32 task;
+    s32 temp;
+
+    task = *(s32*)(param_1 + 0x14);
+    if (task == 0 || *(s32*)(task + 0x14) == 0) {
+        return -1;
+    }
+    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
+        temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 4, 1);
+        temp = FUN_003c5470(task);
+        *(s32*)(param_1 + 0x14) = 0;
+        return *(s32*)temp;
+    }
+    return -1;
+}
+// FUN_003d2d80
+s32 fclCombine003d2d80(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    FUN_003c5460();
+    temp = FUN_003c5470(param_2);
+    *(s32*)(temp + 8) = FUN_003d2f00_result();
+    return 0;
+}
+
+
+// FUN_003d2dd0
+s32 fclCombine003d2dd0(s32 param_1, s32 param_2)
+{
+    FUN_003c5470(param_2);
+    return 0;
+}
+
+// FUN_003d2e00
+s32 fclCombine003d2e00(s32 param_1, s32 param_2)
+{
+    s32* work;
+    s32 temp;
+
+    work = (s32*)FUN_003c5470(param_2);
+    if (fclCombine003d3010(work[2]) != 0) {
+        return (s32)LAB_003c5170;
+    }
+    temp = fclCombine003d3050(work[2]);
+    if (temp != -1) {
+        *work = temp - 1;
+        fclCombine003d3280(work[2]);
+        temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 10, 1);
+    } else if (fclCombine003d3170(work[2]) != 0) {
+        *work = 6;
+        temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 10, 1);
+    }
+    return 0;
+}
+
+// FUN_003d2ef0
+s32 fclCombine003d2ef0(void)
+{
+    return 0;
+}
+
 // FUN_003D2F00
 void FUN_003d2f00(void)
 {
@@ -2538,6 +2222,92 @@ void FUN_003d2f00(void)
     H_Dbprt_FmtLog(DAT_006a4710);
     resource = uGpffffb994;
     FUN_003c5480(FUN_003c5240(resource, 1, stack.data2, 0, 0));
+}
+
+// FUN_003d3010
+s32 fclCombine003d3010(s32 param_1)
+{
+    if (param_1 == 0 || *(s32*)param_1 == 0) {
+        return 1;
+    }
+    return (*(u32*)(*(s32*)param_1 + 4) & 1) != 0;
+}
+
+// FUN_003d3050
+s32 fclCombine003d3050(s32 param_1)
+{
+    s32 item;
+    s32* result;
+    s32 value;
+
+    if (param_1 == 0 || (item = *(s32*)param_1) == 0) {
+        return 0;
+    }
+    result = (s32*)FUN_003c6c50(*(s32*)(item + 8));
+    if (result != 0) {
+        if (FUN_003df010(*(s32*)(item + 0x10)) == 0) {
+            return -1;
+        }
+        FUN_003def80(*(s32*)(item + 0x10));
+        if ((*result - 1) != 6) {
+            value = FUN_003c5460(DAT_007ce684);
+            FUN_003d06d0(value, 0, 0);
+        }
+        fclCombine003d3760(item, 0, 1);
+
+        value = *(s32*)(result[5] + 0xc);
+        *(s32*)(FUN_003c5460(DAT_007ce684) + 0x10) = value;
+        FUN_0010a4e0(0, 0, 0, 1);
+        return *result;
+    }
+    return -1;
+}
+
+// FUN_003d3170
+s32 fclCombine003d3170(s32 param_1)
+{
+    s32* temp;
+    s32 value;
+    s32 item;
+
+    if (param_1 == 0 || (item = *(s32*)param_1) == 0) {
+        return 0;
+    }
+    temp = (s32*)*(s32*)(item + 8);
+    if (FUN_003c6c80((s32)temp) != 0) {
+        if (FUN_003df010(*(s32*)(item + 0x10)) == 0) {
+            return 0;
+        }
+        value = temp[3];
+        FUN_003c4e60(temp, temp + 1);
+        FUN_003def80(*(s32*)(item + 0x10));
+        FUN_003c4de0(temp, temp + 1, value);
+        fclCombine003d3760(item, 0, 1);
+        FUN_0010a4e0(0, 0, 0, 2);
+        FUN_003c6f50((s32)temp);
+        return 1;
+    }
+    return 0;
+}
+
+// FUN_003d3280
+void fclCombine003d3280(s32 param_1)
+{
+    s32 temp;
+
+    if (param_1 == 0) {
+        goto end;
+    }
+    temp = *(s32*)param_1;
+    if (temp != 0) {
+        goto body;
+    }
+end:
+    return;
+body:
+    temp = *(s32*)(temp + 8);
+    FUN_003c6f10(temp);
+    FUN_003c6f50(temp);
 }
 
 // FUN_003D32E0 NONMATCHING
@@ -2736,6 +2506,50 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
 }
 
+// FUN_003d35c0
+s32 fclCombine003d35c0(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    temp = FUN_003c5470(param_2);
+    FUN_003ded40(*(s32*)(temp + 0x10));
+    FUN_003dff00(*(s32*)(temp + 0x14));
+    FUN_003c5a20(*(s32*)(temp + 8));
+    return 0;
+}
+
+// FUN_003d3620
+s32 fclCombine003d3620(s32 param_1, s32 param_2)
+{
+    s32 temp;
+    s32 item;
+    s32 state;
+
+    temp = FUN_003c5470(param_2);
+    item = *(s32*)(temp + 8);
+    FUN_003e0650(*(s32*)(temp + 0x14));
+    FUN_003ded70(*(s32*)(temp + 0x10));
+    state = FUN_003c6270(item);
+    switch (state) {
+    case 3:
+        if (FUN_003df010(*(s32*)(temp + 0x10)) != 0) {
+            return (s32)LAB_003c5170;
+        }
+        break;
+    case 2:
+        FUN_003c6f10(item);
+        FUN_003c6f50(item);
+        break;
+    }
+afterState:
+    if (FUN_003c6ce0(item) != 0 || FUN_003c6d10(item) != 0) {
+        FUN_0010a4e0(0, 0, 0, 0);
+    }
+    if (FUN_003c6ca0(item) != 0 || FUN_003c6cc0(item) != 0) {
+        FUN_0010a4e0(0, 0, 0, 5);
+    }
+    return 0;
+}
 // FUN_003D3760
 
 
@@ -2815,6 +2629,7 @@ void FUN_003d3760(int param_1, int param_2, int param_3)
     break;
   }
 }
+
 
 // FUN_003D38B0 NONMATCHING
 
@@ -2903,6 +2718,19 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
 }
 
+// FUN_003d3b00
+s32 fclCombine003d3b00(s32 param_1, s32 param_2)
+{
+    s32 temp;
+    s32 ret;
+
+    temp = FUN_003c5470(param_2);
+    FUN_003deda0(*(s32*)(temp + 0x10));
+    ret = FUN_003dfac0(*(s32*)(temp + 0x10));
+    FUN_003e0680(*(s32*)(temp + 0x14), func_003d38b0, ret);
+    return 0;
+}
+
 // FUN_003D3B70
 u32 FUN_003d3b70(u32 param_1,u32 param_2)
 {
@@ -2933,6 +2761,53 @@ u32 FUN_003d3b70(u32 param_1,u32 param_2)
   *(u32 *)(iVar4 + 8) = param_2;
   return uVar7;
 }
+
+// FUN_003d3c20
+s32 fclCombine003d3c20(s32 param_1)
+{
+    s32 task;
+    s32 temp;
+
+    task = *(s32*)(param_1 + 0x18);
+    if (task == 0 || *(s32*)(task + 0x14) == 0) {
+        return -1;
+    }
+    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
+        temp = FUN_003c5470(task);
+        *(s32*)(param_1 + 0x18) = 0;
+        return *(s32*)temp;
+    }
+    return -1;
+}
+
+// FUN_003d3ca0
+s32 fclCombine003d3ca0(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    temp = FUN_003c5470(param_2);
+    *(s32*)(temp + 4) = 1;
+    return 0;
+}
+
+// FUN_003d3cd0
+s32 fclCombine003d3cd0(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    FUN_003c5470(param_2);
+    temp = FUN_003c5460(DAT_007ce684);
+    FUN_003d06d0(temp, 0, 1);
+    return 0;
+}
+
+// HARVESTED 3D-42FF
+
+
+
+
+
+
 
 // FUN_003D3D20 NONMATCHING
 
@@ -3788,6 +3663,40 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
 }
 
+// FUN_003d4c80
+s32 fclCombine003d4c80(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    FUN_003c5460();
+    temp = FUN_003c5470(param_2);
+    FUN_003db580(*(s32*)(temp + 0x39c));
+    return 0;
+}
+
+// FUN_003d4cd0
+void fclCombine003d4cd0(u32* param_1, u32* param_2)
+{
+    s32 i;
+    u32* out;
+
+    if (param_2 == 0) {
+        FUN_0019d3f0((s32)DAT_006a4648, 0x82f);
+    }
+    FUN_00521408((s32)param_2, 0, 0x18);
+    out = (u32*)param_2;
+    if ((*param_1 & 2) != 0) {
+        *out |= 1;
+    }
+    *(s16*)(out + 1) = (s16)param_1[2];
+    *(u16*)((s32)out + 6) = *(u16*)(param_1[0xe7] + 0x22);
+    for (i = 0; i < *(s32*)(param_1[0xe7] + 0xc); i++) {
+        if (*(s32*)(*(s32*)(param_1[0xe7] + 0x18) + i * 4) == 0) {
+            FUN_0019d3f0((s32)DAT_006a4648, 0x836);
+        }
+        *(u16*)((s32)out + i * 2 + 8) = *(u16*)(*(s32*)(*(s32*)(param_1[0xe7] + 0x18) + i * 4) + 2);
+    }
+}
 
 // FUN_003D4DE0
 u32 FUN_003d4de0(s32 param_1)
@@ -3819,6 +3728,50 @@ u32 FUN_003d4de0(s32 param_1)
   uVar2 = FUN_003c5460(DAT_007ce684);
   FUN_003d06d0(uVar2,7,0);
   return uVar8;
+}
+
+// FUN_003d4e90
+s32 fclCombine003d4e90(s32 param_1)
+{
+    s32 task;
+    s32 temp;
+
+    task = *(s32*)(param_1 + 0x20);
+    if (task == 0 || *(s32*)(task + 0x14) == 0) {
+        return -1;
+    }
+    if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
+        temp = FUN_003c5470(task);
+        *(s32*)(param_1 + 0x20) = 0;
+        task = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(task, 7, 1);
+        return *(s32*)temp;
+    }
+    return -1;
+}
+
+// FUN_003d4f30
+s32 fclCombine003d4f30(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    FUN_003c5460();
+    temp = FUN_003c5470(param_2);
+    *(s32*)(temp + 8) = FUN_0040c6f0(0);
+    *(s32*)(temp + 4) = 1;
+    return 0;
+}
+
+// FUN_003d4f90
+s32 fclCombine003d4f90(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    temp = FUN_003c5470(param_2);
+    FUN_0040c9a0(*(s32*)(temp + 8));
+    temp = FUN_003c5460(DAT_007ce684);
+    FUN_003d06d0(temp, 0, 1);
+    return 0;
 }
 
 // FUN_003D4FF0 NONMATCHING
@@ -3946,4 +3899,54 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 complete:
   return (u8 *)0x0;
 
+}
+
+// FUN_003d53e0
+s32 fclCombine003d53e0(s32 param_1, s32 param_2)
+{
+    s32 temp;
+
+    temp = FUN_003c5470(param_2);
+    FUN_0040cad0(*(s32*)(temp + 8));
+    return 0;
+}
+
+
+// FUN_003d5420
+s32 fclCombine003d5420(int unused)
+{
+    s32 temp;
+    s32 task;
+
+    task = 0;
+    temp = FUN_003c5460(DAT_007ce684);
+    if (temp != 0) {
+        task = *(s32*)(temp + 0x24);
+    }
+    if (task != 0) {
+        goto body;
+    }
+    return 0;
+body:
+    temp = FUN_003c5470(task);
+    FUN_00401420(*(s32*)(temp + 8), DAT_006b1fa0);
+    return 0;
+}
+
+// FUN_003d54a0
+s32 fclCombine003d54a0(int unused)
+{
+    s32 temp;
+    s32 task;
+
+    task = 0;
+    temp = FUN_003c5460(DAT_007ce684);
+    if (temp != 0) {
+        task = *(s32*)(temp + 0x24);
+    }
+    if (task == 0) {
+        return 1;
+    }
+    temp = FUN_003c5470(task);
+    return FUN_004014e0(*(s32*)(temp + 8)) != 0;
 }

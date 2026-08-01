@@ -350,57 +350,6 @@ extern void FUN_003c8dc0(u32);
 #define FUN_003cf960(...) ((u64 (*)(...))FUN_003cf960)(__VA_ARGS__)
 #define FUN_003cfb50(...) ((void (*)(...))FUN_003cfb50)(__VA_ARGS__)
 
-// FUN_003c9ab0
-u32 fclMisc003c9ab0(void)
-{
-    int ctx;
-
-    ctx = kwlnTaskGetWorkData();
-    K_ASSERT(ctx != 0, 0x683);
-    return *(u32*)(ctx + 8) & 0x20;
-}
-
-// FUN_003c9b00
-void fclMisc003c9b00(u32 param_1, void* param_2, void* param_3)
-{
-    int ctx;
-
-    ctx = kwlnTaskGetWorkData();
-    if (param_3 != NULL) {
-        memcpy((void *)(ctx + 0x1c), param_3, 0x54);
-    } else {
-        memset((void *)(ctx + 0x1c), 0, 0x54);
-    }
-    if (param_2 != NULL) {
-        memcpy((void *)(ctx + 0x20), param_2, 0x34);
-    }
-}
-
-// FUN_003c9ba0
-void fclMisc003c9ba0(u32 param_1, void* param_2)
-{
-    int ctx;
-
-    ctx = kwlnTaskGetWorkData();
-    K_ASSERT(param_2 != NULL, 0x697);
-    memcpy((void *)(ctx + 0x20), param_2, 0x34);
-}
-
-// FUN_003c9c10
-u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
-{
-    int ctx;
-
-    ctx = kwlnTaskGetWorkData();
-    K_ASSERT(param_2 != NULL && param_3 != NULL, 0x69e);
-    memcpy((void *)(ctx + 0x20), param_2, 0x34);
-    memcpy((void *)(ctx + 0x74), param_3, 0x34);
-    if ((*(u32*)(ctx + 8) & 0x40) == 0) {
-        *(s16*)(ctx + 0x16) = (s16)(*(s8*)(ctx + 0xe8) * *(s16*)(ctx + 0x14));
-    }
-    *(u32*)(ctx + 8) |= 0x40;
-    return 1;
-}
 
 #undef FUN_003c8400
 // W212: structured break-based list search measured nd126 -> nd231 and 328/336 -> 344/336; rejected as over-window.
@@ -1510,6 +1459,57 @@ validFacility:
 }
 #define FUN_003c9850(...) ((u64 (*)(...))FUN_003c9850)(__VA_ARGS__)
 #undef FUN_003c9cd0
+// FUN_003c9ab0
+u32 fclMisc003c9ab0(void)
+{
+    int ctx;
+
+    ctx = kwlnTaskGetWorkData();
+    K_ASSERT(ctx != 0, 0x683);
+    return *(u32*)(ctx + 8) & 0x20;
+}
+
+// FUN_003c9b00
+void fclMisc003c9b00(u32 param_1, void* param_2, void* param_3)
+{
+    int ctx;
+
+    ctx = kwlnTaskGetWorkData();
+    if (param_3 != NULL) {
+        memcpy((void *)(ctx + 0x1c), param_3, 0x54);
+    } else {
+        memset((void *)(ctx + 0x1c), 0, 0x54);
+    }
+    if (param_2 != NULL) {
+        memcpy((void *)(ctx + 0x20), param_2, 0x34);
+    }
+}
+
+// FUN_003c9ba0
+void fclMisc003c9ba0(u32 param_1, void* param_2)
+{
+    int ctx;
+
+    ctx = kwlnTaskGetWorkData();
+    K_ASSERT(param_2 != NULL, 0x697);
+    memcpy((void *)(ctx + 0x20), param_2, 0x34);
+}
+
+// FUN_003c9c10
+u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
+{
+    int ctx;
+
+    ctx = kwlnTaskGetWorkData();
+    K_ASSERT(param_2 != NULL && param_3 != NULL, 0x69e);
+    memcpy((void *)(ctx + 0x20), param_2, 0x34);
+    memcpy((void *)(ctx + 0x74), param_3, 0x34);
+    if ((*(u32*)(ctx + 8) & 0x40) == 0) {
+        *(s16*)(ctx + 0x16) = (s16)(*(s8*)(ctx + 0xe8) * *(s16*)(ctx + 0x14));
+    }
+    *(u32*)(ctx + 8) |= 0x40;
+    return 1;
+}
 // FUN_003C9CD0
 
 
@@ -4525,6 +4525,341 @@ u64 FUN_003cea50(u16 *param_1)
 #pragma pop
 #define FUN_003cea50(...) ((u64 (*)(...))FUN_003cea50)(__VA_ARGS__)
 #undef FUN_003cf6c0
+// FUN_003cf080
+void fclCombine003cf080(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 temp;
+
+    temp = FUN_00195540();
+    if (0 == *(s32*)(temp + 0x18)) goto done;
+    if (FUN_00316f70_y2(*(s32*)(temp + 0x18)) != 0) {
+        FUN_003174e0_y2(*(s32*)(temp + 0x18));
+    } else {
+        FUN_00194b20_y2(0, DAT_006a4208, 0x147c, fclCombine003cf080, 0, *(s32*)(temp + 0x18));
+    }
+done:
+    ((void (*)(s32))DAT_0096017c_y2[0])(temp);
+}
+
+// FUN_003cf120
+s32 fclCombine003cf120(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    DAT_007ce680 = FUN_003c44d0_y2(0x40, 0, 0, 0);
+    return *(s32*)(DAT_007ce680 + 0x24);
+}
+
+// FUN_003cf160
+s64 fclCombine003cf160(s32 param_1, s32 param_2)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    u32 lo;
+    u32 mid;
+    u32 hi;
+    s64 result;
+
+    FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x66);
+    lo = (u32)param_1 & 0xff;
+    mid = ((u32)param_1 & 0xff00) >> 8;
+    hi = ((u32)param_1 & 0xffff0000) >> 0x10;
+    FUN_005225a8_y2(DAT_006a4288, param_1, hi, mid, lo);
+    FUN_001052b0_y2(DAT_006a4288, param_1, hi, mid, lo);
+    result = FUN_003cf960_y2(param_1, param_2) != 0;
+    return (result << 48) >> 48;
+}
+
+#pragma push
+#pragma opt_propagation off
+// FUN_003cf240
+s32 fclCombine003cf240(s32 param_1, s32 param_2)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s16 index;
+    s32 base;
+    s16 mask;
+    s32 offset;
+    s32 entryAddress;
+    u32 lo;
+    u32 mid;
+    u32 hi;
+
+    FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x7e);
+    lo = (u32)param_1 & 0xff;
+    mid = ((u32)param_1 & 0xff00) >> 8;
+    hi = ((u32)param_1 & 0xffff0000) >> 0x10;
+    FUN_005225a8_y2(DAT_006a4298, param_1, hi, mid, lo);
+    FUN_001052b0_y2(DAT_006a4298, param_1, hi, mid, lo);
+    index = fclCombine003cf8f0(param_1);
+    if (index != -1) {
+        base = *(s32*)(DAT_007ce680 + 0x24);
+        mask = param_2 & 0xff00;
+        offset = index * 0x14;
+        entryAddress = offset + base;
+        *(s16*)(entryAddress + 4) = *(s16*)(entryAddress + 4) | mask;
+        FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x83);
+        FUN_005225a8_y2(DAT_006a42b0, index);
+        FUN_001052b0_y2(DAT_006a42b0, index);
+        return 1;
+    }
+    return 0;
+}
+#pragma pop
+
+// FUN_003cf3a0
+s32 fclCombine003cf3a0(s32 param_1)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s16* entry;
+    s32 i;
+    s16 flags;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    i = 0;
+    while (i < 3) {
+        flags = *entry;
+        if ((flags & 1) != 0 && (flags & 8) != 0) {
+            if (param_1 != 0 && (flags & 0x100) != 0) {
+                return *(s32*)(entry + 2);
+            }
+            if (param_1 == 0 && (flags & 0x100) == 0) {
+                return *(s32*)(entry + 2);
+            }
+        }
+        entry += 10;
+        i++;
+    }
+    return 0;
+}
+
+// FUN_003cf440
+void fclCombine003cf440(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 i;
+    s16* entry;
+    s16 flags;
+    struct FclCombineNode* node;
+    struct FclCombineNext* next;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    for (i = 0; i < 3; i++) {
+        flags = *entry;
+        if ((flags & 1) != 0) {
+            if ((flags & 8) != 0 || (flags & 2) != 0) {
+                *entry |= 0x400;
+            }
+            if (FUN_0016f190(0x1419) == 0) {
+                *entry |= 0x800;
+            }
+        }
+        entry += 10;
+    }
+    node = (struct FclCombineNode*)*(s32*)(DAT_007ce680 + 4);
+    while (node != 0) {
+        next = *(struct FclCombineNext**)((u8*)node + 0x10);
+        FUN_003c49e0_y2(DAT_007ce680, DAT_007ce680 + 4, (s32)node);
+        node = (struct FclCombineNode*)(s32)next;
+    }
+}
+
+// FUN_003cf520
+void fclCombine003cf520(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 i;
+    s16* entry;
+    s16 flags;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    for (i = 0; i < 3; i++) {
+        flags = *entry;
+        if ((flags & 1) != 0) {
+            if ((flags & 8) != 0 || (flags & 2) != 0) {
+                *entry |= 0x400;
+            }
+            if (FUN_0016f190(0x1419) == 0) {
+                *entry |= 0x800;
+            }
+        }
+        entry += 10;
+    }
+}
+
+// FUN_003cf5d0
+void fclCombine003cf5d0(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 i;
+    s16 flags;
+    s16* entry;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    for (i = 0; i < 3; i++) {
+        flags = *entry;
+        if ((flags & 1) != 0 && (flags & 8) == 0) {
+            *entry = flags | 0x800;
+        }
+        entry = entry + (10);
+    }
+}
+
+// FUN_003cf630
+s32 fclCombine003cf630(void)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 i;
+    s16 flags;
+    s16* entry;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    if (*(s32*)(DAT_007ce680 + 4) != 0) {
+        return 1;
+    }
+    for (i = 0; i < 3; i++) {
+        flags = *entry;
+        if ((flags & 1) != 0 && ((flags & 2) != 0 || (flags & 0x10) != 0)) {
+            return 1;
+        }
+        entry = entry + (10);
+    }
+    return 0;
+}
 #pragma push
 /* W389 sweep: opt_lifetimes on measured nd378/obj524 -> nd339/obj520 (window 560). */
 #pragma opt_lifetimes on
@@ -4647,6 +4982,38 @@ LAB_003cf7a4:
 #pragma pop
 #define FUN_003cf6c0(...) ((short (*)(...))FUN_003cf6c0)(__VA_ARGS__)
 #undef FUN_003cf960
+// FUN_003cf8f0
+s16 fclCombine003cf8f0(s32 param_1)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s32 i;
+    s16* entry;
+
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    i = 0;
+    while (i < 3) {
+        if ((*entry & 1) != 0 && *(s32*)(entry + 2) == param_1) {
+            return (s16)i;
+        }
+        entry += 10;
+        i++;
+    }
+    return -1;
+}
 // FUN_003CF960 NONMATCHING
 
 
@@ -4688,6 +5055,46 @@ LAB_003cf9d8:
 }
 #define FUN_003cf960(...) ((u32 (*)(...))FUN_003cf960)(__VA_ARGS__)
 #undef FUN_003cfb50
+// FUN_003cfac0
+s32 fclCombine003cfac0(s16* param_1)
+{
+    extern s32 DAT_007ce680;
+    extern void* DAT_0096017c_y2[];
+    extern char DAT_006a4208[];
+    extern char DAT_006a4288[];
+    extern char DAT_006a4298[];
+    extern char DAT_006a42b0[];
+    s32 FUN_00316f70_y2(s32 param_1);
+    s32 FUN_00194b20_y2();
+    void FUN_003174e0_y2(s32 param_1);
+    void FUN_005225a8_y2();
+    void FUN_001052b0_y2();
+    s32 FUN_003cf960_y2(s32 param_1, s32 param_2);
+    s32 FUN_0016f190(s32 param_1);
+    void FUN_003c49e0_y2(s32 param_1, s32 param_2, s32 param_3);
+    s32 FUN_003c44d0_y2(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+    s16 fclCombine003cf8f0(s32 param_1);
+    s32 ret;
+    s16* entry;
+    s32 i;
+    s16 flags;
+
+    ret = 1;
+    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
+    for (i = 0; i < 3; i++) {
+        if (entry != param_1) {
+            flags = *entry;
+            if ((flags & 1) != 0 && (flags & 8) != 0 && (flags & 0x100) == (*param_1 & 0x100)) {
+                *entry = flags | 0x400;
+                if ((*entry & 4) == 0) {
+                    ret = 0;
+                }
+            }
+        }
+        entry += 10;
+    }
+    return ret;
+}
 // FUN_003CFB50 NONMATCHING
 
 
@@ -5043,240 +5450,8 @@ s32 fclCombine003d3170(s32 param_1);
 void fclCombine003d3280(s32 param_1);
 void fclCombine003d3760(s32 param_1, s32 param_2, s32 param_3);
 
-// FUN_003cf080
-void fclCombine003cf080(void)
-{
-    s32 temp;
 
-    temp = FUN_00195540();
-    if (0 == *(s32*)(temp + 0x18)) goto done;
-    if (FUN_00316f70_y2(*(s32*)(temp + 0x18)) != 0) {
-        FUN_003174e0_y2(*(s32*)(temp + 0x18));
-    } else {
-        FUN_00194b20_y2(0, DAT_006a4208, 0x147c, fclCombine003cf080, 0, *(s32*)(temp + 0x18));
-    }
-done:
-    ((void (*)(s32))DAT_0096017c_y2[0])(temp);
-}
 
-// FUN_003cf120
-s32 fclCombine003cf120(void)
-{
-    DAT_007ce680 = FUN_003c44d0_y2(0x40, 0, 0, 0);
-    return *(s32*)(DAT_007ce680 + 0x24);
-}
-
-// FUN_003cf160
-s64 fclCombine003cf160(s32 param_1, s32 param_2)
-{
-    u32 lo;
-    u32 mid;
-    u32 hi;
-    s64 result;
-
-    FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x66);
-    lo = (u32)param_1 & 0xff;
-    mid = ((u32)param_1 & 0xff00) >> 8;
-    hi = ((u32)param_1 & 0xffff0000) >> 0x10;
-    FUN_005225a8_y2(DAT_006a4288, param_1, hi, mid, lo);
-    FUN_001052b0_y2(DAT_006a4288, param_1, hi, mid, lo);
-    result = FUN_003cf960_y2(param_1, param_2) != 0;
-    return (result << 48) >> 48;
-}
-
-#pragma push
-#pragma opt_propagation off
-// FUN_003cf240
-s32 fclCombine003cf240(s32 param_1, s32 param_2)
-{
-    s16 index;
-    s32 base;
-    s16 mask;
-    s32 offset;
-    s32 entryAddress;
-    u32 lo;
-    u32 mid;
-    u32 hi;
-
-    FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x7e);
-    lo = (u32)param_1 & 0xff;
-    mid = ((u32)param_1 & 0xff00) >> 8;
-    hi = ((u32)param_1 & 0xffff0000) >> 0x10;
-    FUN_005225a8_y2(DAT_006a4298, param_1, hi, mid, lo);
-    FUN_001052b0_y2(DAT_006a4298, param_1, hi, mid, lo);
-    index = fclCombine003cf8f0(param_1);
-    if (index != -1) {
-        base = *(s32*)(DAT_007ce680 + 0x24);
-        mask = param_2 & 0xff00;
-        offset = index * 0x14;
-        entryAddress = offset + base;
-        *(s16*)(entryAddress + 4) = *(s16*)(entryAddress + 4) | mask;
-        FUN_005225a8_y2((char*)&DAT_007cd728, DAT_006a4270, 0x83);
-        FUN_005225a8_y2(DAT_006a42b0, index);
-        FUN_001052b0_y2(DAT_006a42b0, index);
-        return 1;
-    }
-    return 0;
-}
-#pragma pop
-
-// FUN_003cf3a0
-s32 fclCombine003cf3a0(s32 param_1)
-{
-    s16* entry;
-    s32 i;
-    s16 flags;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    i = 0;
-    while (i < 3) {
-        flags = *entry;
-        if ((flags & 1) != 0 && (flags & 8) != 0) {
-            if (param_1 != 0 && (flags & 0x100) != 0) {
-                return *(s32*)(entry + 2);
-            }
-            if (param_1 == 0 && (flags & 0x100) == 0) {
-                return *(s32*)(entry + 2);
-            }
-        }
-        entry += 10;
-        i++;
-    }
-    return 0;
-}
-
-// FUN_003cf440
-void fclCombine003cf440(void)
-{
-    s32 i;
-    s16* entry;
-    s16 flags;
-    struct FclCombineNode* node;
-    struct FclCombineNext* next;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    for (i = 0; i < 3; i++) {
-        flags = *entry;
-        if ((flags & 1) != 0) {
-            if ((flags & 8) != 0 || (flags & 2) != 0) {
-                *entry |= 0x400;
-            }
-            if (FUN_0016f190(0x1419) == 0) {
-                *entry |= 0x800;
-            }
-        }
-        entry += 10;
-    }
-    node = (struct FclCombineNode*)*(s32*)(DAT_007ce680 + 4);
-    while (node != 0) {
-        next = *(struct FclCombineNext**)((u8*)node + 0x10);
-        FUN_003c49e0_y2(DAT_007ce680, DAT_007ce680 + 4, (s32)node);
-        node = (struct FclCombineNode*)(s32)next;
-    }
-}
-
-// FUN_003cf520
-void fclCombine003cf520(void)
-{
-    s32 i;
-    s16* entry;
-    s16 flags;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    for (i = 0; i < 3; i++) {
-        flags = *entry;
-        if ((flags & 1) != 0) {
-            if ((flags & 8) != 0 || (flags & 2) != 0) {
-                *entry |= 0x400;
-            }
-            if (FUN_0016f190(0x1419) == 0) {
-                *entry |= 0x800;
-            }
-        }
-        entry += 10;
-    }
-}
-
-// FUN_003cf5d0
-void fclCombine003cf5d0(void)
-{
-    s32 i;
-    s16 flags;
-    s16* entry;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    for (i = 0; i < 3; i++) {
-        flags = *entry;
-        if ((flags & 1) != 0 && (flags & 8) == 0) {
-            *entry = flags | 0x800;
-        }
-        entry = entry + (10);
-    }
-}
-
-// FUN_003cf630
-s32 fclCombine003cf630(void)
-{
-    s32 i;
-    s16 flags;
-    s16* entry;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    if (*(s32*)(DAT_007ce680 + 4) != 0) {
-        return 1;
-    }
-    for (i = 0; i < 3; i++) {
-        flags = *entry;
-        if ((flags & 1) != 0 && ((flags & 2) != 0 || (flags & 0x10) != 0)) {
-            return 1;
-        }
-        entry = entry + (10);
-    }
-    return 0;
-}
-
-// FUN_003cf8f0
-s16 fclCombine003cf8f0(s32 param_1)
-{
-    s32 i;
-    s16* entry;
-
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    i = 0;
-    while (i < 3) {
-        if ((*entry & 1) != 0 && *(s32*)(entry + 2) == param_1) {
-            return (s16)i;
-        }
-        entry += 10;
-        i++;
-    }
-    return -1;
-}
-
-// FUN_003cfac0
-s32 fclCombine003cfac0(s16* param_1)
-{
-    s32 ret;
-    s16* entry;
-    s32 i;
-    s16 flags;
-
-    ret = 1;
-    entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
-    for (i = 0; i < 3; i++) {
-        if (entry != param_1) {
-            flags = *entry;
-            if ((flags & 1) != 0 && (flags & 8) != 0 && (flags & 0x100) == (*param_1 & 0x100)) {
-                *entry = flags | 0x400;
-                if ((*entry & 4) == 0) {
-                    ret = 0;
-                }
-            }
-        }
-        entry += 10;
-    }
-    return ret;
-}
 
 
 
