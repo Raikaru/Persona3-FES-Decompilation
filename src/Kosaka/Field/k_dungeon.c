@@ -78,908 +78,7 @@ extern void* func_00318b00(void* model);
 extern void* func_00318b80(void* model);
 extern void* kwlnGetMainCamera(void);
 
-// FUN_001bf570
-void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
-{
-    FldDungeon* dungeon;
-    char eplPath[48];
-    u8 effectData[12];
-    u8 reloadEffectData[12];
-    u32 i;
-    u8* effectDataPtr;
-    s32 j;
 
-    dungeon = (FldDungeon*)dungeonTask->workData;
-
-    switch (dungeon->state)
-    {
-        case FLDDUNGEON_STATE_INITIALIZE:
-            if (gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl))
-            {
-                break;
-            }
-
-            if (!K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
-            {
-                break;
-            }
-
-            dungeon->scrCdvd = NULL;
-            if (!func_001c0440())
-            {
-                break;
-            }
-
-            if (!func_001c0740())
-            {
-                break;
-            }
-
-            dungeon->floorsData = gFldDngFloorsData;
-            j = dungeon->currFloor << 4;
-            if (*(u8*)(j + (s32)dungeon->floorsData + 0x1d) < 0xff)
-            {
-                sprintf(eplPath, "field/effect/DNG%02d.EPL",
-                        *(u8*)(j + (s32)dungeon->floorsData + 0x0d));
-                dungeon->effectEplTask = func_001a9080(dungeonTask, eplPath, -1, NULL);
-            }
-            else
-            {
-                dungeon->effectEplTask = NULL;
-            }
-
-            dungeon->state++;
-
-        case FLDDUNGEON_STATE_WAIT_EFFECT:
-            effectDataPtr = effectData;
-            j = 12;
-            if (effectDataPtr != NULL)
-            {
-                do
-                {
-                    *effectDataPtr++ = 0;
-                    j--;
-                } while (j != 0);
-            }
-            if (dungeon->effectEplTask != NULL)
-            {
-                if (!func_001a9180(dungeon->effectEplTask))
-                {
-                    break;
-                }
-
-                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, effectData);
-            }
-
-            dungeon->state++;
-
-        case FLDDUNGEON_STATE_CREATE_FIELD:
-            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
-            D_0086E580[0] = 0;
-            dungeon->fieldFlags = dungeon->floorsData[dungeon->currFloor].fieldFlags | 0x80000000;
-            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
-                                                  dungeon->floorsData[dungeon->currFloor].majorId,
-                                                  dungeon->floorsData[dungeon->currFloor].minorId,
-                                                  (u16)dungeon->unk_08,
-                                                  0,
-                                                  0,
-                                                  dungeon->fieldFlags,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
-                                                  -1,
-                                                  -1,
-                                                  -1,
-                                                  -1);
-            dungeon->fieldFlags = 0;
-
-            i = 0;
-            while (i < 6)
-            {
-                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
-                    dungeon->currFloor == D_006833C0[i])
-                {
-                    break;
-                }
-                i++;
-            }
-
-            if (i < 6)
-            {
-                func_001baa50(dungeon->fldRootTask, true);
-                datSetFlag(0x1421, true);
-                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
-                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
-            }
-            else
-            {
-                dungeon->state++;
-            }
-            break;
-
-        case FLDDUNGEON_STATE_IDLE:
-            if (dungeon->shouldShutdown == true)
-            {
-                dungeon->state = FLDDUNGEON_STATE_STOP;
-            }
-            break;
-
-        case FLDDUNGEON_STATE_UNK_04:
-        case FLDDUNGEON_STATE_UNK_05:
-        case FLDDUNGEON_STATE_UNK_06:
-            dungeon->state++;
-            break;
-
-        case FLDDUNGEON_STATE_RELOAD_FIELD:
-            effectDataPtr = reloadEffectData;
-            j = 12;
-            if (effectDataPtr != NULL)
-            {
-                do
-                {
-                    *effectDataPtr++ = 0;
-                    j--;
-                } while (j != 0);
-            }
-
-            if ((gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl)) ||
-                !K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
-            {
-                break;
-            }
-
-            dungeon->scrCdvd = NULL;
-            if (!func_001c0440() || !func_001c0740())
-            {
-                break;
-            }
-
-            if (dungeon->effectEplTask != NULL)
-            {
-                if (!func_001a9180(dungeon->effectEplTask))
-                {
-                    break;
-                }
-
-                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, reloadEffectData);
-            }
-
-            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
-            D_0086E580[0] = 0;
-            dungeon->fieldFlags |= dungeon->floorsData[dungeon->currFloor].fieldFlags;
-            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
-                                                  dungeon->floorsData[dungeon->currFloor].majorId,
-                                                  dungeon->floorsData[dungeon->currFloor].minorId,
-                                                  (u16)dungeon->unk_08,
-                                                  0,
-                                                  0,
-                                                  dungeon->fieldFlags,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
-                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
-                                                  -1,
-                                                  -1,
-                                                  -1,
-                                                  -1);
-            dungeon->fieldFlags = 0;
-
-            i = 0;
-            while (i < 6)
-            {
-                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
-                    dungeon->currFloor == D_006833C0[i])
-                {
-                    break;
-                }
-                i++;
-            }
-
-            if (i < 6)
-            {
-                func_001baa50(dungeon->fldRootTask, true);
-                datSetFlag(0x1421, true);
-                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
-                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
-            }
-            else
-            {
-                dungeon->state = FLDDUNGEON_STATE_IDLE;
-            }
-            break;
-
-        case FLDDUNGEON_STATE_WAIT_TRANSITION:
-            if (kwlnTaskExists(dungeon->transitionTask) != true)
-            {
-                datSetFlag(0x1421, false);
-                func_001baa50(dungeon->fldRootTask, false);
-                dungeon->state = FLDDUNGEON_STATE_IDLE;
-            }
-            break;
-
-        case FLDDUNGEON_STATE_STOP:
-            return KWLNTASK_STOP;
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001bfaf0
-void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
-{
-    s32 i;
-
-    func_001c07f0();
-    K_FldDungeon_DestroyScrMemory();
-    gDungeonTask = NULL;
-    gMtScene->fldMajorId = 0;
-
-    for (i = 0; i < 9; i++)
-    {
-        if (D_0086BDC0[i] != NULL)
-        {
-            func_001b3c90(D_0086BDC0[i]);
-            D_0086BDC0[i] = NULL;
-        }
-    }
-
-    if (gDungeonTpMdl != NULL)
-    {
-        mdlDestroy(gDungeonTpMdl);
-        gDungeonTpMdl = NULL;
-        D_0086E694[0] = 0;
-    }
-
-    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(dungeonTask->workData);
-}
-
-// FUN_001bfbc0
-KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
-{
-    KwlnTask* dungeonTask;
-    FldDungeon* dungeon;
-
-    dungeon = (FldDungeon*)RwCalloc(1, sizeof(FldDungeon), rwMEMHINTDUR_GLOBAL);
-    if (dungeon == NULL)
-    {
-        return NULL;
-    }
-
-    gDungeonTask = dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
-                                                                10,
-                                                                "automatic dungeon ",
-                                                                K_FldDungeon_UpdateTask,
-                                                                K_FldDungeon_DestroyTask,
-                                                                dungeon);
-
-    dungeon->currFloor = floor;
-    dungeon->unk_08 = param_3;
-
-    if (floor > 1)
-    {
-        gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD,
-                                          0xffff,
-                                          "field/grmd/fobj000.RMD",
-                                          MDL_READASYNC);
-
-        dungeon->scrCdvd = K_FldDungeon_RequestScript();
-
-        K_FldDungeon_FUN_001c03f0();
-    }
-
-    return dungeonTask;
-}
-
-// FUN_001bff00
-void K_FldDungeon_RequestShutdown()
-{
-    if (gDungeonTask != NULL)
-    {
-        DUNGEON_GET_WORK()->shouldShutdown = true;
-    }
-}
-
-// FUN_001bff20
-u32 K_FldDungeon_GetCurrentFloor_y2()
-{
-    if (gDungeonTask == NULL)
-    {
-        return 0;
-    }
-
-    return DUNGEON_GET_WORK()->currFloor;
-}
-
-// FUN_001bff50
-u8 K_FldDungeon_IsCurrentFloorExplorable()
-{
-    u32 currFloor;
-
-    if (gDungeonTask == NULL)
-    {
-        currFloor = 0;
-    }
-    else 
-    {
-        currFloor = DUNGEON_GET_WORK()->currFloor;
-    }
-
-    if (currFloor >= 2 && currFloor < 400)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-// FUN_001bffa0
-FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
-{
-    if (gDungeonTask == NULL)
-    {
-        return 0;
-    }
-
-    return &DUNGEON_GET_WORK()->floorsData[DUNGEON_GET_WORK()->currFloor];
-}
-
-// FUN_001bffe0
-void* K_FldDungeon_GetScrMemory()
-{
-    if (gDungeonTask == NULL)
-    {
-        return NULL;
-    }
-
-    return DUNGEON_GET_WORK()->scrMemory;
-}
-
-// FUN_001c0010
-u32 K_FldDungeon_GetScrSize()
-{
-    if (gDungeonTask == NULL)
-    {
-        return 0;
-    }
-
-    return DUNGEON_GET_WORK()->scrSize;
-}
-
-// FUN_001c0190. Request a cdvd stream to load main tartarus script
-HCdvd* K_FldDungeon_RequestScript(void)
-{
-    HCdvd* cdvd;
-
-    cdvd = NULL;
-    if (gDungeonTask == NULL)
-    {
-        return NULL;
-    }
-
-    if (DUNGEON_GET_WORK()->scrMemory == NULL)
-    {
-        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-        {
-            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", HCDVD_FILENORMAL);
-        }
-        else
-        {
-            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", HCDVD_FILENORMAL);
-        }
-    }
-
-    return cdvd;
-}
-
-// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
-u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
-{
-    FldDungeon* dungeon;
-    s32 fileSize;
-
-    if (gDungeonTask == NULL)
-    {
-        return true;
-    }
-
-    dungeon = DUNGEON_GET_WORK();
-    if (scrCdvd == NULL)
-    {
-        return true;
-    }
-
-    if (H_Cdvd_IsFileLoaded(scrCdvd))
-    {
-        fileSize = scrCdvd->fileSize;
-        dungeon->scrMemory = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, fileSize, rwMEMHINTDUR_GLOBAL);
-        dungeon->scrSize = scrCdvd->fileSize;
-        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, (s32)scrCdvd->fileSize);
-
-        H_Cdvd_Destroy(scrCdvd);
-
-        return true;
-    }
-
-    return false;
-}
-
-// FUN_001c02e0
-void K_FldDungeon_DestroyScrMemory(void)
-{
-    FldDungeon* dungeon;
-
-    if (gDungeonTask != NULL)
-    {
-        dungeon = DUNGEON_GET_WORK();
-        if (dungeon->scrMemory != NULL)
-        {
-            RwFree(dungeon->scrMemory);
-            dungeon->scrMemory = NULL;
-        }
-    }
-}
-
-// FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
-HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
-{
-    char buffer[128];
-
-    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-    {
-        sprintf(buffer, "field/script/dungeonat%02d.bf", blockId);
-    }
-    else
-    {
-        sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
-    }
-
-    return H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
-}
-
-// FUN_001c03f0
-void K_FldDungeon_FUN_001c03f0(void)
-{
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL && sDngBtlEffectCdvd == NULL)
-    {
-        sDngBtlEffectCdvd = H_Cdvd_Request("field/btl_effect/btl_eff.pac", HCDVD_FILEARCHIVE);
-    }
-}
-
-// FUN_001bfcc0
-void func_001bfcc0(void)
-{
-    FldDungeon* dungeon;
-    char eplPath[48];
-    s32 i;
-    if (gDungeonTask == NULL)
-    {
-        return;
-    }
-
-    dungeon = DUNGEON_GET_WORK();
-    dungeon->unk_08 = 0;
-    func_001a9470(*(void**)((u8*)K_Field_Get() + 0x1200));
-    func_001d4180();
-
-    if (dungeon->floorsData[dungeon->currFloor].effectId !=
-        dungeon->floorsData[dungeon->currFloor + 1].effectId)
-    {
-        if (dungeon->effectEplTask != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(dungeon->effectEplTask);
-        }
-        if (dungeon->floorsData[dungeon->currFloor + 1].effectId < 0xff)
-        {
-            sprintf(eplPath, "field/effect/DNG%02d.EPL",
-                    dungeon->floorsData[dungeon->currFloor + 1].effectId);
-            dungeon->effectEplTask = func_001a9080(
-                gDungeonTask, eplPath, -1, NULL);
-        }
-        else
-        {
-            dungeon->effectEplTask = NULL;
-        }
-    }
-    else if (dungeon->effectEplTask != NULL)
-    {
-        func_001a9400(dungeon->effectEplTask, dungeon->effectEplSlot);
-    }
-
-    if (dungeon->currFloor + 1 > 1)
-    {
-        if (gDungeonTpMdl == NULL)
-        {
-            gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
-                                               "field/grmd/fobj000.RMD",
-                                               MDL_READASYNC);
-        }
-        dungeon->scrCdvd = K_FldDungeon_RequestScript();
-        K_FldDungeon_FUN_001c03f0();
-    }
-
-    if (dungeon->floorsData[dungeon->currFloor].majorId !=
-            dungeon->floorsData[dungeon->currFloor + 1].majorId ||
-        dungeon->floorsData[dungeon->currFloor].minorId !=
-            dungeon->floorsData[dungeon->currFloor + 1].minorId)
-    {
-        dungeon->fieldFlags |= 0x80000000;
-        if (K_Scene_001a0250_y2() == true || func_001a02c0_y2() == true)
-        {
-            for (i = 0; i < 9; i++)
-            {
-                if (D_0086BDC0[i] != NULL)
-                {
-                    func_001b3c90(D_0086BDC0[i]);
-                    D_0086BDC0[i] = NULL;
-                }
-            }
-        }
-    }
-
-    dungeon->currFloor++;
-    K_Field_SetShouldShutdown(dungeon->fldRootTask, true);
-    dungeon->state = FLDDUNGEON_STATE_UNK_04;
-}
-
-// FUN_001c0040
-u32 func_001c0040(void)
-{
-    if (gDungeonTask == NULL)
-    {
-        return 0;
-    }
-    return DUNGEON_GET_WORK()->encounterResult;
-}
-
-// FUN_001c0070
-f32 func_001c0070(void)
-{
-    f32 result;
-    s32 encounterResult;
-
-    result = 1.0f;
-    if (gDungeonTask == NULL)
-    {
-        encounterResult = 0;
-    }
-    else
-    {
-        encounterResult = DUNGEON_GET_WORK()->encounterResult;
-    }
-    switch (encounterResult)
-    {
-        case 1:
-        case 3:
-            result = 2.0f;
-            break;
-        default:
-            break;
-    }
-    return result;
-}
-
-// FUN_001c00d0
-void func_001c00d0(void)
-{
-    if (gDungeonTask != NULL && DUNGEON_GET_WORK()->effectEplTask != NULL)
-    {
-        func_001a9400(DUNGEON_GET_WORK()->effectEplTask,
-                      DUNGEON_GET_WORK()->effectEplSlot);
-    }
-}
-
-// FUN_001c0110
-void func_001c0110(void)
-{
-    FldDungeon* dungeon;
-    u8 data[12];
-    u8* dataPtr;
-    s32 i;
-
-    if (gDungeonTask == NULL)
-    {
-        return;
-    }
-    dungeon = DUNGEON_GET_WORK();
-    if (dungeon->effectEplTask == NULL)
-    {
-        return;
-    }
-    dataPtr = data;
-    i = sizeof(data);
-    if (dataPtr != NULL)
-    {
-        do
-        {
-            *dataPtr = 0;
-            dataPtr++;
-            i--;
-        } while (i != 0);
-    }
-    dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, data);
-}
-
-// FUN_001c03b0
-u32 func_001c03b0(HCdvd* cdvd)
-{
-    if (cdvd == NULL)
-    {
-        return true;
-    }
-    return H_Cdvd_IsFileLoaded(cdvd) != false;
-}
-
-// FUN_001c0440
-u32 func_001c0440(void)
-{
-    if (sDngBtlEffectCdvd == NULL)
-    {
-        return true;
-    }
-    if (!H_Cdvd_IsFileLoaded(sDngBtlEffectCdvd))
-    {
-        return false;
-    }
-
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) =
-            func_001a9080(NULL, "field/effect/DNG_BTL.EPL", 30,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) =
-            func_001a9080(NULL, "field/effect/DNG_BTL2.EPL", -1,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) =
-            func_001a9080(NULL, "field/effect/DNG_BTL3.EPL", 60,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1200) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1200) =
-            func_001a9080(NULL, "field/effect/DNG_BTL4.EPL", -1,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1204) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1204) =
-            func_001a9080(NULL, "field/effect/DNG_BTL5.EPL", 40,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1208) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1208) =
-            func_001a9080(NULL, "field/effect/DNG_BTL6.EPL", 30,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x120c) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x120c) =
-            func_001a9080(NULL, "field/effect/DNG_BTL7.EPL", 40,
-                          sDngBtlEffectCdvd);
-    }
-    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
-    {
-        return true;
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1210) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1210) =
-            func_001a9080(NULL, "field/effect/DNG_BTL8.EPL", 8,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1214) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1214) =
-            func_001a9080(NULL, "field/effect/DNG_BTL9.EPL", 20,
-                          sDngBtlEffectCdvd);
-    }
-    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1218) == NULL)
-    {
-        *(KwlnTask**)((u8*)K_Field_Get() + 0x1218) =
-            func_001a9080(NULL, "field/effect/DNG_BTL10.EPL", 50,
-                          sDngBtlEffectCdvd);
-    }
-    return true;
-}
-
-// FUN_001c0740
-u32 func_001c0740(void)
-{
-    s32 i;
-
-    for (i = 0; i < 10; i++)
-    {
-        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL &&
-            !func_001a9180(
-                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4)))
-        {
-            return false;
-        }
-    }
-    if (sDngBtlEffectCdvd != NULL)
-    {
-        H_Cdvd_Destroy(sDngBtlEffectCdvd);
-        sDngBtlEffectCdvd = NULL;
-    }
-    return true;
-}
-
-// FUN_001c07f0
-void func_001c07f0(void)
-{
-    s32 i;
-
-    for (i = 0; i < 10; i++)
-    {
-        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(
-                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4));
-            *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) = NULL;
-        }
-    }
-}
-// FUN_001C0880
-void* func_001c0880(KwlnTask* task)
-{
-    u8* work;
-    s32 state;
-    s32 frames;
-    f32 alpha;
-
-    work = (u8*)task->workData;
-    state = *(s32*)work;
-    switch (state)
-    {
-    case 0:
-        frames = *(s32*)(work + 8);
-        if (frames > 0)
-        {
-            alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
-                    (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) /
-                        (f32)frames;
-            *(s32*)(work + 8) = frames - 1;
-        }
-        else
-        {
-            alpha = *(f32*)(work + 0x0c);
-            *(s32*)work = state + 1;
-        }
-        *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
-        break;
-    case 1:
-        return KWLNTASK_STOP;
-    default:
-        break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001c0920
-void func_001c0920(KwlnTask* task)
-{
-    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x20) = 0;
-    ((void (*)(void*))DAT_0096017c[0])(task->workData);
-}
-
-
-// FUN_001c0960
-void* func_001c0960(KwlnTask* task)
-{
-    u8* work;
-    u8* modelData;
-    u8* node;
-    RwRGBA* sourceColor;
-    RwRGBA color;
-    f32 alpha;
-    f32 normalizedAlpha;
-    void* result;
-
-    work = (u8*)task->workData;
-    sourceColor = mdlGetColor(*(Model**)(*(u8**)(work + 4) + 0x104));
-    color = *sourceColor;
-    switch (*(u32*)work)
-    {
-    case 0:
-        if (*(s32*)(work + 8) > 0)
-        {
-            alpha = (f32)sourceColor->a;
-            alpha -= *(f32*)(work + 0x0c);
-            alpha /= (f32)*(s32*)(work + 8);
-            alpha = (f32)sourceColor->a - alpha;
-            color.a = (u8)alpha;
-            *(s32*)(work + 8) -= 1;
-        }
-        else
-        {
-            alpha = *(f32*)(work + 0x0c);
-            color.a = (u8)alpha;
-            *(s32*)work += 1;
-        }
-
-        normalizedAlpha = (f32)color.a / 255.0f;
-        modelData = *(u8**)(*(u8**)(*(u8**)(work + 4) + 0x104) + 0xe0);
-
-        node = *(u8**)(modelData + 8);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x14);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x18);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x20);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x0c);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x10);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x1c);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        node = *(u8**)(modelData + 0x24);
-        while (node != NULL)
-        {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
-        }
-        modelData = *(u8**)(modelData + 0x28);
-        while (modelData != NULL)
-        {
-            *(f32*)(modelData + 0x18) = normalizedAlpha;
-            modelData = *(u8**)(modelData + 0x28);
-        }
-        mdlSetColor(*(Model**)(*(u8**)(work + 4) + 0x104), &color);
-        break;
-    case 1:
-        goto stop;
-    }
-    goto done;
-stop:
-    return KWLNTASK_STOP;
-done:
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001c0d30
-void func_001c0d30(KwlnTask* task)
-{
-    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x108) = 0;
-    ((void (*)(void*))DAT_0096017c[0])(task->workData);
-}
-
-// 0x20c bytes. The transition controller keeps its collision-controller task
-// at offset 0x204; the remaining tail is reserved by the retail work layout.
 typedef struct
 {
     u32 state;
@@ -987,7 +86,6 @@ typedef struct
     KwlnTask* collisionTask;
     u8 reserved[4];
 } TransWallCtlWork;
-
 typedef struct
 {
     Resrc base;
@@ -997,7 +95,6 @@ typedef struct
     u32 fadeTimer;
     u8 unkData[0x20];
 } DungeonModelFld;
-
 typedef struct DungeonNode
 {
     u8 unk_00[8];
@@ -1008,7 +105,285 @@ typedef struct DungeonNode
     u32 fadeTimer;
     struct DungeonNode* next;
 } DungeonNode;
+extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
+extern void func_001c1e20(KwlnTask* transWallTask);
+extern void func_0017f8d0(void);
+extern void func_001d0270(void);
+extern void func_00171b50(u32 socialLink);
+extern void datSetActiveSocialLink_s16(s16 activeSocialLink);
+extern u32 adminiGetNowSeqId_u32(void);
+extern u32 adminiGetNextSeqId_u32(void);
+typedef struct
+{
+    u16 unk_00;
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u8 unkData[0x12];
+} FieldSequenceData;
+typedef struct
+{
+    u8 unkData[0x0c];
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} SocialLinkSequenceData;
+#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4)) // 007ce26c
+#include "Kosaka/Field/k_event.h"
+#include "rw/rprandom.h"
+extern u32 DAT_008717e8;
+extern u32 DAT_008717f0;
+extern u32 DAT_008717f4;
+extern f32 fGpffff844c;
+extern f32 fGpffff8450;
+extern f32 fGpffff82fc;
+extern f32 fGpffff82b8;
+extern f32 fGpffffb544;
+extern f32 fGpffffb540;
+extern u32 uGpffffb53c;
+extern u8 D_0067F600[];
+extern const char D_0067F5E0[];
+extern const char D_0067F590[];
+extern u8 D_0067F720[];
+extern u8 D_0067FA26[];
+extern u8 D_00681560[];
+extern u8 D_00681866[];
+extern u8 D_006833B0[];
+extern u8 D_006833B8[];
+extern u8 D_006833C0_y2[];
+extern u8 D_006833A0[];
+extern u8 D_0086E580_y2[];
+extern u8 D_0086EDA0[];
+extern u8 D_008717A0[];
+extern const char D_0067F5C8[];
+extern RwV3d D_0067F5B8;
+extern u8 D_00869F98[];
+extern u8 D_00869FA2[];
+extern u8 D_00869FA3[];
+extern u8 D_00869FA4[];
+extern u32 FUN_00198590(void);
+extern f32 FUN_001A5AA0(void* value);
+extern u32 K_Scene_001a0250(void);
+extern u32 func_001a02c0(void);
+extern void K_Assert(const char* file, s32 line);
+extern void func_0019ff10(void);
+extern void* func_001b5380(u32* resource, const RwV3d* position, u32 rotation);
+extern u16 func_003b6790(u16 resourceId, void* resource);
+extern u16 func_003b65d0(u16 resourceId, void* model);
+extern u16 func_003b66b0(u16 resourceId, void* model);
+extern u32 K_Misc_FindNextFreeResId(u16 resType);
+extern u16 func_003b6870(u16 resourceId, const void* position, u32 packed,
+                          f32 angleX, f32 angleY, f32 angleZ);
+extern void func_001e6af0(void* position, void* model,
+                          f32 x, f32 y, f32 z);
+extern u16 func_003b6b90(u16 resourceId, const RwV3d* position, f32 angle);
+extern u16 func_003b6c50(u16 resourceId, const RwV3d* position, f32 angle);
+extern u16 func_003b6d10(u16 resourceId, const RwV3d* position, f32 angle);
+extern RwMatrix* func_004c38c0(void);
+extern void func_004c31b0(void* object, const void* axis, f32 angle, u32 mode);
+extern void func_004c6be0(void* dst, const void* src, void* object);
+extern void func_004c3880(RwMatrix* matrix);
+extern u32 func_001c7160(const FldUnit* enemy, const FldUnit* party, f32 distance);
+extern u16 func_003b6dd0(u16 resourceId, const RwV3d* position, f32 angle);
+extern u32 FUN_0016F380(u32 parameter);
+extern void FUN_0016F3E0(u32 parameter, u32 value);
+extern s32 DAT_007ce250;
+extern s32 DAT_007ce254;
+static u32 sDungeonGenerationAttempts;  // 007ce260
+static u32 sDungeonGenerationFailed;    // 007ce264
+static u32 sDungeonRoomCounter;         // 007ce25c
+extern KwlnTask* gDungeonTask;
+extern u32 D_00960184[];
+extern void (*jtbl_0096017C)(void* memory);
+extern u32 jtbl_0096017C_abs[];
+extern RwCamera* kwlnGetMainCamera_y2(void);
+extern void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
+extern KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, u32 priority,
+                                                 const char* name, KwlnTaskUpdateFunc update,
+                                                 KwlnTaskDestroyFunc destroy, void* workData);
+extern u8 kwlnTaskDestroyWithHierarchy_y2(KwlnTask* task);
+extern u32 kwlnTaskExists_y2(KwlnTask* task);
+extern void K_Fldrc_RequestFldPac(s16 majorId, s16 minorId);
+extern u8 K_Fldrc_IsFldPacLoaded(void);
+extern void K_Fldrc_DestroyFldPac(void);
+extern u32 K_FldDungeon_GetCurrentFloor(void);
+extern void K_FldDungeon_RequestShutdown_y2(void);
+extern void K_FldUnit_DestroyPcMdl(s32 unitId);
+extern void K_FldUnit_DestroyAllPc(void);
+extern void K_FldUnit_DestroyAllEc(void);
+extern void MT_Scene_Load(s32 majorId, s32 minorId);
+extern u32 MT_Scene_TryLoadFinish(void);
+extern void MT_Scene_Destroy(void);
+extern Resrc* MT_Scene_GetResListHead(u32 resType);
+extern void func_001a0150(u16 resourceId, u32 visible);
+extern s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
+extern s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
+extern void Y_TimeLimit_Stop(void);
+extern void H_Fade_FadeOut(void);
+extern void H_Fade_SetType(s16 type);
+extern void H_Snd_StopBgmFade(s16 fadeDuration);
+extern u8 func_00109f60(s16 channelIndex, s16 mappedChannelIndex);
+extern s8 adminiGetNextSeqId(void);
+extern void clnd00187ea0(void* task);
+extern void* func_001a96c0(KwlnTask* task);
+extern void func_001a0040(u32 visible, u32 updateField);
+extern void func_0019fec0(const void* position);
+extern void func_001cd8e0(void);
+extern void func_001e7410(void);
+extern void func_00350080(s32 sequence);
+extern void func_003c8f70(void);
+extern void func_003c8f40(void);
+extern void func_00458bb0(void);
+extern void func_0045a430(s32 enabled);
+extern void func_0045af70(s32 enabled);
+extern void func_004cb930(void* frame);
+extern void func_004cb270(void* frame);
+extern u32 FUN_00398060(u32 resource);
+extern u32 FUN_00398140(u32 resource, s32* id, u32* minor, u32* param4, u32* param5);
+extern u32 FUN_001b7d60(void);
+extern u32 FUN_001b7e30(void);
+extern u32 FUN_001c0440(void);
+extern u32 FUN_001c0740(void);
+extern u32 FUN_00398060(u32 resource);
+extern u32 FUN_00398140(u32 resource, s32* id, u32* minor, u32* param4, u32* param5);
+extern u32 FUN_00397ec0(s32 param1, s32 param2, s32 param3, s32 param4);
+extern u32 FUN_0035bc00(s32 type, u32 list, u32 list2, s32 index);
+extern u32 FUN_0035bb40(s32 type, u32 list, s32 index);
+extern u32 FUN_003b5d50(u32 resType);
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern u32 FUN_001e7200(s16 majorId);
+extern u32 FUN_001e7290(u32 request, s16 majorId);
+extern u32 FUN_001c7e70(s16 majorId, u16 minorId);
+extern u32 FUN_001c7f20(u32 request);
+extern void FUN_003b58c0(u16 value);
+extern void FUN_003b5980();
+extern u16 FUN_001b6eb0(s16 majorId, u16 minorId);
+extern u32 FUN_00187e20(void);
+extern u32 FUN_001ce960(void);
+extern void FUN_001d19d0(void);
+extern void FUN_001d70a0(void);
+extern void FUN_001d5f30(u32 cameraTask, u32 model);
+extern void FUN_001d6270(KwlnTask* task, s32 enabled, s32 value);
+extern u32 FUN_003982d0(u32 resource);
+extern void FUN_001a9850(void);
+extern void FUN_001aa1b0(void);
+extern void FUN_00187ea0(void);
+extern u32 FUN_0036f3b0(KwlnTask* task, u32 resource);
+extern u32 FUN_001c1f30_y2(KwlnTask* task, u32 model);
+extern void FUN_0016f1f0(s32 id, s32 enabled);
+extern void FUN_001d2610(void);
+extern void FUN_001d1fa0(void);
+extern u32 FUN_001d9f10(KwlnTask* task);
+extern u32 FUN_001dd600(void);
+extern u64 FUN_0018bff0(KwlnTask* task);
+extern void FUN_0018c0c0(u32 object, s32 enabled);
+extern u32 FUN_0018e820(KwlnTask* task);
+extern void FUN_001ddca0(s64 value);
+extern void FUN_0018eb30(u32 object, s32 enabled);
+extern u32 FUN_004579b0(KwlnTask* task);
+extern u32 FUN_00429d40(KwlnTask* task, u32 scene);
+extern void FUN_004532d0(s32 enabled);
+extern u32 FUN_001c03b0(u32 task);
+extern u32 FUN_001d9fd0(u32 task);
+extern void FUN_001da000(u32 task, s32 enabled);
+extern u32 FUN_0042ba30(void);
+extern u32 FUN_0018c0a0(u32 object);
+extern void FUN_001dd8e0(void);
+extern void FUN_001d2a10(void);
+extern void FUN_00188650(void);
+extern void FUN_001085c0(void);
+extern void FUN_001086a0(s32 duration);
+extern u32 FUN_00108710(void);
+extern void FUN_0027c080(s32 type, void* data, s32 size, s32 flags);
+extern void FUN_00100ec0(void);
+extern u32 FUN_0036f480(void);
+extern u16 FUN_0036f4c0(void);
+extern void FUN_0017f8d0(void);
+extern void FUN_0035bfb0(void);
+extern u32 FUN_001e1230(KwlnTask* task, u32 camera, u32 model);
+extern u32 FUN_001cd5a0(KwlnTask* task);
+extern void FUN_004350e0(s32 enabled, s32 update);
+extern void FUN_00429e80(u32 object, s32 enabled);
+extern u32 FUN_001c0330(u8 blockId);
+extern u32 FUN_001bffa0(void);
+extern u32 FUN_001bffe0(void);
+extern u32 FUN_001c0010(void);
+#define FIELD_U8(address)  (*(u8*)(address))
+#define FIELD_U16(address) (*(u16*)(address))
+#define FIELD_U32(address) (*(u32*)(address))
+#define FIELD_S32(address) (*(s32*)(address))
+#define FIELD_F32(address) (*(f32*)(address))
+#define ROOT_U8(work, offset)  (*(u8*)((u8*)(work) + (offset)))
+#define ROOT_U16(work, offset) (*(u16*)((u8*)(work) + (offset)))
+#define ROOT_U32(work, offset) (*(u32*)((u8*)(work) + (offset)))
+#define ROOT_S32(work, offset) (*(s32*)((u8*)(work) + (offset)))
+#define ROOT_F32(work, offset) (*(f32*)((u8*)(work) + (offset)))
+#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4))
+static Field sField; // 00869f60
+extern RwMatrix* FUN_00318b60(void* model);
+extern u32 FUN_001d5a90(KwlnTask* task);
+extern void func_001d8cb0(void);
+extern u32 DAT_007ce24c;
+extern u32 K_FldDungeon_GetCurrentFloor(void);
+extern s16 FUN_0016DD60(s32 index);
+typedef struct DungeonPattern DungeonPattern;
+void func_001bb300(u16 patternId, u16 x, u16 y);
+u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y);
+void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY);
+void func_001bd450(u32 patternId);
+void func_001bd8c0(void);
+void func_001bd950(void);
+void func_001bf220(RwV3d* dst, u32 x, u32 y);
+u32 func_001bf340_y2(const FldDungeonFloorData* floorData);
+struct DungeonPattern
+{
+    u8 raw[0x60];
+};
+static const s16 sDungeonVisibilityOffsets0[] = {
+    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
+    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
+};
+static const s16 sDungeonVisibilityOffsets1[] = {
+    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
+    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
+};
+static const s16 sDungeonVisibilityOffsets2[] = {
+    0x34c, 0x35c, 0x23c, 0x24c, 0x25c, 0x26c, 0x13c,
+    0x14c, 0x15c, 0x16c, 0x17c, 0x3c, 0x4c, 0x5c,
+    0x6c, 0x7c, -0xc4, -0xb4, -0xa4, -0x94
+};
+static const s16 sDungeonVisibilityOffsets3[] = {
+    -0xc4, 0x3c, 0x13c, -0x1b4, -0xb4, 0x4c, 0x14c,
+    0x24c, -0x1a4, -0xa4, 0x5c, 0x15c, 0x25c, -0x194,
+    -0x94, 0x6c, 0x16c, 0x26c, -0x84, 0x7c, 0x17c
+};
+static const s16 sDungeonVisibilityOffsets4[] = {
+    0x13c, 0x14c, 0x15c, 0x16c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x7c, -0xc4, -0xb4, -0xa4, -0x94, -0x84, -0x1c4,
+    -0x1b4, -0x1a4, -0x194, -0x2b4, -0x2a4
+};
+static const s16 sDungeonVisibilityOffsets5[] = {
+    0x34c, 0x35c, 0x25c, 0x24c, 0x23c, 0x22c, 0x15c,
+    0x14c, 0x13c, 0x12c, 0x11c, 0x5c, 0x4c, 0x3c,
+    0x2c, 0x1c, -0xd4, -0xc4, -0xb4, -0xa4
+};
+static const s16 sDungeonVisibilityOffsets6[] = {
+    -0xa4, 0x5c, 0x15c, -0x1b4, -0xb4, 0x4c, 0x14c,
+    0x24c, -0x1c4, -0xc4, 0x3c, 0x13c, 0x23c, -0x1d4,
+    -0xd4, 0x2c, 0x12c, 0x22c, -0xe4, 0x1c, 0x11c
+};
+static const s16 sDungeonVisibilityOffsets7[] = {
+    0x15c, 0x14c, 0x13c, 0x12c, 0x5c, 0x4c, 0x3c, 0x2c,
+    0x1c, -0xa4, -0xb4, -0xc4, -0xd4, -0xe4, -0x1a4,
+    -0x1b4, -0x1c4, -0x1d4, -0x2b4, -0x2a4
+};
 
+void* func_001c0880(KwlnTask* task);
+void func_001c0920(KwlnTask* task);
 static inline void K_Dungeon_ProcessFieldNodes(
     KwlnTask* parentTask,
     DungeonNode* node,
@@ -1139,668 +514,6 @@ static inline void K_Dungeon_ProcessFieldNodes(
         node = node->next;
     }
 }
-
-// Retail uses a 100-unit normalized camera ray and reloads the frame origin
-// for each model probe and before field-node traversal.
-// The previous reconstruction reused a mutated origin and omitted this scale.
-// Restoring those real probe semantics increases normalized_diff in this pass,
-// but avoids silently testing the wrong collision locations.
-// Field-node probes must reload the camera-frame origin at each node helper call.
-// Passing the frame itself preserves that live-origin behavior when camera state
-// changes during traversal; caching cameraPosition would probe stale locations.
-// This intentional semantic correction currently has a larger normalized diff.
-// FUN_001c0d70 NONMATCHING
-void* func_001c0d70(KwlnTask* task)
-{
-    TransWallCtlWork* work;
-    DungeonModelFld* modelFld;
-    ResrcFld* fld;
-    Model* model;
-    KwlnTask* child;
-    u8* fadeWork;
-    void* camera;
-    void* cameraFrame;
-    RwV3d collisionPosition;
-    RwV4d collisionQueryPosition;
-    RwV3d cameraPosition;
-    RwV3d cameraDirection;
-    RwV3d ray[2];
-    RwV3d special[2];
-    u8 queryData[0x208];
-
-    work = (TransWallCtlWork*)task->workData;
-    modelFld = (DungeonModelFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_MODELFLD);
-    fld = (ResrcFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_FLD);
-
-    switch (work->state)
-    {
-    case 0:
-        break;
-    case 1:
-        goto stop;
-    default:
-        goto done;
-    }
-
-    K_FldFrame_CtlCopyPos(&collisionPosition, work->collisionTask);
-    collisionQueryPosition.x = collisionPosition.x;
-    collisionQueryPosition.y = collisionPosition.y;
-    collisionQueryPosition.z = collisionPosition.z;
-    collisionQueryPosition.w =
-        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
-    collisionPosition.y +=
-        60.0f + collisionQueryPosition.w;
-    collisionQueryPosition.x = collisionPosition.x;
-    collisionQueryPosition.y = collisionPosition.y;
-    collisionQueryPosition.z = collisionPosition.z;
-    collisionQueryPosition.w =
-        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
-    camera = kwlnGetMainCamera();
-    cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
-    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
-    cameraDirection = *(RwV3d*)cameraFrame;
-    func_004c69f0(&cameraDirection, &cameraDirection);
-    cameraDirection.x *= 100.0f;
-    cameraDirection.y *= 100.0f;
-    cameraDirection.z *= 100.0f;
-    if (gMtScene->fldMajorId == 0x18 &&
-        gMtScene->fldMinorId == 0x32 &&
-        cameraPosition.x == collisionQueryPosition.x &&
-        cameraPosition.y == collisionQueryPosition.y &&
-        cameraPosition.z == collisionQueryPosition.z)
-    {
-        return KWLNTASK_CONTINUE;
-    }
-
-    while (modelFld != NULL)
-    {
-        if ((modelFld->base.flags & 2) != 0)
-        {
-            model = modelFld->model;
-            memset(queryData, 0, 0x208);
-            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
-
-            cameraPosition.x += cameraDirection.x;
-            cameraPosition.y += cameraDirection.y;
-            cameraPosition.z += cameraDirection.z;
-            func_001ad050(mdlGetClump(model), &collisionQueryPosition,
-                          &cameraPosition, queryData);
-
-            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
-            cameraPosition.x -= cameraDirection.x;
-            cameraPosition.y -= cameraDirection.y;
-            cameraPosition.z -= cameraDirection.z;
-            func_001ad050(mdlGetClump(model), &collisionQueryPosition,
-                          &cameraPosition, queryData);
-            if (*(u32*)queryData > 0)
-            {
-                if (modelFld->fadeTask == NULL &&
-                    ((u8*)mdlGetColor(model))[3] == 255)
-                {
-                    fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
-                        1, 0x14, rwMEMHINTDUR_GLOBAL);
-                    child = NULL;
-                    if (fadeWork != NULL)
-                    {
-                        child = kwlnTaskCreateWithAutoPriority(
-                            task, 10, "field model alpha",
-                            func_001c0960, func_001c0d30, fadeWork);
-                        *(u8**)(fadeWork + 4) = (u8*)modelFld;
-                        *(u32*)(fadeWork + 8) = 5;
-                        *(f32*)(fadeWork + 0x0c) = 0.0f;
-                    }
-                    modelFld->fadeTask = child;
-                    modelFld->fadeTimer = 0;
-                }
-            }
-            else if (modelFld->fadeTask == NULL &&
-                     ((u8*)mdlGetColor(model))[3] == 0)
-            {
-                if (modelFld->fadeTimer >= 0xb)
-                {
-                    fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
-                        1, 0x14, rwMEMHINTDUR_GLOBAL);
-                    child = NULL;
-                    if (fadeWork != NULL)
-                    {
-                        child = kwlnTaskCreateWithAutoPriority(
-                            task, 10, "field model alpha",
-                            func_001c0960, func_001c0d30, fadeWork);
-                        *(u8**)(fadeWork + 4) = (u8*)modelFld;
-                        *(u32*)(fadeWork + 8) = 10;
-                        *(f32*)(fadeWork + 0x0c) = 255.0f;
-                    }
-                    modelFld->fadeTask = child;
-                    modelFld->fadeTimer = 0;
-                }
-                else
-                {
-                    modelFld->fadeTimer += 1;
-                }
-            }
-        }
-        modelFld = (DungeonModelFld*)modelFld->base.next;
-    }
-    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
-
-    while (fld != NULL)
-    {
-        if ((fld->base.flags & 2) != 0 && fld->unk_160 != NULL)
-        {
-            u8* fieldData;
-            u32 i;
-            u8* entry;
-
-            fieldData = (u8*)fld->unk_160;
-            i = 0;
-            while (i < *(u32*)(fieldData + 0x14))
-            {
-                entry = *(u8**)(fieldData + 0x98 + i * 4);
-                if (entry != NULL)
-                {
-                    K_Dungeon_ProcessFieldNodes(
-                        task, (DungeonNode*)*(u8**)(entry + 0x14), &collisionQueryPosition,
-                        cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0], 1);
-                    K_Dungeon_ProcessFieldNodes(
-                        task, (DungeonNode*)*(u8**)(entry + 0x28), &collisionQueryPosition,
-                        cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0], 0);
-                    K_Dungeon_ProcessFieldNodes(
-                        task, (DungeonNode*)*(u8**)(entry + 0x24), &collisionQueryPosition,
-                        cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0], 0);
-                }
-                i++;
-            }
-        }
-
-        fld = (ResrcFld*)fld->base.next;
-    }
-done:
-    return KWLNTASK_CONTINUE;
-stop:
-    return KWLNTASK_STOP;
-}
-
-
-extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
-extern void func_001c1e20(KwlnTask* transWallTask);
-extern void func_0017f8d0(void);
-extern void func_001d0270(void);
-extern void func_00171b50(u32 socialLink);
-#pragma alias datSetActiveSocialLink_s16 datSetActiveSocialLink
-extern void datSetActiveSocialLink_s16(s16 activeSocialLink);
-#pragma alias adminiGetNowSeqId_u32 adminiGetNowSeqId
-extern u32 adminiGetNowSeqId_u32(void);
-#pragma alias adminiGetNextSeqId_u32 adminiGetNextSeqId_y2
-extern u32 adminiGetNextSeqId_u32(void);
-
-
-// 28-byte payload used when switching to the field sequence.
-typedef struct
-{
-    u16 unk_00;
-    u16 unk_02;
-    u16 unk_04;
-    u16 unk_06;
-    u16 unk_08;
-    u8 unkData[0x12];
-} FieldSequenceData;
-
-// 28-byte payload used when switching to the social-link event sequence.
-typedef struct
-{
-    u8 unkData[0x0c];
-    u32 unk_0c;
-    u32 unk_10;
-    u32 unk_14;
-    u32 unk_18;
-} SocialLinkSequenceData;
-
-#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4)) // 007ce26c
-
-// FUN_001c1e20
-void func_001c1e20(KwlnTask* transWallTask)
-{
-    ResrcModelFld* modelFld;
-    void* fadeWork;
-
-    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_MODELFLD);
-    while (modelFld != NULL)
-    {
-        if ((modelFld->base.flags & 2) == 0)
-        {
-            modelFld = (ResrcModelFld*)modelFld->base.next;
-            continue;
-        }
-
-        if (mdlGetColor(modelFld->mdl)->a == 0)
-        {
-            fadeWork = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, 0x14, rwMEMHINTDUR_GLOBAL);
-            if (fadeWork != NULL)
-            {
-                kwlnTaskCreateWithAutoPriority(transWallTask,
-                                               10,
-                                               "RMD fade CTL",
-                                               func_001c0960,
-                                               func_001c0d30,
-                                               fadeWork);
-                ((void**)fadeWork)[1] = modelFld;
-                ((u32*)fadeWork)[2] = 1;
-                ((f32*)fadeWork)[3] = 255.0f;
-            }
-        }
-
-        modelFld = (ResrcModelFld*)modelFld->base.next;
-    }
-
-    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(transWallTask->workData);
-}
-
-
-// FUN_001C1F30
-KwlnTask* FUN_001c1f30(KwlnTask* parentTask, KwlnTask* collisionTask)
-{
-    KwlnTask* task;
-    TransWallCtlWork* work;
-    void* camera;
-    RwV3d collisionPosition;
-
-    work = (TransWallCtlWork*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
-        1, sizeof(TransWallCtlWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    task = kwlnTaskCreateWithAutoPriority(parentTask,
-                                          0x83d,
-                                          "trans wall CTL",
-                                          func_001c0d70,
-                                          func_001c1e20,
-                                          work);
-    work->collisionTask = collisionTask;
-
-    camera = kwlnGetMainCamera();
-    func_004cb2f0(*(void**)((u8*)camera + 4));
-    K_FldFrame_CtlCopyPos(&collisionPosition, collisionTask);
-
-    return task;
-}
-
-// FUN_001C2000
-void FUN_001c2000(KwlnTask* transWallTask, KwlnTask* collisionTask)
-{
-    TransWallCtlWork* work;
-
-    work = (TransWallCtlWork*)transWallTask->workData;
-    work->collisionTask = collisionTask;
-}
-
-// FUN_001C2010
-u32 FUN_001c2010(void)
-{
-    FieldSequenceData data;
-
-    func_0017f8d0();
-    memset(&data, 0, sizeof(data));
-    data.unk_00 = (u16)scrGetIntPara(0);
-    data.unk_02 = (u16)scrGetIntPara(1);
-    data.unk_04 = (u16)scrGetIntPara(2);
-    data.unk_08 = (u16)scrGetIntPara(3);
-    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
-    func_001d0270();
-
-    return true;
-}
-
-// FUN_001C20B0
-u32 FUN_001c20b0(void)
-{
-    FieldSequenceData data;
-
-    gMtScene->unk_14 = -1;
-    func_0017f8d0();
-    memset(&data, 0, sizeof(data));
-    data.unk_00 = (u16)scrGetIntPara(0);
-    data.unk_02 = (u16)scrGetIntPara(1);
-    data.unk_04 = (u16)scrGetIntPara(2);
-    data.unk_08 = (u16)scrGetIntPara(3);
-    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
-    func_001d0270();
-
-    return true;
-}
-
-// FUN_001C2160
-u32 FUN_001c2160(void)
-{
-    SocialLinkSequenceData data;
-    s32 cmdTimer;
-    u32 result;
-
-    datSetActiveSocialLink(0xff);
-    data.unk_0c = (u32)scrGetIntPara(0);
-    data.unk_10 = (u32)scrGetIntPara(1);
-    data.unk_14 = (u32)scrGetIntPara(2);
-
-    cmdTimer = scrGetCmdTimer();
-    if (cmdTimer == 0)
-    {
-        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
-        goto common_false;
-    }
-    if ((s32)scrGetCmdTimer() <= 10)
-    {
-        goto common_false;
-    }
-    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
-    {
-        goto checks_false;
-    }
-    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
-    {
-        goto checks_false;
-    }
-    result = true;
-    goto done;
-checks_false:
-    result = false;
-    goto done;
-common_false:
-    result = false;
-done:
-    return result;
-}
-
-// FUN_001C2240
-u32 FUN_001c2240(void)
-{
-    SocialLinkSequenceData data;
-    s32 socialLink;
-    s32 cmdTimer;
-    u32 result;
-
-    socialLink = scrGetIntPara(3);
-    datSetActiveSocialLink_s16((s16)socialLink);
-    data.unk_0c = (u32)scrGetIntPara(0);
-    data.unk_10 = (u32)scrGetIntPara(1);
-    data.unk_14 = (u32)scrGetIntPara(2);
-
-    cmdTimer = scrGetCmdTimer();
-    if (cmdTimer == 0)
-    {
-        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
-        goto common_false;
-    }
-    if ((s32)scrGetCmdTimer() <= 10)
-    {
-        goto common_false;
-    }
-    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
-    {
-        goto checks_false;
-    }
-    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
-    {
-        goto checks_false;
-    }
-    func_00171b50(socialLink);
-    result = true;
-    goto done;
-checks_false:
-    result = false;
-    goto done;
-common_false:
-    result = false;
-done:
-    return result;
-}
-// FUN_001C2340
-u32 FUN_001c2340(void)
-{
-    SeqDungeon data;
-
-    func_0017f8d0();
-    data.floor = (u32)scrGetIntPara(0);
-    data.unk_04 = 0;
-    if (data.floor == 1)
-    {
-        DUNGEON_SEQUENCE_FLAG = 1;
-    }
-    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
-    func_001d0270();
-
-    return true;
-}
-
-// FUN_001C23B0
-u32 FUN_001c23b0(void)
-{
-    SeqDungeon data;
-    s32 i;
-    KwlnTask* task;
-
-    func_0017f8d0();
-    data.floor = (u32)scrGetIntPara(0);
-    data.unk_04 = (u32)scrGetIntPara(1);
-    if (data.floor == 1)
-    {
-        DUNGEON_SEQUENCE_FLAG = 1;
-    }
-    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
-
-    for (i = 0; i < FLDUNIT_PC_MAX; i++)
-    {
-        task = *(KwlnTask**)((u8*)gFldUnitsPc + i * sizeof(FldUnit) + 0x16c);
-        if (task != NULL)
-        {
-            kwlnTaskEnableFlags(task, KWLNTASK_FLAG_SUSPENDED, 0);
-        }
-    }
-
-    return true;
-}
-
-#include "Kosaka/Field/k_event.h"
-#include "rw/rprandom.h"
-extern u32 DAT_008717e8;
-extern u32 DAT_008717f0;
-extern u32 DAT_008717f4;
-extern f32 fGpffff844c;
-extern f32 fGpffff8450;
-extern f32 fGpffff82fc;
-extern f32 fGpffff82b8;
-extern f32 fGpffffb544;
-extern f32 fGpffffb540;
-extern u32 uGpffffb53c;
-
-extern u8 D_0067F600[];
-extern const char D_0067F5E0[];
-extern const char D_0067F590[];
-extern u8 D_0067F720[];
-extern u8 D_0067FA26[];
-extern u8 D_00681560[];
-extern u8 D_00681866[];
-extern u8 D_006833B0[];
-extern u8 D_006833B8[];
-extern u8 D_006833C0_y2[];
-extern u8 D_006833A0[];
-extern u8 D_0086E580_y2[];
-extern u8 D_0086EDA0[];
-extern u8 D_008717A0[];
-extern const char D_0067F5C8[];
-extern RwV3d D_0067F5B8;
-extern u8 D_00869F98[];
-extern u8 D_00869FA2[];
-extern u8 D_00869FA3[];
-extern u8 D_00869FA4[];
-
-extern u32 FUN_00198590(void);
-extern f32 FUN_001A5AA0(void* value);
-extern u32 K_Scene_001a0250(void);
-extern u32 func_001a02c0(void);
-extern void K_Assert(const char* file, s32 line);
-extern void func_0019ff10(void);
-extern void* func_001b5380(u32* resource, const RwV3d* position, u32 rotation);
-extern u16 func_003b6790(u16 resourceId, void* resource);
-extern u16 func_003b65d0(u16 resourceId, void* model);
-extern u16 func_003b66b0(u16 resourceId, void* model);
-extern u32 K_Misc_FindNextFreeResId(u16 resType);
-extern u16 func_003b6870(u16 resourceId, const void* position, u32 packed,
-                          f32 angleX, f32 angleY, f32 angleZ);
-extern void func_001e6af0(void* position, void* model,
-                          f32 x, f32 y, f32 z);
-extern u16 func_003b6b90(u16 resourceId, const RwV3d* position, f32 angle);
-extern u16 func_003b6c50(u16 resourceId, const RwV3d* position, f32 angle);
-extern u16 func_003b6d10(u16 resourceId, const RwV3d* position, f32 angle);
-extern RwMatrix* func_004c38c0(void);
-extern void func_004c31b0(void* object, const void* axis, f32 angle, u32 mode);
-extern void func_004c6be0(void* dst, const void* src, void* object);
-extern void func_004c3880(RwMatrix* matrix);
-extern u32 func_001c7160(const FldUnit* enemy, const FldUnit* party, f32 distance);
-extern u16 func_003b6dd0(u16 resourceId, const RwV3d* position, f32 angle);
-extern u32 FUN_0016F380(u32 parameter);
-extern void FUN_0016F3E0(u32 parameter, u32 value);
-extern s32 DAT_007ce250;
-extern s32 DAT_007ce254;
-static u32 sDungeonGenerationAttempts;  // 007ce260
-static u32 sDungeonGenerationFailed;    // 007ce264
-static u32 sDungeonRoomCounter;         // 007ce25c
-extern KwlnTask* gDungeonTask;
-extern u32 D_00960184[];
-extern void (*jtbl_0096017C)(void* memory);
-#pragma alias jtbl_0096017C_abs jtbl_0096017C
-extern u32 jtbl_0096017C_abs[];
-
-extern RwCamera* kwlnGetMainCamera_y2(void);
-extern void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
-extern KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, u32 priority,
-                                                 const char* name, KwlnTaskUpdateFunc update,
-                                                 KwlnTaskDestroyFunc destroy, void* workData);
-extern u8 kwlnTaskDestroyWithHierarchy_y2(KwlnTask* task);
-extern u32 kwlnTaskExists_y2(KwlnTask* task);
-
-extern void K_Fldrc_RequestFldPac(s16 majorId, s16 minorId);
-extern u8 K_Fldrc_IsFldPacLoaded(void);
-extern void K_Fldrc_DestroyFldPac(void);
-extern u32 K_FldDungeon_GetCurrentFloor(void);
-extern void K_FldDungeon_RequestShutdown_y2(void);
-extern void K_FldUnit_DestroyPcMdl(s32 unitId);
-extern void K_FldUnit_DestroyAllPc(void);
-extern void K_FldUnit_DestroyAllEc(void);
-extern void MT_Scene_Load(s32 majorId, s32 minorId);
-extern u32 MT_Scene_TryLoadFinish(void);
-extern void MT_Scene_Destroy(void);
-extern Resrc* MT_Scene_GetResListHead(u32 resType);
-extern void func_001a0150(u16 resourceId, u32 visible);
-extern s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
-extern s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
-extern void Y_TimeLimit_Stop(void);
-extern void H_Fade_FadeOut(void);
-extern void H_Fade_SetType(s16 type);
-extern void H_Snd_StopBgmFade(s16 fadeDuration);
-extern u8 func_00109f60(s16 channelIndex, s16 mappedChannelIndex);
-extern s8 adminiGetNextSeqId(void);
-extern void clnd00187ea0(void* task);
-extern void* func_001a96c0(KwlnTask* task);
-extern void func_001a0040(u32 visible, u32 updateField);
-extern void func_0019fec0(const void* position);
-extern void func_001cd8e0(void);
-extern void func_001e7410(void);
-extern void func_00350080(s32 sequence);
-extern void func_003c8f70(void);
-extern void func_003c8f40(void);
-extern void func_00458bb0(void);
-extern void func_0045a430(s32 enabled);
-extern void func_0045af70(s32 enabled);
-extern void func_004cb930(void* frame);
-extern void func_004cb270(void* frame);
-extern u32 FUN_00398060(u32 resource);
-extern u32 FUN_00398140(u32 resource, s32* id, u32* minor, u32* param4, u32* param5);
-
-extern u32 FUN_001b7d60(void);
-extern u32 FUN_001b7e30(void);
-extern u32 FUN_001c0440(void);
-extern u32 FUN_001c0740(void);
-extern u32 FUN_00398060(u32 resource);
-extern u32 FUN_00398140(u32 resource, s32* id, u32* minor, u32* param4, u32* param5);
-extern u32 FUN_00397ec0(s32 param1, s32 param2, s32 param3, s32 param4);
-extern u32 FUN_0035bc00(s32 type, u32 list, u32 list2, s32 index);
-extern u32 FUN_0035bb40(s32 type, u32 list, s32 index);
-extern u32 FUN_003b5d50(u32 resType);
-extern void FUN_0019d3f0(const char* file, s32 line);
-extern u32 FUN_001e7200(s16 majorId);
-extern u32 FUN_001e7290(u32 request, s16 majorId);
-extern u32 FUN_001c7e70(s16 majorId, u16 minorId);
-extern u32 FUN_001c7f20(u32 request);
-extern void FUN_003b58c0(u16 value);
-extern void FUN_003b5980();
-extern u16 FUN_001b6eb0(s16 majorId, u16 minorId);
-extern u32 FUN_00187e20(void);
-extern u32 FUN_001ce960(void);
-extern void FUN_001d19d0(void);
-extern void FUN_001d70a0(void);
-extern void FUN_001d5f30(u32 cameraTask, u32 model);
-extern void FUN_001d6270(KwlnTask* task, s32 enabled, s32 value);
-extern u32 FUN_003982d0(u32 resource);
-extern void FUN_001a9850(void);
-extern void FUN_001aa1b0(void);
-extern void FUN_00187ea0(void);
-extern u32 FUN_0036f3b0(KwlnTask* task, u32 resource);
-extern u32 FUN_001c1f30_y2(KwlnTask* task, u32 model);
-extern void FUN_0016f1f0(s32 id, s32 enabled);
-extern void FUN_001d2610(void);
-extern void FUN_001d1fa0(void);
-extern u32 FUN_001d9f10(KwlnTask* task);
-extern u32 FUN_001dd600(void);
-extern u64 FUN_0018bff0(KwlnTask* task);
-extern void FUN_0018c0c0(u32 object, s32 enabled);
-extern u32 FUN_0018e820(KwlnTask* task);
-extern void FUN_001ddca0(s64 value);
-extern void FUN_0018eb30(u32 object, s32 enabled);
-extern u32 FUN_004579b0(KwlnTask* task);
-extern u32 FUN_00429d40(KwlnTask* task, u32 scene);
-extern void FUN_004532d0(s32 enabled);
-extern u32 FUN_001c03b0(u32 task);
-extern u32 FUN_001d9fd0(u32 task);
-extern void FUN_001da000(u32 task, s32 enabled);
-extern u32 FUN_0042ba30(void);
-extern u32 FUN_0018c0a0(u32 object);
-extern void FUN_001dd8e0(void);
-extern void FUN_001d2a10(void);
-extern void FUN_00188650(void);
-extern void FUN_001085c0(void);
-extern void FUN_001086a0(s32 duration);
-extern u32 FUN_00108710(void);
-extern void FUN_0027c080(s32 type, void* data, s32 size, s32 flags);
-extern void FUN_00100ec0(void);
-extern u32 FUN_0036f480(void);
-extern u16 FUN_0036f4c0(void);
-extern void FUN_0017f8d0(void);
-extern void FUN_0035bfb0(void);
-extern u32 FUN_001e1230(KwlnTask* task, u32 camera, u32 model);
-extern u32 FUN_001cd5a0(KwlnTask* task);
-extern void FUN_004350e0(s32 enabled, s32 update);
-extern void FUN_00429e80(u32 object, s32 enabled);
-extern u32 FUN_001c0330(u8 blockId);
-extern u32 FUN_001bffa0(void);
-extern u32 FUN_001bffe0(void);
-extern u32 FUN_001c0010(void);
-
-#define FIELD_U8(address)  (*(u8*)(address))
-#define FIELD_U16(address) (*(u16*)(address))
-#define FIELD_U32(address) (*(u32*)(address))
-#define FIELD_S32(address) (*(s32*)(address))
-#define FIELD_F32(address) (*(f32*)(address))
-#define ROOT_U8(work, offset)  (*(u8*)((u8*)(work) + (offset)))
-#define ROOT_U16(work, offset) (*(u16*)((u8*)(work) + (offset)))
-#define ROOT_U32(work, offset) (*(u32*)((u8*)(work) + (offset)))
-#define ROOT_S32(work, offset) (*(s32*)((u8*)(work) + (offset)))
-#define ROOT_F32(work, offset) (*(f32*)((u8*)(work) + (offset)))
-#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4))
-
 static void fldRootSetLoadSlot(u8* work)
 {
     u16 majorId;
@@ -1830,61 +543,14 @@ static void fldRootSetLoadSlot(u8* work)
                          (s32)minorId - 0x32);
     }
 }
-
-static Field sField; // 00869f60
-
-
-
-extern RwMatrix* FUN_00318b60(void* model);
-extern u32 FUN_001d5a90(KwlnTask* task);
-extern void func_001d8cb0(void);
-extern u32 DAT_007ce24c;
-// Retail reconstruction note: states 3, 5, and 11 each perform field-load
-// scheduling directly rather than calling the compact source helper.
-// The task/archive predicates and camera-frame offsets follow retail.
-// State 11 also queues the special zero-minor resource request path.
-// This restores the missing state-machine work; residual differences are
-// primarily compiler layout and register-allocation choices.
-
-
-
-
-
-/* Removing this pragma leaves func_001ba8d0 at normalized_diff 132 (object 372B); with it, normalized_diff 0 (object 376B) — measured W310. */
-
-
-
-
-
-
-extern u32 K_FldDungeon_GetCurrentFloor(void);
-extern s16 FUN_0016DD60(s32 index);
-typedef struct DungeonPattern DungeonPattern;
-
-void func_001bb300(u16 patternId, u16 x, u16 y);
-u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y);
-void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY);
-void func_001bd450(u32 patternId);
-void func_001bd8c0(void);
-void func_001bd950(void);
-void func_001bf220(RwV3d* dst, u32 x, u32 y);
-u32 func_001bf340_y2(const FldDungeonFloorData* floorData);
-
-struct DungeonPattern
-{
-    u8 raw[0x60];
-};
-
 static u8* dungeonCell(s32 x, s32 y)
 {
     return (u8*)K_Field_Get() + y * 0x100 + x * 0x10;
 }
-
 static inline u8* dungeonPatternCell(DungeonPattern* pattern, u32 x, u32 y)
 {
     return pattern->raw + y * 0x18 + x * 8;
 }
-
 static inline void dungeonCopyQuad(u8* dst, const u8* src)
 {
     ((s16*)dst)[0] = ((const s16*)src)[0];
@@ -1892,47 +558,6 @@ static inline void dungeonCopyQuad(u8* dst, const u8* src)
     ((s16*)dst)[2] = ((const s16*)src)[2];
     ((s16*)dst)[3] = ((const s16*)src)[3];
 }
-static const s16 sDungeonVisibilityOffsets0[] = {
-    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
-    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
-};
-static const s16 sDungeonVisibilityOffsets1[] = {
-    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
-    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
-};
-static const s16 sDungeonVisibilityOffsets2[] = {
-    0x34c, 0x35c, 0x23c, 0x24c, 0x25c, 0x26c, 0x13c,
-    0x14c, 0x15c, 0x16c, 0x17c, 0x3c, 0x4c, 0x5c,
-    0x6c, 0x7c, -0xc4, -0xb4, -0xa4, -0x94
-};
-static const s16 sDungeonVisibilityOffsets3[] = {
-    -0xc4, 0x3c, 0x13c, -0x1b4, -0xb4, 0x4c, 0x14c,
-    0x24c, -0x1a4, -0xa4, 0x5c, 0x15c, 0x25c, -0x194,
-    -0x94, 0x6c, 0x16c, 0x26c, -0x84, 0x7c, 0x17c
-};
-static const s16 sDungeonVisibilityOffsets4[] = {
-    0x13c, 0x14c, 0x15c, 0x16c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x7c, -0xc4, -0xb4, -0xa4, -0x94, -0x84, -0x1c4,
-    -0x1b4, -0x1a4, -0x194, -0x2b4, -0x2a4
-};
-static const s16 sDungeonVisibilityOffsets5[] = {
-    0x34c, 0x35c, 0x25c, 0x24c, 0x23c, 0x22c, 0x15c,
-    0x14c, 0x13c, 0x12c, 0x11c, 0x5c, 0x4c, 0x3c,
-    0x2c, 0x1c, -0xd4, -0xc4, -0xb4, -0xa4
-};
-static const s16 sDungeonVisibilityOffsets6[] = {
-    -0xa4, 0x5c, 0x15c, -0x1b4, -0xb4, 0x4c, 0x14c,
-    0x24c, -0x1c4, -0xc4, 0x3c, 0x13c, 0x23c, -0x1d4,
-    -0xd4, 0x2c, 0x12c, 0x22c, -0xe4, 0x1c, 0x11c
-};
-static const s16 sDungeonVisibilityOffsets7[] = {
-    0x15c, 0x14c, 0x13c, 0x12c, 0x5c, 0x4c, 0x3c, 0x2c,
-    0x1c, -0xa4, -0xb4, -0xc4, -0xd4, -0xe4, -0x1a4,
-    -0x1b4, -0x1c4, -0x1d4, -0x2b4, -0x2a4
-};
-
 static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
 {
     u8* cell;
@@ -1944,9 +569,6 @@ static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
         func_001a0150(*(u16*)(cell + offsets[i]), 1);
     }
 }
-
-
-
 
 // FUN_001bb090 NONMATCHING
 void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
@@ -2004,7 +626,6 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     sDungeonRoomCounter++;
 }
 
-/* W377: opt_propagation off improves func_001bb300 (nd3604 -> nd3024; object 4780/4912). */
 #pragma opt_propagation off
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
@@ -2439,9 +1060,6 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
 }
 #pragma opt_propagation reset
 
-// Residual MWCC register allocation and loop scheduling differ from retail; accepted floor.
-// Candidate bounds now follow the pattern dimensions; remaining mismatch is compiler codegen.
-/* W377: stacking opt_loop_invariants on and opt_propagation off improves func_001bc630 (nd756 -> nd667; object 996/1168). */
 #pragma opt_loop_invariants on
 #pragma opt_propagation off
 // FUN_001bc630 NONMATCHING
@@ -2577,7 +1195,6 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 #pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 
-/* W377: stacking opt_common_subs off and opt_lifetimes on improves func_001bcac0 (nd1569 -> nd1551; object 2384/2448). */
 #pragma opt_common_subs off
 #pragma opt_lifetimes on
 // FUN_001bcac0 NONMATCHING
@@ -2843,7 +1460,6 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
 #pragma opt_lifetimes reset
 #pragma opt_common_subs reset
 
-/* W377: opt_loop_invariants on improves func_001bd450 (nd439 -> nd431; object 1132/1136). */
 #pragma opt_loop_invariants on
 // FUN_001bd450 NONMATCHING
 void func_001bd450(u32 patternId)
@@ -2982,7 +1598,6 @@ void func_001bd8c0(void)
     }
 }
 
-/* W377: stacking opt_loop_invariants on and opt_dead_assignments off improves func_001bd950 (nd3513 -> nd2143; object 6328/6352). */
 #pragma opt_loop_invariants on
 #pragma opt_dead_assignments off
 // FUN_001bd950 NONMATCHING
@@ -3263,10 +1878,10 @@ void func_001bd950(void)
         }
     }
 }
-
 #pragma pop
 #pragma opt_dead_assignments reset
 #pragma opt_loop_invariants reset
+
 // FUN_001bf220
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
 {
@@ -3374,4 +1989,1394 @@ reset:
     FUN_0016F3E0(0x3b, chance - 1);
 done_reset:
     return 0;
+}
+
+// FUN_001bf570
+void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
+{
+    FldDungeon* dungeon;
+    char eplPath[48];
+    u8 effectData[12];
+    u8 reloadEffectData[12];
+    u32 i;
+    u8* effectDataPtr;
+    s32 j;
+
+    dungeon = (FldDungeon*)dungeonTask->workData;
+
+    switch (dungeon->state)
+    {
+        case FLDDUNGEON_STATE_INITIALIZE:
+            if (gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl))
+            {
+                break;
+            }
+
+            if (!K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
+            {
+                break;
+            }
+
+            dungeon->scrCdvd = NULL;
+            if (!func_001c0440())
+            {
+                break;
+            }
+
+            if (!func_001c0740())
+            {
+                break;
+            }
+
+            dungeon->floorsData = gFldDngFloorsData;
+            j = dungeon->currFloor << 4;
+            if (*(u8*)(j + (s32)dungeon->floorsData + 0x1d) < 0xff)
+            {
+                sprintf(eplPath, "field/effect/DNG%02d.EPL",
+                        *(u8*)(j + (s32)dungeon->floorsData + 0x0d));
+                dungeon->effectEplTask = func_001a9080(dungeonTask, eplPath, -1, NULL);
+            }
+            else
+            {
+                dungeon->effectEplTask = NULL;
+            }
+
+            dungeon->state++;
+
+        case FLDDUNGEON_STATE_WAIT_EFFECT:
+            effectDataPtr = effectData;
+            j = 12;
+            if (effectDataPtr != NULL)
+            {
+                do
+                {
+                    *effectDataPtr++ = 0;
+                    j--;
+                } while (j != 0);
+            }
+            if (dungeon->effectEplTask != NULL)
+            {
+                if (!func_001a9180(dungeon->effectEplTask))
+                {
+                    break;
+                }
+
+                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, effectData);
+            }
+
+            dungeon->state++;
+
+        case FLDDUNGEON_STATE_CREATE_FIELD:
+            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
+            D_0086E580[0] = 0;
+            dungeon->fieldFlags = dungeon->floorsData[dungeon->currFloor].fieldFlags | 0x80000000;
+            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
+                                                  dungeon->floorsData[dungeon->currFloor].majorId,
+                                                  dungeon->floorsData[dungeon->currFloor].minorId,
+                                                  (u16)dungeon->unk_08,
+                                                  0,
+                                                  0,
+                                                  dungeon->fieldFlags,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
+                                                  -1,
+                                                  -1,
+                                                  -1,
+                                                  -1);
+            dungeon->fieldFlags = 0;
+
+            i = 0;
+            while (i < 6)
+            {
+                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
+                    dungeon->currFloor == D_006833C0[i])
+                {
+                    break;
+                }
+                i++;
+            }
+
+            if (i < 6)
+            {
+                func_001baa50(dungeon->fldRootTask, true);
+                datSetFlag(0x1421, true);
+                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
+                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
+            }
+            else
+            {
+                dungeon->state++;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_IDLE:
+            if (dungeon->shouldShutdown == true)
+            {
+                dungeon->state = FLDDUNGEON_STATE_STOP;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_UNK_04:
+        case FLDDUNGEON_STATE_UNK_05:
+        case FLDDUNGEON_STATE_UNK_06:
+            dungeon->state++;
+            break;
+
+        case FLDDUNGEON_STATE_RELOAD_FIELD:
+            effectDataPtr = reloadEffectData;
+            j = 12;
+            if (effectDataPtr != NULL)
+            {
+                do
+                {
+                    *effectDataPtr++ = 0;
+                    j--;
+                } while (j != 0);
+            }
+
+            if ((gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl)) ||
+                !K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
+            {
+                break;
+            }
+
+            dungeon->scrCdvd = NULL;
+            if (!func_001c0440() || !func_001c0740())
+            {
+                break;
+            }
+
+            if (dungeon->effectEplTask != NULL)
+            {
+                if (!func_001a9180(dungeon->effectEplTask))
+                {
+                    break;
+                }
+
+                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, reloadEffectData);
+            }
+
+            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
+            D_0086E580[0] = 0;
+            dungeon->fieldFlags |= dungeon->floorsData[dungeon->currFloor].fieldFlags;
+            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
+                                                  dungeon->floorsData[dungeon->currFloor].majorId,
+                                                  dungeon->floorsData[dungeon->currFloor].minorId,
+                                                  (u16)dungeon->unk_08,
+                                                  0,
+                                                  0,
+                                                  dungeon->fieldFlags,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
+                                                  -1,
+                                                  -1,
+                                                  -1,
+                                                  -1);
+            dungeon->fieldFlags = 0;
+
+            i = 0;
+            while (i < 6)
+            {
+                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
+                    dungeon->currFloor == D_006833C0[i])
+                {
+                    break;
+                }
+                i++;
+            }
+
+            if (i < 6)
+            {
+                func_001baa50(dungeon->fldRootTask, true);
+                datSetFlag(0x1421, true);
+                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
+                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
+            }
+            else
+            {
+                dungeon->state = FLDDUNGEON_STATE_IDLE;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_WAIT_TRANSITION:
+            if (kwlnTaskExists(dungeon->transitionTask) != true)
+            {
+                datSetFlag(0x1421, false);
+                func_001baa50(dungeon->fldRootTask, false);
+                dungeon->state = FLDDUNGEON_STATE_IDLE;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_STOP:
+            return KWLNTASK_STOP;
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001bfaf0
+void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
+{
+    s32 i;
+
+    func_001c07f0();
+    K_FldDungeon_DestroyScrMemory();
+    gDungeonTask = NULL;
+    gMtScene->fldMajorId = 0;
+
+    for (i = 0; i < 9; i++)
+    {
+        if (D_0086BDC0[i] != NULL)
+        {
+            func_001b3c90(D_0086BDC0[i]);
+            D_0086BDC0[i] = NULL;
+        }
+    }
+
+    if (gDungeonTpMdl != NULL)
+    {
+        mdlDestroy(gDungeonTpMdl);
+        gDungeonTpMdl = NULL;
+        D_0086E694[0] = 0;
+    }
+
+    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(dungeonTask->workData);
+}
+
+// FUN_001bfbc0
+KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
+{
+    KwlnTask* dungeonTask;
+    FldDungeon* dungeon;
+
+    dungeon = (FldDungeon*)RwCalloc(1, sizeof(FldDungeon), rwMEMHINTDUR_GLOBAL);
+    if (dungeon == NULL)
+    {
+        return NULL;
+    }
+
+    gDungeonTask = dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
+                                                                10,
+                                                                "automatic dungeon ",
+                                                                K_FldDungeon_UpdateTask,
+                                                                K_FldDungeon_DestroyTask,
+                                                                dungeon);
+
+    dungeon->currFloor = floor;
+    dungeon->unk_08 = param_3;
+
+    if (floor > 1)
+    {
+        gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD,
+                                          0xffff,
+                                          "field/grmd/fobj000.RMD",
+                                          MDL_READASYNC);
+
+        dungeon->scrCdvd = K_FldDungeon_RequestScript();
+
+        K_FldDungeon_FUN_001c03f0();
+    }
+
+    return dungeonTask;
+}
+
+// FUN_001bfcc0
+void func_001bfcc0(void)
+{
+    FldDungeon* dungeon;
+    char eplPath[48];
+    s32 i;
+    if (gDungeonTask == NULL)
+    {
+        return;
+    }
+
+    dungeon = DUNGEON_GET_WORK();
+    dungeon->unk_08 = 0;
+    func_001a9470(*(void**)((u8*)K_Field_Get() + 0x1200));
+    func_001d4180();
+
+    if (dungeon->floorsData[dungeon->currFloor].effectId !=
+        dungeon->floorsData[dungeon->currFloor + 1].effectId)
+    {
+        if (dungeon->effectEplTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(dungeon->effectEplTask);
+        }
+        if (dungeon->floorsData[dungeon->currFloor + 1].effectId < 0xff)
+        {
+            sprintf(eplPath, "field/effect/DNG%02d.EPL",
+                    dungeon->floorsData[dungeon->currFloor + 1].effectId);
+            dungeon->effectEplTask = func_001a9080(
+                gDungeonTask, eplPath, -1, NULL);
+        }
+        else
+        {
+            dungeon->effectEplTask = NULL;
+        }
+    }
+    else if (dungeon->effectEplTask != NULL)
+    {
+        func_001a9400(dungeon->effectEplTask, dungeon->effectEplSlot);
+    }
+
+    if (dungeon->currFloor + 1 > 1)
+    {
+        if (gDungeonTpMdl == NULL)
+        {
+            gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
+                                               "field/grmd/fobj000.RMD",
+                                               MDL_READASYNC);
+        }
+        dungeon->scrCdvd = K_FldDungeon_RequestScript();
+        K_FldDungeon_FUN_001c03f0();
+    }
+
+    if (dungeon->floorsData[dungeon->currFloor].majorId !=
+            dungeon->floorsData[dungeon->currFloor + 1].majorId ||
+        dungeon->floorsData[dungeon->currFloor].minorId !=
+            dungeon->floorsData[dungeon->currFloor + 1].minorId)
+    {
+        dungeon->fieldFlags |= 0x80000000;
+        if (K_Scene_001a0250_y2() == true || func_001a02c0_y2() == true)
+        {
+            for (i = 0; i < 9; i++)
+            {
+                if (D_0086BDC0[i] != NULL)
+                {
+                    func_001b3c90(D_0086BDC0[i]);
+                    D_0086BDC0[i] = NULL;
+                }
+            }
+        }
+    }
+
+    dungeon->currFloor++;
+    K_Field_SetShouldShutdown(dungeon->fldRootTask, true);
+    dungeon->state = FLDDUNGEON_STATE_UNK_04;
+}
+
+// FUN_001bff00
+void K_FldDungeon_RequestShutdown()
+{
+    if (gDungeonTask != NULL)
+    {
+        DUNGEON_GET_WORK()->shouldShutdown = true;
+    }
+}
+
+// FUN_001bff20
+u32 K_FldDungeon_GetCurrentFloor_y2()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return DUNGEON_GET_WORK()->currFloor;
+}
+
+// FUN_001bff50
+u8 K_FldDungeon_IsCurrentFloorExplorable()
+{
+    u32 currFloor;
+
+    if (gDungeonTask == NULL)
+    {
+        currFloor = 0;
+    }
+    else 
+    {
+        currFloor = DUNGEON_GET_WORK()->currFloor;
+    }
+
+    if (currFloor >= 2 && currFloor < 400)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// FUN_001bffa0
+FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return &DUNGEON_GET_WORK()->floorsData[DUNGEON_GET_WORK()->currFloor];
+}
+
+// FUN_001bffe0
+void* K_FldDungeon_GetScrMemory()
+{
+    if (gDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    return DUNGEON_GET_WORK()->scrMemory;
+}
+
+// FUN_001c0010
+u32 K_FldDungeon_GetScrSize()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return DUNGEON_GET_WORK()->scrSize;
+}
+
+// FUN_001c0040
+u32 func_001c0040(void)
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+    return DUNGEON_GET_WORK()->encounterResult;
+}
+
+// FUN_001c0070
+f32 func_001c0070(void)
+{
+    f32 result;
+    s32 encounterResult;
+
+    result = 1.0f;
+    if (gDungeonTask == NULL)
+    {
+        encounterResult = 0;
+    }
+    else
+    {
+        encounterResult = DUNGEON_GET_WORK()->encounterResult;
+    }
+    switch (encounterResult)
+    {
+        case 1:
+        case 3:
+            result = 2.0f;
+            break;
+        default:
+            break;
+    }
+    return result;
+}
+
+// FUN_001c00d0
+void func_001c00d0(void)
+{
+    if (gDungeonTask != NULL && DUNGEON_GET_WORK()->effectEplTask != NULL)
+    {
+        func_001a9400(DUNGEON_GET_WORK()->effectEplTask,
+                      DUNGEON_GET_WORK()->effectEplSlot);
+    }
+}
+
+// FUN_001c0110
+void func_001c0110(void)
+{
+    FldDungeon* dungeon;
+    u8 data[12];
+    u8* dataPtr;
+    s32 i;
+
+    if (gDungeonTask == NULL)
+    {
+        return;
+    }
+    dungeon = DUNGEON_GET_WORK();
+    if (dungeon->effectEplTask == NULL)
+    {
+        return;
+    }
+    dataPtr = data;
+    i = sizeof(data);
+    if (dataPtr != NULL)
+    {
+        do
+        {
+            *dataPtr = 0;
+            dataPtr++;
+            i--;
+        } while (i != 0);
+    }
+    dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, data);
+}
+// FUN_001c0190. Request a cdvd stream to load main tartarus script
+HCdvd* K_FldDungeon_RequestScript(void)
+{
+    HCdvd* cdvd;
+
+    cdvd = NULL;
+    if (gDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    if (DUNGEON_GET_WORK()->scrMemory == NULL)
+    {
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", HCDVD_FILENORMAL);
+        }
+        else
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", HCDVD_FILENORMAL);
+        }
+    }
+
+    return cdvd;
+}
+
+// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
+u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
+{
+    FldDungeon* dungeon;
+    s32 fileSize;
+
+    if (gDungeonTask == NULL)
+    {
+        return true;
+    }
+
+    dungeon = DUNGEON_GET_WORK();
+    if (scrCdvd == NULL)
+    {
+        return true;
+    }
+
+    if (H_Cdvd_IsFileLoaded(scrCdvd))
+    {
+        fileSize = scrCdvd->fileSize;
+        dungeon->scrMemory = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, fileSize, rwMEMHINTDUR_GLOBAL);
+        dungeon->scrSize = scrCdvd->fileSize;
+        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, (s32)scrCdvd->fileSize);
+
+        H_Cdvd_Destroy(scrCdvd);
+
+        return true;
+    }
+
+    return false;
+}
+
+
+// FUN_001c02e0
+void K_FldDungeon_DestroyScrMemory(void)
+{
+    FldDungeon* dungeon;
+
+    if (gDungeonTask != NULL)
+    {
+        dungeon = DUNGEON_GET_WORK();
+        if (dungeon->scrMemory != NULL)
+        {
+            RwFree(dungeon->scrMemory);
+            dungeon->scrMemory = NULL;
+        }
+    }
+}
+
+// FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
+HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
+{
+    char buffer[128];
+
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        sprintf(buffer, "field/script/dungeonat%02d.bf", blockId);
+    }
+    else
+    {
+        sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
+    }
+
+    return H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
+}
+
+// 0x20c bytes. The transition controller keeps its collision-controller task
+// at offset 0x204; the remaining tail is reserved by the retail work layout.
+
+
+
+
+// Retail uses a 100-unit normalized camera ray and reloads the frame origin
+// for each model probe and before field-node traversal.
+// The previous reconstruction reused a mutated origin and omitted this scale.
+// Restoring those real probe semantics increases normalized_diff in this pass,
+// but avoids silently testing the wrong collision locations.
+// Field-node probes must reload the camera-frame origin at each node helper call.
+// Passing the frame itself preserves that live-origin behavior when camera state
+// changes during traversal; caching cameraPosition would probe stale locations.
+// This intentional semantic correction currently has a larger normalized diff.
+// FUN_001c03b0
+u32 func_001c03b0(HCdvd* cdvd)
+{
+    if (cdvd == NULL)
+    {
+        return true;
+    }
+    return H_Cdvd_IsFileLoaded(cdvd) != false;
+}
+
+
+#pragma alias datSetActiveSocialLink_s16 datSetActiveSocialLink
+#pragma alias adminiGetNowSeqId_u32 adminiGetNowSeqId
+#pragma alias adminiGetNextSeqId_u32 adminiGetNextSeqId_y2
+
+
+// 28-byte payload used when switching to the field sequence.
+
+// 28-byte payload used when switching to the social-link event sequence.
+
+
+// FUN_001c03f0
+void K_FldDungeon_FUN_001c03f0(void)
+{
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL && sDngBtlEffectCdvd == NULL)
+    {
+        sDngBtlEffectCdvd = H_Cdvd_Request("field/btl_effect/btl_eff.pac", HCDVD_FILEARCHIVE);
+    }
+}
+
+
+// FUN_001c0440
+u32 func_001c0440(void)
+{
+    if (sDngBtlEffectCdvd == NULL)
+    {
+        return true;
+    }
+    if (!H_Cdvd_IsFileLoaded(sDngBtlEffectCdvd))
+    {
+        return false;
+    }
+
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) =
+            func_001a9080(NULL, "field/effect/DNG_BTL.EPL", 30,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) =
+            func_001a9080(NULL, "field/effect/DNG_BTL2.EPL", -1,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) =
+            func_001a9080(NULL, "field/effect/DNG_BTL3.EPL", 60,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1200) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1200) =
+            func_001a9080(NULL, "field/effect/DNG_BTL4.EPL", -1,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1204) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1204) =
+            func_001a9080(NULL, "field/effect/DNG_BTL5.EPL", 40,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1208) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1208) =
+            func_001a9080(NULL, "field/effect/DNG_BTL6.EPL", 30,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x120c) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x120c) =
+            func_001a9080(NULL, "field/effect/DNG_BTL7.EPL", 40,
+                          sDngBtlEffectCdvd);
+    }
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        return true;
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1210) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1210) =
+            func_001a9080(NULL, "field/effect/DNG_BTL8.EPL", 8,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1214) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1214) =
+            func_001a9080(NULL, "field/effect/DNG_BTL9.EPL", 20,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1218) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1218) =
+            func_001a9080(NULL, "field/effect/DNG_BTL10.EPL", 50,
+                          sDngBtlEffectCdvd);
+    }
+    return true;
+}
+
+// FUN_001c0740
+u32 func_001c0740(void)
+{
+    s32 i;
+
+    for (i = 0; i < 10; i++)
+    {
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL &&
+            !func_001a9180(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4)))
+        {
+            return false;
+        }
+    }
+    if (sDngBtlEffectCdvd != NULL)
+    {
+        H_Cdvd_Destroy(sDngBtlEffectCdvd);
+        sDngBtlEffectCdvd = NULL;
+    }
+    return true;
+}
+
+// FUN_001c07f0
+void func_001c07f0(void)
+{
+    s32 i;
+
+    for (i = 0; i < 10; i++)
+    {
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4));
+            *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) = NULL;
+        }
+    }
+}
+
+// FUN_001C0880
+void* func_001c0880(KwlnTask* task)
+{
+    u8* work;
+    s32 state;
+    s32 frames;
+    f32 alpha;
+
+    work = (u8*)task->workData;
+    state = *(s32*)work;
+    switch (state)
+    {
+    case 0:
+        frames = *(s32*)(work + 8);
+        if (frames > 0)
+        {
+            alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
+                    (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) /
+                        (f32)frames;
+            *(s32*)(work + 8) = frames - 1;
+        }
+        else
+        {
+            alpha = *(f32*)(work + 0x0c);
+            *(s32*)work = state + 1;
+        }
+        *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
+        break;
+    case 1:
+        return KWLNTASK_STOP;
+    default:
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001c0920
+void func_001c0920(KwlnTask* task)
+{
+    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x20) = 0;
+    ((void (*)(void*))DAT_0096017c[0])(task->workData);
+}
+
+// FUN_001c0960
+void* func_001c0960(KwlnTask* task)
+{
+    u8* work;
+    u8* modelData;
+    u8* node;
+    RwRGBA* sourceColor;
+    RwRGBA color;
+    f32 alpha;
+    f32 normalizedAlpha;
+    void* result;
+
+    work = (u8*)task->workData;
+    sourceColor = mdlGetColor(*(Model**)(*(u8**)(work + 4) + 0x104));
+    color = *sourceColor;
+    switch (*(u32*)work)
+    {
+    case 0:
+        if (*(s32*)(work + 8) > 0)
+        {
+            alpha = (f32)sourceColor->a;
+            alpha -= *(f32*)(work + 0x0c);
+            alpha /= (f32)*(s32*)(work + 8);
+            alpha = (f32)sourceColor->a - alpha;
+            color.a = (u8)alpha;
+            *(s32*)(work + 8) -= 1;
+        }
+        else
+        {
+            alpha = *(f32*)(work + 0x0c);
+            color.a = (u8)alpha;
+            *(s32*)work += 1;
+        }
+
+        normalizedAlpha = (f32)color.a / 255.0f;
+        modelData = *(u8**)(*(u8**)(*(u8**)(work + 4) + 0x104) + 0xe0);
+
+        node = *(u8**)(modelData + 8);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x14);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x18);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x20);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x0c);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x10);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x1c);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x24);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        modelData = *(u8**)(modelData + 0x28);
+        while (modelData != NULL)
+        {
+            *(f32*)(modelData + 0x18) = normalizedAlpha;
+            modelData = *(u8**)(modelData + 0x28);
+        }
+        mdlSetColor(*(Model**)(*(u8**)(work + 4) + 0x104), &color);
+        break;
+    case 1:
+        goto stop;
+    }
+    goto done;
+stop:
+    return KWLNTASK_STOP;
+done:
+    return KWLNTASK_CONTINUE;
+}
+// FUN_001c0d30
+void func_001c0d30(KwlnTask* task)
+{
+    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x108) = 0;
+    ((void (*)(void*))DAT_0096017c[0])(task->workData);
+}
+
+// FUN_001c0d70 NONMATCHING
+void* func_001c0d70(KwlnTask* task)
+{
+    TransWallCtlWork* work;
+    DungeonModelFld* modelFld;
+    ResrcFld* fld;
+    Model* model;
+    KwlnTask* child;
+    u8* fadeWork;
+    void* camera;
+    void* cameraFrame;
+    RwV3d collisionPosition;
+    RwV4d collisionQueryPosition;
+    RwV3d cameraPosition;
+    RwV3d cameraDirection;
+    RwV3d ray[2];
+    RwV3d special[2];
+    u8 queryData[0x208];
+
+    work = (TransWallCtlWork*)task->workData;
+    modelFld = (DungeonModelFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_MODELFLD);
+    fld = (ResrcFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_FLD);
+
+    switch (work->state)
+    {
+    case 0:
+        break;
+    case 1:
+        goto stop;
+    default:
+        goto done;
+    }
+
+    K_FldFrame_CtlCopyPos(&collisionPosition, work->collisionTask);
+    collisionQueryPosition.x = collisionPosition.x;
+    collisionQueryPosition.y = collisionPosition.y;
+    collisionQueryPosition.z = collisionPosition.z;
+    collisionQueryPosition.w =
+        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
+    collisionPosition.y +=
+        60.0f + collisionQueryPosition.w;
+    collisionQueryPosition.x = collisionPosition.x;
+    collisionQueryPosition.y = collisionPosition.y;
+    collisionQueryPosition.z = collisionPosition.z;
+    collisionQueryPosition.w =
+        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
+    camera = kwlnGetMainCamera();
+    cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
+    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+    cameraDirection = *(RwV3d*)cameraFrame;
+    func_004c69f0(&cameraDirection, &cameraDirection);
+    cameraDirection.x *= 100.0f;
+    cameraDirection.y *= 100.0f;
+    cameraDirection.z *= 100.0f;
+    if (gMtScene->fldMajorId == 0x18 &&
+        gMtScene->fldMinorId == 0x32 &&
+        cameraPosition.x == collisionQueryPosition.x &&
+        cameraPosition.y == collisionQueryPosition.y &&
+        cameraPosition.z == collisionQueryPosition.z)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    while (modelFld != NULL)
+    {
+        if ((modelFld->base.flags & 2) != 0)
+        {
+            model = modelFld->model;
+            memset(queryData, 0, 0x208);
+            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+
+            cameraPosition.x += cameraDirection.x;
+            cameraPosition.y += cameraDirection.y;
+            cameraPosition.z += cameraDirection.z;
+            func_001ad050(mdlGetClump(model), &collisionQueryPosition,
+                          &cameraPosition, queryData);
+
+            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+            cameraPosition.x -= cameraDirection.x;
+            cameraPosition.y -= cameraDirection.y;
+            cameraPosition.z -= cameraDirection.z;
+            func_001ad050(mdlGetClump(model), &collisionQueryPosition,
+                          &cameraPosition, queryData);
+            if (*(u32*)queryData > 0)
+            {
+                if (modelFld->fadeTask == NULL &&
+                    ((u8*)mdlGetColor(model))[3] == 255)
+                {
+                    fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
+                        1, 0x14, rwMEMHINTDUR_GLOBAL);
+                    child = NULL;
+                    if (fadeWork != NULL)
+                    {
+                        child = kwlnTaskCreateWithAutoPriority(
+                            task, 10, "field model alpha",
+                            func_001c0960, func_001c0d30, fadeWork);
+                        *(u8**)(fadeWork + 4) = (u8*)modelFld;
+                        *(u32*)(fadeWork + 8) = 5;
+                        *(f32*)(fadeWork + 0x0c) = 0.0f;
+                    }
+                    modelFld->fadeTask = child;
+                    modelFld->fadeTimer = 0;
+                }
+            }
+            else if (modelFld->fadeTask == NULL &&
+                     ((u8*)mdlGetColor(model))[3] == 0)
+            {
+                if (modelFld->fadeTimer >= 0xb)
+                {
+                    fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
+                        1, 0x14, rwMEMHINTDUR_GLOBAL);
+                    child = NULL;
+                    if (fadeWork != NULL)
+                    {
+                        child = kwlnTaskCreateWithAutoPriority(
+                            task, 10, "field model alpha",
+                            func_001c0960, func_001c0d30, fadeWork);
+                        *(u8**)(fadeWork + 4) = (u8*)modelFld;
+                        *(u32*)(fadeWork + 8) = 10;
+                        *(f32*)(fadeWork + 0x0c) = 255.0f;
+                    }
+                    modelFld->fadeTask = child;
+                    modelFld->fadeTimer = 0;
+                }
+                else
+                {
+                    modelFld->fadeTimer += 1;
+                }
+            }
+        }
+        modelFld = (DungeonModelFld*)modelFld->base.next;
+    }
+    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+
+    while (fld != NULL)
+    {
+        if ((fld->base.flags & 2) != 0 && fld->unk_160 != NULL)
+        {
+            u8* fieldData;
+            u32 i;
+            u8* entry;
+
+            fieldData = (u8*)fld->unk_160;
+            i = 0;
+            while (i < *(u32*)(fieldData + 0x14))
+            {
+                entry = *(u8**)(fieldData + 0x98 + i * 4);
+                if (entry != NULL)
+                {
+                    K_Dungeon_ProcessFieldNodes(
+                        task, (DungeonNode*)*(u8**)(entry + 0x14), &collisionQueryPosition,
+                        cameraFrame, &cameraDirection, queryData,
+                        &ray[0], &special[0], 1);
+                    K_Dungeon_ProcessFieldNodes(
+                        task, (DungeonNode*)*(u8**)(entry + 0x28), &collisionQueryPosition,
+                        cameraFrame, &cameraDirection, queryData,
+                        &ray[0], &special[0], 0);
+                    K_Dungeon_ProcessFieldNodes(
+                        task, (DungeonNode*)*(u8**)(entry + 0x24), &collisionQueryPosition,
+                        cameraFrame, &cameraDirection, queryData,
+                        &ray[0], &special[0], 0);
+                }
+                i++;
+            }
+        }
+
+        fld = (ResrcFld*)fld->base.next;
+    }
+done:
+    return KWLNTASK_CONTINUE;
+stop:
+    return KWLNTASK_STOP;
+}
+
+
+
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+
+
+
+
+
+
+
+
+
+// Retail reconstruction note: states 3, 5, and 11 each perform field-load
+// scheduling directly rather than calling the compact source helper.
+// The task/archive predicates and camera-frame offsets follow retail.
+// State 11 also queues the special zero-minor resource request path.
+// This restores the missing state-machine work; residual differences are
+// primarily compiler layout and register-allocation choices.
+
+
+
+
+
+/* Removing this pragma leaves func_001ba8d0 at normalized_diff 132 (object 372B); with it, normalized_diff 0 (object 376B) — measured W310. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_001c1e20
+void func_001c1e20(KwlnTask* transWallTask)
+{
+    ResrcModelFld* modelFld;
+    void* fadeWork;
+
+    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead_y2(RESRC_TYPE_MODELFLD);
+    while (modelFld != NULL)
+    {
+        if ((modelFld->base.flags & 2) == 0)
+        {
+            modelFld = (ResrcModelFld*)modelFld->base.next;
+            continue;
+        }
+
+        if (mdlGetColor(modelFld->mdl)->a == 0)
+        {
+            fadeWork = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, 0x14, rwMEMHINTDUR_GLOBAL);
+            if (fadeWork != NULL)
+            {
+                kwlnTaskCreateWithAutoPriority(transWallTask,
+                                               10,
+                                               "RMD fade CTL",
+                                               func_001c0960,
+                                               func_001c0d30,
+                                               fadeWork);
+                ((void**)fadeWork)[1] = modelFld;
+                ((u32*)fadeWork)[2] = 1;
+                ((f32*)fadeWork)[3] = 255.0f;
+            }
+        }
+
+        modelFld = (ResrcModelFld*)modelFld->base.next;
+    }
+
+    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(transWallTask->workData);
+}
+
+/* W377: opt_propagation off improves func_001bb300 (nd3604 -> nd3024; object 4780/4912). */
+// FUN_001C1F30
+KwlnTask* FUN_001c1f30(KwlnTask* parentTask, KwlnTask* collisionTask)
+{
+    KwlnTask* task;
+    TransWallCtlWork* work;
+    void* camera;
+    RwV3d collisionPosition;
+
+    work = (TransWallCtlWork*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
+        1, sizeof(TransWallCtlWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parentTask,
+                                          0x83d,
+                                          "trans wall CTL",
+                                          func_001c0d70,
+                                          func_001c1e20,
+                                          work);
+    work->collisionTask = collisionTask;
+
+    camera = kwlnGetMainCamera();
+    func_004cb2f0(*(void**)((u8*)camera + 4));
+    K_FldFrame_CtlCopyPos(&collisionPosition, collisionTask);
+
+    return task;
+}
+
+// Residual MWCC register allocation and loop scheduling differ from retail; accepted floor.
+// Candidate bounds now follow the pattern dimensions; remaining mismatch is compiler codegen.
+/* W377: stacking opt_loop_invariants on and opt_propagation off improves func_001bc630 (nd756 -> nd667; object 996/1168). */
+// FUN_001C2000
+void FUN_001c2000(KwlnTask* transWallTask, KwlnTask* collisionTask)
+{
+    TransWallCtlWork* work;
+
+    work = (TransWallCtlWork*)transWallTask->workData;
+    work->collisionTask = collisionTask;
+}
+
+/* W377: stacking opt_common_subs off and opt_lifetimes on improves func_001bcac0 (nd1569 -> nd1551; object 2384/2448). */
+// FUN_001C2010
+u32 FUN_001c2010(void)
+{
+    FieldSequenceData data;
+
+    func_0017f8d0();
+    memset(&data, 0, sizeof(data));
+    data.unk_00 = (u16)scrGetIntPara(0);
+    data.unk_02 = (u16)scrGetIntPara(1);
+    data.unk_04 = (u16)scrGetIntPara(2);
+    data.unk_08 = (u16)scrGetIntPara(3);
+    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
+    func_001d0270();
+
+    return true;
+}
+
+/* W377: opt_loop_invariants on improves func_001bd450 (nd439 -> nd431; object 1132/1136). */
+// FUN_001C20B0
+u32 FUN_001c20b0(void)
+{
+    FieldSequenceData data;
+
+    gMtScene->unk_14 = -1;
+    func_0017f8d0();
+    memset(&data, 0, sizeof(data));
+    data.unk_00 = (u16)scrGetIntPara(0);
+    data.unk_02 = (u16)scrGetIntPara(1);
+    data.unk_04 = (u16)scrGetIntPara(2);
+    data.unk_08 = (u16)scrGetIntPara(3);
+    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
+    func_001d0270();
+
+    return true;
+}
+
+// FUN_001C2160
+u32 FUN_001c2160(void)
+{
+    SocialLinkSequenceData data;
+    s32 cmdTimer;
+    u32 result;
+
+    datSetActiveSocialLink(0xff);
+    data.unk_0c = (u32)scrGetIntPara(0);
+    data.unk_10 = (u32)scrGetIntPara(1);
+    data.unk_14 = (u32)scrGetIntPara(2);
+
+    cmdTimer = scrGetCmdTimer();
+    if (cmdTimer == 0)
+    {
+        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+        goto common_false;
+    }
+    if ((s32)scrGetCmdTimer() <= 10)
+    {
+        goto common_false;
+    }
+    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
+    {
+        goto checks_false;
+    }
+    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
+    {
+        goto checks_false;
+    }
+    result = true;
+    goto done;
+checks_false:
+    result = false;
+    goto done;
+common_false:
+    result = false;
+done:
+    return result;
+}
+
+/* W377: stacking opt_loop_invariants on and opt_dead_assignments off improves func_001bd950 (nd3513 -> nd2143; object 6328/6352). */
+// FUN_001C2240
+u32 FUN_001c2240(void)
+{
+    SocialLinkSequenceData data;
+    s32 socialLink;
+    s32 cmdTimer;
+    u32 result;
+
+    socialLink = scrGetIntPara(3);
+    datSetActiveSocialLink_s16((s16)socialLink);
+    data.unk_0c = (u32)scrGetIntPara(0);
+    data.unk_10 = (u32)scrGetIntPara(1);
+    data.unk_14 = (u32)scrGetIntPara(2);
+
+    cmdTimer = scrGetCmdTimer();
+    if (cmdTimer == 0)
+    {
+        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+        goto common_false;
+    }
+    if ((s32)scrGetCmdTimer() <= 10)
+    {
+        goto common_false;
+    }
+    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
+    {
+        goto checks_false;
+    }
+    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
+    {
+        goto checks_false;
+    }
+    func_00171b50(socialLink);
+    result = true;
+    goto done;
+checks_false:
+    result = false;
+    goto done;
+common_false:
+    result = false;
+done:
+    return result;
+}
+
+// FUN_001C2340
+u32 FUN_001c2340(void)
+{
+    SeqDungeon data;
+
+    func_0017f8d0();
+    data.floor = (u32)scrGetIntPara(0);
+    data.unk_04 = 0;
+    if (data.floor == 1)
+    {
+        DUNGEON_SEQUENCE_FLAG = 1;
+    }
+    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
+    func_001d0270();
+
+    return true;
+}
+
+// FUN_001C23B0
+u32 FUN_001c23b0(void)
+{
+    SeqDungeon data;
+    s32 i;
+    KwlnTask* task;
+
+    func_0017f8d0();
+    data.floor = (u32)scrGetIntPara(0);
+    data.unk_04 = (u32)scrGetIntPara(1);
+    if (data.floor == 1)
+    {
+        DUNGEON_SEQUENCE_FLAG = 1;
+    }
+    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
+
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
+    {
+        task = *(KwlnTask**)((u8*)gFldUnitsPc + i * sizeof(FldUnit) + 0x16c);
+        if (task != NULL)
+        {
+            kwlnTaskEnableFlags(task, KWLNTASK_FLAG_SUSPENDED, 0);
+        }
+    }
+
+    return true;
 }

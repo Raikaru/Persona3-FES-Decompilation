@@ -26,51 +26,305 @@ extern f32 sqrtf(f32 value);
 
 static OpFadeWork* sWork; // 007ce3bc
 
-// FUN_002721d0
-void opFadeStart(u32 duration)
+
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/g_data.h"
+static u32* sBrpSeq; // puGpffffb6d0 / iGpffffb6d0
+extern u8 sBrpSeq_abs[];
+extern void func_0024b8a0(void);
+extern void func_0024a7f0(void);
+extern void func_0024abd0(void);
+extern void func_0024ab10(s16);
+extern void func_0024aa90(void);
+extern void func_0024a870(void);
+extern void func_0024ac90(void);
+extern void func_0024adf0(void);
+extern u32 func_0024b9e0(void);
+extern u32 func_0024ac40(void);
+extern void FUN_00279750(void);
+extern void func_00279660(void);
+extern void func_002796b0(void);
+extern u32 func_00279700(void);
+extern u32 func_002797a0(void);
+extern void func_002797f0(void);
+extern void func_00279890(u32 mode, u32 page);
+extern void func_00279120(void);
+extern void func_002791b0(u16 skillId);
+extern void func_002792c0(void);
+extern void func_00279330(u32 value);
+extern void brpParamSetUnlockedSkillLevel(u32 level);
+extern void brpParamSetUnlockedSkillIndex(u32 index);
+extern void func_00279510(u32 slot, u32 value);
+extern void func_00279580(u32 slot, u32 value);
+extern void func_002795f0(u32 slot, u32 value);
+extern u32 func_00276cc0(void);
+extern void brLvpnlDisableDrawing(void);
+extern void brLvpnlEnableDrawing(void);
+extern void scrClearTextBox(s32, s32, s32, s32);
+extern void FUN_003c77a0(void);
+extern void FUN_003c7990(s32);
+extern u32 FUN_003c7850(void);
+extern void FUN_003c7650(s32);
+extern u32 FUN_003c7610(void);
+extern void FUN_003c7bc0();
+extern void FUN_003c7430(s32);
+extern void FUN_003c74e0(s32);
+extern void FUN_003c7560(s32);
+extern void FUN_0010a4e0(s32, s32, s32, s32);
+extern u32 FUN_00173220(u16);
+extern DatPersonaWork* FUN_001749a0(u16);
+extern u32 FUN_00175410(void);
+extern u32 FUN_001756f0(void);
+extern DatPersonaWork* FUN_001761b0(DatPersonaWork*);
+extern void FUN_00176100(DatPersonaWork*, u8*);
+extern void FUN_00175ce0(DatPersonaWork*, u8*);
+extern u32 FUN_00176a30(DatPersonaWork*);
+extern u16* FUN_00173370(DatPersonaWork*);
+extern void FUN_00176d10(DatPersonaWork*, DatPersonaWork*);
+extern u32 FUN_00173580(DatPersonaWork*, u16);
+extern u32 FUN_00171250(s16);
+extern u16 FUN_00170760();
+extern void FUN_00170860();
+extern void FUN_001830c0(void*);
+extern void FUN_001768e0(DatPersonaWork*, u16);
+extern void FUN_00176840(DatPersonaWork*, u16);
+extern u32 FUN_0016f490(s32);
+extern u16 FUN_001fba70(s16);
+extern u16 FUN_001fb560(s16);
+extern u32 FUN_00171110(s16, s32);
+extern void FUN_001828d0(s16, void*);
+extern void H_Fade_FadeOut(void);
+extern void H_Fade_SetType(s32 type);
+extern u32 H_Fade_IsFadeOutDone(void);
+extern u32 FUN_002347e0(void);
+extern void FUN_003c72d0(void*);
+extern void FUN_001fb4b0(u8*, s32, s32, u8, u8*, u8*);
+extern u8* FUN_00275050(s32);
+extern u32 FUN_002751e0(void);
+extern s32 func_00274f00(void);
+extern u32 func_002741f0(void);
+extern u8* DAT_007ce420;
+extern u8* DAT_007ce428;
+extern u32 DAT_007ce4ec;
+extern u32 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16* DAT_007ce438;
+extern const char* PTR_s_Strength_0068ed70[];
+extern const char D_0068EDC0[];
+extern const char D_0068EDE0[];
+extern const char D_0068EDF0[];
+extern const char D_0068EE00[];
+extern const char D_0068EE10[];
+extern const char D_0068EE28[];
+extern const char D_0068EE40[];
+extern const char D_0068EE60[];
+extern const char D_0068EE80[];
+extern const char D_0068EE90[];
+extern u32 gp0xffff97d0;
+extern u32 gp0xffff97d0_1;
+extern u32 gp0xffff97d0_2;
+extern u32 gp0xffff97d0_3;
+extern u32 gp0xffff97d0_4;
+extern u32 gp0xffff97d0_5;
+extern u32 gp0xffff97d0_6;
+extern void FUN_005225a8(u32 format, ...);
+extern const char D_0068ED98[];
+extern const char D_0068EDA8[];
+extern u32 FUN_00108570(void);
+extern void FUN_00108670(s16 type);
+extern void FUN_00523ac8(void*, ...);
+extern s32 FUN_00488f30(void);
+extern u8* FUN_003d5c90(void);
+extern u8 FUN_0016c470(s32);
+extern void func_00279840(void);
+extern u32 uGpffff97ec;
+void brpSeq00273980(void);
+void brpSeq00273c00(void);
+void brpSeq00273c70(void);
+void func_00272810(void);
+void func_00273800(void);
+void func_00273a10(void);
+void func_00273b30(void);
+void func_00273d50(void);
+void func_00273e90(void);
+void func_00274030(void);
+void func_00274100(void);
+u32 func_002741f0(void);
+void func_002743a0(void);
+void func_002743e0(void*, s32*);
+void func_00274590(void);
+void func_00274c00(void);
+u32 func_00274d40(void);
+u32 func_00274d90(void);
+u32 func_00274e10(void);
+s32 func_00274e90(void);
+extern u32 FUN_00108710(void);
+#include "Main/OpEd/op_fade_mid.h"
+#include "Main/Battle/Result/br_res.h"
+typedef int (*code)(...);
+extern void K_Assert(const char* file, s32 line);
+extern const char D_0068ED88[];
+#define OP_MATCH_ASSERT(condition, line) \
+    do {                                 \
+        if (!(condition)) {              \
+            K_Assert(__FILE__, (line));  \
+        }                                \
+    } while (0)
+extern u32 D_00960178[];
+extern u32 D_0096017C[];
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
+                          u32 first, u32 second);
+extern u8 D_00960090_abs[];
+extern u8 D_0096009C_abs[];
+extern void *D_007D2D60;
+extern u8 *DAT_007ce420_y2;
+extern s32 DAT_007cc4dc;
+extern f32 DAT_007cad74;
+extern f32 DAT_007caf38;
+extern f32 DAT_007caf8c;
+extern f32 DAT_007cafec;
+extern f32 DAT_007cb04c;
+extern const char DAT_0068EEB8[];
+extern const char DAT_0068EED0[];
+extern void *FUN_00173220_y2(u16 id);
+extern void *FUN_001749a0_y2(u16 id);
+extern u32 func_00194b80(void *parent, u32 priority, const void *name,
+                          void *update, void *destroy, void *work);
+extern u32 func_00194e10(const void *name, u32 size, u32 a, u32 b,
+                          void *update, void *destroy, u32 flags);
+extern void func_00195020(u32 resource);
+extern void func_0010a370(s32 channel, const char *message);
+extern u32 func_00119a60(u32 id);
+extern u32 func_00198590(void);
+extern void func_001985b0(u8 r, u8 g, u8 b, u8 a);
+extern void func_0019d3f0(const char *file, s32 line);
+extern void func_001fb1f0(void *persona, u16 *out, s32 *count);
+extern u32 func_001fc230(void *persona);
+extern u32 func_001fc3c0(void *persona);
+extern void func_0021d3b0(void *destination, u32 source);
+extern void func_0021d8e0_y2(void *destination, const f32 *layout);
+extern void func_0021d950_y2(void *destination, const u8 *color);
+extern u32 func_0021cca0(u32 resource, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021e380(void *destination, u32 source, s32 mode);
+extern void func_0021eac0(void *destination, f32 value);
+extern void func_00238980(void *destination, s32 count, u32 value, s32 mode);
+extern void func_00238dc0(void *destination, s32 count, u32 value, s32 mode,
+                           const f32 *layout);
+extern void func_0025f5d0(void *destination, u32 resource, s32 frame);
+extern void func_0025fc50(void *destination, u32 resource, s32 frame, s32 mode);
+extern u32 func_00239140(s32 font);
+extern s32 sflPsel00260900(u32 *resource, s32 frame);
+extern s32 sflPsel00260920(u32 *resource, s32 frame);
+extern f32 sinf(f32 angle);
+extern u32 sflPsel00260940(u32 *resource, s32 frame);
+extern void func_00272330(void *task);
+extern void func_00272380_y2(void);
+extern void func_00272400_y2(u64 value);
+extern u32 func_002727c0_y2(void);
+extern void func_002791b0_y2(u16 id);
+extern void func_00279330_y2(u16 id);
+extern void func_00279510_y2(s32 index, u32 value);
+extern void func_00279580_y2(s32 index, u32 value);
+extern void func_002795f0_y2(s32 index, u32 value);
+extern void func_003b0170(u32 resource);
+extern u32 func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern u32 func_003b1360(u32 resource, s32 visible, s32 flags);
+extern void func_003c7430(s32 value);
+extern void func_003c7bc0(s32 channel, u32 value);
+extern void func_003c7e20(s32 mode, s32 x, s32 y, u64 value, s32 a,
+                           s32 b, s32 c);
+extern u32 func_003c9ab0(u32 resource);
+extern void func_003c9ba0(u32 stream, u32 resource);
+extern void func_003c9cd0(u32 resource, s32 value);
+extern void func_003c9d00(u32 resource, s32 value);
+extern void func_003c9d80(u32 resource, s32 value);
+extern void func_00521250(void *destination, const void *source, u32 size);
+extern void func_005225a8(const void *message, ...);
+extern void brLvpnlStartEntranceAnimation(void);
+extern u32 *DAT_007ce3c0;
+extern u32 *DAT_007ce3c4;
+extern u32 *DAT_007ce3c8;
+extern u32 *DAT_007ce3cc;
+extern u32 *DAT_007ce3d0;
+#undef gOpWorkC0
+#undef gOpWorkC4
+#undef gOpWorkC8
+#undef gOpWorkCC
+#undef gOpWorkD0
+#define gOpWorkC0 DAT_007ce3c0
+#define gOpWorkC4 DAT_007ce3c4
+#define gOpWorkC8 DAT_007ce3c8
+#define gOpWorkCC DAT_007ce3cc
+#define gOpWorkD0 DAT_007ce3d0
+#define opTexW(resource, frame) \
+    ((s32)sflPsel00260900((u32 *)(uintptr_t)(resource), (frame)))
+#define opTexH(resource, frame) \
+    ((s32)sflPsel00260920((u32 *)(uintptr_t)(resource), (frame)))
+#define opTexFrame(resource, frame) \
+    (sflPsel00260940((u32 *)(uintptr_t)(resource), (frame)))
+
+static inline u8* brpSeqBytes(void)
 {
-    OpFadeWork* work;
-
-    K_ASSERT(sWork != NULL, 31);
-    work = sWork;
-
-    work->state = OPFADE_STATE_START;
-    work->duration = duration;
+    return (u8*)sBrpSeq;
+}
+static inline u32 brpSeqU32(u32 offset)
+{
+    return *(u32*)(brpSeqBytes() + offset);
+}
+static inline s32 brpSeqS32(u32 offset)
+{
+    return *(s32*)(brpSeqBytes() + offset);
+}
+static inline u16 brpSeqU16(u32 offset)
+{
+    return *(u16*)(brpSeqBytes() + offset);
+}
+static inline s16 brpSeqS16(u32 offset)
+{
+    return *(s16*)(brpSeqBytes() + offset);
+}
+static inline u8 brpSeqU8(u32 offset)
+{
+    return *(u8*)(brpSeqBytes() + offset);
+}
+static inline void brpSeqPutU32(u32 offset, u32 value)
+{
+    *(u32*)(brpSeqBytes() + offset) = value;
+}
+static inline void brpSeqPutU16(u32 offset, u16 value)
+{
+    *(u16*)(brpSeqBytes() + offset) = value;
+}
+static inline void brpSeqPutU8(u32 offset, u8 value)
+{
+    *(u8*)(brpSeqBytes() + offset) = value;
 }
 
-// FUN_00272220
-void opFadeSetColor(const RwRGBA* color)
+#define OP_U8(base, offset) (*(u8 *)((u8 *)(base) + (offset)))
+#define OP_S8(base, offset) (*(s8 *)((u8 *)(base) + (offset)))
+#define OP_U16(base, offset) (*(u16 *)((u8 *)(base) + (offset)))
+#define OP_S16(base, offset) (*(s16 *)((u8 *)(base) + (offset)))
+#define OP_U32(base, offset) (*(u32 *)((u8 *)(base) + (offset)))
+#define OP_S32(base, offset) (*(s32 *)((u8 *)(base) + (offset)))
+#define OP_PTR(base, offset) (*(void **)((u8 *)(base) + (offset)))
+#define OP_WORD(base, index) (((u32 *)(base))[index])
+#define OP_ALLOC(size, flags) (*(void *(**)(u32, u32))D_00960178)((size), (flags))
+#define OP_WORK0 ((u8 *)gOpWorkC0)
+#define OP_WORK4 ((u8 *)gOpWorkC4)
+#define OP_WORK8 ((u8 *)gOpWorkC8)
+#define OP_WORKC ((u8 *)gOpWorkCC)
+#define OP_WORKD ((u8 *)gOpWorkD0)
+
+
+static inline u8 opFadeColorByte(f32 value)
 {
-    OpFadeWork* work;
-
-    K_ASSERT(sWork != NULL, 31);
-    work = sWork;
-
-    work->color = *color;
-}
-
-// FUN_00272290
-void opFadeIn()
-{
-    OpFadeWork* work;
-
-    K_ASSERT(sWork != NULL, 31);
-    work = sWork;
-
-    work->state = OPFADE_STATE_IN;
-    work->timer = work->duration;
-}
-
-// FUN_002722e0
-void opFadeOut()
-{
-    OpFadeWork* work;
-
-    K_ASSERT(sWork != NULL, 31);
-    work = sWork;
-
-    work->state = OPFADE_STATE_OUT;
-    work->timer = work->duration;
+    return (u8)(u32)value;
 }
 
 // FUN_00271D70
@@ -183,10 +437,54 @@ void func_002720c0(void)
     (*renderQuad)(&work->vertices[0], 4, 0, 2, 3);
 }
 
+// FUN_002721d0
+void opFadeStart(u32 duration)
+{
+    OpFadeWork* work;
 
-#include "Kernel/Kwln/kwlnTask.h"
-#include "Main/Battle/Data/datPersona.h"
-#include "Main/g_data.h"
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->state = OPFADE_STATE_START;
+    work->duration = duration;
+}
+
+// FUN_00272220
+void opFadeSetColor(const RwRGBA* color)
+{
+    OpFadeWork* work;
+
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->color = *color;
+}
+
+// FUN_00272290
+void opFadeIn()
+{
+    OpFadeWork* work;
+
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->state = OPFADE_STATE_IN;
+    work->timer = work->duration;
+}
+
+// FUN_002722e0
+void opFadeOut()
+{
+    OpFadeWork* work;
+
+    K_ASSERT(sWork != NULL, 31);
+    work = sWork;
+
+    work->state = OPFADE_STATE_OUT;
+    work->timer = work->duration;
+}
+
+
 
 #pragma alias func_00272330_y2 func_00272330
 #pragma alias D_00960090_y2 D_00960090
@@ -206,256 +504,24 @@ void func_002720c0(void)
 #pragma alias func_002795f0_y2 func_002795f0_y2
 
 
-static u32* sBrpSeq; // puGpffffb6d0 / iGpffffb6d0
 #pragma alias sBrpSeq_abs sBrpSeq
-extern u8 sBrpSeq_abs[];
 
-extern void func_0024b8a0(void);
-extern void func_0024a7f0(void);
-extern void func_0024abd0(void);
-extern void func_0024ab10(s16);
-extern void func_0024aa90(void);
-extern void func_0024a870(void);
-extern void func_0024ac90(void);
-extern void func_0024adf0(void);
-extern u32 func_0024b9e0(void);
-extern u32 func_0024ac40(void);
-extern void FUN_00279750(void);
-extern void func_00279660(void);
-extern void func_002796b0(void);
-extern u32 func_00279700(void);
-extern u32 func_002797a0(void);
-extern void func_002797f0(void);
-extern void func_00279890(u32 mode, u32 page);
-extern void func_00279120(void);
-extern void func_002791b0(u16 skillId);
-extern void func_002792c0(void);
-extern void func_00279330(u32 value);
-extern void brpParamSetUnlockedSkillLevel(u32 level);
-extern void brpParamSetUnlockedSkillIndex(u32 index);
-extern void func_00279510(u32 slot, u32 value);
-extern void func_00279580(u32 slot, u32 value);
-extern void func_002795f0(u32 slot, u32 value);
-extern u32 func_00276cc0(void);
-extern void brLvpnlDisableDrawing(void);
-extern void brLvpnlEnableDrawing(void);
-extern void scrClearTextBox(s32, s32, s32, s32);
-extern void FUN_003c77a0(void);
-extern void FUN_003c7990(s32);
-extern u32 FUN_003c7850(void);
-extern void FUN_003c7650(s32);
-extern u32 FUN_003c7610(void);
-extern void FUN_003c7bc0();
-extern void FUN_003c7430(s32);
-extern void FUN_003c74e0(s32);
-extern void FUN_003c7560(s32);
-extern void FUN_0010a4e0(s32, s32, s32, s32);
-extern u32 FUN_00173220(u16);
-extern DatPersonaWork* FUN_001749a0(u16);
-extern u32 FUN_00175410(void);
-extern u32 FUN_001756f0(void);
-extern DatPersonaWork* FUN_001761b0(DatPersonaWork*);
-extern void FUN_00176100(DatPersonaWork*, u8*);
-extern void FUN_00175ce0(DatPersonaWork*, u8*);
-extern u32 FUN_00176a30(DatPersonaWork*);
-extern u16* FUN_00173370(DatPersonaWork*);
-extern void FUN_00176d10(DatPersonaWork*, DatPersonaWork*);
-extern u32 FUN_00173580(DatPersonaWork*, u16);
-extern u32 FUN_00171250(s16);
-extern u16 FUN_00170760();
-extern void FUN_00170860();
-extern void FUN_001830c0(void*);
-extern void FUN_001768e0(DatPersonaWork*, u16);
-extern void FUN_00176840(DatPersonaWork*, u16);
-extern u32 FUN_0016f490(s32);
-extern u16 FUN_001fba70(s16);
-extern u16 FUN_001fb560(s16);
-extern u32 FUN_00171110(s16, s32);
-extern void FUN_001828d0(s16, void*);
-extern void H_Fade_FadeOut(void);
-extern void H_Fade_SetType(s32 type);
-extern u32 H_Fade_IsFadeOutDone(void);
-extern u32 FUN_002347e0(void);
-extern void FUN_003c72d0(void*);
-extern void FUN_001fb4b0(u8*, s32, s32, u8, u8*, u8*);
-extern u8* FUN_00275050(s32);
-extern u32 FUN_002751e0(void);
-extern s32 func_00274f00(void);
-extern u32 func_002741f0(void);
-extern u8* DAT_007ce420;
-extern u8* DAT_007ce428;
-extern u32 DAT_007ce4ec;
-extern u32 DAT_007e094e;
-extern u16 DAT_007e0952;
-extern u16* DAT_007ce438;
-extern const char* PTR_s_Strength_0068ed70[];
-extern const char D_0068EDC0[];
-extern const char D_0068EDE0[];
-extern const char D_0068EDF0[];
-extern const char D_0068EE00[];
-extern const char D_0068EE10[];
-extern const char D_0068EE28[];
-extern const char D_0068EE40[];
-extern const char D_0068EE60[];
-extern const char D_0068EE80[];
-extern const char D_0068EE90[];
-extern u32 gp0xffff97d0;
 #pragma alias gp0xffff97d0_1 gp0xffff97d0
-extern u32 gp0xffff97d0_1;
 #pragma alias gp0xffff97d0_2 gp0xffff97d0
-extern u32 gp0xffff97d0_2;
 #pragma alias gp0xffff97d0_3 gp0xffff97d0
-extern u32 gp0xffff97d0_3;
 #pragma alias gp0xffff97d0_4 gp0xffff97d0
-extern u32 gp0xffff97d0_4;
 #pragma alias gp0xffff97d0_5 gp0xffff97d0
-extern u32 gp0xffff97d0_5;
 #pragma alias gp0xffff97d0_6 gp0xffff97d0
-extern u32 gp0xffff97d0_6;
-extern void FUN_005225a8(u32 format, ...);
-extern const char D_0068ED98[];
-extern const char D_0068EDA8[];
-extern u32 FUN_00108570(void);
-extern void FUN_00108670(s16 type);
-extern void FUN_00523ac8(void*, ...);
-extern s32 FUN_00488f30(void);
-extern u8* FUN_003d5c90(void);
-extern u8 FUN_0016c470(s32);
-extern void func_00279840(void);
-extern u32 uGpffff97ec;
 
-static inline u8* brpSeqBytes(void)
-{
-    return (u8*)sBrpSeq;
-}
 
-static inline u32 brpSeqU32(u32 offset)
-{
-    return *(u32*)(brpSeqBytes() + offset);
-}
 
-static inline s32 brpSeqS32(u32 offset)
-{
-    return *(s32*)(brpSeqBytes() + offset);
-}
 
-static inline u16 brpSeqU16(u32 offset)
-{
-    return *(u16*)(brpSeqBytes() + offset);
-}
 
-static inline s16 brpSeqS16(u32 offset)
-{
-    return *(s16*)(brpSeqBytes() + offset);
-}
 
-static inline u8 brpSeqU8(u32 offset)
-{
-    return *(u8*)(brpSeqBytes() + offset);
-}
 
-static inline void brpSeqPutU32(u32 offset, u32 value)
-{
-    *(u32*)(brpSeqBytes() + offset) = value;
-}
 
-static inline void brpSeqPutU16(u32 offset, u16 value)
-{
-    *(u16*)(brpSeqBytes() + offset) = value;
-}
 
-static inline void brpSeqPutU8(u32 offset, u8 value)
-{
-    *(u8*)(brpSeqBytes() + offset) = value;
-}
-void func_00272810(void);
-void func_00273800(void);
-void func_00273a10(void);
-void func_00273b30(void);
-void func_00273d50(void);
-void func_00273e90(void);
-void func_00274030(void);
-void func_00274100(void);
-u32 func_002741f0(void);
-void func_002743a0(void);
-void func_002743e0(void*, s32*);
-void func_00274590(void);
-void func_00274c00(void);
-u32 func_00274d40(void);
-u32 func_00274d90(void);
-u32 func_00274e10(void);
-s32 func_00274e90(void);
 
-extern u32 FUN_00108710(void);
-extern void func_00276a80(void);
-extern void func_00276b10(void);
-extern void func_002798f0(void);
-// FUN_002737a0
-
-void brpSeq002737a0(void)
-{
-    K_ASSERT(sBrpSeq != NULL, 0xb0);
-    if ((*sBrpSeq & 0x40) != 0) {
-        func_0024b8a0();
-    }
-}
-
-// FUN_00273980
-void brpSeq00273980(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sBrpSeq != NULL, 0xb0);
-    puVar1 = sBrpSeq;
-    K_ASSERT((~*puVar1 & 2) != 0, 0x3a8);
-    puVar1[4] = 6;
-    *puVar1 &= 0xfffffffe;
-}
-
-// FUN_00273c00
-void brpSeq00273c00(void)
-{
-    int iVar1;
-
-    K_ASSERT(sBrpSeq != NULL, 0xb0);
-    iVar1 = (int)sBrpSeq;
-    FUN_00279750();
-    scrClearTextBox(1, 0, 8, 2);
-    *(u32*)(iVar1 + 0x18) = 0;
-    *(u32*)(iVar1 + 0x10) = 3;
-}
-
-// FUN_00273e10
-void brpSeq00273e10(void)
-{
-    int iVar1;
-
-    K_ASSERT(sBrpSeq != NULL, 0xb0);
-    iVar1 = (int)sBrpSeq;
-    K_ASSERT(*(int*)(iVar1 + 0x74) == 9, 0x40e);
-    FUN_003c7430(3);
-    *(u32*)(iVar1 + 0x18) = 2;
-}
-
-// FUN_00273c70
-void brpSeq00273c70(void)
-{
-    u32* puVar1;
-    u32 uVar2;
-
-    K_ASSERT(sBrpSeq != NULL, 0xb0);
-    puVar1 = sBrpSeq;
-    *puVar1 &= 0xffffffef;
-    K_ASSERT((~puVar1[2] & 1) != 0, 0x3ef);
-    uVar2 = FUN_00173220(*(u16*)((int)puVar1 + 4));
-    FUN_003c7bc0(0, uVar2);
-    FUN_003c7430(8);
-    FUN_003c74e0(9);
-    FUN_003c7560(0);
-    scrClearTextBox(1, 0, 8, 4);
-    puVar1[7] = 0;
-    puVar1[4] = 5;
-}
 // FUN_00272330
 void func_00272330_y2(u32* work)
 {
@@ -599,6 +665,10 @@ u32 func_002727c0(void)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     return brpSeqU32(0) & 1;
 }
+
+extern void func_00276a80(void);
+extern void func_00276b10(void);
+extern void func_002798f0(void);
 #define brpSeqBytes() work
 #define brpSeqU32(offset) (*(u32*)(work + (offset)))
 #define brpSeqS32(offset) (*(s32*)(work + (offset)))
@@ -608,7 +678,6 @@ u32 func_002727c0(void)
 #define brpSeqPutU32(offset, value) (*(u32*)(work + (offset)) = (value))
 #define brpSeqPutU16(offset, value) (*(u16*)(work + (offset)) = (value))
 #define brpSeqPutU8(offset, value) (*(u8*)(work + (offset)) = (value))
-
 // FUN_00272810 NONMATCHING
 void func_00272810(void)
 {
@@ -1042,7 +1111,6 @@ void func_00272810(void)
             func_0024adf0();
     }
 }
-
 #undef brpSeqBytes
 #undef brpSeqU32
 #undef brpSeqS32
@@ -1052,6 +1120,16 @@ void func_00272810(void)
 #undef brpSeqPutU32
 #undef brpSeqPutU16
 #undef brpSeqPutU8
+// FUN_002737a0
+
+void brpSeq002737a0(void)
+{
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    if ((*sBrpSeq & 0x40) != 0) {
+        func_0024b8a0();
+    }
+}
+
 // FUN_00273800
 void func_00273800(void)
 {
@@ -1108,6 +1186,18 @@ loop:
     }
 }
 
+// FUN_00273980
+void brpSeq00273980(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    puVar1 = sBrpSeq;
+    K_ASSERT((~*puVar1 & 2) != 0, 0x3a8);
+    puVar1[4] = 6;
+    *puVar1 &= 0xfffffffe;
+}
+
 // FUN_00273A10
 void func_00273a10(void)
 {
@@ -1158,6 +1248,39 @@ void func_00273b30(void)
     *(u32*)(work + 0x10) = 2;
 }
 
+// FUN_00273c00
+void brpSeq00273c00(void)
+{
+    int iVar1;
+
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    iVar1 = (int)sBrpSeq;
+    FUN_00279750();
+    scrClearTextBox(1, 0, 8, 2);
+    *(u32*)(iVar1 + 0x18) = 0;
+    *(u32*)(iVar1 + 0x10) = 3;
+}
+
+// FUN_00273c70
+void brpSeq00273c70(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    puVar1 = sBrpSeq;
+    *puVar1 &= 0xffffffef;
+    K_ASSERT((~puVar1[2] & 1) != 0, 0x3ef);
+    uVar2 = FUN_00173220(*(u16*)((int)puVar1 + 4));
+    FUN_003c7bc0(0, uVar2);
+    FUN_003c7430(8);
+    FUN_003c74e0(9);
+    FUN_003c7560(0);
+    scrClearTextBox(1, 0, 8, 4);
+    puVar1[7] = 0;
+    puVar1[4] = 5;
+}
+
 // FUN_00273D50
 void func_00273d50(void)
 {
@@ -1172,6 +1295,18 @@ void func_00273d50(void)
     *(u32*)work &= ~0x20u;
     *(u32*)(work + 0x20) = 0;
     *(u32*)(work + 0x10) = 4;
+}
+
+// FUN_00273e10
+void brpSeq00273e10(void)
+{
+    int iVar1;
+
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    iVar1 = (int)sBrpSeq;
+    K_ASSERT(*(int*)(iVar1 + 0x74) == 9, 0x40e);
+    FUN_003c7430(3);
+    *(u32*)(iVar1 + 0x18) = 2;
 }
 
 // FUN_00273E90
@@ -1714,141 +1849,12 @@ s32 func_00274f00(void)
 }
 
 
-#include "Main/OpEd/op_fade_mid.h"
-#include "Main/Battle/Result/br_res.h"
-typedef int (*code)(...);
-extern void K_Assert(const char* file, s32 line);
-extern const char D_0068ED88[];
 
-#define OP_MATCH_ASSERT(condition, line) \
-    do {                                 \
-        if (!(condition)) {              \
-            K_Assert(__FILE__, (line));  \
-        }                                \
-    } while (0)
 
 /* Retail helpers used by the opening/ending result state. */
-extern u32 D_00960178[];
-extern u32 D_0096017C[];
-extern void (*D_00960090)(u32 state, u32 value);
-extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
-                          u32 first, u32 second);
 #pragma alias D_00960090_abs D_00960090
-extern u8 D_00960090_abs[];
 #pragma alias D_0096009C_abs D_0096009C
-extern u8 D_0096009C_abs[];
-extern void *D_007D2D60;
-extern u8 *DAT_007ce420_y2;
-extern s32 DAT_007cc4dc;
-extern f32 DAT_007cad74;
-extern f32 DAT_007caf38;
-extern f32 DAT_007caf8c;
-extern f32 DAT_007cafec;
-extern f32 DAT_007cb04c;
-extern const char DAT_0068EEB8[];
-extern const char DAT_0068EED0[];
 
-extern void *FUN_00173220_y2(u16 id);
-extern void *FUN_001749a0_y2(u16 id);
-extern u32 func_00194b80(void *parent, u32 priority, const void *name,
-                          void *update, void *destroy, void *work);
-extern u32 func_00194e10(const void *name, u32 size, u32 a, u32 b,
-                          void *update, void *destroy, u32 flags);
-extern void func_00195020(u32 resource);
-extern void func_0010a370(s32 channel, const char *message);
-extern u32 func_00119a60(u32 id);
-extern u32 func_00198590(void);
-extern void func_001985b0(u8 r, u8 g, u8 b, u8 a);
-extern void func_0019d3f0(const char *file, s32 line);
-extern void func_001fb1f0(void *persona, u16 *out, s32 *count);
-extern u32 func_001fc230(void *persona);
-extern u32 func_001fc3c0(void *persona);
-extern void func_0021d3b0(void *destination, u32 source);
-extern void func_0021d8e0_y2(void *destination, const f32 *layout);
-extern void func_0021d950_y2(void *destination, const u8 *color);
-extern u32 func_0021cca0(u32 resource, s32 frame);
-extern u32 func_0021cce0(u32 frame);
-extern void func_0021e380(void *destination, u32 source, s32 mode);
-extern void func_0021eac0(void *destination, f32 value);
-extern void func_00238980(void *destination, s32 count, u32 value, s32 mode);
-extern void func_00238dc0(void *destination, s32 count, u32 value, s32 mode,
-                           const f32 *layout);
-extern void func_0025f5d0(void *destination, u32 resource, s32 frame);
-extern void func_0025fc50(void *destination, u32 resource, s32 frame, s32 mode);
-extern u32 func_00239140(s32 font);
-extern s32 sflPsel00260900(u32 *resource, s32 frame);
-extern s32 sflPsel00260920(u32 *resource, s32 frame);
-extern f32 sinf(f32 angle);
-extern u32 sflPsel00260940(u32 *resource, s32 frame);
-extern void func_00272330(void *task);
-extern void func_00272380_y2(void);
-extern void func_00272400_y2(u64 value);
-extern u32 func_002727c0_y2(void);
-extern void func_002791b0_y2(u16 id);
-extern void func_00279330_y2(u16 id);
-extern void func_00279510_y2(s32 index, u32 value);
-extern void func_00279580_y2(s32 index, u32 value);
-extern void func_002795f0_y2(s32 index, u32 value);
-extern void func_003b0170(u32 resource);
-extern u32 func_003b0d70(u32 resource, s32 x, s32 y);
-extern void func_003b0e20(u32 resource, u32 color);
-extern void func_003b0e70(s32 mode);
-extern void func_003b0e90(s32 mode);
-extern u32 func_003b1360(u32 resource, s32 visible, s32 flags);
-extern void func_003c7430(s32 value);
-extern void func_003c7bc0(s32 channel, u32 value);
-extern void func_003c7e20(s32 mode, s32 x, s32 y, u64 value, s32 a,
-                           s32 b, s32 c);
-extern u32 func_003c9ab0(u32 resource);
-extern void func_003c9ba0(u32 stream, u32 resource);
-extern void func_003c9cd0(u32 resource, s32 value);
-extern void func_003c9d00(u32 resource, s32 value);
-extern void func_003c9d80(u32 resource, s32 value);
-extern void func_00521250(void *destination, const void *source, u32 size);
-extern void func_005225a8(const void *message, ...);
-extern void brLvpnlStartEntranceAnimation(void);
-extern u32 *DAT_007ce3c0;
-extern u32 *DAT_007ce3c4;
-extern u32 *DAT_007ce3c8;
-extern u32 *DAT_007ce3cc;
-extern u32 *DAT_007ce3d0;
-#undef gOpWorkC0
-#undef gOpWorkC4
-#undef gOpWorkC8
-#undef gOpWorkCC
-#undef gOpWorkD0
-#define gOpWorkC0 DAT_007ce3c0
-#define gOpWorkC4 DAT_007ce3c4
-#define gOpWorkC8 DAT_007ce3c8
-#define gOpWorkCC DAT_007ce3cc
-#define gOpWorkD0 DAT_007ce3d0
-#define opTexW(resource, frame) \
-    ((s32)sflPsel00260900((u32 *)(uintptr_t)(resource), (frame)))
-#define opTexH(resource, frame) \
-    ((s32)sflPsel00260920((u32 *)(uintptr_t)(resource), (frame)))
-#define opTexFrame(resource, frame) \
-    (sflPsel00260940((u32 *)(uintptr_t)(resource), (frame)))
-
-#define OP_U8(base, offset) (*(u8 *)((u8 *)(base) + (offset)))
-#define OP_S8(base, offset) (*(s8 *)((u8 *)(base) + (offset)))
-#define OP_U16(base, offset) (*(u16 *)((u8 *)(base) + (offset)))
-#define OP_S16(base, offset) (*(s16 *)((u8 *)(base) + (offset)))
-#define OP_U32(base, offset) (*(u32 *)((u8 *)(base) + (offset)))
-#define OP_S32(base, offset) (*(s32 *)((u8 *)(base) + (offset)))
-#define OP_PTR(base, offset) (*(void **)((u8 *)(base) + (offset)))
-#define OP_WORD(base, index) (((u32 *)(base))[index])
-#define OP_ALLOC(size, flags) (*(void *(**)(u32, u32))D_00960178)((size), (flags))
-#define OP_WORK0 ((u8 *)gOpWorkC0)
-#define OP_WORK4 ((u8 *)gOpWorkC4)
-#define OP_WORK8 ((u8 *)gOpWorkC8)
-#define OP_WORKC ((u8 *)gOpWorkCC)
-#define OP_WORKD ((u8 *)gOpWorkD0)
-
-
-static inline u8 opFadeColorByte(f32 value)
-{
-    return (u8)(u32)value;
-}
 
 
 // FUN_00275050 NONMATCHING

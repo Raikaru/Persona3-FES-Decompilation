@@ -15,56 +15,9 @@ typedef struct
 
 static BrpParamWork* sBrpParam; // iGpffffb6e0
 
-// FUN_00279450
-void brpParamSetUnlockedSkillLevel(u32 level)
-{
-    int workBase;
-
-    K_ASSERT(sBrpParam != NULL, 0x61);
-    /* MWCC requires this address form to retain the retail call setup. */
-    workBase = (int)sBrpParam;
-    *(u32*)(workBase + 0x3734) = level;
-    bpIFont00238980((void*)(workBase + 0x3750), 2, level, 2);
-}
-
-// FUN_002794c0
-void brpParamSetUnlockedSkillIndex(u32 index)
-{
-    K_ASSERT(sBrpParam != NULL, 0x61);
-    sBrpParam->unlockedSkillIndex = index;
-}
-
 
 #include "Utils.h"
 #include "Main/OpEd/op_fade_mid.h"
-
-#pragma alias K_Assert_y2 K_Assert
-#pragma alias func_0021d3b0_y2 func_0021d3b0
-#pragma alias func_0021d8e0_y2 func_0021d8e0
-#pragma alias func_0021d950_y2 func_0021d950
-#pragma alias func_0021cca0_y2 func_0021cca0
-#pragma alias func_0021cce0_y2 func_0021cce0
-#pragma alias func_00238980_y2 func_00238980
-#pragma alias func_00279120_y2 func_00279120
-#pragma alias func_002792c0_y2 func_002792c0
-#pragma alias func_003b1360_y2 func_003b1360
-#pragma alias func_004d7f60_y2 func_004d7f60
-#pragma alias func_002791b0_y2 func_002791b0
-#pragma alias func_00279330_y2 func_00279330
-#pragma alias brpParamSetUnlockedSkillLevel_y2 brpParamSetUnlockedSkillLevel
-#pragma alias brpParamSetUnlockedSkillIndex_y2 brpParamSetUnlockedSkillIndex
-#pragma alias func_00279510_y2 func_00279510
-#pragma alias func_00279580_y2 func_00279580
-#pragma alias func_002795f0_y2 func_002795f0
-#pragma alias func_003b0d70_y2 func_003b0d70
-#pragma alias func_003b0e90_y2 func_003b0e90
-#pragma alias func_003c9ab0_y2 func_003c9ab0
-#pragma alias func_00521250_y2 func_00521250
-#pragma alias func_005225a8_y2 func_005225a8
-#pragma alias DAT_007ce3d0_y2 DAT_007ce3d0
-
-
-/* GP-owned work records are shared with the adjacent opening/ending TU. */
 extern u32* DAT_007ce3d0;
 #define sOpTailA DAT_007ce3d0
 extern u32* DAT_007ce3d4;
@@ -92,7 +45,6 @@ extern f32 fGpffff82c4;
 extern u8 DAT_007cc4e8[1];
 #define OP_F82FC (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cafec)
 #define OP_F839C (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cb08c)
-
 extern void func_003b0170(u32 resource);
 extern u32 func_003b0970(const char* text, s32 mode, s32 group, s32 a, s32 b);
 extern void func_003b0d70(u32 resource, s32 x, s32 y);
@@ -151,7 +103,6 @@ extern void (*DAT_00960090[])(s32 state, u32 value);
 extern void (*DAT_00960094[])(s32 state, void* value);
 extern void (*DAT_0096009c[])(void* vertices, s32 stride, s32 mode, s32 a, s32 b);
 extern void func_00521408(void* dst, s32 value, u32 size);
-
 void func_0027a3b0(void);
 u32* func_0027a4a0(void);
 void func_0027a560(u32* work);
@@ -190,310 +141,22 @@ typedef struct OpTailPosition {
     f32 y;
 } OpTailPosition;
 void func_0027bae0(const OpTailPosition* value);
-
-// FUN_00279120
-void func_00279120_y2(void)
-{
-    s32 i;
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    for (i = 0; i < (s32)work[0x3738 / 4]; i++) {
-        func_003b0170(*(u32*)((u8*)work + i * 0x110 + 0x110));
-    }
-    work[0x3738 / 4] = 0;
-}
-
-// FUN_002791b0
-void func_002791b0(u32 id)
-{
-    u32* root;
-    u32* work;
-    u32 handle;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    root = sOpTailA;
-    work = (u32*)((u8*)root + root[0x3738 / 4] * 0x110 + 0x10);
-    func_003b0e70(1);
-    func_003b0e90(2);
-    handle = func_003b0970(
-        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
-    func_003b0d70(handle, 0x640, 0x320);
-    frFontSetTextScale(handle, 0.0f);
-    work[0x100 / 4] = handle;
-    func_003b0e90(1);
-    func_003b0e70(2);
-    root[0x3738 / 4]++;
-}
-
-// FUN_002792c0
-void func_002792c0_y2(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    if ((work[0] & 2) != 0) {
-        func_003b0170(work[0xe54]);
-    }
-    work[0] &= ~2u;
-}
-
-// FUN_00279330
-void func_00279330(u32 id)
-{
-    u32* work;
-    u32 handle;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    if ((~work[0] & 2) == 0) {
-        K_Assert_y2("brp_param.c", 0x3e0);
-    }
-    func_003b0e70(1);
-    func_003b0e90(2);
-    handle = func_003b0970(
-        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
-    func_003b0d70(handle, 0x640, 0x320);
-    frFontSetTextScale(handle, 0.0f);
-    work[0xe54] = handle;
-    func_003b0e90(1);
-    func_003b0e70(2);
-    work[0] |= 2;
-}
-
-
-// FUN_00279510
-void func_00279510(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0x890) = value;
-}
-
-// FUN_00279580
-void func_00279580(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0xaa0) = value;
-}
-
-// FUN_002795f0
-void func_002795f0(s32 index, u32 value)
-{
-    u8* work;
-    s32 byteOffset;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = (u8*)sOpTailA;
-    byteOffset = index * 0x720;
-    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
-    *(u32*)(work + 0xaa4) = value;
-}
-
-// FUN_00279660
-void func_00279660(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 8;
-}
-
-// FUN_002796b0
-void func_002796b0(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0xdcf] = 0;
-    work[0] |= 4;
-}
-
-// FUN_00279700
-u32 func_00279700(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    return sOpTailA[0] & 4;
-}
-
-// FUN_00279750
-void func_00279750(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0xdd1] = 0;
-    work[0] |= 0x10;
-}
-
-// FUN_002797a0
-u32 func_002797a0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    return sOpTailA[0] & 0x10;
-}
-
-// FUN_002797f0
-void func_002797f0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 0x20;
-}
-
-// FUN_00279840
-void func_00279840(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] &= ~0x20u;
-}
-
-// FUN_00279890
-void func_00279890(u32 a, u32 b)
-{
-    u32* work;
-
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    work = sOpTailA;
-    work[0x3b60 / 4] = a;
-    work[0x3b64 / 4] = b;
-}
-
-// FUN_002798f0
-void func_002798f0(void)
-{
-    K_ASSERT(sOpTailA != NULL, 0x61);
-    sOpTailA[0] |= 0x40;
-}
-// W389 residual nd20 (object 372/384): six-knob singles and all 15 knob pairs, plus pointer-type, temporary, and declaration-order probes, were reverted as neutral; alignment-cursor register coloring remains a compiler floor.
-// FUN_00279940 NONMATCHING
-u32* func_00279940(const u32* header)
-{
-    u32 size;
-    u32* out;
-    u32* data;
-    u32 aligned;
-    u32 cursor;
-    u32 i;
-    u8* bytes;
-
-    size = 0x14;
-    size += header[3] * 4;
-    if ((size & 3) != 0) {
-        size += 4 - (size & 3);
-    }
-    size += header[6];
-    if ((size & 3) != 0) {
-        size += 4 - (size & 3);
-    }
-    size += header[2];
-    data = out = (u32*)(*DAT_00960178)(size, 0x40000);
-    data += 5;
-    out[2] = (u32)data;
-    aligned = (u32)data + header[3] * 4;
-    if ((aligned & 3) != 0) {
-        aligned += 4 - (aligned & 3);
-    }
-    out[3] = aligned;
-    aligned += header[6];
-    if ((aligned & 3) != 0) {
-        aligned += 4 - (aligned & 3);
-    }
-    out[4] = aligned;
-    out[1] = header[3];
-    out[0] = header[0];
-    func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);
-    func_00521250((void*)out[4], (const u8*)header + header[1], header[2]);
-    bytes = (u8*)header + header[4];
-    cursor = out[3];
-    for (i = 0; i < header[3]; i++, bytes++) {
-        ((u32*)out[2])[i] = cursor;
-        cursor += *bytes;
-    }
-    return out;
-}
-
-// FUN_00279ac0
-void func_00279ac0(u32 value)
-{
-    (*DAT_0096017c)((void*)(uintptr_t)value);
-}
-
-// FUN_00279AF0
-u32 func_00279af0(const u32* work, u32 index)
-{
-    return *(const u32 *)(index * sizeof(u32) + work[2]);
-}
-
-// FUN_00279b10
-u32 func_00279b10(const u32* work)
-{
-    return work[4];
-}
-
-// FUN_00279b20
-u32 func_00279b20(const u32* work)
-{
-    return work[1];
-}
-
-// FUN_00279b30
-void func_00279b30(u32* work)
-{
-    s32 i;
-    u32 dark;
-
-    work[0] = 0;
-    ((u8*)work)[0x122c] = 0xff;
-    ((u8*)work)[0x122d] = 0xff;
-    ((u8*)work)[0x122e] = 0xff;
-    ((u8*)work)[0x122f] = 0xff;
-    dark = func_0016f190(0xb8e);
-    if (dark != 0) {
-        func_001985b0(0xff, 0xff, 0xff, 0xff);
-    } else {
-        func_001985b0(0xf, 0x1f, 0x28, 0xff);
-    }
-    for (i = 0; i < 0x20; i++) {
-        *(u32*)((u8*)work + i * 0x90 + 4) = 0;
-    }
-    sOpTailB = work;
-}
-
-
 #include "Main/Battle/Result/br_res.h"
 typedef int (*code)(...);
 extern void K_Assert(const char* file, s32 line);
 extern const char D_0068ED88[];
-
 #define OP_MATCH_ASSERT(condition, line) \
     do {                                 \
         if (!(condition)) {              \
             K_Assert(__FILE__, (line));  \
         }                                \
     } while (0)
-
-/* Retail helpers used by the opening/ending result state. */
 extern u32 D_00960178[];
 extern u32 D_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
                           u32 first, u32 second);
-#pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
-#pragma alias D_0096009C_abs D_0096009C
 extern u8 D_0096009C_abs[];
 extern void *D_007D2D60;
 extern u8 *DAT_007ce420;
@@ -505,7 +168,6 @@ extern f32 DAT_007cafec;
 extern f32 DAT_007cb04c;
 extern const char DAT_0068EEB8[];
 extern const char DAT_0068EED0[];
-
 extern void *FUN_00173220(u16 id);
 extern u16 *datPersonaGetSkills(void *persona);
 extern u8 datPersonaGetTotalStat(void *persona, u16 stat);
@@ -584,6 +246,40 @@ extern u32 *DAT_007ce3d0_y2;
 #define gOpWorkD0 DAT_007ce3d0_y2
 #define opTexW(resource, frame) \
     ((s32)sflPsel00260900((u32 *)(uintptr_t)(resource), (frame)))
+typedef struct OpFadeEntry
+{
+    u32 drawHandle;
+    u8 pad_004[0x0c];
+    u8 draw[0x210];
+    u8 panel18[0x100];
+    u8 panel1b[0x100];
+    u8 panel14[0x100];
+    u8 panel14Alt[0x100];
+    u8 panel15[0x100];
+} OpFadeEntry;
+typedef struct OpFadeWork
+{
+    u32 flags;
+    u8 pad_004[0x0c];
+    u8 list12[8][0x110];
+    OpFadeEntry entries[5];
+    u8 panel13[0x100];
+    u8 panel15[0x100];
+    u8 panel15Alt[0x100];
+    u8 panel17[0x100];
+    u8 list14[7][0x100];
+    u32 pad_3730;
+    u32 drawHandle;
+    u32 pad_3738;
+    u32 state;
+    u32 frame;
+    u8 pad_3744[0x0c];
+    u8 draw[0x210];
+    u8 texture1[0x100];
+    u8 texture0[0x110];
+    u8 texture0Alt[0x100];
+} OpFadeWork;
+
 #define opTexH(resource, frame) \
     ((s32)sflPsel00260920((u32 *)(uintptr_t)(resource), (frame)))
 #define opTexFrame(resource, frame) \
@@ -610,32 +306,6 @@ static inline u8 opFadeColorByte(f32 value)
     return (u8)(u32)value;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUN_00276d30
 void func_00276d30(void)
 {
@@ -644,41 +314,6 @@ void func_00276d30(void)
         func_00277070();
     gOpWorkD0 = NULL;
 }
-
-typedef struct OpFadeEntry
-{
-    u32 drawHandle;
-    u8 pad_004[0x0c];
-    u8 draw[0x210];
-    u8 panel18[0x100];
-    u8 panel1b[0x100];
-    u8 panel14[0x100];
-    u8 panel14Alt[0x100];
-    u8 panel15[0x100];
-} OpFadeEntry;
-
-typedef struct OpFadeWork
-{
-    u32 flags;
-    u8 pad_004[0x0c];
-    u8 list12[8][0x110];
-    OpFadeEntry entries[5];
-    u8 panel13[0x100];
-    u8 panel15[0x100];
-    u8 panel15Alt[0x100];
-    u8 panel17[0x100];
-    u8 list14[7][0x100];
-    u32 pad_3730;
-    u32 drawHandle;
-    u32 pad_3738;
-    u32 state;
-    u32 frame;
-    u8 pad_3744[0x0c];
-    u8 draw[0x210];
-    u8 texture1[0x100];
-    u8 texture0[0x110];
-    u8 texture0Alt[0x100];
-} OpFadeWork;
 
 // FUN_00276d90
 void func_00276d90(void)
@@ -727,6 +362,38 @@ void func_00276d90(void)
     work->flags &= ~0x40u;
     work->flags |= 1;
 }
+
+
+
+#pragma alias K_Assert_y2 K_Assert
+#pragma alias func_0021d3b0_y2 func_0021d3b0
+#pragma alias func_0021d8e0_y2 func_0021d8e0
+#pragma alias func_0021d950_y2 func_0021d950
+#pragma alias func_0021cca0_y2 func_0021cca0
+#pragma alias func_0021cce0_y2 func_0021cce0
+#pragma alias func_00238980_y2 func_00238980
+#pragma alias func_00279120_y2 func_00279120
+#pragma alias func_002792c0_y2 func_002792c0
+#pragma alias func_003b1360_y2 func_003b1360
+#pragma alias func_004d7f60_y2 func_004d7f60
+#pragma alias func_002791b0_y2 func_002791b0
+#pragma alias func_00279330_y2 func_00279330
+#pragma alias brpParamSetUnlockedSkillLevel_y2 brpParamSetUnlockedSkillLevel
+#pragma alias brpParamSetUnlockedSkillIndex_y2 brpParamSetUnlockedSkillIndex
+#pragma alias func_00279510_y2 func_00279510
+#pragma alias func_00279580_y2 func_00279580
+#pragma alias func_002795f0_y2 func_002795f0
+#pragma alias func_003b0d70_y2 func_003b0d70
+#pragma alias func_003b0e90_y2 func_003b0e90
+#pragma alias func_003c9ab0_y2 func_003c9ab0
+#pragma alias func_00521250_y2 func_00521250
+#pragma alias func_005225a8_y2 func_005225a8
+#pragma alias DAT_007ce3d0_y2 DAT_007ce3d0
+
+
+/* GP-owned work records are shared with the adjacent opening/ending TU. */
+
+
 
 // FUN_00277070
 void func_00277070(void)
@@ -1230,3 +897,339 @@ void func_00278550(void)
 }
 #undef D_00960090
 #undef D_0096009C
+
+
+// FUN_00279120
+void func_00279120_y2(void)
+{
+    s32 i;
+    u32* work;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    for (i = 0; i < (s32)work[0x3738 / 4]; i++) {
+        func_003b0170(*(u32*)((u8*)work + i * 0x110 + 0x110));
+    }
+    work[0x3738 / 4] = 0;
+}
+
+// FUN_002791b0
+void func_002791b0(u32 id)
+{
+    u32* root;
+    u32* work;
+    u32 handle;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    root = sOpTailA;
+    work = (u32*)((u8*)root + root[0x3738 / 4] * 0x110 + 0x10);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    handle = func_003b0970(
+        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
+    func_003b0d70(handle, 0x640, 0x320);
+    frFontSetTextScale(handle, 0.0f);
+    work[0x100 / 4] = handle;
+    func_003b0e90(1);
+    func_003b0e70(2);
+    root[0x3738 / 4]++;
+}
+
+// FUN_002792c0
+void func_002792c0_y2(void)
+{
+    u32* work;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    if ((work[0] & 2) != 0) {
+        func_003b0170(work[0xe54]);
+    }
+    work[0] &= ~2u;
+}
+
+// FUN_00279330
+void func_00279330(u32 id)
+{
+    u32* work;
+    u32 handle;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    if ((~work[0] & 2) == 0) {
+        K_Assert_y2("brp_param.c", 0x3e0);
+    }
+    func_003b0e70(1);
+    func_003b0e90(2);
+    handle = func_003b0970(
+        (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
+    func_003b0d70(handle, 0x640, 0x320);
+    frFontSetTextScale(handle, 0.0f);
+    work[0xe54] = handle;
+    func_003b0e90(1);
+    func_003b0e70(2);
+    work[0] |= 2;
+}
+
+// FUN_00279450
+void brpParamSetUnlockedSkillLevel(u32 level)
+{
+    int workBase;
+
+    K_ASSERT(sBrpParam != NULL, 0x61);
+    /* MWCC requires this address form to retain the retail call setup. */
+    workBase = (int)sBrpParam;
+    *(u32*)(workBase + 0x3734) = level;
+    bpIFont00238980((void*)(workBase + 0x3750), 2, level, 2);
+}
+
+// FUN_002794c0
+void brpParamSetUnlockedSkillIndex(u32 index)
+{
+    K_ASSERT(sBrpParam != NULL, 0x61);
+    sBrpParam->unlockedSkillIndex = index;
+}
+
+// FUN_00279510
+void func_00279510(s32 index, u32 value)
+{
+    u8* work;
+    s32 byteOffset;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = (u8*)sOpTailA;
+    byteOffset = index * 0x720;
+    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
+    *(u32*)(work + 0x890) = value;
+}
+
+// FUN_00279580
+void func_00279580(s32 index, u32 value)
+{
+    u8* work;
+    s32 byteOffset;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = (u8*)sOpTailA;
+    byteOffset = index * 0x720;
+    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
+    *(u32*)(work + 0xaa0) = value;
+}
+
+// FUN_002795f0
+void func_002795f0(s32 index, u32 value)
+{
+    u8* work;
+    s32 byteOffset;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = (u8*)sOpTailA;
+    byteOffset = index * 0x720;
+    work = (u8*)((uintptr_t)byteOffset + (uintptr_t)work);
+    *(u32*)(work + 0xaa4) = value;
+}
+
+// FUN_00279660
+void func_00279660(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    sOpTailA[0] |= 8;
+}
+
+// FUN_002796b0
+void func_002796b0(void)
+{
+    u32* work;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    work[0xdcf] = 0;
+    work[0] |= 4;
+}
+
+// FUN_00279700
+u32 func_00279700(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    return sOpTailA[0] & 4;
+}
+// W389 residual nd20 (object 372/384): six-knob singles and all 15 knob pairs, plus pointer-type, temporary, and declaration-order probes, were reverted as neutral; alignment-cursor register coloring remains a compiler floor.
+// FUN_00279750
+void func_00279750(void)
+{
+    u32* work;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    work[0xdd1] = 0;
+    work[0] |= 0x10;
+}
+
+// FUN_002797a0
+u32 func_002797a0(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    return sOpTailA[0] & 0x10;
+}
+
+// FUN_002797f0
+void func_002797f0(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    sOpTailA[0] |= 0x20;
+}
+
+// FUN_00279840
+void func_00279840(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    sOpTailA[0] &= ~0x20u;
+}
+
+// FUN_00279890
+void func_00279890(u32 a, u32 b)
+{
+    u32* work;
+
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    work = sOpTailA;
+    work[0x3b60 / 4] = a;
+    work[0x3b64 / 4] = b;
+}
+
+// FUN_002798f0
+void func_002798f0(void)
+{
+    K_ASSERT(sOpTailA != NULL, 0x61);
+    sOpTailA[0] |= 0x40;
+}
+
+
+
+
+/* Retail helpers used by the opening/ending result state. */
+#pragma alias D_00960090_abs D_00960090
+#pragma alias D_0096009C_abs D_0096009C
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_00279940 NONMATCHING
+u32* func_00279940(const u32* header)
+{
+    u32 size;
+    u32* out;
+    u32* data;
+    u32 aligned;
+    u32 cursor;
+    u32 i;
+    u8* bytes;
+
+    size = 0x14;
+    size += header[3] * 4;
+    if ((size & 3) != 0) {
+        size += 4 - (size & 3);
+    }
+    size += header[6];
+    if ((size & 3) != 0) {
+        size += 4 - (size & 3);
+    }
+    size += header[2];
+    data = out = (u32*)(*DAT_00960178)(size, 0x40000);
+    data += 5;
+    out[2] = (u32)data;
+    aligned = (u32)data + header[3] * 4;
+    if ((aligned & 3) != 0) {
+        aligned += 4 - (aligned & 3);
+    }
+    out[3] = aligned;
+    aligned += header[6];
+    if ((aligned & 3) != 0) {
+        aligned += 4 - (aligned & 3);
+    }
+    out[4] = aligned;
+    out[1] = header[3];
+    out[0] = header[0];
+    func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);
+    func_00521250((void*)out[4], (const u8*)header + header[1], header[2]);
+    bytes = (u8*)header + header[4];
+    cursor = out[3];
+    for (i = 0; i < header[3]; i++, bytes++) {
+        ((u32*)out[2])[i] = cursor;
+        cursor += *bytes;
+    }
+    return out;
+}
+
+
+
+// FUN_00279ac0
+void func_00279ac0(u32 value)
+{
+    (*DAT_0096017c)((void*)(uintptr_t)value);
+}
+
+// FUN_00279AF0
+u32 func_00279af0(const u32* work, u32 index)
+{
+    return *(const u32 *)(index * sizeof(u32) + work[2]);
+}
+
+// FUN_00279b10
+u32 func_00279b10(const u32* work)
+{
+    return work[4];
+}
+
+// FUN_00279b20
+u32 func_00279b20(const u32* work)
+{
+    return work[1];
+}
+
+// FUN_00279b30
+void func_00279b30(u32* work)
+{
+    s32 i;
+    u32 dark;
+
+    work[0] = 0;
+    ((u8*)work)[0x122c] = 0xff;
+    ((u8*)work)[0x122d] = 0xff;
+    ((u8*)work)[0x122e] = 0xff;
+    ((u8*)work)[0x122f] = 0xff;
+    dark = func_0016f190(0xb8e);
+    if (dark != 0) {
+        func_001985b0(0xff, 0xff, 0xff, 0xff);
+    } else {
+        func_001985b0(0xf, 0x1f, 0x28, 0xff);
+    }
+    for (i = 0; i < 0x20; i++) {
+        *(u32*)((u8*)work + i * 0x90 + 4) = 0;
+    }
+    sOpTailB = work;
+}
