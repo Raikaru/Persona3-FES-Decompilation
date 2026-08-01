@@ -26,16 +26,30 @@ def source_markers() -> dict[int, list[tuple[Path, dict]]]:
     return markers
 
 def reconciled_windows(old_windows: dict[int, int], source: set[int]) -> dict[str, int]:
+    """Merge source marker boundaries into the canonical Ghidra windows.
+
+    A source marker inside an existing window splits it. The end of each
+    original window is kept as a bound in its own right: verify.py derives
+    upper bounds from `entry + window`, so dropping those ends would let a
+    marker sitting at the top of a mapped region run to the next entry across
+    a large unmapped gap.
+    """
+    import bisect
+
     boundaries = sorted(set(old_windows) | source)
+    bounds = sorted(
+        set(boundaries) | {address + size for address, size in old_windows.items()}
+    )
     windows: dict[str, int] = {}
-    for index, address in enumerate(boundaries):
-        next_address = boundaries[index + 1] if index + 1 < len(boundaries) else None
+    for address in boundaries:
+        index = bisect.bisect_right(bounds, address)
+        next_bound = bounds[index] if index < len(bounds) else None
         if address in old_windows:
             size = old_windows[address]
-            if next_address is not None:
-                size = min(size, next_address - address)
-        elif next_address is not None:
-            size = next_address - address
+            if next_bound is not None:
+                size = min(size, next_bound - address)
+        elif next_bound is not None:
+            size = next_bound - address
         else:
             raise ValueError(f"cannot infer final window at {address:08x}")
         windows[f"{address:08x}"] = size

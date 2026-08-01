@@ -38517,13 +38517,3 @@ void thunk_FUN_0050ce00(void)
   }
   return;
 }
-
-
-
-
-// FUN_0050DB28 NONMATCHING
-/* RFU091 */
-undefined8 FUN_0050db28(u64 param_1)
-{
-  syscall(0x5b);
-}

@@ -74,8 +74,8 @@ def load_config():
         sys.exit(
             "verify: missing config value(s): %s\n"
             "Set P3_MWCC / P3_RETAIL_ELF or create tools/verify_config.local.json, e.g.\n"
-            '  {"mwcc": "D:/mwcps2-3.0b52-030722/mwccps2.exe",\n'
-            '   "retail_elf": "C:/tmp/p3_discs/fes/SLUS_216.21"}' % ", ".join(missing)
+            '  {"mwcc": "D:/path/to/mwcps2-3.0.1b210-060308/mwccps2.exe",\n'
+            '   "retail_elf": "C:/path/to/SLUS_216.21"}' % ", ".join(missing)
         )
     for k in ("mwcc", "retail_elf"):
         if not Path(cfg[k]).is_file():

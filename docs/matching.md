@@ -1,38 +1,31 @@
 # Matching heuristics
 
-Hard-won, reusable source-shaping tricks for making `mwccps2` (`mwcps2-3.0.1b210-060308`,
+Source-level techniques for making `mwccps2` (`mwcps2-3.0.1b210-060308`,
 `-O2 -Iinclude`) reproduce retail codegen byte-for-byte. This complements the
 **Fingerprint checklist** and **compiler-artifact blockers** in `AGENTS.md`: that lists the
 raw signals; this lists the *source rewrites* that flip a `NONMATCHING` to `MATCH`.
+Terms such as *window*, *wall*, *lever*, and *residual* follow the
+[README glossary](../README.md#glossary).
 
-Rules of engagement:
+Verify each result:
 
 - Every entry is verified by `tools/verify.py` reporting `MATCH`. Confirm before you commit;
   never chain `verify && git commit` past a `MISMATCH` (the `&&` only checks the tool exit code,
   not the match status).
 - Diff a single function with `python tools/fndiff.py <file> <fn> | grep -F "!"` (real body diffs;
   empty = body-clean).
-- Techniques are **per-function**. The same construct that matches one function walls the next;
+- Techniques are per-function. A construct that matches one function may differ in another;
   always diff and adjust.
 - If only register allocation, instruction scheduling, evaluation-order, FPU-reg choice,
   mask-fold, or commutative-`addu` operand order remains after exhausting these, it is a
-  compiler-artifact wall — mark `NONMATCHING` and move on.
+  compiler-imposed difference. Mark `NONMATCHING` and move on.
 
 ## Progress metrics
 
-The generated [`progress/metrics.json`](../progress/metrics.json) measures
-function-level verifier progress. Its denominator is the set of authoritative
-mapped window addresses, so each address counts once even when multiple source
-markers or aliases resolve to it. Asm-only labels and other verifier rows outside
-those mapped windows are excluded from the metric.
-
-A mapped address is in the matching numerator when at least one verifier row at
-that address has the exact status `MATCH`; duplicate rows and unknown extra rows
-cannot increase progress. Other verifier statuses do not make an address match.
-The C-linked metric is a strict subset: it includes only matching functions that
-also linked successfully as byte-identical C. The number of matched body bytes is
-supplemental diagnostic data; it is not the denominator for an
-executable-percent metric.
+Use the [README](../README.md) progress badge, generated objdiff report, or `python tools/progress.py` for
+current verifier progress. Do not copy progress figures into prose; the generated
+[`progress/metrics.json`](../progress/metrics.json) is machine-readable diagnostic output
+for mapped function windows.
 ---
 
 ## Types and the EE ABI
@@ -183,19 +176,16 @@ source-reachable. Levers to try, in order:
   reproducing retail's `lw`-then-`lh` order where plain `.member` access reorders the loads.
   A plain two-step temp (`str = base; str += off;`) is enough in simpler cases (CodeFunc_PushSTR).
 
-When no order matches after trying these, drop the function. Indexed getters/setters are the
-usual victims. Before dropping, give `tools/permute_ast.py` 120s — it found every one of the
-levers above.
+When no order matches after trying these, `tools/permute_ast.py` can test the source forms;
+it found every lever above.
 
-## Return-block layout (boolean-result tails; wall)
+## Return-block layout (boolean-result tails)
 
 For functions ending `... result = 1; } else { result = 0; } return result;` (or early-return
 equivalents), retail sometimes places the 0-materialization block AFTER the main body but BEFORE
 the 1-materialization (`b L1 / L0: move v0,0; b end / L1: li v0,1`), while mwcc emits the
-1-block first regardless of source shape. Tried and failed on scrComu 35f4a0/35f7a0: early
-returns, single-exit result variable, inverted branch polarity, pre-initialized default, and a
-600s permute_ast run (best residual 17). Tag NONMATCHING and move on; if a lever is ever found
-it will unlock 35f4a0, 35f7a0, 360110's tail, and battle.c btlDestroy at once.
+1-block first regardless of source shape. Treat this as a compiler wall when source rewrites do not
+alter it.
 
 ## Commutative-`mul.s` (float, frequent wall)
 
@@ -206,53 +196,28 @@ while retail emits *fresh-first* (`mul.s $f0,$f0,$f2`). Neither `(a-b)*scale` no
 source changes it; the operand registers are fixed by allocation. Drop when only this remains
 (gc_pose 250a30 — otherwise a full byte match).
 
-## Process
-
-- **Disassemble before modeling any multi-call handler** (`disassemble_function`). Resolve ambiguous
-  arg types (`(short)` vs raw, `lhu` vs `andi`, literal-const reuse, `char`/`u8` conversion, float vs
-  int, branch polarity, `-1` width) from the real `move`/`dsll32`/`andi`/`lbu`/`mov.s` sequence rather
-  than trusting the decompiler.
-- **`__FILE__` deanonymization** is the scalable way to home a function: `list_data_items_by_xrefs`
-  → module `__FILE__` string → `get_xrefs_to` that string → cluster of that module's functions →
-  assign by gp-global identity. Assert `__FILE__` addresses drift; confirm the real address from a
-  decompiled `FUN_0019d3f0(addr,line)` or `read_memory`.
-- **Extend partial modules.** Pick a `.c` file that already has matches, pull its `__FILE__` cluster,
-  and harvest the unharvested neighbours (getters, flag-checks, cleanups, copy-loops, loaders,
-  destroys). These accessors match far more reliably than update/render functions.
-- **Grep before writing a new module file** (`git ls-files '*name*'` + grep the addresses). A made-up
-  directory causes duplicate definitions; an existing file whose name matches the task-name string is
-  a safe home.
-- **Camp task lifecycle.** `create` = `RwCalloc/RwMalloc` + `kwlnTaskCreate(parent,"<Name>",prio,
-  update,destroy,workData)` + field inits + `if (x==NULL) return NULL;`. `destroy` = conditional frees
-  + `RwFree(workData)`. Destroys almost always match; a `create` with a call *after* the create hits
-  the param-vs-local `s0` wall.
 
 ## Deterministically classified compiler walls
 
 Keep the best source and reducer evidence when the remaining mismatch is proven compiler behavior:
 
-- `scrComu00360ed0`: 356-byte object body, 47 differing words. Empty/default-zero CFG blocks collapse
-  at `codegen_entry`; explicit zero stores change semantics and move farther from retail.
-- `H_Cursor_UpdateTask`: 828-byte object body versus an 832-byte retail window, 54 differing words.
-  Scope/reload variants trigger LICM, grow the body, and worsen the diff.
-- `FUN_00251a80` (`bp_tuta.c`): exact 912-byte body size, 11 differing words. Global and local selector
-  forms produce identical semantic PCode and final object bytes.
-- `bppPanelDrawParameterLayout`: 2328-byte object body versus 2288 retail bytes, 492 differing words.
-  Literal, pointer-local, and per-case dispatch forms are identical; an extern-object form changes
-  codegen but gives the wrong GP-relative semantics.
-- `scrStartScript2`: 520-byte body versus a 528-byte window, 59 differing bytes. Enum-local,
-  no-temporary, and typed-enum-field switch forms either remain semantic-PCode-identical or diverge
-  at `codegen_entry`, but all produce the same final object hash. Retail's case-constant register
-  preloads remain source-unreachable.
-- `FUN_00172e50` (`datSocial.c`): after correcting the free-slot money store and unsigned cap assert,
-  four words remain in the range guard. Retail uses `slti $v1` plus `bnez`; clean C lowers the same
+- `scrComu00360ed0`: Empty/default-zero CFG blocks collapse at `codegen_entry`; explicit zero stores
+  change semantics and move farther from retail.
+- `H_Cursor_UpdateTask`: Scope/reload variants trigger LICM, grow the body, and worsen the diff.
+- `FUN_00251a80` (`bp_tuta.c`): Global and local selector forms produce identical semantic PCode
+  and final object bytes.
+- `bppPanelDrawParameterLayout`: Literal, pointer-local, and per-case dispatch forms are identical;
+  an extern-object form changes codegen but gives the wrong GP-relative semantics.
+- `scrStartScript2`: Enum-local, no-temporary, and typed-enum-field switch forms either remain
+  semantic-PCode-identical or diverge at `codegen_entry`, but all produce the same final object hash.
+  Retail's case-constant register preloads remain source-unreachable.
+- `FUN_00172e50` (`datSocial.c`): After correcting the free-slot money store and unsigned cap assert,
+  the range guard still differs. Retail uses `slti $v1` plus `bnez`; clean C lowers the same
   predicate through the `$at` pseudo with opposite branch polarity.
 
-Focused reducer evidence lives in the sibling `mwccps2-debugger/experiments/p3_*` directories and
-its `build/m2_*` summaries. Revisit these functions only when a reducer identifies a new
-source-level lever or a compiler-stage fix.
+## Known compiler walls
 
-## Known walls (mark NONMATCHING, do not fight)
+Mark a function `NONMATCHING` when only these differences remain:
 
 Register allocation; param-vs-local `s0/s1`; instruction scheduling / subexpression evaluation order;
 FPU-register allocation; u16-mask propagation (retail re-masks per use, mwcc elides); switch

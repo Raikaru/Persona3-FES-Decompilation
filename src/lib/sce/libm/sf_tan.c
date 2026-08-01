@@ -1,4 +1,4 @@
-/* TOOLCHAIN FLOOR (W383, measured).
+/* TOOLCHAIN LIMIT (measured).
  *
  * Retail's libm was NOT built by MWCCPS2.  Two shapes prove it:
  *
