@@ -31,6 +31,18 @@ SCHEMA_VERSION = 1
 CACHE_SECONDS = 3600
 
 
+def repo_relative(path):
+    """Render a path relative to the repository root.
+
+    Reports are committed, so an absolute path would leak the author's
+    machine layout into version control.
+    """
+    try:
+        return Path(path).resolve().relative_to(REPO).as_posix()
+    except (TypeError, ValueError):
+        return str(path)
+
+
 class ProgressError(ValueError):
     """Raised for invalid progress inputs or generated endpoint files."""
 
@@ -349,13 +361,13 @@ def make_metrics(
         "scope": {
             "name": "essential",
             "label": "Essential Persona-specific functions",
-            "policy": policy["source"],
+            "policy": repo_relative(policy["source"]),
             "addresses": [f"{address:08x}" for address in sorted(essential_addresses)],
         },
         "source": {
             "verifier_report": verifier_source,
             "linked_report": linked_source,
-            "function_scope_policy": policy["source"],
+            "function_scope_policy": repo_relative(policy["source"]),
             "raw_rows": len(results),
             "scope_rows": essential["rows"],
             "ignored_unknown_rows": whole["ignored_unknown_rows"],

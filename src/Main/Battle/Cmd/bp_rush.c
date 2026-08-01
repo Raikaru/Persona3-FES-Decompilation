@@ -307,12 +307,13 @@ void bpRushShowSpinner(void)
 
 
 
-/* Recovered battle-misc harvest: 0x0025BE60-0x0025CF20 */
-
-// W389 measured source regrouping plus six-knob singles/pairs: nd2/1940B
-// -> nd2/1940B (window 1952B). Residual is commutative operand order of
-// `mul.s $f20, $f20, $f0` versus retail's `mul.s $f20, $f0, $f20`;
-// MWCCPS2 b210 canonicalizes the source form.
+/* Recovered from the battle-misc range 0x0025BE60-0x0025CF20.
+ *
+ * The remaining difference is the operand order of a commutative multiply:
+ * this emits `mul.s $f20, $f20, $f0` where retail has
+ * `mul.s $f20, $f0, $f20`. MWCCPS2 b210 canonicalizes the source form, so no
+ * arrangement of the C expression reproduces retail's order.
+ */
 
 
 

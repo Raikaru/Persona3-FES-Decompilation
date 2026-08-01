@@ -6639,11 +6639,3 @@ LAB_0052e3bc:
   FUN_005311c8(param_1,lVar1);
   return;
 }
-extern u32 FUN_00530598(long param_1, long param_2, long param_3);
-// FUN_00530578 NONMATCHING
-u64 FUN_00530578(u64 param_1, u64 param_2)
-{
-  u64 auStack_20[2];
-  FUN_00530598(param_1, param_2, (long)auStack_20);
-  return auStack_20[0];
-}
