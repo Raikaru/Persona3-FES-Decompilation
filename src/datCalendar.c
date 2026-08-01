@@ -3760,7 +3760,7 @@ extern void* func_0010c3a0(void* stream, u32* finished, s32 byteCount);
 extern KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* archive);
 extern KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions);
 extern u32 func_001114b0(KwlnTask* task);
-extern void func_00111500(KwlnTask* task);
+extern s32 func_00111500(KwlnTask* task);
 extern void func_00111520(KwlnTask* task, s16 count);
 extern u32 func_00111530(KwlnTask* task);
 extern void func_001115b0(KwlnTask* task);
