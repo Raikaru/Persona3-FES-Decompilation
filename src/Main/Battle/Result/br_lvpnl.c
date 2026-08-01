@@ -1,77 +1,17 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
-#pragma alias brLvpnlStartEntranceAnimation_y2 brLvpnlStartEntranceAnimation_y2
-#pragma alias brLvpnlDisableDrawing_y2 brLvpnlDisableDrawing_y2
-#pragma alias brLvpnlEnableDrawing_y2 brLvpnlEnableDrawing_y2
-
-
-typedef struct
-{
-    u32 flags;
-    u32 unused[0x183];
-    u32 animationFrame;
-    u32 animationMode;
-} BrLvpnlWork;
-
-enum
-{
-    BR_LVPNL_FLAG_ACTIVE = 1 << 0,
-    BR_LVPNL_FLAG_ANIMATING = 1 << 1,
-    BR_LVPNL_FLAG_VISIBLE = 1 << 2,
-    BR_LVPNL_FLAG_DRAW_DISABLED = 1 << 3,
-};
-
-static BrLvpnlWork* sBrLvpnl; // DAT_007ce3c8
-
-// FUN_002767e0
-void brLvpnlStartEntranceAnimation(void)
-{
-    BrLvpnlWork* work;
-
-    K_ASSERT(sBrLvpnl != NULL, 0x3b);
-    work = sBrLvpnl;
-    if (work->flags & BR_LVPNL_FLAG_VISIBLE) {
-        work->animationMode = 1;
-        work->animationFrame = 0;
-        work->flags |= BR_LVPNL_FLAG_ANIMATING;
-    } else {
-        work->animationMode = 0;
-        work->animationFrame = 0;
-        work->flags |= BR_LVPNL_FLAG_ANIMATING;
-        work->flags |= BR_LVPNL_FLAG_VISIBLE;
-    }
-}
-
-// FUN_00276870
-void brLvpnlDisableDrawing(void)
-{
-    K_ASSERT(sBrLvpnl != NULL, 0x3b);
-    sBrLvpnl->flags |= BR_LVPNL_FLAG_DRAW_DISABLED;
-}
-
-// FUN_002768c0
-void brLvpnlEnableDrawing(void)
-{
-    K_ASSERT(sBrLvpnl != NULL, 0x3b);
-    sBrLvpnl->flags &= ~BR_LVPNL_FLAG_DRAW_DISABLED;
-}
-
-
 #include "Main/OpEd/op_fade_mid.h"
 #include "Main/Battle/Result/br_res.h"
 typedef int (*code)(...);
 extern void K_Assert(const char* file, s32 line);
 extern const char D_0068ED88[];
-
 #define OP_MATCH_ASSERT(condition, line) \
     do {                                 \
         if (!(condition)) {              \
             K_Assert(__FILE__, (line));  \
         }                                \
     } while (0)
-
-/* Retail helpers used by the opening/ending result state. */
 extern u32 D_00960178[];
 extern u32 D_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
@@ -91,7 +31,6 @@ extern f32 DAT_007cafec;
 extern f32 DAT_007cb04c;
 extern const char DAT_0068EEB8[];
 extern const char DAT_0068EED0[];
-
 extern void *FUN_00173220(u16 id);
 extern u16 *datPersonaGetSkills(void *persona);
 extern u8 datPersonaGetTotalStat(void *persona, u16 stat);
@@ -181,6 +120,69 @@ extern u32 *DAT_007ce3d0;
 #define gOpWorkD0 DAT_007ce3d0
 #define opTexW(resource, frame) \
     ((s32)sflPsel00260900((u32 *)(uintptr_t)(resource), (frame)))
+typedef struct OpFadeEntry
+{
+    u32 drawHandle;
+    u8 pad_004[0x0c];
+    u8 draw[0x210];
+    u8 panel18[0x100];
+    u8 panel1b[0x100];
+    u8 panel14[0x100];
+    u8 panel14Alt[0x100];
+    u8 panel15[0x100];
+} OpFadeEntry;
+typedef struct OpFadeWork
+{
+    u32 flags;
+    u8 pad_004[0x0c];
+    u8 list12[8][0x110];
+    OpFadeEntry entries[5];
+    u8 panel13[0x100];
+    u8 panel15[0x100];
+    u8 panel15Alt[0x100];
+    u8 panel17[0x100];
+    u8 list14[7][0x100];
+    u32 pad_3730;
+    u32 drawHandle;
+    u32 pad_3738;
+    u32 state;
+    u32 frame;
+    u8 pad_3744[0x0c];
+    u8 draw[0x210];
+    u8 texture1[0x100];
+    u8 texture0[0x110];
+    u8 texture0Alt[0x100];
+} OpFadeWork;
+#define D_00960090 (*state)
+#define D_0096009C (*quad)
+#undef D_00960090
+#undef D_0096009C
+
+
+#pragma alias brLvpnlStartEntranceAnimation_y2 brLvpnlStartEntranceAnimation_y2
+#pragma alias brLvpnlDisableDrawing_y2 brLvpnlDisableDrawing_y2
+#pragma alias brLvpnlEnableDrawing_y2 brLvpnlEnableDrawing_y2
+
+
+typedef struct
+{
+    u32 flags;
+    u32 unused[0x183];
+    u32 animationFrame;
+    u32 animationMode;
+} BrLvpnlWork;
+
+enum
+{
+    BR_LVPNL_FLAG_ACTIVE = 1 << 0,
+    BR_LVPNL_FLAG_ANIMATING = 1 << 1,
+    BR_LVPNL_FLAG_VISIBLE = 1 << 2,
+    BR_LVPNL_FLAG_DRAW_DISABLED = 1 << 3,
+};
+
+static BrLvpnlWork* sBrLvpnl; // DAT_007ce3c8
+/* Retail helpers used by the opening/ending result state. */
+
 #define opTexH(resource, frame) \
     ((s32)sflPsel00260920((u32 *)(uintptr_t)(resource), (frame)))
 #define opTexFrame(resource, frame) \
@@ -206,21 +208,6 @@ static inline u8 opFadeColorByte(f32 value)
 {
     return (u8)(u32)value;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // FUN_00275a90
 void func_00275a90(void)
@@ -322,6 +309,25 @@ void func_00275cb0(void)
     (*quad)(work + 0xc4, 4, 0, 1, 2);
     (*quad)(work + 0xc4, 4, 0, 2, 3);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FUN_002760f0 NONMATCHING
 void func_002760f0(void)
@@ -480,6 +486,39 @@ void func_002760f0(void)
     func_0021d950(work + 0x144, color);
 }
 
+// FUN_002767e0
+void brLvpnlStartEntranceAnimation(void)
+{
+    BrLvpnlWork* work;
+
+    K_ASSERT(sBrLvpnl != NULL, 0x3b);
+    work = sBrLvpnl;
+    if (work->flags & BR_LVPNL_FLAG_VISIBLE) {
+        work->animationMode = 1;
+        work->animationFrame = 0;
+        work->flags |= BR_LVPNL_FLAG_ANIMATING;
+    } else {
+        work->animationMode = 0;
+        work->animationFrame = 0;
+        work->flags |= BR_LVPNL_FLAG_ANIMATING;
+        work->flags |= BR_LVPNL_FLAG_VISIBLE;
+    }
+}
+
+// FUN_00276870
+void brLvpnlDisableDrawing(void)
+{
+    K_ASSERT(sBrLvpnl != NULL, 0x3b);
+    sBrLvpnl->flags |= BR_LVPNL_FLAG_DRAW_DISABLED;
+}
+
+// FUN_002768c0
+void brLvpnlEnableDrawing(void)
+{
+    K_ASSERT(sBrLvpnl != NULL, 0x3b);
+    sBrLvpnl->flags &= ~BR_LVPNL_FLAG_DRAW_DISABLED;
+}
+
 // FUN_00276910
 void func_00276910(u32 *work)
 {
@@ -499,46 +538,9 @@ void func_00276920(void)
 
 
 
-typedef struct OpFadeEntry
-{
-    u32 drawHandle;
-    u8 pad_004[0x0c];
-    u8 draw[0x210];
-    u8 panel18[0x100];
-    u8 panel1b[0x100];
-    u8 panel14[0x100];
-    u8 panel14Alt[0x100];
-    u8 panel15[0x100];
-} OpFadeEntry;
-
-typedef struct OpFadeWork
-{
-    u32 flags;
-    u8 pad_004[0x0c];
-    u8 list12[8][0x110];
-    OpFadeEntry entries[5];
-    u8 panel13[0x100];
-    u8 panel15[0x100];
-    u8 panel15Alt[0x100];
-    u8 panel17[0x100];
-    u8 list14[7][0x100];
-    u32 pad_3730;
-    u32 drawHandle;
-    u32 pad_3738;
-    u32 state;
-    u32 frame;
-    u8 pad_3744[0x0c];
-    u8 draw[0x210];
-    u8 texture1[0x100];
-    u8 texture0[0x110];
-    u8 texture0Alt[0x100];
-} OpFadeWork;
 
 
 
 
 
-#define D_00960090 (*state)
-#define D_0096009C (*quad)
-#undef D_00960090
-#undef D_0096009C
+

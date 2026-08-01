@@ -2,6 +2,85 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/Social/sfl_psel.h"
+#include "Main/Social/sfl_res.h"
+u32 brItem0025f4a0(void);
+void brItem0025f510(int param_1);
+static u32* sSflPsel; // puGpffffb688
+u32 FUN_0021cca0();
+void FUN_0021d3b0();
+void FUN_00260c20();
+void FUN_00261480();
+extern void FUN_0021d8e0_y2(void*, const void*);
+extern void FUN_0021d950_y2(void*, const void*);
+extern void (*D_00960090)(u32, u32);
+extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+extern void RpSkyRenderStateSet(u32, void*);
+extern void func_004d7f60(s32 state, u32 value);
+extern float fGpffff8300;
+extern char D_00960088[];
+extern u32 uGpffffb948;
+extern u16 DAT_007e0952;
+#pragma alias DAT_007e0952_a DAT_007e0952
+extern u16 DAT_007e0952_a[8];
+extern u32 func_00173220(u16 id);
+extern u32 func_00173280(u16 id);
+extern u8* DAT_007ce420;
+extern u32 func_00175410(void);
+extern u32 func_001756f0(void);
+extern void* func_001749a0(u16 id);
+extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
+extern DatPersonaWork* datPersonaGetByPcId(u16 pcId);
+extern u32 func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern u32 func_0021cca0(u32 texture, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021d3b0(void* destination, u32 frame);
+extern void func_0021d8e0(void* destination, const f32* rect);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021e380(void* destination, u32 frame, s32 mode);
+extern f32 func_0021ea00(s32 duration);
+extern void func_0021eac0(void* animation, f32 value);
+extern void func_00238980(void* destination, s32 count, u32 value, s32 mode);
+extern void* func_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* origin);
+extern u32 func_00239140(s32 font);
+extern void func_0024a260(u32* state);
+extern u32 func_003b0970(u32 resource, s32 mode, s8 group, s32 a, s32 b);
+extern void func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern void func_003b1360(u32 resource, s32 mode, s32 value);
+extern void func_003b0170(u32 resource);
+extern void frFontSetTextScale(u32 resource, f32 value);
+extern u32 func_003c7610(void);
+extern void func_003c7650(s32 mode);
+extern u32 func_003c7850(void);
+extern u32 func_003c78d0(void);
+extern void func_003c7990(s32 mode);
+extern void func_003c7bc0(s32 mode, u32 value);
+extern void func_003c7430(u32 value);
+extern void sflPersonaLoad(u16 id);
+extern void sflPersonaSetPersona(u16 id);
+extern void sflPersonaDestroy(void);
+extern u32 sflPersonaIsLoading(void);
+extern void sflPersonaStartExitTransition(void);
+extern u32 sflPersonaIsTransitioning(void);
+extern void func_00523ac8(char* destination, const char* format, ...);
+extern s32 func_00524388(const char* text);
+extern void func_0019d3f0(const char* file, s32 line);
+extern char D_0068e228[];
+extern void func_003c74e0(u32 value);
+typedef void (*SflPselStateCallback)(u32 state, u32 value);
+typedef void (*SflPselDrawCallback)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern u32 FUN_0021cce0(u32 frame);
+extern void FUN_0021d890_y2(void*, const void*);
+
+
 #pragma alias FUN_0021d8e0_y2 FUN_0021d8e0_y2
 #pragma alias FUN_0021d950_y2 FUN_0021d950_y2
 #pragma alias FUN_0021d890_y2 FUN_0021d890_y2
@@ -35,42 +114,6 @@ void FUN_0021eac0(void*, float);
 void FUN_0025d9e0();
 
 
-// FUN_0025d9e0
-void brItem0025d9e0(void)
-{
-    u32* work;
-
-    K_ASSERT(sBrItem != NULL, 0x75);
-    work = sBrItem;
-    work[3] = 0;
-    work[1] = 0;
-    *work |= 2;
-}
-
-// FUN_0025f570
-void brItem0025f570(void)
-{
-    u32* work;
-
-    K_ASSERT(sBrItem != NULL, 0x75);
-    work = sBrItem;
-    work[3] = 0;
-    work[1] = 1;
-    *work |= 2;
-}
-
-// FUN_0025f4a0
-u32 brItem0025f4a0(void)
-{
-    FUN_0025da30();
-    FUN_0025ed40();
-    K_ASSERT(sBrItem != NULL, 0x75);
-    if ((*sBrItem & 1) == 0) {
-        return -1;
-    }
-    return 0;
-}
-
 // FUN_0025d8a0
 void brItem0025d8a0(void* param_1)
 {
@@ -101,373 +144,18 @@ void brItem0025d8a0(void* param_1)
     *puVar1 |= 1;
 }
 
-// FUN_0025f510
-void brItem0025f510(int param_1)
-{
-    u32 uVar1;
-
-    uVar1 = *(u32*)(param_1 + 0x3c);
-    K_ASSERT(sBrItem != NULL, 0x75);
-    sBrItem = NULL;
-    RwFree((void*)uVar1);
-    sBrItem374 = 0;
-}
-
-/* Recovered battle-misc harvest: 0x0025F370-0x0025FC50 */
-// FUN_0025F370
-
-
-KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data)
+// FUN_0025d9e0
+void brItem0025d9e0(void)
 {
     u32* work;
-    KwlnTask* task;
-    float rect[4];
-    u8 color[4];
 
-    work = (u32*)(*(code*)0x00960178)(0x8d0, 0x40000);
-    task = kwlnTaskInitEx(D_0068EC08, 0x18b5, 1, 2,
-                          (KwlnTaskUpdateFunc)brItem0025f4a0,
-                          (KwlnTaskDestroyFunc)brItem0025f510, work);
-    kwlnTaskAddChild(parent, task);
-    *work = 0;
-
-    rect[0] = 0.0f;
-    rect[1] = 0.0f;
-    rect[2] = 640.0f;
-    rect[3] = 448.0f;
-    FUN_0021d8e0(work + 0xc4, rect);
-    FUN_0021eac0(work + 0xc4, FUN_0021ea00(10));
-
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = 0;
-    FUN_0021d950(work + 0xc4, color);
-
-    sBrItem = work;
-    brItem0025d8a0(battle_data);
-    sBrItem374 = (u32)task;
-    return task;
+    K_ASSERT(sBrItem != NULL, 0x75);
+    work = sBrItem;
+    work[3] = 0;
+    work[1] = 0;
+    *work |= 2;
 }
 
-// FUN_0025FB60
-void FUN_0025fb60(int contextAddress, int entryIndex, float* uv)
-{
-    u8* entry;
-    uintptr_t resource;
-    uintptr_t resourceAddress;
-
-    entry = *(u8**)(contextAddress + 0x184) + entryIndex * 0x80;
-    resourceAddress = *(s32*)(entry + 0x14) * sizeof(uintptr_t);
-    resourceAddress += contextAddress;
-    resource = *(uintptr_t*)(resourceAddress + 0x104);
-
-    {
-        f32 size[2] = { 0.0f, 0.0f };
-
-        size[0] = (f32)*(s32*)(entry + 0x54);
-        size[1] = (f32)*(s32*)(entry + 0x5c);
-
-        {
-            f32 offset[2] = { 0.0f, 0.0f };
-            s32* dimensions;
-            f32 width;
-            f32 height;
-            s32 rawWidth;
-            s32 rawHeight;
-
-            offset[0] = (f32)*(s32*)(entry + 0x58);
-            offset[1] = (f32)*(s32*)(entry + 0x60);
-
-            dimensions = (s32*)(resource + 0x0c);
-            rawWidth = *dimensions++;
-            rawHeight = *dimensions;
-            width = (f32)rawWidth;
-            uv[0] = size[0] / width;
-            uv[2] = size[1] / width;
-            height = (f32)rawHeight;
-            uv[1] = offset[0] / height;
-            uv[3] = offset[1] / height;
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUN_0025FC50 NONMATCHING
-void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
-{
-
-  int iVar1;
-    u32 unaff_s4_lo;
-    u32 unaff_s5_lo;
-    u32 unaff_s3_lo;
-    u32 unaff_s2_lo;
-    float fVar2;
-  union {
-    u32 bits;
-    float value;
-  } uStack[4];
-
-
-  
-
-  iVar1 = FUN_00198590();
-
-  fVar2 = 1.0f / *(float *)(iVar1 + 0x80);
-
-  iVar1 = *(int *)((int)param_2 + 0x184) + (int)param_3 * 0x80;
-
-  switch(param_4) {
-
-  case 0:
-
-    FUN_00260430(param_2,param_3,&uStack[0],0);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 100);
-
-    unaff_s4_lo = *(u32 *)(iVar1 + 0x68);
-
-    unaff_s3_lo = unaff_s4_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-    break;
-
-  case 1:
-
-    FUN_00260430(param_2,param_3,&uStack[0],1);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 0x68);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = *(u32 *)(iVar1 + 0x6c);
-
-    unaff_s2_lo = unaff_s3_lo;
-
-    break;
-
-  case 2:
-
-    FUN_00260430(param_2,param_3,&uStack[0],2);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 0x70);
-
-    unaff_s4_lo = *(u32 *)(iVar1 + 0x6c);
-
-    unaff_s3_lo = unaff_s4_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-    break;
-
-  case 3:
-
-    FUN_00260430(param_2,param_3,&uStack[0],3);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 100);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = *(u32 *)(iVar1 + 0x70);
-
-    unaff_s2_lo = unaff_s3_lo;
-
-    break;
-
-  case 4:
-
-    FUN_00260430(param_2,param_3,&uStack[0],4);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 0x68);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = unaff_s5_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-    break;
-
-  case 5:
-
-    FUN_00260430(param_2,param_3,&uStack[0],5);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 0x6c);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = unaff_s5_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-    break;
-
-  case 6:
-
-    FUN_00260430(param_2,param_3,&uStack[0],6);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 0x70);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = unaff_s5_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-    break;
-
-  case 7:
-
-    FUN_00260430(param_2,param_3,&uStack[0],7);
-
-    unaff_s5_lo = *(u32 *)(iVar1 + 100);
-
-    unaff_s4_lo = unaff_s5_lo;
-
-    unaff_s3_lo = unaff_s5_lo;
-
-    unaff_s2_lo = unaff_s5_lo;
-
-  }
-
-  *(float *)(param_1 + 0x10) = uStack[0].value;
-
-  *(float *)(param_1 + 0x14) = uStack[1].value;
-
-  *(float *)(param_1 + 0x18) = fVar2;
-
-  *(float *)(param_1 + 8) = *(f32*)DAT_00960088_abs;
-
-  *(float *)(param_1 + 0x20) = (float)((unaff_s5_lo >> 0x18) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x24) = (float)((unaff_s5_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x28) = (float)((unaff_s5_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x2c) = (float)((unaff_s5_lo & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x50) = uStack[2].value;
-
-  *(float *)(param_1 + 0x54) = uStack[1].value;
-
-  *(float *)(param_1 + 0x58) = fVar2;
-
-  *(float *)(param_1 + 0x48) = *(f32*)DAT_00960088_abs;
-
-  *(float *)(param_1 + 0x60) = (float)((unaff_s4_lo >> 0x18) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 100) = (float)((unaff_s4_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x68) = (float)((unaff_s4_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x6c) = (float)((unaff_s4_lo & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0x90) = uStack[2].value;
-
-  *(float *)(param_1 + 0x94) = uStack[3].value;
-
-  *(float *)(param_1 + 0x98) = fVar2;
-
-  *(float *)(param_1 + 0x88) = *(f32*)DAT_00960088_abs;
-
-  *(float *)(param_1 + 0xa0) = (float)((unaff_s3_lo >> 0x18) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xa4) = (float)((unaff_s3_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xa8) = (float)((unaff_s3_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xac) = (float)((unaff_s3_lo & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xd0) = uStack[0].value;
-
-  *(float *)(param_1 + 0xd4) = uStack[3].value;
-
-  *(float *)(param_1 + 0xd8) = fVar2;
-
-  *(float *)(param_1 + 200) = *(f32*)DAT_00960088_abs;
-
-  *(float *)(param_1 + 0xe0) = (float)((unaff_s2_lo >> 0x18) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xe4) = (float)((unaff_s2_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xe8) = (float)((unaff_s2_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
-
-  *(float *)(param_1 + 0xec) = (float)((unaff_s2_lo & 0xff) * 0xff >> 7 & 0xff);
-
-  return;
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Retail converts the final color bytes into float vertex fields.
- * Keep these stores typed; raw u32 bit patterns drop those conversion paths.
- * The two geometry coordinates at the tail are integer-to-float conversions.
- * Ascending case labels preserve retail's case-0 body layout and dispatch order.
- * The expanded switch/tail reconstruction is intentional despite residual codegen differences.
-*/
-/* W331: opt_propagation off shrinks FUN_0025DA30 4912 -> 4856 (window 4880); retained for window. */
 #pragma opt_propagation off
 // FUN_0025DA30 NONMATCHING
 void FUN_0025da30(void)
@@ -1138,6 +826,66 @@ void FUN_0025ed40(void)
     (*quad)(iVar1 + 0x610, 4, 0, 2, 3);
 }
 
+// FUN_0025F370
+
+
+KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data)
+{
+    u32* work;
+    KwlnTask* task;
+    float rect[4];
+    u8 color[4];
+
+    work = (u32*)(*(code*)0x00960178)(0x8d0, 0x40000);
+    task = kwlnTaskInitEx(D_0068EC08, 0x18b5, 1, 2,
+                          (KwlnTaskUpdateFunc)brItem0025f4a0,
+                          (KwlnTaskDestroyFunc)brItem0025f510, work);
+    kwlnTaskAddChild(parent, task);
+    *work = 0;
+
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    FUN_0021d8e0(work + 0xc4, rect);
+    FUN_0021eac0(work + 0xc4, FUN_0021ea00(10));
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0;
+    FUN_0021d950(work + 0xc4, color);
+
+    sBrItem = work;
+    brItem0025d8a0(battle_data);
+    sBrItem374 = (u32)task;
+    return task;
+}
+
+/* Recovered battle-misc harvest: 0x0025F370-0x0025FC50 */
+// FUN_0025f4a0
+u32 brItem0025f4a0(void)
+{
+    FUN_0025da30();
+    FUN_0025ed40();
+    K_ASSERT(sBrItem != NULL, 0x75);
+    if ((*sBrItem & 1) == 0) {
+        return -1;
+    }
+    return 0;
+}
+
+// FUN_0025f510
+void brItem0025f510(int param_1)
+{
+    u32 uVar1;
+
+    uVar1 = *(u32*)(param_1 + 0x3c);
+    K_ASSERT(sBrItem != NULL, 0x75);
+    sBrItem = NULL;
+    RwFree((void*)uVar1);
+    sBrItem374 = 0;
+}
 
 
 
@@ -1174,6 +922,53 @@ void FUN_0025ed40(void)
 
 
 
+
+// FUN_0025f570
+void brItem0025f570(void)
+{
+    u32* work;
+
+    K_ASSERT(sBrItem != NULL, 0x75);
+    work = sBrItem;
+    work[3] = 0;
+    work[1] = 1;
+    *work |= 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Retail converts the final color bytes into float vertex fields.
+ * Keep these stores typed; raw u32 bit patterns drop those conversion paths.
+ * The two geometry coordinates at the tail are integer-to-float conversions.
+ * Ascending case labels preserve retail's case-0 body layout and dispatch order.
+ * The expanded switch/tail reconstruction is intentional despite residual codegen differences.
+*/
+/* W331: opt_propagation off shrinks FUN_0025DA30 4912 -> 4856 (window 4880); retained for window. */
 // FUN_0025F5D0
 void FUN_0025f5d0(int param_1, int param_2, int param_3)
 {
@@ -1233,84 +1028,294 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     *(float *)(param_1 + 0xec) = (float)abStack_20[15];
 }
 
+// FUN_0025FB60
+void FUN_0025fb60(int contextAddress, int entryIndex, float* uv)
+{
+    u8* entry;
+    uintptr_t resource;
+    uintptr_t resourceAddress;
 
-#include "Main/Battle/Data/datPersona.h"
-#include "Main/Social/sfl_psel.h"
-#include "Main/Social/sfl_res.h"
+    entry = *(u8**)(contextAddress + 0x184) + entryIndex * 0x80;
+    resourceAddress = *(s32*)(entry + 0x14) * sizeof(uintptr_t);
+    resourceAddress += contextAddress;
+    resource = *(uintptr_t*)(resourceAddress + 0x104);
 
-static u32* sSflPsel; // puGpffffb688
-u32 FUN_0021cca0();
-void FUN_0021d3b0();
-void FUN_00260c20();
-void FUN_00261480();
-extern void FUN_0021d8e0_y2(void*, const void*);
-extern void FUN_0021d950_y2(void*, const void*);
-extern void (*D_00960090)(u32, u32);
-extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
-#pragma alias D_00960090_abs D_00960090
-extern u8 D_00960090_abs[];
-#pragma alias D_0096009C_abs D_0096009C
-extern u8 D_0096009C_abs[];
-extern void RpSkyRenderStateSet(u32, void*);
-extern void func_004d7f60(s32 state, u32 value);
-extern float fGpffff8300;
-extern char D_00960088[];
-extern u32 uGpffffb948;
-extern u16 DAT_007e0952;
-#pragma alias DAT_007e0952_a DAT_007e0952
-extern u16 DAT_007e0952_a[8];
-extern u32 func_00173220(u16 id);
-extern u32 func_00173280(u16 id);
-extern u8* DAT_007ce420;
-extern u32 func_00175410(void);
-extern u32 func_001756f0(void);
-extern void* func_001749a0(u16 id);
-extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
-extern DatPersonaWork* datPersonaGetByPcId(u16 pcId);
-extern u32 func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
-extern u32 func_0021cca0(u32 texture, s32 frame);
-extern u32 func_0021cce0(u32 frame);
-extern void func_0021d3b0(void* destination, u32 frame);
-extern void func_0021d8e0(void* destination, const f32* rect);
-extern void func_0021d950(void* destination, const u8* color);
-extern void func_0021e380(void* destination, u32 frame, s32 mode);
-extern f32 func_0021ea00(s32 duration);
-extern void func_0021eac0(void* animation, f32 value);
-extern void func_00238980(void* destination, s32 count, u32 value, s32 mode);
-extern void* func_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* origin);
-extern u32 func_00239140(s32 font);
-extern void func_0024a260(u32* state);
-extern u32 func_003b0970(u32 resource, s32 mode, s8 group, s32 a, s32 b);
-extern void func_003b0d70(u32 resource, s32 x, s32 y);
-extern void func_003b0e20(u32 resource, u32 color);
-extern void func_003b0e70(s32 mode);
-extern void func_003b0e90(s32 mode);
-extern void func_003b1360(u32 resource, s32 mode, s32 value);
-extern void func_003b0170(u32 resource);
-extern void frFontSetTextScale(u32 resource, f32 value);
-extern u32 func_003c7610(void);
-extern void func_003c7650(s32 mode);
-extern u32 func_003c7850(void);
-extern u32 func_003c78d0(void);
-extern void func_003c7990(s32 mode);
-extern void func_003c7bc0(s32 mode, u32 value);
-extern void func_003c7430(u32 value);
-extern void sflPersonaLoad(u16 id);
-extern void sflPersonaSetPersona(u16 id);
-extern void sflPersonaDestroy(void);
-extern u32 sflPersonaIsLoading(void);
-extern void sflPersonaStartExitTransition(void);
-extern u32 sflPersonaIsTransitioning(void);
-extern void func_00523ac8(char* destination, const char* format, ...);
-extern s32 func_00524388(const char* text);
-extern void func_0019d3f0(const char* file, s32 line);
-extern char D_0068e228[];
-extern void func_003c74e0(u32 value);
+    {
+        f32 size[2] = { 0.0f, 0.0f };
 
-typedef void (*SflPselStateCallback)(u32 state, u32 value);
-typedef void (*SflPselDrawCallback)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+        size[0] = (f32)*(s32*)(entry + 0x54);
+        size[1] = (f32)*(s32*)(entry + 0x5c);
 
-extern u32 FUN_0021cce0(u32 frame);
+        {
+            f32 offset[2] = { 0.0f, 0.0f };
+            s32* dimensions;
+            f32 width;
+            f32 height;
+            s32 rawWidth;
+            s32 rawHeight;
+
+            offset[0] = (f32)*(s32*)(entry + 0x58);
+            offset[1] = (f32)*(s32*)(entry + 0x60);
+
+            dimensions = (s32*)(resource + 0x0c);
+            rawWidth = *dimensions++;
+            rawHeight = *dimensions;
+            width = (f32)rawWidth;
+            uv[0] = size[0] / width;
+            uv[2] = size[1] / width;
+            height = (f32)rawHeight;
+            uv[1] = offset[0] / height;
+            uv[3] = offset[1] / height;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FUN_0025FC50 NONMATCHING
+void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
+{
+
+  int iVar1;
+    u32 unaff_s4_lo;
+    u32 unaff_s5_lo;
+    u32 unaff_s3_lo;
+    u32 unaff_s2_lo;
+    float fVar2;
+  union {
+    u32 bits;
+    float value;
+  } uStack[4];
+
+
+  
+
+  iVar1 = FUN_00198590();
+
+  fVar2 = 1.0f / *(float *)(iVar1 + 0x80);
+
+  iVar1 = *(int *)((int)param_2 + 0x184) + (int)param_3 * 0x80;
+
+  switch(param_4) {
+
+  case 0:
+
+    FUN_00260430(param_2,param_3,&uStack[0],0);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 100);
+
+    unaff_s4_lo = *(u32 *)(iVar1 + 0x68);
+
+    unaff_s3_lo = unaff_s4_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+    break;
+
+  case 1:
+
+    FUN_00260430(param_2,param_3,&uStack[0],1);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 0x68);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = *(u32 *)(iVar1 + 0x6c);
+
+    unaff_s2_lo = unaff_s3_lo;
+
+    break;
+
+  case 2:
+
+    FUN_00260430(param_2,param_3,&uStack[0],2);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 0x70);
+
+    unaff_s4_lo = *(u32 *)(iVar1 + 0x6c);
+
+    unaff_s3_lo = unaff_s4_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+    break;
+
+  case 3:
+
+    FUN_00260430(param_2,param_3,&uStack[0],3);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 100);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = *(u32 *)(iVar1 + 0x70);
+
+    unaff_s2_lo = unaff_s3_lo;
+
+    break;
+
+  case 4:
+
+    FUN_00260430(param_2,param_3,&uStack[0],4);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 0x68);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = unaff_s5_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+    break;
+
+  case 5:
+
+    FUN_00260430(param_2,param_3,&uStack[0],5);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 0x6c);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = unaff_s5_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+    break;
+
+  case 6:
+
+    FUN_00260430(param_2,param_3,&uStack[0],6);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 0x70);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = unaff_s5_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+    break;
+
+  case 7:
+
+    FUN_00260430(param_2,param_3,&uStack[0],7);
+
+    unaff_s5_lo = *(u32 *)(iVar1 + 100);
+
+    unaff_s4_lo = unaff_s5_lo;
+
+    unaff_s3_lo = unaff_s5_lo;
+
+    unaff_s2_lo = unaff_s5_lo;
+
+  }
+
+  *(float *)(param_1 + 0x10) = uStack[0].value;
+
+  *(float *)(param_1 + 0x14) = uStack[1].value;
+
+  *(float *)(param_1 + 0x18) = fVar2;
+
+  *(float *)(param_1 + 8) = *(f32*)DAT_00960088_abs;
+
+  *(float *)(param_1 + 0x20) = (float)((unaff_s5_lo >> 0x18) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x24) = (float)((unaff_s5_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x28) = (float)((unaff_s5_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x2c) = (float)((unaff_s5_lo & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x50) = uStack[2].value;
+
+  *(float *)(param_1 + 0x54) = uStack[1].value;
+
+  *(float *)(param_1 + 0x58) = fVar2;
+
+  *(float *)(param_1 + 0x48) = *(f32*)DAT_00960088_abs;
+
+  *(float *)(param_1 + 0x60) = (float)((unaff_s4_lo >> 0x18) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 100) = (float)((unaff_s4_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x68) = (float)((unaff_s4_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x6c) = (float)((unaff_s4_lo & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0x90) = uStack[2].value;
+
+  *(float *)(param_1 + 0x94) = uStack[3].value;
+
+  *(float *)(param_1 + 0x98) = fVar2;
+
+  *(float *)(param_1 + 0x88) = *(f32*)DAT_00960088_abs;
+
+  *(float *)(param_1 + 0xa0) = (float)((unaff_s3_lo >> 0x18) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xa4) = (float)((unaff_s3_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xa8) = (float)((unaff_s3_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xac) = (float)((unaff_s3_lo & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xd0) = uStack[0].value;
+
+  *(float *)(param_1 + 0xd4) = uStack[3].value;
+
+  *(float *)(param_1 + 0xd8) = fVar2;
+
+  *(float *)(param_1 + 200) = *(f32*)DAT_00960088_abs;
+
+  *(float *)(param_1 + 0xe0) = (float)((unaff_s2_lo >> 0x18) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xe4) = (float)((unaff_s2_lo >> 0x10 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xe8) = (float)((unaff_s2_lo >> 8 & 0xff) * 0xff >> 7 & 0xff);
+
+  *(float *)(param_1 + 0xec) = (float)((unaff_s2_lo & 0xff) * 0xff >> 7 & 0xff);
+
+  return;
+
+}
+
+
+
+
+
 
 static inline u8* sflPselBytes(u32* work, u32 offset)
 {
@@ -1498,7 +1503,6 @@ void sflPsel00260970(u8* work)
 
 
 
-extern void FUN_0021d890_y2(void*, const void*);
 
 
 

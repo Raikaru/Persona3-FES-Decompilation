@@ -36,6 +36,10 @@ extern f32 fGpffff8480;
 extern f32 fGpffff809c;
 extern f32 fGpffff83a4;
 
+void opMenu0026da90(s32 param_1);
+void opMenu0026db30(s32 param_1);
+void opMenu0026dc20(void);
+void opMenu0026dc70(void);
 static u32* sOpMenu; // DAT_007ce3b4 / puGpffffb6c4
 static inline u8* opMenuData(u32 offset)
 {
@@ -153,40 +157,6 @@ static inline void opMenuSetIcon(u32 offset, void* frame, f32 x, f32 y)
 }
 
 
-// FUN_0026DA90
-void opMenu0026da90(s32 param_1)
-{
-    u32* base;
-
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    base = sOpMenu;
-    base[param_1 * 0xc4 + 0x2c0] = 8;
-    base[base[0x2be] * 0xc4 + 0x2c1] = 0;
-    base[0x2be] = param_1;
-    base[param_1 * 0xc4 + 0x2c0] = 0;
-    base[param_1 * 0xc4 + 0x2c1] = 0;
-}
-
-// FUN_0026DB30
-void opMenu0026db30(s32 param_1)
-{
-    u32* base;
-
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    base = sOpMenu;
-    base[param_1 * 0xc4 + 0x698] = 8;
-    base[base[0x694] * 0xc4 + 0x699] = 0;
-    base[0x694] = param_1;
-    base[param_1 * 0xc4 + 0x698] = 0;
-    base[param_1 * 0xc4 + 0x699] = 0;
-}
-// FUN_0026DC20
-void opMenu0026dc20(void)
-{
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    *sOpMenu &= ~0x20u;
-}
-
 // FUN_0026a230
 void opMenu0026a230(u32* param_1)
 {
@@ -201,45 +171,6 @@ void opMenu0026a280(void)
     K_ASSERT(sOpMenu != NULL, 0x87);
     sOpMenu = NULL;
 }
-
-// FUN_0026da10
-void opMenu0026da10(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    work = sOpMenu;
-    opMenu0026da90(0);
-    opMenu0026db30(0);
-    opMenu0026dc20();
-    *work &= 0xfffffffe;
-}
-
-// FUN_0026dc70
-void opMenu0026dc70(void)
-{
-    u32* work;
-
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    work = sOpMenu;
-    work[0x247] = 0;
-    *work |= 4;
-}
-
-// FUN_0026dcc0
-u32 opMenu0026dcc0(void)
-{
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    return *sOpMenu & 8;
-}
-
-// FUN_0026dbd0
-void opMenu0026dbd0(void)
-{
-    K_ASSERT(sOpMenu != NULL, 0x87);
-    *sOpMenu |= 0x20;
-}
-
 // FUN_0026A2C0 NONMATCHING
 void opMenu0026a2c0(void)
 {
@@ -916,4 +847,77 @@ void opMenu0026d430(void)
     work[0] |= 8;
     opMenu0026dc70();
     work[0] |= 1;
+}
+
+// FUN_0026da10
+void opMenu0026da10(void)
+{
+    u32* work;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    work = sOpMenu;
+    opMenu0026da90(0);
+    opMenu0026db30(0);
+    opMenu0026dc20();
+    *work &= 0xfffffffe;
+}
+
+// FUN_0026DA90
+void opMenu0026da90(s32 param_1)
+{
+    u32* base;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    base = sOpMenu;
+    base[param_1 * 0xc4 + 0x2c0] = 8;
+    base[base[0x2be] * 0xc4 + 0x2c1] = 0;
+    base[0x2be] = param_1;
+    base[param_1 * 0xc4 + 0x2c0] = 0;
+    base[param_1 * 0xc4 + 0x2c1] = 0;
+}
+
+// FUN_0026DB30
+void opMenu0026db30(s32 param_1)
+{
+    u32* base;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    base = sOpMenu;
+    base[param_1 * 0xc4 + 0x698] = 8;
+    base[base[0x694] * 0xc4 + 0x699] = 0;
+    base[0x694] = param_1;
+    base[param_1 * 0xc4 + 0x698] = 0;
+    base[param_1 * 0xc4 + 0x699] = 0;
+}
+
+// FUN_0026dbd0
+void opMenu0026dbd0(void)
+{
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    *sOpMenu |= 0x20;
+}
+
+// FUN_0026DC20
+void opMenu0026dc20(void)
+{
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    *sOpMenu &= ~0x20u;
+}
+
+// FUN_0026dc70
+void opMenu0026dc70(void)
+{
+    u32* work;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    work = sOpMenu;
+    work[0x247] = 0;
+    *work |= 4;
+}
+
+// FUN_0026dcc0
+u32 opMenu0026dcc0(void)
+{
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    return *sOpMenu & 8;
 }
