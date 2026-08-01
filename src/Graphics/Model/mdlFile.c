@@ -8,6 +8,7 @@ typedef void (*MdlVoidFnU32)(unsigned int);
 #include "Main/Battle/Data/datUnit.h"
 #include "Battle/btlVoice.h"
 #include "temporary.h"
+#define MDL_PATH_FORMAT(addr) (DAT_0069b210 + ((addr) - 0x69b210))
 
 #pragma alias DAT_007cca10_y2 DAT_007cca10
 #pragma alias FUN_004c2f30_y2 FUN_004c2f30
@@ -45,70 +46,7 @@ extern const char DAT_007cca10_y2[];
 extern unsigned char DAT_006a6b20[];
 
 
-// FUN_0031d4f0
-u8 mdlFileIsTypePac(u16 type)
-{
-    switch (type)
-    {
-        case MODEL_TYPE_BTLCHAR: // fallthrough
-        case MODEL_TYPE_ENEMY:   return true;
-    }
 
-    return false;
-}
-// FUN_0031d530
-u32 mdlFileResolvePackPath(u16 type, u16 id, char* dst)
-{
-    char path[0x100];
-    char* name;
-    s32 len;
-    u32 isPac;
-
-    switch (type)
-    {
-        case MODEL_TYPE_BTLCHAR:
-        case MODEL_TYPE_ENEMY:
-            isPac = 1;
-            break;
-        default:
-            isPac = 0;
-            break;
-    }
-
-    if (isPac == 0)
-    {
-        func_0031c820(type, id, dst);
-        /* Retail preserves the resolver's v0 on this early exit. */
-        return;
-    }
-    func_0031c820(type, id, path);
-    len = strlen(path);
-    if (!func_0031e420(type, id))
-    {
-        path[len - 3] = 'p';
-        path[len - 2] = 'a';
-        path[len - 1] = 'c';
-    }
-    else
-    {
-        path[len - 4] = 'a';
-        path[len - 3] = '.';
-        path[len - 2] = 'p';
-        path[len - 1] = 'a';
-        path[len] = 'c';
-        path[len + 1] = '\0';
-        len++; 
-    }
-    while (path[len] != '\\' && path[len] != '/')
-    {
-        len--;
-    }
-    name = path + len;
-    sprintf(dst, D_0069BA08, MODEL_PATH, name);
-    return 1;
-}
-
-/* ---- Recovered range 0x31D600-0x357DC0 (Ghidra reference) ---- */
 typedef int (*code)(...);
 typedef u8 MdlDispatchSlot[0x10];
 typedef u8 bool;
@@ -161,19 +99,11 @@ typedef struct MdlRuntimeState {
     u8 unk_3c[0x50];
     u32 minimumMode;
 } MdlRuntimeState;
-
-
 static const u32 sMdlNanBits = 0x7fffffff;
-#pragma alias ABS_f32 ABS
 extern float ABS_f32(float param_1);
-#pragma alias SQRT_f32 SQRT
 extern float SQRT_f32(float param_1);
-#pragma alias RwMatrixRotate_f32_first RwMatrixRotate
 extern RwMatrix *RwMatrixRotate_f32_first(float angle, RwMatrix *matrix,
                                           const RwV3d *axis, RwOpCombineType combineOp);
-/* Ghidra's VU pseudo-registers are 128-bit values.  MWCC's vector extension is
- * disabled for this TU, so keep the register shape as a plain union and use
- * scalar compatibility shims for the generated intrinsics. */
 typedef union Qword128 { u_long128 q; struct { u64 lo; u64 hi; }; } Qword128;
 typedef union Vec128 {
     struct { u32 _0_4_; u32 _4_4_; u32 _8_4_; u32 _12_4_; };
@@ -192,22 +122,9 @@ typedef struct MdlFrameDispatch {
     code apply;
 } MdlFrameDispatch;
 typedef u32 (*MdlCreate2FloatFn)(float, int, float);
-#define RpSkyRenderStateSet(n,p) ((void)RpSkyRenderStateSet((n),(void *)(u32)(p)))
-#define RwCameraBeginUpdate(p) RwCameraBeginUpdate((RwCamera *)(u32)(p))
-#define RwCameraEndUpdate(p) RwCameraEndUpdate((RwCamera *)(u32)(p))
-#define RwCameraSetProjectionType(p,t) RwCameraSetProjectionType((RwCamera *)(u32)(p),(t))
-#define RwV3dTransformPoint(o,i,m) RwV3dTransformPoint((RwV3d *)(o),(RwV3d *)(i),(RwMatrix *)(u32)(m))
-#define RwV3dNormalize(o,i) RwV3dNormalize((RwV3d *)(o),(RwV3d *)(i))
-#define RtQuatConvertFromMatrix(q,m) RtQuatConvertFromMatrix((RtQuat *)(q),(RwMatrix *)(m))
-#define RwMatrixScale(m,v,f) RwMatrixScale((RwMatrix *)(m),(RwV3d *)(v),(f))
-#define RwMatrixTranslate(m,v,f) RwMatrixTranslate((RwMatrix *)(m),(RwV3d *)(v),(f))
-#define RwMatrixMultiply(o,a,b) RwMatrixMultiply((RwMatrix *)(o),(RwMatrix *)(a),(RwMatrix *)(b))
-#define RwMatrixRotate(a,m,v,f) RwMatrixRotate_f32_first((a),(RwMatrix *)(m),(RwV3d *)(v),(f))
-/* Ghidra stack/global temporaries that are referenced before a matching local declaration. */
 static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStack_90, auStack_a0;
 static Vec128 _DAT_0069c4d0;
 static u64 _DAT_0069c4a0;
-#pragma alias DAT_0069c4a0_abs _DAT_0069c4a0
 extern u8 DAT_0069c4a0_abs[];
 static float _fStack_50;
 static u32 *piGpffffa850;
@@ -215,573 +132,7 @@ static u8 *puGpffffbd04;
 static int cGpffffb857;
 extern u16 sGpffffb880;
 static u8 bGpffffb854, bGpffffb855, bGpffffb856, bGpffffb857;
-static inline Vec128 mdlVecZero(void) { Vec128 v; v._0_8_ = 0; v._8_8_ = 0; return v; }
-static inline Vec128 mdlVecKeep(Vec128 v) { return v; }
-static Vec128 mdlVecLoadN(const void *p, u32 n) {
-    Vec128 v; v._0_8_ = 0; v._8_8_ = 0; memcpy(&v, p, n); return v;
-}
-static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; return v; }
-
 extern f32 DAT_007cae4c;
-/* Retail's VU0 colour-modulate kernel (COP2 macro mode + MMI pack).
-   Unpacks two packed RGBA u32s to floats, scales each by DAT_007cae4c
-   (1/255), multiplies, rescales by 255.0f, converts back and packs.
-   VU macro-mode and MMI parallel ops cannot be expressed in C. */
-static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
-{
-    u32 tmp;
-    u32 c1 = *pc1;
-    u32 c2 = *pc2;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "pextlb      %0, $zero, %1       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "pextlb      %0, $zero, %2       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         %0, 0x437F          \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       %0, $vf10           \n"
-        "ppach       %0, $zero, %0       \n"
-        "ppacb       %0, $zero, %0       \n"
-        ".set reorder"
-        : "=&r"(tmp)
-        : "r"(c1), "r"(c2), "f"(inv255)
-        : "memory");
-    return tmp;
-}
-
-/* The animation kernels spill both packed colours before entering the VU
-   sequence.  Keep the loads inside the asm so those addressable spills are
-   preserved instead of being folded back into integer registers. */
-static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv255)
-{
-    u32 tmp;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          %0, 0(%1)           \n"
-        "pextlb      %0, $zero, %0       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "lw          %0, 0(%2)           \n"
-        "pextlb      %0, $zero, %0       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         %0, 0x437F          \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       %0, $vf10           \n"
-        "ppach       %0, $zero, %0       \n"
-        "ppacb       %0, $zero, %0       \n"
-        ".set reorder"
-        : "=&r"(tmp)
-        : "r"(pc1), "r"(pc2), "f"(inv255)
-        : "memory");
-    return tmp;
-}
-
-static __inline u32 mdlVuScalePackedColor(u32 color, const u8 (*scale)[16], u32 inv255)
-{
-    u32 tmp;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "pextlb      %0, $zero, %1       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "nop                             \n"
-        "qmtc2       %2, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "lqc2        $vf11, 0(%3)         \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         %0, 0x437F          \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       %0, $vf10           \n"
-        "ppach       %0, $zero, %0       \n"
-        "ppacb       %0, $zero, %0       \n"
-        ".set reorder"
-        : "=&r"(tmp)
-        : "r"(color), "r"(inv255), "r"(scale)
-        : "memory");
-    return tmp;
-}
-
-/* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
-static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
-{
-    u32 tmp;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0(%1)          \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %3             \n"
-        "nop                             \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %2, 0x138($sp)       \n"
-        "addiu       $v0, $sp, 0x138      \n"
-        "lw          $v0, 0($v0)          \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %3             \n"
-        "nop                             \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v0, 0x437F          \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10           \n"
-        "ppach       $v0, $zero, $v0     \n"
-        "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0x134($sp)      \n"
-        ".set reorder"
-        : "=m"(tmp)
-        : "r"(pc1), "r"(c2), "f"(inv255)
-        : "memory");
-    return tmp;
-}
-
-
-/* The 0x90-byte animation frames interleave their second colour spill with
-   the VU kernel.  Fixed VU/GPR registers are part of the retail macro-mode
-   sequence; the result is written to the caller's contiguous colour stack. */
-static __inline void mdlVuModulateStacked90(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x8c      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x88($sp)       \n"
-        "addiu       $v0, $sp, 0x88      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v0, 0x437F         \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10          \n"
-        "ppach       $v0, $zero, $v0     \n"
-        "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0x84($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-
-static __inline void mdlVuModulateStacked80V0(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x7c      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x78($sp)       \n"
-        "addiu       $v0, $sp, 0x78      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v0, 0x437F         \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10          \n"
-        "ppach       $v0, $zero, $v0     \n"
-        "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0x74($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-static __inline void mdlVuModulateStacked80V1(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x7c      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x78($sp)       \n"
-        "addiu       $v0, $sp, 0x78      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v1, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v1, 0x437F         \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v1, $vf10          \n"
-        "ppach       $v1, $zero, $v1     \n"
-        "ppacb       $v1, $zero, $v1     \n"
-        "sw          $v1, 0x74($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-static __inline void mdlVuModulateStacked50(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x48      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x44($sp)       \n"
-        "addiu       $v0, $sp, 0x44      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v0, 0x437F         \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10          \n"
-        "ppach       $v0, $zero, $v0     \n"
-        "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0x40($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-static __inline void mdlVuModulateStacked50V1(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x48      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x44($sp)       \n"
-        "addiu       $v0, $sp, 0x44      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v1, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v1, 0x437F         \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v1, $vf10          \n"
-        "ppach       $v1, $zero, $v1     \n"
-        "ppacb       $v1, $zero, $v1     \n"
-        "sw          $v1, 0x40($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-static __inline void mdlVuModulateStacked70(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x6c      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x68($sp)       \n"
-        "addiu       $v0, $sp, 0x68      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v0, 0x437F         \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10          \n"
-        "ppach       $v0, $zero, $v0     \n"
-        "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0x64($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-static __inline void mdlVuModulateStacked40V1(u32 c2)
-{
-    f32 inv255;
-    __asm__ (
-        ".set noreorder                  \n"
-        "addiu       $v0, $sp, 0x3c      \n"
-        ".set reorder"
-        :
-        :
-        : "$v0", "memory");
-    inv255 = *(f32 *)&DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v0, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        "sw          %0, 0x38($sp)       \n"
-        "addiu       $v0, $sp, 0x38      \n"
-        "lw          $v0, 0($v0)         \n"
-        "pextlb      $v0, $zero, $v0     \n"
-        "pextlh      $v0, $zero, $v0     \n"
-        "qmtc2       $v0, $vf10          \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v1, %1             \n"
-        "nop                                \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         $v1, 0x437F         \n"
-        "qmtc2       $v1, $vf2           \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v1, $vf10          \n"
-        "ppach       $v1, $zero, $v1     \n"
-        "ppacb       $v1, $zero, $v1     \n"
-        "sw          $v1, 0x34($sp)      \n"
-        ".set reorder"
-        :
-        : "r"(c2), "f"(inv255)
-        : "$v0", "memory");
-}
-
-
-/* ==========================================================================
- * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
- *
- * They expand to mdlVecZero() (a zeroed Vec128) or mdlVecKeep() (identity),
- * so any function still using them compiles cleanly while emitting scalar
- * GARBAGE instead of the COP2/MMI instructions retail executes. That garbage
- * is why such functions sit 20-40% over their windows.
- *
- * To fix a site you must rewrite its DATAFLOW, not just swap the macro: a
- * real lqc2/sqc2 targets a fixed VU register ($vf10 etc.), so the Ghidra
- * form `auVarN = _lqc2(x);` has no C value to assign and every consumer of
- * auVarN has to be traced out. Decode the retail window first with
- *   python build/wip/W147_dis.py <VADDR_HEX> <SIZE>
- * then emit the real instruction as __asm__ volatile with a "memory" clobber
- * (see mdlVuModulate above, and src/Graphics/Effect/effMisc.c).
- *
- * DELETE THIS BLOCK once the last user is converted, so a stray _lqc2 can
- * never silently reintroduce zeroes.
- * ========================================================================== */
-#define _lqc2(x) mdlVecZero()
-#define _sqc2(x) mdlVecKeep(x)
-#define _qmtc2(x) mdlVecZero()
-#define _qmfc2(x) mdlVecZero()
-#define _vadd(a,b) mdlVecZero()
-#define _vsub(a,b) mdlVecZero()
-#define _vmul(a,b) mdlVecZero()
-#define _vmulbc(a,b) mdlVecZero()
-#define _vaddbc(a,b) mdlVecZero()
-#define _vsubbc(a,b) mdlVecZero()
-#define _vmulabc(a,b) mdlVecZero()
-#define _vmaddabc(a,b) mdlVecZero()
-#define _vmaddbc(a,b) mdlVecZero()
-#define _vftoi0(a) mdlVecZero()
-#define _vitof0(a) mdlVecZero()
-#define _vsqrt(a) mdlVecZero()
-#define _vrsqrt(a,b) mdlVecZero()
-#define _vmulq(a,b) mdlVecZero()
-#define _vmove(a) mdlVecKeep(a)
-#define _vopmula(a,b) mdlVecZero()
-#define _vopmsub(a,b) mdlVecZero()
-#define _vwaitq() ((u32)0)
-#define _pextlb(a,b) mdlVecZero()
-#define _pextlh(a,b) mdlVecZero()
-#define _ppach(a,b) mdlVecZero()
-#define _ppacb(a,b) mdlVecZero()
-#define _cfc2(a) ((u32)0)
-#define _pcpyld(a,b) mdlVecZero()
-#define _prot3w(a) mdlVecZero()
-#define _pexew(a) mdlVecZero()
-#define __int128 Vec128
-#ifndef CONCAT44
-#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
-#ifndef CONCAT11
-#define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
-#endif
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
 void FUN_0031d790(u32 *param_1);
@@ -798,9 +149,7 @@ void FUN_0031dda0(int *param_1,float *param_2);
 void FUN_0031de30(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
 void FUN_0031df80(u32 *param_1);
-#pragma alias FUN_0034fcf0_i FUN_0034fcf0
 extern void FUN_0034fcf0_i(int param_1);
-#pragma alias FUN_0034fcd0_i FUN_0034fcd0
 extern u32 FUN_0034fcd0_i(u32 param_1);
 u32 FUN_0031dff0(u32 param_1,u32 param_2);
 u32 FUN_0031e0b0(int *param_1);
@@ -812,11 +161,8 @@ void FUN_0031e240(int param_1);
 void FUN_0031e270(int param_1,u64 param_2);
 void FUN_0031e2c0(int param_1);
 int FUN_0031e300(u32 *param_1);
-#pragma alias FUN_0031e300_wide FUN_0031e300
 extern u64 FUN_0031e300_wide(u32 *param_1);
-#pragma alias mdlFileSelectCacheSlot FUN_0031e310
 int FUN_0031e310(short param_1,short param_2);
-#pragma alias FUN_0031e310_u32 FUN_0031e310
 extern int FUN_0031e310_u32(u32 param_1,u32 param_2);
 u64 FUN_0031e420(u16 param_1,u32 param_2);
 void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3);
@@ -856,14 +202,11 @@ u32 FUN_00321050(int param_1);
 void FUN_00321070(int *param_1,u32 param_2);
 u32 FUN_003210a0(u32 param_1);
 void FUN_003210c0(void);
-#pragma alias FUN_003210c0_ret FUN_003210c0
 extern u32 FUN_003210c0_ret(u64 param_1);
-#pragma alias FUN_003210c0_int FUN_003210c0
 extern u32 FUN_003210c0_int(int param_1);
 void FUN_00321120(u16 param_1);
 u16 FUN_00321130(void);
 void FUN_00321140(int param_1,u32 param_2);
-#pragma alias FUN_00321140_passthru FUN_00321140
 extern void FUN_00321140_passthru(void);
 void FUN_00321180(int param_1,u32 param_2);
 void FUN_003211d0(int param_1,u32 param_2);
@@ -883,15 +226,12 @@ u64 FUN_00321e20(void);
 u64 FUN_00321e50(void);
 u64 FUN_00321eb0(void);
 void FUN_00321f10(u32 param_1);
-#pragma alias FUN_00321f10_passthru FUN_00321f10
 extern void FUN_00321f10_passthru(void);
 void FUN_00321fe0(void);
 void FUN_00322010(void);
 u32 FUN_00322530(int param_1);
-#pragma alias FUN_00322530_u32 FUN_00322530
 extern u32 FUN_00322530_u32(int param_1);
 u32 FUN_003225d0(int *param_1);
-#pragma alias FUN_003225d0_u32 FUN_003225d0
 extern u32 FUN_003225d0_u32(int *param_1);
 void FUN_00322660(int param_1);
 void FUN_003226b0(int *param_1,int param_2);
@@ -900,11 +240,9 @@ void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,int param_2,float *param_3);
 void FUN_00322d10(int param_1,float *param_2);
 void FUN_00322d40(int param_1,u32 param_2);
-#pragma alias FUN_00322d40_onearg FUN_00322d40
 extern void FUN_00322d40_onearg(u32 resource);
 u32 FUN_00322da0(int *param_1,int param_2);
 u32 FUN_00322dc0(u32 *param_1);
-#pragma alias FUN_00322dc0_u32 FUN_00322dc0
 extern u32 FUN_00322dc0_u32(u32 *param_1);
 void FUN_00322f20(int param_1);
 u32 FUN_00322fb0(u32 param_1);
@@ -912,78 +250,54 @@ void FUN_00322fd0(int param_1,u32 param_2,float *param_3);
 u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3);
 int FUN_00323240(u32 param_1,int param_2,u16 param_3,int param_4);
 int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5);
-#pragma alias FUN_003233a0_ptr FUN_003233a0
 extern int FUN_003233a0_ptr(u32 param_1,u32 param_2,u16 param_3,u8 *param_4,u32 param_5);
 u32 FUN_003234f0(u16 param_1,u32 param_2);
-#pragma alias FUN_003234f0_u32 FUN_003234f0
 extern u32 FUN_003234f0_u32(u16 param_1,u32 param_2);
 u32 FUN_00323640(u16 *param_1);
-#pragma alias FUN_00323640_u32 FUN_00323640
 extern u32 FUN_00323640_u32(u16 *param_1);
 void FUN_003237c0(int param_1);
- #pragma alias FUN_003237c0_i FUN_003237c0
  extern void FUN_003237c0_i(int param_1);
- #pragma alias FUN_003237c0_u32 FUN_003237c0
  extern void FUN_003237c0_u32(u32 param_1);
 void FUN_00323860(void);
- #pragma alias FUN_00323860_4arg FUN_00323860
 void FUN_00323860_4arg(int param_1,int param_2,int param_3,int param_4);
-#pragma alias FUN_00323860_2arg FUN_00323860
 extern void FUN_00323860_2arg(int param_1,int param_2);
 void FUN_00323880(int param_1,u16 *param_2,int param_3,int param_4);
 void FUN_003238d0(int param_1);
-#pragma alias FUN_003238d0_4arg FUN_003238d0
 extern void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
-#pragma alias FUN_003238d0_ptr4 FUN_003238d0
 extern void FUN_003238d0_ptr4(u16 *param_1,u8 *param_2,u8 *param_3,u8 *param_4);
- #pragma alias FUN_00323920_out FUN_00323920
  extern void FUN_00323920_out(u8 *param_1);
- #pragma alias FUN_00323a30_out FUN_00323a30
  extern void FUN_00323a30_out(u8 *param_1);
 void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4);
 void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4);
 void FUN_00323b90(int param_1,u64 param_2);
-#pragma alias FUN_00323b90_i FUN_00323b90
 extern void FUN_00323b90_i(int param_1,int param_2);
 void FUN_00323bf0(int param_1,u32 *param_2);
 u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
-#pragma alias FUN_00323c20_u32first FUN_00323c20
 extern u32 FUN_00323c20_u32first(u32 param_1,u16 param_2,u16 param_3,u32 param_4);
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
                  u32 param_6);
-#pragma alias FUN_00323e10_ptr FUN_00323e10
 extern int FUN_00323e10_ptr(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
                             u8 *param_5,u32 param_6);
 int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5);
-#pragma alias FUN_00323fb0_ptr FUN_00323fb0
 extern int FUN_00323fb0_ptr(u32 param_1,u32 param_2,u8 *param_3,u16 param_4,
                             u32 param_5);
 u32 FUN_00324160(int param_1);
-#pragma alias FUN_00324160_u32 FUN_00324160
 extern u32 FUN_00324160_u32(int param_1);
 void FUN_00324310(int param_1);
- #pragma alias FUN_00324310_i FUN_00324310
  extern void FUN_00324310_i(int param_1);
 void FUN_003243d0(void);
-#pragma alias FUN_003243d0_1arg FUN_003243d0
 extern void FUN_003243d0_1arg(u32 param_1);
-#pragma alias FUN_003243d0_2arg FUN_003243d0
-#pragma alias FUN_003243f0_i FUN_003243f0
 extern void FUN_003243f0_i(int param_1,int param_2);
 extern void FUN_003243d0_2arg(u32 param_1,u16 param_2);
 void FUN_003243f0(int param_1,u32 param_2);
-#pragma alias FUN_00324510_i FUN_00324510
 extern void FUN_00324510_i(int param_1,int param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
-#pragma alias FUN_003244c0_4arg FUN_003244c0
 extern void FUN_003244c0_4arg(u16 *mesh,u64 resource,int position,int scale);
 void FUN_00324510(int param_1,u64 param_2);
 int FUN_003245b0(int param_1);
- #pragma alias FUN_003245b0_passthru FUN_003245b0
  extern int FUN_003245b0_passthru(void);
-#pragma alias FUN_003245b0_wide FUN_003245b0
 extern u64 FUN_003245b0_wide(void);
 int FUN_003245f0(int param_1);
 u32 FUN_00324680(u32 param_1);
@@ -996,46 +310,31 @@ void FUN_00324990(int param_1);
 void FUN_003249e0(int param_1);
 void FUN_00324a30(int param_1, u32 param_2);
 void FUN_00324a90(int param_1);
-#pragma alias FUN_00324a90_f32 FUN_00324a90
 extern void FUN_00324a90_f32(float param_1,u32 param_2);
 void FUN_00324af0(int param_1, u32 param_2);
 void FUN_00324b50(u32 param_1);
-#pragma alias FUN_00324bd0_passthru FUN_00324bd0
 extern u64 FUN_00324bd0_passthru(void);
 u32 FUN_00324bd0(u32 param_1);
-#pragma alias FUN_00324bd0_u32 FUN_00324bd0
 extern u32 FUN_00324bd0_u32(u64 param_1);
-#pragma alias FUN_00324bd0_u64 FUN_00324bd0
 extern u64 FUN_00324bd0_u64(u64 param_1);
 void FUN_003252a0(u64 param_1);
 void FUN_00325500(u64 param_1);
 void FUN_003257a0(u64 param_1);
 void FUN_003257e0(u32 param_1);
-#pragma alias FUN_003257e0_passthru FUN_003257e0
 extern void FUN_003257e0_passthru(void);
 u32 FUN_00325920(u64 *param_1);
-#pragma alias FUN_00325920_u32 FUN_00325920
 extern u32 FUN_00325920_u32(u64 *param_1);
 void FUN_00325b80(int param_1);
-#pragma alias FUN_00325b80_passthru FUN_00325b80
 extern void FUN_00325b80_passthru(void);
-#pragma alias FUN_003252a0_passthru FUN_003252a0
 extern void FUN_003252a0_passthru(void);
-#pragma alias FUN_00325920_passthru FUN_00325920
 extern u32 FUN_00325920_passthru(void);
-#pragma alias FUN_00325e40_passthru FUN_00325e40
 extern void FUN_00325e40_passthru(void);
-/* FUN_003505d0 is also called with its first argument passed through. */
-#pragma alias FUN_003505d0_passthru FUN_003505d0
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
-#pragma alias FUN_00325c10_onearg FUN_00325c10
 extern void FUN_00325c10_onearg(u32 resource);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
-#pragma alias FUN_00325d60_ptr FUN_00325d60
 extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
-#pragma alias FUN_00325e40_reordered FUN_00325e40
 extern void FUN_00325e40_reordered(u8 (*param_1) [16],float param_2);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
@@ -1054,16 +353,11 @@ u32 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
 void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
-#pragma alias FUN_00326cf0_2 FUN_00326cf0
 extern void FUN_00326cf0_2(int param_1,u32 param_2);
-#pragma alias FUN_00326e50_u32 FUN_00326e50
 extern void FUN_00326e50_u32(int param_1,u32 param_2);
-#pragma alias FUN_00326f60_u32 FUN_00326f60
 extern void FUN_00326f60_u32(u32 *param_1,u32 param_2);
-#pragma alias FUN_00327090_u32 FUN_00327090
 extern void FUN_00327090_u32(u32 *param_1,u32 param_2);
 void FUN_00326db0(int param_1,u16 param_2);
-#pragma alias FUN_00326db0_u32 FUN_00326db0
 extern void FUN_00326db0_u32(int param_1,u32 param_2);
 void FUN_00326e50(int param_1,u64 param_2);
 void FUN_00326f00(int param_1,u32 param_2);
@@ -1073,11 +367,8 @@ void FUN_003271c0(int param_1,u32 param_2);
 void FUN_00327220(int param_1);
 void FUN_00327250(float param_1,int param_2);
 void FUN_003275d0(float param_1,int param_2);
-#pragma alias FUN_003275d0_evt FUN_003275d0
 extern void FUN_003275d0_evt(float param_1);
-#pragma alias FUN_003275d0_evt2 FUN_003275d0
 extern void FUN_003275d0_evt2(float param_1,int param_2);
-#pragma alias mdlFileDrawType7Billboards FUN_003282e0
 void FUN_003282e0(int param_1);
 void FUN_00329350(int param_1);
 void FUN_003293a0(void);
@@ -1086,39 +377,29 @@ void FUN_00329430(int param_1);
 void FUN_00329460(int param_1);
 void FUN_00329490(int param_1,u32 param_2);
 void FUN_003294a0(f32 param_1, int param_2);
-#pragma alias mdlFileEmitMaskedFrame1Packet FUN_003294d0
-#pragma alias mdlFileRestoreFrame1Packet FUN_00329550
-#pragma alias mdlFileEmitClamp1Packet FUN_003295c0
-#pragma alias mdlFileRestoreClamp1Packet FUN_00329630
 void FUN_003294d0(void);
 void FUN_00329550(void);
 void FUN_003295c0(u64 param_1);
 void FUN_00329630(void);
 void FUN_003296a0(u32 *param_1,u8 (*param_2) [16]);
- #pragma alias FUN_003296a0_typed FUN_003296a0
  extern void FUN_003296a0_typed(RwMatrix *param_1,s32 param_2);
 void FUN_00329740(u32 *param_1);
 void FUN_003297a0(u32 *param_1);
 void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
-#pragma alias mdlFileBuildAxisRotation FUN_00329890
 void FUN_00329890(u32 param_1);
 void FUN_003299b0(void);
 u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
-#pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
 void FUN_00329d60(float param_1,u8 (*param_2) [16]);
 void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
-#pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
 float FUN_0032a540(char *param_1,int param_2,int param_3);
 void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
                  u8 (*param_4) [16]);
-#pragma alias FUN_0032a770_u32 FUN_0032a770
 extern void FUN_0032a770_u32(u8 (*param_1) [16], int param_2, u32 param_3,
                              u8 (*param_4) [16]);
-#pragma alias FUN_0032a890_u32 FUN_0032a890
 extern void FUN_0032a890_u32(int param_1, u32 param_2);
 void FUN_0032af30(int param_1);
 void FUN_0032ba30(int param_1);
@@ -1132,18 +413,14 @@ void FUN_00330190(u64 param_1);
 void FUN_00330c40(int param_1);
 void FUN_00331650(int param_1);
 u32 FUN_00332070(u16 param_1,int param_2,int param_3);
-#pragma alias FUN_00332070_u32 FUN_00332070
 extern u32 FUN_00332070_u32(u16 param_1,int param_2,int param_3);
-#pragma alias FUN_00332070_u32_ptr FUN_00332070
 extern u32 FUN_00332070_u32_ptr(u16 param_1,int param_2,int *param_3);
 void FUN_003321d0(int param_1);
 void FUN_00332200(int param_1);
 void FUN_00332210(int param_1);
 u_long128 FUN_003322b0(int param_1,u32 *param_2);
 u_long128 FUN_003322d0(int param_1,u32 *param_2);
-#pragma alias FUN_003322d0_one FUN_003322d0
 extern void FUN_003322d0_one(int param_1);
-#pragma alias FUN_00332310_one FUN_00332310
 extern void FUN_00332310_one(int param_1);
 u_long128 FUN_003322f0(int param_1,u32 *param_2);
 u_long128 FUN_00332310(int param_1,u32 *param_2);
@@ -1166,7 +443,6 @@ void FUN_00333050(int param_1);
 void FUN_00333080(int param_1,u32 param_2);
 void FUN_003330b0(f32 param_1, int param_2);
 u32 FUN_003330e0(u32 param_1,u32 param_2);
-#pragma alias FUN_003330e0_u32 FUN_003330e0
 extern u32 FUN_003330e0_u32(u32 param_1,u16 param_2);
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3);
 void FUN_00333420(int param_1,int *param_2);
@@ -1216,7 +492,6 @@ void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
 void FUN_00339200(int param_1);
 u32 FUN_003393d0(u32 param_1,u32 param_2);
-#pragma alias FUN_003393d0_u32 FUN_003393d0
 extern u32 FUN_003393d0_u32(u32 param_1,u32 param_2);
 void FUN_003394f0(int param_1);
 void FUN_00339530(u32 param_1);
@@ -1309,7 +584,6 @@ void FUN_00345080(int param_1);
 void FUN_003450d0(int param_1);
 void FUN_00345970(int param_1);
 u32 FUN_00345cf0(u32 param_1,u64 param_2);
-#pragma alias FUN_00345cf0_u32 FUN_00345cf0
 extern u32 FUN_00345cf0_u32(u32 param_1,u32 param_2);
 void FUN_00345ea0(u32 param_1);
 u32 FUN_00345f00(int param_1);
@@ -1321,13 +595,11 @@ u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
 u32 FUN_003461a0(u32 param_1);
 void FUN_00346350(int param_1);
 u32 FUN_003463c0(int param_1);
-#pragma alias FUN_00347170_ptr FUN_00347170
 extern u32 FUN_00347170_ptr(int param_1);
 void FUN_00346460(int param_1,int param_2);
 void FUN_00346500(int param_1);
 void FUN_00346510(int param_1);
 void FUN_00346530(int param_1);
-#pragma alias FUN_00346530_alt FUN_00346530
 extern void FUN_00346530_alt(int param_1);
 void FUN_00347100(int param_1);
 u32 FUN_00347170(u64 param_1);
@@ -1351,11 +623,9 @@ void FUN_00348bd0(u8 *param_1,float *param_2);
 void FUN_00348da0(int param_1,u32 *param_2);
 void FUN_00348f30(int param_1,float *param_2);
 void FUN_00349090(int *param_1,float *param_2);
-#pragma alias FUN_00349090_ptr FUN_00349090
 extern void FUN_00349090_ptr(int *param_1,int *param_2);
 void FUN_00349260(int param_1,float *param_2);
 void FUN_00349450(int *param_1,float *param_2);
-#pragma alias FUN_00349450_ptr FUN_00349450
 extern void FUN_00349450_ptr(int *param_1,int *param_2);
 void FUN_00349620(int *param_1,float *param_2);
 void FUN_00349870(int param_1);
@@ -1398,9 +668,7 @@ u_long128 FUN_0034bb90(u_long128 *dst, const u_long128 *src);
 void FUN_0034bba0(u32 *param_1, u32 param_2);
 void FUN_0034bbb0(u32 *param_1, float param_2);
 u32 FUN_0034bbc0(int param_1,u32 param_2);
-#pragma alias FUN_0034bbc0_u16 FUN_0034bbc0
 extern u32 FUN_0034bbc0_u16(int param_1,u16 param_2);
-#pragma alias RpSkyRenderStateSet_u32 RpSkyRenderStateSet
 extern void RpSkyRenderStateSet_u32(int state,u32 value);
 void FUN_0034bc80(u32 param_1);
 u32 FUN_0034bcf0(u32 param_1);
@@ -1422,7 +690,6 @@ u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src);
 void FUN_0034c650(int param_1, int param_2);
 void FUN_0034c660(int param_1, float param_2);
 u32 FUN_0034c670(int param_1);
-#pragma alias FUN_0034c670_u32 FUN_0034c670
 extern u32 FUN_0034c670_u32(int param_1);
 void FUN_0034c890(int param_1);
 u32 FUN_0034c940(int param_1);
@@ -1441,7 +708,6 @@ void FUN_0034d8a0(int param_1,u16 param_2,int param_3);
 void FUN_0034d990(int param_1,u32 param_2,u32 param_3);
 void FUN_0034db00(int param_1);
 void FUN_0034db30(int param_1);
-#pragma alias FUN_0034db30_i FUN_0034db30
 extern void FUN_0034db30_i(int param_1);
 void FUN_0034dc00(u64 param_1);
 void FUN_0034e390(int param_1);
@@ -1453,7 +719,6 @@ u32 FUN_0034e4c0(int param_1);
 void FUN_0034e610(int param_1);
 u32 FUN_0034e690(int param_1);
 void FUN_0034e7c0(int param_1,u64 param_2);
-#pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
 extern void FUN_0034e7c0_u32(int param_1,u32 param_2);
 void FUN_0034e800(int param_1,int param_2);
 void FUN_0034e820(int param_1,u16 param_2,int param_3);
@@ -1519,7 +784,6 @@ void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
 s8 FUN_00352c70(int param_1,u8 *param_2);
-#pragma alias FUN_00352c70_u32 FUN_00352c70
 extern u32 FUN_00352c70_u32(int param_1,u8 *param_2);
 u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4);
 u32 FUN_00352eb0(int param_1);
@@ -1563,7 +827,6 @@ extern u64 FUN_00100d80();
 extern u64 FUN_00100ec0();
 extern u64 FUN_001016b0();
 extern u64 FUN_00102100();
-#pragma alias FUN_00102100_mdl FUN_00102100
 extern u32 FUN_00102100_mdl(u32 param_1,u32 param_2,u32 *param_3);
 extern u64 FUN_001023a0();
 extern u64 FUN_00103c30();
@@ -1574,7 +837,6 @@ extern u64 FUN_00109df0();
 extern u64 FUN_0010a0e0();
 extern u64 FUN_0010a240();
 extern u64 FUN_0010a4e0_model(s16 param_1,s16 param_2,s16 param_3,s16 param_4);
-#pragma alias FUN_0010a4e0_model FUN_0010a4e0
 extern u64 FUN_0010a500();
 extern u64 FUN_0010e880();
 extern u64 FUN_0016cd60();
@@ -1587,7 +849,6 @@ extern u64 FUN_001956d0();
 extern u64 FUN_00195710();
 extern u64 FUN_00198560();
 extern u64 FUN_00198580();
-#pragma alias FUN_00198580_u32 FUN_00198580
 extern u32 FUN_00198580_u32(void);
 extern u32 FUN_00198590(void);
 extern u64 FUN_0019f8f0();
@@ -1599,7 +860,6 @@ extern u64 FUN_001a4b70();
 extern u32 FUN_001a6400();
 extern u64 FUN_001b5ae0();
 extern u64 FUN_001eda00();
-#pragma alias FUN_001eda00_u32 FUN_001eda00
 extern u32 FUN_001eda00_u32(u64 param_1, u64 param_2);
 extern u64 FUN_001eda90();
 extern u64 FUN_001eded0();
@@ -1612,13 +872,11 @@ extern u64 FUN_0027f6d0();
 extern u64 FUN_0027f7c0();
 extern u64 FUN_0027ffb0();
 extern u64 FUN_00282d40();
-#pragma alias FUN_00282d40_anim FUN_00282d40
 extern void FUN_00282d40_anim(u32 param_1,int param_2,u16 param_3,float param_4,u16 param_5);
 extern u64 FUN_002831c0();
 extern u64 FUN_00287b20();
 extern u64 FUN_00287cf0();
 extern u64 FUN_0029a1d0();
-#pragma alias FUN_0029a1d0_u32 FUN_0029a1d0
 extern u32 FUN_0029a1d0_u32(u32 param_1);
 extern u64 FUN_0029ea20();
 extern u64 FUN_0029ea30();
@@ -1628,7 +886,6 @@ extern u64 FUN_002a2170();
 extern u64 FUN_002a38f0();
 extern u64 FUN_002a3a80();
 extern u64 FUN_002a3e80();
-#pragma alias FUN_002a3e80_typed FUN_002a3e80
 extern u64 FUN_002a3e80_typed(float,int,int,int,int);
 extern u64 FUN_002a4690();
 extern u64 FUN_002f8810();
@@ -1636,17 +893,12 @@ extern u64 FUN_002ffbc0();
 extern u64 FUN_00308c60();
 extern u32 FUN_0030b5a0();
 extern u64 FUN_00316910();
-#pragma alias FUN_00316910_typed FUN_00316910
 extern u64 FUN_00316910_typed(u16 type,u16 id,u32 mode);
-#pragma alias FUN_00316910_u32_typed FUN_00316910
 extern u32 FUN_00316910_u32_typed(u16 type,u16 id,u32 mode);
 extern u64 FUN_00316bd0();
-#pragma alias FUN_00316bd0_u32 FUN_00316bd0
 extern u32 FUN_00316bd0_u32();
-#pragma alias FUN_00316bd0_typed FUN_00316bd0
 extern u32 FUN_00316bd0_typed(u16 type,u16 id,u32 param_1,u32 param_2,u32 mode);
 extern u64 FUN_00316e00();
-#pragma alias FUN_00316e00_u32 FUN_00316e00
 extern u32 FUN_00316e00_u32(u16 type,u16 id,u32 readMode);
 extern u64 FUN_003174e0();
 extern u64 FUN_00317730();
@@ -1655,19 +907,12 @@ extern u64 FUN_003182d0();
 extern u64 FUN_003185b0();
 extern void FUN_00318770(u32 param_1,u32 param_2,f32 param_3);
 extern u64 FUN_003189f0();
-#pragma alias FUN_003189f0_f32 FUN_003189f0
 extern u64 FUN_003189f0_f32(float param_1,u32 param_2,u32 param_3);
-#pragma alias FUN_003189f0_typed FUN_003189f0
 extern u64 FUN_003189f0_typed(void *param_1,u16 param_2,float param_3);
-#pragma alias FUN_003189f0_reordered FUN_003189f0
 extern u64 FUN_003189f0_reordered(u32 param_1,u32 param_2,float param_3);
-#pragma alias FUN_00318ad0_u32 FUN_00318ad0
 extern u64 FUN_00318ad0_u32(u32 param_1,u32 *param_2);
-#pragma alias FUN_00318a70_u32 FUN_00318a70
 extern u64 FUN_00318a70_u32(u32 param_1,void *param_2,u32 param_3);
-#pragma alias FUN_00318a90_u32 FUN_00318a90
 extern u64 FUN_00318a90_u32(u32 param_1,void *param_2,u32 param_3);
-#pragma alias FUN_00318a30_u32 FUN_00318a30
 extern u64 FUN_00318a30_u32(u32 param_1,void *param_2,u32 param_3);
 extern u64 FUN_00318a30();
 extern u64 FUN_00318a90();
@@ -1680,19 +925,12 @@ extern u64 FUN_00357dd0();
 extern u64 FUN_00357e00();
 extern u64 FUN_00357e30();
 extern void FUN_00357ea0(float angleX,float angleY,float angleZ);
-#pragma alias FUN_00357ea0_4arg FUN_00357ea0
 extern void FUN_00357ea0_4arg(int param_1,float angleX,float angleY,float angleZ);
-#pragma alias FUN_00357fd0_u32 FUN_00357fd0
 extern u32 FUN_00357fd0_u32(u32 seed);
 extern f32 FUN_00358030();
-// Typed aliases preserve the floating-point ABI used by the particle update routine.
-#pragma alias FUN_00358160_f32 FUN_00358160
 extern void FUN_00358160_f32(f32 value);
-#pragma alias FUN_00358380_f32 FUN_00358380
 extern void FUN_00358380_f32(f32 value);
-#pragma alias FUN_00358410_void FUN_00358410
 extern void FUN_00358410_void(void);
-#pragma alias FUN_00358340_vec FUN_00358340
 extern void FUN_00358340_vec(f32 value, void *vector);
 extern u64 FUN_003580f0();
 extern u64 FUN_00358160();
@@ -1700,15 +938,11 @@ extern u64 FUN_00358340();
 extern u64 FUN_00358380();
 extern u64 FUN_00358410();
 extern u64 FUN_00358460();
-#pragma alias FUN_00358a30 FUN_00358a30
 extern void FUN_00358a30(float param_1,void *param_2,void *param_3,int param_4);
-#pragma alias FUN_00359380 FUN_00359380
 extern void FUN_00359380(float param_1,void *param_2,int param_3);
 extern u64 FUN_0035ed20();
-#pragma alias FUN_0035ed20_i FUN_0035ed20
 extern s32 FUN_0035ed20_i(s32 index);
 extern u64 FUN_00474210();
-#pragma alias FUN_00474210_u32 FUN_00474210
 extern u32 FUN_00474210_u32();
 extern u64 FUN_00474640();
 extern u64 FUN_004747f0();
@@ -1718,23 +952,17 @@ extern int FUN_0048ef30();
 extern u32 FUN_0048ef80();
 extern u64 FUN_00491630();
 extern u64 FUN_004916d0();
-#pragma alias FUN_004916d0_typed FUN_004916d0
 extern void FUN_004916d0_typed(u64 param_1,void *param_2,void *param_3);
-#pragma alias FUN_004916d0_u32 FUN_004916d0
 extern void FUN_004916d0_u32(u32 param_1,void *param_2,void *param_3);
 extern u64 FUN_00491880();
-#pragma alias FUN_00491880_u32 FUN_00491880
 extern u32 FUN_00491880_u32(void);
 extern u64 FUN_004919b0();
 extern u64 FUN_00491a80();
 extern u64 FUN_00491cc0();
-#pragma alias FUN_00491cc0_u32 FUN_00491cc0
 extern u32 FUN_00491cc0_u32(u32 param_1);
 extern u64 FUN_00491ea0();
-#pragma alias FUN_00491ea0_u32 FUN_00491ea0
 extern void FUN_00491ea0_u32(u32 param_1);
 extern u64 FUN_004920a0();
-#pragma alias FUN_004920a0_u32 FUN_004920a0
 extern u32 FUN_004920a0_u32(u32 param_1);
 extern u64 FUN_00492d10();
 extern u64 FUN_00493210();
@@ -1742,14 +970,11 @@ extern u64 FUN_00493230();
 extern u64 FUN_00493370();
 extern u64 FUN_004933d0();
 extern u64 FUN_00493710();
-#pragma alias FUN_00493710_u32 FUN_00493710
 extern u32 FUN_00493710_u32(u32 param_1,u32 param_2,u32 param_3);
 extern u64 FUN_00493b60();
 extern u64 FUN_004944b0();
-#pragma alias FUN_004944b0_typed FUN_004944b0
 extern u64 FUN_004944b0_typed(u64 param_1, u32 *param_2);
 extern u64 FUN_00494be0();
-#pragma alias FUN_00494be0_u32 FUN_00494be0
 extern u32 FUN_00494be0_u32(void);
 extern u64 FUN_00494cc0();
 extern u64 FUN_00494d50(u32 param_1,u32 param_2);
@@ -1761,23 +986,18 @@ extern u32 FUN_004c58a0(u32 param_1,u32 param_2,u32 *param_3);
 extern u32 FUN_004c8680(u32 param_1);
 extern u64 FUN_004ca030();
 extern u64 FUN_004ca090();
-#pragma alias FUN_004ca090_u32 FUN_004ca090
 extern u32 FUN_004ca090_u32(void);
 extern u64 FUN_004caf10();
-#pragma alias FUN_004caf10_u32 FUN_004caf10
 extern u32 FUN_004caf10_u32(void);
 extern u64 FUN_004caf80();
 extern u64 FUN_004cb2f0();
-#pragma alias FUN_004cb2f0_u32 FUN_004cb2f0
 extern u32 FUN_004cb2f0_u32();
 extern u64 FUN_004cb420();
 extern u64 FUN_004cb750(u32 param_1,void *param_2,u32 param_3);
 extern u64 FUN_004cb7f0();
-#pragma alias FUN_004cb7f0_typed FUN_004cb7f0
 extern u64 FUN_004cb7f0_typed(u32 param_1, void *param_2, u32 param_3);
 extern u64 FUN_004cde90();
 extern u64 FUN_004ce0f0();
-#pragma alias FUN_004ce0f0_u32 FUN_004ce0f0
 extern u32 FUN_004ce0f0_u32(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 extern u64 FUN_004d0d10();
 extern void FUN_004d0dc0(u32 param_1,u8 *param_2,int *param_3);
@@ -1788,11 +1008,9 @@ extern u64 FUN_004d1840();
 extern u64 FUN_004d59d0();
 extern u64 FUN_004d81b0();
 extern u64 FUN_004e3630();
-#pragma alias FUN_004e3630_ptr FUN_004e3630
 extern int *FUN_004e3630_ptr(void);
 extern u64 FUN_004f1780();
 extern u64 FUN_00521250();
-#pragma alias FUN_00521250_mdl FUN_00521250
 extern void FUN_00521250_mdl(void *destination,const void *source,u32 size);
 extern u64 FUN_00521408();
 extern u64 FUN_005225a8();
@@ -1801,71 +1019,48 @@ extern int FUN_00524128();
 extern u64 FUN_00524270();
 extern u64 FUN_0052e118();
 extern f32 FUN_0052e408();
-#pragma alias FUN_0052e408_f32 FUN_0052e408
 extern f32 FUN_0052e408_f32(f32 value);
-#pragma alias FUN_0052e6d8_f32 FUN_0052e6d8
 extern f32 FUN_0052e6d8_f32(f32 value);
-#pragma alias FUN_0052e878_f32 FUN_0052e878
 extern f32 FUN_0052e878_f32(f32 value);
-#pragma alias FUN_0052ea00_f32 FUN_0052ea00
 extern f32 FUN_0052ea00_f32(f32 value);
 extern f32 FUN_0052e6d8();
 extern f32 FUN_0052e878();
-#pragma alias FUN_0052e9e8_f32 FUN_0052e9e8
 extern f32 FUN_0052e9e8_f32(f32 value);
 extern f32 FUN_0052ea00();
 extern u64 FUN_0052ea18();
-#pragma alias FUN_0052ea18_f32 FUN_0052ea18
 extern f32 FUN_0052ea18_f32(f32 value);
-#pragma alias FUN_0052ea18_2f FUN_0052ea18
 extern f32 FUN_0052ea18_2f(f32 a,f32 b);
 extern u64 FUN_00530da0();
-#pragma alias FUN_00530da0_f32_u32 FUN_00530da0
 extern u32 FUN_00530da0_f32_u32(f32 value);
-#pragma alias FUN_0052e118_u32 FUN_0052e118
 extern u32 FUN_0052e118_u32(u32 value);
-#pragma alias FUN_005311c8_u32 FUN_005311c8
 extern u32 FUN_005311c8_u32(u64 lhs,u32 rhs);
-#pragma alias FUN_00531230_u32 FUN_00531230
 extern u32 FUN_00531230_u32(u64 lhs,u32 rhs);
 extern u64 FUN_005311c8();
 extern u64 FUN_00531230();
 extern u64 FUN_005318a0();
-#pragma alias FUN_005318a0_f32 FUN_005318a0
 extern f32 FUN_005318a0_f32(u32 value);
 extern u32 DAT_0069ba18;
-#pragma alias DAT_0069ba18_abs DAT_0069ba18
 extern s32 DAT_0069ba18_abs[];
 extern u32 DAT_0069bd60;
-#pragma alias DAT_0069bd60_abs DAT_0069bd60
 extern u8 DAT_0069bd60_abs[];
 extern u8 DAT_0069bcd0[];
 extern u8 DAT_0069bde0[];
 extern u32 DAT_0069bd50;
-#pragma alias DAT_0069bd50_abs DAT_0069bd50
 extern u8 DAT_0069bd50_abs[];
 extern u32 DAT_0069bd80;
-#pragma alias DAT_0069bd80_abs DAT_0069bd80
 extern u8 DAT_0069bd80_abs[];
 extern u32 DAT_0069bdc8;
-#pragma alias DAT_0069bdc8_abs DAT_0069bdc8
 extern u8 DAT_0069bdc8_abs[];
 extern u32 DAT_0069c730;
-#pragma alias DAT_0069c730_abs DAT_0069c730
 extern u8 DAT_0069c730_abs[];
 extern u32 DAT_0069bb90;
-#pragma alias DAT_0069bb90_abs DAT_0069bb90
 extern u8 DAT_0069bb90_abs[];
 extern u32 DAT_0069bb94;
-#pragma alias DAT_0069bb94_abs DAT_0069bb94
 extern u8 DAT_0069bb94_abs[];
 extern u32 DAT_0069bbd0;
-#pragma alias DAT_0069bbd0_abs DAT_0069bbd0
 extern u8 DAT_0069bbd0_abs[];
 extern u32 DAT_0069bbd4;
-#pragma alias DAT_0069bbd4_abs DAT_0069bbd4
 extern u8 DAT_0069bbd4_abs[];
-#pragma alias DAT_0069bcb0_abs DAT_0069bcb0
 extern u8 DAT_0069bcb0_abs[];
 extern u8 DAT_0069bb50[];
 extern u8 DAT_0069bb70[];
@@ -1889,13 +1084,9 @@ extern u32 DAT_0069bccc;
 extern u32 DAT_0069c4a8;
 extern u32 DAT_0069c4ac;
 extern u32 DAT_0069c4d0;
-#pragma alias DAT_0069c4d0_f32 DAT_0069c4d0
 extern f32 DAT_0069c4d0_f32;
-#pragma alias DAT_0069c4d4_f32 DAT_0069c4d4
 extern f32 DAT_0069c4d4_f32;
-#pragma alias DAT_0069c4d8_f32 DAT_0069c4d8
 extern f32 DAT_0069c4d8_f32;
-#pragma alias DAT_0069c4d0_abs DAT_0069c4d0
 extern u8 DAT_0069c4d0_abs[];
 extern u32 DAT_0069c4d4;
 extern u32 DAT_0069c4d8;
@@ -1921,10 +1112,8 @@ extern u32 DAT_0069c664;
 extern u32 DAT_0069c6b0;
 extern u32 DAT_0069c6f0;
 extern MdlExtendedDispatch DAT_0069c850[];
-#pragma alias DAT_0069c850_abs DAT_0069c850
 extern MdlExtendedDispatch DAT_0069c850_abs[];
 extern u32 DAT_0069c854;
-#pragma alias DAT_0069c854_abs DAT_0069c854
 extern code DAT_0069c854_abs[];
 extern u32 DAT_0069c858;
 extern u32 DAT_0069c85c;
@@ -1932,10 +1121,8 @@ extern MdlStridedCallback28 DAT_0069c860[];
 extern MdlStridedCallback28 DAT_0069c864[];
 extern u32 DAT_0069c868;
 extern MdlExtendedDispatch DAT_0069c970[];
-#pragma alias DAT_0069c970_abs DAT_0069c970
 extern MdlExtendedDispatch DAT_0069c970_abs[];
 extern u32 DAT_0069c974;
-#pragma alias DAT_0069c974_abs DAT_0069c974
 extern code DAT_0069c974_abs[];
 extern u32 DAT_0069c978;
 extern u32 DAT_0069c97c;
@@ -1943,16 +1130,13 @@ extern MdlStridedCallback28 DAT_0069c980[];
 extern MdlStridedCallback28 DAT_0069c984[];
 extern u32 DAT_0069c988;
 extern u32 DAT_0069c9e0;
-#pragma alias DAT_0069cb80_abs DAT_0069cb80
 extern u8 DAT_0069cb80_abs[];
 extern MdlTypeDispatch DAT_0069cb90[];
 extern u32 DAT_0069cb94;
 extern u32 DAT_0069cb98;
 extern u32 DAT_0069cb9c;
 extern u32 DAT_0069cba0;
-#pragma alias DAT_0069cba0_s8 DAT_0069cba0
 extern s8 DAT_0069cba0_s8;
-#pragma alias DAT_0069cba0_abs DAT_0069cba0
 extern u8 DAT_0069cba0_abs[];
 extern u32 DAT_0069cba4;
 extern MdlTypeDispatch DAT_0069cc50[];
@@ -1960,23 +1144,18 @@ extern u32 DAT_0069cc54;
 extern u32 DAT_0069cc58;
 extern u32 DAT_0069cc5c;
 extern u32 DAT_0069cc60;
-#pragma alias DAT_0069cc60_s8 DAT_0069cc60
 extern s8 DAT_0069cc60_s8;
-#pragma alias DAT_0069cc60_abs DAT_0069cc60
 extern u8 DAT_0069cc60_abs[];
 extern u32 DAT_0069cc64;
 extern MdlTypeDispatch DAT_0069ccc0[];
-#pragma alias DAT_0069ccc0_abs DAT_0069ccc0
 extern MdlTypeDispatch DAT_0069ccc0_abs[];
 extern u32 DAT_0069ccc4;
 extern u32 DAT_0069ccc8;
 extern u32 DAT_0069cccc;
 extern MdlStridedCallback24 DAT_0069ccd0[];
-#pragma alias DAT_0069ccd0_abs DAT_0069ccd0
 extern MdlStridedCallback24 DAT_0069ccd0_abs[];
 extern u32 DAT_0069ccd4;
 extern MdlExtendedDispatch DAT_0069ccf0[];
-#pragma alias DAT_0069ccf0_abs DAT_0069ccf0
 extern MdlExtendedDispatch DAT_0069ccf0_abs[];
 extern u32 DAT_0069ccf4;
 extern u32 DAT_0069ccf8;
@@ -1986,39 +1165,28 @@ extern u32 DAT_0069cd04;
 extern MdlStridedValue DAT_0069cd08[];
 extern u32 DAT_007cad6c;
 extern f32 DAT_007cad7c;
-#pragma alias DAT_007cad7c_f32 DAT_007cad7c
 extern f32 DAT_007cad7c_f32;
 extern f32 DAT_007cada0;
 extern f32 DAT_007cadb0;
-#pragma alias DAT_007cadb0_f32 DAT_007cadb0
 extern f32 DAT_007cadb0_f32;
 extern f32 DAT_007cadc0;
 extern u32 DAT_007cadc4;
-#pragma alias DAT_007cadc4_f32 DAT_007cadc4
 extern f32 DAT_007cadc4_f32;
 extern f32 DAT_007cadd0;
-#pragma alias DAT_007cadd0_f32 DAT_007cadd0
 extern f32 DAT_007cadd0_f32;
 extern u32 DAT_007cade4;
-#pragma alias DAT_007cade4_f32 DAT_007cade4
 extern f32 DAT_007cade4_f32;
 extern f32 DAT_007cae00;
 extern u32 DAT_007cae18;
-#pragma alias DAT_007cae18_f32 DAT_007cae18
 extern f32 DAT_007cae18_f32;
 extern f32 DAT_007cae4c;
 extern f32 DAT_007cae58;
-#pragma alias DAT_007cae58_f32 DAT_007cae58
 extern f32 DAT_007cae58_f32;
 extern u32 DAT_007cae98;
-#pragma alias DAT_007cae98_f32 DAT_007cae98
 extern f32 DAT_007cae98_f32;
-#pragma alias DAT_007cada0_f32 DAT_007cada0
 extern f32 DAT_007cada0_f32;
-#pragma alias DAT_007caea4_f32 DAT_007caea4
 extern f32 DAT_007caea4_f32;
 extern f32 DAT_007cae50;
-#pragma alias DAT_007cae50_f32 DAT_007cae50
 extern f32 DAT_007cae50_f32;
 extern f32 DAT_007cae58;
 extern u32 DAT_007cae5c;
@@ -2072,40 +1240,24 @@ extern u32 DAT_007ce578;
 extern u32 DAT_007ce770;
 extern u32 DAT_007e0982;
 extern u32 DAT_00957220;
-#pragma alias DAT_00957220_abs DAT_00957220
 extern u8 DAT_00957220_abs[];
 extern u32 DAT_00957224;
-#pragma alias DAT_00957224_abs DAT_00957224
 extern u8 DAT_00957224_abs[];
 extern u32 DAT_00957226;
-#pragma alias DAT_00957226_abs DAT_00957226
 extern u8 DAT_00957226_abs[];
 extern u32 DAT_00957240;
-#pragma alias DAT_00957240_abs DAT_00957240
 extern u8 DAT_00957240_abs[];
-#pragma alias DAT_00957240_f32 DAT_00957240
 extern f32 DAT_00957240_f32;
-#pragma alias DAT_00957244_f32 DAT_00957244
 extern f32 DAT_00957244_f32;
-#pragma alias DAT_00957248_f32 DAT_00957248
 extern f32 DAT_00957248_f32;
-#pragma alias DAT_0095724c_f32 DAT_0095724c
 extern f32 DAT_0095724c_f32;
-#pragma alias DAT_00957250_f32 DAT_00957250
 extern f32 DAT_00957250_f32;
-#pragma alias DAT_00957254_f32 DAT_00957254
 extern f32 DAT_00957254_f32;
-#pragma alias DAT_00957258_f32 DAT_00957258
 extern f32 DAT_00957258_f32;
-#pragma alias DAT_0095725c_f32 DAT_0095725c
 extern f32 DAT_0095725c_f32;
-#pragma alias DAT_00957250_abs DAT_00957250
 extern u8 DAT_00957250_abs[];
-#pragma alias DAT_00957254_abs DAT_00957254
 extern u8 DAT_00957254_abs[];
-#pragma alias DAT_00957258_abs DAT_00957258
 extern u8 DAT_00957258_abs[];
-#pragma alias DAT_0095725c_abs DAT_0095725c
 extern u8 DAT_0095725c_abs[];
 extern u32 DAT_00957244;
 extern u32 DAT_00957248;
@@ -2115,16 +1267,12 @@ extern u32 DAT_00957254;
 extern u32 DAT_00957258;
 extern u32 DAT_0095725c;
 extern u32 DAT_00957260;
-#pragma alias DAT_00957260_abs DAT_00957260
 extern u8 DAT_00957260_abs[];
 extern u32 DAT_00957270;
-#pragma alias DAT_00957270_abs DAT_00957270
 extern u8 DAT_00957270_abs[];
 extern u32 DAT_009572b0;
-#pragma alias DAT_009572b0_abs DAT_009572b0
 extern u8 DAT_009572b0_abs[];
 extern u32 DAT_009572c0;
-#pragma alias DAT_009572c0_abs DAT_009572c0
 extern u8 DAT_009572c0_abs[];
 extern u32 DAT_009572b4;
 extern u32 DAT_009572b8;
@@ -2133,23 +1281,14 @@ extern u32 DAT_009572c4;
 extern u32 DAT_009572c8;
 extern u32 DAT_009572cc;
 extern u32 DAT_009572d0;
-#pragma alias DAT_009572d0_abs DAT_009572d0
 extern u8 DAT_009572d0_abs[];
-#pragma alias DAT_009572b0_f32 DAT_009572b0
 extern f32 DAT_009572b0_f32;
-#pragma alias DAT_009572b4_f32 DAT_009572b4
 extern f32 DAT_009572b4_f32;
-#pragma alias DAT_009572b8_f32 DAT_009572b8
 extern f32 DAT_009572b8_f32;
-#pragma alias DAT_009572bc_f32 DAT_009572bc
 extern f32 DAT_009572bc_f32;
-#pragma alias DAT_009572c0_f32 DAT_009572c0
 extern f32 DAT_009572c0_f32;
-#pragma alias DAT_009572c4_f32 DAT_009572c4
 extern f32 DAT_009572c4_f32;
-#pragma alias DAT_009572c8_f32 DAT_009572c8
 extern f32 DAT_009572c8_f32;
-#pragma alias DAT_009572cc_f32 DAT_009572cc
 extern f32 DAT_009572cc_f32;
 extern u32 DAT_009572e0;
 extern u32 DAT_009572e4;
@@ -2171,25 +1310,16 @@ extern u32 DAT_00957620;
 extern u32 DAT_00957720;
 extern u32 DAT_00957820;
 extern u32 DAT_00957920;
-#pragma alias DAT_00957920_abs DAT_00957920
 extern u8 DAT_00957920_abs[];
-#pragma alias DAT_00957820_abs DAT_00957820
 extern u8 DAT_00957820_abs[];
-#pragma alias DAT_00957620_abs DAT_00957620
 extern u8 DAT_00957620_abs[];
-#pragma alias DAT_00957520_abs DAT_00957520
 extern u8 DAT_00957520_abs[];
-#pragma alias DAT_00957720_abs DAT_00957720
 extern u8 DAT_00957720_abs[];
-#pragma alias DAT_00957420_abs DAT_00957420
 extern u8 DAT_00957420_abs[];
-#pragma alias DAT_00957320_abs DAT_00957320
 extern u8 DAT_00957320_abs[];
-#pragma alias DAT_009572e0_abs DAT_009572e0
 extern u8 DAT_009572e0_abs[];
 extern u32 DAT_00957a20;
 extern u32 DAT_00957a80;
-#pragma alias DAT_00957a90_abs DAT_00957a90
 extern u8 DAT_00957a90_abs[];
 extern u32 DAT_00957a84;
 extern u32 DAT_00957a88;
@@ -2198,9 +1328,7 @@ extern f32 DAT_00957a90;
 extern f32 DAT_00957a94;
 extern f32 DAT_00957a98;
 extern u32 DAT_00957b44;
-#pragma alias DAT_00957b44_f32 DAT_00957b44
 extern f32 DAT_00957b44_f32;
-#pragma alias DAT_00957b48_f32 DAT_00957b48
 extern f32 DAT_00957b48_f32;
 extern u32 DAT_00957b48;
 extern u8 DAT_00957b4c;
@@ -2209,22 +1337,15 @@ extern u8 DAT_00957b4e;
 extern u8 DAT_00957b4f;
 extern u32 DAT_00957b64;
 extern u32 DAT_00957ba8;
-#pragma alias DAT_00957ba8_abs DAT_00957ba8
 extern u8 DAT_00957ba8_abs[];
-#pragma alias DAT_00957bac_abs DAT_00957bac
 extern u8 DAT_00957bac_abs[];
-#pragma alias DAT_00957bb0_abs DAT_00957bb0
 extern u8 DAT_00957bb0_abs[];
 extern u32 DAT_00957bac;
 extern u32 DAT_00957bb0;
 extern u32 DAT_00957bc0;
-#pragma alias DAT_00957bc0_abs DAT_00957bc0
 extern u8 DAT_00957bc0_abs[];
-#pragma alias DAT_00957bc4_abs DAT_00957bc4
 extern u8 DAT_00957bc4_abs[];
-#pragma alias DAT_00957bc8_abs DAT_00957bc8
 extern u8 DAT_00957bc8_abs[];
-#pragma alias DAT_00957bcc_abs DAT_00957bcc
 extern u8 DAT_00957bcc_abs[];
 extern u16 DAT_00957bc4;
 extern u32 DAT_00957bc8;
@@ -2236,28 +1357,20 @@ extern u32 DAT_00957bd8;
 extern u32 DAT_00957bdc;
 extern u32 DAT_00957be0;
 extern u32 DAT_00960088;
-#pragma alias DAT_00960088_abs DAT_00960088
 extern u8 DAT_00960088_abs[];
 extern u32 DAT_0096008c;
-#pragma alias DAT_0096008c_abs DAT_0096008c
 extern u8 DAT_0096008c_abs[];
 extern MdlVoidFn DAT_00960090;
-#pragma alias DAT_00960090_abs DAT_00960090
 extern code DAT_00960090_abs[];
 extern MdlVoidFn DAT_00960094;
 extern MdlVoidFn DAT_009600a0;
-#pragma alias DAT_009600a0_abs DAT_009600a0
 extern code DAT_009600a0_abs[];
 extern MdlVoidFn DAT_009600a4;
-#pragma alias DAT_009600a4_abs DAT_009600a4
 extern code DAT_009600a4_abs[];
 extern u64 (*DAT_00960178)(...);
-#pragma alias DAT_00960178_u32 DAT_00960178
 extern u32 (*DAT_00960178_u32)(...);
-#pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern MdlVoidFn DAT_0096017c;
-#pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern void FUN_004c6be0(float *out,float *in,int matrix);
 extern void FUN_004c2f30(void *out,void *left,void *right);
@@ -2294,35 +1407,25 @@ extern u8 LAB_003458ac;
 extern void* PTR_FUN_0069bb14;
 extern void* PTR_FUN_0069bb18;
 extern void* PTR_FUN_0069bb1c;
-#pragma alias PTR_FUN_0069bb14_abs PTR_FUN_0069bb14
 extern u8 PTR_FUN_0069bb14_abs[];
-#pragma alias PTR_FUN_0069bb18_abs PTR_FUN_0069bb18
 extern u8 PTR_FUN_0069bb18_abs[];
-#pragma alias PTR_FUN_0069bb1c_abs PTR_FUN_0069bb1c
 extern u8 PTR_FUN_0069bb1c_abs[];
 extern void* PTR_LAB_0069bb10;
-#pragma alias PTR_LAB_0069bb10_abs PTR_LAB_0069bb10
 extern u8 PTR_LAB_0069bb10_abs[];
 extern void* PTR_LAB_0069be20;
-#pragma alias PTR_LAB_0069be20_abs PTR_LAB_0069be20
 extern u8 PTR_LAB_0069be20_abs[];
-#pragma alias PTR_LAB_0069be20_table PTR_LAB_0069be20
 extern MdlDispatch13 PTR_LAB_0069be20_table[];
 extern code PTR_LAB_0069be28[];
 extern code PTR_LAB_0069be2c[];
 extern void* PTR_LAB_0069be30;
-#pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
 extern u8 PTR_LAB_0069be30_abs[];
-#pragma alias PTR_LAB_0069be30_cb PTR_LAB_0069be30
 extern MdlVoidFnU32 PTR_LAB_0069be30_cb[];
 extern void* PTR_LAB_0069be34;
-#pragma alias PTR_LAB_0069be34_abs PTR_LAB_0069be34
 extern code PTR_LAB_0069be34_abs[];
 extern code PTR_LAB_0069be3c[];
 extern code PTR_LAB_0069be40[];
 extern void* PTR_LAB_0069be44;
 extern void* PTR_LAB_0069be48;
-#pragma alias PTR_LAB_0069be48_abs PTR_LAB_0069be48
 extern code PTR_LAB_0069be48_abs[];
 extern void* PTR_LAB_0069be4c;
 extern code PTR_LAB_0069be50[];
@@ -2339,7 +1442,6 @@ extern u32 uGpffff8198;
 extern u32 uGpffff81c0;
 extern f32 fGpffff81c0;
 extern u16 uGpffff9d38;
-#pragma alias gp0xffff9d38 uGpffff9d38
 extern u16 gp0xffff9d38;
 extern u32 uGpffff9d50;
 extern u32 uGpffffb850;
@@ -2348,6 +1450,2024 @@ extern u32 uGpffffb855;
 extern u32 uGpffffb856;
 extern u64 uGpffffbd48;
 extern u64 uGpffffbd68;
+extern u32 DAT_00957a20_abs[];
+extern u32 DAT_00957bd0_abs[];
+extern u32 DAT_00957bd4_abs[];
+extern u32 DAT_00957bd8_abs[];
+extern u32 DAT_00957bdc_abs[];
+extern u32 DAT_00957be0_abs[];
+typedef void (*MdlVoidFn)(...);
+#include "rw/rpworld.h"
+#include "rw/rphanim.h"
+#include "h_cdvd.h"
+f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
+static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
+typedef struct MdlShortVec8 {
+    short values[8];
+} MdlShortVec8;
+typedef struct MdlShortVec10 {
+    short values[10];
+} MdlShortVec10;
+void mdlStreamInit(Model* mdl);
+void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
+void mdlStreamRequestCdvd(Model* mdl, const char* path);
+void mdlStreamDestroy(Model* mdl);
+void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
+void mdl00319900(Model* mdl, u32 value);
+extern RtAnimAnimation DAT_009571d0;
+extern u8 DAT_009571d0_abs[];
+extern u8 DAT_0069abb8[];
+extern void* jtbl_00960178[];
+extern RwMatrix* FUN_004c2f30_y2(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
+extern RwV3d* FUN_004c6be0_y2(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
+extern s32 func_001a6c00(void* object, const char* name);
+extern char DAT_007cca08[1];
+extern char DAT_007cca08_abs[];
+extern const char DAT_0069b210[];
+extern char DAT_007cca18[1];
+extern char DAT_007cca10[1];
+void* FUN_00491cc0_y2(RpClump* clump);
+void FUN_00491ea0_y2(RpClump* clump);
+void* FUN_001a7570(RpClump* clump);
+void FUN_001a7710(void* object);
+void FUN_001ef340(Model* mdl);
+void FUN_004cb6e0(void* object, void (*callback)(void), void* data);
+void FUN_001a7170(RpClump* clump, RpHAnimHierarchy* hierarchy);
+RpHAnimHierarchy* FUN_00466480(RpHAnimHierarchy* hierarchy, u32 flags, u32 value, s32 index);
+void* func_0031d700(void* resource);
+void func_00320290(void* resource);
+void* func_0031e0b0(void* resource);
+void func_00313230(MdlAnimSlot* slot);
+void func_003132c0(u8* slot);
+void func_00313be0(MdlAnimEntryTable* table);
+void func_00313e60(void* data);
+void func_003143c0(u8* state, RpClump* clump);
+void func_00314d30(void* state);
+void func_00314730(u8* state, f32 frame);
+void func_00314730_ptrfirst(u8* state, f32 frame);
+void func_00314850(RpClump* clump, void* state, s16 id, u16 blendFrameCount, u16 flags);
+void func_003138e0(MdlAnim* anim, s16 id, u16 blendFrameCount, u16 flags);
+void* func_00313490(MdlAnimSlot* slot, void* hierarchy);
+u32 func_00318620(Model* mdl, u16 slotIdx, s16 id);
+void func_003196f0(Model* mdl, u16 wpnIdx);
+void func_003197c0(Model* mdl, RwMatrix* matrix);
+u32 func_0031b220(Model* mdl);
+u32 func_0031ebe0(void* data);
+void func_0031ded0(void* data);
+void func_0031ee80(void* dst, const void* src);
+void func_0031eee0(void* data);
+void func_0031eeb0(void* data);
+void func_0031dda0(void* data, const RwV3d* scale);
+void func_0031d9c0(void* data, Model* mdl);
+void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
+void FUN_004cb7f0_y2(RwFrame* frame, const RwMatrix* matrix, u32 flags);
+void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
+extern void func_004b74c0_typed(f32 frame, void* interpolator);
+extern void func_004b74c0_frame(f32 frame, u32 interpolator);
+extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
+extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
+extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
+extern f32 func_00320810(void* animation);
+void func_00316970(Model* mdl);
+u32 func_003115a0(void* param_1, u32* param_2);
+u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
+void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
+extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
+extern void func_004916d0_typed(u64 object, void* callback, void* data);
+extern void func_004916d0_callback(RpClump* object, void (*callback)(void), void* data);
+void func_0031f5c0(void* data);
+void FUN_0048a2a0(void);
+void FUN_004916d0_y2();
+u64 FUN_00316410(u64 param_1);
+extern u32 datGetUnit_y2(u32);
+extern u32 datCalcGetHeldWeaponType_y2(u32);
+void FUN_004c3760(void);
+typedef struct MdlAnimResourceEntry
+{
+    void* resource;
+    u8 flags;
+    u8 unk_05[3];
+} MdlAnimResourceEntry;
+typedef int (*code)(...);
+typedef u8 bool;
+extern s32 DAT_0096012c;
+extern u8 LAB_00464760;
+extern f32 DAT_009571c0;
+extern f32 DAT_009571c4;
+extern u8 DAT_009571c0_abs[];
+extern u8 DAT_009571c4_abs[];
+extern float fGpffff80d0;
+extern float fGpffff80f4;
+extern float fGpffff814c;
+extern float fGpffff8048;
+extern float fGpffff8118;
+extern float fGpffff8050;
+extern float fGpffff8054;
+extern float fGpffff8058;
+extern float fGpffff8150;
+extern float fGpffff8154;
+extern float fGpffff8158;
+extern s32 DAT_009571b8;
+extern float* DAT_009571bc;
+extern code DAT_009571b0;
+extern s32 DAT_009571b4;
+extern code DAT_009571b0_abs[];
+extern u8 DAT_009571b4_abs[];
+extern u8 DAT_009571b8_abs[];
+extern u8 DAT_009571bc_abs[];
+extern float fGpffff80e4;
+extern char gp0xffff9d10;
+extern u8 LAB_003131f8;
+extern f32 DAT_007cada4;
+extern MdlVoidFn DAT_0096017c_y2[];
+extern u8 LAB_0031379c;
+extern u8 LAB_00313790;
+extern u8 LAB_00313b48;
+extern u8 LAB_00314020;
+extern u8 LAB_00314060;
+extern u8 LAB_00314020_abs[];
+extern u8 LAB_00314060_abs[];
+extern u8 LAB_0031494c;
+extern u8 LAB_003140a0;
+extern u8 LAB_003140b0;
+extern u8 LAB_003140a0_abs[];
+extern u8 LAB_003140b0_abs[];
+extern f32 DAT_007cadd4;
+extern f32 DAT_007caf0c;
+extern f32 DAT_007caf10;
+extern f32 DAT_007cad38;
+extern f32 DAT_007cae08;
+extern f32 DAT_007cad40;
+extern f32 DAT_007cad44;
+extern f32 DAT_007caed0;
+extern u32 DAT_007cada0_y2;
+extern MdlVoidFn DAT_00960090_y2[];
+ extern u8 DAT_00960090_abs_y2[];
+extern MdlVoidFn DAT_00960094_y2[];
+extern u32 DAT_00960070;
+extern f32 DAT_007caf08_y2;
+extern u32 DAT_0069aee0;
+extern u32 DAT_0069aee2;
+extern u32 DAT_0069aee4;
+extern u8 LAB_0031b594;
+extern u8 gp0xffff9d20;
+extern u32 DAT_0069af00;
+extern u32 DAT_0069b190;
+extern u8 DAT_0069b190_abs[];
+extern u8 LAB_0031bfb8;
+extern u32 DAT_0069b1b0;
+extern u8 DAT_0069b1b0_abs[];
+extern u32 DAT_0069b0d0;
+extern u8 DAT_0069b0d0_abs[];
+extern u32 DAT_0069b1c0;
+extern u8 DAT_0069b1c0_abs[];
+extern u32 DAT_0069b1d0;
+extern u8 DAT_0069b1d0_abs[];
+extern u32 DAT_0069b1e0;
+extern u8 DAT_0069b1e0_abs[];
+extern void* PTR_PTR_0069ae80[];
+extern void* RpMaterialGetUserDataArray_y2(void* material,int data);
+extern char* RpUserDataArrayGetName_y2(void* userData);
+extern int RpUserDataArrayGetFormat_y2(void* userData);
+extern f32 func_0052e9e8(f32 value);
+extern f32 func_0052ea18_typed(f32 x, f32 y);
+u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+                  RtAnimInterpolator* param_4, f32 param_1);
+u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
+void func_00312c70(u8* param_1,int param_2);
+void func_00312d40(u8* param_1,u8* param_2);
+void func_00312e80(int param_1);
+u32 func_00312f90(u32 param_1);
+u32 func_00313090(u32 param_1,u32 param_2);
+void func_00313ca0(int *param_1,u32 param_2);
+int func_00313f40(int param_1,void* param_2);
+void* func_00313fe0(void* param_1,u32 *param_2);
+void* func_003140c0(void* param_1,u16 *param_2);
+void* func_00314170(void* param_1, void* param_2);
+u32 func_003142b0(void* param_1);
+void* func_00314510(void* param_1);
+u32 func_00314650(u32 param_1);
+void* func_00315010(void* object, void* data);
+u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
+void func_003151d0(Model* param_1);
+void func_00315c20(int param_1);
+Model* func_00315ed0(Model* param_1);
+u32 func_00315f50(void* param_1,u32 *param_2);
+void func_00316320(u64 param_1,u32* param_2,u16 param_3);
+u32 func_00316360(void* param_1,u32 *param_2);
+void func_003164f0(int param_1,int param_2);
+void* func_003165e0(void* param_1);
+Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
+void func_003176c0(Model* param_1);
+u32 func_003186e0(int param_1,u32 param_2,short param_3);
+void func_00318b10(u32 *param_1);
+u32 func_00318b90(u32 param_1);
+u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3);
+bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3);
+u32 func_00318fc0(int param_1);
+void func_00319230(int param_1,u16 param_2);
+void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5);
+void func_003195f0(int param_1,u32 param_2,Model* param_3);
+u32 func_00319970(Model* param_1);
+int func_0031aad0(Model* param_1);
+void func_0031b470(void);
+void func_0031b4a0(char* param_1,u16 param_2);
+u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
+void func_0031b820(u32 param_1,u32 param_2);
+extern u32 func_0031b680_u32ptr(int param_1,int param_2,u32 *param_3,u32 *param_4);
+u32 func_0031be80(u32 param_1);
+void func_0031c000(char* param_1,u32 param_2);
+u32 func_0031c1d0(int param_1);
+u32 func_0031c7e0(int param_1);
+u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
+void FUN_0031e4d0_y2(int *param_1,u16 param_2,u16 param_3);
+
+static inline Vec128 mdlVecZero(void) { Vec128 v; v._0_8_ = 0; v._8_8_ = 0; return v; }
+static inline Vec128 mdlVecKeep(Vec128 v) { return v; }
+static Vec128 mdlVecLoadN(const void *p, u32 n) {
+    Vec128 v; v._0_8_ = 0; v._8_8_ = 0; memcpy(&v, p, n); return v;
+}
+static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; return v; }
+static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
+{
+    u32 tmp;
+    u32 c1 = *pc1;
+    u32 c2 = *pc2;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "pextlb      %0, $zero, %1       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "pextlb      %0, $zero, %2       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(c1), "r"(c2), "f"(inv255)
+        : "memory");
+    return tmp;
+}
+static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          %0, 0(%1)           \n"
+        "pextlb      %0, $zero, %0       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "lw          %0, 0(%2)           \n"
+        "pextlb      %0, $zero, %0       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "nop                             \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(pc1), "r"(pc2), "f"(inv255)
+        : "memory");
+    return tmp;
+}
+static __inline u32 mdlVuScalePackedColor(u32 color, const u8 (*scale)[16], u32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "pextlb      %0, $zero, %1       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "nop                             \n"
+        "qmtc2       %2, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "lqc2        $vf11, 0(%3)         \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(color), "r"(inv255), "r"(scale)
+        : "memory");
+    return tmp;
+}
+static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0(%1)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %2, 0x138($sp)       \n"
+        "addiu       $v0, $sp, 0x138      \n"
+        "lw          $v0, 0($v0)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F          \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10           \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x134($sp)      \n"
+        ".set reorder"
+        : "=m"(tmp)
+        : "r"(pc1), "r"(c2), "f"(inv255)
+        : "memory");
+    return tmp;
+}
+static __inline void mdlVuModulateStacked90(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x8c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x88($sp)       \n"
+        "addiu       $v0, $sp, 0x88      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x84($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked80V0(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x7c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x78($sp)       \n"
+        "addiu       $v0, $sp, 0x78      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x74($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked80V1(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x7c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x78($sp)       \n"
+        "addiu       $v0, $sp, 0x78      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v1, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v1, 0x437F         \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v1, $vf10          \n"
+        "ppach       $v1, $zero, $v1     \n"
+        "ppacb       $v1, $zero, $v1     \n"
+        "sw          $v1, 0x74($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked50(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x48      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x44($sp)       \n"
+        "addiu       $v0, $sp, 0x44      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x40($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked50V1(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x48      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x44($sp)       \n"
+        "addiu       $v0, $sp, 0x44      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v1, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v1, 0x437F         \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v1, $vf10          \n"
+        "ppach       $v1, $zero, $v1     \n"
+        "ppacb       $v1, $zero, $v1     \n"
+        "sw          $v1, 0x40($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked70(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x6c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x68($sp)       \n"
+        "addiu       $v0, $sp, 0x68      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x64($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+static __inline void mdlVuModulateStacked40V1(u32 c2)
+{
+    f32 inv255;
+    __asm__ (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x3c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x38($sp)       \n"
+        "addiu       $v0, $sp, 0x38      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v1, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v1, 0x437F         \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v1, $vf10          \n"
+        "ppach       $v1, $zero, $v1     \n"
+        "ppacb       $v1, $zero, $v1     \n"
+        "sw          $v1, 0x34($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+
+// FUN_0031C000
+
+
+void func_0031c000(char* param_1,u32 param_2)
+
+
+
+{
+
+
+  u8 uVar3;
+
+  u32 lVar4;
+
+  u32 uVar5;
+
+
+
+  short auStack_20 [12];
+
+  int iStack_4;
+
+  int iStack_8;
+
+  u32 uVar9;
+
+  
+
+  uVar9 = param_2 & 0xffff;
+
+  iStack_4 = 0;
+
+  iStack_8 = 0;
+
+  lVar4 = func_0031b680(5,uVar9,&iStack_4,&iStack_8);
+
+  if (lVar4 == 1) {
+
+    if (iStack_4 >= 0xb) {
+
+      K_Assert((const char*)DAT_0069b1c0_abs,0x1a7);
+
+    }
+
+    if (iStack_4 == 0) {
+
+      sprintf(param_1, (const char*)DAT_0069b1d0_abs, &gp0xffff9d20);
+
+      return;
+
+    }
+
+    if ((iStack_4 == 1) && (iStack_8 == 2)) {
+
+      *(MdlShortVec8 *)((u8 *)auStack_20) =
+          *(MdlShortVec8 *)((u8 *)DAT_0069b1b0_abs);
+
+      uVar5 = datGetUnit_y2(1);
+
+      uVar3 = datCalcGetHeldWeaponType_y2(uVar5);
+
+      if (uVar3 >= 8) {
+
+        K_Assert((const char*)DAT_0069b1c0_abs,0x1bc);
+
+      }
+
+      lVar4 = datGetScenarioMode();
+
+      if (lVar4 != 0) {
+
+        uVar9 = 0x91;
+
+      }
+
+      else {
+
+        uVar9 = (u16)auStack_20[uVar3];
+
+      }
+
+      printf((const char*)DAT_0069b1e0_abs,uVar9);
+
+    }
+
+    else if ((iStack_4 == 9) && (lVar4 = datGetScenarioMode(), lVar4 != 0)) {
+
+      uVar9 = 0x3e6;
+
+    }
+
+    else {
+
+      uVar9 = *(u16 *)(DAT_0069b0d0_abs + iStack_4 * 2);
+
+    }
+
+  }
+
+  func_0031b4a0(param_1,uVar9);
+
+  return;
+
+}
+#pragma push
+#pragma opt_common_subs off
+// FUN_0031C1D0 NONMATCHING
+
+
+u32 func_0031c1d0(int param_1)
+
+
+
+{
+
+  u8 cVar1;
+
+  u16 uVar2;
+
+  int sVar3;
+
+
+  u32 uVar5;
+  int lVar6;
+
+  int iVar7;
+
+
+
+
+  int sVar8;
+
+  char auStack_100[256];
+
+  
+
+  iVar7 = (int)param_1;
+
+  if (*(u16 *)(iVar7 + 0xd4) != 1) return 0;
+
+    uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
+
+    sVar3 = datGetEquipmentId(*(u16 *)(iVar7 + 0xd6),uVar2);
+
+    switch(*(u16 *)(iVar7 + 0xd6)) {
+
+    case 1:
+
+      uVar5 = datGetUnit_y2(1);
+
+      cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
+
+      if ((cVar1 == '\x03') || (cVar1 == '\a')) {
+
+        lVar6 = (int)mdlSearch(10,sVar3,0);
+
+        if (lVar6 == 0) {
+
+          if (cVar1 == '\a') {
+
+            sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+          }
+
+          else {
+
+            sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar3);
+
+          }
+
+          func_003192a0(param_1,0,10,sVar3,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,0,10,sVar3,0);
+
+        }
+
+        sVar8 = sVar3 + 1000;
+
+        lVar6 = (int)mdlSearch(10,sVar8,0);
+
+        if (lVar6 == 0) {
+
+          if (cVar1 == '\a') {
+
+            sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+          }
+
+          else {
+
+            sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar3);
+
+          }
+
+          func_003192a0(param_1,1,10,sVar8,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,1,10,sVar8,0);
+
+        }
+
+      }
+      else {
+        func_00319490(param_1,0,10,sVar3,0);
+      }
+
+      break;
+
+    case 2:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 3:
+
+      lVar6 = (int)mdlSearch(7,sVar3,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      sVar8 = sVar3 + 1000;
+
+      lVar6 = (int)mdlSearch(7,sVar8,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,1,7,sVar8,0);
+
+      }
+
+      break;
+
+    case 4:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 5:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 7:
+
+      lVar6 = (int)mdlSearch(7,sVar3,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      sVar8 = sVar3 + 1000;
+
+      lVar6 = (int)mdlSearch(7,sVar8,0);
+
+      if (lVar6 == 0) {
+
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
+
+        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
+
+      }
+
+      else {
+
+        func_00319490(param_1,1,7,sVar8,0);
+
+      }
+
+      break;
+
+    case 8:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+      break;
+
+    case 9:
+
+      lVar6 = datGetScenarioMode();
+
+      if (lVar6 == 0) {
+
+        func_00319490(param_1,0,7,sVar3,0);
+
+      }
+
+      else {
+
+        lVar6 = (int)mdlSearch(7,sVar3,0);
+
+        if (lVar6 == 0) {
+
+          sprintf(auStack_100, (const char*)0x69b170, &gp0xffff9d20,sVar3);
+
+          func_003192a0(param_1,0,7,sVar3,auStack_100,0);
+
+        }
+
+        else {
+
+          func_00319490(param_1,0,7,sVar3,0);
+
+        }
+
+      }
+
+      break;
+
+    case 10:
+
+      func_00319490(param_1,0,7,sVar3,0);
+
+    }
+
+    mdl003196d0((Model*)param_1,0,500);
+
+    mdl003196d0((Model*)param_1,1,0x1f5);
+
+  return 1;
+}
+#pragma pop
+
+/* ---- Recovered range 0x31D600-0x357DC0 (Ghidra reference) ---- */
+
+
+#pragma alias ABS_f32 ABS
+#pragma alias SQRT_f32 SQRT
+#pragma alias RwMatrixRotate_f32_first RwMatrixRotate
+/* Ghidra's VU pseudo-registers are 128-bit values.  MWCC's vector extension is
+ * disabled for this TU, so keep the register shape as a plain union and use
+ * scalar compatibility shims for the generated intrinsics. */
+#define RpSkyRenderStateSet(n,p) ((void)RpSkyRenderStateSet((n),(void *)(u32)(p)))
+#define RwCameraBeginUpdate(p) RwCameraBeginUpdate((RwCamera *)(u32)(p))
+#define RwCameraEndUpdate(p) RwCameraEndUpdate((RwCamera *)(u32)(p))
+#define RwCameraSetProjectionType(p,t) RwCameraSetProjectionType((RwCamera *)(u32)(p),(t))
+#define RwV3dTransformPoint(o,i,m) RwV3dTransformPoint((RwV3d *)(o),(RwV3d *)(i),(RwMatrix *)(u32)(m))
+#define RwV3dNormalize(o,i) RwV3dNormalize((RwV3d *)(o),(RwV3d *)(i))
+#define RtQuatConvertFromMatrix(q,m) RtQuatConvertFromMatrix((RtQuat *)(q),(RwMatrix *)(m))
+#define RwMatrixScale(m,v,f) RwMatrixScale((RwMatrix *)(m),(RwV3d *)(v),(f))
+#define RwMatrixTranslate(m,v,f) RwMatrixTranslate((RwMatrix *)(m),(RwV3d *)(v),(f))
+#define RwMatrixMultiply(o,a,b) RwMatrixMultiply((RwMatrix *)(o),(RwMatrix *)(a),(RwMatrix *)(b))
+#define RwMatrixRotate(a,m,v,f) RwMatrixRotate_f32_first((a),(RwMatrix *)(m),(RwV3d *)(v),(f))
+/* Ghidra stack/global temporaries that are referenced before a matching local declaration. */
+#pragma alias DAT_0069c4a0_abs _DAT_0069c4a0
+
+/* Retail's VU0 colour-modulate kernel (COP2 macro mode + MMI pack).
+   Unpacks two packed RGBA u32s to floats, scales each by DAT_007cae4c
+   (1/255), multiplies, rescales by 255.0f, converts back and packs.
+   VU macro-mode and MMI parallel ops cannot be expressed in C. */
+
+/* The animation kernels spill both packed colours before entering the VU
+   sequence.  Keep the loads inside the asm so those addressable spills are
+   preserved instead of being folded back into integer registers. */
+
+
+/* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
+
+
+/* The 0x90-byte animation frames interleave their second colour spill with
+   the VU kernel.  Fixed VU/GPR registers are part of the retail macro-mode
+   sequence; the result is written to the caller's contiguous colour stack. */
+
+
+
+
+
+
+
+
+
+/* ==========================================================================
+ * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
+ *
+ * They expand to mdlVecZero() (a zeroed Vec128) or mdlVecKeep() (identity),
+ * so any function still using them compiles cleanly while emitting scalar
+ * GARBAGE instead of the COP2/MMI instructions retail executes. That garbage
+ * is why such functions sit 20-40% over their windows.
+ *
+ * To fix a site you must rewrite its DATAFLOW, not just swap the macro: a
+ * real lqc2/sqc2 targets a fixed VU register ($vf10 etc.), so the Ghidra
+ * form `auVarN = _lqc2(x);` has no C value to assign and every consumer of
+ * auVarN has to be traced out. Decode the retail window first with
+ *   python build/wip/W147_dis.py <VADDR_HEX> <SIZE>
+ * then emit the real instruction as __asm__ volatile with a "memory" clobber
+ * (see mdlVuModulate above, and src/Graphics/Effect/effMisc.c).
+ *
+ * DELETE THIS BLOCK once the last user is converted, so a stray _lqc2 can
+ * never silently reintroduce zeroes.
+ * ========================================================================== */
+#define _lqc2(x) mdlVecZero()
+#define _sqc2(x) mdlVecKeep(x)
+#define _qmtc2(x) mdlVecZero()
+#define _qmfc2(x) mdlVecZero()
+#define _vadd(a,b) mdlVecZero()
+#define _vsub(a,b) mdlVecZero()
+#define _vmul(a,b) mdlVecZero()
+#define _vmulbc(a,b) mdlVecZero()
+#define _vaddbc(a,b) mdlVecZero()
+#define _vsubbc(a,b) mdlVecZero()
+#define _vmulabc(a,b) mdlVecZero()
+#define _vmaddabc(a,b) mdlVecZero()
+#define _vmaddbc(a,b) mdlVecZero()
+#define _vftoi0(a) mdlVecZero()
+#define _vitof0(a) mdlVecZero()
+#define _vsqrt(a) mdlVecZero()
+#define _vrsqrt(a,b) mdlVecZero()
+#define _vmulq(a,b) mdlVecZero()
+#define _vmove(a) mdlVecKeep(a)
+#define _vopmula(a,b) mdlVecZero()
+#define _vopmsub(a,b) mdlVecZero()
+#define _vwaitq() ((u32)0)
+#define _pextlb(a,b) mdlVecZero()
+#define _pextlh(a,b) mdlVecZero()
+#define _ppach(a,b) mdlVecZero()
+#define _ppacb(a,b) mdlVecZero()
+#define _cfc2(a) ((u32)0)
+#define _pcpyld(a,b) mdlVecZero()
+#define _prot3w(a) mdlVecZero()
+#define _pexew(a) mdlVecZero()
+#define __int128 Vec128
+#ifndef CONCAT44
+#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
+#endif
+#ifndef CONCAT11
+#define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
+#endif
+#pragma alias FUN_0034fcf0_i FUN_0034fcf0
+#pragma alias FUN_0034fcd0_i FUN_0034fcd0
+#pragma alias FUN_0031e300_wide FUN_0031e300
+#pragma alias mdlFileSelectCacheSlot FUN_0031e310
+#pragma alias FUN_0031e310_u32 FUN_0031e310
+#pragma alias FUN_003210c0_ret FUN_003210c0
+#pragma alias FUN_003210c0_int FUN_003210c0
+#pragma alias FUN_00321140_passthru FUN_00321140
+#pragma alias FUN_00321f10_passthru FUN_00321f10
+#pragma alias FUN_00322530_u32 FUN_00322530
+#pragma alias FUN_003225d0_u32 FUN_003225d0
+#pragma alias FUN_00322d40_onearg FUN_00322d40
+#pragma alias FUN_00322dc0_u32 FUN_00322dc0
+#pragma alias FUN_003233a0_ptr FUN_003233a0
+#pragma alias FUN_003234f0_u32 FUN_003234f0
+#pragma alias FUN_00323640_u32 FUN_00323640
+ #pragma alias FUN_003237c0_i FUN_003237c0
+ #pragma alias FUN_003237c0_u32 FUN_003237c0
+ #pragma alias FUN_00323860_4arg FUN_00323860
+#pragma alias FUN_00323860_2arg FUN_00323860
+#pragma alias FUN_003238d0_4arg FUN_003238d0
+#pragma alias FUN_003238d0_ptr4 FUN_003238d0
+ #pragma alias FUN_00323920_out FUN_00323920
+ #pragma alias FUN_00323a30_out FUN_00323a30
+#pragma alias FUN_00323b90_i FUN_00323b90
+#pragma alias FUN_00323c20_u32first FUN_00323c20
+#pragma alias FUN_00323e10_ptr FUN_00323e10
+#pragma alias FUN_00323fb0_ptr FUN_00323fb0
+#pragma alias FUN_00324160_u32 FUN_00324160
+ #pragma alias FUN_00324310_i FUN_00324310
+#pragma alias FUN_003243d0_1arg FUN_003243d0
+#pragma alias FUN_003243d0_2arg FUN_003243d0
+#pragma alias FUN_003243f0_i FUN_003243f0
+#pragma alias FUN_00324510_i FUN_00324510
+#pragma alias FUN_003244c0_4arg FUN_003244c0
+ #pragma alias FUN_003245b0_passthru FUN_003245b0
+#pragma alias FUN_003245b0_wide FUN_003245b0
+#pragma alias FUN_00324a90_f32 FUN_00324a90
+#pragma alias FUN_00324bd0_passthru FUN_00324bd0
+#pragma alias FUN_00324bd0_u32 FUN_00324bd0
+#pragma alias FUN_00324bd0_u64 FUN_00324bd0
+#pragma alias FUN_003257e0_passthru FUN_003257e0
+#pragma alias FUN_00325920_u32 FUN_00325920
+#pragma alias FUN_00325b80_passthru FUN_00325b80
+#pragma alias FUN_003252a0_passthru FUN_003252a0
+#pragma alias FUN_00325920_passthru FUN_00325920
+#pragma alias FUN_00325e40_passthru FUN_00325e40
+/* FUN_003505d0 is also called with its first argument passed through. */
+#pragma alias FUN_003505d0_passthru FUN_003505d0
+#pragma alias FUN_00325c10_onearg FUN_00325c10
+#pragma alias FUN_00325d60_ptr FUN_00325d60
+#pragma alias FUN_00325e40_reordered FUN_00325e40
+#pragma alias FUN_00326cf0_2 FUN_00326cf0
+#pragma alias FUN_00326e50_u32 FUN_00326e50
+#pragma alias FUN_00326f60_u32 FUN_00326f60
+#pragma alias FUN_00327090_u32 FUN_00327090
+#pragma alias FUN_00326db0_u32 FUN_00326db0
+#pragma alias FUN_003275d0_evt FUN_003275d0
+#pragma alias FUN_003275d0_evt2 FUN_003275d0
+#pragma alias mdlFileDrawType7Billboards FUN_003282e0
+#pragma alias mdlFileEmitMaskedFrame1Packet FUN_003294d0
+#pragma alias mdlFileRestoreFrame1Packet FUN_00329550
+#pragma alias mdlFileEmitClamp1Packet FUN_003295c0
+#pragma alias mdlFileRestoreClamp1Packet FUN_00329630
+ #pragma alias FUN_003296a0_typed FUN_003296a0
+#pragma alias mdlFileBuildAxisRotation FUN_00329890
+#pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
+#pragma alias FUN_0032a120_2arg FUN_0032a120
+#pragma alias FUN_0032a770_u32 FUN_0032a770
+#pragma alias FUN_0032a890_u32 FUN_0032a890
+#pragma alias FUN_00332070_u32 FUN_00332070
+#pragma alias FUN_00332070_u32_ptr FUN_00332070
+#pragma alias FUN_003322d0_one FUN_003322d0
+#pragma alias FUN_00332310_one FUN_00332310
+#pragma alias FUN_003330e0_u32 FUN_003330e0
+#pragma alias FUN_003393d0_u32 FUN_003393d0
+#pragma alias FUN_00345cf0_u32 FUN_00345cf0
+#pragma alias FUN_00347170_ptr FUN_00347170
+#pragma alias FUN_00346530_alt FUN_00346530
+#pragma alias FUN_00349090_ptr FUN_00349090
+#pragma alias FUN_00349450_ptr FUN_00349450
+#pragma alias FUN_0034bbc0_u16 FUN_0034bbc0
+#pragma alias RpSkyRenderStateSet_u32 RpSkyRenderStateSet
+#pragma alias FUN_0034c670_u32 FUN_0034c670
+#pragma alias FUN_0034db30_i FUN_0034db30
+#pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
+#pragma alias FUN_00352c70_u32 FUN_00352c70
+#pragma alias FUN_00102100_mdl FUN_00102100
+#pragma alias FUN_0010a4e0_model FUN_0010a4e0
+#pragma alias FUN_00198580_u32 FUN_00198580
+#pragma alias FUN_001eda00_u32 FUN_001eda00
+#pragma alias FUN_00282d40_anim FUN_00282d40
+#pragma alias FUN_0029a1d0_u32 FUN_0029a1d0
+#pragma alias FUN_002a3e80_typed FUN_002a3e80
+#pragma alias FUN_00316910_typed FUN_00316910
+#pragma alias FUN_00316910_u32_typed FUN_00316910
+#pragma alias FUN_00316bd0_u32 FUN_00316bd0
+#pragma alias FUN_00316bd0_typed FUN_00316bd0
+#pragma alias FUN_00316e00_u32 FUN_00316e00
+#pragma alias FUN_003189f0_f32 FUN_003189f0
+#pragma alias FUN_003189f0_typed FUN_003189f0
+#pragma alias FUN_003189f0_reordered FUN_003189f0
+#pragma alias FUN_00318ad0_u32 FUN_00318ad0
+#pragma alias FUN_00318a70_u32 FUN_00318a70
+#pragma alias FUN_00318a90_u32 FUN_00318a90
+#pragma alias FUN_00318a30_u32 FUN_00318a30
+#pragma alias FUN_00357ea0_4arg FUN_00357ea0
+#pragma alias FUN_00357fd0_u32 FUN_00357fd0
+// Typed aliases preserve the floating-point ABI used by the particle update routine.
+#pragma alias FUN_00358160_f32 FUN_00358160
+#pragma alias FUN_00358380_f32 FUN_00358380
+#pragma alias FUN_00358410_void FUN_00358410
+#pragma alias FUN_00358340_vec FUN_00358340
+#pragma alias FUN_00358a30 FUN_00358a30
+#pragma alias FUN_00359380 FUN_00359380
+#pragma alias FUN_0035ed20_i FUN_0035ed20
+#pragma alias FUN_00474210_u32 FUN_00474210
+#pragma alias FUN_004916d0_typed FUN_004916d0
+#pragma alias FUN_004916d0_u32 FUN_004916d0
+#pragma alias FUN_00491880_u32 FUN_00491880
+#pragma alias FUN_00491cc0_u32 FUN_00491cc0
+#pragma alias FUN_00491ea0_u32 FUN_00491ea0
+#pragma alias FUN_004920a0_u32 FUN_004920a0
+#pragma alias FUN_00493710_u32 FUN_00493710
+#pragma alias FUN_004944b0_typed FUN_004944b0
+#pragma alias FUN_00494be0_u32 FUN_00494be0
+#pragma alias FUN_004ca090_u32 FUN_004ca090
+#pragma alias FUN_004caf10_u32 FUN_004caf10
+#pragma alias FUN_004cb2f0_u32 FUN_004cb2f0
+#pragma alias FUN_004cb7f0_typed FUN_004cb7f0
+#pragma alias FUN_004ce0f0_u32 FUN_004ce0f0
+#pragma alias FUN_004e3630_ptr FUN_004e3630
+#pragma alias FUN_00521250_mdl FUN_00521250
+#pragma alias FUN_0052e408_f32 FUN_0052e408
+#pragma alias FUN_0052e6d8_f32 FUN_0052e6d8
+#pragma alias FUN_0052e878_f32 FUN_0052e878
+#pragma alias FUN_0052ea00_f32 FUN_0052ea00
+#pragma alias FUN_0052e9e8_f32 FUN_0052e9e8
+#pragma alias FUN_0052ea18_f32 FUN_0052ea18
+#pragma alias FUN_0052ea18_2f FUN_0052ea18
+#pragma alias FUN_00530da0_f32_u32 FUN_00530da0
+#pragma alias FUN_0052e118_u32 FUN_0052e118
+#pragma alias FUN_005311c8_u32 FUN_005311c8
+#pragma alias FUN_00531230_u32 FUN_00531230
+#pragma alias FUN_005318a0_f32 FUN_005318a0
+#pragma alias DAT_0069ba18_abs DAT_0069ba18
+#pragma alias DAT_0069bd60_abs DAT_0069bd60
+#pragma alias DAT_0069bd50_abs DAT_0069bd50
+#pragma alias DAT_0069bd80_abs DAT_0069bd80
+#pragma alias DAT_0069bdc8_abs DAT_0069bdc8
+#pragma alias DAT_0069c730_abs DAT_0069c730
+#pragma alias DAT_0069bb90_abs DAT_0069bb90
+#pragma alias DAT_0069bb94_abs DAT_0069bb94
+#pragma alias DAT_0069bbd0_abs DAT_0069bbd0
+#pragma alias DAT_0069bbd4_abs DAT_0069bbd4
+#pragma alias DAT_0069bcb0_abs DAT_0069bcb0
+#pragma alias DAT_0069c4d0_f32 DAT_0069c4d0
+#pragma alias DAT_0069c4d4_f32 DAT_0069c4d4
+#pragma alias DAT_0069c4d8_f32 DAT_0069c4d8
+#pragma alias DAT_0069c4d0_abs DAT_0069c4d0
+#pragma alias DAT_0069c850_abs DAT_0069c850
+#pragma alias DAT_0069c854_abs DAT_0069c854
+#pragma alias DAT_0069c970_abs DAT_0069c970
+#pragma alias DAT_0069c974_abs DAT_0069c974
+#pragma alias DAT_0069cb80_abs DAT_0069cb80
+#pragma alias DAT_0069cba0_s8 DAT_0069cba0
+#pragma alias DAT_0069cba0_abs DAT_0069cba0
+#pragma alias DAT_0069cc60_s8 DAT_0069cc60
+#pragma alias DAT_0069cc60_abs DAT_0069cc60
+#pragma alias DAT_0069ccc0_abs DAT_0069ccc0
+#pragma alias DAT_0069ccd0_abs DAT_0069ccd0
+#pragma alias DAT_0069ccf0_abs DAT_0069ccf0
+#pragma alias DAT_007cad7c_f32 DAT_007cad7c
+#pragma alias DAT_007cadb0_f32 DAT_007cadb0
+#pragma alias DAT_007cadc4_f32 DAT_007cadc4
+#pragma alias DAT_007cadd0_f32 DAT_007cadd0
+#pragma alias DAT_007cade4_f32 DAT_007cade4
+#pragma alias DAT_007cae18_f32 DAT_007cae18
+#pragma alias DAT_007cae58_f32 DAT_007cae58
+#pragma alias DAT_007cae98_f32 DAT_007cae98
+#pragma alias DAT_007cada0_f32 DAT_007cada0
+#pragma alias DAT_007caea4_f32 DAT_007caea4
+#pragma alias DAT_007cae50_f32 DAT_007cae50
+#pragma alias DAT_00957220_abs DAT_00957220
+#pragma alias DAT_00957224_abs DAT_00957224
+#pragma alias DAT_00957226_abs DAT_00957226
+#pragma alias DAT_00957240_abs DAT_00957240
+#pragma alias DAT_00957240_f32 DAT_00957240
+#pragma alias DAT_00957244_f32 DAT_00957244
+#pragma alias DAT_00957248_f32 DAT_00957248
+#pragma alias DAT_0095724c_f32 DAT_0095724c
+#pragma alias DAT_00957250_f32 DAT_00957250
+#pragma alias DAT_00957254_f32 DAT_00957254
+#pragma alias DAT_00957258_f32 DAT_00957258
+#pragma alias DAT_0095725c_f32 DAT_0095725c
+#pragma alias DAT_00957250_abs DAT_00957250
+#pragma alias DAT_00957254_abs DAT_00957254
+#pragma alias DAT_00957258_abs DAT_00957258
+#pragma alias DAT_0095725c_abs DAT_0095725c
+#pragma alias DAT_00957260_abs DAT_00957260
+#pragma alias DAT_00957270_abs DAT_00957270
+#pragma alias DAT_009572b0_abs DAT_009572b0
+#pragma alias DAT_009572c0_abs DAT_009572c0
+#pragma alias DAT_009572d0_abs DAT_009572d0
+#pragma alias DAT_009572b0_f32 DAT_009572b0
+#pragma alias DAT_009572b4_f32 DAT_009572b4
+#pragma alias DAT_009572b8_f32 DAT_009572b8
+#pragma alias DAT_009572bc_f32 DAT_009572bc
+#pragma alias DAT_009572c0_f32 DAT_009572c0
+#pragma alias DAT_009572c4_f32 DAT_009572c4
+#pragma alias DAT_009572c8_f32 DAT_009572c8
+#pragma alias DAT_009572cc_f32 DAT_009572cc
+#pragma alias DAT_00957920_abs DAT_00957920
+#pragma alias DAT_00957820_abs DAT_00957820
+#pragma alias DAT_00957620_abs DAT_00957620
+#pragma alias DAT_00957520_abs DAT_00957520
+#pragma alias DAT_00957720_abs DAT_00957720
+#pragma alias DAT_00957420_abs DAT_00957420
+#pragma alias DAT_00957320_abs DAT_00957320
+#pragma alias DAT_009572e0_abs DAT_009572e0
+#pragma alias DAT_00957a90_abs DAT_00957a90
+#pragma alias DAT_00957b44_f32 DAT_00957b44
+#pragma alias DAT_00957b48_f32 DAT_00957b48
+#pragma alias DAT_00957ba8_abs DAT_00957ba8
+#pragma alias DAT_00957bac_abs DAT_00957bac
+#pragma alias DAT_00957bb0_abs DAT_00957bb0
+#pragma alias DAT_00957bc0_abs DAT_00957bc0
+#pragma alias DAT_00957bc4_abs DAT_00957bc4
+#pragma alias DAT_00957bc8_abs DAT_00957bc8
+#pragma alias DAT_00957bcc_abs DAT_00957bcc
+#pragma alias DAT_00960088_abs DAT_00960088
+#pragma alias DAT_0096008c_abs DAT_0096008c
+#pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_009600a0_abs DAT_009600a0
+#pragma alias DAT_009600a4_abs DAT_009600a4
+#pragma alias DAT_00960178_u32 DAT_00960178
+#pragma alias DAT_00960178_abs DAT_00960178
+#pragma alias DAT_0096017c_abs DAT_0096017c
+#pragma alias PTR_FUN_0069bb14_abs PTR_FUN_0069bb14
+#pragma alias PTR_FUN_0069bb18_abs PTR_FUN_0069bb18
+#pragma alias PTR_FUN_0069bb1c_abs PTR_FUN_0069bb1c
+#pragma alias PTR_LAB_0069bb10_abs PTR_LAB_0069bb10
+#pragma alias PTR_LAB_0069be20_abs PTR_LAB_0069be20
+#pragma alias PTR_LAB_0069be20_table PTR_LAB_0069be20
+#pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
+#pragma alias PTR_LAB_0069be30_cb PTR_LAB_0069be30
+#pragma alias PTR_LAB_0069be34_abs PTR_LAB_0069be34
+#pragma alias PTR_LAB_0069be48_abs PTR_LAB_0069be48
+#pragma alias gp0xffff9d38 uGpffff9d38
+
+// FUN_0031C7E0
+
+
+u32 func_0031c7e0(int param_1)
+
+
+
+{
+  int iVar1;
+  iVar1 = param_1;
+  FUN_0031e4d0_y2((int *)(iVar1 + 0x3f8),*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6));
+
+  return 1;
+
+}
+
+
+
+
+// FUN_0031C820 NONMATCHING
+
+
+u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
+
+
+
+{
+
+  u8 cVar1;
+
+  int uVar2;
+
+  int sVar3;
+
+  u32 lVar4;
+
+  u32 uVar5;
+
+  
+
+  switch(param_1) {
+
+
+  case 1:
+
+    uVar2 = datGetEquipmentIdx((short)param_2,1);
+
+    sVar3 = datGetEquipmentId((short)param_2,uVar2);
+
+    if (param_2 == 1) {
+
+      lVar4 = datGetScenarioMode();
+
+      if (lVar4 != 0) {
+        switch (sVar3) {
+        case 0x43d:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b230));
+          break;
+        case 0x466:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b250));
+          break;
+        case 0x464:
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b270));
+          break;
+        default:
+          lVar4 = datGetFlag(0x2f0);
+          if (lVar4 != 1) {
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b2b0));
+          }
+          else {
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b290));
+          }
+          break;
+        }
+      }
+      else {
+        uVar5 = datGetUnit_y2(1);
+        cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
+        if ((((cVar1 == '\0') && (lVar4 = datGetFlag(0x15), lVar4 == 0)) &&
+            (lVar4 = datGetFlag(0x1310), lVar4 == 0)) && (lVar4 = func_0031e420(1,1), lVar4 == 0))
+        {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b2d0));
+        }
+        else if (sVar3 == 0x40e) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b370), 1, cVar1);
+        }
+        else if (sVar3 == 0x45f) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b350), 1, cVar1);
+        }
+        else if (sVar3 == 0x453) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b330), 1, cVar1);
+        }
+        else if (sVar3 == 0x452) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b310), 1, cVar1);
+        }
+        else if (sVar3 == 0x439) {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b2f0), 1, cVar1);
+        }
+        else {
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b390), 1, cVar1);
+        }
+      }
+    }
+
+    else {
+
+      switch(param_2) {
+
+      default:
+
+        sprintf(param_3, MDL_PATH_FORMAT(0x69b930), DAT_007cca10);
+
+        break;
+
+      case 2:
+
+        if (sVar3 == 0x41e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b450), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x462) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b430), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45d) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b410), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x459) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x458) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43a) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b3b0), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b470), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b490), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 3:
+
+        if (sVar3 == 0x464) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x466) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43d) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b4b0), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b510), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b530), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 4:
+
+        if (sVar3 == 0x41e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5f0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x463) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b5b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45b) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b590), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45a) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b570), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43c) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b550), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b610), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b630), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 5:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6d0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x460) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b6b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x455) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b690), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x454) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b670), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x440) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b650), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b6f0), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b710), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 7:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b7b0), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x461) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b790), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x457) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b770), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x456) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b750), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43b) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b730), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7d0), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b7f0), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 8:
+
+        if (sVar3 == 0x40e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b870), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x465) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b850), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x45c) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b830), DAT_007cca10);
+
+        }
+
+        else if (sVar3 == 0x43e) {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b810), DAT_007cca10);
+
+        }
+
+        else {
+
+          lVar4 = datGetScenarioMode();
+
+          if (lVar4 != 0) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b890), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8b0), DAT_007cca10);
+
+          }
+
+        }
+
+        break;
+
+      case 9:
+
+        lVar4 = datGetScenarioMode();
+
+        if (lVar4 == 0) {
+
+          if (sVar3 != 0x40e) {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b910), DAT_007cca10);
+
+          }
+
+          else {
+
+            sprintf(param_3, MDL_PATH_FORMAT(0x69b8f0), DAT_007cca10);
+
+          }
+
+        }
+
+        else {
+
+          sprintf(param_3, MDL_PATH_FORMAT(0x69b8d0), DAT_007cca10);
+
+        }
+
+      }
+
+    }
+
+    break;
+
+  case 2:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b950), DAT_007cca10,param_2);
+
+    break;
+
+  case 3:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b970), DAT_007cca10,param_2);
+
+    break;
+
+  case 5:
+
+    func_0031c000(param_3,param_2);
+
+    break;
+
+  case 7:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9b0), DAT_007cca10,param_2);
+
+    break;
+
+  case 8:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9d0), DAT_007cca10,param_2);
+
+    break;
+
+  case 9:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b210), DAT_007cca10,(int)(u32)param_2 >> 8,param_2 & 0xff);
+
+    break;
+
+  case 10:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b990), DAT_007cca10,param_2);
+
+    break;
+
+  case 0xb:
+
+    sprintf(param_3, MDL_PATH_FORMAT(0x69b9f0), DAT_007cca10,param_2);
+
+    break;
+
+  default:
+
+    sprintf(param_3, DAT_007cca18, DAT_007cca10,
+
+                 *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
+
+    break;
+  }
+
+  return 1;
+
+}
+
+
+
+
+// FUN_0031d4f0
+u8 mdlFileIsTypePac(u16 type)
+{
+    switch (type)
+    {
+        case MODEL_TYPE_BTLCHAR: // fallthrough
+        case MODEL_TYPE_ENEMY:   return true;
+    }
+
+    return false;
+}
+
+
+
+
+
+// FUN_0031d530
+u32 mdlFileResolvePackPath(u16 type, u16 id, char* dst)
+{
+    char path[0x100];
+    char* name;
+    s32 len;
+    u32 isPac;
+
+    switch (type)
+    {
+        case MODEL_TYPE_BTLCHAR:
+        case MODEL_TYPE_ENEMY:
+            isPac = 1;
+            break;
+        default:
+            isPac = 0;
+            break;
+    }
+
+    if (isPac == 0)
+    {
+        func_0031c820(type, id, dst);
+        /* Retail preserves the resolver's v0 on this early exit. */
+        return;
+    }
+    func_0031c820(type, id, path);
+    len = strlen(path);
+    if (!func_0031e420(type, id))
+    {
+        path[len - 3] = 'p';
+        path[len - 2] = 'a';
+        path[len - 1] = 'c';
+    }
+    else
+    {
+        path[len - 4] = 'a';
+        path[len - 3] = '.';
+        path[len - 2] = 'p';
+        path[len - 1] = 'a';
+        path[len] = 'c';
+        path[len + 1] = '\0';
+        len++; 
+    }
+    while (path[len] != '\\' && path[len] != '/')
+    {
+        len--;
+    }
+    name = path + len;
+    sprintf(dst, D_0069BA08, MODEL_PATH, name);
+    return 1;
+}
+
+
+
 
 // FUN_0031D6B0
 
@@ -2418,7 +3538,6 @@ void FUN_0031d790(u32 *param_1)
 
 
 
-
 // FUN_0031D7D0
 
 
@@ -2433,9 +3552,6 @@ void FUN_0031d7d0(u32 *param_1)
   return;
 
 }
-
-
-
 
 // FUN_0031D7E0 NONMATCHING
 
@@ -2555,9 +3671,6 @@ u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
   return uVar1;
 
 }
-
-
-
 
 // FUN_0031D9C0 NONMATCHING
 
@@ -2681,9 +3794,6 @@ void FUN_0031d9c0(int *param_1,u32 *param_2)
   return;
 }
 
-
-
-
 // FUN_0031DC80
 
 
@@ -2725,9 +3835,6 @@ void FUN_0031dce0(u32 *param_1)
 
 }
 
-
-
-
 // FUN_0031DD40
 
 
@@ -2741,6 +3848,9 @@ void FUN_0031dd40(int *param_1,u32 *param_2)
         }
     }
 }
+
+
+
 
 // FUN_0031DDA0
 
@@ -2779,6 +3889,9 @@ void FUN_0031de30(u32 *param_1)
     }
     *param_1 = 0;
 }
+
+
+
 
 // FUN_0031DED0
 
@@ -2864,6 +3977,9 @@ u32 FUN_0031dff0(u32 param_1,u32 param_2)
     return wrapper;
 }
 
+
+
+
 // FUN_0031E0B0
 
 
@@ -2910,6 +4026,9 @@ void FUN_0031e130(int *param_1)
     }
     ((void (*)(...))DAT_0096017c_abs[0])(param_1);
 }
+
+
+
 
 // FUN_0031E1B0
 
@@ -4051,9 +5170,6 @@ void FUN_0031ef80(int *param_1,short param_2,short param_3)
 
 }
 
-
-
-
 // FUN_0031F5C0
 void FUN_0031f5c0(int *param_1)
 {
@@ -4212,6 +5328,9 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
   return (u8 *)&DAT_007ce538;
 }
 
+
+
+
 // FUN_0031F870 NONMATCHING
 
 
@@ -4285,10 +5404,6 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
       ((1.0f - (float)*(u8 *)((u8 *)param_4 + 3) / 255.0f) -
        *(float *)&DAT_007ce534) * param_3 + *(float *)&DAT_007ce534 + 0.0f;
 }
-
-
-
-
 // FUN_0031FAF0 NONMATCHING
 void FUN_0031faf0(f32 *param_1,u32 param_2)
 {
@@ -4308,9 +5423,6 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
 
   return;
 }
-
-
-
 
 // FUN_0031FBD0 NONMATCHING
 
@@ -4393,9 +5505,6 @@ static u32 * FUN_0031fbd0(float param_1,int *param_2)
 
 }
 
-
-
-
 // FUN_0031FD00 NONMATCHING
 
 
@@ -4446,6 +5555,10 @@ void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend)
   *(f32 *)(result + 3) =
       blend * (blue - *(f32 *)(result + 3)) + *(f32 *)(result + 3) + 0.0f;
 }
+
+
+
+
 // FUN_0031ff40
 void FUN_0031ff40(float *param_1, u8 *param_2)
 {
@@ -4457,12 +5570,20 @@ void FUN_0031ff40(float *param_1, u8 *param_2)
   puVar1[2] = (u8)(param_1[3] * 255.0f);
 }
 
+
+
+
 // FUN_00320060
 u32 * FUN_00320060(void)
 {
   return (u32 *)DAT_00957260_abs;
 }
 
+
+
+
+// Confirmed b210 saved-register colouring floor (W211): ours/retail s1/s0 at
+// +56/+60, s0/s1 at +88/+92/+124/+156/+172, and v1/a0 at +104/+108.
 // FUN_00320070
 void FUN_00320070(void)
 {
@@ -4635,8 +5756,7 @@ void FUN_00320290(int param_1)
 
 
 
-// Confirmed b210 saved-register colouring floor (W211): ours/retail s1/s0 at
-// +56/+60, s0/s1 at +88/+92/+124/+156/+172, and v1/a0 at +104/+108.
+/* Removing this worsens FUN_00320810 (nd8 -> nd19) - measured W161. */
 // FUN_00320380 NONMATCHING
 
 
@@ -4683,10 +5803,6 @@ void FUN_00320380(float param_1,int *param_2)
   return;
 
 }
-
-
-
-
 // FUN_003204A0 NONMATCHING
 
 
@@ -4898,7 +6014,6 @@ void FUN_00320770(int *param_1)
 
 
 
-/* Removing this worsens FUN_00320810 (nd8 -> nd19) - measured W161. */
 // FUN_00320810 NONMATCHING
 #pragma optimization_level 1
 
@@ -4931,6 +6046,10 @@ void FUN_00320810(int *param_1)
   return;
 
 }
+
+
+
+
 #pragma optimization_level 2
 
 
@@ -5165,6 +6284,8 @@ LAB_003209a8:
 
 
 
+
+
 // FUN_00320BA0
 
 
@@ -5248,9 +6369,6 @@ done:
 
 }
 
-
-
-
 // FUN_00320DA0
 
 
@@ -5320,8 +6438,6 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
 
 
 
-
-
 // FUN_00320f70
 u16 FUN_00320f70(u64 param_1,u32 param_2)
 {
@@ -5339,6 +6455,7 @@ u16 FUN_00320f70(u64 param_1,u32 param_2)
 
 
 
+#pragma alias DAT_00957a20_abs DAT_00957a20
 // FUN_00320FB0
 
 
@@ -5352,6 +6469,9 @@ u32 FUN_00320fb0(u16 param_1)
     *(u16*)(block + 8) = 1;
     *(u16*)(block + 6) = param_1;
 }
+
+
+
 
 // FUN_00321010
 
@@ -5372,81 +6492,6 @@ void FUN_00321010(int param_1)
 
   return;
 
-}
-
-
-
-
-// FUN_00321050
-
-
-u32 FUN_00321050(int param_1)
-
-
-
-{
-
-  *(u16 *)(param_1 + 8) = *(u16 *)(param_1 + 8) + 1;
-
-  return param_1;
-
-}
-
-
-
-
-// FUN_00321070
-
-
-void FUN_00321070(int *param_1,u32 param_2)
-
-
-
-{
-
-  *(u32 *)(*param_1 + (u32)*(u16 *)(param_1 + 1) * 4) = param_2;
-
-  *(short *)(param_1 + 1) = (u16)param_1[1] + 1;
-
-  return;
-
-}
-
-
-
-
-#pragma alias DAT_00957a20_abs DAT_00957a20
-extern u32 DAT_00957a20_abs[];
-// FUN_003210A0
-
-
-u32 FUN_003210a0(u32 param_1)
-
-
-
-{
-
-  return DAT_00957a20_abs[param_1 & 0xffff];
-
-}
-
-
-
-
-// FUN_003210C0
-void FUN_003210c0(void)
-{
-    u32 value;
-    u64 context;
-    s32 object;
-
-    context = FUN_0010e880();
-    object = FUN_004d0e40_u32(context);
-    value = *(u32*)(object + 0x50);
-    value = (value & 0xffffff00) | 2;
-    *(u32*)(object + 0x50) = value;
-    value = (value & 0xffff00ff) | 0x1100;
-    *(u32*)(object + 0x50) = value;
 }
 
 
@@ -7732,11 +8777,6 @@ void FUN_003210c0(void)
 
 
 
-extern u32 DAT_00957bd0_abs[];
-extern u32 DAT_00957bd4_abs[];
-extern u32 DAT_00957bd8_abs[];
-extern u32 DAT_00957bdc_abs[];
-extern u32 DAT_00957be0_abs[];
 
 
 
@@ -8142,113 +9182,27 @@ extern u32 DAT_00957be0_abs[];
 
 
 
-typedef void (*MdlVoidFn)(...);
-#include "rw/rpworld.h"
-#include "rw/rphanim.h"
-#include "h_cdvd.h"
 
-f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
 
-static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
-typedef struct MdlShortVec8 {
-    short values[8];
-} MdlShortVec8;
-typedef struct MdlShortVec10 {
-    short values[10];
-} MdlShortVec10;
 
-void mdlStreamInit(Model* mdl);
-void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
-void mdlStreamRequestCdvd(Model* mdl, const char* path);
-void mdlStreamDestroy(Model* mdl);
-void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
-void mdl00319900(Model* mdl, u32 value);
-extern RtAnimAnimation DAT_009571d0;
 #pragma alias DAT_009571d0_abs DAT_009571d0
-extern u8 DAT_009571d0_abs[];
-extern u8 DAT_0069abb8[];
-extern void* jtbl_00960178[];
 
-extern RwMatrix* FUN_004c2f30_y2(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
-extern RwV3d* FUN_004c6be0_y2(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
-extern s32 func_001a6c00(void* object, const char* name);
-extern char DAT_007cca08[1];
 #pragma alias DAT_007cca08_abs DAT_007cca08
-extern char DAT_007cca08_abs[];
-extern const char DAT_0069b210[];
-extern char DAT_007cca18[1];
-extern char DAT_007cca10[1];
-#define MDL_PATH_FORMAT(addr) (DAT_0069b210 + ((addr) - 0x69b210))
-void* FUN_00491cc0_y2(RpClump* clump);
-void FUN_00491ea0_y2(RpClump* clump);
-void* FUN_001a7570(RpClump* clump);
-void FUN_001a7710(void* object);
-void FUN_001ef340(Model* mdl);
-void FUN_004cb6e0(void* object, void (*callback)(void), void* data);
-void FUN_001a7170(RpClump* clump, RpHAnimHierarchy* hierarchy);
-RpHAnimHierarchy* FUN_00466480(RpHAnimHierarchy* hierarchy, u32 flags, u32 value, s32 index);
-void* func_0031d700(void* resource);
-void func_00320290(void* resource);
-void* func_0031e0b0(void* resource);
-void func_00313230(MdlAnimSlot* slot);
-void func_003132c0(u8* slot);
-void func_00313be0(MdlAnimEntryTable* table);
-void func_00313e60(void* data);
-void func_003143c0(u8* state, RpClump* clump);
-void func_00314d30(void* state);
-void func_00314730(u8* state, f32 frame);
 #pragma alias func_00314730_ptrfirst func_00314730
-void func_00314730_ptrfirst(u8* state, f32 frame);
-void func_00314850(RpClump* clump, void* state, s16 id, u16 blendFrameCount, u16 flags);
-void func_003138e0(MdlAnim* anim, s16 id, u16 blendFrameCount, u16 flags);
-void* func_00313490(MdlAnimSlot* slot, void* hierarchy);
-u32 func_00318620(Model* mdl, u16 slotIdx, s16 id);
-void func_003196f0(Model* mdl, u16 wpnIdx);
-void func_003197c0(Model* mdl, RwMatrix* matrix);
-u32 func_0031b220(Model* mdl);
-u32 func_0031ebe0(void* data);
-void func_0031ded0(void* data);
-void func_0031ee80(void* dst, const void* src);
-void func_0031eee0(void* data);
-void func_0031eeb0(void* data);
-void func_0031dda0(void* data, const RwV3d* scale);
-void func_0031d9c0(void* data, Model* mdl);
-void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
-void FUN_004cb7f0_y2(RwFrame* frame, const RwMatrix* matrix, u32 flags);
-void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
 #pragma alias func_004b74c0_typed func_004b74c0
-extern void func_004b74c0_typed(f32 frame, void* interpolator);
 #pragma alias func_004b74c0_frame FUN_004b74c0
-extern void func_004b74c0_frame(f32 frame, u32 interpolator);
 #pragma alias func_004b74c0_ptrfirst FUN_004b74c0
-extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
 #pragma alias func_004b7240_frame FUN_004b7240
-extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640_y2
-extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
-extern f32 func_00320810(void* animation);
-void func_00316970(Model* mdl);
-u32 func_003115a0(void* param_1, u32* param_2);
-u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
-void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
-extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
 #pragma alias func_004916d0_typed func_004916d0
-extern void func_004916d0_typed(u64 object, void* callback, void* data);
 #pragma alias func_004916d0_callback func_004916d0
-extern void func_004916d0_callback(RpClump* object, void (*callback)(void), void* data);
-void func_0031f5c0(void* data);
 
 /* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
 
-void FUN_0048a2a0(void);
 
 
-void FUN_004916d0_y2();
-u64 FUN_00316410(u64 param_1);
 #pragma alias datGetUnit_y2 datGetUnit
-extern u32 datGetUnit_y2(u32);
 #pragma alias datCalcGetHeldWeaponType_y2 datCalcGetHeldWeaponType
-extern u32 datCalcGetHeldWeaponType_y2(u32);
 
 
 
@@ -8272,7 +9226,6 @@ extern u32 datCalcGetHeldWeaponType_y2(u32);
 
 
 
-void FUN_004c3760(void);
 
 
 
@@ -8305,170 +9258,31 @@ void FUN_004c3760(void);
 
 
 /* ---- Recovered range 0x311480-0x31D4F0 (Ghidra reference, pending match) ---- */
-typedef struct MdlAnimResourceEntry
-{
-    void* resource;
-    u8 flags;
-    u8 unk_05[3];
-} MdlAnimResourceEntry;
 
-typedef int (*code)(...);
-typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 #ifndef CONCAT11
 #define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
 #endif
-extern s32 DAT_0096012c;
-extern u8 LAB_00464760;
-extern f32 DAT_009571c0;
-extern f32 DAT_009571c4;
 #pragma alias DAT_009571c0_abs DAT_009571c0
-extern u8 DAT_009571c0_abs[];
 #pragma alias DAT_009571c4_abs DAT_009571c4
-extern u8 DAT_009571c4_abs[];
-extern float fGpffff80d0;
-extern float fGpffff80f4;
-extern float fGpffff814c;
-extern float fGpffff8048;
-extern float fGpffff8118;
-extern float fGpffff8050;
-extern float fGpffff8054;
-extern float fGpffff8058;
-extern float fGpffff8150;
-extern float fGpffff8154;
-extern float fGpffff8158;
-extern s32 DAT_009571b8;
-extern float* DAT_009571bc;
-extern code DAT_009571b0;
-extern s32 DAT_009571b4;
 #pragma alias DAT_009571b0_abs DAT_009571b0
-extern code DAT_009571b0_abs[];
 #pragma alias DAT_009571b4_abs DAT_009571b4
-extern u8 DAT_009571b4_abs[];
 #pragma alias DAT_009571b8_abs DAT_009571b8
-extern u8 DAT_009571b8_abs[];
 #pragma alias DAT_009571bc_abs DAT_009571bc
-extern u8 DAT_009571bc_abs[];
-extern float fGpffff80e4;
-extern char gp0xffff9d10;
-extern u8 LAB_003131f8;
-extern f32 DAT_007cada4;
-extern MdlVoidFn DAT_0096017c_y2[];
-extern u8 LAB_0031379c;
-extern u8 LAB_00313790;
-extern u8 LAB_00313b48;
-extern u8 LAB_00314020;
-extern u8 LAB_00314060;
 #pragma alias LAB_00314020_abs LAB_00314020
-extern u8 LAB_00314020_abs[];
 #pragma alias LAB_00314060_abs LAB_00314060
-extern u8 LAB_00314060_abs[];
-extern u8 LAB_0031494c;
-extern u8 LAB_003140a0;
-extern u8 LAB_003140b0;
 #pragma alias LAB_003140a0_abs LAB_003140a0
-extern u8 LAB_003140a0_abs[];
 #pragma alias LAB_003140b0_abs LAB_003140b0
-extern u8 LAB_003140b0_abs[];
-extern f32 DAT_007cadd4;
-extern f32 DAT_007caf0c;
-extern f32 DAT_007caf10;
-extern f32 DAT_007cad38;
-extern f32 DAT_007cae08;
-extern f32 DAT_007cad40;
-extern f32 DAT_007cad44;
-extern f32 DAT_007caed0;
-extern u32 DAT_007cada0_y2;
-extern MdlVoidFn DAT_00960090_y2[];
- extern u8 DAT_00960090_abs_y2[];
-extern MdlVoidFn DAT_00960094_y2[];
-extern u32 DAT_00960070;
-extern f32 DAT_007caf08_y2;
-extern u32 DAT_0069aee0;
-extern u32 DAT_0069aee2;
-extern u32 DAT_0069aee4;
-extern u8 LAB_0031b594;
-extern u8 gp0xffff9d20;
-extern u32 DAT_0069af00;
-extern u32 DAT_0069b190;
 #pragma alias DAT_0069b190_abs DAT_0069b190
-extern u8 DAT_0069b190_abs[];
-extern u8 LAB_0031bfb8;
-extern u32 DAT_0069b1b0;
 #pragma alias DAT_0069b1b0_abs DAT_0069b1b0
-extern u8 DAT_0069b1b0_abs[];
-extern u32 DAT_0069b0d0;
 #pragma alias DAT_0069b0d0_abs DAT_0069b0d0
-extern u8 DAT_0069b0d0_abs[];
-extern u32 DAT_0069b1c0;
 #pragma alias DAT_0069b1c0_abs DAT_0069b1c0
-extern u8 DAT_0069b1c0_abs[];
-extern u32 DAT_0069b1d0;
 #pragma alias DAT_0069b1d0_abs DAT_0069b1d0
-extern u8 DAT_0069b1d0_abs[];
-extern u32 DAT_0069b1e0;
 #pragma alias DAT_0069b1e0_abs DAT_0069b1e0
-extern u8 DAT_0069b1e0_abs[];
-extern void* PTR_PTR_0069ae80[];
-extern void* RpMaterialGetUserDataArray_y2(void* material,int data);
-extern char* RpUserDataArrayGetName_y2(void* userData);
-extern int RpUserDataArrayGetFormat_y2(void* userData);
-extern f32 func_0052e9e8(f32 value);
 #pragma alias func_0052ea18_typed func_0052ea18
-extern f32 func_0052ea18_typed(f32 x, f32 y);
-u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
-                  RtAnimInterpolator* param_4, f32 param_1);
-u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
-void func_00312c70(u8* param_1,int param_2);
-void func_00312d40(u8* param_1,u8* param_2);
-void func_00312e80(int param_1);
-u32 func_00312f90(u32 param_1);
-u32 func_00313090(u32 param_1,u32 param_2);
-void func_00313ca0(int *param_1,u32 param_2);
-int func_00313f40(int param_1,void* param_2);
-void* func_00313fe0(void* param_1,u32 *param_2);
-void* func_003140c0(void* param_1,u16 *param_2);
-void* func_00314170(void* param_1, void* param_2);
-u32 func_003142b0(void* param_1);
-void* func_00314510(void* param_1);
-u32 func_00314650(u32 param_1);
-void* func_00315010(void* object, void* data);
-u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
-void func_003151d0(Model* param_1);
-void func_00315c20(int param_1);
-Model* func_00315ed0(Model* param_1);
-u32 func_00315f50(void* param_1,u32 *param_2);
-void func_00316320(u64 param_1,u32* param_2,u16 param_3);
-u32 func_00316360(void* param_1,u32 *param_2);
-void func_003164f0(int param_1,int param_2);
-void* func_003165e0(void* param_1);
-Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
-void func_003176c0(Model* param_1);
-u32 func_003186e0(int param_1,u32 param_2,short param_3);
-void func_00318b10(u32 *param_1);
-u32 func_00318b90(u32 param_1);
-u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3);
-bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3);
-u32 func_00318fc0(int param_1);
-void func_00319230(int param_1,u16 param_2);
-void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5);
-void func_003195f0(int param_1,u32 param_2,Model* param_3);
-u32 func_00319970(Model* param_1);
-int func_0031aad0(Model* param_1);
-void func_0031b470(void);
-void func_0031b4a0(char* param_1,u16 param_2);
-u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
-void func_0031b820(u32 param_1,u32 param_2);
 #pragma alias func_0031b680_u32ptr func_0031b680
-extern u32 func_0031b680_u32ptr(int param_1,int param_2,u32 *param_3,u32 *param_4);
-u32 func_0031be80(u32 param_1);
-void func_0031c000(char* param_1,u32 param_2);
-u32 func_0031c1d0(int param_1);
-u32 func_0031c7e0(int param_1);
-u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
-void FUN_0031e4d0_y2(int *param_1,u16 param_2,u16 param_3);
 
 
 
@@ -8824,106 +9638,37 @@ void FUN_0031e4d0_y2(int *param_1,u16 param_2,u16 param_3);
 
 
 
-// FUN_0031C000
+// FUN_00321050
 
 
-void func_0031c000(char* param_1,u32 param_2)
+u32 FUN_00321050(int param_1)
 
 
 
 {
 
+  *(u16 *)(param_1 + 8) = *(u16 *)(param_1 + 8) + 1;
 
-  u8 uVar3;
+  return param_1;
 
-  u32 lVar4;
-
-  u32 uVar5;
-
+}
 
 
-  short auStack_20 [12];
 
-  int iStack_4;
 
-  int iStack_8;
+/* W323 measured func_0031c1d0 opt_common_subs off: nd1055 -> nd889; object 1544/1552. */
+// FUN_00321070
 
-  u32 uVar9;
 
-  
+void FUN_00321070(int *param_1,u32 param_2)
 
-  uVar9 = param_2 & 0xffff;
 
-  iStack_4 = 0;
 
-  iStack_8 = 0;
+{
 
-  lVar4 = func_0031b680(5,uVar9,&iStack_4,&iStack_8);
+  *(u32 *)(*param_1 + (u32)*(u16 *)(param_1 + 1) * 4) = param_2;
 
-  if (lVar4 == 1) {
-
-    if (iStack_4 >= 0xb) {
-
-      K_Assert((const char*)DAT_0069b1c0_abs,0x1a7);
-
-    }
-
-    if (iStack_4 == 0) {
-
-      sprintf(param_1, (const char*)DAT_0069b1d0_abs, &gp0xffff9d20);
-
-      return;
-
-    }
-
-    if ((iStack_4 == 1) && (iStack_8 == 2)) {
-
-      *(MdlShortVec8 *)((u8 *)auStack_20) =
-          *(MdlShortVec8 *)((u8 *)DAT_0069b1b0_abs);
-
-      uVar5 = datGetUnit_y2(1);
-
-      uVar3 = datCalcGetHeldWeaponType_y2(uVar5);
-
-      if (uVar3 >= 8) {
-
-        K_Assert((const char*)DAT_0069b1c0_abs,0x1bc);
-
-      }
-
-      lVar4 = datGetScenarioMode();
-
-      if (lVar4 != 0) {
-
-        uVar9 = 0x91;
-
-      }
-
-      else {
-
-        uVar9 = (u16)auStack_20[uVar3];
-
-      }
-
-      printf((const char*)DAT_0069b1e0_abs,uVar9);
-
-    }
-
-    else if ((iStack_4 == 9) && (lVar4 = datGetScenarioMode(), lVar4 != 0)) {
-
-      uVar9 = 0x3e6;
-
-    }
-
-    else {
-
-      uVar9 = *(u16 *)(DAT_0069b0d0_abs + iStack_4 * 2);
-
-    }
-
-  }
-
-  func_0031b4a0(param_1,uVar9);
+  *(short *)(param_1 + 1) = (u16)param_1[1] + 1;
 
   return;
 
@@ -8932,776 +9677,34 @@ void func_0031c000(char* param_1,u32 param_2)
 
 
 
-/* W323 measured func_0031c1d0 opt_common_subs off: nd1055 -> nd889; object 1544/1552. */
-#pragma push
-#pragma opt_common_subs off
-// FUN_0031C1D0 NONMATCHING
+// FUN_003210A0
 
 
-u32 func_0031c1d0(int param_1)
+u32 FUN_003210a0(u32 param_1)
 
 
 
 {
 
-  u8 cVar1;
-
-  u16 uVar2;
-
-  int sVar3;
-
-
-  u32 uVar5;
-  int lVar6;
-
-  int iVar7;
-
-
-
-
-  int sVar8;
-
-  char auStack_100[256];
-
-  
-
-  iVar7 = (int)param_1;
-
-  if (*(u16 *)(iVar7 + 0xd4) != 1) return 0;
-
-    uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
-
-    sVar3 = datGetEquipmentId(*(u16 *)(iVar7 + 0xd6),uVar2);
-
-    switch(*(u16 *)(iVar7 + 0xd6)) {
-
-    case 1:
-
-      uVar5 = datGetUnit_y2(1);
-
-      cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
-
-      if ((cVar1 == '\x03') || (cVar1 == '\a')) {
-
-        lVar6 = (int)mdlSearch(10,sVar3,0);
-
-        if (lVar6 == 0) {
-
-          if (cVar1 == '\a') {
-
-            sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
-
-          }
-
-          else {
-
-            sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar3);
-
-          }
-
-          func_003192a0(param_1,0,10,sVar3,auStack_100,0);
-
-        }
-
-        else {
-
-          func_00319490(param_1,0,10,sVar3,0);
-
-        }
-
-        sVar8 = sVar3 + 1000;
-
-        lVar6 = (int)mdlSearch(10,sVar8,0);
-
-        if (lVar6 == 0) {
-
-          if (cVar1 == '\a') {
-
-            sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
-
-          }
-
-          else {
-
-            sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar3);
-
-          }
-
-          func_003192a0(param_1,1,10,sVar8,auStack_100,0);
-
-        }
-
-        else {
-
-          func_00319490(param_1,1,10,sVar8,0);
-
-        }
-
-      }
-      else {
-        func_00319490(param_1,0,10,sVar3,0);
-      }
-
-      break;
-
-    case 2:
-
-      func_00319490(param_1,0,7,sVar3,0);
-
-      break;
-
-    case 3:
-
-      lVar6 = (int)mdlSearch(7,sVar3,0);
-
-      if (lVar6 == 0) {
-
-        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
-
-        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
-
-      }
-
-      else {
-
-        func_00319490(param_1,0,7,sVar3,0);
-
-      }
-
-      sVar8 = sVar3 + 1000;
-
-      lVar6 = (int)mdlSearch(7,sVar8,0);
-
-      if (lVar6 == 0) {
-
-        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
-
-        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
-
-      }
-
-      else {
-
-        func_00319490(param_1,1,7,sVar8,0);
-
-      }
-
-      break;
-
-    case 4:
-
-      func_00319490(param_1,0,7,sVar3,0);
-
-      break;
-
-    case 5:
-
-      func_00319490(param_1,0,7,sVar3,0);
-
-      break;
-
-    case 7:
-
-      lVar6 = (int)mdlSearch(7,sVar3,0);
-
-      if (lVar6 == 0) {
-
-        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
-
-        func_003192a0(param_1,0,7,sVar3,auStack_100,0);
-
-      }
-
-      else {
-
-        func_00319490(param_1,0,7,sVar3,0);
-
-      }
-
-      sVar8 = sVar3 + 1000;
-
-      lVar6 = (int)mdlSearch(7,sVar8,0);
-
-      if (lVar6 == 0) {
-
-        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
-
-        func_003192a0(param_1,1,7,sVar8,auStack_100,0);
-
-      }
-
-      else {
-
-        func_00319490(param_1,1,7,sVar8,0);
-
-      }
-
-      break;
-
-    case 8:
-
-      func_00319490(param_1,0,7,sVar3,0);
-
-      break;
-
-    case 9:
-
-      lVar6 = datGetScenarioMode();
-
-      if (lVar6 == 0) {
-
-        func_00319490(param_1,0,7,sVar3,0);
-
-      }
-
-      else {
-
-        lVar6 = (int)mdlSearch(7,sVar3,0);
-
-        if (lVar6 == 0) {
-
-          sprintf(auStack_100, (const char*)0x69b170, &gp0xffff9d20,sVar3);
-
-          func_003192a0(param_1,0,7,sVar3,auStack_100,0);
-
-        }
-
-        else {
-
-          func_00319490(param_1,0,7,sVar3,0);
-
-        }
-
-      }
-
-      break;
-
-    case 10:
-
-      func_00319490(param_1,0,7,sVar3,0);
-
-    }
-
-    mdl003196d0((Model*)param_1,0,500);
-
-    mdl003196d0((Model*)param_1,1,0x1f5);
-
-  return 1;
-}
-#pragma pop
-
-
-
-
-// FUN_0031C7E0
-
-
-u32 func_0031c7e0(int param_1)
-
-
-
-{
-  int iVar1;
-  iVar1 = param_1;
-  FUN_0031e4d0_y2((int *)(iVar1 + 0x3f8),*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6));
-
-  return 1;
+  return DAT_00957a20_abs[param_1 & 0xffff];
 
 }
 
 
 
 
-// FUN_0031C820 NONMATCHING
-
-
-u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
-
-
-
+// FUN_003210C0
+void FUN_003210c0(void)
 {
-
-  u8 cVar1;
-
-  int uVar2;
-
-  int sVar3;
-
-  u32 lVar4;
-
-  u32 uVar5;
-
-  
-
-  switch(param_1) {
-
-
-  case 1:
-
-    uVar2 = datGetEquipmentIdx((short)param_2,1);
-
-    sVar3 = datGetEquipmentId((short)param_2,uVar2);
-
-    if (param_2 == 1) {
-
-      lVar4 = datGetScenarioMode();
-
-      if (lVar4 != 0) {
-        switch (sVar3) {
-        case 0x43d:
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b230));
-          break;
-        case 0x466:
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b250));
-          break;
-        case 0x464:
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b270));
-          break;
-        default:
-          lVar4 = datGetFlag(0x2f0);
-          if (lVar4 != 1) {
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b2b0));
-          }
-          else {
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b290));
-          }
-          break;
-        }
-      }
-      else {
-        uVar5 = datGetUnit_y2(1);
-        cVar1 = datCalcGetHeldWeaponType_y2(uVar5);
-        if ((((cVar1 == '\0') && (lVar4 = datGetFlag(0x15), lVar4 == 0)) &&
-            (lVar4 = datGetFlag(0x1310), lVar4 == 0)) && (lVar4 = func_0031e420(1,1), lVar4 == 0))
-        {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b2d0));
-        }
-        else if (sVar3 == 0x40e) {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b370), 1, cVar1);
-        }
-        else if (sVar3 == 0x45f) {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b350), 1, cVar1);
-        }
-        else if (sVar3 == 0x453) {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b330), 1, cVar1);
-        }
-        else if (sVar3 == 0x452) {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b310), 1, cVar1);
-        }
-        else if (sVar3 == 0x439) {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b2f0), 1, cVar1);
-        }
-        else {
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b390), 1, cVar1);
-        }
-      }
-    }
-
-    else {
-
-      switch(param_2) {
-
-      default:
-
-        sprintf(param_3, MDL_PATH_FORMAT(0x69b930), DAT_007cca10);
-
-        break;
-
-      case 2:
-
-        if (sVar3 == 0x41e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b450), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x462) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b430), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x45d) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b410), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x459) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3f0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x458) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3d0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x43a) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b3b0), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b470), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b490), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 3:
-
-        if (sVar3 == 0x464) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4f0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x466) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4d0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x43d) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b4b0), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b510), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b530), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 4:
-
-        if (sVar3 == 0x41e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5f0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x463) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5d0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x45e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b5b0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x45b) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b590), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x45a) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b570), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x43c) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b550), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b610), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b630), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 5:
-
-        if (sVar3 == 0x40e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b6d0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x460) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b6b0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x455) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b690), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x454) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b670), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x440) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b650), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b6f0), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b710), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 7:
-
-        if (sVar3 == 0x40e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b7b0), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x461) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b790), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x457) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b770), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x456) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b750), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x43b) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b730), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b7d0), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b7f0), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 8:
-
-        if (sVar3 == 0x40e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b870), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x465) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b850), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x45c) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b830), DAT_007cca10);
-
-        }
-
-        else if (sVar3 == 0x43e) {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b810), DAT_007cca10);
-
-        }
-
-        else {
-
-          lVar4 = datGetScenarioMode();
-
-          if (lVar4 != 0) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b890), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b8b0), DAT_007cca10);
-
-          }
-
-        }
-
-        break;
-
-      case 9:
-
-        lVar4 = datGetScenarioMode();
-
-        if (lVar4 == 0) {
-
-          if (sVar3 != 0x40e) {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b910), DAT_007cca10);
-
-          }
-
-          else {
-
-            sprintf(param_3, MDL_PATH_FORMAT(0x69b8f0), DAT_007cca10);
-
-          }
-
-        }
-
-        else {
-
-          sprintf(param_3, MDL_PATH_FORMAT(0x69b8d0), DAT_007cca10);
-
-        }
-
-      }
-
-    }
-
-    break;
-
-  case 2:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b950), DAT_007cca10,param_2);
-
-    break;
-
-  case 3:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b970), DAT_007cca10,param_2);
-
-    break;
-
-  case 5:
-
-    func_0031c000(param_3,param_2);
-
-    break;
-
-  case 7:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9b0), DAT_007cca10,param_2);
-
-    break;
-
-  case 8:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9d0), DAT_007cca10,param_2);
-
-    break;
-
-  case 9:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b210), DAT_007cca10,(int)(u32)param_2 >> 8,param_2 & 0xff);
-
-    break;
-
-  case 10:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b990), DAT_007cca10,param_2);
-
-    break;
-
-  case 0xb:
-
-    sprintf(param_3, MDL_PATH_FORMAT(0x69b9f0), DAT_007cca10,param_2);
-
-    break;
-
-  default:
-
-    sprintf(param_3, DAT_007cca18, DAT_007cca10,
-
-                 *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
-
-    break;
-  }
-
-  return 1;
-
+    u32 value;
+    u64 context;
+    s32 object;
+
+    context = FUN_0010e880();
+    object = FUN_004d0e40_u32(context);
+    value = *(u32*)(object + 0x50);
+    value = (value & 0xffffff00) | 2;
+    *(u32*)(object + 0x50) = value;
+    value = (value & 0xffff00ff) | 0x1100;
+    *(u32*)(object + 0x50) = value;
 }

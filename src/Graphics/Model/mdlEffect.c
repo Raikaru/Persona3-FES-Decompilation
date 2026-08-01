@@ -2643,6 +2643,13 @@ extern u32 DAT_00957a20_abs[];
 
 
 
+
+extern u32 DAT_00957bd0_abs[];
+extern u32 DAT_00957bd4_abs[];
+extern u32 DAT_00957bd8_abs[];
+extern u32 DAT_00957bdc_abs[];
+extern u32 DAT_00957be0_abs[];
+
 // FUN_00321120
 
 
@@ -5616,33 +5623,6 @@ done:
   return value;
 }
 
-// FUN_00324630
-void FUN_00324630(void)
-{
-}
-
-// FUN_00324640
-void FUN_00324640(void)
-{
-}
-
-// FUN_00324650
-int FUN_00324650(void)
-{
-  return 0;
-}
-
-// FUN_00324660
-void FUN_00324660(void)
-{
-}
-
-// FUN_00324670
-void FUN_00324670(void)
-{
-}
-
-
 // FUN_003245F0
 int FUN_003245f0(int param_1)
 {
@@ -5666,6 +5646,33 @@ zero:
   value = 0;
 done:
   return value;
+}
+
+// FUN_00324630
+void FUN_00324630(void)
+{
+}
+
+// FUN_00324640
+void FUN_00324640(void)
+{
+}
+
+// FUN_00324650
+int FUN_00324650(void)
+{
+  return 0;
+}
+
+// FUN_00324660
+void FUN_00324660(void)
+{
+}
+
+
+// FUN_00324670
+void FUN_00324670(void)
+{
 }
 
 
@@ -40343,6 +40350,35 @@ void FUN_0034b600(int param_1)
 
 
 
+// FUN_0034B680
+u_long128 FUN_0034b680(Vec128 *dst,const Vec128 *src)
+{
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+
+
+
+// FUN_0034B690
+void FUN_0034b690(int param_1,int param_2)
+{
+  *(int *)(param_1 + 0x10) = param_2;
+}
+
+
+
+
+// FUN_0034B6A0
+void FUN_0034b6a0(int param_1,float param_2)
+{
+  *(float *)(param_1 + 0x14) = param_2;
+}
+
+
+
+
 // FUN_0034B6B0
 
 
@@ -40423,9 +40459,6 @@ u32 FUN_0034b6b0(u32 param_1)
   return uVar6;
 
 }
-
-
-
 
 // FUN_0034B830
 
@@ -40548,6 +40581,9 @@ void FUN_0034ba20(int param_1)
 {
   *(int *)(param_1 + 0x1c) = 0;
 }
+
+
+
 
 // FUN_0034BA30
 
@@ -40730,9 +40766,6 @@ void FUN_0034bc80(u32 param_1)
   return;
 }
 
-
-
-
 // FUN_0034BCF0
 u32 FUN_0034bcf0(u32 param_1)
 {
@@ -40775,6 +40808,11 @@ void FUN_0034bd60(u32 param_1)
   *(u16 *)(param_1 + 0xd8) = *(u16 *)(param_1 + 0xd8) & 0xfffd;
 }
 
+
+
+
+// b210 floor: the only residual is pre-JAL argument setup order at +0x140..+0x148:
+// ours mov.s $f12,$f20; move $a0,$s0; move $a1,$zero, retail emits the two moves first.
 // FUN_0034BDF0
 
 
@@ -40839,6 +40877,15 @@ void FUN_0034bef0()
 
 
 
+// Fixed genuine misdecompilation: retail calls FUN_0034c250(dst,src) to
+// transfer/re-acquire a resource handle for the cloned object, not a raw
+// memcpy of 16 bytes (confirmed via direct retail disasm at 0x34c250,
+// which matches FUN_0034c250's exact body). This flips FUN_0034c250 to
+// Retail explicitly re-zeros the first two Vec128 slots via VU0 macro-mode
+// sqc2 $vf0 after the memset. Genuine hardware asm restores those stores:
+// 152/160 nd47 -> 160/160 nd2.
+// Confirmed b210 call-argument setup-order floor (W211): +96/+100 merely
+// swap the independent addiu a1,s1,0x2c and addiu a0,s0,0x2c.
 // FUN_0034BF10
 
 
@@ -40876,8 +40923,6 @@ u32 FUN_0034bf10(int param_1)
 
 
 
-// b210 floor: the only residual is pre-JAL argument setup order at +0x140..+0x148:
-// ours mov.s $f12,$f20; move $a0,$s0; move $a1,$zero, retail emits the two moves first.
 // FUN_0034BFC0
 
 
@@ -40968,6 +41013,8 @@ u32 FUN_0034bfc0(u32 param_1)
 
 
 
+
+
 // FUN_0034C160
 
 
@@ -40980,18 +41027,6 @@ void FUN_0034c160(u32 param_1)
   return;
 }
 
-
-
-
-// Fixed genuine misdecompilation: retail calls FUN_0034c250(dst,src) to
-// transfer/re-acquire a resource handle for the cloned object, not a raw
-// memcpy of 16 bytes (confirmed via direct retail disasm at 0x34c250,
-// which matches FUN_0034c250's exact body). This flips FUN_0034c250 to
-// Retail explicitly re-zeros the first two Vec128 slots via VU0 macro-mode
-// sqc2 $vf0 after the memset. Genuine hardware asm restores those stores:
-// 152/160 nd47 -> 160/160 nd2.
-// Confirmed b210 call-argument setup-order floor (W211): +96/+100 merely
-// swap the independent addiu a1,s1,0x2c and addiu a0,s0,0x2c.
 // FUN_0034C1B0
 
 u32 FUN_0034c1b0(int param_1)
@@ -41033,9 +41068,6 @@ u32 FUN_0034c1b0(int param_1)
   return uVar2;
 
 }
-
-
-
 
 // FUN_0034C250
 
@@ -41088,8 +41120,6 @@ void FUN_0034c250(int param_1,int param_2)
 
 
 
-
-
 // FUN_0034c320
 void FUN_0034c320(int param_1)
 
@@ -41102,6 +41132,9 @@ void FUN_0034c320(int param_1)
   return;
 
 }
+
+
+
 
 // FUN_0034C350
 void FUN_0034c350(u32* param_1)
@@ -41219,9 +41252,6 @@ void FUN_0034c390(float *param_1)
 
 }
 
-
-
-
 // FUN_0034C5A0
 
 
@@ -41236,9 +41266,6 @@ void FUN_0034c5a0(int param_1)
   return;
 
 }
-
-
-
 
 // FUN_0034C5D0
 
@@ -41271,17 +41298,26 @@ u_long128 FUN_0034c630(u_long128 *dst, const u_long128 *src)
     return *dst = *src;
 }
 
+
+
+
 // FUN_0034C640
 u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src)
 {
     return dst[1] = *src;
 }
 
+
+
+
 // FUN_0034C650
 void FUN_0034c650(int param_1, int param_2)
 {
     *(int *)(param_1 + 0x28) = param_2;
 }
+
+
+
 
 // FUN_0034C660
 void FUN_0034c660(int param_1, float param_2)
@@ -41617,9 +41653,6 @@ void FUN_0034cb60(int param_1)
 
 }
 
-
-
-
 // FUN_0034CC00 NONMATCHING
 
 
@@ -41801,9 +41834,6 @@ void FUN_0034cc00(u32 *param_1)
 
 }
 
-
-
-
 // FUN_0034CF30
 
 
@@ -41875,9 +41905,6 @@ void FUN_0034cf30(int param_1)
 
 }
 
-
-
-
 // FUN_0034D050
 
 
@@ -41913,11 +41940,15 @@ void FUN_0034d0b0(u32* param_1, u32 param_2)
   param_1[9] = param_2;
 }
 
+
 // FUN_0034D0C0
 void FUN_0034d0c0(f32* param_1, f32 param_2)
 {
   param_1[8] = param_2;
 }
+
+
+
 
 // FUN_0034D0D0
 u32* FUN_0034d0d0(u32* param_1, u8* param_2)
@@ -41956,6 +41987,9 @@ check:
   return param_1;
 }
 
+
+
+
 // FUN_0034D130
 u32* FUN_0034d130(u32* param_1)
 {
@@ -41965,6 +41999,8 @@ u32* FUN_0034d130(u32* param_1)
   p[2] = p[2] | 0x40;
   return param_1;
 }
+
+
 
 
 // FUN_0034D150
@@ -42091,8 +42127,6 @@ u64 FUN_0034d3a0(int param_1,int param_2,int param_3)
            ((b & 0xff) << 16) | ((a & 0xff) << 24);
   return ((u64)result << 32) | current;
 }
-
-
 
 
 // FUN_0034D510 NONMATCHING
@@ -42272,6 +42306,10 @@ do_update:
 }
 
 
+
+
+
+
 // FUN_0034D810
 void FUN_0034d810(int param_1,int param_2)
 {
@@ -42405,8 +42443,6 @@ done:
   *(u32 *)(param_1 + 0x54) = resource;
   FUN_004916d0_u32(resource,(void *)FUN_0034d130,0);
 }
-
-
 
 
 
@@ -43079,10 +43115,6 @@ void FUN_0034e390(int param_1)
   return;
 
 }
-
-
-
-
 // FUN_0034E3D0
 
 
@@ -43145,6 +43177,10 @@ void FUN_0034e450(int param_1)
   return;
 
 }
+
+
+
+
 // FUN_0034E480
 void FUN_0034e480(u32 *param_1, u32 param_2)
 {
@@ -43170,6 +43206,8 @@ void FUN_0034e490(f32 param_1, int param_2)
   return;
 
 }
+
+
 
 
 
@@ -43433,6 +43471,54 @@ void FUN_0034e800(int param_1,int param_2)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Genuine VU0 macro-mode colour scaling is not expressible in C.
+// Complete conversion of the fake intrinsic block: 1700/3024 nd1176 -> 1384/3024 nd897.
 // FUN_0034E820
 
 void FUN_0034e820(int param_1,u16 param_2,int param_3)
@@ -43487,8 +43573,6 @@ void FUN_0034e820(int param_1,u16 param_2,int param_3)
   return;
 
 }
-
-
 
 
 
@@ -43569,56 +43653,6 @@ void FUN_0034e940(int param_1,float *param_2)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Genuine VU0 macro-mode colour scaling is not expressible in C.
-// Complete conversion of the fake intrinsic block: 1700/3024 nd1176 -> 1384/3024 nd897.
 // FUN_0034EAE0 NONMATCHING
 void FUN_0034eae0(int param_1,float *param_2,int param_3,u32 *param_4,
 
@@ -44104,6 +44138,8 @@ void FUN_0034f910_u32(u32 param_1,u32 param_2)
 }
 
 
+
+
 // FUN_0034FB40
 
 
@@ -44158,10 +44194,6 @@ void FUN_0034fba0(int param_1)
   return;
 
 }
-
-
-
-
 // FUN_0034FBE0
 
 
@@ -44224,6 +44256,7 @@ void FUN_0034fc60(int param_1)
   return;
 
 }
+
 // FUN_0034FC90
 void FUN_0034fc90(u32* param_1, u32 param_2)
 {
@@ -44259,6 +44292,9 @@ void FUN_0034fcd0(void)
   FUN_00324bd0_passthru();
   return;
 }
+
+
+
 
 // FUN_0034FCF0
 void FUN_0034fcf0(void)
@@ -44343,7 +44379,6 @@ void FUN_0034fd70(u64 param_1,u16 param_2)
 
 
 
-
 // FUN_0034FDB0
 
 
@@ -44394,6 +44429,7 @@ void FUN_0034fe30(u64 param_1,float param_2,float param_3,float param_4)
       : "memory");
   FUN_00325d60(param_1,(u8 (*)[16])auStack_20);
 }
+
 
 
 
@@ -44517,8 +44553,6 @@ void FUN_0034ffc0(int param_1,int param_2)
 }
 
 
-
-
 // FUN_00350040
 
 
@@ -44526,6 +44560,7 @@ void FUN_00350040(int param_1,u32 *param_2)
 {
   *param_2 = FUN_00326180(param_1);
 }
+
 
 
 
@@ -44555,6 +44590,11 @@ void FUN_00350080(void)
 }
 
 
+
+
+// Confirmed b210 temporary-register colouring floor (W211): the six residual
+// words use v1 where retail uses v0 for two absolute zero stores and the
+// GP-relative DAT_007ce578 = 1 store; declaration-order changes are inert.
 // FUN_003500A0
 void FUN_003500a0(u32 param_1,u16 param_2)
 {
@@ -44565,7 +44605,6 @@ void FUN_003500a0(u32 param_1,u16 param_2)
   gp0xffffb884 = 0;
   gp0xffffb888 = 1;
 }
-
 
 
 
@@ -44628,9 +44667,6 @@ void FUN_00350110(void)
 
 
 
-// Confirmed b210 temporary-register colouring floor (W211): the six residual
-// words use v1 where retail uses v0 for two absolute zero stores and the
-// GP-relative DAT_007ce578 = 1 store; declaration-order changes are inert.
 // FUN_00350190 NONMATCHING
 
 
@@ -44732,6 +44768,26 @@ u32 FUN_00350230(u32 param_1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_003503E0
 
 
@@ -44766,9 +44822,6 @@ void FUN_003503e0(int param_1)
   return;
 
 }
-
-
-
 
 // FUN_00350450
 
@@ -44823,9 +44876,6 @@ u32 FUN_00350450(u32 param_1)
 
 }
 
-
-
-
 // FUN_00350500
 
 
@@ -44863,37 +44913,19 @@ void FUN_00350500(int param_1,int param_2)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUN_003505a0
 void FUN_003505a0(int *param_1)
 {
   param_1[2] = 0;
 }
-
 // FUN_003505b0
 void FUN_003505b0(int *param_1)
 {
   param_1[2] = param_1[2] + 1;
 }
+
+
+
 
 // FUN_003505D0 NONMATCHING
 void FUN_003505d0(int *param_1)
@@ -45277,6 +45309,33 @@ void FUN_003505d0(int *param_1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Reconstructed camera-fade full-screen-quad draw; obj 1068B/1072B window (99%).
+// The retail frame, seven-call census, unsigned dimension/alpha conversions,
+// and all four packed vertex records now match. Residual is 16 words: one
+// commutative FPU operand-order floor and relocation-masked global loads.
+// Camera typing and DAT_00960090/DAT_009600a0/DAT_0096008c_abs caching follow
+// the sibling FUN_00351290 implementation.
+/* Retail contains this float-to-unsigned expansion: deleting it leaves the
+   function UNDERSIZED at 1008/1072 and nd11 -> nd566, so the conversion is
+   real code, not fabrication. No plain (u32) cast reproduces it -- four
+   spellings were measured on fcl_misc 003C9000 and all fold to the short
+   signed path. Retained until the honest source form is found - measured W176. */
 // FUN_00351250
 
 
@@ -45293,12 +45352,17 @@ void FUN_00351250(int param_1)
   return;
 
 }
+
+
+
+
+
+
 // FUN_00351280
 void FUN_00351280(u32 *param_1, u32 param_2)
 {
   *param_1 = param_2;
 }
-
 
 
 
@@ -45396,33 +45460,6 @@ bool FUN_00351290(int param_1)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Reconstructed camera-fade full-screen-quad draw; obj 1068B/1072B window (99%).
-// The retail frame, seven-call census, unsigned dimension/alpha conversions,
-// and all four packed vertex records now match. Residual is 16 words: one
-// commutative FPU operand-order floor and relocation-masked global loads.
-// Camera typing and DAT_00960090/DAT_009600a0/DAT_0096008c_abs caching follow
-// the sibling FUN_00351290 implementation.
-/* Retail contains this float-to-unsigned expansion: deleting it leaves the
-   function UNDERSIZED at 1008/1072 and nd11 -> nd566, so the conversion is
-   real code, not fabrication. No plain (u32) cast reproduces it -- four
-   spellings were measured on fcl_misc 003C9000 and all fold to the short
-   signed path. Retained until the honest source form is found - measured W176. */
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {
@@ -45530,8 +45567,6 @@ void FUN_00351510(int param_1)
 
 
 
-
-
 // FUN_00351940
 void FUN_00351940(int param_1)
 {
@@ -45569,9 +45604,6 @@ void FUN_00351940(int param_1)
   }
   return;
 }
-
-
-
 // FUN_00351A10 NONMATCHING
 
 
@@ -45759,6 +45791,10 @@ void FUN_00351c20(void)
   return;
 
 }
+
+
+
+
 // FUN_00351CA0
 void FUN_00351ca0(int *param_1)
 {
@@ -45802,6 +45838,23 @@ void FUN_00351ca0(int *param_1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Genuine VU0 macro-mode vector normalization, interpolation, cross-product
+// and quad expansion are not expressible in C. Complete fake-intrinsic
+// conversion: 1240/1888 nd928 -> 1796/1888 nd1386.
 // FUN_00351D20
 
 
@@ -45979,23 +46032,6 @@ void FUN_00351e70(int param_1)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Genuine VU0 macro-mode vector normalization, interpolation, cross-product
-// and quad expansion are not expressible in C. Complete fake-intrinsic
-// conversion: 1240/1888 nd928 -> 1796/1888 nd1386.
 // FUN_003520A0 NONMATCHING
 void FUN_003520a0(u64 param_1)
 
@@ -46435,6 +46471,8 @@ void FUN_00352910(u32 param_1)
 
 
 
+
+
 // FUN_00352980
 
 
@@ -46531,8 +46569,6 @@ void FUN_00352ad0(int param_1)
 
 
 
-
-
 // FUN_00352B30
 void FUN_00352b30(int param_1)
 
@@ -46552,6 +46588,12 @@ void FUN_00352b30(int param_1)
 
 
 
+
+#pragma alias DAT_00957bd0_abs DAT_00957bd0
+#pragma alias DAT_00957bd4_abs DAT_00957bd4
+#pragma alias DAT_00957bd8_abs DAT_00957bd8
+#pragma alias DAT_00957bdc_abs DAT_00957bdc
+#pragma alias DAT_00957be0_abs DAT_00957be0
 
 // FUN_00352B80
 
@@ -46583,9 +46625,6 @@ void FUN_00352b80(int param_1)
 
 }
 
-
-
-
 // FUN_00352C10
 u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src)
 {
@@ -46595,6 +46634,10 @@ u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src)
 
 
 
+// Fixed unsigned-byte-compare bug: param_2 was char* (lb) instead of u8*
+// (lbu). Residual: retail restructures the 3-way boolean-membership loop
+// into a shared-tail-block shape (different branch target layout past
+// offset 16) not yet reproduced -- accepted floor (199 -> 197 nd).
 // FUN_00352C20
 void FUN_00352c20(u32 *param_1, u32 param_2)
 {
@@ -46604,23 +46647,15 @@ void FUN_00352c20(u32 *param_1, u32 param_2)
 
 
 
-#pragma alias DAT_00957bd0_abs DAT_00957bd0
-#pragma alias DAT_00957bd4_abs DAT_00957bd4
-#pragma alias DAT_00957bd8_abs DAT_00957bd8
-#pragma alias DAT_00957bdc_abs DAT_00957bdc
-#pragma alias DAT_00957be0_abs DAT_00957be0
-extern u32 DAT_00957bd0_abs[];
-extern u32 DAT_00957bd4_abs[];
-extern u32 DAT_00957bd8_abs[];
-extern u32 DAT_00957bdc_abs[];
-extern u32 DAT_00957be0_abs[];
-
 // FUN_00352C30
 void FUN_00352c30(u32 param_1,u32 param_2)
 {
   DAT_00957bd0_abs[0] = param_1;
   DAT_00957bd4_abs[0] = param_2;
 }
+
+
+
 
 // FUN_00352C50
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
@@ -46633,10 +46668,6 @@ void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
 
 
 
-// Fixed unsigned-byte-compare bug: param_2 was char* (lb) instead of u8*
-// (lbu). Residual: retail restructures the 3-way boolean-membership loop
-// into a shared-tail-block shape (different branch target layout past
-// offset 16) not yet reproduced -- accepted floor (199 -> 197 nd).
 // FUN_00352C70 NONMATCHING
 
 
@@ -46699,6 +46730,38 @@ s8 FUN_00352c70(int param_1,u8 *param_2)
   return false;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -46791,6 +46854,14 @@ void FUN_00352f20(u32 param_1)
   (*(void (**)(...))0x0096017c)(param_1);
   return;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -47242,6 +47313,46 @@ void FUN_00352f70(float *param_1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_00353960
 
 
@@ -47257,9 +47368,6 @@ void FUN_00353960(void)
 
 }
 
-
-
-
 // FUN_00353990
 
 
@@ -47274,46 +47382,6 @@ void FUN_00353990(void)
   return;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -47554,50 +47622,53 @@ void FUN_003539c0(int param_1)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUN_00354290
 void FUN_00354290(void)
 {
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // FUN_003542A0 NONMATCHING
 void FUN_003542a0(int param_1)
@@ -47903,16 +47974,6 @@ void FUN_00354b50(void)
   return;
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -48367,36 +48428,6 @@ void FUN_003556a0(void)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUN_003556D0 NONMATCHING
 void FUN_003556d0(int param_1)
 
@@ -48611,6 +48642,46 @@ void FUN_003556d0(int param_1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_00355DD0
 
 
@@ -48683,46 +48754,6 @@ void FUN_00355ee0(u32 param_1)
   (*(void (**)(...))0x0096017c)(param_1);
   return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -49655,6 +49686,55 @@ void FUN_003571c0(float *param_1)
 
 
 
+// FUN_00357450
+void FUN_00357450(void)
+{
+  extern float fGpffff8148;
+  *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8148;
+}
+
+
+
+
+// FUN_00357470
+void FUN_00357470(int param_1)
+{
+  u32 *param_2;
+  u32 iVar2;
+  u32 iVar1;
+  float fVar1;
+  float fVar2;
+  float fVar3;
+  extern float fGpffff8144;
+
+  param_2 = *(u32 **)(param_1 + 0x38);
+  iVar1 = *(u32 *)(param_1 + 0x28);
+  iVar2 = *param_2;
+  if (iVar2 == 0) goto skipInterpolation;
+  if (iVar2 >= iVar1) goto interpolate;
+skipInterpolation:
+  return;
+interpolate:
+    fVar2 = *(float *)(param_2 + 1);
+    fVar1 = (float)iVar1;
+    fVar3 = (float)iVar2;
+    fVar1 = fVar1 / fVar3;
+    fVar1 = (*(float *)(param_2 + 2) - fVar2) * fVar1;
+    fVar1 = fVar1 + fVar2;
+    *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8144 * fVar1;
+}
+
+
+
+
+// FUN_00357540
+void FUN_00357540(void)
+{
+}
+
+
+
+
 // FUN_00357550 NONMATCHING
 
 
@@ -49902,7 +49982,7 @@ u32 FUN_00357830(int param_1)
 
 
 
-
+/* Retail sibling body starts at offset 0xB0 from 0x00357CE0. */
 // FUN_00357930
 
 
@@ -49918,9 +49998,7 @@ void FUN_00357930(u32 param_1)
   return;
 }
 
-
-
-
+/* Retail sibling body starts at offset 0xC0 from 0x00357CE0. */
 // FUN_003579B0 NONMATCHING
 
 
@@ -49970,9 +50048,7 @@ u32 FUN_003579b0(u32 param_1)
   return uVar5;
 }
 
-
-
-
+/* Retail sibling body starts at offset 0xD0 from 0x00357CE0. */
 // FUN_00357BA0
 
 
@@ -49998,9 +50074,7 @@ void FUN_00357ba0(int param_1)
 
 }
 
-
-
-
+/* Retail sibling body starts at offset 0xE0 from 0x00357CE0. */
 // FUN_00357C10
 
 
@@ -50026,9 +50100,7 @@ void FUN_00357c10(int param_1)
 
 }
 
-
-
-
+/* Retail sibling body starts at offset 0x290 from 0x003571C0. */
 // FUN_00357C80
 
 
@@ -50052,9 +50124,7 @@ void FUN_00357c80(int param_1)
 
 }
 
-
-
-
+/* Retail sibling body starts at offset 0x2B0 from 0x003571C0. */
 // FUN_00357CE0
 
 
@@ -50092,10 +50162,6 @@ void FUN_00357ce0(int param_1)
   return;
 
 }
-
-
-
-/* Retail sibling body starts at offset 0xB0 from 0x00357CE0. */
 // FUN_00357D90
 u_long128 FUN_00357d90(Vec128 *dst,const Vec128 *src)
 {
@@ -50104,7 +50170,7 @@ u_long128 FUN_00357d90(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-/* Retail sibling body starts at offset 0xC0 from 0x00357CE0. */
+/* Retail sibling body starts at offset 0x80 from 0x0034B600. */
 // FUN_00357DA0
 u_long128 FUN_00357da0(Vec128 *dst,const Vec128 *src)
 {
@@ -50113,82 +50179,18 @@ u_long128 FUN_00357da0(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-/* Retail sibling body starts at offset 0xD0 from 0x00357CE0. */
+/* Retail sibling body starts at offset 0x90 from 0x0034B600. */
 // FUN_00357DB0
 void FUN_00357db0(int param_1,int param_2)
 {
   *(int *)(param_1 + 0x24) = param_2;
 }
 
-/* Retail sibling body starts at offset 0xE0 from 0x00357CE0. */
+/* Retail sibling body starts at offset 0xA0 from 0x0034B600. */
 // FUN_00357DC0
 void FUN_00357dc0(int param_1,float param_2)
 {
   *(float *)(param_1 + 0x20) = param_2;
-}
-
-/* Retail sibling body starts at offset 0x290 from 0x003571C0. */
-// FUN_00357450
-void FUN_00357450(void)
-{
-  extern float fGpffff8148;
-  *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8148;
-}
-
-/* Retail sibling body starts at offset 0x2B0 from 0x003571C0. */
-// FUN_00357470
-void FUN_00357470(int param_1)
-{
-  u32 *param_2;
-  u32 iVar2;
-  u32 iVar1;
-  float fVar1;
-  float fVar2;
-  float fVar3;
-  extern float fGpffff8144;
-
-  param_2 = *(u32 **)(param_1 + 0x38);
-  iVar1 = *(u32 *)(param_1 + 0x28);
-  iVar2 = *param_2;
-  if (iVar2 == 0) goto skipInterpolation;
-  if (iVar2 >= iVar1) goto interpolate;
-skipInterpolation:
-  return;
-interpolate:
-    fVar2 = *(float *)(param_2 + 1);
-    fVar1 = (float)iVar1;
-    fVar3 = (float)iVar2;
-    fVar1 = fVar1 / fVar3;
-    fVar1 = (*(float *)(param_2 + 2) - fVar2) * fVar1;
-    fVar1 = fVar1 + fVar2;
-    *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8144 * fVar1;
-}
-// FUN_00357540
-void FUN_00357540(void)
-{
-}
-
-/* Retail sibling body starts at offset 0x80 from 0x0034B600. */
-// FUN_0034B680
-u_long128 FUN_0034b680(Vec128 *dst,const Vec128 *src)
-{
-  u_long128 value = *(u_long128 *)src;
-  *(u_long128 *)dst = value;
-  return value;
-}
-
-/* Retail sibling body starts at offset 0x90 from 0x0034B600. */
-// FUN_0034B690
-void FUN_0034b690(int param_1,int param_2)
-{
-  *(int *)(param_1 + 0x10) = param_2;
-}
-
-/* Retail sibling body starts at offset 0xA0 from 0x0034B600. */
-// FUN_0034B6A0
-void FUN_0034b6a0(int param_1,float param_2)
-{
-  *(float *)(param_1 + 0x14) = param_2;
 }
 
 
