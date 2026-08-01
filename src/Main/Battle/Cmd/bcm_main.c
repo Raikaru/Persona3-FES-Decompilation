@@ -433,7 +433,7 @@ typedef struct BcmCommandEntry
 #pragma alias FUN_00201730_y2 FUN_00201730_y2
 #pragma alias bppMain0020fc90_y2 bppMain0020fc90_y2
 #pragma alias FUN_00208630_y2 FUN_00208630_y2
-#pragma alias bpMisc001ff740_y2 bpMisc001ff740_y2
+#pragma alias bpMisc001ff740_y2 bpMisc001ff740
 #pragma alias func_0021f0c0_y2 func_0021f0c0_y2
 #pragma alias func_00208010_y2 func_00208010_y2
 #pragma alias func_00208050_y2 func_00208050_y2
@@ -602,6 +602,7 @@ u32 bpRoot_003c72d0_arg(u32);
 // these paths are reconstructed directly even though MWCC lays out the
 // resulting switch differently from the retail object.
 
+// W419 negative probe: FUN_001FF890 direct gBcmWork flag pointer nd521/988B, window976B (over window), rate52.73%; reverted.
 // FUN_001FF890 NONMATCHING
 void FUN_001ff890(void)
 {
@@ -696,6 +697,7 @@ void FUN_001ff890(void)
 }
 
 
+// W419 negative probe: FUN_001FFC60 declaration permutations (work/record/i) all stayed nd295/676B; reverted.
 // FUN_001FFC60 NONMATCHING
 void FUN_001FFC60(void)
 {
@@ -2361,6 +2363,7 @@ void FUN_00202C90(void)
     }
 }
 
+// W419 negative probe: FUN_00202D70 s32 loop index nd407/672B, window704B, rate60.57%; reverted.
 // FUN_00202D70 NONMATCHING
 void FUN_00202D70(void)
 {
@@ -2882,6 +2885,7 @@ void FUN_00203DE0(void)
 }
 
 // W418 negative probes: FUN_00204000 i s16 nd646/1140B -> 667/1180B (over 1152B); FUN_00204760 i s16 nd390/876B -> 532/900B (reverted).
+// W419 negative probe: FUN_00204000 direct data.ids[i] nd680/1140B, window1152B, rate59.65%; reverted.
 // FUN_00204000 NONMATCHING
 void FUN_00204000(void)
 {
@@ -4037,12 +4041,14 @@ void FUN_002065A0(void)
 #pragma opt_loop_invariants reset
 
 // W418 negative probe: FUN_00206740 i s16 nd1200/1668B -> 1267/1748B (reverted).
+// W419 negative probes: FUN_00206740 reversed chain nd1208/1660B, window1792B, rate72.77%; u32 mode chain nd1117/1656B, window1792B, rate67.45%; declaration/scoped row-pointer variants unchanged at nd1067/1652B, window1792B, rate64.59%; reverted.
 // FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {
     DatPersonaWork* persona;
     u16* skills;
     u8* work;
+    u32* row;
     s32 i;
     s32 count;
     s32 mode;
@@ -4058,17 +4064,19 @@ void FUN_00206740(void)
     count = 0;
     for (mode = 0; mode < 3; mode++)
     {
-        switch (mode)
+        row = (u32*)(work + 0x408 + count * 4);
+        if (mode == 0)
         {
-        case 0:
-            *(u32*)(work + 0x408 + count * 4) = 0;
+            *row = 0;
             count++;
-            break;
-        case 1:
-            *(u32*)(work + 0x408 + count * 4) = 1;
+        }
+        else if (mode == 1)
+        {
+            *row = 1;
             count++;
-            break;
-        case 2:
+        }
+        else if (mode == 2)
+        {
             if (*(u32*)(work + 0x20) == 1)
             {
                 persona = datPersonaGetByPcId(6);
@@ -4081,11 +4089,10 @@ void FUN_00206740(void)
                 }
                 if (i != value)
                 {
-                    *(u32*)(work + 0x408 + count * 4) = 2;
+                    *row = 2;
                     count++;
                 }
             }
-            break;
         }
     }
     *(u32*)(work + 0x420) = count;

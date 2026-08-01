@@ -1453,3 +1453,8 @@ void func_001a8910(u32* count)
 
 
 
+// W419 rejected probes (verify.py; nd/object/window and nd/object rate):
+// func_001a7370 const/decl-first/scoped pointer variants: 5/320/320 (0.0156), unchanged.
+// func_001a7370 first-loop direct indexing: 5/320/320 (0.0156) -> 18/320/320 (0.0563); cached pointer was unchanged.
+// func_001a7370 stateValue local: 5/320/320 (0.0156) -> 12/320/320 (0.0375); initialized global pointer: 226/328/320 (0.6890; over window).
+// func_001a8140 callback aliases: 1079/1640/1760 (0.6579) -> 1100/1656/1760 (0.6643).

@@ -3524,6 +3524,7 @@ u32 sflCard00258af0(void)
     return *sSflCardB664 & 0x80;
 }
 /* W414 named f32 90.0f local initialized before the pointer expression stayed nd13/1076B (window 1088B); reverted. Residual is the documented call-argument evaluation-order floor; no software-double calls were introduced. */
+/* W419 static-inline sflCardMeasure(angle, position) probe kept call-setup order unchanged: nd13/1076B (window1088, rate .012082), reverted. */
 // FUN_00258B40 NONMATCHING
 
 

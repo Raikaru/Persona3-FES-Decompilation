@@ -827,6 +827,7 @@ void func_0023f540(void)
             D_0096009C((u8*)(base) + biDigitIndex * 0x100, 4, 0, 2, 3); \
         } \
     } while (0)
+/* W419 OpSocial2: direct absolute D_0096009C callback nd1389/object2424 exceeds 2384; cached/panel/macro variants worsened nd or remained over-window. */
 // FUN_00241910 NONMATCHING
 void func_00241910(void)
 {

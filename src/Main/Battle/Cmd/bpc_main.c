@@ -11,6 +11,8 @@
 #pragma alias func_001775a0_y2 func_001775a0
 
 extern const char D_0068E880[];
+#pragma alias DAT_007cc468_sda DAT_007cc468
+extern const char DAT_007cc468_sda[] __attribute__((section(".sdata")));
 extern const char DAT_007cc468[];
 
 typedef unsigned int uint;
@@ -570,6 +572,7 @@ void FUN_00244120(u32 param_1)
 
 
 
+/* W419 negative probes: DAT_007ce4e8 .sdata alias and DAT_007ce320 pointer .sdata alias left FUN_002441B0 at nd700/1460B, window1472B, rate47.95%; reverted. */
 // FUN_002441B0 NONMATCHING
 void FUN_002441b0(u32 param_1)
 
@@ -600,7 +603,7 @@ void FUN_002441b0(u32 param_1)
   if ((int)puVar2[2] < 1) {
     K_Assert(D_0068E880, 0x26a);
   }
-  message = DAT_007cc468;
+  message = DAT_007cc468_sda;
   printf(message, param_1);
   uVar5 = *puVar2;
   uVar5 = uVar5 & 0xfffffffb;
@@ -1071,7 +1074,7 @@ void FUN_002453d0(u16 param_1)
 /* W389 volatile staging of calc/skill and mode/skill loads was neutral at nd8/1264B; reverted. */
 #pragma push
 #pragma opt_dead_assignments off
-/* W414 argument-order probes: literal-first call stayed nd8/1264B; typed prototype regressed nd601/1268B (over window); schedule-on regressed nd736/1076B (over window). Reverted; residual is the two-argument evaluation-order floor. */
+/* W414 argument-order probes: literal-first call stayed nd8/1264B (window1264B, rate0.63%); typed prototype regressed nd601/1268B (over window); schedule-on regressed nd736/1076B (over window). Reverted; residual is the two-argument evaluation-order floor. */
 // FUN_00245420 NONMATCHING
 void FUN_00245420(uint *param_1,uint param_2)
 
@@ -1395,6 +1398,7 @@ void FUN_00245e50(void)
 /* W418 width negatives: FUN_00245EA0 iVar5 s16 nd6938/9468B -> 7152/9636B; iVar12 s16 -> 7325/9876B (over 9712B). */
 #pragma push
 #pragma opt_propagation off
+/* W419 negative probe: DAT_007caf38 float-array .sdata alias left FUN_00245EA0 at nd6938/9468B, window9712B, rate73.28%; reverted. */
 // FUN_00245EA0 NONMATCHING
 void FUN_00245ea0(void)
 

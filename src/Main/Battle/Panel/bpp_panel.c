@@ -490,6 +490,39 @@ void FUN_0022c8a0(u32* object_param)
     FUN_0021d950(object + 0x410, (u8*)&color3);
 
 
+
+    {
+        void* resource = (void*)FUN_0021cca0(table5, 2);
+        rect[0] = 65.0f + pos1X;
+        rect[1] = 83.0f + pos1Y;
+        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x834)) /
+                         *(s32*)(object + 0x838));
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0xe60, rect);
+    }
+
+    {
+        void* resource = (void*)FUN_0021cca0(table5, 3);
+        rect[0] = pos1X;
+        rect[1] = 89.0f + pos1Y;
+        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x83c)) /
+                         *(s32*)(object + 0x840));
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0xf60, rect);
+    }
+
+    if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
+        colorTmp[0] = 0xd7;
+        colorTmp[1] = 0xff;
+        colorTmp[2] = 0x91;
+        colorTmp[3] = 0xff;
+    } else {
+        colorTmp[0] = 0xff;
+        colorTmp[1] = 0xff;
+        colorTmp[2] = 0xff;
+        colorTmp[3] = 0xff;
+    }
+    FUN_0021d950(object + 0xf60, colorTmp);
     rect[0] = 102.0f + pos1X + 2.0f;
     rect[1] = 72.0f + pos1Y;
     FUN_0022eb30((u32*)(object + 0x860), *(u32*)(object + 0x834), (u32)(size_t)rect);
@@ -533,39 +566,6 @@ void FUN_0022c8a0(u32* object_param)
             FUN_0021d950(object + j * 0x100 + 0xb60, colorTmp);
         }
     }
-
-    {
-        void* resource = (void*)FUN_0021cca0(table5, 2);
-        rect[0] = 65.0f + pos1X;
-        rect[1] = 83.0f + pos1Y;
-        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x834)) /
-                         *(s32*)(object + 0x838));
-        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-        FUN_0021d8e0(object + 0xe60, rect);
-    }
-
-    {
-        void* resource = (void*)FUN_0021cca0(table5, 3);
-        rect[0] = pos1X;
-        rect[1] = 89.0f + pos1Y;
-        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x83c)) /
-                         *(s32*)(object + 0x840));
-        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-        FUN_0021d8e0(object + 0xf60, rect);
-    }
-
-    if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
-        colorTmp[0] = 0xd7;
-        colorTmp[1] = 0xff;
-        colorTmp[2] = 0x91;
-        colorTmp[3] = 0xff;
-    } else {
-        colorTmp[0] = 0xff;
-        colorTmp[1] = 0xff;
-        colorTmp[2] = 0xff;
-        colorTmp[3] = 0xff;
-    }
-    FUN_0021d950(object + 0xf60, colorTmp);
 
     if (*(u32*)object & 2) {
         u32 resourceId = FUN_0022e850(*(u32*)(object + 0x528));

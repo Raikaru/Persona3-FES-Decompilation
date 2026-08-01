@@ -946,3 +946,5 @@ u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
     }
     return result;
 }
+// W419 rejected probes (verify.py; nd/object/window and nd/object rate):
+// func_001b7e60 removing the not-loaded request assignment: 96/408/416 (0.2353) -> 128/396/416 (0.3232).

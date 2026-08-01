@@ -418,6 +418,7 @@ u64 FUN_003c60f0(int param_1)
 }
 #define FUN_003c60f0(...) ((u64 (*)(...))FUN_003c60f0)(__VA_ARGS__)
 #undef FUN_003c6120
+// W419 staged call-argument locals for FUN_003c6120; nd28/object324 was unchanged.
 // FUN_003C6120 NONMATCHING
 
 u32 FUN_003c6120(int param_1,int param_2)

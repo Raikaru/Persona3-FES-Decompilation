@@ -664,6 +664,7 @@ u32 FUN_002a3850(int param_1)
   }
   return 0;
 }
+/* W419 negative: narrowed btlCameraSetState loop variable var_7 from u64 to u32; nd36 -> 184 at object 388/400. */
 // FUN_002a38f0 NONMATCHING
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
@@ -1328,6 +1329,7 @@ extern u32 FUN_002d62d0(int);
 extern u32 FUN_002d6370(s16);
 extern u32 FUN_002d63b0(int, s16, int);
 
+/* W419 negative: moved FUN_002a4c70 radius before the other f32 locals; nd63 -> 73 at object 1972/1984 (rate .031947 -> .037018). */
 // FUN_002a4c70 NONMATCHING
 void FUN_002a4c70(BtlCamera* camera, f32 param_1, f32 param_2)
 {
@@ -3921,6 +3923,8 @@ extern u8 D_00696430[];
 extern u8 DAT_00694fea;
 extern u8 DAT_00694fec;
 extern u32 DAT_00697880;
+#pragma alias DAT_00697888_abs DAT_00697888
+extern u8 DAT_00697888_abs[];
 extern f32 DAT_00697888;
 extern float DAT_007cad20;
 extern float DAT_007cad38;
@@ -9974,6 +9978,7 @@ extern void FUN_002a2290_b64d0(BtlCamera* camera, RwV3d* first,
 #pragma alias FUN_002a3110_b64d0 FUN_002a3110
 extern void FUN_002a3110_b64d0(BtlCamera* camera, f32 step);
 
+/* W419: DAT_00697888_abs restores retail absolute addressing; nd417 -> 326, object 1776 -> 1780/1792, rate .234797 -> .183146. */
 // FUN_002b64d0 NONMATCHING
 u32 FUN_002b64d0(BtlCamera* camera, B64CameraWork* work)
 {
@@ -10138,7 +10143,7 @@ index_ok:
   goto rotate_done;
 no_rotate:
   scratch.matrixLow = *(u64 *)(uintptr_t)&D_00697880;
-  scratch.matrixHigh = DAT_00697888;
+  scratch.matrixHigh = *(f32 *)DAT_00697888_abs;
 rotate_done:
   FUN_002a4690(&scratch.secondResult, &scratch.secondPos, &scratch.secondOut,
                &scratch.matrixLow);

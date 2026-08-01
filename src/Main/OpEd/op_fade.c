@@ -678,14 +678,13 @@ extern void func_002798f0(void);
 #define brpSeqPutU32(offset, value) (*(u32*)(work + (offset)) = (value))
 #define brpSeqPutU16(offset, value) (*(u16*)(work + (offset)) = (value))
 #define brpSeqPutU8(offset, value) (*(u8*)(work + (offset)) = (value))
+/* SocialBig W419 negatives: named equal=slot==last probe (without scoped slot/last locals) was nd2332/3912B, 93 worse than the retained scoped shape nd2239/3912B; removing last and re-reading brpSeqU32(0x2c) regressed nd2460/3924B. */
 // FUN_00272810 NONMATCHING
 void func_00272810(void)
 {
     u8* work;
     DatPersonaWork* persona;
     u32 state;
-    u32 slot;
-    u32 last;
     u32 index;
     u16 skillId;
     u32 selected;
@@ -697,7 +696,7 @@ void func_00272810(void)
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = (u8*)sBrpSeq;
-    if ((brpSeqU32(0) & 1) != 0)
+    if ((~brpSeqU32(0) & 1) == 0)
     {
         state = brpSeqU32(0x10);
         switch (state)
@@ -707,8 +706,9 @@ void func_00272810(void)
                 brpSeqPutU32(0, brpSeqU32(0) & ~0x100u);
             break;
         case 1:
-            if (brpSeqU32(0x14) == 0)
+            switch (brpSeqU32(0x14))
             {
+            case 0:
                 FUN_003c7990(0);
                 if (FUN_003c7850() == 0)
                 {
@@ -724,6 +724,7 @@ void func_00272810(void)
                         func_00273800();
                     }
                 }
+                break;
             }
             break;
         case 2:
@@ -734,6 +735,8 @@ void func_00272810(void)
             }
             else if (brpSeqU32(0x24) == 0)
             {
+                u32 slot;
+                u32 last;
                 slot = brpSeqU32(0x28);
                 last = brpSeqU32(0x2c);
                 FUN_003c7990(slot == last);
@@ -887,6 +890,7 @@ void func_00272810(void)
                     }
                     else if (done == 0)
                     {
+                        u32 slot;
                         FUN_003c7650(1);
                         index = brpSeqU32(0x1b8) == 2 ?
                                 8 : brpSeqU32(0x1bc) +

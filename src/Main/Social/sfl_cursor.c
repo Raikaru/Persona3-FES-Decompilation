@@ -98,16 +98,16 @@ extern void FUN_002561e0(f32 amount, void* node);
 
 void FUN_0025a130(void)
 {
-  u32 *puVar1;
+  f32 f18;
+  f32 f10;
   u32 *puVar2;
   s32 uVar3;
-  f32 fVar4;
-  f32 f10;
   f32 f14;
-  f32 f18;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_18;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_14;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_10;
+  u32 *puVar1;
+  f32 fVar4;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_10;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_18;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_14;
 
   K_ASSERT(sSflCursor != NULL, 0x47);
   puVar1 = sSflCursor;

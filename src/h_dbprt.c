@@ -460,6 +460,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
     return allocation + 1;
 }
 
+/* W419 probe: moving copySize into the else block stayed nd6,obj228/window240 (same as baseline). */
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {

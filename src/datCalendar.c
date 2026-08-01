@@ -1109,7 +1109,7 @@ void* clndUpdateTask(KwlnTask* clndTask)
                 {
                     daysSinceApr5 = datGetDaysSinceApr5();
                     dayOfMonth = datGetDaysSkipTarget();
-                    if (dayOfMonth - daysSinceApr5 > 5)
+                    if (datGetDaysSkipTarget() - datGetDaysSinceApr5() > 5)
                     {
                         datSetDaysSinceApr5(dayOfMonth);
                         datSetTime(datGetTimeSkipTarget());
@@ -1117,7 +1117,7 @@ void* clndUpdateTask(KwlnTask* clndTask)
                         work->state = CLNDTASK_STATE_BEGIN_DAY;
                         return KWLNTASK_CONTINUE;
                     }
-                    if (daysSinceApr5 == dayOfMonth && datGetTime() == datGetTimeSkipTarget())
+                    if (datGetDaysSinceApr5() == datGetDaysSkipTarget() && datGetTime() == datGetTimeSkipTarget())
                     {
                         datSetDaysSinceApr5(dayOfMonth);
                         datSetTime(datGetTimeSkipTarget());
@@ -3008,6 +3008,8 @@ extern void func_001842c0(KwlnTask* task,
 // FUN_00183410 NONMATCHING
 void* func_00183410(KwlnTask* task)
 {
+    /* W419 branch-shape probe: drawReady-positive body measured 1068/1072 nd628
+     * versus baseline nd633/object1068; retained because it remains NONMATCHING. */
     CalendarConfirmWork* work;
     u32 oldState;
 
@@ -3046,11 +3048,7 @@ void* func_00183410(KwlnTask* task)
 
             case 2:
                 datSetFlag(0x1421, false);
-                if (work->drawReady == 0)
-                {
-                    printf((const char*)0x007cc0c0);
-                }
-                else
+                if (work->drawReady != 0)
                 {
                     if (work->timer < 60)
                     {
@@ -3063,6 +3061,10 @@ void* func_00183410(KwlnTask* task)
                                   work->timer,
                                   work->frame,
                                   work->renderContext);
+                }
+                else
+                {
+                    printf((const char*)0x007cc0c0);
                 }
                 break;
 
@@ -4214,6 +4216,7 @@ extern u8 D_00960094_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern f32 D_00960088;
 extern const f32 DAT_007caf38;
+extern RwV3d D_005D6C28;
 extern const char D_005E3F38[];
 extern const char* D_005E4150[];
 extern const char D_005E4190[];
@@ -5016,6 +5019,17 @@ void* func_00186190(KwlnTask* task)
                 }
             }
             break;
+        case 0xb:
+            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
+                          0, (s16)work->selectedValue);
+            func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
+                          0, (s16)work->selectedValue);
+            if (kwlnTaskGetState(work->eventTask) == KWLNTASK_STATE_DESTROY)
+            {
+                work->timer = 0;
+                work->state = work->selectedValue == work->targetValue ? 7 : 3;
+            }
+            break;
 
         case 4:
         {
@@ -5147,17 +5161,6 @@ void* func_00186190(KwlnTask* task)
             }
             break;
 
-        case 0xb:
-            func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
-                          0, (s16)work->selectedValue);
-            func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
-                          0, (s16)work->selectedValue);
-            if (kwlnTaskGetState(work->eventTask) == KWLNTASK_STATE_DESTROY)
-            {
-                work->timer = 0;
-                work->state = work->selectedValue == work->targetValue ? 7 : 3;
-            }
-            break;
     }
     return KWLNTASK_CONTINUE;
 }
@@ -5551,12 +5554,18 @@ KwlnTask* func_00187550(KwlnTask* parent)
 /* W363 callback-address probe: cached D_00960090_abs setState once
  * changes 1436/1520 nd1100 to 1452/1520 nd935; the result remains under the window.
  * The same family covers func_00183410, but its absolute-alias probe is 1088/1072 and blocked. */
+/* W419 global/call probes: D_009600A0 absolute array alias measured
+ * 1460/1520 nd945 versus baseline 1452/1520 nd935; D_00960088 absolute
+ * array alias measured 1460/1520 nd951; both rejected. Inlining the
+ * angle sine/cosine polynomial removed the three EXTRA trig calls but
+ * measured 1616/1520 nd1188 and exceeded the window; retained calls.
+ * Replacing the stack axis with D_005D6C28 measured 1416/1520 nd893
+ * (rate 0.63065) versus baseline 1452/1520 nd935 (rate 0.64394); retained. */
 // FUN_001875F0 NONMATCHING
 void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
 {
     RwCamera* camera;
     RwMatrix* matrix;
-    RwV3d axis;
     RwV3d local[4];
     RwV3d transformed[4];
     RwIm2DVertex vertices[4];
@@ -5584,7 +5593,6 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     local[1] = (RwV3d){15.0f, -22.0f, 0.0f};
     local[2] = (RwV3d){-15.0f, 22.0f, 0.0f};
     local[3] = (RwV3d){15.0f, 22.0f, 0.0f};
-    axis = (RwV3d){0.0f, 0.0f, 1.0f};
 
     while (angle > 180)
     {
@@ -5599,7 +5607,7 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     func_004c2fc0(1.0f - cosf(angleRadians),
                   sinf(angleRadians),
                   matrix,
-                  &axis,
+                  &D_005D6C28,
                   rwCOMBINEREPLACE);
     func_004c6c20(transformed, local, 4, matrix);
     func_004c3880(matrix);
@@ -8056,14 +8064,83 @@ void func_0018c780(KwlnTask* task)
 void func_0018ce50(KwlnTask* task)
 {
     void* object = (void*)task;
-    void* transition = GS_PTR(object, 0x70);
+    void* transition;
+    void* atlas;
+    void* unused;
+    void* unused2;
     void* sprite;
     GsSprite* node;
     f32 width;
     f32 height;
+    s16 pcId;
+    s32 hp;
+    s32 maxHp;
+    s32 sp;
+    s32 maxSp;
+    s32 barWidth;
 
-    gsDrawHeader(object, 8, 7, 6);
-    gsDrawStatusBars(object);
+    transition = GS_PTR(object, 0x70);
+    pcId = GS_S16(object, 0x14);
+    if (datGetScenarioMode() != 0)
+    {
+        if (pcId == 1)
+        {
+            pcId = 11;
+        }
+        if (pcId == 9)
+        {
+            pcId = 12;
+        }
+        if (pcId == 3)
+        {
+            pcId = 11;
+        }
+    }
+    atlas = GS_PTR(object, 0x3c + pcId * 4);
+    func_001159f0(unused, atlas, 8, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 20.0f,
+                  GS_F32(transition, 0x3c) + 18.0f,
+                  GS_F32(transition, 0x24));
+    func_001159f0(unused, atlas, 7, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 20.0f,
+                  GS_F32(transition, 0x3c) + 18.0f,
+                  GS_F32(transition, 0x24));
+    func_001159f0(unused, GS_PTR(object, 0x2c), 6, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 44.0f,
+                  GS_F32(transition, 0x3c) + 39.0f,
+                  GS_F32(transition, 0x24));
+
+    pcId = GS_S16(object, 0x14);
+    hp = datGetHp(pcId);
+    maxHp = datGetMaxHp(pcId);
+    barWidth = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
+    if (barWidth != 0x20)
+    {
+        func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
+                      GS_F32(transition, 0x3c) + 46.0f,
+                      0xffffff00, 0x20 - barWidth, 0x14);
+    }
+    func_001159f0(unused2, GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 50.0f,
+                  GS_F32(transition, 0x3c) + 46.0f,
+                  GS_F32(transition, 0x24));
+
+    sp = datGetSp(pcId);
+    maxSp = func_0016c670(pcId);
+    barWidth = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
+    if (barWidth != 0x20)
+    {
+        func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
+                      GS_F32(transition, 0x3c) + 51.0f,
+                      0xffffff00, 0x20 - barWidth, 0x14);
+    }
+    func_001159f0(unused2, GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 50.0f,
+                  GS_F32(transition, 0x3c) + 51.0f,
+                  GS_F32(transition, 0x24) - 2.0f);
+
     sprite = func_001158b0(NULL, GS_PTR(object, 0x3c), 1);
     node = (GsSprite*)sprite;
     node->depth = GS_F32(transition, 0x24) - 4.0f;
@@ -8092,18 +8169,83 @@ void func_0018d320(KwlnTask* task)
 {
     void* object = (void*)task;
     void* transition = GS_PTR(object, 0x70);
+    void* atlas;
+    void* unused;
+    void* unused2;
     void* sprite;
     GsSprite* node;
     f32 width;
     f32 height;
     s32 frame;
+    s16 pcId;
+    s32 hp;
+    s32 maxHp;
+    s32 sp;
+    s32 maxSp;
+    s32 barWidth;
     s32 burstFrame;
     s32 i;
     u32 alpha;
     u32 burstAlpha;
     u32 randomFrame;
-    gsDrawHeader(object, 6, 4, 5);
-    gsDrawStatusBars(object);
+    pcId = GS_S16(object, 0x14);
+    if (datGetScenarioMode() != 0)
+    {
+        if (pcId == 1)
+        {
+            pcId = 11;
+        }
+        if (pcId == 9)
+        {
+            pcId = 12;
+        }
+        if (pcId == 3)
+        {
+            pcId = 11;
+        }
+    }
+    atlas = GS_PTR(object, 0x3c + pcId * 4);
+    func_001159f0(unused, atlas, 6, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 20.0f,
+                  GS_F32(transition, 0x3c) + 18.0f,
+                  GS_F32(transition, 0x24));
+    func_001159f0(unused, atlas, 4, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 20.0f,
+                  GS_F32(transition, 0x3c) + 18.0f,
+                  GS_F32(transition, 0x24));
+    func_001159f0(unused, GS_PTR(object, 0x2c), 5, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 44.0f,
+                  GS_F32(transition, 0x3c) + 39.0f,
+                  GS_F32(transition, 0x24));
+    pcId = GS_S16(object, 0x14);
+    hp = datGetHp(pcId);
+    maxHp = datGetMaxHp(pcId);
+    barWidth = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
+    if (barWidth != 0x20)
+    {
+        func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
+                      GS_F32(transition, 0x3c) + 46.0f,
+                      0xffffff00, 0x20 - barWidth, 0x14);
+    }
+    func_001159f0(unused2, GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 50.0f,
+                  GS_F32(transition, 0x3c) + 46.0f,
+                  GS_F32(transition, 0x24));
+    sp = datGetSp(pcId);
+    maxSp = func_0016c670(pcId);
+    barWidth = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
+    if (barWidth != 0x20)
+    {
+        func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
+                      GS_F32(transition, 0x3c) + 51.0f,
+                      0xffffff00, 0x20 - barWidth, 0x14);
+    }
+    func_001159f0(unused2, GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
+                  GS_F32(transition, 0x38) + 50.0f,
+                  GS_F32(transition, 0x3c) + 51.0f,
+                  GS_F32(transition, 0x24) - 2.0f);
     frame = GS_S32(object, 0x18);
     if (frame > 5)
     {
@@ -8138,7 +8280,10 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSprite(GS_PTR(object, 0x38), 1, randomFrame & 0xff, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
+        func_001159f0(unused, GS_PTR(object, 0x38), 1, randomFrame & 0xff,
+                      GS_F32(transition, 0x38) + 28.0f,
+                      GS_F32(transition, 0x3c) + 22.0f,
+                      GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -8151,7 +8296,10 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSprite(GS_PTR(object, 0x38), 2, randomFrame & 0xff, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
+        func_001159f0(unused, GS_PTR(object, 0x38), 2, randomFrame & 0xff,
+                      GS_F32(transition, 0x38) + 59.0f,
+                      GS_F32(transition, 0x3c) + 23.0f,
+                      GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -8164,7 +8312,10 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSprite(GS_PTR(object, 0x38), 3, randomFrame & 0xff, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
+        func_001159f0(unused, GS_PTR(object, 0x38), 3, randomFrame & 0xff,
+                      GS_F32(transition, 0x38) + 21.0f,
+                      GS_F32(transition, 0x3c) + 47.0f,
+                      GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -8177,7 +8328,10 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSprite(GS_PTR(object, 0x38), 4, randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f, GS_F32(transition, 0x3c) + 43.0f, GS_F32(transition, 0x24) - 4.0f);
+        func_001159f0(unused, GS_PTR(object, 0x38), 4, randomFrame & 0xff,
+                      GS_F32(transition, 0x38) + 49.0f,
+                      GS_F32(transition, 0x3c) + 43.0f,
+                      GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -8190,7 +8344,10 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSprite(GS_PTR(object, 0x38), 5, randomFrame & 0xff, GS_F32(transition, 0x38) + 67.0f, GS_F32(transition, 0x3c) + 62.0f, GS_F32(transition, 0x24) - 4.0f);
+        func_001159f0(unused, GS_PTR(object, 0x38), 5, randomFrame & 0xff,
+                      GS_F32(transition, 0x38) + 67.0f,
+                      GS_F32(transition, 0x3c) + 62.0f,
+                      GS_F32(transition, 0x24) - 4.0f);
     }
     GS_S32(object, 0x18)++;
     if (GS_S32(object, 0x18) > 0x1e)
@@ -8201,7 +8358,15 @@ void func_0018d320(KwlnTask* task)
 }
 
 #pragma opt_propagation reset
-// FUN_0018DB20 NONMATCHING
+/* W419 operand-order probes at atlas = pcId*4 + object + 0x3c: pointer,
+ * integer-cast, and opt_common_subs-off variants stayed 696/704 nd2; an
+ * add-helper variant was 704/704 nd351; retained direct expression. */
+static inline u32 clndAddOffsetFirst(u32 offset, u32 base)
+{
+    return offset + base;
+}
+/* W419 offset-first integer inline: nd2/object696 -> nd0/object696; window 704. */
+// FUN_0018DB20
 void* func_0018db20(KwlnTask* task)
 {
     GsDb20WorkView* object = (GsDb20WorkView*)task;
@@ -8243,7 +8408,7 @@ void* func_0018db20(KwlnTask* task)
                     pcId = 11;
                 }
             }
-            atlas = (void**)((pcId * 4) + (u8*)object + 0x3c);
+            atlas = (void**)(clndAddOffsetFirst((u32)(pcId * 4), (u32)object) + 0x3c);
             {
                 f32 x;
                 f32 y;

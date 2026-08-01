@@ -857,6 +857,8 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 // and size 504 -> 500, so it was reverted. The seven-word residual is confined
 // to the ten-float copy loop's equivalent index/base address-formation order.
 // W414 direct stack-array indexing probes regressed FUN_0038e660 nd13 -> nd178; retained computed-pointer form.
+// W419 exhaustive declaration sweep: all 120 permutations of iVar1/iVar2/iVar4/piVar3/psVar2 yielded 60 at nd13/object504 and 60 at nd38/object504; no gain.
+// W419 declaration-sweep negative: nd13/object504/window512/rate2.58% for 60 permutations; nd38/object504/window512/rate7.54% for 60 permutations.
 // FUN_0038E660 NONMATCHING
 
 

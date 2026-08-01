@@ -286,6 +286,7 @@ void func_00215b00(void)
 }
 #pragma opt_lifetimes reset
 
+/* SocialBig W419 negative: nested result switch case order 0/1 produced nd929/2108B versus baseline nd883/2100B; reversed order produced nd930/2108B. */
 // FUN_00215FC0 NONMATCHING
 void func_00215fc0(void)
 {

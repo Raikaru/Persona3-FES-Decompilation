@@ -24,6 +24,11 @@ typedef void (*BpEffectRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s
 
 #define BAI_MAIN_ACTIVE 1
 
+static inline f32 baiMul(f32 left, f32 right)
+{
+    return left * right;
+}
+
 typedef struct
 {
     u32 unk0;  // 0x00
@@ -32,6 +37,7 @@ typedef struct
 
 static BaiMainWork* sBaiMain; // DAT_007ce338
 
+/* W419 negative probe: placing static sBpEffect in .sdata left FUN_0024C110 at nd1500/2888B, window2960B, rate51.94%; reverted. */
 // FUN_0024C110 NONMATCHING
 void FUN_0024c110(void)
 {
@@ -95,8 +101,8 @@ void FUN_0024c110(void)
     } else if (*(s32*)(work + 0xc) < 0x32) {
         phase = (f32)(*(s32*)(work + 0xc) - 0x2a) / 8.0f;
         fade = 1.0f - phase;
-        offsetX = (-baseX) * 3.5f * DAT_007cad60 * phase;
-        offsetY = (-baseY) * 3.0f * DAT_007cad60 * phase;
+        offsetX = baiMul(baiMul(DAT_007cad60, (-baseX) * 3.5f), phase);
+        offsetY = baiMul(baiMul(DAT_007cad60, (-baseY) * 3.0f), phase);
     } else {
         fade = 0.0f;
         offsetX = 0.0f;
@@ -105,12 +111,16 @@ void FUN_0024c110(void)
 
     rect[0] = 210.0f + offsetX;
     rect[1] = 178.0f + offsetY;
-    if (*(u32*)work == 1) {
-        rect[2] = 428.0f;
-        rect[3] = 256.0f;
-    } else if (*(u32*)work == 0) {
+    switch (*(u32*)work)
+    {
+    case 0:
         rect[2] = (f32)0x1a1;
         rect[3] = 250.0f;
+        break;
+    case 1:
+        rect[2] = 428.0f;
+        rect[3] = 256.0f;
+        break;
     }
     func_0021d8e0(work + 0x110, rect);
 
@@ -145,12 +155,16 @@ void FUN_0024c110(void)
 
     rect[0] = 210.0f;
     rect[1] = 178.0f;
-    if (*(u32*)work == 1) {
-        rect[2] = 428.0f;
-        rect[3] = 256.0f;
-    } else if (*(u32*)work == 0) {
+    switch (*(u32*)work)
+    {
+    case 0:
         rect[2] = (f32)0x1a1;
         rect[3] = 250.0f;
+        break;
+    case 1:
+        rect[2] = 428.0f;
+        rect[3] = 256.0f;
+        break;
     }
 
     vertices[0] = rect[0];
@@ -188,6 +202,7 @@ void FUN_0024c110(void)
     if (timer < 12) {
         baseX = (f32)timer / 12.0f;
     } else if (timer < 0x30) {
+        baseX = 1.0f;
     } else {
         baseX = 1.0f - (f32)(timer - 0x30) / 12.0f;
     }
@@ -198,14 +213,18 @@ void FUN_0024c110(void)
     rect[3] = 448.0f;
     func_0021d8e0(work + 0x10, rect);
 
-    if (*(u32*)work == 1) {
-        color[0] = 0x37;
-        color[1] = 0;
-        color[2] = 3;
-    } else if (*(u32*)work == 0) {
+    switch (*(u32*)work)
+    {
+    case 0:
         color[0] = 0;
         color[1] = 0x11;
         color[2] = 0x48;
+        break;
+    case 1:
+        color[0] = 0x37;
+        color[1] = 0;
+        color[2] = 3;
+        break;
     }
     color[3] = (u8)(u32)(153.0f * baseX);
     func_0021d950(work + 0x10, color);
@@ -217,14 +236,18 @@ void FUN_0024c110(void)
     *(f32*)(work + 0x390) = 640.0f;
     *(f32*)(work + 0x394) = 448.0f;
 
-    if (*(u32*)work == 1) {
-        color[0] = 0x2d;
-        color[1] = 2;
-        color[2] = 8;
-    } else if (*(u32*)work == 0) {
+    switch (*(u32*)work)
+    {
+    case 0:
         color[0] = 0;
         color[1] = 0x44;
         color[2] = 0xc8;
+        break;
+    case 1:
+        color[0] = 0x2d;
+        color[1] = 2;
+        color[2] = 8;
+        break;
     }
     color[3] = 0;
     *(f32*)(work + 0x330) = (f32)color[0];

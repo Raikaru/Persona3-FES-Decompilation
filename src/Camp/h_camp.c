@@ -4562,6 +4562,8 @@ extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
 extern void* DAT_00833B94;
+#pragma alias DAT_00833B94_abs DAT_00833B94
+extern u8 DAT_00833B94_abs[];
 extern void* DAT_00833B98;
 #pragma alias DAT_00833B90_abs DAT_00833B90
 extern u8 DAT_00833B90_abs[];
@@ -6975,21 +6977,18 @@ void FUN_00125b40_persona(CampVec2 position, CampVec2 unused, f32 alpha,
                   void* persona, s32 fade)
 {
     void* parent;
-    f32 drawAlpha;
+    void* firstParent;
     void* resource;
     s32 personaId;
     u8 level;
     CampVec2 originalPosition;
     CampVec2 iconPosition;
     CampVec2 levelPosition;
-    CampVec2 drawPosition;
 
     originalPosition = position;
-    drawPosition = position;
-    drawAlpha = alpha;
-    campPersonaDrawSprite(parent, *(void**)DAT_00833B90_abs, 1,
-                          drawPosition.x + 22.0f, drawPosition.y + 117.0f,
-                          fade, drawAlpha);
+    campPersonaDrawSprite(firstParent, *(void**)DAT_00833B90_abs, 1,
+                          originalPosition.x + 22.0f, originalPosition.y + 117.0f,
+                          fade, alpha);
     iconPosition = originalPosition;
     resource = *(void**)DAT_00833B88_abs;
     personaId = FUN_00173280_y5(*(u16*)((u8*)persona + 2)) - 1;
@@ -7455,6 +7454,9 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes reset
 #pragma opt_common_subs reset
+/* W419 global-mode probe: DAT_00833B94 GP loads nd956/object1360/1680
+ * (rate .703) -> absolute loads nd999/object1428/1680 (rate .700);
+ * retained as the rate-improving retail addressing mode. */
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 {
@@ -7474,51 +7476,51 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     left = position.x + 21.0f;
     right = position.x + 127.0f;
     top = position.y + 49.0f;
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16, drawAlpha,
                              left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19, drawAlpha,
                              right, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16, drawAlpha,
                              left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19, drawAlpha,
                              right, top, 100.0f);
 
     count = (s16)FUN_00177280(FUN_0016c6f0(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count - 1, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count - 1, drawAlpha,
                              position.x + 129.0f, position.y + 72.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
                              right, position.y + 63.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x17, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x17, drawAlpha,
                              left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1a, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1a, drawAlpha,
                              right, position.y + 97.0f, 100.0f);
 
     count = (s16)FUN_001772F0(FUN_0016c740(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 6, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 6, drawAlpha,
                              position.x + 129.0f, position.y + 120.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
                              right, position.y + 111.0f, 100.0f);
     campStatusDrawSpriteCall(
-        drawParent, DAT_00833B94, 0x1d, drawAlpha,
+        drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
         position.x + 128.0f + (f32)((count - 1) * 20),
         position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x18, drawAlpha,
                              left, position.y + 147.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1b, drawAlpha,
                              right, position.y + 147.0f, 100.0f);
 
     count = (s16)FUN_00177360(FUN_0016c790(parent));
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 13, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 13, drawAlpha,
                              position.x + 129.0f, position.y + 170.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
                              right, position.y + 161.0f, 100.0f);
     campStatusDrawSpriteCall(
-        drawParent, DAT_00833B94, 0x1d, drawAlpha,
+        drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
         position.x + 128.0f + (f32)((count - 1) * 20),
         position.y + 161.0f, 100.0f);
 
@@ -13474,6 +13476,7 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
 }
 
 /* W373 pragma sweep: default nd1925/object2620/2912; propagation off nd1922/object2564/2912. Retained propagation off. */
+/* W419 global-mode probe (not retained): DAT_00833B48 absolute nd1951/object2620/2912 (rate .744656) vs GP nd1922/object2564/2912 (rate .749610). */
 #pragma opt_propagation off
 // FUN_00137580 NONMATCHING
 void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
@@ -14452,6 +14455,7 @@ void FUN_00139DC0(f32 param_1)
 /* W373 pragma sweep: default nd3084/object3972/4112; common_subs off nd3047/object4040/4112; propagation off nd2787/object3628/4112; dead_assignments off nd3033/object3928/4112; common+propagation nd3036/object4040/4112; common+dead_assignments nd3047/object4040/4112; propagation+dead_assignments nd2787/object3628/4112. Retained propagation off + dead_assignments off. */
 #pragma opt_propagation off
 #pragma opt_dead_assignments off
+/* W419 global-mode probe: D_00833B44/B58/B60/B64/B68/BA4 GP loads nd2789/object3628/4112 (rate .768743); absolute aliases nd2793/object3704/4112 (rate .754050); retained. */
 // FUN_00139FC0 NONMATCHING
 void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8, s32 param_9)
@@ -14560,7 +14564,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         hasResource = FUN_00172160(id);
         if (hasResource != 0)
         {
-            campDrawSprite(D_00833B64, 2, (u8)alpha,
+            campDrawSprite(*(void**)D_00833B64_abs, 2, (u8)alpha,
                            579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
         }
         else
@@ -14568,7 +14572,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             hasResource = FUN_001717C0(id);
             if (hasResource != 0)
             {
-                campDrawSprite(D_00833B64, 3, (u8)alpha,
+                campDrawSprite(*(void**)D_00833B64_abs, 3, (u8)alpha,
                                579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
             }
         }
@@ -14585,16 +14589,16 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             alpha = 0;
         }
         id = *item;
-        campDrawSprite(D_00833B58, DAT_005E3220[id] - 1, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B58_abs, DAT_005E3220[id] - 1, (u8)alpha,
                        200.0f + position.x - 60.0f, position.y + 18.0f, param_1);
         rowY = position.y + 40.0f;
-        campDrawSprite(D_00833B58, 0x2B, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B58_abs, 0x2B, (u8)alpha,
                        202.0f + position.x - 60.0f, rowY, param_1);
-        campDrawSprite(D_00833B58, 0x2C, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B58_abs, 0x2C, (u8)alpha,
                        608.0f + position.x - 60.0f, rowY, param_1);
-        campDrawSprite(D_00833B44, DAT_005E3220[id] + 0x31, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B44_abs, DAT_005E3220[id] + 0x31, (u8)alpha,
                        207.0f + position.x - 60.0f, position.y + 40.0f, param_1);
-        campDrawSprite(D_00833B58, 0x2D, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B58_abs, 0x2D, (u8)alpha,
                        291.0f + position.x - 60.0f, position.y + 48.0f, param_1);
     }
 
@@ -14657,13 +14661,13 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             alpha = 0;
         }
         rowY = position.y + 415.0f;
-        campDrawSprite(D_00833B68, 0, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B68_abs, 0, (u8)alpha,
                        96.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
-        campDrawSprite(D_00833B68, 7, (u8)alpha,
+        campDrawSprite(*(void**)D_00833B68_abs, 7, (u8)alpha,
                        112.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
-        campDrawSprite(D_00833BA4, 3, (u8)alpha,
+        campDrawSprite(*(void**)D_00833BA4_abs, 3, (u8)alpha,
                        621.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
-        campDrawSprite(D_00833BA4, 8, (u8)alpha,
+        campDrawSprite(*(void**)D_00833BA4_abs, 8, (u8)alpha,
                        487.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
         id = *item;
         if (id == 0 || id == 0x1D)
@@ -14671,9 +14675,9 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             mark = FUN_0016DBA0((s16)id);
             level = D_00833A60[param_7];
             rowY = position.y + 334.0f;
-            campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
+            campDrawSprite(*(void**)D_00833B58_abs, 0x1F, (u8)alpha,
                            332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
-            campDrawSprite(D_00833B58, 0x20, (u8)alpha,
+            campDrawSprite(*(void**)D_00833B58_abs, 0x20, (u8)alpha,
                            667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
@@ -14687,9 +14691,9 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             mark = FUN_0016DBA0((s16)id);
             reward = D_005DBB00[param_7 + id * 3];
             rowY = position.y + 334.0f;
-            campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
+            campDrawSprite(*(void**)D_00833B58_abs, 0x1F, (u8)alpha,
                            332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
-            campDrawSprite(D_00833B58, 0x20, (u8)alpha,
+            campDrawSprite(*(void**)D_00833B58_abs, 0x20, (u8)alpha,
                            667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
@@ -14715,15 +14719,15 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     }
     x = 636.0f + position.x - 60.0f;
     shiftedPosition = campPackPosition(x, position.y + 199.0f + (f32)iGpffffb27c);
-    campDrawSprite(D_00833B60, 0, (u8)alpha,
+    campDrawSprite(*(void**)D_00833B60_abs, 0, (u8)alpha,
                    campPackedX(shiftedPosition), campPackedY(shiftedPosition),
                    param_1 - 3.0f);
-    campDrawSprite(D_00833B60, 1, (u8)alpha,
+    campDrawSprite(*(void**)D_00833B60_abs, 1, (u8)alpha,
                    x, position.y + (f32)iGpffffb27c, param_1 - 3.0f);
-    campDrawSprite(D_00833B60, 0, (u8)alpha,
+    campDrawSprite(*(void**)D_00833B60_abs, 0, (u8)alpha,
                    x, position.y + 199.0f + (f32)iGpffffb27c - 448.0f,
                    param_1 - 3.0f);
-    campDrawSprite(D_00833B60, 1, (u8)alpha,
+    campDrawSprite(*(void**)D_00833B60_abs, 1, (u8)alpha,
                    x, position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
 #pragma opt_dead_assignments reset
@@ -30460,6 +30464,11 @@ void FUN_00169AE0(int param_1)
 }
 /* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
 
+#pragma push
+/* Retail-tail reconstruction: baseline nd551/object808/1184 (rate .682);
+ * typed calls + absolute depth + count flow nd667/object1064/1184 without
+ * opt_common_subs, and nd611/object1060/1184 with it (rate .576); retained. */
+#pragma opt_common_subs off
 /* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
@@ -30475,52 +30484,81 @@ void FUN_00169B90(void* param_1, undefined8 param_2,
                   void* param_3, s32 param_4, undefined8 param_5)
 {
     RwV2d position;
+    void* owner;
+    f32* depthBase;
     f32 x;
     f32 y;
     f32 depth;
     f32 drawY;
+    s32 count;
+    s32 digit;
+    bool hasHundreds;
 
     position = *(RwV2d*)&param_2;
     y = position.y;
     x = position.x;
+    depthBase = (f32*)DAT_00960088_abs;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    campDataDrawListA(*depthBase - depth, param_1, position, param_3, param_4);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    campDataDrawListB(*depthBase - depth, param_1, position, param_3, param_4);
     drawY = y + 18.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x31,
+                       (u8)param_4, x + 240.0f, drawY,
+                       *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 416.0f, drawY, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x32,
+                       (u8)param_4, x + 416.0f, drawY,
+                       *depthBase - depth);
     drawY = x + 468.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(drawY, y + 408.0f, DAT_00960088 - depth);
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x38,
+                       (u8)param_4, drawY, y + 408.0f,
+                       *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
-    {
-        s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
-        if (count >= 100) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(drawY, y + 384.0f, DAT_00960088 - depth);
-        }
-        if (count >= 10) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
-        }
+    FUN_001159f0_typed(owner, *(void**)((u8*)param_1 + 4), 0x33,
+                       (u8)param_4, x + 386.0f, y + 379.0f,
+                       *depthBase - depth);
+    count = ((CampTargetList*)(uintptr_t)param_3)->count;
+    hasHundreds = false;
+    if (count >= 100) {
+        hasHundreds = true;
+        digit = count / 100;
+        depth = (f32)FUN_0021ea00(0x28);
+        FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                           (u8)param_4, 0x62, 0xae, 0xff,
+                           drawY, y + 384.0f, *depthBase - depth);
+        count %= 100;
     }
+    if (hasHundreds || count >= 10) {
+        digit = count / 10;
+        depth = (f32)FUN_0021ea00(0x28);
+        FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                           (u8)param_4, 0x62, 0xae, 0xff,
+                           x + 495.0f, y + 384.0f, *depthBase - depth);
+    }
+    digit = count % 10;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteAltDirect(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
+    FUN_00115bc0_typed(owner, *(void**)((u8*)param_1 + 4), digit,
+                       (u8)param_4, 0x62, 0xae, 0xff,
+                       x + 522.0f, y + 384.0f, *depthBase - depth);
     y += 404.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 565.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 565.0f, y, *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 584.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 584.0f, y, *depthBase - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
+    campDataDrawDigitsDirect(x + 603.0f, y, *depthBase - depth);
 }
+/* The reconstruction intentionally leaves the retail owner register
+ * uninitialized; no fabricated owner value is introduced. */
+ 
+#pragma opt_common_subs reset
 
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
+#pragma pop
 /* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
 #pragma opt_lifetimes on
 // FUN_0016A030 NONMATCHING

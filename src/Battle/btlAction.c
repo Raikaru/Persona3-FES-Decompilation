@@ -7915,6 +7915,7 @@ void btlActionInitStateExit(BtlAction* action)
         }
     }
 }
+/* W419 negative: permuting btlActionUpdateStateExit locals (including i-first) left nd99 unchanged at object 532/544. */
 // FUN_00299b00 NONMATCHING
 void btlActionUpdateStateExit(BtlAction* action)
 {

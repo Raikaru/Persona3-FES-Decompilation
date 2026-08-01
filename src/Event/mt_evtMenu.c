@@ -856,6 +856,8 @@ float FUN_0038a220(int param_1);
 extern void FUN_00523ac8_evt4(u8 *param_1,const char *param_2,void *param_3,void *param_4);
 float FUN_0038a900(int param_1);
 int FUN_00361830(int param_1);
+#pragma alias FUN_00361830_ptr FUN_00361830
+extern u8 *FUN_00361830_ptr(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
 int FUN_00361f20(int param_1);
 int FUN_00361f60(int param_1,int param_2);
@@ -3066,6 +3068,8 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 #pragma pop
 
 
+// W419 exhaustive declaration sweep: all 24 permutations of iVar1/iVar2/uVar3/iVar4 stayed nd34/object348; no scheduling gain.
+// W419 declaration-sweep negative: nd34/object348/window352/rate9.77% for every permutation.
 // FUN_003715B0 NONMATCHING
 
 
@@ -4013,8 +4017,10 @@ int FUN_00372790(int param_1,int param_2,int param_3)
 #pragma pop
 
 
+/* W419 assertion-only negative: nd1534/object2372/window2384/rate64.67% -> nd1386/object2408/window2384/rate57.56%; over-window by24B, reverted. */
 // FUN_00372C40 NONMATCHING
 /* W417 adding the census-missing FUN_0019d3f0 assertion lowered nd1534 -> 1386 but grew 2372B -> 2408B past the 2384B window; reverted. */
+/* W419 landed: census-missing assertion plus pointer-return declaration lowered nd1534 -> 1370 and object2372B -> 2344B (window2384B). */
 
 
 bool FUN_00372c40(int param_1)
@@ -4027,7 +4033,7 @@ bool FUN_00372c40(int param_1)
 
   int sVar2;
 
-  int iVar3;
+  u8 *iVar3;
 
   u32 uVar4;
 
@@ -4052,9 +4058,12 @@ bool FUN_00372c40(int param_1)
   
 
   iVar7 = param_1;
+  if (*(int *)(param_1 + 0x164) == 0) {
+    FUN_0019d3f0((const char *)(DAT_006a0000 - 0x1bf8),0x869);
+  }
 
 
-  iVar3 = FUN_00361830(param_1);
+  iVar3 = FUN_00361830_ptr(param_1);
 
   if (*(int *)(param_1 + 0x274) == 0) {
 
@@ -5646,6 +5655,8 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+// W419 exhaustive declaration sweep: all 120 permutations of iVar1/result/iVar3/iVar4/callCount stayed nd32/object412; inline count probe nd32 -> nd34, object412 unchanged.
+// W419 declaration-sweep negative: nd32/object412/window416/rate7.77% for every permutation; inline count probe nd34/object412/rate8.25%.
 // FUN_00374AF0 NONMATCHING
 
 
@@ -6545,6 +6556,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 /* opt_lifetimes on: default nd10238/14020B -> nd10038/14020B; retained. */
 #pragma push
 #pragma opt_lifetimes on
+/* W419 global-address probes reverted: first four PTR globals nd10038/object14020/window14096/rate71.60% -> nd10105/object14036/window14096/rate71.99%; extending to seven -> nd10083/object14048/window14096/rate71.78%. */
 // FUN_003760A0 NONMATCHING
 
 
@@ -9442,6 +9454,8 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 
 
 /* W414: shared-value, parameter-return, and switch/goto layout probes did not improve nd4. */
+/* W419 return-value locals and one-argument variants stayed nd4/object324; retail's move v0,a2 remains unresolved. */
+/* W419 return-value negative: nd4/object324/window336/rate1.23% for all one-local and one-argument variants; retail move v0,a2 unresolved. */
 // FUN_0037A640 NONMATCHING
 
 
@@ -16782,6 +16796,7 @@ void FUN_00384520(int param_1,int param_2,int param_3,int param_4)
 /* opt_lifetimes on: default nd337/572B -> nd331/572B; retained. */
 #pragma push
 #pragma opt_lifetimes on
+/* W419 global-address probe negative: base+0x952 grew object 572 -> 588B and nd331 -> 346 (window608); rate 57.87% -> 58.84%; reverted. */
 // FUN_00384780 NONMATCHING
 
 

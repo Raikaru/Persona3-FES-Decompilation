@@ -793,7 +793,7 @@ void FUN_0025ed40(void)
         (*state)(6, 0);
         (*state)(8, 0);
         (*state)(1, 0);
-        quad = state;
+        quad = DAT_0096009c_abs;
         (*quad)(iVar1 + 0x110, 4, 0, 1, 2);
         (*quad)(iVar1 + 0x110, 4, 0, 2, 3);
     }
@@ -801,7 +801,7 @@ void FUN_0025ed40(void)
         (*state)(6, 0);
         (*state)(8, 1);
         (*state)(1, 0);
-        quad = state;
+        quad = DAT_0096009c_abs;
         (*quad)(iVar1 + 0x110, 4, 0, 1, 2);
         (*quad)(iVar1 + 0x110, 4, 0, 2, 3);
     }

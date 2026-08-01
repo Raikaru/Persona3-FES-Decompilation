@@ -61,6 +61,11 @@ static u32* sBpo65c; // puGpffffb65c
 
 void func_00252340(void);
 
+static inline f32 bpoMul(f32 left, f32 right)
+{
+    return left * right;
+}
+
 
 
 // FUN_00251F40
@@ -163,6 +168,7 @@ void FUN_002520f0(void)
     }
 }
 
+/* W419 negative probes: bpoMul on FUN_00252340 rotation products left nd1201/2820B, window2848B, rate42.59%; float SDA aliases also left nd1201/2820B, window2848B, rate42.59%; reverted. */
 // FUN_00252340 NONMATCHING
 void FUN_00252340(void)
 {
@@ -216,8 +222,8 @@ void FUN_00252340(void)
     fVar13 = 1.5f;
     afStack_30[0] = ((float)*(int *)(unaff_s2_lo + 0xc) * -(fVar13 - 1.0f)) / 2.0f + 133.0f;
     afStack_30[1] = ((float)*(int *)(unaff_s2_lo + 0x10) * -(fVar13 - 1.0f)) / 2.0f + 146.0f;
-    afStack_30[2] = fVar13 * (float)*(int *)(unaff_s2_lo + 0xc);
-    afStack_30[3] = fVar13 * (float)*(int *)(unaff_s2_lo + 0x10);
+    afStack_30[2] = bpoMul((float)*(int *)(unaff_s2_lo + 0xc), fVar13);
+    afStack_30[3] = bpoMul((float)*(int *)(unaff_s2_lo + 0x10), fVar13);
     FUN_0021d8e0(puVar2 + 4, afStack_30);
 
     switch (puVar2[2]) {
@@ -275,8 +281,8 @@ void FUN_00252340(void)
         afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] - 61.0f;
     }
     for (iVar4 = 0; iVar4 < 4; iVar4 = iVar4 + 1) {
-        afStack_30[iVar4 * 2] = afStack_30[iVar4 * 2] * fVar13;
-        afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] * fVar13;
+        afStack_30[iVar4 * 2] = bpoMul(afStack_30[iVar4 * 2], fVar13);
+        afStack_30[iVar4 * 2 + 1] = bpoMul(afStack_30[iVar4 * 2 + 1], fVar13);
     }
 
     fVar13 = fGpffff8248 * (in_f21 / 360.0f) * 2.0f;

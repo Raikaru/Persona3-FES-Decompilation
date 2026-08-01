@@ -671,6 +671,8 @@ extern u32 D_0096017C[];
 extern u32 D_00960184[];
 #pragma alias D_00960184_abs D_00960184
 extern u8 D_00960184_abs[];
+#pragma alias D_00960184_sda D_00960184
+extern u8 D_00960184_sda[] __attribute__((section(".sdata")));
 extern u8 D_00834010[];
 extern u8 D_00833994[];
 extern s32 D_005e3840[][2];
@@ -881,6 +883,7 @@ void FUN_00177d40(void)
 
 #pragma opt_common_subs off
 #pragma opt_lifetimes on
+/* W419 D_00960184 first two loads via _sda: nd3098/object4696/window4736 (65.97%) vs baseline nd3175/object4704 (67.49%); retained. */
 // FUN_00177db0 NONMATCHING
 void* FUN_00177db0(u32 saveType, s32* saveSize)
 {
@@ -897,8 +900,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     u32 day;
     s32 resultSize;
 
-    U32(0x0083a6ec) = ((u32*)D_00960184_abs)[0];
-    U32(0x0083a6f0) = ((u32*)D_00960184_abs)[1];
+    U32(0x0083a6ec) = ((u32*)D_00960184_sda)[0];
+    U32(0x0083a6f0) = ((u32*)D_00960184_sda)[1];
     U32(0x0083a6f4) = (u32)FUN_001bff20();
     buffer = (u8*)ALLOCATE(1, 0x20000, 0x40000);
     chunkOffset = 0;
@@ -3146,6 +3149,7 @@ void FUN_0017d3c0(void)
     }
 }
 
+// W419 date comparator declaration-order and u64 aggregate probes stayed nd228/object440; u8 flag was nd302/object456 (over window).
 // FUN_0017d450 NONMATCHING
 u32 FUN_0017d450(s32 index, const void* date)
 {

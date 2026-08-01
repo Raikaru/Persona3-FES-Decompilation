@@ -115,8 +115,16 @@ u32 DAT_006b0020;
 u32 DAT_006b0050;
 u32 DAT_006b0450;
 u32 DAT_006b04d0;
+#pragma alias DAT_006b0450_abs DAT_006b0450
+extern u8 DAT_006b0450_abs[];
+#pragma alias DAT_006b04d0_abs DAT_006b04d0
+extern u8 DAT_006b04d0_abs[];
 u32 DAT_006b0a00;
+#pragma alias DAT_006b0a00_abs DAT_006b0a00
+extern u8 DAT_006b0a00_abs[];
 u32 DAT_006b0a60;
+#pragma alias DAT_006b0a60_abs DAT_006b0a60
+extern u8 DAT_006b0a60_abs[];
 float DAT_006b0ac0;
 float DAT_006b0ac4;
 float DAT_006b0ac8;
@@ -130,6 +138,8 @@ extern u8 DAT_006b0ac8_abs[];
 #pragma alias DAT_006b0acc_abs DAT_006b0acc
 extern u8 DAT_006b0acc_abs[];
 u32 DAT_006b0ad0;
+#pragma alias DAT_006b0ad0_abs DAT_006b0ad0
+extern u8 DAT_006b0ad0_abs[];
 u32 DAT_006b0cb0;
 u32 DAT_006b0dd4;
 u32 DAT_006b0ddc;
@@ -145,7 +155,11 @@ u32 DAT_006b0e6c;
 #pragma alias DAT_006b0e64_abs DAT_006b0e64
 extern u8 DAT_006b0e64_abs[];
 u32 DAT_006b10e0;
+#pragma alias DAT_006b10e0_abs DAT_006b10e0
+extern u8 DAT_006b10e0_abs[];
 u32 DAT_006b1130;
+#pragma alias DAT_006b1130_abs DAT_006b1130
+extern u8 DAT_006b1130_abs[];
 u32 DAT_006b1178;
 u32 DAT_006b1190;
 u32 DAT_006b1220;
@@ -1277,6 +1291,7 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
 }
 
+// W419 negative: DAT_006b0050 array/absolute alias changed FUN_00411ee0 nd298/object424 to nd303/object428 (window448); regressed and reverted.
 // FUN_00411EE0 NONMATCHING
 
 
@@ -1411,7 +1426,7 @@ float afStack_3c [15];
 
 iVar2 = *(int *)(param_2 + 0xc);
 
-puVar9 = &DAT_006b0450;
+puVar9 = (u32 *)(void *)DAT_006b0450_abs;
 
 psVar7 = asStack_80;
 
@@ -1435,7 +1450,7 @@ do {
 
 } while (0 < iVar5);
 
-puVar9 = &DAT_006b04d0;
+puVar9 = (u32 *)(void *)DAT_006b04d0_abs;
 
 psVar7 = asStack_100;
 
@@ -1724,7 +1739,7 @@ float afStack_30 [12];
 
 iVar2 = *(int *)(param_2 + 0xc);
 
-puVar9 = &DAT_006b0a00;
+puVar9 = (u32 *)(void *)DAT_006b0a00_abs;
 
 psVar7 = asStack_60;
 
@@ -1748,7 +1763,7 @@ do {
 
 } while (0 < iVar5);
 
-puVar9 = &DAT_006b0a60;
+puVar9 = (u32 *)(void *)DAT_006b0a60_abs;
 
 psVar7 = asStack_c0;
 
@@ -2078,7 +2093,7 @@ u32 auStack_1e0 [120];
 
 iVar2 = *(int *)(param_2 + 0xc);
 
-puVar11 = &DAT_006b0ad0;
+puVar11 = (u32 *)(void *)DAT_006b0ad0_abs;
 
 puVar10 = auStack_1e0;
 
@@ -2456,7 +2471,7 @@ float afStack_24 [9];
 
 iVar2 = *(int *)(param_2 + 0xc);
 
-puVar9 = &DAT_006b10e0;
+puVar9 = (u32 *)(void *)DAT_006b10e0_abs;
 
 psVar7 = asStack_50;
 
@@ -2480,7 +2495,7 @@ do {
 
 } while (0 < iVar5);
 
-puVar9 = &DAT_006b1130;
+puVar9 = (u32 *)(void *)DAT_006b1130_abs;
 
 psVar7 = asStack_a0;
 
@@ -2986,6 +3001,7 @@ u64 FUN_00413b10(u64 param_1,int param_2)
 
 /* W327 measured: opt_loop_invariants on normalized_diff 1006 -> 986; object 1404/1424 -> 1404/1424 (without/with). */
 #pragma opt_loop_invariants on
+// W419 negative: DAT_006b1190 array/absolute alias changed FUN_00413b70 nd986/object1404 to nd990/object1408 (window1424; rate .702279 -> .703125); regressed and reverted.
 // FUN_00413B70 NONMATCHING
 
 
@@ -3459,6 +3475,7 @@ void FUN_00414280(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 }
 
+// W419 negative: DAT_007cada4 array/absolute alias changed FUN_00414320 nd216/object460 to nd247/object464 (window480); reverted.
 // FUN_00414320 NONMATCHING
 
 
@@ -3729,6 +3746,7 @@ void FUN_00414d70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 }
 
+/* W419 negative: dereferencing PTR_FUN_006b1490/1494/1498 into the three pointer locals left FUN_00414e10 at nd266/object368 (baseline nd266/object368, window464); reverted. */
 // FUN_00414E10 NONMATCHING
 
 
@@ -4558,6 +4576,7 @@ return 0; }
 
 /* W327 measured: opt_loop_invariants on normalized_diff 573 -> 524; object 1116/1152 -> 1116/1152 (without/with). */
 #pragma opt_loop_invariants on
+// W419 negative: DAT_006b1710 array/absolute alias changed FUN_00415dc0 nd524/object1116 to nd724/object1120 (window1152; rate .469534 -> .646429); regressed and reverted.
 // FUN_00415DC0 NONMATCHING
 
 
@@ -5088,6 +5107,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 }
 
 // W415 probes (all reverted): direct arithmetic for CONCAT12 gave nd 199 -> 209, obj 388 -> 384; masked composition gave nd 199 -> 216, obj 396; typed f32 alias plus masked composition gave nd 199 -> 207, obj 384.
+// W419 negative: DAT_007caef0 array/absolute alias changed FUN_00416b90 nd199/object388 to nd242/object392 (window400); reverted.
 // FUN_00416B90 NONMATCHING
 
 
@@ -5209,6 +5229,7 @@ void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 }
 
 #pragma opt_common_subs reset
+// W419 negative: PTR_FUN_006b1830 array/absolute alias left FUN_00417030 at nd119/object292 (baseline nd119/object292, window304); neutral and reverted.
 // FUN_00417030 NONMATCHING
 
 

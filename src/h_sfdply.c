@@ -25,6 +25,8 @@ extern void (*D_0096017c)(void* memory);
 extern void* (*D_00960178_abs[])(u32 size, u32 flags);
 #pragma alias D_0096017c_abs D_0096017c
 extern void (*D_0096017c_abs[])(void* memory);
+#pragma alias D_00960184_abs D_00960184
+extern void* (*D_00960184_abs[])(u32 count, u32 size, u32 flags);
 #pragma alias DAT_007e094e_abs DAT_007e094e
 extern u16 DAT_007e094e_abs[];
 #pragma alias D_0077e4f0_abs D_0077e4f0
@@ -449,6 +451,7 @@ static void H_SfdPlay_BeginStream(HSfd* work)
 // slightly worse, which is expected for this class of fix. W415 removed the
 // retail-nonexistent default-state cleanup: calls 77 -> 73, nd 2966 -> 2921,
 // object 4768 -> 4600 within the 4768-byte window.
+// W419 moving work to the end of the local declarations was neutral: nd 2686, object 4656/window4768.
 // FUN_0010A860 NONMATCHING
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
@@ -543,8 +546,8 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             *(void**)(config + 0x1C) = func_0057c680(config);
             datSetFlag(0x141A, 1);
             work->compressedFrameBuffer =
-                D_00960178((u32)((u8*)*(void**)(config + 0x1C) + 0x40), 0x40000);
-            work->displayBuffer = D_00960184(1, 0x118000, 0x40000);
+                D_00960178_abs[0]((u32)((u8*)*(void**)(config + 0x1C) + 0x40), 0x40000);
+            work->displayBuffer = D_00960184_abs[0](1, 0x118000, 0x40000);
             datSetFlag(0x141A, 0);
             if (work->compressedFrameBuffer == NULL ||
                 work->displayBuffer == NULL)
@@ -560,12 +563,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->compressedFrameBuffer != NULL)
                 {
-                    D_0096017c(work->compressedFrameBuffer);
+                    D_0096017c_abs[0](work->compressedFrameBuffer);
                     work->compressedFrameBuffer = NULL;
                 }
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -584,11 +587,11 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             stream = func_0057d5d8(config);
             if (stream == NULL)
             {
-                D_0096017c(work->compressedFrameBuffer);
+                D_0096017c_abs[0](work->compressedFrameBuffer);
                 work->compressedFrameBuffer = NULL;
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -621,12 +624,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->compressedFrameBuffer != NULL)
                 {
-                    D_0096017c(work->compressedFrameBuffer);
+                    D_0096017c_abs[0](work->compressedFrameBuffer);
                     work->compressedFrameBuffer = NULL;
                 }
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -870,12 +873,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->compressedFrameBuffer != NULL)
                 {
-                    D_0096017c(work->compressedFrameBuffer);
+                    D_0096017c_abs[0](work->compressedFrameBuffer);
                     work->compressedFrameBuffer = NULL;
                 }
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -912,12 +915,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->compressedFrameBuffer != NULL)
                 {
-                    D_0096017c(work->compressedFrameBuffer);
+                    D_0096017c_abs[0](work->compressedFrameBuffer);
                     work->compressedFrameBuffer = NULL;
                 }
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -949,12 +952,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->compressedFrameBuffer != NULL)
                 {
-                    D_0096017c(work->compressedFrameBuffer);
+                    D_0096017c_abs[0](work->compressedFrameBuffer);
                     work->compressedFrameBuffer = NULL;
                 }
                 if (work->displayBuffer != NULL)
                 {
-                    D_0096017c(work->displayBuffer);
+                    D_0096017c_abs[0](work->displayBuffer);
                     work->displayBuffer = NULL;
                     uGpffffb220 = NULL;
                 }
@@ -1564,6 +1567,7 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 }
 
 #pragma opt_common_subs reset
+/* W419 probes: all six declaration orders of i/slots/j, plus absolute aliases on every sSfdDecodeSlots use, stayed nd8,obj532/window544. */
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {

@@ -576,13 +576,16 @@ static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
  * and the exact 13-call order. */
 /* W418 negatives: removing either/both startX/startY u16 casts was neutral at nd375/object620; changing both locals to u16 regressed nd399/object656 and exceeded the 624-byte window. */
 /* W418 accepted: u8 directionLocal assigned from direction before the loops and used for cell->direction; nd375/object620 -> nd301/object624 (rate 60.48% -> 48.24%). */
+// W419 accepted: swapping the independent row/col declarations reduced func_001bb090 from nd301/object624/window624 (48.24%) to nd296/object624/window624 (47.44%); no size change.
+/* W419 rejected probes: direct direction was nd375/object620/window624 (60.48%), row/col plus direct direction nd376/620/624 (60.65%), u16 directionLocal nd302/624/624 (48.40%), u8 volatile directionLocal nd337/620/624 (54.35%), a direction stack store nd398/632/624 (62.97%), and a direction array nd297/624/624 (47.60%). */
+/* W419 rejected start-width probes: startX u16 was nd316/object644/window624 (49.07%), startY u16 with row/col swap nd403/640/624 (62.97%), and both starts u16 nd414/660/624 (62.73%); direction pointer/deref/volatile-pointer and inert placed-local/declaration probes stayed at nd296/624/624 (47.44%) or nd301/624/624 (48.24%). A volatile direction parameter made all 46 scanned functions COMPILE_ERROR. */
 // FUN_001bb090 NONMATCHING
 void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
 {
     s32 startX;
     s32 startY;
-    s32 col;
     s32 row;
+    s32 col;
     FieldDungeonCell* cell;
     const u8* patternCell;
     u8 directionLocal;

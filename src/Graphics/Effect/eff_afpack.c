@@ -689,6 +689,7 @@ void func_001e88f0(RuntimeWork* work, s32 section, RuntimeVec3* output);
 
 
 
+// W419 afpack opt_lifetimes was neutral at nd1603/object2128; opt_common_subs off reached nd1593/object2228 (over window).
 // FUN_001EE2E0 NONMATCHING
 RuntimeWork* func_001ee2e0(const void* rawData)
 {

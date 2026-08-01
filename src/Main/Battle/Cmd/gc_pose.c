@@ -32,6 +32,7 @@ extern u32 RpRandom(void);
 extern void gcPose0024f960(void* pose, RwV3d* output);
 extern RwV3d* gcPose0024faa0(void* pose);
 extern void gcPose0024fba0_y2(void* pose, RtQuat* output);
+extern void gcPose0024fba0(GcPoseController* pose, RtQuat* output);
 extern void func_0024f7f0(void* pose, const RwV3d* offset);
 extern void func_00250280(void* pose, const RwV3d* offset);
 extern void FUN_004bdde0(f32 angle, f32* output, const f32* axis, s32 mode);
@@ -196,6 +197,7 @@ void func_0024dc10(void)
     }
 }
 
+// W419 negative probes: extra gcPose0024fba0 call nd4005/5088B, window5120B, rate78.72%; declaration permutations stayed nd3958/5072B, window5120B, rate78.04%; reverted.
 // FUN_0024DC90 NONMATCHING
 void func_0024dc90(void* camera)
 {
@@ -453,6 +455,7 @@ void func_0024dc90(void* camera)
                     }
                 }
                 else if (mode == 3) {
+                    gcPose0024fba0((GcPoseController*)node, (RtQuat*)(node + 0x14));
                     pose = (u32*)(node + 0x28);
                     if ((*(u32*)(node + 0x10) >= pose[2]) &&
                         ((pose[1] & 1) != 0)) {

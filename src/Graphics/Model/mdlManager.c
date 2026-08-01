@@ -392,6 +392,7 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
+/* W419 liveness negatives: baseline nd4240/object5328/window5440/rate0.795796; opt_lifetimes off nd4317/object5368/window5440/rate0.804210; tail declaration reorder nd4240/object5328/window5440/rate0.795796; sink fVar22 nd4300/object5304/window5440/rate0.810709; sink fVar20 nd4248/object5312/window5440/rate0.799699; both sinks nd4330/object5316/window5440/rate0.814522. */
 // FUN_00311730 NONMATCHING
 
 
@@ -1942,6 +1943,8 @@ u32 func_00312f90(u32 param_1)
     return param_1;
 }
 
+
+// W419 measured helper probes: integer static-inline operand-order variants were best unchanged at nd1/object416/window416 (rate 0.00240); base+offset variants regressed to nd25/object416/window416 (rate 0.06010) and nd224/object412/window416 (rate 0.54369). No variant landed.
 // FUN_00313090 NONMATCHING
 
 
@@ -3556,7 +3559,8 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
   u32 uVar4;
 
   u32 uVar5;
-
+  u32 index_for_address;
+  u16 count;
   int iVar6;
 
   int iVar7;
@@ -3568,14 +3572,14 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
   
 
+  count = *param_2;
   uVar5 = 0;
-
-  while ((uVar5 < *param_2 &&
-
-         ((param_3 & 0xffff) != *(u32 *)(*(int *)(param_2 + 2) + uVar5 * 0x50 + 0x40)))) {
-
+  while ((u16)uVar5 < count) {
+    index_for_address = uVar5 & 0xffff;
+    if ((param_3 & 0xffff) == *(u32 *)(*(int *)(param_2 + 2) + index_for_address * 0x50 + 0x40)) {
+      break;
+    }
     uVar5 = uVar5 + 1 & 0xffff;
-
   }
 
   if (uVar5 != *param_2) {
@@ -4396,10 +4400,7 @@ u32 func_00315f50(void* param_1,u32 *param_2)
     iVar4 = *(int *)(*(int *)(iVar1 + 0x20) + uVar6 * 4);
 
     uVar5 = K_Clump_MatUsrDataGetInt(iVar4,0x69aba0);
-    color.b = (u8)uVar5;
-    color.g = (u8)(uVar5 >> 8);
-    color.r = (u8)(uVar5 >> 0x10);
-    color.a = (u8)(uVar5 >> 0x18);
+    color = *(RwRGBA *)&uVar5;
 
     fVar9 = DAT_007caf08 * (float)color.g;
     fVar7 = DAT_007caf08 * (float)color.b;
@@ -6788,6 +6789,7 @@ void mdlStreamDestroy(Model* mdl)
 /* W389 measured func_00319970 additional opt_lifetimes on: nd 3045 -> 3024; object 4304/4448 -> 4284/4448. */
 #pragma push
 #pragma opt_lifetimes on
+/* W419 prologue/branch negatives: baseline nd3024/object4284/window4448/rate0.705882; branch-local scratch nd3024/object4284/window4448/rate0.705882; branch-base recompute nd3296/object4276/window4448/rate0.770814. */
 // FUN_00319970 NONMATCHING
 
 
@@ -8336,11 +8338,11 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   
 
-  bVar1 = false;
-
   uVar3 = datGetEquipmentIdx((short)param_2,0);
 
   sVar4 = datGetEquipmentId((short)param_2,uVar3);
+
+  bVar1 = false;
 
   switch(param_2) {
 

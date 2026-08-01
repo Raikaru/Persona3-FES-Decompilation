@@ -2537,6 +2537,7 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
     return 0;
 }
 
+/* W419 negative: split/reordered the second-loop index declaration in FUN_002d2c10; nd15 -> 22/23 at object 712/720. */
 // FUN_002d2c10 NONMATCHING
 int FUN_002d2c10(float *param_1, float *param_2)
 {
@@ -7555,6 +7556,7 @@ u32 FUN_002db450(u32 param_1)
             (1u << (param_1 & 0xffff))) != 0;
 }
 
+/* W419 negative: moved FUN_002db480 partySlot before the other u16 locals; nd7 -> 15 at object 456/464 (rate .015351 -> .032895). */
 // FUN_002db480 NONMATCHING
 u32 FUN_002db480(void)
 {

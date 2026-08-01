@@ -33,6 +33,8 @@ extern void FUN_004c31b0_evt_main(void *matrix, void *axis, f32 angle, s32 mode)
 extern void FUN_004c35d0_evt_main(void *matrix, void *vector, s32 mode);
 #pragma alias FUN_004c6c60_evt_main FUN_004c6c60
 extern void FUN_004c6c60_evt_main(void *out, void *in, void *matrix);
+/* W419 typed float + nested call: FUN_0036db20 nd 927 -> 869, object 1564 -> 1560. */
+extern f32 FUN_001a4600(u32 param_1);
 #pragma alias FUN_003bb010_evt_main FUN_003bb010
 extern void FUN_003bb010_evt_main(u16 param_1,u8 param_2);
 #pragma alias FUN_003bb1d0_evt_main FUN_003bb1d0
@@ -3981,7 +3983,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
               if (cVar1 == '\x03') {
 
-                lVar3 = FUN_003b5d10((short)param_1[9]);
+                lVar3 = (int)FUN_003b5d10_evt_main((short)param_1[9]);
 
                 if (lVar3 == 0) {
 
@@ -13075,9 +13077,8 @@ u32 FUN_0036db20(int param_1)
 
   int iVar3;
 
-  u32 uVar4;
-
   u32 uVar5;
+  u32 uVar4;
 
   u32 uVar6;
 
@@ -13105,11 +13106,7 @@ u32 FUN_0036db20(int param_1)
 
     *state = 1;
 
-    uVar4 = FUN_00198590();
-
-    uVar2 = FUN_001a4600(uVar4);
-
-    *(u32 *)(iVar1 + 0x8d0) = uVar2;
+    *(f32 *)(iVar1 + 0x8d0) = FUN_001a4600(FUN_00198590());
 
   case 1:
 
@@ -13642,7 +13639,7 @@ u32 FUN_0036e2f0(int param_1)
 
           *(u16 *)(iVar5 + 0xc) = (short)iVar13 + 900U & 0x3ff | 0xc00;
 
-          lVar9 = FUN_003b5d10(*(u16 *)(iVar5 + 0xc));
+          lVar9 = (int)FUN_003b5d10_evt_main(*(u16 *)(iVar5 + 0xc));
 
           if (lVar9 != 0) {
 
@@ -13696,7 +13693,7 @@ u32 FUN_0036e2f0(int param_1)
 
       FUN_003b9550(sVar6,1);
 
-      uVar10 = FUN_003b5d10(sVar6);
+      uVar10 = (u32)FUN_003b5d10_evt_main(sVar6);
 
       FUN_0038d910(uVar10);
 
@@ -13706,7 +13703,7 @@ u32 FUN_0036e2f0(int param_1)
 
         *(short *)(iVar5 + 0xc) = sVar6;
 
-        lVar9 = FUN_003b5d10(*(u16 *)(iVar5 + 0xc));
+        lVar9 = (int)FUN_003b5d10_evt_main(*(u16 *)(iVar5 + 0xc));
 
         if (lVar9 != 0) {
 

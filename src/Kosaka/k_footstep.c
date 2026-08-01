@@ -150,6 +150,15 @@ void func_001dd530(KwlnTask* task, const RwV3d* position);
 extern void func_004c9d00(RwCamera* camera);
 extern void func_004c9d10(RwCamera* camera);
 extern u8* D_0067EF00[];
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_00960094)(u32 state, void* value);
+extern void (*D_009600A0)(u32 primitive, void* vertices, s32 count);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_00960094_abs D_00960094
+extern u8 D_00960094_abs[];
+#pragma alias D_009600A0_abs D_009600A0
+extern u8 D_009600A0_abs[];
 extern Model* D_008717F0;
 extern u32 D_00875A50[RESRC_ID_MASK + 1];
 extern u8 D_006791A0[];
@@ -1173,14 +1182,14 @@ void* func_001dcb60(KwlnTask* task)
     }
 
 
-    renderState = (void (**)(u32, u32))0x960090;
+    renderState = (void (**)(u32, u32))D_00960090_abs;
     if (*(s32*)(work + 4) != 0)
     {
         func_004c9d10(kwlnGetMainCamera());
-        (*(void (**)(u32, void*))0x960094)(0xe, &savedState);
+        (*(void (**)(u32, void*))D_00960094_abs)(0xe, &savedState);
         (*renderState)(0xe, 0);
     }
-    drawPrim = (void (**)(u32, void*, u32))0x9600a0;
+    drawPrim = (void (**)(u32, void*, u32))D_009600A0_abs;
     (*renderState)(7, 2);
     (*renderState)(0xc, 1);
     (*drawPrim)(4, (void*)((u8*)0x00960120 + 0x20), 4);
@@ -1199,7 +1208,7 @@ void* func_001dcb60(KwlnTask* task)
         (*renderState)(8, 0);
     }
 
-    drawPrim = (void (**)(u32, void*, u32))0x9600a0;
+    drawPrim = (void (**)(u32, void*, u32))D_009600A0_abs;
     (*drawPrim)(4, work + 0x20, 4);
     (*renderState)(1, *(u32*)D_00875A60[*(u32*)(work + 8) + 1]);
     (*drawPrim)(4, work + 0x120, 4);
@@ -2463,8 +2472,10 @@ footstep_case1_default_ded40:
 
 handler_2:
     major = gMtScene->fldMajorId;
-    if (major == 6 || major == 7)
+    switch (major)
     {
+    case 7:
+    case 6:
         result = 2;
         goto done;
     }
@@ -3160,3 +3171,10 @@ KwlnTask* func_001e0510(KwlnTask* parent, void* resource)
     work->resource = resource;
     return task;
 }
+// W419 rejected probes (verify.py; nd/object/window and nd/object rate):
+// func_001d9860 moving rec first: 1129/1632/1664 (0.6918) -> 1130/1632/1664 (0.6924).
+// func_001d9860 alternate switch case order: 1129/1632/1664 (0.6918) -> 1154/1632/1664 (0.7071).
+// K_Footstep_Update inlining K_Footstep_Play: 7531/9896/9936 (0.7610) -> 7659/10136/9936 (0.7556; over window).
+// func_001dc6f0 direct gFldUnitsPc indexing: 155/464/496 (0.3341) -> 161/476/496 (0.3382); unit-helper and mask-hoist variants stayed 155/464/496.
+// func_001dcb60 task-local callback alias: 1685/2248/2256 (0.7496) -> 1685/2248/2256 (no change).
+// func_001ded40 handler2 if/else/goto shape: 309/1796/1808 (0.1720) -> 356/1804/1808 (0.1973); separate case bodies were 333/1812/1808 (0.1838; over window).

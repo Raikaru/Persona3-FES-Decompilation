@@ -387,6 +387,15 @@ typedef struct {
   f32 z;
 } VoiceVector;
 extern s16 DAT_00697c80;
+extern u8 DAT_00697c80_abs[];
+extern u8 DAT_00697c84_abs[];
+extern u8 DAT_00697c88_abs[];
+extern u8 DAT_00697c8c_abs[];
+extern u8 DAT_00697c90_abs[];
+extern u8 DAT_00697c9c_abs[];
+extern u8 DAT_00697ca0_abs[];
+extern u8 DAT_00697ca4_abs[];
+extern u8 DAT_00697ca8_abs[];
 extern f32 DAT_00697c84;
 extern f32 DAT_00697c88;
 extern f32 DAT_00697c8c;
@@ -561,6 +570,7 @@ extern u64 FUN_0027f410();
 extern u64 FUN_0027f650();
 extern u64 FUN_0027f680();
 extern u64 FUN_0027f710(f32 param_1, u32 param_2);
+extern void FUN_0027f710_btlVoice_typed(BtlUnit* unit, f32 scale);
 extern u64 FUN_0027f730();
 extern u64 FUN_0027fcf0();
 extern u64 FUN_0027fe90();
@@ -2110,6 +2120,7 @@ void func_002e4a30(void)
 
 #pragma opt_lifetimes on
 #pragma opt_dead_assignments off
+/* W419 negative: inverted the outer guard in func_002e4a40; nd895 -> 929 at object 1288/1296. */
 // FUN_002e4a40 NONMATCHING
 void func_002e4a40(u64 param_1)
 
@@ -2258,6 +2269,15 @@ LAB_002e4af0:
 #pragma alias DAT_00699c8c_abs DAT_00699c8c
 #pragma alias DAT_0069a000_abs DAT_0069a000
 #pragma alias D_006978A0_abs D_006978A0
+#pragma alias DAT_00697c80_abs DAT_00697c80
+#pragma alias DAT_00697c84_abs DAT_00697c84
+#pragma alias DAT_00697c88_abs DAT_00697c88
+#pragma alias DAT_00697c8c_abs DAT_00697c8c
+#pragma alias DAT_00697c90_abs DAT_00697c90
+#pragma alias DAT_00697c9c_abs DAT_00697c9c
+#pragma alias DAT_00697ca0_abs DAT_00697ca0
+#pragma alias DAT_00697ca4_abs DAT_00697ca4
+#pragma alias DAT_00697ca8_abs DAT_00697ca8
  #pragma alias DAT_007cc9b0_s16 DAT_007cc9b0
  #pragma alias DAT_007cc9b2_s16 DAT_007cc9b2
  #pragma alias DAT_007cc9b4_s16 DAT_007cc9b4
@@ -2268,6 +2288,7 @@ LAB_002e4af0:
 #pragma alias gp0xffff9c9a uGpffff9c9a
 #pragma alias FUN_00280870_btlVoice_typed FUN_00280870
 #pragma alias FUN_0027ffb0_btlVoice_typed FUN_0027ffb0
+#pragma alias FUN_0027f710_btlVoice_typed FUN_0027f710
 #pragma alias FUN_00280130_btlVoice_typed FUN_00280130
 #pragma alias FUN_002b6070_btlVoice_typed FUN_002b6070
 #pragma alias FUN_002b6460_btlVoice_typed FUN_002b6460
@@ -2547,6 +2568,8 @@ void func_002e5060(BtlCamera* camera)
 #pragma opt_propagation reset
 
 #pragma opt_dead_assignments off
+/* W419 negative: inverted the tiny boolean assignment in func_002e58a0; nd1467 -> 1467 at object 2020/2192. */
+/* W419 measured: absolute pilot globals plus scalar quaternion copy and bVar3-first tail => nd1474, object 2088/2192, rate .705939; retained as best rate. */
 // FUN_002e58a0 NONMATCHING
 void func_002e58a0(BtlCamera* param_1)
 
@@ -2641,15 +2664,15 @@ LAB_002e59dc:
     return;
   }
   if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) && (cVar2 == '\0')) {
-    FUN_002a4690(&specQuat1,&DAT_00697c84,&DAT_00697c90,D_00697880);
-    specPos1.x = DAT_00697c84;
-    specPos1.y = DAT_00697c88;
-    specPos1.z = DAT_00697c8c;
-    FUN_002a4690(&specQuat2,&DAT_00697c9c,&DAT_00697ca8,D_00697880);
-    specPos2.x = DAT_00697c9c;
-    specPos2.y = DAT_00697ca0;
-    specPos2.z = DAT_00697ca4;
-    fVar10 = (float)DAT_00697c80 / 30.0f;
+    FUN_002a4690(&specQuat1,(f32 *)DAT_00697c84_abs,(f32 *)DAT_00697c90_abs,D_00697880);
+    specPos1.x = *(f32 *)DAT_00697c84_abs;
+    specPos1.y = *(f32 *)DAT_00697c88_abs;
+    specPos1.z = *(f32 *)DAT_00697c8c_abs;
+    FUN_002a4690(&specQuat2,(f32 *)DAT_00697c9c_abs,(f32 *)DAT_00697ca8_abs,D_00697880);
+    specPos2.x = *(f32 *)DAT_00697c9c_abs;
+    specPos2.y = *(f32 *)DAT_00697ca0_abs;
+    specPos2.z = *(f32 *)DAT_00697ca4_abs;
+    fVar10 = (float)*(s16 *)DAT_00697c80_abs / 30.0f;
     FUN_002a2290((void *)(DAT_007ce3ec + 0x20),(f32 *)&specPos1,(f32 *)&specPos2,1);
     FUN_002a3110((void *)(DAT_007ce3ec + 0x20),fVar10);
     return;
@@ -2733,8 +2756,11 @@ LAB_002e59dc:
     finalPos.y = 25.0f;
   }
   fVar9 = FUN_002d1f30_btlVoice_typed((const f32 *)&quatCopy, (const f32 *)&quat);
-  if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
-    quatCopy = quat;
+  if ((bVar3) && ((!bVar1) || (DAT_007cad58 < fVar9))) {
+    quatCopy.imag.x = quat.imag.x;
+    quatCopy.imag.y = quat.imag.y;
+    quatCopy.imag.z = quat.imag.z;
+    quatCopy.real = quat.real;
     FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
     fVar10 = fVar10 + 200.0f;
     dir.x = dir.x * fVar10;
@@ -5258,6 +5284,7 @@ u32 func_002eb9e0(BtlAction* action)
 
 #pragma opt_common_subs off
 #pragma opt_propagation off
+/* W419 negative: moved the long non-null branch before the short null branch in func_002eba50; nd696 -> 760 at object 1100/1136. */
 // FUN_002eba50 NONMATCHING
 void func_002eba50(BtlAction* action)
 {
@@ -6201,8 +6228,8 @@ u32 func_002ed360(u64 *param_1)
   FUN_0027f650(*(u32 *)(DAT_007ce3ec + 0xb4c),uStack_28);
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb44));
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb48));
-  FUN_0027f710((float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0,
-               *(u32 *)(DAT_007ce3ec + 0xb4c));
+  FUN_0027f710_btlVoice_typed((BtlUnit *)*(u32 *)(DAT_007ce3ec + 0xb4c),
+                              (float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0);
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9d4) = 0;
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0x9d4) = 0;
   FUN_00352c50(*(u32 *)(DAT_007ce3ec + 0xb48),*(u32 *)(DAT_007ce3ec + 0xb44),
@@ -8507,6 +8534,7 @@ int func_002f2510(int param_1)
   return result;
 }
 
+/* W419 negative: swapped actionPacket/parent local declaration order in func_002f2550; nd17 -> 24 at object 752/752. */
 // FUN_002f2550 NONMATCHING
 void func_002f2550(BtlAction* action)
 {
@@ -10219,6 +10247,7 @@ LAB_002f5d34:
 /* W367 stacked probe: opt_lifetimes + opt_propagation nd 644 -> 441; singles 642/447; object 924/928. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+/* W419 negative: moved the long in-range branch before the short out-of-range branch in func_002f5d80; nd441 -> 448 at object 924/928. */
 // FUN_002f5d80 NONMATCHING
 void func_002f5d80(u32 param_1)
 

@@ -6,6 +6,10 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern u32 DAT_006a11d0;
+#pragma alias DAT_006a11d0_98530_abs DAT_006a11d0
+#pragma alias DAT_006a11d4_98530_abs DAT_006a11d4
+extern u8 DAT_006a11d0_98530_abs[];
+extern u8 DAT_006a11d4_98530_abs[];
 extern char D_006A1200[];
 extern char DAT_006a12b0[];
 extern char DAT_006a12d0[];
@@ -58,6 +62,10 @@ extern void FUN_0039ee80_b830(void *);
 extern void FUN_00521408_b8b0(void *,int,int);
 #pragma alias FUN_00194b20_b8b0 FUN_00194b20
 extern void FUN_00194b20_b8b0(u64,const char *,u32,u64 (*)(int),void *,void *);
+/* W419 typed-return probe: FUN_0039e1b0 nd 736 -> 317, object 1332 -> 1336. */
+#pragma alias FUN_00194b20_ret_b8b0 FUN_00194b20
+extern u32 FUN_00194b20_ret_b8b0(u64 task,const char *path,u32 size,
+                                  u64 (*callback)(int),void *arg1,void *arg2);
 extern char DAT_006a1430[];
 #pragma alias FUN_00100ec0_b830_arg FUN_00100ec0
 extern void FUN_00100ec0_b830_arg(void *);
@@ -663,9 +671,9 @@ u32 FUN_00398530(int param_1)
 
           for (iVar12 = 0; iVar12 < 5; iVar12 = iVar12 + 1) {
 
-            if (uVar16 == *(u32 *)(&DAT_006a11d0 + iVar12 * 8)) {
+            if (uVar16 == *(u32 *)(DAT_006a11d0_98530_abs + iVar12 * 8)) {
 
-              uVar8 = *(u32 *)(&DAT_006a11d4 + iVar12 * 8);
+              uVar8 = *(u32 *)(DAT_006a11d4_98530_abs + iVar12 * 8);
 
               goto LAB_00398d80;
 
@@ -1011,9 +1019,9 @@ LAB_00398d80:
 
           for (iVar12 = 0; iVar12 < 5; iVar12 = iVar12 + 1) {
 
-            if (uVar16 == *(u32 *)(&DAT_006a11d0 + iVar12 * 8)) {
+            if (uVar16 == *(u32 *)(DAT_006a11d0_98530_abs + iVar12 * 8)) {
 
-              uVar8 = *(u32 *)(&DAT_006a11d4 + iVar12 * 8);
+              uVar8 = *(u32 *)(DAT_006a11d4_98530_abs + iVar12 * 8);
 
               goto LAB_00399518;
 
@@ -5241,7 +5249,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(u16 *)(iVar2 + 0x94) = 0;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1660,0x10,0x398530,0x399830,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1660,0x10,(u64 (*)(int))0x398530,(void *)0x399830,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
     break;
@@ -5254,7 +5262,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1680,0x10,0x3998b0,0x399be0,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1680,0x10,(u64 (*)(int))0x3998b0,(void *)0x399be0,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5268,7 +5276,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a16a0,0x10,0x399c40,0x39a560,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a16a0,0x10,(u64 (*)(int))0x399c40,(void *)0x39a560,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5282,7 +5290,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a16c0,0x10,0x39a5c0,0x39a840,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a16c0,0x10,(u64 (*)(int))0x39a5c0,(void *)0x39a840,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5300,7 +5308,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(u16 *)((int)uVar4 + 4) = uVar1;
 
-    uVar3 = FUN_00194b20(uVar3,0x6a1430,0x10,0x39a8a0,0x39b830,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(uVar3,(const char *)0x6a1430,0x10,(u64 (*)(int))0x39a8a0,(void *)0x39b830,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5314,7 +5322,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a16e0,0x10,0x39b950,0x39c090,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a16e0,0x10,(u64 (*)(int))0x39b950,(void *)0x39c090,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5328,7 +5336,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1700,0x10,0x39c0f0,0x39c3e0,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1700,0x10,(u64 (*)(int))0x39c0f0,(void *)0x39c3e0,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5342,7 +5350,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1720,0x10,0x39c440,0x39cd60,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1720,0x10,(u64 (*)(int))0x39c440,(void *)0x39cd60,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5356,7 +5364,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1740,0x10,0x39cdc0,0x39cfb0,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1740,0x10,(u64 (*)(int))0x39cdc0,(void *)0x39cfb0,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5370,7 +5378,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1760,0x10,0x39d010,0x39d190,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1760,0x10,(u64 (*)(int))0x39d010,(void *)0x39d190,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5384,7 +5392,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1780,0x18c0,0x39d550,0x39d880,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a1780,0x18c0,(u64 (*)(int))0x39d550,(void *)0x39d880,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5398,7 +5406,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a17a0,0x10,0x39d8e0,0x39db00,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a17a0,0x10,(u64 (*)(int))0x39d8e0,(void *)0x39db00,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5412,7 +5420,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a17c0,0x10,0x39db60,0x39dd30,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a17c0,0x10,(u64 (*)(int))0x39db60,(void *)0x39dd30,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
@@ -5426,7 +5434,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     *(int *)((int)uVar4 + 8) = param_2;
 
-    uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a17e0,0x10,0x39dd90,0x39e130,uVar4);
+    uVar3 = FUN_00194b20_ret_b8b0(*(u32 *)(param_1 + 0x92c),(const char *)0x6a17e0,0x10,(u64 (*)(int))0x39dd90,(void *)0x39e130,(void *)uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
 
