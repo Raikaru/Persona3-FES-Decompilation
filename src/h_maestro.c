@@ -3574,17 +3574,19 @@ u32 func_001114b0(KwlnTask* task)
 #pragma optimization_level 1
 
 
-// FUN_00111500 NONMATCHING
-void func_00111500(KwlnTask* task)
+// FUN_00111500
+/* Returns the value it stores: retail materializes the 1 in $v0, the return
+ * register, rather than reusing the dead argument register $a0. Every void
+ * form colours it $a0 (nd2 floor); the result is discarded at the call site. */
+s32 func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
+    s32 value;
     work = (MaestroStreamWork*)task->workData;
-    {
-        s32 value;
-        value = 1;
-        work->stopAtFrame = value;
-    }
+    value = 1;
+    work->stopAtFrame = value;
     work->complete = 0;
+    return value;
 }
 // FUN_00111520
 void func_00111520(KwlnTask* task, s16 count)
