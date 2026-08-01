@@ -143,121 +143,6 @@ extern f32 fGpffff831c;
 extern f32 fGpffff8338;
 extern f32 fGpffff8334;
 
-// FUN_00209940
-void func_00209940_y2(void* destination, s32 capacity, s32 value)
-{
-    char digits[256];
-    s32 length;
-    s32 i;
-
-    sprintf(digits, "%d", value);
-    length = strlen(digits);
-    K_ASSERT(capacity >= length, 0x1c8);
-    for (i = 0; i < length; i++) {
-        func_00209ba0((u8*)destination + (i << 8), digits[length - 1 - i] - 0x30);
-    }
-}
-
-// FUN_00209a00
-void func_00209a00_y2(void* destination, s32 capacity, s32 value, const f32* origin, f32 scale)
-{
-    f32 layout[4];
-    char digits[256];
-    void* texture;
-    void* frame;
-    s32 i;
-    s32 length;
-
-    texture = (void*)func_0021c3f0(1);
-    sprintf(digits, "%d", value);
-    length = strlen(digits);
-    K_ASSERT(capacity >= length, 0x1de);
-    for (i = 0; i < length; i++) {
-        frame = func_0021cca0((u32)texture, value + 0x2e);
-        layout[0] = origin[0] + (f32)((length - 1 - i) * 15);
-        layout[1] = origin[1];
-        layout[2] = (f32)*(s32*)((u8*)frame + 0xc) * scale;
-        layout[3] = (f32)*(s32*)((u8*)frame + 0x10) * scale;
-        func_0021d8e0((u8*)destination + (i << 8), layout);
-    }
-    for (; length < capacity; length++) {
-        layout[0] = origin[0];
-        layout[1] = origin[1];
-        layout[2] = 0.0f;
-        layout[3] = 0.0f;
-        func_0021d8e0((u8*)destination + (length << 8), layout);
-    }
-}
-
-// FUN_00209ba0
-void func_00209ba0(void* destination, s32 digit)
-{
-    u32 texture;
-    u32 frame;
-
-    texture = func_0021c3f0(1);
-    frame = (u32)func_0021cca0(texture, digit + 0x2e);
-    func_0021d3b0(destination, (void*)frame);
-}
-
-// FUN_00209c00
-u32 func_00209c00_y2(void)
-{
-    return func_0021cce0_y2((u32)func_0021cca0(func_0021c3f0(1), 0x2e));
-}
-
-// FUN_00209c40
-char* func_00209c40(void)
-{
-    return datGetScenarioMode() ? D_006871C0 : D_006850C0;
-}
-
-// FUN_00209c80
-char* func_00209c80(void)
-{
-    return datGetScenarioMode() ? D_0068AB80 : D_006892C0;
-}
-
-// FUN_00209cc0
-char* func_00209cc0(void)
-{
-    return datGetScenarioMode() ? D_0068C760 : D_0068C440;
-}
-
-// FUN_00209d00
-char* func_00209d00(void)
-{
-    return datGetScenarioMode() ? D_0068CDE0 : D_0068CA80;
-}
-
-
-
-
-
-
-
-
-
-
-
-static void panel_init_common(u8* work, u32 state)
-{
-    s32 i;
-
-    func_00209ea0(work);
-    *(u32*)(work + 4) = state;
-    func_0020c7b0(work + 0xe0);
-    for (i = 0; i < 4; i++) {
-        work[0x184 + i] = 0xff;
-        work[0x1a8 + i] = 0xff;
-        work[0x1cc + i] = 0xff;
-        work[0x1f0 + i] = 0xff;
-    }
-}
-
-
-
-
 
 extern f32 DAT_007cadd4;
 extern f32 DAT_007cad7c;
@@ -266,27 +151,6 @@ extern f32 DAT_007caee8;
 extern f32 FUN_0052e878(f32 angle);
 extern f32 FUN_0052e6d8(f32 angle);
 extern void func_0020cf20(void* destination, PanelTransform* transform);
-
-// Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
-// Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removing this worsens FUN_0020cda0 (nd12 -> nd259) and 1 more - measured W161. */
-
-
 typedef struct BattlePanelWork BattlePanelWork;
 typedef struct BtlUnit BtlUnit;
 typedef struct RwV3d {
@@ -295,7 +159,6 @@ typedef struct RwV3d {
     f32 z;
 } RwV3d;
 BattlePanelWork* gBattlePanelWork;
-
 extern void func_0021cd00(void* frame, f32* rectangle);
 extern void func_0021d950(void* destination, const u8* color);
 extern void func_0021eb80(void* destination, const f32* layout);
@@ -321,10 +184,23 @@ extern u8* iGpffffb6fc;
 extern f32 fGpffff7f20;
 typedef void (*BpSetRenderState)(u32 state, u32 value);
 typedef void (*BpRenderQuad)(void* vertices, u32 count, u32 first, u32 second, u32 third);
-#pragma alias D_00960090_y2 D_00960090
 extern u32 D_00960090_y2[];
 extern u32 D_0096009C[];
 
+static void panel_init_common(u8* work, u32 state)
+{
+    s32 i;
+
+    func_00209ea0(work);
+    *(u32*)(work + 4) = state;
+    func_0020c7b0(work + 0xe0);
+    for (i = 0; i < 4; i++) {
+        work[0x184 + i] = 0xff;
+        work[0x1a8 + i] = 0xff;
+        work[0x1cc + i] = 0xff;
+        work[0x1f0 + i] = 0xff;
+    }
+}
 static u8* BP_WORK(void)
 {
     return (u8*)gBattlePanelWork;
@@ -344,11 +220,6 @@ void func_00208b20(void)
     gBattlePanelWork = NULL;
 }
 
-/*
- * The panel keeps a compact list of living battle units followed by one
- * 0x240-byte status slot per unit.  Keep the list construction in one place;
- * rendering and animation updates consume only these slots.
- */
 // FUN_00208b30 NONMATCHING
 void func_00208b30(void)
 {
@@ -573,6 +444,7 @@ void func_00208f60(void)
         func_0021d950(slot + 0x220, color);
     }
 }
+
 // FUN_002094f0
 void func_002094f0(void)
 {
@@ -660,4 +532,135 @@ void func_002095a0(void)
             }
         }
     }
+}
+
+// FUN_00209940
+void func_00209940_y2(void* destination, s32 capacity, s32 value)
+{
+    char digits[256];
+    s32 length;
+    s32 i;
+
+    sprintf(digits, "%d", value);
+    length = strlen(digits);
+    K_ASSERT(capacity >= length, 0x1c8);
+    for (i = 0; i < length; i++) {
+        func_00209ba0((u8*)destination + (i << 8), digits[length - 1 - i] - 0x30);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
+// Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this worsens FUN_0020cda0 (nd12 -> nd259) and 1 more - measured W161. */
+
+
+
+#pragma alias D_00960090_y2 D_00960090
+
+
+// FUN_00209a00
+void func_00209a00_y2(void* destination, s32 capacity, s32 value, const f32* origin, f32 scale)
+{
+    f32 layout[4];
+    char digits[256];
+    void* texture;
+    void* frame;
+    s32 i;
+    s32 length;
+
+    texture = (void*)func_0021c3f0(1);
+    sprintf(digits, "%d", value);
+    length = strlen(digits);
+    K_ASSERT(capacity >= length, 0x1de);
+    for (i = 0; i < length; i++) {
+        frame = func_0021cca0((u32)texture, value + 0x2e);
+        layout[0] = origin[0] + (f32)((length - 1 - i) * 15);
+        layout[1] = origin[1];
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc) * scale;
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10) * scale;
+        func_0021d8e0((u8*)destination + (i << 8), layout);
+    }
+    for (; length < capacity; length++) {
+        layout[0] = origin[0];
+        layout[1] = origin[1];
+        layout[2] = 0.0f;
+        layout[3] = 0.0f;
+        func_0021d8e0((u8*)destination + (length << 8), layout);
+    }
+}
+
+// FUN_00209ba0
+void func_00209ba0(void* destination, s32 digit)
+{
+    u32 texture;
+    u32 frame;
+
+    texture = func_0021c3f0(1);
+    frame = (u32)func_0021cca0(texture, digit + 0x2e);
+    func_0021d3b0(destination, (void*)frame);
+}
+
+/*
+ * The panel keeps a compact list of living battle units followed by one
+ * 0x240-byte status slot per unit.  Keep the list construction in one place;
+ * rendering and animation updates consume only these slots.
+ */
+// FUN_00209c00
+u32 func_00209c00_y2(void)
+{
+    return func_0021cce0_y2((u32)func_0021cca0(func_0021c3f0(1), 0x2e));
+}
+
+// FUN_00209c40
+char* func_00209c40(void)
+{
+    return datGetScenarioMode() ? D_006871C0 : D_006850C0;
+}
+// FUN_00209c80
+char* func_00209c80(void)
+{
+    return datGetScenarioMode() ? D_0068AB80 : D_006892C0;
+}
+
+// FUN_00209cc0
+char* func_00209cc0(void)
+{
+    return datGetScenarioMode() ? D_0068C760 : D_0068C440;
+}
+
+// FUN_00209d00
+char* func_00209d00(void)
+{
+    return datGetScenarioMode() ? D_0068CDE0 : D_0068CA80;
 }

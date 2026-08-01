@@ -228,6 +228,61 @@ void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId)
 
     printf("Scene data load...\n");
 }
+#undef FUN_003b55b0
+#define FUN_003b55b0(...) ((u8 * (*)(...))FUN_003b55b0)(__VA_ARGS__)
+#undef FUN_003b55d0
+#define FUN_003b55d0(...) ((void (*)(...))FUN_003b55d0)(__VA_ARGS__)
+#undef FUN_003b5620
+/* W389 floor: baseline nd15 obj308/320; s0/s1 parameter colouring inversion (retail s0=a0,s1=a1; ours reversed) propagates into branches. First-use probes `first=(u32)param_1` and `second=param_2` hoisted/reused both measured nd15 obj308/320; reverted. */
+#define FUN_003b5620(...) ((u32 (*)(...))FUN_003b5620)(__VA_ARGS__)
+#undef FUN_003b58c0
+// FUN_003B58C0
+
+
+void FUN_003b58c0(short param_1)
+{
+    int iVar1;
+    int wait;
+
+    if ((gMtScene->flags & 1) != 0) {
+        if (gMtScene->unk_14 != param_1) {
+            gMtScene->flags |= 2;
+            gMtScene->unk_14 = param_1;
+            wait = 0x1e;
+            *(u32 *)(FUN_001b9120() + 0x1058) = wait;
+            return;
+        }
+        for (iVar1 = (int)MT_Scene_GetResListHead(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
+            *(u32 *)(iVar1 + 0x28) |= 2;
+        }
+        return;
+    }
+    gMtScene->unk_14 = param_1;
+}
+#define FUN_003b58c0(...) ((void (*)(...))FUN_003b58c0)(__VA_ARGS__)
+#undef FUN_003b5980
+// FUN_003B5980
+
+void FUN_003b5980(short param_1)
+{
+    int iVar2;
+
+    if ((gMtScene->flags & 1) != 0) {
+        if (gMtScene->unk_16 == param_1) {
+            return;
+        }
+        gMtScene->flags |= 4;
+        gMtScene->unk_16 = param_1;
+        if ((gMtScene->flags & 2) != 0) {
+            return;
+        }
+        iVar2 = 0x28;
+        *(u32 *)(FUN_001b9120() + 0x1058) = iVar2;
+        return;
+    }
+    gMtScene->unk_16 = param_1;
+}
+#define FUN_003b5980(...) ((void (*)(...))FUN_003b5980)(__VA_ARGS__)
 
 // FUN_003b5a10
 u32 MT_Scene_TryLoadFinish()
@@ -341,6 +396,15 @@ MtScene* MT_Scene_GetScene()
 {
     return gMtScene;
 }
+#undef FUN_003b5d00
+// FUN_003B5D00
+
+
+u32 FUN_003b5d00(void)
+{
+    return *(u32 *)(PTR_DAT_007cd540 + 8);
+}
+#define FUN_003b5d00(...) ((u32 (*)(...))FUN_003b5d00)(__VA_ARGS__)
 
 // FUN_003b5d10
 Resrc* MT_Scene_GetRes(u16 resTypeId)
@@ -363,6 +427,29 @@ Resrc* MT_Scene_GetResListHead(u32 resType)
 
     return resrcMngGetListHead(gMtScene->resManager, resType);
 }
+#undef FUN_003b5da0
+// FUN_003B5DA0
+
+
+Resrc* FUN_003b5da0(u32 param_1)
+{
+    if (*(int *)(PTR_DAT_007cd540 + 8) == 0)
+    {
+        return NULL;
+    }
+
+    return resrcMngGetListTail(*(ResrcManager **)(PTR_DAT_007cd540 + 8), param_1);
+}
+#define FUN_003b5da0(...) ((Resrc* (*)(...))FUN_003b5da0)(__VA_ARGS__)
+extern const char D_006A2BB0[];
+#pragma alias D_006A2BB0_abs D_006A2BB0
+extern u8 D_006A2BB0_abs[];
+extern const char D_006A2BD0[];
+#pragma alias D_006A2BD0_abs D_006A2BD0
+extern u8 D_006A2BD0_abs[];
+extern const char D_006A2BE8[];
+#pragma alias D_006A2BE8_abs D_006A2BE8
+extern u8 D_006A2BE8_abs[];
 
 // FUN_003b5df0
 u32 MT_Scene_GetTotalResInList(u32 resType)
@@ -391,256 +478,6 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
 
     return total;
 }
-
-// FUN_003b6000
-void MT_Scene_003b6000(u16 resId, Model* mdl)
-{
-    MT_Scene_CreateResModelChar(resId, 0, mdl);
-}
-
-// FUN_003b6030
-u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
-{
-    ResrcManager* resManager;
-    u16 resTypeId;
-    ResrcModelChar* res;
-    RwV3d translation = {0};
-
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELCHAR);
-    
-    resManager = gMtScene->resManager;
-    if (resManager == NULL)
-    {
-        printf("not found active resmanager\n");
-        return 0;
-    }
-
-    if (mdl == NULL)
-    {
-        return 0;
-    }
-
-    res = (ResrcModelChar*)resrcMngCreateRes(resManager, resTypeId);
-    if (res == NULL)
-    {
-        return 0;
-    }
-
-    res->mdl = mdl;
-    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
-    RwMatrixUpdate(mdlGetMatrix(res->mdl));
-
-    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
-    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
-
-    return resTypeId;
-}
-
-// FUN_003b6270
-u16 MT_Scene_CreateResModelNpc(u16 resId, s32 param_2, Model* mdl)
-{
-    ResrcManager* resManager;
-    u16 resTypeId;
-    ResrcModelNpc* res;
-    RwV3d translation = {0};
-
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELNPC);
-    
-    resManager = gMtScene->resManager;
-    if (resManager == NULL)
-    {
-        printf("not found active resmanager\n");
-        return 0;
-    }
-
-    if (mdl == NULL)
-    {
-        return 0;
-    }
-
-    res = (ResrcModelNpc*)resrcMngCreateRes(resManager, resTypeId);
-    if (res == NULL)
-    {
-        return 0;
-    }
-
-    res->mdl = mdl;
-    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
-    RwMatrixUpdate(mdlGetMatrix(res->mdl));
-
-    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
-    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
-
-    return resTypeId;
-}
-
-// FUN_003b63c0
-u16 MT_Scene_CreateResLightChar(u16 resId)
-{
-    ResrcManager* resManager;
-    u16 resTypeId;
-
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTCHAR);
-
-    resManager = gMtScene->resManager;
-    if (resManager == NULL)
-    {
-        printf("not found active resmanager\n");
-        return 0;
-    }
-
-    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
-    {
-        return 0;
-    }
-
-    return resTypeId;
-}
-
-// FUN_003b6440
-u16 MT_Scene_CreateResLightNpc(u16 resId)
-{
-    ResrcManager* resManager;
-    u16 resTypeId;
-
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTNPC);
-
-    resManager = gMtScene->resManager;
-    if (resManager == NULL)
-    {
-        printf("not found active resmanager\n");
-        return 0;
-    }
-
-    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
-    {
-        return 0;
-    }
-
-    return resTypeId;
-}
-
-// FUN_003b65d0
-u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl)
-{
-    ResrcManager* resManager;
-    u16 resTypeId;
-    ResrcModelFld* res;
-    RwV3d unused = {0};
-
-    resTypeId = RESRC_MAKE_TYPEID((u16)resId, RESRC_TYPE_MODELFLD);
-
-    resManager = gMtScene->resManager;
-    if (resManager == NULL)
-    {
-        printf("not found active resmanager\n");
-        return 0;
-    }
-
-    if (mdl == NULL)
-    {
-        return 0;
-    }
-
-    res = (ResrcModelFld*)resrcMngCreateRes(resManager, resTypeId);
-    if (res == NULL)
-    {
-        return 0;
-    }
-
-    res->mdl = mdl;
-    res->base.flags |= (1 << 3); // 0x08
-
-    return resTypeId;
-}
-
-#undef FUN_003b55b0
-#define FUN_003b55b0(...) ((u8 * (*)(...))FUN_003b55b0)(__VA_ARGS__)
-#undef FUN_003b55d0
-#define FUN_003b55d0(...) ((void (*)(...))FUN_003b55d0)(__VA_ARGS__)
-#undef FUN_003b5620
-/* W389 floor: baseline nd15 obj308/320; s0/s1 parameter colouring inversion (retail s0=a0,s1=a1; ours reversed) propagates into branches. First-use probes `first=(u32)param_1` and `second=param_2` hoisted/reused both measured nd15 obj308/320; reverted. */
-#define FUN_003b5620(...) ((u32 (*)(...))FUN_003b5620)(__VA_ARGS__)
-#undef FUN_003b58c0
-// FUN_003B58C0
-
-
-void FUN_003b58c0(short param_1)
-{
-    int iVar1;
-    int wait;
-
-    if ((gMtScene->flags & 1) != 0) {
-        if (gMtScene->unk_14 != param_1) {
-            gMtScene->flags |= 2;
-            gMtScene->unk_14 = param_1;
-            wait = 0x1e;
-            *(u32 *)(FUN_001b9120() + 0x1058) = wait;
-            return;
-        }
-        for (iVar1 = (int)MT_Scene_GetResListHead(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-            *(u32 *)(iVar1 + 0x28) |= 2;
-        }
-        return;
-    }
-    gMtScene->unk_14 = param_1;
-}
-#define FUN_003b58c0(...) ((void (*)(...))FUN_003b58c0)(__VA_ARGS__)
-#undef FUN_003b5980
-// FUN_003B5980
-
-void FUN_003b5980(short param_1)
-{
-    int iVar2;
-
-    if ((gMtScene->flags & 1) != 0) {
-        if (gMtScene->unk_16 == param_1) {
-            return;
-        }
-        gMtScene->flags |= 4;
-        gMtScene->unk_16 = param_1;
-        if ((gMtScene->flags & 2) != 0) {
-            return;
-        }
-        iVar2 = 0x28;
-        *(u32 *)(FUN_001b9120() + 0x1058) = iVar2;
-        return;
-    }
-    gMtScene->unk_16 = param_1;
-}
-#define FUN_003b5980(...) ((void (*)(...))FUN_003b5980)(__VA_ARGS__)
-#undef FUN_003b5d00
-// FUN_003B5D00
-
-
-u32 FUN_003b5d00(void)
-{
-    return *(u32 *)(PTR_DAT_007cd540 + 8);
-}
-#define FUN_003b5d00(...) ((u32 (*)(...))FUN_003b5d00)(__VA_ARGS__)
-#undef FUN_003b5da0
-// FUN_003B5DA0
-
-
-Resrc* FUN_003b5da0(u32 param_1)
-{
-    if (*(int *)(PTR_DAT_007cd540 + 8) == 0)
-    {
-        return NULL;
-    }
-
-    return resrcMngGetListTail(*(ResrcManager **)(PTR_DAT_007cd540 + 8), param_1);
-}
-#define FUN_003b5da0(...) ((Resrc* (*)(...))FUN_003b5da0)(__VA_ARGS__)
-extern const char D_006A2BB0[];
-#pragma alias D_006A2BB0_abs D_006A2BB0
-extern u8 D_006A2BB0_abs[];
-extern const char D_006A2BD0[];
-#pragma alias D_006A2BD0_abs D_006A2BD0
-extern u8 D_006A2BD0_abs[];
-extern const char D_006A2BE8[];
-#pragma alias D_006A2BE8_abs D_006A2BE8
-extern u8 D_006A2BE8_abs[];
 #undef FUN_003b5e90
 // FUN_003B5E90
 
@@ -708,6 +545,54 @@ u16 FUN_003b5f70(u16 param_1)
     return resTypeId;
 }
 #define FUN_003b5f70(...) ((u32 (*)(...))FUN_003b5f70)(__VA_ARGS__)
+
+
+
+
+
+// FUN_003b6000
+void MT_Scene_003b6000(u16 resId, Model* mdl)
+{
+    MT_Scene_CreateResModelChar(resId, 0, mdl);
+}
+
+// FUN_003b6030
+u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelChar* res;
+    RwV3d translation = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELCHAR);
+    
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelChar*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
+    RwMatrixUpdate(mdlGetMatrix(res->mdl));
+
+    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
+    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
+
+    return resTypeId;
+}
 #undef FUN_003b6180
 // FUN_003B6180
 
@@ -761,6 +646,88 @@ u16 FUN_003b6180(u16 param_1, void* param_2)
     return resTypeId;
 }
 #define FUN_003b6180(...) ((u32 (*)(...))FUN_003b6180)(__VA_ARGS__)
+// FUN_003b6270
+u16 MT_Scene_CreateResModelNpc(u16 resId, s32 param_2, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelNpc* res;
+    RwV3d translation = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELNPC);
+    
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelNpc*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    mdlTranslate(res->mdl, &translation, rwCOMBINEREPLACE);
+    RwMatrixUpdate(mdlGetMatrix(res->mdl));
+
+    res->collisCtlTask = K_FldFrame_CreateCtlTask(NULL, resTypeId, 0, 60.0f);
+    res->renderTexShadowTask = K_FldShadow_CreateRenderTexTask(res->collisCtlTask, resTypeId, param_2);
+
+    return resTypeId;
+}
+// FUN_003b63c0
+u16 MT_Scene_CreateResLightChar(u16 resId)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTCHAR);
+
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
+    {
+        return 0;
+    }
+
+    return resTypeId;
+}
+
+// FUN_003b6440
+u16 MT_Scene_CreateResLightNpc(u16 resId)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+
+    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_LIGHTNPC);
+
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (resrcMngCreateRes(resManager, resTypeId) == NULL)
+    {
+        return 0;
+    }
+
+    return resTypeId;
+}
 #undef FUN_003b64c0
 // FUN_003B64C0
 
@@ -804,6 +771,39 @@ u32 FUN_003b64c0(u32 param_1, u32 param_2, u8 param_3)
     return resTypeId;
 }
 #define FUN_003b64c0(...) ((u32 (*)(...))FUN_003b64c0)(__VA_ARGS__)
+// FUN_003b65d0
+u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl)
+{
+    ResrcManager* resManager;
+    u16 resTypeId;
+    ResrcModelFld* res;
+    RwV3d unused = {0};
+
+    resTypeId = RESRC_MAKE_TYPEID((u16)resId, RESRC_TYPE_MODELFLD);
+
+    resManager = gMtScene->resManager;
+    if (resManager == NULL)
+    {
+        printf("not found active resmanager\n");
+        return 0;
+    }
+
+    if (mdl == NULL)
+    {
+        return 0;
+    }
+
+    res = (ResrcModelFld*)resrcMngCreateRes(resManager, resTypeId);
+    if (res == NULL)
+    {
+        return 0;
+    }
+
+    res->mdl = mdl;
+    res->base.flags |= (1 << 3); // 0x08
+
+    return resTypeId;
+}
 #undef FUN_003b66b0
 // FUN_003B66B0
 

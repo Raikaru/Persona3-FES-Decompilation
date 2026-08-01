@@ -9,35 +9,7 @@ static u32* sBrHero; // puGpffffb68c
 void FUN_002630e0();
 void FUN_003b0170();
 
-// FUN_002626e0
-void brHero002626e0(u32* param_1)
-{
-    K_ASSERT(sBrHero == NULL, 0x59);
-    *param_1 = 0;
-    sBrHero = param_1;
-}
 
-// FUN_00262730
-void brHero00262730(void)
-{
-    K_ASSERT(sBrHero != NULL, 0x53);
-    if (*sBrHero & 1) {
-        FUN_002630e0();
-    }
-    sBrHero = NULL;
-}
-
-// FUN_002630e0
-void brHero002630e0(void)
-{
-    u32* work;
-
-    K_ASSERT(sBrHero != NULL, 0x53);
-    work = sBrHero;
-    K_ASSERT(*work & 1, 0x19a);
-    FUN_003b0170(work[0xad4]);
-    *work &= 0xfffffffe;
-}
 typedef struct {
     u32 unk0;
     u32 unk4;
@@ -73,13 +45,20 @@ extern void thunk_FUN_003b0e54(s32, s32);
 extern void FUN_003b1360(s32, s32, s32);
 extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
-#pragma alias D_00960090_abs D_00960090
-#pragma alias D_0096009C_abs D_0096009C
 extern u8 D_00960090_abs[];
 extern u8 D_0096009C_abs[];
 extern u32 uGpffffb948;
 extern float uGpffff83a8;
 extern float uGpffff83ac;
+extern u32 FUN_00233d70_u32(s32);
+extern u32 FUN_0021cca0_u32(u32, u32);
+static u32* sBrPersona; // DAT_007ce380
+void brPersonaDestroy();
+u32 FUN_001749a0();
+u32 FUN_003c9850();
+void FUN_003c9b00();
+void FUN_003c9cd0();
+void FUN_003c9d00();
 
 static void brHeroSetColor(void* object, u8 r, u8 g, u8 b, u8 a)
 {
@@ -90,7 +69,6 @@ static void brHeroSetColor(void* object, u8 r, u8 g, u8 b, u8 a)
     color[3] = a;
     FUN_0021d950(object, color);
 }
-
 static void brHeroSetRect(void* object, float x, float y, float w, float h)
 {
     float rect[4];
@@ -101,6 +79,23 @@ static void brHeroSetRect(void* object, float x, float y, float w, float h)
     FUN_0021d8e0(object, rect);
 }
 
+// FUN_002626e0
+void brHero002626e0(u32* param_1)
+{
+    K_ASSERT(sBrHero == NULL, 0x59);
+    *param_1 = 0;
+    sBrHero = param_1;
+}
+
+// FUN_00262730
+void brHero00262730(void)
+{
+    K_ASSERT(sBrHero != NULL, 0x53);
+    if (*sBrHero & 1) {
+        FUN_002630e0();
+    }
+    sBrHero = NULL;
+}
 
 // FUN_00262790
 void brHero00262790(void)
@@ -276,6 +271,23 @@ void brHero00262790(void)
 
     w[0xe58] = 0;
     *w |= 1;
+}
+#pragma alias D_00960090_abs D_00960090
+#pragma alias D_0096009C_abs D_0096009C
+
+
+
+
+// FUN_002630e0
+void brHero002630e0(void)
+{
+    u32* work;
+
+    K_ASSERT(sBrHero != NULL, 0x53);
+    work = sBrHero;
+    K_ASSERT(*work & 1, 0x19a);
+    FUN_003b0170(work[0xad4]);
+    *work &= 0xfffffffe;
 }
 // FUN_00263170 NONMATCHING
 void brHero00263170(void)
@@ -697,8 +709,6 @@ void brHero00263db0(void)
         renderQuad(w + i * 0x40 + 0xd18, 4, 0, 2, 3);
     }
 }
-#undef setRenderState
-#undef renderQuad
 
 
 #pragma alias brPersonaInit FUN_00264d80
@@ -710,19 +720,10 @@ void brHero00263db0(void)
 #pragma alias brPersonaGetPortraitFrame FUN_00264ca0
 #pragma alias brPersonaGetPortraitFrame_y2 FUN_00264ca0
 #pragma alias FUN_00233d70_u32 FUN_00233d70
-extern u32 FUN_00233d70_u32(s32);
 #pragma alias FUN_0021cca0_u32 FUN_0021cca0
-extern u32 FUN_0021cca0_u32(u32, u32);
 
 
-static u32* sBrPersona; // DAT_007ce380
 
-void brPersonaDestroy();
-u32 FUN_001749a0();
-u32 FUN_003c9850();
-void FUN_003c9b00();
-void FUN_003c9cd0();
-void FUN_003c9d00();
 
 
 
