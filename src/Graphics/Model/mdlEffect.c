@@ -21167,6 +21167,9 @@ LAB_003350f0:
 
 
 
+// W408 measurement: splitting the VU asm block around `inv255 = DAT_007cae4c` fixes the load order (nd19 -> nd12; object 612/624 unchanged).
+// Negative probes: direct global input regressed to nd224; volatile-cast load stayed nd19; pointer-cast with the split also stayed nd12.
+// The remaining six rows are the same register-colouring family as FUN_003377f0 (nd43), a confirmed b210 floor; this is a LOAD-ORDER fix, not a register fix.
 // FUN_00335180 NONMATCHING
 
 void FUN_00335180(int param_1)
@@ -21209,17 +21212,23 @@ void FUN_00335180(int param_1)
     count = *(int *)(node + 0x38);
     alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
     modelAlpha = *(int *)(param_1 + 0x24);
+    __asm__ volatile (
+        ".set noreorder                      \n"
+        "sw %0, 0xd8($sp)                   \n"
+        "addiu $v0, $sp, 0xd8               \n"
+        ".set reorder"
+        : : "r"(modelAlpha)
+        : "$v0", "memory");
+
     inv255 = DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                      \n"
-        "sw %1, 0xd8($sp)                   \n"
-        "addiu $v0, $sp, 0xd8               \n"
         "lw $v0, 0($v0)                     \n"
         "pextlb $v0, $zero, $v0             \n"
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -21231,7 +21240,7 @@ void FUN_00335180(int param_1)
         "pextlh $v0, $zero, $v0             \n"
         "qmtc2.ni $v0, vf10                 \n"
         "vitof0.xyzw vf10, vf10             \n"
-        "mfc1 $v0, %2                       \n"
+        "mfc1 $v0, %1                       \n"
         "nop                                \n"
         "qmtc2.ni $v0, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x        \n"
@@ -21239,7 +21248,7 @@ void FUN_00335180(int param_1)
         "addiu $v0, $sp, 0xb0               \n"
         "sqc2 vf10, 0($v0)                  \n"
         ".set reorder"
-        : : "r"(alpha), "r"(modelAlpha), "f"(inv255)
+        : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
 
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));

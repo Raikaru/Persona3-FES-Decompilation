@@ -3000,7 +3000,7 @@ extern void func_001842c0(KwlnTask* task,
 #pragma opt_common_subs off
 /* W363 callback-address probe: direct D_00960090/D_00960094 calls 1068/1072 nd633;
  * cached absolute aliases improve this to 1088/1072 nd608, but exceed the window, so
- * this sibling remains on the GP form.  The same family is fixed in 001842C0/001875F0. */
+ * this sibling remains on the GP form.  The same family is fixed in func_001842C0/func_001875F0. */
 // FUN_00183410 NONMATCHING
 void* func_00183410(KwlnTask* task)
 {
@@ -3443,7 +3443,7 @@ extern u8 D_00960090_abs[];
 
 /* W363 callback-address probe: cached D_00960090_abs setState before each branch
  * changes 1440/1488 nd945 to 1456/1488 nd789; the result remains under the window.
- * The same family covers 00183410, but its absolute-alias probe is 1088/1072 and blocked. */
+ * The same family covers func_00183410, but its absolute-alias probe is 1088/1072 and blocked. */
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,
@@ -5536,7 +5536,7 @@ KwlnTask* func_00187550(KwlnTask* parent)
 #pragma opt_dead_assignments off
 /* W363 callback-address probe: cached D_00960090_abs setState once
  * changes 1436/1520 nd1100 to 1452/1520 nd935; the result remains under the window.
- * The same family covers 00183410, but its absolute-alias probe is 1088/1072 and blocked. */
+ * The same family covers func_00183410, but its absolute-alias probe is 1088/1072 and blocked. */
 // FUN_001875F0 NONMATCHING
 void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
 {
