@@ -1445,7 +1445,7 @@ void K_FldUnit_DestroyAllEc()
 
 
 
-// Measured opt_common_subs off: nd506 -> 418, object 812/816; retained (under window).
+// Measured opt_common_subs off: nd506 -> 418, object 812/816; cached gFldUnitsPcMdl base: nd418 -> 399, object 812/816; retained (under window).
 #pragma opt_common_subs off
 /* Removing this worsens FUN_001d03f0 (nd506 -> nd517) - measured W161. */
 #pragma opt_loop_invariants on
@@ -1457,6 +1457,7 @@ void func_001d03f0(u16 charId)
     u8* cache;
     Model* cachedModel;
     s32 i;
+    u8* mdlBase;
     s16 pcId;
     u32 sceneMode;
 
@@ -1484,12 +1485,13 @@ void func_001d03f0(u16 charId)
     }
 
     sceneMode = func_001a0310();
+    mdlBase = (u8*)gFldUnitsPcMdl;
     if (sceneMode == 1 ||
         (PTR_DAT_007cd540[0] == 8 && PTR_DAT_007cd540[1] == 3))
     {
         for (i = 0; i < 3; i++)
         {
-            cache = (u8*)gFldUnitsPcMdl + i * 8;
+            cache = mdlBase + i * 8;
             cachedModel = *(Model**)(cache + 0xc);
             if (cachedModel != NULL)
             {
@@ -1541,7 +1543,7 @@ void func_001d03f0(u16 charId)
             }
             else
             {
-                cache = (u8*)gFldUnitsPcMdl + i * 8;
+                cache = mdlBase + i * 8;
                 cachedModel = *(Model**)(cache + 0xc);
                 if (cachedModel != NULL)
                 {

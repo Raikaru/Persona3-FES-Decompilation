@@ -9998,6 +9998,7 @@ void FUN_003fd8e0(int *param_1)
 
 }
 
+// Address-mode probe: DAT_007e0952 first use via u16 absolute alias improved nd434 -> nd400; object 780/816 -> 788/816.
 // FUN_003FD990 NONMATCHING
 
 
@@ -10046,7 +10047,7 @@ u64 FUN_003fd990(int *param_1)
 
   if ((uVar4 & 0x40000000) != 0) {
 
-    if (((DAT_007e0952 & 4) == 0) && ((DAT_007e095a & 4) == 0)) {
+    if (((*(u16 *)DAT_007e0952_abs & 4) == 0) && ((DAT_007e095a & 4) == 0)) {
 
       if (((DAT_007e0952 & 8) == 0) && ((DAT_007e095a & 8) == 0)) {
 
