@@ -936,15 +936,260 @@ u32 _DAT_006af184;
 #pragma alias cosf_y2 cosf_y2
 #pragma alias FUN_003b2cb0_y2 FUN_003b2cb0_y2
 
-// FUN_003fb290
-void fclShopMisc003fb290(void* param_1, void* param_2)
-{
-    K_ASSERT(param_1 != NULL, 0x1018);
-    memcpy((int)param_1 + 0xc, param_2, 0x1c);
-}
 
-// HARVESTED 3D-42FF
+typedef struct {
+  s16 id;
+  u8 pad[3];
+  s8 flags;
+  s16 value;
+} FclShopListEntry;
+u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3);
+void FUN_003f7730_i(int,int,int,int,int);
+void FUN_003f5d10_i(int,int,int,int,int);
+void FUN_003f5f50_i(int,int,int,int,int);
+void FUN_003f7a80_i(int,int,int,int,int);
+typedef int (*code)();
+void FUN_0040e300(u32 param_1,u32 param_2);
+void FUN_0040e360(void);
+void FUN_0040e390(void);
+void FUN_0040e3c0_draw(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6);
+void FUN_0040e3f0_draw(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
+extern void FUN_0040e3f0_i2f1i3f3(int param_5,int param_6,float param_1,u8 param_7,int param_8,
+                                  int param_9,int param_10,int param_11,float param_2,
+                                  float param_3,float param_4);
+void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
+u32 FUN_0040e450(int param_1);
+u32 FUN_0040e4f0(int *param_1);
+void FUN_0040e580(u32 param_1);
+u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
+u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
+extern void FUN_0040e710_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
+extern void FUN_0040e930_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
+u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
+extern u32 fclDrawSpriteCreate_i(int param_1, u32 param_2, int param_3);
+extern void fclDrawSpriteEmit(int param_1,int param_2,float param_3,int param_4,int param_5,int param_6);
+s32 FUN_0040eb50_y2(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7);
+s32 FUN_0040ebc0_y2(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
+void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
+void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
 
+                  int param_6);
+u32 FUN_0040ec50();
+u32 FUN_0040f030(int param_1,int param_2,int param_3);
+u32 FUN_0040f430(int param_1,int param_2);
+u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
+u64 FUN_0040fab0(u64 param_1,int param_2);
+u64 FUN_0040fb90(u64 param_1,int param_2,int param_3);
+void FUN_00521408(void *destination,s32 value,u32 size);
+extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
+extern u32 DAT_006af960[];
+extern u32 DAT_006af980[];
+float DAT_006af9d8;
+float DAT_006af9dc;
+float DAT_006af9e0;
+extern float DAT_006af9d8_abs[];
+extern float DAT_006af9dc_abs[];
+extern float DAT_006af9e0_abs[];
+typedef struct {
+  float x;
+  float y;
+  float z;
+} FclDrawSpriteVec3;
+u32 DAT_006af9a0;
+extern u32 DAT_006af9a0_abs[];
+u16 DAT_006af9c0[];
+typedef short DAT_006af9c0_abs_t;
+extern DAT_006af9c0_abs_t DAT_006af9c0_abs[];
+u32 DAT_006af9f0;
+u32 DAT_006afa70;
+int DAT_006afaf0[];
+u32 DAT_006afb10;
+extern u32 DAT_006afb10_abs[];
+extern u32 DAT_007ce69c;
+extern s32 DAT_007ce6a0;
+extern code DAT_00960178[];
+extern code DAT_0096017c[];
+extern code DAT_00960178_abs[];
+extern code DAT_0096017c_abs[];
+typedef int (*code)();
+typedef void (*FclShopBgCallback)(float, float, float, int, int, int, int, int, int, int, int);
+typedef struct {
+    u32 *callbacks;
+    int count;
+} FclShopBgCallbackPair;
+typedef union {
+    float floats[4];
+    u32 words[4];
+} FclShopBgHeader;
+typedef struct {
+    FclShopBgHeader header;
+    s16 table2[24];
+    s16 table1[40];
+} FclShopBgLocal;
+u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
+u32 H_Maestro_FinishedInit(u32 task);
+void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
+void H_Maestro_00111f20(u32 task,u32 value);
+void H_Maestro_00111c50_y2(u32 task);
+void H_Maestro_00111cb0(u32 task);
+void H_Maestro_SetAlphaMult_y2(float alpha,u32 task);
+void func_00111f10(u32 task,u32 value);
+void func_00111ca0(u32 task,u32 value);
+float fGpffff80d0;
+float fGpffff8168;
+float fGpffff81f8;
+float fGpffff81fc;
+float fGpffff8204;
+float fGpffffad18;
+u32 uGpffff8208;
+u32 uGpffffad1c;
+extern float fGpffffad1c;
+u32 DAT_007cda50;
+extern f32 sinf_fclShop(f32);
+extern f32 cosf_fclShop(f32);
+void FUN_0040e3c0_y2(float, s32, s32, u8, s32, s32);
+void FUN_0040e3c0_i_y2(s32, s32, float, u8, s32, s32);
+void FUN_0040e3f0_typed(float, float, float, float, s32, s32, u8, s32, s32, s32, s32);
+void FUN_003b2cb0_typed(float, s32, s32, u32, u32, u32, u32, u32, u32);
+void FUN_003b2cb0_i_y2(s32, s32, float, u32, u32, u32, u32, u32, u32);
+void FUN_003eec60(s32);
+u64 FUN_004101b0(u64 param_1,int param_2);
+u32 FUN_004105e0(int param_1, int param_2, int param_3);
+u64 FUN_00410a10(u64 param_1,int param_2);
+u32 FUN_00410d30(int param_1,int param_2);
+u32 FUN_00410e70(u32 param_1,int param_2,int param_3);
+u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3);
+u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3);
+u32 FUN_00411340(u64 param_1,u64 param_2,s16 *param_3);
+u32 FUN_004113f0(u64 param_1,int param_2,int param_3);
+u64 FUN_00411710(u64 param_1,int param_2);
+u32 FUN_00411790(u64 param_1,int param_2,int param_3);
+u64 FUN_00411ee0(u64 param_1,int param_2);
+u32 FUN_004120a0(u64 param_1, int param_2, int param_3);
+u64 FUN_00412580(u64 param_1,int param_2);
+u32 FUN_00412610(u64 param_1, int param_2, long param_3);
+u64 FUN_00412af0(u64 param_1,int param_2);
+u32 FUN_00412bc0(u64 param_1, int param_2, long param_3);
+u64 FUN_00413010(u64 param_1,int param_2);
+u32 FUN_004131a0(u64 param_1, int param_2, int param_3);
+u64 FUN_00413680(u64 param_1,int param_2);
+u64 FUN_004138e0(u64 param_1,int param_2,int param_3);
+u64 FUN_00413b10(u64 param_1,int param_2);
+u32 FUN_00413b70(u64 param_1, int param_2, int param_3);
+void FUN_00414100(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_004141e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,u32 param_6);
+void FUN_00414280(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414320(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414500(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004145f0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004146b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414770(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004148b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414950(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004149f0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414ad0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414bd0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414c70(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414d70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+u64 FUN_00414e10(int param_1,int param_2);
+u32 FUN_00414fe0(u64 param_1,int param_2,long param_3);
+void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_00415650(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_004157c0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00415880(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_00415a70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00415b30(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u8 param_6);
+void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+u64 FUN_00415c30(int param_1, int param_2);
+u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
+void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
+void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
+u64 FUN_00417030(int param_1, int param_2);
+float DAT_007cadc0;
+u32 DAT_006afb90;
+u32 DAT_006b0020;
+u32 DAT_006b0050;
+u32 DAT_006b0450;
+u32 DAT_006b04d0;
+u32 DAT_006b0a00;
+u32 DAT_006b0a60;
+float DAT_006b0ac0;
+float DAT_006b0ac4;
+float DAT_006b0ac8;
+float DAT_006b0acc;
+extern u8 DAT_006b0ac0_abs[];
+extern u8 DAT_006b0ac4_abs[];
+extern u8 DAT_006b0ac8_abs[];
+extern u8 DAT_006b0acc_abs[];
+u32 DAT_006b0ad0;
+u32 DAT_006b0cb0;
+u32 DAT_006b0dd4;
+u32 DAT_006b0ddc;
+u32 DAT_006b0de0;
+extern u8 DAT_006b0de0_abs[];
+u32 DAT_006b0e30;
+extern u8 DAT_006b0e30_abs[];
+u32 DAT_006b0e64;
+u32 DAT_006b0e6c;
+extern u8 DAT_006b0e64_abs[];
+u32 DAT_006b10e0;
+u32 DAT_006b1130;
+u32 DAT_006b1178;
+u32 DAT_006b1190;
+u32 DAT_006b1220;
+u32 DAT_006b1340;
+u32 DAT_006b1370;
+u32 DAT_006b13a0;
+u32 DAT_006b1400;
+u32 DAT_006b1460;
+u32 DAT_006b14c0;
+u32 DAT_006b14f0;
+u32 DAT_006b1520;
+u32 DAT_006b1580;
+u32 DAT_006b1610;
+u32 DAT_006b1640;
+u32 DAT_006b16a0;
+u32 DAT_006b16e0;
+u32 DAT_006b1710;
+float DAT_007caee8;
+u32 DAT_007cda4c;
+u32 DAT_007cda58;
+u32 DAT_007cda5a;
+u32 DAT_007cda5c;
+u32 DAT_007cda5e;
+u32 DAT_007cda64;
+extern float DAT_007cda64_f;
+u8 *DAT_007ce420_y2;
+u32 PTR_FUN_006b1490[];
+u32 PTR_FUN_006b1494[];
+u32 PTR_FUN_006b1498[];
+u32 PTR_FUN_006b14a0[];
+u32 PTR_FUN_006b16c8[];
+u32 PTR_FUN_006b16cc[];
+u32 PTR_FUN_006b16d0[];
+u32 PTR_FUN_006b1830[];
+u32 PTR_FUN_007cda10[];
+u32 PTR_FUN_007cda14[];
+u32 PTR_FUN_007cda18[];
+u32 PTR_FUN_007cda1c[];
+u32 PTR_FUN_007cda20[];
+u32 PTR_FUN_007cda24[];
+u32 PTR_FUN_007cda28[];
+u32 PTR_FUN_007cda30[];
+u32 PTR_FUN_007cda34[];
+u32 PTR_FUN_007cda38[];
+u32 PTR_FUN_007cda40[];
+u32 PTR_FUN_007cda44[];
 
 // FUN_003EFFF0
 
@@ -979,6 +1224,9 @@ u8 * FUN_003efff0(int param_1)
 
 
 }
+
+// HARVESTED 3D-42FF
+
 
 // FUN_003F0090
 s16 FUN_003f0090(int param_1)
@@ -1179,7 +1427,6 @@ char FUN_003f03e0(int param_1)
   return level;
 }
 
-/* Reconstructed the packed shop-date availability gate and all date-mode paths. */
 // FUN_003F04F0 NONMATCHING
 
 
@@ -1250,6 +1497,7 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
   return uVar3;
 }
 
+/* Reconstructed the packed shop-date availability gate and all date-mode paths. */
 // FUN_003F06E0 NONMATCHING
 
 
@@ -1288,7 +1536,6 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   return (u32 *)0;
 }
 
-#pragma alias fclShopSelectStockItemId FUN_003f0830
 // FUN_003F0830
 
 
@@ -1376,6 +1623,7 @@ not_found:
   return -1;
 }
 
+#pragma alias fclShopSelectStockItemId FUN_003f0830
 // FUN_003F0AC0
 
 
@@ -1464,8 +1712,6 @@ not_found:
   return -1;
 }
 
-// Confirmed b210 floor: only five branch immediates differ at +136/+148/+160/+172/+184;
-// our inner-switch exits target the final join, while retail targets the shared exit branch.
 // FUN_003F0D60 NONMATCHING
 
 
@@ -1516,6 +1762,8 @@ long FUN_003f0d60(int param_1,u64 param_2)
   return (s64)var_17;
 }
 
+// Confirmed b210 floor: only five branch immediates differ at +136/+148/+160/+172/+184;
+// our inner-switch exits target the final join, while retail targets the shared exit branch.
 // FUN_003F0EC0 NONMATCHING
 
 
@@ -1887,7 +2135,6 @@ void FUN_003f1520(int param_1)
   }
 }
 
-
 // FUN_003F15D0
 
 
@@ -1917,6 +2164,7 @@ int FUN_003f15d0(int param_1,int param_2)
   datSetMoney((s32)puVar2);
   return (s32)puVar2 - (s32)puVar1;
 }
+
 
 // FUN_003F1690
 
@@ -2006,7 +2254,6 @@ u32 FUN_003f1830(short *param_1,int param_2)
   return 1;
 }
 
-
 // FUN_003F1910
 
 
@@ -2039,6 +2286,7 @@ u32 FUN_003f1910(u64 param_1)
   }
   return uVar2;
 }
+
 
 // FUN_003F1A10
 
@@ -2197,7 +2445,6 @@ u32 FUN_003f1a10(u32 param_1)
 
 }
 
-#pragma alias fclShopPopulateEquipmentEntry FUN_003f1ba0
 // FUN_003F1BA0
 
 
@@ -2265,6 +2512,7 @@ void FUN_003f1ba0(int param_1,u32 param_2)
   }
 }
 
+#pragma alias fclShopPopulateEquipmentEntry FUN_003f1ba0
 // FUN_003F1DC0 NONMATCHING
 
 
@@ -2352,8 +2600,6 @@ u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
   return 1;
 }
 
-// Confirmed b210 floor: only +128/+132 differ, with the signed halfword extension
-// routed through $v0 here versus directly through $a0 in retail.
 // FUN_003F2240 NONMATCHING
 
 
@@ -2380,13 +2626,8 @@ u8 FUN_003f2240(int param_1,long param_2)
   return 1;
 }
 
-typedef struct {
-  s16 id;
-  u8 pad[3];
-  s8 flags;
-  s16 value;
-} FclShopListEntry;
-
+// Confirmed b210 floor: only +128/+132 differ, with the signed halfword extension
+// routed through $v0 here versus directly through $a0 in retail.
 // FUN_003F2320 NONMATCHING
 
 
@@ -2443,6 +2684,7 @@ u64 FUN_003f2320(int task,int list)
   FUN_003f2d60(task);
   return 0;
 }
+
 
 // FUN_003F2510
 
@@ -2884,7 +3126,6 @@ u64 FUN_003f2d60(int param_1)
 
 }
 
-// W212: narrowing the maintained result to short measured nd187 -> nd227 and 416/432 -> 444/432; rejected as over-window.
 // FUN_003F2DC0 NONMATCHING
 
 
@@ -2987,6 +3228,7 @@ u64 FUN_003f2dc0(int param_1,int param_2)
 
 }
 
+// W212: narrowing the maintained result to short measured nd187 -> nd227 and 416/432 -> 444/432; rejected as over-window.
 // FUN_003F2F70 NONMATCHING
 
 
@@ -3074,7 +3316,6 @@ u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3)
   return 0;
 }
 
-// Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.
 // FUN_003F3280
 s32 FUN_003f3280(u32 *param_1,u32 *param_2)
 {
@@ -3139,6 +3380,7 @@ ret:
   return result;
 }
 
+// Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.
 #pragma opt_loop_invariants on
 // FUN_003F33D0 NONMATCHING
 
@@ -3318,7 +3560,6 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
   return task;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003F3970
 
 
@@ -3331,9 +3572,8 @@ u64 FUN_003f3970(long param_1,u32 param_2)
 
   return FUN_003f39a0(param_1,0,param_2);
 }
-#pragma alias FUN_003f39a0_u32ret FUN_003f39a0
-u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3);
 
+#pragma opt_loop_invariants reset
 // FUN_003F39A0 NONMATCHING
 
 
@@ -3531,6 +3771,7 @@ u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3)
   return uVar4;
 
 }
+#pragma alias FUN_003f39a0_u32ret FUN_003f39a0
 
 // FUN_003F3DC0
 
@@ -3726,15 +3967,6 @@ void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4)
 
 }
 
-// Typed integer call views preserve the retail 32-bit ABI for these draw helpers.
-#pragma alias FUN_003f7730_i FUN_003f7730
-void FUN_003f7730_i(int,int,int,int,int);
-#pragma alias FUN_003f5d10_i FUN_003f5d10
-void FUN_003f5d10_i(int,int,int,int,int);
-#pragma alias FUN_003f5f50_i FUN_003f5f50
-void FUN_003f5f50_i(int,int,int,int,int);
-#pragma alias FUN_003f7a80_i FUN_003f7a80
-void FUN_003f7a80_i(int,int,int,int,int);
 // FUN_003F4350 NONMATCHING
 
 
@@ -3791,6 +4023,11 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
   }
 }
 
+// Typed integer call views preserve the retail 32-bit ABI for these draw helpers.
+#pragma alias FUN_003f7730_i FUN_003f7730
+#pragma alias FUN_003f5d10_i FUN_003f5d10
+#pragma alias FUN_003f5f50_i FUN_003f5f50
+#pragma alias FUN_003f7a80_i FUN_003f7a80
 // FUN_003F45E0 NONMATCHING
 
 
@@ -5101,6 +5338,7 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
   return;
 
 }
+
 #undef auStack_30
 #undef acStack_20
 #undef sStack_10
@@ -5108,7 +5346,6 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
 #undef sStack_c
 #undef sStack_a
 #undef acStack_8
-
 // FUN_003F67E0 NONMATCHING
 
 
@@ -5385,6 +5622,7 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
   return;
 
 }
+
 #undef auStack_30
 #undef acStack_20
 #undef sStack_10
@@ -5392,7 +5630,6 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 #undef sStack_c
 #undef sStack_a
 #undef acStack_8
-
 // FUN_003F6F20 NONMATCHING
 
 
@@ -5835,11 +6072,6 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
   FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00,1,5,0,*(short *)(iVar1 + 4));
 }
 
-// Filled in from retail disassembly: sibling FUN_003f7fe0's pattern (3/3/1
-// true-branch, 2/2/0 false-branch constants to FUN_003f55b0/FUN_003f5830)
-// applies here too, except the "else" sub-case in each branch substitutes
-// iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
-// param_1/param_3 - a background/unselected variant of the same draw call.
 // FUN_003F7D50 NONMATCHING
 
 
@@ -5937,6 +6169,11 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
 }
 
+// Filled in from retail disassembly: sibling FUN_003f7fe0's pattern (3/3/1
+// true-branch, 2/2/0 false-branch constants to FUN_003f55b0/FUN_003f5830)
+// applies here too, except the "else" sub-case in each branch substitutes
+// iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
+// param_1/param_3 - a background/unselected variant of the same draw call.
 // FUN_003F7FE0
 
 
@@ -6007,13 +6244,6 @@ void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
   return;
 
 }
-
-
-// Filled in from retail disassembly, same dispatch family as the sibling
-// functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
-// func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
-// 1088B vs 1056B window); logic and constants verified against retail.
-
 
 // FUN_003F8180 NONMATCHING
 
@@ -6190,10 +6420,13 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
 }
 
-// Retyped params to match retail's dispatch to func_003f7d50/7fe0/8180
-// (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
-// Residual: case 0x14's two adds route through a scratch reg instead of
-// landing directly in $a0/$a1 - compiler scheduling floor.
+
+// Filled in from retail disassembly, same dispatch family as the sibling
+// functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
+// func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
+// 1088B vs 1056B window); logic and constants verified against retail.
+
+
 // FUN_003F85A0
 
 
@@ -6231,6 +6464,10 @@ void FUN_003f85a0(int param_1,int param_2,u32 param_3,int param_4,
 
 }
 
+// Retyped params to match retail's dispatch to func_003f7d50/7fe0/8180
+// (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
+// Residual: case 0x14's two adds route through a scratch reg instead of
+// landing directly in $a0/$a1 - compiler scheduling floor.
 // FUN_003F86A0 NONMATCHING
 
 
@@ -6961,12 +7198,6 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
 }
 
-// Window was wrongly 784B (should be 400B) - see FUN_003f9cb0 split below.
-// Full logic rewritten from retail disasm: if/else order, switch-based
-// dispatch, and int/long typing all fixed. Residual: register-bank
-// choice for param_1/param_2 (s2/s1 in retail vs s5/s4 here).
-// Exact remaining words are the +164/+168/+172 ordering of the $s3 sign extension
-// and the independent initialization of $s5; their values and uses are identical.
 // FUN_003F9B20 NONMATCHING
 
 
@@ -7058,11 +7289,12 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
 }
 
-// Hidden sibling: only referenced via FUN_003c7000(uVar7,0x3f9cb0,0) as a
-// raw callback pointer literal in FUN_003f9e30 below, never via jal, so
-// Ghidra's boundary scan absorbed it into FUN_003f9b20's window (784B
-// instead of the true 400B). Splitting it out here as its own function
-// per the p3-window-nullsub-discovery Case C procedure.
+// Window was wrongly 784B (should be 400B) - see FUN_003f9cb0 split below.
+// Full logic rewritten from retail disasm: if/else order, switch-based
+// dispatch, and int/long typing all fixed. Residual: register-bank
+// choice for param_1/param_2 (s2/s1 in retail vs s5/s4 here).
+// Exact remaining words are the +164/+168/+172 ordering of the $s3 sign extension
+// and the independent initialization of $s5; their values and uses are identical.
 // FUN_003F9CB0
 s32 FUN_003f9cb0(u32 *param_1, u32 *param_2)
 {
@@ -7135,8 +7367,11 @@ ret:
   return result;
 }
 
-
-#pragma alias fclShopCreateEquipmentItemList FUN_003f9e30
+// Hidden sibling: only referenced via FUN_003c7000(uVar7,0x3f9cb0,0) as a
+// raw callback pointer literal in FUN_003f9e30 below, never via jal, so
+// Ghidra's boundary scan absorbed it into FUN_003f9b20's window (784B
+// instead of the true 400B). Splitting it out here as its own function
+// per the p3-window-nullsub-discovery Case C procedure.
 // FUN_003F9E30
 
 
@@ -7345,6 +7580,8 @@ items_done:
 
 }
 
+
+#pragma alias fclShopCreateEquipmentItemList FUN_003f9e30
 // FUN_003FA0D0
 
 
@@ -7898,7 +8135,6 @@ done:
   return;
 }
 
-
 // FUN_003FADC0
 
 
@@ -7984,6 +8220,7 @@ void FUN_003fadc0(int param_1)
   return;
 
 }
+
 
 // FUN_003FB0C0
 
@@ -8120,6 +8357,13 @@ void FUN_003fb0c0(u32 param_1,u32 param_2)
 
   return;
 
+}
+
+// FUN_003fb290
+void fclShopMisc003fb290(void* param_1, void* param_2)
+{
+    K_ASSERT(param_1 != NULL, 0x1018);
+    memcpy((int)param_1 + 0xc, param_2, 0x1c);
 }
 
 // FUN_003FB2F0
@@ -16595,11 +16839,11 @@ void FUN_004064e0(int param_1,int param_2,int param_3,int param_4)
 
 }
 #pragma opt_loop_invariants reset
-#undef bStack_3c
-#undef FORMAT_SHOP_RECORD_TEXT
 
 // Addressing-signal audit: retail really uses the same two $gp-relative format-string
 // addresses and the same $gp-relative float load. Only +440/+444/+448 call setup differs.
+#undef bStack_3c
+#undef FORMAT_SHOP_RECORD_TEXT
 // FUN_00406AA0
 
 
@@ -17864,8 +18108,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 }
 #pragma schedule off
 #pragma opt_common_subs reset
-#undef FUN_0040e3f0
 
+#undef FUN_0040e3f0
 // FUN_0040B3A0
 
 
@@ -19779,91 +20023,22 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 }
 
 
-typedef int (*code)();
 /* FUSION_EXACT_PROTOS */
-void FUN_0040e300(u32 param_1,u32 param_2);
-void FUN_0040e360(void);
-void FUN_0040e390(void);
 #pragma alias FUN_0040e3c0_draw FUN_0040e3c0
-void FUN_0040e3c0_draw(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6);
-void FUN_0040e3f0_draw(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
 #pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0_draw
-extern void FUN_0040e3f0_i2f1i3f3(int param_5,int param_6,float param_1,u8 param_7,int param_8,
-                                  int param_9,int param_10,int param_11,float param_2,
-                                  float param_3,float param_4);
-void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
-                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
-u32 FUN_0040e450(int param_1);
-u32 FUN_0040e4f0(int *param_1);
-void FUN_0040e580(u32 param_1);
-u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
-u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
 #pragma alias FUN_0040e710_i2f1u8i4i3f FUN_0040e710
-extern void FUN_0040e710_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
-                                     int param_8,int param_9,int param_10,int param_11,
-                                     int param_12,float param_2,float param_3,float param_4);
 #pragma alias FUN_0040e930_i2f1u8i4i3f FUN_0040e930
-extern void FUN_0040e930_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
-                                     int param_8,int param_9,int param_10,int param_11,
-                                     int param_12,float param_2,float param_3,float param_4);
-u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
 #pragma alias fclDrawSpriteCreate_i FUN_001158b0
-extern u32 fclDrawSpriteCreate_i(int param_1, u32 param_2, int param_3);
 #pragma alias fclDrawSpriteEmit FUN_0040e3c0_draw
-extern void fclDrawSpriteEmit(int param_1,int param_2,float param_3,int param_4,int param_5,int param_6);
-s32 FUN_0040eb50_y2(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7);
-s32 FUN_0040ebc0_y2(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
-void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
 #pragma alias FUN_0040ec20_typed FUN_0040ec20
-void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
-
-                  int param_6);
-u32 FUN_0040ec50();
-u32 FUN_0040f030(int param_1,int param_2,int param_3);
-u32 FUN_0040f430(int param_1,int param_2);
-u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
-u64 FUN_0040fab0(u64 param_1,int param_2);
-u64 FUN_0040fb90(u64 param_1,int param_2,int param_3);
-void FUN_00521408(void *destination,s32 value,u32 size);
-extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
-extern u32 DAT_006af960[];
-extern u32 DAT_006af980[];
-float DAT_006af9d8;
-float DAT_006af9dc;
-float DAT_006af9e0;
 #pragma alias DAT_006af9d8_abs DAT_006af9d8
 #pragma alias DAT_006af9dc_abs DAT_006af9dc
 #pragma alias DAT_006af9e0_abs DAT_006af9e0
-extern float DAT_006af9d8_abs[];
-extern float DAT_006af9dc_abs[];
-extern float DAT_006af9e0_abs[];
-typedef struct {
-  float x;
-  float y;
-  float z;
-} FclDrawSpriteVec3;
-u32 DAT_006af9a0;
 #pragma alias DAT_006af9a0_abs DAT_006af9a0
-extern u32 DAT_006af9a0_abs[];
-u16 DAT_006af9c0[];
-typedef short DAT_006af9c0_abs_t;
 #pragma alias DAT_006af9c0_abs DAT_006af9c0
-extern DAT_006af9c0_abs_t DAT_006af9c0_abs[];
-u32 DAT_006af9f0;
-u32 DAT_006afa70;
-int DAT_006afaf0[];
-u32 DAT_006afb10;
 #pragma alias DAT_006afb10_abs DAT_006afb10
-extern u32 DAT_006afb10_abs[];
-extern u32 DAT_007ce69c;
-extern s32 DAT_007ce6a0;
-extern code DAT_00960178[];
-extern code DAT_0096017c[];
 #pragma alias DAT_00960178_abs DAT_00960178
-extern code DAT_00960178_abs[];
 #pragma alias DAT_0096017c_abs DAT_0096017c
-extern code DAT_0096017c_abs[];
 
 
 
@@ -20299,204 +20474,26 @@ void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u6
 
 
 
-#undef asStack_80
-#undef afStack_7c
-#undef auStack_70
-#undef auStack_60
-#undef afStack_40
 
 
-typedef int (*code)();
-typedef void (*FclShopBgCallback)(float, float, float, int, int, int, int, int, int, int, int);
-typedef struct {
-    u32 *callbacks;
-    int count;
-} FclShopBgCallbackPair;
 
-typedef union {
-    float floats[4];
-    u32 words[4];
-} FclShopBgHeader;
-typedef struct {
-    FclShopBgHeader header;
-    s16 table2[24];
-    s16 table1[40];
-} FclShopBgLocal;
-u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
-u32 H_Maestro_FinishedInit(u32 task);
-void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
-void H_Maestro_00111f20(u32 task,u32 value);
-void H_Maestro_00111c50_y2(u32 task);
-void H_Maestro_00111cb0(u32 task);
-void H_Maestro_SetAlphaMult_y2(float alpha,u32 task);
-void func_00111f10(u32 task,u32 value);
-void func_00111ca0(u32 task,u32 value);
-float fGpffff80d0;
-float fGpffff8168;
-float fGpffff81f8;
-float fGpffff81fc;
-float fGpffff8204;
-float fGpffffad18;
-u32 uGpffff8208;
-u32 uGpffffad1c;
 #pragma alias fGpffffad1c uGpffffad1c
-extern float fGpffffad1c;
-u32 DAT_007cda50;
 
 #pragma alias sinf_fclShop sinf_y2
-extern f32 sinf_fclShop(f32);
 #pragma alias cosf_fclShop cosf_y2
-extern f32 cosf_fclShop(f32);
 /* FUSION_EXACT_PROTOS */
-void FUN_0040e3c0_y2(float, s32, s32, u8, s32, s32);
-void FUN_0040e3c0_i_y2(s32, s32, float, u8, s32, s32);
 #pragma alias FUN_0040e3f0_typed FUN_0040e3f0_y2
-void FUN_0040e3f0_typed(float, float, float, float, s32, s32, u8, s32, s32, s32, s32);
 #pragma alias FUN_003b2cb0_typed FUN_003b2cb0_y2
-void FUN_003b2cb0_typed(float, s32, s32, u32, u32, u32, u32, u32, u32);
-void FUN_003b2cb0_i_y2(s32, s32, float, u32, u32, u32, u32, u32, u32);
-void FUN_003eec60(s32);
-u64 FUN_004101b0(u64 param_1,int param_2);
-u32 FUN_004105e0(int param_1, int param_2, int param_3);
-u64 FUN_00410a10(u64 param_1,int param_2);
-u32 FUN_00410d30(int param_1,int param_2);
-u32 FUN_00410e70(u32 param_1,int param_2,int param_3);
-u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3);
-u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3);
-u32 FUN_00411340(u64 param_1,u64 param_2,s16 *param_3);
-u32 FUN_004113f0(u64 param_1,int param_2,int param_3);
-u64 FUN_00411710(u64 param_1,int param_2);
-u32 FUN_00411790(u64 param_1,int param_2,int param_3);
-u64 FUN_00411ee0(u64 param_1,int param_2);
-u32 FUN_004120a0(u64 param_1, int param_2, int param_3);
-u64 FUN_00412580(u64 param_1,int param_2);
-u32 FUN_00412610(u64 param_1, int param_2, long param_3);
-u64 FUN_00412af0(u64 param_1,int param_2);
-u32 FUN_00412bc0(u64 param_1, int param_2, long param_3);
-u64 FUN_00413010(u64 param_1,int param_2);
-u32 FUN_004131a0(u64 param_1, int param_2, int param_3);
-u64 FUN_00413680(u64 param_1,int param_2);
-u64 FUN_004138e0(u64 param_1,int param_2,int param_3);
-u64 FUN_00413b10(u64 param_1,int param_2);
-u32 FUN_00413b70(u64 param_1, int param_2, int param_3);
-void FUN_00414100(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
-void FUN_004141e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,u32 param_6);
-void FUN_00414280(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00414320(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00414500(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_004145f0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_004146b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00414770(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
-void FUN_004148b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00414950(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_004149f0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
-void FUN_00414ad0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
-void FUN_00414bd0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00414c70(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
-void FUN_00414d70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-u64 FUN_00414e10(int param_1,int param_2);
-u32 FUN_00414fe0(u64 param_1,int param_2,long param_3);
-void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
-void FUN_00415650(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
-void FUN_004157c0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00415880(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
-void FUN_00415a70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_00415b30(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u8 param_6);
-void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-u64 FUN_00415c30(int param_1, int param_2);
-u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
-void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
-void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
-void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
-void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
-void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
-u64 FUN_00417030(int param_1, int param_2);
 /* FUSION_GLOBALS */
-float DAT_007cadc0;
-u32 DAT_006afb90;
-u32 DAT_006b0020;
-u32 DAT_006b0050;
-u32 DAT_006b0450;
-u32 DAT_006b04d0;
-u32 DAT_006b0a00;
-u32 DAT_006b0a60;
-float DAT_006b0ac0;
-float DAT_006b0ac4;
-float DAT_006b0ac8;
-float DAT_006b0acc;
 #pragma alias DAT_006b0ac0_abs DAT_006b0ac0
-extern u8 DAT_006b0ac0_abs[];
 #pragma alias DAT_006b0ac4_abs DAT_006b0ac4
-extern u8 DAT_006b0ac4_abs[];
 #pragma alias DAT_006b0ac8_abs DAT_006b0ac8
-extern u8 DAT_006b0ac8_abs[];
 #pragma alias DAT_006b0acc_abs DAT_006b0acc
-extern u8 DAT_006b0acc_abs[];
-u32 DAT_006b0ad0;
-u32 DAT_006b0cb0;
-u32 DAT_006b0dd4;
-u32 DAT_006b0ddc;
-u32 DAT_006b0de0;
 #pragma alias DAT_006b0de0_abs DAT_006b0de0
-extern u8 DAT_006b0de0_abs[];
-u32 DAT_006b0e30;
 #pragma alias DAT_006b0e30_abs DAT_006b0e30
-extern u8 DAT_006b0e30_abs[];
 
-u32 DAT_006b0e64;
-u32 DAT_006b0e6c;
 #pragma alias DAT_006b0e64_abs DAT_006b0e64
-extern u8 DAT_006b0e64_abs[];
-u32 DAT_006b10e0;
-u32 DAT_006b1130;
-u32 DAT_006b1178;
-u32 DAT_006b1190;
-u32 DAT_006b1220;
-u32 DAT_006b1340;
-u32 DAT_006b1370;
-u32 DAT_006b13a0;
-u32 DAT_006b1400;
-u32 DAT_006b1460;
-u32 DAT_006b14c0;
-u32 DAT_006b14f0;
-u32 DAT_006b1520;
-u32 DAT_006b1580;
-u32 DAT_006b1610;
-u32 DAT_006b1640;
-u32 DAT_006b16a0;
-u32 DAT_006b16e0;
-u32 DAT_006b1710;
-float DAT_007caee8;
-u32 DAT_007cda4c;
-u32 DAT_007cda58;
-u32 DAT_007cda5a;
-u32 DAT_007cda5c;
-u32 DAT_007cda5e;
-u32 DAT_007cda64;
 #pragma alias DAT_007cda64_f DAT_007cda64
-extern float DAT_007cda64_f;
-u8 *DAT_007ce420_y2;
-u32 PTR_FUN_006b1490[];
-u32 PTR_FUN_006b1494[];
-u32 PTR_FUN_006b1498[];
-u32 PTR_FUN_006b14a0[];
-u32 PTR_FUN_006b16c8[];
-u32 PTR_FUN_006b16cc[];
-u32 PTR_FUN_006b16d0[];
-u32 PTR_FUN_006b1830[];
-u32 PTR_FUN_007cda10[];
-u32 PTR_FUN_007cda14[];
-u32 PTR_FUN_007cda18[];
-u32 PTR_FUN_007cda1c[];
-u32 PTR_FUN_007cda20[];
-u32 PTR_FUN_007cda24[];
-u32 PTR_FUN_007cda28[];
-u32 PTR_FUN_007cda30[];
-u32 PTR_FUN_007cda34[];
-u32 PTR_FUN_007cda38[];
-u32 PTR_FUN_007cda40[];
-u32 PTR_FUN_007cda44[];
 
 
 
