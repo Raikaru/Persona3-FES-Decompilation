@@ -528,6 +528,7 @@ void func_001da000(KwlnTask* task, u32 disabled)
 // cases 2/4 wrap at 5. Still short of the window: retail keeps eight floats
 // (f20-f27) live giving a -0x70 frame, and has a second work+8 dispatch near
 // offset 1896 that is not yet reconstructed.
+/* W422 rejected direct-play probes: both explicit K_Footstep_Play callsites in this update inlined = 7405/10096/9936; first only = 7661/10016/9936; second only = 7642/10016/9936. mdlId reintroduction/order/no-type variants = 6856/9948/9936, 6852/9948/9936, and 2448/9936/9936. Baseline 2335/9936 retained. */
 // FUN_001da020 NONMATCHING
 void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
 {

@@ -7179,6 +7179,7 @@ void h_campStatusDestroyPcStatusPartsTask(KwlnTask* task)
     RwFree(task->workData);
 }
 
+/* W422 role-cycle split probes: viewport alpha, setState, submitVertices, and combined local copies all stayed nd147/object624/window656 rate .224; rejected. */
 // FUN_00126710 NONMATCHING
 #pragma push
 /* opt_loop_invariants on: nd281/620B off -> nd147/624B on; retained. */
@@ -7931,6 +7932,7 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 
 /* opt_dead_assignments off: default nd783/1312B -> off nd199/1308B; retained. */
 /* W420 rejected alpha-cast probe: 00128720 nd202/object1308/window1312 rate .154 vs baseline nd199/object1308/window1312 rate .152; 00128c40 stayed nd199/object1308/window1312 rate .152. */
+/* W422 role-cycle split probes: status argument aliases/persona/bonus/alpha/allafter, aggregate copies, helper parameter orders, alpha widths, and lifetime/propagation pragmas all stayed nd199/object1308/window1312 rate .152 for both twins; rejected. */
 #pragma opt_dead_assignments off
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,

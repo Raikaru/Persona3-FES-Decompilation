@@ -114,6 +114,7 @@ extern void FUN_00100ec0_pm(u32 param_1);
 #undef FUN_00397950
 /* Source-honest compiler floor: frame, calls, and tail are exact; only the
  * $v0/$a1 temporary coloring at offsets 0x54/0x58 remains (normalized diff 2). */
+/* W422 negatives: register one local and an inlined two-argument equality helper both stayed nd2/object1028/window1040; the addiu/beq temporary remained v0 rather than retail a1. */
 // FUN_00397950 NONMATCHING
 
 

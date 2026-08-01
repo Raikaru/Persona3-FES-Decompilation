@@ -3202,7 +3202,7 @@ u32 FUN_0041a730(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  return (float)(int)(puVar1[1] << 1) + 6.0f < (float)*(int *)(param_2 + 0xc);
+  return (float)*(int *)(param_2 + 0xc) > (float)(int)(puVar1[1] << 1) + 6.0f;
 
 }
 #pragma opt_loop_invariants off
@@ -20424,9 +20424,9 @@ void FUN_00439520(int param_1)
 u64 FUN_00439f60(int param_1,char param_2)
 
 {
+  u32 lVar3;
   int iVar1;
   int iVar2;
-  u32 lVar3;
   u32 uVar4;
   u32 lVar5;
 

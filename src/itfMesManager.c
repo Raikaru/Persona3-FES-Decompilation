@@ -7447,17 +7447,18 @@ void FUN_003a9e20(int param_1,u64 param_2)
 #undef FUN_003a9ed0
 
 // W383 residual: saved-register s2/s3/s4 3-cycle (param1/param2/index); declaration permutation was neutral, first-use index hoist worse, ABI/full-prototype probes neutral or worse.
-// FUN_003A9ED0 NONMATCHING
+// FUN_003A9ED0
 
 
 void FUN_003a9ed0(int param_1,u64 param_2)
 {
-  int index;
   u32 uVar1;
   u8 *iVar2;
   u8 *iVar3;
   int iVar5;
   u8 *iVar4;
+  int index1;
+  int index2;
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(u8 **)(param_1 + 8);
   iVar3 = iVar2 + 0x140;
@@ -7467,14 +7468,14 @@ void FUN_003a9ed0(int param_1,u64 param_2)
   }
   iVar2 = *(u8 **)(param_1 + 8);
   iVar3 = iVar2 + 0x140;
-  for (index = 0; index < 3; index = index + 1) {
-    FUN_003b4eb0(iVar2,iVar3,DAT_006a1f00_abs + index * 8,
-                 DAT_006a1f20_abs + index * 8,8,
+  for (index1 = 0; index1 < 3; index1 = index1 + 1) {
+    FUN_003b4eb0(iVar2,iVar3,DAT_006a1f00_abs + index1 * 8,
+                 DAT_006a1f20_abs + index1 * 8,8,
                  *(u32 *)(param_1 + 0xc),param_2);
   }
-  for (index = 0; index < 6; index = index + 1) {
-    FUN_003b4ec0(iVar2 + (index * 4 + 0x10) * 8,iVar3,&gp0xffffa7d0,
-                 DAT_006a1f40_abs + index * 4,4,
+  for (index2 = 0; index2 < 6; index2 = index2 + 1) {
+    FUN_003b4ec0(iVar2 + (index2 * 4 + 0x10) * 8,iVar3,&gp0xffffa7d0,
+                 DAT_006a1f40_abs + index2 * 4,4,
                  *(u32 *)(param_1 + 0xc),param_2);
   }
   return;
@@ -7483,17 +7484,18 @@ void FUN_003a9ed0(int param_1,u64 param_2)
 #undef FUN_003aa000
 
 // W383 residual: saved-register s2/s3/s4 3-cycle (param1/param2/index); declaration permutation was neutral, first-use index hoist worse, ABI/full-prototype probes neutral or worse.
-// FUN_003AA000 NONMATCHING
+// FUN_003AA000
 
 
 void FUN_003aa000(int param_1,u64 param_2)
 {
-  int index;
   u32 uVar1;
   int iVar2;
   int iVar3;
   int iVar5;
   int iVar4;
+  int index1;
+  int index2;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(int *)(param_1 + 8);
@@ -7504,14 +7506,14 @@ void FUN_003aa000(int param_1,u64 param_2)
   }
   iVar2 = *(int *)(param_1 + 8);
   iVar3 = iVar2 + 0x100;
-  for (index = 0; index < 3; index = index + 1) {
-    FUN_003b4eb0(iVar2,iVar3,DAT_006a1f60_abs + index * 8,
-                 DAT_006a1f80_abs + index * 8,8,
+  for (index1 = 0; index1 < 3; index1 = index1 + 1) {
+    FUN_003b4eb0(iVar2,iVar3,DAT_006a1f60_abs + index1 * 8,
+                 DAT_006a1f80_abs + index1 * 8,8,
                  *(u32 *)(param_1 + 0xc),param_2);
   }
-  for (index = 0; index < 2; index = index + 1) {
-    FUN_003b4ec0(iVar2 + (index * 4 + 0x10) * 8,iVar3,&gp0xffffa7d4,
-                 DAT_006a1fa0_abs + index * 4,4,
+  for (index2 = 0; index2 < 2; index2 = index2 + 1) {
+    FUN_003b4ec0(iVar2 + (index2 * 4 + 0x10) * 8,iVar3,&gp0xffffa7d4,
+                 DAT_006a1fa0_abs + index2 * 4,4,
                  *(u32 *)(param_1 + 0xc),param_2);
   }
   return;
@@ -7709,6 +7711,7 @@ void FUN_003aa370(int param_1,u64 param_2)
 #undef FUN_003aa720
 
 // W383 residual: a0/a3 pointer/counter color cycle; declaration-init was neutral, counter-before-pointer was worse, and full sprite ABI aliases were neutral.
+// W422 probes: split copy/y nd15/960, declaration permutations nd6/960, nd15/960, nd15/960, and assignment-first nd22/960; baseline retained.
 // FUN_003AA720 NONMATCHING
 
 
@@ -10074,6 +10077,7 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 #undef FUN_003ada00
 
 // W383 residual: s1/s2 byte/index color cycle; declaration permutation was neutral, loading bVar6 before bVar1 was worse, and ABI/full-prototype probes were neutral or worse.
+// W422 probes: bVar1-tail, bVar6-u32, low-alias, ternary, and bVar6-first each nd5/256; u32-byte locals nd147/248 and bVar7-u8 nd132/260; baseline retained.
 // FUN_003ADA00 NONMATCHING
 
 
@@ -10577,6 +10581,7 @@ u64 FUN_003ae150(u64 param_1,int param_2)
 #undef FUN_003ae160
 
 // W383 residual: a2/a3/v1 three-role color cycle (first index/second index/counter); declaration permutation was neutral, counter-before-pointer was worse, and the full 2-int prototype was neutral.
+// W422 probes: first2 split nd10/252, second2 split nd7/252, iVar8 split nd7/252, counter-tail nd14/252, indexValue nd7/252, while nd68/260, merge first/second nd7/252, and merge-counter-first/second nd118/252 and nd54/252; baseline retained.
 // FUN_003AE160 NONMATCHING
 
 
@@ -10683,6 +10688,7 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 #undef FUN_003ae260
 
 // W383 residual: a2/a3/v1 three-role color cycle (first index/second index/counter); declaration permutation was neutral, counter-before-pointer was worse, and the full 2-int prototype was neutral.
+// W422 probes: explicit index locals/reuse nd7/252, counter split nd14/252, counter declaration early nd7/252, and dual address split nd10/252; baseline retained.
 // FUN_003AE260 NONMATCHING
 
 

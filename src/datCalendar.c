@@ -5255,11 +5255,12 @@ void func_00186a40(void* resource, CalendarPackedPosition position, u32 alpha, s
                   50.0f);
 }
 
-// FUN_00186BD0 NONMATCHING
+/* W422 MATCH: declaration order `void* unused; s32 tile;` fixed every s0/s1 role row; gsDrawSpritePositionFirst(x, y, unused, resource, tile, alpha, depth) forced retail coordinate-before-alpha evaluation. fndiff was zero-row at nd9 while verify's owned_relocation_diffs exposed the switch's own jump table. Case map [1,2,3,4,5,6,0,7,8], with case 0/case 7 falling through at tile 0x10 and case 8 at tile 0x12, matched that table; naive [6,0..5,7,8] changed the body (first diffs 196-268, nd16), while the working map did not. Final nd0/object384/window384. */
+// FUN_00186BD0
 void func_00186bd0(void* resource, CalendarPackedPosition position, u32 alpha, s16 selection)
 {
-    s32 tile;
     void* unused;
+    s32 tile;
 
     if (alpha == 0xff)
     {
@@ -5275,25 +5276,25 @@ void func_00186bd0(void* resource, CalendarPackedPosition position, u32 alpha, s
     {
     switch (selection)
     {
-        case 0: tile = 0xa; break;
-        case 1: tile = 0xb; break;
-        case 2: tile = 0xc; break;
-        case 3: tile = 0xd; break;
-        case 4: tile = 0xe; break;
-        case 5: tile = 0xf; break;
-        case 6: tile = 0x10; break;
-        case 7: tile = 0x12; break;
-        case 8: break;
+        case 1: tile = 0xa; break;
+        case 2: tile = 0xb; break;
+        case 3: tile = 0xc; break;
+        case 4: tile = 0xd; break;
+        case 5: tile = 0xe; break;
+        case 6: tile = 0xf; break;
+        case 0:
+        case 7: tile = 0x10; break;
+        case 8: tile = 0x12; break;
         default: break;
     }
     }
-    func_001159f0(unused,
-                  resource,
-                  tile,
-                  alpha & 0xff,
-                  position.x + 207.0f,
-                  position.y + 211.0f,
-                  50.0f);
+    gsDrawSpritePositionFirst(position.x + 207.0f,
+                              position.y + 211.0f,
+                              unused,
+                              resource,
+                              tile,
+                              alpha & 0xff,
+                              50.0f);
 }
 
 // FUN_00186D50

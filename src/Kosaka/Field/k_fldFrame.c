@@ -1525,7 +1525,9 @@ void func_001aaac0(KwlnTask* task, u32 value)
  * (0.015267), while base-first helper order returned nd10/524/528
  * (0.019084). Remaining register-role rows are offsets 236, 280, 348, 392:
  * candidate index uses $a2 where retail uses $a3 (offset 236 sll, 280 addu,
- * 348 sll, 392 addu). */
+ * 348 sll, 392 addu). W422 offsetPc/offsetEc split, shared-offset merge,
+ * and signed offset split each gave 9 differing fndiff words at
+ * object524/window528; the a2/a3 role cycle remains. */
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {

@@ -1464,4 +1464,6 @@ void func_001a8910(u32* count)
  * b-to-body, retail bnez-to-body plus b-to-return). func_001a7370 split
  * pointer, const pointer, indexed helper, and inequality-loop probes all
  * stayed nd5/object320/window320 (0.015625); offsets 104/108/120/128/136
- * are the global-base/state-load register-role swaps ($a0 vs $v1). */
+ * are the global-base/state-load register-role swaps ($a0 vs $v1). W422
+ * candidate/current table-base split and index-first helper both stayed
+ * nd5/object320/window320 (0.015625 and 0.046875 for the helper). */

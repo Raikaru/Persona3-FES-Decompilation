@@ -242,6 +242,9 @@ void brPanel00235010(void)
 #define D_00960090 (*brPanelSetState)
 #define D_0096009C (*brPanelSetQuad)
 #pragma push
+/* W422 role-cycle split: separate initial digit-row and entry-loop indices,
+ * move both declarations after other locals: nd2014/3524B -> nd2013/3524B
+ * (window3648B), rate 0.571510 -> 0.571226; retained. */
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
 {
@@ -251,7 +254,6 @@ void brPanel002350f0(void)
     u32 digitTexture;
     u32 frame;
     u32 digitFrame;
-    s32 i;
     s32 mode;
     void (**brPanelSetState)(u32 state, u32 value);
     void (**brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
@@ -260,6 +262,8 @@ void brPanel002350f0(void)
     void (**entrySetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
     s32 entryType;
     u8* digitRowBase;
+    s32 i1;
+    s32 i2;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
@@ -304,9 +308,9 @@ void brPanel002350f0(void)
     RpSkyRenderStateSet(2, 0x44);
 
     digitRowBase = work + 0x520;
-    for (i = 0; i < 7; i++) {
-        D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 1, 2);
-        D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 2, 3);
+    for (i1 = 0; i1 < 7; i1++) {
+        D_0096009C((u32*)(digitRowBase + i1 * 0x100), 4, 0, 1, 2);
+        D_0096009C((u32*)(digitRowBase + i1 * 0x100), 4, 0, 2, 3);
     }
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
@@ -316,8 +320,8 @@ void brPanel002350f0(void)
     D_0096009C((u32*)(work + 0xc20), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
-    for (i = 0; i < *(s32*)(work + 0x1d50); i++) {
-        entry = (BrPanelResultEntry*)(work + 0xe20) + i;
+    for (i2 = 0; i2 < *(s32*)(work + 0x1d50); i2++) {
+        entry = (BrPanelResultEntry*)(work + 0xe20) + i2;
         frame = (u32)(uintptr_t)func_0021cca0(texture, 4);
         brPanelSetState = (void (**)(u32, u32))D_00960090_abs;
         frame = func_0021cce0((void*)(uintptr_t)frame);

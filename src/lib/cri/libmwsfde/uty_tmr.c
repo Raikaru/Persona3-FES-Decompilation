@@ -196,31 +196,35 @@ epilogue:
 }
 
 #pragma push
-/* #pragma schedule on: measured nd117/object156 -> nd95/object136; corrected loop nd90/object136; without it nd117/object156. */
+/* #pragma schedule on: prior for-loop nd90/object136; explicit do-while plus 0x80070000 base/table+=0x11e0 measured nd61/object132 (window136); symbol-address variant nd79/object132. */
 #pragma schedule on
 // FUN_0077FBD8 NONMATCHING
 int FUN_0077fbd8(u32 param_1)
 {
+  u32 i;
   u32 *table;
   u32 value;
-  u32 i;
 
   func_0x000741e8((void *)uRam80074700_abs,0x26);
-  table = (u32 *)uRam80074780_abs;
-  for (i = 0; i < 5; i++, table += 2) {
+  table = (u32 *)0x80070000;
+  table += 0x11e0;
+  i = 0;
+  do {
     value = table[0];
     if (param_1 == value) {
       if (param_1 != 0xffffc402) return 0;
       value = table[1];
       return ((value >> 2) & 0x3ffffff) | 0xc000000;
     }
-  }
+    i++;
+    table += 2;
+  } while (i < 5);
   return 0;
 }
 #pragma pop
 
 #pragma push
-/* #pragma schedule on: measured nd133/object176 -> nd116/object172; without it nd135/object176. */
+/* #pragma schedule on: baseline nd133/object176 -> nd116/object172; corrected retail first mask (~1U, not ~2U) nd115/object172; split-local role probe flat nd115/object172; without it nd135/object176. */
 #pragma schedule on
 // FUN_0077FC60 NONMATCHING
 void FUN_0077fc60(u32 *param_1)
@@ -230,7 +234,7 @@ void FUN_0077fc60(u32 *param_1)
 
   reg = (u32 *)uRam800747a8_abs;
   value = *param_1;
-  value = (value & ~2U) | (*reg & 1);
+  value = (value & ~1U) | (*reg & 1);
   *param_1 = value;
   value = (value & ~7U) | (*reg & 6);
   *param_1 = value;
@@ -247,7 +251,7 @@ void FUN_0077fc60(u32 *param_1)
  #pragma pop
 
 #pragma push
-/* #pragma schedule on: measured nd113/object136 -> nd109/object132; without it nd113/object136. */
+/* #pragma schedule on: direct volatile casts required to preserve six hardware writes; baseline nd114/object172 -> corrected retail first mask (~1U, not ~2U) nd113/object172; pointer-variable casts nd107/object132 were rejected as fake shrink. */
 /* Direct constant-address volatile casts preserve all six hardware-register writes (nd114/object172, rate .663); pointer-variable casts collapsed them (nd107/object132), so optimiser suppression was rejected as fake window fill. */
 /* Row-level residual: at +0x30 candidate `sw $t3,0x47a8($v1)` replaces retail `and $v1,$v1,$a3`; at +0x40 candidate `lui $a1,0xffff` replaces retail `sw $v1,0x47a8($a1)`, then the same store cadence remains shifted. */
 #pragma schedule on
@@ -258,7 +262,7 @@ void FUN_0077fd10(u32 *param_1)
   u32 value;
 
   reg = (u32 *)uRam800747a8_abs;
-  value = (*reg & ~2U) | (*param_1 & 1);
+  value = (*reg & ~1U) | (*param_1 & 1);
   *(volatile u32 *)0x800747a8 = value;
   value = (value & ~7U) | (*param_1 & 6);
   *(volatile u32 *)0x800747a8 = value;

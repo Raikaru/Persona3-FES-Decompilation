@@ -7580,6 +7580,7 @@ u32 FUN_002db450(u32 param_1)
  * $s1,$v0.  Scope reorder measured nd16 at 456/464 (rate 0.035088);
  * party-first declaration measured nd15 at 456/464 (rate 0.032895);
  * unit-first variant measured nd118 at 432/464 (rate 0.273148). */
+/* W422 split probes: second/first-loop while and party-index alias forms held nd7 at 456/464; first-call pointer alias nd282 at 448/464, shortened missingCount lifetime nd28 at 456/464, early party init nd305 at 456/464, dual-counter typed split nd80 at 448/464. All reverted. */
 // FUN_002db480 NONMATCHING
 u32 FUN_002db480(void)
 {
