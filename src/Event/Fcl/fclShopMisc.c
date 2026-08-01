@@ -4786,7 +4786,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
         0) {
 
-      sprintf((char *)scratch.text,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      sprintf((char *)scratch.text,&DAT_007cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
       FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
                    (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
@@ -4906,7 +4906,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
         0) {
 
-      sprintf((char *)scratch.text,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      sprintf((char *)scratch.text,&DAT_007cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
       FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
                    (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
@@ -5857,7 +5857,7 @@ void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       FUN_0040e3c0_u32(0.0f,iVar8 + 0x1c,iVar9,param_3 & 0xff,0xe3,0);
 
-      sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar6 + 0x16));
+      sprintf((char *)auStack_20,&DAT_007cd900,*(u16 *)(iVar6 + 0x16));
 
       FUN_0040eb50(0,iVar8 + 0x15a,iVar9 + 0x2c,param_3 & 0xff,1,auStack_20,1);
 
@@ -5895,7 +5895,7 @@ void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       }
 
-      sprintf((char *)auStack_20,0x7cd900,uVar10);
+      sprintf((char *)auStack_20,&DAT_007cd900,uVar10);
 
       FUN_0040eb50(0,iVar8 + 0x1c2,iVar9 + 0x2c,param_3 & 0xff,1,auStack_20,1);
 
