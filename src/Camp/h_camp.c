@@ -1,3 +1,24 @@
+/* PHYSICAL LINK ORDER: this is the only file in the tree still UNORDERED
+ * (177 of 178 are sorted into retail address order). Two adjacent inversions
+ * remain, but that count badly understates the work: the 281 markers form
+ * three ascending address runs that are fully INTERLEAVED, not concatenated -
+ * 64 foreign addresses fall inside run 1's span and 120 inside run 3's - so
+ * reaching ORDERED needs a genuine three-way merge relocating ~64 blocks.
+ *
+ * Measured W405/W406, two independent attempts:
+ *   - seven targeted group moves took it from 8 inversions to 2 with ZERO
+ *     metric change (those are applied and retained);
+ *   - the frozen m_link_order transform reaches ORDERED but does not compile,
+ *     because declarations are scattered between definitions;
+ *   - a fully ordered hand-built candidate compiled cleanly but measured 98
+ *     metric diffs (168 MATCH -> 127 MATCH + 41 MISMATCH) and was rejected.
+ *
+ * The two survivors are blocked by mid-file declaration bands, not by codegen:
+ * FUN_0016AF90 vs h_campDrawStatusOverview across the status alias band, and
+ * FUN_00166C70 vs FUN_00122630 across the Camp/_h_camp_persona.h include and
+ * its y6/y7 alias prototypes. Physical order affects only a byte-identical
+ * LINK, which verify.py does not measure, so do NOT trade any of the 168
+ * matches for it. */
 #include "Camp/h_camp.h"
 extern int sprintf(char* buffer, const char* format, ...);
 #include "Camp/_h_camp_status.h"
