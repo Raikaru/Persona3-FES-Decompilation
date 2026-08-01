@@ -1045,33 +1045,29 @@ u32 opTitle00269640(void)
     return *sOpTitle & 4;
 }
 
+/* W420 verified: scoped mesh temporaries and declaration order reduced opTitle00269690 nd361/772B to nd353/772B, window784B; rate46.76% to45.73%. */
 // FUN_00269690 NONMATCHING
 u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
 {
-    s32 halfRows;
     s32 indexCount;
     s32 vertexCount;
-    s32 row;
-    s32 column;
-    s32 value;
-    s16* indices;
     u32* mesh;
     void* memory;
-    s32 rowWidth;
-    s32 product;
-    s32 columnsPlus1;
-    s32 columnsPlus2;
     s32 allocationSize;
 
     switch (mode)
     {
     case 0:
+        {
         indexCount = (rows + 1) * (columns + 1);
         vertexCount = columns * rows * 6;
         break;
+        }
     case 1:
+        {
         if ((rows & 1) != 0)
         {
+            s32 halfRows;
             halfRows = rows >> 1;
             if (rows < 0)
             {
@@ -1081,6 +1077,9 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
         }
         else
         {
+            s32 halfRows;
+            s32 product;
+            s32 rowWidth;
             halfRows = rows >> 1;
             if (rows < 0)
             {
@@ -1096,6 +1095,7 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
         }
         vertexCount = rows * (columns * 6 + 3);
         break;
+        }
     }
 
     allocationSize = 0;
@@ -1110,6 +1110,11 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
     switch (mode)
     {
     case 0:
+        {
+            s16* indices;
+            s32 value;
+            s32 row;
+            s32 column;
         value = 0;
         indices = (s16*)(uintptr_t)mesh[1];
         for (row = 0; row < rows; row++)
@@ -1128,7 +1133,15 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
             value++;
         }
         break;
+        }
     case 1:
+        {
+            s32 row;
+            s32 column;
+            s32 value;
+            s16* indices;
+            s32 columnsPlus1;
+            s32 columnsPlus2;
         value = 0;
         indices = (s16*)(uintptr_t)mesh[1];
         columnsPlus2 = columns + 2;
@@ -1175,6 +1188,7 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
             indices += 3;
         }
         break;
+        }
     }
 
     mesh[6] = (u32)mode;

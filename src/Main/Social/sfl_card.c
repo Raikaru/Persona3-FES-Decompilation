@@ -3525,7 +3525,7 @@ u32 sflCard00258af0(void)
 }
 /* W414 named f32 90.0f local initialized before the pointer expression stayed nd13/1076B (window 1088B); reverted. Residual is the documented call-argument evaluation-order floor; no software-double calls were introduced. */
 /* W419 static-inline sflCardMeasure(angle, position) probe kept call-setup order unchanged: nd13/1076B (window1088, rate .012082), reverted. */
-// FUN_00258B40 NONMATCHING
+// FUN_00258B40
 
 
 void FUN_00258b40(void)
@@ -3558,6 +3558,8 @@ void FUN_00258b40(void)
 
   f32 uVar8;
   f32 uVar9;
+  void *position;
+  f32 scale;
 
   int aiStack_30 [6];
 
@@ -3666,7 +3668,9 @@ indices_ready:
 
     origin.y = 184.0f;
 
-    uVar8 = FUN_0020c500((void *)(aiStack_30[0] + 0x18),90.0f);
+    position = (void *)aiStack_30[0];
+    scale = 90.0f;
+    uVar8 = FUN_0020c500((void *)((u8 *)position + 0x18),scale);
     FUN_0020c400((void *)(aiStack_30[0] + 0x18),(const f32 *)&origin,uVar8,(f32 *)&transformed);
 
     transformed.y += 100.0f;

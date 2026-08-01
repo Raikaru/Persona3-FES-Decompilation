@@ -4648,8 +4648,9 @@ void func_001127d0(void* param_1, u32 enabled)
 }
 #pragma opt_loop_invariants on
 /* W419 mask-then-shift color extraction probe for both 00113A30/00113D80 worsened nd434,obj808 to nd549,obj816; reverted. */
+/* W420 mixed int/float parameter order: nd434,obj808/window848 (rate 0.537129) -> nd424,obj808/window848 (rate 0.524752); retained. */
 // FUN_00113A30 NONMATCHING
-void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
+void func_00113a30(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
     f32 corners[4][2];
@@ -4718,8 +4719,9 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 // Same reconstruction pattern as func_001140d0 below.
 /* Scoped loop-invariant pragma measured W330: without nd438, with nd434 (obj 808/848). */
 #pragma opt_loop_invariants on
+/* W420 mixed int/float parameter order: nd434,obj808/window848 (rate 0.537129) -> nd424,obj808/window848 (rate 0.524752); retained. */
 // FUN_00113D80 NONMATCHING
-void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
+void func_00113d80(f32 depth, u32 color, f32 x, f32 y, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
     f32 corners[4][2];
@@ -7137,6 +7139,7 @@ KwlnTask* func_00117490(KwlnTask* parent, void* blob)
 }
 
 #pragma opt_loop_invariants on
+/* W420 collateral from twin ABI reorder: nd4399,obj6732/window7296 (rate 0.653446) -> nd4404,obj6736/window7296 (rate 0.653800); retained for the twin improvement. */
 // FUN_00117540 NONMATCHING
 void* func_00117540(KwlnTask* task)
 {
@@ -7316,8 +7319,8 @@ void* func_00117540(KwlnTask* task)
                     alpha = (u32)(segment * 0xff / 5);
                 else
                     alpha = 0xff;
-                func_00113a30(100.0f, 0.0f, 0.0f,
-                              0x0f395600 | alpha, 0x280, 0x1c0);
+                func_00113a30(100.0f, 0x0f395600 | alpha, 0.0f, 0.0f,
+                              0x280, 0x1c0);
             }
             else
             {

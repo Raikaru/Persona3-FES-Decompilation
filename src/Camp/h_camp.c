@@ -1900,6 +1900,11 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
                   alpha, 0, 0xa);
 }
 
+static inline f32 campAddBaseFirst(f32 base, f32 offset)
+{
+    return base + offset;
+}
+
 // FUN_0011ddb0 NONMATCHING
 void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 {
@@ -1912,7 +1917,7 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     source.x = 0.0f;
     oldDuration = (f32)(s32)work->transitionDuration;
     source.y = oldDuration;
-    work->transitionDuration = (s32)(1.0f + oldDuration);
+    work->transitionDuration = (s32)campAddBaseFirst(oldDuration, 1.0f);
     newDuration = (f32)(s32)work->transitionDuration;
     if (!(newDuration <= 767.0f)) {
         work->transitionDuration = (s32)(newDuration - 448.0f);
@@ -7177,6 +7182,7 @@ void h_campStatusDestroyPcStatusPartsTask(KwlnTask* task)
 // FUN_00126710 NONMATCHING
 #pragma push
 /* opt_loop_invariants on: nd281/620B off -> nd147/624B on; retained. */
+/* W420 rejected setState/submitVertices declaration swap: nd147/object624/window656 rate .236 unchanged from baseline; rejected. */
 #pragma opt_loop_invariants on
 void h_campStatusDrawViewport(void* texture, CampVec2 position, f32 x,
                               s32 alpha)
@@ -7924,6 +7930,7 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 }
 
 /* opt_dead_assignments off: default nd783/1312B -> off nd199/1308B; retained. */
+/* W420 rejected alpha-cast probe: 00128720 nd202/object1308/window1312 rate .154 vs baseline nd199/object1308/window1312 rate .152; 00128c40 stayed nd199/object1308/window1312 rate .152. */
 #pragma opt_dead_assignments off
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
@@ -12948,6 +12955,8 @@ extern void* DAT_00833A50[];
 extern void* DAT_00833A80[];
 extern s16 DAT_00833A60[];
 extern s32 DAT_007cdf9c;
+#pragma alias DAT_007cdf9c_sda DAT_007cdf9c
+extern s32 DAT_007cdf9c_sda __attribute__((section(".sdata")));
 extern u32 DAT_007cdf70;
 extern u32 DAT_007cdf74;
 extern u32 DAT_007cdf6c;
@@ -13224,6 +13233,11 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
 
 /* W373 pragma sweep: default nd22/object364/368; lifetimes on nd14/object364/368. Retained lifetimes on. */
 #pragma opt_lifetimes on
+static inline f32 campAddOffsetFirst(f32 offset, f32 base)
+{
+    return offset + base;
+}
+
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
@@ -13240,8 +13254,8 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
     sprite->spriteScale = alpha;
     x = (p.value.x + 318.0f) - 100.0f;
     sprite->x = x;
-    y = 20.0f + y;
-    sprite->y = y + (f32)DAT_007cdf9c;
+    y = campAddOffsetFirst(20.0f, y);
+    sprite->y = y + (f32)DAT_007cdf9c_sda;
     sprite->alpha = drawAlpha;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
@@ -13249,15 +13263,15 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
     sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40[0], 1);
     sprite->spriteScale = alpha;
     sprite->x = x;
-    y = 100.0f + (y + ((f32)0x3ee + (f32)DAT_007cdf9c));
+    y = 100.0f + (y + ((f32)0x3ee + (f32)DAT_007cdf9c_sda));
     sprite->y = y;
     sprite->alpha = drawAlpha;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
 
-    DAT_007cdf9c--;
-    if (DAT_007cdf9c < -0x452) {
-        DAT_007cdf9c += 0x452;
+    DAT_007cdf9c_sda--;
+    if (DAT_007cdf9c_sda < -0x452) {
+        DAT_007cdf9c_sda += 0x452;
     }
 }
 #pragma opt_lifetimes reset
@@ -18553,6 +18567,8 @@ void FUN_00146710(CampEquipmentPanelWork* work)
 
 #pragma push
 /* opt_lifetimes on + opt_propagation off: baseline nd2853/object3532/3584 -> nd2685/object3216/3584; retained W389. */
+/* W420 rejected opt_propagation on fake window fill: nd2853/object3532/window3584 rate .808 vs off nd2685/object3216/window3584 rate .835; retained off. */
+/* W420 rejected pair declaration reorder: nd2703/object3216/window3584 rate .841 vs baseline nd2685/object3216/window3584 rate .835; rejected. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
 // FUN_001474f0 NONMATCHING

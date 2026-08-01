@@ -3804,6 +3804,8 @@ void FUN_0045a430(char param_1)
 
 #pragma push
 /* W373 singles base 1459/2100; loop 1459/2100; common 1693/2264; life 1460/2100; propagation 1323/1788; strength 1459/2100; dead 1459/2100. */
+/* W420 verified: offset-accurate YRuntimeWork view reduced FUN_0045a490 nd1323/object1788 to nd1291/object1776, window2128, rate .7399 -> .7269. */
+/* W420 negatives: removing/flattening rate use measured nd1343/object1820; pointer-cast field access measured nd1324/object1788; both reverted. */
 #pragma opt_propagation off
 // FUN_0045A490 NONMATCHING
 
@@ -3811,7 +3813,10 @@ void FUN_0045a490(void)
 
 {
   struct YRuntimeWork {
-    u32 data[0x12];
+    u32 data0;
+    u8 pad08[6];
+    u16 value;
+    u8 data0c[0x3c];
     float rate;
   } *puVar1;
   int iVar2;
@@ -3824,9 +3829,9 @@ void FUN_0045a490(void)
   
   puVar1 = *(struct YRuntimeWork **)(iGpffffba08 + 0x3c);
   if (iGpffffba08 != 0) {
-    uVar3 = FUN_001158b0(0,puVar1->data[0],0);
+    uVar3 = FUN_001158b0(0,puVar1->data0,0);
     iVar2 = (int)uVar3;
-    *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
+    *(char *)(iVar2 + 0x18) = (char)puVar1->value;
     fVar5 = (float)FUN_001126b0_typed((void*)uVar3);
     fVar7 = puVar1->rate;
     fVar8 = 16.0f - fVar7 * (fVar5 / 2.0f);
@@ -3860,7 +3865,7 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x2c) = 5.0f;
     FUN_001127d0(uVar3,1);
     FUN_00115980(uVar3);
-    uVar3 = FUN_001158b0(0,puVar1->data[0],0x14);
+    uVar3 = FUN_001158b0(0,puVar1->data0,0x14);
     iVar2 = (int)uVar3;
     fVar7 = puVar1->rate;
     *(float *)(iVar2 + 0x10) = fVar7 * 67.0f + fVar8 + 0.0f;
@@ -3885,9 +3890,9 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x2c) = 4.0f;
     FUN_001127d0(uVar3,1);
     FUN_00115980(uVar3);
-    uVar3 = FUN_001158b0(0,puVar1->data[0],*(char *)((u8 *)puVar1 + 0x54) + 10);
+    uVar3 = FUN_001158b0(0,puVar1->data0,*(char *)((u8 *)puVar1 + 0x54) + 10);
     iVar2 = (int)uVar3;
-    *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
+    *(char *)(iVar2 + 0x18) = (char)puVar1->value;
     fVar7 = puVar1->rate;
     *(float *)(iVar2 + 0x10) = fVar7 * 8.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
@@ -3911,9 +3916,9 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x2c) = 4.0f;
     FUN_001127d0(uVar3,1);
     FUN_00115980(uVar3);
-    uVar3 = FUN_001158b0(0,puVar1->data[0],*(char *)((u8 *)puVar1 + 0x55) + 10);
+    uVar3 = FUN_001158b0(0,puVar1->data0,*(char *)((u8 *)puVar1 + 0x55) + 10);
     iVar2 = (int)uVar3;
-    *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
+    *(char *)(iVar2 + 0x18) = (char)puVar1->value;
     fVar7 = puVar1->rate;
     *(float *)(iVar2 + 0x10) = fVar7 * 38.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
@@ -3937,9 +3942,9 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x2c) = 4.0f;
     FUN_001127d0(uVar3,1);
     FUN_00115980(uVar3);
-    uVar3 = FUN_001158b0(0,puVar1->data[0],*(char *)((u8 *)puVar1 + 0x56) + 10);
+    uVar3 = FUN_001158b0(0,puVar1->data0,*(char *)((u8 *)puVar1 + 0x56) + 10);
     iVar2 = (int)uVar3;
-    *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
+    *(char *)(iVar2 + 0x18) = (char)puVar1->value;
     fVar7 = puVar1->rate;
     *(float *)(iVar2 + 0x10) = fVar7 * 76.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
@@ -3963,9 +3968,9 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x2c) = 4.0f;
     FUN_001127d0(uVar3,1);
     FUN_00115980(uVar3);
-    uVar3 = FUN_001158b0(0,puVar1->data[0],*(char *)((u8 *)puVar1 + 0x57) + 10);
+    uVar3 = FUN_001158b0(0,puVar1->data0,*(char *)((u8 *)puVar1 + 0x57) + 10);
     iVar2 = (int)uVar3;
-    *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
+    *(char *)(iVar2 + 0x18) = (char)puVar1->value;
     fVar7 = puVar1->rate;
     *(float *)(iVar2 + 0x10) = fVar7 * 106.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
@@ -5415,6 +5420,7 @@ u8 FUN_0045e0c0(int param_1)
 /* W373 singles base 372/596; loop 372/596; common 55/616; life 373/596; propagation 372/596; strength 372/596; dead 372/596. */
 #pragma opt_common_subs off
 /* W419 DAT_007ce704 _abs probes: u32 alias nd48/616 changed signed slti to sltiu; s32 alias stayed nd55/616; retained original. */
+/* W420 negatives: direct integer-first FUN_0045afd0_call3 measured nd386/object688 against window624; an inline integer-first wrapper stayed nd55/object616; both reverted. */
 // FUN_0045E170 NONMATCHING
 
 u8 FUN_0045e170(int param_1)

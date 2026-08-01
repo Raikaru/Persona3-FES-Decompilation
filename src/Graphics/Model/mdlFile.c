@@ -178,12 +178,12 @@ void FUN_0031eee0(int *param_1);
 void FUN_0031ef80(int *param_1,short param_2,short param_3);
 void FUN_0031f5c0(int *param_1);
 void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4);
-static u32 FUN_0031f740(float param_1,int *param_2);
+static u32 FUN_0031f740(int *param_2,float param_1);
 u8 * FUN_0031f7a0(float param_1,int *param_2);
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u32 param_2);
-static u32 * FUN_0031fbd0(float param_1,int *param_2);
+static u32 * FUN_0031fbd0(int *param_2,float param_1);
 u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend);
 void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
@@ -5265,7 +5265,7 @@ void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4)
 
 
 // FUN_0031F740
-static u32 FUN_0031f740(float param_1,int *param_2)
+static u32 FUN_0031f740(int *param_2,float param_1)
 {
   int high;
   int low;
@@ -5344,7 +5344,7 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
 // SibMdl negatives: stackSpill volatile-cast removal nd14 -> nd43 (336/352); fraction-first interpolation in either branch nd14 -> nd16; direct final multiply operand swap and pointer argument cast stayed nd14; naming final difference wins nd14 -> nd12.
 // W419 inline address helper fixes both direct-load addu orientations: nd12 -> nd8 (340/352); residual call setup order remains.
 /* W419 rejected forms: stackSpill nd43/object336/window352/rate0.127976; fraction-first nd16/object340/window352/rate0.047059; final multiply/pointer cast nd14/object340/window352/rate0.041176; naming variant nd12/object340/window352/rate0.035294. */
-// FUN_0031F870 NONMATCHING
+// FUN_0031F870
 
 
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5)
@@ -5363,7 +5363,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
   int data2;
 
   data1 = param_2[3];
-  uVar2 = FUN_0031f740(param_1,param_2);
+  uVar2 = FUN_0031f740(param_2,param_1);
   if (uVar2 >= *param_2 - 1U) {
     *(float *)&DAT_007ce534 =
         *(float *)((u8 *)(uintptr_t)MdlFile_AddOffsetFirst(
@@ -5383,7 +5383,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
   *(volatile float *)&stackSpill[2] = param_1;
   *(volatile float *)&stackSpill[3] = saved;
   data2 = param_4[3];
-  uVar2 = FUN_0031f740(param_3,param_4);
+  uVar2 = FUN_0031f740(param_4,param_3);
   if (uVar2 >= *param_4 - 1U) {
     *(float *)&DAT_007ce534 =
         *(float *)((u8 *)(uintptr_t)MdlFile_AddOffsetFirst(
@@ -5434,7 +5434,7 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
   float alpha;
 
   data = param_2[3];
-  uVar1 = FUN_0031f740(param_1,param_2);
+  uVar1 = FUN_0031f740(param_2,param_1);
   if (uVar1 >= *param_2 - 1U) {
     address = uVar1 * 8;
     address += (u32)data;
@@ -5485,7 +5485,7 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
 // FUN_0031FBD0
 
 
-static u32 * FUN_0031fbd0(float param_1,int *param_2)
+static u32 * FUN_0031fbd0(int *param_2,float param_1)
 {
   float *key;
   float fraction;
@@ -5539,7 +5539,8 @@ static u32 * FUN_0031fbd0(float param_1,int *param_2)
 }
 
 // SibMdl negatives: dummy-pointer signature nd9 -> nd125; reversed helper call cast nd8 -> nd176; explicit track/time temporaries and inline reversed-call wrapper stayed nd8; schedule-on nd8/216 -> nd122/200. Two-track/four-float signature measured nd101 -> nd8.
-// FUN_0031FD00 NONMATCHING
+// W420 swapped mixed helper parameter declarations to integer-first order: FUN_0031f870 nd8 -> MATCH (340/352), FUN_0031fd00 nd8 -> MATCH (216/224), no collateral changes.
+// FUN_0031FD00
 
 
 u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend)
@@ -5547,8 +5548,8 @@ u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, f
   struct Float4 { float x, y, z, w; } first;
   struct Float4 second;
 
-  first = *(struct Float4 *)FUN_0031fbd0(firstTime, track1);
-  second = *(struct Float4 *)FUN_0031fbd0(secondTime, track2);
+  first = *(struct Float4 *)FUN_0031fbd0(track1, firstTime);
+  second = *(struct Float4 *)FUN_0031fbd0(track2, secondTime);
   *(float *)DAT_00957254_abs = blend * (second.y - first.y) + first.y;
   *(float *)DAT_00957258_abs = blend * (second.z - first.z) + first.z;
   *(float *)DAT_0095725c_abs = blend * (second.w - first.w) + first.w;
@@ -5575,7 +5576,7 @@ void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend)
   f32 red;
   f32 green;
   f32 blue;
-  result = FUN_0031fbd0(firstTime, track);
+  result = FUN_0031fbd0(track, firstTime);
   red = (f32)color[0] / 255.0f;
   green = (f32)color[1] / 255.0f;
   blue = (f32)color[2] / 255.0f;

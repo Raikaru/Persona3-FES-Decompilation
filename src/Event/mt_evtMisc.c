@@ -1,4 +1,5 @@
 #include "temporary.h"
+extern int FUN_004c31b0();
 
 typedef int (*code)(...);
 typedef u8 bool;
@@ -1336,7 +1337,7 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   *(u32 *)&afStack_90[3] = *(u32 *)&afStack_90[3] | 0x20003;
 
-  FUN_004c31b0(param_6,afStack_90,0x6a2a80,1);
+  ((void (*)(u32 *,f32 *,u32,int))FUN_004c31b0)(param_6,afStack_90,0x6a2a80,1);
 
   corners[0][0] = fStack_30;
   corners[0][1] = fStack_1c;
@@ -4117,6 +4118,7 @@ void FUN_0038b140(int param_1)
 
 
 /* W415 ORDER probes: explicit ascending switch plus f32 copy types lowered nd319 -> 12 (obj648/window656). The remaining five words are only post-call loop setup order at offsets 336/340/344 (move/addiu); no width-pair rows. Assignment reorder regressed to nd24; all six local declaration permutations were nd12,16,17,18,19,20; schedule-on was nd422/obj596. For-loop and while-loop rewrites of that setup both regressed to nd226/obj656 and nd227/obj656. */
+/* W420 negative: post-call assignment reorder nd12/object648/window656/rate1.85% -> nd24/object648/window656/rate3.70%; rejected. */
 // FUN_0038B2C0 NONMATCHING
 
 

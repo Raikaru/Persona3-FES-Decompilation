@@ -2842,6 +2842,7 @@ void FUN_003965d0(u32 *param_1)
 #undef FUN_003965f0
 #define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
 // W414 direct parameter pointer probes regressed FUN_003965f0 nd4 -> nd20/51; retained entryResult form. W419 _abs aliases stayed nd4/364 and direct/cached pointer forms were nd51/360.
+// W420 static inline pointer-offset helpers in both parameter orders stayed nd4/object364/window368; reverted.
 // FUN_003965F0 NONMATCHING
 
 
@@ -3352,6 +3353,7 @@ u32 FUN_00396ed0(int param_1)
 #undef FUN_00396f50
 #define FUN_00396ed0(...) ((u32 (*)(...))FUN_00396ed0)(__VA_ARGS__)
 // W419 exhaustive 120 local declaration permutations for FUN_00396f50 all stayed nd15/object212; baseline retained.
+// W420 base/offset static inline helper in both parameter orders stayed nd15/object212/window224; reverted.
 // FUN_00396F50 NONMATCHING
 
 

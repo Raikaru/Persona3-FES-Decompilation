@@ -40,6 +40,7 @@ u8 * FUN_003c3fe0(int param_1);
 #undef FUN_003c33c0
 #pragma push
 // W419 state-2 switch-shaped dispatch probe worsened 1436/2516 to 1466/2540 (rate 57.07% to 57.72%); if/else form retained.
+/* W420 negative: duplicating the shared state-1 case body for states 0,2..7 produced nd1603/object2756 against window2752 (rate .5707 -> .5814); reverted. */
 // FUN_003C33C0 NONMATCHING
 
 u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)

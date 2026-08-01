@@ -2801,6 +2801,8 @@ void FUN_002230e0(void)
  * coordinates plus colours before the frame call was rejected: nd2148/3268B,
  * window 3776B, rate 0.657895. */
 #pragma opt_propagation off
+/* W420 selector-kind declaration reorder: nd2128/3240B, window 3776B, rate
+ * 0.656790 -> nd2144/3224B, rate 0.665012; reverted. */
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
@@ -3080,6 +3082,9 @@ alpha_done:
 #pragma opt_propagation reset
 
 /* W414 named D_0096009C_abs alias-placement probes (top-level and secondary declaration sites) stayed nd11/1292B (window 1296B); reverted. Residual is the documented slot0/setQuad register-bank floor. */
+/* W420 operand-order helper probes: nd11/1292B, window 1296B, rate 0.008514
+ * -> nd23/1292B, rate 0.017802 and nd19/1292B, rate 0.014706 in the two
+ * directions; both reverted. */
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -3610,6 +3615,8 @@ void FUN_00225670(void)
     FUN_0021d8e0(work + 0x3730, rect);
 }
 
+/* W420 obj2-local elimination/reuse: nd390/2108B, window 2128B, rate
+ * 0.185009 unchanged; reverted. */
 // FUN_002257F0 NONMATCHING
 void FUN_002257F0(void)
 {
@@ -4182,6 +4189,9 @@ void FUN_002265D0(void)
 /* W389 measured opt_loop_invariants on: nd1997/2852B -> nd1941/2732B (window 3024B). */
 #pragma push
 #pragma opt_lifetimes on
+/* W420 direct positive-branch probe: nd175/1280B, window 1296B, rate 0.136719
+ * unchanged; moving setQuad3 before the switch instead produced nd218/1280B,
+ * rate 0.170313; both reverted. */
 // FUN_00227800 NONMATCHING
 void FUN_00227800(void)
 {

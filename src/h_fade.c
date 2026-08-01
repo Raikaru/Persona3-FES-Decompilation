@@ -28,6 +28,10 @@ typedef struct HFadeRwGlobals
 } HFadeRwGlobals;
 
 
+static inline f32 MaestroBig2_mulFirst(f32 left, f32 right)
+{
+    return right * left;
+}
 
 extern FadeDayEpl* func_0034fcd0(const void* eplBlob);
 extern void func_0034fcf0(FadeDayEpl* epl);
@@ -457,6 +461,7 @@ static void H_Fade_White()
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+/* W420 sine temporary plus mixed-order mulFirst: nd30,obj1728/window1728 (rate 0.017361) -> nd28,obj1728/window1728 (rate 0.016204). */
 // FUN_00107b20 NONMATCHING
 static void H_Fade_Day()
 {
@@ -652,12 +657,13 @@ static void H_Fade_Day()
 
     {
         u32 packedColor;
-        s32 travel;
         s32 halfTravel;
+        s32 travel;
 
         if (sFadeState == HFADE_STATE_IN)
         {
             f32 degrees;
+            f32 sine;
             s32 alphaByte;
 
             if (sFadeCounter != 0)
@@ -669,7 +675,8 @@ static void H_Fade_Day()
                 degrees = 90.0f;
             }
 
-            alphaByte = (s32)(sinf((DAT_007caf38 * degrees) / 180.0f) * 255.0f);
+            sine = sinf((DAT_007caf38 * degrees) / 180.0f);
+            alphaByte = (s32)MaestroBig2_mulFirst(255.0f, sine);
             packedColor = (u32)alphaByte | 0x00242000;
         }
         else

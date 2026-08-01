@@ -799,6 +799,8 @@ extern u8 DAT_006af3a0_abs[];
 #pragma alias fclShopEmptyFormat DAT_006af3d0
 extern char fclShopEmptyFormat[];
 extern char DAT_007cd900;
+#pragma alias DAT_006af5e0_abs DAT_006af5e0
+extern u8 DAT_006af5e0_abs[];
 u32 DAT_006af5e0;
 u32 DAT_006af600;
 u32 DAT_006af620;
@@ -2608,7 +2610,7 @@ u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
   return 1;
 }
 
-// FUN_003F2240 NONMATCHING
+// FUN_003F2240
 
 
 u8 FUN_003f2240(int param_1,long param_2)
@@ -2625,7 +2627,7 @@ u8 FUN_003f2240(int param_1,long param_2)
   if (sVar1 == 0) {
     return 0;
   }
-  puVar2 = (u32 *)func_00170e90((param_2 << 0x30) >> 0x30);
+  puVar2 = (u32 *)func_00170e90((long)(short)param_2);
   puVar4 = (u16 *)param_1;
   *puVar4 = param_2;
   *(u32 *)(puVar4 + 2) = FUN_003f1a10(puVar2[0]);
@@ -6268,7 +6270,7 @@ void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 }
 
 // Address-mode probe: DAT_006aeee0 absolute array alias improved nd716 -> 439; object 1048/1056 -> 1052/1056.
-// FUN_003F8180 NONMATCHING
+// FUN_003F8180
 
 
 void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
@@ -6277,9 +6279,9 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
 {
 
-  u16 uVar1;
+  s16 uVar1;
 
-  u16 uVar2;
+  s16 uVar2;
 
   short sVar3;
 
@@ -6287,15 +6289,15 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
   u32 *puVar5;
 
+  s16 *puVar9;
+
+  s16 *puVar8;
+
   int iVar7;
 
-  u16 *puVar8;
+  s16 auStack_20 [16];
 
-  u16 *puVar9;
-
-  u16 auStack_40 [16];
-
-  u16 auStack_20 [16];
+  s16 auStack_40 [16];
 
   
 
@@ -6303,7 +6305,7 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
   if (*(int *)(param_4 + 0xc) == param_5) {
 
-    puVar9 = (u16 *)DAT_006aeee0_abs;
+    puVar9 = (s16 *)DAT_006aeee0_abs;
 
     puVar8 = auStack_20;
 
@@ -6333,19 +6335,19 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4],0);
 
-      if ((*puVar5 & 8) == 0) {
+      if ((*puVar5 & 8) != 0) {
+
+        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 2],0);
+
+      }
+
+      else {
 
         if ((*puVar5 & 4) != 0) {
 
           FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 1],0);
 
         }
-
-      }
-
-      else {
-
-        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 2],0);
 
       }
 
@@ -6375,7 +6377,7 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
   else {
 
-    puVar9 = (u16 *)(&DAT_006aeee0);
+    puVar9 = (s16 *)DAT_006aeee0_abs;
 
     puVar8 = auStack_40;
 
@@ -6405,19 +6407,19 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4],0);
 
-      if ((*puVar5 & 8) == 0) {
+      if ((*puVar5 & 8) != 0) {
+
+        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 2],0);
+
+      }
+
+      else {
 
         if ((*puVar5 & 4) != 0) {
 
           FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 1],0);
 
         }
-
-      }
-
-      else {
-
-        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 2],0);
 
       }
 
@@ -11089,7 +11091,7 @@ u64 FUN_003ff150(int param_1,int param_2)
 
   for (uVar4 = 0; uVar4 < 8; uVar4 = uVar4 + 1) {
 
-    if ((*(short *)(&DAT_006acc60 + uVar4 * 2) == -1) || (lVar3 = datGetFlag(), lVar3 == 0)) {
+    if ((*(short *)(DAT_006acc60_abs + uVar4 * 2) == -1) || (lVar3 = datGetFlag(), lVar3 == 0)) {
 
       if ((uVar4 == 6) && (lVar3 = datGetScenarioMode(), lVar3 != 0)) {
 
@@ -16507,7 +16509,7 @@ void FUN_00405f70(s32 param_1,s32 param_2,s32 param_3,int param_4,u64 param_5,
 
   piVar2 = *(int **)(param_4 + 0x34);
 
-  puVar10 = &DAT_006af5e0;
+  puVar10 = (u32 *)DAT_006af5e0_abs;
 
   puVar9 = auStack_30;
 

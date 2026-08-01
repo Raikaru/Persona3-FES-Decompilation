@@ -136,7 +136,9 @@ static void btlUnitUnlinkAndFree(BtlUnit* unit)
 typedef int (*code)(...);
 void FUN_00287b20(int param_1,u16 param_2);
 #pragma alias btlUnitFabs FUN_0052e118
-extern f64 btlUnitFabs(f64 value);
+extern s32 btlUnitFabs(s32 value);
+extern s32 func_00530da0(f32 value);
+extern f32 func_005318a0(s32 value);
 void FUN_00287cf0(BtlUnit* unit, u16 mode);
 void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
@@ -1202,7 +1204,7 @@ void func_00280da0(BtlUnit* unit)
     RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
     currentAngle = func_0052ea18(forward.x, unit->targetRot.z - unit->pos.z) * 57.295776f;
     angleDelta = angle - currentAngle;
-    angleMagnitude = btlUnitFabs(angleDelta);
+    angleMagnitude = func_005318a0(btlUnitFabs(func_00530da0(angleDelta)));
 
     if (angleMagnitude <= 5.0f || (unit->unk_c4 & 2) != 0)
     {
@@ -2239,11 +2241,10 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     }
 }
 
+/* W420: grouped PC/EC switch and single-case availability checks corrected EXTRA 002831c0 (nd394, obj740/848; baseline nd552, obj820/848). */
 // FUN_002831C0 NONMATCHING
 void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
 {
-    u32 canUseLowHp;
-    u32 canUseDeath;
     s16 animation;
     s16 nextAnimation;
     s16 mode;
@@ -2252,17 +2253,18 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
     s16 animCheck;
 
     nextAnimation = 0;
-    canUseLowHp = 0;
-    canUseDeath = 0;
     if (datCalcIsLowHp(unit->datUnit) != 0 && (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
     {
-        animation = func_00283510(unit, 0x11);
-        canUseLowHp = func_00318620(unit->mdl, 0, animation) != 0 &&
-                      func_003186e0(unit->mdl, 0, animation) != 1;
-    }
-    if (canUseLowHp)
-    {
-        nextAnimation = 0x11;
+        animation = (s16)(u16)func_00283510(unit, 0x11);
+        switch (func_00318620(unit->mdl, 0, animation))
+        {
+        case 1:
+            if (func_003186e0(unit->mdl, 0, animation) != 1)
+            {
+                nextAnimation = 0x11;
+            }
+            break;
+        }
     }
     if (datCalcChkBadStatus(unit->datUnit, 0xffeff) != 0)
     {
@@ -2276,13 +2278,16 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
         (unit->flags3 & 0x20) != 0 &&
         (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
     {
-        animation = func_00283510(unit, 0x12);
-        canUseDeath = func_00318620(unit->mdl, 0, animation) != 0 &&
-                      func_003186e0(unit->mdl, 0, animation) != 1;
-    }
-    if (canUseDeath)
-    {
-        nextAnimation = 0x12;
+        animation = (s16)(u16)func_00283510(unit, 0x12);
+        switch (func_00318620(unit->mdl, 0, animation))
+        {
+        case 1:
+            if (func_003186e0(unit->mdl, 0, animation) != 1)
+            {
+                nextAnimation = 0x12;
+            }
+            break;
+        }
     }
 
     if (nextAnimation == 0x12)
@@ -2312,15 +2317,6 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
     switch (unit->genus)
     {
     case UNIT_GENUS_PC:
-        animCheck = 0;
-        if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
-            animCheck = unit->unk_9ce;
-        if (unit->unk_9e0 == animCheck && unit->unk_9e0 != nextAnimation)
-        {
-            btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
-        }
-        break;
-
     case UNIT_GENUS_EC:
         animCheck = 0;
         if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
@@ -2719,15 +2715,33 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
     return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
 }
 
+/* W420: inlined btlUnitAnimCategory and u16 id recovery: nd211, obj412/416; baseline nd193, obj264/416. */
 // FUN_00283E40 NONMATCHING
-u16 func_00283e40(BtlUnit* unit, s16 id)
+u16 func_00283e40(BtlUnit* unit, u16 id)
 {
     s16 category;
     u16 charId;
     u32 unitId;
     const u8* table;
 
-    category = btlUnitAnimCategory(unit, id);
+    if (unit->genus == UNIT_GENUS_EC)
+    {
+        if (id == 4 || id == 5 || id == 6)
+            category = 0;
+        else
+            category = -1;
+    }
+    else
+    {
+        if (id == 4)
+            category = 0;
+        else if (id == 5)
+            category = 1;
+        else if (id == 6)
+            category = 2;
+        else
+            category = -1;
+    }
     if (category < 0)
     {
         return 0;

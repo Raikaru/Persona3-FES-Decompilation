@@ -972,6 +972,7 @@ void FUN_003c8fa0(void)
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
+static inline f32 fclMiscMulFirst(f32 left, f32 right) { return left * right; }
 #pragma push
 #pragma opt_rebuildconditionals off
 // Conditional-rebuild pragma measured normalized_diff 76 -> 14; remaining
@@ -1013,7 +1014,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    param_2 = 4096.0f * param_2;
+    param_2 = fclMiscMulFirst(4096.0f, param_2);
     if (2147483648.0f <= param_2) goto scale_x_high_9000;
     uVar3 = (u16)(int)param_2;
     goto scale_x_done_9000;
@@ -1022,7 +1023,7 @@ scale_x_high_9000:
 scale_x_done_9000:
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    param_3 = 4096.0f * param_3;
+    param_3 = fclMiscMulFirst(4096.0f, param_3);
     if (2147483648.0f <= param_3) goto scale_y_high_9000;
     uVar3 = (u16)(int)param_3;
     goto scale_y_done_9000;
@@ -2010,7 +2011,7 @@ FUN_003ca780(int param_1,int param_2,float param_3,u32 param_7,u32 param_8,
   *(u16 *)(iVar1 + 0x24) = param_9;
   *(u16 *)(iVar1 + 0x26) = param_10;
   *(float *)(iVar1 + 0x20) = param_4;
-  param_5 = 4096.0f * param_5;
+  param_5 = fclMiscMulFirst(4096.0f, param_5);
   if (2147483648.0f <= param_5) goto scale_x_high_ca780;
   uVar3 = (u16)(int)param_5;
   goto scale_x_done_ca780;
@@ -2019,7 +2020,7 @@ scale_x_high_ca780:
 scale_x_done_ca780:
   *(u16 *)(iVar1 + 0x28) = uVar3;
 
-  param_6 = 4096.0f * param_6;
+  param_6 = fclMiscMulFirst(4096.0f, param_6);
   if (2147483648.0f <= param_6) goto scale_y_high_ca780;
   uVar3 = (u16)(int)param_6;
   goto scale_y_done_ca780;

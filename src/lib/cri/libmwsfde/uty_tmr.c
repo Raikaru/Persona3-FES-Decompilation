@@ -196,37 +196,25 @@ epilogue:
 }
 
 #pragma push
-/* #pragma schedule on: measured nd117/object156 -> nd95/object136; without it nd117/object156. */
+/* #pragma schedule on: measured nd117/object156 -> nd95/object136; corrected loop nd90/object136; without it nd117/object156. */
 #pragma schedule on
 // FUN_0077FBD8 NONMATCHING
 int FUN_0077fbd8(u32 param_1)
 {
   u32 *table;
   u32 value;
-  u32 special;
-  u32 mask;
-  u32 base;
   u32 i;
 
   func_0x000741e8((void *)uRam80074700_abs,0x26);
-  special = 0xffffc402;
-  mask = 0x3ffffff;
-  base = 0xc000000;
   table = (u32 *)uRam80074780_abs;
-  i = 0;
-  for (;;) {
+  for (i = 0; i < 5; i++, table += 2) {
     value = table[0];
-    if (param_1 != value) {
-      i = i + 1;
-      if (i >= 5) goto ret0;
-      table = table + 2;
-      continue;
+    if (param_1 == value) {
+      if (param_1 != 0xffffc402) return 0;
+      value = table[1];
+      return ((value >> 2) & 0x3ffffff) | 0xc000000;
     }
-    if (param_1 == special) goto ret0;
-    value = table[1];
-    return ((value >> 2) & mask) | base;
   }
-ret0:
   return 0;
 }
 #pragma pop

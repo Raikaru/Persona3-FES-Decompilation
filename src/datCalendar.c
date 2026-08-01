@@ -3775,9 +3775,9 @@ extern void gsDrawSpritePositionFirst(f32 x, f32 y, void* unused,
                                       f32 depth);
 extern void func_00115ad0_gs(void* unused, void* atlas, s32 tile,
                           f32 x, f32 y, u32 alpha, u32 extraAlpha, f32 depth);
-extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00113a30(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height);
-extern void func_00113d80(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00113d80(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height);
 extern void func_00114af0(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height, void* texture);
@@ -4085,9 +4085,9 @@ static inline void gsDrawStatusBars(void* object)
     if (width != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      GS_F32(transition, 0x3c) + 46.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
                  GS_F32(transition, 0x38) + 50.0f,
@@ -4100,9 +4100,9 @@ static inline void gsDrawStatusBars(void* object)
     if (width != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      GS_F32(transition, 0x3c) + 51.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
                  GS_F32(transition, 0x38) + 50.0f,
@@ -4201,7 +4201,7 @@ extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
 extern void func_00115bc0(void* unused, void* atlas, s32 tile, u32 alpha,
                            u32 red, u32 green, u32 blue,
                            f32 x, f32 y, f32 depth);
-extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
+extern void func_00113a30(f32 depth, u32 color, f32 x, f32 y,
                           s32 width, s32 height);
 extern void func_003b2cb0(f32 depth, s32 x, s32 y, u32 color, u32 font,
                           u32 align, const void* text, u32 width, u32 flags);
@@ -4813,8 +4813,8 @@ void func_00185b40(void* resource,
     u32 green;
     u32 blue;
 
-    func_00113a30(49.0f, 627.0f, 190.0f, 0xffffff00, 30, 30);
-    func_00113a30(49.0f, 0.0f, 190.0f, 0xffffff00, 21, 30);
+    func_00113a30(49.0f, 0xffffff00, 627.0f, 190.0f, 30, 30);
+    func_00113a30(49.0f, 0xffffff00, 0.0f, 190.0f, 21, 30);
     firstDay = clndGetDaysSinceStartFromDate(month, day);
     dayIndex = firstDay - 3;
     x = clndPackedX(*(u64*)&position) + 17.0f;
@@ -7095,6 +7095,7 @@ void func_0018a9c0(KwlnTask* task)
 {
     (*(void (**)(void*))0x0096017c)(task->workData);
 }
+/* W420 collateral from func_00113A30 ABI reorder: nd1063,obj2160/window2176 (rate 0.492130) -> nd1076,obj2156/window2176 (rate 0.499072); retained for twin improvement. */
 // FUN_0018A9F0 NONMATCHING
 void* func_0018a9f0(KwlnTask* task)
 {
@@ -7296,12 +7297,12 @@ void* func_0018a9f0(KwlnTask* task)
         {
             if (((struct GsLateTimerWork*)work)->timer > 8 && ((struct GsLateTimerWork*)work)->timer < 0x41)
             {
-                func_00113a30(100.0f, 0.0f, 0.0f, 0x0f3956ff, 0x280, 0x1c0);
+                func_00113a30(100.0f, 0x0f3956ff, 0.0f, 0.0f, 0x280, 0x1c0);
             }
         }
         else
         {
-            func_00113a30(100.0f, 0.0f, 0.0f, 0x0f395603, 0x280, 0x1c0);
+            func_00113a30(100.0f, 0x0f395603, 0.0f, 0.0f, 0x280, 0x1c0);
         }
         for (i = 0; i < 2; i++)
         {
@@ -7350,8 +7351,8 @@ void* func_0018a9f0(KwlnTask* task)
             {
                 alpha = 0xff - (u32)(((((struct GsLateTimerWork*)work)->timer - 0x46) * 0xff) / 10);
             }
-            func_00113d80(97.0f, 0.0f, 0.0f,
-                          alpha | 0xffffff00, 0x280, 0x1c0);
+            func_00113d80(97.0f, alpha | 0xffffff00, 0.0f, 0.0f,
+                          0x280, 0x1c0);
         }
         if (((struct GsLateTimerWork*)work)->timer > 0x4f)
         {
@@ -7969,9 +7970,9 @@ void func_0018c150(KwlnTask* task)
     if (width != 0x20)
     {
         func_00113a30(transition->depth - 1.0f,
+                      0xffffff00,
                       transition->position.valueF[0] + (f32)width + 50.0f,
-                      transition->position.valueF[1] + 46.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      transition->position.valueF[1] + 46.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 46.0f, transition->depth);
     sp = datGetSp(pcId);
@@ -7980,9 +7981,9 @@ void func_0018c150(KwlnTask* task)
     if (width != 0x20)
     {
         func_00113a30(transition->depth - 3.0f,
+                      0xffffff00,
                       transition->position.valueF[0] + (f32)width + 50.0f,
-                      transition->position.valueF[1] + 51.0f,
-                      0xffffff00, 0x20 - width, 0x14);
+                      transition->position.valueF[1] + 51.0f, 0x20 - width, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }
@@ -8117,9 +8118,9 @@ void func_0018ce50(KwlnTask* task)
     if (barWidth != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
-                      0xffffff00, 0x20 - barWidth, 0x14);
+                      GS_F32(transition, 0x3c) + 46.0f, 0x20 - barWidth, 0x14);
     }
     func_001159f0(unused2, GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
                   GS_F32(transition, 0x38) + 50.0f,
@@ -8132,9 +8133,9 @@ void func_0018ce50(KwlnTask* task)
     if (barWidth != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
-                      0xffffff00, 0x20 - barWidth, 0x14);
+                      GS_F32(transition, 0x3c) + 51.0f, 0x20 - barWidth, 0x14);
     }
     func_001159f0(unused2, GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
                   GS_F32(transition, 0x38) + 50.0f,
@@ -8224,9 +8225,9 @@ void func_0018d320(KwlnTask* task)
     if (barWidth != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
-                      0xffffff00, 0x20 - barWidth, 0x14);
+                      GS_F32(transition, 0x3c) + 46.0f, 0x20 - barWidth, 0x14);
     }
     func_001159f0(unused2, GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
                   GS_F32(transition, 0x38) + 50.0f,
@@ -8238,9 +8239,9 @@ void func_0018d320(KwlnTask* task)
     if (barWidth != 0x20)
     {
         func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      0xffffff00,
                       GS_F32(transition, 0x38) + (f32)barWidth + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
-                      0xffffff00, 0x20 - barWidth, 0x14);
+                      GS_F32(transition, 0x3c) + 51.0f, 0x20 - barWidth, 0x14);
     }
     func_001159f0(unused2, GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
                   GS_F32(transition, 0x38) + 50.0f,

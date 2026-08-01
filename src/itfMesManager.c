@@ -9207,6 +9207,7 @@ u64 FUN_003acb10(int param_1,int param_2)
 // FUN_003ACBC0 NONMATCHING
 
 
+// W420 recovery: low-byte-first extraction and temporary preservation; verify nd266 -> 242, object 400/480B.
 u32 FUN_003acbc0(u64 param_1,int param_2)
 
 
@@ -9214,6 +9215,8 @@ u32 FUN_003acbc0(u64 param_1,int param_2)
 {
 
   u8 bVar1;
+
+  u8 bVar2;
 
   char cVar2;
 
@@ -9235,23 +9238,29 @@ u32 FUN_003acbc0(u64 param_1,int param_2)
 
   pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
 
+  uVar3 = (u32)(u8)(*pbVar7 - 1);
+
   bVar1 = pbVar7[1];
 
   if (bVar1 == 0xff) {
 
-    uVar3 = 0;
+    uVar4 = 0;
 
   }
 
   else {
 
-    uVar3 = (u32)(u8)(bVar1 - 1);
+    uVar4 = (u32)(u8)(bVar1 - 1);
 
   }
 
-  uVar3 = uVar3 << 8 | *pbVar7 - 1 & 0xff;
+  uVar3 = uVar4 << 8 | uVar3;
 
   iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+
+  bVar2 = *(u8 *)(iVar8 + 2);
+
+  lVar6 = (u32)(u8)(bVar2 - 1);
 
   cVar2 = *(char *)(iVar8 + 3);
 
@@ -9267,9 +9276,13 @@ u32 FUN_003acbc0(u64 param_1,int param_2)
 
   }
 
-  uVar4 = uVar4 << 8 | *(u8 *)(iVar8 + 2) - 1 & 0xff;
+  uVar4 = uVar4 << 8 | lVar6;
 
   iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+
+  bVar2 = *(u8 *)(iVar8 + 4);
+
+  lVar6 = (u32)(u8)(bVar2 - 1);
 
   cVar2 = *(char *)(iVar8 + 5);
 
@@ -9285,7 +9298,7 @@ u32 FUN_003acbc0(u64 param_1,int param_2)
 
   }
 
-  uVar5 = uVar5 << 8 | *(u8 *)(iVar8 + 4) - 1 & 0xff;
+  uVar5 = uVar5 << 8 | lVar6;
 
   lVar6 = FUN_0016f190(0x184);
 
@@ -10166,58 +10179,70 @@ u64 FUN_003adb00(u64 param_1,int param_2)
 // FUN_003ADB80 NONMATCHING
 
 
+// W420 recovery: low-byte-first extraction with preserved base loads; verify nd229 -> 212, object 332/384B.
 u32 FUN_003adb80(u64 param_1,int param_2)
 {
   u32 uVar2;
   u32 uVar4;
   u32 uVar7;
   u32 uVar9;
+  u32 low1;
+  u32 low2;
+  u32 low3;
   int iVar3;
   int iVar8;
   u8 *pbVar6;
   u8 temp;
 
-  iVar3 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  iVar3 = *(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10);
+  low1 = *(u8 *)(iVar3 + 4) - 1 & 0xff;
   temp = *(u8 *)(iVar3 + 5);
   if (temp == 0xff) {
     uVar2 = 0;
-  } else {
-    uVar2 = (temp - 1) & 0xff;
+  }
+  else {
+    uVar2 = (u32)(u8)(temp - 1);
   }
 
-  pbVar6 = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  uVar2 = uVar2 << 8 | low1;
+
+  pbVar6 = (u8 *)(*(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10));
+  low2 = *pbVar6 - 1 & 0xff;
   temp = pbVar6[1];
   if (temp == 0xff) {
     uVar7 = 0;
-  } else {
-    uVar7 = (temp - 1) & 0xff;
+  }
+  else {
+    uVar7 = (u32)(u8)(temp - 1);
   }
 
-  iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  uVar7 = uVar7 << 8 | low2;
+
+  iVar8 = *(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10);
+  low3 = *(u8 *)(iVar8 + 2) - 1 & 0xff;
   temp = *(u8 *)(iVar8 + 3);
   if (temp == 0xff) {
     uVar4 = 0;
-  } else {
-    uVar4 = (temp - 1) & 0xff;
   }
+  else {
+    uVar4 = (u32)(u8)(temp - 1);
+  }
+
+  uVar4 = uVar4 << 8 | low3;
 
   temp = *(u8 *)(iVar8 + 7);
   if (temp == 0xff) {
     temp = 0;
-  } else {
+  }
+  else {
     temp = temp - 1;
   }
-
   uVar9 = 0;
   if ((temp == 0) && (*(u8 *)(iVar8 + 6) == 1)) {
     uVar9 = 0x100;
   }
 
-  FUN_003cf160(
-      uVar2 << 8 | *(u8 *)(iVar3 + 4) - 1 & 0xff |
-      (uVar7 << 8 | *pbVar6 - 1 & 0xff) << 0x10 |
-      (uVar4 << 8 | *(u8 *)(iVar8 + 2) - 1 & 0xff) << 8,
-      uVar9 | 0x200);
+  FUN_003cf160(uVar2 | (uVar7 << 0x10) | (uVar4 << 8), uVar9 | 0x200);
   return 0;
 }
 #define FUN_003adb80(...) ((u64 (*)(...))FUN_003adb80)(__VA_ARGS__)
@@ -10243,13 +10268,14 @@ u64 FUN_003add30(void)
 // FUN_003ADD40 NONMATCHING
 
 
+// W420 recovery: unsigned high-byte branches and explicit mask; verify nd152 -> 144, object 264/288B.
 u32 FUN_003add40(u64 param_1,int param_2)
 
 
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -10261,63 +10287,78 @@ u32 FUN_003add40(u64 param_1,int param_2)
 
   u32 uVar6;
 
+  u32 low1;
+
+  u32 packed1;
+
+  u32 low2;
+
+  u32 low3;
+
   int iVar7;
 
-  
+  iVar3 = *(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10);
 
-  iVar3 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  low1 = *(u8 *)(iVar3 + 4) - 1 & 0xff;
 
-  cVar1 = *(char *)(iVar3 + 5);
+  cVar1 = *(u8 *)(iVar3 + 5);
 
-  if (cVar1 != -1) {
-
-    uVar2 = (u32)(u8)(cVar1 - 1);
-
-  }
-
-  else {
+  if (cVar1 == 0xff) {
 
     uVar2 = 0;
 
   }
 
-  pbVar5 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  else {
 
-  uVar6 = (u32)pbVar5[1];
-
-  if (uVar6 != 0xff) {
-
-    uVar6 = uVar6 - 1 & 0xff;
+    uVar2 = (u32)(u8)(cVar1 - 1);
 
   }
 
-  else {
+  uVar2 = uVar2 & 0xff;
+  packed1 = low1 | (uVar2 << 8);
+
+  pbVar5 = (u8 *)(*(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10));
+
+  low2 = *pbVar5 - 1 & 0xff;
+
+  uVar6 = (u32)pbVar5[1];
+
+  if (uVar6 == 0xff) {
 
     uVar6 = 0;
 
   }
 
-  iVar7 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  else {
 
-  cVar1 = *(char *)(iVar7 + 3);
-
-  if (cVar1 != -1) {
-
-    uVar4 = (u32)(u8)(cVar1 - 1);
+    uVar6 = uVar6 - 1 & 0xff;
 
   }
 
-  else {
+  uVar6 = uVar6 << 8 | low2;
+
+  iVar7 = *(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10);
+
+  low3 = *(u8 *)(iVar7 + 2) - 1 & 0xff;
+
+  cVar1 = *(u8 *)(iVar7 + 3);
+
+  if (cVar1 == 0xff) {
 
     uVar4 = 0;
 
   }
 
-  FUN_003cf160(uVar2 << 8 | *(u8 *)(iVar3 + 4) - 1 & 0xff |
+  else {
 
-               (uVar6 << 8 | *pbVar5 - 1 & 0xff) << 0x10 |
+    uVar4 = (u32)(u8)(cVar1 - 1);
 
-               (uVar4 << 8 | *(u8 *)(iVar7 + 2) - 1 & 0xff) << 8,0);
+  }
+
+  uVar4 = uVar4 << 8 | low3;
+
+  FUN_003cf160(packed1 | (uVar6 << 0x10) | (uVar4 << 8),0);
 
   return 0;
 

@@ -281,6 +281,8 @@ void func_0024ac90(void)
     sBrpBirthWork = NULL;
 }
 
+/* W420 wave/opacity declaration-order variants: nd1798/2640B, window 2736B,
+ * rate 0.681061 unchanged for both tested orders; reverted. */
 // FUN_0024ADF0 NONMATCHING
 void func_0024adf0(void)
 {
