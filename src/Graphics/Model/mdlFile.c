@@ -312,7 +312,7 @@ void FUN_00324a30(int param_1, u32 param_2);
 void FUN_00324a90(int param_1);
 extern void FUN_00324a90_f32(float param_1,u32 param_2);
 void FUN_00324af0(int param_1, u32 param_2);
-void FUN_00324b50(u32 param_1);
+u32 FUN_00324b50(u32 param_1);
 extern u64 FUN_00324bd0_passthru(void);
 u32 FUN_00324bd0(u32 param_1);
 extern u32 FUN_00324bd0_u32(u64 param_1);
