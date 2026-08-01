@@ -593,6 +593,8 @@ extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and wo
 static f32 sVPadMoveSpeed;
 
 // opt_dead_assignments off: normalized_diff 1663 -> 1636; object 3120 -> 3116 (window 3152)
+
+
 #pragma opt_dead_assignments off
 // FUN_001e05b0 NONMATCHING
 void* K_VPad_UpdateTask(KwlnTask* task)
@@ -948,72 +950,6 @@ KwlnTask* K_VPad_CreateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* md
     return task;
 }
 
-// FUN_001e13f0
-void* K_VPad_UpdateRotateTask(KwlnTask* rotatePcTask)
-{
-    static const RwV3d sAxis = { 0.0f, 1.0f, 0.0f }; // 00683da0
-    PcRotateWork* work;
-    RwV3d axis;
-
-    work = (PcRotateWork*)rotatePcTask->workData;
-    axis = sAxis;
-
-    switch (work->state)
-    {
-        case PCROTATE_STATE_IDLE: break;
-
-        case PCROTATE_STATE_ROTATING:
-            work->steps++;
-
-            K_FldFrame_CtlRotate(work->collisCtlTask, &axis, work->angle);
-
-            if (work->steps >= work->maxSteps)
-            {
-                K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &work->mat);
-                K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
-                work->state = PCROTATE_STATE_IDLE;
-            }
-    }
-
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001e14b0
-void K_VPad_DestroyRotateTask(KwlnTask* rotatePcTask)
-{
-    RwFree(rotatePcTask->workData);
-}
-
-// FUN_001e14e0
-KwlnTask* K_VPad_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
-{
-    PcRotateWork* work;
-    KwlnTask* task;
-
-    work = RwCalloc(1, sizeof(PcRotateWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
-    {
-        return NULL;
-    }
-
-    task = kwlnTaskCreateWithAutoPriority(parent,
-                                          10,
-                                          "rotate pc",
-                                          K_VPad_UpdateRotateTask,
-                                          K_VPad_DestroyRotateTask,
-                                          work);
-
-    work->collisCtlTask = collisCtlTask;
-    work->mdl = mdl;
-
-    return task;
-}
-
-// FUN_001e1820
-u32 K_VPad_IsRotating(KwlnTask* rotatePcTask)
-{
-    return ((PcRotateWork*)rotatePcTask->workData)->state == PCROTATE_STATE_ROTATING;
-}
 // FUN_001e1300
 void func_001e1300(KwlnTask* task, s32 controlMode)
 {
@@ -1055,6 +991,66 @@ f32 func_001e13c0(void)
         speed = D_007CE230;
     }
     return speed;
+}
+
+// FUN_001e13f0
+void* K_VPad_UpdateRotateTask(KwlnTask* rotatePcTask)
+{
+    static const RwV3d sAxis = { 0.0f, 1.0f, 0.0f }; // 00683da0
+    PcRotateWork* work;
+    RwV3d axis;
+
+    work = (PcRotateWork*)rotatePcTask->workData;
+    axis = sAxis;
+
+    switch (work->state)
+    {
+        case PCROTATE_STATE_IDLE: break;
+
+        case PCROTATE_STATE_ROTATING:
+            work->steps++;
+
+            K_FldFrame_CtlRotate(work->collisCtlTask, &axis, work->angle);
+
+            if (work->steps >= work->maxSteps)
+            {
+                K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &work->mat);
+                K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
+                work->state = PCROTATE_STATE_IDLE;
+            }
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+// FUN_001e14b0
+void K_VPad_DestroyRotateTask(KwlnTask* rotatePcTask)
+{
+    RwFree(rotatePcTask->workData);
+}
+
+// FUN_001e14e0
+KwlnTask* K_VPad_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
+{
+    PcRotateWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(PcRotateWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parent,
+                                          10,
+                                          "rotate pc",
+                                          K_VPad_UpdateRotateTask,
+                                          K_VPad_DestroyRotateTask,
+                                          work);
+
+    work->collisCtlTask = collisCtlTask;
+    work->mdl = mdl;
+
+    return task;
 }
 
 // FUN_001e1590
@@ -1162,6 +1158,12 @@ s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix,
     return 0;
 }
 
+// FUN_001e1820
+u32 K_VPad_IsRotating(KwlnTask* rotatePcTask)
+{
+    return ((PcRotateWork*)rotatePcTask->workData)->state == PCROTATE_STATE_ROTATING;
+}
+
 // FUN_001E1840
 void* func_001e1840(void)
 {
@@ -1171,6 +1173,7 @@ void* func_001e1840(void)
     ((RuntimeTask*)kwlnTaskCreateWithAutoPriority( \
         (KwlnTask*)(parent), priority, name, \
         (void* (*)(KwlnTask*))(update), (void (*)(KwlnTask*))(destroy), work))
+void func_001e88f0(RuntimeWork* work, s32 section, RuntimeVec3* output);
 #define kwlnGetMainCamera() ((void*)kwlnGetMainCamera())
 #define K_Field_Get() ((u8*)K_Field_Get())
 
@@ -4731,7 +4734,6 @@ s32 func_001e8330(const RuntimeWork* work, s32 index)
     return result;
 }
 
-void func_001e88f0(RuntimeWork* work, s32 section, RuntimeVec3* output);
 
 // FUN_001E8360. Build a path surface direction for one segment side.
 void func_001e8360(RuntimeWork* work, s32 section, s32 side, RuntimeVec3* output)
