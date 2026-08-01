@@ -1,11 +1,11 @@
 name: Publish progress metrics
 
+# Optional. The README progress badges read progress/*.json straight from the
+# repository, so they do not depend on this workflow. Run it manually to also
+# publish the same files to GitHub Pages, which requires Pages to be enabled
+# for the repository with "GitHub Actions" as the source. It is not triggered
+# on push, because the deploy job fails on a repository without Pages.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "progress/**"
-      - ".github/workflows/progress-pages.yml"
   workflow_dispatch:
 
 permissions:
