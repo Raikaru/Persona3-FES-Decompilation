@@ -1,36 +1,51 @@
-/* PHYSICAL LINK ORDER: this is the only file in the tree still UNORDERED
- * (178 of 178 are sorted into retail address order). 0 adjacent inversions
- * remain, but that count badly understates the work: the 281 markers form
- * one ascending address run that is fully INTERLEAVED, not concatenated -
- * 0 foreign addresses fall inside run 1's span and 0 inside run 3's - so
- * reaching ORDERED needs a genuine three-way merge relocating ~0 blocks.
+/* PHYSICAL LINK ORDER: SOLVED. This file is sorted into retail address order,
+ * completing physical link order across all 178 first-party files, and it cost
+ * nothing: 168 MATCH / 113 NONMATCHING before and after, with every function's
+ * (status, object_size, normalized_diff, window) identical to the pre-sort
+ * baseline.
  *
- * This file is UNSOLVED, not unsolvable. A zero-loss ordering provably exists:
- * retail's own source compiled in this exact order and produced these exact
- * bytes. Reordering cannot change a function's codegen by itself - it changes
- * bytes only when the function's DECLARATION AND PRAGMA ENVIRONMENT moves out
- * from under it. Every one of the other 177 files reached ORDERED at exactly
- * zero metric change, which is the expected result, not a lucky one.
+ * It had been written off on the grounds that a fully ordered candidate
+ * measured 98 metric diffs (168 MATCH -> 127 + 41 MISMATCH), i.e. that ordering
+ * cost 41 matches. That was WRONG, and the error is worth remembering:
+ * reordering cannot change a function's codegen by itself. It changes bytes
+ * only when the function's DECLARATION AND PRAGMA ENVIRONMENT moves out from
+ * under it. Each of those 41 named one specific piece of context the merge had
+ * failed to carry. A zero-loss ordering had to exist, because retail's own
+ * source compiled in this order and produced these bytes.
  *
- * Measured W405/W406, two attempts:
- *   - seven targeted group moves took it from 8 inversions to 2 with ZERO
- *     metric change (applied and retained);
- *   - a fully ordered hand-built candidate compiled cleanly but measured 98
- *     metric diffs (168 MATCH -> 127 MATCH + 41 MISMATCH). Those 41 are a
- *     DEFECT IN THAT CANDIDATE, not the price of ordering: each one names a
- *     declaration or pragma scope that the merge failed to carry along.
+ * Reached in five verified increments, each applied only after measuring zero
+ * metric change against the ORIGINAL pre-sort baseline. Blocks out of place,
+ * counted as n minus longest-increasing-subsequence:
+ *     64 -> 31   persona tail merge
+ *        -> 25   persona cluster 0x00124E00..0x00125D70
+ *        -> 13   equipment tail 0x0012C430..0x00131090
+ *        -> 12   0x00133900 into slot
+ *        ->  0   0x0014ED20, plus the menu preamble and the eleven-function
+ *                tail 0x00154970..0x001599F0
  *
- * The way in is to diagnose those 41 individually - for each, diff the set of
- * declarations, prototypes, macros and active pragmas visible above it before
- * and after the move, and restore it. That is mechanical and bounded. The two
- * survivors sit across mid-file declaration bands: FUN_0016AF90 vs
- * h_campDrawStatusOverview across the status alias band, and FUN_00166C70 vs
- * FUN_00122630 across the Camp/_h_camp_persona.h include and its y6/y7 alias
- * prototypes.
+ * Context defects found and fixed along the way, all of the same species:
+ *   - a moved cluster inheriting a preceding `opt_propagation off`, corrected
+ *     with a scoped push / reset / pop so each function keeps its own state;
+ *   - RpSkyRenderStateSet macro collisions after the moved persona band;
+ *   - an `opt_common_subs off` sitting before the persona aliases, which broke
+ *     FUN_00124E00 and FUN_00124E60 until moved before FUN_001230C0;
+ *   - a global FUN_0012E170 prototype that would have leaked into and altered
+ *     FUN_00163330, avoided with an equipment-local alias;
+ *   - the mid-file Camp/_h_camp_persona.h include, which contributes guarded
+ *     Utils/status includes, a KwlnTask forward declaration, CampPersonaDrawParams
+ *     and six typed prototypes. Hoisting it naively clashes on the
+ *     FUN_00125B40_persona versus raw equipment FUN_00125B40 signatures; a narrow
+ *     macro fence around the hoisted include is what makes it zero-loss.
  *
- * Constraint, not excuse: never COMMIT an ordering that costs a match. Order
- * and matches are both required for a byte-identical link, so a candidate that
- * trades one for the other is simply wrong and must be fixed, not shipped. */
+ * Metric note for anyone re-checking: m_tu_order's `inversions` counts only
+ * ADJACENT descents and read 2 for this file while 64 blocks were genuinely
+ * misplaced. Score sortedness with n - LIS over scan_markers, and confirm
+ * extents() resolves all 281 markers - it silently drops any block it cannot
+ * parse, which is how a misplaced K&R function stayed hidden in h_maestro.c.
+ *
+ * Standing rule: never commit an ordering that costs a match. Order and matches
+ * are both required for a byte-identical link, so a candidate trading one for
+ * the other is wrong and must be fixed, not shipped. */
 #include "Camp/h_camp.h"
 extern u32 FUN_0011abd0();
 extern int sprintf(char* buffer, const char* format, ...);
