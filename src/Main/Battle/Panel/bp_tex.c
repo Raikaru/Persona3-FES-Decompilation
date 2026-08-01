@@ -2803,6 +2803,13 @@ void FUN_002230e0(void)
 #pragma opt_propagation off
 /* W420 selector-kind declaration reorder: nd2128/3240B, window 3776B, rate
  * 0.656790 -> nd2144/3224B, rate 0.665012; reverted. */
+/* W421 reconstruction probes (all reverted): colour[4] nd2129/3240B,
+ * rate 0.657099; duplicated selector path nd2525/3720B, rate 0.678763;
+ * common-render rewrite nd2426/3564B, rate 0.680696; signed selector
+ * index nd2286/3388B, rate 0.674734; selector case-body reorder
+ * nd2289/3372B, rate 0.678826; selector reload expressions
+ * nd2317/3388B, rate 0.683884. Baseline retained at nd2128/3240B,
+ * window 3776B, rate 0.656790. */
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
@@ -3085,6 +3092,12 @@ alpha_done:
 /* W420 operand-order helper probes: nd11/1292B, window 1296B, rate 0.008514
  * -> nd23/1292B, rate 0.017802 and nd19/1292B, rate 0.014706 in the two
  * directions; both reverted. */
+/* W421 row classification: offsets 100, 160, 164, 188, 220, 252, 284,
+ * 468 and 500 are candidate s0/s3 colouring substitutions (for example,
+ * candidate addiu $s3,$s2,0x6080 versus retail addiu $s0,$s2,0x6080,
+ * and candidate lw $v0,($s0) versus retail lw $v0,($s3)); offsets 512
+ * and 532 likewise select the alternate pointer register. No commutative
+ * operation differs. */
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {

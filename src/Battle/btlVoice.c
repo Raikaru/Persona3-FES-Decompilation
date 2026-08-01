@@ -8535,6 +8535,16 @@ int func_002f2510(int param_1)
 }
 
 /* W419 negative: swapped actionPacket/parent local declaration order in func_002f2550; nd17 -> 24 at object 752/752. */
+/* W421 classification: baseline verify nd17 at 752/752 (rate 0.022606).
+ * This is action-input versus parent-packet saved-register role coloring,
+ * not a commutative or argument-setup difference.  At +28 ours move
+ * $s4,$a0 versus retail move $s0,$a0; +104/+152/+196/+280/+320/+392/
+ * +508/+620/+684 ours ld $v1,($s4) versus retail ld $v1,($s0);
+ * +316/+592 ours move $s0,$v0 versus retail move $s4,$v0; +328/+628
+ * ours move $a0,$s0 versus retail move $a0,$s4; +384/+500/+676 ours
+ * ld $v1,0x58($s0) versus retail ld $v1,0x58($s4).  Declaration swap
+ * measured nd24 at 752/752 (rate 0.031915); exhaustive declaration
+ * permutations and const-pointer spelling stayed at or above nd17. */
 // FUN_002f2550 NONMATCHING
 void func_002f2550(BtlAction* action)
 {

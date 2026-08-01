@@ -18,7 +18,7 @@ void effMiscNormalizeVU();
 void func_00357e30(void);
 void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ);
 void func_00358160(f32 angle);
-void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle);
+void func_003581f0(f32 angle, const RwV3d* axis, RwMatrix* matrix);
 void func_00358340(const RwV3d* axis, f32 angle);
 void func_00358380(f32 angle);
 void func_00358410(void);

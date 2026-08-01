@@ -991,7 +991,6 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   u32 uVar1;
 
   int iVar2;
-
   u32 offset;
   u16 uVar3;
 
@@ -3402,6 +3401,7 @@ u32 FUN_003cda00(void)
 // Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
 // W389 hand tests: translation z volatile load held nd12; volatile handle sequencing regressed nd12 -> nd16; both reverted.
 // W414 argument-order probes: hoisting arg3 pointer before/after argument locals left nd12 unchanged; explicit handle/pointer locals regressed nd12 -> nd16; reverted.
+
 #pragma push
 /* W389 sweep: opt_propagation off measured nd20/obj320 -> nd12/obj320 (window 320). */
 #pragma opt_propagation off

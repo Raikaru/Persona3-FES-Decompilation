@@ -4236,7 +4236,7 @@ void FUN_0041bf10(int param_1,u32 param_2)
 }
 
 /* W420 negative: post-match declaration/callback-order probes stayed nd7/object448/window448/rate0.015625; pointer declaration nd11/object448/window448/rate0.024554; iVar3 placement nd8/object448/window448/rate0.017857; while spelling grew nd86/object456/window448/rate0.188596; reverted. */
-// FUN_0041BF80 NONMATCHING
+// FUN_0041BF80
 
 
 void FUN_0041bf80(u32 *param_1)
@@ -4249,13 +4249,14 @@ void FUN_0041bf80(u32 *param_1)
 
   u32 uVar2;
 
-  int iVar3;
-
   int lVar4;
+
+  u32 *puVar6;
 
   u32 *puVar5;
 
-  u32 *puVar6;
+  int iVar3;
+
   code *callback;
 
   u32 auStack_40 [16];

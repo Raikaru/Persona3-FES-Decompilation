@@ -2517,6 +2517,13 @@ void FUN_003b9610(Resrc* param_1)
  * merged: it makes this function nd 327 at 508B, over its window. The two
  * separate lui/LO16 materializations retail needs are produced by the
  * aggregate copy itself, not by defeating CSE. Treat nd4 as final. */
+/* W421 row classification: baseline nd=4/object=464/window=464 (rate
+ * 0.008621). At offsets 164/172 candidate `ld $v0,8($v0)` +
+ * `sd $v0,0x48($sp)` versus retail `lwc1 $f0,0x2da8($v0)` +
+ * `swc1 $f0,0x48($sp)`: a 16-byte b210 aggregate blit versus retail's
+ * 12-byte mixed-width copy, not a commutative operand swap. Explicit
+ * scalar/staged/volatile forms measured nd=45/49/6 at 464B but did not
+ * reproduce the retail direct stack stores; all were reverted. */
 // FUN_003BAA70 NONMATCHING
 
 
@@ -3198,6 +3205,13 @@ void FUN_003bb400(u32 param_1)
  * indirect stores through the materialized stack pointer. RwV3d aggregate
  * and memcpy(12) forms exceed the 464-byte window (nd255/472 and nd302/472).
  * All were reverted; the existing nd4 aggregate copy remains the best form. */
+/* W421 row classification: baseline nd=4/object=460/window=464 (rate
+ * 0.008696). At offsets 112/120 candidate `ld $v0,8($v0)` + `sd
+ * $v0,0x98($sp)` versus retail `lwc1 $f0,0x2f00($v0)` + `swc1
+ * $f0,0x98($sp)`: the same 16-byte b210 aggregate blit versus retail's
+ * 12-byte mixed-width copy. Direct scalar, memcpy, and pointer variants
+ * measured nd=10/302/10 (the latter at 472B); none matched and all were
+ * reverted. */
 // FUN_003BB450 NONMATCHING
 
 
@@ -3269,6 +3283,13 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 /* W414 direct stack-store negative: removing the `dest` pointer and writing
  * `direction` directly emits stack-addressed stores but reorders the local
  * aggregate staging, measuring nd17 (376/384) versus retained nd4. Reverted. */
+/* W421 row classification: baseline nd=4/object=376/window=384 (rate
+ * 0.010638). At offsets 216/220 candidate `sd $v0,0($a1)` + `swc1
+ * $f0,8($a1)` versus retail `sd $v0,0xd0($sp)` + `swc1 $f0,0xd8($sp)`.
+ * The aggregate values and widths agree; only the candidate's cached
+ * destination pointer survives where retail uses direct stack-relative
+ * stores. Direct stack, pointer, and staged forms measured nd=17/4/4
+ * (best object 376B) and did not improve the retained form. */
 // FUN_003BB620 NONMATCHING
 
 

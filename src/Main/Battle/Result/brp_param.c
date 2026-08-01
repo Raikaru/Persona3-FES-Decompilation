@@ -1141,6 +1141,8 @@ void func_002798f0(void)
 /* W420 direct-field load: nd185/384B, window 384B, rate 0.481771, versus
  * baseline nd20/372B, rate 0.053763; aligned split variant stayed at baseline;
  * both reverted. */
+
+
 // FUN_00279940 NONMATCHING
 u32* func_00279940(const u32* header)
 {

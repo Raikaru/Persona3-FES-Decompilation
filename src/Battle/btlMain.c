@@ -3614,12 +3614,14 @@ void FUN_002a1db0(s32 param_1)
     *(s32*)packet->workData = param_1;
 }
 
-/* W414 evidence: full fndiff was nd29 at 592/592.  The ordered jal sequence
- * was identical on both sides: FUN_004be310 only; no missing/extra call was
- * present.  Splitting each quintic into sequential Horner statements keeps
- * the retail constant-load/accumulator order and measures nd4 at 592/592.
- * The remaining rows (+368/+428) are the commutative accumulator operand
- * swap (retail f0*f1, ours f1*f0), a confirmed compiler floor. */
+/* W414/W421 evidence: baseline verify nd4 at 592/592 (rate 0.006757).
+ * The ordered jal sequence is identical on both sides: FUN_004be310 only;
+ * no missing/extra call is present.  Splitting each quintic into
+ * sequential Horner statements keeps the retail constant-load/accumulator
+ * order.  The two residuals are one commutative product-order defect:
+ * +368 ours madd.s $f20,$f1,$f0 versus retail madd.s $f20,$f0,$f1;
+ * +428 ours madd.s $f21,$f1,$f0 versus retail madd.s $f21,$f0,$f1.
+ * Both destinations match and both source pairs are swapped. */
 // FUN_002A1E00 NONMATCHING
 
 

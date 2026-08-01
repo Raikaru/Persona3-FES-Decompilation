@@ -2910,7 +2910,6 @@ u32 FUN_003965f0(int *param_1)
         else {
           int *entryResult;
           entryResult = param_1 + iVar1 * 0xb + 0xe;
-
           iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);
           *entryResult = iVar3;
 

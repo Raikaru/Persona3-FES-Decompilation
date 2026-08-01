@@ -589,6 +589,13 @@ u32 FUN_003aea50(u64 param_1, int param_2)
 #define FUN_003aea50(...) ((u64 (*)(...))FUN_003aea50)(__VA_ARGS__)
 #undef FUN_003aec20
 /* W389 residual: register-coloring cycle and one commutative addu (retail keeps glyph in $a2/count in $v1; candidate swaps them). Baseline nd=8/object=240 at the window; common-subs off exceeded the window (nd=141/object=244), other singles and all pairs were neutral. Declaration reorder stayed nd=8; moving count's first use gave nd=182/object=248; s16 glyph gave nd=70/object=248; all were reverted. */
+/* W421 row classification: baseline nd=8/object=240/window=240 (rate
+ * 0.033333). Offset 24 is a commutative swap (`addu $v1,$v1,$v0` versus
+ * retail `addu $v1,$v0,$v1`); offsets 108/112, 128/140/152, and 168 are
+ * a register-role cycle (`$v1` glyph/`$a2` count versus retail `$a2`
+ * glyph/`$v1` count). Operand-order helpers stayed nd=8; reversing the
+ * helper direction measured nd=10/240 (rate 0.041667), so both were
+ * reverted. */
 // FUN_003AEC20 NONMATCHING
 
 

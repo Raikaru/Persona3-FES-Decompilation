@@ -41,6 +41,10 @@ extern void FUN_0019d3f0(const char* file, s32 line);
 extern const char DAT_0068ebd8[];
 extern const char DAT_0068ebe8[];
 #define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
+static inline f32 bpDialogMulFirst(f32 left, f32 right)
+{
+    return left * right;
+}
 
 // FUN_0025be00
 void bpDialog0025be00(void)
@@ -198,7 +202,7 @@ u32 bpDialog0025c1e0(void)
 // -> nd2/1940B (window 1952B). Residual is commutative operand order of
 // `mul.s $f20, $f20, $f0` versus retail's `mul.s $f20, $f0, $f20`;
 // MWCCPS2 b210 canonicalizes the source form.
-// FUN_0025C220 NONMATCHING
+// FUN_0025C220
 void FUN_0025c220(void)
 {
     u32* puVar1;
@@ -302,7 +306,7 @@ void FUN_0025c220(void)
         uVar6 |= 0xffffff00u;
         func_003b0e20(puVar1[1], uVar6);
 
-        fVar11 = (255.0f * fVar6) * fVar11;
+        fVar11 = bpDialogMulFirst(255.0f * fVar6, fVar11);
         uVar7 = (u8)fVar11;
         uVar7 |= 0xffffff00u;
         func_003b0e20(puVar1[2], uVar7);

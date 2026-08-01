@@ -13189,14 +13189,18 @@ void FUN_001365b0(KwlnTask* task)
 }
 #pragma opt_dead_assignments reset
 #pragma opt_propagation reset
+#pragma alias hCampDAT_00960184_abs DAT_00960184
+extern u8 hCampDAT_00960184_abs[];
 /* W414 HCamp frame probes: task/work arrays and one-field/aggregate wrappers all retained object 204B, nd2 (task[1] worsened nd11); retail alone has the 0x50 frame. */
+/* W421 allocator alias: hCampDAT_00960184_abs now emits the correct HI16/LO16 relocations where the prior declaration emitted none; metric-neutral at nd2/object204/window208 rate .0098. The remaining defect is a 16-byte frame deficit (-0x40 versus retail -0x50) with an identical saved-register set. */
+ 
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
     KwlnTask* task;
     CampCommuRootWork* work;
 
-    work = (CampCommuRootWork*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
+    work = (CampCommuRootWork*)(*(void* (**)(u32, u32, u32))hCampDAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
         return NULL;
     }
@@ -18571,8 +18575,15 @@ void FUN_00146710(CampEquipmentPanelWork* work)
 /* W420 rejected pair declaration reorder: nd2703/object3216/window3584 rate .841 vs baseline nd2685/object3216/window3584 rate .835; rejected. */
 #pragma opt_lifetimes on
 #pragma opt_propagation off
+#define func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
+  func_0018bc10_buffirst_subb((transition), (depth), (drawMode), (positionMode), (alphaMode), (start), (end), (param0), (tile), (startFrame), (endFrame))
+ 
+/* W421 prologue census: candidate frame -0x150, ra at 0x60, s2/s1/s0, and f20-f27 saved; retail frame -0x140, ra at 0x50, s2/s1/s0, and f20 only. The candidate has seven surplus callee-saved floats, a 16-byte surplus frame, and is 356B short of the 3584B window. Retail keeps one float alive across calls while this source keeps eight; the float-lifetime census remains incomplete. Enumerate every float local crossing a jal, move definitions after calls, recompute after calls, or sink consumers above calls, then compile all three classes of fixes once; sinking one at a time only promotes the next candidate into the freed slot. */
+/* W421 probe record: direct u64 baseline nd2685/object3216/window3584 rate .8349; buffirst ABI macro alone nd2686/object3216/window3584 rate .8352; pairSlots array alone nd2686/object3216/window3584 rate .8352; -=100.0f probe nd2659/object3184/window3584 rate .8351 (rejected because the sub.s shape and rate were worse); propagation-on fake fill nd2878/object3532/window3584 rate .8148 (rejected). Retained pairSlots + buffirst ABI + campAddOffsetFirst(value,-100.0f): nd2651/object3228/window3584 rate .8213. The -= probe classified offset 0x44 (68) candidate sw $v0,0x14c($sp) versus retail add.s $f0,$f1,$f0, and offset 0x5c (92) candidate sub.s $f0,$f0,$f25 versus retail mtc1 $v0,$f12. */
+/* The retained object is 356B short of its window; no pragma or volatile window fill is used. */
+ 
+ 
 // FUN_001474f0 NONMATCHING
-
 void FUN_001474f0(CampEquipmentPanelWork* work)
 
 {
@@ -18607,51 +18618,82 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   s32 row;
   s32 entryIndex;
   f32 slotY;
+  struct {
+    u64 draw[16];
+    u64 status[10];
+  } pairSlots;
+#define pair0 pairSlots.draw[0]
+#define pair1 pairSlots.draw[1]
+#define pair2 pairSlots.draw[2]
+#define pair3 pairSlots.draw[3]
+#define pair4 pairSlots.draw[4]
+#define pair5 pairSlots.draw[5]
+#define pair6 pairSlots.draw[6]
+#define pair7 pairSlots.draw[7]
+#define pair8 pairSlots.draw[8]
+#define pair9 pairSlots.draw[9]
+#define pair10 pairSlots.draw[10]
+#define pair11 pairSlots.draw[11]
+#define pair12 pairSlots.draw[12]
+#define pair13 pairSlots.draw[13]
+#define pair14 pairSlots.draw[14]
+#define pair15 pairSlots.draw[15]
+#define pair16 pairSlots.status[0]
+#define pair17 pairSlots.status[1]
+#define pair18 pairSlots.status[2]
+#define pair19 pairSlots.status[3]
+#define pair20 pairSlots.status[4]
+#define pair21 pairSlots.status[5]
+#define pair22 pairSlots.status[6]
+#define pair23 pairSlots.status[7]
+#define pair24 pairSlots.status[8]
+#define pair25 pairSlots.status[9]
+
 
   base.x = 40.0f;
   base.y = 12.0f;
   pair0 = *(u64*)&base;
-  *(f32*)&pair0 += -100.0f;
+  *(f32*)&pair0 = campAddOffsetFirst(*(f32*)&pair0, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, pair0, *(u64*)&base, 0, 0, 0, 10);
   base.x = 219.0f;
   base.y = 27.0f;
   pair1 = *(u64*)&base;
-  *(f32*)&pair1 += -100.0f;
+  *(f32*)&pair1 = campAddOffsetFirst(*(f32*)&pair1, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1, *(u64*)&base, 0, 0, 0, 10);
   base.x = 318.0f;
   base.y = 27.0f;
   pair2 = *(u64*)&base;
-  *(f32*)&pair2 += -100.0f;
+  *(f32*)&pair2 = campAddOffsetFirst(*(f32*)&pair2, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair2, *(u64*)&base, 0, 0, 0, 10);
   base.x = (f32)0x155;
   base.y = 27.0f;
   pair3 = *(u64*)&base;
-  *(f32*)&pair3 += -100.0f;
+  *(f32*)&pair3 = campAddOffsetFirst(*(f32*)&pair3, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair3, *(u64*)&base, 0, 0, 0, 10);
   base.x = 484.0f;
   base.y = 27.0f;
   pair4 = *(u64*)&base;
-  *(f32*)&pair4 += -100.0f;
+  *(f32*)&pair4 = campAddOffsetFirst(*(f32*)&pair4, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair4, *(u64*)&base, 0, 0, 0, 10);
   base.x = (f32)0x1fb;
   base.y = 27.0f;
   pair5 = *(u64*)&base;
-  *(f32*)&pair5 += -100.0f;
+  *(f32*)&pair5 = campAddOffsetFirst(*(f32*)&pair5, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair5, *(u64*)&base, 0, 0, 0, 10);
   base.x = 227.0f;
   base.y = 61.0f;
   pair6 = *(u64*)&base;
-  *(f32*)&pair6 += -100.0f;
+  *(f32*)&pair6 = campAddOffsetFirst(*(f32*)&pair6, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, pair6, *(u64*)&base, 0, 0, 0, 10);
   base.x = 247.0f;
   base.y = 219.0f;
   pair7 = *(u64*)&base;
-  *(f32*)&pair7 += -100.0f;
+  *(f32*)&pair7 = campAddOffsetFirst(*(f32*)&pair7, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, pair7, *(u64*)&base, 0, 0, 0, 10);
   base.x = (f32)0x22e;
   base.y = 67.0f;
   pair8 = *(u64*)&base;
-  *(f32*)&pair8 += -100.0f;
+  *(f32*)&pair8 = campAddOffsetFirst(*(f32*)&pair8, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, pair8, *(u64*)&base, 0, 0, 0, 10);
 
   for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
@@ -18660,28 +18702,28 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
       base.x = 65.0f;
       base.y = 8.0f + slotY;
       pair9 = *(u64*)&base;
-      *(f32*)&pair9 += -100.0f;
+      *(f32*)&pair9 = campAddOffsetFirst(*(f32*)&pair9, -100.0f);
       row = entryIndex * 10;
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, pair9, *(u64*)&base, 0, 0, 0, 10);
       base.x = 65.0f;
       base.y = 31.0f + slotY;
       pair10 = *(u64*)&base;
-      *(f32*)&pair10 += -100.0f;
+      *(f32*)&pair10 = campAddOffsetFirst(*(f32*)&pair10, -100.0f);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, pair10, *(u64*)&base, 0, 0, 0, 10);
       base.x = 65.0f;
       base.y = 45.0f + slotY;
       pair11 = *(u64*)&base;
-      *(f32*)&pair11 += -100.0f;
+      *(f32*)&pair11 = campAddOffsetFirst(*(f32*)&pair11, -100.0f);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, pair11, *(u64*)&base, 0, 0, 0, 10);
       base.x = 65.0f;
       base.y = 64.0f + slotY;
       pair12 = *(u64*)&base;
-      *(f32*)&pair12 += -100.0f;
+      *(f32*)&pair12 = campAddOffsetFirst(*(f32*)&pair12, -100.0f);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, pair12, *(u64*)&base, 0, 0, 0, 10);
       base.x = 14.0f;
       base.y = 2.0f + slotY;
       pair13 = *(u64*)&base;
-      *(f32*)&pair13 += -100.0f;
+      *(f32*)&pair13 = campAddOffsetFirst(*(f32*)&pair13, -100.0f);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, pair13, *(u64*)&base, 0, 0, 0, 10);
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
@@ -18700,13 +18742,13 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   base.x = 62.0f;
   base.y = (f32)0x19f;
   pair14 = *(u64*)&base;
-  *(f32*)&pair14 += -100.0f;
+  *(f32*)&pair14 = campAddOffsetFirst(*(f32*)&pair14, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, pair14, *(u64*)&base, 0, 0, 0, 10);
   *(u32 *)(work->drawBuffer + 0x12e0) = 0;
   base.x = 239.0f;
   base.y = (f32)0x19f;
   pair15 = *(u64*)&base;
-  *(f32*)&pair15 += -100.0f;
+  *(f32*)&pair15 = campAddOffsetFirst(*(f32*)&pair15, -100.0f);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, pair15, *(u64*)&base, 0, 0, 0, 10);
 
   tempFloat = (f32)0x17b;
@@ -18774,7 +18816,35 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   base.x = tempFloat + 100.0f;
   func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)), 0, 2, 2, *(u64*)&pair25, *(u64*)&base, 0, 0, 0, 10);
   return;
+#undef pair25
+#undef pair24
+#undef pair23
+#undef pair22
+#undef pair21
+#undef pair20
+#undef pair19
+#undef pair18
+#undef pair17
+#undef pair16
+#undef pair15
+#undef pair14
+#undef pair13
+#undef pair12
+#undef pair11
+#undef pair10
+#undef pair9
+#undef pair8
+#undef pair7
+#undef pair6
+#undef pair5
+#undef pair4
+#undef pair3
+#undef pair2
+#undef pair1
+#undef pair0
 }
+
+#undef func_0018bc10
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
 #pragma pop

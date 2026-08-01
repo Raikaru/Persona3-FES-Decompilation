@@ -40,6 +40,8 @@ static u32 sDrawLogEnabled;
 static char sGrid[HDBPRT_GRID_HEIGHT][HDBPRT_GRID_WIDTH];
 static char sLogs[HDBPRT_LOG_MAXLINE][HDBPRT_LOG_MAXCHAR];
 
+
+
 static void H_Dbprt_DrawText3D(void);
 static f32 H_Dbprt_CalculateScreenZ(f32 zOffset);
 static void H_Dbprt_DrawLog(void);
@@ -461,6 +463,13 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 }
 
 /* W419 probe: moving copySize into the else block stayed nd6,obj228/window240 (same as baseline). */
+/* W421 row classification: verify nd6, object228/window240, rate0.026316.
+ * Offsets 0x30/0x58/0x5c/0x68/0x88/0xac are respectively
+ * move $s0,$v0 / move $s1,$v0; lw $s1,-4($s4) / lw $s0,-4($s4);
+ * sltu $at,$s3,$s1 / sltu $at,$s3,$s0; move $s1,$s3 / move $s0,$s3;
+ * move $a2,$s1 / move $a2,$s0; and beqz $s0,0x10400c / beqz $s1,0x10400c
+ * (candidate / retail): register-role colouring only. */
+
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
@@ -873,6 +882,12 @@ static void H_Dbprt_DrawText3D(void)
 #pragma pop
 #pragma opt_propagation reset
 
+/* W421 row classification: verify nd7, object416/window416, rate0.016827.
+ * Offsets 0xf0 and 0xf4 are:
+ * 0xf0 addiu $v1,$sp,0x60 / addu $v1,$s3,$sp;
+ * 0xf4 addu $v1,$s3,$v1 / addiu $v1,$v1,0x60 (candidate / retail):
+ * stack-address scheduling. */
+
 // FUN_00104D10 NONMATCHING
 void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NONMATCHING nd170 -> NONMATCHING nd290, size 412 -> 424) - measured W170. */ RwV2d pos, const char* fmt, ...)
 {
@@ -900,7 +915,6 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
         {
             break;
         }
-
         glyph = *(char*)((u8*)(uintptr_t)character +
                          (uintptr_t)buffer);
         if (glyph == '\0')

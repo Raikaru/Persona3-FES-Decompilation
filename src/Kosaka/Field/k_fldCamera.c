@@ -226,6 +226,10 @@ extern void func_001023a0(void* object);
 extern void func_00100ec0(void* object);
 extern void func_00521250(void* destination, const void* source, u32 size);
 
+/* W421 probe floors for FUN_001d5a90: declaration-order variants and the
+ * scalar field-address helper stayed nd16/object356/window368 (0.044944);
+ * parent-local materialization also stayed nd16/356/368. Direct frame-field
+ * expressions worsened to nd188/object332/window368 (0.566265). */
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {

@@ -1458,3 +1458,10 @@ void func_001a8910(u32* count)
 // func_001a7370 first-loop direct indexing: 5/320/320 (0.0156) -> 18/320/320 (0.0563); cached pointer was unchanged.
 // func_001a7370 stateValue local: 5/320/320 (0.0156) -> 12/320/320 (0.0375); initialized global pointer: 226/328/320 (0.6890; over window).
 // func_001a8140 callback aliases: 1079/1640/1760 (0.6579) -> 1100/1656/1760 (0.6643).
+/* W421 row-level floors: func_001a7710 positive-guard, explicit-else, and
+ * labelled-body probes all stayed nd3/object504/window512 (0.005952);
+ * offsets 20/28 are the sole branch inversion (candidate beqz-to-body plus
+ * b-to-body, retail bnez-to-body plus b-to-return). func_001a7370 split
+ * pointer, const pointer, indexed helper, and inequality-loop probes all
+ * stayed nd5/object320/window320 (0.015625); offsets 104/108/120/128/136
+ * are the global-base/state-load register-role swaps ($a0 vs $v1). */

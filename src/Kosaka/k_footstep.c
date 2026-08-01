@@ -532,7 +532,6 @@ void func_001da000(KwlnTask* task, u32 disabled)
 void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
 {
     u16 mdlType = mdl->type;
-    u16 mdlId = mdl->id;
     u16 animId = mdlAnimGetId(mdl, 0);
     f32 frame = mdlAnimGetCurrentFrame(mdl, 0);
     RwMatrix* matrix;
@@ -602,7 +601,7 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
         {
             if (mdlType == 9)
             {
-                switch (mdlId & 0xff)
+                switch (mdl->id & 0xff)
                 {
                 case 0:
                 case 1:
@@ -615,7 +614,10 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                     {
                         if (K_Footstep_IsFrameWindow(frame, 10.0f, 11.0f, 25.0f, 26.0f))
                         {
-                            K_Footstep_Play(resTypeId, material, 1);
+                            func_0010a4e0(
+                                0, (s16)(RESRC_GET_ID(resTypeId) + 1), 1,
+                                (s16)(material * 4 +
+                                      D_00875A50[RESRC_GET_ID(resTypeId)]));
                         }
                         return;
                     }
