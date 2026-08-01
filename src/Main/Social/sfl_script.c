@@ -2,6 +2,56 @@
 #include "Kosaka/k_assert.h"
 #include "Main/Social/sfl_script.h"
 
+s32 bpTexHasPendingNode();
+#ifndef SQRT
+#define SQRT(x) sqrtf(x)
+#endif
+float sqrtf(float x);
+typedef int (*code)(...);
+void FUN_0025a120(void);
+void FUN_0025a130(void);
+void FUN_0025a440(void);
+void FUN_0025a7d0(void);
+void FUN_0025aad0(void);
+void FUN_0025b440(void);
+extern code DAT_00960090;
+extern code DAT_0096009c;
+#pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern code DAT_00960090_abs[];
+extern code DAT_0096009c_abs[];
+#define DAT_00960090 DAT_00960090_abs
+#define DAT_0096009c DAT_0096009c_abs
+extern f32 fGpffff8088;
+extern f32 fGpffff8248;
+extern f32 fGpffff82ac;
+extern f32 fGpffff83b8;
+extern f32 fGpffff83bc;
+extern f32 fGpffff82fc;
+extern f32 FUN_0052e878(f32 angle);
+extern u32 uGpffffb670;
+typedef struct { f32 a; f32 b; f32 c; } SflVec3;
+typedef struct {
+  u32 flags;
+  f32 from[3];
+  f32 to[3];
+  f32 position[3];
+  u32 frame;
+  u32 previous;
+  u32 active;
+  u32 timer;
+  u8 padding[0xc68];
+  u32 state;
+} SflCursorWork;
+static u32* sSflCursor; // puGpffffb670
+void FUN_00258540(u32 param_1, void* param_2);
+extern u32 FUN_0020e510(s32 index);
+extern void FUN_0021eb80(void* work, const f32* values);
+extern void FUN_00250f80(f32* output, const void* input);
+extern u32* FUN_00256110(u32 id);
+extern void FUN_002561e0(f32 amount, void* node);
+
+
 
 
 
@@ -101,52 +151,6 @@ void sflScriptStartQueuedCommands(void)
     work->flags |= 1;
 }
 
-// FUN_00259970
-void sflScriptQueueEndCommand(void)
-{
-    K_ASSERT(sSflScript != NULL, 0x43);
-    sflScriptAppendCommand(0, 0);
-}
-
-// FUN_00259b00
-void sflScriptQueueWaitCommand(u16 param_1)
-{
-    u16 arg;
-
-    K_ASSERT(sSflScript != NULL, 0x43);
-    arg = param_1;
-    sflScriptAppendCommand(2, &arg);
-}
-
-// FUN_00259b60
-void sflScriptQueueOpenCommand(u16 param_1)
-{
-    u16 arg;
-
-    K_ASSERT(sSflScript != NULL, 0x43);
-    arg = param_1;
-    sflScriptAppendCommand(4, &arg);
-}
-
-// FUN_00259bc0
-void sflScriptQueueWaitForActionsCommand(void)
-{
-    K_ASSERT(sSflScript != NULL, 0x43);
-    sflScriptAppendCommand(5, 0);
-}
-
-// FUN_00259c60
-void sflScriptQueueSetCardValueCommand(u16 param_1)
-{
-    u16 arg;
-
-    K_ASSERT(sSflScript != NULL, 0x43);
-    arg = param_1;
-    sflScriptAppendCommand(7, &arg);
-}
-
-s32 bpTexHasPendingNode();
-
 // FUN_00259690
 void sflScriptConfigureCommandBuffer(u32 param_1, u32 param_2)
 {
@@ -165,33 +169,6 @@ u32 sflScriptIsRunning(void)
     K_ASSERT(sSflScript != NULL, 0x43);
     return sSflScript->flags & 1;
 }
-
-// FUN_00259c10
-void sflScriptQueueStartActionsCommand(void)
-{
-    K_ASSERT(sSflScript != NULL, 0x43);
-    sflScriptAppendCommand(6, 0);
-}
-
-// FUN_00259cc0
-void sflScriptQueueShuffleCommand(void)
-{
-    K_ASSERT(sSflScript != NULL, 0x43);
-    sflScriptAppendCommand(8, 0);
-}
-
-// FUN_00259e00
-u32 sflScriptHandleWaitForActionsCommand(void)
-{
-    K_ASSERT(sSflScript != NULL, 0x43);
-    if (bpTexHasPendingNode() != 0) {
-        return 0;
-    }
-    return 1;
-}
-
-
-/* Recovered battle-misc harvest: 0x00259630-0x0025A030 */
 
 // FUN_00259740
 
@@ -258,6 +235,55 @@ void sflScriptDispatchCommands(void)
   return;
 
 }
+
+// FUN_00259850
+
+
+void sflScriptAppendCommand(int param_1,const void* param_2)
+
+
+
+{
+  u16 *packet_cursor;
+  SflScriptWork *work;
+  u16 *next_cursor;
+  u32 cursor;
+
+  if (sSflScriptWorkAddress == 0) {
+    K_Assert(sSflScriptSourceFile, 0x43);
+  }
+  work = sSflScriptWorkAddress;
+  packet_cursor = (u16 *)work->appendCursor;
+  *packet_cursor = (short)param_1;
+  next_cursor = packet_cursor + 1;
+  if (*(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8) != 0) {
+    if (((u32)next_cursor & 3) != 0) {
+      next_cursor += 1;
+    }
+    copyMemory(next_cursor,param_2,
+                 *(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8));
+    next_cursor = (u16 *)((int)next_cursor +
+                     *(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8));
+  }
+  cursor = work->appendCursor;
+  cursor += (u32)next_cursor - cursor;
+  work->appendCursor = cursor;
+  if ((int)cursor - work->bufferStart.signedValue >
+      work->bufferCapacity.signedValue) {
+    K_Assert(sSflScriptSourceFile, 0xb2);
+  }
+  if ((work->appendCursor & 1) != 0) {
+    work->appendCursor = work->appendCursor + 1;
+  }
+}
+
+// FUN_00259970
+void sflScriptQueueEndCommand(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    sflScriptAppendCommand(0, 0);
+}
+
 
 // FUN_002599C0
 
@@ -341,6 +367,60 @@ void sflScriptQueueCloseCommand(u16 param_1,u16 param_2)
 
 }
 
+// FUN_00259b00
+void sflScriptQueueWaitCommand(u16 param_1)
+{
+    u16 arg;
+
+    K_ASSERT(sSflScript != NULL, 0x43);
+    arg = param_1;
+    sflScriptAppendCommand(2, &arg);
+}
+
+// FUN_00259b60
+void sflScriptQueueOpenCommand(u16 param_1)
+{
+    u16 arg;
+
+    K_ASSERT(sSflScript != NULL, 0x43);
+    arg = param_1;
+    sflScriptAppendCommand(4, &arg);
+}
+
+// FUN_00259bc0
+void sflScriptQueueWaitForActionsCommand(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    sflScriptAppendCommand(5, 0);
+}
+
+
+/* Recovered battle-misc harvest: 0x00259630-0x0025A030 */
+
+// FUN_00259c10
+void sflScriptQueueStartActionsCommand(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    sflScriptAppendCommand(6, 0);
+}
+
+// FUN_00259c60
+void sflScriptQueueSetCardValueCommand(u16 param_1)
+{
+    u16 arg;
+
+    K_ASSERT(sSflScript != NULL, 0x43);
+    arg = param_1;
+    sflScriptAppendCommand(7, &arg);
+}
+
+// FUN_00259cc0
+void sflScriptQueueShuffleCommand(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    sflScriptAppendCommand(8, 0);
+}
+
 
 // FUN_00259D10
 u64 sflScriptHandleEndCommand(void)
@@ -368,6 +448,16 @@ u32 sflScriptHandleSwapCommand(s16 *param_1)
     return 1;
 }
 
+// FUN_00259e00
+u32 sflScriptHandleWaitForActionsCommand(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    if (bpTexHasPendingNode() != 0) {
+        return 0;
+    }
+    return 1;
+}
+
 // FUN_00259E60
 
 
@@ -391,7 +481,6 @@ u32 sflScriptHandleSetCardValueCommand(u16 *param_1)
     sflCardSetScriptValue(*param_1);
     return 1;
 }
-
 // FUN_00259ED0
 u32 sflScriptHandleShuffleCommand(void)
 {
@@ -408,6 +497,7 @@ u32 sflScriptHandleShuffleCommand(void)
 done_zero:
     return 0;
 }
+
 // FUN_00259F40
 u32 sflScriptHandleCloseCommand(s16 *param_1)
 {
@@ -433,6 +523,7 @@ u32 sflScriptHandleOpenCommand(s16 *param_1)
   return 1;
 }
 
+/* Recovered battle-misc harvest: 0x00259850-0x00259850 */
 // FUN_0025A030
 u32 sflScriptHandleWaitCommand(s16 *param_1)
 {
@@ -459,103 +550,14 @@ u32 sflScriptHandleWaitCommand(s16 *param_1)
     return 0;
 }
 
-/* Recovered battle-misc harvest: 0x00259850-0x00259850 */
-// FUN_00259850
 
-
-void sflScriptAppendCommand(int param_1,const void* param_2)
-
-
-
-{
-  u16 *packet_cursor;
-  SflScriptWork *work;
-  u16 *next_cursor;
-  u32 cursor;
-
-  if (sSflScriptWorkAddress == 0) {
-    K_Assert(sSflScriptSourceFile, 0x43);
-  }
-  work = sSflScriptWorkAddress;
-  packet_cursor = (u16 *)work->appendCursor;
-  *packet_cursor = (short)param_1;
-  next_cursor = packet_cursor + 1;
-  if (*(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8) != 0) {
-    if (((u32)next_cursor & 3) != 0) {
-      next_cursor += 1;
-    }
-    copyMemory(next_cursor,param_2,
-                 *(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8));
-    next_cursor = (u16 *)((int)next_cursor +
-                     *(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8));
-  }
-  cursor = work->appendCursor;
-  cursor += (u32)next_cursor - cursor;
-  work->appendCursor = cursor;
-  if ((int)cursor - work->bufferStart.signedValue >
-      work->bufferCapacity.signedValue) {
-    K_Assert(sSflScriptSourceFile, 0xb2);
-  }
-  if ((work->appendCursor & 1) != 0) {
-    work->appendCursor = work->appendCursor + 1;
-  }
-}
-
-
-#ifndef SQRT
-#define SQRT(x) sqrtf(x)
-#endif
-float sqrtf(float x);
 
 
 /* Recovered battle-misc support prelude */
-typedef int (*code)(...);
-void FUN_0025a120(void);
-void FUN_0025a130(void);
-void FUN_0025a440(void);
-void FUN_0025a7d0(void);
-void FUN_0025aad0(void);
-void FUN_0025b440(void);
-extern code DAT_00960090;
-extern code DAT_0096009c;
-#pragma alias DAT_00960090_abs DAT_00960090
-#pragma alias DAT_0096009c_abs DAT_0096009c
-extern code DAT_00960090_abs[];
-extern code DAT_0096009c_abs[];
-#define DAT_00960090 DAT_00960090_abs
-#define DAT_0096009c DAT_0096009c_abs
-extern f32 fGpffff8088;
-extern f32 fGpffff8248;
-extern f32 fGpffff82ac;
-extern f32 fGpffff83b8;
-extern f32 fGpffff83bc;
-extern f32 fGpffff82fc;
-extern f32 FUN_0052e878(f32 angle);
-extern u32 uGpffffb670;
-
-typedef struct { f32 a; f32 b; f32 c; } SflVec3;
-typedef struct {
-  u32 flags;
-  f32 from[3];
-  f32 to[3];
-  f32 position[3];
-  u32 frame;
-  u32 previous;
-  u32 active;
-  u32 timer;
-  u8 padding[0xc68];
-  u32 state;
-} SflCursorWork;
 
 
-static u32* sSflCursor; // puGpffffb670
 
-void FUN_00258540(u32 param_1, void* param_2);
-extern u32 FUN_0020e510(s32 index);
-extern void FUN_0021eb80(void* work, const f32* values);
-extern void FUN_00250f80(f32* output, const void* input);
-extern u32* FUN_00256110(u32 id);
-extern void FUN_002561e0(f32 amount, void* node);
+
 
 // FUN_0025a110
 void sflCursor0025a110(u32* param_1)

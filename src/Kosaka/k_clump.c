@@ -226,28 +226,6 @@ static u32 kclump_scale_color(u32 component, f32 scale)
     return (u32)value;
 }
 
-// FUN_001a74b0 MATCHING
-static void* kclump_alpha_callback(void* material, void* data)
-{
-    if (*(u8*)((u8*)material + 7) == 0xff)
-    {
-        *(u32*)data = 1;
-    }
-    return material;
-}
-
-static void kclump_render_list(void* list, u32 callbackFlag)
-{
-    KClumpMaterialNode* item;
-
-    item = list != NULL ? *(KClumpMaterialNode**)list : NULL;
-    while (item != NULL)
-    {
-        kclump_render_item(item, callbackFlag);
-        item = item->next;
-    }
-}
-
 // FUN_001a6400
 s32 K_Clump_MatUsrDataGetInt(const RpMaterial* material, const char* name)
 {
@@ -267,6 +245,18 @@ s32 K_Clump_MatUsrDataGetInt(const RpMaterial* material, const char* name)
         }
     }
     return value;
+}
+
+static void kclump_render_list(void* list, u32 callbackFlag)
+{
+    KClumpMaterialNode* item;
+
+    item = list != NULL ? *(KClumpMaterialNode**)list : NULL;
+    while (item != NULL)
+    {
+        kclump_render_item(item, callbackFlag);
+        item = item->next;
+    }
 }
 
 // FUN_001a64f0
@@ -718,8 +708,6 @@ void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
     state[0]++;
 }
 
-// MWCC floor: retail holds D_00678C00 in $v1 while b210 assigns the equivalent
-// pointer lifetime to $a0; direct indexing regresses nd5 to nd34.
 // FUN_001a7370 NONMATCHING
 void* func_001a7370(void* material, u32* state)
 {
@@ -764,6 +752,18 @@ void* func_001a7370(void* material, u32* state)
     if (selected == 1)
     {
         state[1] = 1;
+    }
+    return material;
+}
+
+// MWCC floor: retail holds D_00678C00 in $v1 while b210 assigns the equivalent
+// pointer lifetime to $a0; direct indexing regresses nd5 to nd34.
+// FUN_001a74b0 MATCHING
+static void* kclump_alpha_callback(void* material, void* data)
+{
+    if (*(u8*)((u8*)material + 7) == 0xff)
+    {
+        *(u32*)data = 1;
     }
     return material;
 }

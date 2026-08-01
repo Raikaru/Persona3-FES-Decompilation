@@ -1,6 +1,22 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+void* func_0021c5d0(void);
+void* func_0021c640(void);
+void* func_0021c6b0(void);
+u32 itfMesMngInitialize(void*);
+void itfMesMngDestroyHandle(u32);
+void func_00207e20(void);
+void func_00207f10(void);
+void func_002db420(s32);
+void func_002db650(u32);
+void func_002db2a0(s32);
+void func_0021f3c0(void);
+void bpRushRequestHide(void);
+void bpRushClearHideRequest(void);
+void func_002083d0(void);
+
+
 static u32* sBpMisc; // DAT_007ce3ec
 extern u8* DAT_007ce3ec;
 int datGetFlag();
@@ -109,41 +125,9 @@ u32 FUN_001FF630(u32 index)
     return 0;
 }
 
-void* func_0021c5d0(void);
-void* func_0021c640(void);
-void* func_0021c6b0(void);
-u32 itfMesMngInitialize(void*);
-void itfMesMngDestroyHandle(u32);
-void func_00207e20(void);
-void func_00207f10(void);
-void func_002db420(s32);
-void func_002db650(u32);
-void func_002db2a0(s32);
-void func_0021f3c0(void);
-void bpRushRequestHide(void);
-void bpRushClearHideRequest(void);
-void func_002083d0(void);
 
 // W112BpRoot reconstruction: retail request-mask logging and state-transition paths recovered.
 
-
-// FUN_001ff7f0
-u32 bpMisc001ff7f0(u32 param_1)
-{
-    int base;
-    int p;
-
-    base = (int)sBpMisc;
-    K_ASSERT(sBpMisc != NULL, 0xf1);
-    p = *(int*)(base + 0x150);
-    while (p != 0) {
-        if ((~*(u32*)(p + 0x9c) & 8) == 0 && *(u16*)(*(int*)(p + 0xa2c) + 2) == param_1) {
-            return 1;
-        }
-        p = *(int*)(p + 0xa34);
-    }
-    return 0;
-}
 
 // FUN_001ff740
 u32 bpMisc001ff740(void)
@@ -170,4 +154,22 @@ u32 bpMisc001ff740(void)
         }
     }
     return uVar1;
+}
+
+// FUN_001ff7f0
+u32 bpMisc001ff7f0(u32 param_1)
+{
+    int base;
+    int p;
+
+    base = (int)sBpMisc;
+    K_ASSERT(sBpMisc != NULL, 0xf1);
+    p = *(int*)(base + 0x150);
+    while (p != 0) {
+        if ((~*(u32*)(p + 0x9c) & 8) == 0 && *(u16*)(*(int*)(p + 0xa2c) + 2) == param_1) {
+            return 1;
+        }
+        p = *(int*)(p + 0xa34);
+    }
+    return 0;
 }

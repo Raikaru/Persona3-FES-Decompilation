@@ -1,6 +1,36 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+typedef int (*code)(...);
+void FUN_0025b4f0(void);
+void FUN_0025b690(void);
+void FUN_0025bbf0(void);
+extern u8 DAT_00960090_abs_y2[];
+extern u8 DAT_0096009c_abs_y2[];
+extern f32 fGpffff83c4;
+extern void* FUN_0020e610(s32 index);
+extern void FUN_0010a4e0(s32, s32, s32, s32);
+extern void FUN_0021d890(void* work, const f32* values);
+extern void FUN_0021d8e0_y2(void* work, const f32* values);
+extern void FUN_0021d950_y2(void* work, const u8* color);
+typedef struct {
+    f32 sp80;
+    f32 sp84;
+    f32 sp88;
+    f32 sp8C;
+    f32 sp90;
+    f32 sp94;
+    f32 sp98;
+    f32 sp9C;
+    u8 padA0[0xc];
+    u8 spAC;
+    u8 spAD;
+    u8 spAE;
+    u8 spAF;
+} SflCountStack;
+static u32* sSflCount; // puGpffffb674
+
+
 #pragma alias DAT_00960090_abs_y2 DAT_00960090_abs
 #pragma alias DAT_0096009c_abs_y2 DAT_0096009c_abs
 #pragma alias FUN_0021d8e0_y2 FUN_0021d8e0
@@ -62,59 +92,6 @@ extern u32* FUN_00256110(u32 id);
 extern void FUN_002561e0(f32 amount, void* node);
 
 
-// FUN_0025b300
-void sflCursor0025b300(u32 param_1)
-{
-    u32* work;
-
-    K_ASSERT(sSflCursor != NULL, 0x47);
-    work = sSflCursor;
-    FUN_00258540(work[0xc], work + 1);
-    FUN_00258540(param_1, work + 4);
-    *(SflVec3*)(work + 7) = *(SflVec3*)(work + 1);
-    work[0xb] = work[0xc];
-    work[0xc] = param_1;
-    work[10] = 0;
-    work[0x328] = 0;
-    *work |= 2;
-    FUN_0025aad0();
-}
-
-// FUN_0025b3b0
-void sflCursor0025b3b0(u32 param_1)
-{
-    u32* work;
-
-    K_ASSERT(sSflCursor != NULL, 0x47);
-    work = sSflCursor;
-    FUN_00258540(param_1, work + 7);
-    work[0xb] = work[0xc];
-    work[0xc] = param_1;
-    work[10] = 0;
-    work[0x328] = 1;
-    *work |= 2;
-    FUN_0025aad0();
-}
-
-// FUN_0025aa70
-void sflCursor0025aa70(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sSflCursor != NULL, 0x47);
-    puVar1 = sSflCursor;
-    puVar1[10] = 0;
-    puVar1[0x328] = 3;
-    *puVar1 |= 2;
-}
-
-/* Recovered battle-misc harvest: 0x0025A120-0x0025B440 */
-
-/* Reconstructed the state dispatch, interpolation, and six-slot alpha update.
- * The remaining differences are MWCC register allocation and floating-point
- * spill placement; object size now exactly matches the retail function window.
- */
-/* Removing this worsens FUN_0025a130 (nd185 -> nd295) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0025A130 NONMATCHING
 
@@ -231,7 +208,6 @@ void FUN_0025a130(void)
   return;
 }
 
-#pragma opt_loop_invariants reset
 // FUN_0025A440
 
 
@@ -381,20 +357,26 @@ void FUN_0025a7d0(void)
     *puVar2 |= 1;
 }
 
-// FUN_0025B440
+/* Recovered battle-misc harvest: 0x0025A120-0x0025B440 */
 
-
-void FUN_0025b440(void)
+/* Reconstructed the state dispatch, interpolation, and six-slot alpha update.
+ * The remaining differences are MWCC register allocation and floating-point
+ * spill placement; object size now exactly matches the retail function window.
+ */
+/* Removing this worsens FUN_0025a130 (nd185 -> nd295) - measured W161. */
+// FUN_0025aa70
+void sflCursor0025aa70(void)
 {
-  u32 uVar1;
+    u32* puVar1;
 
-  uVar1 = 0x18;
-  uVar1 += (u32)FUN_00488f30() % 5;
-  FUN_0016f3e0(0x39,0);
-  FUN_0016f3e0(0x38,uVar1);
+    K_ASSERT(sSflCursor != NULL, 0x47);
+    puVar1 = sSflCursor;
+    puVar1[10] = 0;
+    puVar1[0x328] = 3;
+    *puVar1 |= 2;
 }
 
-/* Recovered battle-misc harvest: 0x0025AAD0-0x0025AAD0 */
+#pragma opt_loop_invariants reset
 // FUN_0025AAD0 NONMATCHING
 
 
@@ -718,39 +700,59 @@ void FUN_0025aad0(void)
 
 }
 
+// FUN_0025b300
+void sflCursor0025b300(u32 param_1)
+{
+    u32* work;
+
+    K_ASSERT(sSflCursor != NULL, 0x47);
+    work = sSflCursor;
+    FUN_00258540(work[0xc], work + 1);
+    FUN_00258540(param_1, work + 4);
+    *(SflVec3*)(work + 7) = *(SflVec3*)(work + 1);
+    work[0xb] = work[0xc];
+    work[0xc] = param_1;
+    work[10] = 0;
+    work[0x328] = 0;
+    *work |= 2;
+    FUN_0025aad0();
+}
+
+// FUN_0025b3b0
+void sflCursor0025b3b0(u32 param_1)
+{
+    u32* work;
+
+    K_ASSERT(sSflCursor != NULL, 0x47);
+    work = sSflCursor;
+    FUN_00258540(param_1, work + 7);
+    work[0xb] = work[0xc];
+    work[0xc] = param_1;
+    work[10] = 0;
+    work[0x328] = 1;
+    *work |= 2;
+    FUN_0025aad0();
+}
+
+/* Recovered battle-misc harvest: 0x0025AAD0-0x0025AAD0 */
+// FUN_0025B440
+
+
+void FUN_0025b440(void)
+{
+  u32 uVar1;
+
+  uVar1 = 0x18;
+  uVar1 += (u32)FUN_00488f30() % 5;
+  FUN_0016f3e0(0x39,0);
+  FUN_0016f3e0(0x38,uVar1);
+}
+
 
 
 
 /* Recovered battle-misc support prelude */
-typedef int (*code)(...);
-void FUN_0025b4f0(void);
-void FUN_0025b690(void);
-void FUN_0025bbf0(void);
-extern u8 DAT_00960090_abs_y2[];
-extern u8 DAT_0096009c_abs_y2[];
-extern f32 fGpffff83c4;
-extern void* FUN_0020e610(s32 index);
-extern void FUN_0010a4e0(s32, s32, s32, s32);
-extern void FUN_0021d890(void* work, const f32* values);
-extern void FUN_0021d8e0_y2(void* work, const f32* values);
-extern void FUN_0021d950_y2(void* work, const u8* color);
 
-typedef struct {
-    f32 sp80;
-    f32 sp84;
-    f32 sp88;
-    f32 sp8C;
-    f32 sp90;
-    f32 sp94;
-    f32 sp98;
-    f32 sp9C;
-    u8 padA0[0xc];
-    u8 spAC;
-    u8 spAD;
-    u8 spAE;
-    u8 spAF;
-} SflCountStack;
-static u32* sSflCount; // puGpffffb674
 
 // FUN_0025b4a0
 void sflCount0025b4a0(u32* param_1)

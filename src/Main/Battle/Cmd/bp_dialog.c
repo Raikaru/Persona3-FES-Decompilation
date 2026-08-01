@@ -1,6 +1,9 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+void FUN_003b0170();
+
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -39,23 +42,6 @@ extern const char DAT_0068ebd8[];
 extern const char DAT_0068ebe8[];
 #define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
 
-// FUN_0025c190
-u32 bpDialog0025c190(void)
-{
-    K_ASSERT(sBpDialog368 != NULL, 0x3c);
-    return *sBpDialog368 & 2;
-}
-
-// FUN_0025c1e0
-u32 bpDialog0025c1e0(void)
-{
-    K_ASSERT(sBpDialog368 != NULL, 0x3c);
-    return sBpDialog368[4];
-}
-
-void FUN_003b0170();
-
-
 // FUN_0025be00
 void bpDialog0025be00(void)
 {
@@ -66,18 +52,6 @@ void bpDialog0025be00(void)
     sBpDialog368 = NULL;
 }
 
-// FUN_0025c110
-void bpDialog0025c110(void)
-{
-    u32* puVar1;
-
-    K_ASSERT(sBpDialog368 != NULL, 0x3c);
-    puVar1 = sBpDialog368;
-    K_ASSERT((*sBpDialog368 & 1) != 0, 0xa7);
-    *puVar1 |= 8;
-}
-
-/* Recovered battle-misc harvest: 0x0025BE60-0x0025CF20 */
 // FUN_0025BE60
 
 
@@ -190,6 +164,34 @@ void FUN_0025be60(u32 param_1, u32 param_2, u32 param_3)
 
   return;
 
+}
+
+
+
+// FUN_0025c110
+void bpDialog0025c110(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sBpDialog368 != NULL, 0x3c);
+    puVar1 = sBpDialog368;
+    K_ASSERT((*sBpDialog368 & 1) != 0, 0xa7);
+    *puVar1 |= 8;
+}
+
+// FUN_0025c190
+u32 bpDialog0025c190(void)
+{
+    K_ASSERT(sBpDialog368 != NULL, 0x3c);
+    return *sBpDialog368 & 2;
+}
+
+/* Recovered battle-misc harvest: 0x0025BE60-0x0025CF20 */
+// FUN_0025c1e0
+u32 bpDialog0025c1e0(void)
+{
+    K_ASSERT(sBpDialog368 != NULL, 0x3c);
+    return sBpDialog368[4];
 }
 
 // W389 measured source regrouping plus six-knob singles/pairs: nd2/1940B

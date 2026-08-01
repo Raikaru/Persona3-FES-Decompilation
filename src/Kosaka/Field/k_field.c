@@ -75,6 +75,67 @@ static u32 sDungeonRoomCounter;         // 007ce25c
 #include "Kernel/Kwln/kwlnTask.h"
 extern KwlnTask* gDungeonTask;
 #include "temporary.h"
+
+extern RwMatrix* FUN_00318b60(void* model);
+extern u32 FUN_001d5a90(KwlnTask* task);
+extern void func_001d8cb0(void);
+extern u32 DAT_007ce24c;
+extern u32 K_FldDungeon_GetCurrentFloor(void);
+extern s16 FUN_0016DD60(s32 index);
+typedef struct DungeonPattern DungeonPattern;
+void func_001bb300(u16 patternId, u16 x, u16 y);
+u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y);
+void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY);
+void func_001bd450(u32 patternId);
+void func_001bd8c0(void);
+void func_001bd950(void);
+void func_001bf220(RwV3d* dst, u32 x, u32 y);
+u32 func_001bf340(const FldDungeonFloorData* floorData);
+struct DungeonPattern
+{
+    u8 raw[0x60];
+};
+static const s16 sDungeonVisibilityOffsets0[] = {
+    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
+    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
+};
+static const s16 sDungeonVisibilityOffsets1[] = {
+    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
+    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
+};
+static const s16 sDungeonVisibilityOffsets2[] = {
+    0x34c, 0x35c, 0x23c, 0x24c, 0x25c, 0x26c, 0x13c,
+    0x14c, 0x15c, 0x16c, 0x17c, 0x3c, 0x4c, 0x5c,
+    0x6c, 0x7c, -0xc4, -0xb4, -0xa4, -0x94
+};
+static const s16 sDungeonVisibilityOffsets3[] = {
+    -0xc4, 0x3c, 0x13c, -0x1b4, -0xb4, 0x4c, 0x14c,
+    0x24c, -0x1a4, -0xa4, 0x5c, 0x15c, 0x25c, -0x194,
+    -0x94, 0x6c, 0x16c, 0x26c, -0x84, 0x7c, 0x17c
+};
+static const s16 sDungeonVisibilityOffsets4[] = {
+    0x13c, 0x14c, 0x15c, 0x16c, 0x3c, 0x4c, 0x5c, 0x6c,
+    0x7c, -0xc4, -0xb4, -0xa4, -0x94, -0x84, -0x1c4,
+    -0x1b4, -0x1a4, -0x194, -0x2b4, -0x2a4
+};
+static const s16 sDungeonVisibilityOffsets5[] = {
+    0x34c, 0x35c, 0x25c, 0x24c, 0x23c, 0x22c, 0x15c,
+    0x14c, 0x13c, 0x12c, 0x11c, 0x5c, 0x4c, 0x3c,
+    0x2c, 0x1c, -0xd4, -0xc4, -0xb4, -0xa4
+};
+static const s16 sDungeonVisibilityOffsets6[] = {
+    -0xa4, 0x5c, 0x15c, -0x1b4, -0xb4, 0x4c, 0x14c,
+    0x24c, -0x1c4, -0xc4, 0x3c, 0x13c, 0x23c, -0x1d4,
+    -0xd4, 0x2c, 0x12c, 0x22c, -0xe4, 0x1c, 0x11c
+};
+static const s16 sDungeonVisibilityOffsets7[] = {
+    0x15c, 0x14c, 0x13c, 0x12c, 0x5c, 0x4c, 0x3c, 0x2c,
+    0x1c, -0xa4, -0xb4, -0xc4, -0xd4, -0xe4, -0x1a4,
+    -0x1b4, -0x1c4, -0x1d4, -0x2b4, -0x2a4
+};
+
 extern u32 D_00960184[];
 extern void (*jtbl_0096017C)(void* memory);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
@@ -255,10 +316,6 @@ Field* K_Field_Get()
     return &sField;
 }
 
-extern RwMatrix* FUN_00318b60(void* model);
-extern u32 FUN_001d5a90(KwlnTask* task);
-extern void func_001d8cb0(void);
-extern u32 DAT_007ce24c;
 // FUN_001B9130
 u32 func_001b9130(void)
 {
@@ -975,6 +1032,17 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
 }
 
 /* Removing this pragma leaves func_001ba8d0 at normalized_diff 132 (object 372B); with it, normalized_diff 0 (object 376B) — measured W310. */
+// FUN_001ba880
+void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown)
+{
+    FldRootWork* work;
+
+    work = (FldRootWork*)fldRootTask->workData;
+    printf("shutdown field proc\n");
+
+    work->shouldShutdown = shouldShutdown;
+}
+
 #pragma opt_loop_invariants on
 // FUN_001ba8d0 MATCHING
 void func_001ba8d0(void)
@@ -1056,17 +1124,6 @@ void func_001baaa0(KwlnTask* fldRootTask, u16 param2, u16 param3, u16 param4)
     ROOT_U32(work, 0) = 0x11;
 }
 
-// FUN_001ba880
-void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown)
-{
-    FldRootWork* work;
-
-    work = (FldRootWork*)fldRootTask->workData;
-    printf("shutdown field proc\n");
-
-    work->shouldShutdown = shouldShutdown;
-}
-
 // FUN_001bab20. Get field major id by the root field task. Not really used that much, 'gMtScene' is used instead
 u16 K_Field_GetMajorId(KwlnTask* fldRootTask)
 {
@@ -1079,23 +1136,8 @@ u16 K_Field_GetMinorId(KwlnTask* fldRootTask)
     return ((FldRootWork*)fldRootTask->workData)->minorId;
 }
 
-extern u32 K_FldDungeon_GetCurrentFloor(void);
-extern s16 FUN_0016DD60(s32 index);
-typedef struct DungeonPattern DungeonPattern;
 
-void func_001bb300(u16 patternId, u16 x, u16 y);
-u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y);
-void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY);
-void func_001bd450(u32 patternId);
-void func_001bd8c0(void);
-void func_001bd950(void);
-void func_001bf220(RwV3d* dst, u32 x, u32 y);
-u32 func_001bf340(const FldDungeonFloorData* floorData);
 
-struct DungeonPattern
-{
-    u8 raw[0x60];
-};
 
 static u8* dungeonCell(s32 x, s32 y)
 {
@@ -1114,46 +1156,6 @@ static inline void dungeonCopyQuad(u8* dst, const u8* src)
     ((s16*)dst)[2] = ((const s16*)src)[2];
     ((s16*)dst)[3] = ((const s16*)src)[3];
 }
-static const s16 sDungeonVisibilityOffsets0[] = {
-    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
-    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
-};
-static const s16 sDungeonVisibilityOffsets1[] = {
-    -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x12c, 0x13c, 0x14c, 0x15c, 0x16c, 0x22c, 0x23c,
-    0x24c, 0x25c, 0x26c, 0x33c, 0x34c, 0x35c
-};
-static const s16 sDungeonVisibilityOffsets2[] = {
-    0x34c, 0x35c, 0x23c, 0x24c, 0x25c, 0x26c, 0x13c,
-    0x14c, 0x15c, 0x16c, 0x17c, 0x3c, 0x4c, 0x5c,
-    0x6c, 0x7c, -0xc4, -0xb4, -0xa4, -0x94
-};
-static const s16 sDungeonVisibilityOffsets3[] = {
-    -0xc4, 0x3c, 0x13c, -0x1b4, -0xb4, 0x4c, 0x14c,
-    0x24c, -0x1a4, -0xa4, 0x5c, 0x15c, 0x25c, -0x194,
-    -0x94, 0x6c, 0x16c, 0x26c, -0x84, 0x7c, 0x17c
-};
-static const s16 sDungeonVisibilityOffsets4[] = {
-    0x13c, 0x14c, 0x15c, 0x16c, 0x3c, 0x4c, 0x5c, 0x6c,
-    0x7c, -0xc4, -0xb4, -0xa4, -0x94, -0x84, -0x1c4,
-    -0x1b4, -0x1a4, -0x194, -0x2b4, -0x2a4
-};
-static const s16 sDungeonVisibilityOffsets5[] = {
-    0x34c, 0x35c, 0x25c, 0x24c, 0x23c, 0x22c, 0x15c,
-    0x14c, 0x13c, 0x12c, 0x11c, 0x5c, 0x4c, 0x3c,
-    0x2c, 0x1c, -0xd4, -0xc4, -0xb4, -0xa4
-};
-static const s16 sDungeonVisibilityOffsets6[] = {
-    -0xa4, 0x5c, 0x15c, -0x1b4, -0xb4, 0x4c, 0x14c,
-    0x24c, -0x1c4, -0xc4, 0x3c, 0x13c, 0x23c, -0x1d4,
-    -0xd4, 0x2c, 0x12c, 0x22c, -0xe4, 0x1c, 0x11c
-};
-static const s16 sDungeonVisibilityOffsets7[] = {
-    0x15c, 0x14c, 0x13c, 0x12c, 0x5c, 0x4c, 0x3c, 0x2c,
-    0x1c, -0xa4, -0xb4, -0xc4, -0xd4, -0xe4, -0x1a4,
-    -0x1b4, -0x1c4, -0x1d4, -0x2b4, -0x2a4
-};
 
 static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
 {

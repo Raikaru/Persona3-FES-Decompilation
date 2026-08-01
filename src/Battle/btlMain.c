@@ -13,6 +13,10 @@
 #include "rw/rwcore.h"
 #include "rw/rtquat.h"
 
+void FUN_003b5ab0();
+#pragma alias btlMainDrawColorOverlay btlMain0029e4b0
+
+
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 void FUN_0029ee20(u32 param_1);
@@ -1211,6 +1215,29 @@ u32 btlMainUpdateStateRevival(BtlStateWork* work)
     }
     return BTL_STATE_NULL;
 }
+// FUN_0029cde0
+void btlMainInitStateEnemyDead(BtlStateWork* work)
+{
+    FUN_002fb690();
+    gBtl->flags |= 0x80000;
+}
+// FUN_0029ce20
+u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
+{
+    u32 state;
+
+    if (btlPacketCount() == 0)
+    {
+        gBtl->flags &= ~0x80000;
+        state = (gBtl->flags & 0x80) != 0 ? BTL_STATE_FADEOUT : BTL_STATE_ACTION;
+    }
+    else
+    {
+        state = BTL_STATE_NULL;
+    }
+
+    return state;
+}
 // FUN_0029ce90
 void btlMainInitStateWin(BtlStateWork* work)
 {
@@ -1308,29 +1335,6 @@ win_done:
         return BTL_STATE_CONDITION;
     }
     return BTL_STATE_NULL;
-}
-// FUN_0029cde0
-void btlMainInitStateEnemyDead(BtlStateWork* work)
-{
-    FUN_002fb690();
-    gBtl->flags |= 0x80000;
-}
-// FUN_0029ce20
-u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
-{
-    u32 state;
-
-    if (btlPacketCount() == 0)
-    {
-        gBtl->flags &= ~0x80000;
-        state = (gBtl->flags & 0x80) != 0 ? BTL_STATE_FADEOUT : BTL_STATE_ACTION;
-    }
-    else
-    {
-        state = BTL_STATE_NULL;
-    }
-
-    return state;
 }
 
 // FUN_0029d1f0 NONMATCHING
@@ -1819,7 +1823,6 @@ void FUN_0029dfc0(void)
     gBtl->flags |= 0x2000002;
 }
 
-void FUN_003b5ab0();
 
 // FUN_0029e370
 void btlMain0029e370(void)
@@ -1860,7 +1863,6 @@ void btlMain0029e420(void)
     }
 }
 
-#pragma alias btlMainDrawColorOverlay btlMain0029e4b0
 // FUN_0029e4b0
 void btlMainDrawColorOverlay(void)
 {
@@ -2290,6 +2292,31 @@ u32 FUN_0029f150(float *param_1)
 
 }
 
+// FUN_0029F4B0
+BtlPacket* FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3)
+{
+    float *color;
+    int packet;
+    union { u32 value; u8 bytes[4]; } packed;
+
+    packet = FUN_0027ec10(0x600, 0x68);
+    *(code **)(packet + 0x6c) = (code *)FUN_0029f150;
+    color = *(float **)(packet + 0x78);
+    packed.value = param_1;
+    color[0] = DAT_007caf08 * (float)packed.bytes[0];
+    color[1] = DAT_007caf08 * (float)packed.bytes[1];
+    color[2] = DAT_007caf08 * (float)packed.bytes[2];
+    color[3] = DAT_007caf08 * (float)packed.bytes[3];
+    packed.value = param_2;
+    color[4] = DAT_007caf08 * (float)packed.bytes[0];
+    color[5] = DAT_007caf08 * (float)packed.bytes[1];
+    color[6] = DAT_007caf08 * (float)packed.bytes[2];
+    color[7] = DAT_007caf08 * (float)packed.bytes[3];
+    *(u32*)((u8*)color + 0x60) = param_3;
+    return (BtlPacket*)packet;
+}
+
+/* W389 measured: opt_lifetimes on nd852->804, object 1408/1456 -> 1408/1456. */
 // FUN_0029F760 NONMATCHING
 
 
@@ -2381,8 +2408,18 @@ u32 FUN_0029f760(float *param_1)
   return uVar5;
 
 }
+/* W389 measured: opt_loop_invariants on + opt_propagation off with existing opt_common_subs on nd2367->2325, object 3088/3136 -> 3000/3136. */
+// FUN_0029FA50
 
-/* W389 measured: opt_lifetimes on nd852->804, object 1408/1456 -> 1408/1456. */
+
+BtlPacket* FUN_0029fa50(u32 param_1)
+{
+    BtlPacket* packet;
+    packet = btlPacketCreate(0x601, 0x28);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_0029f760;
+    *(u32*)((u8*)packet->workData + 0x20) = param_1;
+    return packet;
+}
 #pragma push
 #pragma opt_lifetimes on
 // FUN_0029FAA0 NONMATCHING
@@ -2682,7 +2719,55 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 }
 #pragma pop
 #pragma opt_lifetimes reset
-/* W389 measured: opt_loop_invariants on + opt_propagation off with existing opt_common_subs on nd2367->2325, object 3088/3136 -> 3000/3136. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W323 measured: opt_common_subs off nd423->35, object 684/704; default nd423, 684/704. */
+// FUN_002A0050 MATCHING
+BtlPacket* FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5)
+{
+    float *pfVar1;
+    int iVar2;
+    union { u32 value; u8 bytes[4]; } packed;
+
+    iVar2 = (int)FUN_0027ec10(0x602, 0x6c);
+    *(code **)(iVar2 + 0x6c) = (code *)FUN_002a0440;
+    pfVar1 = *(float **)(iVar2 + 0x78);
+
+    packed.value = param_1;
+    pfVar1[0] = DAT_007caf08 * (float)packed.bytes[0];
+    pfVar1[1] = DAT_007caf08 * (float)packed.bytes[1];
+    pfVar1[2] = DAT_007caf08 * (float)packed.bytes[2];
+    pfVar1[3] = DAT_007caf08 * (float)packed.bytes[3];
+
+    packed.value = param_2;
+    pfVar1[8] = DAT_007caf08 * (float)packed.bytes[0];
+    pfVar1[9] = DAT_007caf08 * (float)packed.bytes[1];
+    pfVar1[10] = DAT_007caf08 * (float)packed.bytes[2];
+    pfVar1[0xb] = DAT_007caf08 * (float)packed.bytes[3];
+
+    packed.value = param_3;
+    pfVar1[0x10] = DAT_007caf08 * (float)packed.bytes[0];
+    pfVar1[0x11] = DAT_007caf08 * (float)packed.bytes[1];
+    pfVar1[0x12] = DAT_007caf08 * (float)packed.bytes[2];
+    pfVar1[0x13] = DAT_007caf08 * (float)packed.bytes[3];
+
+    *(u32 *)((u8 *)pfVar1 + 0x60) = param_4;
+    *(u16 *)(pfVar1 + 0x1a) = param_5;
+    return (BtlPacket*)iVar2;
+}
+
+/* W389 measured: opt_common_subs off + opt_dead_assignments off nd680->592, object 952/1008 -> 1008/1008. */
 #pragma push
 #pragma opt_common_subs on
 #pragma opt_loop_invariants on
@@ -3227,6 +3312,23 @@ u32 FUN_002a0440(float *param_1)
 #pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 #pragma opt_common_subs reset
+
+// FUN_002A1080
+
+
+BtlPacket* FUN_002a1080(s32 param_1, s16 param_2)
+{
+    BtlPacket* packet;
+    u8* work;
+    packet = btlPacketCreate(0x603, 0x5c);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a0440;
+    work = (u8*)packet->workData;
+    *(s32*)(work + 0x50) = param_1;
+    *(s16*)(work + 0x58) = param_2;
+    return packet;
+}
+
+/* W389 measured: opt_common_subs off with existing opt_loop_invariants on nd356->309, object 544/576 -> 556/576. */
 // FUN_002A10E0
 
 
@@ -3275,19 +3377,24 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
     return 0;
 }
 
+// FUN_002A1280
+BtlPacket* FUN_002a1280(u32 param_1,u32 param_2)
+{
+    float *color;
+    u32 packed;
+    int packet;
+    packet = (int)FUN_0027ec10(0x604, 0x28);
+    *(code **)(packet + 0x6c) = (code *)FUN_002a10e0;
+    color = *(float **)(packet + 0x78);
+    packed = param_1;
+    color[0] = fGpffff8218 * (float)((u8*)&packed)[0];
+    color[1] = fGpffff8218 * (float)((u8*)&packed)[1];
+    color[2] = fGpffff8218 * (float)((u8*)&packed)[2];
+    color[3] = fGpffff8218 * (float)((u8*)&packed)[3];
+    *(u32*)((u8*)color + 0x20) = param_2;
+    return (BtlPacket*)packet;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-/* W323 measured: opt_common_subs off nd423->35, object 684/704; default nd423, 684/704. */
 #pragma opt_common_subs off
 // FUN_002A1400 NONMATCHING
 u8 FUN_002a1400(float *param_1)
@@ -3334,7 +3441,18 @@ u8 FUN_002a1400(float *param_1)
 }
 #pragma opt_common_subs reset
 
-/* W389 measured: opt_common_subs off + opt_dead_assignments off nd680->592, object 952/1008 -> 1008/1008. */
+// FUN_002A16C0
+
+
+BtlPacket* FUN_002a16c0(s32 param_1)
+{
+    BtlPacket* packet;
+    packet = btlPacketCreate(0x605, 0x18);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a1400;
+    *(s32*)((u8*)packet->workData + 0x10) = param_1;
+    return packet;
+}
+
 #pragma push
 #pragma opt_common_subs off
 #pragma opt_dead_assignments off
@@ -3438,7 +3556,6 @@ void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3)
     *(s32*)(work + 8) = 0;
 }
 
-/* W389 measured: opt_common_subs off with existing opt_loop_invariants on nd356->309, object 544/576 -> 556/576. */
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
@@ -4137,6 +4254,27 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   return;
 }
 
+/* Recovered battle-misc harvest: 0x0029F4B0-0x002A16C0 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_002A2B50
 
 
@@ -4255,6 +4393,34 @@ void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
   return;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_002A2ED0
 
 
@@ -4352,6 +4518,18 @@ u32 FUN_002a3010(u8* param_2,f32 param_1)
     return result;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 // FUN_002A3110
 
 
@@ -4371,180 +4549,4 @@ void FUN_002a3160(u8* param_2,float param_1)
     *(f32*)(param_2 + 0x84) = (param_1 * 60.0f) / 2.0f;
     *(u16*)param_2 = *(u16*)param_2 & 0xfffd;
     *(u16*)param_2 = *(u16*)param_2 & 0xfffb;
-}
-
-/* Recovered battle-misc harvest: 0x0029F4B0-0x002A16C0 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUN_0029F4B0
-BtlPacket* FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3)
-{
-    float *color;
-    int packet;
-    union { u32 value; u8 bytes[4]; } packed;
-
-    packet = FUN_0027ec10(0x600, 0x68);
-    *(code **)(packet + 0x6c) = (code *)FUN_0029f150;
-    color = *(float **)(packet + 0x78);
-    packed.value = param_1;
-    color[0] = DAT_007caf08 * (float)packed.bytes[0];
-    color[1] = DAT_007caf08 * (float)packed.bytes[1];
-    color[2] = DAT_007caf08 * (float)packed.bytes[2];
-    color[3] = DAT_007caf08 * (float)packed.bytes[3];
-    packed.value = param_2;
-    color[4] = DAT_007caf08 * (float)packed.bytes[0];
-    color[5] = DAT_007caf08 * (float)packed.bytes[1];
-    color[6] = DAT_007caf08 * (float)packed.bytes[2];
-    color[7] = DAT_007caf08 * (float)packed.bytes[3];
-    *(u32*)((u8*)color + 0x60) = param_3;
-    return (BtlPacket*)packet;
-}
-
-// FUN_0029FA50
-
-
-BtlPacket* FUN_0029fa50(u32 param_1)
-{
-    BtlPacket* packet;
-    packet = btlPacketCreate(0x601, 0x28);
-    packet->updateFunc = (BtlPacketUpdateFunc)FUN_0029f760;
-    *(u32*)((u8*)packet->workData + 0x20) = param_1;
-    return packet;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUN_002A0050 MATCHING
-BtlPacket* FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5)
-{
-    float *pfVar1;
-    int iVar2;
-    union { u32 value; u8 bytes[4]; } packed;
-
-    iVar2 = (int)FUN_0027ec10(0x602, 0x6c);
-    *(code **)(iVar2 + 0x6c) = (code *)FUN_002a0440;
-    pfVar1 = *(float **)(iVar2 + 0x78);
-
-    packed.value = param_1;
-    pfVar1[0] = DAT_007caf08 * (float)packed.bytes[0];
-    pfVar1[1] = DAT_007caf08 * (float)packed.bytes[1];
-    pfVar1[2] = DAT_007caf08 * (float)packed.bytes[2];
-    pfVar1[3] = DAT_007caf08 * (float)packed.bytes[3];
-
-    packed.value = param_2;
-    pfVar1[8] = DAT_007caf08 * (float)packed.bytes[0];
-    pfVar1[9] = DAT_007caf08 * (float)packed.bytes[1];
-    pfVar1[10] = DAT_007caf08 * (float)packed.bytes[2];
-    pfVar1[0xb] = DAT_007caf08 * (float)packed.bytes[3];
-
-    packed.value = param_3;
-    pfVar1[0x10] = DAT_007caf08 * (float)packed.bytes[0];
-    pfVar1[0x11] = DAT_007caf08 * (float)packed.bytes[1];
-    pfVar1[0x12] = DAT_007caf08 * (float)packed.bytes[2];
-    pfVar1[0x13] = DAT_007caf08 * (float)packed.bytes[3];
-
-    *(u32 *)((u8 *)pfVar1 + 0x60) = param_4;
-    *(u16 *)(pfVar1 + 0x1a) = param_5;
-    return (BtlPacket*)iVar2;
-}
-
-// FUN_002A1080
-
-
-BtlPacket* FUN_002a1080(s32 param_1, s16 param_2)
-{
-    BtlPacket* packet;
-    u8* work;
-    packet = btlPacketCreate(0x603, 0x5c);
-    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a0440;
-    work = (u8*)packet->workData;
-    *(s32*)(work + 0x50) = param_1;
-    *(s16*)(work + 0x58) = param_2;
-    return packet;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUN_002A1280
-BtlPacket* FUN_002a1280(u32 param_1,u32 param_2)
-{
-    float *color;
-    u32 packed;
-    int packet;
-    packet = (int)FUN_0027ec10(0x604, 0x28);
-    *(code **)(packet + 0x6c) = (code *)FUN_002a10e0;
-    color = *(float **)(packet + 0x78);
-    packed = param_1;
-    color[0] = fGpffff8218 * (float)((u8*)&packed)[0];
-    color[1] = fGpffff8218 * (float)((u8*)&packed)[1];
-    color[2] = fGpffff8218 * (float)((u8*)&packed)[2];
-    color[3] = fGpffff8218 * (float)((u8*)&packed)[3];
-    *(u32*)((u8*)color + 0x20) = param_2;
-    return (BtlPacket*)packet;
-}
-
-// FUN_002A16C0
-
-
-BtlPacket* FUN_002a16c0(s32 param_1)
-{
-    BtlPacket* packet;
-    packet = btlPacketCreate(0x605, 0x18);
-    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a1400;
-    *(s32*)((u8*)packet->workData + 0x10) = param_1;
-    return packet;
 }

@@ -5,6 +5,126 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+void FUN_0021cc20();
+#include "Utils.h"
+typedef struct PanelVec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+} PanelVec3;
+typedef struct PanelQuaternion {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} PanelQuaternion;
+typedef struct PanelVideoMode {
+    s32 width;
+    s32 height;
+    s32 depth;
+    u32 flags;
+    s32 refreshRate;
+    s32 format;
+} PanelVideoMode;
+typedef struct PanelMatrix {
+    PanelVec3 right;
+    u32 flags;
+    PanelVec3 up;
+    u32 pad1;
+    PanelVec3 at;
+    u32 pad2;
+    PanelVec3 pos;
+    u32 pad3;
+} PanelMatrix;
+typedef struct PanelTransform {
+    u8 unknown00[0x10];
+    PanelQuaternion rotation;
+    PanelVec3 translation;
+    PanelVec3 scale;
+    void* model;
+} PanelTransform;
+extern void func_0020ca90(PanelMatrix* output, const PanelTransform* transform);
+extern u32 datGetScenarioMode(void);
+extern u32 func_0021c3f0(s32 texture);
+extern void* func_0021cca0(u32 texture, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021d3b0(void* destination, void* frame);
+extern void func_0021d8e0(void* destination, const void* layout);
+extern void func_0021d950(void* destination, const void* color);
+extern void* kwlnGetMainCamera(void);
+extern void* func_004ca5b0(void);
+extern void func_004ca560(void* viewport, void* cameraData);
+extern void func_004c3760(void* matrix, void* source, s32 mode);
+extern void func_004c6c60(PanelVec3* destination, const PanelVec3* source,
+                          const PanelMatrix* matrix);
+extern PanelVec3 D_0068E0C8;
+#pragma alias D_0068E0C8_abs D_0068E0C8
+extern u8 D_0068E0C8_abs[];
+extern PanelVec3 D_0068E0D8;
+#pragma alias D_0068E0D8_abs D_0068E0D8
+extern u8 D_0068E0D8_abs[];
+extern PanelVec3 D_0068E0E8;
+#pragma alias D_0068E0E8_abs D_0068E0E8
+extern u8 D_0068E0E8_abs[];
+extern PanelVec3 D_0068E0F8;
+#pragma alias D_0068E0F8_abs D_0068E0F8
+extern u8 D_0068E0F8_abs[];
+extern void* func_004cb2f0(void* model);
+extern void FUN_004c6be0(void* out, const void* in, const void* matrix);
+extern void RpSkyRenderStateSet(s32 state, void* value);
+extern void printf(const char*, ...);
+extern int sprintf(char*, const char*, ...);
+extern u32 strlen(const char*);
+extern char D_006850C0[];
+extern char D_006871C0[];
+extern char D_006892C0[];
+extern char D_0068AB80[];
+extern char D_0068C440[];
+extern char D_0068C760[];
+extern char D_0068CA80[];
+extern char D_0068CDE0[];
+extern char D_0068D140[];
+extern char D_0068D8F0[];
+extern char D_0068D910[];
+extern char D_0068D930[];
+extern char D_0068DE20[];
+extern char D_0068DF20[];
+extern char D_0068DF30[];
+extern char D_0068DF60[];
+extern char D_0068E020[];
+extern char D_0068DD20[];
+extern char D_0068E0B0[];
+extern void func_00209ba0(void* destination, s32 digit);
+extern void func_0020c7b0(u8* work);
+extern void func_0020cda0(u8* work);
+extern void (*D_00960090)(u32 state, u32 value);
+extern void func_0020ccc0(void* work, const u8* color);
+extern char D_0068E0A0[];
+extern u8 D_0068E090[];
+extern void func_0020d500(s32* work, void* matrix);
+extern u32 func_0021a3a0(void);
+extern u32 func_0021a410(void);
+extern u32 func_0021a480(s32 a, s32 b);
+extern u32 func_0021a590(u16 value);
+extern u32 func_0021b3a0(s32 value);
+extern u32 func_0021b420(s32 value);
+extern void* D_0068E108;
+extern f32 D_0068E110;
+extern f32 fGpffff8318;
+extern f32 fGpffff8320;
+extern f32 fGpffff8324;
+extern f32 fGpffff831c;
+extern f32 fGpffff8338;
+extern f32 fGpffff8334;
+extern f32 DAT_007cadd4;
+extern f32 DAT_007cad7c;
+extern f32 DAT_007cad74;
+extern f32 DAT_007caee8;
+extern f32 FUN_0052e878(f32 angle);
+extern f32 FUN_0052e6d8(f32 angle);
+extern void func_0020cf20(void* destination, PanelTransform* transform);
+
+
 #pragma alias void void
 
 
@@ -102,289 +222,6 @@ static void sflResCopyFile(u32 request, s32 fileIndex, u32* destination)
     }
     *destination = (u32)copy;
 }
-
-// FUN_0020d500
-void sflResDrawIndexedMesh(u32* work, const f32* vertices)
-{
-    RwV3d axis;
-    RwMatrix* matrix;
-    u32* destination;
-    s32 count;
-    const u32* source;
-    u32 x;
-    u32 y;
-
-    axis = DAT_0068e108;
-    if ((*work & 1) != 0) {
-        matrix = (RwMatrix*)func_004c38c0();
-        count = 8;
-        source = (const u32*)vertices;
-        destination = (u32*)matrix;
-        do {
-            x = source[0];
-            y = source[1];
-            source += 2;
-            count -= 1;
-            destination[0] = x;
-            destination[1] = y;
-            destination += 2;
-        } while (count > 0);
-        func_004c31b0(matrix, &axis, 180.0f, 1);
-    } else {
-        matrix = (RwMatrix*)vertices;
-    }
-    func_004f1ed0(work + 1, 0x44, matrix, 3);
-    (*DAT_00960090)(1, 0);
-    func_004f1fd0(3, D_00875A90, 0x138);
-    func_004f1f80();
-    if ((*work & 1) != 0) {
-        func_004c3880(matrix);
-    }
-}
-
-// FUN_0020D630
-void sflResSetSpriteScale(void* work, const f32* value)
-{
-    *(RwV3d*)((u8*)work + 0x2c) = *(const RwV3d*)value;
-}
-
-// FUN_0020D650
-void sflResSetSpritePosition(void* work, const f32* value)
-{
-    *(RwV3d*)((u8*)work + 0x20) = *(const RwV3d*)value;
-}
-
-// FUN_0020D670
-void sflResGetSpritePosition(const void* work, f32* value)
-{
-    *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
-}
-
-// FUN_0020d690
-void sflResSetSpriteRotation(void* work, const f32* value)
-{
-    *(RwV4d*)((u8*)work + 0x10) = *(const RwV4d*)value;
-}
-
-// FUN_0020d6c0
-void sflRes0020d6c0(void* work)
-{
-    K_ASSERT(*(u32*)((u8*)work + 4) == 0, 0x677);
-    *(u32*)((u8*)work + 0x170) |= 1;
-}
-
-// FUN_0020d710
-void sflRes0020d710(u32* work)
-{
-    K_ASSERT(work[1] == 0, 0x67e);
-    work[0x5c] |= 2;
-    work[0] |= 2;
-}
-
-// FUN_0020d770
-void sflRes0020d770(void* work, f32 value)
-{
-    K_ASSERT(*(u32*)((u8*)work + 4) == 1, 0x686);
-    *(f32*)((u8*)work + 0x328) = value;
-}
-
-
-/* Removing this loses FUN_0020d820 (MATCH nd0 -> MISMATCH nd2) - measured W161. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void FUN_0021cc20();
-
-
-
-
-
-
-#include "Utils.h"
-
-typedef struct PanelVec3 {
-    f32 x;
-    f32 y;
-    f32 z;
-} PanelVec3;
-
-typedef struct PanelQuaternion {
-    f32 x;
-    f32 y;
-    f32 z;
-    f32 w;
-} PanelQuaternion;
-
-typedef struct PanelVideoMode {
-    s32 width;
-    s32 height;
-    s32 depth;
-    u32 flags;
-    s32 refreshRate;
-    s32 format;
-} PanelVideoMode;
-
-typedef struct PanelMatrix {
-    PanelVec3 right;
-    u32 flags;
-    PanelVec3 up;
-    u32 pad1;
-    PanelVec3 at;
-    u32 pad2;
-    PanelVec3 pos;
-    u32 pad3;
-} PanelMatrix;
-
-typedef struct PanelTransform {
-    u8 unknown00[0x10];
-    PanelQuaternion rotation;
-    PanelVec3 translation;
-    PanelVec3 scale;
-    void* model;
-} PanelTransform;
-extern void func_0020ca90(PanelMatrix* output, const PanelTransform* transform);
-
-extern u32 datGetScenarioMode(void);
-extern u32 func_0021c3f0(s32 texture);
-extern void* func_0021cca0(u32 texture, s32 frame);
-extern u32 func_0021cce0(u32 frame);
-extern void func_0021d3b0(void* destination, void* frame);
-extern void func_0021d8e0(void* destination, const void* layout);
-extern void func_0021d950(void* destination, const void* color);
-extern void* kwlnGetMainCamera(void);
-extern void* func_004ca5b0(void);
-extern void func_004ca560(void* viewport, void* cameraData);
-extern void func_004c3760(void* matrix, void* source, s32 mode);
-extern void func_004c6c60(PanelVec3* destination, const PanelVec3* source,
-                          const PanelMatrix* matrix);
-
-extern PanelVec3 D_0068E0C8;
-#pragma alias D_0068E0C8_abs D_0068E0C8
-extern u8 D_0068E0C8_abs[];
-extern PanelVec3 D_0068E0D8;
-#pragma alias D_0068E0D8_abs D_0068E0D8
-extern u8 D_0068E0D8_abs[];
-extern PanelVec3 D_0068E0E8;
-#pragma alias D_0068E0E8_abs D_0068E0E8
-extern u8 D_0068E0E8_abs[];
-extern PanelVec3 D_0068E0F8;
-#pragma alias D_0068E0F8_abs D_0068E0F8
-extern u8 D_0068E0F8_abs[];
-
-extern void* func_004cb2f0(void* model);
-extern void FUN_004c6be0(void* out, const void* in, const void* matrix);
-extern void RpSkyRenderStateSet(s32 state, void* value);
-extern void printf(const char*, ...);
-extern int sprintf(char*, const char*, ...);
-extern u32 strlen(const char*);
-
-extern char D_006850C0[];
-extern char D_006871C0[];
-extern char D_006892C0[];
-extern char D_0068AB80[];
-extern char D_0068C440[];
-extern char D_0068C760[];
-extern char D_0068CA80[];
-extern char D_0068CDE0[];
-extern char D_0068D140[];
-extern char D_0068D8F0[];
-extern char D_0068D910[];
-extern char D_0068D930[];
-extern char D_0068DE20[];
-extern char D_0068DF20[];
-extern char D_0068DF30[];
-extern char D_0068DF60[];
-extern char D_0068E020[];
-extern char D_0068DD20[];
-extern char D_0068E0B0[];
-extern void func_00209ba0(void* destination, s32 digit);
-extern void func_0020c7b0(u8* work);
-extern void func_0020cda0(u8* work);
-extern void (*D_00960090)(u32 state, u32 value);
-extern void func_0020ccc0(void* work, const u8* color);
-extern char D_0068E0A0[];
-extern u8 D_0068E090[];
-extern void func_0020d500(s32* work, void* matrix);
-extern u32 func_0021a3a0(void);
-extern u32 func_0021a410(void);
-extern u32 func_0021a480(s32 a, s32 b);
-extern u32 func_0021a590(u16 value);
-extern u32 func_0021b3a0(s32 value);
-extern u32 func_0021b420(s32 value);
-
-extern void* D_0068E108;
-extern f32 D_0068E110;
-extern f32 fGpffff8318;
-extern f32 fGpffff8320;
-extern f32 fGpffff8324;
-extern f32 fGpffff831c;
-extern f32 fGpffff8338;
-extern f32 fGpffff8334;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-static void panel_init_common(u8* work, u32 state)
-{
-    s32 i;
-
-    func_00209ea0(work);
-    *(u32*)(work + 4) = state;
-    func_0020c7b0(work + 0xe0);
-    for (i = 0; i < 4; i++) {
-        work[0x184 + i] = 0xff;
-        work[0x1a8 + i] = 0xff;
-        work[0x1cc + i] = 0xff;
-        work[0x1f0 + i] = 0xff;
-    }
-}
-
-
-
-
-
-extern f32 DAT_007cadd4;
-extern f32 DAT_007cad7c;
-extern f32 DAT_007cad74;
-extern f32 DAT_007caee8;
-extern f32 FUN_0052e878(f32 angle);
-extern f32 FUN_0052e6d8(f32 angle);
-extern void func_0020cf20(void* destination, PanelTransform* transform);
-
-// Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
-// Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
-
 
 // FUN_0020b250 NONMATCHING
 void func_0020b250(void* work)
@@ -779,6 +616,86 @@ void func_0020c7a0(void* work, u32 value)
     *(u32*)((u8*)work + 0x38) = value;
 }
 
+
+/* Removing this loses FUN_0020d820 (MATCH nd0 -> MISMATCH nd2) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static void panel_init_common(u8* work, u32 state)
+{
+    s32 i;
+
+    func_00209ea0(work);
+    *(u32*)(work + 4) = state;
+    func_0020c7b0(work + 0xe0);
+    for (i = 0; i < 4; i++) {
+        work[0x184 + i] = 0xff;
+        work[0x1a8 + i] = 0xff;
+        work[0x1cc + i] = 0xff;
+        work[0x1f0 + i] = 0xff;
+    }
+}
+
+
+
+
+
+
+// Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
+// Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
+
+
 // FUN_0020c7b0
 void func_0020c7b0(u8* work)
 {
@@ -1104,7 +1021,7 @@ void func_0020cda0(u8* work)
     }
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
-/* W389 measured opt_lifetimes on: nd632/1492B -> nd627/1492B (window 1504B). */
+
 #pragma push
 #pragma opt_lifetimes on
 // FUN_0020cf20 NONMATCHING
@@ -1271,3 +1188,88 @@ void func_0020cf20(void* destination, PanelTransform* transform)
 #pragma pop
 #pragma opt_lifetimes reset
 #pragma pop
+
+// FUN_0020d500
+void sflResDrawIndexedMesh(u32* work, const f32* vertices)
+{
+    RwV3d axis;
+    RwMatrix* matrix;
+    u32* destination;
+    s32 count;
+    const u32* source;
+    u32 x;
+    u32 y;
+
+    axis = DAT_0068e108;
+    if ((*work & 1) != 0) {
+        matrix = (RwMatrix*)func_004c38c0();
+        count = 8;
+        source = (const u32*)vertices;
+        destination = (u32*)matrix;
+        do {
+            x = source[0];
+            y = source[1];
+            source += 2;
+            count -= 1;
+            destination[0] = x;
+            destination[1] = y;
+            destination += 2;
+        } while (count > 0);
+        func_004c31b0(matrix, &axis, 180.0f, 1);
+    } else {
+        matrix = (RwMatrix*)vertices;
+    }
+    func_004f1ed0(work + 1, 0x44, matrix, 3);
+    (*DAT_00960090)(1, 0);
+    func_004f1fd0(3, D_00875A90, 0x138);
+    func_004f1f80();
+    if ((*work & 1) != 0) {
+        func_004c3880(matrix);
+    }
+}
+
+// FUN_0020D630
+void sflResSetSpriteScale(void* work, const f32* value)
+{
+    *(RwV3d*)((u8*)work + 0x2c) = *(const RwV3d*)value;
+}
+
+// FUN_0020D650
+void sflResSetSpritePosition(void* work, const f32* value)
+{
+    *(RwV3d*)((u8*)work + 0x20) = *(const RwV3d*)value;
+}
+
+// FUN_0020D670
+void sflResGetSpritePosition(const void* work, f32* value)
+{
+    *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
+}
+
+// FUN_0020d690
+void sflResSetSpriteRotation(void* work, const f32* value)
+{
+    *(RwV4d*)((u8*)work + 0x10) = *(const RwV4d*)value;
+}
+
+// FUN_0020d6c0
+void sflRes0020d6c0(void* work)
+{
+    K_ASSERT(*(u32*)((u8*)work + 4) == 0, 0x677);
+    *(u32*)((u8*)work + 0x170) |= 1;
+}
+
+// FUN_0020d710
+void sflRes0020d710(u32* work)
+{
+    K_ASSERT(work[1] == 0, 0x67e);
+    work[0x5c] |= 2;
+    work[0] |= 2;
+}
+/* W389 measured opt_lifetimes on: nd632/1492B -> nd627/1492B (window 1504B). */
+// FUN_0020d770
+void sflRes0020d770(void* work, f32 value)
+{
+    K_ASSERT(*(u32*)((u8*)work + 4) == 1, 0x686);
+    *(f32*)((u8*)work + 0x328) = value;
+}

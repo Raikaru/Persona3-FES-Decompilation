@@ -12,6 +12,93 @@
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/Battle/Data/datPersona.h"
 #include "temporary.h"
+
+extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
+extern u32 func_0027fc80(BtlUnit *);
+extern u32 func_00280870(s32, u32, RwV3d *, u32, u32, u32);
+extern s64 func_002835e0(BtlUnit *, u16, f32);
+extern s64 func_002838d0(BtlUnit *, u32, f32);
+extern u16 func_00283a70(BtlUnit *, u32);
+extern s64 func_002b7060(u32);
+extern s32 func_002b8f90(u32);
+extern f32 func_002b9590(BtlUnit *);
+extern u64 func_002b9640(u8 *);
+extern s32 func_002d1600(BtlTarget *);
+extern s32 func_002d4cc0(u16);
+extern s32 func_002d4e10(u32, u32);
+extern s32 func_002d5bf0(BtlUnit *);
+extern s32 func_002d5c70(BtlUnit *);
+extern u32 func_002d5dc0(s32 *);
+extern s32 func_002d5eb0(BtlAction *);
+extern s32 func_002d5f50(BtlAction *);
+extern s32 func_002d5fb0(BtlAction *);
+extern s32 func_002d6090(BtlAction *);
+extern s32 func_002d6130(BtlAction *);
+extern s32 func_002d6210(BtlAction *);
+extern s32 func_002d6290(BtlAction *);
+extern s32 func_002d62d0(BtlAction *);
+extern u64 func_002d6370(s16);
+extern s32 func_002dc130(BtlAction *);
+extern s32 func_002ddc80(u16);
+extern s64 func_002f8fd0(BtlUnit *, s16);
+extern s64 func_002f9690(BtlUnit *);
+extern s32 func_002fcaa0(BtlAction *, u32 *);
+extern u32 func_002fd060(BtlAction *);
+extern s32 func_002fd160(BtlAction *);
+extern s32 func_002fdbb0(BtlAction *, BtlUnit *);
+extern s32 func_002fdcb0(BtlUnit *);
+extern u32 func_002fddb0(BtlUnit *, RwV3d *);
+extern s32 func_002fded0(s16);
+extern s64 func_003082f0(DatUnit *, u16);
+extern u64 func_00308a50(u16);
+extern BtlPacket* func_002d8330(BtlAction*);
+extern BtlPacket* btlUnit00286240(BtlUnit*);
+extern BtlPacket* btlUnit002860b0(BtlUnit*);
+extern BtlPacket* func_002e35d0(u16, u16);
+extern BtlPacket* func_002e36f0(void);
+extern BtlPacket* func_002e37e0(void);
+extern BtlPacket* func_002dd8e0(BtlUnit*);
+extern BtlPacket* func_002dd100(u32, u32, u32);
+extern BtlPacket* func_002b8900(BtlAction*, u32, u32);
+extern BtlPacket* func_002b8b70(BtlUnit*, BtlAction*, BtlAction*, u16);
+extern BtlPacket* func_002e3de0(u32, u32);
+extern BtlPacket* func_002e3f20(void);
+extern BtlPacket* func_002dd690(u16, s8*);
+extern BtlPacket* func_002bac00(s32, s8*, u16);
+extern BtlPacket* func_002baf90(s32, BtlUnit*, BtlUnit*, u32);
+extern BtlPacket* func_002bd480(BtlUnit*, ...);
+extern BtlPacket* func_002bd230(BtlUnit*, u32, u32);
+extern BtlPacket* btlUnit002843e0(BtlUnit*, u16);
+extern BtlPacket* btlUnit00284f50(BtlUnit*, u16, f32, u16);
+extern BtlPacket* btlUnit00284c90(BtlUnit*);
+extern BtlPacket* btlUnit002857f0(BtlUnit*);
+extern BtlPacket* func_002dd5e0(u16);
+extern BtlPacket* func_0027f410(u32, BtlAction*);
+extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
+extern BtlPacket* func_0029fa50(u32);
+extern BtlPacket* func_002a1080(u32, u16);
+extern BtlPacket* func_002a16c0(u32);
+extern BtlPacket* func_002a1db0(u32);
+extern DatPersonaWork* datPersonaGetByPcId(u16);
+extern BtlPacket* func_002dd960(BtlUnit*);
+extern BtlPacket* func_002bd590(BtlUnit*, s32);
+extern BtlPacket* func_002bd690(BtlUnit*, u16);
+extern BtlPacket* func_002bd850(BtlUnit*, s16);
+extern BtlPacket* func_002bdbd0(BtlUnit*, BtlUnit*, s32, ...);
+extern BtlPacket* func_002d7e20(BtlAction*, BtlAction*, void*, u32, ...);
+extern BtlPacket* func_002d8090(BtlAction*);
+extern BtlPacket* func_002d7fb0(BtlAction*, u32);
+extern BtlPacket* func_002db740(BtlAction*, u16, ...);
+BtlPacket* func_002bfb50(void);
+BtlPacket* func_002bfae0(void);
+BtlPacket* func_002dd1f0(u32 a, u32 b, u32 c);
+s32 func_0030c2a0(DatUnit* unit);
+void func_00280050(BtlUnit* unit, RwV3d* dst);
+s32 func_002d4cc0(u16 unitId);
+u64 func_002b9640(u8* data);
+BtlPacket* func_002a1db0(u32 a);
+extern RwV3d D_006978A0;
+
 extern u32 func_002e4430();
 f32 FUN_002d1ed0(const RwV3d* a, const RwV3d* b);
 extern const char D_00693318[];
@@ -2899,7 +2986,6 @@ void btlActionInitStateAttack(BtlAction* action)
 {
     (void)action;
 }
-extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
 
 /* W373 pragma sweep nd/obj: base 6050/8252; singles LI=5905/8252 CS=6344/8452(over) LT=6050/8252 PR=6137/8280 SR=6050/8252 DA=6052/8252; retain LI on. */
 #pragma opt_loop_invariants on
@@ -3765,83 +3851,8 @@ void btlActionInitStateSkill(BtlAction* action)
 }
 
 
-extern u32 func_0027fc80(BtlUnit *);
-extern u32 func_00280870(s32, u32, RwV3d *, u32, u32, u32);
-extern s64 func_002835e0(BtlUnit *, u16, f32);
 /* This skill path keeps the u32 argument live; other callers intentionally use u16. */
-extern s64 func_002838d0(BtlUnit *, u32, f32);
-extern u16 func_00283a70(BtlUnit *, u32);
-extern s64 func_002b7060(u32);
-extern s32 func_002b8f90(u32);
-extern f32 func_002b9590(BtlUnit *);
-extern u64 func_002b9640(u8 *);
-extern s32 func_002d1600(BtlTarget *);
-extern s32 func_002d4cc0(u16);
-extern s32 func_002d4e10(u32, u32);
-extern s32 func_002d5bf0(BtlUnit *);
-extern s32 func_002d5c70(BtlUnit *);
-extern u32 func_002d5dc0(s32 *);
-extern s32 func_002d5eb0(BtlAction *);
-extern s32 func_002d5f50(BtlAction *);
-extern s32 func_002d5fb0(BtlAction *);
-extern s32 func_002d6090(BtlAction *);
-extern s32 func_002d6130(BtlAction *);
-extern s32 func_002d6210(BtlAction *);
-extern s32 func_002d6290(BtlAction *);
-extern s32 func_002d62d0(BtlAction *);
-extern u64 func_002d6370(s16);
-extern s32 func_002dc130(BtlAction *);
-extern s32 func_002ddc80(u16);
-extern s64 func_002f8fd0(BtlUnit *, s16);
-extern s64 func_002f9690(BtlUnit *);
-extern s32 func_002fcaa0(BtlAction *, u32 *);
-extern u32 func_002fd060(BtlAction *);
-extern s32 func_002fd160(BtlAction *);
-extern s32 func_002fdbb0(BtlAction *, BtlUnit *);
-extern s32 func_002fdcb0(BtlUnit *);
-extern u32 func_002fddb0(BtlUnit *, RwV3d *);
-extern s32 func_002fded0(s16);
-extern s64 func_003082f0(DatUnit *, u16);
-extern u64 func_00308a50(u16);
 
-extern BtlPacket* func_002d8330(BtlAction*);
-extern BtlPacket* btlUnit00286240(BtlUnit*);
-extern BtlPacket* btlUnit002860b0(BtlUnit*);
-extern BtlPacket* func_002e35d0(u16, u16);
-extern BtlPacket* func_002e36f0(void);
-extern BtlPacket* func_002e37e0(void);
-extern BtlPacket* func_002dd8e0(BtlUnit*);
-extern BtlPacket* func_002dd100(u32, u32, u32);
-extern BtlPacket* func_002b8900(BtlAction*, u32, u32);
-extern BtlPacket* func_002b8b70(BtlUnit*, BtlAction*, BtlAction*, u16);
-extern BtlPacket* func_002e3de0(u32, u32);
-extern BtlPacket* func_002e3f20(void);
-extern BtlPacket* func_002dd690(u16, s8*);
-extern BtlPacket* func_002bac00(s32, s8*, u16);
-extern BtlPacket* func_002baf90(s32, BtlUnit*, BtlUnit*, u32);
-extern BtlPacket* func_002bd480(BtlUnit*, ...);
-extern BtlPacket* func_002bd230(BtlUnit*, u32, u32);
-extern BtlPacket* btlUnit002843e0(BtlUnit*, u16);
-extern BtlPacket* btlUnit00284f50(BtlUnit*, u16, f32, u16);
-extern BtlPacket* btlUnit00284c90(BtlUnit*);
-extern BtlPacket* btlUnit002857f0(BtlUnit*);
-extern BtlPacket* func_002dd5e0(u16);
-extern BtlPacket* func_0027f410(u32, BtlAction*);
-extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
-extern BtlPacket* func_0029fa50(u32);
-extern BtlPacket* func_002a1080(u32, u16);
-extern BtlPacket* func_002a16c0(u32);
-extern BtlPacket* func_002a1db0(u32);
-extern DatPersonaWork* datPersonaGetByPcId(u16);
-extern BtlPacket* func_002dd960(BtlUnit*);
-extern BtlPacket* func_002bd590(BtlUnit*, s32);
-extern BtlPacket* func_002bd690(BtlUnit*, u16);
-extern BtlPacket* func_002bd850(BtlUnit*, s16);
-extern BtlPacket* func_002bdbd0(BtlUnit*, BtlUnit*, s32, ...);
-extern BtlPacket* func_002d7e20(BtlAction*, BtlAction*, void*, u32, ...);
-extern BtlPacket* func_002d8090(BtlAction*);
-extern BtlPacket* func_002d7fb0(BtlAction*, u32);
-extern BtlPacket* func_002db740(BtlAction*, u16, ...);
 /* Skill-state reconstruction is complete; remaining drift is MWCC local-layout codegen. */
 /* W373 pragma sweep nd/obj: base 11197/16672; singles LI=11166/16660 CS=12393/17036(over) LT=11197/16672 PR=12288/16848 SR=11197/16672 DA=11639/16696(over); retain LI on. */
 #pragma opt_loop_invariants on
@@ -6352,193 +6363,6 @@ void btlActionUpdateStateWait(BtlAction* action)
     }
 }
 
-// FUN_00297480
-void btlActionInitStatePersona(BtlAction* action)
-{
-    BtlPacket* packet;
-    BtlPacket* root;
-    s32 table;
-    u16 personaId;
-    BtlUnit* personaUnit;
-
-    btlAction0028a780(action);
-    packet = func_002bd780(action->unit, action->target.commandId);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_PERSONA);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    if (action->unit->genus == UNIT_GENUS_PC)
-    {
-        packet = FUN_002843e0(action->unit, 6);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    else
-    {
-        packet = btlUnitCreateAnimPacket(action->unit, 0x17, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    packet = btlVoice002e2be0(action, 0x19, 0, 0, 0);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    if (action->unit->genus != UNIT_GENUS_PC)
-    {
-        goto persona_init_done;
-    }
-    FUN_00175130_btlAction(*(u16*)action->target.unkData1);
-    personaId = *(volatile u16*)action->target.unkData1;
-    personaUnit = (BtlUnit*)*(volatile BtlUnit**)&action->unit;
-    btlUnitInitPersona(personaUnit, personaId);
-persona_init_done:
-    table = FUN_002fcf50(action);
-    if (table == 0)
-    {
-        table = ACTION_U32(gBtl, 0xca4);
-    }
-    root = FUN_002baf90(table, action->unit, action->unit, 0, 0);
-    ACTION_U16(root, 0x48) = 0xf;
-    root->actionUID = action->uid;
-    btlPacketRegister(root, BTLPACKET_TYPE_3D);
-    packet = FUN_002dd100(10, 2, 4);
-    packet->unk_00 = 5;
-    packet->parentUID = root->uid;
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    if (action->unit->genus != UNIT_GENUS_PC)
-    {
-        goto persona_done;
-    }
-    packet = FUN_002bddd0();
-    packet->unk_00 = 4;
-    packet->parentUID = root->uid;
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-persona_done:
-    gBtl->flags |= 0x400000;
-    BATTLE_U16(0x18) |= 4;
-}
-// FUN_002976d0
-void btlActionUpdateStatePersona(BtlAction* action)
-{
-    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
-    {
-        if (action->unit->genus == UNIT_GENUS_PC)
-        {
-            action->unk_18 &= ~0x400;
-        }
-
-        btlActionSetState(action, action->unk_14);
-    }
-}
-
-// FUN_00297750
-void btlActionInitStateBadDamage(BtlAction* action)
-{
-    (void)action;
-}
-// FUN_00297760
-void btlActionUpdateStateBadDamage(BtlAction* action)
-{
-    BtlPacket* root;
-    BtlPacket* packet;
-    BtlUnit* unit;
-    BtlTargetResult work;
-    s32 damage;
-    u32 badStatus;
-    s64 actionUID;
-    u16 state;
-
-    if (btlPacketCountById(0x700))
-    {
-        return;
-    }
-    if (btlPacketCountById(0x506))
-    {
-        return;
-    }
-    if (btlPacketCountById(0x507))
-    {
-        return;
-    }
-    if (btlPacketCountById(0x301))
-    {
-        return;
-    }
-
-    unit = action->unit;
-    badStatus = datCalcGetBadStatus(unit->datUnit);
-    actionUID = action->uid;
-    switch (badStatus & 0xfffff)
-    {
-    case 0x80:
-        FUN_002d5dc0(&work);
-        damage = FUN_002dc670(action);
-        work.hpDelta = damage;
-        if (damage < 0)
-        {
-            root = FUN_002d7e20(action, action, &work, 1, 1);
-            btlPacketRegister(root, BTLPACKET_TYPE_1);
-            packet = FUN_002bd480(unit);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, &work);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->unk_47 &= ~0x20;
-            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-            packet = FUN_002bd230(unit, 0, 0);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->unk_47 &= ~0x20;
-            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-            packet = btlUnitCreateAnimPacketSignedId(action->unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = FUN_002dd100(10, 6, 0xc);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        switch (action->target.commandId)
-        {
-        case 1:
-        case 3:
-        case 2:
-            state = BTLACTION_STATE_PACKET;
-            break;
-        default:
-            state = BTLACTION_STATE_PACKET;
-            break;
-        }
-        btlActionSetState(action, state);
-        break;
-    default:
-        switch (action->target.commandId)
-        {
-        case 1:
-        case 3:
-        case 2:
-            state = BTLACTION_STATE_PACKET;
-            break;
-        default:
-            state = BTLACTION_STATE_PACKET;
-            break;
-        }
-        btlActionSetState(action, state);
-        break;
-    }
-}
-// FUN_00297a50
-u32 FUN_00297a50(BtlAction* action)
-{
-    return ACTION_U32(action, 0x48c);
-}
-
 // FUN_002964f0
 void btlActionInitStateEscapeMes(BtlAction* action)
 {
@@ -6631,23 +6455,11 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
     }
 }
 
-BtlPacket* func_002bfb50(void);
-BtlPacket* func_002bfae0(void);
-BtlPacket* func_002dd1f0(u32 a, u32 b, u32 c);
-s32 func_0030c2a0(DatUnit* unit);
-void func_00280050(BtlUnit* unit, RwV3d* dst);
-s32 func_002d4cc0(u16 unitId);
-u64 func_002b9640(u8* data);
-BtlPacket* func_002a1db0(u32 a);
-extern RwV3d D_006978A0;
-
 // FUN_00296880
 void btlActionInitStateEscape(BtlAction* action)
 {
     (void)action;
 }
-/* W373 pragma sweep nd/obj: base 1683/3052; singles LI=1672/3052 CS=2244/3188(over) LT=1677/3052 PR=1683/3052 SR=1683/3052 DA=1683/3052. */
-/* Pair nd/obj: LI+CS=2224/3188(over) LI+LT=1674/3052 LI+PR=2320/3124(over) LI+SR=1672/3052 LI+DA=1673/3052 CS+LT=2248/3188(over) CS+PR=2244/3188(over) CS+SR=2244/3188(over) CS+DA=2244/3188(over) LT+PR=1677/3052 LT+SR=1677/3052 LT+DA=1677/3052 PR+SR=1683/3052 PR+DA=1683/3052 SR+DA=1683/3052; retain LI on. */
 #pragma opt_loop_invariants on
 // FUN_00296890 NONMATCHING
 void btlActionUpdateStateEscape(BtlAction* action)
@@ -6979,6 +6791,196 @@ void btlActionUpdateStateEscape(BtlAction* action)
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
 #pragma opt_loop_invariants reset
+// FUN_00297480
+void btlActionInitStatePersona(BtlAction* action)
+{
+    BtlPacket* packet;
+    BtlPacket* root;
+    s32 table;
+    u16 personaId;
+    BtlUnit* personaUnit;
+
+    btlAction0028a780(action);
+    packet = func_002bd780(action->unit, action->target.commandId);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_PERSONA);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    if (action->unit->genus == UNIT_GENUS_PC)
+    {
+        packet = FUN_002843e0(action->unit, 6);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    else
+    {
+        packet = btlUnitCreateAnimPacket(action->unit, 0x17, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    packet = btlVoice002e2be0(action, 0x19, 0, 0, 0);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    if (action->unit->genus != UNIT_GENUS_PC)
+    {
+        goto persona_init_done;
+    }
+    FUN_00175130_btlAction(*(u16*)action->target.unkData1);
+    personaId = *(volatile u16*)action->target.unkData1;
+    personaUnit = (BtlUnit*)*(volatile BtlUnit**)&action->unit;
+    btlUnitInitPersona(personaUnit, personaId);
+persona_init_done:
+    table = FUN_002fcf50(action);
+    if (table == 0)
+    {
+        table = ACTION_U32(gBtl, 0xca4);
+    }
+    root = FUN_002baf90(table, action->unit, action->unit, 0, 0);
+    ACTION_U16(root, 0x48) = 0xf;
+    root->actionUID = action->uid;
+    btlPacketRegister(root, BTLPACKET_TYPE_3D);
+    packet = FUN_002dd100(10, 2, 4);
+    packet->unk_00 = 5;
+    packet->parentUID = root->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    if (action->unit->genus != UNIT_GENUS_PC)
+    {
+        goto persona_done;
+    }
+    packet = FUN_002bddd0();
+    packet->unk_00 = 4;
+    packet->parentUID = root->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+persona_done:
+    gBtl->flags |= 0x400000;
+    BATTLE_U16(0x18) |= 4;
+}
+
+// FUN_002976d0
+void btlActionUpdateStatePersona(BtlAction* action)
+{
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        if (action->unit->genus == UNIT_GENUS_PC)
+        {
+            action->unk_18 &= ~0x400;
+        }
+
+        btlActionSetState(action, action->unk_14);
+    }
+}
+// FUN_00297750
+void btlActionInitStateBadDamage(BtlAction* action)
+{
+    (void)action;
+}
+
+
+// FUN_00297760
+void btlActionUpdateStateBadDamage(BtlAction* action)
+{
+    BtlPacket* root;
+    BtlPacket* packet;
+    BtlUnit* unit;
+    BtlTargetResult work;
+    s32 damage;
+    u32 badStatus;
+    s64 actionUID;
+    u16 state;
+
+    if (btlPacketCountById(0x700))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x506))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x507))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x301))
+    {
+        return;
+    }
+
+    unit = action->unit;
+    badStatus = datCalcGetBadStatus(unit->datUnit);
+    actionUID = action->uid;
+    switch (badStatus & 0xfffff)
+    {
+    case 0x80:
+        FUN_002d5dc0(&work);
+        damage = FUN_002dc670(action);
+        work.hpDelta = damage;
+        if (damage < 0)
+        {
+            root = FUN_002d7e20(action, action, &work, 1, 1);
+            btlPacketRegister(root, BTLPACKET_TYPE_1);
+            packet = FUN_002bd480(unit);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, &work);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->unk_47 &= ~0x20;
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            packet = FUN_002bd230(unit, 0, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->unk_47 &= ~0x20;
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            packet = btlUnitCreateAnimPacketSignedId(action->unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002dd100(10, 6, 0xc);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+        switch (action->target.commandId)
+        {
+        case 1:
+        case 3:
+        case 2:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        default:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        }
+        btlActionSetState(action, state);
+        break;
+    default:
+        switch (action->target.commandId)
+        {
+        case 1:
+        case 3:
+        case 2:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        default:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        }
+        btlActionSetState(action, state);
+        break;
+    }
+}
+/* W373 pragma sweep nd/obj: base 1683/3052; singles LI=1672/3052 CS=2244/3188(over) LT=1677/3052 PR=1683/3052 SR=1683/3052 DA=1683/3052. */
+/* Pair nd/obj: LI+CS=2224/3188(over) LI+LT=1674/3052 LI+PR=2320/3124(over) LI+SR=1672/3052 LI+DA=1673/3052 CS+LT=2248/3188(over) CS+PR=2244/3188(over) CS+SR=2244/3188(over) CS+DA=2244/3188(over) LT+PR=1677/3052 LT+SR=1677/3052 LT+DA=1677/3052 PR+SR=1683/3052 PR+DA=1683/3052 SR+DA=1683/3052; retain LI on. */
+// FUN_00297a50
+u32 FUN_00297a50(BtlAction* action)
+{
+    return ACTION_U32(action, 0x48c);
+}
 
 /* W373 pragma sweep nd/obj: base 1024/1492; singles LI=907/1488 CS=1073/1532 LT=1024/1492 PR=1024/1492 SR=1024/1492 DA=1024/1492; retain LI on. */
 #pragma opt_loop_invariants on

@@ -2,6 +2,10 @@
 #include "Main/Battle/Panel/bp_tex.h"
 #include "Kosaka/k_assert.h"
 #include "h_cdvd.h"
+
+void FUN_004cde90();
+void FUN_0021cc20();
+
 #pragma alias opResShutdown FUN_00266690
 
 
@@ -14,6 +18,22 @@ void opResInit(OpResWork* work)
     work->destroyFlags = 0;
 
     sWork = work;
+}
+
+// FUN_00266690
+void opResShutdown(void)
+{
+    OpResWork* work;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+    if (work->destroyFlags & OPRES_FLAG_TITLE) {
+        opResDestroyTitle();
+    }
+    if (work->destroyFlags & OPRES_FLAG_LOGO) {
+        opResDestroyLogo();
+    }
+    sWork = NULL;
 }
 
 // FUN_00266710
@@ -138,6 +158,23 @@ u32 opResCheckRequestTitle()
     return sWork->requestFlags & OPRES_FLAG_TITLE;
 }
 
+// FUN_00266b30
+void opResDestroyTitle(void)
+{
+    OpResWork* work;
+    s32 i;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+    for (i = 0; i < OPRES_TITLE_TMXCOUNT; i++) {
+        FUN_004cde90(*(RwRaster**)((int)work + i * 4 + 0xc));
+    }
+    for (i = 0; i < OPRES_TITLE_SPRCOUNT; i++) {
+        FUN_0021cc20(*(void**)((int)work + i * 4 + 0x44));
+    }
+    work->destroyFlags &= ~OPRES_FLAG_TITLE;
+}
+
 // FUN_00266bf0
 RwRaster* opResGetTitleRaster(u32 id)
 {
@@ -169,40 +206,13 @@ void opResRequestLogo()
     work->requestFlags |= OPRES_FLAG_LOGO;
 }
 
+
 // FUN_00266d70
 u32 opResCheckRequestLogo()
 {
     K_ASSERT(sWork != NULL, 68);
 
     return sWork->requestFlags & OPRES_FLAG_LOGO;
-}
-
-// FUN_00266e50
-RwRaster* opResGetLogoRaster(u32 id)
-{
-    K_ASSERT(sWork != NULL, 68);
-
-    return sWork->logoRasters[id];
-}
-
-void FUN_004cde90();
-void FUN_0021cc20();
-
-// FUN_00266b30
-void opResDestroyTitle(void)
-{
-    OpResWork* work;
-    s32 i;
-
-    K_ASSERT(sWork != NULL, 68);
-    work = sWork;
-    for (i = 0; i < OPRES_TITLE_TMXCOUNT; i++) {
-        FUN_004cde90(*(RwRaster**)((int)work + i * 4 + 0xc));
-    }
-    for (i = 0; i < OPRES_TITLE_SPRCOUNT; i++) {
-        FUN_0021cc20(*(void**)((int)work + i * 4 + 0x44));
-    }
-    work->destroyFlags &= ~OPRES_FLAG_TITLE;
 }
 
 // FUN_00266dc0
@@ -219,18 +229,10 @@ void opResDestroyLogo(void)
     work->destroyFlags &= ~OPRES_FLAG_LOGO;
 }
 
-// FUN_00266690
-void opResShutdown(void)
+// FUN_00266e50
+RwRaster* opResGetLogoRaster(u32 id)
 {
-    OpResWork* work;
-
     K_ASSERT(sWork != NULL, 68);
-    work = sWork;
-    if (work->destroyFlags & OPRES_FLAG_TITLE) {
-        opResDestroyTitle();
-    }
-    if (work->destroyFlags & OPRES_FLAG_LOGO) {
-        opResDestroyLogo();
-    }
-    sWork = NULL;
+
+    return sWork->logoRasters[id];
 }

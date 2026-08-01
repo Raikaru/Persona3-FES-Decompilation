@@ -1,44 +1,10 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
-#pragma alias FUN_002491f0_y2 FUN_002491f0
-
-
-#pragma alias bpcInit FUN_00248490
-#pragma alias bpmUpdate FUN_00249180
-
-
-static u32* sBpmWork; // puGpffffb634
-extern u32* sBpc324; // 007ce324 / GP -0x49CC
-
-
-void FUN_002491f0_y2();
-
-// FUN_00249180
-void bpmUpdate(void)
-{
-    u32* work;
-
-    K_ASSERT(sBpmWork != NULL, 0x3d);
-    work = sBpmWork;
-    if (*work & 1)
-    {
-        FUN_002491f0_y2();
-        *work &= ~1;
-    }
-}
-
-
 #include "Utils.h"
-
 #pragma alias datGetFlag_y2 datGetFlag
-
-
-/* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
 extern u32* sBpc324; // 007CE324 / GP -0x49CC
-/* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
 u32* sBpc328;
-
 typedef void (*BpcRenderState)(s32 property, u32 value);
 typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
 extern BpcRenderState gBpcRenderState;
@@ -80,6 +46,42 @@ extern void func_003c9790(s32 mode);
 extern s32 datGetFlag(s32 flag);
 extern void datSetFlag(s32 flag, u8 value);
 extern void* func_0030c0c0(void);
+void* FUN_00248f40(void*);
+void FUN_002491f0(void);
+void FUN_00248fc0(void*);
+static u32* sBpeWork;
+
+
+#pragma alias FUN_002491f0_y2 FUN_002491f0
+
+
+#pragma alias bpcInit FUN_00248490
+#pragma alias bpmUpdate FUN_00249180
+
+
+static u32* sBpmWork; // puGpffffb634
+extern u32* sBpc324; // 007ce324 / GP -0x49CC
+
+
+void FUN_002491f0_y2();
+
+// FUN_002484A0
+void FUN_002484a0(void)
+{
+    K_ASSERT(sBpc324 != NULL, 0x3d);
+    if ((*sBpc324 & 1u) != 0) {
+        FUN_002491f0();
+    }
+    sBpc324 = NULL;
+}
+
+
+
+
+
+/* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
+/* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
+
 
 static void bpc324RenderState(u32 state, u32 value)
 {
@@ -97,19 +99,6 @@ static u32 bpc324Flags(void)
     return *sBpc324;
 }
 
-void* FUN_00248f40(void*);
-void FUN_002491f0(void);
-void FUN_00248fc0(void*);
-
-// FUN_002484A0
-void FUN_002484a0(void)
-{
-    K_ASSERT(sBpc324 != NULL, 0x3d);
-    if ((*sBpc324 & 1u) != 0) {
-        FUN_002491f0();
-    }
-    sBpc324 = NULL;
-}
 
 // FUN_00248500
 void FUN_00248500(void* destination)
@@ -373,6 +362,20 @@ u32 FUN_00249130(void)
     return *sBpc324 & 1u;
 }
 
+// FUN_00249180
+void bpmUpdate(void)
+{
+    u32* work;
+
+    K_ASSERT(sBpmWork != NULL, 0x3d);
+    work = sBpmWork;
+    if (*work & 1)
+    {
+        FUN_002491f0_y2();
+        *work &= ~1;
+    }
+}
+
 // FUN_002491F0
 void FUN_002491f0(void)
 {
@@ -383,7 +386,6 @@ void FUN_002491f0(void)
 
 
 
-static u32* sBpeWork;
 
 // FUN_00249240
 void bpe00249240(u32* param_1)

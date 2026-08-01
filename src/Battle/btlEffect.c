@@ -6,6 +6,12 @@
 #include "Battle/btlVoice.h"
 #include "Battle/btlBoss.h"
 
+#pragma alias func_002c1ce0_u32 func_002c1ce0
+extern u32 func_002c1ce0_u32(int param_1, int param_2);
+#pragma alias func_002bf690_u16 func_002bf690
+#pragma alias func_002c3430_u32 func_002c3430
+
+
 extern u32 btlFormation002b8c00(void* work);
 extern u32 btlFormation002b8dc0(void* work);
 
@@ -2132,14 +2138,6 @@ void LAB_002bd060(u32 **param_1)
   *value = *value + 1;
 }
 
-// FUN_002bd210
-void LAB_002bd210(u32 **param_1)
-{
-  u16 *value = (u16 *)((u8 *)(*param_1) + 0xa0);
-  *value = *value - 1;
-}
-
-
 // FUN_002bd080
 
 u32 func_002bd080(int *work)
@@ -2186,6 +2184,14 @@ u32 func_002bd080(int *work)
     break;
   }
   return 1;
+}
+
+
+// FUN_002bd210
+void LAB_002bd210(u32 **param_1)
+{
+  u16 *value = (u16 *)((u8 *)(*param_1) + 0xa0);
+  *value = *value - 1;
 }
 
 
@@ -3396,9 +3402,6 @@ void func_002bf650(void)
   return;
 }
 
-#pragma alias func_002c1ce0_u32 func_002c1ce0
-extern u32 func_002c1ce0_u32(int param_1, int param_2);
-#pragma alias func_002bf690_u16 func_002bf690
 // FUN_002bf690
 
 void func_002bf690_u16(u16 param_1)
@@ -5803,7 +5806,6 @@ bool func_002c3400(int param_1)
   return lVar1 != 0;
 }
 
-#pragma alias func_002c3430_u32 func_002c3430
 // FUN_002c3430
 
 u32

@@ -2,6 +2,180 @@
 #include "Kosaka/k_assert.h"
 #include "Utils.h"
 
+extern u32 datGetFlag(s32 flag);
+extern void* func_00198590(void);
+extern void* kwlnGetMainCamera_y2(void);
+extern void* func_00474210(u32 flags, u32 mode, void* parent);
+extern void** func_003210a0(s32 index);
+extern void* func_004caf10(void);
+extern void func_004caf80(void* resource);
+extern void func_00474640(void* resource, void** buffer, s32 type, u32 flags);
+extern void func_00492d10(void* resource, void* model);
+extern void func_004747f0(void* resource);
+extern u32 func_00488f30(void);
+extern void func_00494d50(void* material, void* texture);
+extern void* func_004cb2f0(void* model);
+extern void func_004c6be0(void* destination, const void* source, void* matrix);
+extern void func_00521250(void* destination, const void* source, u32 size);
+extern void func_005225a8(const void* name, ...);
+extern u32 DAT_007ce770;
+extern const u8 D_0068E880[];
+extern void* func_004c38c0(void);
+extern void func_004c32a0(void* destination, const void* source);
+extern void func_004cb750(void* frame, const void* translation, s32 mode);
+extern f32 sqrtf(f32 value);
+extern void func_004c3880(void* matrix);
+extern void func_004c3760(void* matrix, void* source, s32 mode);
+extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
+extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
+extern void RwV3dTransformPoint(void* out, const void* in, const void* matrix);
+extern u32* sBpc324; // 007CE324 / GP -0x49CC
+u32* sBpc328;
+typedef void (*BpcRenderState)(s32 property, u32 value);
+typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
+extern BpcRenderState gBpcRenderState;
+extern BpcRenderQuad gBpcRenderQuad;
+extern u32 D_00960090_y2[];
+extern u32 D_0096009C_y2[];
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 func_0021c3f0(s32 texture);
+extern u32 func_0021cca0(u32 texture, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void* func_0021c550(s32 index);
+extern void func_0021d3b0(void* destination, u32 frame);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d950_y2(void* destination, const u8* color);
+extern void func_0021e380(void* destination, u32 frame, s32 mode);
+extern void* func_003a52c0(f32 angle, s32 width, s32 height, s32 first,
+                            s32 mode, s32 count, void* left, void* right);
+extern void func_003b0170(u32 resource);
+extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
+extern void func_003b1360(u32 resource, s32 mode, s32 group);
+extern void func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern s32 func_003b19d0(u32 resource);
+extern void frFontSetTextScale(u32 resource, f32 angle);
+extern void func_003c72d0(void* resource);
+extern void func_003c7430(s32 mode);
+extern void func_003c7650(s32 mode);
+extern u32 func_003c7850(void);
+extern void func_003c7990(s32 mode);
+extern void func_003c7bc0(s32 mode, u32 value);
+extern void func_003c7c20(s32 mode, u32 value, s32 count);
+extern void func_003c77a0(void);
+extern u32 func_00173220(u16 value);
+extern u32 func_001775a0(u16 value);
+extern void func_003c94e0(void* resource);
+extern void func_003c9790(s32 mode);
+extern s32 datGetFlag_y2(s32 flag);
+extern void datSetFlag(s32 flag, u8 value);
+extern void* func_0030c0c0(void);
+void* FUN_00248f40(void*);
+void FUN_002491f0(void);
+void FUN_00248fc0(void*);
+#include "Main/Social/sfl_res.h"
+static u32* sSflGround; // puGpffffb624 / DAT_007ce314
+typedef struct SflGroundVec2
+{
+    f32 x;
+    f32 y;
+} SflGroundVec2;
+typedef struct SflGroundColor
+{
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} SflGroundColor;
+typedef struct SflGroundViewport
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 width;
+    s32 height;
+} SflGroundViewport;
+typedef struct SflGroundTile
+{
+    u8 pad0[8];
+    f32 color;
+    u8 pad0c[12];
+    f32 scale;
+    u32 white0;
+    u32 white1;
+    u32 white2;
+    u32 white3;
+} SflGroundTile;
+typedef void (*SflGroundTickCallback)(void* owner);
+typedef void (*SflGroundRenderStateCallback)(u32 selector, u32 value);
+typedef void (*SflGroundRenderQuadCallback)(void* vertices, u32 count,
+                                             u32 group, u32 pass, u32 blend);
+#define GROUND_TILE(work, offset) ((SflGroundTile*)GROUND_PTR((work), (offset)))
+#define GROUND_PTR(work, offset) ((void*)((u8*)(work) + (offset)))
+#define GROUND_U32(work, offset) (*(u32*)GROUND_PTR((work), (offset)))
+#define GROUND_F32(work, offset) (*(f32*)GROUND_PTR((work), (offset)))
+enum
+{
+    SFL_GROUND_WORK_SIZE = 0x8780,
+    SFL_GROUND_PANEL_OFFSET = 0x110,
+    SFL_GROUND_PANEL_STRIDE = 0x200,
+    SFL_GROUND_PARTICLE_OFFSET = 0xD10,
+    SFL_GROUND_PARTICLE_STRIDE = 0x130,
+    SFL_GROUND_TILE_OFFSET = 0x6B00,
+    SFL_GROUND_TILE_STRIDE = 0x40
+};
+extern const f32 D_00960088;
+extern const u32 D_00960090[];
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+extern const u32 D_0096009C[];
+extern const SflGroundVec2 D_0068E7C0[];
+extern f32 gPI;
+extern void (*D_009600A4)(u32, void*, u32, void*, u32);
+void FUN_00249690_y2();
+void* H_Maestro_001120a0(s32 font);
+void func_00249680_y2(void* work);
+void FUN_0023d2a0();
+void FUN_0023d650();
+void func_002496e0_y2();
+void func_00249c10_y2();
+void func_0024a180();
+void func_0024a230();
+void* kwlnGetMainCamera();
+void func_0021d890(void* destination, const void* layout);
+void func_0021d8e0_y2(void* destination, const void* rect);
+void func_0021d950(void* destination, const void* color);
+void func_0021e170(void* destination, const void* center,
+                   const void* direction, const void* size);
+void func_0021eb80(void* destination, const f32* layout);
+f32 func_0052ea18(f32 y, f32 x);
+f32 func_00269c80(f32 value);
+f32 func_00269ca0(f32 value);
+u32 RpRandom();
+f32 func_0052e878(f32 angle);
+f32 func_0052e6d8(f32 angle);
+f32 cosf(f32 angle);
+f32 sinf(f32 angle);
+void func_002392d0();
+void func_0023b990();
+void func_0023c280();
+void func_0023c3a0();
+void func_0023c520();
+void func_0023c850();
+static void sflGroundCallState(u32 selector, u32 value);
+static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value);
+void func_0023c8c0();
+void func_0023ca10();
+void func_0023cda0();
+void func_0023d130();
+void func_0023d2a0();
+void func_0023d650();
+
+
 #pragma alias D_00960090_y2 D_00960090
 #pragma alias D_0096009C_y2 D_0096009C
 #pragma alias kwlnGetMainCamera_y2 kwlnGetMainCamera
@@ -33,6 +207,84 @@ void bpe00249250(void)
     sBpeWork = NULL;
 }
 
+// FUN_002492B0
+void FUN_002492b0(void)
+{
+    u8* work;
+    void* cursor;
+    s32 mode;
+
+    K_ASSERT(sBpc328 != NULL, 0x37);
+    work = (u8*)sBpc328;
+    if (!(~(*(u32*)work) & 1u)) {
+        cursor = func_0021c550(1);
+        mode = *(s32*)(work + 4);
+        switch (mode) {
+        case 0:
+            func_003c7990(0);
+            if (func_003c7850() == 0) {
+                func_003c7650(0);
+                func_003c77a0();
+                func_003c72d0(cursor);
+                func_003c7bc0(0, func_00173220(*(u16*)(work + 0xa)));
+                func_003c7bc0(1, func_00173220(*(u16*)(work + 0xc)));
+                func_003c7c20(2, *(u16*)(work + 8), 5);
+                func_003c7430(0);
+                *(s32*)(work + 4) = 1;
+                return;
+            }
+            break;
+        case 1:
+            func_003c7990(1);
+            if (func_003c7850() == 0) {
+                func_003c7650(1);
+                func_003c77a0();
+                *(u32*)work &= ~1u;
+            }
+            break;
+        }
+    }
+}
+
+
+
+// FUN_00249420
+void FUN_00249420(u16 result, u16 actor, u16 target)
+{
+    u8* work;
+    void* first;
+    void* second;
+    u16* unit;
+    s32 firstMessage;
+
+    K_ASSERT(sBpc328 != NULL, 0x37);
+    work = (u8*)sBpc328;
+    first = func_0021c550(0);
+    second = func_0021c550(1);
+    firstMessage = !(datGetFlag_y2(0x1301) != 0);
+    unit = func_0030c0c0();
+    K_ASSERT(unit != NULL, 0x8c);
+    datSetFlag(*unit + 0x12c0, 1);
+    datSetFlag(0x1301, 1);
+    if (firstMessage) {
+        func_003c94e0(first);
+        func_003c7bc0(0, func_001775a0(1));
+        func_003c9790(0);
+        *(s32*)(work + 4) = 0;
+    } else {
+        func_003c72d0(second);
+        func_003c7bc0(0, func_00173220(actor));
+        func_003c7bc0(1, func_00173220(target));
+        func_003c7c20(2, (u16)result, 5);
+        func_003c7430(0);
+        *(s32*)(work + 4) = 1;
+    }
+    *(s16*)(work + 8) = result;
+    *(s16*)(work + 0xa) = actor;
+    *(s16*)(work + 0xc) = target;
+    *(u32*)work |= 1u;
+}
+
 // FUN_00249600
 u32 bpe00249600(void)
 {
@@ -40,47 +292,18 @@ u32 bpe00249600(void)
     return *sBpeWork & 1;
 }
 
-extern u32 datGetFlag(s32 flag);
-extern void* func_00198590(void);
-extern void* kwlnGetMainCamera_y2(void);
-extern void* func_00474210(u32 flags, u32 mode, void* parent);
-extern void** func_003210a0(s32 index);
-extern void* func_004caf10(void);
-extern void func_004caf80(void* resource);
-extern void func_00474640(void* resource, void** buffer, s32 type, u32 flags);
-extern void func_00492d10(void* resource, void* model);
-extern void func_004747f0(void* resource);
-extern u32 func_00488f30(void);
-extern void func_00494d50(void* material, void* texture);
-extern void* func_004cb2f0(void* model);
-extern void func_004c6be0(void* destination, const void* source, void* matrix);
-extern void func_00521250(void* destination, const void* source, u32 size);
-extern void func_005225a8(const void* name, ...);
-extern u32 DAT_007ce770;
-extern const u8 D_0068E880[];
-extern void* func_004c38c0(void);
-extern void func_004c32a0(void* destination, const void* source);
-extern void func_004cb750(void* frame, const void* translation, s32 mode);
-extern f32 sqrtf(f32 value);
-extern void func_004c3880(void* matrix);
-extern void func_004c3760(void* matrix, void* source, s32 mode);
-extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
-extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
-extern void RwV3dTransformPoint(void* out, const void* in, const void* matrix);
-
-
 // FUN_00249650
 u32 func_00249650(u32 flag)
 {
     return !datGetFlag((s32)(flag & 0xffffu) + 0x12c0);
 }
 
+/* Removing this worsens FUN_002496e0 (nd110 -> nd136) - measured W161. */
 // FUN_00249680
 void func_00249680(void* work)
 {
     *(u32*)((u8*)work + 0x604) = 0;
 }
-
 // FUN_00249690
 void FUN_00249690(void* work)
 {
@@ -93,7 +316,38 @@ void FUN_00249690(void* work)
     }
 }
 
-/* Removing this worsens FUN_002496e0 (nd110 -> nd136) - measured W161. */
+
+
+/* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
+/* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
+
+
+static void bpc324RenderState(u32 state, u32 value)
+{
+    gBpcRenderState(state, value);
+}
+
+static void bpc324Draw(void* quad, s32 pass, s32 blend)
+{
+    gBpcRenderQuad(quad, 4, 0, pass, blend);
+}
+
+static u32 bpc324Flags(void)
+{
+    K_ASSERT(sBpc324 != NULL, 0x3d);
+    return *sBpc324;
+}
+
+
+
+
+
+
+
+
+
+
+
 // FUN_002496E0
 #pragma opt_loop_invariants on
 void func_002496e0(void* work)
@@ -230,6 +484,7 @@ void func_002496e0(void* work)
     *(struct Vec3 *)(base + 0x608) = local.world;
     *(u32*)(base + 0x604) |= 1;
 }
+
 #pragma opt_loop_invariants off
 
 // FUN_00249C10 NONMATCHING
@@ -366,266 +621,19 @@ void func_00249c10(void* work)
 
 
 
-/* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
-extern u32* sBpc324; // 007CE324 / GP -0x49CC
-/* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
-u32* sBpc328;
-
-typedef void (*BpcRenderState)(s32 property, u32 value);
-typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
-extern BpcRenderState gBpcRenderState;
-extern BpcRenderQuad gBpcRenderQuad;
-extern u32 D_00960090_y2[];
-extern u32 D_0096009C_y2[];
-extern void RpSkyRenderStateSet(s32 state, u32 value);
-extern u32 func_0021c3f0(s32 texture);
-extern u32 func_0021cca0(u32 texture, s32 frame);
-extern u32 func_0021cce0(u32 frame);
-extern void* func_0021c550(s32 index);
-extern void func_0021d3b0(void* destination, u32 frame);
-extern void func_0021d8e0(void* destination, const f32* layout);
-extern void func_0021d950_y2(void* destination, const u8* color);
-extern void func_0021e380(void* destination, u32 frame, s32 mode);
-extern void* func_003a52c0(f32 angle, s32 width, s32 height, s32 first,
-                            s32 mode, s32 count, void* left, void* right);
-extern void func_003b0170(u32 resource);
-extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
-extern void func_003b1360(u32 resource, s32 mode, s32 group);
-extern void func_003b0d70(u32 resource, s32 x, s32 y);
-extern void func_003b0e20(u32 resource, u32 color);
-extern void func_003b0e70(s32 mode);
-extern void func_003b0e90(s32 mode);
-extern s32 func_003b19d0(u32 resource);
-extern void frFontSetTextScale(u32 resource, f32 angle);
-extern void func_003c72d0(void* resource);
-extern void func_003c7430(s32 mode);
-extern void func_003c7650(s32 mode);
-extern u32 func_003c7850(void);
-extern void func_003c7990(s32 mode);
-extern void func_003c7bc0(s32 mode, u32 value);
-extern void func_003c7c20(s32 mode, u32 value, s32 count);
-extern void func_003c77a0(void);
-extern u32 func_00173220(u16 value);
-extern u32 func_001775a0(u16 value);
-extern void func_003c94e0(void* resource);
-extern void func_003c9790(s32 mode);
-extern s32 datGetFlag_y2(s32 flag);
-extern void datSetFlag(s32 flag, u8 value);
-extern void* func_0030c0c0(void);
-
-static void bpc324RenderState(u32 state, u32 value)
-{
-    gBpcRenderState(state, value);
-}
-
-static void bpc324Draw(void* quad, s32 pass, s32 blend)
-{
-    gBpcRenderQuad(quad, 4, 0, pass, blend);
-}
-
-static u32 bpc324Flags(void)
-{
-    K_ASSERT(sBpc324 != NULL, 0x3d);
-    return *sBpc324;
-}
-
-void* FUN_00248f40(void*);
-void FUN_002491f0(void);
-void FUN_00248fc0(void*);
-
-
-
-
-
-
-
-
-
-
-// FUN_002492B0
-void FUN_002492b0(void)
-{
-    u8* work;
-    void* cursor;
-    s32 mode;
-
-    K_ASSERT(sBpc328 != NULL, 0x37);
-    work = (u8*)sBpc328;
-    if (!(~(*(u32*)work) & 1u)) {
-        cursor = func_0021c550(1);
-        mode = *(s32*)(work + 4);
-        switch (mode) {
-        case 0:
-            func_003c7990(0);
-            if (func_003c7850() == 0) {
-                func_003c7650(0);
-                func_003c77a0();
-                func_003c72d0(cursor);
-                func_003c7bc0(0, func_00173220(*(u16*)(work + 0xa)));
-                func_003c7bc0(1, func_00173220(*(u16*)(work + 0xc)));
-                func_003c7c20(2, *(u16*)(work + 8), 5);
-                func_003c7430(0);
-                *(s32*)(work + 4) = 1;
-                return;
-            }
-            break;
-        case 1:
-            func_003c7990(1);
-            if (func_003c7850() == 0) {
-                func_003c7650(1);
-                func_003c77a0();
-                *(u32*)work &= ~1u;
-            }
-            break;
-        }
-    }
-}
-
-// FUN_00249420
-void FUN_00249420(u16 result, u16 actor, u16 target)
-{
-    u8* work;
-    void* first;
-    void* second;
-    u16* unit;
-    s32 firstMessage;
-
-    K_ASSERT(sBpc328 != NULL, 0x37);
-    work = (u8*)sBpc328;
-    first = func_0021c550(0);
-    second = func_0021c550(1);
-    firstMessage = !(datGetFlag_y2(0x1301) != 0);
-    unit = func_0030c0c0();
-    K_ASSERT(unit != NULL, 0x8c);
-    datSetFlag(*unit + 0x12c0, 1);
-    datSetFlag(0x1301, 1);
-    if (firstMessage) {
-        func_003c94e0(first);
-        func_003c7bc0(0, func_001775a0(1));
-        func_003c9790(0);
-        *(s32*)(work + 4) = 0;
-    } else {
-        func_003c72d0(second);
-        func_003c7bc0(0, func_00173220(actor));
-        func_003c7bc0(1, func_00173220(target));
-        func_003c7c20(2, (u16)result, 5);
-        func_003c7430(0);
-        *(s32*)(work + 4) = 1;
-    }
-    *(s16*)(work + 8) = result;
-    *(s16*)(work + 0xa) = actor;
-    *(s16*)(work + 0xc) = target;
-    *(u32*)work |= 1u;
-}
-
-
-#include "Main/Social/sfl_res.h"
-
 /* The Ground task owns this 0x8780-byte Social work area. */
-static u32* sSflGround; // puGpffffb624 / DAT_007ce314
 /* 0x0023D7A0 onward is Panel: it switches to DAT_007CE318 and sfl_panel.c asserts. */
 
-typedef struct SflGroundVec2
-{
-    f32 x;
-    f32 y;
-} SflGroundVec2;
-
-typedef struct SflGroundColor
-{
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-} SflGroundColor;
-typedef struct SflGroundViewport
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;
-    s32 width;
-    s32 height;
-} SflGroundViewport;
-typedef struct SflGroundTile
-{
-    u8 pad0[8];
-    f32 color;
-    u8 pad0c[12];
-    f32 scale;
-    u32 white0;
-    u32 white1;
-    u32 white2;
-    u32 white3;
-} SflGroundTile;
-
-typedef void (*SflGroundTickCallback)(void* owner);
-typedef void (*SflGroundRenderStateCallback)(u32 selector, u32 value);
-typedef void (*SflGroundRenderQuadCallback)(void* vertices, u32 count,
-                                             u32 group, u32 pass, u32 blend);
-
-#define GROUND_TILE(work, offset) ((SflGroundTile*)GROUND_PTR((work), (offset)))
-#define GROUND_PTR(work, offset) ((void*)((u8*)(work) + (offset)))
-#define GROUND_U32(work, offset) (*(u32*)GROUND_PTR((work), (offset)))
-#define GROUND_F32(work, offset) (*(f32*)GROUND_PTR((work), (offset)))
-
-enum
-{
-    SFL_GROUND_WORK_SIZE = 0x8780,
-    SFL_GROUND_PANEL_OFFSET = 0x110,
-    SFL_GROUND_PANEL_STRIDE = 0x200,
-    SFL_GROUND_PARTICLE_OFFSET = 0xD10,
-    SFL_GROUND_PARTICLE_STRIDE = 0x130,
-    SFL_GROUND_TILE_OFFSET = 0x6B00,
-    SFL_GROUND_TILE_STRIDE = 0x40
-};
-
-extern const f32 D_00960088;
-extern const u32 D_00960090[];
-#pragma alias D_00960090_abs D_00960090
-extern u8 D_00960090_abs[];
-#pragma alias D_0096009C_abs D_0096009C
-extern u8 D_0096009C_abs[];
-extern const u32 D_0096009C[];
-extern const SflGroundVec2 D_0068E7C0[];
-extern f32 gPI;
-extern void (*D_009600A4)(u32, void*, u32, void*, u32);
-
-void FUN_00249690_y2();
-void* H_Maestro_001120a0(s32 font);
-void func_00249680_y2(void* work);
 
 
 
-void FUN_0023d2a0();
-void FUN_0023d650();
-void func_002496e0_y2();
-void func_00249c10_y2();
-void func_0024a180();
-void func_0024a230();
-void* kwlnGetMainCamera();
-void func_0021d890(void* destination, const void* layout);
-void func_0021d8e0_y2(void* destination, const void* rect);
-void func_0021d950(void* destination, const void* color);
-void func_0021e170(void* destination, const void* center,
-                   const void* direction, const void* size);
-void func_0021eb80(void* destination, const f32* layout);
-f32 func_0052ea18(f32 y, f32 x);
-f32 func_00269c80(f32 value);
-f32 func_00269ca0(f32 value);
-u32 RpRandom();
-f32 func_0052e878(f32 angle);
-f32 func_0052e6d8(f32 angle);
-f32 cosf(f32 angle);
-f32 sinf(f32 angle);
-void func_002392d0();
-void func_0023b990();
-void func_0023c280();
-void func_0023c3a0();
-void func_0023c520();
-void func_0023c850();
 
-static void sflGroundCallState(u32 selector, u32 value);
-static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value);
+
+
+
+
+
+
 // FUN_0024A180
 void func_0024a180(u32* work)
 {
@@ -663,12 +671,6 @@ void func_0024a230(void* work, const volatile /* Removing this qualifier loses f
     ((u8*)work)[0x616] = b;
     ((u8*)work)[0x617] = a;
 }
-void func_0023c8c0();
-void func_0023ca10();
-void func_0023cda0();
-void func_0023d130();
-void func_0023d2a0();
-void func_0023d650();
 
 static f32 sflGroundClamp01(f32 value)
 {

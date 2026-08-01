@@ -3,6 +3,27 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 
+void kwlnInitGameData(void);
+u32 opRootCreateTask(KwlnTask* task);
+extern u32 H_Malloc();
+extern u32 kwlnCreateTaskWithAutoPriority();
+extern u32 kwlnInitTaskEx();
+extern void kwlnAddTaskChild();
+extern void kwlnSetClearColor();
+extern void opResInit();
+extern void opLogoInit();
+extern void opTitleInit();
+extern void opWaitInit();
+extern void opMenuInit();
+extern void opFadeInit();
+extern void opFadeSetColor();
+extern void opFadeIn();
+extern void H_Fade_FadeIn();
+extern void H_Fade_SetType();
+extern void H_Fade_SetDuration();
+extern void opResRequestLogo();
+
+
 #pragma alias gmRootStartOpeningTask FUN_002663c0
 #pragma alias gmRootStartCalendarTask FUN_00266430
 #pragma alias opRootCreateTask FUN_00265c20
@@ -170,52 +191,6 @@ static inline KwlnTask* createTask(KwlnTask* parent)
     return task;
 }
 
-// FUN_002664c0
-KwlnTask* gmRootCreateTask(KwlnTask* parent)
-{
-    GmRootWork* work;
-    KwlnTask* task;
-
-    task = createTask(parent);
-
-    K_ASSERT(sWork != NULL, 90);
-
-    work = sWork;
-    work->chkMemcardTask = func_00188860(work->task);
-    work->unk_04 = 0;
-    work->flags |= GMROOT_FLAG_ACTIVE;
-
-    return task;
-}
-
-// FUN_00266590
-void* gmRootUpdateTask(KwlnTask* gmRootTask)
-{
-    gmRootUpdate();
-
-    K_ASSERT(sWork != NULL, 90);
-
-    if (sWork->flags & GMROOT_FLAG_ACTIVE)
-    {
-        return KWLNTASK_CONTINUE;
-    }
-
-    return KWLNTASK_STOP;
-}
-
-// FUN_00266600
-void gmRootDestroyTask(KwlnTask* gmRootTask)
-{
-    K_ASSERT(sWork != NULL, 90);
-
-    sWork = NULL;
-    RwFree(gmRootTask->workData);
-}
-
-
-void kwlnInitGameData(void);
-u32 opRootCreateTask(KwlnTask* task);
-
 // FUN_002663c0
 void gmRootStartOpeningTask(void)
 {
@@ -242,23 +217,50 @@ void gmRootStartCalendarTask(void)
     work->flags |= GMROOT_FLAG_UNK4;
     work->unk_04 = 2;
 }
-extern u32 H_Malloc();
-extern u32 kwlnCreateTaskWithAutoPriority();
-extern u32 kwlnInitTaskEx();
-extern void kwlnAddTaskChild();
-extern void kwlnSetClearColor();
-extern void opResInit();
-extern void opLogoInit();
-extern void opTitleInit();
-extern void opWaitInit();
-extern void opMenuInit();
-extern void opFadeInit();
-extern void opFadeSetColor();
-extern void opFadeIn();
-extern void H_Fade_FadeIn();
-extern void H_Fade_SetType();
-extern void H_Fade_SetDuration();
-extern void opResRequestLogo();
+
+// FUN_002664c0
+KwlnTask* gmRootCreateTask(KwlnTask* parent)
+{
+    GmRootWork* work;
+    KwlnTask* task;
+
+    task = createTask(parent);
+
+    K_ASSERT(sWork != NULL, 90);
+
+    work = sWork;
+    work->chkMemcardTask = func_00188860(work->task);
+    work->unk_04 = 0;
+    work->flags |= GMROOT_FLAG_ACTIVE;
+
+    return task;
+}
+
+
+
+// FUN_00266590
+void* gmRootUpdateTask(KwlnTask* gmRootTask)
+{
+    gmRootUpdate();
+
+    K_ASSERT(sWork != NULL, 90);
+
+    if (sWork->flags & GMROOT_FLAG_ACTIVE)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    return KWLNTASK_STOP;
+}
+
+// FUN_00266600
+void gmRootDestroyTask(KwlnTask* gmRootTask)
+{
+    K_ASSERT(sWork != NULL, 90);
+
+    sWork = NULL;
+    RwFree(gmRootTask->workData);
+}
 
 
 // FUN_00266660
