@@ -463,155 +463,6 @@ extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int 
 #define FUN_003a8650(...) ((void (*)(...))FUN_003a8650)(__VA_ARGS__)
 #define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
 
-// FUN_003a2d80
-s32 itfMesMngInitialize(BmdHeader* bmdHeader)
-{
-    void* system;
-    s32 result;
-    ItfMes* mes;
-    s32 slot;
-
-    K_ASSERT(itfMesMngCheckBmdMagic(bmdHeader) == 1, 0x69d);
-
-    system = FUN_003b49a0(D_00959ED0);
-    K_ASSERT(system != NULL, 0x6a1);
-
-    result = *(s32*)((u8*)system + 8);
-    mes = (ItfMes*)(u32)FUN_003a2ef0_typed(bmdHeader);
-    K_ASSERT(system != NULL && mes != NULL, 0x66d);
-
-    for (slot = 0; slot < 4; slot++)
-    {
-        u8* entry = (u8*)system + slot * 8;
-        ItfMes** slotPtr = (ItfMes**)(entry + 0x14);
-        if (*(u32*)(entry + 0x14) == 0)
-        {
-            *(ItfMes**)(entry + 0x18) = mes;
-            *slotPtr = mes;
-            goto found;
-        }
-    }
-    slot = -1;
-found:
-    K_ASSERT(slot == 0, 0x6a8);
-
-    FUN_003a2c90_typed(system, slot);
-    D_00959EC0[0]++;
-    FUN_005225a8(D_006A1AC0, *(s16*)((u8*)mes + 0x12));
-    return result;
-}
-
-// FUN_003a3060
-void itfMesMngDestroyHandle(s32 mesHandleIdx)
-{
-    if (mesHandleIdx >= 0
-        && *(ItfMes**)((u8*)&sItfMesHandleSystem
-                       + mesHandleIdx * ITFMES_HANDLE_STRIDE
-                       + ITFMES_HANDLE_ACTIVE_MES_OFFSET) != NULL)
-    {
-        FUN_003a4dd0_typed(mesHandleIdx);
-    }
-}
-
-// FUN_003a4990
-void itfMesMngChangeWindowType(s32 mesHandleIdx, s32 type, u32 param_3)
-{
-    ItfMes* mes;
-    u8* window;
-
-    mes = *(ItfMes**)((u8*)&sItfMesHandleSystem
-                      + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    window = (u8*)mes + 0xa8;
-
-    if ((*(u32*)mes & 0x3300) == 0)
-    {
-        if (*(s16*)((u8*)mes + 0x12) != type ||
-            *(u32*)(window + 0x28) != param_3)
-        {
-            *(s16*)&mes->unkData[0x12] = type;
-            FUN_005225a8(D_006A1B30, type);
-            FUN_003a6ca0_direct((u32)&mes->unkData[0xa8], type, param_3);
-            if (*(u32*)(window + 4) != 0)
-            {
-                FUN_003a8d60(*(u32*)(window + 4));
-                *(u32*)(window + 4) = 0;
-            }
-        }
-    }
-}
-
-// FUN_003a5090
-u32 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader)
-{
-    s8 isMagicValid;
-
-    isMagicValid = true;
-    switch (bmdHeader->magic)
-    {
-        case BMD_HEADER_MAGIC1:
-        case BMD_HEADER_MAGIC0: break;
-
-        default: isMagicValid = false;
-    }
-    
-    if (isMagicValid)
-    {
-        return true;
-    }
-    
-    return false;
-}
-
-// FUN_003a3ba0
-void itfMesMng003a3ba0(s32 mesHandleIdx, u32 param_2)
-{
-    int iVar1;
-
-    iVar1 = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    K_ASSERT(iVar1 != 0, 0x956);
-    *(u32*)(iVar1 + 0x50) = param_2;
-}
-
-// FUN_003a3e10
-void itfMesMng003a3e10(s32 mesHandleIdx, u32 param_2)
-{
-    u32* puVar1;
-
-    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    K_ASSERT(puVar1 != NULL, 0xa81);
-    *puVar1 |= param_2 & 0xffff0000;
-}
-
-// FUN_003a3e90
-void itfMesMng003a3e90(s32 mesHandleIdx, u32 param_2)
-{
-    u32* puVar1;
-
-    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    K_ASSERT(puVar1 != NULL, 0xa96);
-    *puVar1 &= ~(param_2 & 0xffff0000);
-}
-
-// FUN_003a3da0
-u32 itfMesMng003a3da0(s32 mesHandleIdx)
-{
-    u32* p;
-
-    p = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    K_ASSERT(p != NULL, 0xa54);
-    return *p;
-}
-
-// FUN_003a3f20
-s16 itfMesMng003a3f20(s32 mesHandleIdx)
-{
-    int p;
-
-    p = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
-    K_ASSERT(p != 0, 0xaa9);
-    return *(s16*)(p + 0x56);
-}
-
 #undef FUN_003a2150
 #pragma alias FUN_003a4360_typed FUN_003a4360
 extern void FUN_003a4360_typed(s32 param_1, s32 param_2);
@@ -1251,6 +1102,43 @@ int FUN_003a2c90(int param_1,int param_2)
 }
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
 #undef FUN_003a2ef0
+// FUN_003a2d80
+s32 itfMesMngInitialize(BmdHeader* bmdHeader)
+{
+    void* system;
+    s32 result;
+    ItfMes* mes;
+    s32 slot;
+
+    K_ASSERT(itfMesMngCheckBmdMagic(bmdHeader) == 1, 0x69d);
+
+    system = FUN_003b49a0(D_00959ED0);
+    K_ASSERT(system != NULL, 0x6a1);
+
+    result = *(s32*)((u8*)system + 8);
+    mes = (ItfMes*)(u32)FUN_003a2ef0_typed(bmdHeader);
+    K_ASSERT(system != NULL && mes != NULL, 0x66d);
+
+    for (slot = 0; slot < 4; slot++)
+    {
+        u8* entry = (u8*)system + slot * 8;
+        ItfMes** slotPtr = (ItfMes**)(entry + 0x14);
+        if (*(u32*)(entry + 0x14) == 0)
+        {
+            *(ItfMes**)(entry + 0x18) = mes;
+            *slotPtr = mes;
+            goto found;
+        }
+    }
+    slot = -1;
+found:
+    K_ASSERT(slot == 0, 0x6a8);
+
+    FUN_003a2c90_typed(system, slot);
+    D_00959EC0[0]++;
+    FUN_005225a8(D_006A1AC0, *(s16*)((u8*)mes + 0x12));
+    return result;
+}
 // FUN_003A2EF0
 
 
@@ -1347,6 +1235,17 @@ u32 FUN_003a3010(int param_1)
 }
 #define FUN_003a3010(...) ((u32 (*)(...))FUN_003a3010)(__VA_ARGS__)
 #undef FUN_003a30c0
+// FUN_003a3060
+void itfMesMngDestroyHandle(s32 mesHandleIdx)
+{
+    if (mesHandleIdx >= 0
+        && *(ItfMes**)((u8*)&sItfMesHandleSystem
+                       + mesHandleIdx * ITFMES_HANDLE_STRIDE
+                       + ITFMES_HANDLE_ACTIVE_MES_OFFSET) != NULL)
+    {
+        FUN_003a4dd0_typed(mesHandleIdx);
+    }
+}
 // FUN_003A30C0 NONMATCHING
 
 
@@ -1538,6 +1437,15 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
 }
 #define FUN_003a30c0(...) ((u32 (*)(...))FUN_003a30c0)(__VA_ARGS__)
+
+
+
+
+
+
+
+
+
 #undef FUN_003a3420
 #undef FUN_003a3470
 // FUN_003A3420
@@ -1900,6 +1808,15 @@ void FUN_003a3b00(u8 *param_1)
 }
 #define FUN_003a3b00(...) ((void (*)(...))FUN_003a3b00)(__VA_ARGS__)
 #undef FUN_003a3c10
+// FUN_003a3ba0
+void itfMesMng003a3ba0(s32 mesHandleIdx, u32 param_2)
+{
+    int iVar1;
+
+    iVar1 = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(iVar1 != 0, 0x956);
+    *(u32*)(iVar1 + 0x50) = param_2;
+}
 // FUN_003A3C10
 
 
@@ -2012,6 +1929,42 @@ void FUN_003a3ce0(int param_1,int param_2,int param_3)
 }
 #define FUN_003a3ce0(...) ((void (*)(...))FUN_003a3ce0)(__VA_ARGS__)
 #undef FUN_003a3f90
+// FUN_003a3da0
+u32 itfMesMng003a3da0(s32 mesHandleIdx)
+{
+    u32* p;
+
+    p = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(p != NULL, 0xa54);
+    return *p;
+}
+// FUN_003a3e10
+void itfMesMng003a3e10(s32 mesHandleIdx, u32 param_2)
+{
+    u32* puVar1;
+
+    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(puVar1 != NULL, 0xa81);
+    *puVar1 |= param_2 & 0xffff0000;
+}
+// FUN_003a3e90
+void itfMesMng003a3e90(s32 mesHandleIdx, u32 param_2)
+{
+    u32* puVar1;
+
+    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(puVar1 != NULL, 0xa96);
+    *puVar1 &= ~(param_2 & 0xffff0000);
+}
+// FUN_003a3f20
+s16 itfMesMng003a3f20(s32 mesHandleIdx)
+{
+    int p;
+
+    p = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(p != 0, 0xaa9);
+    return *(s16*)(p + 0x56);
+}
 // FUN_003A3F90
 
 
@@ -2510,6 +2463,32 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 #undef FUN_003a4a70
 // W295: addu orientation fell to container-cast base-first form + load-to-temp compare
 // (sVal = ((ItfMesChoiceWork *)((u8 *)work + i * 4))->entries[0].type) - not a floor.
+// FUN_003a4990
+void itfMesMngChangeWindowType(s32 mesHandleIdx, s32 type, u32 param_3)
+{
+    ItfMes* mes;
+    u8* window;
+
+    mes = *(ItfMes**)((u8*)&sItfMesHandleSystem
+                      + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    window = (u8*)mes + 0xa8;
+
+    if ((*(u32*)mes & 0x3300) == 0)
+    {
+        if (*(s16*)((u8*)mes + 0x12) != type ||
+            *(u32*)(window + 0x28) != param_3)
+        {
+            *(s16*)&mes->unkData[0x12] = type;
+            FUN_005225a8(D_006A1B30, type);
+            FUN_003a6ca0_direct((u32)&mes->unkData[0xa8], type, param_3);
+            if (*(u32*)(window + 4) != 0)
+            {
+                FUN_003a8d60(*(u32*)(window + 4));
+                *(u32*)(window + 4) = 0;
+            }
+        }
+    }
+}
 // FUN_003A4A70
 
 
@@ -2771,6 +2750,27 @@ void FUN_003a5030(int object)
 }
 #define FUN_003a5030(...) ((void (*)(...))FUN_003a5030)(__VA_ARGS__)
 #undef FUN_003a50e0
+// FUN_003a5090
+u32 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader)
+{
+    s8 isMagicValid;
+
+    isMagicValid = true;
+    switch (bmdHeader->magic)
+    {
+        case BMD_HEADER_MAGIC1:
+        case BMD_HEADER_MAGIC0: break;
+
+        default: isMagicValid = false;
+    }
+    
+    if (isMagicValid)
+    {
+        return true;
+    }
+    
+    return false;
+}
 // FUN_003A50E0
 
 
