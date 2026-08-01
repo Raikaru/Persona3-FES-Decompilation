@@ -32,6 +32,7 @@
  * and matches are both required for a byte-identical link, so a candidate that
  * trades one for the other is simply wrong and must be fixed, not shipped. */
 #include "Camp/h_camp.h"
+extern u32 FUN_0011abd0();
 extern int sprintf(char* buffer, const char* format, ...);
 #include "Camp/_h_camp_status.h"
 #include "Kernel/Kwln/kwlnTask.h"
@@ -5536,6 +5537,1030 @@ static inline void campStatusResetPersonaAnimations(void* records)
  * 0x131504/0x1315f0/0x13169c/0x1316e8. */
 
 
+#pragma alias FUN_00125b40_persona FUN_00125b40
+#pragma alias DAT_00960090_persona DAT_00960090
+#pragma alias FUN_00114450_persona FUN_00114450
+#pragma alias H_Cdvd_Destroy_persona H_Cdvd_Destroy
+#pragma alias RpSkyRenderStateSet_persona RpSkyRenderStateSet
+#define FUN_00125b40 FUN_00125b40_persona
+#define DAT_00960090 DAT_00960090_persona
+#define FUN_00114450 FUN_00114450_persona
+#define H_Cdvd_Destroy H_Cdvd_Destroy_persona
+#define RpSkyRenderStateSet RpSkyRenderStateSet_persona
+extern void RpSkyRenderStateSet_persona();
+
+#include "Camp/_h_camp_persona.h"
+#include "libm.h"
+
+
+
+
+#pragma alias FUN_001120a0_y7 FUN_001120a0
+#pragma alias FUN_0017d8b0_y7 FUN_0017d8b0
+#pragma alias FUN_0017dae0_y7 FUN_0017dae0
+#pragma alias FUN_0017da40_y7 FUN_0017da40
+#pragma alias DAT_0083aaa0_y7 DAT_0083aaa0
+#pragma alias FUN_001158b0_y7 FUN_001158b0_y7
+#pragma alias FUN_00115980_y7 FUN_00115980_y7
+#pragma alias FUN_0016f190_y7 FUN_0016f190_y7
+#pragma alias FUN_0017d800_y7 FUN_0017d800_y7
+#pragma alias FUN_0017ae30_y7 FUN_0017ae30_y7
+#pragma alias FUN_0012df50_y7 FUN_0012df50_y7
+#pragma alias FUN_00173220_y7 FUN_00173220_y7
+#pragma alias FUN_003b2cb0_y7 FUN_003b2cb0_y7
+#pragma alias FUN_003b32d0_y7 FUN_003b32d0_y7
+#pragma alias FUN_003c7e20_y7 FUN_003c7e20_y7
+#pragma alias FUN_0040eb50_y7 FUN_0040eb50_y7
+#pragma alias FUN_00523ac8_y7 FUN_00523ac8_y7
+#pragma alias DAT_005e3b5e_y7 DAT_005e3b5e_y7
+
+
+#pragma alias FUN_00115bc0_y6 FUN_00115bc0
+#pragma alias FUN_0016c5f0_y6 FUN_0016c5f0
+#pragma alias FUN_00100d80_y6 FUN_00100d80_y6
+#pragma alias FUN_001016b0_y6 FUN_001016b0_y6
+#pragma alias FUN_00102100_y6 FUN_00102100_y6
+#pragma alias FUN_00111f30_y6 FUN_00111f30_y6
+#pragma alias FUN_001158b0_y6 FUN_001158b0_y6
+#pragma alias FUN_00115980_y6 FUN_00115980_y6
+#pragma alias FUN_001127d0_y6 FUN_001127d0_y6
+#pragma alias FUN_0011e380_y6 FUN_0011e380_y6
+#pragma alias func_001712d0_y6 func_001712d0_y6
+#pragma alias FUN_0010a4e0_y6 FUN_0010a4e0_y6
+#pragma alias FUN_0011abd0_y6 FUN_0011abd0_y6
+#pragma alias FUN_0016c4f0_y6 FUN_0016c4f0_y6
+#pragma alias FUN_0016c570_y6 FUN_0016c570_y6
+#pragma alias FUN_0016f630_y6 FUN_0016f630_y6
+#pragma alias FUN_0016f810_y6 FUN_0016f810_y6
+#pragma alias FUN_0016f900_y6 FUN_0016f900_y6
+#pragma alias FUN_0012df50_y6 FUN_0012df50_y6
+#pragma alias FUN_003b2cb0_y6 FUN_003b2cb0_y6
+#pragma alias FUN_003c7e20_y6 FUN_003c7e20_y6
+#pragma alias DAT_007cdf50_y6 DAT_007cdf50_y6
+#pragma alias DAT_007e0952_y6 DAT_007e0952_y6
+#pragma alias DAT_007e095a_y6 DAT_007e095a_y6
+#pragma alias DAT_007e094e_y6 DAT_007e094e_y6
+
+
+void* FUN_00122940_y5(KwlnTask*);
+void FUN_00133d30_y5();
+void FUN_004d0f00_y5();
+extern void FUN_00124e00(CampVec2 position, CampVec2 otherPosition,
+                         f32 alpha, void* persona,
+                         s32 mode, s32 frame, s32 fade);
+extern void* FUN_00173220_y5(u16 personaId);
+extern u8 FUN_00173280_y5(s32 personaId);
+extern s32 FUN_00176600(void* persona);
+extern s32 FUN_00177790_y5();
+extern s32 FUN_001159f0_y5(f32 x, f32 y, f32 alpha, ...);
+#pragma alias campPersonaDrawSprite FUN_001159f0_y5
+extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
+                                  f32 x, f32 y, u8 alpha, f32 scale);
+extern void (*DAT_00960090)(s32 state, s32 value);
+extern f32 FUN_001126b0(void* particle);
+extern f32 FUN_00112740(void* particle);
+extern s32 FUN_00114450(f32 x, f32 y, f32 z, s32 a, s32 b, s32 c,
+                        s32 d);
+extern s32 FUN_0011bba0(s32 a, s32 b, f32 z, s32 c, s32 d);
+extern s32 FUN_001158b0_y5();
+extern s32 FUN_00115980_y5();
+#pragma alias campPersonaDrawTextCall FUN_003b32d0
+extern s32 campPersonaDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
+                                   s32 font, s32 alignment, const char* text,
+                                   s32 maxWidth, s32 shadow);
+extern KwlnTask* DAT_007cdf60;
+#pragma alias DAT_00833B78_abs DAT_00833B78
+extern u8 DAT_00833B78_abs[];
+extern void* h_campUpdatePanelTransition_y5(KwlnTask* task);
+
+
+typedef struct CampPersonaKaniWork
+{
+    s32 state;
+    s32 reserved04;
+    s32 timer;
+    s32 command;
+    void* persona;
+    s32 visible;
+    u16 personaId;
+    s16 screen;
+} CampPersonaKaniWork;
+
+// FUN_00122630
+void FUN_00122630(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+// FUN_00122660
+KwlnTask* FUN_00122660(KwlnTask* parent)
+{
+    CampPanelTransitionWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(*work), 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampPanelTransition", 0x18C1,
+                          h_campUpdatePanelTransition_y5, FUN_00122630, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    work->unused_0c = 0;
+    work->drawId = 1;
+    return task;
+}
+// FUN_00122710
+u32 FUN_00122710(KwlnTask* task, u32 command)
+{
+    CampPanelTransitionWork* work;
+
+    work = task->workData;
+    switch (command) {
+    case 0:
+        work->state = 5;
+        break;
+    case 1:
+        switch (work->unused_0c) {
+        case 0:
+            work->state = 1;
+            break;
+        case 1:
+        case 10:
+        case 14:
+            break;
+        case 2:
+            work->state = 3;
+            break;
+        case 3:
+            work->state = 13;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 11:
+        case 12:
+        case 13:
+        case 15:
+        case 16:
+            work->state = 3;
+            break;
+        }
+        break;
+    case 2:
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        case 3:
+            work->state = 11;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 13:
+            work->state = 3;
+            break;
+        }
+        break;
+    case 3:
+        switch (work->unused_0c) {
+        case 0:
+        case 1:
+        case 3:
+        case 5:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        case 2:
+            work->state = 9;
+            break;
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 13:
+            work->state = 3;
+            break;
+        }
+        break;
+    case 4:
+    case 5:
+    case 6:
+        switch (work->unused_0c) {
+        case 0:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        case 2:
+            work->state = 5;
+            break;
+        case 3:
+            work->state = 5;
+            break;
+        }
+        break;
+    case 7:
+    case 8:
+    case 9:
+    case 15:
+    case 16:
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        }
+        break;
+    case 10:
+    case 11:
+    case 12:
+    case 14:
+        break;
+    case 13:
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 1:
+            work->state = 7;
+            break;
+        }
+        break;
+    }
+    work->unused_0c = command;
+    return 1;
+}
+// FUN_00122940_y5 NONMATCHING
+void* FUN_00122940_y5(KwlnTask* task)
+{
+    s32 alpha;
+    f32 displacement;
+    CampVec2 position;
+    CampVec2 otherPosition;
+    CampPersonaKaniWork* work;
+
+    work = task->workData;
+    work->persona = (void*)FUN_00174800(work->personaId);
+    switch (work->state) {
+    case 0:
+        if (work->visible != 0) {
+            switch (work->screen) {
+            case 0:
+                position.x = 12.0f;
+                position.y = 96.0f;
+                otherPosition = position;
+                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+                break;
+            case 1:
+                position.x = 30.0f;
+                position.y = 219.0f;
+                otherPosition = position;
+                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+                break;
+            }
+        }
+        break;
+    case 1:
+        work->state = 2;
+        work->timer = 0;
+        break;
+    case 2:
+        if (++work->timer == 30) {
+            work->screen = 0;
+            work->state = 0;
+        }
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 0, work->timer, 0);
+        work->visible = 1;
+        break;
+    case 3:
+        work->state = 4;
+        work->timer = 0;
+        break;
+    case 4:
+        if (++work->timer == 20) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 0;
+        }
+        alpha = 0xFF - work->timer * 0xFF / 20;
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
+        break;
+    case 5:
+        if (work->visible == 0) {
+            work->state = 0;
+        } else {
+            work->timer = 0;
+            position.x = 30.0f;
+            position.y = 219.0f;
+            otherPosition = position;
+            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+            work->state = 6;
+        }
+        break;
+    case 6:
+        if (++work->timer == 20) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 0;
+        }
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
+                      work->timer * 0xFF / 20);
+        break;
+    case 7:
+        if (work->visible == 0) {
+            work->state = 0;
+        } else {
+            work->timer = 0;
+            position.x = 30.0f;
+            position.y = 219.0f;
+            otherPosition = position;
+            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+            work->state = 8;
+        }
+        break;
+    case 8:
+        if (++work->timer == 8) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 0;
+        }
+        displacement = 30.0f;
+        alpha = 0;
+        if (work->timer > 2) {
+            displacement += (work->timer - 2) * 80.0f;
+            alpha = (work->timer - 2) * 0xFF / 5;
+        }
+        position.x = displacement;
+        position.y = 219.0f;
+        otherPosition.x = 30.0f;
+        otherPosition.y = 219.0f;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
+        break;
+    case 9:
+        work->state = 10;
+        work->timer = 0;
+        /* fall through */
+    case 10:
+        if (++work->timer == 10) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 1;
+        }
+        displacement = 12.0f + (10 - work->timer) * 40.0f;
+        position.x = displacement;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
+                      0xFF - work->timer * 0xFF / 10);
+        break;
+    case 11:
+        work->state = 12;
+        work->timer = 0;
+        /* fall through */
+    case 12:
+        if (++work->timer == 10) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 1;
+        }
+        displacement = 12.0f + work->timer * 80.0f;
+        position.x = displacement;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
+                      work->timer * 0xFF / 10);
+        break;
+    case 13:
+        work->state = 14;
+        work->timer = 0;
+        /* fall through */
+    case 14:
+        if (++work->timer == 20) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 0;
+        }
+        alpha = work->timer * 0xFF / 20;
+        position.x = 12.0f;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
+                     0xFF - alpha);
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+// FUN_00122fd0. Destroy callback of the "h_camp_persona_kani_control" task
+void h_campPersonaDestroyKaniControlTask(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
+// FUN_00123000
+KwlnTask* h_campPersonaCreateKaniControlTask(KwlnTask* parent, u32 param_2)
+{
+    u32* workData;
+    KwlnTask* task;
+
+    workData = (u32*)RwCalloc(1, 0x1c, 0x40000);
+    if (workData == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "h_camp_persona_kani_control", 0x18c1, FUN_00122940_y5, h_campPersonaDestroyKaniControlTask, workData);
+    if (task == NULL) {
+        return NULL;
+    }
+    workData[3] = 0;
+    workData[4] = param_2;
+    *(u16*)((int)workData + 0x18) = 1;
+    return task;
+}
+
+
+
+
+
+typedef struct CampPersonaTransitionWork
+{
+    s32 state;
+    s16 mode;
+    s16 timer;
+} CampPersonaTransitionWork;
+
+typedef struct CampPersonaParticle
+{
+    u8 reserved00[0x10];
+    f32 x;
+    f32 y;
+    s8 alpha;
+    u8 reserved19[0xf];
+    u16 scaleX;
+    u16 scaleY;
+    f32 drawAlpha;
+} CampPersonaParticle;
+
+static s32 campPersonaClampFade(s32 fade)
+{
+    if (fade < 0) {
+        return 0;
+    }
+    if (fade > 0xff) {
+        return 0xff;
+    }
+    return fade;
+}
+
+static void campPersonaDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
+{
+    FUN_001120a0_y7(2);
+    FUN_001159f0_y5(x, y, alpha, digit);
+}
+
+static void campPersonaDrawLevel(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
+{
+    u8 level;
+    s32 bright;
+
+    if (persona == NULL) {
+        return;
+    }
+    level = *((u8*)persona + 4);
+    bright = campPersonaClampFade(fade);
+    if (level < 10) {
+        campPersonaDrawDigit(alpha, x + 75.0f, y + 127.0f, level);
+    } else {
+        campPersonaDrawDigit(alpha, x + 67.0f, y + 127.0f, level / 10);
+        campPersonaDrawDigit(alpha, x + 82.0f, y + 127.0f, level % 10);
+    }
+}
+
+static void campPersonaDrawName(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
+{
+    char text[0x100];
+    void* name;
+    s32 bright;
+
+    if (persona == NULL) {
+        return;
+    }
+    name = FUN_00173220_y5(*(u16*)((u8*)persona + 2));
+    FUN_00523ac8(text, (void*)0x7cb66c, name);
+    bright = campPersonaClampFade(fade);
+    FUN_003b32d0(alpha, (s32)(x + 111.0f), (s32)(y + 122.0f),
+                 bright | 0xffffff00, 10, 1, text, 0x10, 0x74);
+}
+
+static void campPersonaDrawEffectParticle(f32 alpha, f32 x, f32 y,
+                                           s32 slot, s32 scale)
+{
+    CampPersonaParticle* particle;
+
+    particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, slot);
+    if (particle == NULL) {
+        return;
+    }
+    *(void**)((u8*)particle + 0x2c) = DAT_00833B90;
+    particle->x = x;
+    particle->y = y;
+    particle->alpha = (s8)campPersonaClampFade((s32)alpha);
+    particle->scaleX = (u16)scale;
+    particle->scaleY = (u16)scale;
+    FUN_001127d0(particle, 0);
+    FUN_00115980_y5(particle);
+}
+
+// FUN_00124E00
+void FUN_00124e00(CampVec2 position, CampVec2 otherPosition, f32 alpha,
+                  void* persona, s32 mode, s32 frame, s32 fade)
+{
+    if (mode == 1) {
+        goto drawStatus;
+    }
+    switch (mode) {
+    case 0:
+        FUN_00125740(position, alpha, persona, frame);
+        break;
+    default:
+        goto done;
+    }
+    goto done;
+drawStatus:
+    FUN_00125b40(position, otherPosition, alpha, persona, fade);
+done:;
+}
+
+// FUN_00124E60
+void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
+{
+    u8 level;
+    void* parent;
+
+    level = *((u8*)persona + 4);
+    if (level >= 10) {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                 level / 10 + 0xb,
+                                 position.x + 67.0f,
+                                 position.y + 127.0f, fade, alpha);
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                 *((u8*)((int)persona + 4)) % 10 + 0xb,
+                                 position.x + 82.0f,
+                                 position.y + 127.0f, fade, alpha);
+    } else {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                 level % 10 + 0xb,
+                                 position.x + 75.0f,
+                                 position.y + 127.0f, fade, alpha);
+    }
+}
+
+// FUN_00124FD0 NONMATCHING
+void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
+{
+    char text[0x100];
+    CampPersonaParticle* particle;
+    s32 bright;
+    f32 x;
+    f32 y;
+    f32 scale;
+    void* parent;
+    void (*setRenderState)(s32 state, s32 value);
+
+    bright = 0xff - fade;
+    FUN_00523ac8(text, gp0xffff897c,
+                 FUN_00173220_y5(*(u16*)((u8*)persona + 2)));
+    campPersonaDrawTextCall(alpha, (s32)(position.x + 111.0f),
+                 (s32)(position.y + 122.0f),
+                 (u32)(bright | 0xffffff00), 10, 1, text, 0x10, 0x74);
+    if (FUN_00176600(persona) == 0) {
+        return;
+    }
+    setRenderState = DAT_00960090;
+
+    setRenderState(6, 1);
+    setRenderState(7, 2);
+    setRenderState(8, 1);
+    setRenderState(9, 1);
+    setRenderState(12, 1);
+    setRenderState(11, 6);
+    setRenderState(10, 5);
+    setRenderState(2, 4);
+    RpSkyRenderStateSet(2, 0x44);
+    RpSkyRenderStateSet(3, 0x717fb);
+
+    x = position.x + 272.0f;
+    y = position.y + 110.0f;
+    campPersonaDrawSprite(parent, DAT_00833B90, 0x1a,
+                          (u8)fade, x, y, alpha);
+
+    setRenderState(6, 0);
+    setRenderState(8, 1);
+    if (fade == 0) {
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1b);
+        particle->drawAlpha = alpha;
+        particle->x = position.x + 276.0f;
+        particle->y = position.y + 112.0f;
+        particle->alpha = (s8)fade;
+        FUN_001127d0(particle, 0);
+        FUN_00115980_y5(particle);
+
+        setRenderState(6, 1);
+        setRenderState(8, 0);
+
+        DAT_007cdf68++;
+        if (DAT_007cdf68 >= 20) {
+            DAT_007cdf68 = 0;
+        }
+        RpSkyRenderStateSet(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+
+        bright = DAT_007cdf68;
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1c);
+        particle->drawAlpha = alpha;
+        particle->x = position.x + 276.0f;
+        particle->y = position.y + 112.0f;
+        particle->alpha = 0;
+        particle->reserved19[0] = (u8)((bright << 7) / 10 + 0x7f);
+        particle->scaleX = 0x1000;
+        particle->scaleY = 0x1000;
+        FUN_001127d0(particle, 0);
+        FUN_00115980_y5(particle);
+
+        RpSkyRenderStateSet(2, 0x44);
+        RpSkyRenderStateSet(3, 0x717fb);
+
+        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
+        scale = (f32)((10 - bright) * 0x518 / 10) + (f32)0xc18;
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1e);
+        particle->drawAlpha = alpha;
+        particle->alpha = 0;
+        particle->reserved19[0] = (u8)(bright * 0x66 / 10 + 0x66);
+        particle->scaleX = (u16)scale;
+        particle->scaleY = (u16)scale;
+        x = position.x + 276.0f;
+        y = position.y + 112.0f;
+        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
+        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
+        particle->x = x;
+        particle->y = y;
+        FUN_001127d0(particle, 0);
+        FUN_00115980_y5(particle);
+
+        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
+        scale = (f32)(bright * 0x518 / 10) + (f32)0xc18;
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1d);
+        particle->drawAlpha = alpha;
+        particle->alpha = 0;
+        particle->reserved19[0] =
+            (u8)((10 - bright) * 0x66 / 10 + 0x66);
+        particle->scaleX = (u16)scale;
+        particle->scaleY = (u16)scale;
+        x = position.x + 276.0f;
+        y = position.y + 112.0f;
+        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
+        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
+        particle->x = x;
+        particle->y = y;
+        FUN_001127d0(particle, 0);
+        FUN_00115980_y5(particle);
+    }
+}
+// FUN_00125740 NONMATCHING
+void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
+                  s32 frame)
+{
+    s16 localFrame;
+    s16 shortFrame;
+    s32 bright;
+    f32 slide;
+    CampVec2 originalPosition;
+    CampVec2 iconPosition;
+    CampVec2 levelPosition;
+    CampVec2 fadePosition;
+    void* parent;
+    shortFrame = (s16)frame;
+
+    if (shortFrame < 15) {
+        return;
+    }
+    localFrame = shortFrame - 15;
+    bright = 0;
+    slide = 0.0f;
+    if (localFrame < 3) {
+        bright = 0xff - (localFrame * 0xff) / 3;
+        slide = (f32)(((3 - localFrame) * 0x14) / 3);
+    }
+    originalPosition = position;
+    position.x -= slide;
+    campPersonaDrawSprite(parent, DAT_00833B90, 1,
+                          position.x + 22.0f,
+                          position.y + 117.0f, (u8)bright, alpha);
+    if (localFrame > 0) {
+        if (localFrame < 5) {
+            bright = 0xff - ((localFrame - 1) * 0xff) / 4;
+            slide = (f32)(((5 - localFrame) * 0x3c) / 4);
+            iconPosition = originalPosition;
+            iconPosition.x -= slide;
+        } else {
+            bright = 0;
+            iconPosition = originalPosition;
+        }
+        campPersonaDrawSprite(parent, DAT_00833B88,
+                              FUN_00173280_y5(*(u16*)((u8*)persona + 2)) - 1,
+                              iconPosition.x + 105.0f, iconPosition.y + 142.0f,
+                              (u8)bright, alpha);
+    }
+    if (localFrame > 4) {
+        {
+            u8 level;
+
+            levelPosition = originalPosition;
+            level = *((u8*)persona + 4);
+            if (level >= 10) {
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                      level / 10 + 0xb,
+                                      levelPosition.x + 67.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                      level % 10 + 0xb,
+                                      levelPosition.x + 82.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
+            } else {
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                                      level % 10 + 0xb,
+                                      levelPosition.x + 75.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
+            }
+        }
+    }
+    if (localFrame > 5) {
+        if (localFrame < 9) {
+            bright = 0xff - ((localFrame - 6) * 0xff) / 3;
+        } else {
+            bright = 0;
+        }
+        fadePosition = originalPosition;
+        FUN_00124fd0(fadePosition, alpha, persona, bright);
+    }
+}
+
+// FUN_00125B40 NONMATCHING
+void FUN_00125b40_persona(CampVec2 position, CampVec2 unused, f32 alpha,
+                  void* persona, s32 fade)
+{
+    void* parent;
+    f32 drawAlpha;
+    void* resource;
+    s32 personaId;
+    u8 level;
+    CampVec2 originalPosition;
+    CampVec2 iconPosition;
+    CampVec2 levelPosition;
+    CampVec2 drawPosition;
+
+    originalPosition = position;
+    drawPosition = position;
+    drawAlpha = alpha;
+    campPersonaDrawSprite(parent, *(void**)DAT_00833B90_abs, 1,
+                          drawPosition.x + 22.0f, drawPosition.y + 117.0f,
+                          fade, drawAlpha);
+    iconPosition = originalPosition;
+    resource = *(void**)DAT_00833B88_abs;
+    personaId = FUN_00173280_y5(*(u16*)((u8*)persona + 2)) - 1;
+    campPersonaDrawSprite(parent, resource, personaId,
+                          iconPosition.x + 105.0f, iconPosition.y + 142.0f,
+                          fade, alpha);
+    levelPosition = originalPosition;
+    level = *((u8*)persona + 4);
+    if (level >= 10) {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                              level / 10 + 0xb,
+                              levelPosition.x + 67.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                              level % 10 + 0xb,
+                              levelPosition.x + 82.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
+    }
+    else {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
+                              level % 10 + 0xb,
+                              levelPosition.x + 75.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
+    }
+    FUN_00124fd0(originalPosition, alpha, persona, fade);
+}
+
+static s32 campPersonaTransitionIsReady(void)
+{
+    if (DAT_007cdf60 == NULL || DAT_007cdf60->workData == NULL) {
+        return 0;
+    }
+    return *((s32*)DAT_007cdf60->workData) == 3;
+}
+
+// FUN_00125D70 NONMATCHING
+void* FUN_00125d70(KwlnTask* task)
+{
+    void* parent;
+    CampPersonaTransitionWork* work;
+    s32 fade;
+    f32 x;
+    f32 y;
+    CampPersonaParticle* particle;
+
+    work = task->workData;
+    if (work->state == 1) {
+        goto process;
+    }
+    if (work->state != 0) {
+        return KWLNTASK_CONTINUE;
+    }
+    work->timer = 0;
+    work->state = 1;
+process:
+
+    if (work->mode == 0) {
+        if (work->timer < 5) {
+            if (DAT_007cdf60 != NULL &&
+                DAT_007cdf60->workData != NULL &&
+                *((s32*)DAT_007cdf60->workData) == 3) {
+                FUN_00114450(102.0f, 0.0f, -87.0f, -1,
+                             0x4fa4ff19, 0x280, 0x280);
+            }
+            FUN_0011bba0(0, 0, 102.0f, 0, 0);
+            particle = (CampPersonaParticle*)FUN_001158b0_y5(
+                0, *(void**)DAT_00833B78_abs, 0);
+            particle->drawAlpha = 101.0f;
+            particle->x = 428.0f;
+            particle->y = 27.0f;
+            particle->alpha = 0;
+            particle->scaleX = 0;
+            particle->scaleY = 0;
+            FUN_001127d0(particle, 1);
+            FUN_00115980_y5(particle);
+        }
+        if (work->timer > 4 && work->timer < 20) {
+            fade = ((work->timer - 5) * 800) / 15;
+            if (DAT_007cdf60 != NULL &&
+                DAT_007cdf60->workData != NULL &&
+                *((s32*)DAT_007cdf60->workData) == 3) {
+                FUN_00114450(102.0f, (f32)-fade, (f32)fade - 87.0f,
+                             -1, 0x4fa4ff19, 0x280, 0x280);
+            }
+            FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
+        }
+        if (work->timer > 14) {
+            fade = (20 - work->timer) * 0xff / 5;
+            if (fade < 0) {
+                fade = 0;
+            } else if (fade > 0xff) {
+                fade = 0xff;
+            }
+            x = 428.0f + (f32)(((work->timer - 15) * 21) / 10);
+            y = 27.0f + (f32)(((work->timer - 15) * 2) / 10);
+            particle = (CampPersonaParticle*)FUN_001158b0_y5(
+                0, *(void**)DAT_00833B78_abs, 0);
+            if (particle != NULL) {
+                particle->drawAlpha = 101.0f;
+                particle->x = x;
+                particle->y = y;
+                particle->alpha = (s8)fade;
+                particle->scaleX = 0xe28;
+                particle->scaleY = 0xe28;
+                FUN_001127d0(particle, 1);
+                FUN_00115980_y5(particle);
+            }
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                                  34.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                                  50.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                                  194.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                                  561.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                                  382.0f, 415.0f, (u8)fade, 100.0f);
+        }
+        if (work->timer < 20) {
+            work->timer++;
+        } else {
+            work->state = 2;
+        }
+    } else if (work->mode == 1) {
+        fade = work->timer == 8 ? 0 : 0xff - (work->timer * 0xff) / 8;
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(
+            0, *(void**)DAT_00833B78_abs, 0);
+        if (particle != NULL) {
+            particle->drawAlpha = 101.0f;
+            particle->x = 449.0f;
+            particle->y = 29.0f;
+            particle->alpha = (s8)fade;
+            particle->scaleX = 0xe28;
+            particle->scaleY = 0xe28;
+            FUN_001127d0(particle, 1);
+            FUN_00115980_y5(particle);
+        }
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                              34.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                              50.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                              194.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                              561.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                              382.0f, 415.0f, (u8)fade, 100.0f);
+        if (work->timer < 8) {
+            work->timer++;
+        } else {
+            work->state = 2;
+        }
+    } else if (work->mode == 2 && work->timer != 8) {
+        fade = (work->timer * 0xff) / 8;
+        particle = (CampPersonaParticle*)FUN_001158b0_y5(
+            0, *(void**)DAT_00833B78_abs, 0);
+        if (particle != NULL) {
+            particle->drawAlpha = 101.0f;
+            particle->x = 449.0f;
+            particle->y = 29.0f;
+            particle->alpha = (s8)fade;
+            particle->scaleX = 0xe28;
+            particle->scaleY = 0xe28;
+            FUN_001127d0(particle, 1);
+            FUN_00115980_y5(particle);
+        }
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                              34.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                              50.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                              194.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                              561.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                              382.0f, 415.0f, (u8)fade, 100.0f);
+        work->timer++;
+    }
+    return KWLNTASK_CONTINUE;
+}
+#undef FUN_00125b40
+#undef DAT_00960090
+#undef FUN_00114450
+#undef H_Cdvd_Destroy
+#undef RpSkyRenderStateSet
 #pragma opt_common_subs off
 // FUN_001230C0 NONMATCHING
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
@@ -15898,4736 +16923,13 @@ extern const char D_005E3E70[];
 extern void* h_campUpdateSystemMenuTask(KwlnTask* task);
 extern u32 FUN_0017d800_sys(void);
 extern KwlnTask *FUN_00194B20_sys(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
-// FUN_00154770. Destroy callback of the "H_CampSystemMenuDraw" task
-void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
-{
-    int* workData;
-    int i;
-
-    workData = (int*)task->workData;
-    if (workData[8] != 0) {
-        FUN_004d0f00_sys(workData[8]);
-    }
-    if (workData[5] != 0) {
-        FUN_001124b0(workData[5]);
-    }
-    workData[5] = 0;
-    if (workData[6] != 0) {
-        FUN_001124b0(workData[6]);
-    }
-    workData[6] = 0;
-    if (workData[3] != 0) {
-        RwFree((void*)workData[3]);
-    }
-    workData[3] = 0;
-    if (workData[4] != 0) {
-        RwFree((void*)workData[4]);
-    }
-    workData[4] = 0;
-    FUN_003c7dd0(8);
-    FUN_003c7dd0(0xc);
-    for (i = 0; i < 3; i++) {
-        if (*(int*)((int)workData + i * 4 + 0x24) != 0) {
-            H_Cdvd_Destroy_sys(*(int*)((int)workData + i * 4 + 0x24));
-        }
-        *(int*)((int)workData + i * 4 + 0x24) = 0;
-    }
-    RwFree(workData);
-}
-
-// FUN_001548A0
-KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
-{
-    KwlnTask *task;
-    void *work;
-
-    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
-    if (work == NULL) {
-        return NULL;
-    }
-
-    task = FUN_00194B20_sys(parent, D_005DBD00, priority,
-                        h_campUpdateSystemMenuTask,
-                        h_campSystemDestroyMenuDrawTask, work);
-    if (task == NULL) {
-        return NULL;
-    }
-
-    if (FUN_0017d800_sys() != 0) {
-        *(u32 *)((u8 *)work + 4) = 4;
-    }
-
-    return task;
-}
-
-
-/* Camp system menu work (FUN_0015B330/FUN_0015B430), 0x17c bytes. */
-typedef struct CampMenuEntry
-{
-    u32 state;
-    u32 enabled;
-    u32 drawMode;
-    u8 unknown0c[0x0c];
-    u32 progress;
-    u32 progressLimit;
-    u32 progressTarget;
-    u32 color;
-    u8 unknown28[0x10];
-    f32 x;
-    f32 y;
-    u32 alpha;
-} CampMenuEntry;
-typedef union CampMenuAnimPair
-{
-    u64 q;
-    f32 f[2];
-} CampMenuAnimPair;
-typedef struct CampMenuScratch
-{
-    u32 words[0x1e];
-    CampMenuAnimPair shifted;
-    CampMenuAnimPair pair;
-    u32 tail[2];
-} CampMenuScratch;
-typedef struct CampSystemMenuWork
-{
-    u32 state;
-    u32 unknown04;
-    u32 unknown08;
-    u32 allocation10;
-    u32 entriesAddress;
-    u32 archiveBlob0;
-    u32 archiveBlob1;
-    u32 request;
-    u32 requestResult;
-    u32 cdvdMain;
-    u32 cdvdStatus;
-    u32 cdvdSystem;
-    u32 entriesReady;
-    u8 unknown34[0x120];
-    u32 selectedPanel;
-    u32 panelFlags[7];
-    s32 fadeStep;
-    u32 unknown178;
-} CampSystemMenuWork;
-typedef char CampMenuEntrySizeCheck[(sizeof(CampMenuEntry) == 0x44) ? 1 : -1];
-typedef char CampMenuWorkSizeCheck[(sizeof(CampSystemMenuWork) == 0x17c) ? 1 : -1];
-#define CAMP_MENU_ENTRY_COUNT 100
-#define CAMP_MENU_ENTRY_SIZE 0x44
-#define CAMP_MENU_PTR32(address) ((void *)(uintptr_t)(address))
-#define CAMP_MENU_CONST_PTR(address) ((const char *)(uintptr_t)(address))
-static inline CampSystemMenuWork *camp_menu_work(KwlnTask *task)
-{
-    return (CampSystemMenuWork *)task->workData;
-}
-static inline CampMenuEntry *camp_menu_entry(CampSystemMenuWork *work, s32 index)
-{
-    return (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) +
-                             index * CAMP_MENU_ENTRY_SIZE);
-}
-static inline void *camp_menu_record(CampSystemMenuWork *work, u32 offset)
-{
-    return (u8 *)CAMP_MENU_PTR32(work->entriesAddress) + offset;
-}
-static inline u32 camp_menu_address(const void *pointer)
-{
-    return (u32)(uintptr_t)pointer;
-}
-
-/* Item-list work used by FUN_0015C520/FUN_0015C840/FUN_0015CE50. */
-static inline uintptr_t camp_list_base_address(u32 base)
-{
-    return (uintptr_t)(u32)base;
-}
-static inline u32 camp_list_load_u32(uintptr_t base, size_t offset)
-{
-    return *(const u32 *)(base + offset);
-}
-static inline s32 camp_list_load_s32(uintptr_t base, size_t offset)
-{
-    return *(const s32 *)(base + offset);
-}
-static inline u16 camp_list_load_u16(uintptr_t base, size_t offset)
-{
-    return *(const u16 *)(base + offset);
-}
-static inline void camp_list_store_u32(uintptr_t base, size_t offset, u32 value)
-{
-    *(u32 *)(base + offset) = value;
-}
-static inline f32 camp_list_bits_to_float(u32 bits)
-{
-    union { u32 bits; f32 value; } converter; converter.bits = bits; return converter.value;
-}
-static inline u32 camp_list_float_to_bits(f32 value)
-{
-    union { u32 bits; f32 value; } converter; converter.value = value; return converter.bits;
-}
-static inline u64 camp_list_pack_f32(f32 high, f32 low)
-{
-    return ((u64)camp_list_float_to_bits(high) << 32) | camp_list_float_to_bits(low);
-}
-static f32 camp_list_packed_low_f32(u64 packed)
-{
-    return camp_list_bits_to_float((u32)packed);
-}
-static f32 camp_list_packed_high_f32(u64 packed)
-{
-    return camp_list_bits_to_float((u32)(packed >> 32));
-}
-#define CAMP_LIST_CONST_PTR(address) ((const char *)(uintptr_t)(address))
-typedef struct CampC520ListEntry
-{
-    u8 unknown00[0x0c];
-    u32 itemId;
-    u32 unknown10;
-    s16 mode;
-    u8 unknown16[2];
-    s32 spCost;
-    s32 hpCost;
-} CampC520ListEntry;
-#pragma alias campC520PartyId FUN_0016DD60_sys
-extern u64 campC520PartyId(s32 index);
-#pragma alias campC520NearHero FUN_001C7CE0_sys
-extern s32 campC520NearHero(s32 owner);
-
-/* Camp draw/animation work used by FUN_0015E150..FUN_00160800. */
-typedef struct CampSystemPosition
-{
-    f32 x;
-    f32 y;
-} CampSystemPosition;
-typedef struct CampDrawRecord
-{
-    u32 unknown00;
-    u32 active;
-    u32 unknown08;
-    u32 unknown0c;
-    u32 unknown10;
-    u32 unknown14;
-    s32 progress;
-    s32 unknown1c;
-    s32 target;
-    u32 owner;
-    u32 unknown28;
-    u32 unknown2c;
-    u32 unknown30;
-    u32 unknown34;
-    f32 x;
-    f32 y;
-    u32 alpha;
-} CampDrawRecord;
-typedef struct CampSystemDrawWork
-{
-    s32 state;
-    s32 unknown04;
-    s32 unknown08;
-    s32 frame;
-    s32 unknown10;
-    s32 unknown14;
-    s32 cursor;
-    u32 archive0;
-    u32 archive1;
-    u32 archive2;
-    u32 entryPool;
-    s16 selectedKind;
-    u16 selectedKindPad;
-    u32 imageArchive;
-    u32 unknown34;
-    u32 records;
-    s32 partyIds[4];
-    s32 partyCount;
-    u8 unknown050[0x104];
-    s32 transitionFlag;
-    u32 partyAnimations[7];
-    s32 alpha;
-} CampSystemDrawWork;
-typedef struct CampDrawSprite { u8 bytes[0x30]; } CampDrawSprite;
-typedef char CampDrawRecordSizeCheck[(sizeof(CampDrawRecord) == 0x44) ? 1 : -1];
-typedef char CampDrawWorkSizeCheck[(sizeof(CampSystemDrawWork) == 0x178) ? 1 : -1];
-static inline u32 camp_draw_load_u32(const void *base, size_t offset)
-{
-    return *(const u32 *)((const u8 *)base + offset);
-}
-static inline u64 camp_draw_load_u64(const void *base, size_t offset)
-{
-    return *(const u64 *)((const u8 *)base + offset);
-}
-static inline void camp_draw_store_u32(void *base, size_t offset, u32 value)
-{
-    *(u32 *)((u8 *)base + offset) = value;
-}
-static inline u16 camp_draw_load_u16(const void *base, size_t offset)
-{
-    return *(const u16 *)((const u8 *)base + offset);
-}
-static inline void camp_draw_store_u16(void *base, size_t offset, u16 value)
-{
-    *(u16 *)((u8 *)base + offset) = value;
-}
-static inline u8 camp_draw_load_u8(const void *base, size_t offset)
-{
-    return *((const u8 *)base + offset);
-}
-static inline void camp_draw_store_u8(void *base, size_t offset, u8 value)
-{
-    *((u8 *)base + offset) = value;
-}
-static inline f32 camp_draw_load_f32(const void *base, size_t offset)
-{
-    return *(const f32 *)((const u8 *)base + offset);
-}
-static inline void camp_draw_store_f32(void *base, size_t offset, f32 value)
-{
-    *(f32 *)((u8 *)base + offset) = value;
-}
-static inline u32 camp_draw_f32_bits(f32 value)
-{
-    union {
-        f32 value;
-        u32 bits;
-    } converter;
-    converter.value = value;
-    return converter.bits;
-}
-static inline u64 camp_draw_concat44_words(u32 high, u32 low)
-{
-    return ((u64)high << 32) | low;
-}
-static inline u64 camp_draw_concat44_f32(f32 high, f32 low)
-{
-    return camp_draw_concat44_words(camp_draw_f32_bits(high), camp_draw_f32_bits(low));
-}
-static inline u64 camp_draw_record_xy(const CampDrawRecord *record)
-{
-    return camp_draw_concat44_f32(record->y, record->x);
-}
-static inline void *camp_draw_ptr_add(void *base, size_t offset)
-{
-    return (void *)((u8 *)base + offset);
-}
-static inline void *camp_draw_ptr32(u32 address)
-{
-    return (void *)(uintptr_t)address;
-}
-static inline u32 camp_draw_addr32(const void *address)
-{
-    return (u32)(uintptr_t)address;
-}
-static inline CampSystemDrawWork *camp_draw_task_work(KwlnTask *task)
-{
-    return task == NULL ? NULL : (CampSystemDrawWork *)task->workData;
-}
-static inline CampDrawRecord *camp_draw_state_records(CampSystemDrawWork *work)
-{
-    return (CampDrawRecord *)camp_draw_ptr32(work->records);
-}
-
-/* Retail globals shared by these translated slices. */
-#pragma alias campC520PreviousMode DAT_00836ba8
-extern s16 campC520PreviousMode;
-#pragma alias campC520SetMode FUN_00175200_sys
-extern void campC520SetMode(s16 mode);
-#pragma alias campC520GetHp FUN_0016C4F0
-extern s32 campC520GetHp(s32 arg0);
-#pragma alias campC520GetSp FUN_0016C570
-extern s32 campC520GetSp(s32 arg0);
-extern u32 uGpffffb29c;
-extern u32 uGpffffb288;
-extern KwlnTask *iGpffffb258_sys;
-extern KwlnTask *iGpffffb270_sys;
-extern KwlnTask *iGpffffb26c;
-extern void *uGpffffb260_sys;
-extern void *uGpffffb264;
-extern void *uGpffffb268;
-extern u32 DAT_00833b78;
-#pragma alias DAT_00833b70_abs DAT_00833b70
-extern u8 DAT_00833b70_abs[];
-#pragma alias DAT_00833a50_abs DAT_00833a50_y3
-extern u8 DAT_00833a50_abs[];
-#pragma alias DAT_00833a54_abs DAT_00833a54
-extern u8 DAT_00833a54_abs[];
-#pragma alias DAT_00833a58_abs DAT_00833a58
-extern u8 DAT_00833a58_abs[];
-#pragma alias DAT_00833b78_abs DAT_00833b78
-extern u8 DAT_00833b78_abs[];
-extern void *DAT_00833a50_y3;
-extern void *DAT_00833b70;
-extern void *DAT_00833a54;
-extern void *DAT_00833a58;
-extern u16 DAT_00836ba8;
-extern s32 DAT_007cdf8c;
-extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
-extern const char D_005DBD20[];
-extern const char D_005DBC80[];
-
-extern void FUN_0018bc10(f32 first, void *animation, s32 start,
-                         s32 end, s32 mode, u64 startValues,
-                         u64 endValues, u32 param8, u32 param9);
-#pragma alias campListAnimate FUN_0018bc10
-extern void campListAnimate(f32 first, void *animation, s32 start,
-                            s32 end, s32 mode, u64 startValues,
-                            u64 endValues, u32 param8, u32 param9,
-                            u32 param10, u32 param11);
-/* Explicit unresolved retail API declarations. */
-extern void *FUN_0010c1a0_sys(u32 mode, const char *path, u32 arg2, u32 arg3,
-                          u32 arg4, u32 arg5, u32 arg6, u32 arg7,
-                          u32 arg8, u32 arg9, const char *source, u32 line);
-extern s32 FUN_0010c3a0_sys(void *request, u32 *loaded, u64 arg3);
-extern void *FUN_00100d80(const char *path, u32 mode);
-extern void *FUN_00100d80(const char *path, u32 mode);
-extern s32 FUN_001016b0(void *cdvd);
-extern void *FUN_00102100_sys(void *cdvd, s32 fileIndex, u32 *fileSize);
-extern void *FUN_00112420_sys(void *source);
-extern s32 FUN_00111f30(void *maestroBlob);
-extern void FUN_003c7d80_sys(s32 slot, u64 textureId);
-typedef struct CampD8Object
-{
-    u8 unknown00[0x10];
-    f32 x;
-    f32 y;
-    u8 alpha;
-    u8 unknown19[0x13];
-    f32 drawContext;
-} CampD8Object;
-#pragma alias campD8MakeSprite FUN_001158B0_sys
-extern CampD8Object *campD8MakeSprite(u32 parent, void *resource, u32 frame);
-#pragma alias campD8SetSprite FUN_001127D0_sys
-extern void campD8SetSprite(CampD8Object *object, s32 mode);
-#pragma alias campD8SubmitSprite FUN_00115980_sys
-extern void campD8SubmitSprite(CampD8Object *object);
-extern void FUN_00113a30_sys(f32 x, f32 y, f32 z, u32 color, s32 width, s32 height);
-extern void FUN_00155830(void *record, void *blobPair, s32 index, u32 selectedPanel, const u32 *panelFlags);
-extern void FUN_001599f0(void *record, void *blobPair, s32 category, u32 selectedPage, u32 subPage);
-extern u32 FUN_0016f190_sys(s32 flag);
-extern void FUN_0010a4e0_sys(s32 arg0, s32 arg1, s32 arg2, ...);
-extern void FUN_00103c30(u16 arg0, u16 arg1, u16 arg2, u16 arg3);
-extern void FUN_0016f1f0_y3(s32 flag, u8 enabled);
-extern void FUN_00103cb0(void);
-extern u32 FUN_0017d800_sys(void);
-extern KwlnTask *FUN_00194B20_sys(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
-extern u32 FUN_00119F10(KwlnTask *task, u32 arg1);
-extern void FUN_00175200_sys(u16 mode);
-extern void *FUN_0017B660(u32 mode, u32 itemId);
-extern void FUN_0017B860_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
-extern s16 FUN_0016DD60_sys(s32 arg0);
-extern void *FUN_001C7CE0_sys(u64 owner);
-extern void *FUN_0017BC20_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
-extern s16 FUN_0016C4F0(s32 arg0);
-extern void FUN_0016CF40(s32 arg0, s16 value);
-extern s16 FUN_0016C570(s32 arg0);
-extern void FUN_0016CF90(s32 arg0, s16 value);
-extern void *FUN_00174960(u16 arg0);
-extern void *FUN_00174A90(u16 arg0);
-extern u8 FUN_00173660_sys(uintptr_t arg0, s32 arg1);
-extern s16 FUN_0017B480(u16 arg0);
-extern s16 FUN_0017B500(u32 arg0, u16 arg1);
-extern u32 FUN_0017B5B0(u32 arg0, u16 arg1);
-extern s32 FUN_0017B4E0(u32 itemId);
-extern s16 FUN_0017BB40(u32 value);
-extern void FUN_001159F0_sys(f32 x, f32 y, u32 drawContext);
-extern void FUN_00115BC0_sys(f32 x, f32 y, u32 drawContext);
-extern void FUN_00115AD0_sys(f32 x, f32 y, u32 drawContext);
-extern s32 FUN_0017D2E0(u16 arg0);
-extern u32 FUN_0030BB40(u16 arg0);
-extern u32 FUN_00523AC8_sys(void *dst, u32 stringId, u32 arg2);
-#pragma alias campCE50FormatText FUN_00523AC8_sys
-extern void campCE50FormatText(void *dst, const char *format, u32 arg);
-extern void FUN_003B32D0(u32 drawContext, s32 x, s32 y, u32 color, s32 font, s32 flags, void *text, s32 width, s32 height);
-#pragma alias campCE50DrawSprite FUN_001159F0_sys
-#pragma alias campSystemDrawSprite FUN_001159F0_sys
-extern void campSystemDrawSprite(void *parent, void *resource, s32 frame,
-                                 u8 alpha, f32 x, f32 y, f32 scale);
-extern void campCE50DrawSprite(u64 parent, void *resource, s32 frame,
-                               u32 alpha, f32 x, f32 y, f32 scale);
-/* FUN_00115AD0_sys's value-glyph entry point uses the integer style and alpha
- * arguments after the first three integer parameters. */
-#pragma alias campCE50DrawValueGlyph FUN_00115AD0_sys
-extern void campCE50DrawValueGlyph(void *parent, void *resource, s32 frame,
-                                   f32 x, f32 y, u8 style, u8 alpha,
-                                   f32 scale);
-#pragma alias campCE50DrawSpriteAlt FUN_00115BC0_sys
-extern void campCE50DrawSpriteAlt(u64 parent, void *resource, s32 frame,
-                                  u32 alpha, s32 red, s32 green, s32 blue,
-                                  f32 x, f32 y, f32 scale);
-#pragma alias campCE50DrawText FUN_003b32d0
-extern void campCE50DrawText(s32 x, s32 y, u32 color, f32 scale,
-                             u32 font, u32 alignment, const char *text,
-                             u32 maxWidth, u32 shadow);
-#pragma alias campCE50Font FUN_001120A0_sys
-extern void *campCE50Font(s32 font);
-#pragma alias campCE50DrawValue FUN_003c7e20_sys
-extern void campCE50DrawValue(f32 scale, s32 x, s32 y, u32 color,
-                              u32 font, u32 alignment, u32 style,
-                              u32 value);
-extern void FUN_001120A0_sys(s32 arg0);
-extern void FUN_003c7e20_sys(u32 drawContext, s32 x, s32 y, u32 color, s32 arg4, s32 arg5, s32 arg6);
-extern u64 FUN_001158B0_sys(u32 arg0, void *archive, u32 size);
-extern void FUN_001127D0_sys(u64 object, s32 arg1);
-extern void FUN_00115980_sys(u64 object);
-extern void FUN_0011DA80(u32 arg0, void *object);
-extern void FUN_00121DE0(void *object, u32 arg1);
-extern void FUN_00122710_sys(void *object, u32 arg1);
-extern s32 FUN_0011E380_sys(void *object, u32 arg1);
-extern void FUN_0011BBA0(f32 arg0, f32 arg1, f32 arg2, s32 arg3, s32 arg4);
-extern void FUN_00114450_sys(f32 arg0, f32 arg1, f32 arg2, s32 arg3,
-                         u32 arg4, u32 arg5, u32 arg6);
-extern void FUN_0011ABD0_sys(u32 count, u32 visible, void *first, void *selected);
-extern u8 FUN_0016C470(u16 arg0);
-extern u64 FUN_0016C970(u16 arg0);
-extern s16 FUN_0016C920(u16 arg0);
-extern u32 FUN_0016C670(u16 arg0);
-extern u32 FUN_0016C5F0(u16 arg0);
-extern u32 FUN_00177790_sys(u16 arg0);
-
-void *FUN_0015B430(KwlnTask *task);
-void FUN_0015C520(void *list, s32 ownerMode);
-void FUN_0015C840(void *list);
-void FUN_0015CE50(u64 packedPosition, void *list, s32 alpha,
-                  f32 drawContext);
-void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha);
-void FUN_0015DA70(void *work);
-void FUN_0015E150(CampSystemDrawWork *work);
-void FUN_0015E6E0(CampSystemDrawWork *work);
-void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex);
-void FUN_0015F320(CampSystemDrawWork *work);
-void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work);
-
-
-// FUN_0015B330
-u32 FUN_0015B330(void *entries, void *blobPair,
-                 u32 category, u32 selectedPage)
-{
-    s32 index;
-    u32 allReady = 1;
-
-    for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-        CampMenuEntry *entry = (CampMenuEntry *)((u8 *)entries +
-                                                       index * CAMP_MENU_ENTRY_SIZE);
-        if (entry->enabled != 0) {
-            if (func_0018b700(entry) != 0) {
-                FUN_001599f0(entry, blobPair, index, category, selectedPage);
-            }
-            if (((CampMenuEntry *)((u8 *)entries +
-                                  index * CAMP_MENU_ENTRY_SIZE))->progress !=
-                ((CampMenuEntry *)((u8 *)entries +
-                                  index * CAMP_MENU_ENTRY_SIZE))->progressTarget) {
-                allReady = 0;
-            }
-        }
-    }
-    return allReady;
-}
-
-/*
- * Retail stores each animation endpoint as adjacent float pairs on the stack.
- * The state 6 and state 9 setup paths now preserve those copies and offsets.
- * This restores the missing add/subtract float operations and all panel calls.
- * The reconstructed object is larger and has a higher normalized diff for now.
- * Keep this marker NONMATCHING until register layout and dispatch scheduling converge.
- */
-// FUN_0015B430 NONMATCHING
-void *FUN_0015B430(KwlnTask *task)
-{
-    CampSystemMenuWork *work = camp_menu_work(task);
-    s32 systemReady;
-    s32 index;
-    u32 selected;
-    u32 allReady;
-    bool inputHeld;
-    CampMenuScratch scratch;
-    void *fileData;
-
-    /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
-    FUN_00113a30_sys(100.0f, 0.0f, 20.0f,
-                 ((work->fadeStep * 0xff) / 10) | 0x72b5ff00u,
-                 0x280, 0x19a);
-
-    switch (work->state) {
-    case 0:
-        if (iGpffffb258_sys == NULL) {
-            systemReady = -1;
-        } else {
-            /* Preserve retail's branch-fed scalar assignment. */
-            systemReady = 0;
-            if (camp_menu_work(iGpffffb258_sys)->state != 3) {
-            } else {
-                systemReady = 1;
-            }
-        }
-        if (systemReady != 1) {
-            return 0;
-        }
-
-        if (FUN_0017d800_sys() != 0) {
-            work->request = camp_menu_address(FUN_0010c1a0_sys(
-                0, D_005DB050, 0, 0, 0, 0, 0, 0,
-                0, 0, D_005DBC80, 0xef9));
-        } else {
-            work->request = camp_menu_address(FUN_0010c1a0_sys(
-                0, D_005DB0A0, 0, 0, 0, 0, 0, 0,
-                0, 0, D_005DBC80, 0xefb));
-        }
-        work->allocation10 = camp_menu_address(func_0018b6d0(10));
-        work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));
-        work->cdvdMain = camp_menu_address(FUN_00100d80(
-            CAMP_MENU_CONST_PTR(0x0059bca0), 0));
-        work->cdvdStatus = camp_menu_address(FUN_00100d80(
-            CAMP_MENU_CONST_PTR(0x0059bcc0), 0));
-        work->cdvdSystem = camp_menu_address(FUN_00100d80(
-            CAMP_MENU_CONST_PTR(0x0059bce0), 1));
-        work->state = 1;
-        break;
-
-    case 1:
-        if (work->requestResult == 0) {
-            scratch.words[0] = 0;
-            work->requestResult = (u32)FUN_0010c3a0_sys(
-                CAMP_MENU_PTR32(work->request), &scratch.words[0], 0);
-            if (scratch.words[0] == 0) {
-                work->requestResult = 0;
-                return 0;
-            }
-        }
-        if (FUN_001016b0(CAMP_MENU_PTR32(work->cdvdMain)) != 0 &&
-            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdStatus)) != 0 &&
-            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdSystem)) != 0) {
-            FUN_003c7d80_sys(0x0c,
-                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdMain) + 0x110));
-            FUN_003c7d80_sys(0x08,
-                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
-            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 0,
-                                    &scratch.tail[0]);
-            work->archiveBlob0 = camp_menu_address(FUN_00112420_sys(fileData));
-            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 1,
-                                    &scratch.tail[0]);
-            work->archiveBlob1 = camp_menu_address(FUN_00112420_sys(fileData));
-            work->state = 2;
-        }
-        break;
-
-    case 2:
-        if (FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob0)) != 0 &&
-            FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob1)) != 0) {
-            work->state = 6;
-        }
-        break;
-
-    case 6:
-        work->selectedPanel = 0;
-        scratch.pair.f[0] = 21.0f;
-        scratch.pair.f[1] = 215.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 50.0f;
-        scratch.pair.f[1] = 263.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 87.0f;
-        scratch.pair.f[1] = 92.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 388.0f;
-        scratch.pair.f[1] = 92.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 95.0f;
-        scratch.pair.f[1] = 93.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 200.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        for (index = 0; index < 7; index++) {
-            work->panelFlags[index] = FUN_0016f190_sys(index + 0x183);
-        }
-        scratch.pair.f[0] = 392.0f;
-        scratch.pair.f[1] = 385.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        work->entriesReady = 0;
-        work->state = 7;
-        break;
-
-    case 7:
-        work->state = 8;
-        selected = work->selectedPanel;
-        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
-            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
-                FUN_00155830(entry, &work->archiveBlob0, index, selected,
-                              work->panelFlags);
-            }
-        }
-        break;
-
-    case 8:
-        work->fadeStep = work->fadeStep + 1;
-        if (work->fadeStep > 10) {
-            work->fadeStep = 10;
-        }
-
-        if (work->entriesReady != 0) {
-            if ((DAT_007e094e_y3 & 0x40) == 0) {
-                if ((DAT_007e094e_y3 & 0x20) == 0) {
-                    inputHeld = ((DAT_007e0952_y3 & 0x1000) != 0) ||
-                                ((DAT_007e095a_y3 & 0x1000) != 0);
-                    if (inputHeld) {
-                        if (work->selectedPanel == 0) {
-                            if ((DAT_007e094e_y3 & 0x1000) != 0 ||
-                                (DAT_007e0958_y3 & 0x1000) != 0) {
-                                FUN_0010a4e0_sys(0, 0, 0, 0);
-                                work->selectedPanel = 7;
-                            }
-                        } else {
-                            FUN_0010a4e0_sys(0, 0, 0, 0);
-                            work->selectedPanel = work->selectedPanel - 1;
-                        }
-                    } else if ((DAT_007e0952_y3 & 0x4000) == 0 &&
-                               (DAT_007e095a_y3 & 0x4000) == 0) {
-                        if ((DAT_007e094e_y3 & 0x2000) == 0 &&
-                            (DAT_007e0958_y3 & 0x2000) == 0) {
-                            if (((DAT_007e094e_y3 & 0x8000) != 0 ||
-                                 (DAT_007e0958_y3 & 0x8000) != 0) &&
-                                work->selectedPanel != 7) {
-                                if (work->panelFlags[work->selectedPanel] == 0) {
-                                    FUN_0010a4e0_sys(0, 0, 0, 5);
-                                }
-                                if (work->selectedPanel == 0 &&
-                                    work->panelFlags[0] == 0) {
-                                    FUN_00103c30(10, 0x96, 10, 0);
-                                }
-                                work->panelFlags[work->selectedPanel] = 1;
-                            }
-                        } else if (work->selectedPanel != 7 &&
-                                   work->panelFlags[work->selectedPanel] != 0) {
-                            FUN_0010a4e0_sys(0, 0, 0, 5);
-                            work->panelFlags[work->selectedPanel] = 0;
-                        }
-                    } else if (work->selectedPanel == 7) {
-                        if ((DAT_007e094e_y3 & 0x4000) != 0 ||
-                            (DAT_007e0958_y3 & 0x4000) != 0) {
-                            FUN_0010a4e0_sys(0, 0, 0, 0);
-                            work->selectedPanel = 0;
-                        }
-                    } else {
-                        FUN_0010a4e0_sys(0, 0, 0, 0);
-                        work->selectedPanel = work->selectedPanel + 1;
-                    }
-                } else {
-                    FUN_0010a4e0_sys(0, 0, 0, 2);
-                    work->state = 9;
-                }
-            } else if (work->selectedPanel == 7) {
-                FUN_0010a4e0_sys(0, 0, 0, 1);
-                for (index = 0; index < 7; index++) {
-                    if (index == 2) {
-                        if (work->panelFlags[1] == 0) {
-                            FUN_0016f1f0_y3(0x185, 0);
-                        } else {
-                            FUN_0016f1f0_y3(0x185, (u8)work->panelFlags[2]);
-                        }
-                    } else {
-                        FUN_0016f1f0_y3(index + 0x183, (u8)work->panelFlags[index]);
-                    }
-                }
-                if (FUN_0016f190_sys(0x183) == 0) {
-                    FUN_00103cb0();
-                }
-                uGpffffb288 = 1;
-                work->state = 9;
-            }
-        }
-
-        selected = work->selectedPanel;
-        allReady = 1;
-        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
-            if (entry->enabled != 0) {
-                if (func_0018b700(entry) != 0) {
-                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
-                                  work->panelFlags);
-                }
-                if (entry->progress != entry->progressTarget) {
-                    allReady = 0;
-                }
-            }
-        }
-        work->entriesReady = allReady;
-        break;
-
-    case 9:
-        selected = work->selectedPanel;
-        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
-            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
-                FUN_00155830(entry, &work->archiveBlob0, index, selected,
-                              work->panelFlags);
-            }
-        }
-        scratch.pair.f[0] = 21.0f;
-        scratch.pair.f[1] = 215.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 50.0f;
-        scratch.pair.f[1] = 263.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 87.0f;
-        scratch.pair.f[1] = 92.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 388.0f;
-        scratch.pair.f[1] = 92.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 95.0f;
-        scratch.pair.f[1] = 93.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 392.0f;
-        scratch.pair.f[1] = 385.0f;
-        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        work->state = 10;
-        break;
-
-    case 10:
-        if (work->fadeStep == 0) {
-            work->fadeStep = 0;
-        } else {
-            work->fadeStep = work->fadeStep - 1;
-        }
-        selected = work->selectedPanel;
-        allReady = 1;
-        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
-            if (entry->enabled != 0) {
-                if (func_0018b700(entry) != 0) {
-                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
-                                  work->panelFlags);
-                }
-                if (entry->progress != entry->progressTarget) {
-                    allReady = 0;
-                }
-            }
-        }
-        if (allReady != 0) {
-            return (void *)(uintptr_t)0xffffffffu;
-        }
-        break;
-    }
-
-    return 0;
-}
-
-// FUN_0015C460
-KwlnTask *FUN_0015C460(KwlnTask *param_1)
-{
-    KwlnTask *task;
-    void *work;
-    u32 value;
-    task = param_1;
-
-    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
-    if (work == NULL) {
-        return 0;
-    }
-
-    task = FUN_00194B20_sys(param_1, D_005DBD20, 0x18be,
-                        (KwlnTaskUpdateFunc)FUN_0015B430,
-                        (KwlnTaskDestroyFunc)h_campSystemDestroyMenuDrawTask,
-                        work);
-    if (task == NULL) {
-        return 0;
-    }
-
-    value = FUN_00119F10(task, 1);
-    *(u32 *)((u8 *)work + 8) = value;
-    return task;
-}
-
-// FUN_0015C520 NONMATCHING
-void FUN_0015C520(void *param_1, s32 param_2)
-{
-    CampC520ListEntry *entry;
-    s32 owner_mode;
-    s32 entry_index;
-    u32 item_id;
-    s16 previous_mode;
-    s32 i;
-    s32 found_count;
-    s16 relation;
-    void *result;
-    u64 owner;
-    s32 hp;
-    s32 sp;
-
-    owner_mode = param_2;
-    entry_index = *(s32 *)((u8 *)param_1 + 0x7e0) +
-                  *(s32 *)((u8 *)param_1 + 0x7e4);
-    entry = (CampC520ListEntry *)((u8 *)param_1 + entry_index * 0x14);
-    item_id = entry->itemId;
-    previous_mode = campC520PreviousMode;
-    campC520SetMode(entry->mode);
-
-    result = FUN_0017B660(1, item_id & 0xffffU);
-    if (result == NULL) {
-        if (owner_mode == -2) {
-            FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
-            i = 0;
-            while (i < 3) {
-                relation = (s16)campC520PartyId(i);
-                if (relation != 0) {
-                    owner = campC520PartyId(i);
-                    if (campC520NearHero((s32)(s16)owner) != 0) {
-                        owner = campC520PartyId(i);
-                        result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
-                        if (result == NULL) {
-                            owner = campC520PartyId(i);
-                            FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
-                        }
-                    }
-                }
-                i++;
-            }
-        }
-        else if (owner_mode == 0) {
-            result = (void *)campC520NearHero(1);
-            if ((result != NULL) &&
-                (FUN_0017BC20_sys(1, 1, item_id & 0xffffU, 0) == 0)) {
-                FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
-            }
-        }
-        else {
-            found_count = 0;
-            i = 0;
-            while (i < 3) {
-                relation = (s16)campC520PartyId(i);
-                if (relation != 0) {
-                    found_count++;
-                    if (owner_mode == found_count) {
-                        owner = campC520PartyId(i);
-                        if (campC520NearHero((s32)(s16)owner) != 0) {
-                            owner = campC520PartyId(i);
-                            result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
-                            if (result == NULL) {
-                                owner = campC520PartyId(i);
-                                FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
-                            }
-                        }
-                        break;
-                    }
-                }
-                i++;
-            }
-        }
-
-        entry_index *= 0x14;
-        hp = campC520GetHp(1);
-        FUN_0016CF40(1, (s16)((hp & 0xffff) -
-                             *(s32 *)((u8 *)param_1 + entry_index + 0x1c)));
-        sp = campC520GetSp(1);
-        FUN_0016CF90(1, (s16)((sp & 0xffff) -
-                             *(s32 *)((u8 *)param_1 + entry_index + 0x18)));
-    }
-
-    campC520SetMode(previous_mode);
-}
-
-// FUN_0015C840 NONMATCHING
-void FUN_0015C840(void *param_1)
-{
-    const uintptr_t list = (uintptr_t)param_1;
-    s16 previous_mode = DAT_00836ba8;
-    typedef struct CampC840Entry {
-        u32 words[5];
-    } CampC840Entry;
-    CampC840Entry saved_entry;
-    CampC840Entry candidate_entry;
-    CampC840Entry swap_entry;
-    s32 entry_count = 0;
-    s32 item_index = 0;
-    s32 i;
-    s32 j;
-
-    for (;;) {
-        if (item_index > 0x0b) {
-            camp_list_store_u32(list, 0x7dc, (u32)entry_count);
-
-            /* Stable insertion-like ordering by item id.  IDs in 0xc0..0xff
-             * sort after all IDs outside that range, matching the branch tree
-             * in the retail routine. */
-            for (i = 0; i < entry_count; ++i) {
-                uintptr_t current = list + (size_t)i * 0x14 + 0x0c;
-                saved_entry = *(CampC840Entry *)current;
-
-                for (j = i + 1; j < entry_count; ++j) {
-                    uintptr_t candidate = list + (size_t)j * 0x14 + 0x0c;
-                    bool candidate_is_special;
-                    bool saved_is_special;
-
-                    candidate_entry = *(CampC840Entry *)candidate;
-                    candidate_is_special =
-                        candidate_entry.words[0] >= 0xc0U &&
-                        candidate_entry.words[0] <= 0xffU;
-                    saved_is_special =
-                        saved_entry.words[0] >= 0xc0U &&
-                        saved_entry.words[0] <= 0xffU;
-
-                    if (!candidate_is_special) {
-                        if (!saved_is_special &&
-                            candidate_entry.words[0] < saved_entry.words[0]) {
-                            swap_entry = saved_entry;
-                            *(CampC840Entry *)current = candidate_entry;
-                            *(CampC840Entry *)candidate = swap_entry;
-                            saved_entry = candidate_entry;
-                        }
-                    }
-                    else if (!saved_is_special) {
-                        swap_entry = saved_entry;
-                        *(CampC840Entry *)current = candidate_entry;
-                        *(CampC840Entry *)candidate = swap_entry;
-                        saved_entry = candidate_entry;
-                    }
-                    else if (candidate_entry.words[0] < saved_entry.words[0]) {
-                        swap_entry = saved_entry;
-                        *(CampC840Entry *)current = candidate_entry;
-                        *(CampC840Entry *)candidate = swap_entry;
-                        saved_entry = candidate_entry;
-                    }
-                }
-            }
-
-            FUN_00175200_sys(previous_mode);
-            return;
-        }
-
-        {
-            u16 item = (u16)item_index;
-            uintptr_t item_data;
-
-            if (FUN_00174960(item) != (uintptr_t)0) {
-                s32 slot;
-
-                item_data = (uintptr_t)FUN_00174A90(item);
-                FUN_00175200_sys(item);
-                for (slot = 0; slot < 8; ++slot) {
-                    uintptr_t slot_address = item_data + (size_t)slot * 2 + 0x0c;
-                    u16 item_id = camp_list_load_u16(slot_address, 0);
-                    bool found = false;
-
-                    if (item_id != 0) {
-                        for (j = 0; j < entry_count; ++j) {
-                            uintptr_t entry = list + (size_t)j * 0x14;
-                            if (camp_list_load_u32(entry, 0x0c) == (u32)item_id) {
-                                uintptr_t old_data;
-                                u32 *entryItemIndex;
-                                u8 new_quality;
-                                u8 old_quality;
-
-                                entryItemIndex = (u32 *)(entry + 0x14);
-                                old_data = (uintptr_t)FUN_00174A90(
-                                    *(u16 *)entryItemIndex);
-                                new_quality = FUN_00173660_sys(item_data, 1);
-                                old_quality = FUN_00173660_sys(old_data, 1);
-                                if (old_quality < new_quality) {
-                                    s16 kind;
-                                    camp_list_store_u32(entry, 0x0c, (u32)item_id);
-                                    *entryItemIndex = (u32)item_index;
-                                    camp_list_store_u32(entry, 0x10,
-                                                   (u32)camp_list_load_u16(item_data, 2));
-
-                                    kind = FUN_0017B480(item_id);
-                                    if (kind != 2) {
-                                        kind = FUN_0017B500(1, item_id);
-                                        if (kind == 2) {
-                                            camp_list_store_u32(entry, 0x18,
-                                                   FUN_0017B5B0(1, item_id));
-                                            camp_list_store_u32(entry, 0x1c, 0);
-                                        }
-                                        else if (kind == 1) {
-                                            camp_list_store_u32(entry, 0x18, 0);
-                                            camp_list_store_u32(entry, 0x1c,
-                                                     FUN_0017B5B0(1, item_id));
-                                        }
-                                    }
-                                    else {
-                                        camp_list_store_u32(entry, 0x18, 0);
-                                        camp_list_store_u32(entry, 0x1c, 0);
-                                    }
-                                }
-                                found = true;
-                                break;
-                            }
-                        }
-
-                        if (!found) {
-                            uintptr_t entry = list + (size_t)entry_count * 0x14;
-                            s16 kind;
-
-                            camp_list_store_u32(entry, 0x0c, (u32)item_id);
-                            camp_list_store_u32(entry, 0x14, (u32)item_index);
-                            camp_list_store_u32(entry, 0x10,
-                                           (u32)camp_list_load_u16(item_data, 2));
-                            kind = FUN_0017B480(item_id);
-                            if (kind != 2) {
-                                kind = FUN_0017B500(1, item_id);
-                                if (kind == 2) {
-                                    camp_list_store_u32(entry, 0x18,
-                                                   FUN_0017B5B0(1, item_id));
-                                    camp_list_store_u32(entry, 0x1c, 0);
-                                }
-                                else if (kind == 1) {
-                                    camp_list_store_u32(entry, 0x18, 0);
-                                    camp_list_store_u32(entry, 0x1c,
-                                                     FUN_0017B5B0(1, item_id));
-                                }
-                            }
-                            else {
-                                camp_list_store_u32(entry, 0x18, 0);
-                                camp_list_store_u32(entry, 0x1c, 0);
-                            }
-                            ++entry_count;
-                        }
-                    }
-                }
-            }
-        }
-        ++item_index;
-    }
-}
-
-// FUN_0015CE50 NONMATCHING
-void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
-                  f32 drawContext)
-{
-    union {
-        u64 packed;
-        f32 value[2];
-    } position;
-    bool has_three_digits;
-    u32 color;
-    s32 i;
-    s32 record_index;
-    uintptr_t list;
-    u32 text_handle;
-    f32 x;
-    f32 y;
-    f32 row_x;
-    f32 value_x;
-    f32 value_y;
-    f32 value_tens_x;
-    f32 value_units_x;
-    f32 value_suffix_x;
-    u8 text_buffer[240];
-
-    position.packed = packedPosition;
-    list = camp_list_base_address((u32)(uintptr_t)listPointer);
-    x = position.value[0];
-    y = position.value[1];
-    if (camp_list_load_s32(list, 0x7dc) != 0) {
-        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 6, (u32)alpha,
-                           x + 2.0f,
-                           y + 6.0f +
-                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
-                           drawContext);
-        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 7, (u32)alpha,
-                           x + 317.0f,
-                           y + 6.0f +
-                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
-                           drawContext);
-    }
-
-    row_x = x + 15.0f;
-    color = (0xffU - (u32)alpha) | 0xffffff00U;
-    value_x = y + 19.0f;
-    value_y = y + 16.0f;
-    value_tens_x = x + 256.0f;
-    value_units_x = y + 17.0f;
-    value_suffix_x = x + 288.0f;
-
-    for (i = 0; i < 5; ++i) {
-        record_index = i + camp_list_load_s32(list, 0x7e4);
-        if (record_index >= camp_list_load_s32(list, 0x7dc)) {
-            break;
-        }
-
-        {
-            s32 row_offset = i * 0x1a;
-            uintptr_t entry = list + (size_t)record_index * 0x14;
-            u16 item_id = camp_list_load_u16(entry, 0x0c);
-            s32 value;
-
-            if (i == camp_list_load_s32(list, 0x7e0)) {
-                campCE50DrawSprite(packedPosition, *(void **)DAT_00833b70_abs,
-                                   FUN_0017D2E0(item_id) + 0x20,
-                                   (u32)alpha, row_x,
-                                   y + 2.0f + (f32)row_offset, drawContext);
-                text_handle = FUN_0030BB40(item_id);
-                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
-                campCE50DrawText(
-                    (s32)((f32)(s32)x + 55.0f),
-                    (s32)((f32)(s32)y + 1.0f +
-                          (f32)row_offset + 14.0f),
-                    color, drawContext, 6, 1, (const char *)text_buffer,
-                    0x10, 0x78);
-
-                value = camp_list_load_s32(entry, 0x18);
-                if (value == 0) {
-                    value = camp_list_load_s32(entry, 0x1c);
-                }
-                if (value == 0) {
-                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x11,
-                                       (u32)alpha, x + 249.0f,
-                                       value_x + (f32)row_offset,
-                                       drawContext);
-                } else {
-                    has_three_digits = value > 99;
-                    if (has_three_digits) {
-                        campCE50DrawSprite(
-                            packedPosition, campCE50Font(1),
-                            (value / 100) + 0x0b, (u32)alpha,
-                            x + 240.0f, value_y + (f32)row_offset,
-                            drawContext);
-                        value %= 100;
-                    }
-                    if ((value > 9) || has_three_digits) {
-                        campCE50DrawSprite(
-                            packedPosition, campCE50Font(1),
-                            (value / 10) + 0x0b, (u32)alpha,
-                            value_tens_x, value_y + (f32)row_offset,
-                            drawContext);
-                        value %= 10;
-                    }
-                    campCE50DrawSprite(
-                        packedPosition, campCE50Font(1), value + 0x0b,
-                        (u32)alpha, x + 272.0f,
-                        value_y + (f32)row_offset, drawContext);
-
-                    if (camp_list_load_s32(entry, 0x18) == 0) {
-                        if (camp_list_load_s32(entry, 0x1c) != 0) {
-                            campCE50DrawSprite(
-                                packedPosition, *(void **)DAT_00833a50_abs, 2,
-                                (u32)alpha, value_suffix_x,
-                                value_units_x + (f32)row_offset,
-                                drawContext);
-                        }
-                    } else {
-                        campCE50DrawSprite(
-                            packedPosition, *(void **)DAT_00833a50_abs, 4, (u32)alpha,
-                            value_suffix_x,
-                            value_units_x + (f32)row_offset, drawContext);
-                    }
-                }
-            } else {
-                campCE50DrawSpriteAlt(
-                    packedPosition, *(void **)DAT_00833b70_abs,
-                    FUN_0017D2E0(item_id) + 0x2f, (u32)alpha,
-                    0x20, 0x43, 0x78, row_x,
-                    y + 2.0f + (f32)row_offset, drawContext);
-                text_handle = FUN_0030BB40(item_id);
-                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
-                campCE50DrawText(
-                    (s32)((f32)(s32)x + 55.0f),
-                    (s32)((f32)(s32)y + 1.0f +
-                          (f32)row_offset + 14.0f),
-                    color, drawContext, 10, 1, (const char *)text_buffer,
-                    0x10, 0x78);
-
-                value = camp_list_load_s32(entry, 0x18);
-                if (value == 0) {
-                    value = camp_list_load_s32(entry, 0x1c);
-                }
-                if (value == 0) {
-                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x10,
-                                       (u32)alpha, x + 249.0f,
-                                       value_x + (f32)row_offset,
-                                       drawContext);
-                } else {
-                    has_three_digits = value > 99;
-                    if (has_three_digits) {
-                        campCE50DrawSprite(
-                            packedPosition, campCE50Font(2),
-                            (value / 100) + 0x0b, (u32)alpha,
-                            x + 240.0f, value_y + (f32)row_offset,
-                            drawContext);
-                        value %= 100;
-                    }
-                    if ((value > 9) || has_three_digits) {
-                        campCE50DrawSprite(
-                            packedPosition, campCE50Font(2),
-                            (value / 10) + 0x0b, (u32)alpha,
-                            value_tens_x, value_y + (f32)row_offset,
-                            drawContext);
-                        value %= 10;
-                    }
-                    campCE50DrawSprite(
-                        packedPosition, campCE50Font(2), value + 0x0b,
-                        (u32)alpha, x + 272.0f,
-                        value_y + (f32)row_offset, drawContext);
-
-                    if (camp_list_load_s32(entry, 0x18) == 0) {
-                        if (camp_list_load_s32(entry, 0x1c) != 0) {
-                            campCE50DrawSprite(
-                                packedPosition, *(void **)DAT_00833a50_abs, 3,
-                                (u32)alpha, value_suffix_x,
-                                value_units_x + (f32)row_offset,
-                                drawContext);
-                        }
-                    } else {
-                        campCE50DrawSprite(
-                            packedPosition, *(void **)DAT_00833a50_abs, 5, (u32)alpha,
-                            value_suffix_x,
-                            value_units_x + (f32)row_offset, drawContext);
-                    }
-                }
-            }
-        }
-    }
-
-    record_index = camp_list_load_s32(list, 0x7e4) +
-                   camp_list_load_s32(list, 0x7e0);
-    if (camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c) != 0) {
-        campCE50DrawValue(
-            drawContext, (s32)(x + 54.0f),
-            (s32)(((y + 210.0f) - 30.0f) - 20.0f),
-            UINT32_C(0xffffffff), 1, 10, 3,
-            camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c));
-    }
-
-    if (camp_list_load_s32(list, 0x7dc) != 0) {
-        s32 scrollbar_offset;
-        f32 scrollbar_x = (x + 588.0f) - 247.0f;
-
-        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 8,
-                           (u32)alpha, scrollbar_x,
-                           (y + 30.0f) - 24.0f, drawContext);
-        scrollbar_offset = camp_list_load_s32(list, 0x7dc) - 5;
-        if (scrollbar_offset < 1) {
-            scrollbar_offset = 0;
-        } else {
-            scrollbar_offset =
-                (camp_list_load_s32(list, 0x7e4) * 0x59) / scrollbar_offset;
-        }
-        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x0d,
-                           (u32)alpha, scrollbar_x,
-                           (y + 34.0f + (f32)scrollbar_offset) - 24.0f,
-                           drawContext);
-    }
-}
-
-// FUN_0015D8E0
-void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
-{
-    CampD8Object *object;
-    f32 x;
-    f32 y;
-    f32 yBase;
-
-    yBase = position.y;
-    object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
-    object->drawContext = drawContext;
-    x = 218.0f + position.x;
-    object->x = x + (f32)DAT_007cdf8c;
-    y = 382.0f;
-    y = y + yBase;
-    object->y = y;
-    object->alpha = alpha;
-    campD8SetSprite(object, 1);
-    campD8SubmitSprite(object);
-
-    if (DAT_007cdf8c < -200) {
-        object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
-        object->drawContext = drawContext;
-        object->x = x + (f32)DAT_007cdf8c + 640.0f;
-        object->y = y;
-        object->alpha = alpha;
-        campD8SetSprite(object, 1);
-        campD8SubmitSprite(object);
-    }
-
-    DAT_007cdf8c = DAT_007cdf8c - 1;
-    if ((f32)DAT_007cdf8c < -640.0f) {
-        DAT_007cdf8c += 640.0f;
-    }
-}
-// FUN_0015DA70 NONMATCHING
-void FUN_0015DA70(void *param_1)
-{
-    uintptr_t work_address = (uintptr_t)(u32)(uintptr_t)param_1;
-    CampMenuAnimPair pair;
-    CampMenuAnimPair shifted;
-    f32 row;
-    s32 i;
-    s32 item_offset;
-
-    pair.f[0] = 29.0f;
-    pair.f[1] = 22.0f;
-    shifted = pair;
-    shifted.f[0] += 50.0f;
-    campListAnimate(
-        100.0f,
-        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
-        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-    pair.f[0] = 0.0f;
-    pair.f[1] = 0.0f;
-    campListAnimate(100.0f,
-                    (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
-                    0, 2, 1, pair.q, pair.q, 0, 0, 6, 0x0d);
-    camp_list_store_u32(
-        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0x8c, 0);
-
-    pair.f[0] = (f32)0x1bf;
-    pair.f[1] = (f32)0x19b;
-    shifted = pair;
-    shifted.f[0] += 50.0f;
-    campListAnimate(
-        100.0f,
-        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
-        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-    pair.f[0] = 247.0f;
-    pair.f[1] = 24.0f;
-    shifted = pair;
-    shifted.f[0] -= 50.0f;
-    campListAnimate(
-        100.0f,
-        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
-        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
-
-    for (i = 0; i < 4; ++i) {
-        if (i < camp_list_load_s32(work_address, 0x4c)) {
-            row = (f32)(i * 0x55) + 42.0f;
-            pair.f[0] = 65.0f;
-            pair.f[1] = row + 8.0f;
-            shifted = pair;
-            shifted.f[0] -= 50.0f;
-            campListAnimate(
-                100.0f,
-                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
-                                    (size_t)(i + 1) * 0x2a8),
-                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-            item_offset = i * 10;
-            pair.f[0] = 65.0f;
-            pair.f[1] = row + 31.0f;
-            shifted = pair;
-            shifted.f[0] -= 50.0f;
-            campListAnimate(
-                100.0f,
-                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
-                                    (size_t)(item_offset + 0x0b) * 0x44),
-                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-            pair.f[0] = 65.0f;
-            pair.f[1] = row + 45.0f;
-            shifted = pair;
-            shifted.f[0] -= 50.0f;
-            campListAnimate(
-                100.0f,
-                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
-                                    (size_t)(item_offset + 0x0c) * 0x44),
-                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-            pair.f[0] = 65.0f;
-            pair.f[1] = row + 64.0f;
-            shifted = pair;
-            shifted.f[0] -= 50.0f;
-            campListAnimate(
-                100.0f,
-                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
-                                    (size_t)(item_offset + 0x0d) * 0x44),
-                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
-
-            pair.f[0] = 14.0f;
-            pair.f[1] = row + 2.0f;
-            shifted = pair;
-            shifted.f[0] -= 50.0f;
-            campListAnimate(
-                100.0f,
-                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
-                                    (size_t)(item_offset + 0x0e) * 0x44),
-                0, 2, 1, shifted.q, pair.q, 0, 0, 3, 10);
-
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x400, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x444, 0);
-        } else {
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x2ac, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x2f0, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x334, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x378, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x3bc, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x400, 0);
-            camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x444, 0);
-        }
-    }
-
-    pair.f[0] = 15.0f;
-    pair.f[1] = (f32)0x19f;
-    shifted = pair;
-    shifted.f[0] -= 50.0f;
-    campListAnimate(
-        100.0f,
-        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
-        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
-    camp_list_store_u32(
-        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0xd90, 0);
-
-    pair.f[0] = 488.0f;
-    pair.f[1] = (f32)0x19f;
-    shifted = pair;
-    shifted.f[0] -= 50.0f;
-    campListAnimate(
-        100.0f,
-        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
-        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
-}
-
-// FUN_0015E150 NONMATCHING
-void FUN_0015E150(CampSystemDrawWork *work)
-{
-    void *draw;
-    f32 x;
-    f32 y;
-    u64 pair;
-    s32 i;
-    s32 base;
-
-    draw = camp_draw_ptr32(work->records);
-    x = 22.0f;
-    y = 79.0f;
-    y -= 50.0f;
-    pair = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
-                 pair, pair, 0, 0);
-    FUN_0018bc10(100.0f, draw, 0, 2, 2, 0, 0, 0, 0);
-    camp_draw_store_u32(draw, 0x8c, 0);
-    x = 411.0f;
-    y = 447.0f;
-    pair = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 2,
-                 pair, pair, 0, 0);
-    x = 24.0f;
-    y = 247.0f;
-    pair = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 2,
-                 pair, pair, 0, 0);
-
-    for (i = 0; i < 4; ++i) {
-        if (i < work->partyCount) {
-            x = (f32)(i * 0x55) + 42.0f;
-            pair = camp_draw_concat44_f32(x + 8.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
-                         0, 2, 2, pair, pair, 0, 0);
-            base = i * 10;
-            pair = camp_draw_concat44_f32(x + 31.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
-                         0, 2, 2, pair, pair, 0, 0);
-            pair = camp_draw_concat44_f32(x + 45.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
-                         0, 2, 2, pair, pair, 0, 0);
-            pair = camp_draw_concat44_f32(x + 64.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
-                         0, 2, 2, pair, pair, 0, 0);
-            pair = camp_draw_concat44_f32(x + 2.0f, 14.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
-                         0, 2, 2, pair, pair, 0, 0);
-            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
-            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
-        }
-    }
-    for (; i < 4; ++i) {
-        base = i * 0x2a8;
-        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
-    }
-
-    x = 415.0f;
-    y = 17.0f;
-    pair = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
-                 pair, pair, 0, 0);
-    camp_draw_store_u32(draw, 0xd90, 0);
-    x = 415.0f;
-    y = 488.0f;
-    pair = camp_draw_concat44_f32(x, y);
-    x = 415.0f;
-    y = 537.0f;
-    {
-        u64 endPair = camp_draw_concat44_f32(x, y);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 2,
-                     pair, endPair, 0, 0);
-    }
-}
-
-// FUN_0015E6E0 NONMATCHING
-void FUN_0015E6E0(CampSystemDrawWork *work)
-{
-    void *draw;
-    f32 tailHeight;
-    f32 x;
-    f32 y;
-    u64 first;
-    u64 second;
-    s32 i;
-    s32 base;
-
-    draw = camp_draw_ptr32(work->records);
-    x = 22.0f;
-    y = 29.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y += 50.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
-                 first, second, 0, 0);
-    x = 22.0f;
-    y = 27.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y += 55.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 1,
-                 first, second, 0, 0);
-    x = 447.0f;
-    y = 410.0f;
-    first = camp_draw_concat44_f32(x, y);
-    x += 57.0f;
-    y -= 8.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
-                 first, second, 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
-                 UINT64_C(0x41c0000043770000), UINT64_C(0x41c00000438c0000), 0, 0);
-
-    for (i = 0; i < 4; ++i) {
-        if (i < work->partyCount) {
-            if (i == work->cursor || work->cursor == -2) {
-                tailHeight = 48.0f;
-                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
-                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
-                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                0, 2, 1, first, second, 0, 0);
-            } else {
-                tailHeight = 27.0f;
-                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
-            }
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
-                         0, 2, 0, first, second, 0, 0);
-            base = i * 10;
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
-        }
-    }
-    for (; i < 4; ++i) {
-        base = i * 0x2a8;
-        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
-    }
-
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
-                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 1,
-                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
-                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
-}
-
-// FUN_0015EE40 NONMATCHING
-void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex)
-{
-    void *draw;
-    f32 x;
-    f32 tailHeight;
-    CampMenuAnimPair first;
-    CampMenuAnimPair second;
-    s32 i;
-    s32 base;
-
-    draw = camp_draw_ptr32(work->records);
-    for (i = 0; i < 4; ++i) {
-        if (i < work->partyCount) {
-            x = (f32)(i * 0x55) + 42.0f;
-            if (i == work->cursor) {
-                tailHeight = 48.0f;
-                second.f[0] = 14.0f;
-                second.f[1] = x + 2.0f;
-                first = second;
-                first.f[0] += 27.0f;
-                second.f[0] += tailHeight;
-                FUN_0018bc10(100.0f,
-                             camp_draw_ptr_add(draw,
-                                               (size_t)(i * 10 + 0x10) * 0x44),
-                             0, 2, 1, first.q, second.q, 0, 0);
-            } else {
-                if (i != changedIndex) {
-                    continue;
-                }
-                tailHeight = 27.0f;
-                first.q = camp_draw_load_u64(
-                    draw, (size_t)i * 0x2a8 + 0x478);
-                second.f[0] = 14.0f;
-                second.f[1] = x + 2.0f;
-                second.f[0] += tailHeight;
-                FUN_0018bc10(100.0f,
-                             camp_draw_ptr_add(draw,
-                                               (size_t)(i * 10 + 0x10) * 0x44),
-                             0, 2, 2, first.q, second.q, 0, 0);
-            }
-
-            base = i * 0x2a8;
-            first.q = camp_draw_load_u64(draw, (size_t)base + 0x2e0);
-            second.f[0] = 65.0f;
-            second.f[1] = x + 8.0f;
-            second.f[0] += tailHeight;
-            FUN_0018bc10(100.0f,
-                         camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
-                         0, 2, 0, first.q, second.q, 0, 0);
-
-            base = i * 10;
-            first.q = camp_draw_load_u64(
-                draw, (size_t)(i * 0x2a8) + 0x324);
-            second.f[0] = 65.0f;
-            second.f[1] = x + 31.0f;
-            second.f[0] += tailHeight;
-            FUN_0018bc10(100.0f,
-                         camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
-                         0, 2, 0, first.q, second.q, 0, 0);
-
-            first.q = camp_draw_load_u64(
-                draw, (size_t)(i * 0x2a8) + 0x368);
-            second.f[0] = 65.0f;
-            second.f[1] = x + 45.0f;
-            second.f[0] += tailHeight;
-            FUN_0018bc10(100.0f,
-                         camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
-                         0, 2, 0, first.q, second.q, 0, 0);
-
-            first.q = camp_draw_load_u64(
-                draw, (size_t)(i * 0x2a8) + 0x3ac);
-            second.f[0] = 65.0f;
-            second.f[1] = x + 64.0f;
-            second.f[0] += tailHeight;
-            FUN_0018bc10(100.0f,
-                         camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
-                         0, 2, 0, first.q, second.q, 0, 0);
-
-            first.q = camp_draw_load_u64(
-                draw, (size_t)(i * 0x2a8) + 0x3f0);
-            second.f[0] = 14.0f;
-            second.f[1] = x + 2.0f;
-            second.f[0] += tailHeight;
-            FUN_0018bc10(100.0f,
-                         camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
-                         0, 2, 0, first.q, second.q, 0, 0);
-        }
-    }
-}
-
-// FUN_0015F320 NONMATCHING
-void FUN_0015F320(CampSystemDrawWork *work)
-{
-    void *draw;
-    f32 tailHeight;
-    f32 x;
-    f32 y;
-    u64 first;
-    u64 second;
-    s32 i;
-    s32 base;
-
-    draw = camp_draw_ptr32(work->records);
-    x = 22.0f;
-    y = 79.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y -= 50.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 1,
-                 first, second, 0, 0);
-    x = 22.0f;
-    y = 77.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y -= 50.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 2,
-                 first, second, 0, 0);
-    x = 402.0f;
-    y = 504.0f;
-    first = camp_draw_concat44_f32(x, y);
-    x += 9.0f;
-    y -= 57.0f;
-    second = camp_draw_concat44_f32(x, y);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
-                 first, second, 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
-                 UINT64_C(0x41c00000438c0000), UINT64_C(0x41c0000043770000), 0, 0);
-
-    for (i = 0; i < 4; ++i) {
-        if (i < work->partyCount) {
-            if (i == work->cursor || work->cursor == -2) {
-                tailHeight = 48.0f;
-                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
-                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
-                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                0, 2, 2, first, second, 0, 0);
-            } else {
-                tailHeight = 27.0f;
-                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
-            }
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
-                         0, 2, 0, first, second, 0, 0);
-            base = i * 10;
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
-            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
-                         0, 2, 0, first, second, 0, 0);
-            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
-        }
-    }
-    for (; i < 4; ++i) {
-        base = i * 0x2a8;
-        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
-        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
-    }
-
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 1,
-                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 2,
-                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
-                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
-}
-
-// FUN_0015FA90 NONMATCHING
-void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work)
-{
-    u8 textBuffer[256];
-    s32 digitCount;
-    s32 value;
-    s32 maximum;
-    s32 hasHundreds;
-    s32 group;
-    s32 barWidth;
-    s32 iconKind;
-    s16 itemId;
-    s16 itemWord;
-    s16 category;
-    u8 alpha;
-    u32 spriteHandle;
-    CampD8Object *sprite;
-    u8 *groupBase;
-
-    switch (recordIndex) {
-    case 1:
-        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 0,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 2:
-        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 1,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 3:
-        sprite = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0e);
-        sprite->drawContext = camp_draw_load_f32(record, 0x24);
-        sprite->x = record->x;
-        sprite->y = record->y;
-        sprite->alpha = (u8)record->alpha;
-        camp_draw_store_u32(sprite, 0x20, 0xc2340000);
-        campD8SetSprite(sprite, 1);
-        campD8SubmitSprite(sprite);
-        break;
-    case 4:
-        groupBase = (u8 *)work;
-        FUN_0015CE50(camp_draw_load_u64(record, 0x38),
-                     (void *)(uintptr_t)camp_draw_load_u32(groupBase, 0x28),
-                     record->alpha, camp_draw_load_f32(record, 0x24));
-        break;
-    case 0:
-        FUN_0015D8E0(*(CampSystemPosition *)&record->x,
-                     camp_draw_load_f32(record, 0x24), record->alpha);
-        break;
-    case 0x0a:
-    case 0x14:
-    case 0x1e:
-    case 0x28:
-        group = (recordIndex - 0x0a) / 10;
-        groupBase = (u8 *)work + group * 4;
-        alpha = (u8)record->alpha;
-        spriteHandle = FUN_00177790_sys(
-            *(const s16 *)((const u8 *)groupBase + 0x3c));
-        campCE50FormatText(textBuffer, DAT_007cb66c, spriteHandle);
-        campCE50DrawText(
-            (s32)record->x, (s32)((f32)(s32)record->y + 3.0f),
-            ((u32)(0xffU - alpha) | 0xffffff00U),
-            camp_draw_load_f32(record, 0x24), 10, 1,
-            (const char *)textBuffer, 0x10, 0x78);
-        break;
-    case 0x0b:
-    case 0x15:
-    case 0x1f:
-    case 0x29:
-        group = (recordIndex - 0x0b) / 10;
-        groupBase = (u8 *)work + group * 4;
-        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
-        value = FUN_0016C4F0(itemId) & 0xffff;
-        hasHundreds = value >= 0x64;
-        alpha = (u8)record->alpha;
-        if (hasHundreds) {
-            campCE50DrawValueGlyph(
-                record, campCE50Font(2), (value / 100) + 0x0b,
-                record->x, record->y, 0x27, alpha,
-                camp_draw_load_f32(record, 0x24));
-            value %= 100;
-        }
-        if (value >= 0x0a || hasHundreds) {
-            campCE50DrawValueGlyph(
-                record, campCE50Font(2), (value / 10) + 0x0b,
-                record->x + 16.0f, record->y, 0x27, alpha,
-                camp_draw_load_f32(record, 0x24));
-            value %= 10;
-        }
-        campCE50DrawValueGlyph(
-            record, campCE50Font(2), (value % 10) + 0x0b,
-            record->x + 32.0f, record->y, 0x27, alpha,
-            camp_draw_load_f32(record, 0x24));
-        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
-        value = FUN_0016C4F0(itemWord) & 0xffff;
-        maximum = FUN_0016C5F0(itemWord) & 0xffff;
-        barWidth = 0x4c - ((value * 0x4c) / maximum);
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
-                             alpha, record->x + 50.0f, record->y + 2.0f,
-                             camp_draw_load_f32(record, 0x24));
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0b,
-                             alpha, record->x + 55.0f, record->y + 1.0f,
-                             camp_draw_load_f32(record, 0x24));
-        if (barWidth != 0) {
-            FUN_00113a30_sys(
-                camp_draw_load_f32(record, 0x24) - 1.0f,
-                record->x + 56.0f + (f32)(0x4c - barWidth),
-                record->y + 1.0f, 0xffffff00U, barWidth, 10);
-        }
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 9,
-                             alpha, record->x + 55.0f, record->y + 1.0f,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x0c:
-    case 0x16:
-    case 0x20:
-    case 0x2a:
-        group = (recordIndex - 0x0c) / 10;
-        groupBase = (u8 *)work + group * 4;
-        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
-        value = FUN_0016C570(itemId) & 0xffff;
-        hasHundreds = value >= 0x64;
-        alpha = (u8)record->alpha;
-        if (hasHundreds) {
-            campCE50DrawValueGlyph(
-                record, campCE50Font(2), (value / 100) + 0x0b,
-                record->x, record->y, 0x27, alpha,
-                camp_draw_load_f32(record, 0x24));
-            value %= 100;
-        }
-        if (value >= 0x0a || hasHundreds) {
-            campCE50DrawValueGlyph(
-                record, campCE50Font(2), (value / 10) + 0x0b,
-                record->x + 16.0f, record->y, 0x27, alpha,
-                camp_draw_load_f32(record, 0x24));
-            value %= 10;
-        }
-        campCE50DrawValueGlyph(
-            record, campCE50Font(2), (value % 10) + 0x0b,
-            record->x + 32.0f, record->y, 0x27, alpha,
-            camp_draw_load_f32(record, 0x24));
-        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
-        value = FUN_0016C570(itemWord) & 0xffff;
-        maximum = FUN_0016C670(itemWord) & 0xffff;
-        barWidth = 0x4c - ((value * 0x4c) / maximum);
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
-                             alpha, record->x + 50.0f, record->y + 2.0f,
-                             camp_draw_load_f32(record, 0x24));
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0c,
-                             alpha, record->x + 55.0f, record->y + 1.0f,
-                             camp_draw_load_f32(record, 0x24));
-        if (barWidth != 0) {
-            FUN_00113a30_sys(
-                camp_draw_load_f32(record, 0x24) - 1.0f,
-                record->x + 56.0f + (f32)(0x4c - barWidth),
-                record->y + 1.0f, 0xffffff00U, barWidth, 10);
-        }
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0a,
-                             alpha, record->x + 55.0f, record->y + 1.0f,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x0d:
-    case 0x17:
-    case 0x21:
-    case 0x2b:
-        group = (recordIndex - 0x0c) / 10;
-        groupBase = (u8 *)work + group * 4;
-        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
-        digitCount = FUN_0016C470(itemId) & 0xff;
-        alpha = (u8)record->alpha;
-        if (digitCount >= 0x0a) {
-            campCE50DrawValueGlyph(
-                record, campCE50Font(2), (digitCount / 10) + 0x0b,
-                record->x, record->y, 0x27, alpha,
-                camp_draw_load_f32(record, 0x24));
-            digitCount %= 10;
-        }
-        campCE50DrawValueGlyph(
-            record, campCE50Font(2), (digitCount % 10) + 0x0b,
-            record->x + 16.0f, record->y, 0x27, alpha,
-            camp_draw_load_f32(record, 0x24));
-        if (((u32)FUN_0016C970(itemId) & 0x80000U) != 0) {
-            iconKind = 0x0e;
-        } else if (((u32)FUN_0016C970(itemId) & 0x80U) != 0) {
-            iconKind = 0x0f;
-        } else {
-            category = FUN_0016C920(itemId) & 0xffff;
-            if (category == 5) {
-                iconKind = 1;
-            } else if (category == 4) {
-                iconKind = 0;
-            } else if (category == 3) {
-                iconKind = 2;
-            } else {
-                iconKind = -1;
-            }
-        }
-        if (iconKind != -1) {
-            campSystemDrawSprite(
-                record, *(void **)DAT_00833a54_abs, iconKind,
-                alpha, record->x + 44.0f, record->y - 6.0f,
-                camp_draw_load_f32(record, 0x24));
-        }
-        break;
-    case 0x0e:
-    case 0x18:
-    case 0x22:
-    case 0x2c:
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x0f:
-    case 0x19:
-    case 0x23:
-    case 0x2d:
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x10:
-    case 0x1a:
-    case 0x24:
-    case 0x2e:
-        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 4,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x32:
-        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 1,
-                             (u8)record->alpha, record->x + 16.0f,
-                             record->y, camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x33:
-        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 2,
-                             (u8)record->alpha, record->x + 16.0f,
-                             record->y, camp_draw_load_f32(record, 0x24));
-        break;
-    case 0x34:
-        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 3,
-                             (u8)record->alpha, record->x, record->y,
-                             camp_draw_load_f32(record, 0x24));
-        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 1,
-                             (u8)record->alpha, record->x + 73.0f,
-                             record->y, camp_draw_load_f32(record, 0x24));
-        break;
-    }
-}
-
-// FUN_00160800 NONMATCHING
-void *FUN_00160800(KwlnTask *task)
-{
-    CampSystemDrawWork *work;
-    CampDrawRecord *record;
-    KwlnTask *otherTask;
-    void *entryPool;
-    void *entry;
-    CampD8Object *sprite;
-    void *ready;
-    u32 temp;
-    u16 inputLatch;
-    u16 itemId;
-    s16 itemResult;
-    s32 i;
-    s32 j;
-    s32 oldCursor;
-    s32 allDone;
-    s32 hasInput;
-    s32 itemCount;
-    s32 itemIndex;
-    s32 itemBase;
-    u32 value;
-    u32 value2;
-    u32 fadedAlpha;
-    f32 verticalOffset;
-    f32 displacement;
-
-    work = (CampSystemDrawWork *)camp_draw_ptr32((u32)(uintptr_t)task->workData);
-    switch (work->state) {
-    case 0:
-        uGpffffb29c = 0;
-        if (iGpffffb270_sys == NULL) {
-            ready = NULL;
-        } else {
-            ready = iGpffffb270_sys->workData;
-            if (*(u32 *)ready != 3) {
-                ready = NULL;
-            } else {
-                ready = *(void **)((u8 *)ready + 0x0c);
-            }
-        }
-        if (ready != NULL) {
-            FUN_00114450_sys(102.0f, 0.0f, -87.0f, -1,
-                         0x4fa4ff19, 0x280, 0x280);
-        }
-        FUN_0011BBA0(0.0f, 0.0f, 102.0f, 0, 0);
-        sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
-        camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
-        camp_draw_store_u32(sprite, 0x10, 0x43d60000);
-        camp_draw_store_u32(sprite, 0x14, 0x41d80000);
-        camp_draw_store_u8(sprite, 0x18, 0);
-        camp_draw_store_u16(sprite, 0x28, 0);
-        camp_draw_store_u16(sprite, 0x2a, 0);
-        campD8SetSprite(sprite, 1);
-        campD8SubmitSprite(sprite);
-        work->records = (u32)(uintptr_t)func_0018b6d0(0x3c);
-        work->state = 1;
-        work->partyIds[0] = 1;
-        work->partyCount = 1;
-        for (i = 0; i < 3 && FUN_0016DD60_sys(i) != 0; ++i) {
-            work->partyIds[work->partyCount] = FUN_0016DD60_sys(i);
-            ++work->partyCount;
-        }
-        work->frame = 0;
-        break;
-
-    case 1:
-        i = work->frame;
-        if (i == 10) {
-            work->state = 2;
-        } else {
-            if (i < 9) {
-                s16 fade = 0;
-                if (i >= 3) {
-                    displacement = (f32)(((i - 3) * 400) / 5);
-                    verticalOffset = 0.0f;
-                    fade = (s16)(((i - 3) * 0xff) / 5);
-                } else {
-                    verticalOffset = 0.0f;
-                    displacement = verticalOffset;
-                }
-                if (iGpffffb270_sys == NULL) {
-                    ready = NULL;
-                } else {
-                    ready = iGpffffb270_sys->workData;
-                    if (*(u32 *)ready != 3) {
-                        ready = NULL;
-                    } else {
-                        ready = *(void **)((u8 *)ready + 0x0c);
-                    }
-                }
-                if (ready != NULL) {
-                    fadedAlpha = 0xffU - (s32)fade;
-                    value2 = fadedAlpha;
-                    if (fadedAlpha > 0x18) {
-                        value2 = 0x19;
-                    }
-                    FUN_00114450_sys(102.0f, displacement, verticalOffset - 87.0f,
-                                 fadedAlpha | 0xffffff00U,
-                                 value2 | 0x4fa4ff00U, 0x280, 0x280);
-                }
-                FUN_0011BBA0(0.0f, 0.0f, 102.0f, fade, 0);
-                sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
-                camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
-                camp_draw_store_f32(sprite, 0x10, displacement + 428.0f);
-                camp_draw_store_f32(sprite, 0x14, verticalOffset + 27.0f);
-                camp_draw_store_u8(sprite, 0x18, (u8)fade);
-                camp_draw_store_u16(sprite, 0x28, 0);
-                camp_draw_store_u16(sprite, 0x2a, 0);
-                campD8SetSprite(sprite, 1);
-                campD8SubmitSprite(sprite);
-                if (i == 0) {
-                    otherTask = iGpffffb26c;
-                    entry = camp_draw_ptr32((u32)(uintptr_t)otherTask->workData);
-                    FUN_0011DA80(0x42c80000, entry);
-                    camp_draw_store_u32(entry, 0, 9);
-                    camp_draw_store_u32(entry, 4, 0);
-                }
-                if (i == 4) {
-                    FUN_00121DE0(uGpffffb264, 0x0d);
-                    FUN_00122710_sys(uGpffffb268, 0x0d);
-                }
-            }
-            work->frame = i + 1;
-        }
-        break;
-
-    case 2:
-        if (FUN_001016b0(camp_draw_ptr32(work->imageArchive)) != 0) {
-            work->archive0 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 0, &temp));
-            work->archive1 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 1, &temp));
-            work->archive2 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 2, &temp));
-            entryPool = (*DAT_00960184_abs)(1, 0x7f0, 0x40000);
-            for (i = 0; i < 100; ++i) {
-                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x0c, 0);
-                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x10, 0);
-            }
-            work->entryPool = camp_draw_addr32(entryPool);
-            FUN_0015C840(entryPool);
-            *(void **)DAT_00833a50_abs = camp_draw_ptr32(work->archive0);
-            *(void **)DAT_00833a54_abs = camp_draw_ptr32(work->archive1);
-            *(void **)DAT_00833a58_abs = camp_draw_ptr32(work->archive2);
-            work->state = 3;
-        }
-        break;
-
-    case 3:
-        if (FUN_00111f30(camp_draw_ptr32(work->archive0)) != 0 &&
-            FUN_00111f30(camp_draw_ptr32(work->archive1)) != 0 &&
-            FUN_00111f30(camp_draw_ptr32(work->archive2)) != 0) {
-            work->state = 4;
-        }
-        break;
-
-    case 4:
-        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0d) != 0) {
-            FUN_0015DA70(work);
-            work->state = 5;
-        }
-        break;
-
-    case 5:
-        allDone = 1;
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0) {
-                if (func_0018b700(record) != 0) {
-                    FUN_0015FA90(record, i, work);
-                }
-                if (record->progress != record->target) {
-                    allDone = 0;
-                }
-            }
-        }
-        if (allDone != 0) {
-            work->state = 6;
-        }
-        break;
-
-    case 6:
-        allDone = 1;
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0) {
-                if (func_0018b700(record) != 0) {
-                    FUN_0015FA90(record, i, work);
-                }
-                if (record->progress != record->target) {
-                    allDone = 0;
-                }
-            }
-        }
-        if (allDone != 0 && (DAT_007e094e_y3 & 0x20) == 0) {
-            if ((DAT_007e094e_y3 & 0x40) == 0) {
-                entryPool = camp_draw_ptr32(work->entryPool);
-                FUN_0011ABD0_sys(camp_draw_load_u32(entryPool, 0x7dc), 5,
-                             (u8 *)entryPool + 0x7e4, (u8 *)entryPool + 0x7e0);
-            } else {
-                entryPool = camp_draw_ptr32(work->entryPool);
-                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
-                itemCount = (s32)camp_draw_load_u32(entryPool, 0x7dc);
-                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
-                if (itemIndex < itemCount) {
-                    entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
-                    value = camp_draw_load_u32(entry, 0x0c);
-                    inputLatch = DAT_00836ba8;
-                    FUN_00175200_sys(camp_draw_load_u16(entry, 0x14));
-                    itemResult = FUN_0017B480((u16)value);
-                    if (itemResult == 2 || FUN_0017B660(1, (u16)value) != 0 ||
-                        FUN_0017B4E0((u16)value) != 1) {
-                        FUN_0010a4e0_sys(0, 0, 0, 8);
-                    } else {
-                        FUN_0010a4e0_sys(0, 0, 0);
-                        work->selectedKind = (s16)FUN_0017BB40((u16)value);
-                        if (work->selectedKind != 3) {
-                            if (work->selectedKind == 0) {
-                                work->cursor = 0;
-                            } else {
-                                work->cursor = -2;
-                            }
-                            work->state = 8;
-                        }
-                    }
-                    FUN_00175200_sys(inputLatch);
-                }
-            }
-        } else if (allDone != 0 && (DAT_007e094e_y3 & 0x20) != 0) {
-            FUN_0010a4e0_sys(0, 0, 0, 2);
-            FUN_0015E150(work);
-            work->state = 7;
-        }
-        break;
-
-    case 7:
-        allDone = 1;
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0) {
-                if (func_0018b700(record) != 0) {
-                    FUN_0015FA90(record, i, work);
-                }
-                if (record->progress != record->target) {
-                    allDone = 0;
-                }
-            }
-        }
-        if (allDone != 0) {
-            return (void*)0xffffffff;
-        }
-        break;
-
-    case 8:
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0 && func_0018b700(record) != 0) {
-                FUN_0015FA90(record, i, work);
-            }
-        }
-        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0e) != 0) {
-            FUN_0015E6E0(work);
-            work->state = 9;
-        }
-        break;
-
-    case 9:
-        allDone = 1;
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0) {
-                if (func_0018b700(record) != 0) {
-                    FUN_0015FA90(record, i, work);
-                }
-                if (record->progress != record->target) {
-                    allDone = 0;
-                }
-            }
-        }
-        if (allDone == 0) {
-            break;
-        }
-        oldCursor = work->cursor;
-        if ((DAT_007e094e_y3 & 0x20) == 0) {
-            if ((DAT_007e094e_y3 & 0x40) == 0) {
-                hasInput = ((DAT_007e0952_y3 & 0x1000) != 0) ||
-                           ((DAT_007e095a_y3 & 0x1000) != 0);
-                if (hasInput) {
-                    if (work->cursor != -2) {
-                        if (work->cursor == 0) {
-                            if ((DAT_007e094e_y3 & 0x1000) != 0 ||
-                                (DAT_007e0958_y3 & 0x1000) != 0) {
-                                FUN_0010a4e0_sys(0, 0, 0);
-                                work->cursor = work->partyCount - 1;
-                            }
-                        } else {
-                            FUN_0010a4e0_sys(0, 0, 0);
-                            --work->cursor;
-                        }
-                    }
-                } else if (((DAT_007e0952_y3 & 0x4000) != 0 ||
-                            (DAT_007e095a_y3 & 0x4000) != 0) &&
-                           work->cursor != -2) {
-                    if (work->cursor == work->partyCount - 1) {
-                        if ((DAT_007e094e_y3 & 0x4000) != 0 ||
-                            (DAT_007e0958_y3 & 0x4000) != 0) {
-                            FUN_0010a4e0_sys(0, 0, 0);
-                            work->cursor = 0;
-                        }
-                    } else {
-                        FUN_0010a4e0_sys(0, 0, 0);
-                        ++work->cursor;
-                    }
-                }
-            } else {
-                entryPool = camp_draw_ptr32(work->entryPool);
-                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
-                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
-                entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
-                itemId = (u16)(camp_draw_load_u32(entry, 0x0c) & 0xffff);
-                if (work->selectedKind == 0) {
-                    value = (u32)work->partyIds[work->cursor];
-                    if (campC520NearHero(value) == 0 ||
-                        FUN_0017BC20_sys(1, (s16)value, itemId, 0) != 0) {
-                        FUN_0010a4e0_sys(0, 0, 0, 8);
-                    } else {
-                        FUN_0010a4e0_sys(1, 0, 3, 1);
-                        FUN_0015C520(entryPool, work->cursor);
-                        work->state = 10;
-                    }
-                } else {
-                    hasInput = 0;
-                    for (j = 0; j < work->partyCount; ++j) {
-                        value = (u32)work->partyIds[j];
-                        if (campC520NearHero(value) != 0 &&
-                            FUN_0017BC20_sys(1, (s16)value, itemId, 0) == 0) {
-                            hasInput = 1;
-                        }
-                    }
-                    if (hasInput != 0) {
-                        FUN_0010a4e0_sys(1, 0, 3, 1);
-                        FUN_0015C520(entryPool, -2);
-                        work->state = 10;
-                    } else {
-                        FUN_0010a4e0_sys(0, 0, 0, 8);
-                    }
-                }
-            }
-        } else {
-            FUN_0010a4e0_sys(0, 0, 0, 2);
-            work->state = 10;
-        }
-        if (oldCursor != work->cursor) {
-            FUN_0015EE40(work, oldCursor);
-        }
-        break;
-
-    case 10:
-        for (i = 0; i < 0x3c; ++i) {
-            record = &camp_draw_state_records(work)[i];
-            if (record->active != 0 && func_0018b700(record) != 0) {
-                FUN_0015FA90(record, i, work);
-            }
-        }
-        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0d) != 0) {
-            FUN_0015F320(work);
-            work->state = 6;
-        }
-        break;
-    }
-    return 0;
-}
-
-
-
-#pragma alias DAT_007cdf54_data DAT_007cdf54
-#pragma alias DAT_007cdf58_data DAT_007cdf58
-#pragma alias DAT_007e094e_data DAT_007e094e_y3
-#pragma alias DAT_007e0958_data DAT_007e0958_y3
-#pragma alias DAT_00833a50_data DAT_00833a50_y3
-#pragma alias iGpffffb258_data iGpffffb258
-#pragma alias gp0xffff897c_data gp0xffff897c
-#pragma alias FUN_00100d80_data FUN_00100d80
-#pragma alias FUN_00100ec0_data FUN_00100ec0
-#pragma alias FUN_001016b0_data FUN_001016b0
-#pragma alias FUN_00102100_data FUN_00102100_y3
-#pragma alias FUN_0010a4e0_data FUN_0010a4e0_y3
-#pragma alias FUN_00111f30_data FUN_00111f30
-#pragma alias FUN_00112420_data FUN_00112420_y3
-#pragma alias FUN_001124b0_data FUN_001124b0
-#pragma alias FUN_00113a30_data FUN_00113a30
-#pragma alias FUN_00114450_data FUN_00114450
-#pragma alias FUN_001159f0_data FUN_001159f0
-#pragma alias FUN_00115bc0_data FUN_00115bc0_y6
-#pragma alias FUN_00122710_data FUN_00122710
-#pragma alias FUN_0012a560_data FUN_0012a560
-#pragma alias FUN_0012ac60_data FUN_0012ac60
-#pragma alias FUN_00129b30_data FUN_00129b30
-#pragma alias FUN_0013c240_data FUN_0013c240
-#pragma alias FUN_0013c780_data FUN_0013c780
-#pragma alias FUN_0013cf80_data FUN_0013cf80
-#pragma alias FUN_0013d1a0_data FUN_0013d1a0
-#pragma alias FUN_0013fca0_data FUN_0013fca0
-#pragma alias FUN_00174800_data FUN_00174800
-#pragma alias FUN_00194b20_data FUN_00194b20
-#pragma alias FUN_00195290_data FUN_00195290
-#pragma alias FUN_003b2cb0_data FUN_003b2cb0
-#pragma alias FUN_003c7d80_data FUN_003c7d80
-#pragma alias FUN_003c7e20_data FUN_003c7e20
-#pragma alias FUN_0040eb50_data FUN_0040eb50
-#pragma alias FUN_00523ac8_data FUN_00523ac8
-/* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
-#include "h_snd.h"
-#include "Script/scrTraceCode.h"
-
-#pragma alias DAT_007cdf88_y4 DAT_007cdf88
-#pragma alias FUN_00167f10_y4 FUN_00167f10
-#pragma alias FUN_00167f30_y4 FUN_00167f30
-#pragma alias FUN_00167ef0_y4 FUN_00167ef0
-#pragma alias FUN_001685d0_y4 FUN_001685d0
-#pragma alias FUN_001685e0_y4 FUN_001685e0
-#pragma alias FUN_0012df50_y4 FUN_0012df50
-#pragma alias DAT_007e094e_y4 DAT_007e094e_y4
-#pragma alias DAT_007e0952_y4 DAT_007e0952_y4
-#pragma alias DAT_007e0958_y4 DAT_007e0958_y4
-#pragma alias DAT_007e095a_y4 DAT_007e095a_y4
-#pragma alias FUN_00160800_y4 FUN_00160800_y4
-#pragma alias FUN_001685b0_y4 FUN_001685b0_y4
-#pragma alias FUN_00168770_y4 FUN_00168770_y4
-#pragma alias FUN_00195290_y4 FUN_00195290_y4
-#pragma alias FUN_0010c1a0_y4 FUN_0010c1a0_y4
-#pragma alias FUN_0010c3a0_y4 FUN_0010c3a0_y4
-#pragma alias FUN_001159f0_y4 FUN_001159f0_y4
-#pragma alias FUN_00115bc0_y4 FUN_00115bc0_y4
-#pragma alias FUN_003b2cb0_y4 FUN_003b2cb0_y4
-#pragma alias FUN_003b32d0_y4 FUN_003b32d0_y4
-#pragma alias FUN_003c7e20_y4 FUN_003c7e20_y4
-#pragma alias FUN_00523ac8_y4 FUN_00523ac8_y4
-#pragma alias FUN_0017d800_y4 FUN_0017d800_y4
-#pragma alias FUN_00174800_y4 FUN_00174800_y4
-#pragma alias FUN_0013c240_y4 FUN_0013c240_y4
-#pragma alias FUN_00177c10_y4 FUN_00177c10_y4
-#pragma alias FUN_001158b0_y4 FUN_001158b0_y4
-#pragma alias FUN_001127d0_y4 FUN_001127d0_y4
-#pragma alias FUN_00115980_y4 FUN_00115980_y4
-#pragma alias FUN_0010a4e0_y4 FUN_0010a4e0_y4
-#pragma alias FUN_004d0f00_y4 FUN_004d0f00_y4
-#pragma alias datGetEquipmentId_y4 datGetEquipmentId_y4
-
-
-#pragma alias DAT_007cdf60_y3 DAT_007cdf60_y5
-#pragma alias DAT_007cdfb8_y3 DAT_007cdfb8
-#pragma alias DAT_007e094e_y3 DAT_007e094e
-#pragma alias DAT_007e0952_y3 DAT_007e0952
-#pragma alias DAT_007e0958_y3 DAT_007e0958
-#pragma alias DAT_007e095a_y3 DAT_007e095a
-#pragma alias DAT_00833a50_y3 DAT_00833a50
-#pragma alias FUN_00102100_y3 FUN_00102100
-#pragma alias FUN_0010a4e0_y3 FUN_0010a4e0
-#pragma alias FUN_00112420_y3 FUN_00112420
-#pragma alias FUN_0011e380_y3 FUN_0011e380
-#pragma alias FUN_00145520_y3 FUN_00145520
-#pragma alias FUN_0016f190_y3 FUN_0016f190
-#pragma alias FUN_0016f1f0_y3 FUN_0016f1f0
-#pragma alias FUN_0017d800_y3 FUN_0017d800
-#pragma alias DAT_007cdf50_y3 DAT_007cdf50_y3
-#pragma alias DAT_007cdf54_y3 DAT_007cdf54_y3
-#pragma alias DAT_007cdf58_y3 DAT_007cdf58_y3
-#pragma alias DAT_007cdf5c_y3 DAT_007cdf5c_y3
-#pragma alias DAT_00833b78_y3 DAT_00833b78_y3
-#pragma alias DAT_005dbc60_y3 DAT_005dbc60_y3
-#pragma alias FUN_00100d80_y3 FUN_00100d80_y3
-#pragma alias FUN_001016b0_y3 FUN_001016b0_y3
-#pragma alias FUN_00103c30_y3 FUN_00103c30_y3
-#pragma alias FUN_00103cb0_y3 FUN_00103cb0_y3
-#pragma alias FUN_0010c3a0_y3 FUN_0010c3a0_y3
-#pragma alias FUN_00111f30_y3 FUN_00111f30_y3
-#pragma alias FUN_001127d0_y3 FUN_001127d0_y3
-#pragma alias FUN_00113a30_y3 FUN_00113a30_y3
-#pragma alias FUN_00114450_y3 FUN_00114450_y3
-#pragma alias FUN_001158b0_y3 FUN_001158b0_y3
-#pragma alias FUN_00115980_y3 FUN_00115980_y3
-#pragma alias FUN_001159f0_y3 FUN_001159f0_y3
-#pragma alias FUN_0011bba0_y3 FUN_0011bba0_y3
-#pragma alias FUN_00121de0_y3 FUN_00121de0_y3
-#pragma alias FUN_00122710_y3 FUN_00122710_y3
-#pragma alias FUN_0013e710_y3 FUN_0013e710_y3
-#pragma alias FUN_00141590_y3 FUN_00141590_y3
-#pragma alias FUN_00141660_y3 FUN_00141660_y3
-#pragma alias FUN_00141fb0_y3 FUN_00141fb0_y3
-#pragma alias FUN_00142930_y3 FUN_00142930_y3
-#pragma alias FUN_001432f0_y3 FUN_001432f0_y3
-#pragma alias FUN_00143a00_y3 FUN_00143a00_y3
-#pragma alias FUN_00143ee0_y3 FUN_00143ee0_y3
-#pragma alias FUN_00144910_y3 FUN_00144910_y3
-#pragma alias FUN_00145350_y3 FUN_00145350_y3
-#pragma alias FUN_00146710_y3 FUN_00146710_y3
-#pragma alias FUN_001474f0_y3 FUN_001474f0_y3
-#pragma alias FUN_00173580_y3 FUN_00173580_y3
-#pragma alias FUN_00174960_y3 FUN_00174960_y3
-#pragma alias FUN_00174a90_y3 FUN_00174a90_y3
-#pragma alias FUN_0017bf70_y3 FUN_0017bf70_y3
-#pragma alias FUN_0017bfa0_y3 FUN_0017bfa0_y3
-
-
-typedef u8 undefined1;
-typedef u16 undefined2;
-typedef u32 undefined4;
-typedef u64 undefined8;
-typedef int bool;
-typedef unsigned long ulong;
-typedef struct CampFloatPair
-{
-    f32 x;
-    f32 y;
-} CampFloatPair;
-typedef struct CampHelpPaths
-{
-    const char* paths[8];
-} CampHelpPaths;
-#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
-
-/* Retail globals shared by the Camp bridge state machines. */
-extern void (*DAT_0096017c[])(...);
-#pragma alias DAT_0096017c_abs DAT_0096017c
-extern void (*DAT_0096017c_abs[])(...);
-extern void* (*DAT_00960184_abs[])(...);
-#pragma alias scrGetIntPara_u64 scrGetIntPara
-extern u64 scrGetIntPara_u64(s32);
-extern void* (*DAT_00960184)();
-extern void* (*DAT_00960178)();
-#pragma alias DAT_00960178_abs DAT_00960178
-extern void* (*DAT_00960178_abs[])(...);
-extern void* DAT_007cdf48;
-extern void* DAT_007cdf54_data;
-extern void* DAT_007cdf58_data;
-extern void* DAT_007cdf84;
-extern void* DAT_007cdf88_y4;
-extern s32 DAT_007e094e_data;
-extern s32 DAT_007e0958_data;
-/* Retail accesses these flag words by absolute address. */
-extern u32 DAT_00833a50_data[];
-extern s32 iGpffffb258_data;
-extern s32 uGpffffb290;
-extern s32 uGpffffb28c;
-extern s32 iGpffffb28c;
-
-/* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
-typedef struct CampDataBridgeRoot CampDataBridgeRoot;
-extern CampDataBridgeRoot* iGpffffb2c0;
-#define DAT_007cdfb0 iGpffffb2c0
-extern s32* DAT_007cdfb4;
-extern s32* DAT_007cdfb8_y3;
-extern s32* DAT_007cdfbc;
-extern s32* DAT_007cdfc0;
-extern s32* DAT_007cdfc4;
-extern s32* DAT_007cdfc8;
-extern s32* DAT_007cdfcc;
-extern s32* DAT_007cdfd0;
-extern s32* DAT_007cdfd4;
-extern s32* DAT_007cdfd8;
-extern s32* DAT_007cdfdc;
-extern u8* DAT_007cdfe0;
-extern u8* DAT_007cdfe4;
-extern void* DAT_007cdfe8;
-extern u32 DAT_0083bb30[];
-extern u8 DAT_0083bb40;
-extern u32 DAT_0083aaa0_y7[0x23];
-extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
-extern char DAT_005dc020[];
-extern char DAT_005dbc60[];
-extern const void* gp0xffff897c_data;
-extern const void* gp0xffff8998;
-
-/* Unresolved retail helpers. Old-style declarations preserve the mixed-width
- * call ABI recovered from the stripped executable. */
-extern u32 FUN_00100d80_data();
-extern u32 FUN_00100ec0_data();
-extern u32 FUN_001016b0_data();
-extern u64 FUN_00102100_data();
-extern u32 FUN_001021c0();
-extern u32 FUN_001023a0();
-extern u32 FUN_0010a4e0_data();
-extern u32 FUN_00111cb0();
-extern u32 FUN_00111d50();
-extern u32 FUN_00111dd0();
-extern u32 FUN_00111ec0();
-extern u32 FUN_00111ee0();
-extern u32 FUN_00111f20();
-extern u32 FUN_00111f30_data();
-extern u32 FUN_00112420_data();
-extern u32 FUN_001124b0_data();
-extern void FUN_00113a30_data(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
-#pragma alias FUN_00113a30_camp_reordered FUN_00113a30_data
-extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
-                                        f32 y, s32 width, s32 height);
-extern u32 FUN_00114450_data();
-#pragma alias campDataDrawPersonaSprite FUN_00114450_data
-extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
-                                      s32 mode, u32 color, u32 width,
-                                      u32 height, void* resource);
-extern void FUN_001159f0_data(f32 x, f32 y, ...);
-#pragma alias FUN_001159f0_typed FUN_001159f0_data
-extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                f32 x, f32 y, f32 depth);
-extern u32 FUN_00115bc0_data();
-#pragma alias FUN_00115bc0_typed FUN_00115bc0_data
-extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
-                                u32 red, u32 green, u32 blue, f32 x, f32 y,
-                                f32 depth);
-#pragma alias campDataDrawSpriteDirect FUN_001159f0_data
-extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0_data
-extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawDigitsDirect FUN_00115de0
-extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
-#pragma alias campDataDrawSpriteFade FUN_001159f0_data
-extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
-                                   void* atlas, s32 tile, s32 alpha);
-#pragma alias campDataDrawSpriteAltFade FUN_00115bc0_data
-extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
-                                      void* atlas, s32 tile, s32 alpha,
-                                      s32 red, s32 green, s32 blue, s32 flags);
-extern u32 FUN_00115de0();
-extern u32 FUN_00119f10();
-#pragma alias campDataCreateTask FUN_00119f10
-extern void* campDataCreateTask(void* task, s32 mode);
-extern u32 FUN_0011abd0();
-extern u32 FUN_00122710_data();
-extern u32 FUN_0012a560_data(f32, RwV2d, void*, s32);
-extern u32 FUN_0012ac60_data(f32, RwV2d, void*, s32);
-extern u32 FUN_00129b30_data(f32, RwV2d, void*, s32);
-extern u32 FUN_0013c240_data();
-extern u32 FUN_0013c780_data();
-extern u32 FUN_0013cf80_data();
-extern u32 FUN_0013d1a0_data();
-extern u32 FUN_0013fca0_data();
-#pragma alias campDataDrawEquipment FUN_0013d1a0_data
-extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
-                                  void* work, s32 alpha);
-#pragma alias campDataDrawEquipmentAlt FUN_0013fca0_data
-extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
-                                     void* work, s32 alpha);
-extern u32 FUN_0016f630();
-extern u32 FUN_0016f720();
-extern u32 FUN_0016f810();
-extern u32 FUN_0016f900();
-extern u32 FUN_0016f9f0();
-extern u32 FUN_0016fae0();
-extern u32 FUN_0016fbd0();
-extern u32 FUN_0016fcc0();
-extern u32 FUN_0016fea0();
-extern u32 FUN_0016ff90();
-extern u32 FUN_00170080();
-extern u32 FUN_00170170();
-extern u32 FUN_00170260();
-extern u32 FUN_00170350();
-extern u32 FUN_00170440();
-extern u32 FUN_00170530();
-extern u32 FUN_00170a40();
-extern u32 FUN_00170ab0();
-extern u32 FUN_00170b20();
-extern u32 FUN_00170b90();
-extern u32 FUN_00174800_data();
-extern u32 FUN_00177c10();
-extern u32 FUN_001830c0();
-extern u32 FUN_00194b20_data();
-extern u32 FUN_00195290_data();
-extern void FUN_0019d3f0(const char*, s32);
-extern f32 FUN_0021ea00(s32);
-extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
-extern u32 FUN_0025f570();
-extern u32 FUN_0035ed20();
-extern u32 FUN_003b2cb0_data();
-#pragma alias campDataDrawTextRaw FUN_003b2cb0_data
-extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
-                               s32 font, s32 alignment, const char* text,
-                               s32 maxWidth, s32 shadow);
-extern u32 FUN_003c7d80_data();
-extern u32 FUN_003c7e20_data();
-#pragma alias campDataDrawDigits FUN_003c7e20_data
-extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
-                               s32 style, s32 font, s32 alignment, u32 value);
-extern u32 FUN_0040eb50_data();
-#pragma alias campDataDrawText FUN_0040eb50_data
-extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
-                            const char* text, s32 maxWidth);
-extern u32 FUN_00521250();
-extern u32 FUN_00523ac8_data();
-
-extern void* func_001618a0(KwlnTask* task);
-extern void func_00161d60(KwlnTask* task);
-extern void* func_00166c70(KwlnTask* task);
-extern const char D_005DAC70[];
-extern const char D_005DAC90[];
-extern const char D_005DBD80[];
-extern const char D_005DBED0[];
-extern const char D_005DBEE8[];
-extern const char D_005DBF00[];
-extern const char D_005DBF20[];
-extern const char D_005DBF40[];
-extern const char D_005DBF70[];
-extern const char D_005DBFA0[];
-extern const char D_005DBFD0[];
-/* These task archive names are addressed absolutely by retail. */
-#pragma alias D_005DBF20_abs D_005DBF20
-extern u8 D_005DBF20_abs[];
-#pragma alias D_005DBF40_abs D_005DBF40
-extern u8 D_005DBF40_abs[];
-#pragma alias D_005DBF70_abs D_005DBF70
-extern u8 D_005DBF70_abs[];
-#pragma alias D_005DBFA0_abs D_005DBFA0
-extern u8 D_005DBFA0_abs[];
-#pragma alias D_005DBFD0_abs D_005DBFD0
-extern u8 D_005DBFD0_abs[];
-extern const char D_005DC000[];
-extern const char D_005E3098[];
-extern const char D_005E30B0[];
-extern const char D_005E31F0[];
-extern const char D_005E3200[];
-
-/* Target entry prototypes keep all callbacks visible before their first use. */
-void FUN_001675b0(KwlnTask*);
-void* FUN_001675e0(KwlnTask*);
-void FUN_001678e0(KwlnTask*);
-void* FUN_00167930(KwlnTask*);
-void FUN_00167ec0(KwlnTask*);
-void FUN_00167ef0_y4(KwlnTask*);
-void FUN_00167f10_y4(KwlnTask*);
-u32 FUN_00167f30_y4(KwlnTask*);
-KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
-u32 FUN_00168040(void);
-u32 FUN_00168100(void);
-bool FUN_001681d0(void);
-void* FUN_00168220(KwlnTask*);
-bool FUN_001685b0(KwlnTask*);
-u32 FUN_001685d0_y4(KwlnTask*);
-void FUN_001685e0_y4(KwlnTask*, s32);
-void FUN_00168720(KwlnTask*);
-KwlnTask* FUN_00168770(KwlnTask*, u32);
-u32 FUN_00168810(u32);
-void FUN_00169040(int);
-void FUN_00169110(u16, CampFloatPair, void*, s32);
-void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
-undefined4 FUN_00169330(void);
-bool FUN_00169420(void);
-undefined4 FUN_00169470(KwlnTask*);
-void FUN_00169AE0(int);
-void FUN_00169B90(void* resources, undefined8 coordinates,
-                  void* list, s32 alpha, undefined8 stackArg);
-undefined4 FUN_0016A030(void);
-undefined4 FUN_0016A6A0(void);
-f32 FUN_0016ba00(u32, u32);
-f32 FUN_0016ba80(u32, u32);
-f32 FUN_0016bb00(u32, u32);
-f32 FUN_0016bb80(u32, u32);
-f32 FUN_0016bc00(u32, u32);
-void FUN_0016bc80(u32, u32, f32*);
-void FUN_0016bdb0(u32, u32, f32*);
-void FUN_0016bee0(u32, u32, void*);
-void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
-void FUN_0016c010(void) __attribute__((aligned(16)));
-void FUN_0016c1d0(void);
-void FUN_0016c2f0(void);
-void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
-#pragma alias campDataDrawListA FUN_0016A700
-extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
-#pragma alias campDataDrawListB FUN_0016AF90
-extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
-                              void* list, s32 alpha);
-
-
-typedef struct CampBridgeScreenWork
-{
-    u32 state;          /* 0x00 */
-    u32 timer;          /* 0x04 */
-    u32 personaId;      /* 0x08 */
-    u32 opacity;        /* 0x0c (low halfword used by the fade) */
-    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
-    u32 command;        /* 0x14 */
-    u32 active;         /* 0x18 */
-    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
-    u32 reserved20;     /* 0x20 */
-    u32 reserved24;     /* 0x24 */
-    u32 childTask;      /* 0x28 */
-} CampBridgeScreenWork;
-
-/* Work area for the 0x14-byte state task (the first five words overlap the
- * screen work above but carry different meanings). */
-typedef struct CampBridgeStateWork
-{
-    u32 state;          /* 0x00 */
-    u32 mode;           /* 0x04 */
-    u32 setupTask;      /* 0x08 */
-    u32 activeTask;     /* 0x0c */
-    u32 screenMode;     /* 0x10 */
-} CampBridgeStateWork;
-
-/* Work area allocated by FUN_00167930 for the persona display child. */
-typedef struct CampBridgePersonaDispWork
-{
-    u32 state;          /* 0x00 */
-    u32 personaId;      /* 0x04 */
-    u32 reserved08;     /* 0x08 */
-    u32 mode;           /* 0x0c */
-    f32 alpha;          /* 0x10 */
-    f32 slideStep;      /* 0x14 */
-    f32 slidePosition;  /* 0x18 */
-    f32 depth;          /* 0x1c */
-    void* parseRequest; /* 0x20 */
-    HCdvd* cdvd;        /* 0x24 */
-    void* resource;     /* 0x28 */
-} CampBridgePersonaDispWork;
-
-/* Work area allocated by FUN_00168770 (0x1c bytes). */
-typedef struct CampBridgeBlendWork
-{
-    u32 state;       /* 0x00 */
-    s32 timer;       /* 0x04 */
-    u32 reserved08;  /* 0x08 */
-    u32 mode;        /* 0x0c */
-    u32 archive;     /* 0x10 */
-    u32 sourceTask;  /* 0x14 */
-    u32 targetTask;  /* 0x18 */
-} CampBridgeBlendWork;
-
-
-/* Work area used by FUN_00168810/FUN_00169040. */
-typedef struct CampTargetLoadWork
-{
-    u32 state;                 /* +0x00 */
-    u32 reserved04;            /* +0x04 */
-    s32 frame;                 /* +0x08 */
-    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
-    void* archive;             /* +0x10 */
-    void* resources[2];        /* +0x14 */
-    CampTargetList* listA;     /* +0x1c */
-    CampTargetList* listB;     /* +0x20 */
-    void* childTask;           /* +0x24 */
-} CampTargetLoadWork;
-
-/* Work area used by FUN_00169470/FUN_00169AE0. */
-typedef struct CampTargetMenuWork
-{
-    u32 state;                 /* +0x00 */
-    s32 frame;                 /* +0x04 */
-    u32 reserved08;            /* +0x08 */
-    void* archive;             /* +0x0c */
-    void* resources[2];        /* +0x10 */
-    CampTargetList* list;      /* +0x18 */
-    void* childTask;           /* +0x1c */
-    u32 result;                /* +0x20 */
-} CampTargetMenuWork;
-
-typedef struct CampDataBridgeRecord
-{
-    s16 axis0;                 /* +0x00 */
-    s16 axis1;                 /* +0x02 */
-    s16 axis2;                 /* +0x04 */
-    s16 axis3;                 /* +0x06 */
-    f32 value;                 /* +0x08 */
-    u32 reserved0c;            /* +0x0c */
-    u16 reserved10;            /* +0x10 */
-    s16 helpIndex;             /* +0x12 */
-    u32 color0;                /* +0x14 */
-    u32 color1;                /* +0x18 */
-    u32 reserved1c;            /* +0x1c */
-} CampDataBridgeRecord;
-
-typedef struct CampDataBridgeGroup
-{
-    s32 recordCount;           /* +0x00 */
-    s32 auxiliaryCount;        /* +0x04 */
-    CampDataBridgeRecord* records; /* +0x08 */
-    u8* auxiliaryData;         /* +0x0c */
-} CampDataBridgeGroup;
-
-typedef struct CampDataBridgeRoot
-{
-    CampDataBridgeGroup groups[2];
-} CampDataBridgeRoot;
-
-// FUN_001675b0
-void FUN_001675b0(KwlnTask* task)
-{
-    (*DAT_0096017c_abs)(task->workData);
-}
-
-// FUN_001675e0 MATCHING
-void* FUN_001675e0(KwlnTask* task)
-{
-    CampBridgeStateWork* work;
-    s32 ready;
-    work = (CampBridgeStateWork*)task->workData;
-    switch (work->state) {
-    case 0: {
-        KwlnTask* child;
-        datSetFlag(0x1407, 1);
-        if (DAT_007cdf48 != 0) {
-            child = 0;
-        }
-        else {
-            void* allocated;
-
-            allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
-            if (allocated == 0) {
-                child = 0;
-            }
-            else {
-                child = kwlnTaskCreate(task, D_005DAC70, 0x18bf,
-                                     h_campUpdateSpriteSetupTask,
-                                     h_campDestroySpriteSetupTask,
-                                     allocated);
-                if (child == 0) {
-                    child = 0;
-                }
-                else {
-                    DAT_007cdf48 = (void*)child;
-                    *(u32*)((u8*)allocated + 0x3c) =
-                        (u32)H_Cdvd_Request(D_005DAC90, 1);
-                }
-            }
-        }
-        work->setupTask = (u32)child;
-        work->activeTask = (u32)FUN_00168770(task, 0x18bf);
-        DAT_007cdf88_y4 = (void*)work->activeTask;
-        work->state = 1;
-        break;
-    }
-    case 1: {
-        s16 screenMode;
-        void* allocated;
-
-        ready = 1;
-        if (DAT_007cdf48 == 0) {
-            ready = -1;
-        }
-        else if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData == 3) {
-            ready = 1;
-        }
-        else {
-            ready = 0;
-        }
-        if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
-            if (work->mode == 0) {
-                s16 screenMode0;
-                void* allocated0;
-                KwlnTask* nextTask0;
-                screenMode0 = (s16)work->screenMode;
-                allocated0 = (*DAT_00960184_abs)(1, 0x30, 0x40000);
-                if (allocated0 == 0) {
-                    nextTask0 = 0;
-                }
-                else {
-                    nextTask0 = (KwlnTask*)kwlnTaskCreate(
-                        task, D_005DBD80, 0x18be,
-                        func_001618a0,
-                        func_00161d60,
-                        allocated0);
-                    if (nextTask0 == 0) {
-                        nextTask0 = 0;
-                    }
-                    else {
-                        *(u32*)((u8*)allocated0 + 0x0c) =
-                            (u32)screenMode0;
-                    }
-                }
-                work->activeTask = (u32)nextTask0;
-            }
-            else {
-                KwlnTask* nextTask1;
-                screenMode = (s16)work->screenMode;
-                allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
-                if (allocated == 0) {
-                    nextTask1 = 0;
-                }
-                else {
-                    nextTask1 = (KwlnTask*)kwlnTaskCreate(
-                        task, D_005DBED0, 0x18be,
-                        func_00166c70,
-                        FUN_001675b0,
-                        allocated);
-                    if (nextTask1 == 0) {
-                        nextTask1 = 0;
-                    }
-                    else {
-                        *(u32*)((u8*)allocated + 0x0c) =
-                            (u32)screenMode;
-                    }
-                }
-                work->activeTask = (u32)nextTask1;
-            }
-            work->state = 2;
-        }
-        break;
-    }
-    case 2:
-        if (kwlnTaskGetState((KwlnTask*)work->activeTask) == 3) {
-            return KWLNTASK_STOP;
-        }
-        break;
-    default:
-        break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001678e0
-void FUN_001678e0(KwlnTask* task)
-{
-    void* work;
-
-    work = task->workData;
-    DAT_007cdf88_y4 = 0;
-    datSetFlag(0x1407, 0);
-    (*DAT_0096017c_abs)(work);
-}
-
-// FUN_00167930 NONMATCHING
-void* FUN_00167930(KwlnTask* task)
-{
-    CampBridgeScreenWork* work;
-    CampBridgePersonaDispWork* personaWork;
-    bool complete;
-    s16 value;
-    s16 opacity;
-    s16 screenMode;
-    s16 transitionKind;
-    s16 timer;
-    u32 personaId;
-    KwlnTask* child;
-    s16 fadeValue;
-    void* persona;
-    RwV2d coordinates = {0.0f, 0.0f};
-
-    work = (CampBridgeScreenWork*)task->workData;
-    switch (work->state) {
-    case 0:
-        FUN_001685e0_y4((KwlnTask*)DAT_007cdf88_y4, 2);
-        personaId = datGetPersonaId(*(s16*)((u8*)work + 0x0e));
-        child = 0;
-        personaWork = (CampBridgePersonaDispWork*)
-            (*DAT_00960184)(1, 300, 0x40000);
-        if (personaWork != 0) {
-            child = kwlnTaskCreate(
-                task, D_005DB190, 0x18bf,
-                func_00133780,
-                h_campPersonaDestroyDispCtlDrawTask,
-                personaWork);
-            if (child != 0) {
-                personaWork->personaId = personaId;
-                personaWork->mode = 0xffffffff;
-                personaWork->alpha = 100.0f;
-            }
-        }
-        work->childTask = (u32)child;
-        work->state = 1;
-        break;
-    case 1:
-        *(s16*)((u8*)work + 0x10) = 0;
-        h_campRequestMenuTransition((KwlnTask*)DAT_007cdf54_data, 3);
-        FUN_00122710_data((KwlnTask*)DAT_007cdf58_data, 3);
-        work->state = 2;
-        break;
-    case 2:
-        complete = false;
-        personaWork = (CampBridgePersonaDispWork*)
-            ((KwlnTask*)work->childTask)->workData;
-        if ((personaWork->state == 3) && (personaWork->personaId != 0)) {
-            if (personaWork->slidePosition != 60.0f) {
-                personaWork->slidePosition -= personaWork->slideStep;
-                personaWork->slideStep += 5.0f;
-                if (personaWork->slidePosition < 60.0f) {
-                    personaWork->slidePosition = 60.0f;
-                }
-            }
-            campDataDrawPersonaSprite(personaWork->alpha, personaWork->slidePosition,
-                         personaWork->depth, personaWork->mode,
-                         0x4fa4ff19, 0x280, 0x280, personaWork->resource);
-        }
-        screenMode = *(s16*)((u8*)work + 0x12);
-        transitionKind = *(s16*)((u8*)work + 0x1c);
-        if (screenMode != 0) {
-            opacity = *(s16*)((u8*)work + 0x0c);
-            if (opacity != 0xff) {
-                opacity += 10;
-                *(s16*)((u8*)work + 0x0c) = opacity;
-                if (opacity > 0xff) {
-                    *(s16*)((u8*)work + 0x0c) = 0xff;
-                }
-            }
-            else {
-                complete = true;
-            }
-            opacity = *(s16*)((u8*)work + 0x0c);
-            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_00129b30_data(100.0f, coordinates, persona, 0xff - opacity);
-        }
-        else {
-            timer = *(s16*)((u8*)work + 0x04);
-            complete = timer == 0x14;
-            if (!complete) {
-                timer++;
-                *(s16*)((u8*)work + 0x04) = timer;
-            }
-            value = *(s16*)((u8*)work + 0x04);
-            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_0012ac60_data(100.0f, coordinates, persona, value);
-        }
-        if (complete) {
-            if (transitionKind == 0) {
-                if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
-                    if (((*(u16*)DAT_007e094e_abs & 0x8000) != 0) ||
-                        ((*(u16*)DAT_007e0958_abs & 0x8000) != 0)) {
-                        func_0010a4e0(0, 0, 0, 0);
-                        work->command = 1;
-                    }
-                }
-                else {
-                    func_0010a4e0(0, 0, 0, 2);
-                    work->command = 0xffffffff;
-                }
-            }
-            else if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
-                if (((*(u16*)DAT_007e094e_abs & 0x8000) == 0) &&
-                    ((*(u16*)DAT_007e0958_abs & 0x8000) == 0)) {
-                    if ((*(u16*)DAT_007e094e_abs & 8) == 0) {
-                        if ((*(u16*)DAT_007e094e_abs & 4) != 0) {
-                            func_0010a4e0(0, 0, 0, 0);
-                            work->command = 3;
-                        }
-                    }
-                    else {
-                        func_0010a4e0(0, 0, 0, 0);
-                        work->command = 2;
-                    }
-                }
-                else {
-                    func_0010a4e0(0, 0, 0, 0);
-                    work->command = 1;
-                }
-            }
-            else {
-                func_0010a4e0(0, 0, 0, 2);
-                work->command = 0xffffffff;
-            }
-        }
-        break;
-    case 3:
-        opacity = *(s16*)((u8*)work + 0x0c) - 0x19;
-        *(s16*)((u8*)work + 0x0c) = opacity;
-        if (opacity < 0) {
-            return KWLNTASK_STOP;
-        }
-        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60_data(100.0f, coordinates, persona, 0xff - opacity);
-        /* Retail intentionally falls through into case 4. */
-    case 4:
-        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60_data(100.0f, coordinates, persona, 0);
-        *(s16*)((u8*)work + 0x10) = 0;
-        work->state = 5;
-        break;
-    case 5:
-        timer = *(s16*)((u8*)work + 0x10);
-        if (timer == 10) {
-            return KWLNTASK_STOP;
-        }
-        timer++;
-        *(s16*)((u8*)work + 0x10) = timer;
-        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        fadeValue = timer;
-        FUN_0012a560_data(100.0f, coordinates, persona, fadeValue);
-        break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_00167ec0
-void FUN_00167ec0(KwlnTask* task)
-{
-    (*DAT_0096017c_abs)(task->workData);
-}
-
-// FUN_00167EF0
-void FUN_00167ef0_y4(KwlnTask* task)
-{
-    u32* work;
-
-    work = (u32*)task->workData;
-    *(u16*)((u8*)work + 0x0c) = 0xff;
-    work[0] = 3;
-}
-
-// FUN_00167F10
-void FUN_00167f10_y4(KwlnTask* task)
-{
-    u32* work;
-
-    work = (u32*)task->workData;
-    *(u16*)((u8*)work + 0x10) = 0;
-    work[0] = 4;
-}
-
-// FUN_00167F30
-u32 FUN_00167f30_y4(KwlnTask* task)
-{
-    return ((u32*)task->workData)[5];
-}
-
-// FUN_00167f40
-KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue,
-                       u16 param4, u16 param5, u16 param6)
-{
-    CampBridgeScreenWork* work;
-    KwlnTask* taskValue;
-
-    work = (CampBridgeScreenWork*)(*DAT_00960184_abs)(1, 0x2c, 0x40000);
-    if (work == 0) {
-        return 0;
-    }
-    taskValue = kwlnTaskCreate(parent, D_005DBF00, priority,
-                             FUN_00167930,
-                             FUN_00167ec0,
-                             work);
-    if (taskValue == 0) {
-        return 0;
-    }
-    *(CampFloatPair*)((u8*)work + 4) = packedValue;
-    work->active = 1;
-    *(u16*)((u8*)work + 0x0e) = param4;
-    *(u16*)((u8*)work + 0x12) = param5;
-    *(u16*)((u8*)work + 0x1c) = param6;
-    return (KwlnTask*)taskValue;
-}
-
-// FUN_00168040
-u32 FUN_00168040(void)
-{
-    s16 value;
-    void* allocated;
-    KwlnTask* taskValue;
-
-    value = scrGetIntPara_u64(0);
-    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
-    if (allocated == 0) {
-        taskValue = 0;
-    }
-    else {
-        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
-                                 FUN_001675e0,
-                                 FUN_001678e0,
-                                 allocated);
-        if (taskValue == 0) {
-            taskValue = 0;
-        }
-        else {
-            *(u16*)((u8*)allocated + 0x10) = value;
-            *(u32*)((u8*)allocated + 4) = 0;
-        }
-    }
-    DAT_007cdf84 = (void*)taskValue;
-    return 1;
-}
-
-// FUN_00168100
-u32 FUN_00168100(void)
-{
-    s16 value;
-    void* allocated;
-    KwlnTask* taskValue;
-
-    value = (s16)scrGetIntPara(0);
-    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
-    if (allocated == 0) {
-        taskValue = 0;
-    }
-    else {
-        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
-                                 FUN_001675e0,
-                                 FUN_001678e0,
-                                 allocated);
-        if (taskValue == 0) {
-            taskValue = 0;
-        }
-        else {
-            *(u16*)((u8*)allocated + 0x10) = value;
-            *(u32*)((u8*)allocated + 4) = 1;
-        }
-    }
-    DAT_007cdf84 = (void*)taskValue;
-    return 1;
-}
-
-// FUN_001681d0
-bool FUN_001681d0(void)
-{
-    u32 state;
-
-    state = kwlnTaskGetState((KwlnTask*)DAT_007cdf84);
-    if (state == 3) {
-        DAT_007cdf84 = 0;
-        return 1;
-    }
-    return 0;
-}
-
-// FUN_00168220
-void* FUN_00168220(KwlnTask* task)
-{
-    CampBridgeBlendWork* work;
-    u32 child;
-    s32 frame;
-
-    work = (CampBridgeBlendWork*)task->workData;
-    switch (work->state) {
-    case 0:
-        work->archive = (u32)H_Cdvd_Request((const char*)D_005DBF20_abs, 1);
-        work->state = 1;
-        break;
-    case 1:
-        if (H_Cdvd_IsFileLoaded((HCdvd*)work->archive) != 0) {
-            work->state = 2;
-        }
-        break;
-    case 3:
-        switch (work->mode) {
-        case 0:
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                              (const char*)D_005DBFD0_abs);
-            work->targetTask = child;
-            break;
-        case 1:
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                              (const char*)D_005DBFA0_abs);
-            work->targetTask = child;
-            break;
-        case 2:
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                              (const char*)D_005DBF70_abs);
-            work->targetTask = child;
-            break;
-        case 3:
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                              (const char*)D_005DBF40_abs);
-            work->targetTask = child;
-            break;
-        }
-        work->timer = 0;
-        work->state = 4;
-        break;
-    case 4:
-        if (H_Maestro_FinishedInit((KwlnTask*)work->targetTask) == 1) {
-            func_0010a4e0(0, 0, 0, 5);
-            H_Maestro_RequestDraw((KwlnTask*)work->targetTask);
-            H_Maestro_00111f20((KwlnTask*)work->targetTask, 1);
-            work->state = 5;
-        }
-        break;
-    case 5:
-        if (work->mode == 3) {
-            if (work->timer != 10) {
-                work->timer++;
-            }
-            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
-                         1.0f - (f32)(s32)work->timer / 10.0f);
-        }
-        if (H_Maestro_00111cb0((KwlnTask*)work->targetTask) != 0) {
-            if (work->mode != 3) {
-                if (work->sourceTask != 0) {
-                    kwlnTaskDestroyWithHierarchy((KwlnTask*)work->sourceTask);
-                }
-                work->sourceTask = work->targetTask;
-                work->targetTask = 0;
-            }
-            else {
-                H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 0.0f);
-            }
-            work->state = 2;
-        }
-        break;
-    case 6:
-        frame = (s32)work->timer - 1;
-        work->timer = (u32)frame;
-        if (frame != 0) {
-            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
-                         (f32)frame / 10.0f);
-        }
-        else {
-            return KWLNTASK_STOP;
-        }
-        break;
-    case 7:
-        frame = (s32)work->timer - 1;
-        work->timer = (u32)frame;
-        if (frame != 0) {
-            H_Maestro_SetAlphaMult((KwlnTask*)work->targetTask,
-                         (f32)frame / 10.0f);
-            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
-                         1.0f - (f32)frame / 10.0f);
-        }
-        else {
-            if (work->targetTask != 0) {
-                kwlnTaskDestroyWithHierarchy((KwlnTask*)work->targetTask);
-            }
-            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 1.0f);
-            work->targetTask = 0;
-            work->state = 2;
-        }
-        break;
-    }
-    return KWLNTASK_CONTINUE;
-}
-
-// FUN_001685B0
-bool FUN_001685b0(KwlnTask* task)
-{
-    return *(u32*)task->workData == 2;
-}
-
-// FUN_001685D0
-u32 FUN_001685d0_y4(KwlnTask* task)
-{
-    return ((u32*)task->workData)[2];
-}
-
-// FUN_001685e0_y4
-void FUN_001685e0_y4(KwlnTask* task, s32 command)
-{
-    u32* work;
-    s32 state;
-
-    work = (u32*)task->workData;
-    state = (s32)work[2];
-    switch (state) {
-    case 0:
-        if (command == 1) {
-            work[3] = 0;
-            work[0] = 3;
-            work[2] = (u32)command;
-        }
-        break;
-    case 1:
-        switch (command) {
-        case 1:
-            break;
-        case 2:
-            work[3] = 1;
-            work[0] = 3;
-            break;
-        case 3:
-            work[1] = 10;
-            work[0] = 6;
-            break;
-        case 4:
-            work[3] = 3;
-            work[0] = 3;
-            break;
-        }
-        work[2] = (u32)command;
-        break;
-    case 2:
-        switch (command) {
-        case 1:
-            work[3] = 2;
-            work[0] = 3;
-            break;
-        case 2:
-            break;
-        case 3:
-            work[1] = 10;
-            work[0] = 6;
-            break;
-        }
-        work[2] = (u32)command;
-        break;
-    case 4:
-        work[1] = 10;
-        work[0] = 7;
-        work[2] = (u32)command;
-        break;
-    default:
-        break;
-    }
-}
-
-// FUN_00168720
-void FUN_00168720(KwlnTask* task)
-{
-    u32* work;
-
-    work = (u32*)task->workData;
-    if (work[4] != 0) {
-        H_Cdvd_Destroy((HCdvd*)work[4]);
-    }
-    work[4] = 0;
-    (*DAT_0096017c_abs)(work);
-}
-
-// FUN_00168770
-KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
-{
-    void* work;
-    KwlnTask* taskValue;
-
-    work = (*DAT_00960184_abs)(1, 0x1c, 0x40000);
-    if (work == 0) {
-        return 0;
-    }
-    taskValue = kwlnTaskCreate(parent, D_005DC000, priority,
-                             FUN_00168220,
-                             FUN_00168720,
-                             work);
-    if (taskValue == 0) {
-        return 0;
-    }
-    return (KwlnTask*)taskValue;
-}
-
-
-
-
-/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
-#pragma opt_loop_invariants on
-// FUN_00168810 NONMATCHING
-u32 FUN_00168810(u32 param_1)
-{
-    KwlnTask* task;
-    CampTargetLoadWork* work;
-    u8 readyScratch[4];
-    CampFloatPair drawPosition;
-    s32 i;
-    s32 entry;
-    s32 nextFrame;
-    s32 phase;
-    bool ready;
-    u32 resource;
-
-    task = (KwlnTask*)(uintptr_t)param_1;
-    work = (CampTargetLoadWork*)task->workData;
-    switch (work->state) {
-    case 0:
-        if (FUN_001016b0_data(work->archive) != 0) {
-            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
-                FUN_00102100_data(work->archive, 0, readyScratch));
-            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
-                FUN_00102100_data(work->archive, 1, readyScratch));
-            work->childTask = (void*)(uintptr_t)FUN_00119f10(param_1, 1);
-            DAT_00833a50_data[0] = (u32)(uintptr_t)work->resources[0];
-            DAT_00833a50_data[1] = (u32)(uintptr_t)work->resources[1];
-            work->state = 1;
-        }
-        break;
-
-    case 1:
-        ready = true;
-        for (i = 0; i < 2; i++) {
-            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
-                ready = false;
-            }
-        }
-        if (iGpffffb258_data == 0) {
-            phase = -1;
-        } else if (*(s32*)(*(u32*)((u8*)(uintptr_t)iGpffffb258_data + 0x3c)) == 3) {
-            phase = 1;
-        } else {
-            phase = 0;
-        }
-        if (phase == 1 && ready) {
-            work->frame = 0;
-            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
-            for (entry = 0; entry < 0x140; entry++) {
-                s32 record = (s32)resource + entry * 0x24;
-                *(u32*)(record + 0x64) = 0xffffffff;
-                *(u32*)(record + 0x6c) = 0;
-                *(u32*)(record + 0x68) = 0xffffffff;
-                *(u32*)(record + 0x70) = 0;
-            }
-            work->listA = (CampTargetList*)(uintptr_t)resource;
-            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
-            for (entry = 0; entry < 0x140; entry++) {
-                s32 record = (s32)resource + entry * 0x24;
-                *(u32*)(record + 0x64) = 0xffffffff;
-                *(u32*)(record + 0x6c) = 0;
-                *(u32*)(record + 0x68) = 0xffffffff;
-                *(u32*)(record + 0x70) = 0;
-            }
-            work->listB = (CampTargetList*)(uintptr_t)resource;
-            FUN_0013cf80_data(work->drawIdWord, work->listA);
-            work->state = 2;
-        }
-        break;
-
-    case 2:
-        nextFrame = work->frame + 1;
-        work->frame = nextFrame;
-        if (nextFrame > 9) {
-            work->state = 3;
-        }
-        drawPosition.x = 0.0f;
-        drawPosition.y = 0.0f;
-        FUN_00169110((u16)work->drawIdWord, drawPosition,
-                     work->listA,
-                     (s32)(0xff - (work->frame * 0xff) / 10));
-        break;
-
-    case 3:
-        if ((DAT_007e094e_data & 0x20) == 0) {
-            if ((DAT_007e094e_data & 0x40) == 0) {
-                CampTargetList* list = work->listA;
-                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
-            } else {
-                FUN_0010a4e0_data(0, 0, 0, 1);
-                FUN_0013c240_data(work->listB, (u16)work->drawIdWord,
-                             work->listA->cursor);
-                if (work->listB->count == 0) {
-                    FUN_003c7430(4);
-                    work->state = 5;
-                } else {
-                    work->state = 4;
-                }
-            }
-        } else {
-            FUN_0010a4e0_data(0, 0, 0, 2);
-            work->state = 6;
-        }
-        drawPosition.x = 0.0f;
-        drawPosition.y = 0.0f;
-        FUN_00169110((u16)work->drawIdWord, drawPosition,
-                     work->listA, 0);
-        break;
-
-    case 4:
-        if ((DAT_007e094e_data & 0x20) == 0) {
-            if ((DAT_007e094e_data & 0x40) == 0) {
-                CampTargetList* list = work->listB;
-                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
-            } else {
-                u32 sourceId;
-                u32 destinationId;
-                u16 sourceValue6;
-                u32 sourceValue7;
-                u8 sourceValue8;
-                u8 sourceValue9;
-                u16 sourceValueA;
-                u16 sourceValueB;
-                u16 sourceValueC;
-                u16 sourceValueD;
-                u32 destinationValue;
-
-                FUN_0010a4e0_data(0, 0, 0, 1);
-                sourceId = (u32)work->listA->records[work->listA->cursor].secondaryValue;
-                destinationId = (u32)work->listB->records[
-                    work->listB->cursor + work->listB->selected].secondaryValue;
-                sourceValue6 = FUN_0016f630((u16)work->drawIdWord, sourceId);
-                sourceValue7 = FUN_0016f720((u16)work->drawIdWord, sourceId);
-                sourceValue8 = FUN_0016f810((u16)work->drawIdWord, sourceId);
-                sourceValue9 = FUN_0016f900((u16)work->drawIdWord, sourceId);
-                sourceValueA = FUN_0016f9f0((u16)work->drawIdWord, sourceId);
-                sourceValueB = FUN_0016fae0((u16)work->drawIdWord, sourceId);
-                sourceValueC = FUN_0016fbd0((u16)work->drawIdWord, sourceId);
-                sourceValueD = FUN_0016fcc0((u16)work->drawIdWord, sourceId);
-                destinationValue = FUN_0016f630(1, destinationId);
-                FUN_0016fea0((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016f720(1, destinationId);
-                FUN_0016ff90((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016f810(1, destinationId);
-                FUN_00170080((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016f900(1, destinationId);
-                FUN_00170170((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016fae0(1, destinationId);
-                FUN_00170350((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016fbd0(1, destinationId);
-                FUN_00170440((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016fcc0(1, destinationId);
-                FUN_00170530((u16)work->drawIdWord, sourceId, destinationValue);
-                destinationValue = FUN_0016f9f0(1, destinationId);
-                FUN_00170260((u16)work->drawIdWord, sourceId, destinationValue);
-                FUN_0016fea0(1, destinationId, sourceValue6);
-                FUN_0016ff90(1, destinationId, sourceValue7);
-                FUN_00170080(1, destinationId, sourceValue8);
-                FUN_00170170(1, destinationId, sourceValue9);
-                FUN_00170350(1, destinationId, sourceValueB);
-                FUN_00170440(1, destinationId, sourceValueC);
-                FUN_00170530(1, destinationId, sourceValueD);
-                FUN_00170260(1, destinationId, sourceValueA);
-                FUN_00177c10(work->drawIdWord, sourceId);
-                FUN_0013cf80_data(work->drawIdWord, work->listA);
-                work->state = 3;
-            }
-        } else {
-            FUN_0010a4e0_data(0, 0, 0, 2);
-            work->state = 3;
-        }
-        drawPosition.x = 0.0f;
-        drawPosition.y = 0.0f;
-        FUN_001691F0((u16)work->drawIdWord, drawPosition,
-                     work->listA, work->listB, 0);
-        break;
-
-    case 5:
-        if (FUN_003c7850() == 0) {
-            FUN_003c7700();
-            work->state = 3;
-        }
-        drawPosition.x = 0.0f;
-        drawPosition.y = 0.0f;
-        FUN_00169110((u16)work->drawIdWord, drawPosition,
-                     work->listA, 0);
-        break;
-
-    case 6:
-        nextFrame = work->frame - 1;
-        work->frame = nextFrame;
-        if (nextFrame < 1) {
-            work->state = 7;
-        }
-        drawPosition.x = 0.0f;
-        drawPosition.y = 0.0f;
-        FUN_00169110((u16)work->drawIdWord, drawPosition,
-                     work->listA,
-                     (s32)(0xff - (work->frame * 0xff) / 10));
-        break;
-
-    case 7:
-        return 0xffffffff;
-    }
-    return 0;
-}
-
-#pragma opt_loop_invariants reset
-// FUN_00169040
-void FUN_00169040(int param_1)
-{
-    CampTargetLoadWork* work;
-    s32 i;
-
-    work = (CampTargetLoadWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
-    if (work->listA != NULL) {
-        (*(void (**)(...))0x0096017c)(work->listA);
-        work->listA = NULL;
-    }
-    if (work->listB != NULL) {
-        (*(void (**)(...))0x0096017c)(work->listB);
-        work->listB = NULL;
-    }
-    for (i = 0; i < 2; i++) {
-        if ((*(void**)((u8*)work + 0x14 + i * 4)) != NULL) {
-            FUN_001124b0_data(*(void**)((u8*)work + 0x14 + i * 4));
-        }
-        DAT_00833a50_data[i] = 0;
-    }
-    (*(void (**)(...))0x0096017c)(work);
-}
-
-// FUN_00169110 MATCHING
-void FUN_00169110(u16 param_1, CampFloatPair param_2,
-                  void* param_3, s32 param_4)
-{
-    f32 depth;
-    f32* depthBase;
-    u32 color;
-    CampFloatPair drawPosition;
-
-    color = 0xff - param_4;
-    color |= 0x20808000U;
-    drawPosition.x = param_2.x + 40.0f;
-    drawPosition.y = param_2.y + 50.0f;
-    depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30_camp_reordered(color,
-                                *depthBase - FUN_0021ea00(0x29),
-                                0.0f, 0.0f, 0x280, 0x1c0);
-    depth = FUN_0021ea00(0x28);
-    campDataDrawEquipment(*depthBase - depth,
-                          drawPosition, param_3, param_4);
-}
-// FUN_001691F0 MATCHING
-void FUN_001691F0(u16 param_1, CampFloatPair param_2,
-                  void* param_3, void* param_4, s32 param_5)
-{
-    f32 y;
-    f32 depth;
-    f32* depthBase;
-    u32 color;
-    CampFloatPair drawPosition;
-
-    y = param_2.y;
-    color = 0xff - param_5;
-    color |= 0x20808000U;
-    depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30_camp_reordered(color,
-                                *depthBase - FUN_0021ea00(0x29),
-                                0.0f, 0.0f, 0x280, 0x1c0);
-    drawPosition.x = param_2.x + 40.0f;
-    drawPosition.y = y + 50.0f;
-    depth = FUN_0021ea00(0x28);
-    campDataDrawEquipmentAlt(*depthBase - depth,
-                             drawPosition, param_3, param_5);
-    drawPosition.x = param_2.x + 40.0f;
-    drawPosition.y = y + 80.0f;
-    depth = FUN_0021ea00(0x28);
-    campDataDrawEquipment(*depthBase - depth,
-                          drawPosition, param_4, param_5);
-}
-
-// FUN_00169330
-undefined4 FUN_00169330(void)
-{
-    void* task;
-    void* allocation;
-    s16 language;
-
-    language = (s16)FUN_0035ed20(0);
-    allocation = (*DAT_00960184_abs)(1, 0x28, 0x40000);
-    if (allocation == NULL) {
-        task = NULL;
-    } else {
-        task = (void*)FUN_00194b20_data(0, DAT_005dc020, 0x18bf,
-                                   FUN_00168810, FUN_00169040, allocation);
-        if (task == NULL) {
-            task = NULL;
-        } else {
-            *(s32*)((u8*)allocation + 0x0c) = language;
-            *(u32*)((u8*)allocation + 0x10) = FUN_00100d80_data(DAT_005dbc60, 1);
-        }
-    }
-    uGpffffb290 = (s32)(uintptr_t)task;
-    return 1;
-}
-
-// FUN_00169420
-bool FUN_00169420(void)
-{
-    s32 state;
-
-    state = FUN_00195290_data(uGpffffb290);
-    if (state == 3) {
-        uGpffffb290 = 0;
-        return 1;
-    }
-    return 0;
-}
-
-/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
-#pragma opt_loop_invariants on
-#pragma opt_propagation off
-// FUN_00169470 NONMATCHING
-undefined4 FUN_00169470(KwlnTask* param_1)
-{
-    KwlnTask* task;
-    CampTargetMenuWork* work;
-    u8 readyScratch[4];
-    bool ready;
-    s32 i;
-    s32 entry;
-    s32 nextFrame;
-    s16 itemId;
-    CampTargetItemRecord itemRecord;
-
-    task = (KwlnTask*)(uintptr_t)param_1;
-    work = (CampTargetMenuWork*)task->workData;
-    switch (work->state) {
-    case 0:
-        if (FUN_001016b0_data(work->archive) != 0) {
-            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
-                FUN_00102100_data(work->archive, 0, readyScratch));
-            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
-                FUN_00102100_data(work->archive, 1, readyScratch));
-            work->childTask = (void*)(uintptr_t)FUN_00119f10((undefined8)param_1, 1);
-            work->state = 1;
-        }
-        break;
-    case 1:
-        ready = true;
-        for (i = 0; i < 2; i++) {
-            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
-                ready = false;
-            }
-        }
-        if (ready) {
-            work->frame = 0;
-            work->list = (CampTargetList*)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
-            for (entry = 0; entry < 0x140; entry++) {
-                s32 record = (s32)(uintptr_t)work->list + entry * 0x24;
-                *(u32*)(record + 0x64) = 0xffffffff;
-                *(u32*)(record + 0x6c) = 0;
-                *(u32*)(record + 0x68) = 0xffffffff;
-                *(u32*)(record + 0x70) = 0;
-            }
-            FUN_0013c780_data(work->list);
-            work->state = 2;
-            work->result = (u32)(uintptr_t)FUN_0025f370(
-                task, work->resources[1]);
-        }
-        break;
-    case 2:
-        nextFrame = work->frame + 1;
-        work->frame = nextFrame;
-        if (nextFrame > 0x13) {
-            work->state = 3;
-        }
-        FUN_00169B90(work->resources, 0, work->list,
-                     (s32)(0xff - (work->frame * 0xff) / 0x14),
-                     (undefined8)0);
-        break;
-    case 3:
-        if ((DAT_007e094e_data & 0x40) == 0) {
-            s32 selected = work->list->selected;
-            s32 cursor = work->list->cursor;
-            FUN_0011abd0(work->list->count, 6, &selected, &cursor);
-            work->list->selected = selected;
-            work->list->cursor = cursor;
-        } else {
-            FUN_0010a4e0_data(0, 0, 0, 1);
-            if (work->list->records[
-                    work->list->cursor + work->list->selected].availability == 0) {
-                FUN_003c7430(6);
-                work->state = 5;
-            } else {
-                FUN_003c7430(5);
-                FUN_003c74e0(0);
-                FUN_003c7560(0);
-                work->state = 4;
-            }
-        }
-        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
-        break;
-    case 4:
-        if (FUN_003c7850() == 0) {
-            s32 waitState = FUN_003c7610();
-            if (waitState != 1 && waitState == 0) {
-                s32 current = work->list->records[
-                    work->list->cursor + work->list->selected].secondaryValue;
-                s32 selected = work->list->selected;
-                s32 cursor = work->list->cursor;
-
-                if (current < 0x1000) {
-                    FUN_0016fea0(1, current, 0);
-                } else {
-                    FUN_0016fea0(0xffffffffffffffffULL, current - 0x1000, 0);
-                }
-                FUN_0013c780_data();
-                if (work->list->count < 6) {
-                    work->list->selected = 0;
-                    current = work->list->count - 1;
-                    if (current < cursor) {
-                        work->list->cursor = current;
-                    } else {
-                        work->list->cursor = cursor;
-                    }
-                } else {
-                    current = work->list->count - 6;
-                    if (current < selected) {
-                        work->list->selected = current;
-                        work->list->cursor = cursor;
-                    }
-                }
-            }
-            FUN_003c7700();
-            if (work->list->count < 0x12d) {
-                for (i = 0; i < 0x14; i++) {
-                    itemId = (s16)FUN_0016f630(0xffffffffffffffffULL, i);
-                    if (itemId != 0) {
-                        itemRecord.itemId = (u16)FUN_0016f630(0xffffffffffffffffULL, i);
-                        itemRecord.quantity = FUN_0016f720(0xffffffffffffffffULL, i);
-                        itemRecord.byte08 = (u8)FUN_0016f810(0xffffffffffffffffULL, i);
-                        itemRecord.byte09 = (u8)FUN_0016f900(0xffffffffffffffffULL, i);
-                        itemRecord.value0a = (u16)FUN_0016f9f0(0xffffffffffffffffULL, i);
-                        itemRecord.value0c = (u16)FUN_0016fae0(0xffffffffffffffffULL, i);
-                        itemRecord.value0e = (u16)FUN_0016fbd0(0xffffffffffffffffULL, i);
-                        itemRecord.value10 = (u16)FUN_0016fcc0(0xffffffffffffffffULL, i);
-                        FUN_0016fea0(0xffffffffffffffffULL, i, 0);
-                        FUN_001830c0(&itemRecord);
-                    }
-                }
-                FUN_0025f570();
-                work->frame = 10;
-                work->state = 6;
-            } else {
-                work->state = 3;
-            }
-        }
-        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
-        break;
-    case 5:
-        if (FUN_003c7850() == 0) {
-            FUN_003c7700();
-            work->state = 3;
-        }
-        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
-        break;
-    case 6:
-        nextFrame = work->frame - 1;
-        work->frame = nextFrame;
-        if (nextFrame < 1) {
-            work->state = 7;
-        }
-        FUN_00169B90(work->resources, 0, work->list,
-                     (s32)(0xff - (work->frame * 0xff) / 10),
-                     (undefined8)0);
-        break;
-    case 7:
-        return 0xffffffff;
-    }
-    return 0;
-}
-
-#pragma opt_propagation reset
-#pragma opt_loop_invariants reset
-// FUN_00169AE0
-void FUN_00169AE0(int param_1)
-{
-    CampTargetMenuWork* work;
-    s32 i;
-
-    work = (CampTargetMenuWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
-    if (work->list != NULL) {
-        (*DAT_0096017c_abs)(work->list);
-        work->list = NULL;
-    }
-    for (i = 0; i < 2; i++) {
-        if (*(void**)((u8*)work + 0x10 + i * 4) != NULL) {
-            FUN_001124b0_data(*(void**)((u8*)work + 0x10 + i * 4));
-        }
-    }
-    if (*(void**)((u8*)work + 0x0c) != NULL) {
-        FUN_00100ec0_data(*(void**)((u8*)work + 0x0c));
-    }
-    work->archive = NULL;
-    (*DAT_0096017c_abs)(work);
-}
-/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
-
-/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
-#pragma opt_lifetimes on
-#pragma opt_propagation off
-// FUN_00169B90 NONMATCHING
-void FUN_00169B90(void* param_1, undefined8 param_2,
-                  void* param_3, s32 param_4, undefined8 param_5)
-{
-    RwV2d position;
-    f32 x;
-    f32 y;
-    f32 depth;
-    f32 drawY;
-
-    position = *(RwV2d*)&param_2;
-    y = position.y;
-    x = position.x;
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
-    drawY = y + 18.0f;
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 416.0f, drawY, DAT_00960088 - depth);
-    drawY = x + 468.0f;
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(drawY, y + 408.0f, DAT_00960088 - depth);
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteDirect(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
-    {
-        s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
-        if (count >= 100) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(drawY, y + 384.0f, DAT_00960088 - depth);
-        }
-        if (count >= 10) {
-            depth = (f32)FUN_0021ea00(0x28);
-            campDataDrawSpriteAltDirect(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
-        }
-    }
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawSpriteAltDirect(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
-    y += 404.0f;
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 565.0f, y, DAT_00960088 - depth);
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 584.0f, y, DAT_00960088 - depth);
-    depth = (f32)FUN_0021ea00(0x28);
-    campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
-}
-
-#pragma opt_propagation reset
-#pragma opt_lifetimes reset
-/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
-#pragma opt_lifetimes on
-// FUN_0016A030 NONMATCHING
-undefined4 FUN_0016A030(void)
-{
-    u16 itemId;
-    u16 source;
-    s16 category;
-    u32 amount;
-    u32 secondaryAmount;
-    u32 resource;
-    s32 mode;
-    u32 packed;
-    u16 item;
-    u16 itemIndex;
-    u16 slot;
-    s32 i;
-    s32 sourceCount;
-    s32 generatedCount;
-    s32 lastMode;
-    CampTargetItemRecord itemRecord;
-
-    mode = FUN_0035ed20(0);
-    if (mode == 1) {
-        lastMode = -1;
-        source = 0xffff;
-        for (i = 0; i < 300; i++) {
-            category = (s16)i;
-            itemId = (u16)func_00170760(0xffff, category + 4000);
-            if (itemId != 0) {
-                amount = func_00170760(0xffff, category + 4000);
-                secondaryAmount = func_00170760(1, category + 4000);
-                amount = (amount & 0xffff) + (secondaryAmount & 0xffff);
-                if (amount > 99) {
-                    amount = 99;
-                }
-                func_00170860(1, category + 4000, amount & 0xffff);
-                func_00170860(0xffff, category + 4000, 0);
-            }
-        }
-    } else {
-        lastMode = mode + 0x100;
-        source = (u16)lastMode;
-        for (i = 0; i < 0x14; i++) {
-            item = (u16)mode;
-            slot = (u16)i;
-            itemIndex = (u16)FUN_00170a40(item, slot);
-            if (itemIndex != 0 && FUN_00170ab0(item, slot) != 0) {
-                itemIndex = (u16)FUN_00170a40(item, slot);
-                category = (s16)FUN_00170ab0(item, slot);
-                amount = func_00170760(1, itemIndex);
-                amount = (u32)category + (amount & 0xffff);
-                if ((s32)amount > 99) {
-                    amount = 99;
-                }
-                func_00170860(1, itemIndex, amount & 0xffff);
-                FUN_00170b20((u16)mode, (u16)i, 0);
-                FUN_00170b90((u16)mode, (u16)i, 0);
-            }
-        }
-    }
-
-    sourceCount = 0;
-    for (i = 0; i < 0x14; i++) {
-        if ((u16)FUN_0016f630(source, i) != 0) {
-            sourceCount++;
-        }
-    }
-    generatedCount = 0;
-    for (i = 0; i < 300; i++) {
-        if ((u16)FUN_0016f630(1, i) != 0) {
-            generatedCount++;
-        }
-    }
-    if (sourceCount + generatedCount < 0x12d) {
-        for (lastMode = 0; lastMode < 0x14; lastMode++) {
-            itemId = (u16)FUN_0016f630(source, lastMode);
-            if (itemId != 0) {
-                itemRecord.itemId = (u16)FUN_0016f630(source, lastMode);
-                itemRecord.quantity = FUN_0016f720(source, lastMode);
-                itemRecord.byte08 = (u8)FUN_0016f810(source, lastMode);
-                itemRecord.byte09 = (u8)FUN_0016f900(source, lastMode);
-                itemRecord.value0a = (u16)FUN_0016f9f0(source, lastMode);
-                itemRecord.value0c = (u16)FUN_0016fae0(source, lastMode);
-                itemRecord.value0e = (u16)FUN_0016fbd0(source, lastMode);
-                itemRecord.value10 = (u16)FUN_0016fcc0(source, lastMode);
-                FUN_0016fea0(source, lastMode, 0);
-                FUN_001830c0(&itemRecord);
-            }
-        }
-        uGpffffb28c = 0;
-    } else {
-        if (lastMode != -1) {
-            for (lastMode = 0; lastMode < 0x14; lastMode++) {
-                itemId = (u16)FUN_0016f630(source, lastMode);
-                if (itemId != 0) {
-                    packed = FUN_0016f630(source, lastMode);
-                    FUN_0016fea0(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016f720(source, lastMode);
-                    FUN_0016ff90(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016f810(source, lastMode);
-                    FUN_00170080(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016f900(source, lastMode);
-                    FUN_00170170(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016f9f0(source, lastMode);
-                    FUN_00170260(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016fae0(source, lastMode);
-                    FUN_00170350(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016fbd0(source, lastMode);
-                    FUN_00170440(0xffffffffffffffffULL, lastMode, packed);
-                    packed = FUN_0016fcc0(source, lastMode);
-                    FUN_00170530(0xffffffffffffffffULL, lastMode, packed);
-                    FUN_0016fea0(source, lastMode, 0);
-                }
-            }
-        }
-        resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x24, 0x40000);
-        if (resource == 0) {
-            uGpffffb28c = 0;
-        } else {
-            uGpffffb28c = (s32)(uintptr_t)FUN_00194b20_data(
-                0, 0x5dc020, 0x18bf, FUN_00169470, FUN_00169AE0,
-                (void*)(uintptr_t)resource);
-            if (uGpffffb28c != 0) {
-                *(u32*)(resource + 0x0c) = FUN_00100d80_data(0x5dc030, 1);
-            }
-        }
-    }
-    return 1;
-}
-#pragma opt_lifetimes reset
-
-// FUN_0016A6A0
-undefined4 FUN_0016A6A0(void)
-{
-    s32 state;
-
-    if (iGpffffb28c == 0) {
-        return 1;
-    }
-    state = FUN_00195290_data(iGpffffb28c);
-    if (state == 3) {
-        iGpffffb28c = 0;
-        return 1;
-    }
-    return 0;
-}
-
-
-/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
-#pragma opt_lifetimes on
-// FUN_0016A700 NONMATCHING
-void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
-                  void* param_4, s32 param_5)
-{
-    f32 x;
-    f32 y;
-    s32 i;
-    s32 row;
-    s32 visibleCount;
-    s32 totalCount;
-    s32 selected;
-    u32 type;
-    u32 spriteCode;
-    u32 textAlpha;
-    u32 textId;
-    u32* drawData;
-    undefined1 text[0x100];
-
-    x = *(f32*)((u8*)&param_3 + 4);
-    y = *(f32*)&param_3;
-    drawData = (u32*)param_2;
-    textAlpha = 0xffU - (u32)param_5;
-
-    /* The six-argument form preserves the texture/sprite selectors carried
-     * in the otherwise untyped retail calls. */
-    campDataDrawSpriteFade(x + 541.0f, y + 38.0f, param_1, (void*)(uintptr_t)drawData[1], 0x44, param_5);
-    campDataDrawSpriteFade(x + 541.0f, y + 235.0f, param_1, (void*)(uintptr_t)drawData[1], 0x45, param_5);
-
-    visibleCount = *(s32*)((u8*)param_4 + 0x2d64) - 6;
-    if (visibleCount < 1) {
-        visibleCount = 0;
-    } else {
-        visibleCount = (*(s32*)((u8*)param_4 + 0x2d6c) * 0x97) / visibleCount;
-    }
-    campDataDrawSpriteFade(x + 541.0f, y + 43.0f + (f32)visibleCount,
-                 param_1, (void*)(uintptr_t)drawData[1], 0x46, param_5);
-
-    selected = *(s32*)((u8*)param_4 + 0x2d68);
-    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
-    row = *(s32*)((u8*)param_4 + 0x2d6c);
-
-    for (i = 0; i < 6; i++) {
-        s32 recordIndex;
-        s32 hasRecord;
-
-        recordIndex = row + i;
-        hasRecord = ((CampTargetList*)param_4)->records[recordIndex].flags;
-        if (selected == i) {
-            if (hasRecord != 0) {
-                campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
-                             param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
-            }
-            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x40, param_5);
-            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x41, param_5);
-        } else if (hasRecord == 0) {
-            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x3c, param_5);
-            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x3d, param_5);
-        } else {
-            campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
-                         param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
-            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x3e, param_5);
-            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
-                                   param_1, (void*)(uintptr_t)drawData[1], 0x3f, param_5);
-        }
-    }
-
-    for (i = 0; i < 6; i++) {
-        s32 recordIndex;
-        if (i + row >= totalCount) {
-            break;
-        }
-        recordIndex = row + i;
-        type = ((CampTargetList*)param_4)->records[recordIndex].type;
-
-        if (i == selected) {
-            /* jtbl_007B63A0: the cases are not empty; they select the
-             * selected-row digit/icon before the +1 adjustment. */
-            spriteCode = 9;
-            switch (type) {
-            case 0:  spriteCode = 0;    break;
-            case 1:  spriteCode = 2;    break;
-            case 2:  spriteCode = 4;    break;
-            case 3:  spriteCode = 6;    break;
-            case 4:  spriteCode = 8;    break;
-            case 5:  spriteCode = 0xa;  break;
-            case 6:  spriteCode = 0xc;  break;
-            case 7:  spriteCode = 0xe;  break;
-            case 8:  spriteCode = 0;    break;
-            case 9:  spriteCode = 2;    break;
-            case 10: spriteCode = 4;    break;
-            case 11: spriteCode = 6;    break;
-            case 12: spriteCode = 8;    break;
-            case 13: spriteCode = 0xa;  break;
-            case 14: spriteCode = 0xc;  break;
-            case 15: spriteCode = 0xe;  break;
-            case 16: spriteCode = 0x12; break;
-            case 17: spriteCode = 0x14; break;
-            case 18: spriteCode = 0x16; break;
-            case 19: spriteCode = 0x1a; break;
-            case 20: spriteCode = 0x1a; break;
-            default: break;
-            }
-            campDataDrawSpriteFade(x + 252.0f,
-                         y + 43.0f + (f32)(i * 0x21), param_1,
-                         (void*)(uintptr_t)drawData[0], spriteCode + 1, param_5);
-
-            {
-                u8* record = (u8*)param_4 + recordIndex * 0x24;
-                textId = (u32)func_00171110(*(undefined2*)(record + 100),
-                                      *(undefined1*)(record + 0x7d));
-                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
-            }
-            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
-                                (s32)((s32)y + 52.0f + (f32)(i * 0x21) + 1.0f),
-                                textAlpha | 0xffffff00U, 6, 1, (const char*)text, 0x10, 0);
-        } else {
-            /* jtbl_007B6340: this is the unselected-row table. */
-            spriteCode = 9;
-            switch (type) {
-            case 0:  spriteCode = 1;    break;
-            case 1:  spriteCode = 3;    break;
-            case 2:  spriteCode = 5;    break;
-            case 3:  spriteCode = 7;    break;
-            case 4:  spriteCode = 9;    break;
-            case 5:  spriteCode = 0xb;  break;
-            case 6:  spriteCode = 0xd;  break;
-            case 7:  spriteCode = 0xf;  break;
-            case 8:  spriteCode = 1;    break;
-            case 9:  spriteCode = 3;    break;
-            case 10: spriteCode = 5;    break;
-            case 11: spriteCode = 7;    break;
-            case 12: spriteCode = 9;    break;
-            case 13: spriteCode = 0xb;  break;
-            case 14: spriteCode = 0xd;  break;
-            case 15: spriteCode = 0xf;  break;
-            case 16: spriteCode = 0x13; break;
-            case 17: spriteCode = 0x15; break;
-            case 18: spriteCode = 0x17; break;
-            case 19: spriteCode = 0x1b; break;
-            case 20: spriteCode = 0x1b; break;
-            default: break;
-            }
-            campDataDrawSpriteAltFade(x + 252.0f,
-                                       y + 43.0f + (f32)(i * 0x21),
-                                       param_1, (void*)(uintptr_t)drawData[0],
-                                       spriteCode - 1, param_5, 0x20, 0x43,
-                                       0x78, 0);
-            {
-                u8* record = (u8*)param_4 + recordIndex * 0x24;
-                textId = (u32)func_00171110(*(undefined2*)(record + 100),
-                                      *(undefined1*)(record + 0x7d));
-                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
-            }
-            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
-                                (s32)((s32)y + 52.0f + (f32)(i * 0x21)),
-                                textAlpha | 0xffffff00U, 10, 1, (const char*)text, 0x10, 0);
-        }
-    }
-}
-#pragma opt_lifetimes reset
-
-/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
-#pragma opt_propagation off
-// FUN_0016AF90 NONMATCHING
-void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
-                  void* param_4, s32 param_5)
-{
-    f32 x;
-    f32 y;
-    f32 xLeft;
-    f32 xRight;
-    f32 yTop;
-    f32 yBottom;
-    f32 rowY;
-    f32 barY;
-    s32 totalCount;
-    s32 row;
-    s32 selected;
-    s32 recordIndex;
-    u8* record;
-    s32 condition;
-    u32 type;
-    u32 mainSprite;
-    u32 textId;
-    u32* drawData;
-    undefined1 text[0x100];
-    x = *(f32*)&param_3;
-    y = *(f32*)((u8*)&param_3 + 4);
-    drawData = (u32*)param_2;
-
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
-                       (u8)param_5, x + 36.0f, y + 242.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x49,
-                       (u8)param_5, x + 348.0f, y + 242.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4a,
-                       (u8)param_5, x + 55.0f, y + 252.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4b,
-                       (u8)param_5, x + 55.0f, y + 286.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4c,
-                       (u8)param_5, x + 198.0f, y + 286.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4d,
-                       (u8)param_5, x + 55.0f, y + 313.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4e,
-                       (u8)param_5, x + 198.0f, y + 313.0f, param_1);
-
-    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
-    if (totalCount != 0) {
-        row = *(s32*)((u8*)param_4 + 0x2d6c);
-        selected = *(s32*)((u8*)param_4 + 0x2d68);
-        recordIndex = row + selected;
-        record = (u8*)param_4 + recordIndex * 0x24;
-        type = *(u32*)(record + 0x78);
-
-        /* jtbl_007B6400 selects the main selected-persona icon. */
-        mainSprite = 0x51;
-        switch (type) {
-        case 0:  mainSprite = 0x51; break;
-        case 1:  mainSprite = 0x52; break;
-        case 2:  mainSprite = 0x53; break;
-        case 3:  mainSprite = 0x54; break;
-        case 4:  mainSprite = 0x55; break;
-        case 5:  mainSprite = 0x56; break;
-        case 6:  mainSprite = 0x5b; break;
-        case 7:  mainSprite = 0x57; break;
-        case 8:  mainSprite = 0x51; break;
-        case 9:  mainSprite = 0x52; break;
-        case 10: mainSprite = 0x53; break;
-        case 11: mainSprite = 0x54; break;
-        case 12: mainSprite = 0x55; break;
-        case 13: mainSprite = 0x56; break;
-        case 14: mainSprite = 0x5b; break;
-        case 15: mainSprite = 0x57; break;
-        case 16: mainSprite = 0x58; break;
-        case 17: mainSprite = 0x59; break;
-        case 18: mainSprite = 0x5a; break;
-        case 19: mainSprite = 0x5a; break;
-        case 20: mainSprite = 0x5a; break;
-        default: break;
-        }
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], mainSprite,
-                           (u8)param_5, x + 127.0f, y + 253.0f, param_1);
-
-        condition = *(s8*)((u8*)record + 0x7e);
-        if (condition == 2) {
-            textId = *(undefined2*)((u8*)record + 0x86);
-            FUN_00523ac8_data(text, gp0xffff8998, textId);
-            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
-                             (s32)(y + 313.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
-                             (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-        } else if (condition == 1) {
-            textId = *(undefined2*)((u8*)record + 0x84);
-            FUN_00523ac8_data(text, gp0xffff8998, textId);
-            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
-                             (s32)(y + 313.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
-                             (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-        } else if (condition == 0) {
-            textId = *(undefined2*)((u8*)record + 0x80);
-            FUN_00523ac8_data(text, gp0xffff8998, textId);
-            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
-                             (s32)(y + 286.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
-                             (const char*)text, 0);
-            textId = *(undefined2*)((u8*)record + 0x82);
-            FUN_00523ac8_data(text, gp0xffff8998, textId);
-            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
-                             (s32)(y + 286.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
-                             (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-        } else {
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 55.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                               (u8)param_5, x + 198.0f + 74.0f,
-                               y + 313.0f + 8.0f, param_1);
-        }
-
-        rowY = y + 356.0f;
-        barY = x + 55.0f;
-        campDataDrawDigits(param_1, (s32)barY, (s32)rowY,
-                           (0xffU - (u32)param_5) | 0xffffff00U, 1, 10, 1,
-                           (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
-                                 *(undefined2*)((u8*)record + 100)));
-    } else {
-        /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                           (u8)param_5, x + 55.0f + 74.0f,
-                           y + 286.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                           (u8)param_5, x + 198.0f + 74.0f,
-                           y + 286.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                           (u8)param_5, x + 55.0f + 74.0f,
-                           y + 313.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
-                           (u8)param_5, x + 198.0f + 74.0f,
-                           y + 313.0f + 8.0f, param_1);
-    }
-
-}
-#pragma opt_propagation reset
-
-
+#pragma opt_dead_assignments off
 #pragma alias FUN_0010c1a0_148 FUN_0010c1a0
 #pragma alias FUN_0013cc90_148 FUN_0013cc90
 #pragma alias FUN_003c7d80_148 FUN_003c7d80
 #pragma alias h_campUpdateSystemMenuTask_148 h_campUpdateSystemMenuTask
+#define FUN_00167f40 FUN_00167f40_skill
+#define jtbl_0096017C_abs jtbl_0096017C_abs_skill
 #define campDrawSprite campDrawSprite_148
 #define campDrawSpriteX campDrawSpriteX_148
 #define campDrawSpriteXY campDrawSpriteXY_148
@@ -20833,7 +17135,8 @@ extern u32 FUN_0017bfa0_y3();
 extern u32 FUN_0017d800();
 extern u32 FUN_0017d830();
 /* W373 pragma sweep: default nd1024/object1356/1424; dead_assignments off nd1023/object1356/1424. Retained dead_assignments off. */
-#pragma opt_dead_assignments off
+#pragma alias DAT_00833a50_abs DAT_00833a50_y3
+extern u8 DAT_00833a50_abs[];
 // FUN_001482F0 NONMATCHING
 void h_campDrawStatusOverview(int param_1)
 {
@@ -20923,7 +17226,6 @@ void h_campDrawStatusOverview(int param_1)
                   tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
 }
 #pragma opt_dead_assignments reset
-/* W389 residual: baseline nd18/object900/912. Six-knob singles and aggregate/load-order probes did not lower it; 389.0f operand reversal was neutral (grouping nd21, sequenced-temp nd51, local-offset nd16). The remaining words are the b210 FP scheduling order (retail converts 389 before loading y); retained NONMATCHING. */
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
@@ -23933,7 +20235,2988 @@ u32 h_campUpdateSystemMenuTask_148(int param_1)
   return 0;
 }
 #pragma opt_propagation reset
+#undef campDrawSprite
+#undef campDrawSpriteX
+#undef campDrawSpriteXY
+#undef campDrawEquipmentDetailListAlt
+#undef FUN_0010c1a0
+#undef FUN_0013cc90
+#undef FUN_003c7d80
+#undef h_campUpdateSystemMenuTask
+// FUN_00154770. Destroy callback of the "H_CampSystemMenuDraw" task
+void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
+{
+    int* workData;
+    int i;
 
+    workData = (int*)task->workData;
+    if (workData[8] != 0) {
+        FUN_004d0f00_sys(workData[8]);
+    }
+    if (workData[5] != 0) {
+        FUN_001124b0(workData[5]);
+    }
+    workData[5] = 0;
+    if (workData[6] != 0) {
+        FUN_001124b0(workData[6]);
+    }
+    workData[6] = 0;
+    if (workData[3] != 0) {
+        RwFree((void*)workData[3]);
+    }
+    workData[3] = 0;
+    if (workData[4] != 0) {
+        RwFree((void*)workData[4]);
+    }
+    workData[4] = 0;
+    FUN_003c7dd0(8);
+    FUN_003c7dd0(0xc);
+    for (i = 0; i < 3; i++) {
+        if (*(int*)((int)workData + i * 4 + 0x24) != 0) {
+            H_Cdvd_Destroy_sys(*(int*)((int)workData + i * 4 + 0x24));
+        }
+        *(int*)((int)workData + i * 4 + 0x24) = 0;
+    }
+    RwFree(workData);
+}
+
+// FUN_001548A0
+KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
+{
+    KwlnTask *task;
+    void *work;
+
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+
+    task = FUN_00194B20_sys(parent, D_005DBD00, priority,
+                        h_campUpdateSystemMenuTask,
+                        h_campSystemDestroyMenuDrawTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+
+    if (FUN_0017d800_sys() != 0) {
+        *(u32 *)((u8 *)work + 4) = 4;
+    }
+
+    return task;
+}
+
+
+/* Camp system menu work (FUN_0015B330/FUN_0015B430), 0x17c bytes. */
+typedef struct CampMenuEntry
+{
+    u32 state;
+    u32 enabled;
+    u32 drawMode;
+    u8 unknown0c[0x0c];
+    u32 progress;
+    u32 progressLimit;
+    u32 progressTarget;
+    u32 color;
+    u8 unknown28[0x10];
+    f32 x;
+    f32 y;
+    u32 alpha;
+} CampMenuEntry;
+typedef union CampMenuAnimPair
+{
+    u64 q;
+    f32 f[2];
+} CampMenuAnimPair;
+typedef struct CampMenuScratch
+{
+    u32 words[0x1e];
+    CampMenuAnimPair shifted;
+    CampMenuAnimPair pair;
+    u32 tail[2];
+} CampMenuScratch;
+typedef struct CampSystemMenuWork
+{
+    u32 state;
+    u32 unknown04;
+    u32 unknown08;
+    u32 allocation10;
+    u32 entriesAddress;
+    u32 archiveBlob0;
+    u32 archiveBlob1;
+    u32 request;
+    u32 requestResult;
+    u32 cdvdMain;
+    u32 cdvdStatus;
+    u32 cdvdSystem;
+    u32 entriesReady;
+    u8 unknown34[0x120];
+    u32 selectedPanel;
+    u32 panelFlags[7];
+    s32 fadeStep;
+    u32 unknown178;
+} CampSystemMenuWork;
+typedef char CampMenuEntrySizeCheck[(sizeof(CampMenuEntry) == 0x44) ? 1 : -1];
+typedef char CampMenuWorkSizeCheck[(sizeof(CampSystemMenuWork) == 0x17c) ? 1 : -1];
+#define CAMP_MENU_ENTRY_COUNT 100
+#define CAMP_MENU_ENTRY_SIZE 0x44
+#define CAMP_MENU_PTR32(address) ((void *)(uintptr_t)(address))
+#define CAMP_MENU_CONST_PTR(address) ((const char *)(uintptr_t)(address))
+static inline CampSystemMenuWork *camp_menu_work(KwlnTask *task)
+{
+    return (CampSystemMenuWork *)task->workData;
+}
+static inline CampMenuEntry *camp_menu_entry(CampSystemMenuWork *work, s32 index)
+{
+    return (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) +
+                             index * CAMP_MENU_ENTRY_SIZE);
+}
+static inline void *camp_menu_record(CampSystemMenuWork *work, u32 offset)
+{
+    return (u8 *)CAMP_MENU_PTR32(work->entriesAddress) + offset;
+}
+static inline u32 camp_menu_address(const void *pointer)
+{
+    return (u32)(uintptr_t)pointer;
+}
+
+/* Item-list work used by FUN_0015C520/FUN_0015C840/FUN_0015CE50. */
+static inline uintptr_t camp_list_base_address(u32 base)
+{
+    return (uintptr_t)(u32)base;
+}
+static inline u32 camp_list_load_u32(uintptr_t base, size_t offset)
+{
+    return *(const u32 *)(base + offset);
+}
+static inline s32 camp_list_load_s32(uintptr_t base, size_t offset)
+{
+    return *(const s32 *)(base + offset);
+}
+static inline u16 camp_list_load_u16(uintptr_t base, size_t offset)
+{
+    return *(const u16 *)(base + offset);
+}
+static inline void camp_list_store_u32(uintptr_t base, size_t offset, u32 value)
+{
+    *(u32 *)(base + offset) = value;
+}
+static inline f32 camp_list_bits_to_float(u32 bits)
+{
+    union { u32 bits; f32 value; } converter; converter.bits = bits; return converter.value;
+}
+static inline u32 camp_list_float_to_bits(f32 value)
+{
+    union { u32 bits; f32 value; } converter; converter.value = value; return converter.bits;
+}
+static inline u64 camp_list_pack_f32(f32 high, f32 low)
+{
+    return ((u64)camp_list_float_to_bits(high) << 32) | camp_list_float_to_bits(low);
+}
+static f32 camp_list_packed_low_f32(u64 packed)
+{
+    return camp_list_bits_to_float((u32)packed);
+}
+static f32 camp_list_packed_high_f32(u64 packed)
+{
+    return camp_list_bits_to_float((u32)(packed >> 32));
+}
+#define CAMP_LIST_CONST_PTR(address) ((const char *)(uintptr_t)(address))
+typedef struct CampC520ListEntry
+{
+    u8 unknown00[0x0c];
+    u32 itemId;
+    u32 unknown10;
+    s16 mode;
+    u8 unknown16[2];
+    s32 spCost;
+    s32 hpCost;
+} CampC520ListEntry;
+#pragma alias campC520PartyId FUN_0016DD60_sys
+extern u64 campC520PartyId(s32 index);
+#pragma alias campC520NearHero FUN_001C7CE0_sys
+extern s32 campC520NearHero(s32 owner);
+
+/* Camp draw/animation work used by FUN_0015E150..FUN_00160800. */
+typedef struct CampSystemPosition
+{
+    f32 x;
+    f32 y;
+} CampSystemPosition;
+typedef struct CampDrawRecord
+{
+    u32 unknown00;
+    u32 active;
+    u32 unknown08;
+    u32 unknown0c;
+    u32 unknown10;
+    u32 unknown14;
+    s32 progress;
+    s32 unknown1c;
+    s32 target;
+    u32 owner;
+    u32 unknown28;
+    u32 unknown2c;
+    u32 unknown30;
+    u32 unknown34;
+    f32 x;
+    f32 y;
+    u32 alpha;
+} CampDrawRecord;
+typedef struct CampSystemDrawWork
+{
+    s32 state;
+    s32 unknown04;
+    s32 unknown08;
+    s32 frame;
+    s32 unknown10;
+    s32 unknown14;
+    s32 cursor;
+    u32 archive0;
+    u32 archive1;
+    u32 archive2;
+    u32 entryPool;
+    s16 selectedKind;
+    u16 selectedKindPad;
+    u32 imageArchive;
+    u32 unknown34;
+    u32 records;
+    s32 partyIds[4];
+    s32 partyCount;
+    u8 unknown050[0x104];
+    s32 transitionFlag;
+    u32 partyAnimations[7];
+    s32 alpha;
+} CampSystemDrawWork;
+typedef struct CampDrawSprite { u8 bytes[0x30]; } CampDrawSprite;
+typedef char CampDrawRecordSizeCheck[(sizeof(CampDrawRecord) == 0x44) ? 1 : -1];
+typedef char CampDrawWorkSizeCheck[(sizeof(CampSystemDrawWork) == 0x178) ? 1 : -1];
+static inline u32 camp_draw_load_u32(const void *base, size_t offset)
+{
+    return *(const u32 *)((const u8 *)base + offset);
+}
+static inline u64 camp_draw_load_u64(const void *base, size_t offset)
+{
+    return *(const u64 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u32(void *base, size_t offset, u32 value)
+{
+    *(u32 *)((u8 *)base + offset) = value;
+}
+static inline u16 camp_draw_load_u16(const void *base, size_t offset)
+{
+    return *(const u16 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u16(void *base, size_t offset, u16 value)
+{
+    *(u16 *)((u8 *)base + offset) = value;
+}
+static inline u8 camp_draw_load_u8(const void *base, size_t offset)
+{
+    return *((const u8 *)base + offset);
+}
+static inline void camp_draw_store_u8(void *base, size_t offset, u8 value)
+{
+    *((u8 *)base + offset) = value;
+}
+static inline f32 camp_draw_load_f32(const void *base, size_t offset)
+{
+    return *(const f32 *)((const u8 *)base + offset);
+}
+static inline void camp_draw_store_f32(void *base, size_t offset, f32 value)
+{
+    *(f32 *)((u8 *)base + offset) = value;
+}
+static inline u32 camp_draw_f32_bits(f32 value)
+{
+    union {
+        f32 value;
+        u32 bits;
+    } converter;
+    converter.value = value;
+    return converter.bits;
+}
+static inline u64 camp_draw_concat44_words(u32 high, u32 low)
+{
+    return ((u64)high << 32) | low;
+}
+static inline u64 camp_draw_concat44_f32(f32 high, f32 low)
+{
+    return camp_draw_concat44_words(camp_draw_f32_bits(high), camp_draw_f32_bits(low));
+}
+static inline u64 camp_draw_record_xy(const CampDrawRecord *record)
+{
+    return camp_draw_concat44_f32(record->y, record->x);
+}
+static inline void *camp_draw_ptr_add(void *base, size_t offset)
+{
+    return (void *)((u8 *)base + offset);
+}
+static inline void *camp_draw_ptr32(u32 address)
+{
+    return (void *)(uintptr_t)address;
+}
+static inline u32 camp_draw_addr32(const void *address)
+{
+    return (u32)(uintptr_t)address;
+}
+static inline CampSystemDrawWork *camp_draw_task_work(KwlnTask *task)
+{
+    return task == NULL ? NULL : (CampSystemDrawWork *)task->workData;
+}
+static inline CampDrawRecord *camp_draw_state_records(CampSystemDrawWork *work)
+{
+    return (CampDrawRecord *)camp_draw_ptr32(work->records);
+}
+
+/* Retail globals shared by these translated slices. */
+#pragma alias campC520PreviousMode DAT_00836ba8
+extern s16 campC520PreviousMode;
+#pragma alias campC520SetMode FUN_00175200_sys
+extern void campC520SetMode(s16 mode);
+#pragma alias campC520GetHp FUN_0016C4F0
+extern s32 campC520GetHp(s32 arg0);
+#pragma alias campC520GetSp FUN_0016C570
+extern s32 campC520GetSp(s32 arg0);
+extern u32 uGpffffb29c;
+extern u32 uGpffffb288;
+extern KwlnTask *iGpffffb258_sys;
+extern KwlnTask *iGpffffb270_sys;
+extern KwlnTask *iGpffffb26c;
+extern void *uGpffffb260_sys;
+extern void *uGpffffb264;
+extern void *uGpffffb268;
+extern u32 DAT_00833b78;
+#pragma alias DAT_00833b70_abs DAT_00833b70
+extern u8 DAT_00833b70_abs[];
+#pragma alias DAT_00833a54_abs DAT_00833a54
+extern u8 DAT_00833a54_abs[];
+#pragma alias DAT_00833a58_abs DAT_00833a58
+extern u8 DAT_00833a58_abs[];
+#pragma alias DAT_00833b78_abs DAT_00833b78
+extern u8 DAT_00833b78_abs[];
+extern void *DAT_00833a50_y3;
+extern void *DAT_00833b70;
+extern void *DAT_00833a54;
+extern void *DAT_00833a58;
+extern u16 DAT_00836ba8;
+extern s32 DAT_007cdf8c;
+extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
+extern const char D_005DBD20[];
+extern const char D_005DBC80[];
+
+extern void FUN_0018bc10(f32 first, void *animation, s32 start,
+                         s32 end, s32 mode, u64 startValues,
+                         u64 endValues, u32 param8, u32 param9);
+#pragma alias campListAnimate FUN_0018bc10
+extern void campListAnimate(f32 first, void *animation, s32 start,
+                            s32 end, s32 mode, u64 startValues,
+                            u64 endValues, u32 param8, u32 param9,
+                            u32 param10, u32 param11);
+/* Explicit unresolved retail API declarations. */
+extern void *FUN_0010c1a0_sys(u32 mode, const char *path, u32 arg2, u32 arg3,
+                          u32 arg4, u32 arg5, u32 arg6, u32 arg7,
+                          u32 arg8, u32 arg9, const char *source, u32 line);
+extern s32 FUN_0010c3a0_sys(void *request, u32 *loaded, u64 arg3);
+extern void *FUN_00100d80(const char *path, u32 mode);
+extern void *FUN_00100d80(const char *path, u32 mode);
+extern s32 FUN_001016b0(void *cdvd);
+extern void *FUN_00102100_sys(void *cdvd, s32 fileIndex, u32 *fileSize);
+extern void *FUN_00112420_sys(void *source);
+extern s32 FUN_00111f30(void *maestroBlob);
+extern void FUN_003c7d80_sys(s32 slot, u64 textureId);
+typedef struct CampD8Object
+{
+    u8 unknown00[0x10];
+    f32 x;
+    f32 y;
+    u8 alpha;
+    u8 unknown19[0x13];
+    f32 drawContext;
+} CampD8Object;
+#pragma alias campD8MakeSprite FUN_001158B0_sys
+extern CampD8Object *campD8MakeSprite(u32 parent, void *resource, u32 frame);
+#pragma alias campD8SetSprite FUN_001127D0_sys
+extern void campD8SetSprite(CampD8Object *object, s32 mode);
+#pragma alias campD8SubmitSprite FUN_00115980_sys
+extern void campD8SubmitSprite(CampD8Object *object);
+extern void FUN_00113a30_sys(f32 x, f32 y, f32 z, u32 color, s32 width, s32 height);
+extern void FUN_00155830(void *record, void *blobPair, s32 index, u32 selectedPanel, const u32 *panelFlags);
+extern void FUN_001599f0(void *record, void *blobPair, s32 category, u32 selectedPage, u32 subPage);
+extern u32 FUN_0016f190_sys(s32 flag);
+extern void FUN_0010a4e0_sys(s32 arg0, s32 arg1, s32 arg2, ...);
+extern void FUN_00103c30(u16 arg0, u16 arg1, u16 arg2, u16 arg3);
+extern void FUN_0016f1f0_y3(s32 flag, u8 enabled);
+extern void FUN_00103cb0(void);
+extern u32 FUN_0017d800_sys(void);
+extern KwlnTask *FUN_00194B20_sys(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
+extern u32 FUN_00119F10(KwlnTask *task, u32 arg1);
+extern void FUN_00175200_sys(u16 mode);
+extern void *FUN_0017B660(u32 mode, u32 itemId);
+extern void FUN_0017B860_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
+extern s16 FUN_0016DD60_sys(s32 arg0);
+extern void *FUN_001C7CE0_sys(u64 owner);
+extern void *FUN_0017BC20_sys(u32 mode, u64 owner, u32 itemId, u32 arg3);
+extern s16 FUN_0016C4F0(s32 arg0);
+extern void FUN_0016CF40(s32 arg0, s16 value);
+extern s16 FUN_0016C570(s32 arg0);
+extern void FUN_0016CF90(s32 arg0, s16 value);
+extern void *FUN_00174960(u16 arg0);
+extern void *FUN_00174A90(u16 arg0);
+extern u8 FUN_00173660_sys(uintptr_t arg0, s32 arg1);
+extern s16 FUN_0017B480(u16 arg0);
+extern s16 FUN_0017B500(u32 arg0, u16 arg1);
+extern u32 FUN_0017B5B0(u32 arg0, u16 arg1);
+extern s32 FUN_0017B4E0(u32 itemId);
+extern s16 FUN_0017BB40(u32 value);
+extern void FUN_001159F0_sys(f32 x, f32 y, u32 drawContext);
+extern void FUN_00115BC0_sys(f32 x, f32 y, u32 drawContext);
+extern void FUN_00115AD0_sys(f32 x, f32 y, u32 drawContext);
+extern s32 FUN_0017D2E0(u16 arg0);
+extern u32 FUN_0030BB40(u16 arg0);
+extern u32 FUN_00523AC8_sys(void *dst, u32 stringId, u32 arg2);
+#pragma alias campCE50FormatText FUN_00523AC8_sys
+extern void campCE50FormatText(void *dst, const char *format, u32 arg);
+extern void FUN_003B32D0(u32 drawContext, s32 x, s32 y, u32 color, s32 font, s32 flags, void *text, s32 width, s32 height);
+#pragma alias campCE50DrawSprite FUN_001159F0_sys
+#pragma alias campSystemDrawSprite FUN_001159F0_sys
+extern void campSystemDrawSprite(void *parent, void *resource, s32 frame,
+                                 u8 alpha, f32 x, f32 y, f32 scale);
+extern void campCE50DrawSprite(u64 parent, void *resource, s32 frame,
+                               u32 alpha, f32 x, f32 y, f32 scale);
+/* FUN_00115AD0_sys's value-glyph entry point uses the integer style and alpha
+ * arguments after the first three integer parameters. */
+#pragma alias campCE50DrawValueGlyph FUN_00115AD0_sys
+extern void campCE50DrawValueGlyph(void *parent, void *resource, s32 frame,
+                                   f32 x, f32 y, u8 style, u8 alpha,
+                                   f32 scale);
+#pragma alias campCE50DrawSpriteAlt FUN_00115BC0_sys
+extern void campCE50DrawSpriteAlt(u64 parent, void *resource, s32 frame,
+                                  u32 alpha, s32 red, s32 green, s32 blue,
+                                  f32 x, f32 y, f32 scale);
+#pragma alias campCE50DrawText FUN_003b32d0
+extern void campCE50DrawText(s32 x, s32 y, u32 color, f32 scale,
+                             u32 font, u32 alignment, const char *text,
+                             u32 maxWidth, u32 shadow);
+#pragma alias campCE50Font FUN_001120A0_sys
+extern void *campCE50Font(s32 font);
+#pragma alias campCE50DrawValue FUN_003c7e20_sys
+extern void campCE50DrawValue(f32 scale, s32 x, s32 y, u32 color,
+                              u32 font, u32 alignment, u32 style,
+                              u32 value);
+extern void FUN_001120A0_sys(s32 arg0);
+extern void FUN_003c7e20_sys(u32 drawContext, s32 x, s32 y, u32 color, s32 arg4, s32 arg5, s32 arg6);
+extern u64 FUN_001158B0_sys(u32 arg0, void *archive, u32 size);
+extern void FUN_001127D0_sys(u64 object, s32 arg1);
+extern void FUN_00115980_sys(u64 object);
+extern void FUN_0011DA80(u32 arg0, void *object);
+extern void FUN_00121DE0(void *object, u32 arg1);
+extern void FUN_00122710_sys(void *object, u32 arg1);
+extern s32 FUN_0011E380_sys(void *object, u32 arg1);
+extern void FUN_0011BBA0(f32 arg0, f32 arg1, f32 arg2, s32 arg3, s32 arg4);
+extern void FUN_00114450_sys(f32 arg0, f32 arg1, f32 arg2, s32 arg3,
+                         u32 arg4, u32 arg5, u32 arg6);
+extern void FUN_0011ABD0_sys(u32 count, u32 visible, void *first, void *selected);
+extern u8 FUN_0016C470(u16 arg0);
+extern u64 FUN_0016C970(u16 arg0);
+extern s16 FUN_0016C920(u16 arg0);
+extern u32 FUN_0016C670(u16 arg0);
+extern u32 FUN_0016C5F0(u16 arg0);
+extern u32 FUN_00177790_sys(u16 arg0);
+
+void *FUN_0015B430(KwlnTask *task);
+void FUN_0015C520(void *list, s32 ownerMode);
+void FUN_0015C840(void *list);
+void FUN_0015CE50(u64 packedPosition, void *list, s32 alpha,
+                  f32 drawContext);
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha);
+void FUN_0015DA70(void *work);
+void FUN_0015E150(CampSystemDrawWork *work);
+void FUN_0015E6E0(CampSystemDrawWork *work);
+void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex);
+void FUN_0015F320(CampSystemDrawWork *work);
+void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work);
+
+
+// FUN_0015B330
+u32 FUN_0015B330(void *entries, void *blobPair,
+                 u32 category, u32 selectedPage)
+{
+    s32 index;
+    u32 allReady = 1;
+
+    for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+        CampMenuEntry *entry = (CampMenuEntry *)((u8 *)entries +
+                                                       index * CAMP_MENU_ENTRY_SIZE);
+        if (entry->enabled != 0) {
+            if (func_0018b700(entry) != 0) {
+                FUN_001599f0(entry, blobPair, index, category, selectedPage);
+            }
+            if (((CampMenuEntry *)((u8 *)entries +
+                                  index * CAMP_MENU_ENTRY_SIZE))->progress !=
+                ((CampMenuEntry *)((u8 *)entries +
+                                  index * CAMP_MENU_ENTRY_SIZE))->progressTarget) {
+                allReady = 0;
+            }
+        }
+    }
+    return allReady;
+}
+
+/*
+ * Retail stores each animation endpoint as adjacent float pairs on the stack.
+ * The state 6 and state 9 setup paths now preserve those copies and offsets.
+ * This restores the missing add/subtract float operations and all panel calls.
+ * The reconstructed object is larger and has a higher normalized diff for now.
+ * Keep this marker NONMATCHING until register layout and dispatch scheduling converge.
+ */
+// FUN_0015B430 NONMATCHING
+void *FUN_0015B430(KwlnTask *task)
+{
+    CampSystemMenuWork *work = camp_menu_work(task);
+    s32 systemReady;
+    s32 index;
+    u32 selected;
+    u32 allReady;
+    bool inputHeld;
+    CampMenuScratch scratch;
+    void *fileData;
+
+    /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
+    FUN_00113a30_sys(100.0f, 0.0f, 20.0f,
+                 ((work->fadeStep * 0xff) / 10) | 0x72b5ff00u,
+                 0x280, 0x19a);
+
+    switch (work->state) {
+    case 0:
+        if (iGpffffb258_sys == NULL) {
+            systemReady = -1;
+        } else {
+            /* Preserve retail's branch-fed scalar assignment. */
+            systemReady = 0;
+            if (camp_menu_work(iGpffffb258_sys)->state != 3) {
+            } else {
+                systemReady = 1;
+            }
+        }
+        if (systemReady != 1) {
+            return 0;
+        }
+
+        if (FUN_0017d800_sys() != 0) {
+            work->request = camp_menu_address(FUN_0010c1a0_sys(
+                0, D_005DB050, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xef9));
+        } else {
+            work->request = camp_menu_address(FUN_0010c1a0_sys(
+                0, D_005DB0A0, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xefb));
+        }
+        work->allocation10 = camp_menu_address(func_0018b6d0(10));
+        work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));
+        work->cdvdMain = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bca0), 0));
+        work->cdvdStatus = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bcc0), 0));
+        work->cdvdSystem = camp_menu_address(FUN_00100d80(
+            CAMP_MENU_CONST_PTR(0x0059bce0), 1));
+        work->state = 1;
+        break;
+
+    case 1:
+        if (work->requestResult == 0) {
+            scratch.words[0] = 0;
+            work->requestResult = (u32)FUN_0010c3a0_sys(
+                CAMP_MENU_PTR32(work->request), &scratch.words[0], 0);
+            if (scratch.words[0] == 0) {
+                work->requestResult = 0;
+                return 0;
+            }
+        }
+        if (FUN_001016b0(CAMP_MENU_PTR32(work->cdvdMain)) != 0 &&
+            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdStatus)) != 0 &&
+            FUN_001016b0(CAMP_MENU_PTR32(work->cdvdSystem)) != 0) {
+            FUN_003c7d80_sys(0x0c,
+                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdMain) + 0x110));
+            FUN_003c7d80_sys(0x08,
+                *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
+            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 0,
+                                    &scratch.tail[0]);
+            work->archiveBlob0 = camp_menu_address(FUN_00112420_sys(fileData));
+            fileData = FUN_00102100_sys(CAMP_MENU_PTR32(work->cdvdSystem), 1,
+                                    &scratch.tail[0]);
+            work->archiveBlob1 = camp_menu_address(FUN_00112420_sys(fileData));
+            work->state = 2;
+        }
+        break;
+
+    case 2:
+        if (FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob0)) != 0 &&
+            FUN_00111f30(CAMP_MENU_PTR32(work->archiveBlob1)) != 0) {
+            work->state = 6;
+        }
+        break;
+
+    case 6:
+        work->selectedPanel = 0;
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 200.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        for (index = 0; index < 7; index++) {
+            work->panelFlags[index] = FUN_0016f190_sys(index + 0x183);
+        }
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        work->entriesReady = 0;
+        work->state = 7;
+        break;
+
+    case 7:
+        work->state = 8;
+        selected = work->selectedPanel;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
+                FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                              work->panelFlags);
+            }
+        }
+        break;
+
+    case 8:
+        work->fadeStep = work->fadeStep + 1;
+        if (work->fadeStep > 10) {
+            work->fadeStep = 10;
+        }
+
+        if (work->entriesReady != 0) {
+            if ((DAT_007e094e_y3 & 0x40) == 0) {
+                if ((DAT_007e094e_y3 & 0x20) == 0) {
+                    inputHeld = ((DAT_007e0952_y3 & 0x1000) != 0) ||
+                                ((DAT_007e095a_y3 & 0x1000) != 0);
+                    if (inputHeld) {
+                        if (work->selectedPanel == 0) {
+                            if ((DAT_007e094e_y3 & 0x1000) != 0 ||
+                                (DAT_007e0958_y3 & 0x1000) != 0) {
+                                FUN_0010a4e0_sys(0, 0, 0, 0);
+                                work->selectedPanel = 7;
+                            }
+                        } else {
+                            FUN_0010a4e0_sys(0, 0, 0, 0);
+                            work->selectedPanel = work->selectedPanel - 1;
+                        }
+                    } else if ((DAT_007e0952_y3 & 0x4000) == 0 &&
+                               (DAT_007e095a_y3 & 0x4000) == 0) {
+                        if ((DAT_007e094e_y3 & 0x2000) == 0 &&
+                            (DAT_007e0958_y3 & 0x2000) == 0) {
+                            if (((DAT_007e094e_y3 & 0x8000) != 0 ||
+                                 (DAT_007e0958_y3 & 0x8000) != 0) &&
+                                work->selectedPanel != 7) {
+                                if (work->panelFlags[work->selectedPanel] == 0) {
+                                    FUN_0010a4e0_sys(0, 0, 0, 5);
+                                }
+                                if (work->selectedPanel == 0 &&
+                                    work->panelFlags[0] == 0) {
+                                    FUN_00103c30(10, 0x96, 10, 0);
+                                }
+                                work->panelFlags[work->selectedPanel] = 1;
+                            }
+                        } else if (work->selectedPanel != 7 &&
+                                   work->panelFlags[work->selectedPanel] != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0, 5);
+                            work->panelFlags[work->selectedPanel] = 0;
+                        }
+                    } else if (work->selectedPanel == 7) {
+                        if ((DAT_007e094e_y3 & 0x4000) != 0 ||
+                            (DAT_007e0958_y3 & 0x4000) != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0, 0);
+                            work->selectedPanel = 0;
+                        }
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0, 0);
+                        work->selectedPanel = work->selectedPanel + 1;
+                    }
+                } else {
+                    FUN_0010a4e0_sys(0, 0, 0, 2);
+                    work->state = 9;
+                }
+            } else if (work->selectedPanel == 7) {
+                FUN_0010a4e0_sys(0, 0, 0, 1);
+                for (index = 0; index < 7; index++) {
+                    if (index == 2) {
+                        if (work->panelFlags[1] == 0) {
+                            FUN_0016f1f0_y3(0x185, 0);
+                        } else {
+                            FUN_0016f1f0_y3(0x185, (u8)work->panelFlags[2]);
+                        }
+                    } else {
+                        FUN_0016f1f0_y3(index + 0x183, (u8)work->panelFlags[index]);
+                    }
+                }
+                if (FUN_0016f190_sys(0x183) == 0) {
+                    FUN_00103cb0();
+                }
+                uGpffffb288 = 1;
+                work->state = 9;
+            }
+        }
+
+        selected = work->selectedPanel;
+        allReady = 1;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0) {
+                if (func_0018b700(entry) != 0) {
+                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                                  work->panelFlags);
+                }
+                if (entry->progress != entry->progressTarget) {
+                    allReady = 0;
+                }
+            }
+        }
+        work->entriesReady = allReady;
+        break;
+
+    case 9:
+        selected = work->selectedPanel;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0 && func_0018b700(entry) != 0) {
+                FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                              work->panelFlags);
+            }
+        }
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        work->state = 10;
+        break;
+
+    case 10:
+        if (work->fadeStep == 0) {
+            work->fadeStep = 0;
+        } else {
+            work->fadeStep = work->fadeStep - 1;
+        }
+        selected = work->selectedPanel;
+        allReady = 1;
+        for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
+            CampMenuEntry *entry = camp_menu_entry(work, index);
+            if (entry->enabled != 0) {
+                if (func_0018b700(entry) != 0) {
+                    FUN_00155830(entry, &work->archiveBlob0, index, selected,
+                                  work->panelFlags);
+                }
+                if (entry->progress != entry->progressTarget) {
+                    allReady = 0;
+                }
+            }
+        }
+        if (allReady != 0) {
+            return (void *)(uintptr_t)0xffffffffu;
+        }
+        break;
+    }
+
+    return 0;
+}
+
+// FUN_0015C460
+KwlnTask *FUN_0015C460(KwlnTask *param_1)
+{
+    KwlnTask *task;
+    void *work;
+    u32 value;
+    task = param_1;
+
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
+    if (work == NULL) {
+        return 0;
+    }
+
+    task = FUN_00194B20_sys(param_1, D_005DBD20, 0x18be,
+                        (KwlnTaskUpdateFunc)FUN_0015B430,
+                        (KwlnTaskDestroyFunc)h_campSystemDestroyMenuDrawTask,
+                        work);
+    if (task == NULL) {
+        return 0;
+    }
+
+    value = FUN_00119F10(task, 1);
+    *(u32 *)((u8 *)work + 8) = value;
+    return task;
+}
+
+// FUN_0015C520 NONMATCHING
+void FUN_0015C520(void *param_1, s32 param_2)
+{
+    CampC520ListEntry *entry;
+    s32 owner_mode;
+    s32 entry_index;
+    u32 item_id;
+    s16 previous_mode;
+    s32 i;
+    s32 found_count;
+    s16 relation;
+    void *result;
+    u64 owner;
+    s32 hp;
+    s32 sp;
+
+    owner_mode = param_2;
+    entry_index = *(s32 *)((u8 *)param_1 + 0x7e0) +
+                  *(s32 *)((u8 *)param_1 + 0x7e4);
+    entry = (CampC520ListEntry *)((u8 *)param_1 + entry_index * 0x14);
+    item_id = entry->itemId;
+    previous_mode = campC520PreviousMode;
+    campC520SetMode(entry->mode);
+
+    result = FUN_0017B660(1, item_id & 0xffffU);
+    if (result == NULL) {
+        if (owner_mode == -2) {
+            FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
+                if (relation != 0) {
+                    owner = campC520PartyId(i);
+                    if (campC520NearHero((s32)(s16)owner) != 0) {
+                        owner = campC520PartyId(i);
+                        result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
+                        if (result == NULL) {
+                            owner = campC520PartyId(i);
+                            FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+        else if (owner_mode == 0) {
+            result = (void *)campC520NearHero(1);
+            if ((result != NULL) &&
+                (FUN_0017BC20_sys(1, 1, item_id & 0xffffU, 0) == 0)) {
+                FUN_0017B860_sys(1, 1, item_id & 0xffffU, 0);
+            }
+        }
+        else {
+            found_count = 0;
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
+                if (relation != 0) {
+                    found_count++;
+                    if (owner_mode == found_count) {
+                        owner = campC520PartyId(i);
+                        if (campC520NearHero((s32)(s16)owner) != 0) {
+                            owner = campC520PartyId(i);
+                            result = FUN_0017BC20_sys(1, owner, item_id & 0xffffU, 0);
+                            if (result == NULL) {
+                                owner = campC520PartyId(i);
+                                FUN_0017B860_sys(1, owner, item_id & 0xffffU, 0);
+                            }
+                        }
+                        break;
+                    }
+                }
+                i++;
+            }
+        }
+
+        entry_index *= 0x14;
+        hp = campC520GetHp(1);
+        FUN_0016CF40(1, (s16)((hp & 0xffff) -
+                             *(s32 *)((u8 *)param_1 + entry_index + 0x1c)));
+        sp = campC520GetSp(1);
+        FUN_0016CF90(1, (s16)((sp & 0xffff) -
+                             *(s32 *)((u8 *)param_1 + entry_index + 0x18)));
+    }
+
+    campC520SetMode(previous_mode);
+}
+
+// FUN_0015C840 NONMATCHING
+void FUN_0015C840(void *param_1)
+{
+    const uintptr_t list = (uintptr_t)param_1;
+    s16 previous_mode = DAT_00836ba8;
+    typedef struct CampC840Entry {
+        u32 words[5];
+    } CampC840Entry;
+    CampC840Entry saved_entry;
+    CampC840Entry candidate_entry;
+    CampC840Entry swap_entry;
+    s32 entry_count = 0;
+    s32 item_index = 0;
+    s32 i;
+    s32 j;
+
+    for (;;) {
+        if (item_index > 0x0b) {
+            camp_list_store_u32(list, 0x7dc, (u32)entry_count);
+
+            /* Stable insertion-like ordering by item id.  IDs in 0xc0..0xff
+             * sort after all IDs outside that range, matching the branch tree
+             * in the retail routine. */
+            for (i = 0; i < entry_count; ++i) {
+                uintptr_t current = list + (size_t)i * 0x14 + 0x0c;
+                saved_entry = *(CampC840Entry *)current;
+
+                for (j = i + 1; j < entry_count; ++j) {
+                    uintptr_t candidate = list + (size_t)j * 0x14 + 0x0c;
+                    bool candidate_is_special;
+                    bool saved_is_special;
+
+                    candidate_entry = *(CampC840Entry *)candidate;
+                    candidate_is_special =
+                        candidate_entry.words[0] >= 0xc0U &&
+                        candidate_entry.words[0] <= 0xffU;
+                    saved_is_special =
+                        saved_entry.words[0] >= 0xc0U &&
+                        saved_entry.words[0] <= 0xffU;
+
+                    if (!candidate_is_special) {
+                        if (!saved_is_special &&
+                            candidate_entry.words[0] < saved_entry.words[0]) {
+                            swap_entry = saved_entry;
+                            *(CampC840Entry *)current = candidate_entry;
+                            *(CampC840Entry *)candidate = swap_entry;
+                            saved_entry = candidate_entry;
+                        }
+                    }
+                    else if (!saved_is_special) {
+                        swap_entry = saved_entry;
+                        *(CampC840Entry *)current = candidate_entry;
+                        *(CampC840Entry *)candidate = swap_entry;
+                        saved_entry = candidate_entry;
+                    }
+                    else if (candidate_entry.words[0] < saved_entry.words[0]) {
+                        swap_entry = saved_entry;
+                        *(CampC840Entry *)current = candidate_entry;
+                        *(CampC840Entry *)candidate = swap_entry;
+                        saved_entry = candidate_entry;
+                    }
+                }
+            }
+
+            FUN_00175200_sys(previous_mode);
+            return;
+        }
+
+        {
+            u16 item = (u16)item_index;
+            uintptr_t item_data;
+
+            if (FUN_00174960(item) != (uintptr_t)0) {
+                s32 slot;
+
+                item_data = (uintptr_t)FUN_00174A90(item);
+                FUN_00175200_sys(item);
+                for (slot = 0; slot < 8; ++slot) {
+                    uintptr_t slot_address = item_data + (size_t)slot * 2 + 0x0c;
+                    u16 item_id = camp_list_load_u16(slot_address, 0);
+                    bool found = false;
+
+                    if (item_id != 0) {
+                        for (j = 0; j < entry_count; ++j) {
+                            uintptr_t entry = list + (size_t)j * 0x14;
+                            if (camp_list_load_u32(entry, 0x0c) == (u32)item_id) {
+                                uintptr_t old_data;
+                                u32 *entryItemIndex;
+                                u8 new_quality;
+                                u8 old_quality;
+
+                                entryItemIndex = (u32 *)(entry + 0x14);
+                                old_data = (uintptr_t)FUN_00174A90(
+                                    *(u16 *)entryItemIndex);
+                                new_quality = FUN_00173660_sys(item_data, 1);
+                                old_quality = FUN_00173660_sys(old_data, 1);
+                                if (old_quality < new_quality) {
+                                    s16 kind;
+                                    camp_list_store_u32(entry, 0x0c, (u32)item_id);
+                                    *entryItemIndex = (u32)item_index;
+                                    camp_list_store_u32(entry, 0x10,
+                                                   (u32)camp_list_load_u16(item_data, 2));
+
+                                    kind = FUN_0017B480(item_id);
+                                    if (kind != 2) {
+                                        kind = FUN_0017B500(1, item_id);
+                                        if (kind == 2) {
+                                            camp_list_store_u32(entry, 0x18,
+                                                   FUN_0017B5B0(1, item_id));
+                                            camp_list_store_u32(entry, 0x1c, 0);
+                                        }
+                                        else if (kind == 1) {
+                                            camp_list_store_u32(entry, 0x18, 0);
+                                            camp_list_store_u32(entry, 0x1c,
+                                                     FUN_0017B5B0(1, item_id));
+                                        }
+                                    }
+                                    else {
+                                        camp_list_store_u32(entry, 0x18, 0);
+                                        camp_list_store_u32(entry, 0x1c, 0);
+                                    }
+                                }
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            uintptr_t entry = list + (size_t)entry_count * 0x14;
+                            s16 kind;
+
+                            camp_list_store_u32(entry, 0x0c, (u32)item_id);
+                            camp_list_store_u32(entry, 0x14, (u32)item_index);
+                            camp_list_store_u32(entry, 0x10,
+                                           (u32)camp_list_load_u16(item_data, 2));
+                            kind = FUN_0017B480(item_id);
+                            if (kind != 2) {
+                                kind = FUN_0017B500(1, item_id);
+                                if (kind == 2) {
+                                    camp_list_store_u32(entry, 0x18,
+                                                   FUN_0017B5B0(1, item_id));
+                                    camp_list_store_u32(entry, 0x1c, 0);
+                                }
+                                else if (kind == 1) {
+                                    camp_list_store_u32(entry, 0x18, 0);
+                                    camp_list_store_u32(entry, 0x1c,
+                                                     FUN_0017B5B0(1, item_id));
+                                }
+                            }
+                            else {
+                                camp_list_store_u32(entry, 0x18, 0);
+                                camp_list_store_u32(entry, 0x1c, 0);
+                            }
+                            ++entry_count;
+                        }
+                    }
+                }
+            }
+        }
+        ++item_index;
+    }
+}
+
+// FUN_0015CE50 NONMATCHING
+void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
+                  f32 drawContext)
+{
+    union {
+        u64 packed;
+        f32 value[2];
+    } position;
+    bool has_three_digits;
+    u32 color;
+    s32 i;
+    s32 record_index;
+    uintptr_t list;
+    u32 text_handle;
+    f32 x;
+    f32 y;
+    f32 row_x;
+    f32 value_x;
+    f32 value_y;
+    f32 value_tens_x;
+    f32 value_units_x;
+    f32 value_suffix_x;
+    u8 text_buffer[240];
+
+    position.packed = packedPosition;
+    list = camp_list_base_address((u32)(uintptr_t)listPointer);
+    x = position.value[0];
+    y = position.value[1];
+    if (camp_list_load_s32(list, 0x7dc) != 0) {
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 6, (u32)alpha,
+                           x + 2.0f,
+                           y + 6.0f +
+                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
+                           drawContext);
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 7, (u32)alpha,
+                           x + 317.0f,
+                           y + 6.0f +
+                               (f32)(camp_list_load_s32(list, 0x7e0) * 0x1a),
+                           drawContext);
+    }
+
+    row_x = x + 15.0f;
+    color = (0xffU - (u32)alpha) | 0xffffff00U;
+    value_x = y + 19.0f;
+    value_y = y + 16.0f;
+    value_tens_x = x + 256.0f;
+    value_units_x = y + 17.0f;
+    value_suffix_x = x + 288.0f;
+
+    for (i = 0; i < 5; ++i) {
+        record_index = i + camp_list_load_s32(list, 0x7e4);
+        if (record_index >= camp_list_load_s32(list, 0x7dc)) {
+            break;
+        }
+
+        {
+            s32 row_offset = i * 0x1a;
+            uintptr_t entry = list + (size_t)record_index * 0x14;
+            u16 item_id = camp_list_load_u16(entry, 0x0c);
+            s32 value;
+
+            if (i == camp_list_load_s32(list, 0x7e0)) {
+                campCE50DrawSprite(packedPosition, *(void **)DAT_00833b70_abs,
+                                   FUN_0017D2E0(item_id) + 0x20,
+                                   (u32)alpha, row_x,
+                                   y + 2.0f + (f32)row_offset, drawContext);
+                text_handle = FUN_0030BB40(item_id);
+                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
+                campCE50DrawText(
+                    (s32)((f32)(s32)x + 55.0f),
+                    (s32)((f32)(s32)y + 1.0f +
+                          (f32)row_offset + 14.0f),
+                    color, drawContext, 6, 1, (const char *)text_buffer,
+                    0x10, 0x78);
+
+                value = camp_list_load_s32(entry, 0x18);
+                if (value == 0) {
+                    value = camp_list_load_s32(entry, 0x1c);
+                }
+                if (value == 0) {
+                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x11,
+                                       (u32)alpha, x + 249.0f,
+                                       value_x + (f32)row_offset,
+                                       drawContext);
+                } else {
+                    has_three_digits = value > 99;
+                    if (has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(1),
+                            (value / 100) + 0x0b, (u32)alpha,
+                            x + 240.0f, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 100;
+                    }
+                    if ((value > 9) || has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(1),
+                            (value / 10) + 0x0b, (u32)alpha,
+                            value_tens_x, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 10;
+                    }
+                    campCE50DrawSprite(
+                        packedPosition, campCE50Font(1), value + 0x0b,
+                        (u32)alpha, x + 272.0f,
+                        value_y + (f32)row_offset, drawContext);
+
+                    if (camp_list_load_s32(entry, 0x18) == 0) {
+                        if (camp_list_load_s32(entry, 0x1c) != 0) {
+                            campCE50DrawSprite(
+                                packedPosition, *(void **)DAT_00833a50_abs, 2,
+                                (u32)alpha, value_suffix_x,
+                                value_units_x + (f32)row_offset,
+                                drawContext);
+                        }
+                    } else {
+                        campCE50DrawSprite(
+                            packedPosition, *(void **)DAT_00833a50_abs, 4, (u32)alpha,
+                            value_suffix_x,
+                            value_units_x + (f32)row_offset, drawContext);
+                    }
+                }
+            } else {
+                campCE50DrawSpriteAlt(
+                    packedPosition, *(void **)DAT_00833b70_abs,
+                    FUN_0017D2E0(item_id) + 0x2f, (u32)alpha,
+                    0x20, 0x43, 0x78, row_x,
+                    y + 2.0f + (f32)row_offset, drawContext);
+                text_handle = FUN_0030BB40(item_id);
+                campCE50FormatText(text_buffer, DAT_007cb66c, text_handle);
+                campCE50DrawText(
+                    (s32)((f32)(s32)x + 55.0f),
+                    (s32)((f32)(s32)y + 1.0f +
+                          (f32)row_offset + 14.0f),
+                    color, drawContext, 10, 1, (const char *)text_buffer,
+                    0x10, 0x78);
+
+                value = camp_list_load_s32(entry, 0x18);
+                if (value == 0) {
+                    value = camp_list_load_s32(entry, 0x1c);
+                }
+                if (value == 0) {
+                    campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x10,
+                                       (u32)alpha, x + 249.0f,
+                                       value_x + (f32)row_offset,
+                                       drawContext);
+                } else {
+                    has_three_digits = value > 99;
+                    if (has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(2),
+                            (value / 100) + 0x0b, (u32)alpha,
+                            x + 240.0f, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 100;
+                    }
+                    if ((value > 9) || has_three_digits) {
+                        campCE50DrawSprite(
+                            packedPosition, campCE50Font(2),
+                            (value / 10) + 0x0b, (u32)alpha,
+                            value_tens_x, value_y + (f32)row_offset,
+                            drawContext);
+                        value %= 10;
+                    }
+                    campCE50DrawSprite(
+                        packedPosition, campCE50Font(2), value + 0x0b,
+                        (u32)alpha, x + 272.0f,
+                        value_y + (f32)row_offset, drawContext);
+
+                    if (camp_list_load_s32(entry, 0x18) == 0) {
+                        if (camp_list_load_s32(entry, 0x1c) != 0) {
+                            campCE50DrawSprite(
+                                packedPosition, *(void **)DAT_00833a50_abs, 3,
+                                (u32)alpha, value_suffix_x,
+                                value_units_x + (f32)row_offset,
+                                drawContext);
+                        }
+                    } else {
+                        campCE50DrawSprite(
+                            packedPosition, *(void **)DAT_00833a50_abs, 5, (u32)alpha,
+                            value_suffix_x,
+                            value_units_x + (f32)row_offset, drawContext);
+                    }
+                }
+            }
+        }
+    }
+
+    record_index = camp_list_load_s32(list, 0x7e4) +
+                   camp_list_load_s32(list, 0x7e0);
+    if (camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c) != 0) {
+        campCE50DrawValue(
+            drawContext, (s32)(x + 54.0f),
+            (s32)(((y + 210.0f) - 30.0f) - 20.0f),
+            UINT32_C(0xffffffff), 1, 10, 3,
+            camp_list_load_u32(list, (size_t)record_index * 0x14 + 0x0c));
+    }
+
+    if (camp_list_load_s32(list, 0x7dc) != 0) {
+        s32 scrollbar_offset;
+        f32 scrollbar_x = (x + 588.0f) - 247.0f;
+
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 8,
+                           (u32)alpha, scrollbar_x,
+                           (y + 30.0f) - 24.0f, drawContext);
+        scrollbar_offset = camp_list_load_s32(list, 0x7dc) - 5;
+        if (scrollbar_offset < 1) {
+            scrollbar_offset = 0;
+        } else {
+            scrollbar_offset =
+                (camp_list_load_s32(list, 0x7e4) * 0x59) / scrollbar_offset;
+        }
+        campCE50DrawSprite(packedPosition, *(void **)DAT_00833a50_abs, 0x0d,
+                           (u32)alpha, scrollbar_x,
+                           (y + 34.0f + (f32)scrollbar_offset) - 24.0f,
+                           drawContext);
+    }
+}
+
+// FUN_0015D8E0
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
+{
+    CampD8Object *object;
+    f32 x;
+    f32 y;
+    f32 yBase;
+
+    yBase = position.y;
+    object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
+    object->drawContext = drawContext;
+    x = 218.0f + position.x;
+    object->x = x + (f32)DAT_007cdf8c;
+    y = 382.0f;
+    y = y + yBase;
+    object->y = y;
+    object->alpha = alpha;
+    campD8SetSprite(object, 1);
+    campD8SubmitSprite(object);
+
+    if (DAT_007cdf8c < -200) {
+        object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
+        object->drawContext = drawContext;
+        object->x = x + (f32)DAT_007cdf8c + 640.0f;
+        object->y = y;
+        object->alpha = alpha;
+        campD8SetSprite(object, 1);
+        campD8SubmitSprite(object);
+    }
+
+    DAT_007cdf8c = DAT_007cdf8c - 1;
+    if ((f32)DAT_007cdf8c < -640.0f) {
+        DAT_007cdf8c += 640.0f;
+    }
+}
+// FUN_0015DA70 NONMATCHING
+void FUN_0015DA70(void *param_1)
+{
+    uintptr_t work_address = (uintptr_t)(u32)(uintptr_t)param_1;
+    CampMenuAnimPair pair;
+    CampMenuAnimPair shifted;
+    f32 row;
+    s32 i;
+    s32 item_offset;
+
+    pair.f[0] = 29.0f;
+    pair.f[1] = 22.0f;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 0.0f;
+    pair.f[1] = 0.0f;
+    campListAnimate(100.0f,
+                    (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    0, 2, 1, pair.q, pair.q, 0, 0, 6, 0x0d);
+    camp_list_store_u32(
+        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0x8c, 0);
+
+    pair.f[0] = (f32)0x1bf;
+    pair.f[1] = (f32)0x19b;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 247.0f;
+    pair.f[1] = 24.0f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < camp_list_load_s32(work_address, 0x4c)) {
+            row = (f32)(i * 0x55) + 42.0f;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 8.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(i + 1) * 0x2a8),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            item_offset = i * 10;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 31.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0b) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 45.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0c) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 64.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0d) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 14.0f;
+            pair.f[1] = row + 2.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
+                100.0f,
+                (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
+                                    (size_t)(item_offset + 0x0e) * 0x44),
+                0, 2, 1, shifted.q, pair.q, 0, 0, 3, 10);
+
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x400, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x444, 0);
+        } else {
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2ac, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2f0, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x334, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x378, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x3bc, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x400, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x444, 0);
+        }
+    }
+
+    pair.f[0] = 15.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+    camp_list_store_u32(
+        (uintptr_t)camp_list_load_u32(work_address, 0x38), 0xd90, 0);
+
+    pair.f[0] = 488.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
+}
+
+// FUN_0015E150 NONMATCHING
+void FUN_0015E150(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 x;
+    f32 y;
+    u64 pair;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    y -= 50.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
+                 pair, pair, 0, 0);
+    FUN_0018bc10(100.0f, draw, 0, 2, 2, 0, 0, 0, 0);
+    camp_draw_store_u32(draw, 0x8c, 0);
+    x = 411.0f;
+    y = 447.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 2,
+                 pair, pair, 0, 0);
+    x = 24.0f;
+    y = 247.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 2,
+                 pair, pair, 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            x = (f32)(i * 0x55) + 42.0f;
+            pair = camp_draw_concat44_f32(x + 8.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 2, pair, pair, 0, 0);
+            base = i * 10;
+            pair = camp_draw_concat44_f32(x + 31.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 45.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 64.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            pair = camp_draw_concat44_f32(x + 2.0f, 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 2, pair, pair, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    x = 415.0f;
+    y = 17.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
+                 pair, pair, 0, 0);
+    camp_draw_store_u32(draw, 0xd90, 0);
+    x = 415.0f;
+    y = 488.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    x = 415.0f;
+    y = 537.0f;
+    {
+        u64 endPair = camp_draw_concat44_f32(x, y);
+        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 2,
+                     pair, endPair, 0, 0);
+    }
+}
+
+// FUN_0015E6E0 NONMATCHING
+void FUN_0015E6E0(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 tailHeight;
+    f32 x;
+    f32 y;
+    u64 first;
+    u64 second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 29.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y += 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
+                 first, second, 0, 0);
+    x = 22.0f;
+    y = 27.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y += 55.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 1,
+                 first, second, 0, 0);
+    x = 447.0f;
+    y = 410.0f;
+    first = camp_draw_concat44_f32(x, y);
+    x += 57.0f;
+    y -= 8.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
+                 first, second, 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
+                 UINT64_C(0x41c0000043770000), UINT64_C(0x41c00000438c0000), 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            if (i == work->cursor || work->cursor == -2) {
+                tailHeight = 48.0f;
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
+                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 1, first, second, 0, 0);
+            } else {
+                tailHeight = 27.0f;
+                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+            }
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first, second, 0, 0);
+            base = i * 10;
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 1,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
+                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
+}
+
+// FUN_0015EE40 NONMATCHING
+void FUN_0015EE40(CampSystemDrawWork *work, s32 changedIndex)
+{
+    void *draw;
+    f32 x;
+    f32 tailHeight;
+    CampMenuAnimPair first;
+    CampMenuAnimPair second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            x = (f32)(i * 0x55) + 42.0f;
+            if (i == work->cursor) {
+                tailHeight = 48.0f;
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                first = second;
+                first.f[0] += 27.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 1, first.q, second.q, 0, 0);
+            } else {
+                if (i != changedIndex) {
+                    continue;
+                }
+                tailHeight = 27.0f;
+                first.q = camp_draw_load_u64(
+                    draw, (size_t)i * 0x2a8 + 0x478);
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 2, first.q, second.q, 0, 0);
+            }
+
+            base = i * 0x2a8;
+            first.q = camp_draw_load_u64(draw, (size_t)base + 0x2e0);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 8.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            base = i * 10;
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x324);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 31.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x368);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 45.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3ac);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 64.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3f0);
+            second.f[0] = 14.0f;
+            second.f[1] = x + 2.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+        }
+    }
+}
+
+// FUN_0015F320 NONMATCHING
+void FUN_0015F320(CampSystemDrawWork *work)
+{
+    void *draw;
+    f32 tailHeight;
+    f32 x;
+    f32 y;
+    u64 first;
+    u64 second;
+    s32 i;
+    s32 base;
+
+    draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 1,
+                 first, second, 0, 0);
+    x = 22.0f;
+    y = 77.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 2,
+                 first, second, 0, 0);
+    x = 402.0f;
+    y = 504.0f;
+    first = camp_draw_concat44_f32(x, y);
+    x += 9.0f;
+    y -= 57.0f;
+    second = camp_draw_concat44_f32(x, y);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
+                 first, second, 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
+                 UINT64_C(0x41c00000438c0000), UINT64_C(0x41c0000043770000), 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        if (i < work->partyCount) {
+            if (i == work->cursor || work->cursor == -2) {
+                tailHeight = 48.0f;
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+                FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 2, first, second, 0, 0);
+            } else {
+                tailHeight = 27.0f;
+                camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
+            }
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first, second, 0, 0);
+            base = i * 10;
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first, second, 0, 0);
+            camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
+        }
+    }
+    for (; i < 4; ++i) {
+        base = i * 0x2a8;
+        camp_draw_store_u32(draw, (size_t)base + 0x2ac, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x2f0, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x334, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x378, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x3bc, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x400, 0);
+        camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
+    }
+
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 1,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd8c), 0, 2, 2,
+                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 0,
+                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800043f40000), 0, 0);
+}
+
+// FUN_0015FA90 NONMATCHING
+void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampSystemDrawWork *work)
+{
+    u8 textBuffer[256];
+    s32 digitCount;
+    s32 value;
+    s32 maximum;
+    s32 hasHundreds;
+    s32 group;
+    s32 barWidth;
+    s32 iconKind;
+    s16 itemId;
+    s16 itemWord;
+    s16 category;
+    u8 alpha;
+    u32 spriteHandle;
+    CampD8Object *sprite;
+    u8 *groupBase;
+
+    switch (recordIndex) {
+    case 1:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 2:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 1,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 3:
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0e);
+        sprite->drawContext = camp_draw_load_f32(record, 0x24);
+        sprite->x = record->x;
+        sprite->y = record->y;
+        sprite->alpha = (u8)record->alpha;
+        camp_draw_store_u32(sprite, 0x20, 0xc2340000);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
+        break;
+    case 4:
+        groupBase = (u8 *)work;
+        FUN_0015CE50(camp_draw_load_u64(record, 0x38),
+                     (void *)(uintptr_t)camp_draw_load_u32(groupBase, 0x28),
+                     record->alpha, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0:
+        FUN_0015D8E0(*(CampSystemPosition *)&record->x,
+                     camp_draw_load_f32(record, 0x24), record->alpha);
+        break;
+    case 0x0a:
+    case 0x14:
+    case 0x1e:
+    case 0x28:
+        group = (recordIndex - 0x0a) / 10;
+        groupBase = (u8 *)work + group * 4;
+        alpha = (u8)record->alpha;
+        spriteHandle = FUN_00177790_sys(
+            *(const s16 *)((const u8 *)groupBase + 0x3c));
+        campCE50FormatText(textBuffer, DAT_007cb66c, spriteHandle);
+        campCE50DrawText(
+            (s32)record->x, (s32)((f32)(s32)record->y + 3.0f),
+            ((u32)(0xffU - alpha) | 0xffffff00U),
+            camp_draw_load_f32(record, 0x24), 10, 1,
+            (const char *)textBuffer, 0x10, 0x78);
+        break;
+    case 0x0b:
+    case 0x15:
+    case 0x1f:
+    case 0x29:
+        group = (recordIndex - 0x0b) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
+        }
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemWord) & 0xffff;
+        maximum = FUN_0016C5F0(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0b,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30_sys(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 9,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0c:
+    case 0x16:
+    case 0x20:
+    case 0x2a:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
+        }
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemWord) & 0xffff;
+        maximum = FUN_0016C670(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0c,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30_sys(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0a,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0d:
+    case 0x17:
+    case 0x21:
+    case 0x2b:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        digitCount = FUN_0016C470(itemId) & 0xff;
+        alpha = (u8)record->alpha;
+        if (digitCount >= 0x0a) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (digitCount / 10) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            digitCount %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (digitCount % 10) + 0x0b,
+            record->x + 16.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        if (((u32)FUN_0016C970(itemId) & 0x80000U) != 0) {
+            iconKind = 0x0e;
+        } else if (((u32)FUN_0016C970(itemId) & 0x80U) != 0) {
+            iconKind = 0x0f;
+        } else {
+            category = FUN_0016C920(itemId) & 0xffff;
+            if (category == 5) {
+                iconKind = 1;
+            } else if (category == 4) {
+                iconKind = 0;
+            } else if (category == 3) {
+                iconKind = 2;
+            } else {
+                iconKind = -1;
+            }
+        }
+        if (iconKind != -1) {
+            campSystemDrawSprite(
+                record, *(void **)DAT_00833a54_abs, iconKind,
+                alpha, record->x + 44.0f, record->y - 6.0f,
+                camp_draw_load_f32(record, 0x24));
+        }
+        break;
+    case 0x0e:
+    case 0x18:
+    case 0x22:
+    case 0x2c:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0f:
+    case 0x19:
+    case 0x23:
+    case 0x2d:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x10:
+    case 0x1a:
+    case 0x24:
+    case 0x2e:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 4,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x32:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 1,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x33:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 2,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x34:
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 1,
+                             (u8)record->alpha, record->x + 73.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    }
+}
+
+// FUN_00160800 NONMATCHING
+void *FUN_00160800(KwlnTask *task)
+{
+    CampSystemDrawWork *work;
+    CampDrawRecord *record;
+    KwlnTask *otherTask;
+    void *entryPool;
+    void *entry;
+    CampD8Object *sprite;
+    void *ready;
+    u32 temp;
+    u16 inputLatch;
+    u16 itemId;
+    s16 itemResult;
+    s32 i;
+    s32 j;
+    s32 oldCursor;
+    s32 allDone;
+    s32 hasInput;
+    s32 itemCount;
+    s32 itemIndex;
+    s32 itemBase;
+    u32 value;
+    u32 value2;
+    u32 fadedAlpha;
+    f32 verticalOffset;
+    f32 displacement;
+
+    work = (CampSystemDrawWork *)camp_draw_ptr32((u32)(uintptr_t)task->workData);
+    switch (work->state) {
+    case 0:
+        uGpffffb29c = 0;
+        if (iGpffffb270_sys == NULL) {
+            ready = NULL;
+        } else {
+            ready = iGpffffb270_sys->workData;
+            if (*(u32 *)ready != 3) {
+                ready = NULL;
+            } else {
+                ready = *(void **)((u8 *)ready + 0x0c);
+            }
+        }
+        if (ready != NULL) {
+            FUN_00114450_sys(102.0f, 0.0f, -87.0f, -1,
+                         0x4fa4ff19, 0x280, 0x280);
+        }
+        FUN_0011BBA0(0.0f, 0.0f, 102.0f, 0, 0);
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
+        camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
+        camp_draw_store_u32(sprite, 0x10, 0x43d60000);
+        camp_draw_store_u32(sprite, 0x14, 0x41d80000);
+        camp_draw_store_u8(sprite, 0x18, 0);
+        camp_draw_store_u16(sprite, 0x28, 0);
+        camp_draw_store_u16(sprite, 0x2a, 0);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
+        work->records = (u32)(uintptr_t)func_0018b6d0(0x3c);
+        work->state = 1;
+        work->partyIds[0] = 1;
+        work->partyCount = 1;
+        for (i = 0; i < 3 && FUN_0016DD60_sys(i) != 0; ++i) {
+            work->partyIds[work->partyCount] = FUN_0016DD60_sys(i);
+            ++work->partyCount;
+        }
+        work->frame = 0;
+        break;
+
+    case 1:
+        i = work->frame;
+        if (i == 10) {
+            work->state = 2;
+        } else {
+            if (i < 9) {
+                s16 fade = 0;
+                if (i >= 3) {
+                    displacement = (f32)(((i - 3) * 400) / 5);
+                    verticalOffset = 0.0f;
+                    fade = (s16)(((i - 3) * 0xff) / 5);
+                } else {
+                    verticalOffset = 0.0f;
+                    displacement = verticalOffset;
+                }
+                if (iGpffffb270_sys == NULL) {
+                    ready = NULL;
+                } else {
+                    ready = iGpffffb270_sys->workData;
+                    if (*(u32 *)ready != 3) {
+                        ready = NULL;
+                    } else {
+                        ready = *(void **)((u8 *)ready + 0x0c);
+                    }
+                }
+                if (ready != NULL) {
+                    fadedAlpha = 0xffU - (s32)fade;
+                    value2 = fadedAlpha;
+                    if (fadedAlpha > 0x18) {
+                        value2 = 0x19;
+                    }
+                    FUN_00114450_sys(102.0f, displacement, verticalOffset - 87.0f,
+                                 fadedAlpha | 0xffffff00U,
+                                 value2 | 0x4fa4ff00U, 0x280, 0x280);
+                }
+                FUN_0011BBA0(0.0f, 0.0f, 102.0f, fade, 0);
+                sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
+                camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
+                camp_draw_store_f32(sprite, 0x10, displacement + 428.0f);
+                camp_draw_store_f32(sprite, 0x14, verticalOffset + 27.0f);
+                camp_draw_store_u8(sprite, 0x18, (u8)fade);
+                camp_draw_store_u16(sprite, 0x28, 0);
+                camp_draw_store_u16(sprite, 0x2a, 0);
+                campD8SetSprite(sprite, 1);
+                campD8SubmitSprite(sprite);
+                if (i == 0) {
+                    otherTask = iGpffffb26c;
+                    entry = camp_draw_ptr32((u32)(uintptr_t)otherTask->workData);
+                    FUN_0011DA80(0x42c80000, entry);
+                    camp_draw_store_u32(entry, 0, 9);
+                    camp_draw_store_u32(entry, 4, 0);
+                }
+                if (i == 4) {
+                    FUN_00121DE0(uGpffffb264, 0x0d);
+                    FUN_00122710_sys(uGpffffb268, 0x0d);
+                }
+            }
+            work->frame = i + 1;
+        }
+        break;
+
+    case 2:
+        if (FUN_001016b0(camp_draw_ptr32(work->imageArchive)) != 0) {
+            work->archive0 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 0, &temp));
+            work->archive1 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 1, &temp));
+            work->archive2 = (u32)(uintptr_t)FUN_00112420_sys(FUN_00102100_sys(camp_draw_ptr32(work->imageArchive), 2, &temp));
+            entryPool = (*DAT_00960184_abs)(1, 0x7f0, 0x40000);
+            for (i = 0; i < 100; ++i) {
+                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x0c, 0);
+                camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x10, 0);
+            }
+            work->entryPool = camp_draw_addr32(entryPool);
+            FUN_0015C840(entryPool);
+            *(void **)DAT_00833a50_abs = camp_draw_ptr32(work->archive0);
+            *(void **)DAT_00833a54_abs = camp_draw_ptr32(work->archive1);
+            *(void **)DAT_00833a58_abs = camp_draw_ptr32(work->archive2);
+            work->state = 3;
+        }
+        break;
+
+    case 3:
+        if (FUN_00111f30(camp_draw_ptr32(work->archive0)) != 0 &&
+            FUN_00111f30(camp_draw_ptr32(work->archive1)) != 0 &&
+            FUN_00111f30(camp_draw_ptr32(work->archive2)) != 0) {
+            work->state = 4;
+        }
+        break;
+
+    case 4:
+        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0d) != 0) {
+            FUN_0015DA70(work);
+            work->state = 5;
+        }
+        break;
+
+    case 5:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0) {
+            work->state = 6;
+        }
+        break;
+
+    case 6:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0 && (DAT_007e094e_y3 & 0x20) == 0) {
+            if ((DAT_007e094e_y3 & 0x40) == 0) {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                FUN_0011ABD0_sys(camp_draw_load_u32(entryPool, 0x7dc), 5,
+                             (u8 *)entryPool + 0x7e4, (u8 *)entryPool + 0x7e0);
+            } else {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
+                itemCount = (s32)camp_draw_load_u32(entryPool, 0x7dc);
+                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
+                if (itemIndex < itemCount) {
+                    entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
+                    value = camp_draw_load_u32(entry, 0x0c);
+                    inputLatch = DAT_00836ba8;
+                    FUN_00175200_sys(camp_draw_load_u16(entry, 0x14));
+                    itemResult = FUN_0017B480((u16)value);
+                    if (itemResult == 2 || FUN_0017B660(1, (u16)value) != 0 ||
+                        FUN_0017B4E0((u16)value) != 1) {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0);
+                        work->selectedKind = (s16)FUN_0017BB40((u16)value);
+                        if (work->selectedKind != 3) {
+                            if (work->selectedKind == 0) {
+                                work->cursor = 0;
+                            } else {
+                                work->cursor = -2;
+                            }
+                            work->state = 8;
+                        }
+                    }
+                    FUN_00175200_sys(inputLatch);
+                }
+            }
+        } else if (allDone != 0 && (DAT_007e094e_y3 & 0x20) != 0) {
+            FUN_0010a4e0_sys(0, 0, 0, 2);
+            FUN_0015E150(work);
+            work->state = 7;
+        }
+        break;
+
+    case 7:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone != 0) {
+            return (void*)0xffffffff;
+        }
+        break;
+
+    case 8:
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0 && func_0018b700(record) != 0) {
+                FUN_0015FA90(record, i, work);
+            }
+        }
+        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0e) != 0) {
+            FUN_0015E6E0(work);
+            work->state = 9;
+        }
+        break;
+
+    case 9:
+        allDone = 1;
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0) {
+                if (func_0018b700(record) != 0) {
+                    FUN_0015FA90(record, i, work);
+                }
+                if (record->progress != record->target) {
+                    allDone = 0;
+                }
+            }
+        }
+        if (allDone == 0) {
+            break;
+        }
+        oldCursor = work->cursor;
+        if ((DAT_007e094e_y3 & 0x20) == 0) {
+            if ((DAT_007e094e_y3 & 0x40) == 0) {
+                hasInput = ((DAT_007e0952_y3 & 0x1000) != 0) ||
+                           ((DAT_007e095a_y3 & 0x1000) != 0);
+                if (hasInput) {
+                    if (work->cursor != -2) {
+                        if (work->cursor == 0) {
+                            if ((DAT_007e094e_y3 & 0x1000) != 0 ||
+                                (DAT_007e0958_y3 & 0x1000) != 0) {
+                                FUN_0010a4e0_sys(0, 0, 0);
+                                work->cursor = work->partyCount - 1;
+                            }
+                        } else {
+                            FUN_0010a4e0_sys(0, 0, 0);
+                            --work->cursor;
+                        }
+                    }
+                } else if (((DAT_007e0952_y3 & 0x4000) != 0 ||
+                            (DAT_007e095a_y3 & 0x4000) != 0) &&
+                           work->cursor != -2) {
+                    if (work->cursor == work->partyCount - 1) {
+                        if ((DAT_007e094e_y3 & 0x4000) != 0 ||
+                            (DAT_007e0958_y3 & 0x4000) != 0) {
+                            FUN_0010a4e0_sys(0, 0, 0);
+                            work->cursor = 0;
+                        }
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0);
+                        ++work->cursor;
+                    }
+                }
+            } else {
+                entryPool = camp_draw_ptr32(work->entryPool);
+                itemIndex = (s32)camp_draw_load_u32(entryPool, 0x7e0);
+                itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
+                entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
+                itemId = (u16)(camp_draw_load_u32(entry, 0x0c) & 0xffff);
+                if (work->selectedKind == 0) {
+                    value = (u32)work->partyIds[work->cursor];
+                    if (campC520NearHero(value) == 0 ||
+                        FUN_0017BC20_sys(1, (s16)value, itemId, 0) != 0) {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    } else {
+                        FUN_0010a4e0_sys(1, 0, 3, 1);
+                        FUN_0015C520(entryPool, work->cursor);
+                        work->state = 10;
+                    }
+                } else {
+                    hasInput = 0;
+                    for (j = 0; j < work->partyCount; ++j) {
+                        value = (u32)work->partyIds[j];
+                        if (campC520NearHero(value) != 0 &&
+                            FUN_0017BC20_sys(1, (s16)value, itemId, 0) == 0) {
+                            hasInput = 1;
+                        }
+                    }
+                    if (hasInput != 0) {
+                        FUN_0010a4e0_sys(1, 0, 3, 1);
+                        FUN_0015C520(entryPool, -2);
+                        work->state = 10;
+                    } else {
+                        FUN_0010a4e0_sys(0, 0, 0, 8);
+                    }
+                }
+            }
+        } else {
+            FUN_0010a4e0_sys(0, 0, 0, 2);
+            work->state = 10;
+        }
+        if (oldCursor != work->cursor) {
+            FUN_0015EE40(work, oldCursor);
+        }
+        break;
+
+    case 10:
+        for (i = 0; i < 0x3c; ++i) {
+            record = &camp_draw_state_records(work)[i];
+            if (record->active != 0 && func_0018b700(record) != 0) {
+                FUN_0015FA90(record, i, work);
+            }
+        }
+        if (FUN_0011e380_y3(uGpffffb260_sys, 0x0d) != 0) {
+            FUN_0015F320(work);
+            work->state = 6;
+        }
+        break;
+    }
+    return 0;
+}
+
+
+
+#pragma alias DAT_007cdf54_data DAT_007cdf54
+#pragma alias DAT_007cdf58_data DAT_007cdf58
+#pragma alias DAT_007e094e_data DAT_007e094e_y3
+#pragma alias DAT_007e0958_data DAT_007e0958_y3
+#pragma alias DAT_00833a50_data DAT_00833a50_y3
+#pragma alias iGpffffb258_data iGpffffb258
+#pragma alias gp0xffff897c_data gp0xffff897c
+#pragma alias FUN_00100d80_data FUN_00100d80
+#pragma alias FUN_00100ec0_data FUN_00100ec0
+#pragma alias FUN_001016b0_data FUN_001016b0
+#pragma alias FUN_00102100_data FUN_00102100_y3
+#pragma alias FUN_0010a4e0_data FUN_0010a4e0_y3
+#pragma alias FUN_00111f30_data FUN_00111f30
+#pragma alias FUN_00112420_data FUN_00112420_y3
+#pragma alias FUN_001124b0_data FUN_001124b0
+#pragma alias FUN_00113a30_data FUN_00113a30
+#pragma alias FUN_00114450_data FUN_00114450
+#pragma alias FUN_001159f0_data FUN_001159f0
+#pragma alias FUN_00115bc0_data FUN_00115bc0_y6
+#pragma alias FUN_00122710_data FUN_00122710
+#pragma alias FUN_0012a560_data FUN_0012a560
+#pragma alias FUN_0012ac60_data FUN_0012ac60
+#pragma alias FUN_00129b30_data FUN_00129b30
+#pragma alias FUN_0013c240_data FUN_0013c240
+#pragma alias FUN_0013c780_data FUN_0013c780
+#pragma alias FUN_0013cf80_data FUN_0013cf80
+#pragma alias FUN_0013d1a0_data FUN_0013d1a0
+#pragma alias FUN_0013fca0_data FUN_0013fca0
+#pragma alias FUN_00174800_data FUN_00174800
+#pragma alias FUN_00194b20_data FUN_00194b20
+#pragma alias FUN_00195290_data FUN_00195290
+#pragma alias FUN_003b2cb0_data FUN_003b2cb0
+#pragma alias FUN_003c7d80_data FUN_003c7d80
+#pragma alias FUN_003c7e20_data FUN_003c7e20
+#pragma alias FUN_0040eb50_data FUN_0040eb50
+#pragma alias FUN_00523ac8_data FUN_00523ac8
+/* Camp/data bridge functions at retail 0x001675B0-0x0016C2F0. */
+#include "h_snd.h"
+#include "Script/scrTraceCode.h"
+
+#pragma alias DAT_007cdf88_y4 DAT_007cdf88
+#pragma alias FUN_00167f10_y4 FUN_00167f10
+#pragma alias FUN_00167f30_y4 FUN_00167f30
+#pragma alias FUN_00167ef0_y4 FUN_00167ef0
+#pragma alias FUN_001685d0_y4 FUN_001685d0
+#pragma alias FUN_001685e0_y4 FUN_001685e0
+#pragma alias FUN_0012df50_y4 FUN_0012df50
+#pragma alias DAT_007e094e_y4 DAT_007e094e_y4
+#pragma alias DAT_007e0952_y4 DAT_007e0952_y4
+#pragma alias DAT_007e0958_y4 DAT_007e0958_y4
+#pragma alias DAT_007e095a_y4 DAT_007e095a_y4
+#pragma alias FUN_00160800_y4 FUN_00160800_y4
+#pragma alias FUN_001685b0_y4 FUN_001685b0_y4
+#pragma alias FUN_00168770_y4 FUN_00168770_y4
+#pragma alias FUN_00195290_y4 FUN_00195290_y4
+#pragma alias FUN_0010c1a0_y4 FUN_0010c1a0_y4
+#pragma alias FUN_0010c3a0_y4 FUN_0010c3a0_y4
+#pragma alias FUN_001159f0_y4 FUN_001159f0_y4
+#pragma alias FUN_00115bc0_y4 FUN_00115bc0_y4
+#pragma alias FUN_003b2cb0_y4 FUN_003b2cb0_y4
+#pragma alias FUN_003b32d0_y4 FUN_003b32d0_y4
+#pragma alias FUN_003c7e20_y4 FUN_003c7e20_y4
+#pragma alias FUN_00523ac8_y4 FUN_00523ac8_y4
+#pragma alias FUN_0017d800_y4 FUN_0017d800_y4
+#pragma alias FUN_00174800_y4 FUN_00174800_y4
+#pragma alias FUN_0013c240_y4 FUN_0013c240_y4
+#pragma alias FUN_00177c10_y4 FUN_00177c10_y4
+#pragma alias FUN_001158b0_y4 FUN_001158b0_y4
+#pragma alias FUN_001127d0_y4 FUN_001127d0_y4
+#pragma alias FUN_00115980_y4 FUN_00115980_y4
+#pragma alias FUN_0010a4e0_y4 FUN_0010a4e0_y4
+#pragma alias FUN_004d0f00_y4 FUN_004d0f00_y4
+#pragma alias datGetEquipmentId_y4 datGetEquipmentId_y4
+
+
+#pragma alias DAT_007cdf60_y3 DAT_007cdf60_y5
+#pragma alias DAT_007cdfb8_y3 DAT_007cdfb8
+#pragma alias DAT_007e094e_y3 DAT_007e094e
+#pragma alias DAT_007e0952_y3 DAT_007e0952
+#pragma alias DAT_007e0958_y3 DAT_007e0958
+#pragma alias DAT_007e095a_y3 DAT_007e095a
+#pragma alias DAT_00833a50_y3 DAT_00833a50
+#pragma alias FUN_00102100_y3 FUN_00102100
+#pragma alias FUN_0010a4e0_y3 FUN_0010a4e0
+#pragma alias FUN_00112420_y3 FUN_00112420
+#pragma alias FUN_0011e380_y3 FUN_0011e380
+#pragma alias FUN_00145520_y3 FUN_00145520
+#pragma alias FUN_0016f190_y3 FUN_0016f190
+#pragma alias FUN_0016f1f0_y3 FUN_0016f1f0
+#pragma alias FUN_0017d800_y3 FUN_0017d800
+#pragma alias DAT_007cdf50_y3 DAT_007cdf50_y3
+#pragma alias DAT_007cdf54_y3 DAT_007cdf54_y3
+#pragma alias DAT_007cdf58_y3 DAT_007cdf58_y3
+#pragma alias DAT_007cdf5c_y3 DAT_007cdf5c_y3
+#pragma alias DAT_00833b78_y3 DAT_00833b78_y3
+#pragma alias DAT_005dbc60_y3 DAT_005dbc60_y3
+#pragma alias FUN_00100d80_y3 FUN_00100d80_y3
+#pragma alias FUN_001016b0_y3 FUN_001016b0_y3
+#pragma alias FUN_00103c30_y3 FUN_00103c30_y3
+#pragma alias FUN_00103cb0_y3 FUN_00103cb0_y3
+#pragma alias FUN_0010c3a0_y3 FUN_0010c3a0_y3
+#pragma alias FUN_00111f30_y3 FUN_00111f30_y3
+#pragma alias FUN_001127d0_y3 FUN_001127d0_y3
+#pragma alias FUN_00113a30_y3 FUN_00113a30_y3
+#pragma alias FUN_00114450_y3 FUN_00114450_y3
+#pragma alias FUN_001158b0_y3 FUN_001158b0_y3
+#pragma alias FUN_00115980_y3 FUN_00115980_y3
+#pragma alias FUN_001159f0_y3 FUN_001159f0_y3
+#pragma alias FUN_0011bba0_y3 FUN_0011bba0_y3
+#pragma alias FUN_00121de0_y3 FUN_00121de0_y3
+#pragma alias FUN_00122710_y3 FUN_00122710_y3
+#pragma alias FUN_0013e710_y3 FUN_0013e710_y3
+#pragma alias FUN_00141590_y3 FUN_00141590_y3
+#pragma alias FUN_00141660_y3 FUN_00141660_y3
+#pragma alias FUN_00141fb0_y3 FUN_00141fb0_y3
+#pragma alias FUN_00142930_y3 FUN_00142930_y3
+#pragma alias FUN_001432f0_y3 FUN_001432f0_y3
+#pragma alias FUN_00143a00_y3 FUN_00143a00_y3
+#pragma alias FUN_00143ee0_y3 FUN_00143ee0_y3
+#pragma alias FUN_00144910_y3 FUN_00144910_y3
+#pragma alias FUN_00145350_y3 FUN_00145350_y3
+#pragma alias FUN_00146710_y3 FUN_00146710_y3
+#pragma alias FUN_001474f0_y3 FUN_001474f0_y3
+#pragma alias FUN_00173580_y3 FUN_00173580_y3
+#pragma alias FUN_00174960_y3 FUN_00174960_y3
+#pragma alias FUN_00174a90_y3 FUN_00174a90_y3
+#pragma alias FUN_0017bf70_y3 FUN_0017bf70_y3
+#pragma alias FUN_0017bfa0_y3 FUN_0017bfa0_y3
+
+
+typedef u8 undefined1;
+typedef u16 undefined2;
+typedef u32 undefined4;
+typedef u64 undefined8;
+typedef int bool;
+typedef unsigned long ulong;
+typedef struct CampFloatPair
+{
+    f32 x;
+    f32 y;
+} CampFloatPair;
+typedef struct CampHelpPaths
+{
+    const char* paths[8];
+} CampHelpPaths;
+#define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
+
+/* Retail globals shared by the Camp bridge state machines. */
+extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
+extern void* (*DAT_00960184_abs[])(...);
+#pragma alias scrGetIntPara_u64 scrGetIntPara
+extern u64 scrGetIntPara_u64(s32);
+extern void* (*DAT_00960184)();
+extern void* (*DAT_00960178)();
+#pragma alias DAT_00960178_abs DAT_00960178
+extern void* (*DAT_00960178_abs[])(...);
+extern void* DAT_007cdf48;
+extern void* DAT_007cdf54_data;
+extern void* DAT_007cdf58_data;
+extern void* DAT_007cdf84;
+extern void* DAT_007cdf88_y4;
+extern s32 DAT_007e094e_data;
+extern s32 DAT_007e0958_data;
+/* Retail accesses these flag words by absolute address. */
+extern u32 DAT_00833a50_data[];
+extern s32 iGpffffb258_data;
+extern s32 uGpffffb290;
+extern s32 uGpffffb28c;
+extern s32 iGpffffb28c;
+
+/* Data bridge globals initialized by FUN_0016C010/FUN_0016C2F0. */
+typedef struct CampDataBridgeRoot CampDataBridgeRoot;
+extern CampDataBridgeRoot* iGpffffb2c0;
+#define DAT_007cdfb0 iGpffffb2c0
+extern s32* DAT_007cdfb4;
+extern s32* DAT_007cdfb8_y3;
+extern s32* DAT_007cdfbc;
+extern s32* DAT_007cdfc0;
+extern s32* DAT_007cdfc4;
+extern s32* DAT_007cdfc8;
+extern s32* DAT_007cdfcc;
+extern s32* DAT_007cdfd0;
+extern s32* DAT_007cdfd4;
+extern s32* DAT_007cdfd8;
+extern s32* DAT_007cdfdc;
+extern u8* DAT_007cdfe0;
+extern u8* DAT_007cdfe4;
+extern void* DAT_007cdfe8;
+extern u32 DAT_0083bb30[];
+extern u8 DAT_0083bb40;
+extern u32 DAT_0083aaa0_y7[0x23];
+extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
+extern char DAT_005dc020[];
+extern char DAT_005dbc60[];
+extern const void* gp0xffff897c_data;
+extern const void* gp0xffff8998;
+
+/* Unresolved retail helpers. Old-style declarations preserve the mixed-width
+ * call ABI recovered from the stripped executable. */
+extern u32 FUN_00100d80_data();
+extern u32 FUN_00100ec0_data();
+extern u32 FUN_001016b0_data();
+extern u64 FUN_00102100_data();
+extern u32 FUN_001021c0();
+extern u32 FUN_001023a0();
+extern u32 FUN_0010a4e0_data();
+extern u32 FUN_00111cb0();
+extern u32 FUN_00111d50();
+extern u32 FUN_00111dd0();
+extern u32 FUN_00111ec0();
+extern u32 FUN_00111ee0();
+extern u32 FUN_00111f20();
+extern u32 FUN_00111f30_data();
+extern u32 FUN_00112420_data();
+extern u32 FUN_001124b0_data();
+extern void FUN_00113a30_data(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
+#pragma alias FUN_00113a30_camp_reordered FUN_00113a30_data
+extern void FUN_00113a30_camp_reordered(u32 color, f32 depth, f32 x,
+                                        f32 y, s32 width, s32 height);
+extern u32 FUN_00114450_data();
+#pragma alias campDataDrawPersonaSprite FUN_00114450_data
+extern void campDataDrawPersonaSprite(f32 alpha, f32 slidePosition, f32 depth,
+                                      s32 mode, u32 color, u32 width,
+                                      u32 height, void* resource);
+extern void FUN_001159f0_data(f32 x, f32 y, ...);
+#pragma alias FUN_001159f0_typed FUN_001159f0_data
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                f32 x, f32 y, f32 depth);
+extern u32 FUN_00115bc0_data();
+#pragma alias FUN_00115bc0_typed FUN_00115bc0_data
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
+#pragma alias campDataDrawSpriteDirect FUN_001159f0_data
+extern void campDataDrawSpriteDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteAltDirect FUN_00115bc0_data
+extern void campDataDrawSpriteAltDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawDigitsDirect FUN_00115de0
+extern void campDataDrawDigitsDirect(f32 x, f32 y, f32 depth);
+#pragma alias campDataDrawSpriteFade FUN_001159f0_data
+extern void campDataDrawSpriteFade(f32 x, f32 y, f32 depth,
+                                   void* atlas, s32 tile, s32 alpha);
+#pragma alias campDataDrawSpriteAltFade FUN_00115bc0_data
+extern void campDataDrawSpriteAltFade(f32 x, f32 y, f32 depth,
+                                      void* atlas, s32 tile, s32 alpha,
+                                      s32 red, s32 green, s32 blue, s32 flags);
+extern u32 FUN_00115de0();
+extern u32 FUN_00119f10();
+#pragma alias campDataCreateTask FUN_00119f10
+extern void* campDataCreateTask(void* task, s32 mode);
+extern u32 FUN_0011abd0();
+extern u32 FUN_00122710_data();
+extern u32 FUN_0012a560_data(f32, RwV2d, void*, s32);
+extern u32 FUN_0012ac60_data(f32, RwV2d, void*, s32);
+extern u32 FUN_00129b30_data(f32, RwV2d, void*, s32);
+extern u32 FUN_0013c240_data();
+extern u32 FUN_0013c780_data();
+extern u32 FUN_0013cf80_data();
+extern u32 FUN_0013d1a0_data();
+extern u32 FUN_0013fca0_data();
+#pragma alias campDataDrawEquipment FUN_0013d1a0_data
+extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
+                                  void* work, s32 alpha);
+#pragma alias campDataDrawEquipmentAlt FUN_0013fca0_data
+extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
+                                     void* work, s32 alpha);
+extern u32 FUN_0016f630();
+extern u32 FUN_0016f720();
+extern u32 FUN_0016f810();
+extern u32 FUN_0016f900();
+extern u32 FUN_0016f9f0();
+extern u32 FUN_0016fae0();
+extern u32 FUN_0016fbd0();
+extern u32 FUN_0016fcc0();
+extern u32 FUN_0016fea0();
+extern u32 FUN_0016ff90();
+extern u32 FUN_00170080();
+extern u32 FUN_00170170();
+extern u32 FUN_00170260();
+extern u32 FUN_00170350();
+extern u32 FUN_00170440();
+extern u32 FUN_00170530();
+extern u32 FUN_00170a40();
+extern u32 FUN_00170ab0();
+extern u32 FUN_00170b20();
+extern u32 FUN_00170b90();
+extern u32 FUN_00174800_data();
+extern u32 FUN_00177c10();
+extern u32 FUN_001830c0();
+extern u32 FUN_00194b20_data();
+extern u32 FUN_00195290_data();
+extern void FUN_0019d3f0(const char*, s32);
+extern f32 FUN_0021ea00(s32);
+extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
+extern u32 FUN_0025f570();
+extern u32 FUN_0035ed20();
+extern u32 FUN_003b2cb0_data();
+#pragma alias campDataDrawTextRaw FUN_003b2cb0_data
+extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
+                               s32 font, s32 alignment, const char* text,
+                               s32 maxWidth, s32 shadow);
+extern u32 FUN_003c7d80_data();
+extern u32 FUN_003c7e20_data();
+#pragma alias campDataDrawDigits FUN_003c7e20_data
+extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
+                               s32 style, s32 font, s32 alignment, u32 value);
+extern u32 FUN_0040eb50_data();
+#pragma alias campDataDrawText FUN_0040eb50_data
+extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
+                            const char* text, s32 maxWidth);
+extern u32 FUN_00521250();
+extern u32 FUN_00523ac8_data();
+
+extern void* func_001618a0(KwlnTask* task);
+extern void func_00161d60(KwlnTask* task);
+extern void* func_00166c70(KwlnTask* task);
+extern const char D_005DAC70[];
+extern const char D_005DAC90[];
+extern const char D_005DBD80[];
+extern const char D_005DBED0[];
+extern const char D_005DBEE8[];
+extern const char D_005DBF00[];
+extern const char D_005DBF20[];
+extern const char D_005DBF40[];
+extern const char D_005DBF70[];
+extern const char D_005DBFA0[];
+extern const char D_005DBFD0[];
+/* These task archive names are addressed absolutely by retail. */
+#pragma alias D_005DBF20_abs D_005DBF20
+extern u8 D_005DBF20_abs[];
+#pragma alias D_005DBF40_abs D_005DBF40
+extern u8 D_005DBF40_abs[];
+#pragma alias D_005DBF70_abs D_005DBF70
+extern u8 D_005DBF70_abs[];
+#pragma alias D_005DBFA0_abs D_005DBFA0
+extern u8 D_005DBFA0_abs[];
+#pragma alias D_005DBFD0_abs D_005DBFD0
+extern u8 D_005DBFD0_abs[];
+extern const char D_005DC000[];
+extern const char D_005E3098[];
+extern const char D_005E30B0[];
+extern const char D_005E31F0[];
+extern const char D_005E3200[];
+
+
+
+typedef struct CampBridgeScreenWork
+{
+    u32 state;          /* 0x00 */
+    u32 timer;          /* 0x04 */
+    u32 personaId;      /* 0x08 */
+    u32 opacity;        /* 0x0c (low halfword used by the fade) */
+    u32 fadeTimer;      /* 0x10 (low halfword used by the fade) */
+    u32 command;        /* 0x14 */
+    u32 active;         /* 0x18 */
+    u32 transitionKind; /* 0x1c (low halfword used by the fade) */
+    u32 reserved20;     /* 0x20 */
+    u32 reserved24;     /* 0x24 */
+    u32 childTask;      /* 0x28 */
+} CampBridgeScreenWork;
+
+/* Work area for the 0x14-byte state task (the first five words overlap the
+ * screen work above but carry different meanings). */
+typedef struct CampBridgeStateWork
+{
+    u32 state;          /* 0x00 */
+    u32 mode;           /* 0x04 */
+    u32 setupTask;      /* 0x08 */
+    u32 activeTask;     /* 0x0c */
+    u32 screenMode;     /* 0x10 */
+} CampBridgeStateWork;
+
+/* Work area allocated by FUN_00167930 for the persona display child. */
+typedef struct CampBridgePersonaDispWork
+{
+    u32 state;          /* 0x00 */
+    u32 personaId;      /* 0x04 */
+    u32 reserved08;     /* 0x08 */
+    u32 mode;           /* 0x0c */
+    f32 alpha;          /* 0x10 */
+    f32 slideStep;      /* 0x14 */
+    f32 slidePosition;  /* 0x18 */
+    f32 depth;          /* 0x1c */
+    void* parseRequest; /* 0x20 */
+    HCdvd* cdvd;        /* 0x24 */
+    void* resource;     /* 0x28 */
+} CampBridgePersonaDispWork;
+
+/* Work area allocated by FUN_00168770 (0x1c bytes). */
+typedef struct CampBridgeBlendWork
+{
+    u32 state;       /* 0x00 */
+    s32 timer;       /* 0x04 */
+    u32 reserved08;  /* 0x08 */
+    u32 mode;        /* 0x0c */
+    u32 archive;     /* 0x10 */
+    u32 sourceTask;  /* 0x14 */
+    u32 targetTask;  /* 0x18 */
+} CampBridgeBlendWork;
+
+
+/* Work area used by FUN_00168810/FUN_00169040. */
+typedef struct CampTargetLoadWork
+{
+    u32 state;                 /* +0x00 */
+    u32 reserved04;            /* +0x04 */
+    s32 frame;                 /* +0x08 */
+    u32 drawIdWord;            /* +0x0c (low half is the draw id) */
+    void* archive;             /* +0x10 */
+    void* resources[2];        /* +0x14 */
+    CampTargetList* listA;     /* +0x1c */
+    CampTargetList* listB;     /* +0x20 */
+    void* childTask;           /* +0x24 */
+} CampTargetLoadWork;
+
+/* Work area used by FUN_00169470/FUN_00169AE0. */
+typedef struct CampTargetMenuWork
+{
+    u32 state;                 /* +0x00 */
+    s32 frame;                 /* +0x04 */
+    u32 reserved08;            /* +0x08 */
+    void* archive;             /* +0x0c */
+    void* resources[2];        /* +0x10 */
+    CampTargetList* list;      /* +0x18 */
+    void* childTask;           /* +0x1c */
+    u32 result;                /* +0x20 */
+} CampTargetMenuWork;
+
+typedef struct CampDataBridgeRecord
+{
+    s16 axis0;                 /* +0x00 */
+    s16 axis1;                 /* +0x02 */
+    s16 axis2;                 /* +0x04 */
+    s16 axis3;                 /* +0x06 */
+    f32 value;                 /* +0x08 */
+    u32 reserved0c;            /* +0x0c */
+    u16 reserved10;            /* +0x10 */
+    s16 helpIndex;             /* +0x12 */
+    u32 color0;                /* +0x14 */
+    u32 color1;                /* +0x18 */
+    u32 reserved1c;            /* +0x1c */
+} CampDataBridgeRecord;
+
+typedef struct CampDataBridgeGroup
+{
+    s32 recordCount;           /* +0x00 */
+    s32 auxiliaryCount;        /* +0x04 */
+    CampDataBridgeRecord* records; /* +0x08 */
+    u8* auxiliaryData;         /* +0x0c */
+} CampDataBridgeGroup;
+
+typedef struct CampDataBridgeRoot
+{
+    CampDataBridgeGroup groups[2];
+} CampDataBridgeRoot;
 
 #pragma alias FUN_00167f40_skill FUN_00167f40
 #pragma alias jtbl_0096017C_abs_skill jtbl_0096017C_abs
@@ -23960,7 +23243,6 @@ u32 h_campUpdateSystemMenuTask_148(int param_1)
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 
-// workData[0xc] holds the "camp/camp_skil.pak" cdvd handle.
 // FUN_001616d0. Destroy callback of the "H_NewCampSkillDraw" (skill screen) task
 void h_campSkillDestroySkillDrawTask(KwlnTask* task)
 {
@@ -24362,6 +23644,14 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
                         record->y);
 }
 
+/* Retail: 9-case jump table (@542 = 0x7b6210); case bodies laid out 2,3,4,5,0,7,8
+   with 1 and 6 empty. Reconstructed W297: object 4560B -> 5520B of a 5536B window.
+   Residual (nd597) is one register-coloring artifact: MWCC coalesces the four
+   per-case `id` locals into a single web that then wins $s0, rotating work/record
+   from retail's $s0/$s1 to $s1/$s2 and cascading through every record-relative row.
+   Retail keeps them separate ($s6 in cases 2/3, $s4 in cases 4/5), which per-case
+   scoping alone does not reproduce. */
+/* opt_lifetimes on: off nd1392/5520B -> on nd1174/5520B; retained. */
 // FUN_001617D0
 KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
 {
@@ -24382,8 +23672,6 @@ KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
         H_Cdvd_Request("camp/camp_skil.pak", HCDVD_FILEARCHIVE);
     return task;
 }
-
-/* opt_common_subs off: default/on nd646/1188B -> off nd530/1212B; retained. */
 #pragma opt_common_subs off
 // FUN_001618A0 NONMATCHING
 void* FUN_001618a0(KwlnTask* task)
@@ -24505,20 +23793,11 @@ void* FUN_001618a0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 #pragma opt_common_subs reset
-
 // FUN_00161D60
 void FUN_00161d60(KwlnTask* task)
 {
     RwFree(task->workData);
 }
-/* Retail: 9-case jump table (@542 = 0x7b6210); case bodies laid out 2,3,4,5,0,7,8
-   with 1 and 6 empty. Reconstructed W297: object 4560B -> 5520B of a 5536B window.
-   Residual (nd597) is one register-coloring artifact: MWCC coalesces the four
-   per-case `id` locals into a single web that then wins $s0, rotating work/record
-   from retail's $s0/$s1 to $s1/$s2 and cascading through every record-relative row.
-   Retail keeps them separate ($s6 in cases 2/3, $s4 in cases 4/5), which per-case
-   scoping alone does not reproduce. */
-/* opt_lifetimes on: off nd1392/5520B -> on nd1174/5520B; retained. */
 #pragma opt_lifetimes on
 // FUN_00161D90 NONMATCHING
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
@@ -25612,6 +24891,9 @@ static void campSkillFinishChild(KwlnTask* child)
 }
 
 
+/* opt_common_subs off: default/on nd646/1188B -> off nd530/1212B; retained. */
+
+
 static inline void campSkillBuildAnimationPath(char* path, s32 pcId)
 {
     if (datGetScenarioMode() != 0) {
@@ -26274,1027 +25556,1600 @@ void* FUN_00166c70(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-
-
-#pragma alias FUN_00125b40_persona FUN_00125b40
-#pragma alias DAT_00960090_persona DAT_00960090
-#pragma alias FUN_00114450_persona FUN_00114450
-#pragma alias H_Cdvd_Destroy_persona H_Cdvd_Destroy
-#pragma alias RpSkyRenderStateSet_persona RpSkyRenderStateSet
-#define FUN_00125b40 FUN_00125b40_persona
-#define DAT_00960090 DAT_00960090_persona
-#define FUN_00114450 FUN_00114450_persona
-#define H_Cdvd_Destroy H_Cdvd_Destroy_persona
-#define RpSkyRenderStateSet RpSkyRenderStateSet_persona
-extern void RpSkyRenderStateSet_persona();
-
-#include "Camp/_h_camp_persona.h"
-#include "libm.h"
-
-
-
-
-#pragma alias FUN_001120a0_y7 FUN_001120a0
-#pragma alias FUN_0017d8b0_y7 FUN_0017d8b0
-#pragma alias FUN_0017dae0_y7 FUN_0017dae0
-#pragma alias FUN_0017da40_y7 FUN_0017da40
-#pragma alias DAT_0083aaa0_y7 DAT_0083aaa0
-#pragma alias FUN_001158b0_y7 FUN_001158b0_y7
-#pragma alias FUN_00115980_y7 FUN_00115980_y7
-#pragma alias FUN_0016f190_y7 FUN_0016f190_y7
-#pragma alias FUN_0017d800_y7 FUN_0017d800_y7
-#pragma alias FUN_0017ae30_y7 FUN_0017ae30_y7
-#pragma alias FUN_0012df50_y7 FUN_0012df50_y7
-#pragma alias FUN_00173220_y7 FUN_00173220_y7
-#pragma alias FUN_003b2cb0_y7 FUN_003b2cb0_y7
-#pragma alias FUN_003b32d0_y7 FUN_003b32d0_y7
-#pragma alias FUN_003c7e20_y7 FUN_003c7e20_y7
-#pragma alias FUN_0040eb50_y7 FUN_0040eb50_y7
-#pragma alias FUN_00523ac8_y7 FUN_00523ac8_y7
-#pragma alias DAT_005e3b5e_y7 DAT_005e3b5e_y7
-
-
-#pragma alias FUN_00115bc0_y6 FUN_00115bc0
-#pragma alias FUN_0016c5f0_y6 FUN_0016c5f0
-#pragma alias FUN_00100d80_y6 FUN_00100d80_y6
-#pragma alias FUN_001016b0_y6 FUN_001016b0_y6
-#pragma alias FUN_00102100_y6 FUN_00102100_y6
-#pragma alias FUN_00111f30_y6 FUN_00111f30_y6
-#pragma alias FUN_001158b0_y6 FUN_001158b0_y6
-#pragma alias FUN_00115980_y6 FUN_00115980_y6
-#pragma alias FUN_001127d0_y6 FUN_001127d0_y6
-#pragma alias FUN_0011e380_y6 FUN_0011e380_y6
-#pragma alias func_001712d0_y6 func_001712d0_y6
-#pragma alias FUN_0010a4e0_y6 FUN_0010a4e0_y6
-#pragma alias FUN_0011abd0_y6 FUN_0011abd0_y6
-#pragma alias FUN_0016c4f0_y6 FUN_0016c4f0_y6
-#pragma alias FUN_0016c570_y6 FUN_0016c570_y6
-#pragma alias FUN_0016f630_y6 FUN_0016f630_y6
-#pragma alias FUN_0016f810_y6 FUN_0016f810_y6
-#pragma alias FUN_0016f900_y6 FUN_0016f900_y6
-#pragma alias FUN_0012df50_y6 FUN_0012df50_y6
-#pragma alias FUN_003b2cb0_y6 FUN_003b2cb0_y6
-#pragma alias FUN_003c7e20_y6 FUN_003c7e20_y6
-#pragma alias DAT_007cdf50_y6 DAT_007cdf50_y6
-#pragma alias DAT_007e0952_y6 DAT_007e0952_y6
-#pragma alias DAT_007e095a_y6 DAT_007e095a_y6
-#pragma alias DAT_007e094e_y6 DAT_007e094e_y6
-
-
-void* FUN_00122940_y5(KwlnTask*);
-void FUN_00133d30_y5();
-void FUN_004d0f00_y5();
-extern void FUN_00124e00(CampVec2 position, CampVec2 otherPosition,
-                         f32 alpha, void* persona,
-                         s32 mode, s32 frame, s32 fade);
-extern void* FUN_00173220_y5(u16 personaId);
-extern u8 FUN_00173280_y5(s32 personaId);
-extern s32 FUN_00176600(void* persona);
-extern s32 FUN_00177790_y5();
-extern s32 FUN_001159f0_y5(f32 x, f32 y, f32 alpha, ...);
-#pragma alias campPersonaDrawSprite FUN_001159f0_y5
-extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
-                                  f32 x, f32 y, u8 alpha, f32 scale);
-extern void (*DAT_00960090)(s32 state, s32 value);
-extern f32 FUN_001126b0(void* particle);
-extern f32 FUN_00112740(void* particle);
-extern s32 FUN_00114450(f32 x, f32 y, f32 z, s32 a, s32 b, s32 c,
-                        s32 d);
-extern s32 FUN_0011bba0(s32 a, s32 b, f32 z, s32 c, s32 d);
-extern s32 FUN_001158b0_y5();
-extern s32 FUN_00115980_y5();
-#pragma alias campPersonaDrawTextCall FUN_003b32d0
-extern s32 campPersonaDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
-                                   s32 font, s32 alignment, const char* text,
-                                   s32 maxWidth, s32 shadow);
-extern KwlnTask* DAT_007cdf60;
-#pragma alias DAT_00833B78_abs DAT_00833B78
-extern u8 DAT_00833B78_abs[];
-extern void* h_campUpdatePanelTransition_y5(KwlnTask* task);
-
-
-typedef struct CampPersonaKaniWork
+#undef FUN_00167f40
+#undef jtbl_0096017C_abs
+/* Target entry prototypes keep all callbacks visible before their first use. */
+void FUN_001675b0(KwlnTask*);
+void* FUN_001675e0(KwlnTask*);
+void FUN_001678e0(KwlnTask*);
+void* FUN_00167930(KwlnTask*);
+void FUN_00167ec0(KwlnTask*);
+void FUN_00167ef0_y4(KwlnTask*);
+void FUN_00167f10_y4(KwlnTask*);
+u32 FUN_00167f30_y4(KwlnTask*);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
+u32 FUN_00168040(void);
+u32 FUN_00168100(void);
+bool FUN_001681d0(void);
+void* FUN_00168220(KwlnTask*);
+bool FUN_001685b0(KwlnTask*);
+u32 FUN_001685d0_y4(KwlnTask*);
+void FUN_001685e0_y4(KwlnTask*, s32);
+void FUN_00168720(KwlnTask*);
+KwlnTask* FUN_00168770(KwlnTask*, u32);
+u32 FUN_00168810(u32);
+void FUN_00169040(int);
+void FUN_00169110(u16, CampFloatPair, void*, s32);
+void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
+undefined4 FUN_00169330(void);
+bool FUN_00169420(void);
+undefined4 FUN_00169470(KwlnTask*);
+void FUN_00169AE0(int);
+void FUN_00169B90(void* resources, undefined8 coordinates,
+                  void* list, s32 alpha, undefined8 stackArg);
+undefined4 FUN_0016A030(void);
+undefined4 FUN_0016A6A0(void);
+f32 FUN_0016ba00(u32, u32);
+f32 FUN_0016ba80(u32, u32);
+f32 FUN_0016bb00(u32, u32);
+f32 FUN_0016bb80(u32, u32);
+f32 FUN_0016bc00(u32, u32);
+void FUN_0016bc80(u32, u32, f32*);
+void FUN_0016bdb0(u32, u32, f32*);
+void FUN_0016bee0(u32, u32, void*);
+void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
+void FUN_0016c010(void) __attribute__((aligned(16)));
+void FUN_0016c1d0(void);
+void FUN_0016c2f0(void);
+void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+#pragma alias campDataDrawListA FUN_0016A700
+extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+#pragma alias campDataDrawListB FUN_0016AF90
+extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+// FUN_001675b0
+void FUN_001675b0(KwlnTask* task)
 {
-    s32 state;
-    s32 reserved04;
-    s32 timer;
-    s32 command;
-    void* persona;
-    s32 visible;
-    u16 personaId;
-    s16 screen;
-} CampPersonaKaniWork;
-
-// FUN_00122630
-void FUN_00122630(KwlnTask* task)
-{
-    RwFree(task->workData);
+    (*DAT_0096017c_abs)(task->workData);
 }
 
-// FUN_00122660
-KwlnTask* FUN_00122660(KwlnTask* parent)
+// FUN_001675e0 MATCHING
+void* FUN_001675e0(KwlnTask* task)
 {
-    CampPanelTransitionWork* work;
-    KwlnTask* task;
+    CampBridgeStateWork* work;
+    s32 ready;
+    work = (CampBridgeStateWork*)task->workData;
+    switch (work->state) {
+    case 0: {
+        KwlnTask* child;
+        datSetFlag(0x1407, 1);
+        if (DAT_007cdf48 != 0) {
+            child = 0;
+        }
+        else {
+            void* allocated;
 
-    work = RwCalloc(1, sizeof(*work), 0x40000);
-    if (work == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "H_CampPanelTransition", 0x18C1,
-                          h_campUpdatePanelTransition_y5, FUN_00122630, work);
-    if (task == NULL) {
-        return NULL;
-    }
-    work->unused_0c = 0;
-    work->drawId = 1;
-    return task;
-}
-
-// FUN_00122710
-u32 FUN_00122710(KwlnTask* task, u32 command)
-{
-    CampPanelTransitionWork* work;
-
-    work = task->workData;
-    switch (command) {
-    case 0:
-        work->state = 5;
+            allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+            if (allocated == 0) {
+                child = 0;
+            }
+            else {
+                child = kwlnTaskCreate(task, D_005DAC70, 0x18bf,
+                                     h_campUpdateSpriteSetupTask,
+                                     h_campDestroySpriteSetupTask,
+                                     allocated);
+                if (child == 0) {
+                    child = 0;
+                }
+                else {
+                    DAT_007cdf48 = (void*)child;
+                    *(u32*)((u8*)allocated + 0x3c) =
+                        (u32)H_Cdvd_Request(D_005DAC90, 1);
+                }
+            }
+        }
+        work->setupTask = (u32)child;
+        work->activeTask = (u32)FUN_00168770(task, 0x18bf);
+        DAT_007cdf88_y4 = (void*)work->activeTask;
+        work->state = 1;
         break;
-    case 1:
-        switch (work->unused_0c) {
-        case 0:
-            work->state = 1;
-            break;
-        case 1:
-        case 10:
-        case 14:
-            break;
-        case 2:
-            work->state = 3;
-            break;
-        case 3:
-            work->state = 13;
-            break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 11:
-        case 12:
-        case 13:
-        case 15:
-        case 16:
-            work->state = 3;
-            break;
+    }
+    case 1: {
+        s16 screenMode;
+        void* allocated;
+
+        ready = 1;
+        if (DAT_007cdf48 == 0) {
+            ready = -1;
+        }
+        else if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData == 3) {
+            ready = 1;
+        }
+        else {
+            ready = 0;
+        }
+        if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
+            if (work->mode == 0) {
+                s16 screenMode0;
+                void* allocated0;
+                KwlnTask* nextTask0;
+                screenMode0 = (s16)work->screenMode;
+                allocated0 = (*DAT_00960184_abs)(1, 0x30, 0x40000);
+                if (allocated0 == 0) {
+                    nextTask0 = 0;
+                }
+                else {
+                    nextTask0 = (KwlnTask*)kwlnTaskCreate(
+                        task, D_005DBD80, 0x18be,
+                        func_001618a0,
+                        func_00161d60,
+                        allocated0);
+                    if (nextTask0 == 0) {
+                        nextTask0 = 0;
+                    }
+                    else {
+                        *(u32*)((u8*)allocated0 + 0x0c) =
+                            (u32)screenMode0;
+                    }
+                }
+                work->activeTask = (u32)nextTask0;
+            }
+            else {
+                KwlnTask* nextTask1;
+                screenMode = (s16)work->screenMode;
+                allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+                if (allocated == 0) {
+                    nextTask1 = 0;
+                }
+                else {
+                    nextTask1 = (KwlnTask*)kwlnTaskCreate(
+                        task, D_005DBED0, 0x18be,
+                        func_00166c70,
+                        FUN_001675b0,
+                        allocated);
+                    if (nextTask1 == 0) {
+                        nextTask1 = 0;
+                    }
+                    else {
+                        *(u32*)((u8*)allocated + 0x0c) =
+                            (u32)screenMode;
+                    }
+                }
+                work->activeTask = (u32)nextTask1;
+            }
+            work->state = 2;
         }
         break;
+    }
     case 2:
-        switch (work->unused_0c) {
-        case 0:
-        case 2:
-        case 10:
-        case 11:
-        case 12:
-            break;
-        case 1:
-            work->state = 5;
-            break;
-        case 3:
-            work->state = 11;
-            break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 13:
-            work->state = 3;
-            break;
+        if (kwlnTaskGetState((KwlnTask*)work->activeTask) == 3) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    default:
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001678e0
+void FUN_001678e0(KwlnTask* task)
+{
+    void* work;
+
+    work = task->workData;
+    DAT_007cdf88_y4 = 0;
+    datSetFlag(0x1407, 0);
+    (*DAT_0096017c_abs)(work);
+}
+
+// FUN_00167930 NONMATCHING
+void* FUN_00167930(KwlnTask* task)
+{
+    CampBridgeScreenWork* work;
+    CampBridgePersonaDispWork* personaWork;
+    bool complete;
+    s16 value;
+    s16 opacity;
+    s16 screenMode;
+    s16 transitionKind;
+    s16 timer;
+    u32 personaId;
+    KwlnTask* child;
+    s16 fadeValue;
+    void* persona;
+    RwV2d coordinates = {0.0f, 0.0f};
+
+    work = (CampBridgeScreenWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        FUN_001685e0_y4((KwlnTask*)DAT_007cdf88_y4, 2);
+        personaId = datGetPersonaId(*(s16*)((u8*)work + 0x0e));
+        child = 0;
+        personaWork = (CampBridgePersonaDispWork*)
+            (*DAT_00960184)(1, 300, 0x40000);
+        if (personaWork != 0) {
+            child = kwlnTaskCreate(
+                task, D_005DB190, 0x18bf,
+                func_00133780,
+                h_campPersonaDestroyDispCtlDrawTask,
+                personaWork);
+            if (child != 0) {
+                personaWork->personaId = personaId;
+                personaWork->mode = 0xffffffff;
+                personaWork->alpha = 100.0f;
+            }
+        }
+        work->childTask = (u32)child;
+        work->state = 1;
+        break;
+    case 1:
+        *(s16*)((u8*)work + 0x10) = 0;
+        h_campRequestMenuTransition((KwlnTask*)DAT_007cdf54_data, 3);
+        FUN_00122710_data((KwlnTask*)DAT_007cdf58_data, 3);
+        work->state = 2;
+        break;
+    case 2:
+        complete = false;
+        personaWork = (CampBridgePersonaDispWork*)
+            ((KwlnTask*)work->childTask)->workData;
+        if ((personaWork->state == 3) && (personaWork->personaId != 0)) {
+            if (personaWork->slidePosition != 60.0f) {
+                personaWork->slidePosition -= personaWork->slideStep;
+                personaWork->slideStep += 5.0f;
+                if (personaWork->slidePosition < 60.0f) {
+                    personaWork->slidePosition = 60.0f;
+                }
+            }
+            campDataDrawPersonaSprite(personaWork->alpha, personaWork->slidePosition,
+                         personaWork->depth, personaWork->mode,
+                         0x4fa4ff19, 0x280, 0x280, personaWork->resource);
+        }
+        screenMode = *(s16*)((u8*)work + 0x12);
+        transitionKind = *(s16*)((u8*)work + 0x1c);
+        if (screenMode != 0) {
+            opacity = *(s16*)((u8*)work + 0x0c);
+            if (opacity != 0xff) {
+                opacity += 10;
+                *(s16*)((u8*)work + 0x0c) = opacity;
+                if (opacity > 0xff) {
+                    *(s16*)((u8*)work + 0x0c) = 0xff;
+                }
+            }
+            else {
+                complete = true;
+            }
+            opacity = *(s16*)((u8*)work + 0x0c);
+            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+            FUN_00129b30_data(100.0f, coordinates, persona, 0xff - opacity);
+        }
+        else {
+            timer = *(s16*)((u8*)work + 0x04);
+            complete = timer == 0x14;
+            if (!complete) {
+                timer++;
+                *(s16*)((u8*)work + 0x04) = timer;
+            }
+            value = *(s16*)((u8*)work + 0x04);
+            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+            FUN_0012ac60_data(100.0f, coordinates, persona, value);
+        }
+        if (complete) {
+            if (transitionKind == 0) {
+                if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                    if (((*(u16*)DAT_007e094e_abs & 0x8000) != 0) ||
+                        ((*(u16*)DAT_007e0958_abs & 0x8000) != 0)) {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->command = 1;
+                    }
+                }
+                else {
+                    func_0010a4e0(0, 0, 0, 2);
+                    work->command = 0xffffffff;
+                }
+            }
+            else if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                if (((*(u16*)DAT_007e094e_abs & 0x8000) == 0) &&
+                    ((*(u16*)DAT_007e0958_abs & 0x8000) == 0)) {
+                    if ((*(u16*)DAT_007e094e_abs & 8) == 0) {
+                        if ((*(u16*)DAT_007e094e_abs & 4) != 0) {
+                            func_0010a4e0(0, 0, 0, 0);
+                            work->command = 3;
+                        }
+                    }
+                    else {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->command = 2;
+                    }
+                }
+                else {
+                    func_0010a4e0(0, 0, 0, 0);
+                    work->command = 1;
+                }
+            }
+            else {
+                func_0010a4e0(0, 0, 0, 2);
+                work->command = 0xffffffff;
+            }
         }
         break;
     case 3:
-        switch (work->unused_0c) {
-        case 0:
-        case 1:
-        case 3:
-        case 5:
-        case 10:
-        case 11:
-        case 12:
-            break;
-        case 2:
-            work->state = 9;
-            break;
-        case 4:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 13:
-            work->state = 3;
-            break;
+        opacity = *(s16*)((u8*)work + 0x0c) - 0x19;
+        *(s16*)((u8*)work + 0x0c) = opacity;
+        if (opacity < 0) {
+            return KWLNTASK_STOP;
         }
-        break;
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        FUN_0012ac60_data(100.0f, coordinates, persona, 0xff - opacity);
+        /* Retail intentionally falls through into case 4. */
     case 4:
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        FUN_0012ac60_data(100.0f, coordinates, persona, 0);
+        *(s16*)((u8*)work + 0x10) = 0;
+        work->state = 5;
+        break;
     case 5:
-    case 6:
-        switch (work->unused_0c) {
-        case 0:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-            break;
-        case 1:
-            work->state = 5;
-            break;
-        case 2:
-            work->state = 5;
-            break;
-        case 3:
-            work->state = 5;
-            break;
+        timer = *(s16*)((u8*)work + 0x10);
+        if (timer == 10) {
+            return KWLNTASK_STOP;
         }
-        break;
-    case 7:
-    case 8:
-    case 9:
-    case 15:
-    case 16:
-        switch (work->unused_0c) {
-        case 0:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-            break;
-        case 1:
-            work->state = 5;
-            break;
-        }
-        break;
-    case 10:
-    case 11:
-    case 12:
-    case 14:
-        break;
-    case 13:
-        switch (work->unused_0c) {
-        case 0:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-            break;
-        case 1:
-            work->state = 7;
-            break;
-        }
+        timer++;
+        *(s16*)((u8*)work + 0x10) = timer;
+        persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+        fadeValue = timer;
+        FUN_0012a560_data(100.0f, coordinates, persona, fadeValue);
         break;
     }
-    work->unused_0c = command;
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00167ec0
+void FUN_00167ec0(KwlnTask* task)
+{
+    (*DAT_0096017c_abs)(task->workData);
+}
+
+// FUN_00167EF0
+void FUN_00167ef0_y4(KwlnTask* task)
+{
+    u32* work;
+
+    work = (u32*)task->workData;
+    *(u16*)((u8*)work + 0x0c) = 0xff;
+    work[0] = 3;
+}
+
+// FUN_00167F10
+void FUN_00167f10_y4(KwlnTask* task)
+{
+    u32* work;
+
+    work = (u32*)task->workData;
+    *(u16*)((u8*)work + 0x10) = 0;
+    work[0] = 4;
+}
+
+// FUN_00167F30
+u32 FUN_00167f30_y4(KwlnTask* task)
+{
+    return ((u32*)task->workData)[5];
+}
+
+// FUN_00167f40
+KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue,
+                       u16 param4, u16 param5, u16 param6)
+{
+    CampBridgeScreenWork* work;
+    KwlnTask* taskValue;
+
+    work = (CampBridgeScreenWork*)(*DAT_00960184_abs)(1, 0x2c, 0x40000);
+    if (work == 0) {
+        return 0;
+    }
+    taskValue = kwlnTaskCreate(parent, D_005DBF00, priority,
+                             FUN_00167930,
+                             FUN_00167ec0,
+                             work);
+    if (taskValue == 0) {
+        return 0;
+    }
+    *(CampFloatPair*)((u8*)work + 4) = packedValue;
+    work->active = 1;
+    *(u16*)((u8*)work + 0x0e) = param4;
+    *(u16*)((u8*)work + 0x12) = param5;
+    *(u16*)((u8*)work + 0x1c) = param6;
+    return (KwlnTask*)taskValue;
+}
+
+// FUN_00168040
+u32 FUN_00168040(void)
+{
+    s16 value;
+    void* allocated;
+    KwlnTask* taskValue;
+
+    value = scrGetIntPara_u64(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
+    if (allocated == 0) {
+        taskValue = 0;
+    }
+    else {
+        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
+                                 FUN_001675e0,
+                                 FUN_001678e0,
+                                 allocated);
+        if (taskValue == 0) {
+            taskValue = 0;
+        }
+        else {
+            *(u16*)((u8*)allocated + 0x10) = value;
+            *(u32*)((u8*)allocated + 4) = 0;
+        }
+    }
+    DAT_007cdf84 = (void*)taskValue;
     return 1;
 }
 
-// FUN_00122940_y5 NONMATCHING
-void* FUN_00122940_y5(KwlnTask* task)
+// FUN_00168100
+u32 FUN_00168100(void)
 {
-    s32 alpha;
-    f32 displacement;
-    CampVec2 position;
-    CampVec2 otherPosition;
-    CampPersonaKaniWork* work;
+    s16 value;
+    void* allocated;
+    KwlnTask* taskValue;
 
-    work = task->workData;
-    work->persona = (void*)FUN_00174800(work->personaId);
+    value = (s16)scrGetIntPara(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
+    if (allocated == 0) {
+        taskValue = 0;
+    }
+    else {
+        taskValue = kwlnTaskCreate(0, D_005DBEE8, 100,
+                                 FUN_001675e0,
+                                 FUN_001678e0,
+                                 allocated);
+        if (taskValue == 0) {
+            taskValue = 0;
+        }
+        else {
+            *(u16*)((u8*)allocated + 0x10) = value;
+            *(u32*)((u8*)allocated + 4) = 1;
+        }
+    }
+    DAT_007cdf84 = (void*)taskValue;
+    return 1;
+}
+
+// FUN_001681d0
+bool FUN_001681d0(void)
+{
+    u32 state;
+
+    state = kwlnTaskGetState((KwlnTask*)DAT_007cdf84);
+    if (state == 3) {
+        DAT_007cdf84 = 0;
+        return 1;
+    }
+    return 0;
+}
+
+// FUN_00168220
+void* FUN_00168220(KwlnTask* task)
+{
+    CampBridgeBlendWork* work;
+    u32 child;
+    s32 frame;
+
+    work = (CampBridgeBlendWork*)task->workData;
     switch (work->state) {
     case 0:
-        if (work->visible != 0) {
-            switch (work->screen) {
-            case 0:
-                position.x = 12.0f;
-                position.y = 96.0f;
-                otherPosition = position;
-                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
-                break;
-            case 1:
-                position.x = 30.0f;
-                position.y = 219.0f;
-                otherPosition = position;
-                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
-                break;
-            }
-        }
+        work->archive = (u32)H_Cdvd_Request((const char*)D_005DBF20_abs, 1);
+        work->state = 1;
         break;
     case 1:
-        work->state = 2;
-        work->timer = 0;
-        break;
-    case 2:
-        if (++work->timer == 30) {
-            work->screen = 0;
-            work->state = 0;
+        if (H_Cdvd_IsFileLoaded((HCdvd*)work->archive) != 0) {
+            work->state = 2;
         }
-        position.x = 30.0f;
-        position.y = 219.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 0, work->timer, 0);
-        work->visible = 1;
         break;
     case 3:
-        work->state = 4;
+        switch (work->mode) {
+        case 0:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFD0_abs);
+            work->targetTask = child;
+            break;
+        case 1:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFA0_abs);
+            work->targetTask = child;
+            break;
+        case 2:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF70_abs);
+            work->targetTask = child;
+            break;
+        case 3:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF40_abs);
+            work->targetTask = child;
+            break;
+        }
         work->timer = 0;
+        work->state = 4;
         break;
     case 4:
-        if (++work->timer == 20) {
-            work->visible = 1;
-            work->state = 0;
-            work->screen = 0;
+        if (H_Maestro_FinishedInit((KwlnTask*)work->targetTask) == 1) {
+            func_0010a4e0(0, 0, 0, 5);
+            H_Maestro_RequestDraw((KwlnTask*)work->targetTask);
+            H_Maestro_00111f20((KwlnTask*)work->targetTask, 1);
+            work->state = 5;
         }
-        alpha = 0xFF - work->timer * 0xFF / 20;
-        position.x = 30.0f;
-        position.y = 219.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
         break;
     case 5:
-        if (work->visible == 0) {
-            work->state = 0;
-        } else {
-            work->timer = 0;
-            position.x = 30.0f;
-            position.y = 219.0f;
-            otherPosition = position;
-            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
-            work->state = 6;
+        if (work->mode == 3) {
+            if (work->timer != 10) {
+                work->timer++;
+            }
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         1.0f - (f32)(s32)work->timer / 10.0f);
+        }
+        if (H_Maestro_00111cb0((KwlnTask*)work->targetTask) != 0) {
+            if (work->mode != 3) {
+                if (work->sourceTask != 0) {
+                    kwlnTaskDestroyWithHierarchy((KwlnTask*)work->sourceTask);
+                }
+                work->sourceTask = work->targetTask;
+                work->targetTask = 0;
+            }
+            else {
+                H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 0.0f);
+            }
+            work->state = 2;
         }
         break;
     case 6:
-        if (++work->timer == 20) {
-            work->visible = 0;
-            work->state = 0;
-            work->screen = 0;
+        frame = (s32)work->timer - 1;
+        work->timer = (u32)frame;
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         (f32)frame / 10.0f);
         }
-        position.x = 30.0f;
-        position.y = 219.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
-                      work->timer * 0xFF / 20);
+        else {
+            return KWLNTASK_STOP;
+        }
         break;
     case 7:
-        if (work->visible == 0) {
-            work->state = 0;
-        } else {
-            work->timer = 0;
-            position.x = 30.0f;
-            position.y = 219.0f;
-            otherPosition = position;
-            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
-            work->state = 8;
+        frame = (s32)work->timer - 1;
+        work->timer = (u32)frame;
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->targetTask,
+                         (f32)frame / 10.0f);
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         1.0f - (f32)frame / 10.0f);
         }
-        break;
-    case 8:
-        if (++work->timer == 8) {
-            work->visible = 0;
-            work->state = 0;
-            work->screen = 0;
+        else {
+            if (work->targetTask != 0) {
+                kwlnTaskDestroyWithHierarchy((KwlnTask*)work->targetTask);
+            }
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 1.0f);
+            work->targetTask = 0;
+            work->state = 2;
         }
-        displacement = 30.0f;
-        alpha = 0;
-        if (work->timer > 2) {
-            displacement += (work->timer - 2) * 80.0f;
-            alpha = (work->timer - 2) * 0xFF / 5;
-        }
-        position.x = displacement;
-        position.y = 219.0f;
-        otherPosition.x = 30.0f;
-        otherPosition.y = 219.0f;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
-        break;
-    case 9:
-        work->state = 10;
-        work->timer = 0;
-        /* fall through */
-    case 10:
-        if (++work->timer == 10) {
-            work->visible = 1;
-            work->state = 0;
-            work->screen = 1;
-        }
-        displacement = 12.0f + (10 - work->timer) * 40.0f;
-        position.x = displacement;
-        position.y = 96.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
-                      0xFF - work->timer * 0xFF / 10);
-        break;
-    case 11:
-        work->state = 12;
-        work->timer = 0;
-        /* fall through */
-    case 12:
-        if (++work->timer == 10) {
-            work->visible = 0;
-            work->state = 0;
-            work->screen = 1;
-        }
-        displacement = 12.0f + work->timer * 80.0f;
-        position.x = displacement;
-        position.y = 96.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
-                      work->timer * 0xFF / 10);
-        break;
-    case 13:
-        work->state = 14;
-        work->timer = 0;
-        /* fall through */
-    case 14:
-        if (++work->timer == 20) {
-            work->visible = 1;
-            work->state = 0;
-            work->screen = 0;
-        }
-        alpha = work->timer * 0xFF / 20;
-        position.x = 12.0f;
-        position.y = 96.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
-        position.x = 30.0f;
-        position.y = 219.0f;
-        otherPosition = position;
-        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
-                     0xFF - alpha);
         break;
     }
     return KWLNTASK_CONTINUE;
 }
-// FUN_00122fd0. Destroy callback of the "h_camp_persona_kani_control" task
-void h_campPersonaDestroyKaniControlTask(KwlnTask* task)
+
+// FUN_001685B0
+bool FUN_001685b0(KwlnTask* task)
 {
-    RwFree(task->workData);
+    return *(u32*)task->workData == 2;
 }
 
-// FUN_00123000
-KwlnTask* h_campPersonaCreateKaniControlTask(KwlnTask* parent, u32 param_2)
+// FUN_001685D0
+u32 FUN_001685d0_y4(KwlnTask* task)
 {
-    u32* workData;
-    KwlnTask* task;
-
-    workData = (u32*)RwCalloc(1, 0x1c, 0x40000);
-    if (workData == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "h_camp_persona_kani_control", 0x18c1, FUN_00122940_y5, h_campPersonaDestroyKaniControlTask, workData);
-    if (task == NULL) {
-        return NULL;
-    }
-    workData[3] = 0;
-    workData[4] = param_2;
-    *(u16*)((int)workData + 0x18) = 1;
-    return task;
+    return ((u32*)task->workData)[2];
 }
 
-
-typedef struct CampPersonaTransitionWork
+// FUN_001685e0_y4
+void FUN_001685e0_y4(KwlnTask* task, s32 command)
 {
+    u32* work;
     s32 state;
-    s16 mode;
-    s16 timer;
-} CampPersonaTransitionWork;
 
-typedef struct CampPersonaParticle
-{
-    u8 reserved00[0x10];
-    f32 x;
-    f32 y;
-    s8 alpha;
-    u8 reserved19[0xf];
-    u16 scaleX;
-    u16 scaleY;
-    f32 drawAlpha;
-} CampPersonaParticle;
-
-static s32 campPersonaClampFade(s32 fade)
-{
-    if (fade < 0) {
-        return 0;
-    }
-    if (fade > 0xff) {
-        return 0xff;
-    }
-    return fade;
-}
-
-static void campPersonaDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
-{
-    FUN_001120a0_y7(2);
-    FUN_001159f0_y5(x, y, alpha, digit);
-}
-
-static void campPersonaDrawLevel(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
-{
-    u8 level;
-    s32 bright;
-
-    if (persona == NULL) {
-        return;
-    }
-    level = *((u8*)persona + 4);
-    bright = campPersonaClampFade(fade);
-    if (level < 10) {
-        campPersonaDrawDigit(alpha, x + 75.0f, y + 127.0f, level);
-    } else {
-        campPersonaDrawDigit(alpha, x + 67.0f, y + 127.0f, level / 10);
-        campPersonaDrawDigit(alpha, x + 82.0f, y + 127.0f, level % 10);
-    }
-}
-
-static void campPersonaDrawName(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
-{
-    char text[0x100];
-    void* name;
-    s32 bright;
-
-    if (persona == NULL) {
-        return;
-    }
-    name = FUN_00173220_y5(*(u16*)((u8*)persona + 2));
-    FUN_00523ac8(text, (void*)0x7cb66c, name);
-    bright = campPersonaClampFade(fade);
-    FUN_003b32d0(alpha, (s32)(x + 111.0f), (s32)(y + 122.0f),
-                 bright | 0xffffff00, 10, 1, text, 0x10, 0x74);
-}
-
-static void campPersonaDrawEffectParticle(f32 alpha, f32 x, f32 y,
-                                           s32 slot, s32 scale)
-{
-    CampPersonaParticle* particle;
-
-    particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, slot);
-    if (particle == NULL) {
-        return;
-    }
-    *(void**)((u8*)particle + 0x2c) = DAT_00833B90;
-    particle->x = x;
-    particle->y = y;
-    particle->alpha = (s8)campPersonaClampFade((s32)alpha);
-    particle->scaleX = (u16)scale;
-    particle->scaleY = (u16)scale;
-    FUN_001127d0(particle, 0);
-    FUN_00115980_y5(particle);
-}
-
-// FUN_00124E00
-void FUN_00124e00(CampVec2 position, CampVec2 otherPosition, f32 alpha,
-                  void* persona, s32 mode, s32 frame, s32 fade)
-{
-    if (mode == 1) {
-        goto drawStatus;
-    }
-    switch (mode) {
+    work = (u32*)task->workData;
+    state = (s32)work[2];
+    switch (state) {
     case 0:
-        FUN_00125740(position, alpha, persona, frame);
+        if (command == 1) {
+            work[3] = 0;
+            work[0] = 3;
+            work[2] = (u32)command;
+        }
+        break;
+    case 1:
+        switch (command) {
+        case 1:
+            break;
+        case 2:
+            work[3] = 1;
+            work[0] = 3;
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
+        case 4:
+            work[3] = 3;
+            work[0] = 3;
+            break;
+        }
+        work[2] = (u32)command;
+        break;
+    case 2:
+        switch (command) {
+        case 1:
+            work[3] = 2;
+            work[0] = 3;
+            break;
+        case 2:
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
+        }
+        work[2] = (u32)command;
+        break;
+    case 4:
+        work[1] = 10;
+        work[0] = 7;
+        work[2] = (u32)command;
         break;
     default:
-        goto done;
-    }
-    goto done;
-drawStatus:
-    FUN_00125b40(position, otherPosition, alpha, persona, fade);
-done:;
-}
-
-// FUN_00124E60
-void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
-{
-    u8 level;
-    void* parent;
-
-    level = *((u8*)persona + 4);
-    if (level >= 10) {
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                 level / 10 + 0xb,
-                                 position.x + 67.0f,
-                                 position.y + 127.0f, fade, alpha);
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                 *((u8*)((int)persona + 4)) % 10 + 0xb,
-                                 position.x + 82.0f,
-                                 position.y + 127.0f, fade, alpha);
-    } else {
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                 level % 10 + 0xb,
-                                 position.x + 75.0f,
-                                 position.y + 127.0f, fade, alpha);
+        break;
     }
 }
 
-// FUN_00124FD0 NONMATCHING
-void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
+// FUN_00168720
+void FUN_00168720(KwlnTask* task)
 {
-    char text[0x100];
-    CampPersonaParticle* particle;
-    s32 bright;
-    f32 x;
-    f32 y;
-    f32 scale;
-    void* parent;
-    void (*setRenderState)(s32 state, s32 value);
+    u32* work;
 
-    bright = 0xff - fade;
-    FUN_00523ac8(text, gp0xffff897c,
-                 FUN_00173220_y5(*(u16*)((u8*)persona + 2)));
-    campPersonaDrawTextCall(alpha, (s32)(position.x + 111.0f),
-                 (s32)(position.y + 122.0f),
-                 (u32)(bright | 0xffffff00), 10, 1, text, 0x10, 0x74);
-    if (FUN_00176600(persona) == 0) {
-        return;
+    work = (u32*)task->workData;
+    if (work[4] != 0) {
+        H_Cdvd_Destroy((HCdvd*)work[4]);
     }
-    setRenderState = DAT_00960090;
-
-    setRenderState(6, 1);
-    setRenderState(7, 2);
-    setRenderState(8, 1);
-    setRenderState(9, 1);
-    setRenderState(12, 1);
-    setRenderState(11, 6);
-    setRenderState(10, 5);
-    setRenderState(2, 4);
-    RpSkyRenderStateSet(2, 0x44);
-    RpSkyRenderStateSet(3, 0x717fb);
-
-    x = position.x + 272.0f;
-    y = position.y + 110.0f;
-    campPersonaDrawSprite(parent, DAT_00833B90, 0x1a,
-                          (u8)fade, x, y, alpha);
-
-    setRenderState(6, 0);
-    setRenderState(8, 1);
-    if (fade == 0) {
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1b);
-        particle->drawAlpha = alpha;
-        particle->x = position.x + 276.0f;
-        particle->y = position.y + 112.0f;
-        particle->alpha = (s8)fade;
-        FUN_001127d0(particle, 0);
-        FUN_00115980_y5(particle);
-
-        setRenderState(6, 1);
-        setRenderState(8, 0);
-
-        DAT_007cdf68++;
-        if (DAT_007cdf68 >= 20) {
-            DAT_007cdf68 = 0;
-        }
-        RpSkyRenderStateSet(2, 0x48);
-        RpSkyRenderStateSet(3, 0x71801);
-
-        bright = DAT_007cdf68;
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1c);
-        particle->drawAlpha = alpha;
-        particle->x = position.x + 276.0f;
-        particle->y = position.y + 112.0f;
-        particle->alpha = 0;
-        particle->reserved19[0] = (u8)((bright << 7) / 10 + 0x7f);
-        particle->scaleX = 0x1000;
-        particle->scaleY = 0x1000;
-        FUN_001127d0(particle, 0);
-        FUN_00115980_y5(particle);
-
-        RpSkyRenderStateSet(2, 0x44);
-        RpSkyRenderStateSet(3, 0x717fb);
-
-        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
-        scale = (f32)((10 - bright) * 0x518 / 10) + (f32)0xc18;
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1e);
-        particle->drawAlpha = alpha;
-        particle->alpha = 0;
-        particle->reserved19[0] = (u8)(bright * 0x66 / 10 + 0x66);
-        particle->scaleX = (u16)scale;
-        particle->scaleY = (u16)scale;
-        x = position.x + 276.0f;
-        y = position.y + 112.0f;
-        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
-        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
-        particle->x = x;
-        particle->y = y;
-        FUN_001127d0(particle, 0);
-        FUN_00115980_y5(particle);
-
-        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
-        scale = (f32)(bright * 0x518 / 10) + (f32)0xc18;
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(0, DAT_00833B90, 0x1d);
-        particle->drawAlpha = alpha;
-        particle->alpha = 0;
-        particle->reserved19[0] =
-            (u8)((10 - bright) * 0x66 / 10 + 0x66);
-        particle->scaleX = (u16)scale;
-        particle->scaleY = (u16)scale;
-        x = position.x + 276.0f;
-        y = position.y + 112.0f;
-        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
-        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
-        particle->x = x;
-        particle->y = y;
-        FUN_001127d0(particle, 0);
-        FUN_00115980_y5(particle);
-    }
-}
-// FUN_00125740 NONMATCHING
-void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
-                  s32 frame)
-{
-    s16 localFrame;
-    s16 shortFrame;
-    s32 bright;
-    f32 slide;
-    CampVec2 originalPosition;
-    CampVec2 iconPosition;
-    CampVec2 levelPosition;
-    CampVec2 fadePosition;
-    void* parent;
-    shortFrame = (s16)frame;
-
-    if (shortFrame < 15) {
-        return;
-    }
-    localFrame = shortFrame - 15;
-    bright = 0;
-    slide = 0.0f;
-    if (localFrame < 3) {
-        bright = 0xff - (localFrame * 0xff) / 3;
-        slide = (f32)(((3 - localFrame) * 0x14) / 3);
-    }
-    originalPosition = position;
-    position.x -= slide;
-    campPersonaDrawSprite(parent, DAT_00833B90, 1,
-                          position.x + 22.0f,
-                          position.y + 117.0f, (u8)bright, alpha);
-    if (localFrame > 0) {
-        if (localFrame < 5) {
-            bright = 0xff - ((localFrame - 1) * 0xff) / 4;
-            slide = (f32)(((5 - localFrame) * 0x3c) / 4);
-            iconPosition = originalPosition;
-            iconPosition.x -= slide;
-        } else {
-            bright = 0;
-            iconPosition = originalPosition;
-        }
-        campPersonaDrawSprite(parent, DAT_00833B88,
-                              FUN_00173280_y5(*(u16*)((u8*)persona + 2)) - 1,
-                              iconPosition.x + 105.0f, iconPosition.y + 142.0f,
-                              (u8)bright, alpha);
-    }
-    if (localFrame > 4) {
-        {
-            u8 level;
-
-            levelPosition = originalPosition;
-            level = *((u8*)persona + 4);
-            if (level >= 10) {
-                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                      level / 10 + 0xb,
-                                      levelPosition.x + 67.0f,
-                                      levelPosition.y + 127.0f, bright, alpha);
-                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                      level % 10 + 0xb,
-                                      levelPosition.x + 82.0f,
-                                      levelPosition.y + 127.0f, bright, alpha);
-            } else {
-                campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                                      level % 10 + 0xb,
-                                      levelPosition.x + 75.0f,
-                                      levelPosition.y + 127.0f, bright, alpha);
-            }
-        }
-    }
-    if (localFrame > 5) {
-        if (localFrame < 9) {
-            bright = 0xff - ((localFrame - 6) * 0xff) / 3;
-        } else {
-            bright = 0;
-        }
-        fadePosition = originalPosition;
-        FUN_00124fd0(fadePosition, alpha, persona, bright);
-    }
+    work[4] = 0;
+    (*DAT_0096017c_abs)(work);
 }
 
-// FUN_00125B40 NONMATCHING
-void FUN_00125b40_persona(CampVec2 position, CampVec2 unused, f32 alpha,
-                  void* persona, s32 fade)
+// FUN_00168770
+KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
 {
-    void* parent;
-    f32 drawAlpha;
-    void* resource;
-    s32 personaId;
-    u8 level;
-    CampVec2 originalPosition;
-    CampVec2 iconPosition;
-    CampVec2 levelPosition;
-    CampVec2 drawPosition;
+    void* work;
+    KwlnTask* taskValue;
 
-    originalPosition = position;
-    drawPosition = position;
-    drawAlpha = alpha;
-    campPersonaDrawSprite(parent, *(void**)DAT_00833B90_abs, 1,
-                          drawPosition.x + 22.0f, drawPosition.y + 117.0f,
-                          fade, drawAlpha);
-    iconPosition = originalPosition;
-    resource = *(void**)DAT_00833B88_abs;
-    personaId = FUN_00173280_y5(*(u16*)((u8*)persona + 2)) - 1;
-    campPersonaDrawSprite(parent, resource, personaId,
-                          iconPosition.x + 105.0f, iconPosition.y + 142.0f,
-                          fade, alpha);
-    levelPosition = originalPosition;
-    level = *((u8*)persona + 4);
-    if (level >= 10) {
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                              level / 10 + 0xb,
-                              levelPosition.x + 67.0f,
-                              levelPosition.y + 127.0f, fade, alpha);
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                              level % 10 + 0xb,
-                              levelPosition.x + 82.0f,
-                              levelPosition.y + 127.0f, fade, alpha);
-    }
-    else {
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                              level % 10 + 0xb,
-                              levelPosition.x + 75.0f,
-                              levelPosition.y + 127.0f, fade, alpha);
-    }
-    FUN_00124fd0(originalPosition, alpha, persona, fade);
-}
-
-static s32 campPersonaTransitionIsReady(void)
-{
-    if (DAT_007cdf60 == NULL || DAT_007cdf60->workData == NULL) {
+    work = (*DAT_00960184_abs)(1, 0x1c, 0x40000);
+    if (work == 0) {
         return 0;
     }
-    return *((s32*)DAT_007cdf60->workData) == 3;
+    taskValue = kwlnTaskCreate(parent, D_005DC000, priority,
+                             FUN_00168220,
+                             FUN_00168720,
+                             work);
+    if (taskValue == 0) {
+        return 0;
+    }
+    return (KwlnTask*)taskValue;
 }
 
-// FUN_00125D70 NONMATCHING
-void* FUN_00125d70(KwlnTask* task)
+
+
+
+/* opt_loop_invariants on: baseline nd1045/2096B -> on nd1038/2096B; retained. */
+#pragma opt_loop_invariants on
+// FUN_00168810 NONMATCHING
+u32 FUN_00168810(u32 param_1)
 {
-    void* parent;
-    CampPersonaTransitionWork* work;
-    s32 fade;
+    KwlnTask* task;
+    CampTargetLoadWork* work;
+    u8 readyScratch[4];
+    CampFloatPair drawPosition;
+    s32 i;
+    s32 entry;
+    s32 nextFrame;
+    s32 phase;
+    bool ready;
+    u32 resource;
+
+    task = (KwlnTask*)(uintptr_t)param_1;
+    work = (CampTargetLoadWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        if (FUN_001016b0_data(work->archive) != 0) {
+            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 0, readyScratch));
+            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 1, readyScratch));
+            work->childTask = (void*)(uintptr_t)FUN_00119f10(param_1, 1);
+            DAT_00833a50_data[0] = (u32)(uintptr_t)work->resources[0];
+            DAT_00833a50_data[1] = (u32)(uintptr_t)work->resources[1];
+            work->state = 1;
+        }
+        break;
+
+    case 1:
+        ready = true;
+        for (i = 0; i < 2; i++) {
+            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
+                ready = false;
+            }
+        }
+        if (iGpffffb258_data == 0) {
+            phase = -1;
+        } else if (*(s32*)(*(u32*)((u8*)(uintptr_t)iGpffffb258_data + 0x3c)) == 3) {
+            phase = 1;
+        } else {
+            phase = 0;
+        }
+        if (phase == 1 && ready) {
+            work->frame = 0;
+            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)resource + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            work->listA = (CampTargetList*)(uintptr_t)resource;
+            resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)resource + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            work->listB = (CampTargetList*)(uintptr_t)resource;
+            FUN_0013cf80_data(work->drawIdWord, work->listA);
+            work->state = 2;
+        }
+        break;
+
+    case 2:
+        nextFrame = work->frame + 1;
+        work->frame = nextFrame;
+        if (nextFrame > 9) {
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
+        break;
+
+    case 3:
+        if ((DAT_007e094e_data & 0x20) == 0) {
+            if ((DAT_007e094e_data & 0x40) == 0) {
+                CampTargetList* list = work->listA;
+                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
+            } else {
+                FUN_0010a4e0_data(0, 0, 0, 1);
+                FUN_0013c240_data(work->listB, (u16)work->drawIdWord,
+                             work->listA->cursor);
+                if (work->listB->count == 0) {
+                    FUN_003c7430(4);
+                    work->state = 5;
+                } else {
+                    work->state = 4;
+                }
+            }
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 2);
+            work->state = 6;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA, 0);
+        break;
+
+    case 4:
+        if ((DAT_007e094e_data & 0x20) == 0) {
+            if ((DAT_007e094e_data & 0x40) == 0) {
+                CampTargetList* list = work->listB;
+                FUN_0011abd0(list->count, 5, &list->selected, &list->cursor);
+            } else {
+                u32 sourceId;
+                u32 destinationId;
+                u16 sourceValue6;
+                u32 sourceValue7;
+                u8 sourceValue8;
+                u8 sourceValue9;
+                u16 sourceValueA;
+                u16 sourceValueB;
+                u16 sourceValueC;
+                u16 sourceValueD;
+                u32 destinationValue;
+
+                FUN_0010a4e0_data(0, 0, 0, 1);
+                sourceId = (u32)work->listA->records[work->listA->cursor].secondaryValue;
+                destinationId = (u32)work->listB->records[
+                    work->listB->cursor + work->listB->selected].secondaryValue;
+                sourceValue6 = FUN_0016f630((u16)work->drawIdWord, sourceId);
+                sourceValue7 = FUN_0016f720((u16)work->drawIdWord, sourceId);
+                sourceValue8 = FUN_0016f810((u16)work->drawIdWord, sourceId);
+                sourceValue9 = FUN_0016f900((u16)work->drawIdWord, sourceId);
+                sourceValueA = FUN_0016f9f0((u16)work->drawIdWord, sourceId);
+                sourceValueB = FUN_0016fae0((u16)work->drawIdWord, sourceId);
+                sourceValueC = FUN_0016fbd0((u16)work->drawIdWord, sourceId);
+                sourceValueD = FUN_0016fcc0((u16)work->drawIdWord, sourceId);
+                destinationValue = FUN_0016f630(1, destinationId);
+                FUN_0016fea0((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f720(1, destinationId);
+                FUN_0016ff90((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f810(1, destinationId);
+                FUN_00170080((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f900(1, destinationId);
+                FUN_00170170((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fae0(1, destinationId);
+                FUN_00170350((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fbd0(1, destinationId);
+                FUN_00170440((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016fcc0(1, destinationId);
+                FUN_00170530((u16)work->drawIdWord, sourceId, destinationValue);
+                destinationValue = FUN_0016f9f0(1, destinationId);
+                FUN_00170260((u16)work->drawIdWord, sourceId, destinationValue);
+                FUN_0016fea0(1, destinationId, sourceValue6);
+                FUN_0016ff90(1, destinationId, sourceValue7);
+                FUN_00170080(1, destinationId, sourceValue8);
+                FUN_00170170(1, destinationId, sourceValue9);
+                FUN_00170350(1, destinationId, sourceValueB);
+                FUN_00170440(1, destinationId, sourceValueC);
+                FUN_00170530(1, destinationId, sourceValueD);
+                FUN_00170260(1, destinationId, sourceValueA);
+                FUN_00177c10(work->drawIdWord, sourceId);
+                FUN_0013cf80_data(work->drawIdWord, work->listA);
+                work->state = 3;
+            }
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 2);
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_001691F0((u16)work->drawIdWord, drawPosition,
+                     work->listA, work->listB, 0);
+        break;
+
+    case 5:
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            work->state = 3;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA, 0);
+        break;
+
+    case 6:
+        nextFrame = work->frame - 1;
+        work->frame = nextFrame;
+        if (nextFrame < 1) {
+            work->state = 7;
+        }
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
+        break;
+
+    case 7:
+        return 0xffffffff;
+    }
+    return 0;
+}
+
+#pragma opt_loop_invariants reset
+// FUN_00169040
+void FUN_00169040(int param_1)
+{
+    CampTargetLoadWork* work;
+    s32 i;
+
+    work = (CampTargetLoadWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
+    if (work->listA != NULL) {
+        (*(void (**)(...))0x0096017c)(work->listA);
+        work->listA = NULL;
+    }
+    if (work->listB != NULL) {
+        (*(void (**)(...))0x0096017c)(work->listB);
+        work->listB = NULL;
+    }
+    for (i = 0; i < 2; i++) {
+        if ((*(void**)((u8*)work + 0x14 + i * 4)) != NULL) {
+            FUN_001124b0_data(*(void**)((u8*)work + 0x14 + i * 4));
+        }
+        DAT_00833a50_data[i] = 0;
+    }
+    (*(void (**)(...))0x0096017c)(work);
+}
+
+// FUN_00169110 MATCHING
+void FUN_00169110(u16 param_1, CampFloatPair param_2,
+                  void* param_3, s32 param_4)
+{
+    f32 depth;
+    f32* depthBase;
+    u32 color;
+    CampFloatPair drawPosition;
+
+    color = 0xff - param_4;
+    color |= 0x20808000U;
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = param_2.y + 50.0f;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
+                          drawPosition, param_3, param_4);
+}
+// FUN_001691F0 MATCHING
+void FUN_001691F0(u16 param_1, CampFloatPair param_2,
+                  void* param_3, void* param_4, s32 param_5)
+{
+    f32 y;
+    f32 depth;
+    f32* depthBase;
+    u32 color;
+    CampFloatPair drawPosition;
+
+    y = param_2.y;
+    color = 0xff - param_5;
+    color |= 0x20808000U;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30_camp_reordered(color,
+                                *depthBase - FUN_0021ea00(0x29),
+                                0.0f, 0.0f, 0x280, 0x1c0);
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = y + 50.0f;
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipmentAlt(*depthBase - depth,
+                             drawPosition, param_3, param_5);
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = y + 80.0f;
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
+                          drawPosition, param_4, param_5);
+}
+
+// FUN_00169330
+undefined4 FUN_00169330(void)
+{
+    void* task;
+    void* allocation;
+    s16 language;
+
+    language = (s16)FUN_0035ed20(0);
+    allocation = (*DAT_00960184_abs)(1, 0x28, 0x40000);
+    if (allocation == NULL) {
+        task = NULL;
+    } else {
+        task = (void*)FUN_00194b20_data(0, DAT_005dc020, 0x18bf,
+                                   FUN_00168810, FUN_00169040, allocation);
+        if (task == NULL) {
+            task = NULL;
+        } else {
+            *(s32*)((u8*)allocation + 0x0c) = language;
+            *(u32*)((u8*)allocation + 0x10) = FUN_00100d80_data(DAT_005dbc60, 1);
+        }
+    }
+    uGpffffb290 = (s32)(uintptr_t)task;
+    return 1;
+}
+
+// FUN_00169420
+bool FUN_00169420(void)
+{
+    s32 state;
+
+    state = FUN_00195290_data(uGpffffb290);
+    if (state == 3) {
+        uGpffffb290 = 0;
+        return 1;
+    }
+    return 0;
+}
+
+/* opt_loop_invariants on: baseline nd1082/1628B -> on nd1079/1628B; opt_propagation off nd1070/1600B; stacked nd1045/1596B; retained. */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
+// FUN_00169470 NONMATCHING
+undefined4 FUN_00169470(KwlnTask* param_1)
+{
+    KwlnTask* task;
+    CampTargetMenuWork* work;
+    u8 readyScratch[4];
+    bool ready;
+    s32 i;
+    s32 entry;
+    s32 nextFrame;
+    s16 itemId;
+    CampTargetItemRecord itemRecord;
+
+    task = (KwlnTask*)(uintptr_t)param_1;
+    work = (CampTargetMenuWork*)task->workData;
+    switch (work->state) {
+    case 0:
+        if (FUN_001016b0_data(work->archive) != 0) {
+            work->resources[0] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 0, readyScratch));
+            work->resources[1] = (void*)(uintptr_t)FUN_00112420_data(
+                FUN_00102100_data(work->archive, 1, readyScratch));
+            work->childTask = (void*)(uintptr_t)FUN_00119f10((undefined8)param_1, 1);
+            work->state = 1;
+        }
+        break;
+    case 1:
+        ready = true;
+        for (i = 0; i < 2; i++) {
+            if (work->resources[i] != NULL && FUN_00111f30_data() == 0) {
+                ready = false;
+            }
+        }
+        if (ready) {
+            work->frame = 0;
+            work->list = (CampTargetList*)(uintptr_t)(*DAT_00960184)(1, 0x2d70, 0x40000);
+            for (entry = 0; entry < 0x140; entry++) {
+                s32 record = (s32)(uintptr_t)work->list + entry * 0x24;
+                *(u32*)(record + 0x64) = 0xffffffff;
+                *(u32*)(record + 0x6c) = 0;
+                *(u32*)(record + 0x68) = 0xffffffff;
+                *(u32*)(record + 0x70) = 0;
+            }
+            FUN_0013c780_data(work->list);
+            work->state = 2;
+            work->result = (u32)(uintptr_t)FUN_0025f370(
+                task, work->resources[1]);
+        }
+        break;
+    case 2:
+        nextFrame = work->frame + 1;
+        work->frame = nextFrame;
+        if (nextFrame > 0x13) {
+            work->state = 3;
+        }
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 0x14),
+                     (undefined8)0);
+        break;
+    case 3:
+        if ((DAT_007e094e_data & 0x40) == 0) {
+            s32 selected = work->list->selected;
+            s32 cursor = work->list->cursor;
+            FUN_0011abd0(work->list->count, 6, &selected, &cursor);
+            work->list->selected = selected;
+            work->list->cursor = cursor;
+        } else {
+            FUN_0010a4e0_data(0, 0, 0, 1);
+            if (work->list->records[
+                    work->list->cursor + work->list->selected].availability == 0) {
+                FUN_003c7430(6);
+                work->state = 5;
+            } else {
+                FUN_003c7430(5);
+                FUN_003c74e0(0);
+                FUN_003c7560(0);
+                work->state = 4;
+            }
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 4:
+        if (FUN_003c7850() == 0) {
+            s32 waitState = FUN_003c7610();
+            if (waitState != 1 && waitState == 0) {
+                s32 current = work->list->records[
+                    work->list->cursor + work->list->selected].secondaryValue;
+                s32 selected = work->list->selected;
+                s32 cursor = work->list->cursor;
+
+                if (current < 0x1000) {
+                    FUN_0016fea0(1, current, 0);
+                } else {
+                    FUN_0016fea0(0xffffffffffffffffULL, current - 0x1000, 0);
+                }
+                FUN_0013c780_data();
+                if (work->list->count < 6) {
+                    work->list->selected = 0;
+                    current = work->list->count - 1;
+                    if (current < cursor) {
+                        work->list->cursor = current;
+                    } else {
+                        work->list->cursor = cursor;
+                    }
+                } else {
+                    current = work->list->count - 6;
+                    if (current < selected) {
+                        work->list->selected = current;
+                        work->list->cursor = cursor;
+                    }
+                }
+            }
+            FUN_003c7700();
+            if (work->list->count < 0x12d) {
+                for (i = 0; i < 0x14; i++) {
+                    itemId = (s16)FUN_0016f630(0xffffffffffffffffULL, i);
+                    if (itemId != 0) {
+                        itemRecord.itemId = (u16)FUN_0016f630(0xffffffffffffffffULL, i);
+                        itemRecord.quantity = FUN_0016f720(0xffffffffffffffffULL, i);
+                        itemRecord.byte08 = (u8)FUN_0016f810(0xffffffffffffffffULL, i);
+                        itemRecord.byte09 = (u8)FUN_0016f900(0xffffffffffffffffULL, i);
+                        itemRecord.value0a = (u16)FUN_0016f9f0(0xffffffffffffffffULL, i);
+                        itemRecord.value0c = (u16)FUN_0016fae0(0xffffffffffffffffULL, i);
+                        itemRecord.value0e = (u16)FUN_0016fbd0(0xffffffffffffffffULL, i);
+                        itemRecord.value10 = (u16)FUN_0016fcc0(0xffffffffffffffffULL, i);
+                        FUN_0016fea0(0xffffffffffffffffULL, i, 0);
+                        FUN_001830c0(&itemRecord);
+                    }
+                }
+                FUN_0025f570();
+                work->frame = 10;
+                work->state = 6;
+            } else {
+                work->state = 3;
+            }
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 5:
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            work->state = 3;
+        }
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
+        break;
+    case 6:
+        nextFrame = work->frame - 1;
+        work->frame = nextFrame;
+        if (nextFrame < 1) {
+            work->state = 7;
+        }
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 10),
+                     (undefined8)0);
+        break;
+    case 7:
+        return 0xffffffff;
+    }
+    return 0;
+}
+
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
+// FUN_00169AE0
+void FUN_00169AE0(int param_1)
+{
+    CampTargetMenuWork* work;
+    s32 i;
+
+    work = (CampTargetMenuWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
+    if (work->list != NULL) {
+        (*DAT_0096017c_abs)(work->list);
+        work->list = NULL;
+    }
+    for (i = 0; i < 2; i++) {
+        if (*(void**)((u8*)work + 0x10 + i * 4) != NULL) {
+            FUN_001124b0_data(*(void**)((u8*)work + 0x10 + i * 4));
+        }
+    }
+    if (*(void**)((u8*)work + 0x0c) != NULL) {
+        FUN_00100ec0_data(*(void**)((u8*)work + 0x0c));
+    }
+    work->archive = NULL;
+    (*DAT_0096017c_abs)(work);
+}
+/* Existing lifetime/propagation scope: baseline nd555/812B; single probes nd552/812B and nd552/808B; stacked probe nd551/808B; retained. */
+
+/* opt_lifetimes on and opt_propagation off are both active for this draw helper. */
+#pragma opt_lifetimes on
+#pragma opt_propagation off
+// FUN_00169B90 NONMATCHING
+void FUN_00169B90(void* param_1, undefined8 param_2,
+                  void* param_3, s32 param_4, undefined8 param_5)
+{
+    RwV2d position;
     f32 x;
     f32 y;
-    CampPersonaParticle* particle;
+    f32 depth;
+    f32 drawY;
 
-    work = task->workData;
-    if (work->state == 1) {
-        goto process;
+    position = *(RwV2d*)&param_2;
+    y = position.y;
+    x = position.x;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
+    drawY = y + 18.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 416.0f, drawY, DAT_00960088 - depth);
+    drawY = x + 468.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(drawY, y + 408.0f, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteDirect(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
+    {
+        s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
+        if (count >= 100) {
+            depth = (f32)FUN_0021ea00(0x28);
+            campDataDrawSpriteAltDirect(drawY, y + 384.0f, DAT_00960088 - depth);
+        }
+        if (count >= 10) {
+            depth = (f32)FUN_0021ea00(0x28);
+            campDataDrawSpriteAltDirect(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
+        }
     }
-    if (work->state != 0) {
-        return KWLNTASK_CONTINUE;
-    }
-    work->timer = 0;
-    work->state = 1;
-process:
-
-    if (work->mode == 0) {
-        if (work->timer < 5) {
-            if (DAT_007cdf60 != NULL &&
-                DAT_007cdf60->workData != NULL &&
-                *((s32*)DAT_007cdf60->workData) == 3) {
-                FUN_00114450(102.0f, 0.0f, -87.0f, -1,
-                             0x4fa4ff19, 0x280, 0x280);
-            }
-            FUN_0011bba0(0, 0, 102.0f, 0, 0);
-            particle = (CampPersonaParticle*)FUN_001158b0_y5(
-                0, *(void**)DAT_00833B78_abs, 0);
-            particle->drawAlpha = 101.0f;
-            particle->x = 428.0f;
-            particle->y = 27.0f;
-            particle->alpha = 0;
-            particle->scaleX = 0;
-            particle->scaleY = 0;
-            FUN_001127d0(particle, 1);
-            FUN_00115980_y5(particle);
-        }
-        if (work->timer > 4 && work->timer < 20) {
-            fade = ((work->timer - 5) * 800) / 15;
-            if (DAT_007cdf60 != NULL &&
-                DAT_007cdf60->workData != NULL &&
-                *((s32*)DAT_007cdf60->workData) == 3) {
-                FUN_00114450(102.0f, (f32)-fade, (f32)fade - 87.0f,
-                             -1, 0x4fa4ff19, 0x280, 0x280);
-            }
-            FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
-        }
-        if (work->timer > 14) {
-            fade = (20 - work->timer) * 0xff / 5;
-            if (fade < 0) {
-                fade = 0;
-            } else if (fade > 0xff) {
-                fade = 0xff;
-            }
-            x = 428.0f + (f32)(((work->timer - 15) * 21) / 10);
-            y = 27.0f + (f32)(((work->timer - 15) * 2) / 10);
-            particle = (CampPersonaParticle*)FUN_001158b0_y5(
-                0, *(void**)DAT_00833B78_abs, 0);
-            if (particle != NULL) {
-                particle->drawAlpha = 101.0f;
-                particle->x = x;
-                particle->y = y;
-                particle->alpha = (s8)fade;
-                particle->scaleX = 0xe28;
-                particle->scaleY = 0xe28;
-                FUN_001127d0(particle, 1);
-                FUN_00115980_y5(particle);
-            }
-            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
-                                  34.0f, 415.0f, (u8)fade, 100.0f);
-            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
-                                  50.0f, 415.0f, (u8)fade, 100.0f);
-            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
-                                  194.0f, 415.0f, (u8)fade, 100.0f);
-            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
-                                  561.0f, 415.0f, (u8)fade, 100.0f);
-            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
-                                  382.0f, 415.0f, (u8)fade, 100.0f);
-        }
-        if (work->timer < 20) {
-            work->timer++;
-        } else {
-            work->state = 2;
-        }
-    } else if (work->mode == 1) {
-        fade = work->timer == 8 ? 0 : 0xff - (work->timer * 0xff) / 8;
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(
-            0, *(void**)DAT_00833B78_abs, 0);
-        if (particle != NULL) {
-            particle->drawAlpha = 101.0f;
-            particle->x = 449.0f;
-            particle->y = 29.0f;
-            particle->alpha = (s8)fade;
-            particle->scaleX = 0xe28;
-            particle->scaleY = 0xe28;
-            FUN_001127d0(particle, 1);
-            FUN_00115980_y5(particle);
-        }
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
-                              34.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
-                              50.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
-                              194.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
-                              561.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
-                              382.0f, 415.0f, (u8)fade, 100.0f);
-        if (work->timer < 8) {
-            work->timer++;
-        } else {
-            work->state = 2;
-        }
-    } else if (work->mode == 2 && work->timer != 8) {
-        fade = (work->timer * 0xff) / 8;
-        particle = (CampPersonaParticle*)FUN_001158b0_y5(
-            0, *(void**)DAT_00833B78_abs, 0);
-        if (particle != NULL) {
-            particle->drawAlpha = 101.0f;
-            particle->x = 449.0f;
-            particle->y = 29.0f;
-            particle->alpha = (s8)fade;
-            particle->scaleX = 0xe28;
-            particle->scaleY = 0xe28;
-            FUN_001127d0(particle, 1);
-            FUN_00115980_y5(particle);
-        }
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
-                              34.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
-                              50.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
-                              194.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
-                              561.0f, 415.0f, (u8)fade, 100.0f);
-        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
-                              382.0f, 415.0f, (u8)fade, 100.0f);
-        work->timer++;
-    }
-    return KWLNTASK_CONTINUE;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawSpriteAltDirect(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
+    y += 404.0f;
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 565.0f, y, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 584.0f, y, DAT_00960088 - depth);
+    depth = (f32)FUN_0021ea00(0x28);
+    campDataDrawDigitsDirect(x + 603.0f, y, DAT_00960088 - depth);
 }
+
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
+/* opt_lifetimes on: baseline nd1098/1576B -> on nd1087/1576B; propagation off nd1093/1576B; stacked nd1099/1576B; lifetimes retained. */
+#pragma opt_lifetimes on
+// FUN_0016A030 NONMATCHING
+undefined4 FUN_0016A030(void)
+{
+    u16 itemId;
+    u16 source;
+    s16 category;
+    u32 amount;
+    u32 secondaryAmount;
+    u32 resource;
+    s32 mode;
+    u32 packed;
+    u16 item;
+    u16 itemIndex;
+    u16 slot;
+    s32 i;
+    s32 sourceCount;
+    s32 generatedCount;
+    s32 lastMode;
+    CampTargetItemRecord itemRecord;
+
+    mode = FUN_0035ed20(0);
+    if (mode == 1) {
+        lastMode = -1;
+        source = 0xffff;
+        for (i = 0; i < 300; i++) {
+            category = (s16)i;
+            itemId = (u16)func_00170760(0xffff, category + 4000);
+            if (itemId != 0) {
+                amount = func_00170760(0xffff, category + 4000);
+                secondaryAmount = func_00170760(1, category + 4000);
+                amount = (amount & 0xffff) + (secondaryAmount & 0xffff);
+                if (amount > 99) {
+                    amount = 99;
+                }
+                func_00170860(1, category + 4000, amount & 0xffff);
+                func_00170860(0xffff, category + 4000, 0);
+            }
+        }
+    } else {
+        lastMode = mode + 0x100;
+        source = (u16)lastMode;
+        for (i = 0; i < 0x14; i++) {
+            item = (u16)mode;
+            slot = (u16)i;
+            itemIndex = (u16)FUN_00170a40(item, slot);
+            if (itemIndex != 0 && FUN_00170ab0(item, slot) != 0) {
+                itemIndex = (u16)FUN_00170a40(item, slot);
+                category = (s16)FUN_00170ab0(item, slot);
+                amount = func_00170760(1, itemIndex);
+                amount = (u32)category + (amount & 0xffff);
+                if ((s32)amount > 99) {
+                    amount = 99;
+                }
+                func_00170860(1, itemIndex, amount & 0xffff);
+                FUN_00170b20((u16)mode, (u16)i, 0);
+                FUN_00170b90((u16)mode, (u16)i, 0);
+            }
+        }
+    }
+
+    sourceCount = 0;
+    for (i = 0; i < 0x14; i++) {
+        if ((u16)FUN_0016f630(source, i) != 0) {
+            sourceCount++;
+        }
+    }
+    generatedCount = 0;
+    for (i = 0; i < 300; i++) {
+        if ((u16)FUN_0016f630(1, i) != 0) {
+            generatedCount++;
+        }
+    }
+    if (sourceCount + generatedCount < 0x12d) {
+        for (lastMode = 0; lastMode < 0x14; lastMode++) {
+            itemId = (u16)FUN_0016f630(source, lastMode);
+            if (itemId != 0) {
+                itemRecord.itemId = (u16)FUN_0016f630(source, lastMode);
+                itemRecord.quantity = FUN_0016f720(source, lastMode);
+                itemRecord.byte08 = (u8)FUN_0016f810(source, lastMode);
+                itemRecord.byte09 = (u8)FUN_0016f900(source, lastMode);
+                itemRecord.value0a = (u16)FUN_0016f9f0(source, lastMode);
+                itemRecord.value0c = (u16)FUN_0016fae0(source, lastMode);
+                itemRecord.value0e = (u16)FUN_0016fbd0(source, lastMode);
+                itemRecord.value10 = (u16)FUN_0016fcc0(source, lastMode);
+                FUN_0016fea0(source, lastMode, 0);
+                FUN_001830c0(&itemRecord);
+            }
+        }
+        uGpffffb28c = 0;
+    } else {
+        if (lastMode != -1) {
+            for (lastMode = 0; lastMode < 0x14; lastMode++) {
+                itemId = (u16)FUN_0016f630(source, lastMode);
+                if (itemId != 0) {
+                    packed = FUN_0016f630(source, lastMode);
+                    FUN_0016fea0(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f720(source, lastMode);
+                    FUN_0016ff90(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f810(source, lastMode);
+                    FUN_00170080(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f900(source, lastMode);
+                    FUN_00170170(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016f9f0(source, lastMode);
+                    FUN_00170260(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fae0(source, lastMode);
+                    FUN_00170350(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fbd0(source, lastMode);
+                    FUN_00170440(0xffffffffffffffffULL, lastMode, packed);
+                    packed = FUN_0016fcc0(source, lastMode);
+                    FUN_00170530(0xffffffffffffffffULL, lastMode, packed);
+                    FUN_0016fea0(source, lastMode, 0);
+                }
+            }
+        }
+        resource = (u32)(uintptr_t)(*DAT_00960184)(1, 0x24, 0x40000);
+        if (resource == 0) {
+            uGpffffb28c = 0;
+        } else {
+            uGpffffb28c = (s32)(uintptr_t)FUN_00194b20_data(
+                0, 0x5dc020, 0x18bf, FUN_00169470, FUN_00169AE0,
+                (void*)(uintptr_t)resource);
+            if (uGpffffb28c != 0) {
+                *(u32*)(resource + 0x0c) = FUN_00100d80_data(0x5dc030, 1);
+            }
+        }
+    }
+    return 1;
+}
+#pragma opt_lifetimes reset
+
+// FUN_0016A6A0
+undefined4 FUN_0016A6A0(void)
+{
+    s32 state;
+
+    if (iGpffffb28c == 0) {
+        return 1;
+    }
+    state = FUN_00195290_data(iGpffffb28c);
+    if (state == 3) {
+        iGpffffb28c = 0;
+        return 1;
+    }
+    return 0;
+}
+
+
+/* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
+#pragma opt_lifetimes on
+// FUN_0016A700 NONMATCHING
+void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
+{
+    f32 x;
+    f32 y;
+    s32 i;
+    s32 row;
+    s32 visibleCount;
+    s32 totalCount;
+    s32 selected;
+    u32 type;
+    u32 spriteCode;
+    u32 textAlpha;
+    u32 textId;
+    u32* drawData;
+    undefined1 text[0x100];
+
+    x = *(f32*)((u8*)&param_3 + 4);
+    y = *(f32*)&param_3;
+    drawData = (u32*)param_2;
+    textAlpha = 0xffU - (u32)param_5;
+
+    /* The six-argument form preserves the texture/sprite selectors carried
+     * in the otherwise untyped retail calls. */
+    campDataDrawSpriteFade(x + 541.0f, y + 38.0f, param_1, (void*)(uintptr_t)drawData[1], 0x44, param_5);
+    campDataDrawSpriteFade(x + 541.0f, y + 235.0f, param_1, (void*)(uintptr_t)drawData[1], 0x45, param_5);
+
+    visibleCount = *(s32*)((u8*)param_4 + 0x2d64) - 6;
+    if (visibleCount < 1) {
+        visibleCount = 0;
+    } else {
+        visibleCount = (*(s32*)((u8*)param_4 + 0x2d6c) * 0x97) / visibleCount;
+    }
+    campDataDrawSpriteFade(x + 541.0f, y + 43.0f + (f32)visibleCount,
+                 param_1, (void*)(uintptr_t)drawData[1], 0x46, param_5);
+
+    selected = *(s32*)((u8*)param_4 + 0x2d68);
+    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
+    row = *(s32*)((u8*)param_4 + 0x2d6c);
+
+    for (i = 0; i < 6; i++) {
+        s32 recordIndex;
+        s32 hasRecord;
+
+        recordIndex = row + i;
+        hasRecord = ((CampTargetList*)param_4)->records[recordIndex].flags;
+        if (selected == i) {
+            if (hasRecord != 0) {
+                campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
+                             param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
+            }
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x40, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x41, param_5);
+        } else if (hasRecord == 0) {
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3c, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3d, param_5);
+        } else {
+            campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
+                         param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3e, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3f, param_5);
+        }
+    }
+
+    for (i = 0; i < 6; i++) {
+        s32 recordIndex;
+        if (i + row >= totalCount) {
+            break;
+        }
+        recordIndex = row + i;
+        type = ((CampTargetList*)param_4)->records[recordIndex].type;
+
+        if (i == selected) {
+            /* jtbl_007B63A0: the cases are not empty; they select the
+             * selected-row digit/icon before the +1 adjustment. */
+            spriteCode = 9;
+            switch (type) {
+            case 0:  spriteCode = 0;    break;
+            case 1:  spriteCode = 2;    break;
+            case 2:  spriteCode = 4;    break;
+            case 3:  spriteCode = 6;    break;
+            case 4:  spriteCode = 8;    break;
+            case 5:  spriteCode = 0xa;  break;
+            case 6:  spriteCode = 0xc;  break;
+            case 7:  spriteCode = 0xe;  break;
+            case 8:  spriteCode = 0;    break;
+            case 9:  spriteCode = 2;    break;
+            case 10: spriteCode = 4;    break;
+            case 11: spriteCode = 6;    break;
+            case 12: spriteCode = 8;    break;
+            case 13: spriteCode = 0xa;  break;
+            case 14: spriteCode = 0xc;  break;
+            case 15: spriteCode = 0xe;  break;
+            case 16: spriteCode = 0x12; break;
+            case 17: spriteCode = 0x14; break;
+            case 18: spriteCode = 0x16; break;
+            case 19: spriteCode = 0x1a; break;
+            case 20: spriteCode = 0x1a; break;
+            default: break;
+            }
+            campDataDrawSpriteFade(x + 252.0f,
+                         y + 43.0f + (f32)(i * 0x21), param_1,
+                         (void*)(uintptr_t)drawData[0], spriteCode + 1, param_5);
+
+            {
+                u8* record = (u8*)param_4 + recordIndex * 0x24;
+                textId = (u32)func_00171110(*(undefined2*)(record + 100),
+                                      *(undefined1*)(record + 0x7d));
+                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
+            }
+            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
+                                (s32)((s32)y + 52.0f + (f32)(i * 0x21) + 1.0f),
+                                textAlpha | 0xffffff00U, 6, 1, (const char*)text, 0x10, 0);
+        } else {
+            /* jtbl_007B6340: this is the unselected-row table. */
+            spriteCode = 9;
+            switch (type) {
+            case 0:  spriteCode = 1;    break;
+            case 1:  spriteCode = 3;    break;
+            case 2:  spriteCode = 5;    break;
+            case 3:  spriteCode = 7;    break;
+            case 4:  spriteCode = 9;    break;
+            case 5:  spriteCode = 0xb;  break;
+            case 6:  spriteCode = 0xd;  break;
+            case 7:  spriteCode = 0xf;  break;
+            case 8:  spriteCode = 1;    break;
+            case 9:  spriteCode = 3;    break;
+            case 10: spriteCode = 5;    break;
+            case 11: spriteCode = 7;    break;
+            case 12: spriteCode = 9;    break;
+            case 13: spriteCode = 0xb;  break;
+            case 14: spriteCode = 0xd;  break;
+            case 15: spriteCode = 0xf;  break;
+            case 16: spriteCode = 0x13; break;
+            case 17: spriteCode = 0x15; break;
+            case 18: spriteCode = 0x17; break;
+            case 19: spriteCode = 0x1b; break;
+            case 20: spriteCode = 0x1b; break;
+            default: break;
+            }
+            campDataDrawSpriteAltFade(x + 252.0f,
+                                       y + 43.0f + (f32)(i * 0x21),
+                                       param_1, (void*)(uintptr_t)drawData[0],
+                                       spriteCode - 1, param_5, 0x20, 0x43,
+                                       0x78, 0);
+            {
+                u8* record = (u8*)param_4 + recordIndex * 0x24;
+                textId = (u32)func_00171110(*(undefined2*)(record + 100),
+                                      *(undefined1*)(record + 0x7d));
+                FUN_00523ac8_data(text, gp0xffff897c_data, textId);
+            }
+            campDataDrawTextRaw(param_1, (s32)((s32)x + 292.0f),
+                                (s32)((s32)y + 52.0f + (f32)(i * 0x21)),
+                                textAlpha | 0xffffff00U, 10, 1, (const char*)text, 0x10, 0);
+        }
+    }
+}
+#pragma opt_lifetimes reset
+
+/* opt_propagation off: baseline nd1935/2576B -> off nd1912/2464B; retained. */
+
+
+/* W389 residual: baseline nd18/object900/912. Six-knob singles and aggregate/load-order probes did not lower it; 389.0f operand reversal was neutral (grouping nd21, sequenced-temp nd51, local-offset nd16). The remaining words are the b210 FP scheduling order (retail converts 389 before loading y); retained NONMATCHING. */
+
+
+#define campDrawSprite campDrawSprite_148
+#define campDrawSpriteX campDrawSpriteX_148
+#define campDrawSpriteXY campDrawSpriteXY_148
+#define campDrawEquipmentDetailListAlt campDrawEquipmentDetailListAlt_148
+#define FUN_0010c1a0 FUN_0010c1a0_148
+#define FUN_0013cc90 FUN_0013cc90_148
+#define FUN_003c7d80 FUN_003c7d80_148
+#define h_campUpdateSystemMenuTask h_campUpdateSystemMenuTask_148
+// workData[0xc] holds the "camp/camp_skil.pak" cdvd handle.
+
+
 
 
 #pragma alias FUN_0012e170_equip FUN_0012e170
@@ -27315,6 +27170,11 @@ typedef struct CampEquipSprite
     u8 reserved33;
 } CampEquipSprite;
 
+#define FUN_00125b40 FUN_00125b40_persona
+#define DAT_00960090 DAT_00960090_persona
+#define FUN_00114450 FUN_00114450_persona
+#define H_Cdvd_Destroy H_Cdvd_Destroy_persona
+#define RpSkyRenderStateSet RpSkyRenderStateSet_persona
 typedef struct CampEquipWork
 {
     u8 reserved00[0x12];
@@ -27396,7 +27256,115 @@ extern u16 DAT_007e094e_y6;
 extern char DAT_007cb66c_scalar;
 
 void* FUN_0012c430(KwlnTask*);
-s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category);
+
+// FUN_00130e40. Destroy callback of the "H_CampSoubi1Draw" (equip screen) task
+void h_campEquipDestroySoubi1DrawTask(KwlnTask* task)
+{
+    int* workData;
+
+    workData = (int*)task->workData;
+    if (workData[0xae] != 0) {
+        RwFree((void*)workData[0xae]);
+    }
+    workData[0xae] = 0;
+    if (workData[0xaf] != 0) {
+        RwFree((void*)workData[0xaf]);
+    }
+    workData[0xaf] = 0;
+    if (workData[0xb0] != 0) {
+        RwFree((void*)workData[0xb0]);
+    }
+    workData[0xb0] = 0;
+    if (workData[0xac] != 0) {
+        FUN_001124b0(workData[0xac]);
+    }
+    workData[0xac] = 0;
+    if (workData[0xad] != 0) {
+        FUN_001124b0(workData[0xad]);
+    }
+    workData[0xad] = 0;
+    if (workData[0] != 0) {
+        H_Cdvd_Destroy(workData[0]);
+    }
+    workData[0] = 0;
+    RwFree(workData);
+}
+
+// FUN_00130f20
+KwlnTask* h_campEquipCreateSoubi1DrawTask(KwlnTask* parent, u32 priority, CampVec2 param_3, u16 param_4)
+{
+    u32* workData;
+    KwlnTask* task;
+
+    workData = (u32*)RwCalloc(1, 0x2c4, 0x40000);
+    if (workData == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampSoubi1Draw", priority, FUN_0012c430, h_campEquipDestroySoubi1DrawTask, workData);
+    if (task == NULL) {
+        return NULL;
+    }
+    *(CampVec2*)((int)workData + 8) = param_3;
+    workData[5] = 1;
+    *(u16*)((int)workData + 0x12) = param_4;
+    return task;
+}
+// FUN_00131000
+int FUN_00131000(const void* left, const void* right)
+{
+    u16 leftId;
+    u16 rightId;
+
+    leftId = datGetEquipmentId(1, *(const u16*)left);
+    rightId = datGetEquipmentId(1, *(const u16*)right);
+    if (leftId == rightId) {
+        return 0;
+    }
+    if (leftId < rightId) {
+        return -1;
+    }
+    return 1;
+}
+
+// FUN_00131090
+s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
+{
+    u16 indexes[300];
+    s32 index;
+    s32 count;
+    u16 equipmentId;
+    u16* outputIndexes;
+    s16 pcIdValue;
+    s32 categoryValue;
+    s32 copyIndex;
+
+    (void)unused;
+    outputIndexes = (u16*)output;
+    categoryValue = category;
+    count = 0;
+    index = 0;
+    pcIdValue = pcId;
+    for (; index < 300; index++) {
+        equipmentId = datGetEquipmentId(pcIdValue, index);
+        if (equipmentId == 0) {
+            continue;
+        }
+        if ((func_001712d0_y6((s16)equipmentId) & 0x20) == 0) {
+            continue;
+        }
+        if (func_00171250((s16)equipmentId) != categoryValue) {
+            continue;
+        }
+        indexes[count++] = (u16)index;
+    }
+    if (count > 1) {
+        qsort(indexes, count, sizeof(indexes[0]), campEquipComparatorCall);
+    }
+    for (copyIndex = 0; copyIndex < count; copyIndex++) {
+        outputIndexes[copyIndex] = indexes[copyIndex];
+    }
+    return count;
+}
 
 static inline CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
 {
@@ -27415,6 +27383,179 @@ static inline void campEquipDrawSprite(void* atlas, s32 tile, f32 scale,
     sprite->alpha = alpha;
     FUN_001127d0_y6(sprite, 1);
     FUN_00115980_y6(sprite);
+}
+
+// FUN_0012DC20
+u32 FUN_0012dc20(u32* work)
+{
+    s32 i;
+    u32 allFinished;
+    u8* records;
+
+    allFinished = 1;
+    i = 0;
+    while (i < 10) {
+        records = (u8*)work[0xae];
+        if (*(s32*)(records + i * 0x44 + 4) != 0) {
+            if (func_0018b700(records + i * 0x44) != 0) {
+                FUN_0012e3b0((void*)work, i,
+                             (u8*)work[0xae] + i * 0x44);
+            }
+            records = (u8*)work[0xae];
+            if (*(s32*)(records + i * 0x44 + 0x18) !=
+                *(s32*)(records + i * 0x44 + 0x20)) {
+                allFinished = 0;
+            }
+        }
+        i++;
+    }
+    return allFinished;
+}
+
+// FUN_0012DCF0
+u32 FUN_0012dcf0(u32* work)
+{
+    s32 i;
+    u32 allFinished;
+    u8* records;
+
+    allFinished = 1;
+    i = 0;
+    while (i < 10) {
+        records = (u8*)work[0xaf];
+        if (*(s32*)(records + i * 0x44 + 4) != 0) {
+            if (func_0018b700(records + i * 0x44) != 0) {
+                FUN_0012f6d0((void*)work, i,
+                             (u8*)work[0xaf] + i * 0x44);
+            }
+            records = (u8*)work[0xaf];
+            if (*(s32*)(records + i * 0x44 + 0x18) !=
+                *(s32*)(records + i * 0x44 + 0x20)) {
+                allFinished = 0;
+            }
+        }
+        i++;
+    }
+    return allFinished;
+}
+
+// FUN_0012DDC0
+void FUN_0012ddc0(void* arg)
+{
+    u32* work;
+    CampEquipSprite* sprite;
+
+    work = (u32*)arg;
+    if (func_0018b700((void*)work[0xb0]) == 0) {
+        return;
+    }
+    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
+    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
+    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f;
+    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
+    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
+    FUN_001127d0_y6(sprite, 1);
+    FUN_00115980_y6(sprite);
+    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
+    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
+    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f + 700.0f;
+    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
+    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
+    FUN_001127d0_y6(sprite, 1);
+    FUN_00115980_y6(sprite);
+    ((f32*)work[0xb0])[0xc] -= 1.0f;
+    if (((f32*)work[0xb0])[0xc] < -700.0f) {
+        ((f32*)work[0xb0])[0xc] += 700.0f;
+    }
+}
+
+// FUN_0012DF50
+s32 FUN_0012df50_y6(u32 mask)
+{
+    if ((mask & 0x000001) != 0) return 0;
+    if ((mask & 0x000002) != 0) return 1;
+    if ((mask & 0x000004) != 0) return 2;
+    if ((mask & 0x000008) != 0) return 3;
+    if ((mask & 0x000010) != 0) return 4;
+    if ((mask & 0x000020) != 0) return 5;
+    if ((mask & 0x000040) != 0) return 6;
+    if ((mask & 0x000080) != 0) return 7;
+    if ((mask & 0x000100) != 0) return 0;
+    if ((mask & 0x000200) != 0) return 1;
+    if ((mask & 0x000400) != 0) return 2;
+    if ((mask & 0x000800) != 0) return 3;
+    if ((mask & 0x001000) != 0) return 4;
+    if ((mask & 0x002000) != 0) return 5;
+    if ((mask & 0x004000) != 0) return 6;
+    if ((mask & 0x008000) != 0) return 7;
+    if ((mask & 0x010000) != 0) return 9;
+    if ((mask & 0x020000) != 0) return 10;
+    if ((mask & 0x040000) != 0) return 11;
+    if ((mask & 0x080000) != 0) return 13;
+    if ((mask & 0x100000) != 0) return 13;
+    return 0;
+}
+
+// FUN_0012E170
+void FUN_0012e170_equip(void* atlas, s32 baseTile, CampVec2 position,
+                  s32 scale, s32 red, s32 green, s32 blue, s32 alpha,
+                  s32 value, s32 digits)
+{
+    f32 x;
+
+    x = position.x;
+    if (digits == 3) {
+        if (value >= 100) {
+            CampEquipSprite* sprite;
+
+            sprite = (CampEquipSprite*)FUN_001158b0_y6(
+                0, atlas, baseTile + value / 100);
+            sprite->spriteScale = (f32)scale;
+            sprite->x = x;
+            sprite->y = position.y;
+            sprite->alpha = (u8)alpha;
+            sprite->red = (u8)red;
+            sprite->green = (u8)green;
+            sprite->blue = (u8)blue;
+            FUN_001127d0_y6(sprite, 1);
+            FUN_00115980_y6(sprite);
+        }
+        x += 16.0f;
+        digits--;
+    }
+    if (digits == 2) {
+        if (value >= 10) {
+            CampEquipSprite* sprite;
+
+            sprite = (CampEquipSprite*)FUN_001158b0_y6(
+                0, atlas, baseTile + (value / 10) % 10);
+            sprite->spriteScale = (f32)scale;
+            sprite->x = x;
+            sprite->y = position.y;
+            sprite->alpha = (u8)alpha;
+            sprite->red = (u8)red;
+            sprite->green = (u8)green;
+            sprite->blue = (u8)blue;
+            FUN_001127d0_y6(sprite, 1);
+            FUN_00115980_y6(sprite);
+        }
+        x += 16.0f;
+    }
+    {
+        CampEquipSprite* sprite;
+
+        sprite = (CampEquipSprite*)FUN_001158b0_y6(
+            0, atlas, baseTile + value % 10);
+        sprite->spriteScale = (f32)scale;
+        sprite->x = x;
+        sprite->y = position.y;
+        sprite->alpha = (u8)alpha;
+        sprite->red = (u8)red;
+        sprite->green = (u8)green;
+        sprite->blue = (u8)blue;
+        FUN_001127d0_y6(sprite, 1);
+        FUN_00115980_y6(sprite);
+    }
 }
 
 static inline void campEquipAnimateMain(u32* work, s32 mode)
@@ -27820,179 +27961,6 @@ void* FUN_0012c430(KwlnTask* task)
         break;
     }
     return NULL;
-}
-
-// FUN_0012DC20
-u32 FUN_0012dc20(u32* work)
-{
-    s32 i;
-    u32 allFinished;
-    u8* records;
-
-    allFinished = 1;
-    i = 0;
-    while (i < 10) {
-        records = (u8*)work[0xae];
-        if (*(s32*)(records + i * 0x44 + 4) != 0) {
-            if (func_0018b700(records + i * 0x44) != 0) {
-                FUN_0012e3b0((void*)work, i,
-                             (u8*)work[0xae] + i * 0x44);
-            }
-            records = (u8*)work[0xae];
-            if (*(s32*)(records + i * 0x44 + 0x18) !=
-                *(s32*)(records + i * 0x44 + 0x20)) {
-                allFinished = 0;
-            }
-        }
-        i++;
-    }
-    return allFinished;
-}
-
-// FUN_0012DCF0
-u32 FUN_0012dcf0(u32* work)
-{
-    s32 i;
-    u32 allFinished;
-    u8* records;
-
-    allFinished = 1;
-    i = 0;
-    while (i < 10) {
-        records = (u8*)work[0xaf];
-        if (*(s32*)(records + i * 0x44 + 4) != 0) {
-            if (func_0018b700(records + i * 0x44) != 0) {
-                FUN_0012f6d0((void*)work, i,
-                             (u8*)work[0xaf] + i * 0x44);
-            }
-            records = (u8*)work[0xaf];
-            if (*(s32*)(records + i * 0x44 + 0x18) !=
-                *(s32*)(records + i * 0x44 + 0x20)) {
-                allFinished = 0;
-            }
-        }
-        i++;
-    }
-    return allFinished;
-}
-
-// FUN_0012DDC0
-void FUN_0012ddc0(void* arg)
-{
-    u32* work;
-    CampEquipSprite* sprite;
-
-    work = (u32*)arg;
-    if (func_0018b700((void*)work[0xb0]) == 0) {
-        return;
-    }
-    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
-    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
-    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f;
-    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
-    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
-    FUN_001127d0_y6(sprite, 1);
-    FUN_00115980_y6(sprite);
-    sprite = (CampEquipSprite*)FUN_001158b0_y6(0, (void*)work[0xac], 0x1d);
-    sprite->spriteScale = *(f32*)((u8*)work[0xb0] + 0x24);
-    sprite->x = *(f32*)((u8*)work[0xb0] + 0x38) + 268.0f + 700.0f;
-    sprite->y = *(f32*)((u8*)work[0xb0] + 0x3c);
-    sprite->alpha = (u8)((u32*)work[0xb0])[0x10];
-    FUN_001127d0_y6(sprite, 1);
-    FUN_00115980_y6(sprite);
-    ((f32*)work[0xb0])[0xc] -= 1.0f;
-    if (((f32*)work[0xb0])[0xc] < -700.0f) {
-        ((f32*)work[0xb0])[0xc] += 700.0f;
-    }
-}
-
-// FUN_0012DF50
-s32 FUN_0012df50_y6(u32 mask)
-{
-    if ((mask & 0x000001) != 0) return 0;
-    if ((mask & 0x000002) != 0) return 1;
-    if ((mask & 0x000004) != 0) return 2;
-    if ((mask & 0x000008) != 0) return 3;
-    if ((mask & 0x000010) != 0) return 4;
-    if ((mask & 0x000020) != 0) return 5;
-    if ((mask & 0x000040) != 0) return 6;
-    if ((mask & 0x000080) != 0) return 7;
-    if ((mask & 0x000100) != 0) return 0;
-    if ((mask & 0x000200) != 0) return 1;
-    if ((mask & 0x000400) != 0) return 2;
-    if ((mask & 0x000800) != 0) return 3;
-    if ((mask & 0x001000) != 0) return 4;
-    if ((mask & 0x002000) != 0) return 5;
-    if ((mask & 0x004000) != 0) return 6;
-    if ((mask & 0x008000) != 0) return 7;
-    if ((mask & 0x010000) != 0) return 9;
-    if ((mask & 0x020000) != 0) return 10;
-    if ((mask & 0x040000) != 0) return 11;
-    if ((mask & 0x080000) != 0) return 13;
-    if ((mask & 0x100000) != 0) return 13;
-    return 0;
-}
-
-// FUN_0012E170
-void FUN_0012e170_equip(void* atlas, s32 baseTile, CampVec2 position,
-                  s32 scale, s32 red, s32 green, s32 blue, s32 alpha,
-                  s32 value, s32 digits)
-{
-    f32 x;
-
-    x = position.x;
-    if (digits == 3) {
-        if (value >= 100) {
-            CampEquipSprite* sprite;
-
-            sprite = (CampEquipSprite*)FUN_001158b0_y6(
-                0, atlas, baseTile + value / 100);
-            sprite->spriteScale = (f32)scale;
-            sprite->x = x;
-            sprite->y = position.y;
-            sprite->alpha = (u8)alpha;
-            sprite->red = (u8)red;
-            sprite->green = (u8)green;
-            sprite->blue = (u8)blue;
-            FUN_001127d0_y6(sprite, 1);
-            FUN_00115980_y6(sprite);
-        }
-        x += 16.0f;
-        digits--;
-    }
-    if (digits == 2) {
-        if (value >= 10) {
-            CampEquipSprite* sprite;
-
-            sprite = (CampEquipSprite*)FUN_001158b0_y6(
-                0, atlas, baseTile + (value / 10) % 10);
-            sprite->spriteScale = (f32)scale;
-            sprite->x = x;
-            sprite->y = position.y;
-            sprite->alpha = (u8)alpha;
-            sprite->red = (u8)red;
-            sprite->green = (u8)green;
-            sprite->blue = (u8)blue;
-            FUN_001127d0_y6(sprite, 1);
-            FUN_00115980_y6(sprite);
-        }
-        x += 16.0f;
-    }
-    {
-        CampEquipSprite* sprite;
-
-        sprite = (CampEquipSprite*)FUN_001158b0_y6(
-            0, atlas, baseTile + value % 10);
-        sprite->spriteScale = (f32)scale;
-        sprite->x = x;
-        sprite->y = position.y;
-        sprite->alpha = (u8)alpha;
-        sprite->red = (u8)red;
-        sprite->green = (u8)green;
-        sprite->blue = (u8)blue;
-        FUN_001127d0_y6(sprite, 1);
-        FUN_00115980_y6(sprite);
-    }
 }
 
 static inline CampVec2 campEquipRecordPosition(const u8* record)
@@ -28991,115 +28959,6 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
 #undef posX
 #undef alpha
 #pragma pop
-// FUN_00130e40. Destroy callback of the "H_CampSoubi1Draw" (equip screen) task
-void h_campEquipDestroySoubi1DrawTask(KwlnTask* task)
-{
-    int* workData;
-
-    workData = (int*)task->workData;
-    if (workData[0xae] != 0) {
-        RwFree((void*)workData[0xae]);
-    }
-    workData[0xae] = 0;
-    if (workData[0xaf] != 0) {
-        RwFree((void*)workData[0xaf]);
-    }
-    workData[0xaf] = 0;
-    if (workData[0xb0] != 0) {
-        RwFree((void*)workData[0xb0]);
-    }
-    workData[0xb0] = 0;
-    if (workData[0xac] != 0) {
-        FUN_001124b0(workData[0xac]);
-    }
-    workData[0xac] = 0;
-    if (workData[0xad] != 0) {
-        FUN_001124b0(workData[0xad]);
-    }
-    workData[0xad] = 0;
-    if (workData[0] != 0) {
-        H_Cdvd_Destroy(workData[0]);
-    }
-    workData[0] = 0;
-    RwFree(workData);
-}
-
-// FUN_00130f20
-KwlnTask* h_campEquipCreateSoubi1DrawTask(KwlnTask* parent, u32 priority, CampVec2 param_3, u16 param_4)
-{
-    u32* workData;
-    KwlnTask* task;
-
-    workData = (u32*)RwCalloc(1, 0x2c4, 0x40000);
-    if (workData == NULL) {
-        return NULL;
-    }
-    task = kwlnTaskCreate(parent, "H_CampSoubi1Draw", priority, FUN_0012c430, h_campEquipDestroySoubi1DrawTask, workData);
-    if (task == NULL) {
-        return NULL;
-    }
-    *(CampVec2*)((int)workData + 8) = param_3;
-    workData[5] = 1;
-    *(u16*)((int)workData + 0x12) = param_4;
-    return task;
-}
-// FUN_00131000
-int FUN_00131000(const void* left, const void* right)
-{
-    u16 leftId;
-    u16 rightId;
-
-    leftId = datGetEquipmentId(1, *(const u16*)left);
-    rightId = datGetEquipmentId(1, *(const u16*)right);
-    if (leftId == rightId) {
-        return 0;
-    }
-    if (leftId < rightId) {
-        return -1;
-    }
-    return 1;
-}
-
-// FUN_00131090
-s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
-{
-    u16 indexes[300];
-    s32 index;
-    s32 count;
-    u16 equipmentId;
-    u16* outputIndexes;
-    s16 pcIdValue;
-    s32 categoryValue;
-    s32 copyIndex;
-
-    (void)unused;
-    outputIndexes = (u16*)output;
-    categoryValue = category;
-    count = 0;
-    index = 0;
-    pcIdValue = pcId;
-    for (; index < 300; index++) {
-        equipmentId = datGetEquipmentId(pcIdValue, index);
-        if (equipmentId == 0) {
-            continue;
-        }
-        if ((func_001712d0_y6((s16)equipmentId) & 0x20) == 0) {
-            continue;
-        }
-        if (func_00171250((s16)equipmentId) != categoryValue) {
-            continue;
-        }
-        indexes[count++] = (u16)index;
-    }
-    if (count > 1) {
-        qsort(indexes, count, sizeof(indexes[0]), campEquipComparatorCall);
-    }
-    for (copyIndex = 0; copyIndex < count; copyIndex++) {
-        outputIndexes[copyIndex] = indexes[copyIndex];
-    }
-    return count;
-}
-
 
 
 
@@ -29267,44 +29126,6 @@ void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
             FUN_004d0f00_y5(workData[0xa]);
             workData[0xa] = 0;
         }
-    }
-    RwFree(workData);
-}
-// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
-void h_campItemDestroyNewItemTask(KwlnTask* task)
-{
-    int* workData;
-    int i;
-
-    workData = (int*)task->workData;
-    for (i = 0; i < 3; i++) {
-        if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
-            FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
-            *(int*)((int)workData + i * 4 + 0xb0) = 0;
-            DAT_00833a50[i] = 0;
-        }
-    }
-    if (workData[2] != 0) {
-        H_Cdvd_Destroy(workData[2]);
-        workData[2] = 0;
-    }
-    if (workData[0x29] != 0) {
-        RwFree((void*)workData[0x29]);
-    }
-    if (workData[0x2a] != 0) {
-        RwFree((void*)workData[0x2a]);
-    }
-    if (workData[0x2b] != 0) {
-        RwFree((void*)workData[0x2b]);
-    }
-    if (workData[0x2f] != 0) {
-        RwFree((void*)workData[0x2f]);
-    }
-    if (workData[0x30] != 0) {
-        RwFree((void*)workData[0x30]);
-    }
-    if (workData[0x31] != 0) {
-        RwFree((void*)workData[0x31]);
     }
     RwFree(workData);
 }
@@ -30890,3 +30711,217 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
 
 
 // workData[2] holds the "camp/camp_item.pak" cdvd handle.
+// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
+void h_campItemDestroyNewItemTask(KwlnTask* task)
+{
+    int* workData;
+    int i;
+
+    workData = (int*)task->workData;
+    for (i = 0; i < 3; i++) {
+        if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
+            FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
+            *(int*)((int)workData + i * 4 + 0xb0) = 0;
+            DAT_00833a50[i] = 0;
+        }
+    }
+    if (workData[2] != 0) {
+        H_Cdvd_Destroy(workData[2]);
+        workData[2] = 0;
+    }
+    if (workData[0x29] != 0) {
+        RwFree((void*)workData[0x29]);
+    }
+    if (workData[0x2a] != 0) {
+        RwFree((void*)workData[0x2a]);
+    }
+    if (workData[0x2b] != 0) {
+        RwFree((void*)workData[0x2b]);
+    }
+    if (workData[0x2f] != 0) {
+        RwFree((void*)workData[0x2f]);
+    }
+    if (workData[0x30] != 0) {
+        RwFree((void*)workData[0x30]);
+    }
+    if (workData[0x31] != 0) {
+        RwFree((void*)workData[0x31]);
+    }
+    RwFree(workData);
+}
+#undef FUN_00125b40
+#undef DAT_00960090
+#undef FUN_00114450
+#undef H_Cdvd_Destroy
+#undef RpSkyRenderStateSet
+#pragma opt_propagation off
+// FUN_0016AF90 NONMATCHING
+void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
+{
+    f32 x;
+    f32 y;
+    f32 xLeft;
+    f32 xRight;
+    f32 yTop;
+    f32 yBottom;
+    f32 rowY;
+    f32 barY;
+    s32 totalCount;
+    s32 row;
+    s32 selected;
+    s32 recordIndex;
+    u8* record;
+    s32 condition;
+    u32 type;
+    u32 mainSprite;
+    u32 textId;
+    u32* drawData;
+    undefined1 text[0x100];
+    x = *(f32*)&param_3;
+    y = *(f32*)((u8*)&param_3 + 4);
+    drawData = (u32*)param_2;
+
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
+                       (u8)param_5, x + 36.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x49,
+                       (u8)param_5, x + 348.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4a,
+                       (u8)param_5, x + 55.0f, y + 252.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4b,
+                       (u8)param_5, x + 55.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4c,
+                       (u8)param_5, x + 198.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4d,
+                       (u8)param_5, x + 55.0f, y + 313.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4e,
+                       (u8)param_5, x + 198.0f, y + 313.0f, param_1);
+
+    totalCount = *(s32*)((u8*)param_4 + 0x2d64);
+    if (totalCount != 0) {
+        row = *(s32*)((u8*)param_4 + 0x2d6c);
+        selected = *(s32*)((u8*)param_4 + 0x2d68);
+        recordIndex = row + selected;
+        record = (u8*)param_4 + recordIndex * 0x24;
+        type = *(u32*)(record + 0x78);
+
+        /* jtbl_007B6400 selects the main selected-persona icon. */
+        mainSprite = 0x51;
+        switch (type) {
+        case 0:  mainSprite = 0x51; break;
+        case 1:  mainSprite = 0x52; break;
+        case 2:  mainSprite = 0x53; break;
+        case 3:  mainSprite = 0x54; break;
+        case 4:  mainSprite = 0x55; break;
+        case 5:  mainSprite = 0x56; break;
+        case 6:  mainSprite = 0x5b; break;
+        case 7:  mainSprite = 0x57; break;
+        case 8:  mainSprite = 0x51; break;
+        case 9:  mainSprite = 0x52; break;
+        case 10: mainSprite = 0x53; break;
+        case 11: mainSprite = 0x54; break;
+        case 12: mainSprite = 0x55; break;
+        case 13: mainSprite = 0x56; break;
+        case 14: mainSprite = 0x5b; break;
+        case 15: mainSprite = 0x57; break;
+        case 16: mainSprite = 0x58; break;
+        case 17: mainSprite = 0x59; break;
+        case 18: mainSprite = 0x5a; break;
+        case 19: mainSprite = 0x5a; break;
+        case 20: mainSprite = 0x5a; break;
+        default: break;
+        }
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], mainSprite,
+                           (u8)param_5, x + 127.0f, y + 253.0f, param_1);
+
+        condition = *(s8*)((u8*)record + 0x7e);
+        if (condition == 2) {
+            textId = *(undefined2*)((u8*)record + 0x86);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 1) {
+            textId = *(undefined2*)((u8*)record + 0x84);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 0) {
+            textId = *(undefined2*)((u8*)record + 0x80);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            textId = *(undefined2*)((u8*)record + 0x82);
+            FUN_00523ac8_data(text, gp0xffff8998, textId);
+            campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (const char*)text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else {
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        }
+
+        rowY = y + 356.0f;
+        barY = x + 55.0f;
+        campDataDrawDigits(param_1, (s32)barY, (s32)rowY,
+                           (0xffU - (u32)param_5) | 0xffffff00U, 1, 10, 1,
+                           (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
+                                 *(undefined2*)((u8*)record + 100)));
+    } else {
+        /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
+    }
+
+}
+#pragma opt_propagation reset
