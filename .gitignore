@@ -36,6 +36,18 @@
 *.m2c
 /**/*.ast.c
 
+# --- agent / verification scratch artifacts (never commit) ---
+# Verify + fndiff reports, probe logs and stray objects belong in /build.
+/*.json
+/*.txt
+/*.log
+/*.o
+/*.s
+/*.c
+!/BGM.txt
+**/build/
+/source/
+
 # --- local machine config / editor / caches ---
 /tools/verify_config.local.json
 /tools/__pycache__
