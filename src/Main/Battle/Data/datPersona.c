@@ -1654,6 +1654,7 @@ void datPersonaClearHeroPersonas()
 {
     memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 }
+#pragma opt_loop_invariants reset
 // FUN_00175820
 u32 func_00175820(u16 mode, u16 personaId)
 {
@@ -2048,6 +2049,7 @@ void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
 
     persona->nextExp += exp;
 }
+#pragma opt_loop_invariants reset
 #pragma opt_loop_invariants on
 // FUN_00176510
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
