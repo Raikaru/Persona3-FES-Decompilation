@@ -13,48 +13,7 @@
 extern u32 btlFormation002b8c00(void* work);
 extern u32 btlFormation002b8dc0(void* work);
 
-// FUN_002b8d60
-BtlPacket* btlFormation002b8d60(s32 param_1, u32 flags)
-{
-    BtlPacket* packet;
-    BtlFormationPacket002b8d60* work;
 
-    packet = btlPacketCreate(BTLFORMATION_PACKET_UNK03, sizeof(BtlFormationPacket002b8d60));
-
-    packet->updateFunc = btlFormation002b8c00;
-
-    work = (BtlFormationPacket002b8d60*)packet->workData;
-
-    work->unk_00 = param_1;
-    work->flags = flags;
-
-    return packet;
-}
-
-// FUN_002b8f40
-BtlPacket* btlFormation002b8f40(s32 param_1)
-{
-    BtlPacket* packet;
-    BtlFormationPacket002b8f40* work;
-
-    packet = btlPacketCreate(BTLFORMATION_PACKET_UNK04, sizeof(BtlFormationPacket002b8f40));
-
-    packet->updateFunc = btlFormation002b8dc0;
-
-    work = (BtlFormationPacket002b8f40*)packet->workData;
-
-    work->unk_00 = param_1;
-
-    return packet;
-}
-
-
-
-
-
-
-
-/* Retail formation reference recovery, retained NONMATCHING until codegen cleanup. */
 typedef u8 undefined1;
 typedef u8 bool;
 typedef u16 undefined2;
@@ -92,21 +51,14 @@ typedef struct BtlFormationWork {
   u16 padding56;
   u32 items;
 } BtlFormationWork;
-
-
-#ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
 extern u64 func_00100d80();
-#pragma alias func_00100d80_u32 func_00100d80
 extern u32 func_00100d80_u32(u32 param_1,u32 param_2);
 extern u64 func_00100ec0();
 extern u64 func_001016b0();
-#pragma alias func_001016b0_u32 func_001016b0
 extern u32 func_001016b0_u32(u32 param_1);
 extern u64 func_00102100();
 extern u64 func_001021c0();
-#pragma alias func_001021c0_u32 func_001021c0
 extern u32 func_001021c0_u32(u32 param_1,u8* output);
 extern u64 func_001023a0();
 extern u64 func_00108570();
@@ -129,8 +81,6 @@ extern char D_006964D0[];
 extern char D_006964E8[];
 extern u64 func_00195460();
 extern u64 func_00195540();
-#pragma alias func_00195340_u32 func_00195340
-#pragma alias func_00195540_u32 func_00195540
 extern u32 func_00195340_u32();
 extern u32 func_00195540_u32();
 extern u64 func_00195550();
@@ -150,7 +100,6 @@ typedef struct FormationUpdateResult {
   u16 value3;
   u32 value4;
 } FormationUpdateResult;
-#pragma alias func_001fdf10_btlFormation_result func_001fdf10
 extern void func_001fdf10_btlFormation_result(FormationUpdateResult *result);
 extern u64 func_001fe3b0();
 extern u64 func_001fe430();
@@ -181,9 +130,7 @@ extern u64 func_001ff370();
 extern u64 func_001ff390();
 extern u64 func_001ff3b0();
 extern u64 func_0021c3f0();
-#pragma alias func_0021c3f0_u32 func_0021c3f0
 extern u32 func_0021c3f0_u32(u32 param_1);
-#pragma alias func_0021cca0_u32 func_0021cca0
 extern u32 func_0021cca0_u32(u32 param_1,u32 param_2);
 extern u64 func_0021cca0();
 extern u64 func_0021cce0();
@@ -194,15 +141,12 @@ extern u64 func_0027f650();
 extern u64 func_0027f7c0();
 extern u64 func_0027ffb0();
 extern u64 func_00280870();
-#pragma alias func_00280870_btlFormation_s32 func_00280870
 extern s32 func_00280870_btlFormation_s32(u32 mode, u32 enabled,
                                           void *out, void *end, void *extra,
                                           u32 include);
-#pragma alias func_00280870_btlFormation_f32 func_00280870
 extern f32 func_00280870_btlFormation_f32(u32 mode, u32 enabled,
                                           void *out, void *end, void *extra,
                                           u32 include);
-#pragma alias func_002b96f0_btlFormation_u64 func_002b96f0
 extern void func_002b96f0_btlFormation_u64(float param_1,float param_2,
                                            float *param_3,u32 *param_4,
                                            int param_5,u64 param_6);
@@ -211,10 +155,8 @@ extern u64 func_00289030();
 extern u64 func_0028a780();
 extern u64 func_0029a1d0();
 extern u64 func_0029a210();
-#pragma alias func_0029a210_u32 func_0029a210
 extern u32 func_0029a210_u32(u32 param_1);
 extern u64 func_0029ad20();
-#pragma alias func_0029ad20_u32 func_0029ad20
 extern u32 func_0029ad20_u32(void);
 extern u64 func_0029ad60();
 extern u64 func_002a3b40();
@@ -226,7 +168,6 @@ extern u64 func_002d1a10();
 extern u64 func_002d1a70();
 extern u64 func_002d1de0();
 extern u64 func_002d1fd0();
-#pragma alias func_002d1fd0_c0070 func_002d1fd0
 extern f32 func_002d1fd0_c0070();
 extern u32 func_002d4cf0();
 extern u32 func_002d4e10();
@@ -253,11 +194,8 @@ extern u64 func_002f6bf0();
 extern u64 func_002f6c20();
 extern u64 func_002fd820();
 extern u64 func_002ffbc0();
-#pragma alias func_002ffbc0_u16 func_002ffbc0
 extern u16 func_002ffbc0_u16(u32 max);
-#pragma alias func_002ffbc0_noarg func_002ffbc0
 extern u16 func_002ffbc0_noarg(void);
-#pragma alias func_002ffbc0_noarg_u32 func_002ffbc0
 extern u32 func_002ffbc0_noarg_u32(void);
 extern u64 func_002ffcc0();
 extern u16 func_002ffd70(u32 unit);
@@ -265,65 +203,45 @@ extern u16 func_002ffd80(u32 unit);
 extern u16 func_002ffdf0(u32 unit);
 extern u16 func_00300100(u32 unit);
 extern u64 func_00300530();
-#pragma alias func_00300530_u32 func_00300530
 extern u32 func_00300530_u32(u32 unit);
 extern u64 func_00300550();
-#pragma alias func_00300550_u32 func_00300550
 extern u32 func_00300550_u32(u32 param_1);
 extern u64 func_00300580();
-#pragma alias func_00300580_u32 func_00300580
 extern u32 func_00300580_u32(u32 param_1,u32 param_2);
 extern u64 func_003005e0();
-#pragma alias func_003005e0_u32 func_003005e0
 extern u32 func_003005e0_u32(u32 param_1,u32 param_2);
 extern u64 func_00301540();
 extern u64 func_00301750();
 extern u64 func_00301870();
 extern u64 func_00301ca0();
 extern u64 func_00303130();
-#pragma alias func_00303130_s32 func_00303130
 extern s32 func_00303130_s32(s32,s32,s32,s32,s32,s32,s32,s32);
 extern u32 func_00306e80();
 extern u64 func_003080c0();
 extern u64 func_003082f0();
 extern u64 func_003086f0();
-#pragma alias func_003086f0_u32 func_003086f0
 extern u32 func_003086f0_u32(u32 param_1,u32 param_2);
 extern u64 func_00308860();
 extern u64 func_00308930();
 extern u64 func_00308a80();
 extern u64 func_00308ba0();
 extern u64 func_00308bb0();
-#pragma alias func_00308ba0_u32 func_00308ba0
-#pragma alias func_00308bb0_u32 func_00308bb0
-#pragma alias func_00308860_u32 func_00308860
 extern u32 func_00308ba0_u32(u32 param_1);
 extern u32 func_00308bb0_u32(u32 param_1);
 extern u32 func_00308860_u32(void);
-#pragma alias func_0035f160_u32 func_0035f160
-#pragma alias func_0029ad60_u32 func_0029ad60
-#pragma alias func_0035f060_u32 func_0035f060
 extern u32 func_0035f160_u32(void);
 extern u32 func_0029ad60_u32(u16 param_1);
 extern void func_0035f060_u32(u32 param_1);
-#pragma alias func_0035ed20_u32 func_0035ed20
 extern u32 func_0035ed20_u32(u32 param_1);
-#pragma alias func_002a3d70_f32 func_002a3d70
 extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
-#pragma alias func_002a3d70_move func_002a3d70
 extern u32 func_002a3d70_move(u32 action,RwV3d *startPos,RwV3d *startTarget,RwV3d *endPos,RwV3d *endTarget,float duration);
-#pragma alias func_002b8d60_u32 func_002b8d60
 extern u32 func_002b8d60_u32(s32 param_1,u32 param_2);
-#pragma alias func_0035ee60_f32 func_0035ee60
 extern float func_0035ee60_f32(u32 param_1);
 extern u64 func_0030b4b0();
-#pragma alias func_0030b4b0_u32 func_0030b4b0
 extern u32 func_0030b4b0_u32(u32 param_1,u32 param_2);
-#pragma alias func_0030b5a0_u32 func_0030b5a0
 extern u32 func_0030b5a0_u32(u32,u32);
 extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
-#pragma alias func_0030bc20_u32 func_0030bc20
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern u64 func_003176c0();
@@ -337,13 +255,11 @@ extern u64 func_00321120();
 extern u64 func_00321130();
 extern u64 func_00321320();
 extern u64 func_00324bd0();
-#pragma alias func_00324bd0_u32 func_00324bd0
 extern u32 func_00324bd0_u32(u32 param_1);
 extern u64 func_003252a0();
 extern u64 func_00325500();
 extern u64 func_003257e0();
 extern u64 func_00325920();
-#pragma alias func_00325920_u32 func_00325920
 extern u32 func_00325920_u32(u32 param_1);
 extern u64 func_00325c10();
 extern u64 func_00325d60();
@@ -365,7 +281,6 @@ extern u64 func_0035f060();
 extern u64 func_0035f160();
 extern u64 func_003a4220();
 extern u64 func_003b2cb0();
-#pragma alias func_003b2cb0_typed func_003b2cb0
 extern void func_003b2cb0_typed(f32 scale, s32 x, s32 y, u32 color, u32 font,
                                 u32 align, const void *text, u32 width, u32 flags);
 extern u64 func_0045a430();
@@ -385,13 +300,11 @@ extern u32 func_0052ea18(float param_1, float param_2);
 extern u8 DAT_00696440;
 extern u8 DAT_00696460;
 extern u8 DAT_00696d70;
-#pragma alias DAT_00696d70_abs DAT_00696d70
 extern u8 DAT_00696d70_abs[];
 extern u8 DAT_00696e10;
 extern u32 DAT_00696e30;
 extern u32 DAT_00696e34;
 extern u8 DAT_00696fb0;
-#pragma alias DAT_00696fb0_abs DAT_00696fb0
 extern u8 DAT_00696fb0_abs[];
 extern u32 DAT_006971b0;
 extern code gFormationDispatchTable[];
@@ -412,10 +325,6 @@ extern u32 DAT_007e094e;
 extern u32 DAT_007e0952;
 extern u32 DAT_007e0958;
 extern u32 DAT_007e095a;
-#pragma alias DAT_007e094e_abs DAT_007e094e
-#pragma alias DAT_007e0952_abs DAT_007e0952
-#pragma alias DAT_007e0958_abs DAT_007e0958
-#pragma alias DAT_007e095a_abs DAT_007e095a
 extern u8 DAT_007e094e_abs[];
 extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e0958_abs[];
@@ -424,11 +333,6 @@ extern u32 DAT_00957100;
 extern u32 DAT_00957140;
 extern u32 DAT_00957144;
 extern u32 DAT_00957148;
-#pragma alias DAT_00957100_abs DAT_00957100
-#pragma alias DAT_00957140_abs DAT_00957140
-#pragma alias DAT_00957150_abs DAT_00957150
-#pragma alias DAT_00957160_abs DAT_00957160
-#pragma alias DAT_00957170_abs DAT_00957170
 extern u8 DAT_00957100_abs[];
 extern u8 DAT_00957140_abs[];
 extern u8 DAT_00957150_abs[];
@@ -444,23 +348,16 @@ extern u32 DAT_00957170;
 extern u32 DAT_00957174;
 extern u32 DAT_00957178;
 extern float DAT_00960088;
-#pragma alias DAT_00960088_abs DAT_00960088
 extern float DAT_00960088_abs[];
 extern u64 (*DAT_00960090)();
-#pragma alias DAT_00960090_abs DAT_00960090
 extern u64 (*DAT_00960090_abs)();
-#pragma alias DAT_009600a4_abs DAT_009600a4
 extern u64 (*DAT_009600a4_abs)();
 extern u64 (*DAT_00960178)();
-#pragma alias DAT_00960178_u32_abs DAT_00960178
 extern u32 (*DAT_00960178_u32_abs[])(...);
-#pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern void (*DAT_0096017c[])(...);
-#pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern u32* PTR_DAT_00696f30;
-#pragma alias PTR_DAT_00696f30_abs PTR_DAT_00696f30
 extern u32* PTR_DAT_00696f30_abs[];
 extern code pcRam006971bc;
 extern code pcRam006971c8;
@@ -524,7 +421,6 @@ extern void LAB_002bd060(u32 **param_1);
 extern void LAB_002bd210(u32 **param_1);
 extern char* PTR_s_N_00646555_0x12_00696dcc[];
 extern char* PTR_s_battle_effect_ATC_D_BED_00696c80;
-#pragma alias PTR_s_battle_effect_ATC_D_BED_abs PTR_s_battle_effect_ATC_D_BED_00696c80
 extern char *PTR_s_battle_effect_ATC_D_BED_abs[];
 extern char* PTR_s_battle_effect_SHADOW_S_BED_007cc6f0;
 extern u32 _DAT_007ce4f4;
@@ -543,7 +439,6 @@ extern code PTR_FUN_006974d4[];
 extern code PTR_FUN_006974e0[];
 extern code PTR_FUN_006974ec[];
 extern code PTR_FUN_006975e0[];
-#pragma alias PTR_FUN_006975e0_abs PTR_FUN_006975e0
 extern code PTR_FUN_006975e0_abs[];
 extern code PTR_FUN_006975e8[];
 extern code PTR_FUN_006975f0[];
@@ -581,9 +476,6 @@ extern float fGpffff839c;
 extern u8* iGpffffb6fc;
 extern u8* iGpffffb708;
 extern u8* iGpffffb7b8;
-
-
-/* Target forward declarations. */
 extern u32 func_002b8dc0(u16 *param_1);
 extern u32 func_002b8f90(u16 param_1);
 extern void func_002b9030(u32 param_1);
@@ -591,12 +483,10 @@ extern void func_002b90d0(int param_1,u32 param_2);
 extern void func_002b9220(int param_1);
 extern void func_002b9300(int param_1);
 extern bool func_002b9350(int param_1);
-#pragma alias func_002b9350_u32 func_002b9350
 extern u32 func_002b9350_u32(int param_1);
 extern u32 func_002b9370(int param_1,u16 param_2);
 extern u32 func_002b93c0(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
-#pragma alias func_002b93e0_4arg func_002b93e0
 extern u32 func_002b93e0_4arg(u32 param_1,u16 param_2,u32 param_3,u32 param_4);
 extern void func_002b94f0(BtlFormationWork *param_1);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
@@ -613,7 +503,6 @@ extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16]);
 extern void func_002ba3a0(int param_1);
-#pragma alias func_002ba3a0_void func_002ba3a0
 extern void func_002ba3a0_void(void);
 extern void func_002ba900(int param_1);
 extern void func_002baa20(int *param_1);
@@ -659,12 +548,10 @@ extern void func_002bc890(u8 *param_1,u16 param_2);
 extern u32 func_002bc910(u32 *param_1);
 extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,int param_8);
-#pragma alias func_002bc9c0_long func_002bc9c0
 extern void func_002bc9c0_long(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
 extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
 extern void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5);
-#pragma alias func_002bce10_reordered func_002bce10
 extern void func_002bce10_reordered(int param_3,float param_1,float param_2,
                                     int param_4,float *param_5);
 extern u32 func_002bd080(int *param_1);
@@ -725,13 +612,9 @@ extern void func_002bfc50(void);
 extern void func_002bfc70(void);
 extern void func_002bfc90(void);
 extern void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5);
-#pragma alias func_002bfcb0_ptr func_002bfcb0
 extern void func_002bfcb0_ptr(int param_1,void *param_2,u32 param_3,u32 param_4,long param_5);
-#pragma alias func_002bfcb0_u64call func_002bfcb0
 extern void func_002bfcb0_u64call(u64 param_1,u64 param_2,u32 param_3,u32 param_4,long param_5);
 extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
-// Typed alias for callers that consume the helper's full 16-bit result.
-#pragma alias func_002bff60_u16 func_002bff60
 extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
 extern void func_002c0070(int param_1,int param_2);
 extern u32 func_002c0880(int param_1);
@@ -746,7 +629,6 @@ extern int func_002c0e30(short param_1,u32 param_2,u32 param_3);
 typedef u32 (*FormationPredicate)(int unit,u32 selector);
 extern u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
                          u32 param_5,FormationPredicate param_6,int *param_7);
-#pragma alias func_002c0f40_call func_002c0f40
 extern u32 func_002c0f40_call(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                               long param_5,code *param_6,long param_7);
 extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
@@ -824,7 +706,6 @@ extern u32 func_002c3300(int param_1,u32 param_2);
 extern bool func_002c3400(int param_1);
 extern u64 func_002c3430(u64 param_1,u64 param_2,u32 param_3,u16 param_4,int param_5,code *param_6);
 extern u32 func_002c3770(u32 param_1,u32 param_2);
-#pragma alias func_002c3770_u32 func_002c3770
 extern u32 func_002c3770_u32(u32 param_1,u32 param_2);
 extern u32 func_002c3be0(u32 param_1);
 extern u32 func_002c3ce0(u32 param_1);
@@ -868,20 +749,16 @@ extern u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int pa
 extern u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5);
 extern s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4);
 extern u32 func_002c5380(int param_1,int param_2,u16 *param_3,int param_4);
-#pragma alias func_002c5380_noargs func_002c5380
 extern u32 func_002c5380_noargs();
 extern u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4);
 extern s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4);
 extern s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4);
-#pragma alias func_002c6300_s32 func_002c6300
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
 extern u16 func_002c6ba0(int param_1);
 extern undefined * func_002c6e30(int param_1,u32 param_2);
 extern u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4);
-// The caller passes two 32-bit resource identifiers.
-#pragma alias func_002c6f50_u32 func_002c6f50
 extern u32 func_002c6f50_u32(u32 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002c70d0(int param_1,int param_2);
 extern bool func_002c7250(int param_1);
@@ -1122,1118 +999,8 @@ extern u32 func_002d13c0(void);
 extern u32 func_002d1490(void);
 extern u32 func_002d14d0(void);
 extern u32 func_002d1510(void);
-
-// FUN_002b8dc0 MATCHING
-
-u32 func_002b8dc0(u16* flags)
-{
-  BtlAction* currentAction;
-  BtlUnit* unit;
-  float distance;
-  RwV3d position;
-  RwV3d reference;
-  RwV3d direction;
-
-  currentAction = (BtlAction*)func_0029ad20_u32();
-  func_002b71e0();
-  if ((*flags & 1) != 0) {
-    for (unit = *(BtlUnit **)(iGpffffb6fc + 0x150); unit != NULL; unit = unit->next) {
-      if (func_00300580_u32((u32)unit->datUnit, 0x180271) == 0 &&
-          func_0030b5a0_u32((u32)unit->datUnit, 0) == 0) {
-        if (currentAction->unit == unit) {
-          distance = 250.0f;
-        } else {
-          distance = 350.0f;
-        }
-        btlUnit0027f7c0(unit, &position, NULL, &reference);
-        reference.y = position.y;
-        direction.x = position.x - reference.x;
-        direction.y = position.y - reference.y;
-        direction.z = position.z - reference.z;
-        RwV3dNormalize(&direction, &direction);
-        direction.x *= distance;
-        direction.y *= distance;
-        direction.z *= distance;
-        position.x += direction.x;
-        position.y += direction.y;
-        position.z += direction.z;
-        btlUnitSetPos(unit, &position);
-      }
-    }
-  }
-  return 1;
-}
-
-// FUN_002b8f90
-
-u32 func_002b8f90(u16 param_1)
-{
-  BtlFormationState *state;
-
-  state = (BtlFormationState *)(*DAT_00960178_abs)(0x638,0x40000);
-  switch (param_1) {
-  case 0:
-    state->flags = 0;
-    break;
-  case 1:
-    state->flags = 0;
-    break;
-  case 2:
-    state->flags = 8;
-    break;
-  }
-  state->counter = 1;
-  state->value = 0;
-  return (u32)state;
-}
-
-// FUN_002b9030
-
-void func_002b9030(u32 param_1)
-{
-  BtlFormationState *state;
-
-  state = (BtlFormationState *)param_1;
-  state->counter--;
-  if (((state->flags & 8) != 0) && (state->counter == 1)) {
-    func_002b9220((int)state);
-  }
-  if (state->counter == 0) {
-    if ((state->flags & 2) != 0) {
-      func_002b9220((int)state);
-    }
-    (*DAT_0096017c)(state);
-  }
-  return;
-}
-
-// FUN_002b90d0
-
-void func_002b90d0(int destination, u32 source)
-{
-  u16 outer;
-  u16 index;
-  s32 count;
-  u8* entry;
-  int block;
-  u8* referencedEntry;
-  u32 packed;
-  u32 resource;
-  u32 continueLoop;
-
-  func_00521250(destination, source, 0x630);
-  outer = 0;
-  while ((s32)(continueLoop = outer) < 2) {
-    block = destination + (outer & 0xffff) * 0x314;
-    count = *(u16 *)(block + 0x10);
-    entry = (u8 *)(block + 0x1c);
-    for (index = 0; index < count; index++) {
-      if (entry[0] != 0xfe) {
-        if (entry[0] == 0xff) {
-          packed = *(u32 *)(entry + 4);
-          referencedEntry = (u8 *)(destination + (packed >> 5) * 0x314 +
-                                      (packed & 0x1f) * 0x18 + 0x1c);
-          resource = func_00325920_u32(*(u32 *)(referencedEntry + 4));
-          entry[0] = referencedEntry[0];
-        } else {
-          resource = func_00324bd0_u32(source + *(u32 *)(entry + 4));
-        }
-        *(u32 *)(entry + 4) = resource;
-      }
-      entry += 0x18;
-    }
-    outer++;
-  }
-  *(u16 *)(destination + 0x630) |= 2;
-}
-
-// FUN_002b9220
-
-void func_002b9220(int state)
-{
-  u16 outer;
-  u16 index;
-  int count;
-  u8 *entry;
-  int block;
-  u32 continueLoop;
-
-  outer = 0;
-  while ((s32)(continueLoop = outer) < 2) {
-    block = state + (outer & 0xffff) * 0x314;
-    count = *(u16 *)(block + 0x10);
-    entry = (u8 *)(block + 0x1c);
-    index = 0;
-    while (index < count) {
-      if (*entry != 0xfe && *entry != 0xfd) {
-        func_003257e0(*(u32 *)(entry + 4));
-      }
-      entry += 0x18;
-      index++;
-    }
-    outer++;
-  }
-  *(u16 *)(state + 0x630) &= 0xfffd;
-}
-
-// FUN_002b9300
-
-void func_002b9300(int param_1)
-{
-  extern void func_002b90d0(int,u32);
-  BtlFormationState *state;
-
-  state = (BtlFormationState *)param_1;
-  state->counter++;
-  if (((state->flags & 8) != 0) && (state->counter == 2)) {
-    func_002b90d0(param_1,state->value);
-  }
-  return;
-}
-
-// FUN_002b9350
-
-bool func_002b9350(int param_1)
-
-{
-  return (*(u16 *)(param_1 + 0x630) & 2) != 0;
-}
-
-// FUN_002b9370
-
-u32 func_002b9370(int param_1,u16 param_2)
-{
-  u32 result;
-
-  switch (param_2) {
-  case 0:
-    result = *(u32 *)(param_1 + 8);
-    break;
-  case 1:
-    result = *(u32 *)(param_1 + 0x328);
-    break;
-  default:
-    result = 0;
-    break;
-  }
-  return result;
-}
-
-// FUN_002b93c0
-
-u32 func_002b93c0(int param_1,u16 param_2)
-
-{
-  int iVar1 = (param_2 & 0xffff) * 0x314;
-  return *(u32 *)(iVar1 + param_1 + 0xc);
-}
-
-// FUN_002b93e0
-
-u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
-{
-  extern void func_00521408(void *,u32,u32);
-  u8 random;
-  u32 result;
-  u32 size;
-  BtlFormationWork *work;
-
-  size = *(u16 *)((u8 *)(uintptr_t)((u32)param_2 * 0x314) +
-                  (uintptr_t)param_1 + 0x10) * 4 + 0x5c;
-  result = (*DAT_00960178_abs)(size,0x40000);
-  func_00521408((void *)result,0,size);
-  work = (BtlFormationWork *)result;
-  work->state = param_1;
-  work->list = (u32)(uintptr_t)((u8 *)(uintptr_t)param_1 +
-                                (u32)param_2 * 0x314 + 8);
-  work->count = *(u16 *)((u8 *)(uintptr_t)work->list + 8);
-  work->items = (u32)((u8 *)work + 0x5c);
-  work->sentinel = -1;
-  work->argument3 = param_3;
-  work->argument4 = param_4;
-  work->argument5 = param_5;
-  if (param_2 == 1) {
-    random = func_002ffbc0(100);
-    work->random = random;
-  }
-  return result;
-}
-
-// FUN_002b94f0
-
-void func_002b94f0(BtlFormationWork *work)
-{
-  s32 count;
-  u16 index;
-  u32 *items;
-
-  count = work->count;
-  items = (u32 *)(uintptr_t)work->items;
-  index = 0;
-  while (index < count) {
-    if (*items != 0) {
-      func_003257e0(*items);
-    }
-    items++;
-    index++;
-  }
-  (*DAT_0096017c)(work);
-}
-
-
-// FUN_002b9590 MATCHING
-
-float func_002b9590(int param_1)
-{
-  float fVar1 = 0;
-
-  fVar1 = fGpffff8398 * ((*(float *)(param_1 + 0x90) * *(float *)(param_1 + 0x2c) +
-          *(float *)(param_1 + 0x8c) * *(float *)(param_1 + 0x2c) * 0.5f) * 0.5f);
-  if (fVar1 > 2.5f) {
-    fVar1 = 2.5f;
-  }
-  else if (fVar1 < fGpffff839c) {
-    fVar1 = fGpffff839c;
-  }
-  return fVar1;
-}
-
-// FUN_002b9600
-
-void func_002b9600(u32 *param_1)
-
-{
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  u32 *puVar4;
-  int iVar3 = 0;
-  
-  puVar4 = (u32 *)(uintptr_t)DAT_00957100_abs;
-  iVar3 = 8;
-  do {
-    uVar1 = *param_1;
-    uVar2 = param_1[1];
-    param_1 = param_1 + 2;
-    iVar3 = iVar3 + -1;
-    *puVar4 = uVar1;
-    puVar4[1] = uVar2;
-    puVar4 = puVar4 + 2;
-  } while (0 < iVar3);
-  return;
-}
-
-// FUN_002b9640
-
-u32 func_002b9640(int param_1)
-
-{
-  u16 uVar1 = 0;
-  u32 uVar2 = 0;
-  
-  uVar2 = 0;
-  if (*(int *)(param_1 + 8) != 0) {
-    uVar2 = uVar2 | 0x80;
-  }
-  if (*(int *)(param_1 + 0xc) != 0) {
-    uVar2 = uVar2 | 1;
-  }
-  uVar1 = *(u16 *)(param_1 + 4);
-  if ((uVar1 & 0x400) != 0) {
-    uVar2 = uVar2 | 2;
-  }
-  if ((uVar1 & 0x100) != 0) {
-    uVar2 = uVar2 | 4;
-  }
-  if ((uVar1 & 4) != 0) {
-    uVar2 = uVar2 | 0x10;
-  }
-  if ((uVar1 & 2) != 0) {
-    uVar2 = uVar2 | 8;
-  }
-  if ((*(u16 *)(param_1 + 6) & 2) != 0) {
-    uVar2 = uVar2 | 0x20;
-  }
-  if ((*(u16 *)(param_1 + 6) & 4) != 0) {
-    uVar2 = uVar2 | 0x40;
-  }
-  return uVar2;
-}
-
-// FUN_002b96e0
-
-void func_002b96e0(int param_1,u32 param_2)
-
-{
-  *(u32 *)(param_1 + 0x634) = param_2;
-  return;
-}
-
-// FUN_002b96f0 NONMATCHING
-
-void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
-                   u32 param_6)
-{
-  u8 bVar1 = *(u8 *)(param_5 + 2);
-  float fVar3 = 0.0f;
-  float fStack_10[4];
-  float uStack_20[4];
-  float vectorWork[4];
-  float origin[4];
-  u8 *out = (u8 *)(u32)param_6;
-
-  if (*(u8 *)(param_5 + 1) == 4) {
-    if (bVar1 == 8) {
-      fVar3 = param_1;
-      if (*(short *)(param_5 + 4) == 0) {
-        fVar3 = 2.0f;
-      }
-    }
-    else {
-      fVar3 = 2.0f;
-    }
-  }
-  else {
-    fVar3 = param_2 * *(float *)(&DAT_00696440 + (u32)*(u8 *)(param_5 + 1) * 4) +
-            param_3[1] + 0.0f;
-    if ((bVar1 == 8) && (*(short *)(param_5 + 4) != 0)) {
-      fVar3 += param_1;
-    }
-  }
-
-  if ((bVar1 == 10) || (bVar1 == 9)) {
-    float scale;
-    u32 scaleBits;
-
-    func_003297a0(origin);
-    __asm__ volatile (
-        ".set noreorder          \n"
-        "lqc2 vf10, 0(%0)        \n"
-        ".set reorder"
-        :
-        : "r" (origin)
-        : "vf10", "memory"
-    );
-    if (param_1 >= param_2) {
-      param_2 = param_1;
-    }
-    scale = -param_2;
-    *(RwV4d*)origin = *(RwV4d*)param_3;
-    if (bVar1 != 9) {
-      origin[1] = fVar3;
-    }
-    __asm__ volatile (
-        ".set noreorder          \n"
-        "lqc2 vf11, 0(%0)        \n"
-        "vsub.xyz vf11, vf11, vf10\n"
-        ".set reorder"
-        :
-        : "r" (origin)
-        : "vf11", "memory"
-    );
-    if (bVar1 == 10) {
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "sqc2 vf11, 0(%0)        \n"
-          ".set reorder"
-          :
-          : "r" (vectorWork)
-          : "memory"
-      );
-      *(u32 *)&vectorWork[1] = 0;
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "lqc2 vf11, 0(%0)        \n"
-          ".set reorder"
-          :
-          : "r" (vectorWork)
-          : "vf11", "memory"
-      );
-    }
-    __asm__ volatile (
-        ".set noreorder             \n"
-        "vmul.xyz vf2, vf11, vf11   \n"
-        "vmulax.w ACC, vf0, vf2x    \n"
-        "vmadday.w ACC, vf0, vf2y   \n"
-        "vmaddz.w vf2, vf0, vf2z    \n"
-        "vrsqrt Q, vf0w, vf2w       \n"
-        "vwaitq                     \n"
-        "vmulq.xyz vf11, vf11, Q    \n"
-        "mfc1 %0, %1                \n"
-        "nop                        \n"
-        "qmtc2.ni %0, vf2           \n"
-        "vmulx.xyzw vf11, vf11, vf2x\n"
-        "lqc2 vf10, 0(%2)           \n"
-        "vadd.xyzw vf10, vf10, vf11 \n"
-        "sqc2 vf10, 0(%3)           \n"
-        ".set reorder"
-        : "=r" (scaleBits)
-        : "f" (scale), "r" (origin), "r" (out)
-        : "vf2", "vf10", "vf11", "ACC", "Q", "memory"
-    );
-  }
-  else if (bVar1 == 8) {
-    *(float *)out = *param_3;
-    *(float *)(out + 4) = fVar3;
-    *(float *)(out + 8) = param_3[2];
-  }
-  else {
-    uStack_20[0] = *(float *)param_4;
-    uStack_20[1] = *((float *)param_4 + 1);
-    uStack_20[2] = *((float *)param_4 + 2);
-    uStack_20[3] = *((float *)param_4 + 3);
-    func_004bdde0(*(float *)(&DAT_00696460 + (u32)bVar1 * 4),uStack_20,(const void *)0x697880,2);
-    func_004be1e0(fStack_10,(const void *)0x697890,1,uStack_20);
-    *(float *)out = *param_3 + fStack_10[0] * param_1;
-    *(float *)(out + 4) = fVar3 + fStack_10[1] * param_1;
-    *(float *)(out + 8) = param_3[2] + fStack_10[2] * param_1;
-  }
-  *(u32 *)(out + 0xc) = 0;
-}
-
-// FUN_002b99d0
-
-void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4)
-
-{
-  s32 uVar1;
-  u32 param3Local, param4Local;
-  float fVar2;
-  float fVar3;
-  RwV3d output;
-  RwV3d scaled;
-  RwV3d transformed;
-  
-  param3Local = (u32)param_3;
-  param4Local = (u32)param_4;
-  uVar1 = *(u16 *)((int)param3Local + 4);
-  if (uVar1 == 0) {
-    fVar2 = *(float *)(param_1 + 0x30) * *(float *)(param_2 + 0x2c);
-  }
-  else {
-    fVar2 = (float)uVar1;
-  }
-  fVar3 = *(float *)(param_1 + 0x2c) * *(float *)(param_2 + 0x2c) * 0.5f;
-  scaled.x = *(float *)(param_1 + 0x20) * *(float *)(param_1 + 0x50);
-  scaled.y = *(float *)(param_1 + 0x24) * *(float *)(param_1 + 0x50);
-  scaled.z = *(float *)(param_1 + 0x28) * *(float *)(param_1 + 0x50);
-  func_004be1e0(&transformed,&scaled,1,(u8 *)param_1 + 0x40);
-  output.x = transformed.x + *(float *)(param_1 + 0x34);
-  output.y = transformed.y + *(float *)(param_1 + 0x38);
-  output.z = transformed.z + *(float *)(param_1 + 0x3c);
-  func_002b96f0(fVar2,fVar3,(float *)&output,(u32 *)(param_1 + 0x40),(int)param3Local,param4Local);
-  return;
-}
-
-#pragma alias func_0027ffb0_v3d func_0027ffb0
 extern void func_0027ffb0_v3d(int unit, RwV3d* out);
-#pragma alias func_00318ed0_v3d func_00318ed0
 extern s32 func_00318ed0_v3d(u32 model, u32 index, RwV3d* out);
-
-// FUN_002b9b00
-
-void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
-{
-  s32 result;
-  u16 index;
-  RwV3d position;
-  RwV3d scaled;
-  RwV3d transformed;
-
-  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0_v3d(param_2, &position);
-  }
-  else {
-    index = *(u16*)(param_3 + 4);
-    result = func_00318ed0_v3d(
-        *(u32*)(param_2 + 0x9f4), index, &position);
-    if (result == 0) {
-      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
-      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
-      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
-      func_004be1e0(&transformed, &scaled, 1, param_1 + 0x40);
-      position.x = transformed.x + *(f32*)(param_1 + 0x34);
-      position.y = transformed.y + *(f32*)(param_1 + 0x38);
-      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
-    }
-  }
-  param_4[0] = position.x;
-  param_4[1] = position.y;
-  param_4[2] = position.z;
-}
-
-// FUN_002b9c00
-
-void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
-
-{
-  s32 result;
-  u16 index;
-  u32 model;
-  u32 model_variant;
-  RwV3d position;
-  RwV3d scaled;
-  RwV3d transformed;
-
-  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0_v3d(param_2, &position);
-  }
-  else {
-    model = *(u32*)(param_2 + 0x9f4);
-    model_variant = *(u32*)(model + 0x3c4);
-    if (model_variant == 0) {
-      model_variant = model;
-    }
-    func_003176c0(model_variant);
-    func_00318b90(model_variant);
-    index = *(u16*)(param_3 + 4);
-    result = func_00318ed0_v3d(model_variant, index, &position);
-    if (result == 0) {
-      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
-      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
-      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
-      func_004be1e0(&transformed, &scaled, 1,
-          (void*)((u8*)param_1 + 0x40));
-      position.x = transformed.x + *(f32*)(param_1 + 0x34);
-      position.y = transformed.y + *(f32*)(param_1 + 0x38);
-      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
-    }
-  }
-  param_4[0] = position.x;
-  param_4[1] = position.y;
-  param_4[2] = position.z;
-}
-
-// FUN_002b9d40
-
-void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
-{
-  s32 result;
-  u16 index;
-  u32 model;
-  u32 model_variant;
-  RwV3d position;
-  RwV3d scaled;
-  RwV3d transformed;
-
-  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0_v3d(param_2, &position);
-  }
-  else {
-    model = *(u32*)(param_2 + 0x9f4);
-    model_variant = *(u32*)(model + 0x3b8);
-    if (model_variant == 0) {
-      model_variant = model;
-    }
-    func_003176c0(model_variant);
-    func_00318b90(model_variant);
-    index = *(u16*)(param_3 + 4);
-    result = func_00318ed0_v3d(model_variant, index, &position);
-    if (result == 0) {
-      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
-      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
-      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
-      func_004be1e0(&transformed, &scaled, 1,
-          (void*)((u8*)param_1 + 0x40));
-      position.x = transformed.x + *(f32*)(param_1 + 0x34);
-      position.y = transformed.y + *(f32*)(param_1 + 0x38);
-      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
-    }
-  }
-  param_4[0] = position.x;
-  param_4[1] = position.y;
-  param_4[2] = position.z;
-}
-
-// FUN_002b9e80
-
-void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4)
-
-{
-  s32 uVar1;
-  float fVar2;
-  struct {
-    u32 uStack_20;
-    u32 uStack_1c;
-    u32 uStack_18;
-    u32 uStack_14;
-    float auStack_10[3];
-    float fStack_4;
-  } work;
-  
-  fVar2 = func_00280870_btlFormation_f32(3,0,work.auStack_10,&work.fStack_4,0,0);
-  uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 == 0) {
-    __asm__ ("" : "+f"(fVar2));
-  }
-  else {
-    fVar2 = (float)uVar1;
-  }
-  work.uStack_14 = 0x3f800000;
-  work.uStack_20 = 0;
-  work.uStack_1c = 0;
-  work.uStack_18 = 0;
-  func_002b96f0(fVar2,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
-  return;
-}
-
-// FUN_002b9f30
-
-void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4)
-
-{
-  s32 uVar1;
-  u16 uVar2;
-  float fVar3;
-  struct {
-    u32 uStack_20;
-    u32 uStack_1c;
-    u32 uStack_18;
-    u32 uStack_14;
-    float auStack_10[3];
-    float fStack_4;
-  } work;
-  
-  if (*(u8 *)(param_2 + 0xa2) == '\0') {
-    uVar2 = 1;
-  }
-  else {
-    uVar2 = 2;
-  }
-  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
-  uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 == 0) {
-    __asm__ ("" : "+f"(fVar3));
-  }
-  else {
-    fVar3 = (float)uVar1;
-  }
-  work.uStack_14 = 0x3f800000;
-  work.uStack_20 = 0;
-  work.uStack_1c = 0;
-  work.uStack_18 = 0;
-  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
-  return;
-}
-
-// FUN_002ba000
-
-void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4)
-
-{
-  s32 uVar1;
-  u16 uVar2;
-  float fVar3;
-  struct {
-    u32 uStack_20;
-    u32 uStack_1c;
-    u32 uStack_18;
-    u32 uStack_14;
-    float auStack_10[3];
-    float fStack_4;
-  } work;
-  
-  if (*(u8 *)(param_2 + 0xa2) == '\0') {
-    uVar2 = 2;
-  }
-  else {
-    uVar2 = 1;
-  }
-  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
-  uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 == 0) {
-    __asm__ ("" : "+f"(fVar3));
-  }
-  else {
-    fVar3 = (float)uVar1;
-  }
-  work.uStack_14 = 0x3f800000;
-  work.uStack_20 = 0;
-  work.uStack_1c = 0;
-  work.uStack_18 = 0;
-  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
-  return;
-}
-// FUN_002ba0d0
-void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
-{
-  param_4[0] = 0;
-  param_4[1] = 0;
-  param_4[2] = 0;
-  param_4[3] = 0;
-}
-
-
-/* W322 probe: func_002ba0f0 with opt_common_subs off improved normalized_diff 389 -> 372 (object 680/688). */
-#pragma opt_common_subs off
-// FUN_002ba0f0 NONMATCHING
-
-void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
-
-{
-  int iVar1 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  RwV4d transform[4];
-  RwV4d source[4];
-  RwV3d direction;
-  
-  switch(*param_3) {
-  case '\0':
-    func_004be1e0(&direction,(const void *)0x697890,1,(const void *)(param_1 + 0x40));
-    if ((direction.x == 0.0f) && (direction.z == 0.0f)) {
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "sqc2 vf0, 0(%0)         \n"
-          ".set reorder"
-          :
-          : "r" (param_4)
-          : "memory"
-      );
-    }
-    else {
-      uVar4 = func_0052ea18(direction.x,direction.z);
-      func_00357ea0(0,uVar4,0);
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "sqc2 vf10, 0(%0)         \n"
-          ".set reorder"
-          :
-          : "r" (param_4)
-          : "memory"
-      );
-    }
-    break;
-  case '\x01':
-    if ((*(u32 *)(param_2 + 0x98) & 2) == 0) {
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "sqc2 vf0, 0(%0)         \n"
-          ".set reorder"
-          :
-          : "r" (param_4)
-          : "memory"
-      );
-    }
-    else {
-      lVar3 = func_00318d10(*(u32 *)(param_2 + 0x9f4),*(u16 *)(param_3 + 4),source);
-      if (lVar3 == 0) {
-        __asm__ volatile (
-            ".set noreorder          \n"
-            "sqc2 vf0, 0(%0)         \n"
-            ".set reorder"
-            :
-            : "r" (param_4)
-            : "memory"
-        );
-      }
-      else {
-        transform[0].x = source[0].x;
-        transform[0].y = source[0].y;
-        transform[0].z = source[0].z;
-        transform[0].w = 0.0f;
-        transform[1].x = source[1].x;
-        transform[1].y = source[1].y;
-        transform[1].z = source[1].z;
-        transform[1].w = 0.0f;
-        transform[2].x = source[2].x;
-        transform[2].y = source[2].y;
-        transform[2].z = source[2].z;
-        transform[2].w = 0.0f;
-        transform[3].x = source[3].x;
-        transform[3].y = source[3].y;
-        transform[3].z = source[3].z;
-        transform[3].w = 0.0f;
-        func_00329ed0(transform);
-        __asm__ volatile (
-            ".set noreorder          \n"
-            "sqc2 vf10, 0(%0)         \n"
-            ".set reorder"
-            :
-            : "r" (param_4)
-            : "memory"
-        );
-      }
-    }
-    break;
-  case '\x02':
-  case '\x03':
-  case '\x04':
-  case '\f':
-    __asm__ volatile (
-        ".set noreorder          \n"
-        "sqc2 vf0, 0(%0)         \n"
-        ".set reorder"
-        :
-        : "r" (param_4)
-        : "memory"
-    );
-    break;
-  case '\a':
-  case '\n':
-  case '\v':
-    __asm__ volatile (
-        ".set noreorder          \n"
-        "sqc2 vf0, 0(%0)         \n"
-        ".set reorder"
-        :
-        : "r" (param_4)
-        : "memory"
-    );
-    break;
-  case '\b':
-  case '\t':
-    if ((*(u32 *)(param_2 + 0x98) & 2) == 0) {
-      __asm__ volatile (
-          ".set noreorder          \n"
-          "sqc2 vf0, 0(%0)         \n"
-          ".set reorder"
-          :
-          : "r" (param_4)
-          : "memory"
-      );
-    }
-    else {
-      iVar1 = *(int *)(*(int *)(param_2 + 0x9f4) + 0x3b8 + (u32)(*param_3 == '\b') * 0xc);
-      if (iVar1 != 0) {
-        lVar3 = func_00318d10(iVar1,*(u16 *)(param_3 + 4),source);
-        if (lVar3 == 0) {
-          __asm__ volatile (
-              ".set noreorder          \n"
-              "sqc2 vf0, 0(%0)         \n"
-              ".set reorder"
-              :
-              : "r" (param_4)
-              : "memory"
-          );
-        }
-        else {
-          transform[0].x = source[0].x;
-          transform[0].y = source[0].y;
-          transform[0].z = source[0].z;
-          transform[0].w = 0.0f;
-          transform[1].x = source[1].x;
-          transform[1].y = source[1].y;
-          transform[1].z = source[1].z;
-          transform[1].w = 0.0f;
-          transform[2].x = source[2].x;
-          transform[2].y = source[2].y;
-          transform[2].z = source[2].z;
-          transform[2].w = 0.0f;
-          transform[3].x = source[3].x;
-          transform[3].y = source[3].y;
-          transform[3].z = source[3].z;
-          transform[3].w = 0.0f;
-          func_00329ed0(transform);
-          __asm__ volatile (
-              ".set noreorder          \n"
-              "sqc2 vf10, 0(%0)         \n"
-              ".set reorder"
-              :
-              : "r" (param_4)
-              : "memory"
-          );
-        }
-      }
-    }
-  }
-  return;
-}
-#pragma opt_common_subs reset
-
-// FUN_002ba3a0 NONMATCHING
-
-void func_002ba3a0(int param_1)
-
-{
-  char cVar1;
-  u32 uVar2;
-  int iVar3;
-  u32 uVar4;
-  u32 uVar5;
-  u32 uVar6;
-  bool bVar7;
-  short *psVar8;
-  int *piVar10;
-  char *pcVar11;
-  int *piVar12;
-  u32 uVar13;
-  int iVar14;
-  int iVar15;
-  int iVar16;
-  float fVar17;
-  float fVar18;
-  u8 auStack_40[16];
-  u8 auStack_30[16];
-  u8 auStack_20[16];
-  u8 auStack_10[16];
-  
-  piVar10 = (int *)param_1;
-  iVar3 = piVar10[6];
-  uVar4 = piVar10[4];
-  uVar5 = piVar10[2];
-  if (((uVar5 & 0x800) == 0) && ((uVar4 & 0xff000000) != 0)) {
-    uVar6 = piVar10[3];
-    if ((uVar6 == 0) ||
-       ((((uVar5 & 0x1000) != 0 && (uVar6 == *(u32 *)(*piVar10 + 800))) || ((uVar5 & 0x100) != 0)))
-       ) {
-      psVar8 = (short *)func_002fc520((BtlUnit *)iVar3);
-      if (psVar8 != 0) {
-        *(float *)(piVar10 + 8) = (float)*psVar8;
-        *(float *)(piVar10 + 9) = (float)psVar8[1];
-        *(float *)(piVar10 + 10) = (float)psVar8[2];
-        *(float *)(piVar10 + 0xb) = (float)(u16)psVar8[3];
-        *(float *)(piVar10 + 0xc) = (float)(u16)psVar8[4];
-      }
-      else {
-        iVar14 = *(int *)(iVar3 + 0x84);
-        iVar15 = *(int *)(iVar3 + 0x88);
-        *(RwV3d*)(piVar10 + 8) = *(RwV3d*)(iVar3 + 0x80);
-        piVar10[0xb] = *(int *)(iVar3 + 0x8c);
-        piVar10[0xc] = *(int *)(iVar3 + 0x90);
-      }
-      *(RwV3d*)(piVar10 + 0xd) = *(RwV3d*)(iVar3 + 4);
-      if (iVar3 == piVar10[7]) {
-        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
-      }
-      else if ((*(char *)(iVar3 + 0xa2) == *(char *)(piVar10[7] + 0xa2)) &&
-              (*(char *)(iVar3 + 0xa2) == '\x01')) {
-        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
-      }
-      else {
-        func_0027ffb0(iVar3,auStack_10);
-        func_0027ffb0(piVar10[7],auStack_20);
-        func_002d1de0(piVar10 + 0x10,auStack_10,auStack_20);
-      }
-      piVar10[0x14] = *(int *)(iVar3 + 0x2c);
-    }
-    func_00352c30(piVar10[6],piVar10[7]);
-    piVar12 = (int *)piVar10[0x16];
-    uVar2 = *(u16 *)(piVar10 + 0x15);
-    pcVar11 = (char *)(piVar10[1] + 0x14);
-    for (uVar13 = 0; uVar13 < uVar2; uVar13 = uVar13 + 1) {
-      if ((*(u32 *)(pcVar11 + 0x10) < uVar6) && (*pcVar11 != -2)) {
-        if (*piVar12 == 0) {
-          if (((*(u16 *)(*piVar10 + 0x630) & 4) == 0) || (*pcVar11 == -3)) {
-            iVar14 = func_00325920_u32(*(u32 *)(pcVar11 + 4));
-            *piVar12 = iVar14;
-            bVar7 = true;
-          }
-          else {
-            *piVar12 = *(int *)(pcVar11 + 4);
-            bVar7 = false;
-            *pcVar11 = -3;
-          }
-          if (((*(char *)(piVar10[1] + 0x10) != '\0') && (iVar3 != 0)) &&
-             ((cVar1 = pcVar11[8], cVar1 == '\a' ||
-              (((cVar1 == '\x06' || (cVar1 == '\x01')) || (cVar1 == '\0')))))) {
-            fVar18 = fGpffff839c;
-            if (*(char *)(piVar10[1] + 0x10) == '\x01') {
-              fVar17 = fGpffff8398 *
-                       (*(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c) +
-                       *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c) * 0.5f) * 0.5f;
-              if (2.5f < fVar17) {
-                fVar18 = 2.5f;
-              }
-              else if (fGpffff839c <= fVar17) {
-                fVar18 = fVar17;
-              }
-            }
-            else {
-              iVar14 = piVar10[7];
-              fVar17 = fGpffff8398 *
-                       (*(float *)(iVar14 + 0x90) * *(float *)(iVar14 + 0x2c) +
-                       *(float *)(iVar14 + 0x8c) * *(float *)(iVar14 + 0x2c) * 0.5f) * 0.5f;
-              if (2.5f < fVar17) {
-                fVar18 = 2.5f;
-              }
-              else if (fGpffff839c <= fVar17) {
-                fVar18 = fVar17;
-              }
-            }
-            func_00325e40(fVar18,*piVar12);
-          }
-          if (bVar7) goto LAB_002ba8a0;
-        }
-        if ((*(short *)(pcVar11 + 0xe) == 0) ||
-           (((piVar10[2] & 0x1eU) == 0 && (0x31 < *(u8 *)(piVar10 + 5))))) {
-          (*(PTR_FUN_00696490)[(u8)pcVar11[8]])(param_1,iVar3,pcVar11 + 8,auStack_30);
-          func_00325c10(*piVar12,auStack_30);
-          func_002ba0f0(param_1,iVar3,(u8 *)pcVar11 + 8,&auStack_40);
-          func_00325d60(*piVar12,auStack_40);
-          func_00326030(*piVar12,uVar4);
-          func_003252a0(*piVar12);
-        }
-      }
-LAB_002ba8a0:
-      pcVar11 = pcVar11 + 0x18;
-      piVar12 = piVar12 + 1;
-    }
-    piVar10[3] = piVar10[3] + 1;
-  }
-  return;
-}
-
-// FUN_002ba900
-
-void func_002ba900(int param_1)
-{
-  extern u16 func_00321130(void);
-  u16 count;
-  u32 savedState;
-  int *entries;
-  s32 limit;
-
-  if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
-    entries = *(int **)(param_1 + 0x58);
-    count = *(u16 *)(param_1 + 0x54);
-    if ((*(u32 *)(param_1 + 8) & 0x8000) == 0) {
-      u16 index;
-      index = 0;
-      limit = count;
-      while (index < limit) {
-        if (*entries != 0) func_00325500(*entries);
-        index++;
-        entries++;
-      }
-    } else {
-      u16 index;
-      savedState = func_00321130();
-      func_00321320(DAT_00957100_abs);
-      func_00321120(4);
-      index = 0;
-      limit = count;
-      while (index < limit) {
-        if (*entries != 0) func_00325500(*entries);
-        index++;
-        entries++;
-      }
-      func_00321120(savedState);
-    }
-  }
-}
-
-// FUN_002baa20
-
-void func_002baa20(int *param_1)
-{
-  extern void func_002b90d0(int,u32);
-  extern u32 func_00100d80(u32,u32);
-  BtlFormationState *state;
-
-  state = (BtlFormationState *)*param_1;
-  state->counter++;
-  if (((state->flags & 8) != 0) && (state->counter == 2)) {
-    func_002b90d0((int)state,state->value);
-  }
-  if ((*(u16 *)(param_1 + 3) & 1) == 0) {
-    param_1[1] = func_00100d80(param_1[2],0);
-  } else {
-    param_1[1] = 0;
-  }
-  state->flags |= 1;
-  return;
-}
-
 typedef struct FormationLoadWork {
   BtlFormationState* state;
   u32 request;
@@ -2241,832 +1008,13 @@ typedef struct FormationLoadWork {
   u16 flags;
   u16 padding;
 } FormationLoadWork;
-
-// FUN_002baad0 MATCHING
-
-u32 func_002baad0(int* data)
-{
-  FormationLoadWork* work;
-  BtlFormationState* state;
-  u32 result;
-  u32 resource;
-  u8 output[4];
-
-  work = (FormationLoadWork*)data;
-  state = work->state;
-  if (work->request == 0) {
-    work->request = func_00100d80_u32(work->source, 0);
-  }
-  if (func_001016b0_u32(work->request) != 0) {
-    resource = func_001021c0_u32(work->source, output);
-    func_002b90d0((int)state, resource);
-    func_00100ec0(work->request);
-    state->flags &= 0xfffe;
-    state->flags |= 2;
-    state->counter--;
-    if ((state->flags & 8) != 0 && state->counter == 1) {
-      func_002b9220((int)state);
-    }
-    if (state->counter == 0) {
-      if ((state->flags & 2) != 0) {
-        func_002b9220((int)state);
-      }
-      (*DAT_0096017c_abs)(state);
-    }
-    result = 1;
-  } else {
-    result = 0;
-  }
-  return result;
-}
-
-// FUN_002bac00 MATCHING
-
-u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3)
-{
-  typedef struct FormationStringWork {
-    u32 value;
-    u32 unused;
-    char *text;
-    u16 field;
-    u16 padding;
-  } FormationStringWork;
-  BtlPacket *packet;
-  FormationStringWork *work;
-
-  packet = btlPacketCreate(0x400, func_00524388(param_2) + sizeof(FormationStringWork));
-  packet->unk_47 &= 0xfe;
-  packet->initFunc = (BtlPacketInitFunc)func_002baa20;
-  packet->updateFunc = (BtlPacketUpdateFunc)func_002baad0;
-  work = packet->workData;
-  work->value = param_1;
-  work->text = (char *)(work + 1);
-  work->field = param_3;
-  func_00524270(work->text, param_2);
-  return (u32)packet;
-}
-
-// FUN_002bacb0
-
-void func_002bacb0(u32 *param_1)
-
-{
-  u32 uVar1 = 0;
-  
-  param_1[6] = 0;
-  func_002b9300(*param_1);
-  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
-  *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + 1;
-  switch (*(short *)(param_1 + 3)) {
-  case 0:
-    param_1[5] = *(u32 *)(param_1[1] + 0x9fc);
-    break;
-  case 1:
-    param_1[5] = *(u32 *)(param_1[2] + 0x9fc);
-    break;
-  }
-  uVar1 = (u32)func_002bb9c0(param_1[5]);
-  param_1[4] = uVar1;
-  return;
-}
-
-// FUN_002bad60 NONMATCHING
-
-u32 func_002bad60(u32 *param_1)
-
-{
-  short sVar1;
-  u16 *puVar2;
-  int iVar3;
-  u16 functionIndex;
-  u32 unaff_s2_lo;
-  u32 unaff_s1_lo;
-  
-  if (func_002b9350_u32(*param_1) == 0)
-    return 0;
-  puVar2 = (u16 *)param_1[4];
-    if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
-      return 1;
-    }
-    else {
-      functionIndex = *(volatile u16 *)(param_1 + 3);
-      iVar3 = func_002b9370(*param_1,functionIndex);
-      if ((*puVar2 & 0x40) == 0) {
-        if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
-          *puVar2 = *puVar2 | 0x100;
-          return 0;
-        }
-        if ((param_1[6] == 0) &&
-            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
-          sVar1 = *(short *)(param_1 + 3);
-          switch (sVar1) {
-          case 0:
-            unaff_s2_lo = param_1[1];
-            unaff_s1_lo = param_1[2];
-            break;
-          case 1:
-            unaff_s2_lo = param_1[2];
-            unaff_s1_lo = param_1[1];
-            break;
-          }
-          *(u32 *)(puVar2 + 8) =
-              func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
-          *puVar2 = *puVar2 | 0x30;
-        }
-        param_1[6] = param_1[6] + 2;
-      }
-    }
-  return 0;
-}
-
-// FUN_002baec0
-
-bool func_002baec0(u32 *param_1)
-{
-  int iVar2;
-  u16 index;
-  u32 value;
-  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *index_ptr;
-  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *value_ptr;
-  
-  if (!func_002b9350(*param_1)) {
-    return false;
-  }
-  index_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *)(param_1 + 3);
-  value_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *)param_1;
-  iVar2 = (index = *index_ptr,
-           value = *value_ptr,
-           func_002b93c0(value,index));
-  iVar2 <<= 1;
-  if (iVar2 < 1) {
-    iVar2 = 2;
-  }
-  return iVar2 <= (int)param_1[6];
-}
-
-// FUN_002baf30
-
-void func_002baf30(u32 *param_1)
-
-{
-  func_002bbac0(param_1[5],(u16 *)param_1[4]);
-  func_002b9030(*(int *)param_1);
-  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
-  *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + -1;
-  return;
-}
-
-// FUN_002baf90
-
-void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
-                 u32 param_5)
-
-{
-  u32 *puVar1;
-  int iVar2 = 0;
-  
-  iVar2 = func_0027ec10(0x301,0x20);
-  *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
-  *(code *)(iVar2 + 0x68) = (code)func_002bacb0;
-  *(code *)(iVar2 + 0x6c) = (code)func_002bad60;
-  *(code *)(iVar2 + 0x74) = (code)func_002baec0;
-  *(code *)(iVar2 + 0x70) = (code)func_002baf30;
-  puVar1 = *(u32 **)(iVar2 + 0x78);
-  *puVar1 = param_1;
-  puVar1[1] = param_2;
-  puVar1[2] = param_3;
-  *(u16 *)(puVar1 + 3) = param_4;
-  puVar1[7] = param_5;
-  return;
-}
-
-// FUN_002bb050
-
-void func_002bb050(u32 *param_1)
-
-{
-  u32 uVar1 = 0;
-  
-  param_1[7] = 0;
-  func_002b9300(*param_1);
-  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
-  uVar1 = (u32)func_002bb9c0(*(u32 *)(param_1[1] + 0x9fc));
-  param_1[6] = uVar1;
-  return;
-}
-
-// FUN_002bb0b0 NONMATCHING
-
-u32 func_002bb0b0(u32 *param_1)
-
-{
-  u16 *puVar1;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  
-  if (func_002b9350(*param_1) == 0) {
-    uVar3 = 0;
-  }
-  else {
-    puVar1 = (u16 *)param_1[6];
-    if ((*(u32 *)(puVar1 + 2) & 0xff000000) == 0) {
-      uVar3 = 1;
-    }
-    else {
-      if ((*puVar1 & 0x40) == 0) {
-        if ((*(u16 *)(param_1 + 8) & 0x4000) != 0) {
-          iVar2 = param_1[7] + 1;
-        }
-        else {
-          iVar2 = func_002b9370(*param_1,0);
-          iVar2 = iVar2 << 1;
-        }
-        if ((((param_1[2] != 0) && (param_1[2] * 2 + -0xd <= (int)param_1[7])) ||
-            ((*(long *)(param_1 + 4) != 0 &&
-             (lVar4 = func_0027e310(*(long *)(param_1 + 4),0x3fffffffffffffff), lVar4 == 0)))) ||
-           ((iVar2 != 0 && (iVar2 <= (int)param_1[7])))) {
-          if ((*(u16 *)(param_1 + 8) & 0x2000) != 0) {
-            *(u8 *)(param_1[6] + 8) = 4;
-          }
-          *(u16 *)param_1[6] = *(u16 *)param_1[6] | 0x100;
-          return 0;
-        }
-        if (param_1[7] == 0) {
-          uVar3 = func_002b93e0(*param_1,0,param_1[1],param_1[1],*(u16 *)(param_1 + 8));
-          *(u32 *)(puVar1 + 8) = uVar3;
-        }
-        else if (param_1[7] == 2) {
-          *puVar1 = *puVar1 | 0xb0;
-          *(u32 *)(puVar1 + 2) = (u32)((u32)((long)*(int *)(puVar1 + 2) << 0x28) >> 0x28);
-        }
-        param_1[7] = param_1[7] + 2;
-      }
-      uVar3 = 0;
-    }
-  }
-  return uVar3;
-}
-
-// FUN_002bb290
-
-void func_002bb290(u32 *param_1)
-
-{
-  func_002bbac0(*(u32 *)(param_1[1] + 0x9fc),(u16 *)param_1[6]);
-  func_002b9030(*(int *)param_1);
-  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
-  return;
-}
-
-// FUN_002bb2f0
-
-void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
-                 u16 param_5)
-
-{
-  u32 *puVar1;
-  int iVar2 = 0;
-  
-  iVar2 = func_0027ec10(0x302,0x28);
-  *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
-  *(code *)(iVar2 + 0x68) = (code)func_002bb050;
-  *(code *)(iVar2 + 0x6c) = (code)func_002bb0b0;
-  *(code *)(iVar2 + 0x70) = (code)func_002bb290;
-  puVar1 = *(u32 **)(iVar2 + 0x78);
-  *puVar1 = param_1;
-  puVar1[1] = param_2;
-  puVar1[2] = param_3;
-  *(u64 *)(puVar1 + 4) = param_4;
-  *(u16 *)(puVar1 + 8) = param_5;
-  return;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002bde10 (MATCH nd0 -> MISMATCH nd119) - measured W161. */
-
-/* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 extern u32 func_002c1ce0_u32(int param_1, int param_2);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W322 probe: func_002bfcb0 with opt_loop_invariants on improved normalized_diff 479 -> 446 (object 688/688). */
-
-/* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
-
-
-
-
-
-/* Removing this loses func_002c0970 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
-/* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
-
-
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002c1490 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-/* Removing this loses FUN_002c14f0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-/* Removing this loses FUN_002c15e0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
-
-
-/* Removing this loses FUN_002c16a0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
-
-
-
-/* Removing this loses FUN_002c17b0 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
-/* Removing this loses FUN_002c1850 (MATCH nd0 -> MISMATCH nd153) - measured W161. */
-
-/* Removing this loses FUN_002c1a30 (MATCH nd0 -> MISMATCH nd124) - measured W161. */
-
-/* Removing this loses FUN_002c1bf0 (MATCH nd0 -> MISMATCH nd135) - measured W161. */
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002c1f60 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c2010 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c20c0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c2170 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-/* Removing this loses FUN_002c2270 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-/* Removing this loses FUN_002c2360 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-/* Removing this loses FUN_002c2470 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-
-
-
-/* Removing this loses FUN_002c2630 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c26e0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c2790 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-/* Removing this loses FUN_002c2840 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
-
-
-/* Removing this loses FUN_002c29e0 (MATCH nd0 -> MISMATCH nd175) - measured W161. */
-
-/* Removing this loses FUN_002c2be0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-/* Removing this loses FUN_002c2c40 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-/* Removing this loses FUN_002c2ca0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-
-
-/* W322 probe: func_002c2ed0 with opt_loop_invariants on improved normalized_diff 178 -> 158 (object 540/544). */
-
-
-/* Removing this loses FUN_002c3150 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-/* Removing this loses FUN_002c31b0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-/* Removing this loses FUN_002c3210 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
-
-
-
-/* Removing this loses FUN_002c3300 (MATCH nd0 -> MISMATCH nd148) - measured W161. */
-
-
-
-/* W322 probe: func_002c3770 with opt_loop_invariants on improved normalized_diff 817 -> 808 (object 1056/1136). */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W322 probe: func_002c48a0 with opt_loop_invariants on improved normalized_diff 206 -> 48 (object 484/496). */
-
-/* W322 probe: func_002c4a90 with opt_loop_invariants on improved normalized_diff 206 -> 56 (object 492/496). */
-
-/* W322 probe: func_002c4c80 with opt_loop_invariants on improved normalized_diff 239 -> 19 (object 460/464). */
-
-/* W322 probe: func_002c4e50 with opt_common_subs off improved normalized_diff 288 -> 210 (object 472/480). */
-
-/* W322 probe: func_002c5030 with opt_loop_invariants on improved normalized_diff 534 -> 533 (object 840/848). */
-
-
-
-
-/* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
-
-/* W322 rerun probe: func_002c65d0 with opt_loop_invariants on improved normalized_diff 191 -> 125 (object 1068/1072). */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002ca480 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002ca590 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002ca6a0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002ca7b0 (MATCH nd0 -> MISMATCH nd202) - measured W161. */
-/* Removing this loses FUN_002ca900 (MATCH nd0 -> MISMATCH nd113) - measured W161. */
-/* Removing this loses FUN_002ca9d0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002caae0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002cabf0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002cad00 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002cae10 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002caf20 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
-/* Removing this loses FUN_002cb030 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
-/* Removing this loses FUN_002cb0e0 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002cdad0 (MATCH nd0 -> MISMATCH nd74) - measured W161. */
-
-
-
-
-
-
-
-/* Removing this loses FUN_002cde60 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Removing this loses FUN_002ced60 (MATCH nd0 -> MISMATCH nd263) - measured W161. */
-#pragma opt_rebuildconditionals off
-static inline u16 btlFormationGetOpposingGenus(u32 unit)
-{
-  u32 side;
-  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
-    goto nonzero;
-  side = 1;
-  goto done;
-nonzero:
-  side = 0;
-done:
-  return side;
-}
-#pragma opt_rebuildconditionals reset
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* W322 probe: func_002d03e0 with opt_loop_invariants on improved normalized_diff 190 -> 188 (object 472/480). */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "Battle/btlCamera.h"
 #include "Kosaka/k_view.h"
 #include "Kernel/Kwln/kwln.h"
 #include "Main/Battle/Data/datUnit.h"
 #include "Graphics/primitive.h"
 #include "libm.h"
-
-/* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 typedef union Local128 { u64 d[2]; u32 w[4]; } Local128;
 typedef struct LocalCameraPacket {
@@ -3085,7 +1033,6 @@ typedef struct LocalCameraPacket {
   f32 f11c;
   RwV3d center;
 } LocalCameraPacket;
-#pragma alias FUN_002b0280_legacy FUN_002b0280
 extern void FUN_002b0280_legacy(float param_1,u64 param_2,long param_3,long param_4);
 u32 FUN_002a32f0(int param_1);
 u32 FUN_002a3380(u8* camera);
@@ -3098,36 +1045,25 @@ extern s16 btlUnit00282c30(BtlUnit* unit);
 extern s16 func_002835e0(BtlUnit* unit,u16 id,f32 scale);
 extern s16 btlUnitGetAnimFrame(BtlUnit* unit);
 u8 FUN_002a3820(int param_1);
-#pragma alias FUN_002a3820_u32 FUN_002a3820
 extern u32 FUN_002a3820_u32(int param_1);
 extern void FUN_004c31b0_typed(RwMatrix *matrix, const RwV3d *axis, f32 angle, s32 mode);
-#pragma alias FUN_004c31b0_typed FUN_004c31b0
 u32 FUN_002a3850(int param_1);
 u16 FUN_002a3a80(void);
 void FUN_002a3a90(int param_1);
 void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
- #pragma alias FUN_002a3e80_ab330 FUN_002a3e80
  extern void FUN_002a3e80_ab330(BtlAction* action, RwV3d* unitPos,
                                  f32* targetPos, s32 mode, f32 distance);
-#pragma alias FUN_002a3e80_side FUN_002a3e80
 extern void FUN_002a3e80_side(BtlAction* action, RwV3d* unitPos,
                               f32* targetPos, f32 distance, s32 mode);
 extern u64 FUN_00280050();
-#pragma alias FUN_00280050_typed FUN_00280050
 extern void FUN_00280050_typed(BtlUnit* unit, RwV3d* out);
 extern f32 gp0xffff80e0;
 u64 FUN_0027ffb0();
-#pragma alias FUN_002a3520_result FUN_002a3520
 u32 FUN_002a3520_result(int param_1);
-#pragma alias FUN_002fdbb0_result FUN_002fdbb0
 extern u32 FUN_002fdbb0_result(BtlAction* action, BtlUnit* persona);
 extern f32 fGpffff8090;
-#pragma alias FUN_002a3520_s32 FUN_002a3520
 extern s32 FUN_002a3520_s32(void);
-#pragma alias FUN_002a3550_s32 FUN_002a3550
 extern s32 FUN_002a3550_s32(u8* camera);
-/* Target-local ABI aliases for FUN_002b3980. */
-#pragma alias FUN_002a3e80_action FUN_002a3e80
 extern void FUN_002a3e80_action(void* action, u32 arg_1, u32 arg_2, u32 arg_3, u32 arg_4);
 void FUN_002a42a0(void);
 void FUN_002a4470(f32 *param_1, f32 *param_2);
@@ -3155,26 +1091,15 @@ void FUN_002a44b0(f32 *param_1, f32 *param_2);
 void FUN_002a44f0(f32 *param_1, f32 *param_2);
 void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4);
 void FUN_002a4690(void* out, const void* first, const void* second, const void* config);
-/* b6070 exact call signatures */
-#pragma alias FUN_00300580_b6070 FUN_00300580
 extern u32 FUN_00300580_b6070(void* unitData, u32 flags);
-#pragma alias FUN_00280130_b6070 FUN_00280130
 extern void FUN_00280130_b6070(BtlUnit* unit, RwV3d* out);
-#pragma alias FUN_004be1e0_b6070 FUN_004be1e0
 extern void FUN_004be1e0_b6070(RwV3d* out, const RwV3d* basis, s32 count, const void* source);
-#pragma alias FUN_004c31b0_b6070 FUN_004c31b0
 extern void FUN_004c31b0_b6070(RwMatrix* matrix, const RwV3d* axis, f32 angle, s32 mode);
-#pragma alias FUN_004c69f0_b6070 FUN_004c69f0
 extern f32 FUN_004c69f0_b6070(RwV3d* out, const RwV3d* in);
-#pragma alias FUN_004c6c60_b6070 FUN_004c6c60
 extern void FUN_004c6c60_b6070(RwV3d* out, const RwV3d* in, const RwMatrix* matrix);
-#pragma alias FUN_002a4690_b6070 FUN_002a4690
 extern void FUN_002a4690_b6070(void* out, const void* first, const void* second, const void* config);
-#pragma alias FUN_002a2290_b6070 FUN_002a2290
 extern void FUN_002a2290_b6070(BtlCamera* camera, const RwV3d* start, const RwV3d* end, s32 mode);
-#pragma alias FUN_002a3110_b6070 FUN_002a3110
 extern void FUN_002a3110_b6070(BtlCamera* camera, f32 step);
-#pragma alias FUN_002a3160_typed FUN_002a3160
 extern void FUN_002a3160_typed(BtlCamera* camera, f32 step);
 void FUN_002a4a70(void);
 void FUN_002a4c20(void);
@@ -3204,7 +1129,6 @@ extern int iGpffffb710;
 extern u16 (*gp0xffffb710)[14];
 extern u8 DAT_006941d4[];
 extern u8 DAT_00694c90[];
-
 extern f32 FUN_002d21e0(f32 target, f32* motion);
 extern f32 fGpffff807c;
 extern f32 fGpffff80e8;
@@ -3223,13 +1147,9 @@ typedef struct F32Vec4 {
 } F32Vec4;
 extern RwV3d D_00697870;
 extern f32 FUN_002d1fd0(f32* from, f32* to, f32* eye, f32* out);
-#pragma alias FUN_002d1f30_b21f0v2 FUN_002d1f30
 extern f32 FUN_002d1f30_b21f0v2(RtQuat *first, RtQuat *second);
-#pragma alias FUN_00280130_b21f0v2 FUN_00280130
 extern void FUN_00280130_b21f0v2(BtlUnit *unit, RwV3d *out);
-#pragma alias FUN_004c69f0_b21f0v2 FUN_004c69f0
 extern f32 FUN_004c69f0_b21f0v2(RwV3d *out, RwV3d *in);
-#pragma alias FUN_004c6b20_b21f0v2 FUN_004c6b20
 extern void FUN_004c6b20_b21f0v2(RwV3d *out, RwV3d *in);
 extern void func_002af960(BtlCamera* camera);
 extern f32 fGpffff8060;
@@ -3262,40 +1182,24 @@ extern void FUN_002a1e00(f32* out, f32* start, f32* end, f32 t);
 extern f32 FUN_00280870(u32 param_1, u32 param_2, void* param_3, void* param_4, void* param_5, u32 param_6);
 extern f32 tanf(f32 angle);
 extern f32 fGpffff8098;
-#pragma alias func_00280870_ae740 func_00280870
 extern f32 func_00280870_ae740(u32 mode, u32 enabled,
                                 f32* start, f32* end, f32* extra,
                                 u32 include);
-#pragma alias FUN_002c0880_ae740 FUN_002c0880
 extern void *FUN_002c0880_ae740(u8* data);
-#pragma alias FUN_002a3850_ae740 FUN_002a3850
 extern u32 FUN_002a3850_ae740(BtlCamera* camera);
-#pragma alias FUN_004be310_ae740 FUN_004be310
 extern void FUN_004be310_ae740(const RtQuat* first, const RtQuat* second, RwV3d* out);
-#pragma alias FUN_004c6b20_ae740 FUN_004c6b20
 extern void FUN_004c6b20_ae740(f32* out, f32* in);
-#pragma alias FUN_004be1e0_ae740 FUN_004be1e0
 extern void FUN_004be1e0_ae740(RwV3d* out, const RwV3d* basis, u32 mode, const void* source);
-#pragma alias FUN_004c69f0_ae740 FUN_004c69f0
 extern f32 FUN_004c69f0_ae740(RwV3d* out, RwV3d* in);
-#pragma alias FUN_00280050_ae740 FUN_00280050
 extern void FUN_00280050_ae740(BtlUnit* unit, RwV3d* out);
-#pragma alias FUN_002a2170_ae740 FUN_002a2170
 extern void FUN_002a2170_ae740(BtlCamera* camera, void* out);
-#pragma alias FUN_004be1e0_typed FUN_004be1e0
 extern void FUN_004be1e0_typed(RwV3d *out, const RwV3d *basis, s32 mode, const void *source);
-#pragma alias FUN_004be310_typed FUN_004be310
 extern void FUN_004be310_typed(const void *first, const void *second, void *out);
-#pragma alias FUN_004c6b20_typed FUN_004c6b20
 extern void FUN_004c6b20_typed(f32 *out, f32 *in);
 extern u8 DAT_006978A0[];
 extern u8 DAT_006978A0_arr[];
 extern u8 DAT_00697880_arr[];
 extern f32 FUN_002d1f30_typed(const f32 *first, const f32 *second);
-#pragma alias FUN_002d1f30_typed FUN_002d1f30
-
-
-
 extern void FUN_002a5430(BtlCamera* camera);
 extern void FUN_002a5460(BtlCamera* camera);
 extern void btlCameraFrameActionDefault(BtlCamera* camera);
@@ -3362,7 +1266,6 @@ extern void FUN_002b56e0(u8* param_1);
 extern void FUN_002b58f0(BtlCamera* param_1);
 extern void FUN_002b5cd0(BtlCamera* camera);
 extern void FUN_002b6460(BtlCamera* camera);
-
 static const BtlCameraStateEntry sCameraStateEntries[] =
 {
     {NULL, NULL, 0, 0, NULL}, // BTLCAMERA_STATE_NULL
@@ -3406,16 +1309,6 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {FUN_002b5cd0, NULL, 1, 0, "ENEMY_ALL"}, // ENEMY_ALL
     {FUN_002b6460, NULL, 1, 0, "TARGET_ONLY"}, // TARGET_ONLY
 };
-
-
-
-
-
-
-
-
-
-
 extern void FUN_002a2290(u16* camera, RwV3d* first, RwV3d* second, int mode);
 extern void FUN_002a3110(u16* camera, f32 param_1);
 extern f32 FUN_002d1f30();
@@ -3423,9 +1316,7 @@ extern u64 FUN_00351bb0();
 extern u64 FUN_004be310();
 extern u64 FUN_004c6b20();
 extern f32 FUN_0052e930(f32 x);
-/* This no-argument declaration is caller-specific; the state-table callback uses a camera pointer. */
 extern void FUN_002b6460();
-
 extern f32 fGpffff812c;
 typedef struct BtlCameraQuatBlend
 {
@@ -3434,7 +1325,6 @@ typedef struct BtlCameraQuatBlend
     f32 scalar;
     s32 flag;
 } BtlCameraQuatBlend;
-
 extern void FUN_0027f7c0(BtlUnit* unit, RwV3d* out, void* p3, void* p4);
 extern RwV3d D_00697880;
 extern float fGpffff8094;
@@ -3456,182 +1346,6 @@ extern u32 FUN_002d6290(int);
 extern u32 FUN_002d62d0(int);
 extern u32 FUN_002d6370(s16);
 extern u32 FUN_002d63b0(int, s16, int);
-
-
-
-
-/* Retail camera callbacks for the 0x2A4C70-0x2A95D0 window.  The original
- * routines share the same unit framing and look-at path; the callbacks keep
- * that state typed while remaining NONMATCHING until instruction scheduling
- * is tuned against the retail object. */
-static BtlUnit* btlCameraRangeUnit(BtlCamera* camera)
-{
-    if (camera == NULL || camera->action == NULL)
-    {
-        return NULL;
-    }
-    return camera->action->unit;
-}
-
-static BtlUnit* btlCameraRangeTarget(BtlCamera* camera)
-{
-    BtlAction* target;
-    if (camera == NULL || camera->action == NULL)
-    {
-        return NULL;
-    }
-    target = camera->action->target.targetedActions[0];
-    return target != NULL ? target->unit : NULL;
-}
-
-static void btlCameraRangeCross(RwV3d* out, const RwV3d* a, const RwV3d* b)
-{
-    out->x = a->y * b->z - a->z * b->y;
-    out->y = a->z * b->x - a->x * b->z;
-    out->z = a->x * b->y - a->y * b->x;
-}
-
-static void btlCameraRangeLookAt(BtlCamera* camera, const RwV3d* eye,
-                                 const RwV3d* target)
-{
-    RwV3d at;
-    RwV3d upAxis;
-    RwV3d right;
-    RwV3d up;
-    RwMatrix matrix;
-
-    at.x = target->x - eye->x;
-    at.y = target->y - eye->y;
-    at.z = target->z - eye->z;
-    if (RwV3dNormalize(&at, &at) <= 0.0001f)
-    {
-        at.x = 0.0f;
-        at.y = 0.0f;
-        at.z = 1.0f;
-    }
-    upAxis.x = 0.0f;
-    upAxis.y = 1.0f;
-    upAxis.z = 0.0f;
-    btlCameraRangeCross(&right, &upAxis, &at);
-    if (RwV3dNormalize(&right, &right) <= 0.0001f)
-    {
-        upAxis.x = 0.0f;
-        upAxis.y = 0.0f;
-        upAxis.z = 1.0f;
-        btlCameraRangeCross(&right, &upAxis, &at);
-        RwV3dNormalize(&right, &right);
-    }
-    btlCameraRangeCross(&up, &at, &right);
-    RwV3dNormalize(&up, &up);
-    matrix.right = right;
-    matrix.up = up;
-    matrix.at = at;
-    matrix.pos = *eye;
-    matrix.pad1 = matrix.pad2 = matrix.pad3 = 0;
-    rwMatrixSetFlags(&matrix, rwMATRIXTYPEORTHONORMAL);
-    camera->pos = *eye;
-    RtQuatConvertFromMatrix(&camera->rot, &matrix);
-}
-
-static void btlCameraRangeFrame(BtlCamera* camera, const RwV3d* first,
-                                const RwV3d* second, f32 margin, f32 minimum)
-{
-    RwV3d center;
-    RwV3d delta;
-    RwV3d direction;
-    RwV3d eye;
-    f32 radius;
-    f32 distance;
-
-    if (camera == NULL || first == NULL)
-    {
-        return;
-    }
-    if (second != NULL)
-    {
-        center.x = (first->x + second->x) * 0.5f;
-        center.y = (first->y + second->y) * 0.5f;
-        center.z = (first->z + second->z) * 0.5f;
-        delta.x = second->x - first->x;
-        delta.y = second->y - first->y;
-        delta.z = second->z - first->z;
-        radius = RwV3dLength(&delta) * 0.5f;
-    }
-    else
-    {
-        center = *first;
-        radius = 0.0f;
-    }
-    radius += 100.0f;
-    distance = radius * (margin < 1.0f ? 1.0f : margin);
-    if (distance < minimum)
-    {
-        distance = minimum;
-    }
-    direction.x = camera->pos.x - center.x;
-    direction.y = camera->pos.y - center.y;
-    direction.z = camera->pos.z - center.z;
-    if (RwV3dNormalize(&direction, &direction) <= 0.0001f)
-    {
-        direction.x = 0.0f;
-        direction.y = 0.25f;
-        direction.z = 1.0f;
-        RwV3dNormalize(&direction, &direction);
-    }
-    eye.x = center.x + direction.x * distance;
-    eye.y = center.y + direction.y * distance;
-    eye.z = center.z + direction.z * distance;
-    btlCameraRangeLookAt(camera, &eye, &center);
-    camera->keyFrameIdx = 0;
-    camera->keyFrames[0].pos = eye;
-    camera->keyFrames[0].rot = camera->rot;
-    camera->framesUntilUpdate = 0;
-    if (camera->fovRad <= 0.01f)
-    {
-        camera->fovRad = 0.7853982f;
-    }
-}
-
-static void btlCameraRangeActionFrame(BtlCamera* camera, f32 margin,
-                                      f32 minimum, u32 includeTarget)
-{
-    BtlUnit* unit;
-    BtlUnit* target;
-    RwV3d first;
-    RwV3d second;
-
-    unit = btlCameraRangeUnit(camera);
-    if (unit == NULL)
-    {
-        return;
-    }
-    btlUnitGetSphereWorldCenter(unit, (RwV3d*)&first);
-    target = includeTarget != 0 ? btlCameraRangeTarget(camera) : NULL;
-    if (target != NULL && target != unit)
-    {
-        btlUnitGetSphereWorldCenter(target, (RwV3d*)&second);
-        btlCameraRangeFrame(camera, &first, &second, margin, minimum);
-    }
-    else
-    {
-        btlCameraRangeFrame(camera, &first, NULL, margin, minimum);
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 typedef struct BtlCameraTargetingWork
 {
     BtlCameraKeyFrame first;
@@ -3663,30 +1377,12 @@ typedef struct BtlCameraTargetingWork
     RwV3d sphereCenter;
     f32 radius;
 } BtlCameraTargetingWork;
-
-
-
-
-
-// The near-window candidate still differs in saved-register layout and long-lived
-// temporary coloring; declaration and access-order probes were codegen-neutral.
-// Keep this marker NONMATCHING until those register lifetimes are reconstructed.
-/* W367 measured: opt_dead_assignments off + opt_lifetimes on nd2376 -> 2221, object 3276/3296; baseline object 3288/3296. */
-
-
-
-/* Retail camera recovery for the 0x2b02xx-0x2b8cxx slice.  The bodies below
- * retain the complete branch/data flow recovered from the executable; all
- * entries remain NONMATCHING until instruction scheduling is cleaned up. */
 typedef u8 undefined1;
 typedef u16 undefined2;
 typedef u32 undefined4;
 typedef u64 undefined8;
 typedef void undefined;
-
-#ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
 extern u64 FUN_0019d400();
 extern u32 FUN_0027ec10();
 extern u64 FUN_0027f650();
@@ -3726,7 +1422,6 @@ extern u64 FUN_00308a50(u16 param_1);
 extern u8 FUN_003093a0();
 extern u64 FUN_0030b5a0();
 extern u64 FUN_0030c3a0();
-/* Broad K&R declarations preserve this function's retail call ABI; typed callers below narrow them locally. */
 extern u64 FUN_004be1e0();
 extern u64 FUN_004c31b0();
 extern float FUN_004c69f0();
@@ -3822,110 +1517,32 @@ extern u32 FUN_002b6bd0(int param_1);
 extern void FUN_002b6bf0(undefined4 *param_1, undefined4 param_2, undefined4 param_3, u32 param_4, u16 param_5);
 extern u8* FUN_002b6cd0(int param_1);
 extern void FUN_002b6de0(unsigned short *param_1);
-
 typedef struct BtlCameraPoseLocal {
   RwV3d pos;
   RtQuat rot;
 } BtlCameraPoseLocal;
-#pragma alias FUN_002a4470_b280 FUN_002a4470
 extern void FUN_002a4470_b280(BtlCameraPoseLocal* dst,
                               const BtlCameraPoseLocal* src);
-#pragma alias FUN_0027ffb0_b280 FUN_0027ffb0
 extern void FUN_0027ffb0_b280(BtlUnit* unit, RwV3d* dst);
-#pragma alias FUN_002a4690_b280 FUN_002a4690
 extern void FUN_002a4690_b280(RtQuat* out, const RwV3d* first,
                               const RwV3d* second, const RwV3d* config);
-#pragma alias FUN_004be1e0_b280 FUN_004be1e0
 extern void FUN_004be1e0_b280(RwV3d* out, const RwV3d* basis,
                               s32 count, const RtQuat* source);
-#pragma alias FUN_004c69f0_b280 FUN_004c69f0
 extern f32 FUN_004c69f0_b280(RwV3d* out, const RwV3d* in);
-#pragma alias FUN_004c6b20_b280 FUN_004c6b20
 extern void FUN_004c6b20_b280(f32* out, const f32* in);
-#pragma alias FUN_002d1fd0_b280 FUN_002d1fd0
 extern f32 FUN_002d1fd0_b280(f32* from, f32* to, f32* point, f32* projected);
-#pragma alias FUN_002d1f30_b280 FUN_002d1f30
 extern f32 FUN_002d1f30_b280(RtQuat* first, RtQuat* second);
-#pragma alias FUN_002a2170_b280 FUN_002a2170
 extern void FUN_002a2170_b280(BtlCamera* camera, RwV3d* out);
-#pragma alias FUN_002a2290_b280 FUN_002a2290
 extern void FUN_002a2290_b280(BtlCamera* camera, RwV3d* start,
                               RwV3d* end, s32 mode);
-#pragma alias FUN_002a3110_b280 FUN_002a3110
 extern void FUN_002a3110_b280(BtlCamera* camera, f32 step);
-#pragma alias FUN_002a3e80_b280 FUN_002a3e80
 extern void FUN_002a3e80_b280(f32 distance, u8* scene, u8* unit,
                               u8* center, u32 mode);
-#pragma alias FUN_002d5bf0_b280 FUN_002d5bf0
 extern s32 FUN_002d5bf0_b280(BtlUnit* unit);
-#pragma alias FUN_003093a0_b280 FUN_003093a0
 extern s32 FUN_003093a0_b280(u32 data);
-#pragma alias FUN_0052e930_b280 FUN_0052e930
 extern f32 FUN_0052e930_b280(f32 angle);
-
-#pragma opt_lifetimes reset
-#pragma opt_dead_assignments reset
-/* W367 measured: opt_propagation off nd2626 -> 2579, object 3264/3488; baseline object 3364/3488. */
-
-
-
-#pragma opt_dead_assignments off
-#pragma opt_propagation reset
-
-#pragma opt_dead_assignments reset
-
-
-
-
 extern u8 DAT_00693d10[];
-
-
-
-
-
-/* W383 floor, measured.  The whole nd12 residual is three adjacent lwc1 pairs at
- * +284/+300/+316: retail loads the SUBTRAHEND (scratch.targetCenter, sp+0xF0) before
- * the minuend (scratch.sourceCenter, sp+0xE0) in each component; we emit them the
- * other way round.  Registers and every other word are identical, so this is the
- * classic reordered-adjacent-loads case.  The volatile-cast technique needs a staging
- * temporary to express the order, and that temporary costs 12 bytes: both variants
- * (subtrahend-only volatile, and both-operands volatile) measured 1384/1376 nd653 --
- * OVER the 1376-byte window.  Plain non-volatile temporaries are byte-neutral (the
- * load sinks back to its use), a whole-vector temp gives 1408/1376 nd782, and all of
- * scheduling on/off, optimize_for_size and the six opt_* knobs are neutral or worse
- * (common_subs off 1616/nd1145, propagation off and dead_assignments off both nd796).
- * Window-blocked: there is no room to buy the ordering.  Keep 1372/1376 nd12. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#pragma alias FUN_002b4db0_float FUN_002b4db0
 extern void FUN_002b4db0_float(float);
-
-
-
-
-
-
-
-
-
-
 #undef sp40
 #undef sp44
 #undef sp48
@@ -3955,10 +1572,6 @@ extern void FUN_002b4db0_float(float);
 #undef sp110
 #undef sp114
 #undef sp118
-
-
-
-
 typedef struct B64CameraWork {
   BtlAction *firstAction;
   BtlAction *secondAction;
@@ -3968,7 +1581,6 @@ typedef struct B64CameraWork {
   u16 flags;
   u16 *entries;
 } B64CameraWork;
-
 typedef struct B64CameraEntry {
   s16 duration;
   u16 mode;
@@ -3988,7 +1600,6 @@ typedef struct B64CameraEntry {
   f32 secondZ2;
   f32 angle;
 } B64CameraEntry;
-
 typedef struct B64CameraScratch {
   RwV3d firstOut;
   RwV3d secondOut;
@@ -4018,39 +1629,326 @@ typedef struct B64CameraScratch {
   RwV3d sphereVector;
   u8 pad_13c[4];
 } B64CameraScratch;
-
-#pragma alias FUN_002d1de0_b64d0 FUN_002d1de0
 extern void FUN_002d1de0_b64d0(RtQuat *out, const RwV3d *from, const RwV3d *to);
-#pragma alias FUN_002802d0_b64d0 FUN_002802d0
 extern void FUN_002802d0_b64d0(BtlUnit *first, BtlUnit *second, RwV3d *out);
-#pragma alias FUN_004be1e0_b64d0 FUN_004be1e0
 extern void FUN_004be1e0_b64d0(RwV3d *out, const RwV3d *in, s32 count, const RtQuat *rotation);
-#pragma alias FUN_00280130_b64d0 FUN_00280130
 extern void FUN_00280130_b64d0(BtlUnit *unit, RwV3d *out);
-#pragma alias FUN_00280200_b64d0 FUN_00280200
 extern void FUN_00280200_b64d0(BtlUnit *unit, BtlUnitAnimBounds *bounds, RwV3d *out);
-#pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
 extern void FUN_004c6c60_b64d0(void *out, const RwV3d *in, const RwMatrix *matrix);
 extern BtlUnitAnimBounds *func_002fc520_y2(BtlUnit *unit);
-#pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
 extern u32 FUN_002b6bd0_b64d0(struct B64CameraWork* work);
-#pragma alias FUN_002a2290_b64d0 FUN_002a2290
 extern void FUN_002a2290_b64d0(BtlCamera* camera, RwV3d* first,
                                 RwV3d* second, s32 mode);
-#pragma alias FUN_002a3110_b64d0 FUN_002a3110
 extern void FUN_002a3110_b64d0(BtlCamera* camera, f32 step);
+#define BTLCAMERA_GHIDRA_PAIR
+typedef u8 u8;
+typedef u8 byte;
+typedef unsigned short ushort;
+typedef union BtlCameraGhidraPair
+{
+    struct { f32 _0_4_; f32 _4_4_; } f;
+    u64 raw;
+} BtlCameraGhidraPair;
+#define GhidraPair BtlCameraGhidraPair
+#define PAIR44(hi, lo) ((GhidraPair){{(lo), (hi)}})
+extern f32 DAT_007cad3c;
+extern f32 DAT_007cad54;
+extern f32 DAT_007cad98;
+extern f32 DAT_007cadb0;
+extern f32 DAT_007caddc;
+extern f32 DAT_007cade0;
+extern f32 DAT_007cade4;
+extern f32 DAT_007cade8;
+extern f32 DAT_007cadfc;
+extern f32 DAT_007cae00;
+extern f32 DAT_007cae04;
+extern f32 DAT_007cae0c;
+extern f32 DAT_007cae10;
+extern f32 DAT_007cae14;
+extern f32 DAT_007cae18;
+extern f32 DAT_007cae24;
+extern f32 fGpffff8030;
+extern f32 fGpffff807c;
+extern f32 fGpffff80a0;
+extern f32 fGpffff80a4;
+extern f32 fGpffff80a8;
+extern f32 fGpffff80b0;
+extern f32 fGpffff80b8;
+extern f32 fGpffff80bc;
+extern u32 uGpffff8074;
+extern u32 uGpffff809c;
+extern u32 uGpffff80ac;
+extern u64 func_00280050();
+extern u8* iGpffffb73c;
+typedef struct BtlCameraC920Pose
+{
+    RwV3d pos;
+    RtQuat rot;
+} BtlCameraC920Pose;
+typedef struct BtlCameraC920Pair
+{
+    f32 first;
+    f32 second;
+} BtlCameraC920Pair;
+typedef struct BtlCameraC920Work
+{
+    BtlCameraC920Pose cameraPose;
+    BtlCameraC920Pose desiredPose;
+    RwV3d sourceCenter;
+    RwV3d targetCenter;
+    RwV3d direction;
+    RwV3d firstPoint;
+    RwV3d secondPoint;
+    RwV3d basePoint;
+    BtlCameraC920Pair cameraHorizontal;
+    BtlCameraC920Pair projectionFrom;
+    BtlCameraC920Pair projectionTo;
+    BtlCameraC920Pair projectionOutput;
+    f32 f2;
+    f32 f7;
+    f32 f8;
+    f32 f9;
+    f32 f11;
+    f32 f12;
+    f32 f13;
+    f32 projectionDistance;
+    f32 step;
+} BtlCameraC920Work;
+extern void FUN_002a4470_c920(BtlCameraC920Pose* dst,
+                               const BtlCameraC920Pose* src);
+extern void FUN_002a44f0_c920(BtlCameraC920Pose* dst,
+                               const BtlCameraC920Pose* src);
+extern void FUN_002a2290_c920(BtlCamera* camera, const RwV3d* start,
+                               const RwV3d* end, s32 mode);
+extern void FUN_002a3110_c920(BtlCamera* camera, f32 step);
+typedef struct BtlCameraFramingPoseLocal {
+  RwV3d pos;
+  RtQuat rot;
+} BtlCameraFramingPoseLocal;
+typedef struct BtlCameraFramingWork {
+  f32 fStack_140;
+  f32 fStack_13c;
+  f32 fStack_138;
+  f32 fStack_134;
+  f32 fStack_130;
+  f32 fStack_12c;
+  f32 fStack_128;
+  f32 fStack_124;
+  f32 fStack_120;
+  int iStack_11c;
+  f32 fStack_110;
+  f32 fStack_10c;
+  f32 fStack_108;
+  Local128 auStack_104;
+  f32 fStack_f4;
+  f32 fStack_f0;
+  f32 fStack_ec;
+  struct {
+    Local128 quat;
+    f32 aux0;
+    f32 aux1;
+  } auStack_e8;
+  BtlCameraFramingPoseLocal auStack_d0;
+  f32 fStack_b4;
+  f32 fStack_b0;
+  f32 fStack_ac;
+  f32 fStack_a8;
+  f32 fStack_a4;
+  f32 fStack_a0;
+  f32 fStack_9c;
+  f32 fStack_90;
+  f32 fStack_8c;
+  f32 fStack_88;
+  f32 fStack_80;
+  f32 fStack_7c;
+  f32 fStack_78;
+  f32 fStack_70;
+  f32 fStack_6c;
+  f32 fStack_68;
+  f32 fStack_64;
+  f32 fStack_60;
+  f32 fStack_58;
+  f32 fStack_54;
+  f32 fStack_50;
+  f32 fStack_48;
+  f32 fStack_44;
+  f32 fStack_40;
+  f32 fStack_38;
+  f32 fStack_34;
+  f32 fStack_30;
+  f32 fStack_28;
+  f32 fStack_24;
+  f32 fStack_20;
+  f32 fStack_18;
+  f32 fStack_14;
+  f32 fStack_10;
+  f32 auStack_8;
+  f32 fStack_4;
+} BtlCameraFramingWork;
+extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
+extern u16 FUN_002c09f0_y2(int target);
 
+static inline u16 btlFormationGetOpposingGenus(u32 unit)
+{
+  u32 side;
+  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  side = 1;
+  goto done;
+nonzero:
+  side = 0;
+done:
+  return side;
+}
+static BtlUnit* btlCameraRangeUnit(BtlCamera* camera)
+{
+    if (camera == NULL || camera->action == NULL)
+    {
+        return NULL;
+    }
+    return camera->action->unit;
+}
+static BtlUnit* btlCameraRangeTarget(BtlCamera* camera)
+{
+    BtlAction* target;
+    if (camera == NULL || camera->action == NULL)
+    {
+        return NULL;
+    }
+    target = camera->action->target.targetedActions[0];
+    return target != NULL ? target->unit : NULL;
+}
+static void btlCameraRangeCross(RwV3d* out, const RwV3d* a, const RwV3d* b)
+{
+    out->x = a->y * b->z - a->z * b->y;
+    out->y = a->z * b->x - a->x * b->z;
+    out->z = a->x * b->y - a->y * b->x;
+}
+static void btlCameraRangeLookAt(BtlCamera* camera, const RwV3d* eye,
+                                 const RwV3d* target)
+{
+    RwV3d at;
+    RwV3d upAxis;
+    RwV3d right;
+    RwV3d up;
+    RwMatrix matrix;
 
+    at.x = target->x - eye->x;
+    at.y = target->y - eye->y;
+    at.z = target->z - eye->z;
+    if (RwV3dNormalize(&at, &at) <= 0.0001f)
+    {
+        at.x = 0.0f;
+        at.y = 0.0f;
+        at.z = 1.0f;
+    }
+    upAxis.x = 0.0f;
+    upAxis.y = 1.0f;
+    upAxis.z = 0.0f;
+    btlCameraRangeCross(&right, &upAxis, &at);
+    if (RwV3dNormalize(&right, &right) <= 0.0001f)
+    {
+        upAxis.x = 0.0f;
+        upAxis.y = 0.0f;
+        upAxis.z = 1.0f;
+        btlCameraRangeCross(&right, &upAxis, &at);
+        RwV3dNormalize(&right, &right);
+    }
+    btlCameraRangeCross(&up, &at, &right);
+    RwV3dNormalize(&up, &up);
+    matrix.right = right;
+    matrix.up = up;
+    matrix.at = at;
+    matrix.pos = *eye;
+    matrix.pad1 = matrix.pad2 = matrix.pad3 = 0;
+    rwMatrixSetFlags(&matrix, rwMATRIXTYPEORTHONORMAL);
+    camera->pos = *eye;
+    RtQuatConvertFromMatrix(&camera->rot, &matrix);
+}
+static void btlCameraRangeFrame(BtlCamera* camera, const RwV3d* first,
+                                const RwV3d* second, f32 margin, f32 minimum)
+{
+    RwV3d center;
+    RwV3d delta;
+    RwV3d direction;
+    RwV3d eye;
+    f32 radius;
+    f32 distance;
 
+    if (camera == NULL || first == NULL)
+    {
+        return;
+    }
+    if (second != NULL)
+    {
+        center.x = (first->x + second->x) * 0.5f;
+        center.y = (first->y + second->y) * 0.5f;
+        center.z = (first->z + second->z) * 0.5f;
+        delta.x = second->x - first->x;
+        delta.y = second->y - first->y;
+        delta.z = second->z - first->z;
+        radius = RwV3dLength(&delta) * 0.5f;
+    }
+    else
+    {
+        center = *first;
+        radius = 0.0f;
+    }
+    radius += 100.0f;
+    distance = radius * (margin < 1.0f ? 1.0f : margin);
+    if (distance < minimum)
+    {
+        distance = minimum;
+    }
+    direction.x = camera->pos.x - center.x;
+    direction.y = camera->pos.y - center.y;
+    direction.z = camera->pos.z - center.z;
+    if (RwV3dNormalize(&direction, &direction) <= 0.0001f)
+    {
+        direction.x = 0.0f;
+        direction.y = 0.25f;
+        direction.z = 1.0f;
+        RwV3dNormalize(&direction, &direction);
+    }
+    eye.x = center.x + direction.x * distance;
+    eye.y = center.y + direction.y * distance;
+    eye.z = center.z + direction.z * distance;
+    btlCameraRangeLookAt(camera, &eye, &center);
+    camera->keyFrameIdx = 0;
+    camera->keyFrames[0].pos = eye;
+    camera->keyFrames[0].rot = camera->rot;
+    camera->framesUntilUpdate = 0;
+    if (camera->fovRad <= 0.01f)
+    {
+        camera->fovRad = 0.7853982f;
+    }
+}
+static void btlCameraRangeActionFrame(BtlCamera* camera, f32 margin,
+                                      f32 minimum, u32 includeTarget)
+{
+    BtlUnit* unit;
+    BtlUnit* target;
+    RwV3d first;
+    RwV3d second;
 
+    unit = btlCameraRangeUnit(camera);
+    if (unit == NULL)
+    {
+        return;
+    }
+    btlUnitGetSphereWorldCenter(unit, (RwV3d*)&first);
+    target = includeTarget != 0 ? btlCameraRangeTarget(camera) : NULL;
+    if (target != NULL && target != unit)
+    {
+        btlUnitGetSphereWorldCenter(target, (RwV3d*)&second);
+        btlCameraRangeFrame(camera, &first, &second, margin, minimum);
+    }
+    else
+    {
+        btlCameraRangeFrame(camera, &first, NULL, margin, minimum);
+    }
+}
 
-
-
-
-
-
-
-/* Removing this loses FUN_002b7060 (MATCH nd0 -> MISMATCH nd81) - measured W161. */
 // FUN_002b7060
 #pragma opt_loop_invariants on
 s16 FUN_002b7060(void)
@@ -4086,6 +1984,7 @@ s16 FUN_002b7060(void)
 done:
   return (s16)selectedIdx;
 }
+
 #pragma opt_loop_invariants off
 
 
@@ -4251,6 +2150,96 @@ void FUN_002b71e0(void)
     }
 }
 
+
+
+
+
+
+
+/* Retail formation reference recovery, retained NONMATCHING until codegen cleanup. */
+
+
+#ifndef CONCAT44
+#endif
+#pragma alias func_00100d80_u32 func_00100d80
+#pragma alias func_001016b0_u32 func_001016b0
+#pragma alias func_001021c0_u32 func_001021c0
+#pragma alias func_00195340_u32 func_00195340
+#pragma alias func_00195540_u32 func_00195540
+#pragma alias func_001fdf10_btlFormation_result func_001fdf10
+#pragma alias func_0021c3f0_u32 func_0021c3f0
+#pragma alias func_0021cca0_u32 func_0021cca0
+#pragma alias func_00280870_btlFormation_s32 func_00280870
+#pragma alias func_00280870_btlFormation_f32 func_00280870
+#pragma alias func_002b96f0_btlFormation_u64 func_002b96f0
+#pragma alias func_0029a210_u32 func_0029a210
+#pragma alias func_0029ad20_u32 func_0029ad20
+#pragma alias func_002d1fd0_c0070 func_002d1fd0
+#pragma alias func_002ffbc0_u16 func_002ffbc0
+#pragma alias func_002ffbc0_noarg func_002ffbc0
+#pragma alias func_002ffbc0_noarg_u32 func_002ffbc0
+#pragma alias func_00300530_u32 func_00300530
+#pragma alias func_00300550_u32 func_00300550
+#pragma alias func_00300580_u32 func_00300580
+#pragma alias func_003005e0_u32 func_003005e0
+#pragma alias func_00303130_s32 func_00303130
+#pragma alias func_003086f0_u32 func_003086f0
+#pragma alias func_00308ba0_u32 func_00308ba0
+#pragma alias func_00308bb0_u32 func_00308bb0
+#pragma alias func_00308860_u32 func_00308860
+#pragma alias func_0035f160_u32 func_0035f160
+#pragma alias func_0029ad60_u32 func_0029ad60
+#pragma alias func_0035f060_u32 func_0035f060
+#pragma alias func_0035ed20_u32 func_0035ed20
+#pragma alias func_002a3d70_f32 func_002a3d70
+#pragma alias func_002a3d70_move func_002a3d70
+#pragma alias func_002b8d60_u32 func_002b8d60
+#pragma alias func_0035ee60_f32 func_0035ee60
+#pragma alias func_0030b4b0_u32 func_0030b4b0
+#pragma alias func_0030b5a0_u32 func_0030b5a0
+#pragma alias func_0030bc20_u32 func_0030bc20
+#pragma alias func_00324bd0_u32 func_00324bd0
+#pragma alias func_00325920_u32 func_00325920
+#pragma alias func_003b2cb0_typed func_003b2cb0
+#pragma alias DAT_00696d70_abs DAT_00696d70
+#pragma alias DAT_00696fb0_abs DAT_00696fb0
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0958_abs DAT_007e0958
+#pragma alias DAT_007e095a_abs DAT_007e095a
+#pragma alias DAT_00957100_abs DAT_00957100
+#pragma alias DAT_00957140_abs DAT_00957140
+#pragma alias DAT_00957150_abs DAT_00957150
+#pragma alias DAT_00957160_abs DAT_00957160
+#pragma alias DAT_00957170_abs DAT_00957170
+#pragma alias DAT_00960088_abs DAT_00960088
+#pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_009600a4_abs DAT_009600a4
+#pragma alias DAT_00960178_u32_abs DAT_00960178
+#pragma alias DAT_00960178_abs DAT_00960178
+#pragma alias DAT_0096017c_abs DAT_0096017c
+#pragma alias PTR_DAT_00696f30_abs PTR_DAT_00696f30
+#pragma alias PTR_s_battle_effect_ATC_D_BED_abs PTR_s_battle_effect_ATC_D_BED_00696c80
+#pragma alias PTR_FUN_006975e0_abs PTR_FUN_006975e0
+
+
+/* Target forward declarations. */
+#pragma alias func_002b9350_u32 func_002b9350
+#pragma alias func_002b93e0_4arg func_002b93e0
+#pragma alias func_002ba3a0_void func_002ba3a0
+#pragma alias func_002bc9c0_long func_002bc9c0
+#pragma alias func_002bce10_reordered func_002bce10
+#pragma alias func_002bfcb0_ptr func_002bfcb0
+#pragma alias func_002bfcb0_u64call func_002bfcb0
+// Typed alias for callers that consume the helper's full 16-bit result.
+#pragma alias func_002bff60_u16 func_002bff60
+#pragma alias func_002c0f40_call func_002c0f40
+#pragma alias func_002c3770_u32 func_002c3770
+#pragma alias func_002c5380_noargs func_002c5380
+#pragma alias func_002c6300_s32 func_002c6300
+// The caller passes two 32-bit resource identifiers.
+#pragma alias func_002c6f50_u32 func_002c6f50
+
 // FUN_002b77ac
 void FUN_002b77ac(void)
 {
@@ -4397,9 +2386,8 @@ void FUN_002b7bd0(u32 param_1,u32 param_2,float param_3,u16 param_4)
   *(u16 *)(work + 3) = param_4;
 }
 
-#pragma opt_lifetimes reset
-/* W367 measured: opt_propagation off nd2117 -> 2094, object 3236/3248; baseline object 3248/3248. */
 #pragma opt_propagation off
+#pragma opt_lifetimes reset
 // FUN_002b7c50 NONMATCHING
 
 u32 FUN_002b7c50(u32 *work)
@@ -4793,7 +2781,6 @@ void LAB_002b8970(u32 *work)
   (*(u16 *)(unit + 0xa0))++;
 }
 
-#pragma opt_propagation reset
 // FUN_002b8990 NONMATCHING
 
 undefined4 FUN_002b8990(undefined4 *param_1)
@@ -4862,6 +2849,7 @@ void FUN_002b8b70(undefined4 param_1,undefined4 param_2,undefined4 param_3,undef
   return;
 }
 
+
 // FUN_002b8c00
 
 undefined4 FUN_002b8c00(u16 *param_1)
@@ -4909,50 +2897,2174 @@ undefined4 FUN_002b8c00(u16 *param_1)
 }
 #pragma opt_loop_invariants reset
 
+// FUN_002b8d60
+BtlPacket* btlFormation002b8d60(s32 param_1, u32 flags)
+{
+    BtlPacket* packet;
+    BtlFormationPacket002b8d60* work;
+
+    packet = btlPacketCreate(BTLFORMATION_PACKET_UNK03, sizeof(BtlFormationPacket002b8d60));
+
+    packet->updateFunc = btlFormation002b8c00;
+
+    work = (BtlFormationPacket002b8d60*)packet->workData;
+
+    work->unk_00 = param_1;
+    work->flags = flags;
+
+    return packet;
+}
+#pragma opt_propagation reset
+
+// FUN_002b8dc0 MATCHING
+
+u32 func_002b8dc0(u16* flags)
+{
+  BtlAction* currentAction;
+  BtlUnit* unit;
+  float distance;
+  RwV3d position;
+  RwV3d reference;
+  RwV3d direction;
+
+  currentAction = (BtlAction*)func_0029ad20_u32();
+  func_002b71e0();
+  if ((*flags & 1) != 0) {
+    for (unit = *(BtlUnit **)(iGpffffb6fc + 0x150); unit != NULL; unit = unit->next) {
+      if (func_00300580_u32((u32)unit->datUnit, 0x180271) == 0 &&
+          func_0030b5a0_u32((u32)unit->datUnit, 0) == 0) {
+        if (currentAction->unit == unit) {
+          distance = 250.0f;
+        } else {
+          distance = 350.0f;
+        }
+        btlUnit0027f7c0(unit, &position, NULL, &reference);
+        reference.y = position.y;
+        direction.x = position.x - reference.x;
+        direction.y = position.y - reference.y;
+        direction.z = position.z - reference.z;
+        RwV3dNormalize(&direction, &direction);
+        direction.x *= distance;
+        direction.y *= distance;
+        direction.z *= distance;
+        position.x += direction.x;
+        position.y += direction.y;
+        position.z += direction.z;
+        btlUnitSetPos(unit, &position);
+      }
+    }
+  }
+  return 1;
+}
+
+// FUN_002b8f40
+BtlPacket* btlFormation002b8f40(s32 param_1)
+{
+    BtlPacket* packet;
+    BtlFormationPacket002b8f40* work;
+
+    packet = btlPacketCreate(BTLFORMATION_PACKET_UNK04, sizeof(BtlFormationPacket002b8f40));
+
+    packet->updateFunc = btlFormation002b8dc0;
+
+    work = (BtlFormationPacket002b8f40*)packet->workData;
+
+    work->unk_00 = param_1;
+
+    return packet;
+}
+
+// FUN_002b8f90
+
+u32 func_002b8f90(u16 param_1)
+{
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)(*DAT_00960178_abs)(0x638,0x40000);
+  switch (param_1) {
+  case 0:
+    state->flags = 0;
+    break;
+  case 1:
+    state->flags = 0;
+    break;
+  case 2:
+    state->flags = 8;
+    break;
+  }
+  state->counter = 1;
+  state->value = 0;
+  return (u32)state;
+}
+
+// FUN_002b9030
+
+void func_002b9030(u32 param_1)
+{
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)param_1;
+  state->counter--;
+  if (((state->flags & 8) != 0) && (state->counter == 1)) {
+    func_002b9220((int)state);
+  }
+  if (state->counter == 0) {
+    if ((state->flags & 2) != 0) {
+      func_002b9220((int)state);
+    }
+    (*DAT_0096017c)(state);
+  }
+  return;
+}
+
+#pragma alias func_0027ffb0_v3d func_0027ffb0
+#pragma alias func_00318ed0_v3d func_00318ed0
+
+// FUN_002b90d0
+
+void func_002b90d0(int destination, u32 source)
+{
+  u16 outer;
+  u16 index;
+  s32 count;
+  u8* entry;
+  int block;
+  u8* referencedEntry;
+  u32 packed;
+  u32 resource;
+  u32 continueLoop;
+
+  func_00521250(destination, source, 0x630);
+  outer = 0;
+  while ((s32)(continueLoop = outer) < 2) {
+    block = destination + (outer & 0xffff) * 0x314;
+    count = *(u16 *)(block + 0x10);
+    entry = (u8 *)(block + 0x1c);
+    for (index = 0; index < count; index++) {
+      if (entry[0] != 0xfe) {
+        if (entry[0] == 0xff) {
+          packed = *(u32 *)(entry + 4);
+          referencedEntry = (u8 *)(destination + (packed >> 5) * 0x314 +
+                                      (packed & 0x1f) * 0x18 + 0x1c);
+          resource = func_00325920_u32(*(u32 *)(referencedEntry + 4));
+          entry[0] = referencedEntry[0];
+        } else {
+          resource = func_00324bd0_u32(source + *(u32 *)(entry + 4));
+        }
+        *(u32 *)(entry + 4) = resource;
+      }
+      entry += 0x18;
+    }
+    outer++;
+  }
+  *(u16 *)(destination + 0x630) |= 2;
+}
+
+// FUN_002b9220
+
+void func_002b9220(int state)
+{
+  u16 outer;
+  u16 index;
+  int count;
+  u8 *entry;
+  int block;
+  u32 continueLoop;
+
+  outer = 0;
+  while ((s32)(continueLoop = outer) < 2) {
+    block = state + (outer & 0xffff) * 0x314;
+    count = *(u16 *)(block + 0x10);
+    entry = (u8 *)(block + 0x1c);
+    index = 0;
+    while (index < count) {
+      if (*entry != 0xfe && *entry != 0xfd) {
+        func_003257e0(*(u32 *)(entry + 4));
+      }
+      entry += 0x18;
+      index++;
+    }
+    outer++;
+  }
+  *(u16 *)(state + 0x630) &= 0xfffd;
+}
+
+// FUN_002b9300
+
+void func_002b9300(int param_1)
+{
+  extern void func_002b90d0(int,u32);
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)param_1;
+  state->counter++;
+  if (((state->flags & 8) != 0) && (state->counter == 2)) {
+    func_002b90d0(param_1,state->value);
+  }
+  return;
+}
+
+// FUN_002b9350
+
+bool func_002b9350(int param_1)
+
+{
+  return (*(u16 *)(param_1 + 0x630) & 2) != 0;
+}
+
+// FUN_002b9370
+
+u32 func_002b9370(int param_1,u16 param_2)
+{
+  u32 result;
+
+  switch (param_2) {
+  case 0:
+    result = *(u32 *)(param_1 + 8);
+    break;
+  case 1:
+    result = *(u32 *)(param_1 + 0x328);
+    break;
+  default:
+    result = 0;
+    break;
+  }
+  return result;
+}
+
+// FUN_002b93c0
+
+u32 func_002b93c0(int param_1,u16 param_2)
+
+{
+  int iVar1 = (param_2 & 0xffff) * 0x314;
+  return *(u32 *)(iVar1 + param_1 + 0xc);
+}
+// FUN_002b93e0
+
+u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
+{
+  extern void func_00521408(void *,u32,u32);
+  u8 random;
+  u32 result;
+  u32 size;
+  BtlFormationWork *work;
+
+  size = *(u16 *)((u8 *)(uintptr_t)((u32)param_2 * 0x314) +
+                  (uintptr_t)param_1 + 0x10) * 4 + 0x5c;
+  result = (*DAT_00960178_abs)(size,0x40000);
+  func_00521408((void *)result,0,size);
+  work = (BtlFormationWork *)result;
+  work->state = param_1;
+  work->list = (u32)(uintptr_t)((u8 *)(uintptr_t)param_1 +
+                                (u32)param_2 * 0x314 + 8);
+  work->count = *(u16 *)((u8 *)(uintptr_t)work->list + 8);
+  work->items = (u32)((u8 *)work + 0x5c);
+  work->sentinel = -1;
+  work->argument3 = param_3;
+  work->argument4 = param_4;
+  work->argument5 = param_5;
+  if (param_2 == 1) {
+    random = func_002ffbc0(100);
+    work->random = random;
+  }
+  return result;
+}
+
+
+/* W322 probe: func_002ba0f0 with opt_common_subs off improved normalized_diff 389 -> 372 (object 680/688). */
+// FUN_002b94f0
+
+void func_002b94f0(BtlFormationWork *work)
+{
+  s32 count;
+  u16 index;
+  u32 *items;
+
+  count = work->count;
+  items = (u32 *)(uintptr_t)work->items;
+  index = 0;
+  while (index < count) {
+    if (*items != 0) {
+      func_003257e0(*items);
+    }
+    items++;
+    index++;
+  }
+  (*DAT_0096017c)(work);
+}
+
+// FUN_002b9590 MATCHING
+
+float func_002b9590(int param_1)
+{
+  float fVar1 = 0;
+
+  fVar1 = fGpffff8398 * ((*(float *)(param_1 + 0x90) * *(float *)(param_1 + 0x2c) +
+          *(float *)(param_1 + 0x8c) * *(float *)(param_1 + 0x2c) * 0.5f) * 0.5f);
+  if (fVar1 > 2.5f) {
+    fVar1 = 2.5f;
+  }
+  else if (fVar1 < fGpffff839c) {
+    fVar1 = fGpffff839c;
+  }
+  return fVar1;
+}
+
+// FUN_002b9600
+
+void func_002b9600(u32 *param_1)
+
+{
+  u32 uVar1 = 0;
+  u32 uVar2 = 0;
+  u32 *puVar4;
+  int iVar3 = 0;
+  
+  puVar4 = (u32 *)(uintptr_t)DAT_00957100_abs;
+  iVar3 = 8;
+  do {
+    uVar1 = *param_1;
+    uVar2 = param_1[1];
+    param_1 = param_1 + 2;
+    iVar3 = iVar3 + -1;
+    *puVar4 = uVar1;
+    puVar4[1] = uVar2;
+    puVar4 = puVar4 + 2;
+  } while (0 < iVar3);
+  return;
+}
+
+// FUN_002b9640
+
+u32 func_002b9640(int param_1)
+
+{
+  u16 uVar1 = 0;
+  u32 uVar2 = 0;
+  
+  uVar2 = 0;
+  if (*(int *)(param_1 + 8) != 0) {
+    uVar2 = uVar2 | 0x80;
+  }
+  if (*(int *)(param_1 + 0xc) != 0) {
+    uVar2 = uVar2 | 1;
+  }
+  uVar1 = *(u16 *)(param_1 + 4);
+  if ((uVar1 & 0x400) != 0) {
+    uVar2 = uVar2 | 2;
+  }
+  if ((uVar1 & 0x100) != 0) {
+    uVar2 = uVar2 | 4;
+  }
+  if ((uVar1 & 4) != 0) {
+    uVar2 = uVar2 | 0x10;
+  }
+  if ((uVar1 & 2) != 0) {
+    uVar2 = uVar2 | 8;
+  }
+  if ((*(u16 *)(param_1 + 6) & 2) != 0) {
+    uVar2 = uVar2 | 0x20;
+  }
+  if ((*(u16 *)(param_1 + 6) & 4) != 0) {
+    uVar2 = uVar2 | 0x40;
+  }
+  return uVar2;
+}
+
+
+// FUN_002b96e0
+
+void func_002b96e0(int param_1,u32 param_2)
+
+{
+  *(u32 *)(param_1 + 0x634) = param_2;
+  return;
+}
+
+// FUN_002b96f0 NONMATCHING
+
+void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
+                   u32 param_6)
+{
+  u8 bVar1 = *(u8 *)(param_5 + 2);
+  float fVar3 = 0.0f;
+  float fStack_10[4];
+  float uStack_20[4];
+  float vectorWork[4];
+  float origin[4];
+  u8 *out = (u8 *)(u32)param_6;
+
+  if (*(u8 *)(param_5 + 1) == 4) {
+    if (bVar1 == 8) {
+      fVar3 = param_1;
+      if (*(short *)(param_5 + 4) == 0) {
+        fVar3 = 2.0f;
+      }
+    }
+    else {
+      fVar3 = 2.0f;
+    }
+  }
+  else {
+    fVar3 = param_2 * *(float *)(&DAT_00696440 + (u32)*(u8 *)(param_5 + 1) * 4) +
+            param_3[1] + 0.0f;
+    if ((bVar1 == 8) && (*(short *)(param_5 + 4) != 0)) {
+      fVar3 += param_1;
+    }
+  }
+
+  if ((bVar1 == 10) || (bVar1 == 9)) {
+    float scale;
+    u32 scaleBits;
+
+    func_003297a0(origin);
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf10, 0(%0)        \n"
+        ".set reorder"
+        :
+        : "r" (origin)
+        : "vf10", "memory"
+    );
+    if (param_1 >= param_2) {
+      param_2 = param_1;
+    }
+    scale = -param_2;
+    *(RwV4d*)origin = *(RwV4d*)param_3;
+    if (bVar1 != 9) {
+      origin[1] = fVar3;
+    }
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf11, 0(%0)        \n"
+        "vsub.xyz vf11, vf11, vf10\n"
+        ".set reorder"
+        :
+        : "r" (origin)
+        : "vf11", "memory"
+    );
+    if (bVar1 == 10) {
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf11, 0(%0)        \n"
+          ".set reorder"
+          :
+          : "r" (vectorWork)
+          : "memory"
+      );
+      *(u32 *)&vectorWork[1] = 0;
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "lqc2 vf11, 0(%0)        \n"
+          ".set reorder"
+          :
+          : "r" (vectorWork)
+          : "vf11", "memory"
+      );
+    }
+    __asm__ volatile (
+        ".set noreorder             \n"
+        "vmul.xyz vf2, vf11, vf11   \n"
+        "vmulax.w ACC, vf0, vf2x    \n"
+        "vmadday.w ACC, vf0, vf2y   \n"
+        "vmaddz.w vf2, vf0, vf2z    \n"
+        "vrsqrt Q, vf0w, vf2w       \n"
+        "vwaitq                     \n"
+        "vmulq.xyz vf11, vf11, Q    \n"
+        "mfc1 %0, %1                \n"
+        "nop                        \n"
+        "qmtc2.ni %0, vf2           \n"
+        "vmulx.xyzw vf11, vf11, vf2x\n"
+        "lqc2 vf10, 0(%2)           \n"
+        "vadd.xyzw vf10, vf10, vf11 \n"
+        "sqc2 vf10, 0(%3)           \n"
+        ".set reorder"
+        : "=r" (scaleBits)
+        : "f" (scale), "r" (origin), "r" (out)
+        : "vf2", "vf10", "vf11", "ACC", "Q", "memory"
+    );
+  }
+  else if (bVar1 == 8) {
+    *(float *)out = *param_3;
+    *(float *)(out + 4) = fVar3;
+    *(float *)(out + 8) = param_3[2];
+  }
+  else {
+    uStack_20[0] = *(float *)param_4;
+    uStack_20[1] = *((float *)param_4 + 1);
+    uStack_20[2] = *((float *)param_4 + 2);
+    uStack_20[3] = *((float *)param_4 + 3);
+    func_004bdde0(*(float *)(&DAT_00696460 + (u32)bVar1 * 4),uStack_20,(const void *)0x697880,2);
+    func_004be1e0(fStack_10,(const void *)0x697890,1,uStack_20);
+    *(float *)out = *param_3 + fStack_10[0] * param_1;
+    *(float *)(out + 4) = fVar3 + fStack_10[1] * param_1;
+    *(float *)(out + 8) = param_3[2] + fStack_10[2] * param_1;
+  }
+  *(u32 *)(out + 0xc) = 0;
+}
+
+// FUN_002b99d0
+
+void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4)
+
+{
+  s32 uVar1;
+  u32 param3Local, param4Local;
+  float fVar2;
+  float fVar3;
+  RwV3d output;
+  RwV3d scaled;
+  RwV3d transformed;
+  
+  param3Local = (u32)param_3;
+  param4Local = (u32)param_4;
+  uVar1 = *(u16 *)((int)param3Local + 4);
+  if (uVar1 == 0) {
+    fVar2 = *(float *)(param_1 + 0x30) * *(float *)(param_2 + 0x2c);
+  }
+  else {
+    fVar2 = (float)uVar1;
+  }
+  fVar3 = *(float *)(param_1 + 0x2c) * *(float *)(param_2 + 0x2c) * 0.5f;
+  scaled.x = *(float *)(param_1 + 0x20) * *(float *)(param_1 + 0x50);
+  scaled.y = *(float *)(param_1 + 0x24) * *(float *)(param_1 + 0x50);
+  scaled.z = *(float *)(param_1 + 0x28) * *(float *)(param_1 + 0x50);
+  func_004be1e0(&transformed,&scaled,1,(u8 *)param_1 + 0x40);
+  output.x = transformed.x + *(float *)(param_1 + 0x34);
+  output.y = transformed.y + *(float *)(param_1 + 0x38);
+  output.z = transformed.z + *(float *)(param_1 + 0x3c);
+  func_002b96f0(fVar2,fVar3,(float *)&output,(u32 *)(param_1 + 0x40),(int)param3Local,param4Local);
+  return;
+}
+
+// FUN_002b9b00
+
+void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
+{
+  s32 result;
+  u16 index;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
+  }
+  else {
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(
+        *(u32*)(param_2 + 0x9f4), index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1, param_1 + 0x40);
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
+    }
+  }
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
+}
+
+// FUN_002b9c00
+
+void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
+
+{
+  s32 result;
+  u16 index;
+  u32 model;
+  u32 model_variant;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
+  }
+  else {
+    model = *(u32*)(param_2 + 0x9f4);
+    model_variant = *(u32*)(model + 0x3c4);
+    if (model_variant == 0) {
+      model_variant = model;
+    }
+    func_003176c0(model_variant);
+    func_00318b90(model_variant);
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(model_variant, index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1,
+          (void*)((u8*)param_1 + 0x40));
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
+    }
+  }
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
+}
+
+// FUN_002b9d40
+
+void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
+{
+  s32 result;
+  u16 index;
+  u32 model;
+  u32 model_variant;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
+  }
+  else {
+    model = *(u32*)(param_2 + 0x9f4);
+    model_variant = *(u32*)(model + 0x3b8);
+    if (model_variant == 0) {
+      model_variant = model;
+    }
+    func_003176c0(model_variant);
+    func_00318b90(model_variant);
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(model_variant, index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1,
+          (void*)((u8*)param_1 + 0x40));
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
+    }
+  }
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
+}
+
+// FUN_002b9e80
+
+void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4)
+
+{
+  s32 uVar1;
+  float fVar2;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
+  
+  fVar2 = func_00280870_btlFormation_f32(3,0,work.auStack_10,&work.fStack_4,0,0);
+  uVar1 = *(u16 *)((int)param_3 + 4);
+  if (uVar1 == 0) {
+    __asm__ ("" : "+f"(fVar2));
+  }
+  else {
+    fVar2 = (float)uVar1;
+  }
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar2,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
+  return;
+}
+
+// FUN_002b9f30
+
+void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4)
+
+{
+  s32 uVar1;
+  u16 uVar2;
+  float fVar3;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
+  
+  if (*(u8 *)(param_2 + 0xa2) == '\0') {
+    uVar2 = 1;
+  }
+  else {
+    uVar2 = 2;
+  }
+  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
+  uVar1 = *(u16 *)((int)param_3 + 4);
+  if (uVar1 == 0) {
+    __asm__ ("" : "+f"(fVar3));
+  }
+  else {
+    fVar3 = (float)uVar1;
+  }
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
+  return;
+}
+
+// FUN_002ba000
+
+void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4)
+
+{
+  s32 uVar1;
+  u16 uVar2;
+  float fVar3;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
+  
+  if (*(u8 *)(param_2 + 0xa2) == '\0') {
+    uVar2 = 2;
+  }
+  else {
+    uVar2 = 1;
+  }
+  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
+  uVar1 = *(u16 *)((int)param_3 + 4);
+  if (uVar1 == 0) {
+    __asm__ ("" : "+f"(fVar3));
+  }
+  else {
+    fVar3 = (float)uVar1;
+  }
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
+  return;
+}
+
+// FUN_002ba0d0
+void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
+{
+  param_4[0] = 0;
+  param_4[1] = 0;
+  param_4[2] = 0;
+  param_4[3] = 0;
+}
+
+#pragma opt_common_subs off
+// FUN_002ba0f0 NONMATCHING
+
+void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
+
+{
+  int iVar1 = 0;
+  long lVar3 = 0;
+  u32 uVar4 = 0;
+  RwV4d transform[4];
+  RwV4d source[4];
+  RwV3d direction;
+  
+  switch(*param_3) {
+  case '\0':
+    func_004be1e0(&direction,(const void *)0x697890,1,(const void *)(param_1 + 0x40));
+    if ((direction.x == 0.0f) && (direction.z == 0.0f)) {
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf0, 0(%0)         \n"
+          ".set reorder"
+          :
+          : "r" (param_4)
+          : "memory"
+      );
+    }
+    else {
+      uVar4 = func_0052ea18(direction.x,direction.z);
+      func_00357ea0(0,uVar4,0);
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf10, 0(%0)         \n"
+          ".set reorder"
+          :
+          : "r" (param_4)
+          : "memory"
+      );
+    }
+    break;
+  case '\x01':
+    if ((*(u32 *)(param_2 + 0x98) & 2) == 0) {
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf0, 0(%0)         \n"
+          ".set reorder"
+          :
+          : "r" (param_4)
+          : "memory"
+      );
+    }
+    else {
+      lVar3 = func_00318d10(*(u32 *)(param_2 + 0x9f4),*(u16 *)(param_3 + 4),source);
+      if (lVar3 == 0) {
+        __asm__ volatile (
+            ".set noreorder          \n"
+            "sqc2 vf0, 0(%0)         \n"
+            ".set reorder"
+            :
+            : "r" (param_4)
+            : "memory"
+        );
+      }
+      else {
+        transform[0].x = source[0].x;
+        transform[0].y = source[0].y;
+        transform[0].z = source[0].z;
+        transform[0].w = 0.0f;
+        transform[1].x = source[1].x;
+        transform[1].y = source[1].y;
+        transform[1].z = source[1].z;
+        transform[1].w = 0.0f;
+        transform[2].x = source[2].x;
+        transform[2].y = source[2].y;
+        transform[2].z = source[2].z;
+        transform[2].w = 0.0f;
+        transform[3].x = source[3].x;
+        transform[3].y = source[3].y;
+        transform[3].z = source[3].z;
+        transform[3].w = 0.0f;
+        func_00329ed0(transform);
+        __asm__ volatile (
+            ".set noreorder          \n"
+            "sqc2 vf10, 0(%0)         \n"
+            ".set reorder"
+            :
+            : "r" (param_4)
+            : "memory"
+        );
+      }
+    }
+    break;
+  case '\x02':
+  case '\x03':
+  case '\x04':
+  case '\f':
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "sqc2 vf0, 0(%0)         \n"
+        ".set reorder"
+        :
+        : "r" (param_4)
+        : "memory"
+    );
+    break;
+  case '\a':
+  case '\n':
+  case '\v':
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "sqc2 vf0, 0(%0)         \n"
+        ".set reorder"
+        :
+        : "r" (param_4)
+        : "memory"
+    );
+    break;
+  case '\b':
+  case '\t':
+    if ((*(u32 *)(param_2 + 0x98) & 2) == 0) {
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf0, 0(%0)         \n"
+          ".set reorder"
+          :
+          : "r" (param_4)
+          : "memory"
+      );
+    }
+    else {
+      iVar1 = *(int *)(*(int *)(param_2 + 0x9f4) + 0x3b8 + (u32)(*param_3 == '\b') * 0xc);
+      if (iVar1 != 0) {
+        lVar3 = func_00318d10(iVar1,*(u16 *)(param_3 + 4),source);
+        if (lVar3 == 0) {
+          __asm__ volatile (
+              ".set noreorder          \n"
+              "sqc2 vf0, 0(%0)         \n"
+              ".set reorder"
+              :
+              : "r" (param_4)
+              : "memory"
+          );
+        }
+        else {
+          transform[0].x = source[0].x;
+          transform[0].y = source[0].y;
+          transform[0].z = source[0].z;
+          transform[0].w = 0.0f;
+          transform[1].x = source[1].x;
+          transform[1].y = source[1].y;
+          transform[1].z = source[1].z;
+          transform[1].w = 0.0f;
+          transform[2].x = source[2].x;
+          transform[2].y = source[2].y;
+          transform[2].z = source[2].z;
+          transform[2].w = 0.0f;
+          transform[3].x = source[3].x;
+          transform[3].y = source[3].y;
+          transform[3].z = source[3].z;
+          transform[3].w = 0.0f;
+          func_00329ed0(transform);
+          __asm__ volatile (
+              ".set noreorder          \n"
+              "sqc2 vf10, 0(%0)         \n"
+              ".set reorder"
+              :
+              : "r" (param_4)
+              : "memory"
+          );
+        }
+      }
+    }
+  }
+  return;
+}
+#pragma opt_common_subs reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002bde10 (MATCH nd0 -> MISMATCH nd119) - measured W161. */
+
+/* W322 probe: func_002bdfb0 with opt_loop_invariants on improved normalized_diff 431 -> 373 (object 796/816). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002bfcb0 with opt_loop_invariants on improved normalized_diff 479 -> 446 (object 688/688). */
+
+/* W322 probe: func_002c0070 with opt_loop_invariants on improved normalized_diff 1574 -> 1570 (object 1988/2064). */
+
+
+
+
+
+/* Removing this loses func_002c0970 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
+/* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002c1490 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+/* Removing this loses FUN_002c14f0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c15e0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
+
+
+/* Removing this loses FUN_002c16a0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
+
+
+
+/* Removing this loses FUN_002c17b0 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
+/* Removing this loses FUN_002c1850 (MATCH nd0 -> MISMATCH nd153) - measured W161. */
+
+/* Removing this loses FUN_002c1a30 (MATCH nd0 -> MISMATCH nd124) - measured W161. */
+
+/* Removing this loses FUN_002c1bf0 (MATCH nd0 -> MISMATCH nd135) - measured W161. */
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002c1f60 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2010 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c20c0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2170 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2270 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2360 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c2470 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+
+
+
+/* Removing this loses FUN_002c2630 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c26e0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2790 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+/* Removing this loses FUN_002c2840 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
+
+
+/* Removing this loses FUN_002c29e0 (MATCH nd0 -> MISMATCH nd175) - measured W161. */
+
+/* Removing this loses FUN_002c2be0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c2c40 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c2ca0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+
+
+/* W322 probe: func_002c2ed0 with opt_loop_invariants on improved normalized_diff 178 -> 158 (object 540/544). */
+
+
+/* Removing this loses FUN_002c3150 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c31b0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+/* Removing this loses FUN_002c3210 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
+
+
+
+/* Removing this loses FUN_002c3300 (MATCH nd0 -> MISMATCH nd148) - measured W161. */
+
+
+
+/* W322 probe: func_002c3770 with opt_loop_invariants on improved normalized_diff 817 -> 808 (object 1056/1136). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002c48a0 with opt_loop_invariants on improved normalized_diff 206 -> 48 (object 484/496). */
+
+/* W322 probe: func_002c4a90 with opt_loop_invariants on improved normalized_diff 206 -> 56 (object 492/496). */
+
+/* W322 probe: func_002c4c80 with opt_loop_invariants on improved normalized_diff 239 -> 19 (object 460/464). */
+
+/* W322 probe: func_002c4e50 with opt_common_subs off improved normalized_diff 288 -> 210 (object 472/480). */
+
+/* W322 probe: func_002c5030 with opt_loop_invariants on improved normalized_diff 534 -> 533 (object 840/848). */
+
+
+
+
+/* W322 probe: func_002c6300 with opt_common_subs off improved normalized_diff 457 -> 456 (object 664/720). */
+
+/* W322 rerun probe: func_002c65d0 with opt_loop_invariants on improved normalized_diff 191 -> 125 (object 1068/1072). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002ca480 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca590 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca6a0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002ca7b0 (MATCH nd0 -> MISMATCH nd202) - measured W161. */
+/* Removing this loses FUN_002ca900 (MATCH nd0 -> MISMATCH nd113) - measured W161. */
+/* Removing this loses FUN_002ca9d0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002caae0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cabf0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cad00 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cae10 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002caf20 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
+/* Removing this loses FUN_002cb030 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
+/* Removing this loses FUN_002cb0e0 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002cdad0 (MATCH nd0 -> MISMATCH nd74) - measured W161. */
+
+
+
+
+
+
+
+/* Removing this loses FUN_002cde60 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002ced60 (MATCH nd0 -> MISMATCH nd263) - measured W161. */
+#pragma opt_rebuildconditionals off
+#pragma opt_rebuildconditionals reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W322 probe: func_002d03e0 with opt_loop_invariants on improved normalized_diff 190 -> 188 (object 472/480). */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Recovered battle-misc support prelude */
+#pragma alias FUN_002b0280_legacy FUN_002b0280
+#pragma alias FUN_002a3820_u32 FUN_002a3820
+#pragma alias FUN_004c31b0_typed FUN_004c31b0
+ #pragma alias FUN_002a3e80_ab330 FUN_002a3e80
+#pragma alias FUN_002a3e80_side FUN_002a3e80
+#pragma alias FUN_00280050_typed FUN_00280050
+#pragma alias FUN_002a3520_result FUN_002a3520
+#pragma alias FUN_002fdbb0_result FUN_002fdbb0
+#pragma alias FUN_002a3520_s32 FUN_002a3520
+#pragma alias FUN_002a3550_s32 FUN_002a3550
+/* Target-local ABI aliases for FUN_002b3980. */
+#pragma alias FUN_002a3e80_action FUN_002a3e80
+/* b6070 exact call signatures */
+#pragma alias FUN_00300580_b6070 FUN_00300580
+#pragma alias FUN_00280130_b6070 FUN_00280130
+#pragma alias FUN_004be1e0_b6070 FUN_004be1e0
+#pragma alias FUN_004c31b0_b6070 FUN_004c31b0
+#pragma alias FUN_004c69f0_b6070 FUN_004c69f0
+#pragma alias FUN_004c6c60_b6070 FUN_004c6c60
+#pragma alias FUN_002a4690_b6070 FUN_002a4690
+#pragma alias FUN_002a2290_b6070 FUN_002a2290
+#pragma alias FUN_002a3110_b6070 FUN_002a3110
+#pragma alias FUN_002a3160_typed FUN_002a3160
+
+#pragma alias FUN_002d1f30_b21f0v2 FUN_002d1f30
+#pragma alias FUN_00280130_b21f0v2 FUN_00280130
+#pragma alias FUN_004c69f0_b21f0v2 FUN_004c69f0
+#pragma alias FUN_004c6b20_b21f0v2 FUN_004c6b20
+#pragma alias func_00280870_ae740 func_00280870
+#pragma alias FUN_002c0880_ae740 FUN_002c0880
+#pragma alias FUN_002a3850_ae740 FUN_002a3850
+#pragma alias FUN_004be310_ae740 FUN_004be310
+#pragma alias FUN_004c6b20_ae740 FUN_004c6b20
+#pragma alias FUN_004be1e0_ae740 FUN_004be1e0
+#pragma alias FUN_004c69f0_ae740 FUN_004c69f0
+#pragma alias FUN_00280050_ae740 FUN_00280050
+#pragma alias FUN_002a2170_ae740 FUN_002a2170
+#pragma alias FUN_004be1e0_typed FUN_004be1e0
+#pragma alias FUN_004be310_typed FUN_004be310
+#pragma alias FUN_004c6b20_typed FUN_004c6b20
+#pragma alias FUN_002d1f30_typed FUN_002d1f30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* This no-argument declaration is caller-specific; the state-table callback uses a camera pointer. */
+
+
+
+
+
+
+/* Retail camera callbacks for the 0x2A4C70-0x2A95D0 window.  The original
+ * routines share the same unit framing and look-at path; the callbacks keep
+ * that state typed while remaining NONMATCHING until instruction scheduling
+ * is tuned against the retail object. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// The near-window candidate still differs in saved-register layout and long-lived
+// temporary coloring; declaration and access-order probes were codegen-neutral.
+// Keep this marker NONMATCHING until those register lifetimes are reconstructed.
+/* W367 measured: opt_dead_assignments off + opt_lifetimes on nd2376 -> 2221, object 3276/3296; baseline object 3288/3296. */
+
+
+
+/* Retail camera recovery for the 0x2b02xx-0x2b8cxx slice.  The bodies below
+ * retain the complete branch/data flow recovered from the executable; all
+ * entries remain NONMATCHING until instruction scheduling is cleaned up. */
+
+#ifndef CONCAT44
+#endif
+/* Broad K&R declarations preserve this function's retail call ABI; typed callers below narrow them locally. */
+
+#pragma alias FUN_002a4470_b280 FUN_002a4470
+#pragma alias FUN_0027ffb0_b280 FUN_0027ffb0
+#pragma alias FUN_002a4690_b280 FUN_002a4690
+#pragma alias FUN_004be1e0_b280 FUN_004be1e0
+#pragma alias FUN_004c69f0_b280 FUN_004c69f0
+#pragma alias FUN_004c6b20_b280 FUN_004c6b20
+#pragma alias FUN_002d1fd0_b280 FUN_002d1fd0
+#pragma alias FUN_002d1f30_b280 FUN_002d1f30
+#pragma alias FUN_002a2170_b280 FUN_002a2170
+#pragma alias FUN_002a2290_b280 FUN_002a2290
+#pragma alias FUN_002a3110_b280 FUN_002a3110
+#pragma alias FUN_002a3e80_b280 FUN_002a3e80
+#pragma alias FUN_002d5bf0_b280 FUN_002d5bf0
+#pragma alias FUN_003093a0_b280 FUN_003093a0
+#pragma alias FUN_0052e930_b280 FUN_0052e930
+
+#pragma opt_lifetimes reset
+#pragma opt_dead_assignments reset
+/* W367 measured: opt_propagation off nd2626 -> 2579, object 3264/3488; baseline object 3364/3488. */
+
+
+
+#pragma opt_dead_assignments off
+#pragma opt_propagation reset
+
+#pragma opt_dead_assignments reset
+
+
+
+
+
+
+
+
+
+/* W383 floor, measured.  The whole nd12 residual is three adjacent lwc1 pairs at
+ * +284/+300/+316: retail loads the SUBTRAHEND (scratch.targetCenter, sp+0xF0) before
+ * the minuend (scratch.sourceCenter, sp+0xE0) in each component; we emit them the
+ * other way round.  Registers and every other word are identical, so this is the
+ * classic reordered-adjacent-loads case.  The volatile-cast technique needs a staging
+ * temporary to express the order, and that temporary costs 12 bytes: both variants
+ * (subtrahend-only volatile, and both-operands volatile) measured 1384/1376 nd653 --
+ * OVER the 1376-byte window.  Plain non-volatile temporaries are byte-neutral (the
+ * load sinks back to its use), a whole-vector temp gives 1408/1376 nd782, and all of
+ * scheduling on/off, optimize_for_size and the six opt_* knobs are neutral or worse
+ * (common_subs off 1616/nd1145, propagation off and dead_assignments off both nd796).
+ * Window-blocked: there is no room to buy the ordering.  Keep 1372/1376 nd12. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma alias FUN_002b4db0_float FUN_002b4db0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma alias FUN_002d1de0_b64d0 FUN_002d1de0
+#pragma alias FUN_002802d0_b64d0 FUN_002802d0
+#pragma alias FUN_004be1e0_b64d0 FUN_004be1e0
+#pragma alias FUN_00280130_b64d0 FUN_00280130
+#pragma alias FUN_00280200_b64d0 FUN_00280200
+#pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
+#pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
+#pragma alias FUN_002a2290_b64d0 FUN_002a2290
+#pragma alias FUN_002a3110_b64d0 FUN_002a3110
+
+
+
+
+
+
+
+
+
+
+
+/* Removing this loses FUN_002b7060 (MATCH nd0 -> MISMATCH nd81) - measured W161. */
+// FUN_002ba3a0 NONMATCHING
+
+void func_002ba3a0(int param_1)
+
+{
+  char cVar1;
+  u32 uVar2;
+  int iVar3;
+  u32 uVar4;
+  u32 uVar5;
+  u32 uVar6;
+  bool bVar7;
+  short *psVar8;
+  int *piVar10;
+  char *pcVar11;
+  int *piVar12;
+  u32 uVar13;
+  int iVar14;
+  int iVar15;
+  int iVar16;
+  float fVar17;
+  float fVar18;
+  u8 auStack_40[16];
+  u8 auStack_30[16];
+  u8 auStack_20[16];
+  u8 auStack_10[16];
+  
+  piVar10 = (int *)param_1;
+  iVar3 = piVar10[6];
+  uVar4 = piVar10[4];
+  uVar5 = piVar10[2];
+  if (((uVar5 & 0x800) == 0) && ((uVar4 & 0xff000000) != 0)) {
+    uVar6 = piVar10[3];
+    if ((uVar6 == 0) ||
+       ((((uVar5 & 0x1000) != 0 && (uVar6 == *(u32 *)(*piVar10 + 800))) || ((uVar5 & 0x100) != 0)))
+       ) {
+      psVar8 = (short *)func_002fc520((BtlUnit *)iVar3);
+      if (psVar8 != 0) {
+        *(float *)(piVar10 + 8) = (float)*psVar8;
+        *(float *)(piVar10 + 9) = (float)psVar8[1];
+        *(float *)(piVar10 + 10) = (float)psVar8[2];
+        *(float *)(piVar10 + 0xb) = (float)(u16)psVar8[3];
+        *(float *)(piVar10 + 0xc) = (float)(u16)psVar8[4];
+      }
+      else {
+        iVar14 = *(int *)(iVar3 + 0x84);
+        iVar15 = *(int *)(iVar3 + 0x88);
+        *(RwV3d*)(piVar10 + 8) = *(RwV3d*)(iVar3 + 0x80);
+        piVar10[0xb] = *(int *)(iVar3 + 0x8c);
+        piVar10[0xc] = *(int *)(iVar3 + 0x90);
+      }
+      *(RwV3d*)(piVar10 + 0xd) = *(RwV3d*)(iVar3 + 4);
+      if (iVar3 == piVar10[7]) {
+        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
+      }
+      else if ((*(char *)(iVar3 + 0xa2) == *(char *)(piVar10[7] + 0xa2)) &&
+              (*(char *)(iVar3 + 0xa2) == '\x01')) {
+        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
+      }
+      else {
+        func_0027ffb0(iVar3,auStack_10);
+        func_0027ffb0(piVar10[7],auStack_20);
+        func_002d1de0(piVar10 + 0x10,auStack_10,auStack_20);
+      }
+      piVar10[0x14] = *(int *)(iVar3 + 0x2c);
+    }
+    func_00352c30(piVar10[6],piVar10[7]);
+    piVar12 = (int *)piVar10[0x16];
+    uVar2 = *(u16 *)(piVar10 + 0x15);
+    pcVar11 = (char *)(piVar10[1] + 0x14);
+    for (uVar13 = 0; uVar13 < uVar2; uVar13 = uVar13 + 1) {
+      if ((*(u32 *)(pcVar11 + 0x10) < uVar6) && (*pcVar11 != -2)) {
+        if (*piVar12 == 0) {
+          if (((*(u16 *)(*piVar10 + 0x630) & 4) == 0) || (*pcVar11 == -3)) {
+            iVar14 = func_00325920_u32(*(u32 *)(pcVar11 + 4));
+            *piVar12 = iVar14;
+            bVar7 = true;
+          }
+          else {
+            *piVar12 = *(int *)(pcVar11 + 4);
+            bVar7 = false;
+            *pcVar11 = -3;
+          }
+          if (((*(char *)(piVar10[1] + 0x10) != '\0') && (iVar3 != 0)) &&
+             ((cVar1 = pcVar11[8], cVar1 == '\a' ||
+              (((cVar1 == '\x06' || (cVar1 == '\x01')) || (cVar1 == '\0')))))) {
+            fVar18 = fGpffff839c;
+            if (*(char *)(piVar10[1] + 0x10) == '\x01') {
+              fVar17 = fGpffff8398 *
+                       (*(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c) +
+                       *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c) * 0.5f) * 0.5f;
+              if (2.5f < fVar17) {
+                fVar18 = 2.5f;
+              }
+              else if (fGpffff839c <= fVar17) {
+                fVar18 = fVar17;
+              }
+            }
+            else {
+              iVar14 = piVar10[7];
+              fVar17 = fGpffff8398 *
+                       (*(float *)(iVar14 + 0x90) * *(float *)(iVar14 + 0x2c) +
+                       *(float *)(iVar14 + 0x8c) * *(float *)(iVar14 + 0x2c) * 0.5f) * 0.5f;
+              if (2.5f < fVar17) {
+                fVar18 = 2.5f;
+              }
+              else if (fGpffff839c <= fVar17) {
+                fVar18 = fVar17;
+              }
+            }
+            func_00325e40(fVar18,*piVar12);
+          }
+          if (bVar7) goto LAB_002ba8a0;
+        }
+        if ((*(short *)(pcVar11 + 0xe) == 0) ||
+           (((piVar10[2] & 0x1eU) == 0 && (0x31 < *(u8 *)(piVar10 + 5))))) {
+          (*(PTR_FUN_00696490)[(u8)pcVar11[8]])(param_1,iVar3,pcVar11 + 8,auStack_30);
+          func_00325c10(*piVar12,auStack_30);
+          func_002ba0f0(param_1,iVar3,(u8 *)pcVar11 + 8,&auStack_40);
+          func_00325d60(*piVar12,auStack_40);
+          func_00326030(*piVar12,uVar4);
+          func_003252a0(*piVar12);
+        }
+      }
+LAB_002ba8a0:
+      pcVar11 = pcVar11 + 0x18;
+      piVar12 = piVar12 + 1;
+    }
+    piVar10[3] = piVar10[3] + 1;
+  }
+  return;
+}
+// FUN_002ba900
+
+void func_002ba900(int param_1)
+{
+  extern u16 func_00321130(void);
+  u16 count;
+  u32 savedState;
+  int *entries;
+  s32 limit;
+
+  if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
+    entries = *(int **)(param_1 + 0x58);
+    count = *(u16 *)(param_1 + 0x54);
+    if ((*(u32 *)(param_1 + 8) & 0x8000) == 0) {
+      u16 index;
+      index = 0;
+      limit = count;
+      while (index < limit) {
+        if (*entries != 0) func_00325500(*entries);
+        index++;
+        entries++;
+      }
+    } else {
+      u16 index;
+      savedState = func_00321130();
+      func_00321320(DAT_00957100_abs);
+      func_00321120(4);
+      index = 0;
+      limit = count;
+      while (index < limit) {
+        if (*entries != 0) func_00325500(*entries);
+        index++;
+        entries++;
+      }
+      func_00321120(savedState);
+    }
+  }
+}
+
+// FUN_002baa20
+
+void func_002baa20(int *param_1)
+{
+  extern void func_002b90d0(int,u32);
+  extern u32 func_00100d80(u32,u32);
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)*param_1;
+  state->counter++;
+  if (((state->flags & 8) != 0) && (state->counter == 2)) {
+    func_002b90d0((int)state,state->value);
+  }
+  if ((*(u16 *)(param_1 + 3) & 1) == 0) {
+    param_1[1] = func_00100d80(param_1[2],0);
+  } else {
+    param_1[1] = 0;
+  }
+  state->flags |= 1;
+  return;
+}
+
+// FUN_002baad0 MATCHING
+
+u32 func_002baad0(int* data)
+{
+  FormationLoadWork* work;
+  BtlFormationState* state;
+  u32 result;
+  u32 resource;
+  u8 output[4];
+
+  work = (FormationLoadWork*)data;
+  state = work->state;
+  if (work->request == 0) {
+    work->request = func_00100d80_u32(work->source, 0);
+  }
+  if (func_001016b0_u32(work->request) != 0) {
+    resource = func_001021c0_u32(work->source, output);
+    func_002b90d0((int)state, resource);
+    func_00100ec0(work->request);
+    state->flags &= 0xfffe;
+    state->flags |= 2;
+    state->counter--;
+    if ((state->flags & 8) != 0 && state->counter == 1) {
+      func_002b9220((int)state);
+    }
+    if (state->counter == 0) {
+      if ((state->flags & 2) != 0) {
+        func_002b9220((int)state);
+      }
+      (*DAT_0096017c_abs)(state);
+    }
+    result = 1;
+  } else {
+    result = 0;
+  }
+  return result;
+}
+
+// FUN_002bac00 MATCHING
+
+u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3)
+{
+  typedef struct FormationStringWork {
+    u32 value;
+    u32 unused;
+    char *text;
+    u16 field;
+    u16 padding;
+  } FormationStringWork;
+  BtlPacket *packet;
+  FormationStringWork *work;
+
+  packet = btlPacketCreate(0x400, func_00524388(param_2) + sizeof(FormationStringWork));
+  packet->unk_47 &= 0xfe;
+  packet->initFunc = (BtlPacketInitFunc)func_002baa20;
+  packet->updateFunc = (BtlPacketUpdateFunc)func_002baad0;
+  work = packet->workData;
+  work->value = param_1;
+  work->text = (char *)(work + 1);
+  work->field = param_3;
+  func_00524270(work->text, param_2);
+  return (u32)packet;
+}
+
+// FUN_002bacb0
+
+void func_002bacb0(u32 *param_1)
+
+{
+  u32 uVar1 = 0;
+  
+  param_1[6] = 0;
+  func_002b9300(*param_1);
+  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
+  *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + 1;
+  switch (*(short *)(param_1 + 3)) {
+  case 0:
+    param_1[5] = *(u32 *)(param_1[1] + 0x9fc);
+    break;
+  case 1:
+    param_1[5] = *(u32 *)(param_1[2] + 0x9fc);
+    break;
+  }
+  uVar1 = (u32)func_002bb9c0(param_1[5]);
+  param_1[4] = uVar1;
+  return;
+}
+
+// FUN_002bad60 NONMATCHING
+
+u32 func_002bad60(u32 *param_1)
+
+{
+  short sVar1;
+  u16 *puVar2;
+  int iVar3;
+  u16 functionIndex;
+  u32 unaff_s2_lo;
+  u32 unaff_s1_lo;
+  
+  if (func_002b9350_u32(*param_1) == 0)
+    return 0;
+  puVar2 = (u16 *)param_1[4];
+    if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
+      return 1;
+    }
+    else {
+      functionIndex = *(volatile u16 *)(param_1 + 3);
+      iVar3 = func_002b9370(*param_1,functionIndex);
+      if ((*puVar2 & 0x40) == 0) {
+        if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
+          *puVar2 = *puVar2 | 0x100;
+          return 0;
+        }
+        if ((param_1[6] == 0) &&
+            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
+          sVar1 = *(short *)(param_1 + 3);
+          switch (sVar1) {
+          case 0:
+            unaff_s2_lo = param_1[1];
+            unaff_s1_lo = param_1[2];
+            break;
+          case 1:
+            unaff_s2_lo = param_1[2];
+            unaff_s1_lo = param_1[1];
+            break;
+          }
+          *(u32 *)(puVar2 + 8) =
+              func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
+          *puVar2 = *puVar2 | 0x30;
+        }
+        param_1[6] = param_1[6] + 2;
+      }
+    }
+  return 0;
+}
+
+#pragma opt_lifetimes reset
+/* W367 measured: opt_propagation off nd2117 -> 2094, object 3236/3248; baseline object 3248/3248. */
+// FUN_002baec0
+
+bool func_002baec0(u32 *param_1)
+{
+  int iVar2;
+  u16 index;
+  u32 value;
+  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *index_ptr;
+  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *value_ptr;
+  
+  if (!func_002b9350(*param_1)) {
+    return false;
+  }
+  index_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *)(param_1 + 3);
+  value_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *)param_1;
+  iVar2 = (index = *index_ptr,
+           value = *value_ptr,
+           func_002b93c0(value,index));
+  iVar2 <<= 1;
+  if (iVar2 < 1) {
+    iVar2 = 2;
+  }
+  return iVar2 <= (int)param_1[6];
+}
+
+// FUN_002baf30
+
+void func_002baf30(u32 *param_1)
+
+{
+  func_002bbac0(param_1[5],(u16 *)param_1[4]);
+  func_002b9030(*(int *)param_1);
+  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
+  *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + -1;
+  return;
+}
+
+// FUN_002baf90
+
+void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
+                 u32 param_5)
+
+{
+  u32 *puVar1;
+  int iVar2 = 0;
+  
+  iVar2 = func_0027ec10(0x301,0x20);
+  *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
+  *(code *)(iVar2 + 0x68) = (code)func_002bacb0;
+  *(code *)(iVar2 + 0x6c) = (code)func_002bad60;
+  *(code *)(iVar2 + 0x74) = (code)func_002baec0;
+  *(code *)(iVar2 + 0x70) = (code)func_002baf30;
+  puVar1 = *(u32 **)(iVar2 + 0x78);
+  *puVar1 = param_1;
+  puVar1[1] = param_2;
+  puVar1[2] = param_3;
+  *(u16 *)(puVar1 + 3) = param_4;
+  puVar1[7] = param_5;
+  return;
+}
+
+#pragma opt_propagation reset
+// FUN_002bb050
+
+void func_002bb050(u32 *param_1)
+
+{
+  u32 uVar1 = 0;
+  
+  param_1[7] = 0;
+  func_002b9300(*param_1);
+  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
+  uVar1 = (u32)func_002bb9c0(*(u32 *)(param_1[1] + 0x9fc));
+  param_1[6] = uVar1;
+  return;
+}
+
+// FUN_002bb0b0 NONMATCHING
+
+u32 func_002bb0b0(u32 *param_1)
+
+{
+  u16 *puVar1;
+  int iVar2 = 0;
+  u32 uVar3 = 0;
+  long lVar4 = 0;
+  
+  if (func_002b9350(*param_1) == 0) {
+    uVar3 = 0;
+  }
+  else {
+    puVar1 = (u16 *)param_1[6];
+    if ((*(u32 *)(puVar1 + 2) & 0xff000000) == 0) {
+      uVar3 = 1;
+    }
+    else {
+      if ((*puVar1 & 0x40) == 0) {
+        if ((*(u16 *)(param_1 + 8) & 0x4000) != 0) {
+          iVar2 = param_1[7] + 1;
+        }
+        else {
+          iVar2 = func_002b9370(*param_1,0);
+          iVar2 = iVar2 << 1;
+        }
+        if ((((param_1[2] != 0) && (param_1[2] * 2 + -0xd <= (int)param_1[7])) ||
+            ((*(long *)(param_1 + 4) != 0 &&
+             (lVar4 = func_0027e310(*(long *)(param_1 + 4),0x3fffffffffffffff), lVar4 == 0)))) ||
+           ((iVar2 != 0 && (iVar2 <= (int)param_1[7])))) {
+          if ((*(u16 *)(param_1 + 8) & 0x2000) != 0) {
+            *(u8 *)(param_1[6] + 8) = 4;
+          }
+          *(u16 *)param_1[6] = *(u16 *)param_1[6] | 0x100;
+          return 0;
+        }
+        if (param_1[7] == 0) {
+          uVar3 = func_002b93e0(*param_1,0,param_1[1],param_1[1],*(u16 *)(param_1 + 8));
+          *(u32 *)(puVar1 + 8) = uVar3;
+        }
+        else if (param_1[7] == 2) {
+          *puVar1 = *puVar1 | 0xb0;
+          *(u32 *)(puVar1 + 2) = (u32)((u32)((long)*(int *)(puVar1 + 2) << 0x28) >> 0x28);
+        }
+        param_1[7] = param_1[7] + 2;
+      }
+      uVar3 = 0;
+    }
+  }
+  return uVar3;
+}
+
+// FUN_002bb290
+
+void func_002bb290(u32 *param_1)
+
+{
+  func_002bbac0(*(u32 *)(param_1[1] + 0x9fc),(u16 *)param_1[6]);
+  func_002b9030(*(int *)param_1);
+  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
+  return;
+}
+
+// FUN_002bb2f0
+
+void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
+                 u16 param_5)
+
+{
+  u32 *puVar1;
+  int iVar2 = 0;
+  
+  iVar2 = func_0027ec10(0x302,0x28);
+  *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
+  *(code *)(iVar2 + 0x68) = (code)func_002bb050;
+  *(code *)(iVar2 + 0x6c) = (code)func_002bb0b0;
+  *(code *)(iVar2 + 0x70) = (code)func_002bb290;
+  puVar1 = *(u32 **)(iVar2 + 0x78);
+  *puVar1 = param_1;
+  puVar1[1] = param_2;
+  puVar1[2] = param_3;
+  *(u64 *)(puVar1 + 4) = param_4;
+  *(u16 *)(puVar1 + 8) = param_5;
+  return;
+}
+
 /* Camera-state work records use the retail 64-bit pair layout. */
 #ifndef BTLCAMERA_GHIDRA_PAIR
-#define BTLCAMERA_GHIDRA_PAIR
-typedef u8 u8;
-typedef u8 byte;
-typedef unsigned short ushort;
-typedef union BtlCameraGhidraPair
-{
-    struct { f32 _0_4_; f32 _4_4_; } f;
-    u64 raw;
-} BtlCameraGhidraPair;
-#define GhidraPair BtlCameraGhidraPair
-#define PAIR44(hi, lo) ((GhidraPair){{(lo), (hi)}})
 #endif
 
-extern f32 DAT_007cad3c;
-extern f32 DAT_007cad54;
-extern f32 DAT_007cad98;
-extern f32 DAT_007cadb0;
-extern f32 DAT_007caddc;
-extern f32 DAT_007cade0;
-extern f32 DAT_007cade4;
-extern f32 DAT_007cade8;
-extern f32 DAT_007cadfc;
-extern f32 DAT_007cae00;
-extern f32 DAT_007cae04;
-extern f32 DAT_007cae0c;
-extern f32 DAT_007cae10;
-extern f32 DAT_007cae14;
-extern f32 DAT_007cae18;
-extern f32 DAT_007cae24;
-extern f32 fGpffff8030;
-extern f32 fGpffff807c;
-extern f32 fGpffff80a0;
-extern f32 fGpffff80a4;
-extern f32 fGpffff80a8;
-extern f32 fGpffff80b0;
-extern f32 fGpffff80b8;
-extern f32 fGpffff80bc;
-extern u32 uGpffff8074;
-extern u32 uGpffff809c;
-extern u32 uGpffff80ac;
-extern u64 func_00280050();
-extern u8* iGpffffb73c;
 
 // Restored five retail camera-frame quaternion calls omitted by the raw decompilation.
 // These calls update the frame orientation in each camera-state path before final setup.
@@ -4968,54 +5080,13 @@ extern u8* iGpffffb73c;
 /* Retail 0x2AC920 recovery: frame slots 0x20-0x158 hold the camera/target
  * poses, six world vectors, four 2-D helper pairs, and scalar intermediates.
  * Restored retail calls are at 0x4d8, 0x514, 0x52c, 0x604, 0x61c, and 0x62c. */
-typedef struct BtlCameraC920Pose
-{
-    RwV3d pos;
-    RtQuat rot;
-} BtlCameraC920Pose;
 
-typedef struct BtlCameraC920Pair
-{
-    f32 first;
-    f32 second;
-} BtlCameraC920Pair;
 
-typedef struct BtlCameraC920Work
-{
-    BtlCameraC920Pose cameraPose;
-    BtlCameraC920Pose desiredPose;
-    RwV3d sourceCenter;
-    RwV3d targetCenter;
-    RwV3d direction;
-    RwV3d firstPoint;
-    RwV3d secondPoint;
-    RwV3d basePoint;
-    BtlCameraC920Pair cameraHorizontal;
-    BtlCameraC920Pair projectionFrom;
-    BtlCameraC920Pair projectionTo;
-    BtlCameraC920Pair projectionOutput;
-    f32 f2;
-    f32 f7;
-    f32 f8;
-    f32 f9;
-    f32 f11;
-    f32 f12;
-    f32 f13;
-    f32 projectionDistance;
-    f32 step;
-} BtlCameraC920Work;
 
 #pragma alias FUN_002a4470_c920 FUN_002a4470
-extern void FUN_002a4470_c920(BtlCameraC920Pose* dst,
-                               const BtlCameraC920Pose* src);
 #pragma alias FUN_002a44f0_c920 FUN_002a44f0
-extern void FUN_002a44f0_c920(BtlCameraC920Pose* dst,
-                               const BtlCameraC920Pose* src);
 #pragma alias FUN_002a2290_c920 FUN_002a2290
-extern void FUN_002a2290_c920(BtlCamera* camera, const RwV3d* start,
-                               const RwV3d* end, s32 mode);
 #pragma alias FUN_002a3110_c920 FUN_002a3110
-extern void FUN_002a3110_c920(BtlCamera* camera, f32 step);
 
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
@@ -5047,76 +5118,10 @@ extern void FUN_002a3110_c920(BtlCamera* camera, f32 step);
 /* W367 measured: opt_lifetimes on nd849 -> 848, object 2108/2112; baseline object 2108/2112. */
 
 /* Retail 0x2AEF80-0x2AF7E0: retain the measured framing frame slots as real aggregates. */
-typedef struct BtlCameraFramingPoseLocal {
-  RwV3d pos;
-  RtQuat rot;
-} BtlCameraFramingPoseLocal;
 
-typedef struct BtlCameraFramingWork {
-  f32 fStack_140;
-  f32 fStack_13c;
-  f32 fStack_138;
-  f32 fStack_134;
-  f32 fStack_130;
-  f32 fStack_12c;
-  f32 fStack_128;
-  f32 fStack_124;
-  f32 fStack_120;
-  int iStack_11c;
-  f32 fStack_110;
-  f32 fStack_10c;
-  f32 fStack_108;
-  Local128 auStack_104;
-  f32 fStack_f4;
-  f32 fStack_f0;
-  f32 fStack_ec;
-  struct {
-    Local128 quat;
-    f32 aux0;
-    f32 aux1;
-  } auStack_e8;
-  BtlCameraFramingPoseLocal auStack_d0;
-  f32 fStack_b4;
-  f32 fStack_b0;
-  f32 fStack_ac;
-  f32 fStack_a8;
-  f32 fStack_a4;
-  f32 fStack_a0;
-  f32 fStack_9c;
-  f32 fStack_90;
-  f32 fStack_8c;
-  f32 fStack_88;
-  f32 fStack_80;
-  f32 fStack_7c;
-  f32 fStack_78;
-  f32 fStack_70;
-  f32 fStack_6c;
-  f32 fStack_68;
-  f32 fStack_64;
-  f32 fStack_60;
-  f32 fStack_58;
-  f32 fStack_54;
-  f32 fStack_50;
-  f32 fStack_48;
-  f32 fStack_44;
-  f32 fStack_40;
-  f32 fStack_38;
-  f32 fStack_34;
-  f32 fStack_30;
-  f32 fStack_28;
-  f32 fStack_24;
-  f32 fStack_20;
-  f32 fStack_18;
-  f32 fStack_14;
-  f32 fStack_10;
-  f32 auStack_8;
-  f32 fStack_4;
-} BtlCameraFramingWork;
 #pragma opt_lifetimes reset
 /* W367 measured: opt_lifetimes on + opt_propagation off nd1499 -> 1485, object 2060/2160; baseline object 2100/2160. */
 
-extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
-extern u16 FUN_002c09f0_y2(int target);
 
 
 
