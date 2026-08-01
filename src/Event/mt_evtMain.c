@@ -5524,9 +5524,9 @@ switch (cVar1) {
       }
 
     }
+
+
   }
-
-
   return;
 
 }
@@ -13014,12 +13014,12 @@ u32 FUN_0036da10(int param_1)
 
 {
 
-  int iVar4;
 
+  int iVar4;
   int iVar5;
 
-  short uVar1;
 
+  short uVar1;
   short sVar2;
 
   int iVar3;

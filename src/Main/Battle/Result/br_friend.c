@@ -951,6 +951,7 @@ u32 func_001faea0(void)
   int iVar5;
   u32 uVar6;
   u8 auStack_8[8];
+  u32 uVar7;
 
   uVar2 = FUN_0035ed20(0);
   lVar3 = FUN_00174800(uVar2);
@@ -1011,8 +1012,8 @@ u32 func_001faea0(void)
   }
   lVar4 = FUN_0017d800();
   if ((lVar4 == 0) && (lVar3 != 0)) {
-    for (uVar6 = 0; (int)uVar6 < 5; uVar6 = uVar6 + 1) {
-      FUN_00173b60(uVar2,uVar6 & 0xffff,auStack_8[uVar6]);
+    for (uVar7 = 0; (int)uVar7 < 5; uVar7 = uVar7 + 1) {
+      FUN_00173b60(uVar2,uVar7 & 0xffff,auStack_8[uVar7]);
     }
   }
   return 1;

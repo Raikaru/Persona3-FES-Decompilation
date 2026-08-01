@@ -4880,8 +4880,9 @@ u32 func_002bad60(u32 *param_1)
           *puVar2 = *puVar2 | 0x100;
           return 0;
         }
-        if ((param_1[6] == 0) &&
-            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
+        if (param_1[6] == 0) {
+          u32 flags = param_1[7];
+          if ((flags & 0xc00) != 0xc00) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:
@@ -4897,6 +4898,7 @@ u32 func_002bad60(u32 *param_1)
               func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
           *puVar2 = *puVar2 | 0x30;
         }
+          }
         param_1[6] = param_1[6] + 2;
       }
     }

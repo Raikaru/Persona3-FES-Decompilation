@@ -46,6 +46,10 @@ extern u32 DAT_0095be9d;
 
 extern void FUN_003b2cb0(float param_1,int param_2,int param_3,u32 param_4,
                          u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
+#pragma alias FUN_003b2cb0_color_first FUN_003b2cb0
+extern void FUN_003b2cb0_color_first(float scale,u32 color,u32 active,
+                                     int x,int y,u32 font,u32 text,
+                                     u32 width,u32 flags);
 #pragma alias FUN_003c63f0_typed FUN_003c63f0
 extern u64 FUN_003c63f0_typed(int param_1);
 #pragma alias FUN_003c4e70_typed FUN_003c4e70
@@ -420,6 +424,7 @@ u64 FUN_003c60f0(int param_1)
 #undef FUN_003c6120
 // W419 staged call-argument locals for FUN_003c6120; nd28/object324 was unchanged.
 // W420 reversed mixed-argument static inline helper measured nd29/object324/window336; commutative OR helper measured nd32/object324/window336; reverted.
+// W423 color-first FUN_003b2cb0 ABI alias (scale,color,active,x,y,...) matches retail setup order; nd28 -> 5, object324/window336; retained.
 // FUN_003C6120 NONMATCHING
 
 u32 FUN_003c6120(int param_1,int param_2)
@@ -460,8 +465,9 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
-                 (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
+    FUN_003b2cb0_color_first(0.0f,puVar2[4] | 0xffffff00,
+                             (u32)(param_2 == *(int *)(param_1 + 0xc)),
+                             puVar2[0],puVar2[1],4,puVar2[2],0x10,0);
   }
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;

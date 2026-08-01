@@ -14,6 +14,8 @@ extern u32 D_00960090[];
 extern u8 D_00960090_abs[];
 #pragma alias D_0096009C_abs D_0096009C
 extern u8 D_0096009C_abs[];
+#pragma alias D_0096009C_fn D_0096009C
+extern void (*D_0096009C_fn)(u32*, u32, u32, u32, u32);
 extern void* FUN_00198590(void);
 u32 FUN_0021c450();
 u32 FUN_0021cd00();
@@ -647,7 +649,6 @@ void FUN_0022c8a0(u32* object_param)
 void FUN_0022df10(u32* object)
 {
     void (**setState)(u32, u32);
-    void (**setQuad)(u32*, u32, u32, u32, u32);
     u32 table3;
     u32 table5;
     u32 text;
@@ -658,7 +659,6 @@ void FUN_0022df10(u32* object)
     table5 = FUN_0021c3f0(5);
     text = FUN_0021c450(*(u16*)((u8*)object + 4));
     setState = (void (**)(u32, u32))D_00960090_abs;
-    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
     (*setState)(0x14, 2);
     (*setState)(8, 0);
     (*setState)(6, 0);
@@ -667,20 +667,20 @@ void FUN_0022df10(u32* object)
     if ((object[0] & 0x20) != 0) {
         RpSkyRenderStateSet_void(3, (void*)0x717fb);
         RpSkyRenderStateSet_void(2, (void*)0x44);
-        (*setQuad)((u32*)((u8*)object + 0x310), 4, 0, 1, 2);
-        (*setQuad)((u32*)((u8*)object + 0x310), 4, 0, 2, 3);
+        D_0096009C_fn((u32*)((u8*)object + 0x310), 4, 0, 1, 2);
+        D_0096009C_fn((u32*)((u8*)object + 0x310), 4, 0, 2, 3);
 
         if (!((object[0] & 4) != 0 && object[0x20c] == 8)) {
             RpSkyRenderStateSet_void(3, (void*)0x717fb);
             RpSkyRenderStateSet_void(2, (void*)0x44);
-            (*setQuad)((u32*)((u8*)object + 0x410), 4, 0, 1, 2);
-            (*setQuad)((u32*)((u8*)object + 0x410), 4, 0, 2, 3);
+            D_0096009C_fn((u32*)((u8*)object + 0x410), 4, 0, 1, 2);
+            D_0096009C_fn((u32*)((u8*)object + 0x410), 4, 0, 2, 3);
         }
     }
     RpSkyRenderStateSet_void(3, (void*)0x717fb);
     RpSkyRenderStateSet_void(2, (void*)0x44);
-    (*setQuad)((u32*)((u8*)object + 0x110), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x110), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x110), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x110), 4, 0, 2, 3);
 
     if ((object[0] & 0x20) == 0) {
         goto check210_flag8;
@@ -701,20 +701,20 @@ check210_flag8:
 draw210:
     RpSkyRenderStateSet_void(3, (void*)0x71801);
     RpSkyRenderStateSet_void(2, (void*)0x48);
-    (*setQuad)((u32*)((u8*)object + 0x210), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x210), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x210), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x210), 4, 0, 2, 3);
 skip210:
 
     RpSkyRenderStateSet_void(3, (void*)0x717fb);
     RpSkyRenderStateSet_void(2, (void*)0x44);
     (*setState)(1, FUN_0021cce0(FUN_0021cca0(text, 0)));
-    (*setQuad)((u32*)((u8*)object + 0x10), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x10), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x10), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x10), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table3, 0xa);
     (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
 
     if ((object[0] & 0x20) == 0) {
         goto check730_flag8;
@@ -735,42 +735,42 @@ check730_flag8:
 draw730:
     RpSkyRenderStateSet_void(3, (void*)0x71801);
     RpSkyRenderStateSet_void(2, (void*)0x48);
-    (*setQuad)((u32*)((u8*)object + 0x730), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x730), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x730), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x730), 4, 0, 2, 3);
 skip730:
 
     RpSkyRenderStateSet_void(3, (void*)0x717fb);
     RpSkyRenderStateSet_void(2, (void*)0x44);
     resource = FUN_0021cca0(table3, 0);
     (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)((u8*)object + 0x860), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x860), 4, 0, 2, 3);
-    (*setQuad)((u32*)((u8*)object + 0x960), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0x960), 4, 0, 2, 3);
-    (*setQuad)((u32*)((u8*)object + 0xa60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xa60), 4, 0, 2, 3);
-    (*setQuad)((u32*)((u8*)object + 0xb60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xb60), 4, 0, 2, 3);
-    (*setQuad)((u32*)((u8*)object + 0xc60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xc60), 4, 0, 2, 3);
-    (*setQuad)((u32*)((u8*)object + 0xd60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xd60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x860), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x860), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0x960), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0x960), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xa60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xa60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xb60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xb60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xc60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xc60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xd60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xd60), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table5, 2);
     (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)((u8*)object + 0xe60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xe60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xe60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xe60), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table5, 3);
     (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)((u8*)object + 0xf60), 4, 0, 1, 2);
-    (*setQuad)((u32*)((u8*)object + 0xf60), 4, 0, 2, 3);
+    D_0096009C_fn((u32*)((u8*)object + 0xf60), 4, 0, 1, 2);
+    D_0096009C_fn((u32*)((u8*)object + 0xf60), 4, 0, 2, 3);
 
     if ((object[0] & 2) != 0) {
         resource = FUN_0021cca0(table3, FUN_0022e850(object[0x14a]));
         (*setState)(1, FUN_0021cce0(resource));
-        (*setQuad)((u32*)((u8*)object + 0x530), 4, 0, 1, 2);
-        (*setQuad)((u32*)((u8*)object + 0x530), 4, 0, 2, 3);
+        D_0096009C_fn((u32*)((u8*)object + 0x530), 4, 0, 1, 2);
+        D_0096009C_fn((u32*)((u8*)object + 0x530), 4, 0, 2, 3);
     }
     if ((object[0] & 4) != 0) {
         bppPanelDrawParameterLayout_void((void*)object);

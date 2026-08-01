@@ -2401,6 +2401,9 @@ done:
     func_001abd20(collisionWorld, pos, translation, sphereCollisRadius, resTypeId);
 }
 
+/* W423 raycast FPU-role probes: unused f32 local, scalar segment locals,
+ * and declaration-order relocation each stayed nd59/object240/window240
+ * (0.245833), reverted. */
 // FUN_001ac950 NONMATCHING
 void* func_001ac950(const RwV3d* line, void* unused,
                     const void* triangle, FldFrameRaycast* raycast)
@@ -2914,6 +2917,9 @@ void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
     RwFree(collisCtlTask->workData);
 }
 /* W389 sweep: baseline nd 59, obj 240/240; all six knobs and 15 pairs stayed nd59/obj240, except opt_common_subs off (nd246, obj364/240). Retained no pragma; documented residual is scheduling of x/y vector loads versus multiplies. */
+/* W423 CreateCtlTask pointer-role probe: merging computed units into
+ * unitsBase with direct global bases worsened nd27/object524/window528
+ * (0.051527), reverted. */
 // FUN_001ad660 NONMATCHING
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
 {
