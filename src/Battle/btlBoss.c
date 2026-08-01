@@ -132,135 +132,6 @@ extern s32 func_002d6370(s32 id);
 extern void func_0029a2c0(void);
 extern s32 FUN_00195460(s32 task);
 
-// FUN_002f7dc0
-void btlBossInitEncounterResources()
-{
-    switch (gBtl->startInfo.enmUnits->encountId)
-    {
-        case 0x1a7:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(5));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(6));
-            break;
-
-        case 0x1a8:
-            *(s16*)((u8*)gBtl + 0xb50) = 0;
-            *(u32*)((u8*)gBtl + 0xb54) = 0;
-            break;
-
-        case 0x1a9:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            break;
-
-        case 0x1aa:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            break;
-
-        case 0x1ab:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            break;
-
-        case 0x1ac:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(2));
-            break;
-
-        case 0x1ad:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(2));
-            break;
-
-        case 0x1ae:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            *(void**)((u8*)gBtl + 0xb50) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb50), func_002f87e0(6));
-            break;
-
-        case 0x1af:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            break;
-
-        case 0x1b0:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
-            *(void**)((u8*)gBtl + 0xb50) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb50), func_002f87e0(6));
-            break;
-
-        case 0x1b1:
-        case 0x1b2:
-        case 0x1b3:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(4));
-            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(5));
-            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(6));
-            break;
-
-        case 0x1b4:
-            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
-            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(5));
-            break;
-
-        default:
-            break;
-    }
-}
-
-// FUN_002f8840
-const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
-{
-    const BtlCameraStateEntry* entry;
-    s16 bossCameraSet;
-
-    if (!(gBtl->unk_10 & 0x10))
-    {
-        return NULL;
-    }
-
-    bossCameraSet = *(s16*)((u8*)gBtl + 0xb84);
-    entry = &gBtlBossCameraStateEntries[bossCameraSet][cameraState];
-
-    if (entry->init == NULL && entry->update == NULL)
-    {
-        return NULL;
-    }
-
-    return entry;
-}
 
 extern void func_002e4a30(void);
 extern void func_002e4a40(u64 param_1);
@@ -292,7 +163,6 @@ extern void func_002e8d70(void *param_1);
 extern void func_002e8e20(void);
 extern void func_002e8f40(void);
 extern void func_002e9060(void);
-
 const BtlCameraStateEntry gBtlBossCameraStateEntries[3][BTLCAMERA_STATE_MAX] =
 {
     {
@@ -422,250 +292,41 @@ const BtlCameraStateEntry gBtlBossCameraStateEntries[3][BTLCAMERA_STATE_MAX] =
         {NULL, NULL, 1, 0, NULL},
     },
 };
-
-// FUN_002f9710
-void btlBossInitLoadPakPacket(void* work)
+extern void func_00288f80(BtlUnit* unit, s32 value);
+extern void func_002f4490(void);
+extern void func_002f5330(void);
+extern void func_002f5980(void);
+extern void func_002e4220(u32 begin, u32 end, void* action);
+extern s32 func_002e4250(void);
+extern void func_002d3fe0(BtlUnit* unit);
+extern void func_002831c0(BtlUnit* unit, s32 value);
+extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 value4);
+extern void func_00282d40_reordered(BtlUnit* unit, s16 value2, s32 value3, s8 value4, f32 value);
+extern void func_00287510(BtlUnit* unit);
+extern void func_0027f650(BtlUnit* unit, u32 value);
+extern void func_0027f650_ptr(BtlUnit* unit, void* value);
+extern u8 DAT_00957180_boss[];
+extern void func_002eaa40(void);
+extern void func_0029a690(s32 value);
+extern void func_0029a470(void* value);
+extern void func_002b90d0(void* object, void* archiveEntry);
+extern void* func_002baf90(void* object, u32 value1, u32 value2, s32 value3, u32 value4);
+extern void func_0027ed20(void* object, s32 value);
+extern void func_002ef670(void);
+extern void func_002ec790(void);
+extern void func_002e9ac0(void);
+extern void func_002e9450(void);
+extern s32 func_00300580(u32 persona, s32 value);
+extern s32 func_00301750(u32 persona, s32 value);
+extern s32 func_0030b5e0(u32 persona);
+typedef struct BtlBossAnimRecord
 {
-    u16 encountId;
-
-    encountId = gBtl->startInfo.enmUnits->encountId;
-
-    if (encountId == 0x1b4)
-    {
-        goto encount_1b4;
-    }
-
-    if (encountId == 0x1b3)
-    {
-        goto encount_1b3;
-    }
-
-    if (encountId == 0x1b2)
-    {
-        goto encount_1b2;
-    }
-
-    if (encountId == 0x1b1)
-    {
-        goto encount_1b1;
-    }
-
-    if (encountId == 0x1b0)
-    {
-        goto encount_1b0;
-    }
-
-    if (encountId == 0x1af)
-    {
-        goto encount_1af;
-    }
-
-    if (encountId == 0x1ae)
-    {
-        goto encount_1ae;
-    }
-
-    if (encountId == 0x1ad)
-    {
-        goto encount_1ad;
-    }
-
-    if (encountId == 0x1ac)
-    {
-        goto encount_1ac;
-    }
-
-    if (encountId == 0x1ab)
-    {
-        goto encount_1ab;
-    }
-
-    if (encountId == 0x1aa)
-    {
-        goto encount_1aa;
-    }
-
-    if (encountId == 0x1a9)
-    {
-        goto encount_1a9;
-    }
-
-    if (encountId == 0x1a8)
-    {
-        goto encount_1a8;
-    }
-
-    if (encountId == 0x1a7)
-    {
-        goto encount_1a7;
-    }
-
-    if (encountId == 0x1a6)
-    {
-        goto encount_1a6;
-    }
-
-    if (encountId == 0x1a5)
-    {
-        goto encount_1a5;
-    }
-
-    if (encountId == 0x1a4)
-    {
-        goto encount_1a4;
-    }
-
-    if (encountId == 0x1a3)
-    {
-        goto encount_1a3;
-    }
-
-    if (encountId == 0x1a2)
-    {
-        goto encount_1a2;
-    }
-
-    if (encountId == 0x1a1)
-    {
-        goto encount_1a1;
-    }
-
-    if (encountId == 0x1a0)
-    {
-        goto encount_1a0;
-    }
-
-    switch (encountId)
-    {
-        case 0x1c8:
-            goto encount_1c8;
-
-        default:
-            goto done;
-    }
-
-encount_1c8:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1C8.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a0:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A0.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a1:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A1.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a2:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A2.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a3:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A3.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a4:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A4.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a5:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A5.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a6:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A6.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a7:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A7.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a8:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A8.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1a9:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A9.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1aa:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AA.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1ab:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AB.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1ac:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AC.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1ad:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AD.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1ae:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AE.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1af:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AF.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1b0:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B0.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1b1:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B1.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1b2:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B2.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1b3:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B3.pak", HCDVD_FILEARCHIVE);
-    goto done;
-
-encount_1b4:
-    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B4.pak", HCDVD_FILEARCHIVE);
-
-done:
-    return;
-}
-
-// FUN_002f9b60
-u32 btlBossUpdateLoadPakPacket(void* work)
-{
-    if (gBtl->bossPakCdvd == NULL)
-    {
-        return 1;
-    }
-
-    if (H_Cdvd_IsFileLoaded(gBtl->bossPakCdvd))
-    {
-        btlBossInitEncounterResources();
-
-        return 1;
-    }
-
-    return 0;
-}
-
-// FUN_002f9bc0
-BtlPacket* btlBossCreateLoadPakPacket()
-{
-    BtlPacket* packet;
-
-    packet = btlPacketCreate(BTLBOSS_PACKET_LOADPAK, 0);
-
-    packet->unk_47 &= ~(1 << 0);
-    packet->initFunc = btlBossInitLoadPakPacket;
-    packet->updateFunc = btlBossUpdateLoadPakPacket;
-
-    return packet;
-}
+    u16 unk_0;
+    BtlUnitAnimBounds bounds;
+} BtlBossAnimRecord;
+extern BtlUnitAnimBounds DAT_0069A0E8;
+extern BtlUnitAnimBounds DAT_0069A5A8;
+extern BtlBossAnimRecord* D_007CE4C0;
 
 static inline u16 btlBossGetEncounterId()
 {
@@ -675,12 +336,174 @@ static u16 btlBossGetEncounterIdCall()
 {
     return *(u16*)(*(u8**)((u8*)gBtl + 0xbbc) + 8);
 }
-
 static inline BtlUnit* btlBossGetEnemyHead()
 {
     return *(BtlUnit**)((u8*)gBtl + 0x158);
 }
+static inline u32 btlBossCreateModePacket(u16 archiveIndex)
+{
+    void* object;
+    void* file;
+    void* work;
+    void* generated;
+    u32 fileSize;
+    u32 mode;
 
+    object = func_002b8f90(0);
+    file = H_Cdvd_ArchiveGetFile(gBtl->bossPakCdvd, archiveIndex, &fileSize);
+    func_002b90d0(object, file);
+    work = *(void**)((u8*)gBtl + 0x148);
+    mode = *(u32*)((u8*)work + 0x30);
+    generated = func_002baf90(object, mode, mode, 0, 0x200);
+    func_0027ed20(generated, 2);
+    func_002b9030(object);
+    return 1;
+}
+static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1A8(BtlUnit* unit)
+{
+    if (unit->genus != 1)
+    {
+        return NULL;
+    }
+    if (unit->charId != 0x10d)
+    {
+        return NULL;
+    }
+    if (*(u32*)((u8*)gBtl + 0xb54) == 1)
+    {
+        return &DAT_0069A0E8;
+    }
+    return NULL;
+}
+static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1B4(BtlUnit* unit)
+{
+    u32 resource;
+
+    if (unit->genus != 1)
+    {
+        return NULL;
+    }
+    if (unit->charId != 0xf1)
+    {
+        return NULL;
+    }
+    resource = btlBossGetEncounterId() == 0x1b4
+        ? *(u32*)((u8*)gBtl + 0xb48)
+        : 0;
+    if (resource == 1)
+    {
+        return &DAT_0069A5A8;
+    }
+    return NULL;
+}
+
+// FUN_002f7dc0
+void btlBossInitEncounterResources()
+{
+    switch (gBtl->startInfo.enmUnits->encountId)
+    {
+        case 0x1a7:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(5));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(6));
+            break;
+
+        case 0x1a8:
+            *(s16*)((u8*)gBtl + 0xb50) = 0;
+            *(u32*)((u8*)gBtl + 0xb54) = 0;
+            break;
+
+        case 0x1a9:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            break;
+
+        case 0x1aa:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            break;
+
+        case 0x1ab:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            break;
+
+        case 0x1ac:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(2));
+            break;
+
+        case 0x1ad:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(2));
+            break;
+
+        case 0x1ae:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            *(void**)((u8*)gBtl + 0xb50) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb50), func_002f87e0(6));
+            break;
+
+        case 0x1af:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            break;
+
+        case 0x1b0:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(3));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(5));
+            *(void**)((u8*)gBtl + 0xb50) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb50), func_002f87e0(6));
+            break;
+
+        case 0x1b1:
+        case 0x1b2:
+        case 0x1b3:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(4));
+            *(void**)((u8*)gBtl + 0xb48) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb48), func_002f87e0(5));
+            *(void**)((u8*)gBtl + 0xb4c) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb4c), func_002f87e0(6));
+            break;
+
+        case 0x1b4:
+            *(void**)((u8*)gBtl + 0xb44) = func_002b8f90(2);
+            func_002b96e0(*(void**)((u8*)gBtl + 0xb44), func_002f87e0(5));
+            break;
+
+        default:
+            break;
+    }
+}
 
 // FUN_002f8460
 void func_002f8460()
@@ -777,6 +600,8 @@ void func_002f8460()
     }
 }
 
+
+
 // FUN_002f8790
 void func_002f8790()
 {
@@ -804,7 +629,31 @@ void* func_002f8810()
     return H_Cdvd_ArchiveGetFile(gBtl->bossPakCdvd, 0, &fileSize);
 }
 
-/* Removing this worsens FUN_002f88c0 (nd2 -> nd85) - measured W161. */
+
+
+
+// FUN_002f8840
+const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
+{
+    const BtlCameraStateEntry* entry;
+    s16 bossCameraSet;
+
+    if (!(gBtl->unk_10 & 0x10))
+    {
+        return NULL;
+    }
+
+    bossCameraSet = *(s16*)((u8*)gBtl + 0xb84);
+    entry = &gBtlBossCameraStateEntries[bossCameraSet][cameraState];
+
+    if (entry->init == NULL && entry->update == NULL)
+    {
+        return NULL;
+    }
+
+    return entry;
+}
+
 #pragma opt_loop_invariants on
 // FUN_002f88c0 NONMATCHING
 u64 func_002f88c0()
@@ -874,7 +723,6 @@ case_1a4_done:
     }
 }
 
-#pragma opt_loop_invariants reset
 // FUN_002f8a40
 u32 func_002f8a40(BtlUnit* unit)
 {
@@ -1159,6 +1007,7 @@ u32 func_002f8ea0(BtlUnit* unit, RwV3d* target)
     return 0;
 }
 
+/* Removing this worsens FUN_002f88c0 (nd2 -> nd85) - measured W161. */
 // FUN_002f8eb0
 s16 func_002f8eb0(BtlUnit* unit, s16 index)
 {
@@ -1208,7 +1057,7 @@ return_result:
     }
 }
 
-/* W373 pragma sweep nd/obj: base 879/1300; singles LI=874/1296 LT=879/1300 CS=938/1428(over) PR=884/1300 SR=879/1300 DA=884/1308; retain LI on. */
+#pragma opt_loop_invariants reset
 #pragma opt_loop_invariants on
 // FUN_002f8fd0 NONMATCHING
 s16 func_002f8fd0(BtlUnit* unit, s16 id)
@@ -1437,24 +1286,254 @@ return_minus_one:
     return -1;
 }
 
-extern void func_00288f80(BtlUnit* unit, s32 value);
-extern void func_002f4490(void);
-extern void func_002f5330(void);
-extern void func_002f5980(void);
-extern void func_002e4220(u32 begin, u32 end, void* action);
-extern s32 func_002e4250(void);
-extern void func_002d3fe0(BtlUnit* unit);
-extern void func_002831c0(BtlUnit* unit, s32 value);
-extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 value4);
+/* W373 pragma sweep nd/obj: base 879/1300; singles LI=874/1296 LT=879/1300 CS=938/1428(over) PR=884/1300 SR=879/1300 DA=884/1308; retain LI on. */
+// FUN_002f9710
+void btlBossInitLoadPakPacket(void* work)
+{
+    u16 encountId;
+
+    encountId = gBtl->startInfo.enmUnits->encountId;
+
+    if (encountId == 0x1b4)
+    {
+        goto encount_1b4;
+    }
+
+    if (encountId == 0x1b3)
+    {
+        goto encount_1b3;
+    }
+
+    if (encountId == 0x1b2)
+    {
+        goto encount_1b2;
+    }
+
+    if (encountId == 0x1b1)
+    {
+        goto encount_1b1;
+    }
+
+    if (encountId == 0x1b0)
+    {
+        goto encount_1b0;
+    }
+
+    if (encountId == 0x1af)
+    {
+        goto encount_1af;
+    }
+
+    if (encountId == 0x1ae)
+    {
+        goto encount_1ae;
+    }
+
+    if (encountId == 0x1ad)
+    {
+        goto encount_1ad;
+    }
+
+    if (encountId == 0x1ac)
+    {
+        goto encount_1ac;
+    }
+
+    if (encountId == 0x1ab)
+    {
+        goto encount_1ab;
+    }
+
+    if (encountId == 0x1aa)
+    {
+        goto encount_1aa;
+    }
+
+    if (encountId == 0x1a9)
+    {
+        goto encount_1a9;
+    }
+
+    if (encountId == 0x1a8)
+    {
+        goto encount_1a8;
+    }
+
+    if (encountId == 0x1a7)
+    {
+        goto encount_1a7;
+    }
+
+    if (encountId == 0x1a6)
+    {
+        goto encount_1a6;
+    }
+
+    if (encountId == 0x1a5)
+    {
+        goto encount_1a5;
+    }
+
+    if (encountId == 0x1a4)
+    {
+        goto encount_1a4;
+    }
+
+    if (encountId == 0x1a3)
+    {
+        goto encount_1a3;
+    }
+
+    if (encountId == 0x1a2)
+    {
+        goto encount_1a2;
+    }
+
+    if (encountId == 0x1a1)
+    {
+        goto encount_1a1;
+    }
+
+    if (encountId == 0x1a0)
+    {
+        goto encount_1a0;
+    }
+
+    switch (encountId)
+    {
+        case 0x1c8:
+            goto encount_1c8;
+
+        default:
+            goto done;
+    }
+
+encount_1c8:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1C8.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a0:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A0.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a1:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A1.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a2:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A2.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a3:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A3.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a4:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A4.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a5:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A5.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a6:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A6.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a7:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A7.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a8:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A8.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1a9:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1A9.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1aa:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AA.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1ab:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AB.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1ac:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AC.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1ad:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AD.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1ae:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AE.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1af:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1AF.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1b0:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B0.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1b1:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B1.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1b2:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B2.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1b3:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B3.pak", HCDVD_FILEARCHIVE);
+    goto done;
+
+encount_1b4:
+    gBtl->bossPakCdvd = H_Cdvd_Request("snd_benc/boss/e1B4.pak", HCDVD_FILEARCHIVE);
+
+done:
+    return;
+}
+
+// FUN_002f9b60
+u32 btlBossUpdateLoadPakPacket(void* work)
+{
+    if (gBtl->bossPakCdvd == NULL)
+    {
+        return 1;
+    }
+
+    if (H_Cdvd_IsFileLoaded(gBtl->bossPakCdvd))
+    {
+        btlBossInitEncounterResources();
+
+        return 1;
+    }
+
+    return 0;
+}
+
+// FUN_002f9bc0
+BtlPacket* btlBossCreateLoadPakPacket()
+{
+    BtlPacket* packet;
+
+    packet = btlPacketCreate(BTLBOSS_PACKET_LOADPAK, 0);
+
+    packet->unk_47 &= ~(1 << 0);
+    packet->initFunc = btlBossInitLoadPakPacket;
+    packet->updateFunc = btlBossUpdateLoadPakPacket;
+
+    return packet;
+}
+
 #pragma alias func_00282d40_reordered func_00282d40
-extern void func_00282d40_reordered(BtlUnit* unit, s16 value2, s32 value3, s8 value4, f32 value);
-extern void func_00287510(BtlUnit* unit);
-extern void func_0027f650(BtlUnit* unit, u32 value);
 #pragma alias func_0027f650_ptr func_0027f650
-extern void func_0027f650_ptr(BtlUnit* unit, void* value);
 #pragma alias DAT_00957180_boss DAT_00957180
-extern u8 DAT_00957180_boss[];
-extern void func_002eaa40(void);
 
 // FUN_002f9c10 NONMATCHING
 u32 func_002f9c10(BtlAction* action)
@@ -1842,48 +1921,9 @@ void func_002faab0()
 }
 #pragma opt_loop_invariants reset
 
-extern void func_0029a690(s32 value);
-extern void func_0029a470(void* value);
-extern void func_002b90d0(void* object, void* archiveEntry);
-extern void* func_002baf90(void* object, u32 value1, u32 value2, s32 value3, u32 value4);
-extern void func_0027ed20(void* object, s32 value);
-extern void func_002ef670(void);
-extern void func_002ec790(void);
-extern void func_002e9ac0(void);
-extern void func_002e9450(void);
-extern s32 func_00300580(u32 persona, s32 value);
-extern s32 func_00301750(u32 persona, s32 value);
-extern s32 func_0030b5e0(u32 persona);
 
-typedef struct BtlBossAnimRecord
-{
-    u16 unk_0;
-    BtlUnitAnimBounds bounds;
-} BtlBossAnimRecord;
 
-extern BtlUnitAnimBounds DAT_0069A0E8;
-extern BtlUnitAnimBounds DAT_0069A5A8;
-extern BtlBossAnimRecord* D_007CE4C0;
 
-static inline u32 btlBossCreateModePacket(u16 archiveIndex)
-{
-    void* object;
-    void* file;
-    void* work;
-    void* generated;
-    u32 fileSize;
-    u32 mode;
-
-    object = func_002b8f90(0);
-    file = H_Cdvd_ArchiveGetFile(gBtl->bossPakCdvd, archiveIndex, &fileSize);
-    func_002b90d0(object, file);
-    work = *(void**)((u8*)gBtl + 0x148);
-    mode = *(u32*)((u8*)work + 0x30);
-    generated = func_002baf90(object, mode, mode, 0, 0x200);
-    func_0027ed20(generated, 2);
-    func_002b9030(object);
-    return 1;
-}
 
 // FUN_002fac80
 void func_002fac80()
@@ -2297,44 +2337,7 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
     }
 }
 
-static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1A8(BtlUnit* unit)
-{
-    if (unit->genus != 1)
-    {
-        return NULL;
-    }
-    if (unit->charId != 0x10d)
-    {
-        return NULL;
-    }
-    if (*(u32*)((u8*)gBtl + 0xb54) == 1)
-    {
-        return &DAT_0069A0E8;
-    }
-    return NULL;
-}
 
-static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1B4(BtlUnit* unit)
-{
-    u32 resource;
-
-    if (unit->genus != 1)
-    {
-        return NULL;
-    }
-    if (unit->charId != 0xf1)
-    {
-        return NULL;
-    }
-    resource = btlBossGetEncounterId() == 0x1b4
-        ? *(u32*)((u8*)gBtl + 0xb48)
-        : 0;
-    if (resource == 1)
-    {
-        return &DAT_0069A5A8;
-    }
-    return NULL;
-}
 
 // FUN_002fc410
 BtlUnitAnimBounds* func_002fc410(BtlUnit* unit)
