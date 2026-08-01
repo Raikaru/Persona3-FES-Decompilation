@@ -1171,7 +1171,7 @@ void FUN_003297a0(u32 *param_1);
 void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
 #pragma alias mdlFileBuildAxisRotation FUN_00329890
 void FUN_00329890(u32 param_1);
-void FUN_003299b0(void);
+f32 *FUN_003299b0(void);
 u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
 #pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
@@ -1558,7 +1558,7 @@ void FUN_00350080(void);
 void FUN_003500a0(u32 param_1,u16 param_2);
 void FUN_003500e0(void);
 void FUN_00350110(void);
-void FUN_00350190(void);
+u32 FUN_00350190(void);
 u32 FUN_00350200(void);
 u32 FUN_00350230(u32 param_1);
 void FUN_003503e0(int param_1);
@@ -10489,12 +10489,13 @@ void mdlFileBuildAxisRotation(f32 param_1)
 
 
 // FUN_003299B0 NONMATCHING
-void FUN_003299b0(void)
+f32 *FUN_003299b0(void)
 {
   u32 iVar2;
   f32 quad[4];
   f32 dst[3];
   f32 src[3];
+  f32 *result;
 
   __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(DAT_0069c4d0_abs) : "memory");
   src[0] = *(f32 *)DAT_0069c4d0_abs;
@@ -10506,8 +10507,9 @@ void FUN_003299b0(void)
   quad[1] = 448.0f * (dst[1] / dst[2]);
   *(u32 *)&quad[2] = 0;
   *(u32 *)&quad[3] = 0;
-  __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(quad) : "memory");
-  return;
+  result = quad;
+  __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(result) : "memory");
+  return result;
 }
 
 // FUN_00329A60
@@ -44667,33 +44669,25 @@ void FUN_00350110(void)
 
 
 
-// FUN_00350190 NONMATCHING
+// FUN_00350190
 
 
-void FUN_00350190(void)
-
-
-
+u32 FUN_00350190(void)
 {
-
   u32 uVar1;
   u32 uVar2;
-  
+  u32 value;
 
   uVar1 = FUN_0035ed20_i(0);
-
-    
   uVar2 = FUN_0035ed20_i(1);
-
   *(u32 *)DAT_00957bc0_abs = uVar1;
   *(u16 *)DAT_00957bc4_abs = uVar2;
   *(u32 *)DAT_00957bc8_abs = 0;
   *(u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
-  DAT_007ce578 = 1;
-  return;
-
-
+  value = 1;
+  DAT_007ce578 = value;
+  return value;
 }
 
 
