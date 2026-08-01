@@ -305,6 +305,264 @@ void FUN_001b5e60(u32 color, const void* scale);
 void FUN_001b60a0(u32 value, const void* scale);
 void FUN_001b60d0(u32 value, const void* scale);
 
+
+typedef struct FldrcCloneRecord
+{
+    u32 words[6];
+} FldrcCloneRecord;
+
+static void fldrc_copy_words(u32 dst, u32 src, u32 count)
+{
+    u32 i;
+    for (i = 0; i < count; i++)
+    {
+        *(u32*)(dst + i * 4) = *(u32*)(src + i * 4);
+    }
+}
+void FUN_001b5610(u32* resource, const f32* color);
+static inline void fldrc_apply_field_config(u32 config)
+{
+    u32* dst;
+    u32 listA;
+    u32 listB;
+    u32 node;
+    u32 i;
+    u32 count;
+    u32 version;
+    f32 farPlane;
+    u32* field;
+
+    listA = FUN_003b5d50(4);
+    listB = FUN_003b5d50(5);
+    FUN_0019fdd0(*(u8*)(config + 8));
+    FUN_0019fe20(*(u8*)(config + 9));
+    FUN_0019fe70(*(u8*)(config + 10));
+    FUN_0019fec0(*(u8*)(config + 0x0b));
+    if (*(u8*)(config + 0x0f) == 1)
+    {
+        DAT_007ce0d4 = 1;
+    }
+    else
+    {
+        DAT_007ce0d4 = 0;
+    }
+    DAT_007ce0d8 = *(u8*)(config + 0x0c);
+    DAT_007ce0dc = *(u8*)(config + 0x0d);
+    DAT_007ce0e0 = *(u8*)(config + 0x0e);
+    DAT_007ce0e4 = 0;
+    DAT_007ce0e8 = DAT_007ce0d8;
+    DAT_007ce0ec = DAT_007ce0dc;
+    DAT_007ce0f0 = DAT_007ce0e0;
+    DAT_007ce0f4 = 0;
+    FUN_001985b0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
+    FUN_001985e0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
+    FUN_004c9db0(FUN_00198590(), *(f32*)(config + 0x14));
+    *(f32*)(FUN_00198590() + 0x88) = *(f32*)(config + 0x10);
+    FUN_00198590();
+
+    version = *(u32*)(config + 4);
+    if (version > 0x10003)
+    {
+        farPlane = *(f32*)(config + 0x18);
+        if (farPlane > 1.0f)
+        {
+            FUN_004c9d70(FUN_00198590(), farPlane);
+        }
+        if (farPlane == 50.0f)
+        {
+            FUN_004c9d70(FUN_00198590(), 100.0f);
+        }
+        if (*(s8*)(config + 0x1ff) == -1)
+        {
+            FUN_001985b0(*(u8*)(config + 0x1fc),
+                         *(u8*)(config + 0x1fd),
+                         *(u8*)(config + 0x1fe), 0);
+            FUN_001985e0(*(u8*)(config + 0x1fc),
+                         *(u8*)(config + 0x1fd),
+                         *(u8*)(config + 0x1fe), 0);
+        }
+    }
+
+    dst = (u32*)FUN_0019fd40();
+    ((f32*)dst)[0] = *(f32*)(config + 0x1c);
+    ((f32*)dst)[1] = *(f32*)(config + 0x20);
+    ((f32*)dst)[2] = *(f32*)(config + 0x24);
+    ((f32*)dst)[3] = *(f32*)(config + 0x28);
+    dst = (u32*)FUN_0019fd70();
+    ((f32*)dst)[0] = *(f32*)(config + 0x2c);
+    ((f32*)dst)[1] = *(f32*)(config + 0x30);
+    ((f32*)dst)[2] = *(f32*)(config + 0x34);
+    ((f32*)dst)[3] = *(f32*)(config + 0x38);
+    dst = (u32*)FUN_0019fda0();
+    {
+        u32* src = (u32*)(config + 0x40);
+        u32 n = 8;
+        while (n > 0)
+        {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            src += 2;
+            dst += 2;
+            n--;
+        }
+    }
+
+    if (listB != 0)
+    {
+        ((f32*)(listB + 0x100))[0] = *(f32*)(config + 0x80);
+        ((f32*)(listB + 0x100))[1] = *(f32*)(config + 0x84);
+        ((f32*)(listB + 0x100))[2] = *(f32*)(config + 0x88);
+        ((f32*)(listB + 0x100))[3] = *(f32*)(config + 0x8c);
+        ((f32*)(listB + 0x110))[0] = *(f32*)(config + 0x90);
+        ((f32*)(listB + 0x110))[1] = *(f32*)(config + 0x94);
+        ((f32*)(listB + 0x110))[2] = *(f32*)(config + 0x98);
+        ((f32*)(listB + 0x110))[3] = *(f32*)(config + 0x9c);
+        {
+            u32* src = (u32*)(config + 0xa0);
+            u32* out = (u32*)(listB + 0x120);
+            u32 n = 8;
+            while (n > 0)
+            {
+                out[0] = src[0];
+                out[1] = src[1];
+                src += 2;
+                out += 2;
+                n--;
+            }
+        }
+        ((f32*)(listB + 0x160))[0] = *(f32*)(config + 0xe0);
+        ((f32*)(listB + 0x160))[1] = *(f32*)(config + 0xe4);
+        ((f32*)(listB + 0x160))[2] = *(f32*)(config + 0xe8);
+        ((f32*)(listB + 0x160))[3] = *(f32*)(config + 0xec);
+        {
+            u32* src = (u32*)(config + 0xf0);
+            u32* out = (u32*)(listB + 0x170);
+            u32 n = 8;
+            while (n > 0)
+            {
+                out[0] = src[0];
+                out[1] = src[1];
+                src += 2;
+                out += 2;
+                n--;
+            }
+        }
+    }
+
+    if (version > 0x10000)
+    {
+        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+        K_Field_Get_A();
+        for (i = 0; i < count; i++)
+        {
+            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
+            ((u32*)node)[0xa20 / 4] = ((u32*)config)[0x130 / 4];
+            ((u32*)node)[0xa24 / 4] = ((u32*)config)[0x134 / 4];
+            ((u32*)node)[0xa28 / 4] = ((u32*)config)[0x138 / 4];
+            FUN_001b5610((u32*)node, (const f32*)(node + 0xa20));
+        }
+    }
+
+    if ((version > 0x10001) && (listA != 0))
+    {
+        ((u32*)listA)[0x100 / 4] = ((u32*)config)[0x13c / 4];
+        ((u32*)listA)[0x104 / 4] = ((u32*)config)[0x140 / 4];
+        ((u32*)listA)[0x108 / 4] = ((u32*)config)[0x144 / 4];
+        ((u32*)listA)[0x10c / 4] = ((u32*)config)[0x148 / 4];
+        ((u32*)listA)[0x110 / 4] = ((u32*)config)[0x14c / 4];
+        ((u32*)listA)[0x114 / 4] = ((u32*)config)[0x150 / 4];
+        ((u32*)listA)[0x118 / 4] = ((u32*)config)[0x154 / 4];
+        ((u32*)listA)[0x11c / 4] = ((u32*)config)[0x158 / 4];
+        for (i = 0; i < 8; i++)
+        {
+            ((u32*)listA)[0x120 / 4 + i * 2] =
+                ((u32*)config)[0x160 / 4 + i * 2];
+            ((u32*)listA)[0x124 / 4 + i * 2] =
+                ((u32*)config)[0x164 / 4 + i * 2];
+        }
+        ((u32*)listA)[0x160 / 4] = ((u32*)config)[0x1a0 / 4];
+        ((u32*)listA)[0x164 / 4] = ((u32*)config)[0x1a4 / 4];
+        ((u32*)listA)[0x168 / 4] = ((u32*)config)[0x1a8 / 4];
+        ((u32*)listA)[0x16c / 4] = ((u32*)config)[0x1ac / 4];
+        for (i = 0; i < 8; i++)
+        {
+            ((u32*)listA)[0x170 / 4 + i * 2] =
+                ((u32*)config)[0x1b0 / 4 + i * 2];
+            ((u32*)listA)[0x174 / 4 + i * 2] =
+                ((u32*)config)[0x1b4 / 4 + i * 2];
+        }
+    }
+
+    if (version > 0x10002)
+    {
+        listA = FUN_003b5d50(1);
+        listB = FUN_003b5d50(3);
+        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+        K_Field_Get_A();
+        for (i = 0; i < count; i++)
+        {
+            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
+            ((u32*)node)[0xa2c / 4] = ((u32*)config)[0x1f0 / 4];
+            ((u32*)node)[0xa30 / 4] = ((u32*)config)[0x1f4 / 4];
+            ((u32*)node)[0xa34 / 4] = ((u32*)config)[0x1f8 / 4];
+        }
+        while (listA != 0)
+        {
+            u32 model = FUN_00318b80(*(u32*)(listA + 0x128));
+            FUN_004916d0(model, 0x1b6060, config + 0x1f0);
+            listA = *(u32*)(listA + 0xf8);
+        }
+        while (listB != 0)
+        {
+            u32 model = FUN_00318b80(*(u32*)(listB + 0x128));
+            FUN_004916d0(model, 0x1b6060, config + 0x1f0);
+            listB = *(u32*)(listB + 0xf8);
+        }
+    }
+    if (version < 0x10004)
+    {
+        FUN_001a1540(0, 0, 0x178, 0x678ff0);
+    }
+}
+static u32 fldrc_event_override(u16 group, u32 id)
+{
+    if (((group == 6) && ((id == 4) || (id == 5) || (id == 7) || (id == 8) ||
+                          (id == 0x15) || (id == 0x16))) ||
+        ((group == 7) && ((id == 1) || (id == 3) || (id == 4) || (id == 5) ||
+                          (id == 6) || (id == 7) || (id == 0x0e) || (id == 0x0f))) ||
+        (group == 8) ||
+        ((group == 9) && ((id == 3) || (id == 4) || (id == 5) || (id == 6))) ||
+        ((group == 10) && (id == 2)) ||
+        ((group == 0x0e) && (id == 2)) ||
+        ((group == 0x0f) && (id == 1)) ||
+        ((group == 0x10) && ((id == 4) || (id == 5))))
+    {
+        if ((FUN_0017e480(4, 0x1b, 0x0c, 0x1f) == 1) ||
+            (FUN_0017e480(1, 1, 2, 0x1c) == 1))
+        {
+            return id;
+        }
+    }
+    return 0xffffffff;
+}
+static inline void fldrc_render_begin(void)
+{
+    FUN_00198610(0x40000002, 0);
+    FUN_00198610(2, 1);
+    (*DAT_00960090)(6, 1);
+    (*DAT_00960090)(8, 1);
+    if (iGpffffb3e4 == 1)
+    {
+        (*DAT_00960090)(0x0e);
+        (*DAT_00960090)(0x0f,
+                        (u32)bGpffffb3f0 |
+                        ((u32)bGpffffb3ec << 8) |
+                        ((u32)bGpffffb3e8 << 16) |
+                        ((u32)bGpffffb3f4 << 24));
+        (*DAT_00960090)(0x10, 1);
+    }
+}
+
 // FUN_001b0710
 void K_Fldrc_RequestArchives()
 {
@@ -1306,44 +1564,1034 @@ init_phase29:
 #pragma opt_lifetimes reset
 #pragma pop
 
-// FUN_001b5850
-void* K_Fldrc_UpdateFilterTask(KwlnTask* fldFilterTask)
+// FUN_001b2780
+void* FUN_001b2780(s16 majorId, s16 minorId)
 {
-    K_FldFilter_Main();
+    char path[40];
+    char token[8];
 
-    return KWLNTASK_CONTINUE;
+    if (iGpffffb470 == 0)
+    {
+        FUN_00524270(path, D_00678E08);
+    }
+    else
+    {
+        FUN_00524270(path, D_00678E18);
+    }
+    FUN_00523ac8(token, (const char*)&gp0xffff9538 - 0x6ac8, majorId);
+    FUN_00523e68(path, token);
+    FUN_00523ac8(token, (const char*)&gp0xffff9540 - 0x6ac0, minorId);
+    FUN_00523e68(path, token);
+    FUN_00523e68(path, (const char*)&gp0xffff9548 - 0x6ab8);
+    return FUN_001b2860(path);
 }
 
-// FUN_001b5880
-void K_Fldrc_DestroyFilterTask(KwlnTask* fldFilterTask)
+// FUN_001b2860 NONMATCHING
+void* FUN_001b2860(char* path)
 {
-    RwFree(fldFilterTask->workData);
-}
+    u32 resource;
+    u32 payload;
+    char* end;
+    char digits[4];
+    u32 valid;
 
-// FUN_001b58b0
-KwlnTask* K_Fldrc_CreateFilterTask(KwlnTask* parent)
-{
-    FldFilterWork* work;
-    KwlnTask* task;
-
-    work = RwCalloc(1, sizeof(FldFilterWork), rwMEMHINTDUR_GLOBAL);
-    if (work == NULL)
+    valid = 1;
+    resource = (u32)(*DAT_00960184)(1, 0xa4c, 0x40000);
+    if (resource == 0)
     {
         return NULL;
     }
-
-    task = kwlnTaskCreate(parent,
-                          "field filter",
-                          4197,
-                          K_Fldrc_UpdateFilterTask,
-                          K_Fldrc_DestroyFilterTask,
-                          work);
-
-    work->unk_08 = 1;
-    work->unk_0c = 200;
-
-    return task;
+    payload = (u32)(*DAT_00960184)(1, 0x124, 0x40000);
+    *(u32*)(resource + 0xa40) = payload;
+    if (payload == 0)
+    {
+        (*DAT_0096017c)((void*)resource);
+        return NULL;
+    }
+    FUN_00524270((void*)payload, path);
+    end = path;
+    while (*end != '\0')
+    {
+        end++;
+    }
+    while ((end > path) && (*end != '/'))
+    {
+        end--;
+    }
+    if (end[1] != 'f')
+    {
+        valid = 0;
+    }
+    else
+    {
+        if ((PTR_DAT_007be9c8[(u8)end[2]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[3]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[4]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if (end[5] != '_')
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[6]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[7]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[8]] & 4) == 0)
+        {
+            valid = 0;
+        }
+    }
+    if (valid != 0)
+    {
+        digits[0] = end[2];
+        digits[1] = end[3];
+        digits[2] = end[4];
+        digits[3] = 0;
+        *(u16*)(resource + 4) = (u16)FUN_0051e0f0(digits);
+        digits[0] = end[6];
+        digits[1] = end[7];
+        digits[2] = end[8];
+        digits[3] = 0;
+        *(u16*)(resource + 6) = (u16)FUN_0051e0f0(digits);
+    }
+    else
+    {
+        *(u16*)(resource + 4) = 0xffff;
+        *(u16*)(resource + 6) = 0xffff;
+    }
+    if (iGpffffb470 == 0)
+    {
+        *(u32*)(payload + 0x80) = FUN_00100d80(payload, 0);
+    }
+    else
+    {
+        *(u32*)(payload + 0x80) = 1;
+    }
+    return (void*)resource;
 }
+
+// FUN_001b2b30
+u32 FUN_001b2b30(u32 resource)
+{
+    u32 payload;
+
+    payload = *(u32*)(resource + 0xa40);
+    if (*(u32*)(payload + 0x80) == 0)
+    {
+        return true;
+    }
+    if (iGpffffb470 == 0)
+    {
+        return FUN_001016b0(*(u32*)(payload + 0x80)) != 0;
+    }
+    return true;
+}
+#pragma push
+/* W389: baseline obj 856/880, nd 528; opt_common_subs off -> obj 856/880, nd 521. */
+#pragma opt_common_subs off
+// FUN_001b2b90 NONMATCHING
+void FUN_001b2b90(u32 resource)
+{
+    u32 payload;
+    u32 streamInfo[2];
+    u32 entryInfo[2];
+    u32 substream[2];
+    u32 entry;
+    u32* header;
+    u32 index;
+
+    payload = *(u32*)(resource + 0xa40);
+    streamInfo[1] = 0;
+    streamInfo[0] = FUN_001021c0(payload, &streamInfo[1]);
+    if (streamInfo[0] == 0)
+    {
+        return;
+    }
+    header = (u32*)FUN_004c58a0(3, 1, streamInfo);
+    if (header == NULL)
+    {
+        goto cleanup;
+    }
+    while (FUN_004c1970((u32)header, entryInfo) != 0)
+    {
+        switch (entryInfo[0])
+        {
+            case 0x0b:
+                index = *(u32*)(payload + 0x8c);
+                substream[0] =
+                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
+                if (*(u32*)(payload + index * 4 + 0x90) != 0)
+                {
+                    substream[0] = streamInfo[0];
+                }
+                substream[1] = streamInfo[1];
+                entry = FUN_004c58a0(3, 1, substream);
+                *(u32*)(payload + index * 4 + 0x90) =
+                    FUN_0010c1a0(1, 0, 0, 0, entry, 0, 0, 0,
+                                 0, 0, __FILE__, 0x4c8);
+                FUN_004c5620((u32)header, entryInfo[1]);
+                *(u32*)(payload + 0x8c) = index + 1;
+                break;
+            case 0x10:
+                substream[0] =
+                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
+                substream[1] = streamInfo[1];
+                entry = FUN_004c58a0(3, 1, substream);
+                index = *(u32*)(payload + 0x98);
+                *(u32*)(payload + index * 4 + 0x9c) =
+                    FUN_0010c1a0(2, 0, 0, 0, entry, 0, 0, 0,
+                                 0, 0, __FILE__, 0x4d6);
+                FUN_004c5620((u32)header, entryInfo[1]);
+                *(u32*)(payload + 0x98) = index + 1;
+                break;
+            case 0x23:
+                entry = FUN_004bda10((u32)header);
+                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0d10(entry);
+                break;
+            case 0x16:
+                entry = FUN_004c8680((u32)header);
+                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0d10(entry);
+                break;
+            case 0x0c:
+                *(u32*)(resource + 0xa1c) = FUN_0048d0e0((u32)header);
+                break;
+            default:
+                FUN_004c5620((u32)header, entryInfo[1]);
+                break;
+        }
+    }
+    if (header != NULL)
+    {
+        FUN_004c5780((u32)header, 0);
+    }
+    return;
+
+cleanup:
+    if (payload != 0)
+    {
+        FUN_00100ec0(*(u32*)(payload + 0x80));
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)payload);
+    }
+    if (resource != 0)
+    {
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
+    }
+}
+#pragma opt_common_subs reset
+#pragma pop
+
+// FUN_001b2f00 NONMATCHING
+u32 FUN_001b2f00(u32* resource)
+{
+    u32 payload;
+    u32 i;
+    u32 pending;
+    u32 object;
+    u32 loaded;
+    u32 tagged;
+    u32 state;
+    u32 kind;
+    u32 result;
+
+    pending = 0;
+    payload = resource[0x290];
+    if (payload == 0)
+    {
+        return 1;
+    }
+    if (*(u32*)(payload + 0x84) != 0)
+    {
+        if (*(u32*)(payload + 0x120) != 0)
+        {
+            FUN_0019d3f0(D_00678DF8, 0x534);
+        }
+        state = 0;
+        kind = 0;
+        object = FUN_0010c3a0(payload, &state, &kind);
+        if (state == 1)
+        {
+            FUN_004d0dc0(object, 0x1a13b0, payload + 0x120);
+            FUN_004d0d10(object);
+            *(u32*)(payload + 0x84) = 0;
+            if (kind != 0)
+            {
+                FUN_004c5780(kind, 0);
+            }
+        }
+        else
+        {
+            pending = 1;
+        }
+    }
+    for (i = 0; i < *(u32*)(payload + 0x8c); i++)
+    {
+        object = *(u32*)(payload + i * 4 + 0x90);
+        if (object == 0)
+        {
+            continue;
+        }
+        state = 0;
+        kind = 0;
+        loaded = FUN_0010c3a0(object, &state, &kind);
+        if (state == 1)
+        {
+            if (loaded == 0)
+            {
+                FUN_0019d3f0(D_00678DF8, 0x550);
+            }
+            tagged = FUN_001a6740(loaded, D_00678E30);
+            if (tagged == 0)
+            {
+                if (resource[3] == 0)
+                {
+                    resource[3] = loaded;
+                    FUN_004bcbf0(loaded, FUN_00198590());
+                }
+                else
+                {
+                    resource[2] = loaded;
+                }
+            }
+            else
+            {
+                resource[4] = loaded;
+            }
+            *(u32*)(payload + i * 4 + 0x90) = 0;
+            resource[0] |= 1;
+            if (kind != 0)
+            {
+                FUN_004c5780(kind, 0);
+            }
+        }
+        else
+        {
+            pending++;
+        }
+    }
+    for (i = 0; i < *(u32*)(payload + 0x98); i++)
+    {
+        object = *(u32*)(payload + i * 4 + 0x9c);
+        if (object == 0)
+        {
+            continue;
+        }
+        state = 0;
+        kind = 0;
+        loaded = FUN_0010c3a0(object, &state, &kind);
+        if (state == 1)
+        {
+            if (loaded == 0)
+            {
+                FUN_0019d3f0(D_00678DF8, 0x571);
+            }
+            tagged = FUN_001a66f0(loaded, D_00678E30);
+            if (tagged == 0)
+            {
+                if (((resource[0] & 1) == 0) && (resource[2] == 0))
+                {
+                    resource[2] = loaded;
+                    resource[3] = FUN_001a7570(loaded);
+                }
+                else
+                {
+                    resource[resource[5] + 6] = loaded;
+                    resource[resource[5] + 0x26] = FUN_001a7570(loaded);
+                    resource[5]++;
+                }
+            }
+            else
+            {
+                resource[4] = loaded;
+            }
+            *(u32*)(payload + i * 4 + 0x9c) = 0;
+            if (kind != 0)
+            {
+                FUN_004c5780(kind, 0);
+            }
+        }
+        else
+        {
+            pending++;
+        }
+    }
+    *(u32*)(payload + 0x11c) = 0;
+    if (pending != 0)
+    {
+        return 0;
+    }
+    if (resource[2] == 0)
+    {
+        resource[0] |= 0x20000000;
+        resource[2] = resource[3];
+    }
+    if (((resource[0] & 1) == 0) && (resource[5] == 0))
+    {
+        resource[0] |= 0x20000000;
+    }
+    if (iGpffffb470 == 0)
+    {
+        FUN_00100ec0(*(u32*)(payload + 0x80));
+    }
+    resource[0x288] = 0x3f800000;
+    resource[0x289] = 0x3f800000;
+    resource[0x28a] = 0x3f800000;
+    result = 1;
+    return result;
+}
+
+// FUN_001b32f0
+u32 FUN_001b32f0(void* resource, u32 wanted, u32* hasOverlay)
+{
+    u32 outer;
+    s32 inner;
+    s32 count;
+    u32 result;
+    u32 type[2];
+    u32 match[2];
+    u32 found[2];
+
+    result = 0;
+    outer = 0;
+    goto outer_check;
+outer_body:
+    {
+        u8* entry = (u8*)resource + outer * 4;
+        count = FUN_001a6c00(*(u32*)(entry + 0x18), D_00678E50_abs);
+        inner = 0;
+        goto inner_check;
+inner_body:
+        FUN_001a6e90(match, *(u32*)(entry + 0x18), D_00678E70_abs, inner);
+        if (match[0] == 0)
+        {
+            K_Assert(D_00678DF8_abs, 0x5d2);
+        }
+        FUN_001a6e90(type, *(u32*)(entry + 0x18), D_00678E50_abs, inner);
+        FUN_001a6e90(found, *(u32*)(entry + 0x18), D_00678E90_abs, inner);
+        if (found[0] != 0)
+        {
+            *hasOverlay = 1;
+        }
+        else
+        {
+            *hasOverlay = 0;
+        }
+        if (type[0] == 1)
+        {
+            goto inner_increment;
+        }
+        if (wanted != match[0])
+        {
+            goto inner_increment;
+        }
+        result = type[1];
+        goto done;
+inner_increment:
+        inner++;
+inner_check:
+        if (inner < count)
+        {
+            goto inner_body;
+        }
+        outer++;
+outer_check:
+        if (outer < *(u32*)((u8*)resource + 0x14))
+        {
+            goto outer_body;
+        }
+    }
+done:
+    return result;
+}
+
+
+#pragma push
+/* W389: baseline obj 1352/1376, nd 991; opt_dead_assignments off -> obj 1352/1376, nd 990. */
+#pragma opt_dead_assignments off
+// FUN_001b3480 NONMATCHING
+void FUN_001b3480(u32 resource)
+{
+    u32 group;
+    u32 entry;
+    u32 count;
+    u32 i;
+    u32 query[16];
+    u32 active;
+    u32 id;
+    u32 overlay;
+    u32 mode;
+    u32 flags;
+    u32 metadata;
+    u32 stream;
+    char path[256];
+    char token[64];
+    u32 fieldId;
+
+    for (group = 0; group < *(u32*)(resource + 0x14); group++)
+    {
+        entry = resource + group * 4;
+        count = FUN_001a6c00(*(u32*)(entry + 0x18), 0x678e50);
+        for (i = 0; i < count; i++)
+        {
+            FUN_001a6e90(&query[0], *(u32*)(entry + 0x18), 0x678eb0, i);
+            active = query[0];
+            if (active == 0)
+            {
+                continue;
+            }
+            FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), 0x678e70, i);
+            id = query[1];
+            if (id == 0)
+            {
+                FUN_0019d3f0(D_00678DF8, 0x60a);
+            }
+            *(u16*)(resource +
+                    *(u32*)(resource + 0x118) * 0x18 + 0x120) =
+                (u16)id;
+            FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), 0x678e90, i);
+            overlay = query[2];
+            if (overlay != 0)
+            {
+                *(u16*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) = 2;
+            }
+            FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), 0x678e50, i);
+            mode = query[3];
+            if (mode == 0)
+            {
+                if (iGpffffb470 == 0)
+                {
+                    FUN_00524270(path, 0x678ec8);
+                    FUN_00523ac8(token, &gp0xffff9550,
+                                 *(u16*)(resource + 4));
+                    FUN_00523e68(path, token);
+                    FUN_00523ac8(token, 0x678ed8, id);
+                    FUN_00523e68(path, token);
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
+                        FUN_00316b40(4, (u16)id, path, 0);
+                }
+                else
+                {
+                    FUN_00524270(path, 0x678ee8);
+                    FUN_00523ac8(token, &gp0xffff9550,
+                                 *(u16*)(resource + 4));
+                    FUN_00523e68(path, token);
+                    FUN_00523ac8(token, 0x678ed8, id);
+                    FUN_00523e68(path, token);
+                    metadata = 0;
+                    stream = FUN_001021c0(path, &metadata);
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
+                        FUN_00316bd0(4, (u16)id, stream, metadata, 0);
+                }
+            }
+            else if (mode == 1)
+            {
+                if (iGpffffb470 == 0)
+                {
+                    FUN_00524270(path, 0x678ef8);
+                    FUN_00523ac8(token, &gp0xffff9550,
+                                 *(u16*)(resource + 4));
+                    FUN_00523e68(path, token);
+                    FUN_00523ac8(token, 0x678f08, id);
+                    FUN_00523e68(path, token);
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
+                        FUN_00100d80(path, 0);
+                    if (*(u32*)(resource +
+                                *(u32*)(resource + 0x118) * 0x18 +
+                                0x130) == 0)
+                    {
+                        FUN_0019d3f0(D_00678DF8, 0x650);
+                    }
+                }
+                else
+                {
+                    FUN_00524270(path, 0x678f18);
+                    FUN_00523ac8(token, &gp0xffff9550,
+                                 *(u16*)(resource + 4));
+                    FUN_00523e68(path, token);
+                    FUN_00523ac8(token, 0x678f08, id);
+                    FUN_00523e68(path, token);
+                    metadata = 0;
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
+                        FUN_001021c0(path, &metadata);
+                }
+            }
+            else if (mode == 2)
+            {
+                FUN_00524270(path, 0x678f30);
+                FUN_00523ac8(token, 0x678ed8, id);
+                FUN_00523e68(path, token);
+                fieldId = (id + 1000) & 0xffff;
+                *(u32*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x128) =
+                    FUN_00316b40(4, fieldId, path, 0);
+            }
+            FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), 0x678f40, i);
+            flags = query[4];
+            if (mode == 0)
+            {
+                *(u16*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) |=
+                    (u16)flags;
+            }
+            *(u32*)(resource +
+                    *(u32*)(resource + 0x118) * 0x18 + 0x124) = 0;
+            *(u32*)(resource + 0x118) += 1;
+        }
+    }
+}
+#pragma opt_dead_assignments reset
+#pragma pop
+
+// FUN_001b39e0 NONMATCHING
+u32 FUN_001b39e0(u32 resource)
+{
+    s32 firstIndex;
+    s32 secondIndex;
+    u8* record;
+    u32 type;
+    u32 object;
+    u32 matrix;
+
+    firstIndex = 0;
+    goto first_check;
+first_body:
+    record = (u8*)resource + firstIndex * 0x18;
+    type = *(u16*)(record + 0x11c);
+    if (type == 0)
+    {
+        object = *(u32*)(record + 0x128);
+        if (FUN_00316f70(object) == 0)
+        {
+            return 0;
+        }
+        goto first_increment;
+    }
+    if (type == 2)
+    {
+        object = *(u32*)(record + 0x128);
+        if (FUN_00316f70(object) == 0)
+        {
+            return 0;
+        }
+        goto first_increment;
+    }
+    if (type != 1)
+    {
+        goto first_increment;
+    }
+    if (iGpffffb470 != 0)
+    {
+        goto first_increment;
+    }
+    object = *(u32*)(record + 0x130);
+    if (object == 0)
+    {
+        goto first_increment;
+    }
+    if (FUN_001016b0(object) != 0)
+    {
+        goto first_increment;
+    }
+    return 0;
+first_increment:
+    firstIndex++;
+first_check:
+    if ((u32)firstIndex < *(u32*)((u8*)resource + 0x118))
+    {
+        goto first_body;
+    }
+
+    secondIndex = 0;
+    goto second_check;
+second_body:
+    record = (u8*)resource + secondIndex * 0x18;
+    type = *(u16*)(record + 0x11c);
+    if (type == 0)
+    {
+        goto stream_model;
+    }
+    if (type == 2)
+    {
+        goto stream_model;
+    }
+    if (type != 1)
+    {
+        goto second_increment;
+    }
+    if (*(u32*)(record + 0x130) == 0)
+    {
+        goto second_increment;
+    }
+    if (iGpffffb470 == 0)
+    {
+        object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
+    }
+    else
+    {
+        object = FUN_0034fcd0();
+    }
+    *(u32*)(record + 0x12c) = object;
+    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+    FUN_0034fdf0(object, matrix + 0x30);
+    if (iGpffffb470 == 0)
+    {
+        FUN_00100ec0(*(u32*)(record + 0x130));
+    }
+    *(u32*)(record + 0x130) = 0;
+    goto second_increment;
+stream_model:
+    object = *(u32*)(record + 0x128);
+    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+    FUN_00318a70(object, matrix, 0);
+    FUN_00319230(object, 3);
+    if ((*(u16*)(record + 0x11e) & 1) == 0)
+    {
+        FUN_003182d0(object, 0, 0, 8, 1);
+    }
+    else
+    {
+        FUN_003189f0(0, object, 0);
+    }
+second_increment:
+    secondIndex++;
+second_check:
+    if ((u32)secondIndex < *(u32*)((u8*)resource + 0x118))
+    {
+        goto second_body;
+    }
+    if (*(u32*)((u8*)resource + 0xa40) != 0)
+    {
+        object = *(u32*)((u8*)resource + 0xa40);
+        FUN_001a14c0(*(u32*)(object + 0x120));
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)object);
+        *(u32*)((u8*)resource + 0xa40) = 0;
+    }
+    return 1;
+}
+
+// FUN_001b3c90
+void FUN_001b3c90(void* resource)
+{
+    u32 firstIndex;
+    u32 secondIndex;
+
+    if ((*(u32*)resource & 1) != 0)
+    {
+        if (*(u32*)((u8*)resource + 8) != 0 &&
+            *(u32*)((u8*)resource + 8) != *(u32*)((u8*)resource + 0x0c))
+        {
+            FUN_0049a290(*(u32*)((u8*)resource + 8));
+        }
+        if (*(u32*)((u8*)resource + 0x0c) != 0)
+        {
+            FUN_0049a290(*(u32*)((u8*)resource + 0x0c));
+        }
+        if (*(u32*)((u8*)resource + 0x10) != 0)
+        {
+            FUN_0049a290(*(u32*)((u8*)resource + 0x10));
+        }
+    }
+    else
+    {
+        FUN_001a7710(*(u32*)((u8*)resource + 0x0c));
+        if (*(u32*)((u8*)resource + 8) != 0)
+        {
+            FUN_00491ea0(*(u32*)((u8*)resource + 8));
+        }
+        if (*(u32*)((u8*)resource + 0x10) != 0)
+        {
+            FUN_00491ea0(*(u32*)((u8*)resource + 0x10));
+        }
+    }
+    for (firstIndex = 0; firstIndex < *(u32*)((u8*)resource + 0x14); firstIndex++)
+    {
+        FUN_001a7710(*(u32*)((u8*)resource + 0x98 + firstIndex * 4));
+        FUN_00491ea0(*(u32*)((u8*)resource + 0x18 + firstIndex * 4));
+    }
+    for (secondIndex = 0; secondIndex < *(u32*)((u8*)resource + 0x118); secondIndex++)
+    {
+        u8* record = (u8*)resource + secondIndex * 0x18;
+        u16 type = *(u16*)(record + 0x11c);
+        if ((type == 0) || (type == 2))
+        {
+            FUN_003174e0(*(u32*)(record + 0x128));
+        }
+        else if (type == 1)
+        {
+            FUN_0034fcf0(*(u32*)(record + 0x12c));
+        }
+    }
+    if (*(u32*)((u8*)resource + 0xa1c) != 0)
+    {
+        FUN_0048da30(*(u32*)((u8*)resource + 0xa1c));
+    }
+    if (*(u32*)((u8*)resource + 0xa3c) != 0)
+    {
+        (*(void (**)(void*))DAT_0096017c_abs)(*(void**)((u8*)resource + 0xa3c));
+    }
+    (*(void (**)(void*))DAT_0096017c_abs)(resource);
+}
+// FUN_001b3e50 NONMATCHING
+void FUN_001b3e50(void* camera, u32* resource)
+{
+    f32 savedLight[4];
+    f32 savedFog[4];
+    u32 savedStates[16];
+    u32* state;
+    f32* fstate;
+    u32* stateData;
+    u32 light;
+    u32 value;
+    u32 world;
+    u32 i;
+
+    FUN_004d7f60(2, 0x44);
+    FUN_004d7f60(3, 0x717fb);
+    fstate = (f32*)FUN_00198560();
+    savedLight[0] = fstate[6];
+    savedLight[1] = fstate[7];
+    savedLight[2] = fstate[8];
+    savedLight[3] = fstate[9];
+    fstate = (f32*)FUN_00198570();
+    savedFog[0] = fstate[6];
+    savedFog[1] = fstate[7];
+    savedFog[2] = fstate[8];
+    savedFog[3] = fstate[9];
+    state = (u32*)FUN_00198570();
+    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
+    for (i = 0; i < 8; i++)
+    {
+        savedStates[i * 2] = stateData[0];
+        savedStates[i * 2 + 1] = stateData[1];
+        stateData += 2;
+    }
+    light = FUN_00198560();
+    value = FUN_0019fd40();
+    FUN_004944b0(light, value);
+    light = FUN_00198570();
+    value = FUN_0019fd70();
+    FUN_004944b0(light, value);
+    state = (u32*)FUN_00198570();
+    FUN_004cb7f0(*(u32*)((u8*)state + 4), FUN_0019fda0(), 0);
+    state = (u32*)FUN_00198570();
+    *((u8*)state + 2) = 3;
+    FUN_00198570();
+
+    if ((*resource & 1) != 0)
+    {
+        light = FUN_00198540(uGpffffb3dc);
+        FUN_0049c1b0(light, (u32)camera);
+        if ((*resource & 0x80000000) == 0)
+        {
+            if ((*resource & 0x40000000) == 0)
+            {
+                FUN_0049c160(resource[2], (u32)camera);
+            }
+            else if (resource[4] != 0)
+            {
+                FUN_0049c160(resource[4], (u32)camera);
+            }
+        }
+        else
+        {
+            FUN_0049c160(resource[3], (u32)camera);
+        }
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198560();
+        FUN_0049c480(light, value);
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198570();
+        FUN_0049c480(light, value);
+        if ((*resource & 0x80000000) == 0)
+        {
+            if ((*resource & 0x40000000) == 0)
+            {
+                value = FUN_00198560();
+                FUN_0049c3d0(resource[2], value);
+                value = FUN_00198570();
+                FUN_0049c3d0(resource[2], value);
+            }
+            else
+            {
+                value = FUN_00198560();
+                FUN_0049c3d0(resource[4], value);
+                value = FUN_00198570();
+                FUN_0049c3d0(resource[4], value);
+            }
+        }
+        else
+        {
+            value = FUN_00198560();
+            FUN_0049c3d0(resource[3], value);
+            value = FUN_00198570();
+            FUN_0049c3d0(resource[3], value);
+        }
+    }
+    else
+    {
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198580();
+        FUN_0049c3d0(light, value);
+    }
+
+    if ((*resource & 1) == 0)
+    {
+        world = FUN_004c9d10((u32)camera);
+        if (world == 0)
+        {
+            FUN_0019d3f0(D_00678DF8, 0x7a4);
+        }
+        else
+        {
+            fldrc_render_begin();
+            if ((*resource & 0x80000000) == 0)
+            {
+                if ((*resource & 0x40000000) != 0)
+                {
+                    if (resource[4] != 0)
+                    {
+                        FUN_001a88e0(resource[4]);
+                    }
+                }
+            }
+            else if (resource[3] == 0)
+            {
+                FUN_001a88e0(resource[2]);
+            }
+            else
+            {
+                FUN_001a7b50(resource[3], 1);
+            }
+        }
+    }
+    else if (resource[2] != 0)
+    {
+        world = FUN_004c9d10((u32)camera);
+        if (world == 0)
+        {
+            FUN_0019d3f0(D_00678DF8, 0x783);
+        }
+        else
+        {
+            fldrc_render_begin();
+            if ((*resource & 0x80000000) == 0)
+            {
+                if ((*resource & 0x40000000) == 0)
+                {
+                    FUN_0049a250(resource[2]);
+                }
+                else
+                {
+                    FUN_0049a250(resource[4]);
+                }
+            }
+            else
+            {
+                FUN_0049a250(resource[3]);
+            }
+        }
+    }
+    if ((*resource & 0xc0000000) == 0)
+    {
+        for (i = 0; i < resource[5]; i++)
+        {
+            if (resource[i + 0x26] == 0)
+            {
+                FUN_001a88e0(resource[i + 6]);
+            }
+            else
+            {
+                FUN_001a7b50(resource[i + 0x26], 1);
+            }
+        }
+    }
+    FUN_004c9d00((u32)camera);
+    if ((*resource & 1) == 0)
+    {
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198580();
+        FUN_0049c3d0(light, value);
+    }
+    else
+    {
+        if ((*resource & 0x80000000) == 0)
+        {
+            if ((*resource & 0x40000000) == 0)
+            {
+                value = FUN_00198560();
+                FUN_0049c480(resource[2], value);
+                value = FUN_00198570();
+                FUN_0049c480(resource[2], value);
+            }
+            else
+            {
+                value = FUN_00198560();
+                FUN_0049c480(resource[4], value);
+                value = FUN_00198570();
+                FUN_0049c480(resource[4], value);
+            }
+        }
+        else
+        {
+            value = FUN_00198560();
+            FUN_0049c480(resource[3], value);
+            value = FUN_00198570();
+            FUN_0049c480(resource[3], value);
+        }
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198560();
+        FUN_0049c3d0(light, value);
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198570();
+        FUN_0049c3d0(light, value);
+        if ((*resource & 0x80000000) == 0)
+        {
+            if ((*resource & 0x40000000) == 0)
+            {
+                FUN_0049c1b0(resource[2], (u32)camera);
+            }
+            else
+            {
+                FUN_0049c1b0(resource[4], (u32)camera);
+            }
+        }
+        else
+        {
+            FUN_0049c1b0(resource[3], (u32)camera);
+        }
+        light = FUN_00198540(uGpffffb3dc);
+        FUN_0049c160(light, (u32)camera);
+    }
+    state = (u32*)FUN_00198560();
+    FUN_004944b0(state, savedLight);
+    state = (u32*)FUN_00198570();
+    FUN_004944b0(state, savedFog);
+    state = (u32*)FUN_00198570();
+    FUN_004cb7f0(*(u32*)((u8*)state + 4), savedStates, 0);
+    state = (u32*)FUN_00198570();
+    *((u8*)state + 2) = 3;
+    FUN_00198570();
+    FUN_00198610(3, 0);
+}
+
 #pragma push
 /* W389: baseline obj 1568/1760, nd 912; opt_lifetimes on -> obj 1560/1760, nd 854. */
 #pragma opt_lifetimes on
@@ -1694,11 +2942,6 @@ void FUN_001b5200(u32* resource, f32 angle)
     }
 }
 
-typedef struct FldrcCloneRecord
-{
-    u32 words[6];
-} FldrcCloneRecord;
-
 #pragma push
 /* W389: baseline obj 644/656, nd 366; opt_loop_invariants on + opt_lifetimes on -> obj 640/656, nd 354. */
 #pragma opt_loop_invariants on
@@ -1822,6 +3065,46 @@ void FUN_001b56f0(u32* resource, const f32* color)
         node = *(s32*)(node + 0xf8);
     }
 }
+
+// FUN_001b5850
+void* K_Fldrc_UpdateFilterTask(KwlnTask* fldFilterTask)
+{
+    K_FldFilter_Main();
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001b5880
+void K_Fldrc_DestroyFilterTask(KwlnTask* fldFilterTask)
+{
+    RwFree(fldFilterTask->workData);
+}
+
+// FUN_001b58b0
+KwlnTask* K_Fldrc_CreateFilterTask(KwlnTask* parent)
+{
+    FldFilterWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(FldFilterWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreate(parent,
+                          "field filter",
+                          4197,
+                          K_Fldrc_UpdateFilterTask,
+                          K_Fldrc_DestroyFilterTask,
+                          work);
+
+    work->unk_08 = 1;
+    work->unk_0c = 200;
+
+    return task;
+}
+
 // FUN_001b5950
 void FUN_001b5950(u32 task, u32 value)
 {
@@ -1861,7 +3144,6 @@ void FUN_001b5a00(u32 task, u32 value)
     *(u32*)(work + 0x0c) = value;
     FUN_001d5130(value);
 }
-
 // FUN_001b5a30
 void FUN_001b5a30(u8* color)
 {
@@ -1879,6 +3161,8 @@ void FUN_001b5a30(u8* color)
         FUN_0048efa0(value, 0, packed);
     }
 }
+
+
 
 // FUN_001b5ae0
 void FUN_001b5ae0(u32 value, const u8* rgba)
@@ -2060,220 +3344,6 @@ done:
     return value;
 }
 
-static void fldrc_copy_words(u32 dst, u32 src, u32 count)
-{
-    u32 i;
-    for (i = 0; i < count; i++)
-    {
-        *(u32*)(dst + i * 4) = *(u32*)(src + i * 4);
-    }
-}
-
-static inline void fldrc_apply_field_config(u32 config)
-{
-    u32* dst;
-    u32 listA;
-    u32 listB;
-    u32 node;
-    u32 i;
-    u32 count;
-    u32 version;
-    f32 farPlane;
-    u32* field;
-
-    listA = FUN_003b5d50(4);
-    listB = FUN_003b5d50(5);
-    FUN_0019fdd0(*(u8*)(config + 8));
-    FUN_0019fe20(*(u8*)(config + 9));
-    FUN_0019fe70(*(u8*)(config + 10));
-    FUN_0019fec0(*(u8*)(config + 0x0b));
-    if (*(u8*)(config + 0x0f) == 1)
-    {
-        DAT_007ce0d4 = 1;
-    }
-    else
-    {
-        DAT_007ce0d4 = 0;
-    }
-    DAT_007ce0d8 = *(u8*)(config + 0x0c);
-    DAT_007ce0dc = *(u8*)(config + 0x0d);
-    DAT_007ce0e0 = *(u8*)(config + 0x0e);
-    DAT_007ce0e4 = 0;
-    DAT_007ce0e8 = DAT_007ce0d8;
-    DAT_007ce0ec = DAT_007ce0dc;
-    DAT_007ce0f0 = DAT_007ce0e0;
-    DAT_007ce0f4 = 0;
-    FUN_001985b0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
-    FUN_001985e0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
-    FUN_004c9db0(FUN_00198590(), *(f32*)(config + 0x14));
-    *(f32*)(FUN_00198590() + 0x88) = *(f32*)(config + 0x10);
-    FUN_00198590();
-
-    version = *(u32*)(config + 4);
-    if (version > 0x10003)
-    {
-        farPlane = *(f32*)(config + 0x18);
-        if (farPlane > 1.0f)
-        {
-            FUN_004c9d70(FUN_00198590(), farPlane);
-        }
-        if (farPlane == 50.0f)
-        {
-            FUN_004c9d70(FUN_00198590(), 100.0f);
-        }
-        if (*(s8*)(config + 0x1ff) == -1)
-        {
-            FUN_001985b0(*(u8*)(config + 0x1fc),
-                         *(u8*)(config + 0x1fd),
-                         *(u8*)(config + 0x1fe), 0);
-            FUN_001985e0(*(u8*)(config + 0x1fc),
-                         *(u8*)(config + 0x1fd),
-                         *(u8*)(config + 0x1fe), 0);
-        }
-    }
-
-    dst = (u32*)FUN_0019fd40();
-    ((f32*)dst)[0] = *(f32*)(config + 0x1c);
-    ((f32*)dst)[1] = *(f32*)(config + 0x20);
-    ((f32*)dst)[2] = *(f32*)(config + 0x24);
-    ((f32*)dst)[3] = *(f32*)(config + 0x28);
-    dst = (u32*)FUN_0019fd70();
-    ((f32*)dst)[0] = *(f32*)(config + 0x2c);
-    ((f32*)dst)[1] = *(f32*)(config + 0x30);
-    ((f32*)dst)[2] = *(f32*)(config + 0x34);
-    ((f32*)dst)[3] = *(f32*)(config + 0x38);
-    dst = (u32*)FUN_0019fda0();
-    {
-        u32* src = (u32*)(config + 0x40);
-        u32 n = 8;
-        while (n > 0)
-        {
-            dst[0] = src[0];
-            dst[1] = src[1];
-            src += 2;
-            dst += 2;
-            n--;
-        }
-    }
-
-    if (listB != 0)
-    {
-        ((f32*)(listB + 0x100))[0] = *(f32*)(config + 0x80);
-        ((f32*)(listB + 0x100))[1] = *(f32*)(config + 0x84);
-        ((f32*)(listB + 0x100))[2] = *(f32*)(config + 0x88);
-        ((f32*)(listB + 0x100))[3] = *(f32*)(config + 0x8c);
-        ((f32*)(listB + 0x110))[0] = *(f32*)(config + 0x90);
-        ((f32*)(listB + 0x110))[1] = *(f32*)(config + 0x94);
-        ((f32*)(listB + 0x110))[2] = *(f32*)(config + 0x98);
-        ((f32*)(listB + 0x110))[3] = *(f32*)(config + 0x9c);
-        {
-            u32* src = (u32*)(config + 0xa0);
-            u32* out = (u32*)(listB + 0x120);
-            u32 n = 8;
-            while (n > 0)
-            {
-                out[0] = src[0];
-                out[1] = src[1];
-                src += 2;
-                out += 2;
-                n--;
-            }
-        }
-        ((f32*)(listB + 0x160))[0] = *(f32*)(config + 0xe0);
-        ((f32*)(listB + 0x160))[1] = *(f32*)(config + 0xe4);
-        ((f32*)(listB + 0x160))[2] = *(f32*)(config + 0xe8);
-        ((f32*)(listB + 0x160))[3] = *(f32*)(config + 0xec);
-        {
-            u32* src = (u32*)(config + 0xf0);
-            u32* out = (u32*)(listB + 0x170);
-            u32 n = 8;
-            while (n > 0)
-            {
-                out[0] = src[0];
-                out[1] = src[1];
-                src += 2;
-                out += 2;
-                n--;
-            }
-        }
-    }
-
-    if (version > 0x10000)
-    {
-        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
-        K_Field_Get_A();
-        for (i = 0; i < count; i++)
-        {
-            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
-            ((u32*)node)[0xa20 / 4] = ((u32*)config)[0x130 / 4];
-            ((u32*)node)[0xa24 / 4] = ((u32*)config)[0x134 / 4];
-            ((u32*)node)[0xa28 / 4] = ((u32*)config)[0x138 / 4];
-            FUN_001b5610((u32*)node, (const f32*)(node + 0xa20));
-        }
-    }
-
-    if ((version > 0x10001) && (listA != 0))
-    {
-        ((u32*)listA)[0x100 / 4] = ((u32*)config)[0x13c / 4];
-        ((u32*)listA)[0x104 / 4] = ((u32*)config)[0x140 / 4];
-        ((u32*)listA)[0x108 / 4] = ((u32*)config)[0x144 / 4];
-        ((u32*)listA)[0x10c / 4] = ((u32*)config)[0x148 / 4];
-        ((u32*)listA)[0x110 / 4] = ((u32*)config)[0x14c / 4];
-        ((u32*)listA)[0x114 / 4] = ((u32*)config)[0x150 / 4];
-        ((u32*)listA)[0x118 / 4] = ((u32*)config)[0x154 / 4];
-        ((u32*)listA)[0x11c / 4] = ((u32*)config)[0x158 / 4];
-        for (i = 0; i < 8; i++)
-        {
-            ((u32*)listA)[0x120 / 4 + i * 2] =
-                ((u32*)config)[0x160 / 4 + i * 2];
-            ((u32*)listA)[0x124 / 4 + i * 2] =
-                ((u32*)config)[0x164 / 4 + i * 2];
-        }
-        ((u32*)listA)[0x160 / 4] = ((u32*)config)[0x1a0 / 4];
-        ((u32*)listA)[0x164 / 4] = ((u32*)config)[0x1a4 / 4];
-        ((u32*)listA)[0x168 / 4] = ((u32*)config)[0x1a8 / 4];
-        ((u32*)listA)[0x16c / 4] = ((u32*)config)[0x1ac / 4];
-        for (i = 0; i < 8; i++)
-        {
-            ((u32*)listA)[0x170 / 4 + i * 2] =
-                ((u32*)config)[0x1b0 / 4 + i * 2];
-            ((u32*)listA)[0x174 / 4 + i * 2] =
-                ((u32*)config)[0x1b4 / 4 + i * 2];
-        }
-    }
-
-    if (version > 0x10002)
-    {
-        listA = FUN_003b5d50(1);
-        listB = FUN_003b5d50(3);
-        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
-        K_Field_Get_A();
-        for (i = 0; i < count; i++)
-        {
-            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
-            ((u32*)node)[0xa2c / 4] = ((u32*)config)[0x1f0 / 4];
-            ((u32*)node)[0xa30 / 4] = ((u32*)config)[0x1f4 / 4];
-            ((u32*)node)[0xa34 / 4] = ((u32*)config)[0x1f8 / 4];
-        }
-        while (listA != 0)
-        {
-            u32 model = FUN_00318b80(*(u32*)(listA + 0x128));
-            FUN_004916d0(model, 0x1b6060, config + 0x1f0);
-            listA = *(u32*)(listA + 0xf8);
-        }
-        while (listB != 0)
-        {
-            u32 model = FUN_00318b80(*(u32*)(listB + 0x128));
-            FUN_004916d0(model, 0x1b6060, config + 0x1f0);
-            listB = *(u32*)(listB + 0xf8);
-        }
-    }
-    if (version < 0x10004)
-    {
-        FUN_001a1540(0, 0, 0x178, 0x678ff0);
-    }
-}
-
 #pragma push
 /* W389: baseline obj 3244/3264, nd 2138; opt_lifetimes on + opt_propagation off -> obj 3244/3264, nd 2127. */
 #pragma opt_lifetimes on
@@ -2318,28 +3388,6 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
 #pragma opt_propagation reset
 #pragma opt_lifetimes reset
 #pragma pop
-static u32 fldrc_event_override(u16 group, u32 id)
-{
-    if (((group == 6) && ((id == 4) || (id == 5) || (id == 7) || (id == 8) ||
-                          (id == 0x15) || (id == 0x16))) ||
-        ((group == 7) && ((id == 1) || (id == 3) || (id == 4) || (id == 5) ||
-                          (id == 6) || (id == 7) || (id == 0x0e) || (id == 0x0f))) ||
-        (group == 8) ||
-        ((group == 9) && ((id == 3) || (id == 4) || (id == 5) || (id == 6))) ||
-        ((group == 10) && (id == 2)) ||
-        ((group == 0x0e) && (id == 2)) ||
-        ((group == 0x0f) && (id == 1)) ||
-        ((group == 0x10) && ((id == 4) || (id == 5))))
-    {
-        if ((FUN_0017e480(4, 0x1b, 0x0c, 0x1f) == 1) ||
-            (FUN_0017e480(1, 1, 2, 0x1c) == 1))
-        {
-            return id;
-        }
-    }
-    return 0xffffffff;
-}
-
 // FUN_001b6eb0 NONMATCHING
 u32 FUN_001b6eb0(u16 group, u32 id)
 {
@@ -2502,7 +3550,6 @@ u32 FUN_001b6eb0(u16 group, u32 id)
     }
     return result;
 }
-
 // FUN_001b75e0
 u32 FUN_001b75e0(u32 task)
 {
@@ -2561,1047 +3608,4 @@ void* FUN_001b7700(void* parent)
                                FUN_001b75e0, FUN_001b76b0, work);
     *(u32*)(work + 4) = FUN_00100d80(D_00679040_abs, 0);
     return task;
-}
-
-// FUN_001b2780
-void* FUN_001b2780(s16 majorId, s16 minorId)
-{
-    char path[40];
-    char token[8];
-
-    if (iGpffffb470 == 0)
-    {
-        FUN_00524270(path, D_00678E08);
-    }
-    else
-    {
-        FUN_00524270(path, D_00678E18);
-    }
-    FUN_00523ac8(token, (const char*)&gp0xffff9538 - 0x6ac8, majorId);
-    FUN_00523e68(path, token);
-    FUN_00523ac8(token, (const char*)&gp0xffff9540 - 0x6ac0, minorId);
-    FUN_00523e68(path, token);
-    FUN_00523e68(path, (const char*)&gp0xffff9548 - 0x6ab8);
-    return FUN_001b2860(path);
-}
-
-// FUN_001b2860 NONMATCHING
-void* FUN_001b2860(char* path)
-{
-    u32 resource;
-    u32 payload;
-    char* end;
-    char digits[4];
-    u32 valid;
-
-    valid = 1;
-    resource = (u32)(*DAT_00960184)(1, 0xa4c, 0x40000);
-    if (resource == 0)
-    {
-        return NULL;
-    }
-    payload = (u32)(*DAT_00960184)(1, 0x124, 0x40000);
-    *(u32*)(resource + 0xa40) = payload;
-    if (payload == 0)
-    {
-        (*DAT_0096017c)((void*)resource);
-        return NULL;
-    }
-    FUN_00524270((void*)payload, path);
-    end = path;
-    while (*end != '\0')
-    {
-        end++;
-    }
-    while ((end > path) && (*end != '/'))
-    {
-        end--;
-    }
-    if (end[1] != 'f')
-    {
-        valid = 0;
-    }
-    else
-    {
-        if ((PTR_DAT_007be9c8[(u8)end[2]] & 4) == 0)
-        {
-            valid = 0;
-        }
-        if ((PTR_DAT_007be9c8[(u8)end[3]] & 4) == 0)
-        {
-            valid = 0;
-        }
-        if ((PTR_DAT_007be9c8[(u8)end[4]] & 4) == 0)
-        {
-            valid = 0;
-        }
-        if (end[5] != '_')
-        {
-            valid = 0;
-        }
-        if ((PTR_DAT_007be9c8[(u8)end[6]] & 4) == 0)
-        {
-            valid = 0;
-        }
-        if ((PTR_DAT_007be9c8[(u8)end[7]] & 4) == 0)
-        {
-            valid = 0;
-        }
-        if ((PTR_DAT_007be9c8[(u8)end[8]] & 4) == 0)
-        {
-            valid = 0;
-        }
-    }
-    if (valid != 0)
-    {
-        digits[0] = end[2];
-        digits[1] = end[3];
-        digits[2] = end[4];
-        digits[3] = 0;
-        *(u16*)(resource + 4) = (u16)FUN_0051e0f0(digits);
-        digits[0] = end[6];
-        digits[1] = end[7];
-        digits[2] = end[8];
-        digits[3] = 0;
-        *(u16*)(resource + 6) = (u16)FUN_0051e0f0(digits);
-    }
-    else
-    {
-        *(u16*)(resource + 4) = 0xffff;
-        *(u16*)(resource + 6) = 0xffff;
-    }
-    if (iGpffffb470 == 0)
-    {
-        *(u32*)(payload + 0x80) = FUN_00100d80(payload, 0);
-    }
-    else
-    {
-        *(u32*)(payload + 0x80) = 1;
-    }
-    return (void*)resource;
-}
-
-// FUN_001b2b30
-u32 FUN_001b2b30(u32 resource)
-{
-    u32 payload;
-
-    payload = *(u32*)(resource + 0xa40);
-    if (*(u32*)(payload + 0x80) == 0)
-    {
-        return true;
-    }
-    if (iGpffffb470 == 0)
-    {
-        return FUN_001016b0(*(u32*)(payload + 0x80)) != 0;
-    }
-    return true;
-}
-
-#pragma push
-/* W389: baseline obj 856/880, nd 528; opt_common_subs off -> obj 856/880, nd 521. */
-#pragma opt_common_subs off
-// FUN_001b2b90 NONMATCHING
-void FUN_001b2b90(u32 resource)
-{
-    u32 payload;
-    u32 streamInfo[2];
-    u32 entryInfo[2];
-    u32 substream[2];
-    u32 entry;
-    u32* header;
-    u32 index;
-
-    payload = *(u32*)(resource + 0xa40);
-    streamInfo[1] = 0;
-    streamInfo[0] = FUN_001021c0(payload, &streamInfo[1]);
-    if (streamInfo[0] == 0)
-    {
-        return;
-    }
-    header = (u32*)FUN_004c58a0(3, 1, streamInfo);
-    if (header == NULL)
-    {
-        goto cleanup;
-    }
-    while (FUN_004c1970((u32)header, entryInfo) != 0)
-    {
-        switch (entryInfo[0])
-        {
-            case 0x0b:
-                index = *(u32*)(payload + 0x8c);
-                substream[0] =
-                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
-                if (*(u32*)(payload + index * 4 + 0x90) != 0)
-                {
-                    substream[0] = streamInfo[0];
-                }
-                substream[1] = streamInfo[1];
-                entry = FUN_004c58a0(3, 1, substream);
-                *(u32*)(payload + index * 4 + 0x90) =
-                    FUN_0010c1a0(1, 0, 0, 0, entry, 0, 0, 0,
-                                 0, 0, __FILE__, 0x4c8);
-                FUN_004c5620((u32)header, entryInfo[1]);
-                *(u32*)(payload + 0x8c) = index + 1;
-                break;
-            case 0x10:
-                substream[0] =
-                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
-                substream[1] = streamInfo[1];
-                entry = FUN_004c58a0(3, 1, substream);
-                index = *(u32*)(payload + 0x98);
-                *(u32*)(payload + index * 4 + 0x9c) =
-                    FUN_0010c1a0(2, 0, 0, 0, entry, 0, 0, 0,
-                                 0, 0, __FILE__, 0x4d6);
-                FUN_004c5620((u32)header, entryInfo[1]);
-                *(u32*)(payload + 0x98) = index + 1;
-                break;
-            case 0x23:
-                entry = FUN_004bda10((u32)header);
-                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
-                FUN_004d0d10(entry);
-                break;
-            case 0x16:
-                entry = FUN_004c8680((u32)header);
-                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
-                FUN_004d0d10(entry);
-                break;
-            case 0x0c:
-                *(u32*)(resource + 0xa1c) = FUN_0048d0e0((u32)header);
-                break;
-            default:
-                FUN_004c5620((u32)header, entryInfo[1]);
-                break;
-        }
-    }
-    if (header != NULL)
-    {
-        FUN_004c5780((u32)header, 0);
-    }
-    return;
-
-cleanup:
-    if (payload != 0)
-    {
-        FUN_00100ec0(*(u32*)(payload + 0x80));
-        (*(void (**)(void*))DAT_0096017c_abs)((void*)payload);
-    }
-    if (resource != 0)
-    {
-        (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
-    }
-}
-#pragma opt_common_subs reset
-#pragma pop
-// FUN_001b2f00 NONMATCHING
-u32 FUN_001b2f00(u32* resource)
-{
-    u32 payload;
-    u32 i;
-    u32 pending;
-    u32 object;
-    u32 loaded;
-    u32 tagged;
-    u32 state;
-    u32 kind;
-    u32 result;
-
-    pending = 0;
-    payload = resource[0x290];
-    if (payload == 0)
-    {
-        return 1;
-    }
-    if (*(u32*)(payload + 0x84) != 0)
-    {
-        if (*(u32*)(payload + 0x120) != 0)
-        {
-            FUN_0019d3f0(D_00678DF8, 0x534);
-        }
-        state = 0;
-        kind = 0;
-        object = FUN_0010c3a0(payload, &state, &kind);
-        if (state == 1)
-        {
-            FUN_004d0dc0(object, 0x1a13b0, payload + 0x120);
-            FUN_004d0d10(object);
-            *(u32*)(payload + 0x84) = 0;
-            if (kind != 0)
-            {
-                FUN_004c5780(kind, 0);
-            }
-        }
-        else
-        {
-            pending = 1;
-        }
-    }
-    for (i = 0; i < *(u32*)(payload + 0x8c); i++)
-    {
-        object = *(u32*)(payload + i * 4 + 0x90);
-        if (object == 0)
-        {
-            continue;
-        }
-        state = 0;
-        kind = 0;
-        loaded = FUN_0010c3a0(object, &state, &kind);
-        if (state == 1)
-        {
-            if (loaded == 0)
-            {
-                FUN_0019d3f0(D_00678DF8, 0x550);
-            }
-            tagged = FUN_001a6740(loaded, D_00678E30);
-            if (tagged == 0)
-            {
-                if (resource[3] == 0)
-                {
-                    resource[3] = loaded;
-                    FUN_004bcbf0(loaded, FUN_00198590());
-                }
-                else
-                {
-                    resource[2] = loaded;
-                }
-            }
-            else
-            {
-                resource[4] = loaded;
-            }
-            *(u32*)(payload + i * 4 + 0x90) = 0;
-            resource[0] |= 1;
-            if (kind != 0)
-            {
-                FUN_004c5780(kind, 0);
-            }
-        }
-        else
-        {
-            pending++;
-        }
-    }
-    for (i = 0; i < *(u32*)(payload + 0x98); i++)
-    {
-        object = *(u32*)(payload + i * 4 + 0x9c);
-        if (object == 0)
-        {
-            continue;
-        }
-        state = 0;
-        kind = 0;
-        loaded = FUN_0010c3a0(object, &state, &kind);
-        if (state == 1)
-        {
-            if (loaded == 0)
-            {
-                FUN_0019d3f0(D_00678DF8, 0x571);
-            }
-            tagged = FUN_001a66f0(loaded, D_00678E30);
-            if (tagged == 0)
-            {
-                if (((resource[0] & 1) == 0) && (resource[2] == 0))
-                {
-                    resource[2] = loaded;
-                    resource[3] = FUN_001a7570(loaded);
-                }
-                else
-                {
-                    resource[resource[5] + 6] = loaded;
-                    resource[resource[5] + 0x26] = FUN_001a7570(loaded);
-                    resource[5]++;
-                }
-            }
-            else
-            {
-                resource[4] = loaded;
-            }
-            *(u32*)(payload + i * 4 + 0x9c) = 0;
-            if (kind != 0)
-            {
-                FUN_004c5780(kind, 0);
-            }
-        }
-        else
-        {
-            pending++;
-        }
-    }
-    *(u32*)(payload + 0x11c) = 0;
-    if (pending != 0)
-    {
-        return 0;
-    }
-    if (resource[2] == 0)
-    {
-        resource[0] |= 0x20000000;
-        resource[2] = resource[3];
-    }
-    if (((resource[0] & 1) == 0) && (resource[5] == 0))
-    {
-        resource[0] |= 0x20000000;
-    }
-    if (iGpffffb470 == 0)
-    {
-        FUN_00100ec0(*(u32*)(payload + 0x80));
-    }
-    resource[0x288] = 0x3f800000;
-    resource[0x289] = 0x3f800000;
-    resource[0x28a] = 0x3f800000;
-    result = 1;
-    return result;
-}
-
-// FUN_001b32f0
-u32 FUN_001b32f0(void* resource, u32 wanted, u32* hasOverlay)
-{
-    u32 outer;
-    s32 inner;
-    s32 count;
-    u32 result;
-    u32 type[2];
-    u32 match[2];
-    u32 found[2];
-
-    result = 0;
-    outer = 0;
-    goto outer_check;
-outer_body:
-    {
-        u8* entry = (u8*)resource + outer * 4;
-        count = FUN_001a6c00(*(u32*)(entry + 0x18), D_00678E50_abs);
-        inner = 0;
-        goto inner_check;
-inner_body:
-        FUN_001a6e90(match, *(u32*)(entry + 0x18), D_00678E70_abs, inner);
-        if (match[0] == 0)
-        {
-            K_Assert(D_00678DF8_abs, 0x5d2);
-        }
-        FUN_001a6e90(type, *(u32*)(entry + 0x18), D_00678E50_abs, inner);
-        FUN_001a6e90(found, *(u32*)(entry + 0x18), D_00678E90_abs, inner);
-        if (found[0] != 0)
-        {
-            *hasOverlay = 1;
-        }
-        else
-        {
-            *hasOverlay = 0;
-        }
-        if (type[0] == 1)
-        {
-            goto inner_increment;
-        }
-        if (wanted != match[0])
-        {
-            goto inner_increment;
-        }
-        result = type[1];
-        goto done;
-inner_increment:
-        inner++;
-inner_check:
-        if (inner < count)
-        {
-            goto inner_body;
-        }
-        outer++;
-outer_check:
-        if (outer < *(u32*)((u8*)resource + 0x14))
-        {
-            goto outer_body;
-        }
-    }
-done:
-    return result;
-}
-#pragma push
-/* W389: baseline obj 1352/1376, nd 991; opt_dead_assignments off -> obj 1352/1376, nd 990. */
-#pragma opt_dead_assignments off
-// FUN_001b3480 NONMATCHING
-void FUN_001b3480(u32 resource)
-{
-    u32 group;
-    u32 entry;
-    u32 count;
-    u32 i;
-    u32 query[16];
-    u32 active;
-    u32 id;
-    u32 overlay;
-    u32 mode;
-    u32 flags;
-    u32 metadata;
-    u32 stream;
-    char path[256];
-    char token[64];
-    u32 fieldId;
-
-    for (group = 0; group < *(u32*)(resource + 0x14); group++)
-    {
-        entry = resource + group * 4;
-        count = FUN_001a6c00(*(u32*)(entry + 0x18), 0x678e50);
-        for (i = 0; i < count; i++)
-        {
-            FUN_001a6e90(&query[0], *(u32*)(entry + 0x18), 0x678eb0, i);
-            active = query[0];
-            if (active == 0)
-            {
-                continue;
-            }
-            FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), 0x678e70, i);
-            id = query[1];
-            if (id == 0)
-            {
-                FUN_0019d3f0(D_00678DF8, 0x60a);
-            }
-            *(u16*)(resource +
-                    *(u32*)(resource + 0x118) * 0x18 + 0x120) =
-                (u16)id;
-            FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), 0x678e90, i);
-            overlay = query[2];
-            if (overlay != 0)
-            {
-                *(u16*)(resource +
-                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) = 2;
-            }
-            FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), 0x678e50, i);
-            mode = query[3];
-            if (mode == 0)
-            {
-                if (iGpffffb470 == 0)
-                {
-                    FUN_00524270(path, 0x678ec8);
-                    FUN_00523ac8(token, &gp0xffff9550,
-                                 *(u16*)(resource + 4));
-                    FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678ed8, id);
-                    FUN_00523e68(path, token);
-                    *(u32*)(resource +
-                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
-                        FUN_00316b40(4, (u16)id, path, 0);
-                }
-                else
-                {
-                    FUN_00524270(path, 0x678ee8);
-                    FUN_00523ac8(token, &gp0xffff9550,
-                                 *(u16*)(resource + 4));
-                    FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678ed8, id);
-                    FUN_00523e68(path, token);
-                    metadata = 0;
-                    stream = FUN_001021c0(path, &metadata);
-                    *(u32*)(resource +
-                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
-                        FUN_00316bd0(4, (u16)id, stream, metadata, 0);
-                }
-            }
-            else if (mode == 1)
-            {
-                if (iGpffffb470 == 0)
-                {
-                    FUN_00524270(path, 0x678ef8);
-                    FUN_00523ac8(token, &gp0xffff9550,
-                                 *(u16*)(resource + 4));
-                    FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678f08, id);
-                    FUN_00523e68(path, token);
-                    *(u32*)(resource +
-                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
-                        FUN_00100d80(path, 0);
-                    if (*(u32*)(resource +
-                                *(u32*)(resource + 0x118) * 0x18 +
-                                0x130) == 0)
-                    {
-                        FUN_0019d3f0(D_00678DF8, 0x650);
-                    }
-                }
-                else
-                {
-                    FUN_00524270(path, 0x678f18);
-                    FUN_00523ac8(token, &gp0xffff9550,
-                                 *(u16*)(resource + 4));
-                    FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678f08, id);
-                    FUN_00523e68(path, token);
-                    metadata = 0;
-                    *(u32*)(resource +
-                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
-                        FUN_001021c0(path, &metadata);
-                }
-            }
-            else if (mode == 2)
-            {
-                FUN_00524270(path, 0x678f30);
-                FUN_00523ac8(token, 0x678ed8, id);
-                FUN_00523e68(path, token);
-                fieldId = (id + 1000) & 0xffff;
-                *(u32*)(resource +
-                        *(u32*)(resource + 0x118) * 0x18 + 0x128) =
-                    FUN_00316b40(4, fieldId, path, 0);
-            }
-            FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), 0x678f40, i);
-            flags = query[4];
-            if (mode == 0)
-            {
-                *(u16*)(resource +
-                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) |=
-                    (u16)flags;
-            }
-            *(u32*)(resource +
-                    *(u32*)(resource + 0x118) * 0x18 + 0x124) = 0;
-            *(u32*)(resource + 0x118) += 1;
-        }
-    }
-}
-#pragma opt_dead_assignments reset
-#pragma pop
-// FUN_001b39e0 NONMATCHING
-u32 FUN_001b39e0(u32 resource)
-{
-    s32 firstIndex;
-    s32 secondIndex;
-    u8* record;
-    u32 type;
-    u32 object;
-    u32 matrix;
-
-    firstIndex = 0;
-    goto first_check;
-first_body:
-    record = (u8*)resource + firstIndex * 0x18;
-    type = *(u16*)(record + 0x11c);
-    if (type == 0)
-    {
-        object = *(u32*)(record + 0x128);
-        if (FUN_00316f70(object) == 0)
-        {
-            return 0;
-        }
-        goto first_increment;
-    }
-    if (type == 2)
-    {
-        object = *(u32*)(record + 0x128);
-        if (FUN_00316f70(object) == 0)
-        {
-            return 0;
-        }
-        goto first_increment;
-    }
-    if (type != 1)
-    {
-        goto first_increment;
-    }
-    if (iGpffffb470 != 0)
-    {
-        goto first_increment;
-    }
-    object = *(u32*)(record + 0x130);
-    if (object == 0)
-    {
-        goto first_increment;
-    }
-    if (FUN_001016b0(object) != 0)
-    {
-        goto first_increment;
-    }
-    return 0;
-first_increment:
-    firstIndex++;
-first_check:
-    if ((u32)firstIndex < *(u32*)((u8*)resource + 0x118))
-    {
-        goto first_body;
-    }
-
-    secondIndex = 0;
-    goto second_check;
-second_body:
-    record = (u8*)resource + secondIndex * 0x18;
-    type = *(u16*)(record + 0x11c);
-    if (type == 0)
-    {
-        goto stream_model;
-    }
-    if (type == 2)
-    {
-        goto stream_model;
-    }
-    if (type != 1)
-    {
-        goto second_increment;
-    }
-    if (*(u32*)(record + 0x130) == 0)
-    {
-        goto second_increment;
-    }
-    if (iGpffffb470 == 0)
-    {
-        object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
-    }
-    else
-    {
-        object = FUN_0034fcd0();
-    }
-    *(u32*)(record + 0x12c) = object;
-    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-    FUN_0034fdf0(object, matrix + 0x30);
-    if (iGpffffb470 == 0)
-    {
-        FUN_00100ec0(*(u32*)(record + 0x130));
-    }
-    *(u32*)(record + 0x130) = 0;
-    goto second_increment;
-stream_model:
-    object = *(u32*)(record + 0x128);
-    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-    FUN_00318a70(object, matrix, 0);
-    FUN_00319230(object, 3);
-    if ((*(u16*)(record + 0x11e) & 1) == 0)
-    {
-        FUN_003182d0(object, 0, 0, 8, 1);
-    }
-    else
-    {
-        FUN_003189f0(0, object, 0);
-    }
-second_increment:
-    secondIndex++;
-second_check:
-    if ((u32)secondIndex < *(u32*)((u8*)resource + 0x118))
-    {
-        goto second_body;
-    }
-    if (*(u32*)((u8*)resource + 0xa40) != 0)
-    {
-        object = *(u32*)((u8*)resource + 0xa40);
-        FUN_001a14c0(*(u32*)(object + 0x120));
-        (*(void (**)(void*))DAT_0096017c_abs)((void*)object);
-        *(u32*)((u8*)resource + 0xa40) = 0;
-    }
-    return 1;
-}
-
-// FUN_001b3c90
-void FUN_001b3c90(void* resource)
-{
-    u32 firstIndex;
-    u32 secondIndex;
-
-    if ((*(u32*)resource & 1) != 0)
-    {
-        if (*(u32*)((u8*)resource + 8) != 0 &&
-            *(u32*)((u8*)resource + 8) != *(u32*)((u8*)resource + 0x0c))
-        {
-            FUN_0049a290(*(u32*)((u8*)resource + 8));
-        }
-        if (*(u32*)((u8*)resource + 0x0c) != 0)
-        {
-            FUN_0049a290(*(u32*)((u8*)resource + 0x0c));
-        }
-        if (*(u32*)((u8*)resource + 0x10) != 0)
-        {
-            FUN_0049a290(*(u32*)((u8*)resource + 0x10));
-        }
-    }
-    else
-    {
-        FUN_001a7710(*(u32*)((u8*)resource + 0x0c));
-        if (*(u32*)((u8*)resource + 8) != 0)
-        {
-            FUN_00491ea0(*(u32*)((u8*)resource + 8));
-        }
-        if (*(u32*)((u8*)resource + 0x10) != 0)
-        {
-            FUN_00491ea0(*(u32*)((u8*)resource + 0x10));
-        }
-    }
-    for (firstIndex = 0; firstIndex < *(u32*)((u8*)resource + 0x14); firstIndex++)
-    {
-        FUN_001a7710(*(u32*)((u8*)resource + 0x98 + firstIndex * 4));
-        FUN_00491ea0(*(u32*)((u8*)resource + 0x18 + firstIndex * 4));
-    }
-    for (secondIndex = 0; secondIndex < *(u32*)((u8*)resource + 0x118); secondIndex++)
-    {
-        u8* record = (u8*)resource + secondIndex * 0x18;
-        u16 type = *(u16*)(record + 0x11c);
-        if ((type == 0) || (type == 2))
-        {
-            FUN_003174e0(*(u32*)(record + 0x128));
-        }
-        else if (type == 1)
-        {
-            FUN_0034fcf0(*(u32*)(record + 0x12c));
-        }
-    }
-    if (*(u32*)((u8*)resource + 0xa1c) != 0)
-    {
-        FUN_0048da30(*(u32*)((u8*)resource + 0xa1c));
-    }
-    if (*(u32*)((u8*)resource + 0xa3c) != 0)
-    {
-        (*(void (**)(void*))DAT_0096017c_abs)(*(void**)((u8*)resource + 0xa3c));
-    }
-    (*(void (**)(void*))DAT_0096017c_abs)(resource);
-}
-static inline void fldrc_render_begin(void)
-{
-    FUN_00198610(0x40000002, 0);
-    FUN_00198610(2, 1);
-    (*DAT_00960090)(6, 1);
-    (*DAT_00960090)(8, 1);
-    if (iGpffffb3e4 == 1)
-    {
-        (*DAT_00960090)(0x0e);
-        (*DAT_00960090)(0x0f,
-                        (u32)bGpffffb3f0 |
-                        ((u32)bGpffffb3ec << 8) |
-                        ((u32)bGpffffb3e8 << 16) |
-                        ((u32)bGpffffb3f4 << 24));
-        (*DAT_00960090)(0x10, 1);
-    }
-}
-
-// FUN_001b3e50 NONMATCHING
-void FUN_001b3e50(void* camera, u32* resource)
-{
-    f32 savedLight[4];
-    f32 savedFog[4];
-    u32 savedStates[16];
-    u32* state;
-    f32* fstate;
-    u32* stateData;
-    u32 light;
-    u32 value;
-    u32 world;
-    u32 i;
-
-    FUN_004d7f60(2, 0x44);
-    FUN_004d7f60(3, 0x717fb);
-    fstate = (f32*)FUN_00198560();
-    savedLight[0] = fstate[6];
-    savedLight[1] = fstate[7];
-    savedLight[2] = fstate[8];
-    savedLight[3] = fstate[9];
-    fstate = (f32*)FUN_00198570();
-    savedFog[0] = fstate[6];
-    savedFog[1] = fstate[7];
-    savedFog[2] = fstate[8];
-    savedFog[3] = fstate[9];
-    state = (u32*)FUN_00198570();
-    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
-    for (i = 0; i < 8; i++)
-    {
-        savedStates[i * 2] = stateData[0];
-        savedStates[i * 2 + 1] = stateData[1];
-        stateData += 2;
-    }
-    light = FUN_00198560();
-    value = FUN_0019fd40();
-    FUN_004944b0(light, value);
-    light = FUN_00198570();
-    value = FUN_0019fd70();
-    FUN_004944b0(light, value);
-    state = (u32*)FUN_00198570();
-    FUN_004cb7f0(*(u32*)((u8*)state + 4), FUN_0019fda0(), 0);
-    state = (u32*)FUN_00198570();
-    *((u8*)state + 2) = 3;
-    FUN_00198570();
-
-    if ((*resource & 1) != 0)
-    {
-        light = FUN_00198540(uGpffffb3dc);
-        FUN_0049c1b0(light, (u32)camera);
-        if ((*resource & 0x80000000) == 0)
-        {
-            if ((*resource & 0x40000000) == 0)
-            {
-                FUN_0049c160(resource[2], (u32)camera);
-            }
-            else if (resource[4] != 0)
-            {
-                FUN_0049c160(resource[4], (u32)camera);
-            }
-        }
-        else
-        {
-            FUN_0049c160(resource[3], (u32)camera);
-        }
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198560();
-        FUN_0049c480(light, value);
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198570();
-        FUN_0049c480(light, value);
-        if ((*resource & 0x80000000) == 0)
-        {
-            if ((*resource & 0x40000000) == 0)
-            {
-                value = FUN_00198560();
-                FUN_0049c3d0(resource[2], value);
-                value = FUN_00198570();
-                FUN_0049c3d0(resource[2], value);
-            }
-            else
-            {
-                value = FUN_00198560();
-                FUN_0049c3d0(resource[4], value);
-                value = FUN_00198570();
-                FUN_0049c3d0(resource[4], value);
-            }
-        }
-        else
-        {
-            value = FUN_00198560();
-            FUN_0049c3d0(resource[3], value);
-            value = FUN_00198570();
-            FUN_0049c3d0(resource[3], value);
-        }
-    }
-    else
-    {
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198580();
-        FUN_0049c3d0(light, value);
-    }
-
-    if ((*resource & 1) == 0)
-    {
-        world = FUN_004c9d10((u32)camera);
-        if (world == 0)
-        {
-            FUN_0019d3f0(D_00678DF8, 0x7a4);
-        }
-        else
-        {
-            fldrc_render_begin();
-            if ((*resource & 0x80000000) == 0)
-            {
-                if ((*resource & 0x40000000) != 0)
-                {
-                    if (resource[4] != 0)
-                    {
-                        FUN_001a88e0(resource[4]);
-                    }
-                }
-            }
-            else if (resource[3] == 0)
-            {
-                FUN_001a88e0(resource[2]);
-            }
-            else
-            {
-                FUN_001a7b50(resource[3], 1);
-            }
-        }
-    }
-    else if (resource[2] != 0)
-    {
-        world = FUN_004c9d10((u32)camera);
-        if (world == 0)
-        {
-            FUN_0019d3f0(D_00678DF8, 0x783);
-        }
-        else
-        {
-            fldrc_render_begin();
-            if ((*resource & 0x80000000) == 0)
-            {
-                if ((*resource & 0x40000000) == 0)
-                {
-                    FUN_0049a250(resource[2]);
-                }
-                else
-                {
-                    FUN_0049a250(resource[4]);
-                }
-            }
-            else
-            {
-                FUN_0049a250(resource[3]);
-            }
-        }
-    }
-    if ((*resource & 0xc0000000) == 0)
-    {
-        for (i = 0; i < resource[5]; i++)
-        {
-            if (resource[i + 0x26] == 0)
-            {
-                FUN_001a88e0(resource[i + 6]);
-            }
-            else
-            {
-                FUN_001a7b50(resource[i + 0x26], 1);
-            }
-        }
-    }
-    FUN_004c9d00((u32)camera);
-    if ((*resource & 1) == 0)
-    {
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198580();
-        FUN_0049c3d0(light, value);
-    }
-    else
-    {
-        if ((*resource & 0x80000000) == 0)
-        {
-            if ((*resource & 0x40000000) == 0)
-            {
-                value = FUN_00198560();
-                FUN_0049c480(resource[2], value);
-                value = FUN_00198570();
-                FUN_0049c480(resource[2], value);
-            }
-            else
-            {
-                value = FUN_00198560();
-                FUN_0049c480(resource[4], value);
-                value = FUN_00198570();
-                FUN_0049c480(resource[4], value);
-            }
-        }
-        else
-        {
-            value = FUN_00198560();
-            FUN_0049c480(resource[3], value);
-            value = FUN_00198570();
-            FUN_0049c480(resource[3], value);
-        }
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198560();
-        FUN_0049c3d0(light, value);
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198570();
-        FUN_0049c3d0(light, value);
-        if ((*resource & 0x80000000) == 0)
-        {
-            if ((*resource & 0x40000000) == 0)
-            {
-                FUN_0049c1b0(resource[2], (u32)camera);
-            }
-            else
-            {
-                FUN_0049c1b0(resource[4], (u32)camera);
-            }
-        }
-        else
-        {
-            FUN_0049c1b0(resource[3], (u32)camera);
-        }
-        light = FUN_00198540(uGpffffb3dc);
-        FUN_0049c160(light, (u32)camera);
-    }
-    state = (u32*)FUN_00198560();
-    FUN_004944b0(state, savedLight);
-    state = (u32*)FUN_00198570();
-    FUN_004944b0(state, savedFog);
-    state = (u32*)FUN_00198570();
-    FUN_004cb7f0(*(u32*)((u8*)state + 4), savedStates, 0);
-    state = (u32*)FUN_00198570();
-    *((u8*)state + 2) = 3;
-    FUN_00198570();
-    FUN_00198610(3, 0);
 }
