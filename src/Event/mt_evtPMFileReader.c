@@ -45,7 +45,7 @@ extern s32 FUN_003bd8b0_pm(u32 param_1, u32 param_2, u32 param_3);
 #pragma alias FUN_00395000_pm FUN_00395000
 extern void FUN_00395000_pm(u32 param_1,u32 param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
 #pragma alias FUN_00100d80_pm FUN_00100d80
-extern u32 FUN_00100d80_pm();
+extern u32 FUN_00100d80_pm(u8 *param_1,u32 param_2);
 #pragma alias FUN_001016b0_pm FUN_001016b0
 extern s32 FUN_001016b0_pm(u32 param_1);
 #pragma alias FUN_001021c0_pm FUN_001021c0
@@ -112,10 +112,10 @@ extern void FUN_00100ec0_pm(u32 param_1);
 #define FUN_003983a0(...) ((u8 (*)(...))FUN_003983a0)(__VA_ARGS__)
 
 #undef FUN_00397950
-/* Source-honest compiler floor: frame, calls, and tail are exact; only the
- * $v0/$a1 temporary coloring at offsets 0x54/0x58 remains (normalized diff 2). */
-/* W422 negatives: register one local and an inlined two-argument equality helper both stayed nd2/object1028/window1040; the addiu/beq temporary remained v0 rather than retail a1. */
-// FUN_00397950 NONMATCHING
+/* W425: the state-0 FUN_00100d80 call now supplies its mode argument. */
+/* This preserves retail's live $a1 temporary and closes FUN_00397950. */
+/* The function remains 1028 bytes within its 1040-byte retail window. */
+// FUN_00397950
 
 
 u64 FUN_00397950(void)
@@ -154,7 +154,7 @@ u64 FUN_00397950(void)
     piVar2[0xd] = 0;
     piVar2[0xe] = 0;
     piVar2[0xf] = 0;
-    iVar3 = FUN_00100d80(auStack_50);
+    iVar3 = FUN_00100d80(auStack_50,1);
     piVar2[7] = iVar3;
     *piVar2 = 1;
     goto done;

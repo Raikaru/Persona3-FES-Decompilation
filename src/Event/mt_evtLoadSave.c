@@ -77,6 +77,10 @@ u32 FUN_0038e860(u32 param_1,u32 param_2);
 void FUN_0038f0f0(u32 param_1);
 void FUN_0038f440(u8 *param_1,void *param_2,int param_3);
 void FUN_0038f8c0(int param_1,u64 param_2,int param_3,u16 param_4);
+#pragma alias FUN_00361ca0_loadsave_target FUN_00361ca0
+extern int FUN_00361ca0_loadsave_target(int param_1,int param_2);
+#pragma alias FUN_00361350_loadsave_target FUN_00361350
+extern u32 FUN_00361350_loadsave_target(int *param_1,int param_2,int param_3);
 #pragma alias FUN_00361350_direct FUN_00361350
 extern u32 FUN_00361350_direct(int param_1,u16 param_2,u64 param_3);
 #pragma alias FUN_0038f440_direct FUN_0038f440
@@ -1414,14 +1418,11 @@ void FUN_0038f0f0(u32 param_1)
 
   int iVar15;
   int copyCount;
-
   u32 uVar16;
-
   u32 uVar17;
-
   u32 uVar18;
 
-  
+  u32 objectAddress;
 
   lVar8 = FUN_003b5d00();
 
@@ -1431,11 +1432,11 @@ void FUN_0038f0f0(u32 param_1)
 
     if (lVar9 != 0) {
 
-      uVar10 = FUN_00361ca0(1,param_1);
+      objectAddress = FUN_00361ca0_loadsave_target(1,param_1);
 
-      FUN_00361d60(uVar10,0x400,lVar9);
+      FUN_00361d60(objectAddress,0x400,lVar9);
 
-      iVar5 = (int)uVar10;
+      iVar5 = (int)objectAddress;
 
       *(u32 *)(iVar5 + 8) = 0xffffffff;
 
@@ -1448,7 +1449,6 @@ void FUN_0038f0f0(u32 param_1)
       uVar10 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->x);
       uVar11 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->y);
       uVar12 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->z);
-
       FUN_005225a8(DAT_006a0bd0,uVar10,uVar11,uVar12);
 
       puVar4 = (u8 *)FUN_00318b00(*(u32 *)(iVar15 + 0x128));
@@ -1466,9 +1466,9 @@ void FUN_0038f0f0(u32 param_1)
 
     else {
 
-      uVar10 = FUN_00361ca0(1,param_1);
+      objectAddress = FUN_00361ca0_loadsave_target(1,param_1);
 
-      FUN_00361d60(uVar10,0x400,0);
+      FUN_00361d60(objectAddress,0x400,0);
 
     }
 
@@ -3210,7 +3210,7 @@ void FUN_00391080(u32 param_1,u32 param_2)
   while ((int)uVar12 < 8) {
 
 
-    uVar6 = FUN_00361ca0(0x30,param_2);
+    uVar6 = FUN_00361ca0_loadsave_target(0x30,param_2);
 
     puVar5 = (u32 *)uVar6;
 
@@ -3260,7 +3260,7 @@ void FUN_00391080(u32 param_1,u32 param_2)
 
           }
 
-          uVar7 = FUN_00361350(uVar6,uVar2,param_2);
+          uVar7 = FUN_00361350_loadsave_target((int *)uVar6,uVar2,param_2);
 
           FUN_0038f440_direct((u8 *)param_1,(void *)uVar7,iVar11);
 

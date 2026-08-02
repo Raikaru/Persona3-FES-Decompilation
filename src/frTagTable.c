@@ -596,8 +596,9 @@ u32 FUN_003aea50(u64 param_1, int param_2)
  * glyph/`$v1` count). Operand-order helpers stayed nd=8; reversing the
  * helper direction measured nd=10/240 (rate 0.041667), so both were
  * reverted. */
-// FUN_003AEC20 NONMATCHING
+static inline u8 *frTagAddOffset(u8 *base, u32 offset) { return base + offset; }
 
+// FUN_003AEC20 NONMATCHING
 
 u32 FUN_003aec20(u64 unused, int context)
 {
@@ -614,7 +615,7 @@ u32 FUN_003aec20(u64 unused, int context)
   int base;
   offset = *(int *)(context + 0x18);
   base = *(int *)(context + 0x10);
-  cursor = (u8 *)(offset + base);
+  cursor = frTagAddOffset((u8 *)base, (u32)offset);
   low = cursor[0] - 1;
 
   if (cursor[1] == 0xff) {
@@ -623,7 +624,6 @@ u32 FUN_003aec20(u64 unused, int context)
     high = cursor[1] - 1;
   }
   glyph = FUN_003082f0_tag(0, (u16)((u16)high << 8 | low));
-
   source = DAT_006a26f0;
   dest = table;
   count = 0x13;
