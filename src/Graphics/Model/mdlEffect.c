@@ -1282,7 +1282,7 @@ void FUN_00338530(int param_1);
 float * FUN_003385d0(u32 param_1);
 void FUN_00338770(int param_1);
 void FUN_003387c0(int param_1);
-void FUN_00338ac0(u64 param_1);
+void FUN_00338ac0(u32 param_1);
 u32 FUN_00338d60(u32 *param_1);
 void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
@@ -6608,6 +6608,7 @@ void FUN_00325500(u64 param_1)
   u8 auStack_20[16];
 
   u8 auStack_10[16];
+
 
   
 
@@ -18955,7 +18956,6 @@ void FUN_00332b60(int *param_1)
 
 {
 
-  int iVar1;
 
   int iVar2;
 
@@ -18969,7 +18969,7 @@ void FUN_00332b60(int *param_1)
 
   u8 scaledAlpha[16];
 
-  f32 positionStack[3];
+  f32 positionStack[4];
 
   int iStack_c;
 
@@ -19006,13 +19006,12 @@ void FUN_00332b60(int *param_1)
 
     puVar8 = *(u32 **)(param_1[0xc] + 0x18);
 
-    iVar1 = *param_1;
 
     iVar2 = param_1[10];
 
     FUN_003341c0(iVar2);
 
-    for (uVar7 = 0; (int)uVar7 < iVar1; uVar7 = uVar7 + 1) {
+    for (uVar7 = 0; (int)uVar7 < *param_1; uVar7 = uVar7 + 1) {
 
       if (!FUN_00333940(iVar2,uVar7 & 0xffff)) {
 
@@ -23743,7 +23742,6 @@ void FUN_00337fd0(int param_1)
 
   int iVar4;
 
-  u32 uVar5;
 
   u32 *puVar6;
 
@@ -23856,7 +23854,7 @@ void FUN_00337fd0(int param_1)
         : "v0", "vf2", "vf10", "vf11", "memory"
     );
 
-    for (uVar5 = 0; uVar5 < (u32)(iVar4 >> 2); uVar5 = uVar5 + 1) {
+    for (iVar3 = 0; iVar3 < (int)(iVar4 >> 2); iVar3 = iVar3 + 1) {
 
       uVar7 = FUN_0052e6d8_f32(fVar11);
 
@@ -24365,7 +24363,7 @@ void FUN_003387c0(int param_1)
 // FUN_00338AC0 NONMATCHING
 
 
-void FUN_00338ac0(u64 param_1)
+void FUN_00338ac0(u32 param_1)
 
 
 
@@ -24900,7 +24898,6 @@ u32 FUN_003393d0(u32 param_1,u32 param_2)
   
 
   param_1 = param_1 & 0xffff;
-
   iVar1 = DAT_0069c650[param_1].allocationSize;
 
   uVar6 = (*DAT_00960178_abs)(iVar1 + 0x50,0x40000);
@@ -32359,7 +32356,7 @@ void FUN_00341ba0(int param_1)
 
 
 
-  u64 uStack_18;
+  u_long128 uStack_18;
 
   u8 uStack_4;
 
@@ -34683,7 +34680,7 @@ void FUN_00344720(int param_1)
 
   char cVar7;
 
-  u8 packed1[4];
+  u32 packed1;
   u32 c1s1;
   u32 c2s1;
   u8 packed2[4];
@@ -34728,7 +34725,7 @@ void FUN_00344720(int param_1)
 
     c2s1 = (u32)(iVar8);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
+    packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -34744,7 +34741,7 @@ void FUN_00344720(int param_1)
 
         c1s2 = (u32)(iVar8);
 
-        c2s2 = (u32)(*(u32 *)packed1);
+        c2s2 = packed1;
 
         *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
@@ -35756,7 +35753,7 @@ void FUN_00345970(int param_1)
 
   char cVar7;
 
-  u8 packed1[4];
+  u32 packed1;
   u32 c1s1;
   u32 c2s1;
   u8 packed2[4];
@@ -35801,7 +35798,7 @@ void FUN_00345970(int param_1)
 
     c2s1 = (u32)(iVar8);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
+    packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -35817,7 +35814,7 @@ void FUN_00345970(int param_1)
 
         c1s2 = (u32)(iVar8);
 
-        c2s2 = (u32)(*(u32 *)packed1);
+        c2s2 = packed1;
 
         *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
@@ -41684,7 +41681,7 @@ void FUN_0034cc00(u32 *param_1)
 
   float scaleStack [3];
 
-  u32 uStack_c;
+  u32 color;
 
   int iStack_4;
 
@@ -41734,7 +41731,7 @@ void FUN_0034cc00(u32 *param_1)
       iStack_4 = param_1[9];
 
       stackPtr = (u32 *)&iStack_4;
-      uStack_c = mdlVuModulateStackedV0(stackPtr,(u32)iStack_8,DAT_007cae4c);
+      color = mdlVuModulateStackedV0(stackPtr,(u32)iStack_8,DAT_007cae4c);
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
@@ -41757,7 +41754,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(positionStack));
 
-          FUN_00326030(*puVar7,*((u32 *)&uStack_c - 1));
+          FUN_00326030(*puVar7,color);
 
           renderStack[1] = matrixStack[1];
 
@@ -41797,7 +41794,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325e40_reordered((u8 (*) [16])(*puVar7),(float)(fVar8));
 
-          FUN_00326030(*puVar7,uStack_c);
+          FUN_00326030(*puVar7,color);
 
           FUN_003252a0((u64)(*puVar7));
 

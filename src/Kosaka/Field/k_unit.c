@@ -741,7 +741,6 @@ u32 func_001ce960(void)
     s32 j;
     s32 partyCount;
     s32 orientation;
-    u16 resourceId;
     u8* field;
     u8* cell;
     u8 partyPositions[0x330];
@@ -819,9 +818,9 @@ u32 func_001ce960(void)
         {
             continue;
         }
-        resourceId = func_003b6030((u32)i, 1, gFldUnitsPc[i].mdl);
         gFldUnitsPc[i].resrc =
-            (ResrcModelChar*)func_003b5d10(resourceId);
+            (ResrcModelChar*)func_003b5d10(
+                func_003b6030((u32)i, 1, gFldUnitsPc[i].mdl));
         if (gFldUnitsPc[i].resrc == NULL)
         {
             return false;
@@ -1073,7 +1072,7 @@ u32 func_001ce960(void)
         gFldUnitsPc[i].unk_180 =
             func_001d40e0(NULL, &gFldUnitsPc[i]);
         RwMatrixUpdate(mdlGetMatrix(gFldUnitsPc[i].mdl));
-        func_001a0dc0(resourceId, 1);
+        func_001a0dc0(gFldUnitsPc[i].resrc->base.resTypeId, 1);
         func_001ad870(gFldUnitsPc[i].resrc->collisCtlTask,
                       0x40000000);
     }

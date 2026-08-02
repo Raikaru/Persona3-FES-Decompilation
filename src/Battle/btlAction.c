@@ -1710,10 +1710,8 @@ void btlActionUpdateStateCommand(BtlAction* action)
 void btlActionInitStateTarget(BtlAction* action)
 {
     int specificId = action->target.specificId;
-    union {
-        BtlAction* selected;
-        u16 i;
-    } scratch;
+    BtlAction* selected;
+    u16 i;
     BtlPacket* packet;
 
     if (action->target.commandId == 4)
@@ -1739,17 +1737,17 @@ void btlActionInitStateTarget(BtlAction* action)
     if (ACTION_U8(gBtl, 0x16fc + action->target.specificId * 0x2c) == 1 ||
         ACTION_U8(gBtl, 0x16fc + action->target.specificId * 0x2c) == 2)
     {
-        scratch.selected = NULL;
-        for (scratch.i = 0; scratch.i < action->target.targetedCount; scratch.i++)
+        selected = NULL;
+        for (i = 0; i < action->target.targetedCount; i++)
         {
-            FUN_001fe7f0(action->target.targetedActions[scratch.i]->unit->id);
+            FUN_001fe7f0(action->target.targetedActions[i]->unit->id);
         }
     }
     else
     {
         FUN_002c0ac0(action, (BtlTarget*)action->unkData3);
-        scratch.selected = FUN_002c0880((BtlTarget*)action->unkData3);
-        FUN_001fe7f0(scratch.selected->unit->id);
+        selected = FUN_002c0880((BtlTarget*)action->unkData3);
+        FUN_001fe7f0(selected->unit->id);
     }
     FUN_001fe810(specificId);
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_TARGET);
@@ -1757,10 +1755,10 @@ void btlActionInitStateTarget(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
     FUN_001fef50();
     FUN_002899e0(action);
-    if (scratch.selected != NULL)
+    if (selected != NULL)
     {
-        btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, scratch.selected->unit, BTLUNIT_LOOKAT_FLAG_ALLPLAYER), BTLPACKET_TYPE_1);
-        btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(scratch.selected->unit, 0), BTLPACKET_TYPE_1);
+        btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, selected->unit, BTLUNIT_LOOKAT_FLAG_ALLPLAYER), BTLPACKET_TYPE_1);
+        btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(selected->unit, 0), BTLPACKET_TYPE_1);
     }
 }
 /* W417 negative: target input-branch inversion measured nd666 -> 693, object 1084/1120; retained source. */

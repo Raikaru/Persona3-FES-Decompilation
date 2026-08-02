@@ -1918,10 +1918,9 @@ void FUN_0038fa10(int param_1,u32 param_2)
   int iVar16;
 
   MtEvtVec3 uStack_30;
-
   u8 auStack_20 [16];
-
   MtEvtVec3 uStack_10;
+
 
   
 
@@ -2453,11 +2452,8 @@ void FUN_003902c0(int param_1,int param_2)
   
 
   for (iVar9 = 0; iVar9 < 3; iVar9 = iVar9 + 1) {
-
     iVar6 = FUN_00361ca0(0x24,param_2);
-
     aiStack_10[iVar9] = iVar6;
-
     *(u32 *)(iVar6 + 8) = 0xffffffff;
 
     *(u32 *)(iVar6 + 0x14) = 0;
@@ -2641,6 +2637,7 @@ void FUN_003905f0(int param_1,int param_2)
   int iVar9;
 
   int iVar10;
+  MtEvtHalf4 half4;
 
   
 
@@ -2684,19 +2681,14 @@ void FUN_003905f0(int param_1,int param_2)
 
         iVar9 = *(int *)(param_1 + 0x9c) + iVar7;
 
-        uVar4 = *(u16 *)(iVar9 + 0xe);
-
-        uVar1 = *(u16 *)(iVar9 + 0x10);
-
-        uVar2 = *(u16 *)(iVar9 + 0x12);
-
-        *(u16 *)(iVar5 + 8) = *(u16 *)(iVar9 + 0xc);
-
-        *(u16 *)(iVar5 + 10) = uVar4;
-
-        *(u16 *)(iVar5 + 0xc) = uVar1;
-
-        *(u16 *)(iVar5 + 0xe) = uVar2;
+        half4.f0 = *(s16 *)(iVar9 + 0xc);
+        half4.f1 = *(s16 *)(iVar9 + 0xe);
+        half4.f2 = *(s16 *)(iVar9 + 0x10);
+        half4.f3 = *(s16 *)(iVar9 + 0x12);
+        *(s16 *)(iVar5 + 8) = half4.f0;
+        *(s16 *)(iVar5 + 10) = half4.f1;
+        *(s16 *)(iVar5 + 0xc) = half4.f2;
+        *(s16 *)(iVar5 + 0xe) = half4.f3;
 
         if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) != 4) {
 

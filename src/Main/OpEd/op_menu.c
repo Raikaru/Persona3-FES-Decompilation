@@ -184,9 +184,6 @@ void opMenu0026a2c0(void)
     f32 scale;
     f32 rect[6];
     s32 i;
-    s32 count;
-    u32 base;
-    f32* p;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = (s32*)sOpMenu;
@@ -215,18 +212,20 @@ void opMenu0026a2c0(void)
             work[0] &= ~4u;
     }
 
-    count = (work[0] & 0x20) != 0 ? 4 : 2;
-    base = count == 4 ? 0xb00 : 0x1a60;
-    for (i = 0; i < count; i++)
+    for (i = 0; i < ((work[0] & 0x20) != 0 ? 4 : 2); i++)
     {
-        u8* slot = (u8*)work + base + (u32)i * 0x310;
+        u8* slot = (u8*)work +
+                   ((work[0] & 0x20) != 0 ? 0xb00 : 0x1a60) +
+                   (u32)i * 0x310;
         if (*(s32*)slot < 8)
             *(u32*)slot = *(u32*)slot + 1;
-        if ((u32)i != (count == 4 ? work[0xaf8 / 4] : work[0x1a50 / 4]) &&
+        if ((u32)i != ((work[0] & 0x20) != 0 ?
+                       work[0xaf8 / 4] : work[0x1a50 / 4]) &&
             *(s32*)(slot + 4) < 0x10)
             *(u32*)(slot + 4) = *(u32*)(slot + 4) + 1;
     }
-    if (count == 4 && *(s32*)((u8*)work + 0x1740) < 8)
+    if ((work[0] & 0x20) != 0 &&
+        *(s32*)((u8*)work + 0x1740) < 8)
         work[0x1740 / 4] = work[0x1740 / 4] + 1;
 
     fade = *(s32*)((u8*)work + 0x91c);
@@ -296,7 +295,7 @@ void opMenu0026a2c0(void)
     opMenuColor((u8*)work + 0x920, 255.0f);
 
     alpha = opMenuClamp01(fade, 0x14, 0x28);
-    if (count == 2)
+    if ((work[0] & 0x20) == 0)
     {
         u8* slot;
         f32 shown;
@@ -423,10 +422,10 @@ void opMenu0026a2c0(void)
             fGpffff809c * func_0052e878(angle);
     scale = fGpffff83a4 +
             fGpffff809c * func_0052e878(angle);
-    for (p = rect; p != rect + 6; p += 2)
+    for (i = 0; i < 6; i += 2)
     {
-        p[0] = (p[0] - fGpffff83a4) * pulse + fGpffff83a4;
-        p[1] = (p[1] - 448.0f) * scale + 448.0f;
+        rect[i] = (rect[i] - fGpffff83a4) * pulse + fGpffff83a4;
+        rect[i + 1] = (rect[i + 1] - 448.0f) * scale + 448.0f;
     }
     ((f32*)((u8*)work + 0xa20))[0] = rect[0];
     ((f32*)((u8*)work + 0xa20))[1] = rect[1];

@@ -31,9 +31,26 @@ typedef struct {
     u32 _pad_end;
 } FclShopStack;
 typedef struct {
+    u32 camera[16];
+    u8 path[76];
+    u8 result[4];
+} FclShopLoadStack;
+typedef struct {
     s16 *entries;
     u32 count;
 } FclShopDrawGroup;
+typedef struct {
+    u8 auStack_80[4];
+    u8 _pad_7c[28];
+    u8 auStack_60[4];
+    u16 auStack_5c[4];
+    u8 uStack_54;
+    u8 _pad_6d[11];
+    u16 uStack_48;
+    u8 _pad_7a[6];
+    u8 auStack_40[32];
+    u8 auStack_20[32];
+} FclShopManagerStack;
 u32 uGpffffb998;
 extern u8 DAT_006a6a90[];
 extern char DAT_006a6af8[];
@@ -527,19 +544,7 @@ u64 FUN_003e6e80(void)
 
   short sVar3;
 
-  u8 auStack_80 [4];
-
-  u8 auStack_60 [4];
-
-  u16 auStack_5c [4];
-
-  u8 uStack_54;
-
-  u16 uStack_48;
-
-  u8 auStack_40 [32];
-
-  u8 auStack_20 [32];
+  FclShopManagerStack stack;
 
   
 
@@ -756,7 +761,7 @@ u64 FUN_003e6e80(void)
 
     switch (*piVar10) {
     case 4:
-      lVar8 = FUN_00402480(auStack_40);
+      lVar8 = FUN_00402480(stack.auStack_40);
 
       if (lVar8 != 1) {
         piVar10[1] = 0x27;
@@ -1250,19 +1255,19 @@ LAB_003e789c:
 
     piVar10[1] = 0x26;
 
-    FUN_0017c220(auStack_60);
+    FUN_0017c220(stack.auStack_60);
 
-    func_001830c0(auStack_5c);
+    func_001830c0(stack.auStack_5c);
 
     FUN_0017c190();
 
-    FUN_003f0d60(*piVar10,uStack_48);
+    FUN_003f0d60(*piVar10,stack.uStack_48);
 
-    FUN_003c7c20(0,uStack_54,0x11);
+    FUN_003c7c20(0,stack.uStack_54,0x11);
 
-    FUN_003c7c20(1,auStack_5c[0],0x11);
+    FUN_003c7c20(1,stack.auStack_5c[0],0x11);
 
-    lVar8 = FUN_00401890(auStack_5c[0]);
+    lVar8 = FUN_00401890(stack.auStack_5c[0]);
 
     if (lVar8 != 0) {
 
@@ -1276,7 +1281,7 @@ LAB_003e789c:
 
     }
 
-    FUN_00401950(auStack_5c[0]);
+    FUN_00401950(stack.auStack_5c[0]);
 
   case 0x26:
 
@@ -1777,11 +1782,11 @@ LAB_003e789c:
     }
 
     piVar10[1] = 0x42;
-    FUN_00402480(auStack_80);
-    sprintf((char *)auStack_20,(const char *)0x7cd7c8,auStack_80[2]);
-    FUN_003c7bc0(0,auStack_20);
-    sprintf((char *)auStack_20,(const char *)0x7cd7c8,auStack_80[3]);
-    FUN_003c7bc0(1,auStack_20);
+    FUN_00402480(stack.auStack_80);
+    sprintf((char *)stack.auStack_20,(const char *)0x7cd7c8,stack.auStack_80[2]);
+    FUN_003c7bc0(0,stack.auStack_20);
+    sprintf((char *)stack.auStack_20,(const char *)0x7cd7c8,stack.auStack_80[3]);
+    FUN_003c7bc0(1,stack.auStack_20);
     FUN_003c7430(0x15);
     if (*piVar10 == 4) {
       uVar6 = FUN_003c5460(DAT_007ce688);
@@ -2058,11 +2063,7 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
   u32 uVar11;
 
-  u32 auStack_90 [16];
-
-  u8 auStack_50 [76];
-
-  u8 auStack_4 [4];
+  FclShopLoadStack stack;
 
   
 
@@ -2124,19 +2125,19 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
         if (lVar7 == 0) {
 
-          sprintf((char *)auStack_50,(const char *)0x6a7010,*(u32 *)(puVar10 + 2));
+          sprintf((char *)stack.path,(const char *)0x6a7010,*(u32 *)(puVar10 + 2));
 
         }
 
         else {
 
-          sprintf((char *)auStack_50,(const char *)0x6a6ff0,*(u32 *)(puVar10 + 2));
+          sprintf((char *)stack.path,(const char *)0x6a6ff0,*(u32 *)(puVar10 + 2));
 
         }
 
         bVar2 = 1;
 
-        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
+        iVar8 = H_Cdvd_CacheFindFile(stack.path,stack.result);
 
         piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
 
@@ -2156,11 +2157,11 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
         }
 
-        sprintf((char *)auStack_50,(const char *)&gp0xffffaae8,*(u32 *)(puVar10 + 2));
+        sprintf((char *)stack.path,(const char *)&gp0xffffaae8,*(u32 *)(puVar10 + 2));
 
         bVar2 = 1;
 
-        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
+        iVar8 = H_Cdvd_CacheFindFile(stack.path,stack.result);
 
         piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
 
@@ -2191,17 +2192,17 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
         if (lVar7 == 0) {
 
-          sprintf((char *)auStack_50,(const char *)0x6a7030,*(u32 *)(puVar10 + 2));
+          sprintf((char *)stack.path,(const char *)0x6a7030,*(u32 *)(puVar10 + 2));
 
         }
 
         else {
 
-          sprintf((char *)auStack_50,(const char *)0x6a7020,*(u32 *)(puVar10 + 2));
+          sprintf((char *)stack.path,(const char *)0x6a7020,*(u32 *)(puVar10 + 2));
 
         }
 
-        iVar8 = H_Cdvd_Request(auStack_50,1);
+        iVar8 = H_Cdvd_Request(stack.path,1);
 
         piVar3[0x16] = iVar8;
 
@@ -2292,7 +2293,7 @@ LAB_003e8b7c:
 
           puVar5 = (u32 *)func_001a1150();
 
-          puVar9 = auStack_90;
+          puVar9 = stack.camera;
 
           iVar8 = 8;
 
@@ -2316,7 +2317,7 @@ LAB_003e8b7c:
 
           iVar8 = kwlnGetMainCamera();
 
-          FUN_004cb7f0(*(u32 *)(iVar8 + 4),auStack_90,0);
+          FUN_004cb7f0(*(u32 *)(iVar8 + 4),stack.camera,0);
 
           uVar6 = kwlnGetMainCamera();
 

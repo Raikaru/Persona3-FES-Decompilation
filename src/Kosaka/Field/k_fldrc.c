@@ -495,11 +495,10 @@ static inline void fldrc_apply_field_config(u32 config)
 
     if (version > 0x10002)
     {
-        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
         listA = FUN_003b5d50(1);
         listB = FUN_003b5d50(3);
         K_Field_Get_A();
-        for (i = 0; i < count; i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
             node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
             ((u32*)node)[0xa2c / 4] = ((u32*)config)[0x1f0 / 4];
@@ -694,7 +693,6 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     char path2[64];
     u32 count;
     u32 index;
-    u32 dungeon;
     u8* field;
 
     field = (u8*)K_Field_Get();
@@ -703,12 +701,12 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     *(u32*)(field + 0x1058) = 0;
 
     index = (u16)majorId;
-    dungeon = (((majorId >= 51) && (majorId < 59)) ||
-               ((majorId >= 71) && (majorId < 79)));
     if (((majorId >= 21) && (majorId < 51) && (minorId == 0)) ||
-        (dungeon != 0))
+        (((majorId >= 51) && (majorId < 59)) ||
+         ((majorId >= 71) && (majorId < 79))))
     {
-        if (dungeon != 0)
+        if (((majorId >= 51) && (majorId < 59)) ||
+            ((majorId >= 71) && (majorId < 79)))
         {
             index = (u16)(majorId - 30);
             *(u32*)((u8*)K_Field_Get() + 0x38) |= 0x80000000;
@@ -1616,6 +1614,7 @@ void* FUN_001b2860(char* path)
     {
         return NULL;
     }
+
     payload = (u32)(*alloc)(1, 0x124, 0x40000);
     *(u32*)(resource + 0xa40) = payload;
     if (payload == 0)
@@ -2732,8 +2731,7 @@ void FUN_001b4720(void* camera, u32* resource)
     }
     if ((*resource & 0xc0000000) == 0)
     {
-        count = resource[5];
-        for (i = 0; (u32)i < count; i++)
+        for (i = 0; (u32)i < resource[5]; i++)
         {
             if (resource[i + 0x26] != 0)
             {
@@ -2821,7 +2819,6 @@ void FUN_001b4720(void* camera, u32* resource)
 void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
 {
     u32 i;
-    u32 count;
     s16 type;
     u32 object;
     u32 matrix;
@@ -2864,8 +2861,7 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
             FUN_004cb270(object);
         }
     }
-    count = resource[5];
-    for (i = 0; i < count; i++)
+    for (i = 0; i < resource[5]; i++)
     {
         if (resource[i + 6] != 0)
         {
@@ -2881,8 +2877,7 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
             FUN_004cb270(object);
         }
     }
-    count = resource[0x46];
-    for (i = 0; i < count; i++)
+    for (i = 0; i < resource[0x46]; i++)
     {
         type = (s16)resource[i * 6 + 0x47];
         if ((type == 0) || (type == 2))

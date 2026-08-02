@@ -2401,6 +2401,7 @@ u32 FUN_003d8080(int param_1,int param_2,int param_3)
 s32 lVar6;
 
   int iVar7;
+  int iVar8;
 
   u32 auStack_20 [8];
 
@@ -2424,9 +2425,9 @@ s32 lVar6;
 
   }
 
-  for (iVar7 = 0; iVar7 < param_3; iVar7 = iVar7 + 1) {
+  for (iVar8 = 0; iVar8 < param_3; iVar8 = iVar8 + 1) {
 
-    if (uVar4 == auStack_20[iVar7]) {
+    if (uVar4 == auStack_20[iVar8]) {
 
       bVar3 = 1;
 
@@ -2434,7 +2435,7 @@ s32 lVar6;
 
     else {
 
-      lVar6 = FUN_00174b40(auStack_20[iVar7] & 0xffff);
+      lVar6 = FUN_00174b40(auStack_20[iVar8] & 0xffff);
 
       if (lVar6 == 0) {
 
@@ -2456,9 +2457,11 @@ s32 lVar6;
 
     uVar2 = *(u16 *)(iVar7 + 4);
 
+    uVar1 = uVar1 | uVar2;
+
     memcpy(lVar6,iVar7 + 4,0x34);
 
-    *(u16 *)lVar6 = uVar1 | uVar2;
+    *(u16 *)lVar6 = uVar1;
 
     if (bVar3) {
 

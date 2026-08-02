@@ -6718,7 +6718,7 @@ s32 func_002c5030(int param_1,int param_2,s32 param_3,int param_4)
   int iVar7;
   s32 lVar8;
   u32 uVar9;
-  u16 auStack_10 [8];
+  u16 auStack_10 [4];
   
   iVar2 = *(int *)((int)param_1 + 0x30);
   uVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c),0);
@@ -7155,7 +7155,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
   u32 uVar9 = 0;
   u32 uVar10 = 0;
   u16 *puVar11;
-  u16 auStack_10 [8];
+  u16 auStack_10 [4];
   
   if (param_3 == 0x10) {
     lVar8 = func_002c5380_noargs();

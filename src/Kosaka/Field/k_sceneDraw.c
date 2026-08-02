@@ -2116,9 +2116,7 @@ void* func_001a1550(KwlnTask* task)
         case 0:
         {
             f32 tileColor;
-            u8* tileBytes;
             s32 i;
-            KWindowRenderData* renderData;
             KWindowQuad* quad;
             u8* tile;
 
@@ -2137,31 +2135,29 @@ void* func_001a1550(KwlnTask* task)
             ((RwRGBA*)((u8*)work->colorDataB + 4))->b = work->colorB.b;
             ((RwRGBA*)((u8*)work->colorDataB + 4))->a = work->colorB.a;
 
-            renderData = (KWindowRenderData*)work->renderData;
             tileColor = *(f32*)((u8*)&gp0xffff9460 - 4);
-            tileBytes = (u8*)&tileColor;
             i = 0;
             while (i < 4)
             {
                 func_001e7aa0(work->renderData, i, work->colorDataA);
-                tile = (u8*)renderData->layout->tileColors + i * 16;
-                tile[0] = tileBytes[0];
-                tile[1] = tileBytes[1];
-                tile[2] = tileBytes[2];
-                tile[3] = tileBytes[3];
-                tile[4] = tileBytes[0];
-                tile[5] = tileBytes[1];
-                tile[6] = tileBytes[2];
-                tile[7] = tileBytes[3];
-                tile[8] = tileBytes[0];
-                tile[9] = tileBytes[1];
-                tile[10] = tileBytes[2];
-                tile[11] = tileBytes[3];
-                tile[12] = tileBytes[0];
-                tile[13] = tileBytes[1];
-                tile[14] = tileBytes[2];
-                tile[15] = tileBytes[3];
-                quad = renderData->layout->quadStore->quad + i;
+                tile = (u8*)((KWindowRenderData*)work->renderData)->layout->tileColors + i * 16;
+                tile[0] = ((u8*)&tileColor)[0];
+                tile[1] = ((u8*)&tileColor)[1];
+                tile[2] = ((u8*)&tileColor)[2];
+                tile[3] = ((u8*)&tileColor)[3];
+                tile[4] = ((u8*)&tileColor)[0];
+                tile[5] = ((u8*)&tileColor)[1];
+                tile[6] = ((u8*)&tileColor)[2];
+                tile[7] = ((u8*)&tileColor)[3];
+                tile[8] = ((u8*)&tileColor)[0];
+                tile[9] = ((u8*)&tileColor)[1];
+                tile[10] = ((u8*)&tileColor)[2];
+                tile[11] = ((u8*)&tileColor)[3];
+                tile[12] = ((u8*)&tileColor)[0];
+                tile[13] = ((u8*)&tileColor)[1];
+                tile[14] = ((u8*)&tileColor)[2];
+                tile[15] = ((u8*)&tileColor)[3];
+                quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad + i;
                 quad->vertex[0].x = 0.0f;
                 quad->vertex[0].y = 0.0f;
                 quad->vertex[1].x = 0.0f;
@@ -2175,24 +2171,24 @@ void* func_001a1550(KwlnTask* task)
             }
 
             func_001e7aa0(work->renderData, 4, work->colorDataB);
-            tile = (u8*)renderData->layout->tileColors + 0x40;
-            tile[0] = tileBytes[0];
-            tile[1] = tileBytes[1];
-            tile[2] = tileBytes[2];
-            tile[3] = tileBytes[3];
-            tile[4] = tileBytes[0];
-            tile[5] = tileBytes[1];
-            tile[6] = tileBytes[2];
-            tile[7] = tileBytes[3];
-            tile[8] = tileBytes[0];
-            tile[9] = tileBytes[1];
-            tile[10] = tileBytes[2];
-            tile[11] = tileBytes[3];
-            tile[12] = tileBytes[0];
-            tile[13] = tileBytes[1];
-            tile[14] = tileBytes[2];
-            tile[15] = tileBytes[3];
-            quad = renderData->layout->quadStore->quad + 4;
+            tile = (u8*)((KWindowRenderData*)work->renderData)->layout->tileColors + 0x40;
+            tile[0] = ((u8*)&tileColor)[0];
+            tile[1] = ((u8*)&tileColor)[1];
+            tile[2] = ((u8*)&tileColor)[2];
+            tile[3] = ((u8*)&tileColor)[3];
+            tile[4] = ((u8*)&tileColor)[0];
+            tile[5] = ((u8*)&tileColor)[1];
+            tile[6] = ((u8*)&tileColor)[2];
+            tile[7] = ((u8*)&tileColor)[3];
+            tile[8] = ((u8*)&tileColor)[0];
+            tile[9] = ((u8*)&tileColor)[1];
+            tile[10] = ((u8*)&tileColor)[2];
+            tile[11] = ((u8*)&tileColor)[3];
+            tile[12] = ((u8*)&tileColor)[0];
+            tile[13] = ((u8*)&tileColor)[1];
+            tile[14] = ((u8*)&tileColor)[2];
+            tile[15] = ((u8*)&tileColor)[3];
+            quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad + 4;
             quad->vertex[0].x = (f32)work->rect.x;
             quad->vertex[0].y = (f32)work->rect.y;
             quad->vertex[1].x = (f32)(work->rect.x + work->rect.w);
@@ -2202,7 +2198,7 @@ void* func_001a1550(KwlnTask* task)
             quad->vertex[3].x = (f32)(work->rect.x + work->rect.w);
             quad->vertex[3].y = (f32)(work->rect.y + work->rect.h);
             func_001e7b10(quad, func_001e7c20(-32));
-            func_004933d0(renderData->layout);
+            func_004933d0(((KWindowRenderData*)work->renderData)->layout);
             work->horizontalOffset = 0.0f;
             work->verticalOffset = 0.0f;
             work->horizontalInset = 0.0f;

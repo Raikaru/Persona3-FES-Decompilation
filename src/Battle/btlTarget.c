@@ -3739,7 +3739,6 @@ u32 FUN_002d4ed0(s32 param_1)
 u16 FUN_002d50c0(void)
 {
     u16 encountId = gBtl->startInfo.enmUnits->encountId;
-    u16 startFlags = (u16)gBtl->startInfo.unk_00;
     u16 value1;
     u16 value2;
     u16 chance;
@@ -3767,7 +3766,7 @@ u16 FUN_002d50c0(void)
         }
     }
 
-    if ((startFlags & 4) != 0)
+    if ((*(u16*)(iGpffffb6fc + 0xba8) & 4) != 0)
     {
         return 0;
     }
@@ -3786,13 +3785,13 @@ u16 FUN_002d50c0(void)
     value1 = (u16)FUN_002d4cf0(1, 0);
     value2 = (u16)FUN_002d4cf0(2, 0);
 
-    if ((startFlags & 1) == 0)
+    if ((*(u16*)(iGpffffb6fc + 0xba8) & 1) == 0)
     {
-        if ((startFlags & 2) == 0)
+        if ((*(u16*)(iGpffffb6fc + 0xba8) & 2) == 0)
         {
             return 1;
         }
-        if (datGetFlag(0x1319) == 0 || (startFlags & 8) != 0)
+        if (datGetFlag(0x1319) == 0 || ((*(u16*)(iGpffffb6fc + 0xba8) & 8) != 0))
         {
             return 0;
         }
@@ -7232,7 +7231,6 @@ u64 FUN_002da930(u64 param_1, u64 command, u64 param_3, u64 param_4)
 // FUN_002daa20 NONMATCHING
 s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 param_5)
 {
-    u32 effectId;
     u32* effectFlags;
     u8* resourceTable;
     u8* resultTable;
@@ -7240,7 +7238,6 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     BtlTargetEffectFn effect;
     s32 result;
 
-    effectId = param_2;
 
     if ((*(u32*)(iGpffffb6fc + 0xc) & 0x01000000) == 0)
     {
@@ -7261,20 +7258,20 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
 
     effectFlags = (u32*)(iGpffffb7b8 +
         (u32)*(u16*)(*(u8**)(iGpffffb6fc + 0xbbc) + 8) * 0x1c);
-    if (effectId != 0x1f && (*effectFlags & 0x400) != 0)
+    if (param_2 != 0x1f && (*effectFlags & 0x400) != 0)
     {
         return 1;
     }
     if ((*(u16*)(iGpffffb6fc + 0xa16) & 1) != 0)
     {
-        if ((s32)*(s16*)(iGpffffb6fc + 0xa24) == (s32)effectId ||
-            (s32)*(s16*)(iGpffffb6fc + 0xa2c) == (s32)effectId)
+        if ((s32)*(s16*)(iGpffffb6fc + 0xa24) == (s32)param_2 ||
+            (s32)*(s16*)(iGpffffb6fc + 0xa2c) == (s32)param_2)
         {
             return 1;
         }
     }
 
-    effect = D_006978F0[effectId];
+    effect = D_006978F0[param_2];
     if (effect == NULL)
     {
         return 1;

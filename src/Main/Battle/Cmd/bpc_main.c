@@ -1433,7 +1433,7 @@ void FUN_00245ea0(void)
   float fVar24;
   float fVar25;
   float fVar26;
-  RwV2d afStack_30[4];
+  RwV2d afStack_30[6];
   u8 auStack_4[4];
   
   
