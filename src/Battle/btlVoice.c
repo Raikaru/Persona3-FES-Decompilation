@@ -800,11 +800,11 @@ void func_002e42e0(u32 param_1);
 void func_002e4310(void);
 u32 func_002e4330(u32 param_1);
 s32 func_002e43a0(void);
-u32 func_002e4430(BtlAction* action, s32 skillId);
+u32 func_002e4430(BtlAction* action, s32 skillId, u32 param_3);
 u32 func_002e4520(int param_1,u32 param_2,u32 param_3);
 u32 func_002e4720(u16 param_1);
 u32 func_002e47a0(BtlAction* action, s32 skillId);
-u32 func_002e4910(BtlAction* action, s32 skillId);
+u32 func_002e4910(BtlAction* action, s32 skillId, u32 param_3);
 void func_002e4a30(void);
 void func_002e4a40(u64 param_1);
 extern void func_002e4a40_camera(BtlCamera* camera);
@@ -1924,7 +1924,7 @@ s32 func_002e43a0(void)
 }
 
 // FUN_002e4430
-u32 func_002e4430(BtlAction* action, s32 skillId)
+u32 func_002e4430(BtlAction* action, s32 skillId, u32 param_3)
 {
     u8* entry;
     s32 offset;
@@ -2079,7 +2079,7 @@ u32 func_002e47a0(BtlAction* action, s32 skillId)
 }
 
 // FUN_002e4910
-u32 func_002e4910(BtlAction* action, s32 skillId)
+u32 func_002e4910(BtlAction* action, s32 skillId, u32 param_3)
 {
     u8* entry;
     u32 flags;

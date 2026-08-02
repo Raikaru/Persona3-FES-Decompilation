@@ -1396,7 +1396,7 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x58] != 0) {
 
-          FUN_001b3c90();
+          FUN_001b3c90(puVar4[0x58]);
 
           puVar4[0x58] = 0;
 

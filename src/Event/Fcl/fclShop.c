@@ -2066,7 +2066,7 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
   
 
-  piVar3 = (int *)FUN_003c5460();
+  piVar3 = (int *)FUN_003c5460(param_1);
 
   iVar4 = FUN_003c5470(param_2);
 
@@ -3028,7 +3028,7 @@ u8 * FUN_003e9af0(u32 param_1,u32 param_2)
 
   
 
-  piVar5 = (int *)FUN_003c5460();
+  piVar5 = (int *)FUN_003c5460(param_1);
 
   lVar11 = 0;
 
@@ -4092,7 +4092,7 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
 
   
 
-  iVar4 = FUN_003c5460();
+  iVar4 = FUN_003c5460(param_1);
 
   iVar5 = FUN_003c5470(param_2);
 
@@ -4110,7 +4110,7 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
   }
   {
 
-    if ((*(int *)(iVar5 + 0x10) != 0) && (lVar8 = FUN_003fe950(), lVar8 != 0)) {
+    if ((*(int *)(iVar5 + 0x10) != 0) && (lVar8 = FUN_003fe950(*(u32 *)(iVar5 + 0x10)), lVar8 != 0)) {
 
       FUN_003c5a20(*(u32 *)(iVar5 + 0x10));
 
@@ -5912,7 +5912,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   
 
-  FUN_003c5460();
+  FUN_003c5460(param_1);
 
   work = (u8*)FUN_003c5470(param_2);
 
@@ -6116,7 +6116,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
                 *(u32 *)(iVar2 + 0x18) = 1;
 
-                FUN_003c9e70(*(u32 *)(iVar2 + 8));
+                FUN_003c9e70(*(u32 *)(iVar2 + 8),1);
 
               }
 

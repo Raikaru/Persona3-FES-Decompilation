@@ -1078,7 +1078,7 @@ mt_evtPolygonMovie2_case_done:
 
         if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 2) != 0) {
 
-          FUN_0039edd0(param_1);
+          FUN_0039edd0(param_1,*(u32 *)(iVar6 + 0x4c));
 
           if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 8) != 0) {
 
@@ -1090,7 +1090,7 @@ mt_evtPolygonMovie2_case_done:
 
         else {
 
-          FUN_0039ec70(param_1);
+          FUN_0039ec70(param_1,*(u32 *)(iVar6 + 0x4c));
 
           if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 8) != 0) {
 

@@ -1897,7 +1897,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
   
 
-  iVar3 = FUN_003c5460();
+  iVar3 = FUN_003c5460(param_1);
 
   iVar4 = FUN_003c5470(param_2);
 
@@ -2858,7 +2858,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
   
 
-  puVar3 = (u32 *)FUN_003c5460();
+  puVar3 = (u32 *)FUN_003c5460(param_1);
 
   uVar8 = FUN_003c5470(param_2);
 
@@ -2918,7 +2918,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     if (puVar4[0xfd] != 0) {
 
-      kwlnTaskDestroyWithHierarchy();
+      kwlnTaskDestroyWithHierarchy((void *)puVar4[0xfd]);
 
       puVar4[0xfd] = 0;
 
@@ -3794,13 +3794,13 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   
 
-  uVar3 = FUN_003c5460();
+  uVar3 = FUN_003c5460(param_1);
 
   work = (u32 *)FUN_003c5470(param_2);
 
   iVar1 = *(int *)(work[2] + 0xc);
 
-  lVar4 = FUN_0040ca00();
+  lVar4 = FUN_0040ca00(work[2]);
 
   if (lVar4 == 3) {
 

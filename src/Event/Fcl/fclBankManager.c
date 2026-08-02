@@ -80,7 +80,7 @@ extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
 void FUN_003d06d0(s32 param_1,s32 param_2,s32 param_3);
 void FUN_003d1df0(s32 param_1,int param_2);
-u32 FUN_003d2200(void);
+u32 FUN_003d2200(s32 param_1);
 void FUN_003d25c0(u32 param_1);
 u8 * FUN_003d2740(s32 param_1,u32 param_2);
 u32 FUN_003d2c10(s32 param_1);
@@ -3547,7 +3547,7 @@ s32 fclCombine003d21d0(void)
 // FUN_003D2200 NONMATCHING
 
 
-u32 FUN_003d2200(void)
+u32 FUN_003d2200(s32 param_1)
 
 
 
@@ -3569,7 +3569,7 @@ int iVar5;
 
   
 
-  puVar1 = (u32 *)FUN_003c5460();
+  puVar1 = (u32 *)FUN_003c5460(param_1);
 
   if ((*puVar1 & 1) == 0) {
 

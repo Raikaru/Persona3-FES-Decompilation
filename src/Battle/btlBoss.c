@@ -293,9 +293,9 @@ const BtlCameraStateEntry gBtlBossCameraStateEntries[3][BTLCAMERA_STATE_MAX] =
     },
 };
 extern void func_00288f80(BtlUnit* unit, s32 value);
-extern void func_002f4490(void);
-extern void func_002f5330(void);
-extern void func_002f5980(void);
+extern void func_002f4490(BtlAction* action);
+extern void func_002f5330(int param_1);
+extern void func_002f5980(BtlAction* action);
 extern void func_002e4220(u32 begin, u32 end, void* action);
 extern s32 func_002e4250(void);
 extern void func_002d3fe0(BtlUnit* unit);
@@ -1701,7 +1701,7 @@ u32 func_002f9c10(BtlAction* action)
             func_002f3670(action);
             return 1;
         case 0x1ae:
-            func_002f4490();
+            func_002f4490(action);
             return 1;
         case 0x1af:
             func_002f4890(action);
@@ -1712,10 +1712,10 @@ u32 func_002f9c10(BtlAction* action)
         case 0x1b1:
         case 0x1b2:
         case 0x1b3:
-            func_002f5330();
+            func_002f5330((int)action);
             return 0;
         case 0x1b4:
-            func_002f5980();
+            func_002f5980(action);
             return 0;
         default:
             return 0;

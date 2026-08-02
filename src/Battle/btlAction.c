@@ -99,7 +99,7 @@ u64 func_002b9640(u8* data);
 BtlPacket* func_002a1db0(u32 a);
 extern RwV3d D_006978A0;
 
-extern u32 func_002e4430(BtlAction* action, s32 skillId);
+extern u32 func_002e4430(BtlAction* action, s32 skillId, u32 param_3);
 f32 FUN_002d1ed0(const RwV3d* a, const RwV3d* b);
 extern const char D_00693318[];
 #pragma alias D_00693318_abs D_00693318
@@ -1685,11 +1685,11 @@ void btlActionUpdateStateCommand(BtlAction* action)
         effect = 0;
         if (action->target.commandId == 3)
         {
-            effect = func_002e4430(action, action->target.specificId);
+            effect = func_002e4430(action, action->target.specificId, 0);
         }
         else if (action->target.commandId == 1 || action->target.commandId == 2)
         {
-            effect = func_002e4430(action, action->target.specificId);
+            effect = func_002e4430(action, action->target.specificId, 1);
         }
         effect = FUN_002e4720(effect);
         if (effect == 0)
