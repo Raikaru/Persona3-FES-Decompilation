@@ -1,4 +1,5 @@
 #include "Kernel/Kwln/kwlnTask.h"
+#include "sce/eetypes.h"
 typedef struct FclShopDispatchResult {
   u32 value;
   u32 value_aux;
@@ -13498,7 +13499,7 @@ u32 FUN_00401a00(u16 param_1,u16 *param_2,short *param_3)
 
   u16 auStack_20 [15];
 
-  unsigned __int128 snapshot;
+  u_long128 snapshot;
 
   short sStack_2;
   short *out;
@@ -13560,7 +13561,7 @@ LAB_00401aa4:
 
     key2 = param_1;
 
-    snapshot = *(unsigned __int128 *)DAT_006af180_abs;
+    snapshot = *(u_long128 *)DAT_006af180_abs;
 
     srcB = (u16 *)&snapshot;
 
@@ -13903,7 +13904,7 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
   u16 auStack_20 [14];
 
-  unsigned __int128 snapshot;
+  u_long128 snapshot;
 
   int iStack_4;
 
@@ -13971,7 +13972,7 @@ LAB_00401ea8:
 
     key2 = rawKey & 0xffff;
 
-    snapshot = *(unsigned __int128 *)DAT_006af180_abs;
+    snapshot = *(u_long128 *)DAT_006af180_abs;
 
     srcB = (u16 *)&snapshot;
 

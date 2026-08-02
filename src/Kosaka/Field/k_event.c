@@ -355,6 +355,7 @@ extern void (*DAT_0096017c[])(void*);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern u32 DAT_0096017c_abs[];
 extern u8 D_0086B180[];
+extern u8 D_008717A0[];
 extern RwV3d D_008717D0;
 extern u8 DAT_0086be80[0x2700];
 #pragma alias DAT_0086eda0_units DAT_0086eda0
@@ -367,6 +368,7 @@ extern u32 gFldScrMemory;
 extern u32 gFldScrSize;
 extern u32 DAT_007ce294;
 extern u32 D_007CE284;
+extern u32 D_007CE23C;
 extern u32 D_007CE274;
 #pragma alias D_008717E8_abs D_008717E8
 extern u8 D_008717E8_abs[];
@@ -1784,7 +1786,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FUN_00453460() >= 0)
             {
                 currentActor = FUN_00453460();
-                EVENT_WORD(9) = 0x0086eda0 + currentActor * 0x1c0;
+                EVENT_WORD(9) = (u32)DAT_0086eda0_units + currentActor * 0x1c0;
                 if (FUN_002ff790(PTR_U32(EVENT_WORD(9), 0x48)) != true)
                 {
                     FUN_001c7830(&EVENT_WORD(10), EVENT_WORD(9));
@@ -2073,7 +2075,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                             currentActor = PTR_S32((void*)PTR_U32((void*)npc, 0x1fc), 0x70);
                             if (currentActor != -1)
                             {
-                                EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce23c), DATA_U32(0x007ce238), currentActor);
+                                EVENT_WORD(0x18) = FUN_0035bc00(10, D_007CE23C, DATA_U32(0x007ce238), currentActor);
 
                                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
@@ -2102,7 +2104,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 /* Retail offset 0x1640 re-fetches the field hit table for every access. */
 #define HIT_DATA_PTR(offset) ((u8*)FIELD_WORD(0x1148) + ((hit & 0x3ff) * 0x2c) + (offset))
                 active = true;
-                if (FIELD_WORD(0x1144) <= (u32)(hit & 0x3ff)) FUN_0019d3f0(0x00683730, 0x756);
+                if (FIELD_WORD(0x1144) <= (u32)(hit & 0x3ff)) FUN_0019d3f0(D_00683730, 0x756);
                 for (i = 0; i < 3; i++)
                 {
                     currentActor = PTR_S32(HIT_DATA_PTR(0), i * 4);
@@ -2481,7 +2483,7 @@ case8_teardown:
             }
             else if (currentArea >= 0)
             {
-                EVENT_WORD(9) = 0x0086eda0 + FUN_00453460() * 0x1c0;
+                EVENT_WORD(9) = (u32)DAT_0086eda0_units + FUN_00453460() * 0x1c0;
                 if (FUN_002ff790(PTR_U32(EVENT_WORD(9), 0x48)) != true)
                 {
                     FUN_001c7830(&EVENT_WORD(10), EVENT_WORD(9));
@@ -2633,7 +2635,7 @@ case8_teardown:
                     {
                         for (i = 1; i < 4; i++)
                         {
-                            if (((u32*)0x008717e8)[i * 0x70] != 0 && FUN_002ff790(((u32*)0x008717e8)[i * 0x70]) == true && FUN_0016f190(0xc21) == true)
+                            if (*(u32*)(D_008717A0 + i * 0x1c0 + 0x48) != 0 && FUN_002ff790(*(u32*)(D_008717A0 + i * 0x1c0 + 0x48)) == true && FUN_0016f190(0xc21) == true)
                             {
                                 FUN_0016cf40(*(u16*)((u8*)0x00871948 + i * 0x1c0));
                                 FUN_0016d9d0(*(u16*)((u8*)0x00871948 + i * 0x1c0), 0x80000);

@@ -287,13 +287,16 @@ static void* hmallocCreateTaskD(void)
     return task;
 }
 
-// FUN_00192B50 NONMATCHING
+// FUN_00192B50
 static s32 hmallocTaskUpdateE(void* task)
 {
     u32* work;
     u32 state;
     f32 value0;
     f32 value1;
+    const f32* image;
+    u32* selected;
+    u64 packed;
     union
     {
         f32 f;
@@ -310,8 +313,8 @@ static s32 hmallocTaskUpdateE(void* task)
             work[0] = 1;
             break;
         case 1:
-            value0 = HMALLOC_GLOBAL_FLOAT_VALUES[0];
-            value1 = HMALLOC_GLOBAL_FLOAT_VALUES[1];
+            __asm__ volatile ("lwc1 %0, -0x6c18($gp)" : "=f"(value0) : : "memory");
+            __asm__ volatile ("lwc1 %0, -0x6c14($gp)" : "=f"(value1) : : "memory");
             values[0].f = value0;
             values[1].f = value1;
             if ((D_007E094E & 0x40) != 0)
@@ -330,7 +333,11 @@ static s32 hmallocTaskUpdateE(void* task)
                                 NULL, 0x106f, D_005E4D10,
                                 (KwlnTaskUpdateFunc)hmallocTaskUpdateC,
                                 (KwlnTaskDestroyFunc)hmallocTaskDestroyC, workMemory);
-                            if (created != NULL)
+                            if (created == NULL)
+                            {
+                                created = NULL;
+                            }
+                            else
                             {
                                 func_0017d7f0(0);
                             }
@@ -349,7 +356,11 @@ static s32 hmallocTaskUpdateE(void* task)
                                 NULL, 0x106f, D_005E4D30,
                                 (KwlnTaskUpdateFunc)hmallocTaskUpdateD,
                                 (KwlnTaskDestroyFunc)hmallocTaskDestroyD, workMemory);
-                            if (created != NULL)
+                            if (created == NULL)
+                            {
+                                created = NULL;
+                            }
+                            else
                             {
                                 func_0017d7f0(1);
                             }
@@ -375,13 +386,20 @@ static s32 hmallocTaskUpdateE(void* task)
             }
             values[2].u = 0x40800000;
             values[3].u = 0x40800000;
-            func_00104d10(*(u64*)&values[2], HMALLOC_GLOBAL_IMAGE_VALUES,
-                          values[work[1]].u);
+            selected = (u32*)(uintptr_t)work[1];
+            __asm__ volatile ("sll %0, %0, 2\n\taddu %0, %0, $sp"
+                              : "+r"(selected) : : "memory");
+            packed = *(u64*)&values[2];
+            __asm__ volatile ("addiu %0, $gp, -0x6c10"
+                              : "=r"(image) : "r"(packed), "r"(selected) : "memory");
+            func_00104d10(packed, image, selected[12]);
             break;
         case 2:
-            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) != 3)
-                break;
-            return -1;
+            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+            {
+                return -1;
+            }
+            break;
     }
     return 0;
 }

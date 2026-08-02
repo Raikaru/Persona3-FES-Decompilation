@@ -2446,7 +2446,7 @@ s32 lVar6;
   }
   else {
     uVar1 = *(u16 *)result;
-    uVar1 = uVar1 | *(u16 *)(iVar7 + 4);
+    uVar1 = uVar1 | *(u16 *)((u8 *)param_1 + 4);
     memcpy(result,iVar7 + 4,0x34);
     *(u16 *)result = uVar1;
     if (bVar3) {

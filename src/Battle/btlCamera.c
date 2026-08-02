@@ -4294,37 +4294,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     basePos.x = mid.x + axis.x * fVar13;
     basePos.y = mid.y + axis.y * fVar13;
     basePos.z = mid.z + axis.z * fVar13;
-    if (lVar7 == 0) {
-      if (0.0f <= fVar14) {
-        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, -27.5f, 0);
-      }
-      else {
-        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, 27.5f, 0);
-      }
-      FUN_004c6c60(&delta,&axis,auStack_110);
-      fVar13 = fVar13 * fGpffff807c;
-      fVar15 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
-      fVar15 = fVar13 * fVar15 * 0.21875f * 0.5f;
-      fStack_98 = delta.x;
-      fStack_94 = delta.z;
-      FUN_004c6b20_b6070(&fStack_98,&fStack_98);
-      mid.x = fStack_94 * fVar15 + mid.x;
-      mid.z = mid.z - fStack_98 * fVar15;
-      outputPos.x = mid.x + delta.x * fVar13;
-      outputPos.z = mid.z + delta.z * fVar13;
-      outputPos.y = fGpffff80a4 * fStack_4;
-      delta.x = centerA.x - target[0];
-      delta.y = centerA.y - target[1];
-      delta.z = centerA.z - target[2];
-      fVar15 = (float)FUN_004c69f0_b6070(&delta,&delta);
-      fVar15 = fVar15 * 0.25f;
-      mid.x = delta.x * fVar15 + target[0];
-      mid.y = delta.y * fVar15 + target[1];
-      mid.z = delta.z * fVar15 + target[2];
-      FUN_002a4690_b6070((void*)auStack_110, &outputPos, &mid, (const void*)&D_00697880);
-      fVar16 = 3.75f;
-    }
-    else {
+    if (lVar7 != 0) {
       sVar1 = *(u16 *)(*(int *)(iVar9 + 0xe0) + 0x6e);
       switch (sVar1) {
       case 0x26:
@@ -4368,6 +4338,37 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       outputPos.z = basePos.z;
       FUN_002a4690_b6070((void*)auStack_110, &outputPos,
                           &mid,(const void*)&D_00697880);
+    }
+    else {
+      if (0.0f <= fVar14) {
+        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, -27.5f, 0);
+      }
+      else {
+        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, 27.5f, 0);
+      }
+      FUN_004c6c60(&delta,&axis,auStack_110);
+      fVar13 = fVar13 * fGpffff807c;
+      fVar15 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
+      fVar15 = fVar13 * fVar15 * 0.21875f * 0.5f;
+      fStack_98 = delta.x;
+      fStack_94 = delta.z;
+      FUN_004c6b20_b6070(&fStack_98,&fStack_98);
+      mid.x = fStack_94 * fVar15 + mid.x;
+      mid.z = mid.z - fStack_98 * fVar15;
+      outputPos.x = mid.x + delta.x * fVar13;
+      outputPos.z = mid.z + delta.z * fVar13;
+      outputPos.y = fGpffff80a4 * fStack_4;
+      delta.x = centerA.x - target[0];
+      delta.y = centerA.y - target[1];
+      delta.z = centerA.z - target[2];
+      fVar15 = (float)FUN_004c69f0_b6070(&delta,&delta);
+      fVar15 = fVar15 * 0.25f;
+      mid.x = delta.x * fVar15 + target[0];
+      mid.y = delta.y * fVar15 + target[1];
+      mid.z = delta.z * fVar15 + target[2];
+      FUN_002a4690_b6070((void*)auStack_110, &outputPos, &mid,
+                          (const void*)&D_00697880);
+      fVar16 = 3.75f;
     }
   }
   if ((param_3 == 0) && (lVar7 == 0)) {
@@ -6980,69 +6981,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
   fStack_a0 = fStack_50;
   fStack_9c = fStack_48;
   fVar12 = fStack_50 * fStack_98 + fStack_48 * fStack_94;
-  if (((fVar12 < 0.0f) && (param_4 != 1)) || (param_3 != 0)) {
-    fVar10 = fVar10 * 0.5f;
-    fStack_40 = fStack_50 * fVar10 + fStack_20;
-    fStack_3c = fStack_4c * fVar10 + fStack_1c;
-    fStack_38 = fStack_48 * fVar10 + fStack_18;
-    uStack_30.f._0_4_ = fStack_20;
-    uStack_30.f._4_4_ = fStack_1c;
-    fStack_28 = fStack_18;
-    fVar7 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.25f;
-    fStack_a0 = fStack_48;
-    fStack_9c = -fStack_50;
-    fVar9 = fStack_48 * fStack_98 + fStack_9c * fStack_94;
-    fStack_5c = fStack_1c;
-    if (fStack_1c < fStack_c) {
-      fStack_5c = fStack_c;
-    }
-    if (0.0f <= fVar9) {
-      fStack_60 = fStack_48 * fVar7 + fStack_20;
-      fStack_58 = (fStack_18) - fStack_50 * fVar7;
-      uStack_70.f._0_4_ = fStack_50;
-      uStack_70.f._4_4_ = fStack_4c;
-      fStack_68 = fStack_48;
-    }
-    else {
-      fStack_60 = (fStack_20) - fStack_48 * fVar7;
-      fStack_58 = fStack_50 * fVar7 + fStack_18;
-    }
-    fVar10 = fStack_18;
-    FUN_002a4690((RtQuat*)&uStack_b8,(const RwV3d*)&fStack_60,
-                 (const RwV3d*)&fStack_40,(const RwV3d*)&D_00697880);
-    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
-                 (const RtQuat*)&uStack_b8);
-    fStack_90 = fStack_40;
-    fStack_8c = fStack_38;
-    fStack_88 = fStack_60;
-    fStack_84 = fStack_58;
-    uStack_78 = uStack_30.f._0_4_;
-    fStack_74 = fVar10;
-    fVar16 = (float)FUN_002d1fd0((f32*)&fStack_90,(f32*)&fStack_88,(f32*)&uStack_78,(f32*)&fStack_80);
-    fVar7 = DAT_007cad60;
-    fVar14 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.5f + fVar16;
-    fStack_60 = fStack_80;
-    fStack_5c = fStack_1c;
-    fStack_58 = fStack_7c;
-    fVar15 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar4 + 0xb8) * 0.5f);
-    fVar16 = 550.0f;
-    if (550.0f <= fVar14 / fVar15) {
-      fVar16 = fVar14 / fVar15;
-    }
-    fStack_50 = fStack_50 * fVar16;
-    fStack_4c = fStack_4c * fVar16;
-    fStack_48 = fStack_48 * fVar16;
-    if (0.0f <= fVar9) {
-      fVar16 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5f;
-      fStack_60 = (fStack_60) - fStack_68 * fVar16;
-      fStack_58 = uStack_70.f._0_4_ * fVar16 + fStack_58;
-    }
-    fStack_c4 = fStack_60 + fStack_50;
-    fStack_c0 = fStack_5c + fStack_4c;
-    fStack_bc = fStack_58 + fStack_48;
-    iVar5 = iVar1;
-  }
-  else {
+  if (!(((fVar12 < 0.0f) && (param_4 != 1)) || (param_3 != 0))) {
     uStack_30.f._0_4_ = fStack_10;
     uStack_30.f._4_4_ = fStack_c;
     fStack_28 = fStack_8;
@@ -7083,7 +7022,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     }
     fVar10 = fStack_28;
     FUN_002a4690((RtQuat*)&uStack_b8,(const RwV3d*)&fStack_60,
-                 (const RwV3d*)&fStack_40,(const RwV3d*)&D_00697880);
+                 (const RwV3d*)&fStack_40,(const void*)&D_00697880);
     FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
                  (const RtQuat*)&uStack_b8);
     fStack_90 = fStack_40;
@@ -7113,6 +7052,68 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     fStack_bc = fStack_58 + fStack_48;
     iVar5 = iVar6;
     iVar6 = iVar1;
+  }
+  else {
+    fVar10 = fVar10 * 0.5f;
+    fStack_40 = fStack_50 * fVar10 + fStack_20;
+    fStack_3c = fStack_4c * fVar10 + fStack_1c;
+    fStack_38 = fStack_48 * fVar10 + fStack_18;
+    uStack_30.f._0_4_ = fStack_20;
+    uStack_30.f._4_4_ = fStack_1c;
+    fStack_28 = fStack_18;
+    fVar7 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.25f;
+    fStack_a0 = fStack_48;
+    fStack_9c = -fStack_50;
+    fVar9 = fStack_48 * fStack_98 + fStack_9c * fStack_94;
+    fStack_5c = fStack_1c;
+    if (fStack_1c < fStack_c) {
+      fStack_5c = fStack_c;
+    }
+    if (0.0f <= fVar9) {
+      fStack_60 = fStack_48 * fVar7 + fStack_20;
+      fStack_58 = (fStack_18) - fStack_50 * fVar7;
+      uStack_70.f._0_4_ = fStack_50;
+      uStack_70.f._4_4_ = fStack_4c;
+      fStack_68 = fStack_48;
+    }
+    else {
+      fStack_60 = (fStack_20) - fStack_48 * fVar7;
+      fStack_58 = fStack_50 * fVar7 + fStack_18;
+    }
+    fVar10 = fStack_18;
+    FUN_002a4690((RtQuat*)&uStack_b8,(const RwV3d*)&fStack_60,
+                 (const RwV3d*)&fStack_40,(const void*)&D_00697880);
+    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
+                 (const RtQuat*)&uStack_b8);
+    fStack_90 = fStack_40;
+    fStack_8c = fStack_38;
+    fStack_88 = fStack_60;
+    fStack_84 = fStack_58;
+    uStack_78 = uStack_30.f._0_4_;
+    fStack_74 = fVar10;
+    fVar16 = (float)FUN_002d1fd0((f32*)&fStack_90,(f32*)&fStack_88,(f32*)&uStack_78,(f32*)&fStack_80);
+    fVar7 = DAT_007cad60;
+    fVar14 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.5f + fVar16;
+    fStack_60 = fStack_80;
+    fStack_5c = fStack_1c;
+    fStack_58 = fStack_7c;
+    fVar15 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar4 + 0xb8) * 0.5f);
+    fVar16 = 550.0f;
+    if (550.0f <= fVar14 / fVar15) {
+      fVar16 = fVar14 / fVar15;
+    }
+    fStack_50 = fStack_50 * fVar16;
+    fStack_4c = fStack_4c * fVar16;
+    fStack_48 = fStack_48 * fVar16;
+    if (0.0f <= fVar9) {
+      fVar16 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5f;
+      fStack_60 = (fStack_60) - fStack_68 * fVar16;
+      fStack_58 = uStack_70.f._0_4_ * fVar16 + fStack_58;
+    }
+    fStack_c4 = fStack_60 + fStack_50;
+    fStack_c0 = fStack_5c + fStack_4c;
+    fStack_bc = fStack_58 + fStack_48;
+    iVar5 = iVar1;
   }
   fVar16 = (float)FUN_002d1f30((RtQuat*)&uStack_d4,(RtQuat*)&uStack_b8);
   if ((param_1 <= 0.0f) || (param_1 = DAT_007cadf4 * param_1, param_1 < fVar16)) {

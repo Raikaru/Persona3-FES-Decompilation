@@ -7524,12 +7524,18 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 {
   u32 flags;
   u32 lengthBits;
-  u8 transformed[16];
   u32 scale[4];
+  u8 transformed[16];
 
   flags = *(u32 *)(param_1 + 0x68);
   if ((flags & 0x18) == 0) {
-    *(__int128 *)*param_3 = *(__int128 *)(param_1 + 0x40);
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lq $v0, 64(%0)                  \n"
+        "sq $v0, 0(%1)                   \n"
+        ".set reorder"
+        : : "r" (param_1), "r" ((u8 *)*param_3) : "v0", "memory"
+    );
   }
   else {
     __asm__ volatile (
@@ -16357,6 +16363,7 @@ void FUN_00330190(u64 param_1)
 
   float fVar28;
 
+
   u32 in_vc6;
 
   __int128 in_vf0;
@@ -16715,7 +16722,6 @@ void FUN_00330190(u64 param_1)
             auVar29 = _sqc2(auVar29);
 
             *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
-
             fVar27 = (float)puVar4[0x1b];
 
             fVar20 = (float)FUN_00358030(0);
@@ -16945,6 +16951,7 @@ void FUN_00330190(u64 param_1)
             *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
 
           }
+
 
           FUN_0032a770(pauVar17,(int)(puVar4),iVar9,(u8 (*)[16])(&uStack_20));
 
@@ -41656,11 +41663,9 @@ void FUN_0034cc00(u32 *param_1)
 
   u32 uVar3;
 
-  __int128 in_zero_qw;
 
   long lVar4;
 
-  __int128 auVar5;
 
   u32 uVar6;
 
@@ -41668,11 +41673,7 @@ void FUN_0034cc00(u32 *param_1)
   float alphaF;
   float zero;
 
-  __int128 auVar9;
 
-  __int128 extraout_vf10;
-
-  __int128 auVar10;
 
   float positionStack [4];
 
@@ -42749,7 +42750,6 @@ void FUN_0034dc00(u64 param_1)
     if (*(short *)(iVar4 + 0xc) == 3) {
 
       if ((*(u32 *)(iVar7 + 0xc) & 1) != 0) {
-
         uVar12 = DAT_007caf08;
 
         FUN_003322f0((int)(iVar7),(u32 *)(&auStack_90));
@@ -42916,10 +42916,10 @@ void FUN_0034dc00(u64 param_1)
 
         }
 
+
       }
 
       else {
-
         uVar12 = DAT_007caf08;
 
         FUN_003322f0((int)(iVar7),(u32 *)(&auStack_90));
@@ -43071,6 +43071,7 @@ void FUN_0034dc00(u64 param_1)
           puVar5 = puVar5 + 6;
 
         }
+
 
       }
 
@@ -49222,7 +49223,7 @@ void FUN_00356c70(u8 *param_1)
   u32 frame;
   float scale;
 
-  __int128 auStack_f0;
+  RtQuat auStack_f0;
 
   u8 auStack_e0 [64];
 
@@ -49230,9 +49231,9 @@ void FUN_00356c70(u8 *param_1)
 
   u8 auStack_60 [48];
 
-  __int128 auStack_30;
+  RwV3d auStack_30;
 
-  __int128 auStack_20;
+  RwV3d auStack_20;
 
   float fStack_10;
 
@@ -49265,11 +49266,11 @@ void FUN_00356c70(u8 *param_1)
 
              (lVar4 = FUN_0030b5a0(*(u32 *)(iVar3 + 0xa2c),0), lVar4 == 0)) {
 
-            FUN_0027f7c0(iVar3,auStack_20,auStack_f0,0);
+            FUN_0027f7c0(iVar3,&auStack_20,&auStack_f0,0);
 
-            FUN_0027f650(iVar3,auStack_20);
+            FUN_0027f650(iVar3,&auStack_20);
 
-            FUN_0027f680(iVar3,auStack_f0);
+            FUN_0027f680(iVar3,&auStack_f0);
 
             FUN_002831c0(iVar3,0);
 
@@ -49505,7 +49506,7 @@ void FUN_003571c0(float *param_1)
 
   u8 auStack_e4 [20];
 
-  __int128 auStack_d0;
+  Vec128 auStack_d0;
 
   u8 auStack_c0 [32];
 
@@ -49513,7 +49514,7 @@ void FUN_003571c0(float *param_1)
 
   u8 auStack_90 [48];
 
-  __int128 auStack_60;
+  Vec128 auStack_60;
 
   u8 auStack_50 [64];
 
@@ -49690,9 +49691,8 @@ void FUN_00357550(int param_1)
 
   u32 uVar5;
 
-  __int128 auStack_10;
-
-  __int128 auStack_20;
+  RwV3d auStack_10;
+  RtQuat auStack_20;
 
   
 
@@ -49732,11 +49732,11 @@ void FUN_00357550(int param_1)
 
              (lVar4 = FUN_0030b5a0(*(int *)(node + 0xa2c),0), lVar4 == 0)) {
 
-            FUN_0027f7c0(node,auStack_10,auStack_20,0);
+            FUN_0027f7c0(node,&auStack_10,&auStack_20,0);
 
-            FUN_0027f650(node,auStack_10);
+            FUN_0027f650(node,&auStack_10);
 
-            FUN_0027f680(node,auStack_20);
+            FUN_0027f680(node,&auStack_20);
 
             FUN_002831c0(node,0);
 

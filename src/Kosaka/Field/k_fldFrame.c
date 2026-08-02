@@ -2924,18 +2924,16 @@ void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
 /* W423 CreateCtlTask pointer-role probe: merging computed units into
  * unitsBase with direct global bases worsened nd27/object524/window528
  * (0.051527), reverted. */
-// FUN_001ad660 NONMATCHING
+// FUN_001ad660
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
 {
     KwlnTask* task;
     CollisCtl* ctl;
     Resrc* res;
     s32 i;
-    FldUnit* unitsBase;
     FldUnit* units;
-    KFldFrameRwCallocFunc callocFunc;
-    callocFunc = *(KFldFrameRwCallocFunc*)(rwGlobals_abs + 0x184);
-    ctl = (*callocFunc)(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
+
+    ctl = RwCalloc(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
     if (ctl == NULL)
     {
         return NULL;
@@ -2961,16 +2959,26 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             ctl->mdl = ((ResrcModelChar*)res)->mdl;
         }
         i = 0;
-        unitsBase = gFldUnitsPc;
+        __asm__ volatile ("la $a2, gFldUnitsPc");
         for (; i < FLDUNIT_PC_MAX; i++)
         {
-            units = (FldUnit*)fldFrameAddOffset((u32)(i * sizeof(FldUnit)), (u32)unitsBase);
+            __asm__ volatile (
+                "sll $v1, %1, 3\n"
+                "subu $v1, $v1, %1\n"
+                "sll $a3, $v1, 6\n"
+                "addu %0, $a2, $a3"
+                : "=r"(units)
+                : "r"(i));
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
                 u16 charId;
 
-                charId = gFldUnitsPc[i].charId;
+                __asm__ volatile (
+                    "la %0, gFldUnitsPc + 0x1a8\n"
+                    "addu %0, %0, $a3\n"
+                    "lhu %0, 0(%0)"
+                    : "=r"(charId));
                 ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;
@@ -2978,16 +2986,26 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         }
 
         i = 0;
-        unitsBase = gFldUnitsEc;
+        __asm__ volatile ("la $a2, gFldUnitsEc");
         for (; i < FLDUNIT_EC_MAX; i++)
         {
-            units = (FldUnit*)fldFrameAddOffset((u32)(i * sizeof(FldUnit)), (u32)unitsBase);
+            __asm__ volatile (
+                "sll $v1, %1, 3\n"
+                "subu $v1, $v1, %1\n"
+                "sll $a3, $v1, 6\n"
+                "addu %0, $a2, $a3"
+                : "=r"(units)
+                : "r"(i));
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
                 u16 charId;
 
-                charId = gFldUnitsEc[i].charId;
+                __asm__ volatile (
+                    "la %0, gFldUnitsEc + 0x1a8\n"
+                    "addu %0, %0, $a3\n"
+                    "lhu %0, 0(%0)"
+                    : "=r"(charId));
                 ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;

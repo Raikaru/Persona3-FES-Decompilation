@@ -933,48 +933,48 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     header[0x31] = (u8)((u32*)D_00960184_abs)[1];
 
     memcpy(buffer + 4, header, sizeof(header));
-    SAVE_AT(buffer, 0x38, 1, 0x24, PTR8(0x00836200));
-    SAVE_AT(buffer, 0x64, 2, 0x50, PTR8(0x00836224));
-    SAVE_AT(buffer, 0xbc, 3, 0x508, PTR8(0x00836274));
-    SAVE_AT(buffer, 0x5cc, 4, 0x10, PTR8(0x0083677c));
-    SAVE_AT(buffer, 0x5e4, 5, 8, PTR8(0x0083678c));
+    SAVE_AT(buffer, 0x38, 1, 0x24, DAT_00836200);
+    SAVE_AT(buffer, 0x64, 2, 0x50, DAT_00836212 + 0x12);
+    SAVE_AT(buffer, 0xbc, 3, 0x508, DAT_00836212 + 0x62);
+    SAVE_AT(buffer, 0x5cc, 4, 0x10, DAT_00836212 + 0x56a);
+    SAVE_AT(buffer, 0x5e4, 5, 8, DAT_00836212 + 0x57a);
     SAVE_AT(buffer, 0x5f4, 6, 0x1770, PTRP(0x00836794));
     SAVE_AT(buffer, 0x1d6c, 7, 0x258, PTRP(0x00836798));
-    SAVE_AT(buffer, 0x1fcc, 8, 2, PTR8(0x0083679c));
-    SAVE_AT(buffer, 0x1fd6, 9, 1, PTR8(0x0083679e));
-    SAVE_AT(buffer, 0x1fdf, 10, 4, PTR8(0x008367a0));
-    SAVE_AT(buffer, 0x1fe7, 11, 2, PTR8(0x008367a4));
-    SAVE_AT(buffer, 0x1fef, 12, 1, PTR8(0x008367a6));
-    SAVE_AT(buffer, 0x1ff5, 13, 0x400, PTR8(0x008367a7));
-    SAVE_AT(buffer, 0x2406, 14, 2, PTR8(0x00836ba8));
-    SAVE_AT(buffer, 0x2410, 15, 0x270, PTR8(0x00836bac));
-    SAVE_AT(buffer, 0x2688, 16, 0x3400, PTR8(0x00836e1c));
-    SAVE_AT(buffer, 0x5a90, 17, 0x2c0, PTR8(0x0083a21c));
-    SAVE_AT(buffer, 0x5d58, 18, 4, PTR8(0x0083a6dc));
-    SAVE_AT(buffer, 0x5d64, 19, 8, PTR8(0x0083a6e0));
-    SAVE_AT(buffer, 0x5d74, 20, 4, PTR8(0x0083a6e8));
-    SAVE_AT(buffer, 0x5d80, 21, 4, PTR8(0x0083a6ec));
-    SAVE_AT(buffer, 0x5d8c, 22, 4, PTR8(0x0083a6f0));
-    SAVE_AT(buffer, 0x5d98, 23, 4, PTR8(0x0083a6f4));
-    SAVE_AT(buffer, 0x5da4, 24, 0x2c, PTR8(0x0083a8c4));
-    SAVE_AT(buffer, 0x5dd8, 25, 0x200, PTR8(0x0083a4dc));
-    SAVE_AT(buffer, 0x5fe0, 26, 0x1c, PTR8(0x0083a6fc));
-    SAVE_AT(buffer, 0x6004, 27, 0x10, PTR8(0x0083a718));
-    SAVE_AT(buffer, 0x601c, 28, 8, PTR8(0x0083a728));
-    SAVE_AT(buffer, 0x602c, 29, 4, PTR8(0x0083a730));
-    SAVE_AT(buffer, 0x6038, 30, 0x100, PTR8(0x0083a734));
-    SAVE_AT(buffer, 0x6140, 31, 0x90, PTR8(0x0083a834));
-    SAVE_AT(buffer, 0x61d8, 0x21, 0x1a8, PTR8(0x0083a8f0));
-    SAVE_AT(buffer, 0x6388, 0x22, 1, PTR8(0x0083679e));
-    SAVE_AT(buffer, 0x6391, 0x23, 4, PTR8(0x0083aa98));
-    SAVE_AT(buffer, 0x639d, 0x24, 4, PTR8(0x0083a6f8));
+    SAVE_AT(buffer, 0x1fcc, 8, 2, DAT_00836212 + 0x58a);
+    SAVE_AT(buffer, 0x1fd6, 9, 1, DAT_00836212 + 0x58c);
+    SAVE_AT(buffer, 0x1fdf, 10, 4, DAT_00836212 + 0x58e);
+    SAVE_AT(buffer, 0x1fe7, 11, 2, DAT_00836212 + 0x592);
+    SAVE_AT(buffer, 0x1fef, 12, 1, DAT_00836212 + 0x594);
+    SAVE_AT(buffer, 0x1ff5, 13, 0x400, DAT_00836212 + 0x595);
+    SAVE_AT(buffer, 0x2406, 14, 2, DAT_00836212 + 0x996);
+    SAVE_AT(buffer, 0x2410, 15, 0x270, DAT_00836212 + 0x99a);
+    SAVE_AT(buffer, 0x2688, 16, 0x3400, DAT_00836e1c);
+    SAVE_AT(buffer, 0x5a90, 17, 0x2c0, D_0083a21c);
+    SAVE_AT(buffer, 0x5d58, 18, 4, DAT_00836212 + 0x44ca);
+    SAVE_AT(buffer, 0x5d64, 19, 8, DAT_00836212 + 0x44ce);
+    SAVE_AT(buffer, 0x5d74, 20, 4, DAT_00836212 + 0x44d6);
+    SAVE_AT(buffer, 0x5d80, 21, 4, DAT_00836212 + 0x44da);
+    SAVE_AT(buffer, 0x5d8c, 22, 4, DAT_00836212 + 0x44de);
+    SAVE_AT(buffer, 0x5d98, 23, 4, DAT_00836212 + 0x44e2);
+    SAVE_AT(buffer, 0x5da4, 24, 0x2c, DAT_00836212 + 0x46b2);
+    SAVE_AT(buffer, 0x5dd8, 25, 0x200, DAT_00836212 + 0x42ca);
+    SAVE_AT(buffer, 0x5fe0, 26, 0x1c, D_0083A6FC);
+    SAVE_AT(buffer, 0x6004, 27, 0x10, DAT_0083a718);
+    SAVE_AT(buffer, 0x601c, 28, 8, DAT_00836212 + 0x4516);
+    SAVE_AT(buffer, 0x602c, 29, 4, DAT_00836212 + 0x451e);
+    SAVE_AT(buffer, 0x6038, 30, 0x100, DAT_00836212 + 0x4522);
+    SAVE_AT(buffer, 0x6140, 31, 0x90, DAT_00836212 + 0x4622);
+    SAVE_AT(buffer, 0x61d8, 0x21, 0x1a8, DAT_00836212 + 0x46de);
+    SAVE_AT(buffer, 0x6388, 0x22, 1, DAT_00836212 + 0x58c);
+    SAVE_AT(buffer, 0x6391, 0x23, 4, DAT_00836212 + 0x4886);
+    SAVE_AT(buffer, 0x639d, 0x24, 4, DAT_00836212 + 0x44e6);
     chunkOffset += 0x63a9;
     cursor = buffer + 0x63a9;
 
     for (i = 0; i < 10; i++)
     {
         u32 base = 0x100 + i * 0x100;
-        u32 sourceAddress = 0x00834010 + i * 0x364;
+        u32 sourceAddress = (u32)D_00834010 + i * 0x364;
         SAVE_AT(cursor, 0, base, 4, PTR8(sourceAddress));
         SAVE_AT(cursor, 0x0c, base + 1, 0x50, PTR8(sourceAddress + 4));
         SAVE_AT(cursor, 0x64, base + 2, 8, PTR8(sourceAddress + 0x54));
@@ -990,8 +990,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
         cursor += 0x3c4;
         chunkOffset += 0x3c4;
     }
-    SAVE_AT(cursor, 0, 0x1000, 400, PTR8(0x00833e80));
-    SAVE_AT(cursor, 0x198, 0x1001, 600, PTR8(0x00833c20));
+    SAVE_AT(cursor, 0, 0x1000, 400, D_00833E80);
+    SAVE_AT(cursor, 0x198, 0x1001, 600, DAT_00833bf0 + 0x30);
     checksum = 0;
     for (i = 0; i < chunkOffset + 0x3c0; i++)
         checksum = (u8)(checksum + buffer[0x38 + i]);
@@ -1107,16 +1107,16 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             if (size == 0x24) FUN_00521250(DAT_00836200, data, 0x24);
             break;
         case 2:
-            if (size == 0x50) FUN_00521250(PTR8(0x00836224), data, 0x50);
+            if (size == 0x50) FUN_00521250(DAT_00836212 + 0x12, data, 0x50);
             break;
         case 3:
-            if (size == 0x508) FUN_00521250(PTR8(0x00836274), data, 0x508);
+            if (size == 0x508) FUN_00521250(DAT_00836212 + 0x62, data, 0x508);
             break;
         case 4:
-            if (size == 0x10) FUN_00521250(PTR8(0x0083677c), data, 0x10);
+            if (size == 0x10) FUN_00521250(DAT_00836212 + 0x56a, data, 0x10);
             break;
         case 5:
-            if (size == 8) FUN_00521250(PTR8(0x0083678c), data, 8);
+            if (size == 8) FUN_00521250(DAT_00836212 + 0x57a, data, 8);
             break;
         case 6:
             if (size == 6000) FUN_00521250(PTRP(0x00836794), data, size);
@@ -1125,28 +1125,28 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             if (size == 600) FUN_00521250(PTRP(0x00836798), data, size);
             break;
         case 8:
-            if (size == 2) FUN_00521250(PTR8(0x0083679c), data, size);
+            if (size == 2) FUN_00521250(DAT_00836212 + 0x58a, data, size);
             break;
         case 9:
-            if (size == 1) FUN_00521250(PTR8(0x0083679e), data, size);
+            if (size == 1) FUN_00521250(DAT_00836212 + 0x58c, data, size);
             break;
         case 10:
-            if (size == 4) FUN_00521250(PTR8(0x008367a0), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x58e, data, size);
             break;
         case 11:
-            if (size == 2) FUN_00521250(PTR8(0x008367a4), data, size);
+            if (size == 2) FUN_00521250(DAT_00836212 + 0x592, data, size);
             break;
         case 12:
-            if (size == 1) FUN_00521250(PTR8(0x008367a6), data, size);
+            if (size == 1) FUN_00521250(DAT_00836212 + 0x594, data, size);
             break;
         case 13:
-            if (size == 0x400) FUN_00521250(PTR8(0x008367a7), data, size);
+            if (size == 0x400) FUN_00521250(DAT_00836212 + 0x595, data, size);
             break;
         case 14:
-            if (size == 2) FUN_00521250(PTR8(0x00836ba8), data, size);
+            if (size == 2) FUN_00521250(DAT_00836212 + 0x996, data, size);
             break;
         case 15:
-            if (size == 0x270) FUN_00521250(PTR8(0x00836bac), data, size);
+            if (size == 0x270) FUN_00521250(DAT_00836212 + 0x99a, data, size);
             break;
         case 16:
             if (size == 0x3400) FUN_00521250(DAT_00836e1c, data, size);
@@ -1155,28 +1155,28 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             if (size == 0x2c0) FUN_00521250(D_0083a21c, data, size);
             break;
         case 18:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6dc), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44ca, data, size);
             break;
         case 19:
-            if (size == 8) FUN_00521250(PTR8(0x0083a6e0), data, size);
+            if (size == 8) FUN_00521250(DAT_00836212 + 0x44ce, data, size);
             break;
         case 20:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6e8), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44d6, data, size);
             break;
         case 21:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6ec), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44da, data, size);
             break;
         case 22:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6f0), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44de, data, size);
             break;
         case 23:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6f4), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44e2, data, size);
             break;
         case 24:
-            if (size == 0x2c) FUN_00521250(PTR8(0x0083a8c4), data, size);
+            if (size == 0x2c) FUN_00521250(DAT_00836212 + 0x46b2, data, size);
             break;
         case 25:
-            if (size == 0x200) FUN_00521250(PTR8(0x0083a4dc), data, size);
+            if (size == 0x200) FUN_00521250(DAT_00836212 + 0x42ca, data, size);
             break;
         case 26:
             if (size == 0x1c) FUN_00521250(D_0083A6FC, data, size);
@@ -1185,30 +1185,30 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             if (size == 0x10) FUN_00521250(DAT_0083a718, data, size);
             break;
         case 28:
-            if (size == 8) FUN_00521250(PTR8(0x0083a728), data, size);
+            if (size == 8) FUN_00521250(DAT_00836212 + 0x4516, data, size);
             break;
         case 29:
-            if (size == 4) FUN_00521250(PTR8(0x0083a730), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x451e, data, size);
             break;
         case 30:
-            if (size == 0x100) FUN_00521250(PTR8(0x0083a734), data, size);
+            if (size == 0x100) FUN_00521250(DAT_00836212 + 0x4522, data, size);
             break;
         case 31:
-            if (size == 0x90) FUN_00521250(PTR8(0x0083a834), data, size);
+            if (size == 0x90) FUN_00521250(DAT_00836212 + 0x4622, data, size);
             break;
         case 32:
             break;
         case 33:
-            if (size == 0x1a8) FUN_00521250(PTR8(0x0083a8f0), data, size);
+            if (size == 0x1a8) FUN_00521250(DAT_00836212 + 0x46de, data, size);
             break;
         case 34:
-            if (size == 1) FUN_00521250(PTR8(0x0083679e), data, size);
+            if (size == 1) FUN_00521250(DAT_00836212 + 0x58c, data, size);
             break;
         case 35:
-            if (size == 4) FUN_00521250(PTR8(0x0083aa98), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x4886, data, size);
             break;
         case 36:
-            if (size == 4) FUN_00521250(PTR8(0x0083a6f8), data, size);
+            if (size == 4) FUN_00521250(DAT_00836212 + 0x44e6, data, size);
             break;
 
         /* Group bodies: retail 0x17a044..0x17a3b8. */
@@ -1370,10 +1370,10 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             break;
 
         case 0x1000:
-            if (size == 400) FUN_00521250(PTR8(0x00833e80), data, size);
+            if (size == 400) FUN_00521250(D_00833E80, data, size);
             break;
         case 0x1001:
-            if (size == 600) FUN_00521250(PTR8(0x00833c20), data, size);
+            if (size == 600) FUN_00521250(DAT_00833bf0 + 0x30, data, size);
             break;
         default:
             break;

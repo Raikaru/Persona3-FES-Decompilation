@@ -17974,7 +17974,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     s32 rank;
     s16 statType;
     s32 icon;
-    char textBuffer[264];
+    char textBuffer[248];
     CampBits drawPair;
     f32 depth = campTextureAsFloat(item);
 
@@ -24126,7 +24126,7 @@ typedef union CampMenuAnimPair
 } CampMenuAnimPair;
 typedef struct CampMenuScratch
 {
-    u32 words[0x1e];
+    u32 words[0x16];
     CampMenuAnimPair shifted;
     CampMenuAnimPair pair;
     u32 tail[2];
@@ -27932,7 +27932,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
     s32 font;
     struct {
         s32 tileUpDown[5][4];
-        char text[0x100];
+        char text[0xd0];
     } scratch;
 
     colourState[0] = colourState[1] = colourState[2] = colourState[3] = 0xff;

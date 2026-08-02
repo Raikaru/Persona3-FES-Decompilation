@@ -203,11 +203,11 @@ static inline void opWaitSetColor(void* quad, f32 alpha, u8* color)
 
 static inline f32 opWaitClamp01(s32 value, s32 begin, s32 end)
 {
-    if (value <= begin)
+    if (value < begin)
         return 0.0f;
-    if (value >= end)
-        return 1.0f;
-    return (f32)(value - begin) / (f32)(end - begin);
+    if (value < end)
+        return (f32)(value - begin) / (f32)(end - begin);
+    return 1.0f;
 }
 
 // FUN_0026dd10
@@ -590,9 +590,8 @@ u32 opWait0026ee80(void)
 
 
 // Retail's frame-0x10 overlay uses a dynamic x offset and fixed 256/375/202 geometry.
-// Keep the explicit atlas lookup and default-mode alpha path even though this
-// source-shape correction currently increases normalized_diff while preserving
-// the runtime behavior for the overlay's documented mode 0/1 paths.
+// Keep the explicit atlas lookup and default-mode alpha path; strict endpoint
+// tests in opWaitClamp01 reproduce the retail branch orientation.
 // The frame dimensions and mode fallback were previously approximated.
 // FUN_0026EED0 NONMATCHING
 void opWait0026eed0(void)
@@ -892,11 +891,9 @@ void opWait0026eed0(void)
         f32 transformedX;
         f32 transformedY;
         f32 interpolationProgress;
-        unsigned __int128 partBase;
-        unsigned __int128* partBaseRef;
+        OpWaitPart* partBase;
         s32 j;
-        partBase = (unsigned __int128)&work->parts[i];
-        partBaseRef = &partBase;
+        partBase = &work->parts[i];
         elapsed = (s32)work->counters[6] - work->parts[i].startFrame;
 
         if (elapsed < 0)
@@ -1096,8 +1093,8 @@ void opWait0026eed0(void)
             point[0] += x;
             point[1] += y;
         }
-        func_0021d890((void*)((u8*)*partBaseRef + 0x10), points);
-        opWaitSetColor((void*)((u8*)*partBaseRef + 0x10),
+        func_0021d890(partBase->quad, points);
+        opWaitSetColor(partBase->quad,
                        partAlpha * fade * 255.0f);
     }
 
