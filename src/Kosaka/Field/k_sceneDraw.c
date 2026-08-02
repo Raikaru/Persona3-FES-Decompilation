@@ -2024,8 +2024,8 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3dNormalize(&right->at, &right->at);
 
     right->right.x = right->at.y * up->z - right->at.z * up->y;
-    right->right.y = right->at.z * up->x - right->at.x * up->z;
-    right->right.z = right->at.x * up->y - right->at.y * up->x;
+    right->right.y = up->x * right->at.z - up->z * right->at.x;
+    right->right.z = up->y * right->at.x - up->x * right->at.y;
     RwV3dNormalize(&right->right, &right->right);
     right->up.x = right->at.y * right->right.z - right->at.z * right->right.y;
     right->up.y = right->at.z * right->right.x - right->at.x * right->right.z;

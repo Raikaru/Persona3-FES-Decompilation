@@ -683,6 +683,11 @@ extern u8 DAT_00836200[];
 extern u32 DAT_007ce00c;
 extern s8* puGpffffb704;
 extern u8 D_0083A6FC[];
+extern u8 DAT_0083a6ec[];
+extern u8 DAT_00836794[];
+extern u8 DAT_0083a598[];
+extern u8 DAT_00836268[];
+extern u8 DAT_0083a47c[];
 extern const char D_005e3098[];
 extern const char D_005e3278[];
 extern u8 DAT_00836e1c[];
@@ -900,17 +905,17 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     u32 day;
     s32 resultSize;
 
-    U32(0x0083a6ec) = ((u32*)D_00960184_sda)[0];
-    U32(0x0083a6f0) = ((u32*)D_00960184_sda)[1];
-    U32(0x0083a6f4) = (u32)FUN_001bff20();
+    U32(DAT_0083a6ec + 0) = ((u32*)D_00960184_sda)[0];
+    U32(DAT_0083a6ec + 4) = ((u32*)D_00960184_sda)[1];
+    U32(DAT_0083a6ec + 8) = (u32)FUN_001bff20();
     buffer = (u8*)ALLOCATE(1, 0x20000, 0x40000);
     chunkOffset = 0;
     memcpy(buffer, &saveType, 4);
 
-    *(u16*)(header + 0) = U16(0x0083679c);
-    *(u16*)(header + 2) = U8(0x0083679e);
-    *(u32*)(header + 4) = U32(0x0083a598);
-    today = U32(0x00836268);
+    *(u16*)(header + 0) = U16(D_0083679C + 0);
+    *(u16*)(header + 2) = U8((u8*)D_0083679C + 2);
+    *(u32*)(header + 4) = U32(DAT_0083a598);
+    today = U32(DAT_00836268);
     month = 0;
     day = 0;
     while (day < 99)
@@ -921,8 +926,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     }
     if (day >= 99) month = 99;
     header[8] = (u8)month;
-    header[9] = (U32(0x0083a47c) & 0x2000000) != 0 ? 2 :
-                ((U32(0x0083a47c) & 0x20000) != 0 ? 1 : 0);
+    header[9] = (U32(DAT_0083a47c) & 0x2000000) != 0 ? 2 :
+                ((U32(DAT_0083a47c) & 0x20000) != 0 ? 1 : 0);
     header[10] = (u8)FUN_0017d7b0();
     header[11] = (u8)U32(0x0083a6ec);
     for (i = 0; i < 0x12; i++)
@@ -938,8 +943,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     SAVE_AT(buffer, 0xbc, 3, 0x508, DAT_00836212 + 0x62);
     SAVE_AT(buffer, 0x5cc, 4, 0x10, DAT_00836212 + 0x56a);
     SAVE_AT(buffer, 0x5e4, 5, 8, DAT_00836212 + 0x57a);
-    SAVE_AT(buffer, 0x5f4, 6, 0x1770, PTRP(0x00836794));
-    SAVE_AT(buffer, 0x1d6c, 7, 0x258, PTRP(0x00836798));
+    SAVE_AT(buffer, 0x5f4, 6, 0x1770, PTRP(DAT_00836794 + 0));
+    SAVE_AT(buffer, 0x1d6c, 7, 0x258, PTRP(DAT_00836794 + 4));
     SAVE_AT(buffer, 0x1fcc, 8, 2, DAT_00836212 + 0x58a);
     SAVE_AT(buffer, 0x1fd6, 9, 1, DAT_00836212 + 0x58c);
     SAVE_AT(buffer, 0x1fdf, 10, 4, DAT_00836212 + 0x58e);

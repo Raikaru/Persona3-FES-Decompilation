@@ -1335,8 +1335,8 @@ RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
     s32 pixelColumn4;
     u8 format;
 
-    source = (u8*)tmxMemory;
-    pixelSource = source;
+    pixelSource = (u8*)tmxMemory;
+    source = pixelSource;
     paletteSource = 0;
     depth = 0;
     paletteFlag = 0;

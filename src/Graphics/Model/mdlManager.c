@@ -2106,105 +2106,60 @@ void func_00313230(MdlAnimSlot* param_1)
 
 void func_003132c0(u8* param_1)
 {
+  MdlAnim* anim;
+  MdlAnimResourceSet* resources;
+  MdlAnimEntryTable* table;
+  MdlAnimEntry* entry;
+  RtAnimAnimation* rtAnim;
+  u32 i;
 
-  u32 *puVar1;
-
-  int *piVar2;
-
-  u8 *puVar3;
-
-  int iVar4;
-
-  u32 uVar5;
-
-  
-
-  puVar1 = *(u32 **)(param_1 + 0x18);
-
-  if (puVar1 != (u32 *)0x0) {
-
-    for (uVar5 = 0; uVar5 < *puVar1; uVar5 = uVar5 + 1) {
-
-      if (*(int *)(puVar1[5] + uVar5 * 4) != 0) {
-
+  anim = (MdlAnim*)param_1;
+  resources = anim->resources;
+  if (resources != NULL) {
+    for (i = 0; i < *(u32*)resources; i = i + 1) {
+      if (resources->primary[i] != NULL) {
         func_0031d790();
-
       }
-
-      if (*(int *)(puVar1[8] + uVar5 * 4) != 0) {
-
+      if (resources->secondary[i] != NULL) {
         func_0031e130();
-
       }
-
     }
-
-    (*DAT_0096017c)(puVar1);
-
-    *(u32 *)(param_1 + 0x18) = 0;
-
+    (*DAT_0096017c)(resources);
+    anim->resources = NULL;
   }
 
-  if (*(int *)(param_1 + 0x12) != 0) {
-
+  if (anim->oldInterp != NULL) {
     func_004b6eb0();
-
-    *(u16 *)(param_1 + 0x12) = 0;
-
+    anim->oldInterp = NULL;
   }
-
-  if (*(int *)(param_1 + 0x14) != 0) {
-
+  if (anim->nextInterp != NULL) {
     func_004b6eb0();
-
-    *(u16 *)(param_1 + 0x14) = 0;
-
+    anim->nextInterp = NULL;
   }
 
-  piVar2 = *(int **)(param_1 + 0x16);
-
-  if (piVar2 != (int *)0x0) {
-
-    *(short *)((int)piVar2 + 6) = *(short *)((int)piVar2 + 6) + -1;
-
-    if (*(short *)((int)piVar2 + 6) == 0) {
-
-      for (uVar5 = 0; uVar5 < *(u16 *)(piVar2 + 1); uVar5 = uVar5 + 1 & 0xffff) {
-
-        iVar4 = *piVar2 + uVar5 * 0x50;
-
-        puVar3 = *(u8 **)(iVar4 + 0x40);
-
-        if (((puVar3 != (u8 *)0x0) && ((*(u32 *)(iVar4 + 0x44) & 1) == 0)) &&
-
-           (puVar3 != (u8 *)&DAT_009571d0)) {
-
+  table = anim->table;
+  if (table != NULL) {
+    table->unk_06 = table->unk_06 - 1;
+    if (table->unk_06 == 0) {
+      for (i = 0; i < table->count; i = i + 1 & 0xffff) {
+        entry = &table->entries[i];
+        rtAnim = entry->rtAnim;
+        if ((rtAnim != NULL) && ((*(u32*)entry->unkData & 1) == 0) &&
+            (rtAnim != &DAT_009571d0)) {
           func_004b6980();
-
         }
-
       }
-
-      (*DAT_0096017c)(piVar2);
-
+      (*DAT_0096017c)(table);
     }
-
-    *(u16 *)(param_1 + 0x16) = 0;
-
+    anim->table = NULL;
   }
 
-  if (((*param_1 & 2) != 0) && (*(int *)(param_1 + 0x10) != 0)) {
-
+  if (((anim->flags & 2) != 0) && (anim->hierarchy != NULL)) {
     func_004663d0();
-
-    *(u16 *)(param_1 + 0x10) = 0;
-
+    anim->hierarchy = NULL;
   }
-
-  return;
 
 }
-
 #pragma push
 #pragma opt_propagation off
 // FUN_00313490 NONMATCHING
@@ -3588,50 +3543,29 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
     uVar5 = uVar5 + 1 & 0xffff;
   }
 
-  if (uVar5 != *param_2) {
-
-    iVar7 = *(int *)(param_2 + 2) + uVar5 * 0x50;
-
-    iVar1 = *(int *)(iVar7 + 0x44);
-
-    iVar6 = *(int *)(param_4 + 4);
-
-    iVar2 = func_00466720(iVar6);
-
-    if (iVar1 != iVar2) {
-
-      callbackData.result = 0;
-      callbackData.expected = iVar1;
-      func_004cb6e0(iVar6,(void *)func_00315010,&callbackData);
-      iVar6 = callbackData.result;
-
-    }
-
-    if (iVar6 != 0) {
-
-      uVar4 = func_004cb2f0(iVar6);
-
-      FUN_004c2f30(param_1,(const RwMatrix*)iVar7,(const RwMatrix*)uVar4);
-
-      uVar3 = 1;
-
-    }
-
-    else {
-
-      uVar3 = 0;
-
-    }
-
+  if (uVar5 == *param_2) {
+    return 0;
   }
 
-  else {
+  iVar7 = *(int *)(param_2 + 2) + uVar5 * 0x50;
+  iVar1 = *(int *)(iVar7 + 0x44);
+  iVar6 = *(int *)(param_4 + 4);
+  iVar2 = func_00466720(iVar6);
 
-    uVar3 = 0;
-
+  if (iVar1 != iVar2) {
+    callbackData.result = 0;
+    callbackData.expected = iVar1;
+    func_004cb6e0(iVar6,(void *)func_00315010,&callbackData);
+    iVar6 = callbackData.result;
   }
 
-  return uVar3;
+  if (iVar6 == 0) {
+    return 0;
+  }
+
+  uVar4 = func_004cb2f0(iVar6);
+  FUN_004c2f30(param_1,(const RwMatrix*)iVar7,(const RwMatrix*)uVar4);
+  return 1;
 
 }
 #pragma pop
@@ -4899,8 +4833,12 @@ Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
     char path[0x100];
 
     mdl = sMdlListTails[type];
-    while (mdl != NULL && mdl->id != id)
+    while (mdl != NULL)
     {
+        if (mdl->id == id)
+        {
+            break;
+        }
         mdl = mdl->prev;
     }
     if (mdl == NULL)
@@ -5266,7 +5204,6 @@ void mdl00317730(Model* mdl)
 {
     RwMatrix matrix;
     void* hierarchy;
-    Model* wpnMdl;
     MdlAnimResourceSet* resources;
     RwFrame* frame;
     u32 i;
@@ -5309,22 +5246,22 @@ void mdl00317730(Model* mdl)
 
         for (i = 0; i < 5; i++)
         {
-            wpnMdl = mdl->attachedWpns[i].wpnMdl;
-            if ((mdl->attachedWpns[i].flags & 1) != 0 && wpnMdl != NULL &&
+            if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
                 mdl00319770(mdl, i))
             {
-                *(RwMatrix*)((u8*)wpnMdl + 0x40) = mdl->identityMat;
+                *(RwMatrix*)((u8*)mdl->attachedWpns[i].wpnMdl + 0x40) = mdl->identityMat;
                 if (mdl->attachedWpns[i].unk_08 == -1)
                 {
-                    wpnMdl->mat = mdl->mat;
+                    mdl->attachedWpns[i].wpnMdl->mat = mdl->mat;
                 }
                 else
                 {
-                    func_00318d10((u8*)mdl, mdl->attachedWpns[i].unk_08, (u32*)mdlGetMatrix(wpnMdl));
+                    func_00318d10((u8*)mdl, mdl->attachedWpns[i].unk_08,
+                                  (u32*)mdlGetMatrix(mdl->attachedWpns[i].wpnMdl));
                 }
 
-                mdlAnimSetSpeed(wpnMdl, 0, mdl->animSlots[0].anim.speed);
-                mdl00317730(wpnMdl);
+                mdlAnimSetSpeed(mdl->attachedWpns[i].wpnMdl, 0, mdl->animSlots[0].anim.speed);
+                mdl00317730(mdl->attachedWpns[i].wpnMdl);
             }
         }
     }

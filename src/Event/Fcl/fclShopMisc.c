@@ -10673,7 +10673,7 @@ u32 FUN_003fe950(u64 param_1)
 // pre-JAL argument setup order remains a compiler floor.
 // Confirmed pre-JAL setup-order floor: +160/+164/+168 contain the same address
 // computation and signed extension, with retail materializing $a1 before $a0.
-// FUN_003FEA10 NONMATCHING
+// FUN_003FEA10
 
 
 u64 FUN_003fea10(u32 param_1,u32 *param_2)
@@ -10709,7 +10709,8 @@ u64 FUN_003fea10(u32 param_1,u32 *param_2)
       *(int *)((int)uVar4 + 4) = (int)sVar1;
 
       iVar2 = *(int *)(*(int *)((int)uVar4 + 0x14) + 0x1c);
-      FUN_003f1ba0(iVar2 + 4,sVar1);
+      lVar3 = (short)sVar1;
+      FUN_003f1ba0(iVar2 + 4,lVar3);
 
 
       memcpy(iVar2 + 0x14,psVar6 + 3,0xe);

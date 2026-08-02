@@ -47,6 +47,7 @@ void bcmDestroyOwnedResource();
 void FUN_003b0170();
 extern u8* DAT_007ce3f8;
 extern u32 D_00684F00[];
+extern u8 DAT_00684efc[];
 extern u32 DAT_007e094e;
 extern u32 DAT_007e0952;
 extern u32 DAT_007e095a;
@@ -3217,7 +3218,7 @@ void FUN_00204760(void)
             slot = work + i * 8;
             *(u32*)(slot + 0x370) = handle;
             handle = func_003b0970(
-                ((u32*)0x00684efc)[*(u32*)(row + 0x10) - 1],
+                *(u32*)(DAT_00684efc + (*(u32*)(row + 0x10) - 1) * 4),
                 2, alpha, 0, 0);
             func_003b2c60(handle, 0.0f);
             func_003b0e20(handle, -1);
@@ -3672,7 +3673,7 @@ void FUN_002057C0(void)
     for (i = 0; i < *(u32*)(work + 0x400); i++)
     {
         id = *(u32*)(work + 0x3b0 + i * 4);
-        handle = func_003b0970(*(u32*)(0x00684efc + id * 4), 2, 0, 0, 0);
+        handle = func_003b0970(*(u32*)(DAT_00684efc + id * 4), 2, 0, 0, 0);
         func_003b0d70(handle, 0x1450, 0x8c0 + i * 0x90);
         func_003b2c60(handle, 0.0f);
         func_003b0e20(handle, -1);

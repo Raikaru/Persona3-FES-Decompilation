@@ -24,7 +24,7 @@ void H_Maestro_00111cb0(u32 task);
 void H_Maestro_SetAlphaMult(float alpha,u32 task);
 void func_00111f10(u32 task,u32 value);
 void func_00111ca0(u32 task,u32 value);
-float fGpffff80d0;
+extern float fGpffff80d0;
 float fGpffff8110;
 float fGpffff8168;
 float fGpffff81f8;
@@ -47,6 +47,8 @@ void FUN_0040e3c0(float, s32, s32, u8, s32, s32);
 void FUN_0040e3c0_i(s32, s32, float, u8, s32, s32);
 #pragma alias FUN_0040e3f0_typed FUN_0040e3f0
 void FUN_0040e3f0_typed(float, float, float, float, s32, s32, u8, s32, s32, s32, s32);
+#pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
+extern void FUN_0040e3f0_i2f1i3f3(s32, s32, float, u8, s32, s32, s32, s32, float, float, float);
 #pragma alias FUN_003b2cb0_typed FUN_003b2cb0
 void FUN_003b2cb0_typed(float, s32, s32, u32, u32, u32, u32, u32, u32);
 #pragma alias FUN_003b2cb0_i FUN_003b2cb0
@@ -183,9 +185,9 @@ u32 DAT_006b1640;
 u32 DAT_006b16a0;
 u32 DAT_006b16e0;
 u32 DAT_006b1710;
-float DAT_007cada4;
+extern float DAT_007cada4;
 float DAT_007caee8;
-float DAT_007caef0;
+extern float DAT_007caef0;
 u32 DAT_007cda4c;
 u32 DAT_007cda58;
 u32 DAT_007cda5a;
@@ -2292,8 +2294,9 @@ else if (*(short *)(iVar2 + 0x78) == 0) {
 return 1; }
 
 #pragma opt_propagation off
-/* Measured normalized_diff 154 -> 153; object_size remains 400B. */
-// FUN_00413010 NONMATCHING
+/* W442: MATCH at 400/400 via the interleaved FUN_0040e3f0_i2f1i3f3 alias, the
+ * fGpffff80d0 extern, and scalar staging of x/y/zero/color/z/one. */
+// FUN_00413010
 
 
 u64 FUN_00413010(u64 param_1,int param_2)
@@ -2394,16 +2397,26 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
     psVar8 = (s16 *)(puVar6 + iVar11 * 4);
 
-    sVar3 = psVar8[2];
-    iVar10 = (int)sVar3 >> 1;
+    {
+      int x;
+      int y;
+      float zero;
+      u8 color;
+      s16 z;
+      float one;
 
-    FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
+      sVar3 = psVar8[2];
+      iVar10 = (int)sVar3 >> 1;
+      x = ((int)*psVar9 + (int)*psVar8) - (int)sVar3;
+      y = ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3;
+      zero = 0.0f;
+      color = (u8)psVar9[2];
+      z = psVar8[3];
+      one = fGpffff80d0 * *(float *)(psVar9 + 4);
 
-                 ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
-
-                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(u8)psVar9[2],psVar8[3],0,iVar10,
-
-                 iVar10);
+      FUN_0040e3f0_i2f1i3f3(x,y,zero,color,z,0,
+                            iVar10,iVar10,one,1.0f,1.0f);
+    }
 
   }
 
@@ -4345,26 +4358,36 @@ void FUN_00415880(u64 param_1,u64 param_2,int param_3,int param_4,
                  int param_5,int param_6)
 {
   float fVar2;
+  u32 uVar1;
 
   fVar2 = (float)param_6 * 0.5f;
 
+  if (2147483648.0f > fVar2) {
+    uVar1 = (u32)(s32)fVar2;
+  }
+  else {
+    uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
+  }
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
-                    ((fVar2 < 2147483648.0f)
-                     ? (s32)fVar2
-                     : ((s32)(fVar2 - 2147483648.0f) | 0x80000000)) & 0xff,
-                    0x61,0,0,0);
+                    uVar1 & 0xff,0x61,0,0,0);
 
+  if (2147483648.0f > fVar2) {
+    uVar1 = (u32)(s32)fVar2;
+  }
+  else {
+    uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
+  }
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0x132,
-                    ((fVar2 < 2147483648.0f)
-                     ? (s32)fVar2
-                     : ((s32)(fVar2 - 2147483648.0f) | 0x80000000)) & 0xff,
-                    0x62,0,0,0);
+                    uVar1 & 0xff,0x62,0,0,0);
 
+  if (2147483648.0f > fVar2) {
+    uVar1 = (u32)(s32)fVar2;
+  }
+  else {
+    uVar1 = (u32)((s32)(fVar2 - 2147483648.0f) | 0x80000000);
+  }
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0x197,
-                    ((fVar2 < 2147483648.0f)
-                     ? (s32)fVar2
-                     : ((s32)(fVar2 - 2147483648.0f) | 0x80000000)) & 0xff,
-                    99,0,0,0);
+                    uVar1 & 0xff,99,0,0,0);
 }
 
 // FUN_00415A70

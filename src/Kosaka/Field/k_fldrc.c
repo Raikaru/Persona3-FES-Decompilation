@@ -44,6 +44,8 @@ extern u64 DAT_00678f58;
 extern u32 DAT_00678f60;
 extern u64 DAT_00678f68;
 extern u32 DAT_00678f70;
+extern u8 DAT_007ce164[];
+extern u8 DAT_007cdeac[];
 #pragma alias DAT_00678f68_abs DAT_00678f68
 extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70
@@ -868,7 +870,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
             mdlCreateFromPath(MODEL_TYPE_FLD, 0xfffd, D_00678DE0,
                               MDL_READASYNC);
     }
-    *(u32*)0x007ce164 = *(u32*)0x007cdeac;
+    *(u32*)DAT_007ce164 = *(u32*)DAT_007cdeac;
 }
 #pragma opt_loop_invariants off
 #pragma pop
@@ -1039,11 +1041,11 @@ init_phase4:
     {
         return false;
     }
-    count = *(u32*)0x007ce164;
-    *(u32*)0x007ce164 = *(u32*)0x007cdeac - count;
+    count = *(u32*)DAT_007ce164;
+    *(u32*)DAT_007ce164 = *(u32*)DAT_007cdeac - count;
     if (gMtScene->fldMajorId < 0xc8)
     {
-        *(u32*)0x007ce164 += 0x32000;
+        *(u32*)DAT_007ce164 += 0x32000;
     }
     D_00867EF8 = (void*)func_001b8160();
     D_00867EFC = (void*)func_001b8680();

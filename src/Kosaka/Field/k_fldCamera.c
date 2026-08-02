@@ -672,7 +672,7 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
                                              rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
-        goto done;
+        return task;
     }
     task = kwlnTaskCreateWithAutoPriority(parentTask, 10,
                                           "field camera rotation",
@@ -714,9 +714,12 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
     {
         directDelta -= 360.0f;
     }
-    while (wrappedDelta > 360.0f)
+    if (wrappedDelta > 360.0f)
     {
-        wrappedDelta -= 360.0f;
+        do
+        {
+            wrappedDelta -= 360.0f;
+        } while (wrappedDelta > 360.0f);
     }
 
     if (func_0045ec00(func_0052e118(func_00530da0(directDelta)),

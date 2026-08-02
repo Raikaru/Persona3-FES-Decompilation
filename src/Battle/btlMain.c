@@ -4228,7 +4228,7 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 // FUN_002A2A20 NONMATCHING
 
 
-/* BtlCore2 W419 negative: 2a2a20 _abs address spellings held nd63 at 296B; scalar direct spelling worsened nd63->151 and shrank to 284B. */
+/* BtlCore2 W419 negative: 2a2a20 _abs address spellings held nd63 at 296B; scalar direct spelling worsened nd63->151 and shrank to 284B. W442 natural u16 increments reduce nd63->59 at 296B. */
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
   u32 currentAddress;
@@ -4255,7 +4255,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   *param_3 = fVar4;
   param_3[1] = fVar5;
   param_3[2] = fVar9;
-  for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
+  for (uVar3 = 0; uVar3 < 4; uVar3++) {
     fVar6 = *(float *)((u8 *)afStack_10 + (u32)uVar3 * 4 + 0);
     currentAddress = (u32)uVar2 * 0x1c;
     currentAddress = currentAddress + (u32)param_2;
@@ -4265,7 +4265,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
     *param_3 = *param_3 + fVar7 * fVar6 + 0.0f;
     param_3[1] = param_3[1] + fVar4;
     param_3[2] = param_3[2] + fVar5;
-    uVar2 = uVar2 + 1 & 0xffff;
+    uVar2++;
     if (uVar2 >= 4) {
       uVar2 = 0;
     }

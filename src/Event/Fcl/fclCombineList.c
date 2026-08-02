@@ -542,6 +542,8 @@ s32 FUN_003d8230(FclFusionOutput*, FclFusionDetail**, s32);
 s32 FUN_003d02e0(void);
 s32 FUN_003d06d0(s32, s32, s32);
 s32 FUN_003d6ae0(s32, s32, s32);
+#pragma alias fclList6ae0Ptr FUN_003d6ae0
+extern u8 fclList6ae0Ptr(void *, s32, int *);
 u32 FUN_003d6c90(int param_1);
 u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
 s32 FUN_003d7180();
@@ -776,7 +778,7 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
 da570_found:
         if (i == -1) {
             scratch[param_1->used] = (s32)data->selection_detail;
-            FUN_003d6ae0((s32)&data->fusion, mode, (s32)scratch);
+            fclList6ae0Ptr(&data->fusion, mode, scratch);
             scratch[param_1->used] = 0;
         } else {
             memset(&data->fusion, 0, 0x54);

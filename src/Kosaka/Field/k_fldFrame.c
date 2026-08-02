@@ -4048,15 +4048,18 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
         {
             if (K_FldFrame_Raycast(line, &resolved) == true)
             {
-                output = (RwV3d*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18);
+                output = (RwV3d*)((u8*)(uintptr_t)fldFrameAddOffset(work->pendingPointCount * 0x18,
+                                                                     (u32)(uintptr_t)work) + 0x4e0);
                 *output = resolved;
             }
             else
             {
-                output = (RwV3d*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18);
+                output = (RwV3d*)((u8*)(uintptr_t)fldFrameAddOffset(work->pendingPointCount * 0x18,
+                                                                     (u32)(uintptr_t)work) + 0x4e0);
                 *output = *position;
             }
-            *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
+            *(f32*)((u8*)(uintptr_t)fldFrameAddOffset(work->pendingPointCount * 0x18,
+                                                       (u32)(uintptr_t)work) + 0x4ec) = duration;
             work->pendingPointCount++;
             return true;
         }

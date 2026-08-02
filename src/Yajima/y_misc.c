@@ -10198,8 +10198,7 @@ void FUN_0042bc10(int param_1)
     uVar2 = FUN_004560d0_typed(param_1,*(float *)(iVar1 + 0x89c),
                                *(float *)(iVar1 + 0x8a0),1.0f,0x20,0x20);
 
-
-    *(int *)(iVar1 + 0x898) = (int)uVar2;
+    *(u32 *)(iVar1 + 0x898) = uVar2;
 
     FUN_004563c0_y2(uVar2,*(char *)(iVar1 + 0xb90));
 
@@ -15392,7 +15391,6 @@ u64 FUN_00430060(int param_1);
 u64 FUN_00430bb0(int param_1);
 u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4);
 u32 FUN_00431670(int param_1,char param_2,u32 param_3);
-u64 FUN_00439f60(int param_1,char param_2);
 u64 FUN_00439f60(int param_1,char param_2);
 u64 FUN_0043a0b0(u64 param_1,char param_2);
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3);
