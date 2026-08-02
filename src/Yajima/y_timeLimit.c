@@ -4194,7 +4194,13 @@ FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int p
   return 0;
 }
 
-// FUN_0045B190 NONMATCHING
+
+
+static inline f32 yTimeBlend(f32 addend, f32 delta, f32 factor)
+{
+  return addend + delta * factor;
+}
+// FUN_0045B190
 
 u32 FUN_0045b190(int param_1)
 
@@ -4236,10 +4242,10 @@ u32 FUN_0045b190(int param_1)
                       (float)(int)*(short *)((int)pfVar5 + 0x1e);
               fVar9 = pfVar5[4];
               fVar7 = (float)FUN_0052e878_typed(fVar8);
-              *pfVar5 = (pfVar5[2] - fVar9) * fVar7 + fVar9 + 0.0f;
+              *pfVar5 = yTimeBlend(fVar9, pfVar5[2] - fVar9, fVar7) + 0.0f;
               fVar9 = pfVar5[5];
               fVar7 = (float)FUN_0052e878_typed(fVar8);
-              pfVar5[1] = (pfVar5[3] - fVar9) * fVar7 + fVar9 + 0.0f;
+              pfVar5[1] = yTimeBlend(fVar9, pfVar5[3] - fVar9, fVar7) + 0.0f;
             }
             else {
               *pfVar5 = *pfVar5 + pfVar5[4];

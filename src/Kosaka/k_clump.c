@@ -109,6 +109,8 @@ extern char D_00678C78;
 #pragma alias D_00678C78_abs D_00678C78
 extern char D_00678C78_abs[];
 extern u32 D_00678C00[];
+ #pragma alias D_00678C00_abs D_00678C00
+extern u32 D_00678C00_abs[];
 extern const char D_00678C28[];
 extern const char D_00678C38[];
 extern const char D_00678C48[];
@@ -715,8 +717,8 @@ void* func_001a7370(void* material, u32* state)
     s32 current;
     s32 selected;
     s32 value;
-    u32* values;
 
+    u32* values;
     value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, D_00678C28);
     if (K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C38))
     {
@@ -727,7 +729,7 @@ void* func_001a7370(void* material, u32* state)
         state[2] = 1;
     }
     candidate = 0;
-    values = D_00678C00;
+    values = D_00678C00_abs;
     for (; candidate < 10; candidate++)
     {
         if (state[0] == values[candidate])
@@ -736,7 +738,7 @@ void* func_001a7370(void* material, u32* state)
         }
     }
     current = 0;
-    values = D_00678C00;
+    values = D_00678C00_abs;
     for (; current < 10; current++)
     {
         if (value == values[current])
@@ -746,7 +748,7 @@ void* func_001a7370(void* material, u32* state)
     }
     if (candidate < current)
     {
-        state[0] = D_00678C00[current];
+        state[0] = D_00678C00_abs[current];
     }
     selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C48);
     if (selected == 1)

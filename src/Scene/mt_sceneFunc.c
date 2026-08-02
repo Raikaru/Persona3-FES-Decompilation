@@ -2551,6 +2551,11 @@ u32 FUN_003baa70(char *param_1)
     int addrs[3];
   } blk;
 
+
+
+  
+  
+
   
 
   iVar1 = FUN_003b5d50(0x15);
@@ -3388,7 +3393,6 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
       puVar5 = puVar5 + 1;
 
     } while (0 < cnt);
-
     dest = (u8 *)direction;
     xy = *(volatile u64 *)dstbuf;
     z = *(volatile f32 *)((u8 *)dstbuf + 8);

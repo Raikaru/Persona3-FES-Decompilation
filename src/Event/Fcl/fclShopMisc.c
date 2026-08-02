@@ -6100,7 +6100,7 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 
 // W414: swapping the iVar3/uVar4 declaration order drops nd27 -> nd11 (obj644/window656);
 // the remaining rows are register-coloring residuals.
-// FUN_003F7D50 NONMATCHING
+// FUN_003F7D50
 
 
 void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
@@ -6125,6 +6125,7 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
   int cond2;
   int cond1;
   int cond3;
+  int isLess;
 
   
 
@@ -6141,8 +6142,9 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
   iVar5 = *(int *)(param_5 + 0x14);
   iVar5 = *(volatile int *)(iVar5 + 0xc) -
           *(volatile int *)(iVar6 + 0xc);
+  isLess = sVar1 < iVar5;
 
-  if (iVar5 <= sVar1) {
+  if (isLess == 0) {
     iVar3 = sVar1 - iVar5;
     cond3 = iVar3 < 5;
     if (cond3 == 0) {
