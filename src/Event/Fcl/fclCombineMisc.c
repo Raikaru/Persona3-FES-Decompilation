@@ -74,6 +74,7 @@ u32 FUN_003d8260(int param_1,u32 param_2);
 u32 FUN_003d8370(int param_1,u32 param_2,u32 param_3);
 u32 FUN_003d84c0(u64 param_1,int param_2);
 u32 FUN_003d8630(int param_1,int param_2);
+u16 FUN_001752b0(void);
 void FUN_003d8850();
 typedef struct Fcm982Node Fcm982Node;
 typedef struct Fcm982Item Fcm982Item;
@@ -1486,9 +1487,7 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
     arcana = (u32)(((iVar4 % 0xffff) * 0x13) / 0xffff + 2U & 0xff);
 
     iVar5 = RpRandom();
-
-    adjustment = (u32)((iVar5 % 0xffff) * 0xc) / 0xffff;
-
+    adjustment = (u16)(((iVar5 % 0xffff) * 0xc) / 0xffff);
     uVar6 = datGetLevel(1);
 
     uVar6 = (uVar6 & 0xff) + adjustment - 10;
@@ -2390,9 +2389,8 @@ u32 FUN_003d8080(int param_1,int param_2,int param_3)
 
   u32 uVar1;
 
-  u32 uVar2;
 
-  u8 bVar3;
+  u32 bVar3;
 
   u32 uVar4;
 
@@ -2404,12 +2402,15 @@ s32 lVar6;
   int iVar8;
 
   u32 auStack_20 [8];
+  u32 target;
+  void *result;
 
   
 
   uVar4 = FUN_001752b0();
 
   uVar4 = uVar4 & 0xffff;
+  target = uVar4;
 
   bVar3 = 0;
 
@@ -2427,64 +2428,35 @@ s32 lVar6;
 
   for (iVar8 = 0; iVar8 < param_3; iVar8 = iVar8 + 1) {
 
-    if (uVar4 == auStack_20[iVar8]) {
-
-      bVar3 = 1;
-
-    }
-
-    else {
-
+    if (target != auStack_20[iVar8]) {
       lVar6 = FUN_00174b40(auStack_20[iVar8] & 0xffff);
-
       if (lVar6 == 0) {
-
         K_Assert(DAT_006a5f70,0x494);
-
       }
-
+    }
+    else {
+      bVar3 = 1;
     }
 
   }
 
   iVar7 = (int)param_1;
-
-  lVar6 = FUN_00174e20(*(u16 *)(iVar7 + 6));
-
-  if (lVar6 != 0) {
-
-    uVar1 = *(u16 *)lVar6;
-
-    uVar2 = *(u16 *)(iVar7 + 4);
-
-    uVar1 = uVar1 | uVar2;
-
-    memcpy(lVar6,iVar7 + 4,0x34);
-
-    *(u16 *)lVar6 = uVar1;
-
-    if (bVar3) {
-
-      FUN_00175130(*(u16 *)(iVar7 + 6));
-
-      FUN_00174b40(uVar4);
-
-    }
-
-    else {
-
-      FUN_00175130(uVar4);
-
-    }
-
-    uVar5 = 1;
-
-  }
-
-  else {
-
+  if ((result = (void *)FUN_00174e20(*(u16 *)(iVar7 + 6))) == 0) {
     uVar5 = 0;
-
+  }
+  else {
+    uVar1 = *(u16 *)result;
+    uVar1 = uVar1 | *(u16 *)(iVar7 + 4);
+    memcpy(result,iVar7 + 4,0x34);
+    *(u16 *)result = uVar1;
+    if (bVar3) {
+      FUN_00175130(*(u16 *)(iVar7 + 6));
+      FUN_00174b40(target);
+    }
+    else {
+      FUN_00175130(target);
+    }
+    uVar5 = 1;
   }
 
   return uVar5;

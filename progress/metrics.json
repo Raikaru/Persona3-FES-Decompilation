@@ -4,7 +4,7 @@
     "complete": false,
     "label": "Essential Persona-specific functions",
     "name": "essential_functions",
-    "remaining": 1347,
+    "remaining": 1344,
     "requires_every_function_to_match": true,
     "whole_executable_identity_is_separate": true
   },
@@ -3855,6 +3855,7 @@
       "002d2340",
       "002d2470",
       "002d2990",
+      "002d2c10",
       "002d2ee0",
       "002d3d70",
       "002d3e00",
@@ -4440,6 +4441,7 @@
       "00317450",
       "003174e0",
       "003176c0",
+      "003182d0",
       "00318540",
       "003185b0",
       "00318620",
@@ -5898,6 +5900,7 @@
       "003b6dd0",
       "003b6e90",
       "003b6f50",
+      "003b7090",
       "003b78b0",
       "003b7930",
       "003b79a0",
@@ -6954,11 +6957,11 @@
       "007807e0",
       "00780800"
     ],
-    "count": 6888,
+    "count": 6891,
     "duplicate_rows": 0,
     "known_rows": 8235,
-    "matched_body_bytes": 1382080,
-    "percent": 83.643,
+    "matched_body_bytes": 1384388,
+    "percent": 83.679,
     "unique_known_addresses": 8235
   },
   "schema_version": 1,
@@ -15207,15 +15210,15 @@
   "source": {
     "function_scope_policy": "config/function_scope.json",
     "ignored_unknown_rows": 0,
-    "linked_report": "build\\wip\\W434_linked.json",
+    "linked_report": "build\\wip\\W435_linked.json",
     "raw_rows": 14055,
     "scope_ignored_unknown_rows": 0,
     "scope_rows": 8235,
-    "verifier_report": "build\\baselines\\W434_gate.json"
+    "verifier_report": "build\\baselines\\W435_gate.json"
   },
   "status_counts": {
-    "MATCH": 6888,
-    "NONMATCHING": 1346,
+    "MATCH": 6891,
+    "NONMATCHING": 1343,
     "SIZE_MISMATCH": 1
   },
   "total": 8235,
@@ -19065,6 +19068,7 @@
         "002d2340",
         "002d2470",
         "002d2990",
+        "002d2c10",
         "002d2ee0",
         "002d3d70",
         "002d3e00",
@@ -19650,6 +19654,7 @@
         "00317450",
         "003174e0",
         "003176c0",
+        "003182d0",
         "00318540",
         "003185b0",
         "00318620",
@@ -21108,6 +21113,7 @@
         "003b6dd0",
         "003b6e90",
         "003b6f50",
+        "003b7090",
         "003b78b0",
         "003b7930",
         "003b79a0",
@@ -23328,16 +23334,16 @@
         "007807e0",
         "00780800"
       ],
-      "count": 8054,
+      "count": 8057,
       "duplicate_rows": 0,
       "known_rows": 14055,
-      "matched_body_bytes": 1432880,
-      "percent": 57.299,
+      "matched_body_bytes": 1435188,
+      "percent": 57.321,
       "unique_known_addresses": 14055
     },
     "status_counts": {
-      "MATCH": 8054,
-      "NONMATCHING": 5998,
+      "MATCH": 8057,
+      "NONMATCHING": 5995,
       "SIZE_MISMATCH": 1,
       "STUB": 2
     },

@@ -5519,12 +5519,13 @@ void FUN_00317a20(Model* param_1)
 
 
 
-// FUN_003182d0 NONMATCHING
+// FUN_003182d0
 u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
 {
     MdlAnim* anim;
     MdlAnimEntry* entry;
     u16 i;
+    Model* m;
 
     if (func_00318620(mdl, slotIdx, id))
     {
@@ -5556,7 +5557,7 @@ u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
 
         for (i = 0; i < 5; i++)
         {
-            if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
+            if (((m = mdl)->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
                 mdl00319770(mdl, i))
             {
                 mdlAnimSet(mdl->attachedWpns[i].wpnMdl, 0, id, blendFrameCount, flags);

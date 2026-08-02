@@ -767,7 +767,7 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
         for (i = 0; i < param_1->capacity; i++) {
             if (fclCombineListGetValue(param_1, i) ==
                 (s32)data->selection_detail) {
-                break;
+                goto da570_found;
             }
         }
         if (i == param_1->capacity) {

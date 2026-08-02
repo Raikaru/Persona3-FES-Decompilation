@@ -3987,7 +3987,7 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 
     work = (FldFrameMoveWork*)task->workData;
     line[1] = *position;
-    line[0] = *position;
+    line[0] = line[1];
     if (K_Scene_001a0250() != false)
     {
         line[0].y += 600.0f;

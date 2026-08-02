@@ -1191,7 +1191,7 @@ u16 FUN_003b6f50(u32 param_1,u32 param_5,float param_4,u32 *param_6,RwV3d *param
 #pragma push
 #pragma opt_loop_invariants on
 /* W420 negative: swapping puVar4 and iVar6 declarations left nd 98, object 972/976 (window 976), rate 0.100823 unchanged. */
-// FUN_003B7090 NONMATCHING
+// FUN_003B7090
 
 
 void FUN_003b7090(u64 param_1)
@@ -1256,7 +1256,7 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x7a] != 0) {
 
-          uVar3 = FUN_00318b70();
+          uVar3 = FUN_00318b70(puVar4[0x7a]);
 
           FUN_004cb590(uVar3);
 

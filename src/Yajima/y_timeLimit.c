@@ -215,6 +215,7 @@ typedef u8 bool;
 
 typedef union Vec128 { struct { u32 _0_4_; u32 _4_4_; u32 _8_4_; u32 _12_4_; }; struct { u64 _0_8_; u64 _8_8_; }; u8 _bytes[16]; } Vec128;
 static inline Vec128 rwVecZero(void) { Vec128 v; v._0_8_=0; v._8_8_=0; return v; }
+static inline int yTimeLess(int lhs, int rhs) { return lhs < rhs; }
 static Vec128 rwVecKeep(Vec128 v) { return v; }
 #define _lqc2(x) rwVecZero()
 #define _sqc2(x) rwVecKeep(x)
@@ -4223,7 +4224,7 @@ u32 FUN_0045b190(int param_1)
         pfVar5 = (float *)(iVar6 + *(int *)(iVar6 + 0x80) * 0x20);
         cVar1 = *(char *)(pfVar5 + 7);
         lVar4 = *(int *)(iVar6 + 0x88);
-        if (cVar1 <= lVar4) {
+        if (!yTimeLess(lVar4,cVar1)) {
           iVar3 = (int)cVar1 + (int)*(short *)((int)pfVar5 + 0x1e);
           if (lVar4 < iVar3) {
             if (lVar4 == iVar3 + -1) {
@@ -4243,16 +4244,16 @@ u32 FUN_0045b190(int param_1)
             else {
               *pfVar5 = *pfVar5 + pfVar5[4];
               pfVar5[1] = pfVar5[1] + pfVar5[5];
-              if (0.0f < pfVar5[6]) {
+              if (pfVar5[6] > 0.0f) {
                 pfVar5[4] = pfVar5[6] * (pfVar5[2] - *pfVar5);
                 pfVar5[5] = pfVar5[6] * (pfVar5[3] - pfVar5[1]);
               }
             }
           }
-          else if (*(char *)((int)pfVar5 + 0x1d) + iVar3 + -1 <= lVar4) {
+          else if (!yTimeLess(lVar4,*(char *)((int)pfVar5 + 0x1d) + iVar3 + -1)) {
             iVar3 = *(int *)(iVar6 + 0x80) + 1;
             *(int *)(iVar6 + 0x80) = iVar3;
-            if (*(int *)(iVar6 + 0x84) <= iVar3) {
+            if (!yTimeLess(iVar3,*(int *)(iVar6 + 0x84))) {
               *(u32 *)(iVar6 + 0x88) = 0;
               *(u32 *)(iVar6 + 0x90) = 0;
               *(int *)(iVar6 + 0x80) = *(int *)(iVar6 + 0x80) + -1;

@@ -5641,7 +5641,7 @@ void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float para
 
   if (piVar2 == *(int **)(param_5 + 0x50)) {
 
-    u16 uVar1 = *(u16 *)(piVar2 + 1);
+    u32 uVar1 = *(u16 *)(piVar2 + 1);
 
     for (uVar6 = 0; uVar6 < 4; uVar6 = uVar6 + 1) {
 
