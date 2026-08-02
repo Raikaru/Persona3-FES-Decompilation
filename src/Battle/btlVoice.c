@@ -3035,15 +3035,17 @@ void func_002e6a20(BtlCamera* camera, float weight)
   BtlUnit* secondUnit;
   BtlUnit* selectedUnit;
   u32 mode;
+  BtlCamera* cachedCamera;
 
-  firstUnit = camera->action->unit;
-  secondUnit = camera->action->target.targetedActions[0]->unit;
+  cachedCamera = camera;
+  firstUnit = cachedCamera->action->unit;
+  secondUnit = cachedCamera->action->target.targetedActions[0]->unit;
   work.distance = func_002e6130(firstUnit, secondUnit,
                                 (f32*)&work.first, (f32*)&work.second);
   work.firstRadius = firstUnit->sphereRadius * firstUnit->scale;
   work.secondRadius = secondUnit->sphereRadius * secondUnit->scale;
-  work.viewXZ[0] = camera->pos.x - work.first.x;
-  work.viewXZ[1] = camera->pos.z - work.first.z;
+  work.viewXZ[0] = cachedCamera->pos.x - work.first.x;
+  work.viewXZ[1] = cachedCamera->pos.z - work.first.z;
   FUN_004c6b20_6a20(work.viewXZ, work.viewXZ);
 
   if (firstUnit->genus == 0) {
@@ -3121,7 +3123,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
   work.projected[1] = work.rotated.z;
   work.projection = FUN_002d1fd0(work.fromXZ, work.toXZ, work.eyeXZ,
                                   work.projected);
-  work.fovScale = FUN_0052e930_6a20(DAT_007cad60 * camera->fovRad * 0.5f);
+  work.fovScale = FUN_0052e930_6a20(DAT_007cad60 * cachedCamera->fovRad * 0.5f);
   work.temp1 = work.distance * (selectedUnit->sphereRadius *
                                 selectedUnit->scale) +
               work.temp0;
@@ -3140,7 +3142,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
     work.target.y = 22.5f;
   }
 
-  FUN_002a4470_6a20((f32*)&work.pose, (f32*)&camera->pos);
+  FUN_002a4470_6a20((f32*)&work.pose, (f32*)&cachedCamera->pos);
   work.quatDot = FUN_002d1f30_6a20(&work.pose.rot, &work.aim);
   if (DAT_007cadc4 >= work.quatDot) {
     mode = 0x33;
@@ -3149,7 +3151,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
     FUN_002a44f0_6a20((f32*)&work.pose.pos, (f32*)&work.target);
     mode = 3;
   }
-  FUN_002a3e80(50.0f, (u8*)camera->action, (u8*)&selectedUnit->pos,
+  FUN_002a3e80(50.0f, (u8*)cachedCamera->action, (u8*)&selectedUnit->pos,
                (u8*)&work.target, mode);
 
   if (weight != 0.0f) {
@@ -3167,13 +3169,13 @@ void func_002e6a20(BtlCamera* camera, float weight)
       work.target.y = 22.5f;
     }
     work.temp2 = 2.0f;
-    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
-    FUN_002a3110(camera, work.temp2);
+    FUN_002a2290(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    FUN_002a3110(cachedCamera, work.temp2);
   }
   else {
     work.temp3 = weight;
-    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
-    FUN_002a3110(camera, work.temp3);
+    FUN_002a2290(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    FUN_002a3110(cachedCamera, work.temp3);
   }
 }
 #pragma opt_propagation reset

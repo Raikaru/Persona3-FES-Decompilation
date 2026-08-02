@@ -1558,8 +1558,7 @@ void func_00180220(void)
         table = func_003bd890();
         for (i = 0; i < table->total; i++)
         {
-            currentDate = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-            if (currentDate != table->records[i * 4])
+            if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) != table->records[i * 4])
             {
                 continue;
             }

@@ -1130,7 +1130,6 @@ void func_00271230(u32* param)
     u8* context;
     RwIm2DVertex* vertex;
     RwCamera* camera;
-    f32 recipZ;
     f32 width;
     f32 height;
     f32 x;
@@ -1146,6 +1145,7 @@ void func_00271230(u32* param)
     f32 transformedX;
     f32 transformedY;
     f32 alpha;
+    f32 recipZ;
 
     context = (u8*)(uintptr_t)param[3];
     camera = kwlnGetMainCamera();

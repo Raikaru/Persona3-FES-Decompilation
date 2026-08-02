@@ -8634,6 +8634,7 @@ void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
         CampVec2 footerPosition;
         CampVec2 headerPosition;
     } locals;
+    f32 textX;
 
     for (i = 0; i < 9; i++) {
         h_campStatusRenderStatIcon(position, scale, i, alpha);
@@ -8690,8 +8691,8 @@ void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
                                  locals.footerPosition.x + (f32)0x113,
                                  footerY, scale);
         {
-            f32 textX = footerX + 254.0f;
             f32 textY = footerY + 2.0f;
+            textX = footerX + 254.0f;
             if (*((u8*)persona + 4) == 0x63) {
                 sprintf(locals.text, "%d", 0);
             } else {
@@ -8759,6 +8760,7 @@ void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
         CampVec2 footerPosition;
         CampVec2 headerPosition;
     } locals;
+    f32 textX;
 
     for (i = 0; i < 9; i++) {
         h_campStatusRenderStatIcon(position, scale, i, alpha);
@@ -8815,8 +8817,8 @@ void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
                                  locals.footerPosition.x + (f32)0x113,
                                  footerY, scale);
         {
-            f32 textX = footerX + 254.0f;
             f32 textY = footerY + 2.0f;
+            textX = footerX + 254.0f;
             if (*((u8*)persona + 4) == 0x63) {
                 sprintf(locals.text, "%d", 0);
             } else {
@@ -15543,7 +15545,7 @@ static void campEquipmentClearCategoryCounts(CampEquipmentWork* work)
 // FUN_0013c240 NONMATCHING
 void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 {
-    u16 indices[304];
+    u16 indices[312];
     s32 count = 0;
     s32 scan = 0;
     s32 outCount;
@@ -15695,7 +15697,7 @@ found:
 // FUN_0013c780 NONMATCHING
 void FUN_0013c780(CampEquipmentWork* work)
 {
-    u16 candidateIndices[304];
+    u16 candidateIndices[312];
     s32 candidateCount = 0;
     s32 scanIndex = 0;
     s32 recordCount;
@@ -17636,8 +17638,8 @@ void FUN_001432f0(CampEquipmentPanelWork* work)
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 2, pair0.u, pair1.u, 0, 0, 0, 0);
   for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
     if (entryIndex < work->visibleCount) {
-      slotY = (float)(entryIndex * 0x55) + 62.0f;
       row = entryIndex * 10;
+      slotY = (float)(entryIndex * 0x55) + 62.0f;
       packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 8.0f, 0x42820000);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
       packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 31.0f, 0x42820000);
@@ -17765,8 +17767,8 @@ void FUN_00143ee0(CampEquipmentPanelWork* work)
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, 0x42860000440b8000, 0x4286000044310000, 0, 0, 0, 0);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
-      slotX = (float)(row * 0x55) + 62.0f;
       index = row * 10;
+      slotX = (float)(row * 0x55) + 62.0f;
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0xc20c0000), 0, 0, 0, 0);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0xc20c0000), 0, 0, 0, 0);
       func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0xc20c0000), 0, 0, 0, 0);

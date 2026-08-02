@@ -507,15 +507,14 @@ void* FUN_001fd890(KwlnTask* task)
     func_0021bcb0();
     func_0024c110();
     bpRushUpdate();
-    flags = work[0];
-    if (flags & 0x400)
+    if (work[0] & 0x400)
     {
         if (bpRes0021bab0())
         {
             return NULL;
         }
         bpd00253410();
-        work[0] = flags & ~0x401u;
+        work[0] &= ~0x401u;
     }
     misc = (u32*)panelMiscWork();
     K_ASSERT(misc != NULL, 0x164);

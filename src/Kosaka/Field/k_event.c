@@ -1110,8 +1110,7 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
                   mdlGetMatrix(unit->mdl)->pos.z;
         if (func_004c6ac0(&delta) < maxDist)
         {
-            return *(void**)(DAT_0086b180_abs + z * 0x310 + x * 0xc4 +
-                             0x1e0 + i * sizeof(void*));
+            return *(void**)(cell + 0x1e0 + i * sizeof(void*));
         }
         i++;
     }
