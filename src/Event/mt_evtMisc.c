@@ -1839,7 +1839,7 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
+                *(u_long128 *)puVar13 = *(u_long128 *)puVar14;
                 puVar14 = puVar14 + 8;
                 iVar10 = iVar10 + -1;
                 puVar13 = puVar13 + 4;
@@ -1868,8 +1868,8 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
-                *(unsigned __int128 *)(puVar13 + 4) = *(unsigned __int128 *)(puVar14 + 8);
+                *(u_long128 *)puVar13 = *(u_long128 *)puVar14;
+                *(u_long128 *)(puVar13 + 4) = *(u_long128 *)(puVar14 + 8);
                 puVar14 = puVar14 + 0x10;
                 iVar10 = iVar10 + -1;
                 puVar13 = puVar13 + 8;
@@ -1898,7 +1898,7 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
+                *(u_long128 *)puVar13 = *(u_long128 *)puVar14;
                 puVar14 = puVar14 + 8;
                 iVar10 = iVar10 + -1;
                 puVar13 = puVar13 + 4;
@@ -2117,7 +2117,7 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
+                *(u_long128 *)puVar13 = *(u_long128 *)puVar14;
                 puVar14 = puVar14 + 8;
                 iVar10 = iVar10 + -1;
                 puVar13 = puVar13 + 4;
@@ -2226,7 +2226,7 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
+          *(u_long128 *)puVar14 = *(u_long128 *)puVar16;
           puVar16 = puVar16 + 8;
           iVar11 = iVar11 + -1;
           puVar14 = puVar14 + 4;
@@ -2245,8 +2245,8 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar15;
-          *(unsigned __int128 *)(puVar14 + 4) = *(unsigned __int128 *)(puVar15 + 8);
+          *(u_long128 *)puVar14 = *(u_long128 *)puVar15;
+          *(u_long128 *)(puVar14 + 4) = *(u_long128 *)(puVar15 + 8);
           puVar15 = puVar15 + 0x10;
           iVar11 = iVar11 + -1;
           puVar14 = puVar14 + 8;
@@ -2277,7 +2277,7 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
+          *(u_long128 *)puVar14 = *(u_long128 *)puVar16;
           puVar16 = puVar16 + 8;
           iVar11 = iVar11 + -1;
           puVar14 = puVar14 + 4;
@@ -2424,7 +2424,7 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
+          *(u_long128 *)puVar14 = *(u_long128 *)puVar16;
           puVar16 = puVar16 + 8;
           iVar11 = iVar11 + -1;
           puVar14 = puVar14 + 4;

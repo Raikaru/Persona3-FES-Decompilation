@@ -3386,138 +3386,73 @@ void FUN_003a5980(u32 *param_1)
 
 
 void FUN_003a5ca0(u8 *param_1,int param_2,u32 param_3,int param_4)
-
-
-
 {
-
   u32 uVar1;
-
   int iVar2;
-
   u32 uVar3;
-
   int lVar4;
-
   u32 *puVar5;
-
   int iVar6;
-
   u32 *puVar7;
-
   int *piVar8;
-
   int iVar9;
-
   int iVar10;
-
-  
+  int iVar11;
 
   if (param_1 == 0) {
-
     FUN_0019d3f0("itfMesManager.c",0x10a7);
-
   }
-
-  if ((param_2 < 0) || (0x1f < param_2)) {
-
+  if ((param_2 < 0) || ((iVar11 = param_2 < 0x20) == 0)) {
     FUN_0019d3f0("itfMesManager.c",0x10a8);
-
   }
-
   iVar10 = (int)param_1 + 0xd4;
-
   iVar6 = (int)param_2;
-
   iVar9 = iVar6 * 4;
-
   piVar8 = (int *)(iVar10 + iVar9);
-
   if (*piVar8 != 0) {
-
     FUN_00191a10(piVar8[0x20]);
-
     *piVar8 = 0;
-
   }
-
   if (param_4 < 1) {
-
     iVar2 = FUN_00524388(param_3);
-
     uVar1 = iVar2 + 4U & 0xfffffffc;
-
     lVar4 = FUN_0016f190(0x1424);
-
     if (lVar4 != 0) {
-
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
-
       uVar3 = (*DAT_00960178_abs)(uVar1,0x40000);
-
       *puVar5 = uVar3;
-
     }
-
     else {
-
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
-
       uVar3 = FUN_00191af0(uVar1);
-
       *puVar5 = uVar3;
-
     }
-
     uVar3 = *puVar5;
-
     *(u32 *)(iVar10 + iVar6 * 4) = uVar3;
-
     FUN_00521250(uVar3,param_3,uVar1);
-
   }
-
   else {
-
     uVar1 = (int)param_4 + 5U & 0xfffffffc;
-
     lVar4 = FUN_0016f190(0x1424);
-
     if (lVar4 != 0) {
-
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
-
       uVar3 = (*DAT_00960178_abs)(uVar1,0x40000);
-
       *puVar5 = uVar3;
-
     }
-
     else {
-
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
-
       uVar3 = FUN_00191af0(uVar1);
-
       *puVar5 = uVar3;
-
     }
-
     puVar7 = (u32 *)(iVar10 + iVar6 * 4);
-
     uVar3 = *puVar5;
-
     *puVar7 = uVar3;
-
     FUN_00521408(uVar3,0,uVar1);
-
     FUN_00521250(*puVar7,param_3,param_4);
-
   }
-
   return;
-
 }
+
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
 #pragma opt_common_subs reset
 #undef FUN_003a5ea0

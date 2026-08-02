@@ -41,11 +41,11 @@ typedef struct FldShadowRenderTex
 
 #define FLDSHADOW_VIEW_SCALE (*(const f32*)0x007cadb0)
 #define FLDSHADOW_FAR_SCALE (*(const f32*)0x007caf24)
-#define FLDSHADOW_CLEAR_COLOR ((RwRGBA*)0x007ce138)
-#define FLDSHADOW_TINT (*(const RwRGBA*)0x007cc144)
+#define FLDSHADOW_CLEAR_COLOR ((RwRGBA*)DAT_007ce138)
+#define FLDSHADOW_TINT (*(const RwRGBA*)DAT_007cc144_abs)
 #define FLDSHADOW_RENDER_ACTIVE (*(u32*)0x007ce158)
 #define FLDSHADOW_CHAR_RENDER_GUARD (*(u32*)0x007cc1ec)
-#define FLDSHADOW_CAMERA_OFFSET ((const RwV3d*)0x00678920)
+#define FLDSHADOW_CAMERA_OFFSET ((const RwV3d*)DAT_00678920)
 #define FLDSHADOW_TASK_NAME ((const char*)0x00678930)
 #define FLDSHADOW_SOURCE_FILE ((const char*)0x00678948)
 
@@ -87,6 +87,11 @@ extern void (*D_00960090_abs[])(u32 state, u32 value);
 extern u32 D_00960184[];
 #pragma alias D_00960184_abs D_00960184
 extern u8 D_00960184_abs[];
+extern RwRGBA DAT_007cc144;
+#pragma alias DAT_007cc144_abs DAT_007cc144
+extern u8 DAT_007cc144_abs[];
+extern u8 DAT_007ce138[];
+extern u8 DAT_00678920[];
 extern s32 DAT_007cc148;
 extern s32 DAT_007ce13c;
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);

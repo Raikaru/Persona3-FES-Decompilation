@@ -249,8 +249,9 @@ int func_001fc870(u8* event, void* target)
 
 void func_001fc980(u8* event, u16* result, s32* count)
 {
-    extern void FUN_0017be10(s16 param_1, s16 param_2, s16 param_3, int param_4,
-                             void* param_5, void* param_6, void* param_7);
+    extern void FUN_0017be10(s16 param_1, s16 param_2, s16 param_3,
+                             int param_4, void* param_5, void* param_6,
+                             void* param_7);
     extern u16 FUN_0017bb40(s32 id);
     DatPersonaWork* persona;
     u16* skills;
@@ -294,7 +295,7 @@ void func_001fc980(u8* event, u16* result, s32* count)
         }
     }
     *count = resultCount;
-    FUN_005225a8(0x684df0, resultCount);
+    FUN_005225a8(DAT_00684d70 + 0x80, resultCount);
 }
 // FUN_001FCB30 NONMATCHING
 void func_001fcb30(u8* event, u32* result, s32* count)

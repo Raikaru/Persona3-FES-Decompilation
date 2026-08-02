@@ -1111,7 +1111,7 @@ void FUN_00253a40(void)
 
                ((int)(puVar1[iVar2 + 0x49ef] * puVar1[0x4a22]) <= (int)puVar1[0x49ed])) {
 
-              FUN_005225a8(0x68ea20,iVar2);
+              FUN_005225a8((u32)(D_0068EA00_abs + 0x20),iVar2);
 
               FUN_00256f20(unaff_s0,auStack_40,auStack_4);
 
@@ -1942,7 +1942,7 @@ void bpTexRemoveNodeAt_y2(s32 index)
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     work = BP_TEX_GLOBAL;
     count = BP_TEX_S32(work, 0x12684);
@@ -1953,7 +1953,7 @@ void bpTexRemoveNodeAt_y2(s32 index)
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     i = 0;
     for (scan = BP_TEX_PTR(work, 0x1265c);
@@ -1985,7 +1985,7 @@ void bpTexRemoveNodeAt_y2(s32 index)
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     func_00259190(node, children, &childCount);
     for (i = 0; i < childCount; i++)
@@ -2837,11 +2837,11 @@ void bpTexApplyActions(void)
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     work = BP_TEX_GLOBAL;
-    preload.xy = *(u64*)0x0068ea70;
-    preload.z = *(f32*)0x0068ea78;
+    preload.xy = *(u64*)(D_0068EA00_abs + 0x70);
+    preload.z = *(f32*)(D_0068EA00_abs + 0x78);
     actionCount = BP_TEX_S32(work, 0x127a8);
     frame = BP_TEX_S32(work, 0x1267c);
     for (i = 0; i < actionCount; i++)
@@ -2867,7 +2867,7 @@ void bpTexApplyActions(void)
             }
             if (BP_TEX_GLOBAL == NULL)
             {
-                func_0019d3f0((const char*)0x0068ea00, 0xbc);
+                func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
             }
             frame += directCount - 1;
             break;
@@ -2936,7 +2936,7 @@ void bpTexApplyActions(void)
             node[4] = first[4];
             if (BP_TEX_GLOBAL == NULL)
             {
-                func_0019d3f0((const char*)0x0068ea00, 0xbc);
+                func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
             }
             func_00258630(node);
             func_004bdde0(0, &preload, 0, 0);
@@ -3067,7 +3067,7 @@ void bpTexApplyActions(void)
 
     if (BP_TEX_GLOBAL == NULL)
     {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
     }
     rootCount = 0;
     for (tail = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
@@ -3083,7 +3083,7 @@ void bpTexApplyActions(void)
     {
         if (BP_TEX_GLOBAL == NULL)
         {
-            func_0019d3f0((const char*)0x0068ea00, 0xbc);
+            func_0019d3f0((const char*)D_0068EA00_abs, 0xbc);
         }
         node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
         while (node != NULL)
@@ -3097,7 +3097,7 @@ void bpTexApplyActions(void)
         }
         if (node == NULL)
         {
-            func_0019d3f0((const char*)0x0068ea00, 0x47a);
+            func_0019d3f0((const char*)D_0068EA00_abs, 0x47a);
         }
         if ((*node & 0x20) == 0)
         {

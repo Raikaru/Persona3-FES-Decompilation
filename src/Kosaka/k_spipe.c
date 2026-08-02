@@ -94,6 +94,9 @@ extern void (*D_00960090_abs[])(u32 state, u32 value);
 extern u32 D_00960184[];
 extern u8 D_00960184_abs[];
 extern s32 DAT_007cc148;
+extern RwRGBA DAT_007cc140;
+#pragma alias DAT_007cc140_abs DAT_007cc140
+extern u8 DAT_007cc140_abs[];
 extern s32 DAT_007ce13c;
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
 extern u32 jtbl_0096017C_abs[];
@@ -185,7 +188,7 @@ static ShadowColors gShadowColors =
     {0, 0, 0, 255},
     {0, 0, 0, 255}
 };
-#define FLDSHADOW_RING_COLOR ((const RwRGBA*)0x007cc140)
+#define FLDSHADOW_RING_COLOR ((const RwRGBA*)DAT_007cc140_abs)
 extern f32 fGpffff8214;
 #define FLDSHADOW_RING_ANGLE_STEP fGpffff8214
 extern void* func_004916d0(void* list, void* callback, void* context);

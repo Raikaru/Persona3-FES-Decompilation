@@ -18,6 +18,9 @@ extern f32 fGpffff82b8;
 extern f32 fGpffffb544;
 extern f32 fGpffffb540;
 extern u32 uGpffffb53c;
+extern u8 D_0067F578[];
+extern u8 D_00869F64[];
+extern u8 D_00869F78[];
 
 extern u8 D_0067F600[];
 extern const char D_0067F5E0[];
@@ -430,7 +433,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             {
                 if (id == 0)
                 {
-                    FUN_0019d3f0((const char*)0x0067f578, 0x125);
+                    FUN_0019d3f0((const char*)D_0067F578, 0x125);
                 }
                 work->majorId = (u16)id;
                 work->minorId = aux0;
@@ -445,7 +448,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             }
             else if (resource != 0)
             {
-                FUN_0019d3f0((const char*)0x0067f578, 0x135);
+                FUN_0019d3f0((const char*)D_0067F578, 0x135);
             }
             break;
 
@@ -571,7 +574,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             request = ROOT_U32(work, 0x40);
             if (request == 0 || kwlnTaskExists((KwlnTask*)request) != 1)
             {
-                FIELD_U32(0x00869f64) = FUN_001d5a90(fldRootTask);
+                FIELD_U32(D_00869F64) = FUN_001d5a90(fldRootTask);
                 FUN_001d70a0();
                 if (ROOT_U32(work, 0x38) == 0)
                 {
@@ -587,7 +590,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 FUN_001d19d0();
                 if (ROOT_U32(work, 0x38) == 0)
                 {
-                    FUN_001d5f30(FIELD_U32(0x00869f64),
+                    FUN_001d5f30(FIELD_U32(D_00869F64),
                                  *(u32*)(void*)FIELD_U32(0x008717f4));
                     FUN_001d6270(fldRootTask, 1, -1);
                     ROOT_U32(work, 0) = 8;
@@ -655,7 +658,6 @@ void* func_001b9480(KwlnTask* fldRootTask)
             if (ROOT_U32(work, 0x38) != 0 || request == 0 ||
                 kwlnTaskExists((KwlnTask*)request) != 1)
             {
-                camera = FIELD_U32(0x008717f4);
                 FIELD_U32(0x00869f7c) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0x1e0));
                 FUN_0016f1f0(0x1411, 0);
@@ -678,7 +680,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 {
                     ROOT_U32(work, 0x48) = FUN_004579b0(fldRootTask);
                 }
-                FIELD_U32(0x00869f78) =
+                FIELD_U32(D_00869F78) =
                     FUN_00429d40(fldRootTask, FIELD_U32(0x007cc2a0));
                 ROOT_U32(work, 0) = 0x0a;
             }
@@ -704,7 +706,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     if ((!(work->majorId == 0x0e &&
                            work->minorId == 5) ||
                          kwlnTaskExists((KwlnTask*)ROOT_U32(work, 0x48)) != 1) &&
-                        (FIELD_U32(0x00869f78) == 0 || FUN_0042ba30() != 0) &&
+                        (FIELD_U32(D_00869F78) == 0 || FUN_0042ba30() != 0) &&
                         FUN_0016f190(0x1410) != 1 && ROOT_U32(work, 4) != 1)
                     {
                         FUN_001d2a10();
@@ -793,10 +795,10 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 }
             }
             camera = FIELD_U32(0x008717f4);
-            FIELD_U32(0x00869f6c) =
+            FIELD_U32(D_00869F64 + 8) =
                 FUN_001e1230(fldRootTask, *(u32*)((u8*)camera + 0x1e0),
                              FIELD_U32(0x008717f0));
-            FIELD_U32(0x00869f68) = FUN_001cd5a0(fldRootTask);
+            FIELD_U32(D_00869F64 + 4) = FUN_001cd5a0(fldRootTask);
             FUN_001d37f0((KwlnTask*)FIELD_U32(0x00869f84), 0);
             FUN_001da000(FIELD_U32(0x00869f80), 0);
             FUN_004532d0(0);
@@ -856,7 +858,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             if (FUN_001ce960() != 0)
             {
                 FUN_001d2a10();
-                FUN_001d5f30(FIELD_U32(0x00869f64),
+                FUN_001d5f30(FIELD_U32(D_00869F64),
                              *(u32*)(void*)FIELD_U32(0x008717f4));
                 FUN_001d6270(fldRootTask, 1, -1);
                 FIELD_U32(0x007ce24c) = 1;

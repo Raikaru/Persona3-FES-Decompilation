@@ -5450,7 +5450,7 @@ void FUN_003bdbd0(int param_1)
         }
 
         if (bVar2) {
-          sVar1 = *(volatile /* Removing this qualifier worsens FUN_003bdbd0 (NONMATCHING nd41 -> NONMATCHING nd49, size 360 -> 360) - measured W170. */ s16 *)(*(u32 *)DAT_0095b2a0_abs);
+          sVar1 = *(volatile s16 *)(*(u32 *)DAT_0095b2a0_abs);
           FUN_00171960(iVar5 + 6,(s32)sVar1);
         }
       }

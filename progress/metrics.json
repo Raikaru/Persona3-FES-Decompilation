@@ -4,7 +4,7 @@
     "complete": false,
     "label": "Essential Persona-specific functions",
     "name": "essential_functions",
-    "remaining": 1340,
+    "remaining": 1337,
     "requires_every_function_to_match": true,
     "whole_executable_identity_is_separate": true
   },
@@ -972,6 +972,7 @@
       "00192980",
       "00192a70",
       "00192aa0",
+      "00192b50",
       "00192db0",
       "00192de0",
       "00193320",
@@ -1275,6 +1276,7 @@
       "001ad220",
       "001ad2f0",
       "001ad630",
+      "001ad660",
       "001ad870",
       "001ad890",
       "001ad8b0",
@@ -2795,6 +2797,7 @@
       "00279840",
       "00279890",
       "002798f0",
+      "00279940",
       "00279ac0",
       "00279af0",
       "00279b10",
@@ -6961,11 +6964,11 @@
       "007807e0",
       "00780800"
     ],
-    "count": 6895,
+    "count": 6898,
     "duplicate_rows": 0,
     "known_rows": 8235,
-    "matched_body_bytes": 1387108,
-    "percent": 83.728,
+    "matched_body_bytes": 1388612,
+    "percent": 83.764,
     "unique_known_addresses": 8235
   },
   "schema_version": 1,
@@ -15214,15 +15217,15 @@
   "source": {
     "function_scope_policy": "config/function_scope.json",
     "ignored_unknown_rows": 0,
-    "linked_report": "build\\wip\\W438_linked.json",
+    "linked_report": "build\\wip\\W440_linked.json",
     "raw_rows": 14055,
     "scope_ignored_unknown_rows": 0,
     "scope_rows": 8235,
-    "verifier_report": "build\\baselines\\W438_gate.json"
+    "verifier_report": "build\\baselines\\W440_gate.json"
   },
   "status_counts": {
-    "MATCH": 6895,
-    "NONMATCHING": 1339,
+    "MATCH": 6898,
+    "NONMATCHING": 1336,
     "SIZE_MISMATCH": 1
   },
   "total": 8235,
@@ -16189,6 +16192,7 @@
         "00192980",
         "00192a70",
         "00192aa0",
+        "00192b50",
         "00192db0",
         "00192de0",
         "00193320",
@@ -16492,6 +16496,7 @@
         "001ad220",
         "001ad2f0",
         "001ad630",
+        "001ad660",
         "001ad870",
         "001ad890",
         "001ad8b0",
@@ -18012,6 +18017,7 @@
         "00279840",
         "00279890",
         "002798f0",
+        "00279940",
         "00279ac0",
         "00279af0",
         "00279b10",
@@ -23342,16 +23348,16 @@
         "007807e0",
         "00780800"
       ],
-      "count": 8061,
+      "count": 8064,
       "duplicate_rows": 0,
       "known_rows": 14055,
-      "matched_body_bytes": 1437908,
-      "percent": 57.349,
+      "matched_body_bytes": 1439412,
+      "percent": 57.371,
       "unique_known_addresses": 14055
     },
     "status_counts": {
-      "MATCH": 8061,
-      "NONMATCHING": 5991,
+      "MATCH": 8064,
+      "NONMATCHING": 5988,
       "SIZE_MISMATCH": 1,
       "STUB": 2
     },
