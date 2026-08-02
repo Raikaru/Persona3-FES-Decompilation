@@ -1892,7 +1892,7 @@ void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float pa
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
-void FUN_0045bd90(u64 param_1);
+void FUN_0045bd90(int param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
@@ -3308,7 +3308,7 @@ void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float pa
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
-void FUN_0045bd90(u64 param_1);
+void FUN_0045bd90(int param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
@@ -4589,7 +4589,7 @@ LAB_0045bd70:
 #pragma opt_lifetimes on
 // FUN_0045BD90 NONMATCHING
 
-void FUN_0045bd90(u64 param_1)
+void FUN_0045bd90(int param_1)
 
 {
   int iVar1;
@@ -4600,12 +4600,14 @@ void FUN_0045bd90(u64 param_1)
   int iVar6;
   int iVar7;
   u8 auStack_4 [4];
+  u16 *state;
   
   iVar1 = *(int *)((int)param_1 + 0x3c);
   for (iVar7 = 0; iVar7 < 6; iVar7 = iVar7 + 1) {
     *(u32 *)(iVar1 + iVar7 * 4 + 0x1c50) = 0;
   }
-  *(u16 *)(iVar1 + 0x1c4c) = 0;
+  state = (u16 *)(iVar1 + 0x1c4c);
+  *state = 0;
   bVar2 = 0;
   if (iGpffffba24 == 0) {
     iVar7 = 0;
@@ -4625,13 +4627,14 @@ void FUN_0045bd90(u64 param_1)
       }
       if (iVar7 < 8) {
         bVar2 = 1;
-        *(u16 *)(iVar1 + 0x1c4c) = 1;
+        *state = 1;
       }
     }
   }
   if ((((DAT_007e094e & 0x800) == 0) && ((DAT_007e0958 & 0x800) == 0)) || (!bVar2)) {
     *(u16 *)(iVar1 + 0x1c44) = 0;
-    *(u16 *)(iVar1 + 0x1c38) = 0;
+    state = (u16 *)(iVar1 + 0x1c38);
+    *state = 0;
     iVar7 = 0;
     if (iGpffffba24 >= 1) {
       iVar7 = 10;
@@ -4685,7 +4688,7 @@ LAB_0045bfe0:
       }
     }
     if (iVar7 != 0) {
-      *(u16 *)(iVar1 + 0x1c38) = 1;
+      *state = 1;
     }
     if (((DAT_007e094e & 0x20) != 0) || ((DAT_007e0958 & 0x20) != 0)) {
       if (iVar7 == 0x1f) {

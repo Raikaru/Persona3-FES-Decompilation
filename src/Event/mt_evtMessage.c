@@ -1641,7 +1641,7 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
         break;
       }
       FUN_003b78b0(*(u16 *)(param_2 * 2 + param_1 + 0xec),&position,0);
-      FUN_003b9550(*(u16 *)(param_2 * 2 + param_1 + 0xec),1);
+      FUN_003b9550(*handlePtr,1);
     }
   }
 }

@@ -416,10 +416,10 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
 // FUN_00210D90 NONMATCHING
 void bsaMain00210d90(BsaWork* work)
 {
-    s32* p;
-    u32 table6;
+    u32 tables[3];
     u32 table1;
     u32 table2;
+    s32* p;
     u32 image;
     u32 resource;
     f32 alpha;
@@ -434,9 +434,10 @@ void bsaMain00210d90(BsaWork* work)
     f32 rect[4];
     u8 drawColor[4];
     u8 cachedAlpha;
+    f32 labelY;
 
     p = (s32*)work->words;
-    table6 = func_0021c3f0(6);
+    tables[0] = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
     if ((p[1] & BSA_FLAG_ACTIVE) == 0)
@@ -470,13 +471,14 @@ void bsaMain00210d90(BsaWork* work)
         bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
         for (i = 0; i < 2; i++) bsaSetColor(p + 0x4c50 + i * 0x40, bsaAlpha(alpha255));
     } else {
+        labelY = base + 58.0f;
         image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f, -1.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x182c, image, 110.0f, labelY, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x33);
-        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f, -1.0f, -1.0f, alpha255);
-        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image), base + 58.0f, 30.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x186c, image, 106.0f, labelY, -1.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image), labelY, 30.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f, -1.0f, -1.0f, cachedAlpha);
+        bsaPlaceQuad(p, 0x18ec, image, 140.0f, labelY, -1.0f, -1.0f, cachedAlpha);
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
         f32 origin[2];
@@ -611,7 +613,7 @@ void bsaMain00210d90(BsaWork* work)
             bsaPlaceQuad(p, i * 0x80 + 0xc50, image, panelBaseX + 58.0f, groupY, -1.0f, -1.0f, alpha255);
             bsaPlaceQuad(p, i * 0x80 + 0xc90, image, panelBaseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, alpha255);
             if (i < (s32)p[0xd]) {
-                image = func_0021cca0(table6,
+                image = func_0021cca0(tables[0],
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
                 rect[0] = panelBaseX + 54.0f;
                 rect[1] = (f32)(i & 3) * 30.0f + 271.0f;

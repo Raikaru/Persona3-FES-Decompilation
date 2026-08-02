@@ -79,8 +79,8 @@ void FUN_0022c850(u32* object)
 // FUN_0022C8A0 NONMATCHING
 void FUN_0022c8a0(u32* object_param)
 {
-    u8* object;
     u32 table3;
+    u8* object;
     u32 table5;
     f32 rect[4];
     union {

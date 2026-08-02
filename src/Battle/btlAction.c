@@ -2320,6 +2320,7 @@ void btlActionUpdateStateReady(BtlAction* action)
 {
     BtlAction* target;
     u16 i;
+    u16 command;
 
     if (btlPacketCountById(0x506) != 0)
     {
@@ -2339,7 +2340,8 @@ void btlActionUpdateStateReady(BtlAction* action)
         FUN_002d15e0(action->target.targetedActions);
     }
     action->unk_18 &= ~2;
-    switch (action->target.commandId)
+    command = action->target.commandId;
+    switch (command)
     {
         case 1: case 2: case 3: case 9:
             FUN_002d6620(action);
@@ -2378,7 +2380,7 @@ void btlActionUpdateStateReady(BtlAction* action)
         case 12: btlActionSetState(action, BTLACTION_STATE_ESCAPE); break;
         default: FUN_0019d3f0((void*)0x693318, 0xaec); break;
     }
-    if ((action->target.commandId == 1 || action->target.commandId == 2 || action->target.commandId == 3) &&
+    if ((command == 1 || command == 2 || command == 3) &&
         FUN_0028a3e0(action) != 0)
     {
         action->unk_18 |= 8;
@@ -5713,6 +5715,7 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     RwV3d direction;
     RwV3d destination;
     u16 state;
+    BtlUnit* unit = action->unit;
 
     root = btlVoice002e2be0(action, 0x14, 0, 0, 0);
     btlPacketRegister(root, BTLPACKET_TYPE_1);
@@ -5723,7 +5726,7 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_REINFORCE);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    action->unit->mdl = (Model*)FUN_00316910(action->unit->genus + 1, action->unit->charId, 0);
+    unit->mdl = (Model*)FUN_00316910(unit->genus + 1, unit->charId, 0);
     if (action->unit->mdl == NULL)
     {
         root = FUN_00285690(action->unit, action->unit->charId, 0x7e);
@@ -5732,28 +5735,28 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     }
     else
     {
-        action->unit->flags2 |= BTLUNIT_FLAG2_UPDATE | BTLUNIT_FLAG2_DIRTY;
-        action->unit->resTypeId = FUN_003b6000(action->unit->charId, action->unit->mdl);
+        unit->flags2 |= BTLUNIT_FLAG2_UPDATE | BTLUNIT_FLAG2_DIRTY;
+        unit->resTypeId = FUN_003b6000(unit->charId, unit->mdl);
         FUN_001a0590(action->unit->resTypeId, 1);
         FUN_00287b20(action->unit, 1);
-        FUN_002831c0(action->unit, 0);
-        FUN_00282bc0(action->unit);
-        packet = FUN_002864a0(action->unit, action->unit->charId, 0x10);
+        FUN_002831c0(unit, 0);
+        FUN_00282bc0(unit);
+        packet = FUN_002864a0(unit, unit->charId, 0x10);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    btlUnitAnimate(action->unit, -1, 0xc, 1.0f, 3);
-    FUN_002b77c0(action->unit);
-    btlUnit0027f7c0(action->unit, &pos, NULL, &direction);
-    packet = FUN_002864a0(action->unit, action->unit->charId, 0x10);
+    btlUnitAnimate(unit, -1, 0xc, 1.0f, 3);
+    FUN_002b77c0(unit);
+    btlUnit0027f7c0(unit, &pos, NULL, &direction);
+    packet = FUN_002864a0(unit, unit->charId, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    FUN_00287b20(action->unit, 1);
-    FUN_002d3e00(action->unit, &destination);
-    FUN_00287490(action->unit);
-    packet = FUN_00285d30(action->unit, -1, 0xc, 0, 3, 1);
+    FUN_00287b20(unit, 1);
+    FUN_002d3e00(unit, &destination);
+    FUN_00287490(unit);
+    packet = FUN_00285d30(unit, -1, 0xc, 0, 3, 1);
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
     ACTION_U16(packet, 0x48) = 1;
