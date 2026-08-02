@@ -2999,6 +2999,8 @@ typedef struct
 } CalendarConfirmWork;
 
 extern const char D_005E4190[];
+extern const char DAT_007cc0c0[];
+extern void* DAT_007cdff0;
 extern u32 H_Maestro_00111f30(s16* state);
 extern void func_001842c0(KwlnTask* task,
                           s32 month,
@@ -3048,7 +3050,7 @@ void* func_00183410(KwlnTask* task)
             case 1:
                 if (H_Maestro_00111f30((s16*)work->resource) == 1)
                 {
-                    *(void**)0x007cdff0 = work->resource;
+                    DAT_007cdff0 = work->resource;
                     work->timer = 60;
                     work->state = 2;
                 }
@@ -3072,7 +3074,7 @@ void* func_00183410(KwlnTask* task)
                 }
                 else
                 {
-                    printf((const char*)0x007cc0c0);
+                    printf(DAT_007cc0c0);
                 }
                 break;
 

@@ -165,6 +165,8 @@ u32 DAT_006b1130;
 #pragma alias DAT_006b1130_abs DAT_006b1130
 extern u8 DAT_006b1130_abs[];
 u32 DAT_006b1178;
+#pragma alias DAT_006b1178_abs DAT_006b1178
+extern u8 DAT_006b1178_abs[];
 u32 DAT_006b1190;
 u32 DAT_006b1220;
 u32 DAT_006b1340;
@@ -2744,7 +2746,7 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
   iVar4 = *(int *)(param_2 + 0xc);
 
-  psVar7 = (short *)0x006b1178;
+  psVar7 = (short *)DAT_006b1178_abs;
 
   psVar6 = asStack_10;
 
