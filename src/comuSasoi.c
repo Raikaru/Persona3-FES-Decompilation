@@ -831,7 +831,7 @@ u32 FUN_003c3190(int *param_1)
 
   uVar6 = FUN_0017da40();
 
-  DAT_0095b790 = 0;
+  DAT_0095b790_abs[0] = 0;
 
   lVar7 = FUN_00395230(100);
 
@@ -909,7 +909,7 @@ LAB_003c3274:
 
         *param_1 = iVar3;
 
-        lVar7 = FUN_003be2a0(0,0,iVar3,7,0x95b79c);
+        lVar7 = FUN_003be2a0_ptr(0,0,iVar3,7,DAT_0095b79c_abs);
 
         if (lVar7 == 0) {
 
@@ -919,7 +919,7 @@ LAB_003c3274:
 
         uVar4 = 1;
 
-        DAT_0095b790 = 1;
+        DAT_0095b790_abs[0] = 1;
 
       }
 

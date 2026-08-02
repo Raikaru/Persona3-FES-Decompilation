@@ -6624,11 +6624,11 @@ u32 func_002ed360(u64 *param_1)
 
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
-// FUN_002ee640 NONMATCHING
+// FUN_002ee640
 void func_002ee640(BtlAction* action)
 {
-  BtlUnit* unit;
   BtlUnit* other;
+  BtlUnit* unit;
   void* object;
   BtlPacket* parent;
   BtlPacket* packet;
@@ -6652,9 +6652,12 @@ void func_002ee640(BtlAction* action)
     break;
   }
   if (unit->charId == 0x10a) {
-    for (other = gBtl->unitLists[UNIT_GENUS_EC].head;
-         other != NULL && other->charId != 0x109;
-         other = other->next) {
+    other = gBtl->unitLists[UNIT_GENUS_EC].head;
+    while (other != NULL) {
+      if (other->charId == 0x109) {
+        break;
+      }
+      other = other->next;
     }
   }
   parent = FUN_00284200_packet_voice(1.0f, unit, 0x12, 0, 2);

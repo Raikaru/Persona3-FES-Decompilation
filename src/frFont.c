@@ -96,6 +96,8 @@ extern u32 DAT_0095ad08;
 extern u32 DAT_0095ad0c;
 #pragma alias DAT_0095ad0c_abs DAT_0095ad0c
 extern u32 DAT_0095ad0c_abs[];
+#pragma alias DAT_0095ad0c_target DAT_0095ad0c
+extern u8 DAT_0095ad0c_target[];
 extern u32 DAT_0095ad10;
 extern u32 DAT_0095ad30;
 extern u32 DAT_0095ad50;
@@ -110,6 +112,8 @@ extern u32 DAT_0095ae14_abs[];
 extern u32 DAT_0095ae18;
 #pragma alias DAT_0095ae18_abs DAT_0095ae18
 extern u32 DAT_0095ae18_abs[];
+#pragma alias DAT_0095ae18_target DAT_0095ae18
+extern u8 DAT_0095ae18_target[];
 extern u32 DAT_0095ae1c;
 #pragma alias DAT_0095ae1c_abs DAT_0095ae1c
 extern u32 DAT_0095ae1c_abs[];
@@ -139,6 +143,8 @@ extern code DAT_0096017c;
 extern code DAT_0096017c_abs[];
 extern u32 LAB_003b28b8;
 extern u8 bGpffffb950;
+#pragma alias bGpffffb950_sda bGpffffb950
+extern u8 bGpffffb950_sda __attribute__((section(".sdata")));
 extern u32 gp0xffffa808;
 extern u32 gp0xffffa838;
 extern u32 iGpffffa800;
@@ -183,6 +189,10 @@ extern void FUN_003b0430_typed(int param_1,u32 param_2);
 u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 #pragma alias FUN_003b0970_typed FUN_003b0970
 extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,u32 param_5);
+#pragma alias FUN_003b05c0_typed FUN_003b05c0
+extern void FUN_003b05c0_typed(u16 *param_1);
+#pragma alias FUN_003b0840_typed FUN_003b0840
+extern int FUN_003b0840_typed(int param_1);
 void FUN_003b05c0(u16 *param_1);
 int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 #pragma alias FUN_003b0620_typed FUN_003b0620
@@ -1235,8 +1245,8 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
   int iVar3;
 
   int lVar4;
-
   u16 uVar5;
+
 
   int iVar6;
 
@@ -1250,11 +1260,11 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
     goto skipCachedFont;
   }
 
-  bGpffffb950 = param_2;
+  bGpffffb950_sda = param_2;
 
 skipCachedFont:
 
-  if (DAT_0095ad0c_abs[(u32)bGpffffb950 * 8] != 0) {
+  if (((u32*)DAT_0095ad0c_target)[(u32)bGpffffb950_sda * 8] != 0) {
     goto processFont;
   }
 
@@ -1270,9 +1280,9 @@ processFont:
 
     if (param_5 == 0) {
 
-      param_5 = (u8 *)FUN_003b46b0(DAT_0095ae20);
+      param_5 = (u8 *)FUN_003b46b0(*(u32*)DAT_0095ae20_abs);
 
-      DAT_0095ae18 = DAT_0095ae18 + 1;
+      (*(u32*)DAT_0095ae18_target)++;
 
       if (param_5 == 0) {
 
@@ -1280,7 +1290,7 @@ processFont:
 
       }
 
-      FUN_003b05c0(param_5);
+      FUN_003b05c0_typed((u16*)param_5);
 
     }
 
@@ -1293,18 +1303,18 @@ processFont:
     for (uVar7 = 0; uVar7 < uVar2; uVar7 = uVar7 + 1) {
 
       bVar1 = *(u8 *)((int)param_1 + uVar7);
-
       uVar5 = (u16)bVar1;
+
 
       if (0x7f < uVar5) {
 
         uVar7 = uVar7 + 1;
 
-        uVar5 = ((u16)bVar1 << 8) | *(u8 *)((int)param_1 + uVar7);
+        uVar5 = ((u16)uVar5 << 8) | *(u8 *)((int)param_1 + uVar7);
 
       }
 
-      iVar3 = FUN_003b0620_typed(uVar5,bGpffffb950,param_3,param_4);
+      iVar3 = FUN_003b0620_typed(uVar5,bGpffffb950_sda,param_3,param_4);
 
       if (iVar6 == 0) {
 
@@ -1330,7 +1340,7 @@ processFont:
 
       *(int *)(iVar8 + 0x18) = *(int *)(iVar8 + 0x18) + 1;
 
-      lVar4 = FUN_003b0840(iVar3);
+      lVar4 = FUN_003b0840_typed(iVar3);
 
       if (lVar4 != 0) {
 

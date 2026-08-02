@@ -2059,17 +2059,18 @@ void btlActionInitStateSupport(BtlAction* action)
 // FUN_0028d080 NONMATCHING
 void btlActionUpdateStateSupport(BtlAction* action)
 {
-    BtlPacket* packet;
-    BtlUnit* unit = action->unit;
-    u8 status;
-    s32 work[4];
+BtlPacket* packet;
     s32 messageId = 0;
     s32 special = 0;
+    s32 work[7];
+    s8 status;
+    BtlUnit* unit;
 
     if (btlPacketCountById(0x506) != 0)
     {
         return;
     }
+    unit = action->unit;
     status = FUN_00302f50(unit->datUnit);
     switch (status)
     {
@@ -6239,7 +6240,7 @@ void btlActionUpdateStateEndure(BtlAction* action)
     BtlPacket* animPacket;
     BtlPacket* messagePacket;
     BtlUnit* unit;
-    s32 work[4];
+    s32 work[7];
     u16 skillId;
     s16 messageId;
     u16 count;
@@ -7187,49 +7188,49 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
             return;
         }
         i = 0;
-        while (i < ACTION_U16(gBtl, 0xb98))
-        {
-            partyIds[i] = ((BtlAction*)ACTION_U32(gBtl, 0xb88 + i * 4))->unit->charId;
-            i++;
-        }
-        while (i < 3)
-        {
-            partyIds[i] = 0;
-            i++;
-        }
-        packet = func_002e3b50(partyIds[0], partyIds[1], partyIds[2]);
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = func_002e3990();
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlVoice002e2be0(selected, 4, 0, 0, 0);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002dd100(10, 2, 0x12);
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        callbackPacket = func_0027f410((u32)btlActionInitStateRoundUpMes, action);
-        btlPacketRegister(callbackPacket, BTLPACKET_TYPE_1);
-
-        setup[0] = DAT_007cb050[0];
-        setup[1] = DAT_007cb050[1];
-        setup[2] = DAT_007cb050[2];
-        setup[3] = 3;
-        setup[4] = DAT_007cb050[3];
-        setup[5] = DAT_007cb050[4];
-        setup[6] = DAT_007cb050[5];
-        setup[8] = DAT_007cb050[6];
-        setup[9] = DAT_007cb050[7];
-        setup[10] = DAT_007cb050[8];
-        setup[12] = DAT_007cb050[9];
-        setup[13] = DAT_007cb050[10];
-        setup[14] = DAT_007cb050[11];
-        func_002b9600(setup);
-        packet = func_002bb2f0(ACTION_U32(gBtl, 0xd10), action->unit, 0,
-                               callbackPacket->uid, 0xc000);
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        action->unk_488 = 1;
+    while (i < ACTION_U16(gBtl, 0xb98))
+    {
+        partyIds[i] = ((BtlAction*)ACTION_U32(gBtl, 0xb88 + i * 4))->unit->charId;
+        i++;
     }
+    while (i < 3)
+    {
+        partyIds[i] = 0;
+        i++;
+    }
+    packet = func_002e3b50(partyIds[0], partyIds[1], partyIds[2]);
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = func_002e3990();
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = btlVoice002e2be0(selected, 4, 0, 0, 0);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = FUN_002dd100(10, 2, 0x12);
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    callbackPacket = func_0027f410((u32)btlActionInitStateRoundUpMes, action);
+    btlPacketRegister(callbackPacket, BTLPACKET_TYPE_1);
 
+    setup[0] = DAT_007cb050[0];
+    setup[1] = DAT_007cb050[1];
+    setup[2] = DAT_007cb050[2];
+    setup[3] = 3;
+    setup[4] = DAT_007cb050[3];
+    setup[5] = DAT_007cb050[4];
+    setup[6] = DAT_007cb050[5];
+    setup[8] = DAT_007cb050[6];
+    setup[9] = DAT_007cb050[7];
+    setup[10] = DAT_007cb050[8];
+    setup[12] = DAT_007cb050[9];
+    setup[13] = DAT_007cb050[10];
+    setup[14] = DAT_007cb050[11];
+    func_002b9600(setup);
+    packet = func_002bb2f0(ACTION_U32(gBtl, 0xd10), action->unit, 0,
+                           callbackPacket->uid, 0xc000);
+    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+    action->unk_488 = 1;
+
+    }
     timer = ACTION_S16(action, 0x490);
     if (timer == 0)
     {

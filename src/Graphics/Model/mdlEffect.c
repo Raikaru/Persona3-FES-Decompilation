@@ -10447,6 +10447,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
 
 
 
+
 // FUN_003299B0 NONMATCHING
 f32 *FUN_003299b0(void)
 {
@@ -10455,7 +10456,6 @@ f32 *FUN_003299b0(void)
   f32 dst[3];
   f32 src[3];
   f32 *result;
-
   __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(DAT_0069c4d0_abs) : "memory");
   src[0] = *(f32 *)DAT_0069c4d0_abs;
   src[1] = *(f32 *)(DAT_0069c4d0_abs + 4);
@@ -23340,10 +23340,11 @@ void FUN_003377f0(u32 param_1)
           u8 red = ((volatile u8 *)&stack.output.chan)[0];
           u8 green = ((volatile u8 *)&stack.output.chan)[1];
           u8 blue = ((volatile u8 *)&stack.output.chan)[2];
+          u8 outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
-          *(u8 *)(dst + 7) = ((volatile u8 *)&stack.output.chan)[3];
+          *(u8 *)(dst + 7) = outputAlpha;
         } else {
           int dst;
           u8 red;
@@ -38086,10 +38087,10 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
   
 
-  if (((!(*(float *)(param_1 + 0x18) <= 640.0f) ||
-        !(*(float *)(param_1 + 0x1c) <= 448.0f)) ||
-       !(0.0f <= *(float *)(param_1 + 0x20))) ||
-      !(0.0f <= *(float *)(param_1 + 0x24))) {
+  if ((((*(float *)(param_1 + 0x18) > 640.0f) ||
+        (*(float *)(param_1 + 0x1c) > 448.0f)) ||
+       (*(float *)(param_1 + 0x20) < 0.0f)) ||
+      (*(float *)(param_1 + 0x24) < 0.0f)) {
 
     uVar6 = 0;
 
@@ -38606,7 +38607,6 @@ void FUN_00348da0(int param_1,u32 *param_2)
   
 
   FUN_004d81b0(2,&uStack_4);
-
   setState = (void (**)(int, int))DAT_00960090_abs;
   (*setState)(1,*param_2);
 
@@ -38650,11 +38650,11 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
 
 
+
 static inline f32 mdlEffectScaleFirst(f32 factor, f32 value)
 {
   return factor * value;
 }
-
 // FUN_00348F30
 
 

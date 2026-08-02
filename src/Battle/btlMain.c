@@ -653,6 +653,7 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
 // FUN_0029b760 NONMATCHING
 u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
 {
+    BtlUnit* unitA;
     BtlUnit* unit;
     BtlPacket* movePacket;
     BtlPacket* packet;
@@ -665,13 +666,11 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     u8 hasSkill24d;
     u8 hasSkill24e;
     u8 hasSkill24f;
-    u32 genus;
+    u16 genus;
     u32 encountIndex;
-    if (btlPacketCount() != 0 || FUN_001fec30() != 0)
+    if (btlPacketCount() == 0 && FUN_001fec30() == 0)
     {
-        return BTL_STATE_NULL;
-    }
-    FUN_002dcd30();
+        FUN_002dcd30();
     if (FUN_001feec0() == 0 && FUN_002d1a70() == 1)
     {
         gBtl->flags |= 0x4000;
@@ -684,14 +683,16 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     }
     for (genus = 0; genus < 2; genus++)
     {
-        for (unit = gBtl->unitLists[genus].head; unit != ((void*)0); unit = unit->next)
+        for (unitA = gBtl->unitLists[genus].head; unitA != ((void*)0); unitA = unitA->next)
         {
-            FUN_002d3e00(unit, 0);
-            btlUnit0027f7c0(unit, ((void*)0), (RwV3d*)&baseRot, ((void*)0));
-            FUN_0027f680(unit, &baseRot);
+            FUN_002d3e00(unitA, 0);
+            btlUnit0027f7c0(unitA, ((void*)0), (RwV3d*)&baseRot, ((void*)0));
+            FUN_0027f680(unitA, &baseRot);
         }
     }
     FUN_00280870(2, 0, &homePos, 0, 0, 1);
+    {
+        BtlUnit* unit;
     for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
         FUN_00287490(unit);
@@ -728,10 +729,11 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
                 packet = FUN_00284200(1.0f, unit, 0x10, 4, 0);
                 packet->unk_00 = 4;
                 packet->parentUID = movePacket->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
                 (*(u16*)((u8*)(packet) + (0x48))) = 4;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
             }
         }
+    }
     }
     for (genus = 0; genus < 2; genus++)
     {
@@ -783,6 +785,8 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     FUN_002bfc70(0);
     FUN_002bfc50(0);
     return BTL_STATE_UNITLOAD;
+    }
+    return BTL_STATE_NULL;
 }
 #pragma pop
 #pragma opt_loop_invariants reset

@@ -3839,7 +3839,7 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     s16 alphaDuration;
     s16 end;
     f32 factor;
-    s32 counter;
+    s16 counter;
 
     packet = (BtlUnitPacket00285d30*)work;
     unit = packet->unit;

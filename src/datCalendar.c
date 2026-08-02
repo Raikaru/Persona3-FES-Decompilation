@@ -3172,11 +3172,11 @@ void* func_00183410(KwlnTask* task)
 /* W414: y57-only hoist reached nd597/object924 but did not grow the frame; y67-only reached nd681. */
 // FUN_00183840 NONMATCHING
 void func_00183840(void* resource,
+                   f32 baseX,
+                   f32 baseY,
                    s32 alpha,
                    s32 month,
-                   s32 day,
-                   f32 baseX,
-                   f32 baseY)
+                   s32 day)
 {
     s32 days;
     s32 phase;
@@ -3197,6 +3197,9 @@ void func_00183840(void* resource,
 
     switch (phase)
     {
+        case 29:
+            frame = 18;
+            break;
         case 0:
         case 1:
             frame = 3;
@@ -3256,9 +3259,6 @@ void func_00183840(void* resource,
         case 28:
             frame = 17;
             break;
-        case 29:
-            frame = 18;
-            break;
         default:
             frame = 0;
             break;
@@ -3310,17 +3310,17 @@ void func_00183840(void* resource,
 /* W414 negative: pre-call y15 hoist worsened nd420->588; assigning after the second draw reached nd418/object888. */
 // FUN_00183BE0 NONMATCHING
 void func_00183be0(void* resource,
+                   f32 baseX,
+                   f32 baseY,
                    s32 alpha,
                    s32 month,
-                   s32 day,
-                   f32 baseX,
-                   f32 baseY)
+                   s32 day)
 {
-    u32 red;
     u32 green;
     u32 blue;
-    s32 weekday;
+    u32 red;
     s32 days;
+    s32 weekday;
     void* unused;
     f32 drawY15;
 
@@ -3390,12 +3390,12 @@ void func_00183be0(void* resource,
 #pragma opt_propagation reset
 // FUN_00183F60 NONMATCHING
 void func_00183f60(void* resource,
+                   f32 baseX,
+                   f32 baseY,
                    s32 alpha,
                    s32 month,
                    s32 day,
-                   s32 time,
-                   f32 baseX,
-                   f32 baseY)
+                   s32 time)
 {
     s32 days;
     void* unused;
@@ -3410,11 +3410,6 @@ void func_00183f60(void* resource,
 
     switch (time)
     {
-        case 0:
-        case 7:
-            func_001159f0(unused, resource, 0x35, alpha & 0xff,
-                          baseX + 491.0f, baseY + 29.0f, 50.0f);
-            return;
         case 1:
             func_001159f0(unused, resource, 0x2f, alpha & 0xff,
                           baseX + 452.0f, baseY + 29.0f, 50.0f);
@@ -3438,6 +3433,11 @@ void func_00183f60(void* resource,
         case 6:
             func_001159f0(unused, resource, 0x34, alpha & 0xff,
                           baseX + 528.0f, baseY + 29.0f, 50.0f);
+            return;
+        case 0:
+        case 7:
+            func_001159f0(unused, resource, 0x35, alpha & 0xff,
+                          baseX + 491.0f, baseY + 29.0f, 50.0f);
             return;
         case 8:
             func_001159f0(unused, resource, 0x37, alpha & 0xff,
@@ -3504,10 +3504,10 @@ void func_001842c0(KwlnTask* task,
         blue = 0xff;
     }
 
-    func_00183840(resource, 0, month, day, CLND_CALENDAR_X, 0.0f);
-    func_00183be0(resource, 0, month, day, CLND_CALENDAR_X, 0.0f);
+    func_00183840(resource, CLND_CALENDAR_X, 0.0f, 0, month, day);
+    func_00183be0(resource, CLND_CALENDAR_X, 0.0f, 0, month, day);
     fade = ((60 - timer) * 0xff) / 60;
-    func_00183f60(resource, fade, month, day, time, CLND_CALENDAR_X, 0.0f);
+    func_00183f60(resource, CLND_CALENDAR_X, 0.0f, fade, month, day, time);
 
     if (datGetFlag(0x1420) != 0)
     {
@@ -5438,7 +5438,7 @@ KwlnTask* func_001870e0(KwlnTask* parent)
     return task;
 }
 
-// FUN_001871A0 NONMATCHING
+// FUN_001871A0
 void* func_001871a0(KwlnTask* task)
 {
     CalendarRecoveredColdWork* work;
@@ -5504,7 +5504,7 @@ void* func_001871a0(KwlnTask* task)
 draw:
     if (work->timer < 10)
         color = (u32)((work->timer * 0xff) / 10);
-    else if (work->timer >= 0x51)
+    else if (work->timer > 0x50)
         color = (u32)(((0x5a - work->timer) * 0xff) / 10);
     else
         color = 0xff;
@@ -6552,7 +6552,7 @@ void* func_00189230(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 3:
@@ -6570,7 +6570,7 @@ void* func_00189230(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 4:
@@ -6588,7 +6588,7 @@ void* func_00189230(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 5:
@@ -6606,7 +6606,7 @@ void* func_00189230(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 6:
@@ -6625,7 +6625,7 @@ void* func_00189230(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 7:
@@ -6645,7 +6645,7 @@ void* func_00189230(KwlnTask* task)
             }
             func_001140d0(0.0f, 0xffffff00U | iVar2, fVar1, fVar2,
                           iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3]);
+                          (const void*)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6700,7 +6700,7 @@ void* func_00189810(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 3:
@@ -6720,7 +6720,7 @@ void* func_00189810(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 4:
@@ -6740,7 +6740,7 @@ void* func_00189810(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 5:
@@ -6760,7 +6760,7 @@ void* func_00189810(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 6:
@@ -6779,7 +6779,7 @@ void* func_00189810(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 7:
@@ -6987,7 +6987,7 @@ void* func_0018a3f0(KwlnTask* task)
             {
                 puVar1[0] = 3;
             }
-            fVar1 = ((f32)(puVar1[1] + -0x12) * 0.0f) + 419.0f;
+            fVar1 = 419.0f;
             fVar2 = 273.0f - ((f32)(puVar1[1] + -0x12) * 2.0f) / 2.0f;
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
             iVar3 = iVar2 >> 0xc;
@@ -8527,6 +8527,16 @@ void* func_0018de60(KwlnTask* task)
     void* transition;
 
     if (GS_U32(work, 0) == 1)
+        goto de60_state1;
+    if (GS_U32(work, 0) == 0)
+    {
+        GS_TASK(work, 0x70) = (KwlnTask*)func_0018b6d0(1);
+        GS_S32(work, 4) = 0;
+        GS_TASK(work, 0xc) = NULL;
+        GS_U32(work, 0) = 1;
+    }
+    goto de60_done;
+de60_state1:
     {
         for (i = 0; i < 3; i++)
         {
@@ -8634,13 +8644,7 @@ void* func_0018de60(KwlnTask* task)
             func_0018db20(GS_TASK(work, 0x70));
         }
     }
-    else if (GS_U32(work, 0) == 0)
-    {
-        GS_TASK(work, 0x70) = (KwlnTask*)func_0018b6d0(1);
-        GS_S32(work, 4) = 0;
-        GS_TASK(work, 0xc) = NULL;
-        GS_U32(work, 0) = 1;
-    }
+de60_done:
     return KWLNTASK_CONTINUE;
 }
 

@@ -204,6 +204,8 @@ extern RwV3d D_005D6C28;
 extern MaestroRenderNode* DAT_00833a4c;
 extern MaestroBlobNode* DAT_00833a50;
 extern int* DAT_007cdf3c;
+#pragma alias DAT_007cdf3c_sda DAT_007cdf3c
+extern int* DAT_007cdf3c_sda __attribute__((section(".sdata")));
 extern const char* D_005D66E0[];
 #define MAESTRO_ALLOC(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184_abs)(count, size, flags)
 #define MAESTRO_FREE(memory) (*(void (**)(void*))jtbl_0096017C)(memory)
@@ -5927,10 +5929,10 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
   if (piVar1 == (int *)0x0) {
 
-    DAT_007cdf3c = (int*)*piVar2;
+    DAT_007cdf3c_sda = (int*)*piVar2;
 
-    if (DAT_007cdf3c != 0) {
-      DAT_007cdf3c[1] = 0;
+    if (DAT_007cdf3c_sda != 0) {
+      DAT_007cdf3c_sda[1] = 0;
     }
 
   }

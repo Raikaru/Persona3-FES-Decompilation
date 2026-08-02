@@ -51,6 +51,10 @@ void FUN_0040e3f0_typed(float, float, float, float, s32, s32, u8, s32, s32, s32,
 void FUN_003b2cb0_typed(float, s32, s32, u32, u32, u32, u32, u32, u32);
 #pragma alias FUN_003b2cb0_i FUN_003b2cb0
 void FUN_003b2cb0_i(s32, s32, float, u32, u32, u32, u32, u32, u32);
+#pragma alias FUN_003b32d0_typed FUN_003b32d0
+void FUN_003b32d0_typed(float, s32, s32, u32, s32, s32, const void *, s32, s32);
+#pragma alias FUN_0040eb50_typed FUN_0040eb50
+void FUN_0040eb50_typed(float, s32, s32, u8, s32, const void *, s32);
 void FUN_003eec60(s32);
 u64 FUN_004101b0(u64 param_1,int param_2);
 u32 FUN_004105e0(int param_1, int param_2, int param_3);
@@ -189,7 +193,11 @@ u32 DAT_007cda64;
 #pragma alias DAT_007cda64_f DAT_007cda64
 extern float DAT_007cda64_f;
 u8 *DAT_007ce420;
+#pragma alias DAT_007ce420_sda DAT_007ce420
+extern u8 *DAT_007ce420_sda __attribute__((section(".sdata")));
 u8 *DAT_007ce4e4;
+#pragma alias DAT_007ce4e4_sda DAT_007ce4e4
+extern u8 *DAT_007ce4e4_sda __attribute__((section(".sdata")));
 code DAT_00960090;
 u32 PTR_FUN_006b1490[];
 u32 PTR_FUN_006b1494[];
@@ -4883,65 +4891,58 @@ void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 
 {
 
-  int iVar1;
-
-  int iVar2;
-
   int iVar3;
-
+  int iVar2;
+  u8 *puVar1;
+  int scale;
+  u32 color;
   u8 auStack_8 [8];
 
   
 
-  iVar1 = *(int *)(param_2 + 0xc);
-
+  puVar1 = (u8 *)(*(int *)(param_2 + 0xc) + 0x6c);
   iVar3 = param_3 + 0x14e;
-
   iVar2 = param_4 + 0x2b;
+  scale = param_5;
+  color = param_6;
 
-  FUN_0040e3c0((float)param_5,iVar3,iVar2,param_6 & 0xff,0xa9,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2,color & 0xff,0xa9,0);
 
-  FUN_0040e3c0((float)param_5,iVar3,iVar2,param_6 & 0xff,0xaa,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2,color & 0xff,0xaa,0);
 
-  FUN_0040e3c0((float)param_5,iVar3,param_4 + 0x2c,param_6 & 0xff,0xab,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2 + 1,color & 0xff,0xab,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2 + 1,color & 0xff,0xac,0);
 
-  FUN_0040e3c0((float)param_5,iVar3,param_4 + 0x2c,param_6 & 0xff,0xac,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2,color & 0xff,0xad,0);
 
-  FUN_0040e3c0((float)param_5,iVar3,iVar2,param_6 & 0xff,0xad,0);
+  FUN_0040e3c0((float)scale,iVar3,iVar2,color & 0xff,0xae,0);
 
-  FUN_0040e3c0((float)param_5,iVar3,iVar2,param_6 & 0xff,0xae,0);
+  FUN_0040e3c0(0,iVar3 + 0x58,iVar2 + 7,color & 0xff,3,
+               (*(u8 *)((u32)*(u16 *)(puVar1 + 2) * 0xe + DAT_007ce420_sda + 2) - 1) * 2 + 1);
 
-  FUN_0040e3c0(0,param_3 + 0x1a6,param_4 + 0x32,param_6 & 0xff,3,
+  sprintf((char *)auStack_8,(const char *)0x7cda50,puVar1[4]);
 
-               (*(u8 *)((u32)*(u16 *)(iVar1 + 0x6e) * 0xe + DAT_007ce420 + 2) - 1) * 2 + 1);
+  if (puVar1[4] < 10) {
 
-  sprintf((char *)auStack_8,(const char *)0x7cda50,*(u8 *)(iVar1 + 0x70));
-
-  if (*(u8 *)(iVar1 + 0x70) < 10) {
-
-    FUN_0040eb50(0,param_3 + 0x195,param_4 + 0x4f,param_6 & 0xff,2,auStack_8,2);
+    FUN_0040eb50_typed(0.0f,iVar3 + 0x47,iVar2 + 0x24,color & 0xff,2,auStack_8,2);
 
   }
 
   else {
 
-    FUN_0040eb50(0,param_3 + 400,param_4 + 0x4f,param_6 & 0xff,2,auStack_8,2);
+    FUN_0040eb50_typed(0.0f,iVar3 + 0x42,iVar2 + 0x24,color & 0xff,2,auStack_8,2);
 
   }
 
-  FUN_003b32d0(0,param_3 + 0x1ae,param_4 + 0x46,param_6 | 0xffffffffffffff00,5,1,
-
-               DAT_007ce4e4 + (u32)*(u16 *)(iVar1 + 0x6e) * 0x11,0,0x78);
+  FUN_003b32d0_typed(0.0f,iVar3 + 0x60,iVar2 + 0x1b,
+                     color | 0xffffff00,5,1,
+                     DAT_007ce4e4_sda + (u32)*(u16 *)(puVar1 + 2) * 0x11,0,0x78);
 
   param_3 = param_3 + 0x143;
-
   param_4 = param_4 + 0xd;
-
-  FUN_0040e3c0((float)param_5,param_3,param_4,param_6 & 0xff,0xa6,0);
-
-  FUN_0040e3c0((float)param_5,param_3,param_4,param_6 & 0xff,0xa7,0);
-
-  FUN_0040e3c0((float)param_5,param_3,param_4,param_6 & 0xff,0xa8,0);
+  FUN_0040e3c0((float)scale,param_3,param_4,color & 0xff,0xa6,0);
+  FUN_0040e3c0((float)scale,param_3,param_4,color & 0xff,0xa7,0);
+  FUN_0040e3c0((float)scale,param_3,param_4,color & 0xff,0xa8,0);
 
   return;
 
