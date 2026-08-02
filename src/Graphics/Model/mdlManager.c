@@ -1978,7 +1978,6 @@ u32 func_00313090(u32 param_1,u32 param_2)
   if (piVar1 != (int *)0x0) {
 
     if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
-
         (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
 
@@ -2581,7 +2580,12 @@ void func_00313be0(MdlAnimEntryTable* table)
 }
 
 /* W415 direct call census: CLEAN (12 calls, exact retail sequence); no missing callee. */
-// FUN_00313CA0 NONMATCHING
+static inline u32 mdlManagerAdd(u32 left, u32 right)
+{
+  return left + right;
+}
+
+// FUN_00313CA0
 
 
 void func_00313ca0(int *param_1,u32 param_2)
@@ -2666,7 +2670,7 @@ void func_00313ca0(int *param_1,u32 param_2)
           piVar4 = *(int **)(iVar7 + 0x2c);
 
           if (!((((piVar4 == (int *)0x0) || ((int)*(u16 *)(piVar4 + 1) <= lVar6)) ||
-              (puVar5 = *(u8 **)(*piVar4 + 0x40 + (sVar1 * 4 + (int)sVar1) * 0x10),
+              (puVar5 = *(u8 **)(*piVar4 + 0x40 + mdlManagerAdd((u32)(sVar1 * 4), (u32)(int)sVar1) * 0x10),
               puVar5 == (u8 *)0x0)) || (puVar5 == (u8 *)&DAT_009571d0))) {
             if (lVar6 < 0) {
               fVar9 = 0.0f;

@@ -16,6 +16,10 @@ typedef u32 int3;
 extern char DAT_006a1030[];
 extern char DAT_006a1000[];
 extern char DAT_006a0f80[];
+ #pragma alias DAT_006a0f80_abs DAT_006a0f80
+ extern char DAT_006a0f80_abs[];
+ #pragma alias DAT_006a0fb0_abs DAT_006a0fb0
+ extern char DAT_006a0fb0_abs[];
 extern char DAT_006a0fb0[];
 extern char DAT_006a0fe0[];
 extern char DAT_006a0ea0[];
@@ -2880,7 +2884,7 @@ u32 FUN_003965f0(int *param_1)
 
       if (param_1[iVar1 * 0xb + 4] == 0) {
 
-        FUN_005225a8(DAT_006a0f80,iVar1);
+        FUN_005225a8(DAT_006a0f80_abs,iVar1);
 
         param_1[2] = param_1[2] + 1;
 
@@ -2897,7 +2901,7 @@ u32 FUN_003965f0(int *param_1)
             iVar3 = (int)FUN_001021c0((const char *)(param_1 + iVar1 * 0xb + 5),auStack_4);
             param_1[iVar1 * 0xb + 0xd] = iVar3;
 
-            FUN_005225a8(DAT_006a0fb0,iVar1,param_1 + iVar1 * 0xb + 5);
+            FUN_005225a8(DAT_006a0fb0_abs,iVar1,param_1 + iVar1 * 0xb + 5);
 
             param_1[3] = 0;
 
@@ -2912,7 +2916,6 @@ u32 FUN_003965f0(int *param_1)
           entryResult = param_1 + iVar1 * 0xb + 0xe;
           iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);
           *entryResult = iVar3;
-
           param_1[3] = iVar3;
 
         }

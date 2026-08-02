@@ -6146,7 +6146,7 @@ void FUN_00366970(u32 param_1,u32 param_2)
 /* W367 stacked probe: opt_loop_invariants + opt_lifetimes nd 451 -> 431; singles 447/436; object 984/992. */
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
-// FUN_00366AC0 NONMATCHING
+// FUN_00366AC0
 
 
 void FUN_00366ac0(u32 param_1,u32 param_2)
@@ -6170,6 +6170,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
   int iVar7;
 
   int unaff_s2;
+  int isLess;
 
   
 
@@ -6249,7 +6250,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
           if ((lVar5 != 0) &&
              (((unaff_s2 == 0 && (param_1 == *puVar3)) ||
               ((0 < unaff_s2 &&
-               (((int)(u32)*puVar3 <= (int)param_1 &&
+               ((((isLess = ((int)param_1 < (int)(u32)*puVar3)) == 0) &&
                 ((int)param_1 < (int)((u32)*puVar3 + (int)unaff_s2))))))))) {
             FUN_00363030(piVar2,puVar3,param_1,(u8 *)param_2);
           }
