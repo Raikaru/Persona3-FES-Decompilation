@@ -1202,7 +1202,7 @@ void FUN_003b7090(u64 param_1)
 
   int iVar6;
   u32 scene;
-  u32 uVar2;
+  int uVar2;
   u32 uVar3;
   u32 *puVar4;
   u32 resource;
@@ -1284,7 +1284,7 @@ void FUN_003b7090(u64 param_1)
 
       case 3:
 
-        uVar2 = puVar4[0x4a];
+        iVar6 = puVar4[0x4a];
 
         FUN_00195020(puVar4[0x7a]);
 
@@ -1292,17 +1292,17 @@ void FUN_003b7090(u64 param_1)
 
         puVar4[0x7c] = 0;
 
-        FUN_003174e0(uVar2);
+        FUN_003174e0(iVar6);
 
         puVar4[0x4a] = 0;
 
-        for (iVar6 = 0; iVar6 < 3; iVar6 = iVar6 + 1) {
+        for (uVar2 = 0; uVar2 < 3; uVar2 = uVar2 + 1) {
 
-          if (puVar4[iVar6 + 0x40] != 0) {
+          if (puVar4[uVar2 + 0x40] != 0) {
 
-            FUN_0034fcf0(puVar4[iVar6 + 0x40]);
+            FUN_0034fcf0(puVar4[uVar2 + 0x40]);
 
-            puVar4[iVar6 + 0x40] = 0;
+            puVar4[uVar2 + 0x40] = 0;
 
           }
 
@@ -1328,7 +1328,7 @@ void FUN_003b7090(u64 param_1)
 
         }
 
-        FUN_005225a8(D_006A2C20_abs,uVar2);
+        FUN_005225a8(D_006A2C20_abs,iVar6);
 
         break;
 
@@ -1697,12 +1697,12 @@ void FUN_003b79a0(u32 *param_1, u64 param_2, u32 *param_3)
 
 void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 {
-  u32 *src;
+  int count;
   u32 *dst;
+  u32 *src;
   RwV3d *right;
   RwV3d *up;
   RwV3d *at;
-  int count;
   float angle2;
 
   float angle1;
@@ -1724,7 +1724,6 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   RwV3d transformedAt;
   RwV3d transformedDifference;
   RwV3d worldAxis;
-  RwV3d finalAt;
   RwV3d finalDifference;
 
   src = param_1;
@@ -1871,23 +1870,23 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   if (FUN_004c69f0_mt_scene(&worldAxis.x, &normalized.x) == 0.0f) {
     FUN_0019d3f0("mt_scene.c", 0x669);
   }
-  finalAt = finalMatrix.at;
-  normalized = finalAt;
-  if (FUN_004c69f0_mt_scene(&finalAt.x, &normalized.x) == 0.0f) {
+  transformedAt = finalMatrix.at;
+  normalized = transformedAt;
+  if (FUN_004c69f0_mt_scene(&transformedAt.x, &normalized.x) == 0.0f) {
     FUN_0019d3f0("mt_scene.c", 0x66d);
   }
-  finalDifference.x = finalAt.x - worldAxis.x;
-  finalDifference.y = finalAt.y - worldAxis.y;
-  finalDifference.z = finalAt.z - worldAxis.z;
-  if (FUN_004c6ac0_mt_scene(&finalDifference.x) <= DAT_007caf24) {
+  transformedDifference.x = transformedAt.x - worldAxis.x;
+  transformedDifference.y = transformedAt.y - worldAxis.y;
+  transformedDifference.z = transformedAt.z - worldAxis.z;
+  if (FUN_004c6ac0_mt_scene(&transformedDifference.x) <= DAT_007caf24) {
     angle3 = 0.0f;
   } else {
-    angle3 = FUN_0052e9e8_mt_scene(finalAt.z * worldAxis.z +
-                                  finalAt.x * worldAxis.x +
-                                  finalAt.y * worldAxis.y);
+    angle3 = FUN_0052e9e8_mt_scene(transformedAt.z * worldAxis.z +
+                                  transformedAt.x * worldAxis.x +
+                                  transformedAt.y * worldAxis.y);
     angle3 = DAT_007caf34 * angle3;
   }
-  if (finalAt.x < 0.0f) {
+  if (transformedAt.x < 0.0f) {
     angle3 = 360.0f - angle3;
   }
 

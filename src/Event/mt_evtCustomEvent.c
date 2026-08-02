@@ -5579,7 +5579,6 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
   int lVar3;
   int iVar4;
   u16 *puVar5;
-  u16 item;
   u8 auStack_40 [64];
   
 
@@ -5628,17 +5627,16 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
         iVar4 = param_4 * 2 + param_1;
 
         puVar5 = (u16 *)(iVar4 + 0x7b8);
-        item = *(u16 *)(iVar4 + 0x7b8);
 
-        lVar3 = FUN_00316910(5,item,0);
+        lVar3 = FUN_00316910(5,*puVar5,0);
 
         if (lVar3 == 0) {
           iVar4 = param_4 * 4 + param_1;
-          FUN_00319390(param_2,param_3 & 0xffff,5,item,*(u32 *)(iVar4 + 0x790),
+          FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(iVar4 + 0x790),
                        *(u32 *)(iVar4 + 0x7cc),1);
         }
         else {
-          FUN_00319490(param_2,param_3 & 0xffff,5,item,0);
+          FUN_00319490(param_2,param_3 & 0xffff,5,*puVar5,0);
         }
 
         FUN_003196d0(param_2,param_3 & 0xffff,param_5);

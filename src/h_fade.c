@@ -62,6 +62,8 @@ static FadeDayEpl* sFadeDayEpl;        // 007cdee0
 static KwlnTask* sMaestroInTask;       // 007cdedc
 static KwlnTask* sMaestroOutTask;      // 007cded8
 static u32 sFadeActive;                // 007cded4
+#pragma alias sFadeState_sda sFadeState
+extern s16 sFadeState_sda __attribute__((section(".sdata")));
 
 static HCdvd* cdvds[8]; // 007e39d0
 
@@ -501,10 +503,10 @@ static void H_Fade_Day()
     (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
 
     drawDayTexture = false;
-    switch (sFadeState)
+    switch (sFadeState_sda)
     {
         case HFADE_STATE_INIT_OUT:
-            sFadeState = HFADE_STATE_OUT;
+            sFadeState_sda = HFADE_STATE_OUT;
             sFadeCounter = 0;
             // fallthrough
 
@@ -512,7 +514,7 @@ static void H_Fade_Day()
             sFadeCounter++;
             if (sFadeCounter == sFadeDuration)
             {
-                sFadeState = HFADE_STATE_HOLD;
+                sFadeState_sda = HFADE_STATE_HOLD;
             }
             break;
 
@@ -584,7 +586,7 @@ static void H_Fade_Day()
             sFadeDayTmxRequest = func_0010c1a0(NULL, "camp/camp/i_time25_01.tmx",
                                                  NULL, NULL, NULL, NULL, NULL, NULL,
                                                  NULL, NULL, "h_fade.c", 0x223);
-            sFadeState = HFADE_STATE_MAESTROIN;
+            sFadeState_sda = HFADE_STATE_MAESTROIN;
             break;
 
         case HFADE_STATE_IN:
@@ -630,7 +632,7 @@ static void H_Fade_Day()
             else
             {
                 sFadeDayTmxRequest = NULL;
-                sFadeState = HFADE_STATE_IN;
+                sFadeState_sda = HFADE_STATE_IN;
             }
             break;
     }
@@ -672,7 +674,7 @@ static void H_Fade_Day()
         u32 packedColor;
         s32 halfTravel;
         s32 travel;
-        if (sFadeState == HFADE_STATE_IN)
+        if (sFadeState_sda == HFADE_STATE_IN)
         {
             f32 degrees;
             f32 sine;
@@ -699,7 +701,7 @@ static void H_Fade_Day()
         travel = ((sFadeDuration - sFadeCounter) * 5000) / sFadeDuration;
         halfTravel = travel / 2;
         func_001140d0(99.0f, packedColor, (f32)-halfTravel,
-                       (f32)(-96 - halfTravel), travel + 640, travel + 640, sFadeDayTmx);
+                      (f32)(-96 - halfTravel), travel + 640, travel + 640, sFadeDayTmx);
     }
     }
 }

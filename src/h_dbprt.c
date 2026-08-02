@@ -159,6 +159,8 @@ static u32 sRwCallocCount;
 static u32 sRwReallocCount;
 static u32 sRwAllocationHint;
 static RwMemoryFunctions sRwMemoryFunctions;
+#pragma alias sRwReallocCount_sda sRwReallocCount
+extern u32 sRwReallocCount_sda __attribute__((section(".sdata")));
 
 static inline void H_Dbprt_AppendText3D(HDbText3D* text)
 {
@@ -493,7 +495,7 @@ void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
         reallocated = H_Pad_RwMalloc(newSize, mallocHint);
         memcpy(reallocated, memory, copySize);
         H_Pad_RwFree(memory);
-        sRwReallocCount++;
+        sRwReallocCount_sda++;
     }
 
     if (intrState != 0)

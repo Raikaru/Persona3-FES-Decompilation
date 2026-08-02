@@ -136,6 +136,8 @@ extern void func_0018bc10_buffirst(void* transition, s32 drawMode,
     func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame)
 extern void* DAT_00833B78;
 extern void* DAT_00833B8C;
+#pragma alias DAT_00833B78_abs DAT_00833B78
+extern u8 DAT_00833B78_abs[];
 #pragma alias DAT_00833B80_abs DAT_00833B80
 #pragma alias DAT_00833B8C_abs DAT_00833B8C
 #pragma alias DAT_00833B74_abs DAT_00833B74
@@ -181,11 +183,16 @@ extern char gp0xffff8978[];
 #pragma alias h_campDrawSprite FUN_001159f0
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias h_campDrawSpriteInterleaved FUN_001159f0
+extern void h_campDrawSpriteInterleaved(void* parent, void* resource, s32 frame,
+                                        f32 x, f32 y, u32 alpha, f32 scale);
 
 #pragma alias h_campNoopRootDrawCallback_4 h_campNoopRootDrawCallback
 extern void h_campNoopRootDrawCallback_4(s32, s32, f32, f32);
 #pragma alias h_campNoopRootDrawCallback_5 h_campNoopRootDrawCallback
 extern void h_campNoopRootDrawCallback_5(s32, s32, f32, f32, f32);
+#pragma alias h_campNoopRootDrawCallback_5Interleaved2 h_campNoopRootDrawCallback
+extern void h_campNoopRootDrawCallback_5Interleaved2(f32, f32, s32, s32, f32);
 static const char* sCourageLevels[] = {
     "Timid", "Ordinary", "Determined", "Though", "Fearless", "Badass"
 };
@@ -1622,8 +1629,8 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
                       var_5 | 0x4fa4ff00, 0.0f, -87.0f,
                       0x280, 0x280, (const u32*)var_8);
     }
-    h_campNoopRootDrawCallback_5((s32)(s16)temp_16, 0, 0.0f, 0.0f,
-                                 4.0f + alpha);
+    h_campNoopRootDrawCallback_5((s32)(s16)temp_16, 0,
+                                 0.0f, 0.0f, 4.0f + alpha);
 
     temp_2_2 = func_001158b0(0, DAT_00833B78, 0);
     *(f32*)((u8*)temp_2_2 + 0x2c) = 2.0f + alpha;
@@ -1940,13 +1947,18 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(work, alpha);
 }
 
+static inline f32 campAddDurationOffsetFirst(f32 offset, f32 duration)
+{
+    return duration + offset;
+}
+
 // FUN_0011dfe0 NONMATCHING
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {
-    void* parent;
+    void* node;
     void* textureState;
     void* stage;
-    void* node;
+    void* parent;
     s32 cacheIndex;
     f32* cacheSlot;
     f32 oldDuration;
@@ -1968,9 +1980,9 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
         func_00114450_7arg(2.0f + alpha, -1, 0x4fa4ff19,
                            0.0f, -87.0f, 0x280, 0x280);
     }
-    h_campNoopRootDrawCallback_5(0, 0x1000, 0.0f, 0.0f, 2.0f + alpha);
+    h_campNoopRootDrawCallback_5Interleaved2(0.0f, 0.0f, 0, 0x1000, 2.0f + alpha);
 
-    node = func_001158b0(0, DAT_00833B78, 0);
+    node = func_001158b0(0, *(void**)DAT_00833B78_abs, 0);
     *(f32*)((u8*)node + 0x2c) = 1.0f + alpha;
     *(u32*)((u8*)node + 0x10) = 0x43d60000;
     *(u32*)((u8*)node + 0x14) = 0x41d80000;
@@ -1991,25 +2003,25 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
     source.x = 0.0f;
     oldDuration = (f32)(s32)work->transitionDuration;
     source.y = oldDuration;
-    work->transitionDuration = (s32)(oldDuration + 1.0f);
+    work->transitionDuration =
+        (s32)campAddDurationOffsetFirst(1.0f, oldDuration);
     newDuration = (f32)(s32)work->transitionDuration;
     if (!(newDuration <= 767.0f)) {
         work->transitionDuration = (s32)(newDuration - 448.0f);
     }
 
     position = source;
-    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
-                     589.0f + position.x, position.y - 190.0f, 100.0f);
-    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
-                     589.0f + position.x,
-                     (position.y - 129.0f) - 190.0f, 100.0f);
+    h_campDrawSpriteInterleaved(parent, *(void**)DAT_00833B8C_abs, 3,
+                                589.0f + position.x, position.y - 190.0f, 0, 100.0f);
+    h_campDrawSpriteInterleaved(parent, *(void**)DAT_00833B8C_abs, 4,
+                                589.0f + position.x,
+                                (position.y - 129.0f) - 190.0f, 0, 100.0f);
     if (!(position.y <= 448.0f)) {
-        position.y -= 448.0f;
-        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
-                         589.0f + position.x, position.y - 190.0f, 100.0f);
-        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
-                         589.0f + position.x,
-                         (position.y - 129.0f) - 190.0f, 100.0f);
+        h_campDrawSpriteInterleaved(parent, *(void**)DAT_00833B8C_abs, 3,
+                                    589.0f + position.x, (position.y - 448.0f) - 190.0f, 0, 100.0f);
+        h_campDrawSpriteInterleaved(parent, *(void**)DAT_00833B8C_abs, 4,
+                                    589.0f + position.x,
+                                    ((position.y - 448.0f) - 129.0f) - 190.0f, 0, 100.0f);
     }
 
     h_campDrawRootUi(work, alpha);
@@ -5653,8 +5665,6 @@ extern s32 campPersonaDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
                                    s32 font, s32 alignment, const char* text,
                                    s32 maxWidth, s32 shadow);
 extern KwlnTask* DAT_007cdf60;
-#pragma alias DAT_00833B78_abs DAT_00833B78
-extern u8 DAT_00833B78_abs[];
 extern void* h_campUpdatePanelTransition_y5(KwlnTask* task);
 
 
@@ -13021,7 +13031,7 @@ extern void hCampMainDrawTexQuadPtr(f32 depth, f32 x, f32 y,
                                   f32 textureX, f32 textureY, s32 orientation,
                                   u32 color, s32 width, s32 height, s32 textureDimensions);
 #pragma alias hCampMainDrawSpriteAlpha FUN_001368A0
-extern void hCampMainDrawSpriteAlpha(f32 alpha, u64 position, u8 drawAlpha);
+extern void hCampMainDrawSpriteAlpha(u64 position, u8 drawAlpha, f32 alpha);
 #pragma alias hCampMainDrawValue FUN_003C7E20
 extern void hCampMainDrawValue(f32 scale, s32 x, s32 y, u32 color,
                                u32 font, u32 alignment, u32 style, u32 value);
@@ -13074,7 +13084,7 @@ extern void FUN_00133D00(KwlnTask* task);
 extern void func_004d0f00(void* resource);
 extern void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha);
 extern void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha, s32 frame);
-extern void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha);
+extern void FUN_001368a0(u64 position, u8 drawAlpha, f32 alpha);
 extern void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
 extern void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
 extern void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
@@ -13245,16 +13255,14 @@ static inline f32 campAddOffsetFirst(f32 offset, f32 base)
 }
 
 // FUN_001368A0 NONMATCHING
-void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
+void FUN_001368a0(u64 position, u8 drawAlpha, f32 alpha)
 {
-    u64 savedPosition;
     CampCarouselPackedPosition p;
     CampCardSprite* sprite;
     f32 x;
     f32 y;
 
-    savedPosition = position;
-    p.packed = savedPosition;
+    p.packed = position;
     y = p.value.y;
     sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40[0], 1);
     sprite->spriteScale = alpha;
@@ -13453,7 +13461,7 @@ static void campDrawCarousel(f32 alpha, u64 position, const s32* entries,
                      i == selected, fade, 0);
     }
     if (count < 10) {
-        FUN_001368a0(alpha, position, (u8)((10 - count) * 0xff / 10));
+        FUN_001368a0(position, (u8)((10 - count) * 0xff / 10), alpha);
     }
 }
 
@@ -13607,7 +13615,7 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         FUN_00115980(sprite);
     } else {
         local.value = 0;
-        FUN_001368a0(alpha, local.value, 0);
+        FUN_001368a0(local.value, 0, alpha);
     }
 
     visibleCount = count;
@@ -13763,7 +13771,7 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     }
     local.x = 0.0f;
     local.y = 0.0f;
-    FUN_001368a0(alpha, *(u64*)&local, 0);
+    FUN_001368a0(*(u64*)&local, 0, alpha);
 
     visibleCount = count;
     switch (count) {
@@ -13892,7 +13900,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
         FUN_00115980(sprite);
     }
     local.value = 0;
-    FUN_001368a0(alpha, local.value, 0);
+    FUN_001368a0(local.value, 0, alpha);
 
     visibleCount = count;
     switch (count) {
@@ -14503,7 +14511,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     stage = (s32)param_8;
     FUN_00139DC0(param_1);
-    hCampMainDrawSpriteAlpha(param_1, 0, 0);
+    hCampMainDrawSpriteAlpha(0, 0, param_1);
 
     position.x = campPackedX(param_2);
     position.y = campPackedY(param_2);
@@ -14781,7 +14789,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     (void)param_4;
     FUN_00139DC0(param_1);
-    hCampMainDrawSpriteAlpha(param_1, 0, 0);
+    hCampMainDrawSpriteAlpha(0, 0, param_1);
 
     position.x = campPackedX(param_2);
     position.y = campPackedY(param_2);

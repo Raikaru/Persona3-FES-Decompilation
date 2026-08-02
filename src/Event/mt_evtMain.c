@@ -1853,7 +1853,7 @@ int FUN_00361f20(int param_1)
 
 /* W367 pragma probe: opt_loop_invariants on nd 61 -> 36; off nd 61; object 116/128. */
 #pragma opt_loop_invariants on
-// FUN_00361F60 NONMATCHING
+// FUN_00361F60
 
 
 int FUN_00361f60(int param_1,int param_2)
@@ -1868,10 +1868,10 @@ int FUN_00361f60(int param_1,int param_2)
       if (*piVar2 == 5) {
         continue;
       }
-      if (*piVar2 != 0x13) {
-        goto add_value;
+      if (*piVar2 == 0x13) {
+        continue;
       }
-      continue;
+      goto add_value;
     }
     if (param_1 == 3) {
       if ((*piVar2 == 5) || (*piVar2 == 0x13)) {
@@ -6157,7 +6157,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
 {
 
-  u32 uVar1;
+  u32 uVar1, masked;
 
   int *piVar2;
 
@@ -6179,9 +6179,9 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
   uVar1 = *(u32 *)(iVar6 + 4);
 
-  uVar1 &= 0xfffffffd;
-  *(u32 *)(iVar6 + 4) = uVar1;
-  uVar1 &= 0xfffffffb;
+  masked = uVar1 & 0xfffffffd;
+  *(u32 *)(iVar6 + 4) = masked;
+  uVar1 = masked & 0xfffffffb;
   *(u32 *)(iVar6 + 4) = uVar1;
 
   *(u32 *)(iVar6 + 0xec) = 0;
@@ -6221,23 +6221,23 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
     iVar7 = *piVar2;
 
     if (iVar7 != 1) {
-
-      if ((((((iVar7 == 0x2e) || (iVar7 == 0x2d)) || (iVar7 == 0x2c)) ||
-
-           ((iVar7 == 0x2a || (iVar7 == 0x1d)))) ||
-
-          ((iVar7 == 0x1c || ((iVar7 == 7 || (iVar7 == 0x13)))))) ||
-
-         ((iVar7 == 0x32 || ((iVar7 == 5 || (iVar7 == 0x29)))))) {
-
+      switch (iVar7) {
+      case 0x29:
+      case 5:
+      case 0x32:
+      case 0x13:
+      case 7:
+      case 0x1c:
+      case 0x1d:
+      case 0x2a:
+      case 0x2c:
+      case 0x2d:
+      case 0x2e:
         bVar4 = true;
-
-      }
-
-      else {
-
+        break;
+      default:
         bVar4 = false;
-
+        break;
       }
 
       if (bVar4) {
@@ -6249,17 +6249,11 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
           lVar5 = FUN_00360ed0(puVar3);
 
           if ((lVar5 != 0) &&
-
              (((unaff_s2 == 0 && (param_1 == *puVar3)) ||
-
               ((0 < unaff_s2 &&
-
                (((int)(u32)*puVar3 <= (int)param_1 &&
-
                 ((int)param_1 < (int)((u32)*puVar3 + (int)unaff_s2))))))))) {
-
             FUN_00363030(piVar2,puVar3,param_1,(u8 *)param_2);
-
           }
 
         }
@@ -6274,45 +6268,41 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
     iVar7 = *piVar2;
 
-    if ((((iVar7 == 0x24) || (iVar7 == 0x2b)) || (iVar7 == 0x27)) || ((iVar7 == 10 || (iVar7 == 6)))
-
-       ) {
-
+    switch (iVar7) {
+    case 6:
+    case 10:
+    case 0x27:
+    case 0x2b:
+    case 0x24:
       bVar4 = true;
-
-    }
-
-    else {
-
+      break;
+    default:
       bVar4 = false;
-
+      break;
     }
 
     if (bVar4) {
-
       iVar7 = piVar2[8];
 
-      for (puVar3 = (u16 *)piVar2[0x1b];
-
-          (puVar3 != (u16 *)0x0 &&
-
-          ((lVar5 = FUN_00360ed0(puVar3), lVar5 == 0 ||
-
-           ((int)((u32)*puVar3 + (int)(short)iVar7) <= (int)param_1))));
-
-          puVar3 = *(u16 **)(puVar3 + 0x26)) {
-
+      puVar3 = (u16 *)piVar2[0x1b];
+      while (puVar3 != (u16 *)0x0) {
+        lVar5 = FUN_00360ed0(puVar3);
+        if ((lVar5 != 0) &&
+            ((int)((u32)*puVar3 + (int)(short)iVar7) > (int)param_1)) {
+          break;
+        }
+        puVar3 = *(u16 **)(puVar3 + 0x26);
       }
 
-      if (puVar3 == (u16 *)0x0) {
+      if (puVar3 != (u16 *)0x0) {
 
-        iVar7 = piVar2[0x1c];
+        iVar7 = *(int *)(puVar3 + 0x28);
 
       }
 
       else {
 
-        iVar7 = *(int *)(puVar3 + 0x28);
+        iVar7 = piVar2[0x1c];
 
       }
 
@@ -6320,18 +6310,18 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
       if (lVar5 == 1) {
 
-        while ((iVar7 != 0 && (lVar5 = FUN_00360ed0(iVar7), lVar5 != 1))) {
-
+        while (iVar7 != 0) {
+          lVar5 = FUN_00360ed0(iVar7);
+          if (lVar5 == 1) {
+            break;
+          }
           iVar7 = *(int *)(iVar7 + 0x50);
-
         }
 
       }
 
       FUN_003638e0(piVar2,(u32)puVar3,iVar7,param_1,param_2);
-
     }
-
   }
 
   FUN_00366210(param_1,param_2);
@@ -13102,10 +13092,9 @@ u32 FUN_0036db20(int param_1)
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
+
   state = (u32 *)(iVar1 + 0x960);
-
   switch(*state) {
-
   case 0:
 
     FUN_0036f000(iVar1);

@@ -835,13 +835,13 @@ extern u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 pa
 extern u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5);
 extern u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5);
 extern u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5);
-extern s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4);
+extern s32 func_002c5030(int param_1,int param_2,s32 param_3,int param_4);
 extern u32 func_002c5380(int param_1,int param_2,u16 *param_3,int param_4);
 #pragma alias func_002c5380_noargs func_002c5380
 extern u32 func_002c5380_noargs();
 extern u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4);
 extern s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4);
-extern s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4);
+extern s32 func_002c6300(u32 param_1,u32 param_2,short param_3,s32 param_4);
 #pragma alias func_002c6300_s32 func_002c6300
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
@@ -1973,12 +1973,12 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
 {
   int iVar1;
   u32 uVar2;
+  float defaultValue;
   float invDepth;
   float channel0;
   float channel1;
   float channel2;
   float channel3;
-  float defaultValue;
   float vertexData[64];
   
   iVar1 = func_00198590();
@@ -3709,14 +3709,14 @@ void func_002bfc90(void)
 void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5)
 
 {
-  u8 cVar1 = 0;
-  int iVar2 = 0;
-  u32 lVar3 = 0;
-  u32 uVar4 = 0;
-  u32 unaff_s0_lo = 0;
-  u32 unaff_s1_lo = 0;
+  u8 cVar1;
+  int iVar2;
+  u32 lVar3;
+  u32 uVar4;
+  u32 unaff_s0_lo;
+  u32 unaff_s1_lo;
   int *piVar5;
-  int iVar6 = 0;
+  int iVar6;
   
   func_00521408((u32)param_2,0,0x30);
   piVar5 = (int *)param_2;
@@ -3724,11 +3724,7 @@ void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5
   *(u16 *)((int)piVar5 + 0x3a) = 0;
   *(u8 *)(piVar5 + 0xf) = 0;
   *(u8 *)(piVar5 + 0xf) = *(u8 *)(piVar5 + 0xf) | 1;
-  if (param_1 == 0) {
-    unaff_s1_lo = 1;
-    unaff_s0_lo = 2;
-  }
-  else {
+  if (param_1 != 0) {
     cVar1 = *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2);
     if (cVar1 == '\x01') {
       unaff_s1_lo = 2;
@@ -3738,6 +3734,10 @@ void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,int param_5
       unaff_s0_lo = 2;
       unaff_s1_lo = 1;
     }
+  }
+  else {
+    unaff_s1_lo = 1;
+    unaff_s0_lo = 2;
   }
   uVar4 = 0;
   if ((param_3 & 1) != 0) {
@@ -4332,31 +4332,44 @@ func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5,
             code *param_6)
 
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  char cVar3 = 0;
-  u32 uVar5 = 0;
+  u32 sideMask;
+  u32 optionMask;
+  u32 option1;
+  u32 option2;
+  u32 optionC;
+  u32 option4;
+  u32 activeMask;
+  code callback;
+  int iVar1;
+  int iVar2;
+  char cVar3;
+  u32 uVar5;
   
   iVar1 = *(int *)(iGpffffb6fc + 0x14c);
-  do {
-    if (iVar1 == 0) {
-      return 0;
-    }
+  sideMask = (u32)param_3 & 0xffff;
+  optionMask = (u32)param_5 & 0xffff;
+  option1 = optionMask & 1;
+  option2 = optionMask & 2;
+  optionC = optionMask & 0xc;
+  option4 = optionMask & 4;
+  activeMask = param_4 & 0x80000;
+  callback = (code)param_6;
+  while ((iVar1 = *(int *)(iVar1 + 0x4a8)) != 0) {
     if ((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
        (iVar2 = *(int *)(iVar1 + 0x30),
-       (param_3 & 0xffff & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0)) {
-      if (param_5 == 0) {
+       (sideMask & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0)) {
+      if (optionMask == 0) {
 LAB_002c123c:
-        if (((((param_4 & 0x80000) == 0) ||
+        if (((((activeMask) == 0) ||
              func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0) == 0) &&
             func_00300580(*(u32 *)(iVar2 + 0xa2c),param_4) == 0) &&
-           (*param_6)(iVar1,param_2) != 0) {
+           (*callback)(iVar1,param_2) != 0) {
           return 1;
         }
       }
-      else if (((param_5 & 1) == 0) ||
+      else if ((option1 == 0) ||
               func_00300580(*(u32 *)(iVar2 + 0xa2c),0x100000) != 0) {
-        if (((param_5 & 2) != 0) && (uVar5 = func_003080c0((short)param_2), (uVar5 & 0xe0001) == 0))
+        if ((option2 != 0) && (uVar5 = func_003080c0((short)param_2), (uVar5 & 0xe0001) == 0))
         {
           if ((uVar5 & 0xe) != 0) {
             cVar3 = func_00301750(*(u32 *)(iVar2 + 0xa2c),0x11);
@@ -4368,17 +4381,18 @@ LAB_002c123c:
           if ('\0' < cVar3) goto LAB_002c12a0;
         }
 LAB_002c11dc:
-        if ((((param_5 & 0xc) == 0) || (*(char *)(iVar2 + 0xa2) != '\x01')) ||
+        if (((optionC == 0) || (*(char *)(iVar2 + 0xa2) != '\x01')) ||
            (func_002e3350(iVar1,(short)param_2) != 0 ||
             func_0017b260(*(u16 *)(iVar2 + 0xa4)) != 0)) goto LAB_002c123c;
-        if ((param_5 & 4) == 0) {
+        if (option4 == 0) {
           return 1;
         }
       }
     }
 LAB_002c12a0:
-    iVar1 = *(int *)(iVar1 + 0x4a8);
-  } while( true );
+    ;
+  }
+  return 0;
 }
 
 // FUN_002c12f0
@@ -6692,21 +6706,20 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
 #pragma opt_loop_invariants on
 // FUN_002c5030 NONMATCHING
 
-s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4)
+s32 func_002c5030(int param_1,int param_2,s32 param_3,int param_4)
 
 {
-  u16 uVar1;
   int iVar2;
-  int iVar3;
-  int bVar4;
-  u16 uVar5;
+  u32 uVar10;
   u32 uVar6;
+  u32 uVar11;
+  u16 *puVar12;
+  int iVar3;
+  u16 uVar1;
+  u16 uVar5;
   int iVar7;
   s32 lVar8;
   u32 uVar9;
-  u32 uVar10;
-  u32 uVar11;
-  u16 *puVar12;
   u16 auStack_10 [8];
   
   iVar2 = *(int *)((int)param_1 + 0x30);
@@ -6759,20 +6772,20 @@ LAB_002c5168:
             if (lVar8 != 0) {
               lVar8 = func_003086f0_u32(*(u32 *)(iVar3 + 0xa2c),uVar1);
               if (lVar8 != 0) {
-                bVar4 = false;
+                lVar8 = 0;
               }
               else {
-                bVar4 = true;
+                lVar8 = 1;
               }
             }
             else {
-              bVar4 = false;
+              lVar8 = 0;
             }
           }
           else {
-            bVar4 = false;
+            lVar8 = 0;
           }
-          if (bVar4 && func_002c2ed0(param_2,uVar5,1)) {
+          if ((lVar8 != 0) && func_002c2ed0(param_2,uVar5,1)) {
             auStack_10[uVar10] = *puVar12;
             uVar10 = uVar10 + 1 & 0xffff;
           }
@@ -7223,7 +7236,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
 /* W415: corrected the param_3 comparison to emit the required helper; call census now matches retail (nd 456 -> 454, object 720/720). */
 // FUN_002c6300 NONMATCHING
 
-s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
+s32 func_002c6300(u32 param_1,u32 param_2,short param_3,s32 param_4)
 
 {
   u16 uVar1 = 0;
@@ -7255,8 +7268,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
             uVar4 = func_0030bc20(uVar3);
             if ((uVar4 != 0) && (uVar4 < 0x1d0)) {
               sVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c));
-              if (((long)sVar5 ==
-                   CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3)) &&
+              if (((long)sVar5 == (long)param_3) &&
                  (sVar6 = func_001706c0(uVar1,uVar9), 0 < sVar6)) {
                 lVar7 = func_002c2ed0(param_2,sVar5,1);
                 if (lVar7 != 0) {
