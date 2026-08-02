@@ -2970,9 +2970,9 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 
   u16 *puVar1;
 
-  u32 uVar2;
-
   int iVar3;
+
+  u32 uVar2;
 
   f32 uVar4;
 
@@ -2992,62 +2992,38 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 
   }
 
-  if (param_3 != 0) {
-
-    if (param_3 == 1) {
-
-      uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-
-      evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)&gp0xffffa058);
-
-      return;
-
-    }
-
-    if (param_3 == 2) {
-
-      uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-
-      evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)DAT_0069e6b8_abs);
-
-      return;
-
-    }
-
-  }
-
-  else {
-
+  if (param_3 == 0) {
     uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-
     evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)&gp0xffffa050);
-
   }
-
+  else if (param_3 == 1) {
+    uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)&gp0xffffa058);
+    return;
+  }
+  else if (param_3 == 2) {
+    uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)DAT_0069e6b8_abs);
+    return;
+  }
   iVar3 += 3;
 
-  for (puVar1 = (u16 *)FUN_003b5d50(3); puVar1 != (u16 *)0x0;
+  puVar1 = (u16 *)FUN_003b5d50(3);
 
-      puVar1 = *(u16 **)(puVar1 + 0x7c)) {
-
+  while (puVar1 != (u16 *)0x0) {
     if (iVar3 == param_3) {
-
       uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-
       evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar2, (const char *)DAT_0069e878_abs, *puVar1);
-
       return;
-
     }
 
+    puVar1 = *(u16 **)(puVar1 + 0x7c);
     iVar3 = iVar3 + 1;
-
   }
 
   puVar1 = (u16 *)FUN_003b5d50(1);
 
-  while( true) {
-
+  while (true) {
     if (puVar1 == (u16 *)0x0) {
       return;
     }
@@ -3057,7 +3033,6 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
     puVar1 = *(u16 **)(puVar1 + 0x7c);
 
     iVar3 = iVar3 + 1;
-
   }
 
   uVar4 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));

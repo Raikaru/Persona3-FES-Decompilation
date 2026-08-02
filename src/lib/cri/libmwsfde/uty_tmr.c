@@ -494,7 +494,7 @@ int FUN_007803f8(int param_1,int param_2)
   i = 0;
   if (0 < iRam80076700) {
     do {
-      if (param_2 < func_0x00076038(param_1,entries[i].id)) {
+      if (param_2 < func_0x00076038(param_1, entries[i].id)) {
         j = iRam80076700 - 1;
         if (j < i) {
           return i;

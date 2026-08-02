@@ -4667,9 +4667,9 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatLabels(CampVec2 position, f32 scale,
                                 void* persona, s32 alpha);
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale,
-                                void* bonus, void* persona, s32 alpha);
+                                s32 alpha, void* persona, void* bonus);
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale,
-                                 void* bonus, void* persona, s32 alpha);
+                                 s32 alpha, void* persona, void* bonus);
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha);
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
@@ -5256,7 +5256,7 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
     CampVec2 labelPos;
 
     h_campStatusDrawStatLabels(position, 0.0f, persona, alpha);
-    h_campStatusDrawStatValues(position, 0.0f, bonus, persona, alpha);
+    h_campStatusDrawStatValues(position, 0.0f, alpha, persona, bonus);
     h_campStatusDrawEquipmentSlots(parent, position, persona, bonus, alpha);
     labelPos.x = position.x + 12.0f;
     labelPos.y = position.y + 96.0f;
@@ -6977,6 +6977,7 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
         FUN_00124fd0(fadePosition, alpha, persona, bright);
     }
 }
+
 // FUN_00125B40 NONMATCHING
 void FUN_00125b40_persona(CampVec2 position, CampVec2 unused, f32 alpha,
                   void* persona, s32 fade)
@@ -7014,7 +7015,7 @@ void FUN_00125b40_persona(CampVec2 position, CampVec2 unused, f32 alpha,
     }
     else {
         campPersonaDrawSprite(parent, (void*)FUN_001120a0_y7(2),
-                              level % 10 + 0xb,
+                              *((u8*)persona + 4) % 10 + 0xb,
                               levelPosition.x + 75.0f,
                               levelPosition.y + 127.0f, fade, alpha);
     }
@@ -7935,8 +7936,8 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 /* W422 role-cycle split probes: status argument aliases/persona/bonus/alpha/allafter, aggregate copies, helper parameter orders, alpha widths, and lifetime/propagation pragmas all stayed nd199/object1308/window1312 rate .152 for both twins; rejected. */
 #pragma opt_dead_assignments off
 // FUN_00128720 NONMATCHING
-void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
-                                void* persona, s32 alpha)
+void h_campStatusDrawStatValues(CampVec2 position, f32 scale, s32 alpha,
+                                void* persona, void* bonus)
 {
     u32 parent;
     campStatusDrawDigitRow(position.x, position.y, scale, bonus, persona,
@@ -7955,8 +7956,8 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
 /* opt_dead_assignments off: default nd783/1312B -> off nd199/1308B; retained. */
 #pragma opt_dead_assignments off
 // FUN_00128C40 NONMATCHING
-void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
-                                 void* persona, s32 alpha)
+void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, s32 alpha,
+                                 void* persona, void* bonus)
 {
     u32 parent;
     campStatusDrawDigitRow(position.x, position.y, scale, bonus, persona,
@@ -8229,7 +8230,7 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                  (184.0f + position.y) - 25.0f, scale);
         drawPos.x = drawX;
         drawPos.y = position.y;
-        h_campStatusDrawStatValues(drawPos, scale, NULL, persona, (u8)alpha);
+        h_campStatusDrawStatValues(drawPos, scale, (u8)alpha, persona, NULL);
     }
     if (frame >= 5) {
         fade = frame - 5;
@@ -8367,7 +8368,7 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, alpha,
                              panelX, panelBottomY, scale);
     valuePosition = drawPosition;
-    h_campStatusDrawStatValues(valuePosition, scale, NULL, persona, alpha);
+    h_campStatusDrawStatValues(valuePosition, scale, alpha, persona, NULL);
     for (row = 0; row < 5; row++) {
         switch (row) {
         case 0:
@@ -8481,7 +8482,7 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
     panelPosition.y += 59.0f;
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, (u8)alpha,
                              panelPosition.x, panelPosition.y, scale);
-    h_campStatusDrawStatValues(valuesPosition, scale, NULL, persona, alpha);
+    h_campStatusDrawStatValues(valuesPosition, scale, alpha, persona, NULL);
     for (row = 0; row < 5; row++) {
         rowOffset = row * 19;
         rowBaseY = valuesPosition.y + 129.0f + (f32)rowOffset;
@@ -8560,7 +8561,7 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x13, alpha,
                              position.x + 30.0f,
                              (184.0f + position.y) - 25.0f, scale);
-    h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
+    h_campStatusDrawStatValues(position, scale, alpha, persona, NULL);
     for (i = 0; i < 5; i++) {
         switch (i) {
         case 0:
@@ -8642,7 +8643,7 @@ void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
                                  (u8)alpha, headerX,
                                  (184.0f + headerY) - 25.0f, scale);
     }
-    h_campStatusDrawStatValues(position, scale, currentStats, persona, alpha);
+    h_campStatusDrawStatValues(position, scale, alpha, persona, currentStats);
     for (i = 0; i < 5; i++) {
         switch (i) {
         case 0: value = FUN_00173660(persona, 0) & 0xff; break;
@@ -8767,8 +8768,7 @@ void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
                                  (u8)alpha, headerX,
                                  (184.0f + headerY) - 25.0f, scale);
     }
-    h_campStatusDrawSkillValues(position, scale, currentStats, persona,
-                                alpha);
+    h_campStatusDrawSkillValues(position, scale, alpha, persona, currentStats);
     for (i = 0; i < 5; i++) {
         switch (i) {
         case 0: value = FUN_00173580(persona, 0) & 0xff; break;
@@ -15824,9 +15824,9 @@ void FUN_0013c780(CampEquipmentWork* work)
 void FUN_0013cc90(CampEquipmentWork* work)
 {
     u16 indices[300];
-    s32 count = 0;
-    s32 scan = 0;
     s32 recordCount = 0;
+    s32 scan = 0;
+    s32 count = 0;
     s32 index;
     s32 category;
     s16 candidate;

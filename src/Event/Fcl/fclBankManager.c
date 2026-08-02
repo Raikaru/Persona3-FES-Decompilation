@@ -3691,40 +3691,23 @@ int iVar5;
 
     uVar2 = fclCombine003d2ce0((u32)puVar1);
 
-    switch(uVar2) {
-
-    case 0:
-
+    switch(uVar2 + 1) {
     case 1:
-
-      puVar1[2] = 0xc;
-
-      puVar1[3] = uVar2;
-
-      break;
-
     case 2:
-
-    case 3:
-
-    case 4:
-
-      puVar1[2] = 10;
-
+      puVar1[2] = 0xc;
       puVar1[3] = uVar2;
-
       break;
-
+    case 3:
+    case 4:
     case 5:
-
-      puVar1[2] = 0x10;
-
+      puVar1[2] = 10;
+      puVar1[3] = uVar2;
       break;
-
     case 6:
-
+      puVar1[2] = 0x10;
+      break;
+    case 7:
       puVar1[2] = 2;
-
     }
 
     break;

@@ -1633,11 +1633,7 @@ void* FUN_001b2860(char* path)
     {
         end--;
     }
-    if (end[1] != 'f')
-    {
-        valid = 0;
-    }
-    else
+    if (end[1] == 'f')
     {
         if ((PTR_DAT_007be9c8[(u8)end[2]] & 4) == 0)
         {
@@ -1667,6 +1663,10 @@ void* FUN_001b2860(char* path)
         {
             valid = 0;
         }
+    }
+    else
+    {
+        valid = 0;
     }
     if (valid != 0)
     {
@@ -2996,8 +2996,8 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     }
     copy = (u32*)(*(void* (**)(u32, ...))DAT_00960184_abs)(1, 0xa4c, 0x40000);
     copy[0] = resource[0] | 2;
-    copy[1] = resource[1];
-    *(u16*)((u8*)copy + 6) = *(u16*)((u8*)resource + 6);
+    *(s16*)((u8*)copy + 4) = *(s16*)((u8*)resource + 4);
+    *(s16*)((u8*)copy + 6) = *(s16*)((u8*)resource + 6);
     if (resource[2] != 0)
     {
         source = FUN_00491cc0(resource[2]);

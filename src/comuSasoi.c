@@ -48,6 +48,8 @@ extern s32 FUN_003bdd50(void);
 extern s32 FUN_00172c50(void *out);
 extern s32 FUN_0017ddf0(void *first, void *second);
 extern s32 FUN_003be2a0(s32 arg0, s32 arg1, u32 id, s32 arg3, u32 arg4);
+#pragma alias FUN_003be2a0_ptr FUN_003be2a0
+extern s32 FUN_003be2a0_ptr(s32 arg0, s32 arg1, u32 id, s32 arg3, u8 *arg4);
 extern s32 FUN_00395200(s32 max);
 extern s32 FUN_001717b0(void);
 extern s32 FUN_00395230(s32 max);
@@ -599,7 +601,7 @@ u32 FUN_003c2df0(u32 param_1)
 #pragma opt_loop_invariants off
 #undef FUN_003c2df0
 #undef FUN_003c2ee0
-// FUN_003C2EE0 NONMATCHING
+// FUN_003C2EE0
 
 
 u32 * FUN_003c2ee0(s32 param_1)
@@ -694,7 +696,7 @@ u32 * FUN_003c2ee0(s32 param_1)
 
     else {
 
-      lVar3 = FUN_003be2a0(0,0,param_1,7,0x95b79c);
+      lVar3 = FUN_003be2a0_ptr(0,0,param_1,7,DAT_0095b79c_abs);
 
       if (lVar3 == 0) {
 

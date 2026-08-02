@@ -4974,6 +4974,7 @@ u32 FUN_0039dd90(int param_1)
   u16 uVar1;
 
   u32 *puVar2;
+
   u32 *config;
 
   u8 *puVar3;

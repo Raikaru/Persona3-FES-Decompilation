@@ -6014,6 +6014,12 @@ extern u8 DAT_006a1f80_abs[];
 extern u8 DAT_006a1fa0[];
 #pragma alias DAT_006a1fa0_abs DAT_006a1fa0
 extern u8 DAT_006a1fa0_abs[];
+extern u8 DAT_006a1fb0[];
+#pragma alias DAT_006a1fb0_abs DAT_006a1fb0
+extern u8 DAT_006a1fb0_abs[];
+extern u8 DAT_006a1fc0[];
+#pragma alias DAT_006a1fc0_abs DAT_006a1fc0
+extern u8 DAT_006a1fc0_abs[];
 extern u32 DAT_006a212c;
 #pragma alias DAT_006a212c_abs DAT_006a212c
 extern u8 DAT_006a212c_abs[];
@@ -7523,16 +7529,19 @@ void FUN_003aa000(int param_1,u64 param_2)
 
 /* opt_loop_invariants on: measured nd 235 -> 216, object 328/336 -> 328/336. */
 #pragma opt_loop_invariants on
-// FUN_003AA130 NONMATCHING
+// FUN_003AA130
 
 
 void FUN_003aa130(int param_1,u64 param_2)
 {
   int *piVar1;
+  int *piVar2;
   int iVar2;
+  int index2;
   int aiStack_60[24];
 
   piVar1 = *(int **)(param_1 + 8);
+  piVar2 = piVar1 + 8;
   for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
     aiStack_60[iVar2 * 8] = piVar1[0] + iVar2 * 0x10;
     aiStack_60[iVar2 * 8 + 1] = piVar1[1] + iVar2 * 8;
@@ -7543,11 +7552,11 @@ void FUN_003aa130(int param_1,u64 param_2)
     aiStack_60[iVar2 * 8 + 6] = piVar1[6] + iVar2 * 0x10;
     aiStack_60[iVar2 * 8 + 7] = piVar1[7] - iVar2 * 8;
   }
-  FUN_003b4b40(piVar1,piVar1 + 8,gp0xffffa7d8,gp0xffffa7dc,
+  FUN_003b4b40(piVar1,piVar2,&gp0xffffa7d8,&gp0xffffa7dc,
                *(u32 *)(param_1 + 0xc),param_2);
-  for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
-    FUN_003b4ec0(aiStack_60,piVar1 + 8,iVar2 * 5 + 0x6a1fb0,
-                 iVar2 * 5 + 0x6a1fc0,5,*(u32 *)(param_1 + 0xc),param_2);
+  for (index2 = 0; index2 < 3; index2 = index2 + 1) {
+    FUN_003b4ec0(aiStack_60,piVar2,DAT_006a1fb0_abs + index2 * 5,
+                 DAT_006a1fc0_abs + index2 * 5,5,*(u32 *)(param_1 + 0xc),param_2);
   }
   return;
 }

@@ -674,7 +674,6 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
     {
         goto done;
     }
-
     task = kwlnTaskCreateWithAutoPriority(parentTask, 10,
                                           "field camera rotation",
                                           (KwlnTaskUpdateFunc)func_001d5f90,
@@ -1238,9 +1237,9 @@ u16* K_Encount_001d78c0(u32 param_1, u16 flag, u32 areaId)
     s32 var_4_2;
     s32 var_6;
     u16* temp_5;
-    u16* var_19;
-    u32 temp_3_3;
     u32 var_17;
+    u32 temp_3_3;
+    u16* var_19;
     void* temp_3_2;
 
     var_19 = NULL;

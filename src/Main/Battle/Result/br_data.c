@@ -106,6 +106,8 @@ extern u8* pbGpffffb758;
 extern u16* puGpffffb74c;
 extern u16* puGpffffb730;
 extern u16* puGpffffb750;
+#pragma alias psGpffffb754_sda psGpffffb754
+extern u16* psGpffffb754_sda __attribute__((section(".sdata")));
 extern u16* psGpffffb754;
 extern char gp0xffff9700[];
 extern char gp0xffff9708[];
@@ -629,24 +631,20 @@ u32 func_001fba70(u16 param_1)
 
   iVar3 = -1;
 
-  for (psVar7 = psGpffffb754; ((*psVar7 != 0 || (psVar7[1] != 0)) || ((char)psVar7[2] != '\0'));
-
-      psVar7 = psVar7 + 3) {
-
-    if (*psVar7 == param_1) {
-
-      if (iVar3 == -1) {
-
-        iVar3 = iVar6;
-
-      }
-
-      iVar9 = iVar9 + 1;
-
+  psVar7 = psGpffffb754_sda;
+  iVar6 = 0;
+  while (1) {
+    if ((*psVar7 == 0) && (psVar7[1] == 0) && ((char)psVar7[2] == '\0')) {
+      break;
     }
-
+    if (*psVar7 == param_1) {
+      if (iVar3 == -1) {
+        iVar3 = iVar6;
+      }
+      iVar9 = iVar9 + 1;
+    }
     iVar6 = iVar6 + 1;
-
+    psVar7 = psVar7 + 3;
   }
 
   FUN_005225a8(sflResultMsgD20_abs,iVar9);
@@ -657,7 +655,7 @@ u32 func_001fba70(u16 param_1)
 
   while (iVar6 < iVar9) {
     iVar5 = iVar3 + iVar6;
-    psVar7 = psGpffffb754 + iVar5 * 3;
+    psVar7 = psGpffffb754_sda + iVar5 * 3;
     FUN_005225a8(&gp0xffff9700,psVar7[1]);
     iVar2 = FUN_00488f30();
     FUN_005225a8(sflResultMsgC80_abs,iVar2 % 100,(char)psVar7[2]);

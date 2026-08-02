@@ -4693,22 +4693,21 @@ int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
 
   int iVar3;
 
-  short *psVar4;
+  u16 *psVar4;
 
-  short sVar5;
-
-  int lVar6;
+  int iVar8;
 
   int iVar7;
 
-  int iVar8;
+  int lVar6;
+
+  u16 sVar5;
 
   
 
   param_1 = param_1 & 0xffff;
 
   iVar3 = FUN_003230f0(param_1 * param_3,param_1 * (param_2 & 0xffff),param_5);
-
   iVar1 = *(int *)(*(int *)(iVar3 + 0x10) + 0x18);
 
   uVar2 = *(u32 *)(iVar3 + 0x14);
@@ -4721,9 +4720,10 @@ int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
 
     for (lVar6 = 0; lVar6 < (int)((param_2 & 0xffff) * 3); lVar6 = lVar6 + 3) {
 
-      psVar4 = (short *)(param_4 + (int)lVar6 * 2);
+      psVar4 = (u16 *)(param_4 + (int)lVar6 * 2);
 
-      FUN_00493210(iVar1,iVar8,sVar5 + *psVar4,sVar5 + psVar4[1],sVar5 + psVar4[2]);
+      FUN_00493210(iVar1,iVar8,sVar5 + *psVar4 & 0xffff,sVar5 + psVar4[1] & 0xffff,
+                   sVar5 + psVar4[2] & 0xffff);
 
       FUN_00493230(iVar1,iVar8,uVar2);
 
@@ -7834,7 +7834,7 @@ u32 FUN_00326510(u32 param_1)
 
 
 
-// FUN_00326740 NONMATCHING
+// FUN_00326740
 
 
 void FUN_00326740(int param_1)
@@ -7873,7 +7873,7 @@ void FUN_00326740(int param_1)
 
     }
 
-    (*DAT_0096017c)(puVar1[0xe]);
+    DAT_0096017c_abs[0](puVar1[0xe]);
 
   }
 
@@ -7893,11 +7893,11 @@ void FUN_00326740(int param_1)
 
     for (uVar3 = 0; uVar3 < uVar2; uVar3 = uVar3 + 1) {
 
-      FUN_003257e0((u64)(*(u32 *)(puVar1[0xf] + uVar3 * 4)));
+      FUN_003257e0(*(u32 *)(puVar1[0xf] + uVar3 * 4));
 
     }
 
-    (*DAT_0096017c)(puVar1[0x10]);
+    DAT_0096017c_abs[0](puVar1[0x10]);
 
   }
 
@@ -7921,11 +7921,11 @@ void FUN_00326740(int param_1)
 
   if (puVar1[0x14] != 0) {
 
-    FUN_003237c0((int)(param_1));
+    FUN_003237c0((int)(puVar1[0x14]));
 
   }
 
-  (*DAT_0096017c)(param_1);
+  DAT_0096017c_abs[0](param_1);
 
   return;
 
@@ -32616,9 +32616,9 @@ u32 FUN_00342130(int param_1)
 
   u32 uVar1;
 
-  u32 uVar2;
-
   u32 uVar3;
+
+  u32 uVar2;
 
   int iVar4;
 
@@ -32635,6 +32635,7 @@ u32 FUN_00342130(int param_1)
     uVar3 = FUN_00341f10(uVar1 & 0xffff,uVar2);
 
     iVar4 = (uVar1 & 0xffff) * 0x1c;
+
     uVar2 = DAT_0069c850[uVar1 & 0xffff].callback1(uVar2,0);
 
     *(u32 *)((int)uVar3 + 0x3c) = uVar2;
@@ -37942,16 +37943,16 @@ void FUN_00348110(int *param_1,u32 param_2)
   iVar1 = *param_1;
 
   if (((int)param_2 <= iVar1) || (iVar1 == 0)) {
-
     DAT_007cca48 = 1.0f;
+
 
     if (0 < iVar1) {
 
       if (param_2 >= (u32)param_1[2]) {
 
         uVar2 = param_1[3];
-
         DAT_007cca48 = 1.0f;
+
 
         if (iVar1 - uVar2 < param_2) {
 

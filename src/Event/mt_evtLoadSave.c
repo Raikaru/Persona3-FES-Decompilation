@@ -2838,12 +2838,12 @@ void FUN_00390920(int param_1,int param_2)
   int iVar8;
 
   u32 *puVar9;
+
   MtEvtHalf4 half4;
 
   int iVar10;
 
   int iVar11;
-
   
 
   uVar6 = FUN_00361ca0(0x29);
@@ -2852,29 +2852,29 @@ void FUN_00390920(int param_1,int param_2)
 
     iVar5 = *(int *)(*(int *)(param_1 + 0x84) + 0x14);
 
-    if (iVar5 != 4) {
-
-      eventType = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c);
-
-    }
-
-    else {
+    if (iVar5 == 4) {
 
       eventType = *(u16 *)(*(int *)(param_1 + 0x98) + iVar11 * 0x10);
 
     }
 
+    else {
+
+      eventType = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c);
+
+    }
+
     if (eventType == 0x29) {
 
-      if (iVar5 != 4) {
+      if (iVar5 == 4) {
 
-        uVar4 = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c + 2);
+        uVar4 = *(u16 *)(*(int *)(param_1 + 0x98) + iVar11 * 0x10 + 2);
 
       }
 
       else {
 
-        uVar4 = *(u16 *)(*(int *)(param_1 + 0x98) + iVar11 * 0x10 + 2);
+        uVar4 = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c + 2);
 
       }
 

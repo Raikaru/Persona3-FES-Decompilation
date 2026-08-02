@@ -242,8 +242,8 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
       uVar5 = ((long)psVar12[iVar10 + 2] << 0x36) >> 0x36;
 
       if (uVar5 != 0) {
-
         puVar14 = (FclPersonaTableEntry *)DAT_007ce420;
+
         for (sVar7 = 0; bVar2 = 0, sVar7 < 0xc; sVar7 = sVar7 + 1) {
 
           uVar1 = *(u32 *)((int)param_4 + sVar7 * 0xc + 4);
@@ -814,7 +814,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
   int iVar10;
 
-  u8 *puVar11;
 
   short sStack_2;
 
@@ -862,15 +861,14 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
         iVar5 = uVar6 * 8;
 
-        puVar11 = DAT_006a5410 + iVar5;
 
         bVar3 = bVar2;
 
-        if ((u32)uVar1 == (long)*(short *)(puVar11 + 4)) {
+        if ((u32)uVar1 == (long)*(short *)(DAT_006a5410 + iVar5 + 4)) {
 
-          if ((*(s16 *)(puVar11 + 6) & 1) != 0) {
+          if ((*(s16 *)(DAT_006a5410 + iVar5 + 6) & 1) != 0) {
 
-            lVar4 = datGetFlag(*(u32 *)puVar11);
+            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
 
             if (lVar4 == 0) {
 
@@ -884,9 +882,9 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
           else {
 
-            if ((*(s16 *)(puVar11 + 6) & 2) != 0) {
+            if ((*(s16 *)(DAT_006a5410 + iVar5 + 6) & 2) != 0) {
 
-              lVar4 = datGetFlag(*(u32 *)puVar11);
+              lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
 
               bVar2 = 1;
 
@@ -1081,7 +1079,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
 {
 
-  u8 cVar1;
+  u32 cVar1;
 
   u16 sVar2;
 
@@ -1092,17 +1090,15 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
   u16 uStack_20;
   u16 uStack_1e;
   u16 uStack_1c;
-  u16 uStack_8;
-  u16 uStack_6;
-  u16 uStack_4;
+  u16 uStack_8[3];
 
   
 
-  uStack_8 = *(u16 *)((int)param_2 + 2);
+  uStack_8[0] = *(u16 *)((int)param_2 + 2);
 
-  uStack_6 = *(u16 *)((int)param_3 + 2);
+  uStack_8[1] = *(u16 *)((int)param_3 + 2);
 
-  uStack_4 = *(u16 *)((int)param_4 + 2);
+  uStack_8[2] = *(u16 *)((int)param_4 + 2);
 
   if ((((param_1 == 0) || (param_2 == 0)) || (param_3 == 0)) || (param_4 == 0)) {
 
@@ -1110,59 +1106,35 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
   }
 
-  cVar1 = FUN_003d6200(param_1,1,&uStack_8,3);
+  cVar1 = FUN_003d6200(param_1,1,uStack_8,3);
 
-  if (cVar1 == '\0') {
-
+  if (cVar1 != '\0') {
+    uVar3 = 2;
+  }
+  else {
     cVar1 = FUN_003d5e60(param_2,param_3,param_4);
-
     if (cVar1 == '\0') {
-
       memset(param_1,0,0x34);
-
       uVar3 = 0;
-
     }
-
     else {
-
       memset(&uStack_20,0,0x18);
-
       uStack_20 = *(u16 *)((int)param_2 + 2);
-
       uStack_1e = *(u16 *)((int)param_3 + 2);
-
       uStack_1c = *(u16 *)((int)param_4 + 2);
-
       iVar4 = DAT_007ce420 + 3;
-
       sVar2 = FUN_003d7ac0(cVar1,((u32)*(u8 *)(iVar4 + (u32)uStack_1c * 0xe) +
                                  (u32)*(u8 *)(iVar4 + (u32)uStack_20 * 0xe) +
                                  (u32)*(u8 *)(iVar4 + (u32)uStack_1e * 0xe)) / 3 + 5 & 0xff,
                            &uStack_20);
-
       if (sVar2 != 0) {
-
         FUN_00176680(param_1,sVar2);
-
         uVar3 = 1;
-
       }
-
       else {
-
         uVar3 = 0;
-
       }
-
     }
-
-  }
-
-  else {
-
-    uVar3 = 2;
-
   }
 
   return uVar3;
@@ -1493,7 +1465,7 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
   u8 bVar2;
 
-  u32 sVar3;
+  u16 sVar3;
 
   int iVar4;
 
@@ -2781,8 +2753,8 @@ u32 FUN_003d8630(int param_1,int param_2)
   u32 uVar8;
 
   u16 *puVar9;
-
   u8 *puVar10;
+
 
   u16 auStack_20 [15];
 
@@ -2835,8 +2807,8 @@ u32 FUN_003d8630(int param_1,int param_2)
       for (uVar8 = 0; uVar8 < 0x43; uVar8 = uVar8 + 1) {
 
         iVar5 = uVar8 * 8;
-
         puVar10 = DAT_006a5410 + iVar5;
+
 
         bVar3 = bVar2;
 

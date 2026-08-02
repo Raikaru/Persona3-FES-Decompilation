@@ -4202,7 +4202,7 @@ u32 FUN_0045b190(int param_1)
   int iVar3;
   int lVar4;
   float *pfVar5;
-  int iVar6;
+  u8 *iVar6;
   float fVar7;
   float fVar8;
   float fVar9;
@@ -4210,7 +4210,7 @@ u32 FUN_0045b190(int param_1)
   if (param_1 == 0) {
     return 0xffffffff;
   }
-  iVar6 = (int)param_1;
+  iVar6 = (u8 *)(uintptr_t)param_1;
     if ((*(u32 *)(iVar6 + 0x8c) & 2) != 0) {
       return 2;
     }

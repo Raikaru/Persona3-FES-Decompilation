@@ -3155,8 +3155,8 @@ void FUN_0017d3c0(void)
 // FUN_0017d450 NONMATCHING
 u32 FUN_0017d450(s32 index, const void* date)
 {
-    u8 current[8];
-    s32 newer = 0;
+u8 current[8];
+s32 newer = 0;
 
     if (date == NULL) FUN_0019d3f0(0x5e3098, 0x1933);
     if (index >= 5) return 0;

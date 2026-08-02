@@ -2263,8 +2263,8 @@ void FUN_002b77c0(int param_1)
 
   if (*(char *)(param_1 + 0x9f0) < '\0') {
     base = DAT_007ce3ec;
-    uVar6 = *(u8 *)(param_1 + 0xa2);
     uVar5 = (u32)*(u16 *)(base + 0xa38);
+    uVar6 = *(u8 *)(param_1 + 0xa2);
     switch (uVar6) {
     case 0:
       uVar3 = 0;

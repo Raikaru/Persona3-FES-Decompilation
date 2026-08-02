@@ -2400,7 +2400,12 @@ void FUN_00202D70(void)
     if (datGetFlag(0x186))
     {
         selectedValue = FUN_0016F380(0x32);
-        if (selectedValue != 0)
+        if (selectedValue == 0)
+        {
+            selected = 0;
+            start = 0;
+        }
+        else
         {
             for (selected = 0; selected < out; selected++)
             {
@@ -2425,11 +2430,6 @@ void FUN_00202D70(void)
             {
                 start = 0;
             }
-        }
-        else
-        {
-            selected = 0;
-            start = 0;
         }
     }
     else

@@ -10202,6 +10202,7 @@ void FUN_0042bc10(int param_1)
     FUN_00423fe0(&fStack_8,0,0x7e,0x7e,0x20,0x20);
 
     *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + fStack_8;
+    *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + fStack_8;
 
     uVar2 = FUN_004560d0_typed(param_1,*(float *)(iVar1 + 0x89c),
                                *(float *)(iVar1 + 0x8a0),1.0f,0x20,0x20);
@@ -14392,7 +14393,7 @@ void FUN_00439520(int param_1);
 void FUN_0043a1a0(char param_1,u8 param_2);
 void FUN_0043a2f0(int param_1);
 void FUN_0043a960(int param_1);
-void FUN_0043bf50(u64 param_1);
+void FUN_0043bf50(int param_1);
 void FUN_0043c660(int param_1);
 void FUN_0043c7a0(char param_1,u8 param_2);
 void FUN_00447ad0(int param_1);
@@ -15785,7 +15786,7 @@ void FUN_00439520(int param_1);
 void FUN_0043a1a0(char param_1,u8 param_2);
 void FUN_0043a2f0(int param_1);
 void FUN_0043a960(int param_1);
-void FUN_0043bf50(u64 param_1);
+void FUN_0043bf50(int param_1);
 void FUN_0043c660(int param_1);
 void FUN_0043c7a0(char param_1,u8 param_2);
 void FUN_00447ad0(int param_1);
@@ -18005,7 +18006,7 @@ u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
   position.y = 0.0f;
   *(u32 *)(iVar2 + 0xe4) = 0;
   delta.x = position.x - *(float *)(iVar2 + 0xe0);
-  delta.y = 0.0f - *(float *)(iVar2 + 0xe4);
+  delta.y = position.y - *(float *)(iVar2 + 0xe4);
   delta.z = position.z - *(float *)(iVar2 + 0xe8);
   fVar4 = (float)FUN_004c69f0(&delta.x,&delta.x);
   delta.y = 0.0f;
@@ -21254,7 +21255,7 @@ short FUN_0043bda0(char param_1,char param_2)
 #pragma opt_dead_assignments off
 // FUN_0043BF50 NONMATCHING
 
-void FUN_0043bf50(u64 param_1)
+void FUN_0043bf50(int param_1)
 
 {
   char cVar1;
@@ -27639,8 +27640,8 @@ u32 FUN_0044ffb0(int param_1)
   u32 uVar6;
   u8 auStack_10 [16];
   
-  iVar2 = DAT_007ce290;
   iVar1 = *(int *)(param_1 + 0x3c);
+  iVar2 = DAT_007ce290;
   uVar6 = 0;
   if (*(char *)(iVar1 + 0x41) == '\x01') {
     uVar6 = 0;

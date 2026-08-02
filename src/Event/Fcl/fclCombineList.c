@@ -1665,12 +1665,12 @@ void fclCombineList003dd800(s32 x, s32 y, s32 alpha, FclOwner* owner,
     work = owner->container->work;
     candidate_data = candidate->payload->data.node_data;
 
+    selection_detail = candidate_data->selection_detail;
     if (candidate == owner->root.secondary_head) {
         record.flags |= 1;
     }
 
     found = 0;
-    selection_detail = candidate_data->selection_detail;
     if ((selection_detail != 0) &&
         (((work->flags & 1) == 0) || (candidate_data->fusion.detail.persona_id != 0))) {
         K_ASSERT(work != 0, 0x438);
