@@ -951,6 +951,7 @@ void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5)
           if (flag40 != 0) {
             FUN_0027f790(unit, 2);
             if (flag10 == 0) *(u8 *)((u8 *)unit + 0x37) = 0xff;
+            goto next_unit;
           }
           else if ((list == *(u8 **)(iGpffffb6fc + 0x148)) && (flag4 != 0)) {
             FUN_0027f790(unit, 2);
@@ -978,8 +979,8 @@ void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5)
               if (index_value == *(u16 *)(param_2 + 0x6a)) goto next_unit;
             }
 
-            if ((*(s8 *)((u8 *)unit + 0xa2) !=
-                 *(s8 *)(*(u8 **)(param_2 + 0x30) + 0xa2)) ||
+            if ((*(u8 *)((u8 *)unit + 0xa2) !=
+                 *(u8 *)(*(u8 **)(param_2 + 0x30) + 0xa2)) ||
                 (packet.flag8.w[0] == 0)) goto geometry;
 
             FUN_0027f790(unit, 2);
@@ -987,10 +988,7 @@ void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5)
           }
           else {
 geometry:
-            if ((param_3 == 0) || (param_4 == 0)) {
-              distance = 0.0f;
-            }
-            else {
+            if ((param_3 != 0) && (param_4 != 0)) {
               FUN_0027ffb0(unit, &packet.center);
               packet.f110 = packet.center.x;
               packet.f114 = packet.center.z;
@@ -999,12 +997,15 @@ geometry:
               distance = (distance) -
                          *(f32 *)((u8 *)unit + 0x90) *
                          *(f32 *)((u8 *)unit + 0x2c);
-              if (((packet.f100 < packet.f118 || packet.f118 < packet.f108) &&
-                   (packet.f118 < packet.f100 || packet.f108 < packet.f118)) ||
-                  ((packet.f104 < packet.f114 || packet.f114 < packet.f10c) &&
-                   (packet.f114 < packet.f104 || packet.f10c < packet.f114))) {
+              if (((packet.f100 < packet.f118 || !(packet.f108 <= packet.f118)) &&
+                   (!(packet.f100 <= packet.f118) || packet.f108 < packet.f118)) ||
+                  ((packet.f104 < packet.f11c || !(packet.f10c <= packet.f11c)) &&
+                   (!(packet.f104 <= packet.f11c) || packet.f10c < packet.f11c))) {
                 goto next_unit;
               }
+            }
+            else {
+              distance = 0.0f;
             }
 
             if (distance <= param_1) {
@@ -10021,7 +10022,7 @@ index_ok:
     }
   }
   nextIndex = index + 1;
-  if (nextIndex >= (s16)entries[0]) {
+  if (nextIndex >= entries[0]) {
     goto disable;
   }
   if (work->firstAction == 0) {

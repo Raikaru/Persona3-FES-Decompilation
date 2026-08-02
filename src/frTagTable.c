@@ -808,6 +808,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
 /* W389 pragma: opt_common_subs off; without nd=370/object=528, with nd=358/object=580; window=592. */
 #pragma push
 #pragma opt_common_subs off
+
 // FUN_003AF110 NONMATCHING
 
 
@@ -912,7 +913,7 @@ u32 FUN_003af110(u64 param_1,int param_2)
       break;
     }
 
-  }
+}
 
   return 0;
 

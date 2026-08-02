@@ -5499,7 +5499,7 @@ void* func_001871a0(KwlnTask* task)
     default:
         break;
     }
-    return KWLNTASK_CONTINUE;
+    goto cont;
 
 draw:
     if (work->timer < 10)
@@ -5519,9 +5519,10 @@ draw:
                   0x18,
                   0);
     work->timer++;
-    if (work->timer < 0x5a)
-        return KWLNTASK_CONTINUE;
-    return KWLNTASK_STOP;
+    if (work->timer >= 0x5a)
+        return KWLNTASK_STOP;
+cont:
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_00187520

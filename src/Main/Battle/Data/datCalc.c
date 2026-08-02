@@ -3610,38 +3610,43 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
   if (!((s32)(param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xcc5);
   }
-  if ((param_2 == 0) || (param_3 == 0)) {
-    uVar1 = 0;
+  if (param_2 == 0) {
+    goto datCalc_00306bc0_zero;
   }
-  else {
-    if (param_5 != 0) {
-      uVar1 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
-      *(u32 *)param_5 = uVar1;
-    }
-    if (param_6 != 0) {
-      uVar1 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
-      *(u32 *)param_6 = uVar1;
-    }
-    if (param_7 != 0) {
-      if (!((s32)(param_1 & 0xffff) < 0x1d0)) {
-        FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
-      }
-      iVar2 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
-      if (*(u8 *)(iVar2 + 0x18) == 2) {
-        if (*(u8 *)(iVar2 + 0x19) < 100) {
-          FUN_0019d3f0((u32)D_0069aa80, 0xc05);
-        }
-        uVar1 = FUN_00305970(param_1,param_2,param_3);
-      }
-      else {
-        uVar1 = 0;
-      }
-      *(u32 *)param_7 = uVar1;
-    }
-    *(u32 *)((int)param_2 + 0x18) = 0;
-    *(u32 *)((int)param_3 + 0x18) = 0;
-    uVar1 = 1;
+  if (param_3 == 0) {
+    goto datCalc_00306bc0_zero;
   }
+  if (param_5 != 0) {
+    uVar1 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
+    *(u32 *)param_5 = uVar1;
+  }
+  if (param_6 != 0) {
+    uVar1 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
+    *(u32 *)param_6 = uVar1;
+  }
+  if (param_7 != 0) {
+    if (!((s32)(param_1 & 0xffff) < 0x1d0)) {
+      FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
+    }
+    iVar2 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
+    if (*(u8 *)(iVar2 + 0x18) == 2) {
+      if (*(u8 *)(iVar2 + 0x19) < 100) {
+        FUN_0019d3f0((u32)D_0069aa80, 0xc05);
+      }
+      uVar1 = FUN_00305970(param_1,param_2,param_3);
+    }
+    else {
+      uVar1 = 0;
+    }
+    *(u32 *)param_7 = uVar1;
+  }
+  *(u32 *)((int)param_2 + 0x18) = 0;
+  *(u32 *)((int)param_3 + 0x18) = 0;
+  uVar1 = 1;
+  goto datCalc_00306bc0_return;
+datCalc_00306bc0_zero:
+  uVar1 = 0;
+datCalc_00306bc0_return:
   return uVar1;
 }
 

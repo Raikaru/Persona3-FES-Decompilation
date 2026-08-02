@@ -57,6 +57,8 @@ extern code DAT_0096017c_abs[];
 
 #pragma alias PTR_DAT_007cd540_u32 PTR_DAT_007cd540
 extern u32 *PTR_DAT_007cd540_u32;
+extern void FUN_0034fcf0(u32 param_1);
+extern void FUN_003174e0(u32 param_1);
 extern void FUN_001e6af0(void *param_1,void *param_2,float param_3,float param_4,float param_5);
 extern s32 adminiGetNowSeqId(void);
 extern void func_001b3c90(void* param_1);
@@ -1244,7 +1246,7 @@ void FUN_003b7090(u64 param_1)
 
           if (puVar4[iVar6 + 0x40] != 0) {
 
-            FUN_0034fcf0();
+            FUN_0034fcf0(puVar4[iVar6 + 0x40]);
 
             puVar4[iVar6 + 0x40] = 0;
 
@@ -1298,7 +1300,7 @@ void FUN_003b7090(u64 param_1)
 
           if (puVar4[iVar6 + 0x40] != 0) {
 
-            FUN_0034fcf0();
+            FUN_0034fcf0(puVar4[iVar6 + 0x40]);
 
             puVar4[iVar6 + 0x40] = 0;
 
@@ -1308,19 +1310,19 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x80] != 0) {
 
-          (*DAT_0096017c_abs)();
+          (*DAT_0096017c_abs)(puVar4[0x80]);
 
         }
 
         if (puVar4[0x82] != 0) {
 
-          (*DAT_0096017c_abs)();
+          (*DAT_0096017c_abs)(puVar4[0x82]);
 
         }
 
         if (puVar4[0x7b] != 0) {
 
-          FUN_003174e0();
+          FUN_003174e0(puVar4[0x7b]);
 
           puVar4[0x7b] = 0;
 
@@ -1340,7 +1342,7 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x41] != 0) {
 
-          FUN_0034fcf0();
+          FUN_0034fcf0(puVar4[0x41]);
 
           puVar4[0x41] = 0;
 
@@ -1368,7 +1370,7 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x4b] != 0) {
 
-          FUN_003174e0();
+          FUN_003174e0(puVar4[0x4b]);
 
           puVar4[0x4b] = 0;
 
@@ -1382,7 +1384,7 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x41] != 0) {
 
-          FUN_0034fcf0();
+          FUN_0034fcf0(puVar4[0x41]);
 
           puVar4[0x41] = 0;
 

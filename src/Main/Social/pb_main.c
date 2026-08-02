@@ -71,6 +71,8 @@ void func_001fccc0(u8* src, u8* dst, u32 skill);
 void func_001fce20(u8* persona, u16* skills, s32 count);
 void func_001fd350(u8* persona, u32* skills, s32 count);
 extern s16 FUN_001706c0(s16 pcId, s16 index);
+#pragma alias FUN_005225a8_pb FUN_005225a8
+extern void FUN_005225a8_pb(const char* format, ...);
 extern u8* pbGpffffb758;
 extern u16* puGpffffb74c;
 extern u16* puGpffffb730;
@@ -112,6 +114,8 @@ extern const char sflResultMsgCE0_abs[];
 extern const char sflResultMsgCF8_abs[];
 extern const char sflResultMsgD08_abs[];
 extern const char sflResultMsgD20_abs[];
+#pragma alias pbResultMsgDD0_abs DAT_00684d70
+extern const char pbResultMsgDD0_abs[];
 extern const char sflResultMsgD30_abs[];
 extern const char sflResultMsgD40_abs[];
 #pragma alias sflResultAssertBA8_abs DAT_00684ba8
@@ -245,15 +249,15 @@ int func_001fc870(u8* event, void* target)
 
 void func_001fc980(u8* event, u16* result, s32* count)
 {
-    extern void FUN_0017be10(int param_1, int param_2, s16 param_3, int param_4,
+    extern void FUN_0017be10(s16 param_1, s16 param_2, s16 param_3, int param_4,
                              void* param_5, void* param_6, void* param_7);
     extern u16 FUN_0017bb40(s32 id);
     DatPersonaWork* persona;
     u16* skills;
-    u32 skillCount;
+    s32 skillCount;
     s32 skill;
     u32 resultCount;
-    u32 i;
+    s32 i;
     s32 hp;
     u32 sp;
     u32 status;
@@ -278,7 +282,7 @@ void func_001fc980(u8* event, u16* result, s32* count)
             id = *(s16*)(event + 2);
             FUN_0017be10(id, id, skill, 0,
                          &hp, &sp, &status);
-            FUN_005225a8(0x684dd0, hp, sp, status);
+            FUN_005225a8(DAT_00684d70 + 0x60, hp, sp, status);
             if (hp > 0 && FUN_0017bb40(skill) == 0)
             {
                 result[resultCount] = skill;
@@ -315,7 +319,7 @@ void func_001fcb30(u8* event, u32* result, s32* count)
             {
                 FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2),
                              *(u16*)(skillId + 8), 1, &hp, &sp, &status);
-                FUN_005225a8(0x684dd0, hp, sp, status);
+                FUN_005225a8(DAT_00684d70 + 0x60, hp, sp, status);
                 if (hp > 0)
                 {
                     switch (skill)

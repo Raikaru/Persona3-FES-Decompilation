@@ -94,6 +94,8 @@ extern u32 DAT_0095ad00;
 extern u32 DAT_0095ad04;
 extern u32 DAT_0095ad08;
 extern u32 DAT_0095ad0c;
+#pragma alias DAT_0095ad0c_abs DAT_0095ad0c
+extern u32 DAT_0095ad0c_abs[];
 extern u32 DAT_0095ad10;
 extern u32 DAT_0095ad30;
 extern u32 DAT_0095ad50;
@@ -1252,7 +1254,7 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
 skipCachedFont:
 
-  if ((&DAT_0095ad0c)[(u32)bGpffffb950 * 8] != 0) {
+  if (DAT_0095ad0c_abs[(u32)bGpffffb950 * 8] != 0) {
     goto processFont;
   }
 

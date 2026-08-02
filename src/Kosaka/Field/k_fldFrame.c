@@ -3978,6 +3978,8 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
     FldFrameMoveWork* work;
     RwV3d line[2];
     RwV3d resolved;
+    RwV3d* output;
+    f32 debugColor;
 
     work = (FldFrameMoveWork*)task->workData;
     line[1] = *position;
@@ -3994,48 +3996,49 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
     switch (work->pathMode)
     {
     case 0:
-        if (work->pointCount >= 47)
+        if (work->pointCount < 47)
         {
-            return false;
-        }
-        if (K_FldFrame_Raycast(line, &resolved) != false)
-        {
-            work->points[work->pointCount].position = resolved;
-        }
-        else
-        {
-            work->points[work->pointCount].position = *position;
-        }
-        work->points[work->pointCount].duration = duration;
-        work->points[work->pointCount].kind = 0;
-        if ((work->flags & 0x80000000) != 0)
-        {
-            work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
-            if (work->points[work->pointCount].drawTask != NULL)
+            if (K_FldFrame_Raycast(line, &resolved) == true)
             {
-                K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
+                work->points[work->pointCount].position = resolved;
+            }
+            else
+            {
+                work->points[work->pointCount].position = *position;
+            }
+            work->points[work->pointCount].duration = duration;
+            work->points[work->pointCount].kind = 0;
+            if ((work->flags & 0x80000000) != 0)
+            {
+                debugColor = *(f32*)&sDebugSphereColor;
+                work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
+                K_Draw_SetPositionColor(work->points[work->pointCount].drawTask,
+                                        (RwRGBA*)&debugColor);
                 K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
                                       &work->points[work->pointCount].position);
             }
+            work->pointCount++;
+            return true;
         }
-        work->pointCount++;
-        return true;
+        return false;
     case 1:
-        if (work->pendingPointCount >= 7)
+        if (work->pendingPointCount < 7)
         {
-            return false;
+            if (K_FldFrame_Raycast(line, &resolved) == true)
+            {
+                output = (RwV3d*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18);
+                *output = resolved;
+            }
+            else
+            {
+                output = (RwV3d*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18);
+                *output = *position;
+            }
+            *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
+            work->pendingPointCount++;
+            return true;
         }
-        if (K_FldFrame_Raycast(line, &resolved) != false)
-        {
-            memcpy_k_fldFrame_typed((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, &resolved, sizeof(RwV3d));
-        }
-        else
-        {
-            memcpy_k_fldFrame_typed((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, position, sizeof(RwV3d));
-        }
-        *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
-        work->pendingPointCount++;
-        return true;
+        return false;
     default:
         return false;
     }

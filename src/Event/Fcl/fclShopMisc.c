@@ -3146,6 +3146,7 @@ u64 FUN_003f2dc0(int param_1,int param_2)
 {
 
   short sVar1;
+  long compareId;
 
   u32 *puVar2;
 
@@ -3165,7 +3166,6 @@ u64 FUN_003f2dc0(int param_1,int param_2)
   int lVar8;
 
   int iVar9;
-
   int iStack_4;
 
   
@@ -3175,6 +3175,7 @@ u64 FUN_003f2dc0(int param_1,int param_2)
   *puVar2 = *puVar2 & 0xffffffef;
 
   sVar1 = (short)puVar2[1];
+  compareId = (long)(short)sVar1;
 
   iStack_4 = -1;
 
@@ -3190,13 +3191,13 @@ u64 FUN_003f2dc0(int param_1,int param_2)
     sVar4 = 0;
     for (iVar9 = 0; iVar9 < 300; iVar9 = iVar9 + 1) {
       uVar7 = datGetEquipmentId(1,iVar9);
-      if (sVar1 == (uVar7 & 0xffff)) {
+      if (compareId == (uVar7 & 0xffff)) {
         sVar4 = sVar4 + 1;
       }
     }
     break;
   case 4:
-    sVar4 = func_00170760(1,sVar1);
+    sVar4 = func_00170760(1,compareId);
     break;
   }
 
@@ -5044,7 +5045,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   iVar15 = (int)param_2;
 
-  FUN_0040e3c0(0,param_1,iVar15 + 1,param_3,0x38,0);
+  FUN_0040e3c0_f32(0.0f,param_1,iVar15 + 1,param_3,0x38,0);
 
   puVar13 = &DAT_006aef60;
 
@@ -5070,13 +5071,10 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  FUN_0040e3c0(0,param_1,iVar15 + 1,param_3,0x39,scratch.mapping[*(u8 *)(iVar6 + 8)]);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3,0x3a,0);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3,0x3b,0);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3,0x3c,0);
+  FUN_0040e3c0_f32(0.0f,param_1,iVar15 + 1,param_3,0x39,scratch.mapping[*(u8 *)(iVar6 + 8)]);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,0x3a,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,0x3b,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,0x3c,0);
 
   for (uVar14 = 0; (int)uVar14 < 4; uVar14 = uVar14 + 1) {
 
@@ -5094,7 +5092,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
     else {
 
-      FUN_0040e3c0(0,(int)param_1 + (uVar14 & 1) * 0x7c,iVar15 + ((int)uVar14 >> 1 & 1U) * 0x15,
+      FUN_0040e3c0_f32(0.0f,(int)param_1 + (uVar14 & 1) * 0x7c,iVar15 + ((int)uVar14 >> 1 & 1U) * 0x15,
 
                    param_3,0x3d,0);
 
@@ -5927,7 +5925,7 @@ void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
-// FUN_003F7730 NONMATCHING
+// FUN_003F7730
 
 
 void FUN_003f7730(int param_1,int param_2,u32 param_3,int param_4,int param_5)
@@ -5984,9 +5982,8 @@ void FUN_003f7730(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   sprintf((char *)auStack_10,&DAT_007cd954,*(short *)(iVar2 + 0xe));
   iVar3 = (int)param_1 + 0x8b;
-  iVar2 = (int)param_2;
-  iVar2 = iVar2 + 0xc;
-  FUN_0040eb50_f32(0.0f,iVar3,iVar2,param_3,1,auStack_10,1);
+  iVar2 = (int)param_2 + 0xc;
+  FUN_0040eb50_i(iVar3,iVar2,0.0f,param_3,1,auStack_10,1);
   return;
 
 }
@@ -12640,7 +12637,6 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
   iVar3 = *(int *)(iVar2 + 4);
 
   while (iVar5 = iVar3, iVar5 != 0) {
-
     lVar4 = FUN_003ffa20_3(*(u16 *)(*(int *)(iVar5 + 0x14) + 4),
 
                          *(u16 *)(*(int *)(iVar5 + 0x14) + 6),

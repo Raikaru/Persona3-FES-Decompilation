@@ -1936,6 +1936,7 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     u32* progress;
     u32* table;
     u32 personaId;
+ 
 
     socialLinkBase = gGlobalWork.heroStatus.socialLinkStat + socialLink;
     level = socialLinkBase[0];
@@ -1944,7 +1945,7 @@ void func_0016e2b0(s16 socialLink, s32 amount)
         return;
     }
     socialLink = socialLinkBase[0x76];
-    if (socialLink <= 0 || socialLink >= 10)
+    if (socialLink >= 10 || socialLink <= 0)
     {
         return;
     }

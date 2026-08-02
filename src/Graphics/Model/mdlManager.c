@@ -85,6 +85,9 @@ extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
 extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640
 extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
+extern void func_003204a0(int *param_4, f32 param_1, f32 param_2, f32 param_3, int *param_5);
+extern void func_00320380(int *param_2, f32 param_1);
+extern void func_00320770(int *param_1);
 extern f32 func_00320810(void* animation);
 void func_00316970(Model* mdl);
 u32 func_003115a0(void* param_1, u32* param_2);
@@ -2603,19 +2606,20 @@ void func_00313ca0(int *param_1,u32 param_2)
 
   float fVar8;
 
-  u32 uVar9;
+  float fVar9;
 
   
 
-  if ((int *)*param_1 != (int *)0x0) {
+  if ((int *)*param_1 == (int *)0x0) {
+    return;
+  }
 
-    iVar7 = (int)param_2;
-
-    sVar1 = *(short *)(iVar7 + 4);
-
-    lVar6 = (int)sVar1;
-
-    if (-1 < lVar6) {
+  iVar7 = (int)param_2;
+  sVar1 = *(short *)(iVar7 + 4);
+  lVar6 = (int)sVar1;
+  if (sVar1 < 0) {
+    return;
+  }
 
       iVar2 = *(int *)*param_1;
 
@@ -2627,7 +2631,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
         if (iVar2 != 0) {
 
-          func_003204a0(*(u32 *)(iVar7 + 0x14),0,iVar2,iVar3);
+          func_003204a0((int *)iVar2,*(f32 *)(iVar7 + 0x14),0.0f,*(f32 *)(iVar7 + 0x1c),(int *)iVar3);
 
         }
 
@@ -2651,7 +2655,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
           if (param_1[1] != 0) {
 
-            func_00320770();
+            func_00320770((int *)param_1[1]);
 
           }
 
@@ -2661,34 +2665,34 @@ void func_00313ca0(int *param_1,u32 param_2)
 
           piVar4 = *(int **)(iVar7 + 0x2c);
 
-          if (!((((piVar4 == (int *)0x0) || ((u32)*(u16 *)(piVar4 + 1) <= (u32)lVar6)) ||
+          if (!((((piVar4 == (int *)0x0) || ((int)*(u16 *)(piVar4 + 1) <= lVar6)) ||
               (puVar5 = *(u8 **)(*piVar4 + 0x40 + (sVar1 * 4 + (int)sVar1) * 0x10),
               puVar5 == (u8 *)0x0)) || (puVar5 == (u8 *)&DAT_009571d0))) {
             if (lVar6 < 0) {
-              uVar9 = 0;
+              fVar9 = 0.0f;
             }
             else {
-              uVar9 = *(u32 *)(iVar7 + 0xc);
+              fVar9 = *(f32 *)(iVar7 + 0xc);
             }
-            func_00320380(uVar9,iVar3);
+            func_00320380((int *)iVar3,fVar9);
           }
           else {
-            func_00320380(*(u32 *)(iVar7 + 0xc),iVar3);
+            func_00320380((int *)iVar3,*(f32 *)(iVar7 + 0xc));
             fVar8 = func_00320810((void*)iVar3);
-            if (fVar8 < *(float *)(iVar7 + 0xc)) {
-              func_00313090(0,param_2);
+            if (*(float *)(iVar7 + 0xc) <= fVar8) {
+              goto LAB_00313e38;
             }
+            func_00313090(0,param_2);
           }
 
         }
 
+      LAB_00313e38:
         param_1[1] = iVar3;
 
       }
 
-    }
 
-  }
 
   return;
 
@@ -4202,115 +4206,70 @@ void func_00315c20(int param_1)
 
 
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  long lVar3;
-
+  code *stateFn;
   int *piVar4;
-
+  u32 uVar1;
+  u32 uVar2;
+  long lVar3;
   u32 uStack_4;
 
-  
-
   if ((*(u16 *)(param_1 + 0xd8) & 0x400) != 0) {
-
     mdl003164c0((void*)*(u32 *)(param_1 + 0xdc));
-
   }
 
   RpSkyRenderStateSet(2, (void*)100);
 
   if (((*(u16 *)(param_1 + 0xd8) & 0x200) == 0) || ((*(u16 *)(param_1 + 0xd8) & 0x400) != 0))
-
   {
-
     RpSkyRenderStateSet(3, (void*)0x7000f);
-
   }
-
-  else if (*(u8 *)(param_1 + 0xd3) < 0xc9) {
-
-    RpSkyRenderStateSet(3, (void*)0x7008d);
-
-  }
-
-  else {
-
+  else if (*(u8 *)(param_1 + 0xd3) >= 0xc9) {
     RpSkyRenderStateSet(3, (void*)0x704fd);
-
+  }
+  else {
+    RpSkyRenderStateSet(3, (void*)0x7008d);
   }
 
-  (*DAT_00960090)(6,1);
-
+  stateFn = (code *)&DAT_00960090_abs;
+  (*stateFn)(6,1);
   (*DAT_00960094)(0xe,&uStack_4);
-
-  (*DAT_00960090)(0xe,0);
+  (*stateFn)(0xe,0);
 
   uVar1 = DAT_00960070;
 
   if ((*(int *)(param_1 + 0xe0) == 0) || ((*(u16 *)(param_1 + 0xd8) & 0x200) != 0)) {
-
     func_001a88e0(*(u32 *)(param_1 + 0xdc));
-
   }
-
   else {
-
     for (piVar4 = *(int **)(*(int *)(param_1 + 0xe0) + 8); piVar4 != (int *)0x0;
-
         piVar4 = (int *)piVar4[10]) {
-
       uVar2 = func_004912b0(*piVar4);
-
       lVar3 = RwCameraFrustumTestSphere((const RwCamera*)uVar1,(const RwSphere*)uVar2);
-
       if (lVar3 != 0) {
-
         (*(code *)(*piVar4 + 0x48))();
-
       }
-
     }
-
   }
 
-  (*DAT_00960090)(0xe,uStack_4);
+  (*stateFn)(0xe,uStack_4);
 
   if ((*(int *)(param_1 + 0xe0) == 0) || ((*(u16 *)(param_1 + 0xd8) & 0x800) != 0)) {
-
     RpSkyRenderStateSet(2, (void*)*(u32 *)(param_1 + 0xe4));
-
     RpSkyRenderStateSet(3, (void*)*(u32 *)(param_1 + 0xe8));
-
-    (*DAT_00960090)(6,1);
-
-    (*DAT_00960090)(8,0);
-
+    (*stateFn)(6,1);
+    (*stateFn)(8,0);
     func_001a88e0(*(u32 *)(param_1 + 0xdc));
-
   }
-
   else {
-
-    (*DAT_00960090)(6,1);
-
-    (*DAT_00960090)(8,0);
-
+    (*stateFn)(6,1);
+    (*stateFn)(8,0);
     uVar1 = *(u32 *)(param_1 + 0xe0);
-
     func_001a7b50(uVar1,0);
-
     func_001a7fc0(uVar1,0);
-
     func_001a8140(uVar1,0);
-
   }
 
   return;
-
 }
 
 // FUN_00315ED0
@@ -4895,10 +4854,8 @@ Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u3
 Model* func_00316c70(u16 modelType,u16 id,void* archive,u32 readMode)
 {
   Model *mdl;
-  MdlRmdFileMemory rmd;
-  void *data;
-  u32 size;
   if (!mdlFileIsTypePac(modelType)) {
+    MdlRmdFileMemory rmd;
     rmd.memory = *(void **)((int)archive + 0x110);
     rmd.size = *(u32 *)((int)archive + 0x118);
     mdl = mdlInit(modelType,id);
@@ -4910,6 +4867,9 @@ Model* func_00316c70(u16 modelType,u16 id,void* archive,u32 readMode)
     mdlStreamRead(mdl);
   }
   else {
+    MdlRmdFileMemory rmd;
+    void *data;
+    u32 size;
     data = H_Cdvd_ArchiveGetFile((HCdvd*)archive,0,&size);
     mdl = mdlInit(modelType,id);
     if ((readMode & 1) != 0) {
@@ -5562,44 +5522,43 @@ u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
 {
     MdlAnim* anim;
     MdlAnimEntry* entry;
-    u32 i;
+    u16 i;
 
-    if (!func_00318620(mdl, slotIdx, id))
+    if (func_00318620(mdl, slotIdx, id))
     {
-        return true;
-    }
-
-    anim = &mdl->animSlots[slotIdx].anim;
-    if (slotIdx == 0)
-    {
-        if (id < 0 || anim->table == NULL || id >= anim->table->count ||
-            anim->table->entries[id].rtAnim == NULL ||
-            anim->table->entries[id].rtAnim == &DAT_009571d0)
+        if (slotIdx == 0)
         {
-            RwMatrixSetIdentity(&mdl->identityMat);
+            if (id >= 0 && mdl->animSlots[0].anim.table != NULL &&
+                id < mdl->animSlots[0].anim.table->count &&
+                mdl->animSlots[0].anim.table->entries[id].rtAnim != NULL &&
+                mdl->animSlots[0].anim.table->entries[id].rtAnim != &DAT_009571d0)
+            {
+                entry = &mdl->animSlots[0].anim.table->entries[id];
+                mdl->identityMat = entry->identityMat;
+            }
+            else
+            {
+                RwMatrixSetIdentity(&mdl->identityMat);
+            }
+
+            func_00314850(mdl->clump, (u8*)mdl + 0x364, id, blendFrameCount, flags);
         }
-        else
+
+        anim = &mdl->animSlots[slotIdx].anim;
+        func_003138e0(anim, id, blendFrameCount, flags);
+
+        if (*(void**)mdl->runtimeData.animationData != NULL && (flags & 0x40) == 0 && slotIdx == 0)
         {
-            entry = &anim->table->entries[id];
-            mdl->identityMat = entry->identityMat;
+            func_0031ef80(mdl->runtimeData.animationData, id, blendFrameCount);
         }
 
-        func_00314850(mdl->clump, (u8*)mdl + 0x364, id, blendFrameCount, flags);
-    }
-
-    func_003138e0(anim, id, blendFrameCount, flags);
-
-    if (*(void**)mdl->runtimeData.animationData != NULL && (flags & 0x40) == 0 && slotIdx == 0)
-    {
-        func_0031ef80(mdl->runtimeData.animationData, id, blendFrameCount);
-    }
-
-    for (i = 0; i < 5; i++)
-    {
-        if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
-            mdl00319770(mdl, i))
+        for (i = 0; i < 5; i++)
         {
-            mdlAnimSet(mdl->attachedWpns[i].wpnMdl, 0, id, blendFrameCount, flags);
+            if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
+                mdl00319770(mdl, i))
+            {
+                mdlAnimSet(mdl->attachedWpns[i].wpnMdl, 0, id, blendFrameCount, flags);
+            }
         }
     }
 
@@ -5976,55 +5935,38 @@ u32 func_00318b90(u32 param_1)
 
   piVar1 = *(int **)(iVar6 + 0x118);
 
-  if ((((piVar1 == (int *)0x0) ||
-
-       ((u32)*(u16 *)(piVar1 + 1) <= (s32)*(short *)(iVar6 + 0xf0))) ||
-
-      (puVar2 = *(u8 **)(*piVar1 + 0x40 + *(short *)(iVar6 + 0xf0) * 0x50),
-
-      puVar2 == (u8 *)0x0)) || (puVar2 == (u8 *)&DAT_009571d0)) {
-
-    uVar3 = 0;
-
-  }
-
-  else {
+  if ((piVar1 != (int *)0x0) &&
+      (*(short *)(iVar6 + 0xf0) < *(u16 *)(piVar1 + 1)) &&
+      ((puVar2 = *(u8 **)(*piVar1 + 0x40 + *(short *)(iVar6 + 0xf0) * 0x50),
+        puVar2 != (u8 *)0x0)) &&
+      (puVar2 != (u8 *)&DAT_009571d0)) {
 
     func_00466ef0(*(u32 *)(iVar6 + 0x10c));
 
     for (uVar7 = 0; uVar7 < 5; uVar7 = uVar7 + 1 & 0xffff) {
-
       iVar5 = iVar6 + uVar7 * 0xc;
 
       if ((((*(u8 *)(iVar5 + 0x3b4) & 1) != 0) && (*(int *)(iVar5 + 0x3b8) != 0)) &&
-
          (lVar4 = mdl00319770((Model*)param_1,uVar7), lVar4 != 0)) {
 
         iVar5 = *(int *)(iVar5 + 0x3b8);
-
         piVar1 = *(int **)(iVar5 + 0x118);
 
         if (((piVar1 != (int *)0x0) &&
-
-            ((s32)*(short *)(iVar5 + 0xf0) < (u32)*(u16 *)(piVar1 + 1))) &&
-
+            (*(short *)(iVar5 + 0xf0) < *(u16 *)(piVar1 + 1))) &&
            ((puVar2 = *(u8 **)(*piVar1 + *(short *)(iVar5 + 0xf0) * 0x50 + 0x40),
-
             puVar2 != (u8 *)0x0 && (puVar2 != (u8 *)&DAT_009571d0)))) {
 
           func_00466ef0(*(u32 *)(iVar5 + 0x10c));
-
         }
-
       }
-
     }
 
-    uVar3 = 1;
-
+    return 1;
   }
 
-  return uVar3;
+  return 0;
+
 
 }
 
@@ -8256,7 +8198,7 @@ LAB_0031b594:
 
 
 
-// FUN_0031B680 NONMATCHING
+// FUN_0031B680
 
 
 u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
@@ -8266,44 +8208,38 @@ u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
   int iVar3;
 
   if (param_1 != 5) {
-    uVar2 = 0;
+    return 0;
   }
-  else {
-    iVar3 = (int)param_2;
-    if ((param_2 < 60000) || (0xeac3 < param_2)) {
-      if ((param_2 < 0xeac4) || (0xeb27 < param_2)) {
-        if ((param_2 < 0xeb28) || (0xeb8b < param_2)) {
-          if ((param_2 < 0xeb8c) || (0xebef < param_2)) {
-            uVar2 = 0;
-          }
-          else {
-            sVar1 = datGetPartyId(2);
-            *param_3 = (int)sVar1;
-            *param_4 = iVar3 % 100;
-            uVar2 = 1;
-          }
-        }
-        else {
-          sVar1 = datGetPartyId(1);
-          *param_3 = (int)sVar1;
-          *param_4 = iVar3 % 100;
-          uVar2 = 1;
-        }
-      }
-      else {
-        sVar1 = datGetPartyId(0);
-        *param_3 = (int)sVar1;
-        *param_4 = iVar3 % 100;
-        uVar2 = 1;
-      }
-    }
-    else {
-      uVar2 = 1;
-      *param_3 = 1;
-      *param_4 = iVar3 % 100;
-    }
+
+  iVar3 = (int)param_2;
+  if ((param_2 >= 60000) && (param_2 < 0xeac4)) {
+    *param_3 = 1;
+    *param_4 = iVar3 % 100;
+    return 1;
   }
-  return uVar2;
+
+  if ((param_2 >= 0xeac4) && (param_2 < 0xeb28)) {
+    sVar1 = datGetPartyId(0);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    return 1;
+  }
+
+  if ((param_2 >= 0xeb28) && (param_2 < 0xeb8c)) {
+    sVar1 = datGetPartyId(1);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    return 1;
+  }
+
+  if ((param_2 >= 0xeb8c) && (param_2 < 0xebf0)) {
+    sVar1 = datGetPartyId(2);
+    *param_3 = (int)sVar1;
+    *param_4 = iVar3 % 100;
+    return 1;
+  }
+
+  return 0;
 }
 
 

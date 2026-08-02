@@ -1911,7 +1911,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
     switch (*(int *)(iVar4 + 4)) {
     case 0:
-      switch(*(u16 *)puVar10) {
+      switch(*(s16 *)puVar10) {
       case 1:
         uVar5 = FUN_003c9850(*(u32 *)(iVar3 + 0xcc),2,5,5);
         *(u32 *)(iVar3 + 0xd0) = uVar5;
@@ -1969,7 +1969,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
       *(u32 *)(iVar4 + 4) = 1;
       /* fall through */
     case 1:
-      switch(*(u16 *)puVar10) {
+      switch(*(s16 *)puVar10) {
       case 1:
         lVar9 = fclMisc003c9ab0(*(u32 *)(iVar3 + 0xd0));
         if (lVar9 != 0) {
@@ -2319,9 +2319,9 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
 {
 
-  char cVar1;
+  int task;
 
-  char cVar2;
+  int iVar14;
 
   int header;
 
@@ -2335,8 +2335,8 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
   u32 flagEnabled;
   
 
-  int task;
-  int count;
+  char cVar2;
+  char *pcVar13;
 
   u32 *copyDst;
   u32 *node;
@@ -2346,9 +2346,9 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
   u32 *copySrc;
   u32 *out;
 
-  char *pcVar13;
+  int count;
 
-  int iVar14;
+  char cVar1;
   int entryIndex;
 
   u32 uVar15;

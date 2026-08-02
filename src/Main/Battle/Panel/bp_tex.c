@@ -4219,7 +4219,6 @@ void FUN_00227800(void)
     void (**setQuad)(u32*, u32, u32, u32, u32);
     void (**setState2)(u32, u32);
     void (**setQuad2)(u32*, u32, u32, u32, u32);
-    void (**setQuad3)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -4293,13 +4292,13 @@ void FUN_00227800(void)
         break;
     }
 
-    setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
     for (j = 0; j < loopCount; j++) {
         record = work + (j << 9);
-        (*setQuad3)((u32*)(record + 0x2230), 4, 0, 1, 2);
-        (*setQuad3)((u32*)(record + 0x2230), 4, 0, 2, 3);
-        (*setQuad3)((u32*)(record + 0x2330), 4, 0, 1, 2);
-        (*setQuad3)((u32*)(record + 0x2330), 4, 0, 2, 3);
+        setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad2)((u32*)(record + 0x2230), 4, 0, 1, 2);
+        (*setQuad2)((u32*)(record + 0x2230), 4, 0, 2, 3);
+        (*setQuad2)((u32*)(record + 0x2330), 4, 0, 1, 2);
+        (*setQuad2)((u32*)(record + 0x2330), 4, 0, 2, 3);
     }
 }
 #pragma pop

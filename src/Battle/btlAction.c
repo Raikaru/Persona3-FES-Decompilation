@@ -6122,7 +6122,6 @@ void btlActionUpdateStateError(BtlAction* action)
     u32 isCommand3;
     u64 actionUID;
     f32 one = 1.0f;
-
     btlAction0028a780(action);
     isCommand3 = action->target.commandId == 3;
     actionUID = action->uid;
