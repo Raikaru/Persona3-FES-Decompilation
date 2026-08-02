@@ -745,14 +745,12 @@ u32 func_001ce960(void)
     u8* field;
     u8* cell;
     u8 partyPositions[0x330];
-    FldUnit* unit;
-    ResrcModelChar* resource;
-    HCdvd* cdvd;
     RwMatrix* reference;
     RwV3d fieldPosition;
-    RwV3d scale;
     RwV3d fixedPosition;
     RwV3d axis;
+    RwV3d position;
+    RwV3d offset;
     void* (*allocate)(u32 count, u32 size, u32 flags);
     Model* weapon;
 
@@ -838,10 +836,10 @@ u32 func_001ce960(void)
         }
         gFldUnitsPc[i].resrc->baseMdl =
             (Model*)func_00317450(uGpffffb52c);
-        scale.x = func_001ad8b0(gFldUnitsPc[i].resrc->collisCtlTask);
-        scale.y = scale.x;
-        scale.z = scale.x;
-        func_00318a90(gFldUnitsPc[i].resrc->baseMdl, &scale, 2);
+        offset.x = func_001ad8b0(gFldUnitsPc[i].resrc->collisCtlTask);
+        offset.y = offset.x;
+        offset.z = offset.x;
+        func_00318a90(gFldUnitsPc[i].resrc->baseMdl, &offset, 2);
         func_004cb420(func_00318b70(gFldUnitsPc[i].mdl),
                       func_00318b70(gFldUnitsPc[i].resrc->baseMdl));
         func_00317730(gFldUnitsPc[i].resrc->baseMdl);
@@ -905,8 +903,6 @@ u32 func_001ce960(void)
                     break;
                 case 1:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->right;
                         RwV3dNormalize(&offset, &offset);
@@ -919,8 +915,6 @@ u32 func_001ce960(void)
                     break;
                 case 2:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->right;
                         RwV3dNormalize(&offset, &offset);
@@ -936,8 +930,6 @@ u32 func_001ce960(void)
                     break;
                 case 3:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->at;
                         RwV3dNormalize(&offset, &offset);
@@ -1001,8 +993,6 @@ u32 func_001ce960(void)
                     break;
                 case 1:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->right;
                         RwV3dNormalize(&offset, &offset);
@@ -1026,8 +1016,6 @@ u32 func_001ce960(void)
                     break;
                 case 2:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->right;
                         RwV3dNormalize(&offset, &offset);
@@ -1054,8 +1042,6 @@ u32 func_001ce960(void)
                     break;
                 case 3:
                     {
-                        RwV3d position;
-                        RwV3d offset;
                         position = reference->pos;
                         offset = reference->at;
                         RwV3dNormalize(&offset, &offset);

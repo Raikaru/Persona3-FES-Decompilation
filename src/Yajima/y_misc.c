@@ -10182,9 +10182,9 @@ void FUN_0042bc10(int param_1)
 
   int lVar3;
 
-  float fStack_8;
+  YajimaVec2 offset;
 
-  float fStack_4;
+
 
   
 
@@ -10198,10 +10198,10 @@ void FUN_0042bc10(int param_1)
 
     }
 
-    FUN_00423fe0(&fStack_8,0,0x7e,0x7e,0x20,0x20);
+    FUN_00423fe0_vec2(&offset,0,0x7e,0x7e,0x20,0x20);
 
-    *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + fStack_8;
-    *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + fStack_8;
+    *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + offset.x;
+    *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + offset.y;
 
     uVar2 = FUN_004560d0_typed(param_1,*(float *)(iVar1 + 0x89c),
                                *(float *)(iVar1 + 0x8a0),1.0f,0x20,0x20);
@@ -10209,15 +10209,13 @@ void FUN_0042bc10(int param_1)
 
     *(int *)(iVar1 + 0x898) = (int)uVar2;
 
-    FUN_004563c0_y2(uVar2,*(u8 *)(iVar1 + 0xb90));
+    FUN_004563c0_y2(uVar2,*(char *)(iVar1 + 0xb90));
 
     FUN_004563d0_y2(*(u32 *)(iVar1 + 0x898),*(u64 *)(iVar1 + 0x85c));
 
-    FUN_004563b0_y2(*(f32 *)
-
-                  (*(short *)(iVar1 + 0xb90) * 0x28 + *piGpffffa850 * 0x3c4 + iGpffffb5c0 + -0x74a0)
-
-                 ,*(u32 *)(iVar1 + 0x898));
+    FUN_004563b0_y2(*(f32 *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
+                             *(short *)(iVar1 + 0xb90) * 0x28 - 0x74a0),
+                    *(u32 *)(iVar1 + 0x898));
 
     *(u32 *)(iVar1 + 0xba4) = 0;
 

@@ -296,6 +296,7 @@ struct FclSoundLookup {
     byte pad00[2];                        /* 0x000 */
     s16 text_id;                          /* 0x002 */
     byte text_style;                      /* 0x004 */
+    byte pad05[0x2f];                     /* 0x005 */
 };
 
 struct FclTextLayout {
@@ -1500,9 +1501,9 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
 void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* result,
                              FclDrawCallbackRecord* record, s32 selected)
 {
+    s16 alpha;
     s32 x;
     s32 y;
-    s16 alpha;
 
     x = record->x + result->x_offset;
     y = record->y + result->y_offset;
@@ -1511,25 +1512,23 @@ void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* res
         alpha = (s16)((float)alpha * DAT_007cad74);
     }
 
-    if (record->owner->container->work->mode < 2) {
-        if ((record->work->flags & 1) == 0) {
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x2f, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x30, 0);
-        } else if ((record->flags & 2) == 0) {
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3c, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x2f, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3b, 0);
-        } else {
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3d, 0);
-            FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3e, 0);
-        }
-    } else {
+    if (record->owner->container->work->mode >= 2) {
         FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x53, 0);
         FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x51, 0);
         FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x52, 0);
+    } else if ((record->work->flags & 1) == 0) {
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x2f, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x30, 0);
+    } else if ((record->flags & 2) == 0) {
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3c, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x2f, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3b, 0);
+    } else {
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3d, 0);
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3e, 0);
     }
 
     (void)callback_target;

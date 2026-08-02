@@ -601,7 +601,7 @@ u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
     u16* skills;
     u16 count;
     u16 i;
-    s16 pcId;
+    s32 pcId;
     s16 equipmentIdx;
     u16 equipmentId;
 
@@ -6118,7 +6118,10 @@ u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4)
   if ((*(u8 *)(iGpffffb708 + (u32)param_3 * 0x2c) & 2) == 0) {
     uVar5 = 0;
   }
-  else if ((*(u32 *)(param_2 + 0xc) & 0x100000) == 0) {
+  else if ((*(u32 *)(param_2 + 0xc) & 0x100000) != 0) {
+    uVar5 = 0;
+  }
+  else {
     puVar7 = (u16 *)param_1;
     if ((*puVar7 & 0x20) != 0) {
       uVar5 = 0;
@@ -6182,9 +6185,6 @@ u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4)
         uVar5 = 0;
       }
     }
-  }
-  else {
-    uVar5 = 0;
   }
   return uVar5;
 }

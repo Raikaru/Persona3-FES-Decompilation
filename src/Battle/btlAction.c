@@ -2627,7 +2627,7 @@ check_distance_threshold:
 
 compute_vector_offset:
     {
-        FUN_0027f940(personaUnit, victimUnit, actionUnit, (s32)(u32)personaActionType, &sp110, NULL, 2);
+        FUN_0027f940(personaUnit, victimUnit, actionUnit, personaActionType, &sp110, NULL, 2);
 
         spE0.x = sp110.x - spE0.x;
         spE0.y = 0.0f;
@@ -4409,7 +4409,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                 temp_v0_18->parentUID = temp_v0_17->uid;
                 temp_v0_18->actionUID = temp_s0;
                 btlPacketRegister(temp_v0_18, 1U);
-                temp_v0_19 = btlVoice002e2be0(action, 0xC, (s32) sp450->charId, 0, 0);
+                temp_v0_19 = btlVoice002e2be0(action, 0xC, sp450->charId, 0, 0);
                 temp_v0_19->unk_00 = 5;
                 temp_v0_19->parentUID = temp_v0_18->uid;
                 temp_v0_19->actionUID = temp_s0;
@@ -5179,7 +5179,7 @@ loop_302:
             temp_v0_116 = (u8*)temp_s2_3 + sp360 * 0x1C;
             sp110 = (u64) temp_v0_116;
             sp100 = (u64) ((u8*)temp_v0_116 + 0xF8);
-            temp_v0_117 = btlUnitCreateAnimPacket(var_s5_2->unit, (u16) ACTION_U8(temp_s2_3, 0xf8 + sp360 * 0x1c), 0U, 1.0f, 0U);
+            temp_v0_117 = btlUnitCreateAnimPacket(var_s5_2->unit, ACTION_U8(temp_s2_3, 0xf8 + sp360 * 0x1c), 0U, 1.0f, 0U);
             var_s3 = temp_v0_117;
             temp_v0_117->unk_00 = 0xB;
             temp_v0_117->parentUID = var_s1_3->uid;
@@ -5448,7 +5448,7 @@ block_325:
             }
         }
     } else if ((sp380 > 0) && (temp_v1_14 = ACTION_U8(action, 0xca), ((temp_v1_14 & 1) != 0)) && !(temp_v1_14 & 2)) {
-        temp_v0_144 = func_002db740(action, 0x17, (s32) sp320, 0);
+        temp_v0_144 = func_002db740(action, 0x17, sp320, 0);
         temp_v0_144->unk_00 = 5;
         temp_v0_144->parentUID = temp_s2_4;
         temp_v0_144->preUpdateDelay = (s16) sp3C0;
@@ -5669,7 +5669,7 @@ block_394:
             temp_v0_164->preUpdateDelay = var_v0_12;
             temp_v0_164->actionUID = temp_s0;
             btlPacketRegister(temp_v0_164, 1U);
-            temp_v0_165 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xCEC)), sp450, (u32) sp3B0, 0U, 0);
+            temp_v0_165 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xCEC)), sp450, sp3B0, 0U, 0);
             temp_v0_165->unk_00 = 4;
             temp_v0_165->parentUID = sp420;
             temp_v0_165->actionUID = temp_s0;

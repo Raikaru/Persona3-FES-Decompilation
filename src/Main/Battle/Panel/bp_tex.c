@@ -4204,7 +4204,7 @@ void FUN_002265D0(void)
 /* W420 direct positive-branch probe: nd175/1280B, window 1296B, rate 0.136719
  * unchanged; moving setQuad3 before the switch instead produced nd218/1280B,
  * rate 0.170313; both reverted. */
-// FUN_00227800 NONMATCHING
+// FUN_00227800
 void FUN_00227800(void)
 {
     void (**setState)(u32, u32);
@@ -4212,6 +4212,7 @@ void FUN_00227800(void)
     u8* work;
     u32 texture;
     u32 resource;
+    u32* quad;
     s32 i;
     s32 j;
     s32 loopCount;
@@ -4270,7 +4271,7 @@ void FUN_00227800(void)
     (*setQuad2)((u32*)(work + 0x2030), 4, 0, 1, 2);
     (*setQuad2)((u32*)(work + 0x2030), 4, 0, 2, 3);
 
-    if (*(u32*)(work + 0x463c) != 3 && *(s32*)(work + 0x6074) >= 5) {
+    if (*(u32*)(work + 0x463c) != 3 && *(s32*)(work + 0x6074) > 4) {
         resource = FUN_0021cca0(table0, 0x1d);
         (*setState2)(1, FUN_0021cce0(resource));
         (*setQuad2)((u32*)(work + 0x2130), 4, 0, 1, 2);
@@ -4294,11 +4295,13 @@ void FUN_00227800(void)
 
     for (j = 0; j < loopCount; j++) {
         record = work + (j << 9);
+        quad = (u32*)(record + 0x2230);
         setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-        (*setQuad2)((u32*)(record + 0x2230), 4, 0, 1, 2);
-        (*setQuad2)((u32*)(record + 0x2230), 4, 0, 2, 3);
-        (*setQuad2)((u32*)(record + 0x2330), 4, 0, 1, 2);
-        (*setQuad2)((u32*)(record + 0x2330), 4, 0, 2, 3);
+        (*setQuad2)(quad, 4, 0, 1, 2);
+        (*setQuad2)(quad, 4, 0, 2, 3);
+        quad = (u32*)(record + 0x2330);
+        (*setQuad2)(quad, 4, 0, 1, 2);
+        (*setQuad2)(quad, 4, 0, 2, 3);
     }
 }
 #pragma pop

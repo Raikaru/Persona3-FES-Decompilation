@@ -513,6 +513,8 @@ u64 FUN_003e6e80(void)
 
   u16 uVar4;
 
+  int *piVar10;
+
   int iVar5;
 
   int uVar6;
@@ -520,8 +522,6 @@ u64 FUN_003e6e80(void)
   int lVar7;
 
   int lVar8;
-
-  int *piVar10;
 
   int iVar9;
 
@@ -7374,9 +7374,9 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   int iVar6;
 
-  int iVar7;
-
   s16 *puVar10;
+
+  int iVar7;
 
   s16 *puVar8;
 
