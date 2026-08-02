@@ -1995,7 +1995,7 @@ void FUN_003c1a70(void)
 #pragma push
 #pragma opt_lifetimes on
 #pragma opt_propagation off
-// FUN_003C1AB0 NONMATCHING
+// FUN_003C1AB0
 
 
 u32 FUN_003c1ab0(u32 param_1,u32 param_2)
@@ -2004,11 +2004,11 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
 {
 
-  s32 lVar4;
-
-  u32 uVar2;
+  code *lVar4;
 
   u32 uVar1;
+
+  u32 uVar2;
 
   s32 lVar3;
 
@@ -2024,17 +2024,17 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
   case 1:
 
-    lVar4 = FUN_0017e050(100,uVar1,uVar2);
+    lVar3 = FUN_0017e050(100,uVar1,uVar2);
 
-    if (lVar4 == 1) {
+    if (lVar3 == 1) {
 
-      lVar4 = (s32)(code *)&FUN_003bff40;
+      lVar4 = (code *)&FUN_003bff40;
 
     }
 
     else {
 
-      lVar4 = (s32)(code *)&FUN_003c0bd0;
+      lVar4 = (code *)&FUN_003c0bd0;
 
     }
 
@@ -2046,7 +2046,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 != 1) {
 
-      lVar4 = (s32)(code *)&FUN_003c0f20;
+      lVar4 = (code *)&FUN_003c0f20;
 
     }
 
@@ -2058,7 +2058,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 == 0) {
 
-      lVar4 = (s32)(code *)&FUN_003c1300;
+      lVar4 = (code *)&FUN_003c1300;
 
     }
 
@@ -2072,7 +2072,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
       FUN_003bec50();
 
-      lVar4 = (s32)(code *)&FUN_003c0d20;
+      lVar4 = (code *)&FUN_003c0d20;
 
     }
 
@@ -2082,7 +2082,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
       if ((lVar3 != 6) && (lVar3 = FUN_0017e050(100,uVar1,uVar2), lVar3 == 0)) {
 
-        lVar4 = (s32)(code *)&FUN_003c0f20;
+        lVar4 = (code *)&FUN_003c0f20;
 
       }
 
@@ -2096,7 +2096,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 == 0) {
 
-      lVar4 = (s32)(code *)&FUN_003c1810;
+      lVar4 = (code *)&FUN_003c1810;
 
     }
 
@@ -2104,13 +2104,13 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
   case 6:
 
-    lVar4 = (s32)(code *)&FUN_003c18c0;
+    lVar4 = (code *)&FUN_003c18c0;
 
     break;
 
   case 7:
 
-    lVar4 = (s32)(code *)&FUN_003bf610;
+    lVar4 = (code *)&FUN_003bf610;
 
   case 8:
     break;
@@ -2134,7 +2134,7 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     FUN_00521408(lVar3,0,0x58);
 
-    return *(u32 *)((u8 *)lVar3 + 0x18) = FUN_00194b20(param_1,(const char *)(DAT_006a3308 - 0x58),0xe,lVar4,(code *)&FUN_003c1a70,lVar3);
+    return *(u32 *)((u8 *)lVar3 + 0x18) = FUN_00194b20(param_1,(const char *)(DAT_006a3308 - 0x58),0xe,(void *(*)(void *))lVar4,(code *)&FUN_003c1a70,lVar3);
 
   }
 

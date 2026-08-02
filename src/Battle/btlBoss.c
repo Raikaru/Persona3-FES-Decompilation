@@ -112,6 +112,11 @@ extern u32 DAT_007ce4d0;
 extern u32 DAT_0069aa50[];
 #pragma alias DAT_0069aa50_ptr DAT_0069aa50
 extern ScrHeader* DAT_0069aa50_ptr;
+/* W442: func_002fd2e0 indexes the battle work block through its own extern
+ * declaration of the same object; that separate declaration is what reproduces
+ * retail's relocation there. Measured nd 200 -> 62 at 448/448B. */
+#pragma alias gBtlWork gBtl
+extern Battle* gBtlWork;
 extern f32 DAT_0096008c;
 extern void (*DAT_00960090)(...);
 extern void (*DAT_00960094)(...);
@@ -2968,7 +2973,7 @@ u32 FUN_002fd2e0(int param_1, u16 param_2)
     KwlnTask* task;
     ScrData* scr;
 
-    iVar4 = (int)(uintptr_t)((u8*)gBtl + (u32)param_2 * 4);
+    iVar4 = (int)(uintptr_t)((u8*)gBtlWork + (u32)param_2 * 4);
     if (*(s32*)(iVar4 + 0xb2c) == *(s32*)(param_1 + 8) &&
         *(s32*)(iVar4 + 0xb38) == *(s32*)(param_1 + 0x20))
     {

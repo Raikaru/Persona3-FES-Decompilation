@@ -3847,20 +3847,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x14) = fVar6;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 5.0f;
@@ -3872,20 +3872,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x10) = fVar7 * 67.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 4.0f;
@@ -3898,20 +3898,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x10) = fVar7 * 8.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 4.0f;
@@ -3924,20 +3924,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x10) = fVar7 * 38.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 4.0f;
@@ -3950,20 +3950,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x10) = fVar7 * 76.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 4.0f;
@@ -3976,20 +3976,20 @@ void FUN_0045a490(void)
     *(float *)(iVar2 + 0x10) = fVar7 * 106.0f + fVar8 + 0.0f;
     *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
     fVar7 = puVar1->rate;
     fVar5 = fVar7 * 4096.0f;
-    if (fVar5 < 2.1474836e+09f) {
-      uVar4 = (u16)(int)fVar5;
+    if (2147483648.0f <= fVar5) {
+      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
     else {
-      uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
+      uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x2a) = uVar4 & 0xff;
     *(float *)(iVar2 + 0x2c) = 4.0f;

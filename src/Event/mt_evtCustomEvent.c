@@ -5566,7 +5566,7 @@ static inline int mtEvtAddOffsetFirst(int offset, int base) { return offset + ba
 /* opt_common_subs off: default nd123/408B -> nd44/408B; retained. */
 #pragma push
 #pragma opt_common_subs off
-// FUN_0039E880 NONMATCHING
+// FUN_0039E880
 
 
 u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
@@ -5582,7 +5582,7 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
   u8 auStack_40 [64];
   
 
-  if (param_4 >= *(int *)(param_1 + 0x78c)) {
+  if (*(int *)(param_1 + 0x78c) <= param_4) {
 
     uVar2 = 0;
 
@@ -5631,8 +5631,10 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
         lVar3 = FUN_00316910(5,*puVar5,0);
 
         if (lVar3 == 0) {
-          iVar4 = mtEvtAddOffsetFirst(param_4 * 4,param_1);
-          FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(iVar4 + 0x790),
+          iVar4 = param_4 * 4;
+          lVar3 = param_3 & 0xffff;
+          iVar4 = iVar4 + param_1;
+          FUN_00319390(param_2,lVar3,5,*puVar5,*(u32 *)(iVar4 + 0x790),
                        *(u32 *)(iVar4 + 0x7cc),1);
         }
         else {

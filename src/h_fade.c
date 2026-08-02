@@ -1260,7 +1260,7 @@ static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
     }
 }
 
-// FUN_00108BC0 NONMATCHING
+// FUN_00108BC0
 void func_00108bc0(void)
 {
     func_00540ec0();
@@ -1304,14 +1304,16 @@ void func_00108bc0(void)
 
     {
         s32 i;
+        s16 compareIndex;
         HsndChannel* channel;
         void** handle;
         s32 status;
         s16* state;
 
-        for (i = 2; i < HSND_SLOT_COUNT; )
+        compareIndex = 2;
+        for (i = compareIndex; compareIndex < HSND_SLOT_COUNT; )
         {
-            channel = &sChannels[i];
+            channel = &sChannels[compareIndex];
             if (channel->active != false)
             {
                 handle = &channel->handle;
@@ -1346,6 +1348,7 @@ void func_00108bc0(void)
             {
                 s16 next = (s16)(i + 1);
                 i = next;
+                compareIndex = (s16)i;
             }
         }
     }

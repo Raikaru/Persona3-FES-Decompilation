@@ -6409,8 +6409,8 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
   s32 materialCount;
   s32 arrayCount;
   s32 dataCount;
-  s32 materialIndex;
   s32 arrayIndex;
+  s32 materialIndex;
   s32 dataIndex;
   u32 material;
   void *userData;

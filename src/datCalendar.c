@@ -2160,9 +2160,9 @@ s32 clndFindAndExecSiteibiEvents()
             return -1;
         }
 
-        event = &siteibiTable->events[i];
         daysSinceApr5 = datGetDaysSinceApr5();
         month = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
+        event = &siteibiTable->events[i];
         if (event->startMonth == month)
         {
             daysSinceApr5 = datGetDaysSinceApr5();

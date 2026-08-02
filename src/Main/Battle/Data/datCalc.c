@@ -1153,6 +1153,7 @@ void FUN_00301540(int param_1,u32 param_2)
 
 {
   u16 iVar1;
+  u16 offset;
   s32 check;
   s32 uVar2;
   
@@ -1165,22 +1166,23 @@ void FUN_00301540(int param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80, 0x438);
     }
     iVar1 = (int)check >> 1;
+    offset = iVar1 & 0xffff;
     uVar2 = check;
     if ((uVar2 & 1) != 0) {
-      *(u8 *)(iVar1 + param_1 + 0x1c) = *(u8 *)(iVar1 + param_1 + 0x1c) & 0xf;
+      *(u8 *)(offset + param_1 + 0x1c) = *(u8 *)(offset + param_1 + 0x1c) & 0xf;
     }
     else {
-      *(u8 *)(iVar1 + param_1 + 0x1c) = *(u8 *)(iVar1 + param_1 + 0x1c) & 0xf0;
+      *(u8 *)(offset + param_1 + 0x1c) = *(u8 *)(offset + param_1 + 0x1c) & 0xf0;
     }
     if (!(check < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
-    iVar1 = iVar1 & 0xffff;
+    offset = iVar1 & 0xffff;
     if ((uVar2 & 1) != 0) {
-      *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf;
+      *(u8 *)(offset + param_1 + 0x29) = *(u8 *)(offset + param_1 + 0x29) & 0xf;
     }
     else {
-      *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf0;
+      *(u8 *)(offset + param_1 + 0x29) = *(u8 *)(offset + param_1 + 0x29) & 0xf0;
     }
   }
   else {

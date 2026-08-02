@@ -591,10 +591,12 @@ static void brPanel00236390(void)
     s32 length;
     s32 i;
     f32 alpha;
+    f32 secondAlpha;
     f32 shift;
     f32 shift2;
     f32 scale;
     f32 textWidth;
+    f32 textWidthLive;
     f32 root2;
     f32 baseShift;
     f32 progressShift;
@@ -627,7 +629,8 @@ static void brPanel00236390(void)
         if ((*(s32*)(work + 0x2668)) < 2) {
             shift = 0.0f;
         } else if ((*(s32*)(work + 0x2668)) < 8) {
-            shift = (1.0f - (f32)((*(s32*)(work + 0x2668)) - 2) / 6.0f) * (f32)*(s32*)((u8*)frame + 0xc);
+            shift = (1.0f - (f32)((*(s32*)(work + 0x2668)) - 2) / 6.0f) *
+                    (f32)*(s32*)((u8*)frame + 0xc);
         } else {
             shift = 0.0f;
         }
@@ -784,10 +787,10 @@ static void brPanel00236390(void)
     BR_PANEL_SET_COLOR(work + 0x520, alpha);
     sprintf(text2, "%d", *(s32*)(work + 0x2664));
     length = (s32)strlen(text2);
-    textWidth = (f32)(length * 23);
+    textWidthLive = (f32)(length * 23);
 
     frame = func_0021cca0(brRes00234570(0), 2);
-    rect[0] = 40.0f + textWidth +
+    rect[0] = 40.0f + textWidthLive +
               40.0f - 0.0f + shift;
     rect[1] = 158.0f;
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
@@ -1013,7 +1016,6 @@ static void brPanel00236390(void)
         rect[5] = 0.0f;
         rect[6] = 0.0f;
         rect[7] = 0.0f;
-        alpha = 0.0f;
     } else if ((*(s32*)(work + 0x266c)) == 1) {
         root2 = sqrtf(2.0f);
         scale = ((*(s32*)(work + 0x2668)) < 8) ? (f32)(*(s32*)(work + 0x2668)) / 8.0f : 1.0f;
@@ -1043,7 +1045,6 @@ static void brPanel00236390(void)
         rect[5] = rect[3] + shift;
         rect[6] = rect[0] + shift;
         rect[7] = rect[1] + shift;
-        alpha = 0.5f + scale * 0.5f;
         if ((*(s32*)(work + 0x2668)) < 3) {
             shift2 = (f32)((*(s32*)(work + 0x2668)) + 1) / 3.0f;
             rect[0] += baseShift * (1.0f - shift2);
@@ -1093,16 +1094,14 @@ static void brPanel00236390(void)
         rect[5] = rect[3] + secondShift;
         rect[6] = rect[0] + secondShift;
         rect[7] = rect[1] + secondShift;
-        alpha = 1.0f - scale;
     }
     BR_PANEL_SET_VERTICES(work + 0x2260);
     BR_PANEL_ANIMATE(work + 0x2260, 0x32);
     color[0] = 0xe;
     color[1] = 0x8b;
     color[2] = 0xec;
-    color[3] = (u8)(u32)(255.0f * alpha);
+    color[3] = 0xff;
     func_0021d950(work + 0x2260, color);
-
     if ((*(s32*)(work + 0x266c)) == 0) {
         rect[0] = 0.0f;
         rect[1] = 0.0f;
@@ -1148,36 +1147,40 @@ static void brPanel00236390(void)
         } else if ((*(s32*)(work + 0x2668)) >= 10) {
             scale = 0.0f;
         }
-        baseShift = (350.0f / root2 - 350.0f) * scale;
-        progressShift = (320.0f - 224.0f) * (1.0f - scale);
-        secondShift = 224.0f * scale;
-        shift = baseShift + progressShift;
-        if ((*(s32*)(work + 0x2668)) < 3) {
-            shift2 = (f32)(*(s32*)(work + 0x2668)) / 3.0f;
-            shift += secondShift * shift2;
-        } else if ((*(s32*)(work + 0x2668)) < 7) {
-            shift2 = (f32)((*(s32*)(work + 0x2668)) - 3) / 4.0f;
-            shift += secondShift * (1.0f - shift2);
+        baseShift = (350.0f / root2 - DAT_007caff0) / root2;
+        progressShift = scale * (544.0f - baseShift);
+        secondShift = (40.0f + 283.0f / root2) / root2;
+        shift2 = 40.0f / root2;
+        if ((*(s32*)(work + 0x2668)) < 4) {
+            shift = (f32)(*(s32*)(work + 0x2668)) / 4.0f;
+            progressShift *= shift;
+            secondShift *= shift;
+        } else if ((*(s32*)(work + 0x2668)) < 8) {
+            shift = (f32)((*(s32*)(work + 0x2668)) - 4) / 4.0f;
+            baseShift *= 1.0f - shift;
+            progressShift += secondShift * shift;
         } else {
-            shift2 = 1.0f;
+            shift = 1.0f;
         }
-        rect[0] = 320.0f + shift;
-        rect[1] = -320.0f + shift - progressShift;
-        rect[2] = -224.0f + shift - secondShift * 0.5f;
-        rect[3] = 224.0f + shift + progressShift;
-        rect[4] = rect[0] - secondShift;
-        rect[5] = rect[1] - secondShift;
-        rect[6] = rect[2] + secondShift;
-        rect[7] = rect[3] + secondShift;
+        rect[0] = 320.0f - shift2 + progressShift;
+        rect[1] = -320.0f - shift2 + progressShift;
+        rect[2] = -224.0f - shift2 + progressShift;
+        rect[3] = 224.0f - shift2 + progressShift;
+        rect[4] = rect[2] + secondShift;
+        rect[5] = rect[3] + secondShift;
+        rect[6] = rect[0] + secondShift;
+        rect[7] = rect[1] + secondShift;
         alpha = 1.0f - scale;
     }
+    secondAlpha = alpha;
     BR_PANEL_SET_VERTICES(work + 0x2360);
     BR_PANEL_ANIMATE(work + 0x2360, 0x23);
     color[0] = 4;
     color[1] = 0x29;
     color[2] = 0x46;
-    color[3] = (u8)(u32)(255.0f * alpha);
+    color[3] = (u8)(u32)(255.0f * secondAlpha);
     func_0021d950(work + 0x2360, color);
+
 
     if ((*(s32*)(work + 0x266c)) == 2) {
         root2 = sqrtf(2.0f);

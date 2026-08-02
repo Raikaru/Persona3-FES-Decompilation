@@ -418,10 +418,10 @@ void* func_001b9480(KwlnTask* fldRootTask)
     FldRootWork* work;
     u32 state;
     s32 id;
-    u32 value;
     u32 aux0;
     u32 aux1;
-    u32 request;
+    u32 value;
+    s32 request;
     u32 resource;
     u32 camera;
     u32 list;
@@ -433,28 +433,30 @@ void* func_001b9480(KwlnTask* fldRootTask)
     switch (state)
     {
         case 0:
-            resource = ROOT_U32(work, 0x38);
-            if (FUN_00398060(resource) != 0 &&
-                FUN_00398140(resource, &id, &aux0, &aux1, &value) == 1)
+            if (FUN_00398060(*(u32*)((u8*)work + 0x38)) != 0)
             {
-                if (id == 0)
+                if (FUN_00398140(*(u32*)(work->unkData2 + 0x24),
+                                 &id, &aux0, &aux1, &value) == 1)
                 {
-                    FUN_0019d3f0((const char*)D_0067F578, 0x125);
+                    if (id == 0)
+                    {
+                        FUN_0019d3f0((const char*)D_0067F578, 0x125);
+                    }
+                    work->majorId = (u16)id;
+                    work->minorId = aux0;
+                    ROOT_U16(work, 0x18) = aux1;
+                    ROOT_U16(work, 0x1a) = value;
+                    K_Fldrc_RequestFldPac((s16)work->majorId, (s16)work->minorId);
+                    for (request = 0; request < 4; request++)
+                    {
+                        K_FldUnit_DestroyPcMdl(request);
+                    }
+                    ROOT_U32(work, 0) = 2;
                 }
-                work->majorId = (u16)id;
-                work->minorId = aux0;
-                ROOT_U16(work, 0x18) = aux1;
-                ROOT_U16(work, 0x1a) = value;
-                K_Fldrc_RequestFldPac((s16)work->majorId, (s16)aux0);
-                for (id = 0; id < 4; id++)
+                else if (*(u32*)(work->unkData2 + 0x24) != 0)
                 {
-                    K_FldUnit_DestroyPcMdl(id);
+                    FUN_0019d3f0((const char*)D_0067F578, 0x135);
                 }
-                ROOT_U32(work, 0) = 2;
-            }
-            else if (resource != 0)
-            {
-                FUN_0019d3f0((const char*)D_0067F578, 0x135);
             }
             break;
 
@@ -665,7 +667,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 kwlnTaskExists((KwlnTask*)request) != 1)
             {
                 FIELD_U32(0x00869f7c) =
-                    FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0x1e0));
+                    FUN_001c1f30(fldRootTask, *(u32*)((u8*)FIELD_U32(0x008717f4) + 0x1e0));
                 FUN_0016f1f0(0x1411, 0);
                 FIELD_U32(D_00869F84) = (u32)FUN_001d36f0(fldRootTask);
                 FUN_001d2610();
@@ -882,9 +884,8 @@ void* func_001b9480(KwlnTask* fldRootTask)
             request = ROOT_U32(work, 0x40);
             if (request == 0 || kwlnTaskExists((KwlnTask*)request) != 1)
             {
-                camera = FIELD_U32(0x008717f4);
                 FIELD_U32(0x00869f7c) =
-                    FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0x1e0));
+                    FUN_001c1f30(fldRootTask, *(u32*)((u8*)FIELD_U32(0x008717f4) + 0x1e0));
                 func_001b9140(work->majorId, work->minorId);
                 FUN_001085c0();
                 ROOT_U32(work, 0) = 0x0b;

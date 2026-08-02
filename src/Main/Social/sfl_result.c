@@ -8,8 +8,8 @@
 extern u8* func_00209d00(void);
 extern void func_0021a670(u32, u32);
 extern void func_0021a760(u16);
-extern u32 func_0020c500_y2(float, void*);
-extern void func_0020c400_y2(u32, void*, const float*, float*);
+extern f32 func_0020c500_y2(float, void*);
+extern void func_0020c400_y2(void*, float*, f32, const float*);
 extern void func_004bdde0(float, float*, const float*, u32);
 extern void func_001f6630(void);
 extern void func_001f7210(void);
@@ -118,6 +118,7 @@ extern u8* pcGpffffb76c;
 extern u8* pcGpffffb770;
 extern u8* pcGpffffb774;
 extern u8* pcGpffffb778;
+extern u8 DAT_00684a10[];
 extern u8 DAT_00684d70[];
 #pragma alias DAT_00684d60 DAT_00684d70
 extern u8 DAT_00684d60[];
@@ -851,7 +852,7 @@ void *func_001f5b20(void)
             BR_S32(work, 0x3510) = cnt;
             if ((u32)cnt < BR_U32(work, 0x3514)) {
                 u32 idx = BR_U32(work, 0x34e8 + cnt * 8);
-                func_003c7bc0(0, ((u32 *)0x00684a10)[idx]);
+                func_003c7bc0(0, ((u32 *)DAT_00684a10)[idx]);
                 func_003c7c20(1, BR_U32(work, 0x34ec + cnt * 8), 0);
                 func_003c7430(0x17);
             } else {
@@ -2397,8 +2398,11 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 6:
@@ -2609,26 +2613,26 @@ void sflResult001f9a80(void)
     if (*(u32*)(base + 8) == 1) {
         for (i = 0; i < *(s32*)(base + 0x3418); i++) {
             u32 index = *(u32*)(base + 0x1c + i * 4);
-            u8* entry = base + index * 0x670 + 0x68;
+            u8* sprite = base + index * 0x670 + 0x5c;
             float scale[3];
             float origin[2] = {(float)i * 220.0f + 320.0f, 184.0f};
             float rect[4];
             float quad[3];
-            u32 frame;
+            f32 frame;
 
             scale[0] = 10.0f;
             scale[1] = 10.0f;
             scale[2] = 10.0f;
-            sflResSetSpriteScale_y2(entry, scale);
-            frame = func_0020c500_y2(200.0f, entry);
-            func_0020c400_y2(frame, entry, origin, rect);
+            sflResSetSpriteScale_y2(sprite + 0xc, scale);
+            frame = func_0020c500_y2(200.0f, sprite + 0xc);
+            func_0020c400_y2(sprite + 0xc, rect, frame, origin);
             rect[1] += 100.0f;
-            sflResSetSpritePosition_y2(entry, rect);
+            sflResSetSpritePosition_y2(sprite + 0xc, rect);
             quad[0] = 0.0f;
             quad[1] = 1.0f;
             quad[2] = 0.0f;
             func_004bdde0(180.0f, quad, quad, 0);
-            sflResSetSpriteRotation_y2(entry, quad);
+            sflResSetSpriteRotation_y2(sprite + 0xc, quad);
         }
         *(u32*)(base + 0x36d8) = 0;
         *(u32*)(base + 0x36dc) = 0;
