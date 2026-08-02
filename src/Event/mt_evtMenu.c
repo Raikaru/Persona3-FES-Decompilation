@@ -841,6 +841,7 @@ extern u32 uGpffffb8ec;
 extern u32 uGpffffb900;
 extern u32 uGpffffb924;
 
+u32 FUN_00524388(const char *param_1);
 u32 FUN_003b5d00(void);
 bool FUN_0036d320(int param_1);
 bool FUN_0036f480(void);
@@ -9469,7 +9470,7 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
     rowCount = 10;
   }
   else {
-    rowCount = FUN_00524388(*(int *)(param_3 + 0x120));
+    rowCount = FUN_00524388((const char *)(u32)*(int *)(param_3 + 0x120));
     if (rowCount < 6) {
       rowCount = 6;
     }

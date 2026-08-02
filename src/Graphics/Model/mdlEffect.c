@@ -1781,7 +1781,7 @@ extern u64 FUN_0035ed20();
 extern s32 FUN_0035ed20_i(s32 index);
 extern u64 FUN_00474210();
 #pragma alias FUN_00474210_u32 FUN_00474210
-extern u32 FUN_00474210_u32();
+extern u32 FUN_00474210_u32(u32 param_1,u32 param_2,u32 param_3);
 extern u64 FUN_00474640();
 extern u64 FUN_004747f0();
 extern u64 FUN_00474820();
@@ -4772,7 +4772,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   *(u32 *)(puVar1 + 0xc) = 0;
 
-  uVar2 = FUN_00474210_u32(param_1,param_2,2);
+  uVar2 = (u32)FUN_00474210_u32(param_1,param_2,2);
 
   *(u32 *)(puVar1 + 8) = uVar2;
 
@@ -5952,9 +5952,7 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 // W414 failed address-width probes: u8*/Qword128* aliases stayed nd2; direct-global addressing regressed to nd36.
 // W421 row classification: nd2, object 120/128 (rate 0.015625); first
-// reloc-masked difference +0x40 is andi.b $w0,$w0,0x43 vs $w0,$w0,0x42
-// (raw 0x78430000 vs 0x78420000), a VU aggregate-copy register encoding.
-// FUN_00324B50 NONMATCHING
+// FUN_00324B50
 
 u32 FUN_00324b50(u32 param_1)
 
@@ -5976,7 +5974,21 @@ u32 FUN_00324b50(u32 param_1)
   *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
   source = (u32)DAT_0069c4a0_abs;
-  *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)(u8 *)source;
+  /* Retail copies the 16-byte aggregate through the GPR quadword pair.
+   * Plain C aggregate assignment emits a different form; see
+   * skill mwccps2-quadword-aggregate-copy. */
+  __asm__ volatile (
+    "lq %0, 0(%0)\n"
+    "sq %0, 0x20(%1)\n"
+    : "+r"(source)
+    : "r"(pauVar5)
+    : "memory");
+
+
+
+
+
+
   *(u32 *)(pauVar5 + 0x60) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x74) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
@@ -32500,23 +32512,17 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
   pauVar7 = (u8 (*) [16])uVar6;
 
   *(u8 (**) [16])pauVar7[4] = pauVar7 + 5;
-
   *(u32 *)(pauVar7[3] + 4) = 0;
-
   *(u32 *)(pauVar7[3] + 8) = param_1 & 0xffff;
-
   *(u32 *)pauVar7[3] = 0xffffffff;
 
   colourAddress = (u32)DAT_0069c4a0_abs;
   *(Qword128 *)pauVar7[2] = *(Qword128 *)colourAddress;
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
-
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar7) : "memory");
-
   FUN_00521250(*(u32 *)pauVar7[4],param_2,iVar1);
 
   return uVar6;
-
 }
 
 

@@ -516,10 +516,10 @@ extern code DAT_00960178;
 extern code DAT_0096017c;
 extern code DAT_00960184;
 
-extern float FUN_004c69f0();
+extern float FUN_004c69f0(void *dst, const void *src);
 #pragma alias FUN_003951d0_i32 FUN_003951d0
 extern int FUN_003951d0_i32(int param_1);
-extern float FUN_004c6ac0();
+extern float FUN_004c6ac0(const void *param_1);
 #pragma alias FUN_004c6ac0_scene_vec FUN_004c6ac0
 extern float FUN_004c6ac0_scene_vec(const RwV3d *param_1);
 #pragma alias FUN_004c69f0_scene_typed FUN_004c69f0
@@ -536,10 +536,10 @@ typedef struct SceneVecBits {
 extern SceneVecBits DAT_006a2f48_abs[];
 #pragma alias DAT_006a2f50_abs DAT_006a2f50
 extern float DAT_006a2f50_abs[];
-void FUN_003bcc80();
+void FUN_003bcc80(void);
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
-void FUN_003bc940();
+void FUN_003bc940(void);
 void FUN_003b9610(Resrc* param);
 void FUN_003bb7a0(Resrc* param);
 
@@ -5416,9 +5416,9 @@ void FUN_003bdbd0(int param_1)
   extern s8 FUN_0016dba0(s16 param_1);
   u32 bVar2;
   s8 cVar3;
-  s16 sVar1;
   u32 lVar4;
   int iVar5;
+  s16 sVar1;
 
   lVar4 = FUN_0016dce0((s16)param_1);
   if ((lVar4 != 0) && (lVar4 = FUN_00172a50((s16)param_1), lVar4 != 0)) {

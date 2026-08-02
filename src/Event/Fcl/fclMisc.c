@@ -983,10 +983,10 @@ static inline f32 fclMiscMulFirst(f32 left, f32 right) { return left * right; }
 
 void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
                   f32 param_2, f32 param_3, int param_7, u32 param_8)
-
-
-
 {
+  extern u32 FUN_001158b0(int param_1, u32 param_2, u32 param_3);
+  extern void FUN_001127d0(u32 param_1, u32 param_2);
+  extern void FUN_00115980(u32 param_1);
 
   u32 uVar1;
 
@@ -1988,16 +1988,17 @@ void FUN_003ca6b0(void)
 // W389 re-test: six-knob singles/inverse/pairs and m_loadperm found no further change; nd14 remains.
 // FUN_003CA780 NONMATCHING
 
-
 u64
 FUN_003ca780(int param_1,int param_2,float param_3,u32 param_7,u32 param_8,
             u16 param_9,u16 param_10,u32 param_11,float param_4,float param_5,
             float param_6)
 {
+  extern u32 FUN_001158b0(int param_1, u32 param_2, u32 param_3);
+  extern void FUN_001127d0(u32 param_1, u32 param_2);
+  extern void FUN_00115980(u32 param_1);
   int iVar1;
   u32 uVar2;
   u16 uVar3;
-
   uVar2 = FUN_001158b0(0,param_11,param_8);
   iVar1 = (int)uVar2;
   *(float *)(iVar1 + 0x10) = (float)param_1;
@@ -2018,7 +2019,6 @@ scale_x_high_ca780:
   uVar3 = (u16)(0x80000000 | (u32)(int)(param_5 - 2147483648.0f));
 scale_x_done_ca780:
   *(u16 *)(iVar1 + 0x28) = uVar3;
-
   param_6 = fclMiscMulFirst(4096.0f, param_6);
   if (2147483648.0f <= param_6) goto scale_y_high_ca780;
   uVar3 = (u16)(int)param_6;
@@ -5057,7 +5057,7 @@ LAB_003cf9d8:
     puVar4 = (short *)(*(int *)(DAT_007ce680_y2 + 0x24) + sVar5 * 0x14);
     sVar2 = *(u8 *)(puVar4 + 2);
     puVar4[2] = sVar2;
-    puVar4[2] = sVar2 | param_2 & 0xff00;
+    puVar4[2] = (param_2 & 0xff00) | sVar2;
     FUN_005225a8(&DAT_007cd728,DAT_006a4270,0x1b6);
     FUN_005225a8(DAT_006a42f0,sVar5);
     FUN_001052b0(DAT_006a42f0,sVar5);

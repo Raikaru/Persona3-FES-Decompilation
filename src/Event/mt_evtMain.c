@@ -18,6 +18,7 @@ extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
 extern u8 DAT_0069de20[];
 extern int FUN_003b5d10(...);
+void FUN_003969b0(int param_1);
 #pragma alias FUN_003b55b0_evt_main FUN_003b55b0
 extern u8 *FUN_003b55b0_evt_main(int param_1);
 #pragma alias FUN_003b5d10_evt_main FUN_003b5d10
@@ -1862,10 +1863,23 @@ int FUN_00361f60(int param_1,int param_2)
   iVar1 = 0;
   for (piVar2 = *(int **)(param_2 + 0x84); piVar2 != (int *)0x0;
        piVar2 = (int *)piVar2[0x25]) {
-    if (((param_1 == 2) && (*piVar2 != 5 && *piVar2 != 0x13)) ||
-        ((param_1 == 3) && ((*piVar2 == 5) || (*piVar2 == 0x13)))) {
-      iVar1 = iVar1 + piVar2[0x1a];
+    if (param_1 == 2) {
+      if (*piVar2 == 5) {
+        continue;
+      }
+      if (*piVar2 != 0x13) {
+        goto add_value;
+      }
+      continue;
     }
+    if (param_1 == 3) {
+      if ((*piVar2 == 5) || (*piVar2 == 0x13)) {
+        goto add_value;
+      }
+    }
+    continue;
+add_value:
+    iVar1 = iVar1 + piVar2[0x1a];
   }
   return iVar1;
 }
@@ -5415,7 +5429,7 @@ void FUN_00365b70(u32 param_1,u32 param_2)
    the window; vector aggregate form before width fixes exceeded the window.
    W422 negative: changing the first state load cast from int to u32 stayed
    nd2/object684/window688; the v1->a0 branch-load coloring was unchanged. */
-// FUN_00365CD0 NONMATCHING
+// FUN_00365CD0
 
 
 void FUN_00365cd0(u32 param_1,int param_2)
@@ -5453,7 +5467,7 @@ void FUN_00365cd0(u32 param_1,int param_2)
 
   if (*(int *)(param_2 + 0x710) != 0) {
     if (param_1 == *(u32 *)(param_2 + 0x10)) {
-      FUN_003969b0();
+      FUN_003969b0(*(int *)(param_2 + 0x710));
 
     }
 

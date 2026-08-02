@@ -2610,13 +2610,15 @@ int FUN_002d2c10(float *param_1, float *param_2)
     }
 
     {
+        u8 *record;
+        float *next;
+        float *edge;
         u8 *node2;
         for (node2 = *(u8 **)(iGpffffb6fc + 0x2cc); node2 != NULL; node2 = *(u8 **)(node2 + 0x4cc))
         for (i = 0; i < 4; ++i)
         {
-            u8 *record = node2 + i * 0x130;
-            float *edge = (float *)(record + 0x08);
-            float *next;
+            record = node2 + i * 0x130;
+            edge = (float *)(record + 0x08);
 
             if (edge == param_1)
             {

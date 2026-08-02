@@ -106,6 +106,11 @@ extern u32 kwlnTaskExists_d010(u32);
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
+extern u32 FUN_00318d10(u8 *param_1,u32 param_2,u32 *param_3);
+extern u32 FUN_00316910(u16 param_1,u16 param_2,u16 param_3);
+extern void FUN_00319390(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5,u32 param_6,u32 param_7);
+extern void FUN_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5);
+extern void FUN_003196d0(u32 param_1,u16 param_2,int param_3);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 int FUN_003983e0(int param_1,int param_2);
 #pragma alias FUN_003983e0_call FUN_003983e0
@@ -5556,6 +5561,7 @@ void FUN_0039e820(u64 param_1)
 }
 #define FUN_0039e820(...) ((void (*)(...))FUN_0039e820)(__VA_ARGS__)
 #undef FUN_0039e880
+static inline int mtEvtAddOffsetFirst(int offset, int base) { return offset + base; }
 /* opt_common_subs off: default nd123/408B -> nd44/408B; retained. */
 #pragma push
 #pragma opt_common_subs off
@@ -5567,20 +5573,13 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 
 {
-
   int bVar1;
-
   u32 uVar2;
-
   int lVar3;
-
   int iVar4;
-
   u16 *puVar5;
   u16 item;
-
   u8 auStack_40 [64];
-
   
 
   if (param_4 >= *(int *)(param_1 + 0x78c)) {
@@ -5601,7 +5600,7 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
 
       bVar1 = 0;
 
-      iVar4 = (int)param_3 * 0xc + (int)param_2;
+      iVar4 = mtEvtAddOffsetFirst((int)param_3 * 0xc,(int)param_2);
 
       if (((*(u8 *)(iVar4 + 0x3b4) & 1) != 0) && (*(int *)(iVar4 + 0x3b8) != 0)) {
 
@@ -5615,7 +5614,7 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
 
       }
 
-      lVar3 = FUN_00318d10(param_2,param_5,auStack_40);
+      lVar3 = FUN_00318d10((u8 *)param_2,param_5,(u32 *)auStack_40);
 
       if (lVar3 == 0) {
 
@@ -5695,6 +5694,7 @@ done:
 }
 #define FUN_0039ea20(...) ((void (*)(...))FUN_0039ea20)(__VA_ARGS__)
 #undef FUN_0039eaa0
+static inline int mtEvtAddBaseFirst(int base, int offset) { return base + offset; }
 // W414 direct base->entries[index] loop probe raised FUN_0039eaa0 nd19 -> nd32; retained cached entries form.
 // FUN_0039EAA0 NONMATCHING
 
@@ -5725,7 +5725,7 @@ void FUN_0039eaa0(int param_1)
       combinedValue = baseValue + entryValue;
       extraValue = entry->unk_14;
       *(short *)((int)output + count * 2 + 0x18) = count + 31000;
-      output[count + 1] = combinedValue;
+      *(int *)mtEvtAddBaseFirst((int)output,count * 4) = combinedValue;
       output[count + 9] = extraValue;
       *output = *output + 1;
     }
