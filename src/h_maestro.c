@@ -4284,13 +4284,13 @@ void func_001127d0(void* param_1, u32 enabled)
     s32 width;
     s32 height;
     s32 edge;
+    f32 recipZ;
     f32 angle;
     f32 radians;
     f32 angleSquared;
     f32 polynomial;
     f32 cosine;
     f32 sine;
-    f32 recipZ;
     u32 i;
     u32 packedColor;
     s32 red;

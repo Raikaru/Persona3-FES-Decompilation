@@ -2079,6 +2079,10 @@ short *psVar15;
 
 float fVar16;
 
+u32 auStack_1e0 [120];
+
+u32 auStack_300 [72];
+
 u32 *puStack_310;
 
 u32 uStack_30c;
@@ -2086,11 +2090,6 @@ u32 uStack_30c;
 u32 *puStack_308;
 
 u32 uStack_304;
-
-u32 auStack_300 [72];
-
-u32 auStack_1e0 [120];
-
 
 
 iVar2 = *(int *)(param_2 + 0xc);
@@ -2322,16 +2321,14 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 
 
+
   int iVar10;
 
   int iVar11;
 
   FclShopBgLocal stack;
 
-  float fStack_0;
-  float fStack_4;
-  float fStack_8;
-  float fStack_c;
+
 
 
 
@@ -2380,29 +2377,23 @@ u64 FUN_00413010(u64 param_1,int param_2)
     } while (0 < count);
   }
 
-  fStack_0 = *(float *)((u8 *)DAT_006b0e64_abs - 4);
-  fStack_4 = *(float *)DAT_006b0e64_abs;
-  fStack_8 = *(float *)((u8 *)DAT_006b0e64_abs + 4);
-  fStack_c = *(float *)((u8 *)DAT_006b0e64_abs + 8);
-  *(float *)((u8 *)&stack + 0) = fStack_0;
-  *(float *)((u8 *)&stack + 4) = fStack_4;
-  *(float *)((u8 *)&stack + 8) = fStack_8;
-  *(float *)((u8 *)&stack + 0xc) = fStack_c;
+  stack.header = *(FclShopBgHeader *)((u8 *)DAT_006b0e64_abs - 4);
 
-  *(u32 *)((u8 *)&stack + 0) = (u32)stack.table1;
+  stack.header.words[0] = (u32)stack.table1;
 
-  *(u32 *)((u8 *)&stack + 8) = (u32)stack.table2;
+  stack.header.words[2] = (u32)stack.table2;
 
   iVar5 = *(int *)(iVar4 + 0x7c) >> 1;
 
-  puVar6 = (s16 *)*(u32 *)((u8 *)&stack + iVar5 * 8);
 
-  iVar5 = *(int *)((u8 *)&stack + iVar5 * 8 + 4);
+  puVar6 = (s16 *)stack.header.words[iVar5 * 2];
+
+  iVar5 = stack.header.words[iVar5 * 2 + 1];
 
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
-    short *psVar9;
     s16 *psVar8;
+    short *psVar9;
 
     psVar9 = (short *)(iVar4 + iVar11 * 0xc);
 
@@ -2415,7 +2406,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
                  ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
 
-                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(char)psVar9[2],psVar8[3],0,iVar10,
+                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(u8)psVar9[2],psVar8[3],0,iVar10,
 
                  iVar10);
 
@@ -5169,6 +5160,9 @@ void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5,
   u64 uVar2;
 
 
+
+
+  
   
 
   iVar1 = *(int *)(param_2 + 0xc);
@@ -5214,6 +5208,7 @@ void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5,
     FUN_0040e3c0((float)param_5, param_3 + 0x6a, param_4 + 0x9f, param_6 & 0xff, 7, (int)*(char *)(iVar1 + 0xbf) % 10);
 
   }
+
 
   uVar2 = clndGetDaysSinceStartFromDate(*(u8 *)(iVar1 + 0xbe),*(u8 *)(iVar1 + 0xbf));
 

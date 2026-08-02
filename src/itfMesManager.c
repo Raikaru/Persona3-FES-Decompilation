@@ -289,7 +289,7 @@ u32 FUN_003a5940(int param_1,int param_2);
 void FUN_003a5980(u32 *param_1);
 #pragma alias FUN_003a5980_typed FUN_003a5980
 extern void FUN_003a5980_typed(u32 *param_1);
-void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4);
+void FUN_003a5ca0(u8 *param_1,int param_2,u32 param_3,int param_4);
 #pragma alias FUN_003a5ca0_typed FUN_003a5ca0
 extern void FUN_003a5ca0_typed(u32 param_1,long param_2,u64 param_3,long param_4);
 void FUN_003a5ea0(int param_1,int param_2,u32 param_3);
@@ -361,7 +361,7 @@ u32 FUN_003a7a40(int param_1);
 extern u32 FUN_003a7a40_typed(void);
 void FUN_003a7cb0(int param_1,int param_2);
 s16 FUN_003a7d60(int param_1);
-void FUN_003a7dd0(int object);
+void FUN_003a7dd0(u8 *object);
 void FUN_003a7e90(u32 *param_1);
 void FUN_003a8080(u32 *param_1);
 void FUN_003a8170(int param_1);
@@ -3382,7 +3382,7 @@ void FUN_003a5980(u32 *param_1)
 // FUN_003A5CA0 NONMATCHING
 
 
-void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
+void FUN_003a5ca0(u8 *param_1,int param_2,u32 param_3,int param_4)
 
 
 
@@ -5527,7 +5527,7 @@ s16 FUN_003a7d60(int param_1)
 // FUN_003A7DD0 NONMATCHING
 
 
-void FUN_003a7dd0(int object)
+void FUN_003a7dd0(u8 *object)
 {
   typedef struct ItfMesAnim {
     u8 active;
@@ -6186,8 +6186,8 @@ u32 FUN_003add40(u64 param_1,int param_2);
 u32 FUN_003ade70(int param_1,int param_2);
 u64 FUN_003adf70(u64 param_1,int param_2);
 u64 FUN_003ae000(u64 param_1,int param_2);
-u32 FUN_003ae160(u64 param_1,int param_2);
-u32 FUN_003ae260(u64 param_1,int param_2);
+u32 FUN_003ae160(u64 param_1,u8 *param_2);
+u32 FUN_003ae260(u64 param_1,u8 *param_2);
 u64 FUN_003ae360(u64 param_1,int param_2);
 u64 FUN_003ad360(u32 param_1,int param_2);
 u64 FUN_003ad380(u64 param_1,int param_2);
@@ -10602,7 +10602,7 @@ u64 FUN_003ae150(u64 param_1,int param_2)
 // FUN_003AE160 NONMATCHING
 
 
-u32 FUN_003ae160(u64 param_1,int param_2)
+u32 FUN_003ae160(u64 param_1,u8 *param_2)
 
 
 
@@ -10709,7 +10709,7 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 // FUN_003AE260 NONMATCHING
 
 
-u32 FUN_003ae260(u64 param_1,int param_2)
+u32 FUN_003ae260(u64 param_1,u8 *param_2)
 
 
 

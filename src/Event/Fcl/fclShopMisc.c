@@ -15926,8 +15926,8 @@ void FUN_004045d0(u64 param_1)
   
 
   iVar2 = DAT_007cd8f4;
-  iVar7 = 0;
   puVar8 = PTR_DAT_007cd8f0_ptr;
+  iVar7 = 0;
   do {
     if (iVar2 <= iVar7) {
       return;

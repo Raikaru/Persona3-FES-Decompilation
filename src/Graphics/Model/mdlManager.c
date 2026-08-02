@@ -2413,7 +2413,7 @@ void func_003138e0(MdlAnim* param_1,s16 param_2,u16 param_3,u16 param_4)
 
   *(u8 *)(puVar6 + 1) = 0;
 
-  if (param_3 != 0) {
+  if (param_3 > 0) {
 
     uVar1 = puVar6[2];
 
@@ -3410,7 +3410,7 @@ void func_00314d30(void* param_1)
 
     else {
 
-      fVar7 = 0.0;
+      fVar7 = 0.0f;
 
       *(short *)(iVar5 + 0x14) = *(short *)(iVar5 + 0x14) + -1;
 
@@ -7351,11 +7351,11 @@ u32 func_00319970(Model* param_1)
 
             if (piVar2[3] == 0) {
 
-              uVar9 = (*DAT_00960178)((u32)uStack_2 << 2,0x40000);
+              uVar9 = (*DAT_00960178)(uStack_2 << 2,0x40000);
 
               piVar2[3] = (int)uVar9;
 
-              memset(uVar9,0,(u32)uStack_2 << 2);
+              memset(uVar9,0,uStack_2 << 2);
 
             }
 

@@ -7828,22 +7828,22 @@ void func_002f0ea0(u64 *param_1)
 {
   /* Caller-specific return width: retail consumes only the s32 result in this path. */
   extern s32 FUN_0030b5a0();
-  u16 sVar1;
-  u32 bVar2;
-  u8 *puVar3;
+  s32 uVar11;
+  s32 uVar12;
+  BtlUnit* iVar14;
   int iVar4;
-  u8 *puVar5;
+  u32 bVar2;
   u32 uVar6;
   u32 uVar7;
   u32 uVar8;
+  u8 *puVar3;
+  u8 *puVar5;
   BtlPacket* packet;
   u32 uVar9;
   s32 lVar10;
-  s32 uVar11;
-  s32 uVar12;
   int iVar13;
-  int iVar14;
-  int initialPacket;
+  u16 sVar1;
+  BtlPacket* initialPacket;
   
   uVar11 = (u32)*(u16 *)(iGpffffb6fc + 0xb50);
   *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x80000;
@@ -7857,7 +7857,7 @@ void func_002f0ea0(u64 *param_1)
         uVar12 = uVar12 + 1 & 0xffff;
       }
       else if (sVar1 == 0x10d) {
-        iVar14 = iVar4;
+        iVar14 = (BtlUnit *)(uintptr_t)iVar4;
       }
     }
   }
@@ -7889,7 +7889,7 @@ void func_002f0ea0(u64 *param_1)
     *(u64 *)((int)uVar8 + 0x60) = *param_1;
     FUN_0027ed20(uVar8,1);
   }
-  initialPacket = (int)uVar8;
+  initialPacket = (BtlPacket*)uVar8;
   uVar9 = (u32)FUN_002f8810_ptr_voice();
   uVar9 = (u32)FUN_002dd760_packet_voice(3,(void *)uVar9,0);
   *(u16 *)((int)uVar9 + 0x48) = 2;
@@ -7897,7 +7897,7 @@ void func_002f0ea0(u64 *param_1)
   FUN_0027ed20(uVar9,1);
   puVar3 = (u8 *)FUN_002b8d60_packet_voice(3,0xfff);
   *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
+  *(u64 *)(puVar3 + 8) = initialPacket->uid;
   *(u64 *)(puVar3 + 0x60) = *param_1;
   FUN_0027ed20((u32)puVar3,1);
   for (uVar12 = 0; uVar12 < uVar11; uVar12 = uVar12 + 1 & 0xffff) {
@@ -7905,14 +7905,14 @@ void func_002f0ea0(u64 *param_1)
     uVar8 = (u32)FUN_0027fe90_packet_voice((BtlUnit *)*(u32 *)(iVar4 + 0x30),0,(const void *)0x6978b0,0);
     puVar3 = (u8 *)uVar8;
     *puVar3 = 4;
-    *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
+    *(u64 *)(puVar3 + 8) = initialPacket->uid;
     *(u64 *)(puVar3 + 0x60) = *param_1;
     FUN_0027ed20(uVar8,1);
   }
   uVar8 = (u32)FUN_002a3b40_packet_voice(0,1);
   puVar3 = (u8 *)uVar8;
   *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
+  *(u64 *)(puVar3 + 8) = initialPacket->uid;
   *(u64 *)(puVar3 + 0x60) = *param_1;
   FUN_0027ed20(uVar8,0);
   packet = FUN_002baf90_packet_voice((void*)uVar6, (BtlUnit*)*(u32 *)(iVar4 + 0x30), (BtlUnit*)*(u32 *)(iVar4 + 0x30), 0, 0x200);
@@ -7936,7 +7936,7 @@ void func_002f0ea0(u64 *param_1)
     FUN_0027ed20(uVar8,1);
   }
   if (!bVar2) {
-    uVar8 = (u32)FUN_0027f410_packet_voice(0x2efdb0,iVar14);
+    uVar8 = (u32)FUN_0027f410_packet_voice(0x2efdb0,(u32)(uintptr_t)iVar14);
     *(u8 *)uVar8 = 4;
     *(u64 *)((u8 *)uVar8 + 8) = *(u64 *)(iVar4 + 0x58);
     FUN_0027ed20(uVar8,1);

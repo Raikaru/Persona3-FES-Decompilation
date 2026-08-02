@@ -979,7 +979,7 @@ u32 FUN_00322fb0(u32 param_1);
 void FUN_00322fd0(int param_1,u32 param_2,float *param_3);
 u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3);
 int FUN_00323240(u32 param_1,int param_2,u16 param_3,int param_4);
-int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5);
+int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,u8 *param_4,u32 param_5);
 #pragma alias FUN_003233a0_ptr FUN_003233a0
 extern int FUN_003233a0_ptr(u32 param_1,u32 param_2,u16 param_3,u8 *param_4,u32 param_5);
 u32 FUN_003234f0(u16 param_1,u32 param_2);
@@ -1027,7 +1027,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5);
 #pragma alias FUN_00323fb0_ptr FUN_00323fb0
 extern int FUN_00323fb0_ptr(u32 param_1,u32 param_2,u8 *param_3,u16 param_4,
                             u32 param_5);
-u32 FUN_00324160(int param_1);
+u32 FUN_00324160(u8 *param_1);
 #pragma alias FUN_00324160_u32 FUN_00324160
 extern u32 FUN_00324160_u32(int param_1);
 void FUN_00324310(int param_1);
@@ -4681,7 +4681,7 @@ int FUN_00323240(u32 param_1,int param_2,u16 param_3,int param_4)
 // FUN_003233A0 NONMATCHING
 
 
-int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
+int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,u8 *param_4,u32 param_5)
 
 
 
@@ -5385,7 +5385,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 // FUN_00324160 NONMATCHING
 
 
-u32 FUN_00324160(int param_1)
+u32 FUN_00324160(u8 *param_1)
 
 
 
@@ -7628,6 +7628,9 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 {
+
+
+
 
   u32 uVar1;
 
@@ -15364,7 +15367,7 @@ void FUN_0032eb40(int param_1)
 
           __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(pauVar19) : "memory");
 
-          FUN_0032a770(pauVar19,(int)(iVar4),iVar11,(u8 (*)[16])particleCopy);
+          FUN_0032a770(pauVar19,iVar4,iVar11,(u8 (*)[16])particleCopy);
 
           *(float *)(pauVar19[1] + 8) = *(float *)(pauVar19[1] + 8) * pfVar18[0x10];
 
@@ -15716,7 +15719,7 @@ void FUN_0032eb40(int param_1)
               *(int *)pauVar19[1] = (int)fVar39;
             }
 
-            FUN_0032a770(pauVar19,(int)(iVar4),*(u32 *)pauVar19[1],(u8 (*)[16])particleCopy);
+            FUN_0032a770(pauVar19,iVar4,*(u32 *)pauVar19[1],(u8 (*)[16])particleCopy);
 
             *(float *)(pauVar19[1] + 8) = *(float *)(pauVar19[1] + 8) * pfVar18[0x10];
 
@@ -17902,7 +17905,7 @@ void FUN_00331650(int param_1)
 
             if ((uVar3 & 1) != 0) {
 
-              *pfVar13 = 0.0;
+              *pfVar13 = 0.0f;
 
               pfVar13[1] = fVar23;
 
@@ -32168,7 +32171,7 @@ void FUN_003407e0(int param_1)
 
                       }
 
-                      FUN_003403b0((int)(puVar6),(int)(iVar5));
+                      FUN_003403b0((int)(puVar6),iVar5);
 
                       DAT_00957b48_f32 = *(float *)(iVar5 + 0xa8);
 
@@ -32185,7 +32188,7 @@ void FUN_003407e0(int param_1)
 
                     }
 
-                    FUN_003403b0((int)(puVar6),(int)(iVar5));
+                    FUN_003403b0((int)(puVar6),iVar5);
 
                     DAT_00957b48_f32 = *(float *)(iVar5 + 0xa8);
 
@@ -32202,7 +32205,7 @@ void FUN_003407e0(int param_1)
 
                   }
 
-                  FUN_003403b0((int)(puVar6),(int)(iVar5));
+                  FUN_003403b0((int)(puVar6),iVar5);
 
                   DAT_00957b44_f32 = *(float *)(iVar5 + 0xa4);
 
@@ -32216,7 +32219,7 @@ void FUN_003407e0(int param_1)
 
                 }
 
-                FUN_003403b0((int)(puVar6),(int)(iVar5));
+                FUN_003403b0((int)(puVar6),iVar5);
 
                 DAT_00957b44_f32 = *(float *)(iVar5 + 0xa4);
 
@@ -32236,7 +32239,7 @@ void FUN_003407e0(int param_1)
 
             *(u8 *)(iVar5 + 0xc4) = 1;
 
-            FUN_003403b0((int)(puVar6),(int)(iVar5));
+            FUN_003403b0((int)(puVar6),iVar5);
 
             DAT_00957b64 = *(u8 *)(iVar5 + 0xc4);
 
@@ -32248,7 +32251,7 @@ void FUN_003407e0(int param_1)
 
           *(u8 *)(iVar5 + 0xc4) = 0;
 
-          FUN_003403b0((int)(puVar6),(int)(iVar5));
+          FUN_003403b0((int)(puVar6),iVar5);
 
           DAT_00957b64 = *(u8 *)(iVar5 + 0xc4);
 
@@ -45593,7 +45596,7 @@ void FUN_00351940(int param_1)
 
 u64 FUN_00351a10(int param_1)
 {
-  char cVar1;
+  u8 cVar1;
   short sVar2;
   char *pcVar3;
   int lVar4;
@@ -45601,49 +45604,51 @@ u64 FUN_00351a10(int param_1)
 
   pcVar3 = *(char **)(param_1 + 0x3c);
   cVar1 = *pcVar3;
-  if (cVar1 == '\x04') {
-    FUN_00351940((int)(pcVar3));
-    *pcVar3 = '\0';
-    return 0;
-  }
-  if (cVar1 != '\x03') {
-    if (cVar1 != '\x02') {
-      if (cVar1 != '\x01') {
-        return 0;
-      }
-      lVar4 = FUN_004ca090_u32();
-      *(int *)(pcVar3 + 0xc) = (int)lVar4;
-      if (lVar4 == 0) {
-        return 0;
-      }
-      uVar5 = FUN_004caf10();
-      FUN_004d1840(*(u32 *)(pcVar3 + 0xc),uVar5);
-      if (*(int *)(*(int *)(pcVar3 + 0xc) + 4) == 0) {
-        return 0;
-      }
-      lVar4 = FUN_004ce0f0_u32(0x200,0x100,0x10,0x185);
-      *(int *)(pcVar3 + 8) = (int)lVar4;
-      if (lVar4 == 0) {
-        return 0;
-      }
-      FUN_004f1780((int *)lVar4,1);
-      RwCameraSetProjectionType(*(u32 *)(pcVar3 + 0xc),2);
-      *(u32 *)(*(int *)(pcVar3 + 0xc) + 0x60) = *(u32 *)(pcVar3 + 8);
-      pcVar3[4] = '\0';
-      pcVar3[5] = '\0';
+  switch (cVar1) {
+  case 1:
+    lVar4 = FUN_004ca090_u32();
+    *(int *)(pcVar3 + 0xc) = (int)lVar4;
+    if (lVar4 == 0) {
+      return 0;
     }
+    uVar5 = FUN_004caf10();
+    FUN_004d1840(*(u32 *)(pcVar3 + 0xc),uVar5);
+    if (*(int *)(*(int *)(pcVar3 + 0xc) + 4) == 0) {
+      return 0;
+    }
+    lVar4 = FUN_004ce0f0_u32(0x200,0x100,0x10,0x185);
+    *(int *)(pcVar3 + 8) = (int)lVar4;
+    if (lVar4 == 0) {
+      return 0;
+    }
+    FUN_004f1780((int *)lVar4,1);
+    RwCameraSetProjectionType(*(u32 *)(pcVar3 + 0xc),2);
+    *(u32 *)(*(int *)(pcVar3 + 0xc) + 0x60) = *(u32 *)(pcVar3 + 8);
+    pcVar3[4] = '\0';
+    pcVar3[5] = '\0';
+  case 2:
     lVar4 = FUN_00351290((int)(pcVar3));
     if (lVar4 == 0) {
       return 0;
     }
     *pcVar3 = '\x03';
+  case 3:
+    break;
+  case 4:
+    goto state4;
+  default:
+    return 0;
   }
-  FUN_00351510((int)(pcVar3));
   sVar2 = *(short *)(pcVar3 + 4);
   *(u16 *)(pcVar3 + 4) = sVar2 + 1U;
   if (*(u16 *)(pcVar3 + 2) <= (u16)(sVar2 + 1U)) {
     *pcVar3 = '\x04';
   }
+  goto done;
+state4:
+  FUN_00351940((int)(pcVar3));
+  *pcVar3 = '\0';
+done:
   return 0;
 }
 

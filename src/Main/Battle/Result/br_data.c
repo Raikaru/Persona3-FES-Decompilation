@@ -872,21 +872,21 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   fVar4 = *(float *)(iGpffffb7ac + level * 4);
   param_4 = (u16)param_4;
 
-  fVar5 = 0.0;
+  fVar5 = 0.0f;
 
   if (param_4 == 0x229) {
 
-    fVar5 = 0.25;
+    fVar5 = 0.25f;
 
   }
 
   else if (param_4 == 0x22a) {
-    fVar5 = 0.5;
+    fVar5 = 0.5f;
 
   }
 
   else if (param_4 == 0x22b) {
-    fVar5 = 1.0;
+    fVar5 = 1.0f;
 
   }
 
