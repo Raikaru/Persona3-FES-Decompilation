@@ -38,6 +38,7 @@ extern u32 DAT_0086e690;
 extern u32 DAT_0086e694;
 extern u8 DAT_00871ec0[0x200];
 extern char s__field_script_reserve_xxx_006837af[];
+extern const char DAT_006836f0[];
 extern RwV3d DAT_00683780[];
 extern RwV3d DAT_00683910;
 extern RwV3d DAT_00683920;
@@ -2659,7 +2660,7 @@ case8_teardown:
                     taskResult == -1
                         ? false
                         : FUN_001b0910() == false
-                              ? (FUN_00523ac8(scriptPath, 0x006836f0, taskResult, currentActor),
+                              ? (FUN_00523ac8(scriptPath, DAT_006836f0, taskResult, currentActor),
                                  FUN_001008b0(scriptPath) == false
                                      ? false
                                      : FUN_00100d80(scriptPath, false))

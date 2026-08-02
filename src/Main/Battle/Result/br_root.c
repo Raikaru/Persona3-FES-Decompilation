@@ -136,6 +136,9 @@ extern char D_00683F98[];
 extern char D_00683FB0[];
 extern char D_00683FD0[];
 extern char D_007CC2F8;
+extern u8 D_007CC378;
+extern const char D_00684680[];
+extern const char D_006846A0[];
 extern char D_007CC2FC;
 extern char D_007CC300;
 extern char D_007CC304;
@@ -2464,8 +2467,8 @@ void *func_001f2300(KwlnTask *task)
         if ((BR_U32(work, 4) & 2) == 0) {
             u16 v;
             sflResRequestTutorialArchive();
-            v = *(u16*)0x007E094E;
-            if ((v & 0x9ff) != 0 || (*(u16*)0x007E094C & 0x10) != 0) {
+            v = *(u16*)DAT_007e094e_abs;
+            if ((v & 0x9ff) != 0 || (*(u16*)DAT_007e094c_abs & 0x10) != 0) {
                 func_001f4a00();
             }
         }
@@ -2483,8 +2486,8 @@ void *func_001f2300(KwlnTask *task)
             BR_U32(work, 0x1fd5c) = temp + 1;
         }
         if (BR_U32(work, 0x1fd5c) == 15 &&
-            ((*(u16*)0x007E094E & 0x40) != 0 ||
-             (*(u16*)0x007E094C & 0x10) != 0)) {
+            ((*(u16*)DAT_007e094e_abs & 0x40) != 0 ||
+             (*(u16*)DAT_007e094c_abs & 0x10) != 0)) {
             func_00258a50();
             BR_U32(work, 8) = 9;
         } else {
@@ -2515,8 +2518,8 @@ void *func_001f2300(KwlnTask *task)
         u32 ready;
 
         if (sflCount0025b640() != 0 &&
-            (*(u16 *)0x007E094E & 0x40) == 0 &&
-            (*(u16 *)0x007E094C & 0x10) == 0) {
+            (*(u16 *)DAT_007e094e_abs & 0x40) == 0 &&
+            (*(u16 *)DAT_007e094c_abs & 0x10) == 0) {
             break;
         }
         sflCount0025b5f0();
@@ -2529,9 +2532,9 @@ void *func_001f2300(KwlnTask *task)
         BR_U32(work, 4) &= ~0x20u;
         if (BR_U32(work, 0xe4) < 7 && func_0016f190(0x1318) != 0) {
             randomValue = func_00488f30() % 100;
-            chance = ((const u8 *)0x007CC378)[BR_U32(work, 0xe4)];
-            func_005225a8((const char *)0x00684680, (s32)randomValue, (s32)chance);
-            if (randomValue < ((const u8 *)0x007CC378)[BR_U32(work, 0xe4)]) {
+            chance = (&D_007CC378)[BR_U32(work, 0xe4)];
+            func_005225a8(D_00684680, (s32)randomValue, (s32)chance);
+            if (randomValue < (&D_007CC378)[BR_U32(work, 0xe4)]) {
                 BR_U32(work, 4) |= 0x200;
             }
         }
@@ -2688,7 +2691,7 @@ void *func_001f2300(KwlnTask *task)
     case 15:
         if (func_003c78d0() == 0) {
             func_003c7650(0);
-            printf((const char *)0x006846A0);
+            printf(D_006846A0);
             temp = func_003c7610();
             if (temp == 0) {
                 func_002594c0();

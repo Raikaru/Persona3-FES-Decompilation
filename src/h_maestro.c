@@ -75,7 +75,7 @@ typedef struct MaestroResourceWork
     void* parsedResources[40];
     void* effectResources[40];
     s32 recordIndices[40];
-    u8 reserved0[0xA0];
+    s32 renderStates[40];
     void* runtimeResources[40];
     u8 reserved1[0x10];
     f32 x;
@@ -2197,7 +2197,7 @@ void func_0010ec50(KwlnTask* task)
     u8* frames;
     HSfdRenderFrame* record;
     void* resource;
-    unsigned __int128 quad;
+    MaestroResourceWork* typedWork;
     void (**setRenderState)(u32, u32);
     RwCamera* camera;
     s32 element;
@@ -2218,8 +2218,7 @@ void func_0010ec50(KwlnTask* task)
     s64 green;
     s64 blue;
     s64 alpha;
-    unsigned __int128 colorBase;
-    u64 frameOffset;
+    u32 frameOffset;
     u8 colorBytes[4];
     s32 colorState;
     f32 zero;
@@ -2239,6 +2238,7 @@ void func_0010ec50(KwlnTask* task)
     s32 out7;
 
     work = (u8*)task->workData;
+    typedWork = (MaestroResourceWork*)work;
     setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(8, 0);
     (*setRenderState)(6, 0);
@@ -2281,14 +2281,12 @@ void func_0010ec50(KwlnTask* task)
         resource = *(void**)(entry + 0xa8);
         func_004ac5f0(resource);
         func_004ab1b0(resource);
-        colorBase = (unsigned __int128)(work + element * 2);
-        quad = (unsigned __int128)(work + colorState * 4);
         while (draw == 0)
         {
             if (colorReady == 0)
             {
                 frames = *(u8**)(entry + 8);
-                frameOffset = (unsigned __int128)(frame * 0x12);
+                frameOffset = (u32)(frame * 0x12);
                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                 if (record->command != -1)
                 {
@@ -2300,9 +2298,9 @@ void func_0010ec50(KwlnTask* task)
                            (s8)(record->colorB & 0xff) : 0xff;
                     alpha = (record->colorA < 0x100) ?
                             (record->colorA & 0xff) : 0xff;
-                    red += *(s16*)((u8*)colorBase + 0x3f0);
-                    green += *(s16*)((u8*)colorBase + 0x440);
-                    blue += *(s16*)((u8*)colorBase + 0x490);
+                    red += typedWork->coordinates0[element];
+                    green += typedWork->coordinates1[element];
+                    blue += typedWork->coordinates2[element];
                     if (red < 0)
                         red = 0;
                     if (red >= 0x100)
@@ -2324,7 +2322,7 @@ void func_0010ec50(KwlnTask* task)
             }
 
             frames = *(u8**)(entry + 8);
-            frameOffset = (unsigned __int128)(frame * 0x12);
+            frameOffset = (u32)(frame * 0x12);
             record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
             if (record->command != -1)
             {
@@ -2332,7 +2330,7 @@ void func_0010ec50(KwlnTask* task)
                 {
                     draw = 1;
                     func_004a62e0(*(void**)(entry + 0x148),
-                                  *(void**)((u8*)quad + 0x328));
+                                  typedWork->runtimeResources[colorState]);
                     out0 = 0;
                     zero = *(f32*)((u8*)work - 0x7cf8);
                     out1 = zero;
@@ -2434,7 +2432,7 @@ void func_0010ec50(KwlnTask* task)
                     case 2:
                         *(s32*)(entry + 0x288) = record->type;
                         frames = *(u8**)(entry + 8);
-                        frameOffset = (unsigned __int128)(frame * 0x12);
+                        frameOffset = (u32)(frame * 0x12);
                         record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                         baseX = (s32)*(f32*)(work + 0x3d8);
                         baseY = (s32)*(f32*)(work + 0x3dc);
@@ -2486,12 +2484,11 @@ void func_0010ec50(KwlnTask* task)
                 j = 0;
                 for (i = element - 1; i >= 0; i--)
                 {
-                    quad = (unsigned __int128)(work + i * 4);
-                    if (*(s32*)((u8*)quad + 0x288) == 0)
+                    if (typedWork->renderStates[i] == 0)
                     {
                         func_00110650(work, i, element);
                         if (layer >= 3)
-                            func_004a6600(*(void**)((u8*)quad + 0xa8),
+                            func_004a6600(typedWork->parsedResources[i],
                                           *(void**)(entry + 0x148));
                         j = 1;
                         break;
@@ -2521,7 +2518,7 @@ void* func_0010f6c0(KwlnTask* task)
     u8* frames;
     HSfdRenderFrame* record;
     void* resource;
-    unsigned __int128 quad;
+    MaestroResourceWork* typedWork;
     void (**setRenderState)(u32, u32);
     RwCamera* camera;
     s32 element;
@@ -2542,8 +2539,7 @@ void* func_0010f6c0(KwlnTask* task)
     s64 green;
     s64 blue;
     s64 alpha;
-    unsigned __int128 colorBase;
-    u64 frameOffset;
+    u32 frameOffset;
     u8 colorBytes[4];
     s32 colorState;
     f32 zero;
@@ -2563,6 +2559,7 @@ void* func_0010f6c0(KwlnTask* task)
     s32 out7;
 
     work = (u8*)task->workData;
+    typedWork = (MaestroResourceWork*)work;
     setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(8, 0);
     (*setRenderState)(6, 0);
@@ -2650,14 +2647,12 @@ void* func_0010f6c0(KwlnTask* task)
                 resource = *(void**)(entry + 0xa8);
                 func_004ac5f0(resource);
                 func_004ab1b0(resource);
-                colorBase = (unsigned __int128)(work + element * 2);
-                quad = (unsigned __int128)(work + colorState * 4);
                 while (draw == 0)
                 {
                     if (colorReady == 0)
                     {
                         frames = *(u8**)(entry + 8);
-                        frameOffset = (unsigned __int128)(frame * 0x12);
+                        frameOffset = (u32)(frame * 0x12);
                         record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                         if (record->command != -1)
                         {
@@ -2669,9 +2664,9 @@ void* func_0010f6c0(KwlnTask* task)
                                   (s8)(record->colorB & 0xff) : 0xff;
                             alpha = (record->colorA < 0x100) ?
                                     (record->colorA & 0xff) : 0xff;
-                            red += *(s16*)((u8*)colorBase + 0x3f0);
-                            green += *(s16*)((u8*)colorBase + 0x440);
-                            blue += *(s16*)((u8*)colorBase + 0x490);
+                            red += typedWork->coordinates0[element];
+                            green += typedWork->coordinates1[element];
+                            blue += typedWork->coordinates2[element];
                             if (red < 0)
                                 red = 0;
                             if (red >= 0x100)
@@ -2693,7 +2688,7 @@ void* func_0010f6c0(KwlnTask* task)
                     }
 
                     frames = *(u8**)(entry + 8);
-                    frameOffset = (unsigned __int128)(frame * 0x12);
+                    frameOffset = (u32)(frame * 0x12);
                     record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                     if (record->command != -1)
                     {
@@ -2701,7 +2696,7 @@ void* func_0010f6c0(KwlnTask* task)
                         {
                             draw = 1;
                             func_004a62e0(*(void**)(entry + 0x148),
-                                          *(void**)((u8*)quad + 0x328));
+                                          typedWork->runtimeResources[colorState]);
                             out0 = 0;
                             zero = *(f32*)((u8*)work - 0x7cf8);
                             out1 = zero;
@@ -2802,7 +2797,7 @@ void* func_0010f6c0(KwlnTask* task)
                             case 2:
                                 *(s32*)(entry + 0x288) = record->type;
                                 frames = *(u8**)(entry + 8);
-                                frameOffset = (unsigned __int128)(frame * 0x12);
+                                frameOffset = (u32)(frame * 0x12);
                                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                                 x0 = (f32)(s32)screenX;
                                 y0 = (f32)screenY;
@@ -2861,12 +2856,11 @@ void* func_0010f6c0(KwlnTask* task)
                         j = 0;
                         for (i = element - 1; i >= 0; i--)
                         {
-                            quad = (unsigned __int128)(work + i * 4);
-                            if (*(s32*)((u8*)quad + 0x288) == 0)
+                            if (typedWork->renderStates[i] == 0)
                             {
                                 func_00110650(work, i, element);
                                 if (layer >= 3)
-                                    func_004a6600(*(void**)((u8*)quad + 0xa8),
+                                    func_004a6600(typedWork->parsedResources[i],
                                                   *(void**)(entry + 0x148));
                                 j = 1;
                                 break;

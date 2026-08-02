@@ -21,6 +21,12 @@ extern u32 uGpffffb53c;
 extern u8 D_0067F578[];
 extern u8 D_00869F64[];
 extern u8 D_00869F78[];
+extern u8 D_0086AFA8[];
+extern u8 D_0086AFAC[];
+extern u8 D_00869F88[];
+extern u8 D_00869F8C[];
+extern u8 D_00869F80[];
+extern u8 D_00869F84[];
 
 extern u8 D_0067F600[];
 extern const char D_0067F5E0[];
@@ -476,7 +482,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 ROOT_U32(work, 0x28) = 0;
                 FIELD_U32(0x007ce24c) = 0;
                 if (ROOT_U32(work, 0x38) == 0 &&
-                    FIELD_U32(0x0086afa8) != 0)
+                    FIELD_U32(D_0086AFA8) != 0)
                 {
                     if ((work->majorId < 0x14 ||
                          work->majorId > 0x1c ||
@@ -491,14 +497,14 @@ void* func_001b9480(KwlnTask* fldRootTask)
                             work->majorId > 0x30)
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                              (s32)work->minorId - 1);
                         }
                     }
                     else
                     {
                         ROOT_U32(work, 0x40) =
-                            FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                            FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                          (s32)work->minorId - 0x32);
                     }
                 }
@@ -539,7 +545,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 {
                     FIELD_U32(0x007ce24c) = 3;
                     if (ROOT_U32(work, 0x38) == 0 &&
-                        FIELD_U32(0x0086afa8) != 0)
+                        FIELD_U32(D_0086AFA8) != 0)
                     {
                         if ((work->majorId < 0x14 ||
                              work->majorId > 0x1c ||
@@ -554,14 +560,14 @@ void* func_001b9480(KwlnTask* fldRootTask)
                                 work->majorId > 0x30)
                             {
                                 ROOT_U32(work, 0x40) =
-                                    FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                    FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                                  (s32)work->minorId - 1);
                             }
                         }
                         else
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                              (s32)work->minorId - 0x32);
                         }
                     }
@@ -612,7 +618,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
 
         case 8:
             FIELD_U32(0x007ce24c) = 1;
-            if (ROOT_U32(work, 0x38) == 0 && FIELD_U32(0x0086afa8) != 0)
+            if (ROOT_U32(work, 0x38) == 0 && FIELD_U32(D_0086AFA8) != 0)
             {
                 if ((work->majorId < 0x14 ||
                      work->majorId > 0x1c ||
@@ -627,7 +633,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         work->majorId > 0x30)
                     {
                         ROOT_U32(work, 0x40) =
-                            FUN_0035bb40(10, FIELD_U32(0x0086afa8),
+                            FUN_0035bb40(10, FIELD_U32(D_0086AFA8),
                                          (s32)work->minorId - 1);
                     }
                     else if (work->minorId == 0)
@@ -647,7 +653,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 else
                 {
                     ROOT_U32(work, 0x40) =
-                        FUN_0035bb40(10, FIELD_U32(0x0086afa8),
+                        FUN_0035bb40(10, FIELD_U32(D_0086AFA8),
                                      (s32)work->minorId - 0x32);
                 }
             }
@@ -661,20 +667,20 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 FIELD_U32(0x00869f7c) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0x1e0));
                 FUN_0016f1f0(0x1411, 0);
-                FIELD_U32(0x00869f84) = (u32)FUN_001d36f0(fldRootTask);
+                FIELD_U32(D_00869F84) = (u32)FUN_001d36f0(fldRootTask);
                 FUN_001d2610();
                 FUN_001d1fa0();
-                FIELD_U32(0x00869f80) = FUN_001d9f10(fldRootTask);
+                FIELD_U32(D_00869F80) = FUN_001d9f10(fldRootTask);
                 if (FUN_001dd600() == 1)
                 {
-                    FIELD_U32(0x00869f88) = (u32)FUN_0018bff0(fldRootTask);
-                    FUN_0018c0c0(FIELD_U32(0x00869f88), 0);
+                    FIELD_U32(D_00869F88) = (u32)FUN_0018bff0(fldRootTask);
+                    FUN_0018c0c0(FIELD_U32(D_00869F88), 0);
                 }
                 if (work->majorId < 200)
                 {
-                    FIELD_U32(0x00869f8c) = FUN_0018e820(fldRootTask);
+                    FIELD_U32(D_00869F8C) = FUN_0018e820(fldRootTask);
                     FUN_001ddca0(-1);
-                    FUN_0018eb30(FIELD_U32(0x00869f8c), 0);
+                    FUN_0018eb30(FIELD_U32(D_00869F8C), 0);
                 }
                 if (work->majorId == 0x0e && work->minorId == 5)
                 {
@@ -687,17 +693,17 @@ void* func_001b9480(KwlnTask* fldRootTask)
             /* fall through */
 
         case 10:
-            if (FUN_001d3790((KwlnTask*)FIELD_U32(0x00869f84)) != 0)
+            if (FUN_001d3790((KwlnTask*)FIELD_U32(D_00869F84)) != 0)
             {
-                FUN_001d37f0((KwlnTask*)FIELD_U32(0x00869f84), 1);
+                FUN_001d37f0((KwlnTask*)FIELD_U32(D_00869F84), 1);
                 FUN_004532d0(1);
                 if (FUN_001c03b0(ROOT_U32(work, 0x2c)) != 0 &&
-                    FUN_001d9fd0(FIELD_U32(0x00869f80)) != 0)
+                    FUN_001d9fd0(FIELD_U32(D_00869F80)) != 0)
                 {
-                    FUN_001da000(FIELD_U32(0x00869f80), 1);
+                    FUN_001da000(FIELD_U32(D_00869F80), 1);
                     if (FUN_001dd600() == 1)
                     {
-                        if (FUN_0018c0a0(FIELD_U32(0x00869f88)) == 0)
+                        if (FUN_0018c0a0(FIELD_U32(D_00869F88)) == 0)
                         {
                             return KWLNTASK_CONTINUE;
                         }
@@ -737,7 +743,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             if (FUN_00108710() != 0)
             {
                 FIELD_U32(0x007ce24c) = 2;
-                if (FIELD_U32(0x0086afa8) != 0)
+                if (FIELD_U32(D_0086AFA8) != 0)
                 {
                     if ((work->majorId < 0x14 ||
                          work->majorId > 0x1c ||
@@ -752,7 +758,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                             work->majorId > 0x30)
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                                FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                              (s32)work->minorId - 1);
                         }
                         else if (work->minorId == 0)
@@ -765,14 +771,14 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         else
                         {
                             ROOT_U32(work, 0x40) =
-                                FUN_0035bb40(10, FIELD_U32(0x0086afa8),
+                                FUN_0035bb40(10, FIELD_U32(D_0086AFA8),
                                              (s32)work->minorId - 1);
                         }
                     }
                     else
                     {
                         ROOT_U32(work, 0x40) =
-                            FUN_0035bc00(10, FIELD_U32(0x0086afa8), FIELD_U32(0x0086afac),
+                            FUN_0035bc00(10, FIELD_U32(D_0086AFA8), FIELD_U32(D_0086AFAC),
                                          (s32)work->minorId - 0x32);
                     }
                 }
@@ -799,21 +805,21 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 FUN_001e1230(fldRootTask, *(u32*)((u8*)camera + 0x1e0),
                              FIELD_U32(0x008717f0));
             FIELD_U32(D_00869F64 + 4) = FUN_001cd5a0(fldRootTask);
-            FUN_001d37f0((KwlnTask*)FIELD_U32(0x00869f84), 0);
-            FUN_001da000(FIELD_U32(0x00869f80), 0);
+            FUN_001d37f0((KwlnTask*)FIELD_U32(D_00869F84), 0);
+            FUN_001da000(FIELD_U32(D_00869F80), 0);
             FUN_004532d0(0);
             FUN_004350e0(0, 0);
             if (FIELD_U32(0x00869f78) != 0 && FIELD_U32(0x00869f74) == 0)
             {
                 FUN_00429e80(FIELD_U32(0x00869f78), 1);
             }
-            if (FIELD_U32(0x00869f88) != 0)
+            if (FIELD_U32(D_00869F88) != 0)
             {
-                FUN_0018c0c0(FIELD_U32(0x00869f88), 1);
+                FUN_0018c0c0(FIELD_U32(D_00869F88), 1);
             }
-            if (FIELD_U32(0x00869f8c) != 0)
+            if (FIELD_U32(D_00869F8C) != 0)
             {
-                FUN_0018eb30(FIELD_U32(0x00869f8c), 1);
+                FUN_0018eb30(FIELD_U32(D_00869F8C), 1);
             }
             func_0045a430(0);
             func_0045af70(0);
@@ -846,7 +852,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     FUN_001d70a0();
                     if (work->majorId < 200)
                     {
-                        FIELD_U32(0x00869f8c) = FUN_0018e820(fldRootTask);
+                        FIELD_U32(D_00869F8C) = FUN_0018e820(fldRootTask);
                         FUN_001ddca0(-1);
                     }
                     ROOT_U32(work, 0) = 0x0f;
@@ -862,10 +868,10 @@ void* func_001b9480(KwlnTask* fldRootTask)
                              *(u32*)(void*)FIELD_U32(0x008717f4));
                 FUN_001d6270(fldRootTask, 1, -1);
                 FIELD_U32(0x007ce24c) = 1;
-                if (FIELD_U32(0x0086afa8) != 0)
+                if (FIELD_U32(D_0086AFA8) != 0)
                 {
                     ROOT_U32(work, 0x40) =
-                        FUN_0035bb40(10, FIELD_U32(0x0086afa8),
+                        FUN_0035bb40(10, FIELD_U32(D_0086AFA8),
                                      (s32)work->minorId - 1);
                 }
                 ROOT_U32(work, 0) = 0x10;
