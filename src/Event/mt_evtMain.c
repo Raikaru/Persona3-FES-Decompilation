@@ -3312,7 +3312,6 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
   long lVar17;
 
-  float fVar18;
 
   u32 iStack_10;
 
@@ -3358,17 +3357,6 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
   }
 
-  if (uVar5 - uVar13 != 0) {
-
-    fVar18 = (float)(int)(param_4 - uVar13) / (float)(int)(uVar5 - uVar13);
-
-  }
-
-  else {
-
-    fVar18 = 0.0f;
-
-  }
 
   iVar9 = *param_1;
 
@@ -3468,7 +3456,10 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
         }
 
-        FUN_00396c70(param_1[1],uVar11,uVar6,lVar17,lVar16,lVar15,lVar3,fVar18);
+        FUN_00396c70(param_1[1],uVar11,uVar6,lVar17,lVar16,lVar15,lVar3,
+                     (uVar5 - uVar13 != 0)
+                     ? (float)(int)(param_4 - uVar13) / (float)(int)(uVar5 - uVar13)
+                     : 0.0f);
 
       }
 
@@ -4528,18 +4519,25 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
   char acStack_170 [304];
 
   u32 uStack_40;
+
   u32 uStack_3c;
+
   u32 uStack_38;
+
   u32 uStack_30;
+
   u32 uStack_2c;
+
   u32 uStack_28;
 
-  u8 auStack_20 [4];
+  u8 auStack_20 [0x10];
 
   u32 uStack_1c;
 
   u32 uStack_10;
+
   u32 uStack_c;
+
   u32 uStack_8;
 
   u32 uStack_4;

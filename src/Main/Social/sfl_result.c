@@ -1430,7 +1430,7 @@ void func_001f7210(void)
     u32 item_substate;
     u32 debug_val;
     u32 total_weight;
-    u32 weightTable[13];
+    u32 weightTable[25];
     s32 *weight_slot;
     s16 scan_arr[6];
     s32 member_count;

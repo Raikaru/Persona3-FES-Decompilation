@@ -8551,7 +8551,6 @@ int FUN_003fb6b0(u64 param_1)
 
   u32 uVar1;
 
-  short sVar2;
 
   int iVar3;
 
@@ -8645,11 +8644,10 @@ int FUN_003fb6b0(u64 param_1)
 
     case 4:
 
-      sVar2 = *(short *)((int)puVar5 + 6) + 1;
+      *(short *)((int)puVar5 + 6) = *(short *)((int)puVar5 + 6) + 1;
 
-      *(short *)((int)puVar5 + 6) = sVar2;
 
-      fVar7 = (float)cosf((fGpffff8110 * (float)(int)sVar2) / 5.0f);
+      fVar7 = (float)cosf((fGpffff8110 * (float)(int)*(short *)((int)puVar5 + 6)) / 5.0f);
 
       *(short *)(puVar5 + 0xc) = (short)(int)(fVar7 * -100.0f);
 
@@ -8691,11 +8689,10 @@ int FUN_003fb6b0(u64 param_1)
 
     case 6:
 
-      sVar2 = *(short *)((int)puVar5 + 6) + 1;
+      *(short *)((int)puVar5 + 6) = *(short *)((int)puVar5 + 6) + 1;
 
-      *(short *)((int)puVar5 + 6) = sVar2;
 
-      *(short *)((int)puVar5 + 0x2a) = (short)(int)(255.0f - (float)(sVar2 * 0xff) / 5.0f);
+      *(short *)(puVar5 + 0x2a) = (short)(int)(255.0f - (float)(*(short *)((int)puVar5 + 6) * 0xff) / 5.0f);
 
       if (4 < *(short *)((int)puVar5 + 6)) {
 
@@ -16440,10 +16437,14 @@ void FUN_00405f70(s32 param_1,s32 param_2,s32 param_3,int param_4,u64 param_5,
   float fVar14;
 
   s32 uVar15;
-  u32 auStack_50 [8];
-  u32 auStack_30 [10];
-
-  u8 auStack_8 [8];
+  struct {
+    u32 auStack_50[8];
+    u32 auStack_30[10];
+    u8 auStack_8[8];
+  } scratch;
+#define auStack_50 scratch.auStack_50
+#define auStack_30 scratch.auStack_30
+#define auStack_8 scratch.auStack_8
 
   
 
@@ -16671,6 +16672,9 @@ LAB_00406468:
   return;
 
 }
+#undef auStack_50
+#undef auStack_30
+#undef auStack_8
 
 
 

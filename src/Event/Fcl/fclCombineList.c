@@ -1799,6 +1799,8 @@ void fclCombineList003ddb90(FclList* list, FclSelection* selection)
 // FUN_003ddd20 NONMATCHING
 s32 fclCombineList003ddd20(FclSelection* selection)
 {
+    s32 result = 0;
+
     switch (selection->state) {
     case FCL_SELECTION_STATE_INITIALIZE:
         selection->state = FCL_SELECTION_STATE_READY;
@@ -1814,9 +1816,11 @@ s32 fclCombineList003ddd20(FclSelection* selection)
         FUN_003c9d00(selection->ui, 0x10);
         if ((selection->flags & FCL_SELECTION_FLAG_CONFIRM) != 0) {
             selection->flags &= ~FCL_SELECTION_FLAG_CONFIRM;
-            return 1;
+            result = 1;
+        } else {
+            result = 2;
         }
-        return 2;
+        break;
 
     case FCL_SELECTION_STATE_FINISHED:
         break;
@@ -1907,7 +1911,7 @@ s32 fclCombineList003ddd20(FclSelection* selection)
     default:
         break;
     }
-    return 0;
+    return result;
 }
 
 // FUN_003de160

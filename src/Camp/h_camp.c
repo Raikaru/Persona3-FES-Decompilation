@@ -8559,7 +8559,7 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
 {
     s32 i;
     s32 value;
-    char text[0x100];
+    char text[0x120];
 
     for (i = 0; i < 9; i++) {
         h_campStatusRenderStatIcon(position, scale, i, alpha);

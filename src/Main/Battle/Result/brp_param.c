@@ -452,7 +452,7 @@ void func_002771f0(void)
     u32 frame;
     u8 *listEntry;
     OpFadeEntry *entry;
-    f32 layout[4];
+    f32 layout[8];
     f32 alpha;
     f32 alpha2;
     u8 color[4];
@@ -748,7 +748,7 @@ void func_00278550(void)
     u32 frame;
     s32 i;
     s32 j;
-    u8 vertices[0x100];
+    u8 vertices[0x110];
     f32 rect[4];
 
     OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);

@@ -3954,11 +3954,11 @@ void FUN_002265D0(void)
     f32 rowStep;
     f32 ratio;
     f32 y150;
-    f32 panelAlpha;
     f32 baseX;
     f32 baseY;
     f32 quadBaseX;
     f32 quadBaseY;
+    f32 panelAlpha;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -4115,7 +4115,7 @@ void FUN_002265D0(void)
             f32 top = (36.0f + baseY + rowOffset) - 4.0f;
             f32 bottom = 91.0f + baseY + rowOffset;
             rect[0] = 22.0f + baseX;
-            if (*(s32*)(work + 0x6074) >= 5) {
+            if (*(s32*)(work + 0x6074) > 4) {
                 f32 t = (f32)*(s32*)(work + 0x606c);
                 f32 range = bottom - top;
                 f32 denom = (f32)(*(s32*)(work + 0x6074) - 4);
@@ -5229,10 +5229,10 @@ void FUN_0022AE80(void)
     u32 table0;
     u32 table6;
     u32 texture;
-    s32 i;
     void (**pRender)(u32, u32);
     void (**pRenderInitial)(u32, u32);
     void (**pQuad)(u32*, u32, u32, u32, u32);
+    s32 i;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;

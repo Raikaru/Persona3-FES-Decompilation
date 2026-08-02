@@ -18031,32 +18031,28 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
 {
   char cVar1;
   int iVar2;
-  u64 uVar3;
-  float fVar4;
   float fVar5;
   u32 uVar6;
   float fVar7;
   float uVar8;
   float fVar9;
-  YVec3f result;
-  YVec3f delta;
   YVec3f start;
+  YVec3f delta;
+  YVec3f result;
+  u64 uVar3;
   float axisX;
   float axisY;
   
-  start.x = *param_4;
-  start.y = param_4[1];
-  start.z = param_4[2];
+  start = *(YVec3f *)param_4;
   iVar2 = *(int *)(param_3 + 0x3c);
   uVar6 = 0;
   FUN_00318b60(*(u32 *)(*(int *)(iVar2 + 0xc) + 0x128));
-  fVar5 = start.z;
-  fVar4 = *(float *)DAT_006b4620_abs;
   uVar3 = *(u64 *)DAT_006b4618_abs;
   delta.x = *(float *)(iVar2 + 0xe0) - start.x;
   delta.y = *(float *)(iVar2 + 0xe4) - start.y;
-  delta.z = *(float *)(iVar2 + 0xe8) - start.z;
   fVar9 = start.y;
+  fVar5 = start.z;
+  delta.z = *(float *)(iVar2 + 0xe8) - start.z;
   fVar7 = (float)FUN_004c69f0((float *)&delta,(float *)&delta);
   if (param_2 <= fVar7) {
     cVar1 = *(char *)((int)(u8 *)DAT_007ce6e4 + *(int *)(iVar2 + 4) + 3);
@@ -18076,8 +18072,8 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
         delta.y = fVar9 - result.y;
         delta.z = fVar5 - result.z;
         FUN_004c69f0((float *)&delta,(float *)&delta);
-        result.x = result.x + (delta.y * fVar4 - delta.z * axisY) * 80.0f;
-        result.y = result.y + (delta.z * axisX - delta.x * fVar4) * 80.0f;
+        result.x = result.x + (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * 80.0f;
+        result.y = result.y + (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * 80.0f;
         result.z = result.z + (delta.x * axisY - delta.y * axisX) * 80.0f;
       }
       else if (cVar1 == '\x01') {
@@ -18088,8 +18084,8 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
         delta.y = fVar9 - result.y;
         delta.z = fVar5 - result.z;
         FUN_004c69f0((float *)&delta,(float *)&delta);
-        result.x = result.x + (delta.y * fVar4 - delta.z * axisY) * -80.0f;
-        result.y = result.y + (delta.z * axisX - delta.x * fVar4) * -80.0f;
+        result.x = result.x + (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * -80.0f;
+        result.y = result.y + (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * -80.0f;
         result.z = result.z + (delta.x * axisY - delta.y * axisX) * -80.0f;
       }
     }

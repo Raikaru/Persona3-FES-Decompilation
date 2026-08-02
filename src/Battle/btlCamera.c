@@ -6220,7 +6220,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   iVar1 = *(int *)(iVar3 + 0xe0);
   iVar2 = FUN_002c0880(iVar1 + 0x88);
   iVar1 = *(int *)(iVar1 + 0x30);
-  fVar5 = func_00280870_ae740(1 << (*(byte *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,1,
+  fStack_24 = func_00280870_ae740(1 << (*(byte *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,1,
                               &fStack_18,&fStack_4,&auStack_8,1);
   func_00280050(iVar1,&fStack_58);
   fVar4 = *(float *)(iVar1 + 0x2c);
@@ -6241,7 +6241,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_30 = fStack_50 - fStack_10;
   FUN_004c69f0(&fStack_38,&fStack_38);
   fVar4 = fStack_50;
-  fVar6 = DAT_007cad7c * fVar5;
+  fVar6 = DAT_007cad7c * fStack_24;
   fStack_18 = fStack_18 + fStack_38 * fVar6;
   fStack_14 = fStack_14 + fStack_34 * fVar6;
   fStack_10 = fStack_10 + fStack_30 * fVar6;
@@ -6260,7 +6260,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_44 = DAT_007cae0c * fStack_4;
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_18);
   fVar6 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
-  fVar6 = (DAT_007cadf0 * fVar5) / fVar6;
+  fVar6 = (DAT_007cadf0 * fStack_24) / fVar6;
   /* Retail 0x2AF1F0: derive the first framing quaternion before applying its transform. */
   FUN_002a4690((void*)&auStack_104,&fStack_48,&fStack_18,&D_00697880);
   FUN_004be1e0(&fStack_38,&D_006978A0,1,auStack_104);
@@ -6299,7 +6299,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_44 = DAT_007cae0c * fStack_4;
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_68);
   fVar7 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
-  fVar7 = (DAT_007cadb0 * fVar5) / fVar7;
+  fVar7 = (DAT_007cadb0 * fStack_24) / fVar7;
   /* Retail 0x2AF438: derive the second framing quaternion before applying its transform. */
   FUN_002a4690((void*)&auStack_e8,&fStack_48,&fStack_68,&D_00697880);
   FUN_004be1e0(&fStack_38,&D_006978A0,1,auStack_e8);
@@ -6976,7 +6976,6 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
   fStack_98 = *(float *)(iVar4 + 0x9c) - fStack_40;
   fStack_94 = *(float *)(iVar4 + 0xa4) - fStack_38;
   FUN_004c6b20((f32*)&fStack_98,(const f32*)&fStack_98);
-  fVar8 = fStack_1c;
   fStack_a0 = fStack_50;
   fStack_9c = fStack_48;
   fVar12 = fStack_50 * fStack_98 + fStack_48 * fStack_94;
@@ -7022,7 +7021,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     fVar7 = DAT_007cad60;
     fVar14 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.5f + fVar16;
     fStack_60 = fStack_80;
-    fStack_5c = fVar8;
+    fStack_5c = fStack_1c;
     fStack_58 = fStack_7c;
     fVar15 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar4 + 0xb8) * 0.5f);
     fVar16 = 550.0f;
@@ -7068,7 +7067,6 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     fStack_a0 = fStack_48;
     fStack_9c = -fStack_50;
     fVar9 = fStack_48 * fStack_98 + fStack_9c * fStack_94;
-    fVar8 = uStack_30.f._4_4_;
     fVar15 = fVar15 + uStack_30.f._4_4_;
     fStack_5c = *(float *)(iVar6 + 0x8c) * *(float *)(iVar6 + 0x2c) * 0.5f + fVar15;
     if (0.0f > fVar9) {
@@ -7123,7 +7121,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       fStack_4c = fStack_c - fStack_1c;
       fStack_48 = fStack_8 - fStack_18;
       FUN_004c69f0((RwV3d*)&fStack_50,(RwV3d*)&fStack_50);
-      fStack_5c = DAT_007cadb4 * *(float *)(iVar5 + 0x8c) * *(float *)(iVar5 + 0x2c) + fVar8;
+      fStack_5c = DAT_007cadb4 * *(float *)(iVar5 + 0x8c) * *(float *)(iVar5 + 0x2c) + uStack_30.f._4_4_;
       if (0.0f <= fVar9) {
         fStack_60 = uStack_30.f._0_4_ - fStack_48 * fVar16;
         fStack_58 = fStack_50 * fVar16 + fVar10;
@@ -7144,7 +7142,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       fStack_74 = fVar10;
       FUN_002d1fd0((f32*)&fStack_90,(f32*)&fStack_88,(f32*)&uStack_78,(f32*)&fStack_80);
       fStack_60 = fStack_80;
-      fStack_5c = DAT_007cadb4 * *(float *)(iVar5 + 0x8c) * *(float *)(iVar5 + 0x2c) + fVar8;
+      fStack_5c = DAT_007cadb4 * *(float *)(iVar5 + 0x8c) * *(float *)(iVar5 + 0x2c) + uStack_30.f._4_4_;
       fStack_58 = fStack_7c;
       fVar7 = (float)FUN_0052e930(fVar7 * *(float *)(iVar4 + 0xb8) * 0.5f);
       fVar7 = (*(float *)(iVar5 + 0x90) * *(float *)(iVar5 + 0x2c) * 4.0f) / fVar7;

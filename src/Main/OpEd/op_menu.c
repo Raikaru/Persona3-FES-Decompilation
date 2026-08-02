@@ -667,7 +667,7 @@ void opMenu0026d430(void)
 {
     u32* work;
     void* atlas;
-    f32 layout[4];
+    f32 layout[8];
     f32 inverseZ;
     void* frame;
     s32 i;
