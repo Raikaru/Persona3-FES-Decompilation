@@ -35,7 +35,7 @@ extern int iGpffffb6fc;
 extern void FUN_0019d3f0(const char* file, s32 line);
 extern const char DAT_0068ebd8[];
 #define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
-void FUN_003b0170();
+u64 FUN_003b0170(u64 param_1);
 
 
 #pragma alias DAT_00960090_y2 DAT_00960090

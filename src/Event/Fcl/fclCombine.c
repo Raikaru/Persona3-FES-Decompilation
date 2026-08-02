@@ -46,8 +46,8 @@ extern void FUN_0040e3f0(f32, f32, f32, f32, s32, s32, u8, s32, s32, s32, s32);
 extern int iGpffffb730;
 extern int iGpffffb7f4;
 extern int iGpffffb800;
-extern int printf();
-extern void H_Dbprt_FmtLog();
+extern int printf(const char* fmt, ...);
+extern void H_Dbprt_FmtLog(const char* fmt, ...);
 extern float uGpffffaa78;
 extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
@@ -2876,11 +2876,11 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     func_001a0150(0xc02,0);
 
-    printf(0x7bb730,0x7bb720,0x2a);
+    printf((const char *)0x7bb730,0x7bb720,0x2a);
 
-    printf(0x7bb700);
+    printf((const char *)0x7bb700);
 
-    H_Dbprt_FmtLog(0x7bb6e0);
+    H_Dbprt_FmtLog((const char *)0x7bb6e0);
 
     uVar5 = puVar4[2];
 
@@ -2932,11 +2932,11 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     func_001a0150(0xc02,1);
 
-    printf(0x7bb790,0x7bb780,0x22);
+    printf((const char *)0x7bb790,0x7bb780,0x22);
 
-    printf(0x7bb760);
+    printf((const char *)0x7bb760);
 
-    H_Dbprt_FmtLog(0x7bb740);
+    H_Dbprt_FmtLog((const char *)0x7bb740);
 
     return LAB_003c5170;
 
@@ -3830,9 +3830,9 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
     func_001a0150(0xc00,1);
     func_001a0150(0xc01,1);
     func_001a0150(0xc02,1);
-    printf(0x7bb790,0x7bb780,0x22);
-    printf(0x7bb760);
-    H_Dbprt_FmtLog(0x7bb740);
+    printf((const char *)0x7bb790,0x7bb780,0x22);
+    printf((const char *)0x7bb760);
+    H_Dbprt_FmtLog((const char *)0x7bb740);
     work[1] = 0;
     FUN_003d06d0(uVar3,1,1);
     break;
@@ -3843,9 +3843,9 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
     func_001a0150(0xc00,0);
     func_001a0150(0xc01,0);
     func_001a0150(0xc02,0);
-    printf(0x7bb730,0x7bb720,0x2a);
-    printf(0x7bb700);
-    H_Dbprt_FmtLog(0x7bb6e0);
+    printf((const char *)0x7bb730,0x7bb720,0x2a);
+    printf((const char *)0x7bb700);
+    H_Dbprt_FmtLog((const char *)0x7bb6e0);
 
   case 3:
     lVar4 = FUN_003dff30(*(u32 *)(work[2] + 8));

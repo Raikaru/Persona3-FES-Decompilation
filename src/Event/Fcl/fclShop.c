@@ -8147,7 +8147,7 @@ typedef struct FclShopDispatchStorage {
 } FclShopDispatchStorage;
 
 extern u32 D_006AF3E0[];
-extern u32 FUN_003dffc0();
+extern int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 extern u32 fclCombineList003df100();
 
 #define FCL_SHOP_DISPATCH_BUILD(SRC, OUT, OWNER, ID, COPY_OFFSET) do { \

@@ -53,7 +53,7 @@ void FUN_00201e00();
 void bppMain0020fc90();
 void FUN_00208630();
 void FUN_002094f0();
-void FUN_0024cf00();
+void FUN_0024cf00(s32 mode);
 void bppMain0020f3b0();
 void bppMain0020f570();
 void FUN_00244120();

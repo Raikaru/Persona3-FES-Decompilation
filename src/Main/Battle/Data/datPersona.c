@@ -281,7 +281,7 @@ u32 func_001715f0(s16 id);
 #pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
 #pragma alias datRecordSocialLinkDate FUN_00172cc0
 #pragma alias datGetSocialLinksForToday FUN_00172d70
-void FUN_00300af0();
+s32 FUN_00300af0(s32 param_1);
 void FUN_00403130();
 void FUN_00403220();
 void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
@@ -415,15 +415,15 @@ extern u32 FUN_00119f10();
 #pragma alias campDataCreateTask FUN_00119f10
 extern void* campDataCreateTask(void* task, s32 mode);
 extern u32 FUN_0011abd0();
-extern u32 FUN_00122710();
+extern u32 FUN_00122710(KwlnTask* task, u32 command);
 extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
 extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
 extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
-extern u32 FUN_0013c240();
-extern u32 FUN_0013c780();
-extern u32 FUN_0013cf80();
-extern u32 FUN_0013d1a0();
-extern u32 FUN_0013fca0();
+extern void FUN_0013c240(void* work, s16 pcId, s16 equipmentType);
+extern void FUN_0013c780(void* work);
+extern void FUN_0013cf80(u64 pcId, void* work);
+extern void FUN_0013d1a0(f32 texture, CampFloatPair position, void* work, s32 alpha);
+extern void FUN_0013fca0(f32 texture, u64 position, void* work, s32 alpha);
 #pragma alias campDataDrawEquipment FUN_0013d1a0
 extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
                                   void* work, s32 alpha);
@@ -460,19 +460,19 @@ extern f32 FUN_0021ea00(s32);
 extern KwlnTask* FUN_0025f370(KwlnTask* parent, void* battle_data);
 extern u32 FUN_0025f570();
 extern u32 FUN_0035ed20();
-extern u32 FUN_003b2cb0();
+extern s32 FUN_003b2cb0(s32 param_2, s32 param_3, f32 param_1, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
 #pragma alias campDataDrawTextRaw FUN_003b2cb0
 extern s32 campDataDrawTextRaw(f32 scale, s32 x, s32 y, s32 color,
                                s32 font, s32 alignment, const char* text,
                                s32 maxWidth, s32 shadow);
-extern u32 FUN_003c7430();
-extern u32 FUN_003c74e0();
-extern u32 FUN_003c7560();
+extern u32 FUN_003c7430(u64 param_1);
+extern u32 FUN_003c74e0(s32 param_1);
+extern void FUN_003c7560(u8 param_1);
 extern u32 FUN_003c7610();
 extern u32 FUN_003c7700();
 extern u32 FUN_003c7850();
-extern u32 FUN_003c7d80();
-extern u32 FUN_003c7e20();
+extern void FUN_003c7d80(s32 param_1, u64 param_2);
+extern void FUN_003c7e20(u32 p1, u32 p2, f32 p3, u32 p4, u32 p5, u32 p6, u32 p7, u32 p8);
 #pragma alias campDataDrawDigits FUN_003c7e20
 extern void campDataDrawDigits(f32 depth, s32 x, s32 y, s32 color,
                                s32 style, s32 font, s32 alignment, u32 value);

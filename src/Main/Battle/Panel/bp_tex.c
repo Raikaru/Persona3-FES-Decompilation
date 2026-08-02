@@ -27,7 +27,7 @@ void FUN_00227d10();
 void FUN_00238980();
 void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, const float* origin);
 void FUN_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* layout);
-extern void FUN_003b1360();
+extern int FUN_003b1360(void *param_1, u32 param_2, u32 param_3);
 extern u32 FUN_00239140(s32);
 extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
 extern void FUN_003b0e20(u32 resource, u32 color);
@@ -4905,7 +4905,7 @@ void FUN_00229B40(void)
         record = records + i * 0x510;
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        FUN_003b1360(*(u32*)(record + 4), 1, 0);
+        FUN_003b1360((void*)*(u32*)(record + 4), 1, 0);
         state = *(u32*)(record + 8);
         if (state == 1) {
             resource = FUN_0021cca0(table0, 0x31);
@@ -4943,7 +4943,7 @@ void FUN_00229B40(void)
         record = base + 0x6d00;
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        FUN_003b1360(*(u32*)(record + 4), 1, 0);
+        FUN_003b1360((void*)*(u32*)(record + 4), 1, 0);
         state = *(u32*)(record + 8);
         if (state == 1) {
             resource = FUN_0021cca0(table0, 0x31);
@@ -5248,7 +5248,7 @@ void FUN_0022AE80(void)
 
     for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
         record = records + i * 0x410;
-        FUN_003b1360(*(u32*)record, 1, 0);
+        FUN_003b1360((void*)*(u32*)record, 1, 0);
 
         texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
         pRender = (void (**)(u32, u32))D_00960090_abs;
@@ -5282,7 +5282,7 @@ void FUN_0022AE80(void)
     }
 
     overlay = work + 0x6d00;
-    FUN_003b1360(*(u32*)overlay, 1, 0);
+    FUN_003b1360((void*)*(u32*)overlay, 1, 0);
 
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
     pRender = (void (**)(u32, u32))D_00960090_abs;

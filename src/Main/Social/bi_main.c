@@ -46,17 +46,17 @@ extern void (*D_0096009C)();
 extern u8 D_00960090_abs[];
 
 
-void* func_0021c3f0();
-void* func_0021cca0();
-void* func_0021cce0();
-void func_0021d3b0();
-void func_0021d890();
-void func_0021d8e0();
-void func_0021d950();
-void func_0021eae0();
+u32 func_0021c3f0(s32 param_1);
+void* func_0021cca0(void* texture, s32 index);
+u32 func_0021cce0(void* frameData);
+void func_0021d3b0(void* destination, void* frameData);
+void func_0021d890(void* destination, const f32* vertices);
+void func_0021d8e0(void* destination, const f32* rect);
+void func_0021d950(void* destination, const u8* color);
+void func_0021eae0(void* destination, const f32* rect);
 void func_0021eac0(void* glyph, f32 value);
-void* btlUnitFindFromId();
-void func_002806d0();
+void* btlUnitFindFromId(u16 id);
+void func_002806d0(void* unit, RwV3d* param_2);
 u32 func_002d20a0();
 int sprintf(char*, const char*, ...);
 u32 strlen(const char*);
@@ -98,7 +98,7 @@ static void biMainPrepareDigit(void* glyph, s32 digit)
     void* renderContext;
     void* glyphResource;
 
-    renderContext = func_0021c3f0(1);
+    renderContext = (void*)func_0021c3f0(1);
     glyphResource = func_0021cca0(renderContext, digit + 0x2e);
     func_0021d3b0(glyph, glyphResource);
 }
@@ -187,7 +187,7 @@ void func_0023f540(void)
     work = sBiMain;
     K_ASSERT(work != NULL, 0x8a);
     work = sBiMain;
-    renderContext = func_0021c3f0(1);
+    renderContext = (void*)func_0021c3f0(1);
 
 
 
@@ -214,7 +214,7 @@ void func_0023f540(void)
             continue;
         }
         unit = btlUnitFindFromId(BI_U16(slot, 0x314));
-        func_002806d0(unit, transform);
+        func_002806d0(unit, (RwV3d*)transform);
         if (func_002d20a0(transform, projected) != 0 &&
             *(u8*)((u8*)unit + 0x37) != 0) {
             BI_U32(slot, 0) &= ~BI_SLOT_HIDDEN;
@@ -843,7 +843,7 @@ void func_00241910(void)
 
     K_ASSERT(sBiMain != NULL, 0x8a);
     work = sBiMain;
-    renderContext = func_0021c3f0(1);
+    renderContext = (void*)func_0021c3f0(1);
     stateSet = (void (**)(u32, u32))D_00960090_abs;
     (*stateSet)(9, 2);
     (*stateSet)(0x14, 2);
@@ -955,7 +955,7 @@ void func_00242320(void* slot, s32 mode)
 {
     void* renderContext;
 
-    renderContext = func_0021c3f0(1);
+    renderContext = (void*)func_0021c3f0(1);
     kwlnGetMainCamera();
     switch (mode) {
     case 0: {
@@ -1019,11 +1019,11 @@ void func_00242540(void* slot)
     origin[1] = 0.0f;
     origin[2] = 0.0f;
     origin[3] = 0.0f;
-    func_0021eae0((u8*)slot + 0xd40, &origin);
-    func_0021d950((u8*)slot + 0xd40, &color);
+    func_0021eae0((u8*)slot + 0xd40, (const f32*)origin);
+    func_0021d950((u8*)slot + 0xd40, (const u8*)&color);
     func_0021eac0((u8*)slot + 0xd40, 0.0f);
-    func_0021eae0((u8*)slot + 0xe40, &origin);
-    func_0021d950((u8*)slot + 0xe40, &color);
+    func_0021eae0((u8*)slot + 0xe40, (const f32*)origin);
+    func_0021d950((u8*)slot + 0xe40, (const u8*)&color);
     func_0021eac0((u8*)slot + 0xe40, 0.0f);
     BI_U32(slot, 0x310) = 0;
     BI_U32(slot, 0) |= BI_SLOT_INITIALIZED;
@@ -1119,7 +1119,7 @@ void func_00242840(void* glyphs, s32 capacity, s32 value)
 // FUN_002428F0
 void func_002428f0(void* glyph, s32 digit)
 {
-    func_0021d3b0(glyph, func_0021cca0(func_0021c3f0(1), digit + 0x2e));
+    func_0021d3b0(glyph, func_0021cca0((void*)func_0021c3f0(1), digit + 0x2e));
 }
 
 // FUN_00242950
@@ -1130,7 +1130,7 @@ f32 func_00242950(s32 value)
     void* renderContext;
     void* glyphResource;
 
-    renderContext = func_0021c3f0(1);
+    renderContext = (void*)func_0021c3f0(1);
     sprintf(digits, "%d", value);
     length = strlen(digits);
     glyphResource = func_0021cca0(renderContext, 0x2e);
@@ -1205,7 +1205,7 @@ u32 func_00242b80(u16 unitId, RwV2d* screenPosition)
     RwV3d projected;
     RwV2d transformed;
 
-    unit = btlUnitFindFromId(unitId);
+    unit = btlUnitFindFromId((u32)unitId);
     if (unit == NULL) {
         return 0;
     }

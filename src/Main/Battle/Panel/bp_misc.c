@@ -19,7 +19,7 @@ void func_002083d0(void);
 
 static u32* sBpMisc; // DAT_007ce3ec
 extern u8* DAT_007ce3ec;
-int datGetFlag();
+u32 datGetFlag(s32 bit);
 
 // FUN_001FF430
 u32 FUN_001FF430(u32 id)

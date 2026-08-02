@@ -109,14 +109,14 @@ u64 FUN_0041ba60(int param_1);
 u64 FUN_0041baf0(int param_1);
 void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *param_5);
 u32 FUN_0041be50(int param_1);
-void FUN_0041beb0();
-void FUN_0041bee0();
+void FUN_0041beb0(int param_1);
+void FUN_0041bee0(int param_1);
 void FUN_0041bf10(int param_1,u32 param_2);
 void FUN_0041bf80(u32 *param_1);
 void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4);
 s32 FUN_003c44d0(s32 param_1,code param_2,code param_3,s32 param_4);
-extern void *func_0010c3a0();
-extern void *mdlCreateFromRmdMemory();
+extern void *func_0010c3a0(void *entry, u32 *wasReady, s32 *byteCount);
+extern void *mdlCreateFromRmdMemory(u16 type, u16 id, void *rmdMemory, u32 rmdSize, u32 readMode);
 void FUN_0041c180(int param_1,int param_2,int param_3);
 void FUN_0040e3c0(u32 param_1,u32 param_2,u8 param_3,u32 param_4);
 #pragma alias FUN_00418130_abs FUN_00418130

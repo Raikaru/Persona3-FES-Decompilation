@@ -79,7 +79,7 @@ void FUN_003e6400(u64 param_1,u64 param_2);
 void memcpy();
 void* memset(void*, s32, s32);
 s32 sprintf(char*, const char*, ...);
-void K_Assert();
+void K_Assert(const char* file, s32 line);
 
 
 extern char DAT_006A6020[];
@@ -541,11 +541,11 @@ s32 FUN_003d8230(FclFusionOutput*, FclFusionDetail**, s32);
 s32 FUN_003d02e0(void);
 s32 FUN_003d06d0(s32, s32, s32);
 s32 FUN_003d6ae0(s32, s32, s32);
-s32 FUN_003d6c90();
-s32 FUN_003d6f80();
+u32 FUN_003d6c90(int param_1);
+u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
 s32 FUN_003d7180();
-s32 FUN_003d71d0();
-s32 FUN_003d72f0();
+u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3);
+u64 FUN_003d72f0(u16 *param_1);
 s32 FUN_003d74f0(void);
 s32 FUN_003d8370(s32, s32, s32);
 s32 FUN_003d8850(s32, s32, s32);
@@ -1005,17 +1005,17 @@ selection_confirm:
             selected_ids[i] = param_1->values[i]->persona_id;
         }
         if (FUN_003d7180(selector_mode) != 0) {
-            if (FUN_003d71d0(transformed, &param_1->fusion, selected_ids) != 0) {
+            if (FUN_003d71d0((u32 *)(void *)transformed, (u8 *)(void *)&param_1->fusion, selected_ids) != 0) {
                 param_1->flags |= 0x40;
                 param_1->flags |= 0x80;
                 memcpy(&param_1->fusion, transformed, 0x54);
             }
-        } else if (FUN_003d6f80(transformed, &param_1->fusion, selected_ids) != 0) {
+        } else if (FUN_003d6f80((int)(void *)transformed, (int)(void *)&param_1->fusion, selected_ids) != 0) {
             param_1->flags |= 0x40;
             memcpy(&param_1->fusion, transformed, 0x54);
         }
     }
-    FUN_003d72f0((s32)&param_1->fusion.detail);
+    FUN_003d72f0((u16 *)(void *)&param_1->fusion.detail);
     FUN_003c6f10((s32)list);
     FUN_003c6f50((s32)list);
     param_1->state = 2;
@@ -1970,7 +1970,7 @@ FclList* fclCombineList003de290(void* input, s32 state)
         capacity = 6;
         break;
     default:
-        K_Assert(DAT_006A6020_abs, 0x966);
+        K_Assert((const char *)DAT_006A6020_abs, 0x966);
         break;
     }
     task = FUN_003c58f0(0, capacity * 4 + 0x1b0, 0xc, 0x18);
@@ -2077,12 +2077,12 @@ s32 fclCombineList003de470(FclList* work)
                     K_ASSERT(work->values[i] != 0, 0x9c4);
                     selected_values[i] = work->values[i]->persona_id;
                 }
-                if (FUN_003d6f80(validated_input, &work->fusion, selected_values) != 0) {
+                if (FUN_003d6f80((int)(void *)validated_input, (int)(void *)&work->fusion, selected_values) != 0) {
                     work->flags |= 0x40;
                     memcpy(&work->fusion, validated_input, sizeof(work->fusion));
                 }
             }
-            FUN_003d72f0((s32)&work->fusion.detail);
+            FUN_003d72f0((u16 *)(void *)&work->fusion.detail);
             FUN_003c6f10((s32)task);
             FUN_003c6f50((s32)task);
             work->state = 2;

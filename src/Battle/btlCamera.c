@@ -165,7 +165,7 @@ extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
 extern u64 FUN_002d1de0();
 extern f32 fGpffff83cc;
 extern void FUN_002a3010(BtlCamera* camera, f32 step);
-extern void FUN_002a2ed0();
+extern u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3);
 extern RwV3d D_00697880;
 extern RwV3d D_006978A0;
 typedef struct F32Vec4 {
@@ -397,7 +397,7 @@ void btlCameraUpdate(BtlCamera* camera)
     *(f32*)((u8*)camera + 0x80) += step;
     FUN_002a3010(camera, step);
     g = iGpffffb6fc;
-    FUN_002a2ed0(g + 0x20, g + 0xbc, g + 0xc8);
+    FUN_002a2ed0(g + 0x20, (f32*)(g + 0xbc), (f32*)(g + 0xc8));
 }
 
 // FUN_002A32F0
@@ -1290,10 +1290,10 @@ void btlCameraFreeze()
 }
 extern void FUN_002a2290(u16* camera, RwV3d* first, RwV3d* second, int mode);
 extern void FUN_002a3110(u16* camera, f32 param_1);
-extern f32 FUN_002d1f30();
-extern u64 FUN_00351bb0();
+extern f32 FUN_002d1f30(f32* left, f32* right);
+extern u32 FUN_00351bb0(u16 param_1);
 extern u64 FUN_004be310();
-extern u64 FUN_004c6b20();
+extern float FUN_004c6b20(float *param_1,float *param_2);
 extern f32 FUN_0052e930(f32 x);
 /* This no-argument declaration is caller-specific; the state-table callback uses a camera pointer. */
 extern void FUN_002b6460();
@@ -3858,7 +3858,7 @@ extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
 extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
 extern s16 FUN_00284040();
-extern u64 FUN_00288110();
+extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
 extern u64 FUN_002a2170();
@@ -3867,14 +3867,14 @@ extern void FUN_002a2660(BtlCamera* camera, BtlCameraKeyFrame* first,
                          BtlCameraKeyFrame* fourth, int mode);
 extern u64 FUN_002add10();
 extern u64 FUN_002d1de0();
-extern float FUN_002d1f30();
-extern u64 FUN_002d2280();
-extern u64 FUN_002d4040();
-extern u64 FUN_002d4e10();
+extern f32 FUN_002d1f30(f32* left, f32* right);
+extern void FUN_002d2280(s16* outX, s16* outZ, f32* position);
+extern u32 FUN_002d4040(BtlUnit* unit);
+extern u16 FUN_002d4e10(u16 mask, u32 badStatus);
 extern int FUN_002d5bf0();
 extern s16 FUN_002f8eb0(BtlUnit* unit, s16 index);
 extern u64 FUN_002fa240();
-extern u64 FUN_002fdcf0();
+extern u32 FUN_002fdcf0(int param_1, int param_2);
 extern u32 FUN_002ffbc0();
 extern u64 FUN_00300580();
 extern u8 FUN_00308c60();
@@ -3887,7 +3887,7 @@ extern u64 FUN_004be1e0();
 extern u64 FUN_004c31b0();
 extern float FUN_004c69f0();
 extern float FUN_004c6ac0();
-extern float FUN_004c6af0();
+extern float FUN_004c6af0(float *param_1);
 extern u64 FUN_004c6c60();
 extern u64 FUN_00521250();
 extern u64 FUN_00521408();

@@ -282,7 +282,7 @@ extern f32 gPI;
 extern void (*D_009600A4)(u32, void*, u32, void*, u32);
 extern f32 sqrtf(f32 value);
 
-void FUN_00249690();
+void FUN_00249690(void* work);
 void func_00249680(void* work);
 
 // FUN_00239140
@@ -294,9 +294,9 @@ void* func_00239140(s32 font)
 
 void FUN_0023d2a0();
 void FUN_0023d650();
-void func_002496e0();
-void func_00249c10();
-void func_0024a180();
+void func_002496e0(void* work);
+void func_00249c10(void* work);
+void func_0024a180(u32* work);
 void func_0024a230();
 void* kwlnGetMainCamera_y2();
 void func_0021d890(void* destination, const void* layout);
@@ -318,13 +318,13 @@ f32 sinf(f32 angle);
 void func_002392d0();
 void func_0023b990();
 void func_0023c280();
-void func_0023c3a0();
+void func_0023c3a0(void* destination);
 void func_0023c520();
-void func_0023c850();
+void func_0023c850(void* vertices, const SflGroundColor* color);
 
 static void sflGroundCallState(u32 selector, u32 value);
 static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value);
-void func_0023c8c0();
+void func_0023c8c0(void* vertices);
 void func_0023ca10();
 void func_0023cda0();
 void func_0023d130();

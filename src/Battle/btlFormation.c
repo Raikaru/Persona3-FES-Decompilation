@@ -66,11 +66,11 @@ extern u64 func_00108670();
 extern u64 func_00108680();
 extern u64 func_001086a0();
 extern u64 func_0016f1f0();
-extern u64 func_00170670();
-extern u64 func_001706c0();
+extern u16 func_00170670(s16 pcId, s16 index);
+extern s16 func_001706c0(s16 pcId, s16 index);
 extern const char* func_00171110(s16 id, s16 field);
 extern u64 func_00173220();
-extern u64 func_001778b0();
+extern u8* func_001778b0(s16 param_1);
 extern u64 func_0017b220();
 extern u64 func_0017b260();
 extern u64 func_00194b20();
@@ -129,11 +129,11 @@ extern u64 func_001ff350();
 extern u64 func_001ff370();
 extern u64 func_001ff390();
 extern u64 func_001ff3b0();
-extern u64 func_0021c3f0();
+extern u32 func_0021c3f0(s32 param_1);
 extern u32 func_0021c3f0_u32(u32 param_1);
 extern u32 func_0021cca0_u32(u32 param_1,u32 param_2);
-extern u64 func_0021cca0();
-extern u64 func_0021cce0();
+extern void* func_0021cca0(void* texture, s32 index);
+extern u32 func_0021cce0(void* frameData);
 extern u64 func_0027e310();
 extern u32 func_0027ec10();
 extern u64 func_0027ed20();
@@ -175,22 +175,22 @@ extern u64 func_002d5550();
 extern u64 func_002db650();
 extern u64 func_002db800();
 extern u64 func_002db890();
-extern u64 func_002e3350();
+extern u64 func_002e3350(BtlAction* action, s16 index);
 extern u64 func_002eab70();
 extern u64 func_002eabb0();
-extern u64 func_002ec560();
+extern void func_002ec560(u32 param_1);
 extern u64 func_002ec590();
-extern u64 func_002ecb30();
+extern u32 func_002ecb30(BtlAction* action, s16 selection);
 extern void func_002efc90(u32 param_1);
 extern void func_002efcd0(u32 param_1);
 extern u64 func_002efd10();
 extern void func_002f2450(u32 param_1);
 extern void func_002f2490(u32 param_1);
 extern u64 func_002f24d0();
-extern u64 func_002f2510();
-extern u64 func_002f5030();
+extern int func_002f2510(int param_1);
+extern void func_002f5030(int param_1);
 extern u64 func_002f5320();
-extern u64 func_002f6bf0();
+extern void func_002f6bf0(u32 param_1);
 extern u64 func_002f6c20();
 extern u64 func_002fd820();
 extern u64 func_002ffbc0();
@@ -244,13 +244,13 @@ extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
-extern u64 func_003176c0();
+extern void func_003176c0(Model* mdl);
 extern u64 func_00317730();
-extern u64 FUN_00317a20();
+extern void FUN_00317a20(Model* param_1);
 extern u64 func_00318ad0();
-extern u64 func_00318b90();
+extern u32 func_00318b90(u32 param_1);
 extern u64 func_00318d10();
-extern u64 func_00318ed0();
+extern bool func_00318ed0(u8* param_1, u32 param_2, RwV3d* param_3);
 extern u64 func_00321120();
 extern u64 func_00321130();
 extern u64 func_00321320();
@@ -274,7 +274,7 @@ extern u64 func_00357ea0();
 extern u64 func_0035ae10();
 extern u64 func_0035bb40();
 extern u64 func_0035c090();
-extern u64 func_0035c1a0();
+extern void func_0035c1a0(KwlnTask* task, s32 value);
 extern u64 func_0035ed20();
 extern u64 func_0035ee60();
 extern u64 func_0035f060();
@@ -1133,10 +1133,10 @@ extern f32 FUN_002d21e0(f32 target, f32* motion);
 extern f32 fGpffff807c;
 extern f32 fGpffff80e8;
 extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
-extern u64 FUN_002d1de0();
+extern void FUN_002d1de0(void* task, const RwV3d* from, const RwV3d* to);
 extern f32 fGpffff83cc;
 extern void FUN_002a3010(BtlCamera* camera, f32 step);
-extern void FUN_002a2ed0();
+extern u32 FUN_002a2ed0(u8* param_1, f32* param_2, f32* param_3);
 extern RwV3d D_00697880;
 extern RwV3d D_006978A0;
 typedef struct F32Vec4 {
@@ -1311,12 +1311,12 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
 };
 extern void FUN_002a2290(u16* camera, RwV3d* first, RwV3d* second, int mode);
 extern void FUN_002a3110(u16* camera, f32 param_1);
-extern f32 FUN_002d1f30();
-extern u64 FUN_00351bb0();
-extern u64 FUN_004be310();
-extern u64 FUN_004c6b20();
+extern f32 FUN_002d1f30(f32* left, f32* right);
+extern u32 FUN_00351bb0(u16 param_1);
+extern void FUN_004be310(float *param_1, float *param_2, float *param_3);
+extern float FUN_004c6b20(float *param_1, float *param_2);
 extern f32 FUN_0052e930(f32 x);
-extern void FUN_002b6460();
+extern void FUN_002b6460(BtlCamera* camera);
 extern f32 fGpffff812c;
 typedef struct BtlCameraQuatBlend
 {
@@ -1398,35 +1398,35 @@ extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
 extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
 extern s16 FUN_00284040();
-extern u64 FUN_00288110();
+extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
-extern u64 FUN_002a2170();
+extern void FUN_002a2170(u16 *param_1, f32 *param_2);
 extern void FUN_002a2660(BtlCamera* camera, BtlCameraKeyFrame* first,
                          BtlCameraKeyFrame* second, BtlCameraKeyFrame* third,
                          BtlCameraKeyFrame* fourth, int mode);
 extern u64 FUN_002add10();
-extern u64 FUN_002d1de0();
-extern float FUN_002d1f30();
-extern u64 FUN_002d2280();
-extern u64 FUN_002d4040();
-extern u64 FUN_002d4e10();
-extern int FUN_002d5bf0();
+extern void FUN_002d1de0(void* task, const RwV3d* from, const RwV3d* to);
+extern f32 FUN_002d1f30(f32* left, f32* right);
+extern void FUN_002d2280(s16* outX, s16* outZ, f32* position);
+extern u32 FUN_002d4040(BtlUnit* unit);
+extern u16 FUN_002d4e10(u16 mask, u32 badStatus);
+extern u32 FUN_002d5bf0(BtlUnit* unit);
 extern s16 FUN_002f8eb0(BtlUnit* unit, s16 index);
 extern u64 FUN_002fa240();
-extern u64 FUN_002fdcf0();
+extern u32 FUN_002fdcf0(int param_1, int param_2);
 extern u32 FUN_002ffbc0();
 extern u64 FUN_00300580();
 extern u8 FUN_00308c60();
 extern u64 FUN_00308a50(u16 param_1);
-extern u8 FUN_003093a0();
+extern u8 FUN_003093a0(u16 *param_1);
 extern u64 FUN_0030b5a0();
-extern u64 FUN_0030c3a0();
+extern u32 FUN_0030c3a0(u16 *param_1);
 extern u64 FUN_004be1e0();
 extern u64 FUN_004c31b0();
 extern float FUN_004c69f0();
 extern float FUN_004c6ac0();
-extern float FUN_004c6af0();
+extern float FUN_004c6af0(float *param_1);
 extern u64 FUN_004c6c60();
 extern u64 FUN_00521250();
 extern u64 FUN_00521408();
@@ -1678,7 +1678,7 @@ extern f32 fGpffff80bc;
 extern u32 uGpffff8074;
 extern u32 uGpffff809c;
 extern u32 uGpffff80ac;
-extern u64 func_00280050();
+extern void func_00280050(void* param_1, RwV3d* param_2);
 extern u8* iGpffffb73c;
 typedef struct BtlCameraC920Pose
 {
@@ -2291,7 +2291,7 @@ found:
       iVar1 = (uVar5 & 0xffff) * 0xe0;
       afStack_10[0] = *(float *)(iVar3 + iVar1 + 0x694f14);
       afStack_10[2] = *(float *)(iVar3 + iVar1 + 0x694f18);
-      FUN_002d2280(param_1 + 0x94,param_1 + 0x96,afStack_10);
+      FUN_002d2280((s16 *)(param_1 + 0x94),(s16 *)(param_1 + 0x96),afStack_10);
       FUN_0027f650(param_1,afStack_10);
       switch (*(u8 *)(param_1 + 0xa2)) {
       case 0:
@@ -2304,7 +2304,7 @@ found:
       *(char *)(param_1 + 0x9f0) = (char)uVar3;
       FUN_00280870(2,1,auStack_20,0,0,1);
       FUN_0027ffb0(param_1,afStack_10);
-      FUN_002d1de0(auStack_30,afStack_10,auStack_20);
+      FUN_002d1de0(auStack_30,(const RwV3d*)afStack_10,(const RwV3d*)auStack_20);
       FUN_0027f680(param_1,auStack_30);
       break;
     case 1:
@@ -2459,7 +2459,7 @@ u32 FUN_002b7c50(u32 *work)
             centerY = source->pos.y;
             center.y = centerY;
             if ((work_p[2] == 1) && (target != source) &&
-                (FUN_002fdcf0(source, target) != 0))
+                (FUN_002fdcf0((int)(uintptr_t)source, (int)(uintptr_t)target) != 0))
             {
                 if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
                 {
@@ -2882,12 +2882,12 @@ undefined4 FUN_002b8c00(u16 *param_1)
           if (b1 != 0) {
             FUN_0027f650(iVar3,auStack_10);
             FUN_00281290(iVar3);
-            FUN_002d4040(iVar3);
+            FUN_002d4040((BtlUnit*)(uintptr_t)iVar3);
           }
           if (b2 != 0) {
             FUN_0027f680(iVar3,auStack_20);
             FUN_002812b0(iVar3);
-            FUN_00288110(iVar3);
+            FUN_00288110((BtlUnit*)(uintptr_t)iVar3);
           }
         }
       }
@@ -3492,7 +3492,7 @@ void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
     if (model_variant == 0) {
       model_variant = model;
     }
-    func_003176c0(model_variant);
+    func_003176c0((Model*)model_variant);
     func_00318b90(model_variant);
     index = *(u16*)(param_3 + 4);
     result = func_00318ed0_v3d(model_variant, index, &position);
@@ -3533,7 +3533,7 @@ void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
     if (model_variant == 0) {
       model_variant = model;
     }
-    func_003176c0(model_variant);
+    func_003176c0((Model*)model_variant);
     func_00318b90(model_variant);
     index = *(u16*)(param_3 + 4);
     result = func_00318ed0_v3d(model_variant, index, &position);

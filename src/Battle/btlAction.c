@@ -99,7 +99,7 @@ u64 func_002b9640(u8* data);
 BtlPacket* func_002a1db0(u32 a);
 extern RwV3d D_006978A0;
 
-extern u32 func_002e4430();
+extern u32 func_002e4430(BtlAction* action, s32 skillId);
 f32 FUN_002d1ed0(const RwV3d* a, const RwV3d* b);
 extern const char D_00693318[];
 #pragma alias D_00693318_abs D_00693318
@@ -193,9 +193,9 @@ BtlPacket* FUN_002e2be0();
 BtlPacket* func_002e3fe0(u16 voiceId);
 u32 FUN_002e4310();
 BtlPacket* FUN_0027dc00();
-BtlPacket* FUN_0029fa50();
-BtlPacket* FUN_002a1080();
-BtlPacket* FUN_002a16c0();
+BtlPacket* FUN_0029fa50(u32 param_1);
+BtlPacket* FUN_002a1080(s32 param_1, s16 param_2);
+BtlPacket* FUN_002a16c0(s32 param_1);
 BtlPacket* FUN_002d7fb0(BtlAction* action, u32 arg);
 BtlPacket* FUN_002e40d0();
 BtlPacket* FUN_002e41d0();
@@ -205,7 +205,7 @@ BtlPacket* FUN_002bc950(u32 a, u32 b, u32 c);
 BtlPacket* FUN_002e3c80(void);
 BtlPacket* FUN_002d8090(BtlAction* action);
 BtlPacket* FUN_002dd690(u32 a, u32 b);
-BtlPacket* FUN_002a1db0();
+BtlPacket* FUN_002a1db0(s32 param_1);
 BtlPacket* FUN_002dd4a0(u16 param_1, u16 param_2);
 void FUN_002b9030(u32 param_1);
 BtlPacket* FUN_002e38a0(u16 a);
@@ -331,8 +331,8 @@ void btlActionUpdateStateTest(BtlAction* action);
 
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 void btlAction00299e50(BtlAction* action);
-void FUN_002dc5e0();
-void FUN_002a3a90();
+void FUN_002dc5e0(BtlAction* action);
+void FUN_002a3a90(int param_1);
 void FUN_001fdd40();
 u16 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
 u32 FUN_002c0970(BtlTarget* target);
@@ -1685,11 +1685,11 @@ void btlActionUpdateStateCommand(BtlAction* action)
         effect = 0;
         if (action->target.commandId == 3)
         {
-            effect = func_002e4430(action, action->target.specificId, 1);
+            effect = func_002e4430(action, action->target.specificId);
         }
         else if (action->target.commandId == 1 || action->target.commandId == 2)
         {
-            effect = func_002e4430(action, action->target.specificId, 0);
+            effect = func_002e4430(action, action->target.specificId);
         }
         effect = FUN_002e4720(effect);
         if (effect == 0)
@@ -2128,7 +2128,7 @@ void btlActionUpdateStateSupport(BtlAction* action)
 // FUN_0028d560
 void btlActionInitStateBad(BtlAction* action)
 {
-    FUN_002dc5e0();
+    FUN_002dc5e0(action);
     action->movedAwayFromHome = true;
     action->unk_488 = 0;
 }
@@ -7997,7 +7997,7 @@ void btlActionUpdateStateExit(BtlAction* action)
     }
 
     btlAction00299e50(action);
-    FUN_002a3a90(action);
+    FUN_002a3a90((int)action);
     action->unk_1a |= 2;
 }
 

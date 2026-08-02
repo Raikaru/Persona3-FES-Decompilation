@@ -1670,8 +1670,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 #define DATA_U32(address) (*(u32*)(address))
 #define DATA_S32(address) (*(s32*)(address))
     extern void* K_Field_Get();
-    extern u16 K_Field_GetMajorId();
-    extern u16 K_Field_GetMinorId();
+    extern u16 K_Field_GetMajorId(KwlnTask* fldRootTask);
+    extern u16 K_Field_GetMinorId(KwlnTask* fldRootTask);
 #define PTR_U32(base, offset) (*(u32*)((u8*)(base) + (offset)))
 #define PTR_S16(base, offset) (*(s16*)((u8*)(base) + (offset)))
 #define PTR_U16(base, offset) (*(u16*)((u8*)(base) + (offset)))
@@ -1694,7 +1694,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     extern s32 FUN_001c0010();
     extern s32 FUN_001c0440();
     extern s32 FUN_001c0740();
-    extern s32 FUN_001c1f30();
+    extern KwlnTask* FUN_001c1f30(KwlnTask* parentTask, KwlnTask* collisionTask);
     extern s32 FUN_001d8d80();
     extern s32 FUN_001dd600();
     extern s32 FUN_001e7200();
@@ -2718,7 +2718,7 @@ case8_teardown:
                 FUN_001d5f30((KwlnTask*)FIELD_WORD(4), *(u32*)D_008717F4_abs);
                 if (FUN_001a01c0() == true && FIELD_WORD(0x14) == 0) FUN_00429e80((void*)FIELD_WORD(0x18), true);
                 FIELD_WORD(0x0c) = FUN_001e1230((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0), *(u32*)D_008717F0_abs);
-                FIELD_WORD(0x1c) = FUN_001c1f30((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0));
+                FIELD_WORD(0x1c) = (u32)FUN_001c1f30((KwlnTask*)FIELD_WORD(0), (KwlnTask*)PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0));
                 EVENT_WORD(5) = FUN_003b5d10(0x400);
                 FUN_001a9850();
                 if (gMtScene->fldMajorId == 0x1f)

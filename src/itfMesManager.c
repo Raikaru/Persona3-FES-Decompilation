@@ -141,10 +141,10 @@ extern void FUN_003a8d60();
 extern s32 D_00959EC0[];
 extern u8 D_00959ED0[];
 extern s32 FUN_0035f140(void);
-extern int FUN_003b0bb0();
+extern void FUN_003b0bb0(int param_1, u8 param_2);
 extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
-extern int thunk_FUN_003b0e04();
+extern void thunk_FUN_003b0e04(int param_1, u8 param_2);
 #pragma alias FUN_003b2940_u8 FUN_003b2940
 extern u32 FUN_003b2940_u8(u32 param_1,u32 param_2,u8 param_3,u8 param_4,
                            u32 param_5,u32 param_6,u32 param_7,u32 param_8);

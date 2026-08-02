@@ -25,7 +25,7 @@ extern s32 FUN_00514900();
 extern s32 FUN_0017d800();
 extern s32 FUN_0016f190();
 extern s32 FUN_001021c0();
-extern s32 FUN_005136f8();
+extern u32 FUN_005136f8(u64 param_1, u32 param_2);
 extern s32 FUN_005137b8();
 extern s32 FUN_00513968();
 extern s32 FUN_00513cc8();
@@ -33,7 +33,7 @@ extern s32 FUN_00513cc8();
 extern u32 FUN_00513cc8_m0(s32 socket, void* path, u32 size,
                            u32 mode, void* buffer);
 extern s32 FUN_00513de8();
-extern s32 FUN_00513598();
+extern u32 FUN_00513598(u64 param_1);
 extern s64 FUN_005140f8();
 extern s32 FUN_005225a8();
 extern s32 FUN_00523ac8();
@@ -229,7 +229,7 @@ s32 func_0018f2c0(void)
             cardCode = 0;
             if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
             {
-                FUN_005136f8(sSocketNo, D_00846EA0);
+                FUN_005136f8(sSocketNo, (u32)D_00846EA0);
                 sMemcardSeqMode = 1;
             }
             break;
@@ -325,7 +325,7 @@ s32 func_0018f2c0(void)
             goto state3_done;
 
 state3_error:
-            FUN_005136f8(sSocketNo, D_00846EA0);
+            FUN_005136f8(sSocketNo, (u32)D_00846EA0);
 state3_done:
             return 2;
         }
@@ -454,7 +454,7 @@ state5_done:
                     }
                     break;
                 case -1:
-                    FUN_005136f8(sSocketNo, D_00846EA0);
+                    FUN_005136f8(sSocketNo, (u32)D_00846EA0);
                     break;
                 default:
                     break;
@@ -877,7 +877,7 @@ s32 func_00190590(void)
         if (status == -1)
         {
             sMemcardAbort = 0;
-            FUN_005136f8(sSocketNo, D_00846EA0);
+            FUN_005136f8(sSocketNo, (u32)D_00846EA0);
         }
     }
     else
@@ -885,7 +885,7 @@ s32 func_00190590(void)
         status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
         if (status == 1)
         {
-            FUN_005136f8(sSocketNo, D_00846EA0);
+            FUN_005136f8(sSocketNo, (u32)D_00846EA0);
             if (cardError == 0)
             {
                 switch (cardCode)
@@ -972,7 +972,7 @@ state0:
     cardCode = 0;
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        FUN_005136f8(sSocketNo, D_00846EA0);
+        FUN_005136f8(sSocketNo, (u32)D_00846EA0);
         sMemcardSeqMode = 1;
     }
     goto done;
@@ -1197,7 +1197,7 @@ s32 func_00190cd0(void)
 state0:
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        FUN_005225a8(D_005E4BC8, FUN_005136f8(sSocketNo, D_00846EA0));
+        FUN_005225a8(D_005E4BC8, FUN_005136f8(sSocketNo, (u32)D_00846EA0));
         sMemcardSeqMode = 1;
     }
     goto done;
@@ -1399,7 +1399,7 @@ state0:
     sSlotScanMode = 0;
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        FUN_005136f8(sSocketNo, D_00846EA0);
+        FUN_005136f8(sSocketNo, (u32)D_00846EA0);
         sMemcardSeqMode = 1;
     }
     goto done;
@@ -1444,7 +1444,7 @@ state1_error5b:
 state1_error5a:
     return -5;
 state1_error3:
-    FUN_005136f8(sSocketNo, D_00846EA0);
+    FUN_005136f8(sSocketNo, (u32)D_00846EA0);
     goto done;
 state1_error4:
     return -4;
@@ -1600,7 +1600,7 @@ state0:
     cardCode = 0;
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        FUN_005136f8(sSocketNo, D_00846EA0);
+        FUN_005136f8(sSocketNo, (u32)D_00846EA0);
         sMemcardSeqMode = 1;
     }
     goto done;
@@ -1644,7 +1644,7 @@ state1_error5b:
 state1_error5a:
     return -5;
 state1_error3:
-    FUN_005136f8(sSocketNo, D_00846EA0);
+    FUN_005136f8(sSocketNo, (u32)D_00846EA0);
     goto done;
 state1_error4:
     return -4;

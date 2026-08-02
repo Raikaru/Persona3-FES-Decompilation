@@ -11,27 +11,27 @@ void func_00171110(short, short);
 char datGetSocialLinkLevel(short);
 void datPersonaAddToNaturalStatHeroPersona(u16, u16, char);
 void datSetActiveSocialLink(short);
-void datPersonaAddToBonusStatByPcId();
+void datPersonaAddToBonusStatByPcId(int pcId, int statId, int amount);
 int datGetActiveSocialLinkPtr();
 
-int scrGetIntPara();
+s32 scrGetIntPara(s32 paramIdx);
 int FUN_0016dce0(short);
 int datSocialLinkLevelIsNotZero(short);
-void scrSetIntReturnVal();
+void scrSetIntReturnVal(s32 retVal);
 void FUN_0016e2b0(short, int);
-int FUN_001717c0();
-int FUN_00172160();
+int FUN_001717c0(s32 socialLink);
+int FUN_00172160(s32 socialLink);
 void FUN_0016e410(short, char);
-int FUN_003bded0();
+int FUN_003bded0(int param_1);
 int FUN_0035f140();
-int FUN_00172f70();
+int FUN_00172f70(s32* outSlot);
 u32 FUN_00173220(u16);
-void FUN_003a4220();
-void FUN_00171c40();
-void FUN_00172200();
+void FUN_003a4220(int param_1, ...);
+void FUN_00171c40(s32 socialLink, s32 enabled);
+void FUN_00172200(s32 socialLink, s32 enabled);
 short FUN_00175360();
-int FUN_003be8e0();
-u32 FUN_003c3f40();
+int FUN_003be8e0(u32 param_1, u8* param_2);
+u32 FUN_003c3f40(u32 param_1);
 int FUN_00173780(u16, u16);
 extern u8 DAT_00958400[];
 extern u8 DAT_0095841e[];
@@ -42,10 +42,10 @@ void FUN_0016dfb0(short);
 int FUN_00172990();
 int adminiGetNowSeqId();
 int adminiGetNextSeqId();
-void adminiChangeSeq();
-int FUN_003c33c0();
-void FUN_001728d0();
-int FUN_003bffa0();
+void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable);
+int FUN_003c33c0(int param_1, int *param_2, int param_3);
+void FUN_001728d0(const void* values);
+int FUN_003bffa0(u32 *param_1, u32 *param_2, u32 *param_3);
 short datGetAcademicPoint(short);
 short datGetCharmPoint(short);
 short datGetCouragePoint(short);
@@ -58,34 +58,34 @@ void datSetCouragePoint(short, short);
 const char* h_camp_getAcademicLevelString(short);
 const char* h_camp_getCharmLevelString(short);
 const char* h_camp_getCourageLevelString(short);
-void FUN_003a4270();
-void FUN_003a4010();
+void FUN_003a4270(int param_1, ...);
+void FUN_003a4010(int param_1, ...);
 u32 clndGetCurrentMonth();
 u32 clndGetCurrentDay();
-int FUN_003beab0();
-int FUN_003beb10();
-u32 ComuData_FUN_003c4210();
+int FUN_003beab0(u32 param_1, u32 param_2, int *param_3);
+int FUN_003beb10(int param_1);
+u32 ComuData_FUN_003c4210(s32 idx);
 u32 FUN_003c43f0();
 void FUN_00176fb0(u16, u16*, int*);
-u32 FUN_0030bb40();
+u32 FUN_0030bb40(u16 param_1);
 u32 FUN_0030bbb0(u8);
-u32 FUN_003c3f80();
-void FUN_00173040();
-int FUN_003beca0();
-int FUN_003bee80();
-u32 FUN_003a2090();
-u32 FUN_003c2350();
-u32 FUN_0039b8b0();
-u32 kwlnTaskExists();
-void FUN_00395350();
-void FUN_003952d0();
+u32 FUN_003c3f80(s32 socialLink);
+void FUN_00173040(s32 slot);
+int FUN_003beca0(void* param_1);
+int FUN_003bee80(int param_1, int *param_2);
+u32 FUN_003a2090(int param_1, int param_2, int param_3, int param_4);
+u32 FUN_003c2350(int param_1, int param_2);
+u32 FUN_0039b8b0(int param_1, int param_2);
+u32 kwlnTaskExists(KwlnTask* task);
+void FUN_00395350(int param_1, int param_2);
+void FUN_003952d0(int param_1, int param_2, int param_3);
 int FUN_003951d0();
 u32 FUN_0038d6f0(short);
-int FUN_0036f500();
+int FUN_0036f500(int param_1);
 u16 FUN_001752b0();
 void FUN_00172e50();
-void printf();
-void memset();
+void printf(const char* fmt, ...);
+void* memset(int dst, int value, int size);
 extern s16 DAT_007cca60;
 extern s16 DAT_007cca62;
 extern s16 DAT_007cca64;
@@ -1612,7 +1612,7 @@ u32 scrComu00360990(void)
     if (scrGetCmdTimer() == 0) {
         sDat007ce5bc = FUN_003a2090(0, uVar1, uVar2, 0x400);
     } else {
-        if (kwlnTaskExists(sDat007ce5bc) == 0) {
+        if (kwlnTaskExists((KwlnTask*)sDat007ce5bc) == 0) {
             sDat007ce5bc = 0;
             return 1;
         }
@@ -1626,7 +1626,7 @@ u32 scrComu00360a40(void)
     if (scrGetCmdTimer() == 0) {
         sDat007ce5c0 = FUN_003c2350(0, 0xc00);
     } else {
-        if (kwlnTaskExists(sDat007ce5c0) == 0) {
+        if (kwlnTaskExists((KwlnTask*)sDat007ce5c0) == 0) {
             sDat007ce5c0 = 0;
             return 1;
         }
@@ -1655,7 +1655,7 @@ u32 scrComu00360b00(void)
     if (scrGetCmdTimer() == 0) {
         sDat007ce5c4 = FUN_0039b8b0(0, 0xc00);
     } else {
-        if (kwlnTaskExists(sDat007ce5c4) == 0) {
+        if (kwlnTaskExists((KwlnTask*)sDat007ce5c4) == 0) {
             sDat007ce5c4 = 0;
             return 1;
         }
