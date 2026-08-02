@@ -853,7 +853,7 @@ void FUN_003c5d40(u32 param_1,int param_2,int param_3)
 
   iVar1 = *(int *)(iVar3 + 0x24);
 
-  iVar2 = FUN_003c6f80();
+  iVar2 = FUN_003c6f80(param_1);
 
   if (param_2 != 0) {
 

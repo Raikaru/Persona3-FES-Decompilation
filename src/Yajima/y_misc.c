@@ -1239,7 +1239,7 @@ LAB_00417a90:
       *puVar9 = *puVar9 | 2;
 
       if (piVar4[1] != 0) {
-        H_Cdvd_Destroy();
+        H_Cdvd_Destroy(piVar4[1]);
       }
 
       piVar4[1] = 0;
@@ -1320,7 +1320,7 @@ LAB_00417a90:
         *puVar9 = *puVar9 | 0x10;
         piVar4[3] = 0;
         if (piVar4[1] != 0) {
-          H_Cdvd_Destroy();
+          H_Cdvd_Destroy(piVar4[1]);
         }
         piVar4[1] = 0;
         bVar8 = 1;
@@ -1342,7 +1342,7 @@ LAB_00417a90:
       *(int *)(puVar9 + 4) = piVar4[4];
       *puVar9 = *puVar9 | 4;
       if (piVar4[1] != 0) {
-        H_Cdvd_Destroy();
+        H_Cdvd_Destroy(piVar4[1]);
       }
       piVar4[1] = 0;
       bVar8 = 1;
@@ -1366,7 +1366,7 @@ LAB_00417a90:
       }
       func_0021b4a0(piVar4[2]);
       if (piVar4[1] != 0) {
-        H_Cdvd_Destroy();
+        H_Cdvd_Destroy(piVar4[1]);
       }
       piVar4[1] = 0;
       bVar8 = 1;
@@ -8683,7 +8683,7 @@ u32 FUN_004281f0(u32 param_1)
 
         if (*(int *)(pcVar1 + iVar15 * 4 + 4) != 0) {
 
-          H_Cdvd_Destroy();
+          H_Cdvd_Destroy(*(u32 *)pcVar20);
 
           pcVar20[0] = '\0';
 

@@ -3439,7 +3439,7 @@ u32 FUN_0039b950(u64 param_1)
 
       if (lVar6 == 1) {
 
-        FUN_00171f50(puVar1[0x17]);
+        FUN_00171f50(puVar1[0x17],1);
 
       }
 

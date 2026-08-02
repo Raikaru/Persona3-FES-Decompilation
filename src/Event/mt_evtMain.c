@@ -2873,7 +2873,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
     break;
   case 0x29:
     if (param_3 == *param_2) {
-      FUN_0039e1b0(param_4);
+      FUN_0039e1b0(param_4,param_2);
     }
     break;
   case 0x5:
@@ -3204,7 +3204,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
   case 0x2e:
     if ((param_3 == *param_2) && (sVar5 = FUN_0016dd40(), sVar5 != 0xff)) {
 
-      lVar9 = FUN_003c2ee0();
+      lVar9 = FUN_003c2ee0(sVar5);
 
       if (lVar9 == 0) {
 
@@ -3531,7 +3531,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
       if (lVar3 != -1) {
 
-        FUN_00172820();
+        FUN_00172820(lVar3);
 
       }
 
@@ -5262,7 +5262,7 @@ void FUN_003658b0(u32 param_1,int param_2)
             switch ((char)puVar1[8]) {
             case 0:
               if ((char)puVar1[10] == '\0') {
-                FUN_003b9500();
+                FUN_003b9500(lVar3,1);
               }
               else {
                 FUN_003b9500(lVar3,0);
@@ -13434,7 +13434,7 @@ switchD_0036db68_caseD_10:
 
     if (((lVar7 == 1) && (*(int *)(iVar3 + 0x14) < iStack_4)) && (-1 < *(int *)(iVar3 + 0x14))) {
 
-      FUN_00397510(iVar1);
+      FUN_00397510(iVar1,*(int *)(iVar3 + 0x14));
 
       FUN_00393f30(iVar1,0x36e690);
 

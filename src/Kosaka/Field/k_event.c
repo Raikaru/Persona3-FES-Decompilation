@@ -2702,7 +2702,7 @@ case8_teardown:
             FIELD_WORD(4) = FUN_001d5a90((KwlnTask*)FIELD_WORD(0));
             FUN_001d69e0((KwlnTask*)FIELD_WORD(4), &EVENT_WORD(0x20));
             FUN_001d5f30((KwlnTask*)FIELD_WORD(4), *(u32*)D_008717F4_abs);
-            if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask);
+            if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask, *(u64*)(uintptr_t)0x007cc2b0);
             FIELD_WORD(0x1054) = func_0010a770(fldEventTask, 2, 0, 2, 0x1ea, 1);
             fldEvent->eventType = 0x13;
             break;
@@ -2968,7 +2968,7 @@ case16_second_action_done:
             FUN_001d1360();
             FUN_001d1c20();
             FUN_001d37f0((KwlnTask*)FIELD_WORD(0x24), false);
-            if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask);
+            if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask, *(u64*)(uintptr_t)0x007cc2b8);
             fldEvent->eventType = 0x1b;
             break;
 

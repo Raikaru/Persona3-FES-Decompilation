@@ -1143,7 +1143,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
       if (sVar2 != 0) {
 
-        FUN_00176680(param_1);
+        FUN_00176680(param_1,sVar2);
 
         uVar3 = 1;
 

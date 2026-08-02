@@ -520,7 +520,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 }
                 else
                 {
-                    FUN_003b5980();
+                    FUN_003b5980(ROOT_U16(work, 0x1a));
                 }
                 ROOT_U32(work, 0x44) = FUN_00187e20();
                 ROOT_U32(work, 0) = 5;

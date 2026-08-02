@@ -2232,7 +2232,7 @@ u32 FUN_003a0e90(int param_1)
 
       *puVar6 = 0x15;
 
-      FUN_003952d0(0,0x1f6);
+      FUN_003952d0(0,0x1f6,3);
 
     }
 
@@ -2558,7 +2558,7 @@ u32 FUN_003a0e90(int param_1)
 
       else {
 
-        FUN_00395270();
+        FUN_00395270(*(short *)(iVar1 + 0xe0));
 
       }
 

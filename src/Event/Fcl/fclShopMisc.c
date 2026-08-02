@@ -1455,7 +1455,7 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
   psVar5 = (short *)param_1;
   bVar1 = 1;
   if (((u32)*psVar5 & (1u << (uVar2 & 0x1f))) != 0) {
-    if ((psVar5[1] != 0) && (datGetFlag() == 0)) {
+    if ((psVar5[1] != 0) && (datGetFlag(psVar5[1]) == 0)) {
       bVar1 = 0;
     }
     if (bVar1) {
@@ -2810,7 +2810,7 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
            ((*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1 &&
 
-            (lVar8 = datGetFlag(), lVar8 == 0)))) {
+            (lVar8 = datGetFlag(*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2)), lVar8 == 0)))) {
 
           bVar3 = 0;
 
@@ -2981,7 +2981,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
             (*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1)) &&
 
-           (lVar8 = datGetFlag(), lVar8 == 0)) {
+           (lVar8 = datGetFlag(*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2)), lVar8 == 0)) {
 
           bVar3 = 0;
 
@@ -3005,7 +3005,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
           if (((uVar7 != 0xffffffff) && (*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1)) &&
 
-             (lVar8 = datGetFlag(), lVar8 == 0)) {
+             (lVar8 = datGetFlag(*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2)), lVar8 == 0)) {
 
             bVar3 = 0;
 
@@ -3029,7 +3029,7 @@ u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4)
 
              ((*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2) != -1 &&
 
-              (lVar8 = datGetFlag(), lVar8 == 0)))) {
+              (lVar8 = datGetFlag(*(short *)(DAT_006acc60_abs + (uVar7 & 0xff) * 2)), lVar8 == 0)))) {
 
             bVar3 = 0;
 
@@ -7725,7 +7725,7 @@ void FUN_003fa210(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x24) + 0x44);
 
-  lVar3 = FUN_003c6e10();
+  lVar3 = FUN_003c6e10(param_1);
 
   if (lVar3 != 1) {
 
@@ -11096,7 +11096,7 @@ u64 FUN_003ff150(int param_1,int param_2)
 
   for (uVar4 = 0; uVar4 < 8; uVar4 = uVar4 + 1) {
 
-    if ((*(short *)(DAT_006acc60_abs + uVar4 * 2) == -1) || (lVar3 = datGetFlag(), lVar3 == 0)) {
+    if ((*(short *)(DAT_006acc60_abs + uVar4 * 2) == -1) || (lVar3 = datGetFlag(*(short *)(DAT_006acc60_abs + uVar4 * 2)), lVar3 == 0)) {
 
       if ((uVar4 == 6) && (lVar3 = datGetScenarioMode(), lVar3 != 0)) {
 
@@ -11128,7 +11128,7 @@ u64 FUN_003ff150(int param_1,int param_2)
 
       else {
 
-        datSetFlag();
+        datSetFlag(*(short *)(&DAT_006acc60 + uVar4 * 2),1);
 
       }
 
@@ -11198,7 +11198,7 @@ u64 FUN_003ff150(int param_1,int param_2)
 
       else {
 
-        datSetFlag();
+        datSetFlag(*(short *)(&DAT_006acc60 + uVar4 * 2),1);
 
       }
 
@@ -15607,7 +15607,7 @@ LAB_00403d20:
 
   if (cVar1 == '\x01') {
 
-    lVar8 = FUN_0017c610();
+    lVar8 = FUN_0017c610(param_1);
 
     if (lVar8 == 0) {
 

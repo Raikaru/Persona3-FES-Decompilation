@@ -2105,7 +2105,7 @@ void FUN_003c7990(long param_1)
 
     switch (cVar1) {
     case 1:
-      FUN_003a2580();
+      FUN_003a2580(*piVar4);
       if (extraout_v0_hi < 0) {
         *(u8 *)(piVar4 + 1) = 2;
       }
@@ -2125,7 +2125,7 @@ void FUN_003c7990(long param_1)
           bVar2 = 0;
         }
         else {
-          FUN_003a2750();
+          FUN_003a2750(*(int *)lVar5);
           if (extraout_v0_hi_00 < 0) {
             bVar2 = 0;
           }
@@ -2138,7 +2138,7 @@ void FUN_003c7990(long param_1)
               uVar3 = 0xff;
             }
             else {
-              uVar3 = FUN_003a2830();
+              uVar3 = FUN_003a2830(*(int *)lVar6);
             }
             *(u8 *)((int)(int *)lVar5 + 0xd) = uVar3;
             bVar2 = 1;
