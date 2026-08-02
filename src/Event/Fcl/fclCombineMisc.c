@@ -61,7 +61,7 @@ u32 FUN_003d6c90(int param_1);
 s32 FUN_003d6e60(int param_1,int param_2);
 u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
 u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3);
-u64 FUN_003d72f0(u16 *param_1);
+u32 FUN_003d72f0(u16 *param_1);
 void FUN_003d74f0(int param_1,int param_2,int param_3);
 #pragma alias FUN_003d74f0_i FUN_003d74f0
 extern void FUN_003d74f0_i(int param_1, int param_2, int param_3);
@@ -620,13 +620,7 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
   u8 bVar5;
 
-  int *piVar6;
-
   u8 uVar7;
-
-  int *piVar8;
-
-  int *piVar9;
 
   short sVar10;
 
@@ -641,21 +635,17 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
   
 
-  piVar8 = (int *)0x10;
+  iVar11 = 0x10;
 
-  piVar9 = aiStack_20;
+  pcVar12 = (char *)aiStack_20;
 
-  piVar6 = piVar9;
+  while (iVar11 != 0) {
 
-  while (piVar6 != (int *)0x0) {
+    *pcVar12 = 0;
 
-    *(u8 *)piVar9 = 0;
+    pcVar12 = (char *)((int)pcVar12 + 1);
 
-    piVar9 = (int *)((int)piVar9 + 1);
-
-    piVar8 = (int *)((int)piVar8 + -1);
-
-    piVar6 = piVar8;
+    iVar11 = iVar11 + -1;
 
   }
 
@@ -815,7 +805,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
   int iVar10;
 
 
-  short sStack_2;
+  short sStack_2[9];
 
   
 
@@ -841,11 +831,11 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
     }
 
-    sStack_2 = 0;
+    sStack_2[0] = 0;
 
-    lVar4 = FUN_003d5a40(puVar8,(short)param_2 + 2,param_3,param_4,&sStack_2);
+    lVar4 = FUN_003d5a40(puVar8,(short)param_2 + 2,param_3,param_4,sStack_2);
 
-    if (sStack_2 < (short)((short)param_2 + 2)) {
+    if (sStack_2[0] < (short)((short)param_2 + 2)) {
 
       lVar4 = 0;
 
@@ -1467,9 +1457,11 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
   u16 sVar3;
 
-  int iVar4;
+  u32 arcana;
+  u32 iVar4;
 
-  int iVar5;
+  u32 iVar5;
+  u16 adjustment;
 
   u32 uVar6;
 
@@ -1491,11 +1483,15 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
     iVar4 = RpRandom();
 
+    arcana = (u32)(((iVar4 % 0xffff) * 0x13) / 0xffff + 2U & 0xff);
+
     iVar5 = RpRandom();
+
+    adjustment = (u32)((iVar5 % 0xffff) * 0xc) / 0xffff;
 
     uVar6 = datGetLevel(1);
 
-    uVar6 = ((uVar6 & 0xff) + ((iVar5 % 0xffff) * 0xc) / 0xffff) - 10;
+    uVar6 = (uVar6 & 0xff) + adjustment - 10;
 
     if ((int)uVar6 < 1) {
 
@@ -1509,8 +1505,7 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
     }
 
-    sVar3 = FUN_003d7ac0_u8((u8)(((iVar4 % 0xffff) * 0x13) / 0xffff + 2U & 0xff),
-                            (u8)(uVar6 & 0xff),param_3);
+    sVar3 = FUN_003d7ac0_u8(arcana,(u8)(uVar6 & 0xff),param_3);
 
     lVar8 = FUN_001749a0(sVar3);
 
@@ -1608,7 +1603,7 @@ success:
 }
 
 // FUN_003D72F0 NONMATCHING
-u64 FUN_003d72f0(u16 *param_1)
+u32 FUN_003d72f0(u16 *param_1)
 
 
 

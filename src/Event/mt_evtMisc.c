@@ -5626,7 +5626,6 @@ void FUN_0038c830(int param_1,long param_2)
   bool bVar2;
   int group;
   u16 sStack_2;
-
   piVar7 = *(int **)((int)param_1 + 0x84);
   while (piVar7 != (int *)0x0) {
     if (*piVar7 == 4) {
@@ -5634,7 +5633,6 @@ void FUN_0038c830(int param_1,long param_2)
     }
     piVar7 = (int *)piVar7[0x25];
   }
-
   if (piVar7 != (int *)0x0) {
     for (iVar5 = 0; iVar5 < 10; iVar5 = iVar5 + 1) {
       bVar3 = false;

@@ -2079,7 +2079,140 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
     puVar10 = (u16 *)(**(int **)(iVar4 + 0x50) + *(int *)(iVar4 + 0x54) * 8);
 
-    if (*(int *)(iVar4 + 8) == 1) {
+    switch (*(int *)(iVar4 + 8)) {
+
+    case 0:
+
+      switch(*puVar10) {
+
+      case 1:
+
+        if ((*piVar3 == 4) || (*piVar3 != 8)) {
+
+          iVar8 = FUN_003c9850(piVar3[0x20],3,5,5);
+
+          piVar3[0x21] = iVar8;
+
+        }
+
+        else {
+
+          iVar8 = FUN_003c9850(piVar3[0x20],4,5,5);
+
+          piVar3[0x21] = iVar8;
+
+        }
+
+        break;
+
+      case 2:
+
+
+        FUN_0040e300(FUN_003efed0(*(int *)(iVar4 + 4)),piVar3[0x16]);
+
+        break;
+
+      case 3:
+
+        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
+
+          K_Assert(DAT_006a6af8,0x8a2);
+
+        }
+
+        lVar7 = datGetScenarioMode();
+
+        if (lVar7 == 0) {
+
+          sprintf((char *)auStack_50,(const char *)0x6a7010,*(u32 *)(puVar10 + 2));
+
+        }
+
+        else {
+
+          sprintf((char *)auStack_50,(const char *)0x6a6ff0,*(u32 *)(puVar10 + 2));
+
+        }
+
+        bVar2 = 1;
+
+        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
+
+        piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
+
+        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
+
+          K_Assert(DAT_006a6af8,0x8ad);
+
+        }
+
+        break;
+
+      case 4:
+
+        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
+
+          K_Assert(DAT_006a6af8,0x8b3);
+
+        }
+
+        sprintf((char *)auStack_50,(const char *)&gp0xffffaae8,*(u32 *)(puVar10 + 2));
+
+        bVar2 = 1;
+
+        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
+
+        piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
+
+        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
+
+          K_Assert(DAT_006a6af8,0x8b9);
+
+        }
+
+        break;
+
+      case 5:
+
+        MT_Scene_Load(*(u8 *)(puVar10 + 1),*(u8 *)((int)puVar10 + 3));
+
+        break;
+
+      case 6:
+
+
+        FUN_003efce0();
+
+        break;
+
+      case 7:
+
+        lVar7 = datGetScenarioMode();
+
+        if (lVar7 == 0) {
+
+          sprintf((char *)auStack_50,(const char *)0x6a7030,*(u32 *)(puVar10 + 2));
+
+        }
+
+        else {
+
+          sprintf((char *)auStack_50,(const char *)0x6a7020,*(u32 *)(puVar10 + 2));
+
+        }
+
+        iVar8 = H_Cdvd_Request(auStack_50,1);
+
+        piVar3[0x16] = iVar8;
+
+      }
+
+      *(u32 *)(iVar4 + 8) = 1;
+
+      goto LAB_003e8b7c;
+
+
+    case 1:
 
 LAB_003e8b7c:
 
@@ -2242,139 +2375,16 @@ LAB_003e8b7c:
 
         *(u32 *)(iVar4 + 8) = 0;
 
-      }
+    default:
+      if (!bVar2) {
 
-    }
-
-    else if (*(int *)(iVar4 + 8) == 0) {
-
-      switch(*puVar10) {
-
-      case 1:
-
-        if ((*piVar3 == 4) || (*piVar3 != 8)) {
-
-          iVar8 = FUN_003c9850(piVar3[0x20],3,5,5);
-
-          piVar3[0x21] = iVar8;
-
-        }
-
-        else {
-
-          iVar8 = FUN_003c9850(piVar3[0x20],4,5,5);
-
-          piVar3[0x21] = iVar8;
-
-        }
-
-        break;
-
-      case 2:
-
-
-        FUN_0040e300(FUN_003efed0(*(int *)(iVar4 + 4)),piVar3[0x16]);
-
-        break;
-
-      case 3:
-
-        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
-
-          K_Assert(DAT_006a6af8,0x8a2);
-
-        }
-
-        lVar7 = datGetScenarioMode();
-
-        if (lVar7 == 0) {
-
-          sprintf((char *)auStack_50,(const char *)0x6a7010,*(u32 *)(puVar10 + 2));
-
-        }
-
-        else {
-
-          sprintf((char *)auStack_50,(const char *)0x6a6ff0,*(u32 *)(puVar10 + 2));
-
-        }
-
-        bVar2 = 1;
-
-        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
-
-        piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
-
-        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
-
-          K_Assert(DAT_006a6af8,0x8ad);
-
-        }
-
-        break;
-
-      case 4:
-
-        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
-
-          K_Assert(DAT_006a6af8,0x8b3);
-
-        }
-
-        sprintf((char *)auStack_50,(const char *)&gp0xffffaae8,*(u32 *)(puVar10 + 2));
-
-        bVar2 = 1;
-
-        iVar8 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
-
-        piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] = iVar8;
-
-        if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
-
-          K_Assert(DAT_006a6af8,0x8b9);
-
-        }
-
-        break;
-
-      case 5:
-
-        MT_Scene_Load(*(u8 *)(puVar10 + 1),*(u8 *)((int)puVar10 + 3));
-
-        break;
-
-      case 6:
-
-
-        FUN_003efce0();
-
-        break;
-
-      case 7:
-
-        lVar7 = datGetScenarioMode();
-
-        if (lVar7 == 0) {
-
-          sprintf((char *)auStack_50,(const char *)0x6a7030,*(u32 *)(puVar10 + 2));
-
-        }
-
-        else {
-
-          sprintf((char *)auStack_50,(const char *)0x6a7020,*(u32 *)(puVar10 + 2));
-
-        }
-
-        iVar8 = H_Cdvd_Request(auStack_50,1);
-
-        piVar3[0x16] = iVar8;
+        return (u8 *)0x0;
 
       }
 
-      *(u32 *)(iVar4 + 8) = 1;
+      break;
 
-      goto LAB_003e8b7c;
+      }
 
     }
 

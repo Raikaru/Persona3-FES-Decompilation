@@ -122,7 +122,7 @@ void func_00185830(KwlnTask* task);
 KwlnTask* func_00185880(KwlnTask* parent, s16 sourceMonth, s16 sourceDay, s16 targetMonth, s16 targetDay);
 void func_00185980(void* resource, CalendarPackedPosition position, u32 alpha, s16 day);
 void func_00185ae0(void* resource, CalendarPackedPosition position, u32 alpha, s16 day);
-void func_00185b40(void* resource, CalendarPackedPosition position, u32 unused, s16 month, s16 day);
+void func_00185b40(void* resource, CalendarPackedPosition position, u32 alpha, s16 month, s16 day);
 void func_00186050(void* resource, CalendarPackedPosition position, u32 alpha);
 void func_00186100(void* resource, CalendarPackedPosition position, u32 alpha);
 void func_00186140(void* resource, CalendarPackedPosition position, u32 alpha);
@@ -2341,6 +2341,15 @@ extern f32 gp0xffffb308;
 #define CLND_CALENDAR_X gp0xffffb308
 extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
                            f32 x, f32 y, f32 depth);
+#pragma alias gsDrawSpritePositionFirst func_001159f0
+extern void gsDrawSpritePositionFirst(f32 x, f32 y, void* unused,
+                                      void* atlas, s32 tile, u32 alpha,
+                                      f32 depth);
+#pragma alias gsDrawSpriteColorPositionFirst func_00115bc0
+extern void gsDrawSpriteColorPositionFirst(f32 x, f32 y, void* unused,
+                                            void* atlas, s32 tile, u32 alpha,
+                                            u32 red, u32 green, u32 blue,
+                                            f32 depth);
 extern void func_00115ad0(void* unused, void* atlas, s32 tile, u32 alpha,
                           u32 extraAlpha, f32 x, f32 y, f32 depth);
 extern void func_00115bc0(void* unused, void* atlas, s32 tile, u32 alpha,
@@ -3330,26 +3339,26 @@ void func_00183be0(void* resource,
     }
     if (month >= 10)
     {
-        func_00115bc0(unused, resource, 0x24, alpha & 0xff,
-                      0, 0x0e, 2,
-                      baseX + 515.0f, baseY + 15.0f, 50.0f);
+        gsDrawSpriteColorPositionFirst(baseX + 515.0f, baseY + 15.0f,
+                                       unused, resource, 0x24, alpha & 0xff,
+                                       0, 0x0e, 2, 50.0f);
     }
-    func_00115bc0(unused, resource, (month % 10) + 0x23, alpha & 0xff,
-                  0, 0x0e, 2,
-                  baseX + 532.0f, baseY + 15.0f, 50.0f);
+    gsDrawSpriteColorPositionFirst(baseX + 532.0f, baseY + 15.0f,
+                                   unused, resource, (month % 10) + 0x23,
+                                   alpha & 0xff, 0, 0x0e, 2, 50.0f);
     drawY15 = baseY + 15.0f;
-    func_00115bc0(unused, resource, 0x2d, alpha & 0xff,
-                  0, 0x0e, 2,
-                  baseX + 548.0f, drawY15, 50.0f);
+    gsDrawSpriteColorPositionFirst(baseX + 548.0f, drawY15,
+                                   unused, resource, 0x2d, alpha & 0xff,
+                                   0, 0x0e, 2, 50.0f);
     if (day >= 10)
     {
-        func_00115bc0(unused, resource, day / 10 + 0x23, alpha & 0xff,
-                      0, 0x0e, 2,
-                      baseX + 557.0f, drawY15, 50.0f);
+        gsDrawSpriteColorPositionFirst(baseX + 557.0f, drawY15,
+                                       unused, resource, day / 10 + 0x23,
+                                       alpha & 0xff, 0, 0x0e, 2, 50.0f);
     }
-    func_00115bc0(unused, resource, day % 10 + 0x23, alpha & 0xff,
-                  0, 0x0e, 2,
-                  baseX + 574.0f, drawY15, 50.0f);
+    gsDrawSpriteColorPositionFirst(baseX + 574.0f, drawY15,
+                                   unused, resource, day % 10 + 0x23,
+                                   alpha & 0xff, 0, 0x0e, 2, 50.0f);
 
     days = clndGetDaysSinceStartFromDate(month, day);
     if (func_0017db40(days) == 1)
@@ -3382,13 +3391,13 @@ void func_00183be0(void* resource,
         case 6: weekday = 0x21; break;
         default: break;
     }
-    func_00115bc0(unused, resource, weekday, alpha & 0xff,
-                  red, green, blue,
-                  baseX + 592.0f, baseY + 13.0f, 50.0f);
+    gsDrawSpriteColorPositionFirst(baseX + 592.0f, baseY + 13.0f,
+                                   unused, resource, weekday, alpha & 0xff,
+                                   red, green, blue, 50.0f);
 }
 
 #pragma opt_propagation reset
-// FUN_00183F60 NONMATCHING
+// FUN_00183F60
 void func_00183f60(void* resource,
                    f32 baseX,
                    f32 baseY,
@@ -3403,45 +3412,45 @@ void func_00183f60(void* resource,
     days = clndGetDaysSinceStartFromDate(month, day);
     if (func_0017db40(days) == 1 && (u32)(time - 2) < 4)
     {
-        func_001159f0(unused, resource, 0x36, alpha & 0xff,
-                      baseX + 525.0f, baseY + 29.0f, 50.0f);
+        gsDrawSpritePositionFirst(baseX + 525.0f, baseY + 29.0f,
+                                  unused, resource, 0x36, alpha & 0xff, 50.0f);
         return;
     }
 
     switch (time)
     {
         case 1:
-            func_001159f0(unused, resource, 0x2f, alpha & 0xff,
-                          baseX + 452.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 452.0f, baseY + 29.0f,
+                                      unused, resource, 0x2f, alpha & 0xff, 50.0f);
             return;
         case 2:
-            func_001159f0(unused, resource, 0x30, alpha & 0xff,
-                          baseX + 524.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 524.0f, baseY + 29.0f,
+                                      unused, resource, 0x30, alpha & 0xff, 50.0f);
             return;
         case 3:
-            func_001159f0(unused, resource, 0x31, alpha & 0xff,
-                          baseX + 495.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 495.0f, baseY + 29.0f,
+                                      unused, resource, 0x31, alpha & 0xff, 50.0f);
             return;
         case 4:
-            func_001159f0(unused, resource, 0x32, alpha & 0xff,
-                          baseX + 499.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 499.0f, baseY + 29.0f,
+                                      unused, resource, 0x32, alpha & 0xff, 50.0f);
             return;
         case 5:
-            func_001159f0(unused, resource, 0x33, alpha & 0xff,
-                          baseX + 467.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 467.0f, baseY + 29.0f,
+                                      unused, resource, 0x33, alpha & 0xff, 50.0f);
             return;
         case 6:
-            func_001159f0(unused, resource, 0x34, alpha & 0xff,
-                          baseX + 528.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 528.0f, baseY + 29.0f,
+                                      unused, resource, 0x34, alpha & 0xff, 50.0f);
             return;
         case 0:
         case 7:
-            func_001159f0(unused, resource, 0x35, alpha & 0xff,
-                          baseX + 491.0f, baseY + 29.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 491.0f, baseY + 29.0f,
+                                      unused, resource, 0x35, alpha & 0xff, 50.0f);
             return;
         case 8:
-            func_001159f0(unused, resource, 0x37, alpha & 0xff,
-                          baseX + 500.0f, baseY + 26.0f, 50.0f);
+            gsDrawSpritePositionFirst(baseX + 500.0f, baseY + 26.0f,
+                                      unused, resource, 0x37, alpha & 0xff, 50.0f);
             return;
         default:
             return;
@@ -3769,10 +3778,6 @@ extern void* func_001158b0(void* unused, void* atlas, s32 tile);
 extern void func_00115980(void* sprite);
 extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
                           f32 x, f32 y, f32 depth);
-#pragma alias gsDrawSpritePositionFirst func_001159f0
-extern void gsDrawSpritePositionFirst(f32 x, f32 y, void* unused,
-                                      void* atlas, s32 tile, u32 alpha,
-                                      f32 depth);
 extern void func_00115ad0_gs(void* unused, void* atlas, s32 tile,
                           f32 x, f32 y, u32 alpha, u32 extraAlpha, f32 depth);
 extern void func_00113a30(f32 depth, u32 color, f32 x, f32 y,
@@ -4805,7 +4810,7 @@ void func_00185b40(void* resource,
 {
     s32 firstDay;
     s32 dayIndex;
-    s32 i;
+    s16 loopIndex;
     s32 dayValue;
     s32 weekday;
     s32 moonPhase;
@@ -4822,14 +4827,14 @@ void func_00185b40(void* resource,
     dayIndex = firstDay - 3;
     x = clndPackedX(*(u64*)&position) + 17.0f;
     y = clndPackedY(*(u64*)&position) + 213.0f;
-    for (i = 0; i < 8; dayIndex++, i++)
+    for (loopIndex = 0; loopIndex < 8; dayIndex++, loopIndex++)
     {
         if (dayIndex < 0)
         {
             continue;
         }
 
-        cellAlpha = i == 3 ? alpha & 0xff : 0xff - (alpha & 0xff);
+        cellAlpha = loopIndex == 3 ? alpha & 0xff : 0xff - (alpha & 0xff);
         if (dayIndex == firstDay)
         {
             if (func_0017db40((s16)dayIndex) != 0)
@@ -4875,16 +4880,16 @@ void func_00185b40(void* resource,
         {
             func_00115bc0(NULL, resource, dayValue + 0x18, cellAlpha,
                           red, green, blue,
-                          (f32)i * 87.0f + x + 25.0f, y + 10.0f, 72.0f);
+                          (f32)loopIndex * 87.0f + x + 25.0f, y + 10.0f, 72.0f);
         }
         else
         {
             func_00115bc0(NULL, resource, dayValue / 10 + 0x18, cellAlpha,
                           red, green, blue,
-                          (f32)i * 87.0f + x + 10.0f, y + 10.0f, 72.0f);
+                          (f32)loopIndex * 87.0f + x + 10.0f, y + 10.0f, 72.0f);
             func_00115bc0(NULL, resource, dayValue % 10 + 0x18, cellAlpha,
                           red, green, blue,
-                          (f32)i * 87.0f + x + 39.0f, y + 10.0f, 72.0f);
+                          (f32)loopIndex * 87.0f + x + 39.0f, y + 10.0f, 72.0f);
         }
 
         weekday = clndGetWeekDay(dayIndex);
@@ -4900,12 +4905,12 @@ void func_00185b40(void* resource,
         }
         func_00115bc0(NULL, resource, weekday, cellAlpha,
                       red, green, blue,
-                      (f32)i * 87.0f + x + 17.0f, y + 45.0f, 72.0f);
+                      (f32)loopIndex * 87.0f + x + 17.0f, y + 45.0f, 72.0f);
 
         moonPhase = clndGetMoonPhase(dayIndex);
         func_00115bc0(NULL, resource, moonPhase + 0x2f, cellAlpha,
                       0xff, 0xff, 0xff,
-                      (f32)i * 87.0f + x + 25.0f, y + 59.0f, 72.0f);
+                      (f32)loopIndex * 87.0f + x + 25.0f, y + 59.0f, 72.0f);
     }
 }
 
@@ -6409,7 +6414,7 @@ void* func_00188c30(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 3:
@@ -6427,7 +6432,7 @@ void* func_00188c30(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 4:
@@ -6445,7 +6450,7 @@ void* func_00188c30(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 5:
@@ -6463,7 +6468,7 @@ void* func_00188c30(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 6:
@@ -6481,7 +6486,7 @@ void* func_00188c30(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 7:
@@ -6500,7 +6505,7 @@ void* func_00188c30(KwlnTask* task)
                           183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f,
                           16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f,
                           iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3]);
+                          (const void*)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -6851,7 +6856,7 @@ void* func_00189df0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 3:
@@ -6869,7 +6874,7 @@ void* func_00189df0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 4:
@@ -6887,7 +6892,7 @@ void* func_00189df0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 5:
@@ -6905,7 +6910,7 @@ void* func_00189df0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 6:
@@ -6923,7 +6928,7 @@ void* func_00189df0(KwlnTask* task)
                 iVar3 = iVar2 >> 0xc;
             }
             func_001140d0(0.0f, 0xffffffffU, fVar1, fVar2,
-                          iVar3, iVar3, (const void*)(u32)puVar1[3]);
+                          iVar3, iVar3, (const void*)puVar1[3]);
             break;
 
         case 7:
@@ -6944,7 +6949,7 @@ void* func_00189df0(KwlnTask* task)
                           ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f,
                           ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f,
                           iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3]);
+                          (const void*)puVar1[3]);
             break;
     }
     return KWLNTASK_CONTINUE;

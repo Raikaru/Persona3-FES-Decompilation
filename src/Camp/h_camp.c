@@ -15832,9 +15832,9 @@ void FUN_0013c780(CampEquipmentWork* work)
 void FUN_0013cc90(CampEquipmentWork* work)
 {
     u16 indices[300];
-    s32 recordCount = 0;
-    s32 scan = 0;
+    s32 recordCount;
     s32 count = 0;
+    s32 scan = 0;
     s32 index;
     s32 category;
     s16 candidate;
@@ -15850,6 +15850,7 @@ void FUN_0013cc90(CampEquipmentWork* work)
     if (count >= 2) {
         qsort(indices, count, 2, campCompareEquipmentIndex);
     }
+    recordCount = 0;
 
     index = 0;
     while (index < count) {

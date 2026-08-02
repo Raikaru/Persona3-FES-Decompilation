@@ -75,17 +75,16 @@ extern void func_004d7f60(s32 state, u32 value);
 #define bsaPlaceQuad(work, destination, frame, x, y, width, height, alphaSource) \
     do { \
         s32* quadDestination = (work) + (destination); \
-        u8 quadColor[4]; \
         rect[0] = (x); \
         rect[1] = (y); \
         rect[2] = (width) < 0.0f ? BSA_FRAME_W(frame) : (width); \
         rect[3] = (height) < 0.0f ? BSA_FRAME_H(frame) : (height); \
         func_0021d8e0(quadDestination, rect); \
-        quadColor[0] = 0xff; \
-        quadColor[1] = 0xff; \
-        quadColor[2] = 0xff; \
-        quadColor[3] = (u32)(alphaSource); \
-        func_0021d950(quadDestination, quadColor); \
+        drawColor[0] = 0xff; \
+        drawColor[1] = 0xff; \
+        drawColor[2] = 0xff; \
+        drawColor[3] = (u32)(alphaSource); \
+        func_0021d950(quadDestination, drawColor); \
     } while (0)
 #define bsaSetColor(destination, alpha) \
     do { \

@@ -10262,11 +10262,10 @@ void FUN_0042bd80(int param_1)
 
   int iVar6;
 
-  int iVar7;
-
   int iVar8;
 
-  int iVar9;
+  int iVar7;
+
 
   u8 *row;
 
@@ -10298,27 +10297,26 @@ void FUN_0042bd80(int param_1)
 
           }
 
-          iVar9 = iVar8 * 0x10;
 
           K_Field_Get();
 
           iVar4 = K_Field_Get();
 
-          if (*(u8 *)(iVar6 + iVar4 + iVar9 + 0x4a) < 5) {
+          if (*(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4a) < 5) {
 
             iVar4 = K_Field_Get();
 
-            bVar2 = *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4a);
+            bVar2 = *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4a);
 
             iVar4 = K_Field_Get();
 
-            uVar1 = *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4a);
+            uVar1 = *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4a);
 
             iVar4 = K_Field_Get();
 
             iVar4 = FUN_00427670_typed(0.625f,0.625f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
-                                 *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
+                                 *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4e));
 
             *piVar5 = iVar4;
 
@@ -10328,17 +10326,17 @@ void FUN_0042bd80(int param_1)
 
             iVar4 = K_Field_Get();
 
-            bVar2 = *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4a);
+            bVar2 = *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4a);
 
             iVar4 = K_Field_Get();
 
-            uVar1 = *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4a);
+            uVar1 = *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4a);
 
             iVar4 = K_Field_Get();
 
             iVar4 = FUN_00427670_typed(0.59375f,0.59375f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
-                                 *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
+                                 *(u8 *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x4e));
 
             *piVar5 = iVar4;
 
@@ -10820,7 +10818,6 @@ void FUN_0042cd80(int param_1)
   s16 *offsetX;
   s16 *offsetY;
   u32 random;
-  s8 count;
   s32 outer;
   s32 inner;
   s32 end;
@@ -10841,9 +10838,8 @@ void FUN_0042cd80(int param_1)
                      *(s8 *)offsetX, *(s8 *)offsetY, entry->counter);
         delay = &entry->delay;
         if (entry->delay < 1) {
-          count = entry->counter + 1;
-          entry->counter = count;
-          if (count > 20) {
+        entry->counter++;
+        if (entry->counter > 20) {
             random = FUN_00488f30();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));
             random = FUN_00488f30();
@@ -24683,12 +24679,14 @@ void FUN_00447ad0(int param_1)
   int iVar3;
   int iVar4;
   int iVar5;
+  u32 value;
   
   iVar1 = *(int *)(param_1 + 0x3c);
   for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4 + 0x274;
-    if (*(int *)iVar3 != 0) {
-      FUN_004d0f00_arg(*(u32 *)iVar3);
+    value = *(u32 *)iVar3;
+    if (value != 0) {
+      FUN_004d0f00_arg(value);
       *(u32 *)iVar3 = 0;
     }
   }
@@ -30308,8 +30306,8 @@ void FUN_00456670(u64 param_1,u64 param_2)
   char cVar9;
   u16 *puVar10;
   u64 uVar11;
-  RwV3d uStack_30;
   RwV3d uStack_20;
+  RwV3d uStack_30;
   
   cVar9 = (char)param_2;
   iVar8 = cVar9 * 0x1c0;
