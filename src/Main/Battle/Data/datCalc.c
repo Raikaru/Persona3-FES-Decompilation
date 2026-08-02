@@ -3630,14 +3630,16 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
     }
     iVar2 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
     if (*(u8 *)(iVar2 + 0x18) == 2) {
-      if (*(u8 *)(iVar2 + 0x19) < 100) {
-        FUN_0019d3f0((u32)D_0069aa80, 0xc05);
-      }
-      uVar1 = FUN_00305970(param_1,param_2,param_3);
+      goto datCalc_00306bc0_body;
     }
-    else {
-      uVar1 = 0;
+    uVar1 = 0;
+    goto datCalc_00306bc0_store;
+datCalc_00306bc0_body:
+    if (*(u8 *)(iVar2 + 0x19) < 100) {
+      FUN_0019d3f0((u32)D_0069aa80, 0xc05);
     }
+    uVar1 = FUN_00305970(param_1,param_2,param_3);
+datCalc_00306bc0_store:
     *(u32 *)param_7 = uVar1;
   }
   *(u32 *)((int)param_2 + 0x18) = 0;
