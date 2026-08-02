@@ -2313,9 +2313,8 @@ u32 func_0031c1d0(int param_1)
 
   if (*(u16 *)(iVar7 + 0xd4) != 1) return 0;
 
-    uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
 
-    sVar3 = datGetEquipmentId(*(u16 *)(iVar7 + 0xd6),uVar2);
+    sVar3 = datGetEquipmentId(*(u16 *)(iVar7 + 0xd6),datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0));
 
     switch(*(u16 *)(iVar7 + 0xd6)) {
 
@@ -2922,7 +2921,6 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
   u8 cVar1;
 
   int uVar2;
-
   int sVar3;
 
   u32 lVar4;
@@ -6110,13 +6108,12 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4)
 
   u8 auStack_a0 [128];
 
-  int iStack_20;
-
-  int iStack_1c;
-
-  int iStack_18;
-
-  u32 uStack_14;
+  struct {
+    int size;
+    int field_1c;
+    int field_18;
+    u32 length;
+  } readData;
 
   struct {
     int value;
@@ -6125,13 +6122,13 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4)
 
   
 
-  FUN_004c5250(param_1,&iStack_20,0x14);
+  FUN_004c5250(param_1,&readData,0x14);
 
-  bVar5 = 0x7f < uStack_14;
+  bVar5 = 0x7f < readData.length;
 
   if (bVar5) {
 
-    puVar7 = (u8 *)(*DAT_00960178_abs)(uStack_14 + 1,0x40000);
+    puVar7 = (u8 *)(*DAT_00960178_abs)(readData.length + 1,0x40000);
 
   }
 
@@ -6141,9 +6138,9 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4)
 
   }
 
-  FUN_004c5250(param_1,puVar7,uStack_14);
+  FUN_004c5250(param_1,puVar7,readData.length);
 
-  puVar7[uStack_14] = 0;
+  puVar7[readData.length] = 0;
 
   uVar6 = FUN_00320f70((u64)(param_4),(u32)(puVar7));
 
@@ -6267,7 +6264,7 @@ LAB_003209a8:
 
   }
 
-  iVar4 = iStack_20 * iStack_18;
+  iVar4 = readData.size * readData.field_18;
 
   if (piVar8[3] != 0) {
 
@@ -6277,11 +6274,11 @@ LAB_003209a8:
 
   else {
 
-    *piVar8 = iStack_20;
+    *piVar8 = readData.size;
 
-    piVar8[1] = iStack_1c;
+    piVar8[1] = readData.field_1c;
 
-    piVar8[2] = iStack_18;
+    piVar8[2] = readData.field_18;
 
     uVar11 = (*DAT_00960178_abs)(iVar4,0x40000);
 

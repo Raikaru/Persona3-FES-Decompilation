@@ -7372,36 +7372,34 @@ updateFlag:
 // FUN_002dae30 NONMATCHING
 void FUN_002dae30(u64 param_1)
 {
-    u8* btl;
     u32 stop;
     u32 slotIndex;
 
-    btl = iGpffffb6fc;
     stop = 0;
     slotIndex = 0;
     while (slotIndex < 3 && stop == 0)
     {
         u32 bit = (1u << (slotIndex & 0x1f)) & 0xffff;
-        if ((*(u16*)(btl + 0xa04) & bit) != 0)
+        if ((*(u16*)(iGpffffb6fc + 0xa04) & bit) != 0)
         {
             if (param_1 != 0)
             {
-                u8* slot = btl + slotIndex * 4;
+                u8* slot = iGpffffb6fc + slotIndex * 4;
                 *(u16*)(slot + 0x9f8) = *(u16*)(slot + 0x9f8) + 1;
             }
 
             switch (bit)
             {
             case 1:
-                if (*(u32*)(btl + 0xa10) == 0 &&
-                    FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
+                if (*(u32*)(iGpffffb6fc + 0xa10) == 0 &&
+                    FUN_0029adf0(*(BtlAction**)(iGpffffb6fc + 0x148)) == 0)
                 {
                     u8* candidates[3];
                     u32 candidateCount = 0;
                     u32 i;
                     for (i = 0; i < 3; i++)
                     {
-                        u8* candidate = *(u8**)(btl + 0xbc4 + i * 8);
+                        u8* candidate = *(u8**)(iGpffffb6fc + 0xbc4 + i * 8);
                         if (candidate != NULL &&
                             (*(u16*)(candidate + 0xa) & 1) == 0 &&
                             FUN_002ff790(candidate) == 0)
@@ -7412,12 +7410,12 @@ void FUN_002dae30(u64 param_1)
                     }
                     if (candidateCount == 0)
                     {
-                        *(u16*)(btl + 0xa04) &= (u16)~1;
+                        *(u16*)(iGpffffb6fc + 0xa04) &= (u16)~1;
                     }
                     else
                     {
                         u8* selected = candidates[datCalcRand(candidateCount)];
-                        *(u8**)(btl + 0xa10) = selected;
+                        *(u8**)(iGpffffb6fc + 0xa10) = selected;
                         FUN_002daa20(0, 7, *(u16*)(*(u8**)(selected + 4) + 2), 0, 4);
                     }
                 }
@@ -7430,17 +7428,17 @@ void FUN_002dae30(u64 param_1)
                     datCalcIsDead(*(DatUnit**)(currentUnit + 0xa2c), 0) != 0)
                 {
                     BtlUnit* unit;
-                    unit = *(BtlUnit**)(btl + 0x158);
+                    unit = *(BtlUnit**)(iGpffffb6fc + 0x158);
                     while (unit != NULL &&
                            (((unit->flags3 & 8) == 0 ||
                              datCalcIsDead(unit->datUnit, 0) != 0) ||
-                            unit->charId != *(u16*)(btl + 0xa0c)))
+                            unit->charId != *(u16*)(iGpffffb6fc + 0xa0c)))
                     {
                         unit = unit->next;
                     }
                     if (unit == NULL)
                     {
-                        u8* slot = btl + slotIndex * 4;
+                        u8* slot = iGpffffb6fc + slotIndex * 4;
                         *(u16*)(slot + 0x9f8) = *(u16*)(slot + 0x9fa);
                     }
                     else
@@ -7453,55 +7451,55 @@ void FUN_002dae30(u64 param_1)
             }
 
             {
-                u8* slot = btl + slotIndex * 4;
+                u8* slot = iGpffffb6fc + slotIndex * 4;
                 if (*(u16*)(slot + 0x9fa) <= *(u16*)(slot + 0x9f8))
                 {
                     switch (bit)
                     {
                     case 2:
                     {
-                        BtlAction* action = *(BtlAction**)(btl + 0x148);
+                        BtlAction* action = *(BtlAction**)(iGpffffb6fc + 0x148);
                         if (FUN_0029adf0(action) == 0)
                         {
                             action->unk_16 = 0x13;
                             FUN_0029a380(action);
                             stop = 1;
-                            *(u16*)(btl + 0xa04) &= (u16)~2;
+                            *(u16*)(iGpffffb6fc + 0xa04) &= (u16)~2;
                         }
                         break;
                     }
                     case 1:
-                        if ((*(u16*)(btl + 0xa06) & 1) == 0 &&
-                            FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
+                        if ((*(u16*)(iGpffffb6fc + 0xa06) & 1) == 0 &&
+                            FUN_0029adf0(*(BtlAction**)(iGpffffb6fc + 0x148)) == 0)
                         {
-                            if (FUN_002db480() == 0 && *(u32*)(btl + 0xa10) != 0)
+                            if (FUN_002db480() == 0 && *(u32*)(iGpffffb6fc + 0xa10) != 0)
                             {
-                                u8* selected = *(u8**)(btl + 0xa10);
+                                u8* selected = *(u8**)(iGpffffb6fc + 0xa10);
                                 BtlAction* action = (BtlAction*)FUN_00289650(
                                     0, *(u16*)(*(u8**)(selected + 4) + 2));
                                 *(u16*)(selected + 0xa) |= 1;
                                 FUN_001fdd40();
                                 action->unk_16 = 0x11;
                                 FUN_0029a380(action);
-                                *(u16*)(btl + 0xa06) |= 1;
+                                *(u16*)(iGpffffb6fc + 0xa06) |= 1;
                                 stop = 1;
                                 FUN_002db2a0(0);
                             }
                             else
                             {
-                                *(u16*)(btl + 0xa04) &= (u16)~1;
+                                *(u16*)(iGpffffb6fc + 0xa04) &= (u16)~1;
                             }
                         }
                         break;
                     case 4:
                     {
-                        BtlAction* action = *(BtlAction**)(btl + 0x148);
+                        BtlAction* action = *(BtlAction**)(iGpffffb6fc + 0x148);
                         if (FUN_0029adf0(action) == 0)
                         {
                             action->unk_16 = 7;
                             FUN_0029a380(action);
                             stop = 1;
-                            *(u16*)(btl + 0xa04) &= (u16)~4;
+                            *(u16*)(iGpffffb6fc + 0xa04) &= (u16)~4;
                         }
                         break;
                     }

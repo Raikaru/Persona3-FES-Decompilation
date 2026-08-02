@@ -1409,19 +1409,12 @@ int iVar10;
 int iVar11;
 
 short asStack_100 [2];
-
 float afStack_fc [14];
-
 short asStack_c4 [4];
-
 float afStack_bc [15];
-
 short asStack_80 [2];
-
 float afStack_7c [14];
-
 short asStack_44 [4];
-
 float afStack_3c [15];
 
 
@@ -3040,31 +3033,19 @@ u32 *puStack_20360;
 
 u32 auStack_2035c [32787];
 
-u32 *puStack_300;
-
-u32 uStack_2fc;
-
-u32 *puStack_2f8;
-
-u32 *puStack_2f0;
-
-u32 *puStack_2e8;
-
-u32 *puStack_2e0;
-
-u32 *puStack_2d8;
-
-u32 auStack_2d0 [24];
-
-u32 auStack_270 [24];
-
-u32 auStack_210 [12];
-
-u32 auStack_1e0 [12];
-
-u32 auStack_1b0 [72];
-
 u32 auStack_90 [36];
+u32 auStack_1b0 [72];
+u32 auStack_1e0 [12];
+u32 auStack_210 [12];
+u32 auStack_270 [24];
+u32 auStack_2d0 [24];
+u32 *puStack_300;
+u32 uStack_2fc;
+u32 *puStack_2f8;
+u32 *puStack_2f0;
+u32 *puStack_2e8;
+u32 *puStack_2e0;
+u32 *puStack_2d8;
 
 
 
@@ -3241,15 +3222,10 @@ do {
 } while (0 < iVar9);
 
 puStack_300 = auStack_90;
-
 puStack_2f8 = auStack_1b0;
-
 puStack_2f0 = auStack_1e0;
-
 puStack_2e8 = auStack_210;
-
 puStack_2e0 = auStack_270;
-
 puStack_2d8 = auStack_2d0;
 
 if (lVar19 != 0) {
@@ -3329,7 +3305,6 @@ else {
   iVar9 = (int)*(u32 *)(iVar1 + 0x98) >> 1;
 
   puVar11 = (&puStack_300)[iVar9 * 2];
-
   uVar16 = (&uStack_2fc)[iVar9 * 2] >> 2;
 
   *(short *)(iVar1 + 0x96) = *(short *)(iVar1 + 0x96) + 1;

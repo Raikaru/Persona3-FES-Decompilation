@@ -33687,7 +33687,7 @@ void FUN_00343410(int param_1)
 
   u32 uVar4;
 
-  u8 packed1[4];
+  u32 packed1;
   u32 c1s1;
   u32 c2s1;
   u8 packed2[4];
@@ -33732,7 +33732,7 @@ void FUN_00343410(int param_1)
 
     c2s1 = (u32)(iVar5);
 
-    *(u32 *)packed1 = mdlVuModulateStacked(&c1s1,&c2s1,DAT_007cae4c);
+    packed1 = mdlVuModulateStacked(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -34700,11 +34700,8 @@ void FUN_00344720(int param_1)
 
 
   u8 uStack_4;
-
   u8 uStack_3;
-
   u8 uStack_2;
-
   char cStack_1;
 
   
@@ -34746,11 +34743,8 @@ void FUN_00344720(int param_1)
         *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
         cStack_1 = packed2[3];
-
         uStack_4 = packed2[0];
-
         uStack_3 = packed2[1];
-
         uStack_2 = packed2[2];
 
         if (cStack_1 != -1) {
@@ -34758,11 +34752,8 @@ void FUN_00344720(int param_1)
           iVar8 = *(int *)(*(int *)(puVar2 + 0x14) + (uVar11 & 0xffff) * 4);
 
           *(u8 *)(iVar8 + 4) = uStack_4;
-
           *(u8 *)(iVar8 + 5) = uStack_3;
-
           *(u8 *)(iVar8 + 6) = uStack_2;
-
           *(char *)(iVar8 + 7) = cStack_1;
 
         }
@@ -34772,11 +34763,8 @@ void FUN_00344720(int param_1)
           iVar8 = *(int *)(*(int *)(puVar2 + 0x14) + (uVar11 & 0xffff) * 4);
 
           *(u8 *)(iVar8 + 4) = uStack_4;
-
           *(u8 *)(iVar8 + 5) = uStack_3;
-
           *(u8 *)(iVar8 + 6) = uStack_2;
-
           *(u8 *)(iVar8 + 7) = 0xfe;
 
         }
@@ -47622,8 +47610,8 @@ void FUN_003542a0(int param_1)
   long extraout_t3;
 
   u32 uVar6;
-
   u32 uVar7;
+
 
   int iVar8;
   int lVar9;
@@ -47662,8 +47650,8 @@ void FUN_003542a0(int param_1)
 
 
   uVar3 = *(u32 *)(param_1 + 0x28);
-
   uVar7 = (u32)(int)uVar3;
+
 
   iVar8 = *piVar2;
 
@@ -48552,11 +48540,8 @@ void FUN_003556d0(int param_1)
 
 
       *pfVar6 = fStack_20;
-
       pfVar6[1] = fStack_1c;
-
       pfVar6[2] = fStack_18;
-
       pfVar6[3] = fStack_14;
 
 

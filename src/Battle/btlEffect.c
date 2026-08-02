@@ -7246,7 +7246,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,short param_3,s32 param_4)
   s32 lVar7 = 0;
   u32 uVar8 = 0;
   u16 uVar9 = 0;
-  u16 auStack_20 [16];
+  u16 auStack_20 [20];
   
   if (param_3 == 0x10) {
     lVar7 = func_002c59d0(0,0,0,0);

@@ -1100,7 +1100,6 @@ u32 func_001ce960(void)
 FldUnit* func_001cf940(u32 encounter, void* unitData)
 {
     s32 i;
-    s32 count;
     s32 levelSum;
     u16 enemyId;
     u16 tier;
@@ -1134,16 +1133,15 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     unit->genusBase = (DatUnitGenusBase*)enemy;
     unit->encount = &gEncountTbl[enemyId];
     unit->charId = 0;
-    count = enemy->base.count;
-    if (count >= 4)
+    if (enemy->base.count >= 4)
     {
         unit->scaleIdx = 3;
     }
-    else if (count >= 2)
+    else if (enemy->base.count >= 2)
     {
         unit->scaleIdx = 2;
     }
-    else if (count == 1)
+    else if (enemy->base.count == 1)
     {
         unit->scaleIdx = 1;
     }
@@ -1187,13 +1185,13 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
                         800.0f);
 
     levelSum = 0;
-    for (i = 0; i < count; i++)
+    for (i = 0; i < enemy->base.count; i++)
     {
         levelSum += enemy->units[i].level;
     }
-    if (count != 0)
+    if (enemy->base.count != 0)
     {
-        unit->unk_184 = levelSum / count;
+        unit->unk_184 = levelSum / enemy->base.count;
     }
     if (unit->unk_18c == 3)
     {

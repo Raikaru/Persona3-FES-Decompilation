@@ -2058,6 +2058,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     RwV3d diff;
     RwV3d rayOrigin;
     RwV3d hitPoint;
+    f32 posY;
+    f32 posZ;
     u16 resTypeMask;
     s32 returnVal;
 
@@ -2270,6 +2272,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         listNode = *(void**)((u8*)listNode + 0xf8);
     }
 
+    posY = pos->y;
+    posZ = pos->z;
     for (i = 0; i < (s32)collector.count; i++)
     {
         RwV3d normal;
@@ -2283,8 +2287,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             continue;
 
         diff.x = collector.points[i].x - pos->x;
-        diff.y = collector.points[i].y - pos->y;
-        diff.z = collector.points[i].z - pos->z;
+        diff.y = collector.points[i].y - posY;
+        diff.z = collector.points[i].z - posZ;
         func_004c69f0(&diff, &diff);
 
         correction = sphereCollisRadius - collector.distances[i];

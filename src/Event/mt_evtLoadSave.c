@@ -2447,7 +2447,7 @@ void FUN_003902c0(int param_1,int param_2)
 
   int iVar9;
 
-  int aiStack_10 [4];
+  int aiStack_10 [8];
 
   
 

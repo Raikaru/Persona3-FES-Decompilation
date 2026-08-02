@@ -3018,7 +3018,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     u64 actionUID;
     u64 sp260;
     u64 sp258;
-    u32 workBuf[4];
+    u32 workBuf[7];
     s16 sp190;
     s16 sp180;
     s16 sp1D0;
@@ -5815,7 +5815,7 @@ void btlActionUpdateStateSummon(BtlAction* action)
     s16 castDelay;
     u32 outA;
     u32 outB;
-    char stackBufE0[0x88];
+    char stackBufE0[0x98];
     u32 didFormationSetup;
     u64 chainUID;
     u16 i;
@@ -7366,7 +7366,7 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
 
     u32 mode;
     u8 workBuf[0x100];
-    u32 extraWork[4];
+    u32 extraWork[7];
     BtlAction* basis;
 
     rootH = FUN_002b8f90(1);

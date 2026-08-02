@@ -1818,9 +1818,8 @@ HSfdImage* func_0010e0d0(const u8* stream)
 {
     HSfdImage* image;
     s32 bits;
-    const u8* payload;
     s32 paletteBits;
-    s32 paletteBytes;
+    const u8* payload;
 
     payload = stream + 0x40;
     if ((stream[0] != 2) || (stream[1] != 0) ||
@@ -1867,21 +1866,6 @@ HSfdImage* func_0010e0d0(const u8* stream)
         switch (stream[0x11])
         {
             case 0:
-                paletteBits = 0x20;
-                break;
-            case 2:
-            case 0x0A:
-                paletteBits = 0x10;
-                break;
-            default:
-                paletteBits = 0;
-                break;
-        }
-        paletteBytes = ((1 << bits) * stream[0x10] * paletteBits) >> 3;
-
-        switch (stream[0x11])
-        {
-            case 0:
                 func_0010df60(image, payload);
                 break;
             case 1:
@@ -1907,7 +1891,9 @@ HSfdImage* func_0010e0d0(const u8* stream)
                 break;
         }
         func_0010e010(image, bits);
-        payload += paletteBytes;
+        paletteBits = (stream[0x11] == 0) ? 0x20 :
+                      ((stream[0x11] == 2 || stream[0x11] == 0x0A) ? 0x10 : 0);
+        payload += ((1 << image->depth) * stream[0x10] * paletteBits) >> 3;
     }
 
     switch (stream[0x16])

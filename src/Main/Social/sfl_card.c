@@ -1567,7 +1567,7 @@ void bpTexSortVisibleNodes(void)
     cameraMatrix = func_004cb2f0(camera != NULL ? *(void**)((u8*)camera + 4) : NULL);
     nodeCount = bpTexNodeCount();
     groupCount = 0;
-    for (i = 0; i < nodeCount && groupCount < 8; i++)
+    for (i = 0; groupCount < 8 && i < nodeCount; i++)
     {
         node = bpTexFindNodeByIndex(i);
         bpTexCollect(node, leaves, &leafCount);
@@ -2488,6 +2488,7 @@ void bpTexUpdateNode(void* nodeData)
 {
     u32* work;
     u32* node;
+    f32 rotation[4];
     u32* leaves[8];
     u32* parents[8];
     u32* finalLeaves[8];
@@ -2497,12 +2498,11 @@ void bpTexUpdateNode(void* nodeData)
     s32 i;
     f32 phase;
     volatile /* Removing this qualifier worsens bpTexUpdateNode (NONMATCHING nd1885 -> NONMATCHING nd1919, size 2488 -> 2472) - measured W170. */ f32 offsets[3];
-    f32 rotation[4];
-    f32 position[3];
+    f32 position[4];
     f32 direction[3];
     f32 alpha;
     f32 leafAlpha;
-    u8 color[4];
+    u8 color[8];
     u32 mode;
     u32 flags;
     void* camera;

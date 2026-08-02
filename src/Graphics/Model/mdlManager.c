@@ -5346,8 +5346,10 @@ void FUN_00317a20(Model* param_1)
   code *stateFn;
   u32 uVar12;
   u32 uVar13;
-  int iStack_18;
-  u16 uStack_14;
+  struct {
+    int value;
+    u16 field;
+  } stackPair;
   int iStack_c;
   int iStack_8;
   float red;
@@ -5380,9 +5382,9 @@ void FUN_00317a20(Model* param_1)
       }
       (*stateFn)(0x14,uVar12);
       FUN_00313ca0(iVar8 + 0x35c,iVar8 + 0xec);
-      iStack_18 = iVar8 + 0xd0;
-      uStack_14 = 0;
-      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x315f50,&iStack_18);
+      stackPair.value = iVar8 + 0xd0;
+      stackPair.field = 0;
+      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x315f50,&stackPair.value);
       if (((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) || (*(u8 *)(iVar8 + 0xd3) == 0xff)) {
         iVar9 = *(int *)(iVar8 + 0xe0);
         if (iVar9 == 0) {
@@ -6936,10 +6938,9 @@ u32 func_00319970(Model* param_1)
       uVar9 = (void *)func_0031d7e0(uVar5,iVar4 + iVar11,uStack_2c,uStack_30,uStack_24);
 
       uVar8 = (u32)uStack_30;
-
       while (uVar8 = uVar8 + 1 & 0xffff, uVar8 < uStack_2e + 1) {
-
         func_0031d900(uVar5,uVar9,uVar8);
+
 
       }
 
@@ -7515,9 +7516,10 @@ int func_0031aad0(Model* param_1)
 
   int iVar19;
 
-  int iStack_8;
-
-  u32 uStack_4;
+  struct {
+    int value;
+    u32 field;
+  } stackPair;
 
   
 
@@ -7531,15 +7533,15 @@ int func_0031aad0(Model* param_1)
 
   if (*(int *)(iVar2 + 4) != 0) {
 
-    uVar8 = func_0010c3a0(*(int *)(iVar2 + 4),&iStack_8,&uStack_4);
+    uVar8 = func_0010c3a0(*(int *)(iVar2 + 4),&stackPair.value,&stackPair.field);
 
-    if (iStack_8 == 1) {
+    if (stackPair.value == 1) {
 
       func_004d0dc0(uVar8,0x1a13b0,iVar2 + 0x40);
 
       func_004d0d10(uVar8);
 
-      func_004c5780(uStack_4,0);
+      func_004c5780(stackPair.field,0);
 
       *(u32 *)(iVar2 + 4) = 0;
 
@@ -7557,9 +7559,9 @@ int func_0031aad0(Model* param_1)
 
   if (*(int *)(iVar2 + 8) != 0) {
 
-    uVar8 = func_0010c3a0(*(int *)(iVar2 + 8),&iStack_8,&uStack_4);
+    uVar8 = func_0010c3a0(*(int *)(iVar2 + 8),&stackPair.value,&stackPair.field);
 
-    if (iStack_8 == 1) {
+    if (stackPair.value == 1) {
 
       if (*(int **)(param_1->unkData2 + 0x1c) == 0) {
 
@@ -7587,7 +7589,7 @@ int func_0031aad0(Model* param_1)
 
       func_004b7760(0x77e4e0,uVar8);
 
-      func_004c5780(uStack_4,0);
+      func_004c5780(stackPair.field,0);
 
       *(u32 *)(iVar2 + 8) = 0;
 
@@ -7611,9 +7613,9 @@ int func_0031aad0(Model* param_1)
 
       if (iVar12 != 0) {
 
-        uVar6 = func_0010c3a0(iVar12,&iStack_8,&uStack_4);
+        uVar6 = func_0010c3a0(iVar12,&stackPair.value,&stackPair.field);
 
-        if (iStack_8 == 1) {
+        if (stackPair.value == 1) {
 
           if (*(int **)(param_1->unkData2 + 0x1c) == 0) {
 
@@ -7639,7 +7641,7 @@ int func_0031aad0(Model* param_1)
 
           *(u32 *)(**(int **)(param_1->unkData2 + 0x1c) + (uVar18 & 0xffff) * 8) = uVar6;
 
-          func_004c5780(uStack_4,0);
+          func_004c5780(stackPair.field,0);
 
           *(u32 *)(*(int *)(iVar2 + 0xc) + uVar18 * 4) = 0;
 
@@ -7665,13 +7667,13 @@ int func_0031aad0(Model* param_1)
 
       if (iVar12 == 0) {
 
-        uVar6 = func_0010c3a0(*(u32 *)(iVar2 + 0x10),&iStack_8,&uStack_4);
+    uVar6 = func_0010c3a0(*(u32 *)(iVar2 + 0x10),&stackPair.value,&stackPair.field);
 
-        if (iStack_8 == 1) {
+    if (stackPair.value == 1) {
 
           param_1->clump = (RpClump *)uVar6;
 
-          func_004c5780(uStack_4,0);
+      func_004c5780(stackPair.field,0);
 
           *(u32 *)(iVar2 + 0x10) = 0;
 
@@ -8258,7 +8260,6 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   char cVar2;
 
-  u16 uVar3;
 
   int sVar4;
 
@@ -8272,9 +8273,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   
 
-  uVar3 = datGetEquipmentIdx((short)param_2,0);
-
-  sVar4 = datGetEquipmentId((short)param_2,uVar3);
+  sVar4 = datGetEquipmentId((short)param_2,datGetEquipmentIdx((short)param_2,0));
 
   bVar1 = false;
 

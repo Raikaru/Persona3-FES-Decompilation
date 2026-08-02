@@ -92,7 +92,6 @@ void FUN_0022c8a0(u32* object_param)
     u32 color1;
     u32 color2;
     u32 color3;
-    s32 s0;
     f32 pos1X, pos1Y;
     f32 pos2X, pos2Y;
     f32 pos3X, pos3Y;
@@ -570,6 +569,7 @@ void FUN_0022c8a0(u32* object_param)
     }
 
     if (*(u32*)object & 2) {
+        s32 idx;
         u32 resourceId = FUN_0022e850(*(u32*)(object + 0x528));
         {
             void* resource = (void*)FUN_0021cca0(table3, resourceId);
@@ -580,34 +580,34 @@ void FUN_0022c8a0(u32* object_param)
             FUN_0021d8e0(object + 0x530, rect);
         }
  
-        s0 = 0;
+        idx = 0;
         if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
             if (*(s32*)(object + 0x528) < 6) {
                 switch (*(s32*)(object + 0x528)) {
                 case 0:
                     K_ASSERT(0, 0x369);
-                    s0 = 0;
+                    idx = 0;
                     break;
                 case 1:
-                    s0 = 0;
+                    idx = 0;
                     break;
                 case 2:
-                    s0 = 1;
+                    idx = 1;
                     break;
                 case 3:
-                    s0 = 2;
+                    idx = 2;
                     break;
                 case 4:
-                    s0 = 3;
+                    idx = 3;
                     break;
                 case 5:
-                    s0 = 4;
+                    idx = 4;
                     break;
                 }
             }
-            colorTmp[0] = D_0068E4D8[s0 * 3 + 0];
-            colorTmp[1] = D_0068E4D8[s0 * 3 + 1];
-            colorTmp[2] = D_0068E4D8[s0 * 3 + 2];
+            colorTmp[0] = D_0068E4D8[idx * 3 + 0];
+            colorTmp[1] = D_0068E4D8[idx * 3 + 1];
+            colorTmp[2] = D_0068E4D8[idx * 3 + 2];
             colorTmp[3] = 0xff;
         } else {
             colorTmp[0] = 0xff;

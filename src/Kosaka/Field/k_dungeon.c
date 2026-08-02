@@ -3073,9 +3073,9 @@ void* func_001c0d70(KwlnTask* task)
     {
         if ((fld->base.flags & 2) != 0 && fld->unk_160 != NULL)
         {
-            u8* fieldData;
             u32 i;
             u8* entry;
+            u8* fieldData;
 
             fieldData = (u8*)fld->unk_160;
             i = 0;

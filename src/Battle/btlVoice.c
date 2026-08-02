@@ -2366,7 +2366,6 @@ void func_002e5040(void)
 // FUN_002e5060 NONMATCHING
 void func_002e5060(BtlCamera* camera)
 {
-  BtlAction *action;
   BtlUnit *unit;
   BtlUnit *targetUnit;
   u8 *voiceData;
@@ -2407,10 +2406,9 @@ void func_002e5060(BtlCamera* camera)
     return;
   }
 
-  action = camera->action;
-  if (action == 0) {
+  if (camera->action == 0) {
     usePreset = 1;
-  } else if (action->unit->genus == 0) {
+  } else if (camera->action->unit->genus == 0) {
     state = *(u16 *)(DAT_007ce3ec + 0x104);
     if ((state == 0x1d) || (state == 0x1c)) {
       usePreset = 0;
@@ -2426,7 +2424,7 @@ void func_002e5060(BtlCamera* camera)
     }
   }
 
-  unit = action->unit;
+  unit = camera->action->unit;
   FUN_0027ffb0_btlVoice_typed(unit, (RwV3d *)&position);
   result = FUN_0030c3a0(unit->datUnit);
   if ((result != 0) && (usePreset != 0)) {
@@ -2441,12 +2439,12 @@ void func_002e5060(BtlCamera* camera)
       position.y = unit->unk_8c * unit->scale * 0.25f +
                    position.y + 0.0f;
     }
-    result = FUN_002d6290(action);
+    result = FUN_002d6290(camera->action);
     if (result == 0) {
-      targetId = FUN_002d1600((BtlTarget*)((u8 *)action + 0x38));
+      targetId = FUN_002d1600((BtlTarget*)((u8 *)camera->action + 0x38));
       FUN_00280870_btlVoice_typed(targetId, 1, &target, 0, 0, 1);
     } else {
-      targetUnit = action->target.targetedActions[0]->unit;
+      targetUnit = camera->action->target.targetedActions[0]->unit;
       FUN_0027ffb0_btlVoice_typed(targetUnit, &target);
     }
     FUN_002d1de0_btlVoice_typed(&facingRot, &position, &target);
@@ -2508,7 +2506,7 @@ void func_002e5060(BtlCamera* camera)
     endFrame.pos.z = position.z + output.z;
     FUN_002a4690(&startFrame.rot, &startFrame.pos, &position, D_00697880);
     FUN_002a4690(&endFrame.rot, &endFrame.pos, &position, D_00697880);
-    FUN_002a3e80(0.0f, (u8 *)action, 0, 0, 1);
+    FUN_002a3e80(0.0f, (u8 *)camera->action, 0, 0, 1);
     if (startFrame.pos.y < 25.0f) {
       startFrame.pos.y = 25.0f;
     }
@@ -3470,7 +3468,6 @@ void func_002e7890(u32 param_1)
   u16 index;
   u16 mode;
   u8 color[4];
-  u8 *base;
   u8 *voiceData;
   s8 voiceType;
   u32 isSpecial;
@@ -3504,7 +3501,6 @@ void func_002e7890(u32 param_1)
     FUN_0027f730(persona, *(u32 *)color);
   }
   FUN_002880e0((u32)(uintptr_t)persona, 0);
-  base = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18));
 
   switch (mode) {
   case 0:
@@ -3525,7 +3521,8 @@ void func_002e7890(u32 param_1)
     BtlVoicePlayback playbackA;
     randomIndex = FUN_002ffbc0(2);
     voiceType = unit->unk_9f0;
-    voiceData = base + (voiceType * 0x68) +
+    voiceData = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18)) +
+                (voiceType * 0x68) +
                 ((randomIndex & 0xffff) * 0x34) + 4;
     btlVoicePlayCameraVoice(voiceData, playbackA.startTransform,
                             playbackA.endTransform, &playbackA.startPosition,
@@ -3539,7 +3536,7 @@ void func_002e7890(u32 param_1)
       break;
     if (unit->genus == 0) {
       BtlVoicePlayback playbackB;
-      voiceData = base + 0x3ac + 4;
+      voiceData = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18)) + 0x3ac + 4;
       btlVoicePlayCameraVoice(voiceData, playbackB.startTransform,
                               playbackB.endTransform, &playbackB.startPosition,
                               &playbackB.endPosition);
@@ -3547,7 +3544,8 @@ void func_002e7890(u32 param_1)
     else {
       BtlVoicePlayback playbackC;
       randomIndex = FUN_002ffbc0(2);
-      voiceData = base + ((randomIndex & 0xffff) * 0x34) + 0x20c + 4;
+      voiceData = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18)) +
+                  ((randomIndex & 0xffff) * 0x34) + 0x20c + 4;
       btlVoicePlayCameraVoice(voiceData, playbackC.startTransform,
                               playbackC.endTransform, &playbackC.startPosition,
                               &playbackC.endPosition);
@@ -10278,7 +10276,6 @@ void func_002f5d80(u32 param_1)
   float fVar5;
   u32 uVar6;
   u32 uStack_4;
-  
   iVar4 = (int)param_1;
   if (((*(u8 *)(iVar4 + 0xa2) == 1) && (*(u16 *)(iVar4 + 0xa4) == 0xf1)) &&
      ((*(u32 *)(iVar4 + 0x98) & 2) != 0)) {
