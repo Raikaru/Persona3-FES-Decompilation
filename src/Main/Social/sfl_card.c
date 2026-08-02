@@ -1937,6 +1937,7 @@ void bpTexRemoveNodeAt_y2(s32 index)
     u32* action;
     s32 childCount;
     s32 count;
+    s32 targetIndex;
     s32 i;
 
     if (BP_TEX_GLOBAL == NULL)
@@ -1946,8 +1947,8 @@ void bpTexRemoveNodeAt_y2(s32 index)
     work = BP_TEX_GLOBAL;
     count = BP_TEX_S32(work, 0x12684);
     K_ASSERT(index >= 0 && index < count, 0x4c9);
-    index = count - 1 - index;
-    node = BP_TEX_PTR(work, 0x12664 + index * 4);
+    targetIndex = count - 1 - index;
+    node = BP_TEX_PTR(work, 0x12664 + targetIndex * 4);
     K_ASSERT((*node & 2) == 0, 0x4cf);
 
     if (BP_TEX_GLOBAL == NULL)
@@ -1991,7 +1992,7 @@ void bpTexRemoveNodeAt_y2(s32 index)
     {
         children[i][0] |= 0x20;
     }
-    for (i = index; i < count - 1; i++)
+    for (i = targetIndex; i < count - 1; i++)
     {
         BP_TEX_PTR(work, 0x12664 + i * 4) =
             BP_TEX_PTR(work, 0x12664 + (i + 1) * 4);
@@ -2021,7 +2022,7 @@ void bpTexShuffleNodes(void)
 {
     u32* work;
     u32* node;
-    u32* positions[4];
+    f32 position[4];
     s32 count;
     s32 nodeCount;
     s32 leafCount;
@@ -2029,18 +2030,18 @@ void bpTexShuffleNodes(void)
     s32 j;
     u32 tmp;
     s32 selected;
-    f32 position[3];
+    u32* positions[4];
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
     count = (s32)BP_TEX_U32(work, 0x1267c);
-    func_005225a8((u32)"speed:%d\n", BP_TEX_U32(work, 0x126b0));
-    BP_TEX_U32(work, 0x4a22 * 4) =
-        (s32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
-    BP_TEX_U32(work, 0x4a23 * 4) =
-        (s32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 3.0f + 5.0f);
-    func_005225a8((u32)"divH:%d\n", BP_TEX_U32(work, 0x4a22 * 4));
-    func_005225a8((u32)"divV:%d\n", BP_TEX_U32(work, 0x4a23 * 4));
+    func_005225a8((u32)"speed:%d\n", BP_TEX_U32(work, 0x127b0));
+    BP_TEX_U32(work, 0x49ef * 4) =
+        (s32)(((f32)((s32)BP_TEX_U32(work, 0x127b0) - 4) / 14.0f) * 10.0f + 3.0f);
+    BP_TEX_U32(work, 0x49f0 * 4) =
+        (s32)(((f32)((s32)BP_TEX_U32(work, 0x127b0) - 4) / 14.0f) * 3.0f + 5.0f);
+    func_005225a8((u32)"divH:%d\n", BP_TEX_U32(work, 0x49ef * 4));
+    func_005225a8((u32)"divV:%d\n", BP_TEX_U32(work, 0x49f0 * 4));
     for (i = 0; i < count; i++)
     {
         BP_TEX_U32(work, (0x49ef + i) * 4) = (u32)i;

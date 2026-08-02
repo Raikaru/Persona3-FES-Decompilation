@@ -865,6 +865,10 @@ extern u8 DAT_007e095a_abs[];
 u32 DAT_00960088;
 code DAT_00960090;
 code DAT_009600a0;
+ #pragma alias DAT_00960090_abs DAT_00960090
+ extern code DAT_00960090_abs[];
+ #pragma alias DAT_009600a0_abs DAT_009600a0
+ extern code DAT_009600a0_abs[];
 u32 DAT_0098967f;
 u32 LAB_003eff84[];
 u32 LAB_003f0748[];
@@ -4269,7 +4273,7 @@ void FUN_003f4de0(int param_1,int param_2,u32 param_3,int param_4)
 
   float fVar15;
 
-  u32 auStack_140 [12];
+  u32 auStack_140 [16];
 
   u32 uStack_110;
 
@@ -4277,7 +4281,7 @@ void FUN_003f4de0(int param_1,int param_2,u32 param_3,int param_4)
 
   int iStack_108;
 
-  u32 auStack_100 [9];
+  u32 auStack_100 [16];
 
   u32 uStack_dc;
 
@@ -4285,7 +4289,7 @@ void FUN_003f4de0(int param_1,int param_2,u32 param_3,int param_4)
 
   int iStack_d4;
 
-  u32 auStack_c0 [6];
+  u32 auStack_c0 [16];
 
   u32 uStack_a8;
 
@@ -4293,7 +4297,7 @@ void FUN_003f4de0(int param_1,int param_2,u32 param_3,int param_4)
 
   int iStack_a0;
 
-  u32 auStack_80 [4];
+  u32 auStack_80 [8];
 
   u32 uStack_70;
 
@@ -5445,6 +5449,7 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
   sStack_a = DAT_007cd946;
 
+
   pcVar7 = (char *)(&DAT_006aefa8);
 
   pcVar6 = acStack_20;
@@ -5639,7 +5644,6 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
   return;
 
 }
-
 #undef auStack_30
 #undef acStack_20
 #undef sStack_10
@@ -5647,6 +5651,7 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 #undef sStack_c
 #undef sStack_a
 #undef acStack_8
+
 // FUN_003F6F20 NONMATCHING
 
 
@@ -19815,31 +19820,32 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
   u32 uVar3;
 
   u32 uVar4;
+  code *render_state;
 
-  f32 vertices[64];
-  f32 reciprocal;
+  f32 vertices[80];
 
   if (param_7 == 0) {
 
     RpSkyRenderStateSet(2,0x44);
 
     RpSkyRenderStateSet(3,0x717fb);
+    render_state = (code *)&DAT_00960090_abs;
 
-    (*DAT_00960090)(6,1);
+    (*render_state)(6,1);
 
-    (*DAT_00960090)(8,1);
+    (*render_state)(8,1);
 
-    (*DAT_00960090)(7,2);
+    (*render_state)(7,2);
 
-    (*DAT_00960090)(9,2);
+    (*render_state)(9,2);
 
-    (*DAT_00960090)(0xc,1);
+    (*render_state)(0xc,1);
 
-    (*DAT_00960090)(0xe,0);
+    (*render_state)(0xe,0);
 
-    (*DAT_00960090)(0x14,2);
+    (*render_state)(0x14,2);
 
-    (*DAT_00960090)(1,0);
+    (*render_state)(1,0);
 
   }
 
@@ -19858,7 +19864,7 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 
     iVar2 = kwlnGetMainCamera();
 
-    reciprocal = 1.0f / *(float *)(iVar2 + 0x84);
+    vertices[6] = 1.0f / *(float *)(iVar2 + 0x84);
 
   }
 
@@ -19896,16 +19902,16 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
   if (param_8 != 0) {
     vertices[4] = 0.0f;
     vertices[5] = 0.0f;
-    vertices[6] = reciprocal;
+    vertices[6] = vertices[6];
     vertices[20] = 0.0f;
     vertices[21] = 1.0f;
-    vertices[22] = reciprocal;
+    vertices[22] = vertices[6];
     vertices[36] = 1.0f;
     vertices[37] = 0.0f;
-    vertices[38] = reciprocal;
+    vertices[38] = vertices[6];
     vertices[52] = 1.0f;
     vertices[53] = 1.0f;
-    vertices[54] = reciprocal;
+    vertices[54] = vertices[6];
   }
 
 
@@ -19955,7 +19961,7 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
   u32 uVar3;
   float fVar4;
   float fVar5;
-  float render_data[44];
+  float render_data[48];
   code render_state = DAT_00960090;
 
   if (param_9 == 0) {

@@ -4,7 +4,7 @@
     "complete": false,
     "label": "Essential Persona-specific functions",
     "name": "essential_functions",
-    "remaining": 1351,
+    "remaining": 1348,
     "requires_every_function_to_match": true,
     "whole_executable_identity_is_separate": true
   },
@@ -847,6 +847,7 @@
       "001831e0",
       "001832c0",
       "001833e0",
+      "00183f60",
       "00184890",
       "00184c80",
       "00184d90",
@@ -3103,6 +3104,7 @@
       "00295ba0",
       "00295bf0",
       "00295f00",
+      "00295fa0",
       "00296310",
       "00296320",
       "002964f0",
@@ -5245,6 +5247,7 @@
       "00367e00",
       "00367ec0",
       "00368020",
+      "003680e0",
       "003682f0",
       "003683a0",
       "00368440",
@@ -6950,11 +6953,11 @@
       "007807e0",
       "00780800"
     ],
-    "count": 6884,
+    "count": 6887,
     "duplicate_rows": 0,
     "known_rows": 8235,
-    "matched_body_bytes": 1378536,
-    "percent": 83.594,
+    "matched_body_bytes": 1380792,
+    "percent": 83.631,
     "unique_known_addresses": 8235
   },
   "schema_version": 1,
@@ -15203,15 +15206,15 @@
   "source": {
     "function_scope_policy": "config/function_scope.json",
     "ignored_unknown_rows": 0,
-    "linked_report": "build\\wip\\W430_linked.json",
+    "linked_report": "build\\wip\\W431_linked.json",
     "raw_rows": 14055,
     "scope_ignored_unknown_rows": 0,
     "scope_rows": 8235,
-    "verifier_report": "build\\wip\\W430_final2.json"
+    "verifier_report": "build\\wip\\W431_final.json"
   },
   "status_counts": {
-    "MATCH": 6884,
-    "NONMATCHING": 1350,
+    "MATCH": 6887,
+    "NONMATCHING": 1347,
     "SIZE_MISMATCH": 1
   },
   "total": 8235,
@@ -16053,6 +16056,7 @@
         "001831e0",
         "001832c0",
         "001833e0",
+        "00183f60",
         "00184890",
         "00184c80",
         "00184d90",
@@ -18309,6 +18313,7 @@
         "00295ba0",
         "00295bf0",
         "00295f00",
+        "00295fa0",
         "00296310",
         "00296320",
         "002964f0",
@@ -20451,6 +20456,7 @@
         "00367e00",
         "00367ec0",
         "00368020",
+        "003680e0",
         "003682f0",
         "003683a0",
         "00368440",
@@ -23320,16 +23326,16 @@
         "007807e0",
         "00780800"
       ],
-      "count": 8050,
+      "count": 8053,
       "duplicate_rows": 0,
       "known_rows": 14055,
-      "matched_body_bytes": 1429336,
-      "percent": 57.271,
+      "matched_body_bytes": 1431592,
+      "percent": 57.292,
       "unique_known_addresses": 14055
     },
     "status_counts": {
-      "MATCH": 8050,
-      "NONMATCHING": 6002,
+      "MATCH": 8053,
+      "NONMATCHING": 5999,
       "SIZE_MISMATCH": 1,
       "STUB": 2
     },

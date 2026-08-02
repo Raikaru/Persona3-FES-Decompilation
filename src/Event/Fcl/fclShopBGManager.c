@@ -623,74 +623,76 @@ u32 FUN_004113f0(u64 param_1,int param_2,int param_3)
 
     sVar6 = *(short *)((int)param_3 + 6);
 
-    if (sVar6 == 4) {
-
-      uVar2 = *puVar1;
-
-      *puVar1 = uVar2 | 2;
-
-      *puVar1 = uVar2 | 10;
-
-      uVar2 = puVar1[5];
-
-      puVar1[5] = uVar2 | 2;
-
-      puVar1[5] = uVar2 | 10;
-
-      uVar2 = puVar1[10];
-
-      puVar1[10] = uVar2 | 2;
-
-      puVar1[10] = uVar2 | 10;
-
-      uVar2 = puVar1[0xf];
-
-      puVar1[0xf] = uVar2 | 2;
-
-      puVar1[0xf] = uVar2 | 10;
-
-    }
-
-    else if ((sVar6 != 2) && (sVar6 == 1)) {
+    switch (sVar6) {
+    case 1:
 
       memset(puVar1,0,0x50);
 
       *(u16 *)((int)puVar1 + 0xe) = 0xff;
 
       uVar2 = *puVar1;
-
-      *puVar1 = uVar2 | 1;
-
-      *puVar1 = uVar2 & 0xfffffff7 | 1;
+      uVar2 = uVar2 | 1;
+      *puVar1 = uVar2;
+      uVar2 = uVar2 & 0xfffffff7;
+      *puVar1 = uVar2;
 
       *(u16 *)((int)puVar1 + 0x22) = 0xff;
 
       uVar2 = puVar1[5];
-
-      puVar1[5] = uVar2 | 1;
-
-      puVar1[5] = uVar2 & 0xfffffff7 | 1;
+      uVar2 = uVar2 | 1;
+      puVar1[5] = uVar2;
+      uVar2 = uVar2 & 0xfffffff7;
+      puVar1[5] = uVar2;
 
       *(u16 *)((int)puVar1 + 0x36) = 0xff;
 
       uVar2 = puVar1[10];
-
-      puVar1[10] = uVar2 | 1;
-
-      puVar1[10] = uVar2 & 0xfffffff7 | 1;
+      uVar2 = uVar2 | 1;
+      puVar1[10] = uVar2;
+      uVar2 = uVar2 & 0xfffffff7;
+      puVar1[10] = uVar2;
 
       *(u16 *)((int)puVar1 + 0x4a) = 0xff;
 
       uVar2 = puVar1[0xf];
-
-      puVar1[0xf] = uVar2 | 1;
-
-      puVar1[0xf] = uVar2 & 0xfffffff7 | 1;
+      uVar2 = uVar2 | 1;
+      puVar1[0xf] = uVar2;
+      uVar2 = uVar2 & 0xfffffff7;
+      puVar1[0xf] = uVar2;
 
       *(u16 *)(puVar1 + 0x14) = 0;
+      break;
 
+    case 2:
+      break;
+
+    case 4:
+
+      uVar2 = *puVar1;
+      uVar2 = uVar2 | 2;
+      *puVar1 = uVar2;
+      uVar2 = uVar2 | 8;
+      *puVar1 = uVar2;
+
+      uVar2 = puVar1[5];
+      uVar2 = uVar2 | 2;
+      puVar1[5] = uVar2;
+      uVar2 = uVar2 | 8;
+      puVar1[5] = uVar2;
+
+      uVar2 = puVar1[10];
+      uVar2 = uVar2 | 2;
+      puVar1[10] = uVar2;
+      uVar2 = uVar2 | 8;
+      puVar1[10] = uVar2;
+
+      uVar2 = puVar1[0xf];
+      uVar2 = uVar2 | 2;
+      puVar1[0xf] = uVar2;
+      uVar2 = uVar2 | 8;
+      puVar1[0xf] = uVar2;
+      break;
     }
-
   }
 
   sVar6 = (short)puVar1[0x14];
@@ -869,26 +871,18 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
     u32 uVar2;
     u32 *pfVar7;
     u32 *pfVar8;
-  pfVar8 = (u32 *)&DAT_006b0020;
-  pfVar7 = (u32 *)afStack_30;
-
-  iVar6 = 5;
-
-  do {
-
-    uVar2 = *pfVar8;
-    uVar3 = pfVar8[1];
-
-    pfVar8 = pfVar8 + 2;
-
-    iVar6 = iVar6 + -1;
-
-    *pfVar7 = uVar2;
-    pfVar7[1] = uVar3;
-
-    pfVar7 = pfVar7 + 2;
-
-  } while (0 < iVar6);
+    pfVar8 = (u32 *)&DAT_006b0020;
+    pfVar7 = (u32 *)afStack_30;
+    iVar6 = 5;
+    do {
+      uVar2 = *pfVar8;
+      uVar3 = pfVar8[1];
+      pfVar8 = pfVar8 + 2;
+      iVar6 = iVar6 + -1;
+      *pfVar7 = uVar2;
+      pfVar7[1] = uVar3;
+      pfVar7 = pfVar7 + 2;
+    } while (0 < iVar6);
   }
 
   if (param_3 != 0) {
@@ -5173,6 +5167,7 @@ void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5,
   int iVar1;
 
   u64 uVar2;
+
 
   
 

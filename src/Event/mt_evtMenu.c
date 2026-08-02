@@ -12314,7 +12314,8 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
   iVar1 = 0;
 
-  FUN_0036f900(param_1,param_2,0x19,0xb,0,1,param_3,0x37e3f0,0);
+  FUN_0036f900(param_1,param_2,0x19,0xb,0,1,param_3,(int)(code *)FUN_0037e3f0,
+               0);
 
   iVar2 = (int)param_3;
 

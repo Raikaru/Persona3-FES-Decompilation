@@ -6231,7 +6231,7 @@ void btlActionInitStateEndure(BtlAction* action)
     }
 }
 /* W212: template 00297760 suggested restoring actionUID writes after two packet constructors; the honest probe grew 788 to 804 bytes but regressed nd507 to nd548 (window 880), so it was reverted. Residual starts at frame 0x50 versus retail 0x80, confirming broader missing packet-chain structure. */
-// FUN_00295fa0 NONMATCHING
+// FUN_00295fa0
 void btlActionUpdateStateEndure(BtlAction* action)
 {
     BtlPacket* packet;
@@ -6241,9 +6241,10 @@ void btlActionUpdateStateEndure(BtlAction* action)
     BtlPacket* messagePacket;
     BtlUnit* unit;
     s32 work[7];
-    u16 skillId;
-    s16 messageId;
-    u16 count;
+    s32 messageId;
+    u64 messageUID;
+    u64 animUID;
+    s32 count;
 
     unit = action->unit;
 
@@ -6251,67 +6252,71 @@ void btlActionUpdateStateEndure(BtlAction* action)
     {
         return;
     }
-    skillId = ACTION_U16(action, 0x460);
     barrier = FUN_0027dc00(0x80000);
     barrier->actionUID = action->uid;
     btlPacketRegister(barrier, BTLPACKET_TYPE_0);
-    if (skillId == 0x1b6)
+    switch (*(u16*)&action->unkData3[0x3d8])
     {
-        messageId = 0xdf;
+    case 0x23c:
+        messageId = (s16)(unit->genus == UNIT_GENUS_PC ? 0x42 : 0x43);
+        break;
+    case 0x1b6:
+        messageId = (s16)0xdf;
+        break;
+    default:
+        messageId = (s16)(unit->genus == UNIT_GENUS_PC ? 0x40 : 0x41);
     }
-    else if (skillId == 0x23c)
-    {
-        messageId = unit->genus == UNIT_GENUS_PC ? 0x42 : 0x43;
-    }
-    else
-    {
-        messageId = unit->genus == UNIT_GENUS_PC ? 0x40 : 0x41;
-    }
-    messagePacket = FUN_002bd850(unit, messageId);
+    messagePacket = FUN_002bd850(action->unit, (s16)messageId);
     ACTION_U16(messagePacket, 0x48) = 8;
     messagePacket->actionUID = action->uid;
     btlPacketRegister(messagePacket, BTLPACKET_TYPE_2D);
+    messageUID = messagePacket->uid;
     animPacket = FUN_00284c90(unit);
     animPacket->actionUID = action->uid;
     btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
-    if (skillId == 0x23c)
+    animUID = animPacket->uid;
+    if (*(u16*)&action->unkData3[0x3d8] == 0x1b6)
     {
         count = func_00170760((s16)unit->datUnit->id, 0xfc7);
-        func_00170860((s16)unit->datUnit->id, 0xfc7, count - 1);
+        if (count > 0)
+        {
+            func_00170860((s16)unit->datUnit->id, 0xfc7, count - 1);
+        }
+    }
+    if (*(u16*)&action->unkData3[0x3d8] == 0x23c)
+    {
         FUN_002d5dc0(work);
         work[0] = (FUN_002ffdf0(unit->datUnit) & 0xffff) -
                   (FUN_002ffd70(unit->datUnit) & 0xffff);
         root = FUN_002d7e20(action, action, work, 1, 1);
         root->unk_00 = 4;
-        root->parentUID = animPacket->uid;
+        root->parentUID = animUID;
         root->actionUID = action->uid;
         btlPacketRegister(root, BTLPACKET_TYPE_1);
         packet = FUN_002bd480(unit);
         packet->unk_00 = 4;
-        packet->parentUID = animPacket->uid;
+        packet->parentUID = animUID;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, work);
         packet->unk_00 = 4;
-        packet->parentUID = animPacket->uid;
-        packet->unk_47 &= ~0x20;
+        packet->parentUID = animUID;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
         packet = FUN_002bd230(unit, 0, 0);
         packet->unk_00 = 4;
-        packet->parentUID = animPacket->uid;
-        packet->unk_47 &= ~0x20;
+        packet->parentUID = animUID;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
         packet = FUN_002baf90(ACTION_U32(gBtl, 0xce0), unit, unit, 1, 0);
         packet->unk_00 = 4;
-        packet->parentUID = animPacket->uid;
+        packet->parentUID = animUID;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_3D);
     }
     barrier = FUN_0027dc80(0x80000);
     barrier->unk_00 = 4;
-    barrier->parentUID = messagePacket->uid;
+    barrier->parentUID = messageUID;
     barrier->actionUID = action->uid;
     btlPacketRegister(barrier, BTLPACKET_TYPE_0);
     btlActionSetState(action, BTLACTION_STATE_STANDBY);

@@ -5391,6 +5391,8 @@ u32 FUN_00324160(int param_1)
 
 {
 
+  int outer1;
+
   int iVar1;
 
   int iVar2;
@@ -5405,11 +5407,15 @@ u32 FUN_00324160(int param_1)
 
   u16 *puVar7;
 
-  int lVar8;
-  int lVar9;
-
   u16 *puVar10;
+
   u32 color;
+
+  int copy;
+
+  int outer2;
+
+  int inner;
 
   
 
@@ -5423,9 +5429,9 @@ u32 FUN_00324160(int param_1)
 
   iVar3 = *(int *)(*(int *)((int)uVar4 + 0x10) + 0x18);
 
-  for (lVar8 = 0; lVar8 < *(short *)(param_1 + 0x1c); lVar8 = lVar8 + 1) {
+  for (outer1 = 0; outer1 < *(short *)(param_1 + 0x1c); outer1 = outer1 + 1) {
 
-    iVar5 = (int)lVar8 * 4;
+    iVar5 = (int)outer1 * 4;
 
     if (**(int **)(*(int *)(param_1 + 0x28) + iVar5) != 0) {
 
@@ -5444,7 +5450,7 @@ u32 FUN_00324160(int param_1)
 
   puVar6 = puVar10;
 
-  for (lVar8 = 0; lVar8 < *(short *)(param_1 + 0x20); lVar8 = lVar8 + 1) {
+  for (copy = 0; copy < *(short *)(param_1 + 0x20); copy = copy + 1) {
 
     *puVar6 = *puVar7;
 
@@ -5458,9 +5464,9 @@ u32 FUN_00324160(int param_1)
 
   }
 
-  for (lVar8 = 0; lVar8 < *(short *)(param_1 + 0x1c); lVar8 = lVar8 + 1) {
-    color = *(u32 *)(iVar1 + (int)lVar8 * 4);
-    for (lVar9 = 0; lVar9 < *(short *)(param_1 + 10); lVar9 = lVar9 + 1) {
+  for (outer2 = 0; outer2 < *(short *)(param_1 + 0x1c); outer2 = outer2 + 1) {
+    color = *(u32 *)(iVar1 + (int)outer2 * 4);
+    for (inner = 0; inner < *(short *)(param_1 + 10); inner = inner + 1) {
 
       FUN_00493230(iVar3,(int)puVar10,color);
 
@@ -38302,37 +38308,22 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
   } while (uVar7 < 4);
 
-  ((u32 *)param_2)[0] = *(u32 *)(param_1 + 0x18);
-
-  ((u32 *)param_2)[1] = *(u32 *)(param_1 + 0x1c);
-
-  ((u32 *)param_2)[0x10] = *(u32 *)(param_1 + 0x18);
-
-  ((u32 *)param_2)[0x11] = *(u32 *)(param_1 + 0x24);
-
-  ((u32 *)param_2)[0x20] = *(u32 *)(param_1 + 0x20);
-
-  ((u32 *)param_2)[0x21] = *(u32 *)(param_1 + 0x24);
-
-  ((u32 *)param_2)[0x30] = *(u32 *)(param_1 + 0x20);
-
-  ((u32 *)param_2)[0x31] = *(u32 *)(param_1 + 0x1c);
-
-  ((u32 *)param_2)[4] = 0;
-
-  ((u32 *)param_2)[5] = 0;
-
-  ((u32 *)param_2)[0x14] = 0;
-
-  ((u32 *)param_2)[0x15] = 0x3f800000;
-
-  ((u32 *)param_2)[0x24] = 0x3f800000;
-
-  ((u32 *)param_2)[0x25] = 0x3f800000;
-
-  ((u32 *)param_2)[0x34] = 0x3f800000;
-
-  ((u32 *)param_2)[0x35] = 0;
+  param_2[0] = *(float *)(param_1 + 0x18);
+  param_2[1] = *(float *)(param_1 + 0x1c);
+  param_2[0x10] = *(float *)(param_1 + 0x18);
+  param_2[0x11] = *(float *)(param_1 + 0x24);
+  param_2[0x20] = *(float *)(param_1 + 0x20);
+  param_2[0x21] = *(float *)(param_1 + 0x24);
+  param_2[0x30] = *(float *)(param_1 + 0x20);
+  param_2[0x31] = *(float *)(param_1 + 0x1c);
+  param_2[4] = 0.0f;
+  param_2[5] = 0.0f;
+  param_2[0x14] = 0.0f;
+  param_2[0x15] = 1.0f;
+  param_2[0x24] = 1.0f;
+  param_2[0x25] = 1.0f;
+  param_2[0x34] = 1.0f;
+  param_2[0x35] = 0.0f;
 
   return;
 
@@ -38437,21 +38428,14 @@ void FUN_00348950(u8 *param_1,float *param_2)
 
   } while (uVar7 < 4);
 
-  ((u32 *)param_2)[0] = *(u32 *)(param_1 + 0x18);
-
-  ((u32 *)param_2)[1] = *(u32 *)(param_1 + 0x1c);
-
-  ((u32 *)param_2)[0x10] = *(u32 *)(param_1 + 0x18);
-
-  ((u32 *)param_2)[0x11] = *(u32 *)(param_1 + 0x24);
-
-  ((u32 *)param_2)[0x20] = *(u32 *)(param_1 + 0x20);
-
-  ((u32 *)param_2)[0x21] = *(u32 *)(param_1 + 0x24);
-
-  ((u32 *)param_2)[0x30] = *(u32 *)(param_1 + 0x20);
-
-  ((u32 *)param_2)[0x31] = *(u32 *)(param_1 + 0x1c);
+  param_2[0] = *(float *)(param_1 + 0x18);
+  param_2[1] = *(float *)(param_1 + 0x1c);
+  param_2[0x10] = *(float *)(param_1 + 0x18);
+  param_2[0x11] = *(float *)(param_1 + 0x24);
+  param_2[0x20] = *(float *)(param_1 + 0x20);
+  param_2[0x21] = *(float *)(param_1 + 0x24);
+  param_2[0x30] = *(float *)(param_1 + 0x20);
+  param_2[0x31] = *(float *)(param_1 + 0x1c);
 
   fVar10 = (*(float *)(param_1 + 0x18) + fVar8) / *(float *)DAT_00957bac_abs;
 
@@ -38559,23 +38543,14 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
     uVar7 = uVar7 + 1;
 
   } while (uVar7 < 4);
-
-
-  ((u32 *)param_2)[0] = *(u32 *)(param_1 + 8);
-
-  ((u32 *)param_2)[1] = *(u32 *)(param_1 + 0xc);
-
-  ((u32 *)param_2)[0x10] = *(u32 *)(param_1 + 8);
-
-  ((u32 *)param_2)[0x11] = *(u32 *)(param_1 + 0x14);
-
-  ((u32 *)param_2)[0x20] = *(u32 *)(param_1 + 0x10);
-
-  ((u32 *)param_2)[0x21] = *(u32 *)(param_1 + 0x14);
-
-  ((u32 *)param_2)[0x30] = *(u32 *)(param_1 + 0x10);
-
-  ((u32 *)param_2)[0x31] = *(u32 *)(param_1 + 0xc);
+  param_2[0] = *(float *)(param_1 + 8);
+  param_2[1] = *(float *)(param_1 + 0xc);
+  param_2[0x10] = *(float *)(param_1 + 8);
+  param_2[0x11] = *(float *)(param_1 + 0x14);
+  param_2[0x20] = *(float *)(param_1 + 0x10);
+  param_2[0x21] = *(float *)(param_1 + 0x14);
+  param_2[0x30] = *(float *)(param_1 + 0x10);
+  param_2[0x31] = *(float *)(param_1 + 0xc);
 
   return;
 
@@ -45617,115 +45592,59 @@ void FUN_00351940(int param_1)
 
 
 u64 FUN_00351a10(int param_1)
-
-
-
 {
-
   char cVar1;
-
   short sVar2;
-
   char *pcVar3;
-
   int lVar4;
-
   u32 uVar5;
 
-  
-
   pcVar3 = *(char **)(param_1 + 0x3c);
-
   cVar1 = *pcVar3;
-
   if (cVar1 == '\x04') {
-
     FUN_00351940((int)(pcVar3));
-
     *pcVar3 = '\0';
-
     return 0;
-
   }
-
   if (cVar1 != '\x03') {
-
     if (cVar1 != '\x02') {
-
       if (cVar1 != '\x01') {
-
         return 0;
-
       }
-
       lVar4 = FUN_004ca090_u32();
-
       *(int *)(pcVar3 + 0xc) = (int)lVar4;
-
       if (lVar4 == 0) {
-
         return 0;
-
       }
-
       uVar5 = FUN_004caf10();
-
       FUN_004d1840(*(u32 *)(pcVar3 + 0xc),uVar5);
-
       if (*(int *)(*(int *)(pcVar3 + 0xc) + 4) == 0) {
-
         return 0;
-
       }
-
       lVar4 = FUN_004ce0f0_u32(0x200,0x100,0x10,0x185);
-
       *(int *)(pcVar3 + 8) = (int)lVar4;
-
       if (lVar4 == 0) {
-
         return 0;
-
       }
-
       FUN_004f1780((int *)lVar4,1);
-
       RwCameraSetProjectionType(*(u32 *)(pcVar3 + 0xc),2);
-
       *(u32 *)(*(int *)(pcVar3 + 0xc) + 0x60) = *(u32 *)(pcVar3 + 8);
-
       pcVar3[4] = '\0';
-
       pcVar3[5] = '\0';
-
     }
-
     lVar4 = FUN_00351290((int)(pcVar3));
-
     if (lVar4 == 0) {
-
       return 0;
-
     }
-
     *pcVar3 = '\x03';
-
   }
-
   FUN_00351510((int)(pcVar3));
-
   sVar2 = *(short *)(pcVar3 + 4);
-
   *(u16 *)(pcVar3 + 4) = sVar2 + 1U;
-
   if (*(u16 *)(pcVar3 + 2) <= (u16)(sVar2 + 1U)) {
-
     *pcVar3 = '\x04';
-
   }
-
   return 0;
-
 }
 
 

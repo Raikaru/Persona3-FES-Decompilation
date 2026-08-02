@@ -1231,10 +1231,11 @@ char * func_002e3120(int param_1)
 
 {
   char cVar1;
-  short sVar2;
+  u16 sVar2;
   int iVar3;
   int iVar4;
   u32 uVar5;
+  u32 uVar7;
   char *pcVar6;
   
   for (uVar5 = 0; uVar5 < 0xc; uVar5 = uVar5 + 1 & 0xffff) {
@@ -1255,20 +1256,22 @@ char * func_002e3120(int param_1)
   pcVar6 = (char *)0x0;
   cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
   sVar2 = *(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa2c) + 4);
-  uVar5 = 0;
-  while( true ) {
-    if (0xb < uVar5) {
-      FUN_00521408(pcVar6,0,4);
-      *pcVar6 = cVar1;
-      *(short *)(pcVar6 + 2) = sVar2;
-      return pcVar6;
+  uVar7 = 0;
+  while (uVar7 <= 0xb) {
+    iVar3 = (int)iGpffffb6fc + uVar7 * 4;
+    if ((*(char *)(iVar3 + 0xa60) == cVar1) && (*(short *)(iVar3 + 0xa62) == sVar2)) {
+      break;
     }
-    iVar3 = (int)iGpffffb6fc + uVar5 * 4;
-    if ((*(char *)(iVar3 + 0xa60) == cVar1) && (*(short *)(iVar3 + 0xa62) == sVar2)) break;
     if ((pcVar6 == (char *)0x0) && (*(char *)(iVar3 + 0xa60) == -1)) {
       pcVar6 = (char *)(iVar3 + 0xa60);
     }
-    uVar5 = uVar5 + 1 & 0xffff;
+    uVar7 = uVar7 + 1 & 0xffff;
+  }
+  if (uVar7 > 0xb) {
+    FUN_00521408(pcVar6,0,4);
+    *pcVar6 = cVar1;
+    *(short *)(pcVar6 + 2) = sVar2;
+    return pcVar6;
   }
   return (char *)(iVar3 + 0xa60);
 }

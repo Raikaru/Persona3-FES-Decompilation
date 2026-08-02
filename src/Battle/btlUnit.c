@@ -2726,19 +2726,19 @@ u16 func_00283e40(BtlUnit* unit, u16 id)
 
     if (unit->genus == UNIT_GENUS_EC)
     {
-        if (id == 4 || id == 5 || id == 6)
+        if (id == 6 || id == 5 || id == 4)
             category = 0;
         else
             category = -1;
     }
     else
     {
-        if (id == 4)
-            category = 0;
+        if (id == 6)
+            category = 2;
         else if (id == 5)
             category = 1;
-        else if (id == 6)
-            category = 2;
+        else if (id == 4)
+            category = 0;
         else
             category = -1;
     }

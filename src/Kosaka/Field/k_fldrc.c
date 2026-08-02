@@ -2363,36 +2363,34 @@ void FUN_001b3c90(void* resource)
 // FUN_001b3e50 NONMATCHING
 void FUN_001b3e50(void* camera, u32* resource)
 {
-    f32 savedLight[4];
-    f32 savedFog[4];
+    RwV4d savedLight;
+    RwV4d savedFog;
     u32 savedStates[16];
     u32* state;
     f32* fstate;
+    u32* savedState;
     u32* stateData;
     u32 light;
     u32 value;
     u32 world;
+    u32 count;
     u32 i;
 
     FUN_004d7f60(2, 0x44);
     FUN_004d7f60(3, 0x717fb);
     fstate = (f32*)FUN_00198560();
-    savedLight[0] = fstate[6];
-    savedLight[1] = fstate[7];
-    savedLight[2] = fstate[8];
-    savedLight[3] = fstate[9];
+    savedLight = *(RwV4d*)(fstate + 6);
     fstate = (f32*)FUN_00198570();
-    savedFog[0] = fstate[6];
-    savedFog[1] = fstate[7];
-    savedFog[2] = fstate[8];
-    savedFog[3] = fstate[9];
+    savedFog = *(RwV4d*)(fstate + 6);
     state = (u32*)FUN_00198570();
     stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
-    for (i = 0; i < 8; i++)
+    savedState = savedStates;
+    for (count = 8; count > 0; count--)
     {
-        savedStates[i * 2] = stateData[0];
-        savedStates[i * 2 + 1] = stateData[1];
+        savedState[0] = stateData[0];
+        savedState[1] = stateData[1];
         stateData += 2;
+        savedState += 2;
     }
     light = FUN_00198560();
     value = FUN_0019fd40();
@@ -2402,7 +2400,6 @@ void FUN_001b3e50(void* camera, u32* resource)
     FUN_004944b0(light, value);
     state = (u32*)FUN_00198570();
     FUN_004cb7f0(*(u32*)((u8*)state + 4), FUN_0019fda0(), 0);
-    state = (u32*)FUN_00198570();
     *((u8*)state + 2) = 3;
     FUN_00198570();
 
@@ -2979,7 +2976,7 @@ void FUN_001b5200(u32* resource, f32 angle)
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
 // FUN_001b5380 NONMATCHING
-void* FUN_001b5380(u32* resource, void* position, u32 direction)
+void* FUN_001b5380(u32* resource, const f32* position, u32 direction)
 {
     u32* copy;
     const FldrcCloneRecord* sourceRecord;
@@ -3036,7 +3033,7 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     }
     *(RwV3d*)&copy[0x288] = *(const RwV3d*)&resource[0x288];
     FUN_001b5200(copy, angle);
-    FUN_001b4e00(copy, (const f32*)position, angle);
+    FUN_001b4e00(copy, position, angle);
     return copy;
 }
 #pragma opt_lifetimes reset
