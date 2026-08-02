@@ -3,12 +3,12 @@
 extern int *piGpffffb98c;
 typedef int (*code)(...);
 /* FUSION_EXACT_PROTOS */
-u32 FUN_003c8b50();
+u32 FUN_003c8b50(u32 param_1,int param_2);
 extern void FUN_003c9240(int *);
 extern u64 FUN_003c9290(int *,u64,u64);
 extern s8 FUN_003c9340(int *);
 extern void FUN_003c9390(int *);
-extern u32 FUN_003c9460(int *);
+extern u32 FUN_003c9460(u32 *);
 #pragma alias fclMisc9fe0Call FUN_003c9fe0
 extern void fclMisc9fe0Call(int *);
 #pragma alias fclMisc9240Call FUN_003c9240
@@ -363,9 +363,9 @@ extern u64 FUN_003c8810(int *);
 #undef FUN_003c8dc0
 extern void FUN_003c8dc0(u32);
 #undef FUN_003c8400
-extern u32 FUN_003c8400();
+extern u32 FUN_003c8400(u32 param_1,int param_2);
 #undef FUN_003c8b50
-extern u32 FUN_003c8b50();
+extern u32 FUN_003c8b50(u32 param_1,int param_2);
 #undef FUN_003c91b0
 extern u8 FUN_003c91b0(u8 *, u32);
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
@@ -398,7 +398,7 @@ void FUN_003c8fa0(void);
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
 #undef FUN_003c8fa0
 #undef FUN_003c9460
-u32 FUN_003c9460();
+u32 FUN_003c9460(u32 *param_1);
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
@@ -407,7 +407,7 @@ u32 FUN_003c9460();
 #define FUN_003c91b0(...) ((u8 (*)(...))FUN_003c91b0)(__VA_ARGS__)
 #undef FUN_003c9240
 #undef FUN_003c9460
-u32 FUN_003c9460();
+u32 FUN_003c9460(u32 *param_1);
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c9240(...) ((void (*)(...))FUN_003c9240)(__VA_ARGS__)
 #undef FUN_003c9290

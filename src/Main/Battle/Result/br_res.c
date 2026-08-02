@@ -27,8 +27,8 @@ extern char DAT_0068e730[];
 extern char DAT_0068e750[];
 extern char DAT_0068e770[];
 int datGetScenarioMode();
-int datGetFlag();
-u32 H_Cdvd_Request();
+u32 datGetFlag(s32 bit);
+u32 H_Cdvd_Request(const char* path, u32 fileMode);
 
 // FUN_00233970
 void brRes00233970(u32* param_1)

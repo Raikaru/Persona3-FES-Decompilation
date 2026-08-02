@@ -81,22 +81,22 @@ void* gmRootUpdateTask(KwlnTask* gmRootTask);
 void gmRootDestroyTask(KwlnTask* gmRootTask);
 void kwlnInitGameData(void);
 u32 opRootCreateTask(KwlnTask* task);
-extern u32 H_Malloc();
+extern void* H_Malloc(size_t size);
 extern u32 kwlnCreateTaskWithAutoPriority();
 extern u32 kwlnInitTaskEx();
 extern void kwlnAddTaskChild();
-extern void kwlnSetClearColor();
-extern void opResInit();
+extern void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
+extern void opResInit(OpResWork* work);
 extern void opLogoInit();
 extern void opTitleInit();
 extern void opWaitInit();
 extern void opMenuInit();
 extern void opFadeInit();
-extern void opFadeSetColor();
+extern void opFadeSetColor(const RwRGBA* color);
 extern void opFadeIn();
 extern void H_Fade_FadeIn();
-extern void H_Fade_SetType();
-extern void H_Fade_SetDuration();
+extern void H_Fade_SetType(s16 type);
+extern void H_Fade_SetDuration(s16 duration);
 extern void opResRequestLogo_y2();
 
 static inline KwlnTask* createTask(KwlnTask* parent)
@@ -549,7 +549,7 @@ u32 opRootCreateTask(KwlnTask* parent)
     kwlnAddTaskChild(task, child);
     work[0] = 0;
     work[2] = task;
-    opResInit(work + 8);
+    opResInit((OpResWork*)(work + 8));
     opLogoInit(work + 0x20);
     opTitleInit(work + 0x68);
     opWaitInit(work + 0x47c);
@@ -564,7 +564,7 @@ u32 opRootCreateTask(KwlnTask* parent)
     color[1] = 0;
     color[2] = 0;
     color[3] = 0xff;
-    opFadeSetColor(color);
+    opFadeSetColor((const RwRGBA*)color);
     opFadeIn();
     H_Fade_FadeIn();
     H_Fade_SetType(5);

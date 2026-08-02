@@ -74,7 +74,7 @@ extern int sprintf(char* buffer, const char* format, ...);
 
 
 extern void* func_0010c1a0();
-extern void* func_0010c3a0();
+extern void* func_0010c3a0(void* entry, u32* wasReady, s32* byteCount);
 extern void func_00133d30();
 extern void func_004d0f00_y2();
 extern void func_00123640();
@@ -4521,8 +4521,8 @@ extern s32 FUN_00177280();
 extern s32 FUN_001772f0();
 extern s32 FUN_00177360();
 extern s32 FUN_00173220_y2();
-extern s32 FUN_00173280();
-extern s32 FUN_001733b0();
+extern u8 FUN_00173280(s32 personaId);
+extern void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx);
 extern s32 FUN_00173340();
 extern s32 FUN_00173330();
 extern s32 FUN_00173580();
@@ -4563,7 +4563,7 @@ extern KwlnTask* FUN_00128040(KwlnTask* task, s32 resource, f32 unused,
 extern void FUN_00127ab0(KwlnTask* task);
 extern void FUN_00127ff0(KwlnTask* task);
 extern void FUN_00128010(KwlnTask* task);
-extern void FUN_003b32d0();
+extern int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,const char* param_7,u32 param_8,u32 param_9);
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
 extern void* DAT_00833B94;
@@ -4602,13 +4602,13 @@ extern const char D_005DB158[];
 extern const char D_005DACB0[];
 extern const char D_005DB170[];
 extern void* func_0010c1a0();
-extern void* func_0010c3a0();
+extern void* func_0010c3a0(void* entry, u32* wasReady, s32* byteCount);
 extern int printf_y2(const char* format, ...);
-extern void FUN_00174c10();
-extern void FUN_00175200();
-extern u32 FUN_003c7430();
-extern u32 FUN_003c74e0();
-extern u32 FUN_003c7560();
+extern u32 FUN_00174c10(s16 heroPersonaIdx);
+extern u8 FUN_00175200(s16 heroPersonaIdx);
+extern u32 FUN_003c7430(u64 param_1);
+extern u32 FUN_003c74e0(int param_1);
+extern void FUN_003c7560(u8 param_1);
 extern u32 FUN_003c7610();
 extern u32 FUN_003c7700();
 extern u32 FUN_003c7850();
@@ -4979,7 +4979,7 @@ extern s32 FUN_004d0f00_y2();
 extern s32 FUN_001fc230();
 extern s32 FUN_001fc3c0();
 extern s32 FUN_001fb1f0();
-extern void FUN_003b32d0();
+extern int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,const char* param_7,u32 param_8,u32 param_9);
 #pragma alias FUN_003b32d0_typed FUN_003b32d0
 extern void FUN_003b32d0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
                                 s32 alignment, const char* text, s32 maxWidth,
@@ -18902,7 +18902,7 @@ typedef int bool;
 extern void *memcpy(void *dst, const void *src, u32 size);
 void FUN_004d0f00_sys();
 void H_Cdvd_Destroy_sys();
-void FUN_003c7dd0();
+void FUN_003c7dd0(int param_1);
 extern void* (*DAT_00960184_abs[])(...);
 extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
 extern const char D_005DBD00[];
@@ -19114,9 +19114,9 @@ extern u32 FUN_0016f1f0();
 extern u32 FUN_00173580_y3();
 extern u32 FUN_00174960_y3();
 extern u64 FUN_00174a90_y3();
-extern u32 FUN_0017ae30();
-extern u32 FUN_0017bb40();
-extern u32 FUN_0017bbb0();
+extern u8* FUN_0017ae30(s32 index);
+extern u8 FUN_0017bb40(s32 id);
+extern u8 FUN_0017bbb0(s32 id);
 extern u32 FUN_0017bf70_y3();
 extern u32 FUN_0017bfa0_y3();
 extern u32 FUN_0017d800();
@@ -22398,7 +22398,7 @@ extern void campMenuDrawSpriteDigits(u32 parent, const void* resource, s32 frame
 extern void FUN_001140d0(f32 depth, f32 x, f32 y, u32 color, s32 width,
                          s32 height, const void* textureState);
 extern void* FUN_0016f190_y7();
-extern void* FUN_0017c670();
+extern s16* FUN_0017c670(s32 index);
 extern s32 FUN_0017d800_y7();
 extern s32 FUN_0017c6c0();
 extern s32 FUN_0017c6e0();
@@ -22412,7 +22412,7 @@ extern s32 FUN_00170ed0();
 extern s32 FUN_00171110();
 extern s32 FUN_00171250();
 extern s32 FUN_00173220_y7();
-extern s32 FUN_0030c220();
+extern s32 FUN_0030c220(s32 param_1);
 /* Typed ABI aliases keep the scale in f12 instead of treating it as a ninth integer argument. */
 extern s32 FUN_003b2cb0_typed(f32 scale, s32 x, s32 y, s32 color,
                               s32 font, s32 alignment, const char* text,
@@ -22425,12 +22425,12 @@ extern s32 FUN_0040eb50_typed(f32 scale, s32 x, s32 y, u8 color, s16 font,
                               const char* text, s32 maxWidth);
 extern s32 FUN_003b2cb0_y7();
 extern s32 FUN_003b32d0_y7();
-extern s32 FUN_003c3fe0();
+extern u8* FUN_003c3fe0(s32 socialLink);
 extern s32 FUN_003c7e20_y7();
 extern s32 FUN_00403380();
-extern s32 FUN_00403740();
-extern s32 FUN_00403800();
-extern s32 FUN_00403830();
+extern s16 FUN_00403740(short param_1);
+extern long FUN_00403800(short param_1);
+extern long FUN_00403830(short param_1);
 extern void* FUN_00403880();
 extern s32 FUN_00403900();
 extern s32 FUN_0040eb50_y7();

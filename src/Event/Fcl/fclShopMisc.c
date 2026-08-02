@@ -49,7 +49,7 @@ typedef struct FclShopDispatchStorage {
 } FclShopDispatchStorage;
 
 extern u32 D_006AF3E0[];
-extern u32 FUN_003dffc0();
+extern int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 extern u32 fclCombineList003df100();
 
 #define FCL_SHOP_DISPATCH_BUILD(SRC, OUT, OWNER, ID, COPY_OFFSET) do { \
@@ -105,7 +105,7 @@ extern u32 fclCombineList003df100();
   (SRC)[17].field18 = 0; \
   memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
   fclCombineList003df100( \
-      FUN_003dffc0((OWNER), (ID), *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), \
+      FUN_003dffc0((int *)(OWNER), (ID), *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), \
       (OUT)); \
 } while (0)
 #define FCL_SHOP_MISC_BUILD(SRC, OUT, OWNER, ID, VALUE, FIELD, COPY_OFFSET) do { \
@@ -152,7 +152,7 @@ extern u32 fclCombineList003df100();
     (SRC)[27].value = (VALUE); (SRC)[27].field18 = (FIELD); \
     memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
     fclCombineList003df100( \
-        FUN_003dffc0((OWNER), (ID), \
+        FUN_003dffc0((int *)(OWNER), (ID), \
             *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), (OUT)); \
 } while (0)
 #define FCL_SHOP_MISC_AT(OFFSET) \

@@ -98,7 +98,7 @@ extern f32 gPI;
 extern void (*D_009600A4)(u32, void*, u32, void*, u32);
 extern f32 sqrtf(f32 value);
 
-void FUN_00249690();
+void FUN_00249690(void* work);
 void* H_Maestro_001120a0(s32 font);
 void func_00249680(void* work);
 
@@ -140,9 +140,9 @@ void func_00239170(u32* work)
 
 void FUN_0023d2a0();
 void FUN_0023d650();
-void func_002496e0();
-void func_00249c10();
-void func_0024a180();
+void func_002496e0(void* work);
+void func_00249c10(void* work);
+void func_0024a180(u32* work);
 void func_0024a230();
 SflGroundRwCamera* kwlnGetMainCamera();
 void func_0021d890(void* destination, const void* layout);

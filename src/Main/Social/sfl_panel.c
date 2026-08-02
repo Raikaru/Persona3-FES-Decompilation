@@ -28,11 +28,11 @@ extern code DAT_0096009c[];
 extern u8 DAT_00960090_abs[];
 #pragma alias DAT_0096009c_abs DAT_0096009c
 extern u8 DAT_0096009c_abs[];
-void func_0021d890();
-void func_0021d8e0();
-void func_0021d950();
+void func_0021d890(void* destination, const f32* vertices);
+void func_0021d8e0(void* destination, const f32* rect);
+void func_0021d950(void* destination, const u8* color);
 void func_0021e170();
-void func_0021eb80();
+void func_0021eb80(void* destination, const f32* rect);
 void func_004cb750();
 u32 func_00255130();
 void scrClearTextBox();
@@ -191,7 +191,7 @@ void func_0023dac0(void)
         color.g = 0xff;
         color.b = 0xff;
         color.a = (unsigned char)(alpha * 255.0f);
-        func_0021d950(work + 0x44, &color);
+        func_0021d950(work + 0x44, (const u8*)&color);
 
         frame = work[2];
         if (frame < 4) {
@@ -229,7 +229,7 @@ void func_0023dac0(void)
         }
         func_0021d890(work + 4, quad);
         color.a = (unsigned char)(alpha * 255.0f);
-        func_0021d950(work + 4, &color);
+        func_0021d950(work + 4, (const u8*)&color);
     }
     goto done;
     default:
@@ -305,7 +305,7 @@ mode12:
         color.r = 0xff;
         color.g = 0xff;
         color.b = 0xff;
-        func_0021d950(work + 0x84 + i * 0x40, &color);
+        func_0021d950(work + 0x84 + i * 0x40, (const u8*)&color);
     }
     frame = work[2];
 
@@ -335,7 +335,7 @@ mode12:
     panelSize[1] *= scale;
     func_0021e170(work + 0x104, panelPosition, panelDirection, panelSize);
     color.a = (unsigned char)(alpha * 255.0f);
-    func_0021d950(work + 0x104, &color);
+    func_0021d950(work + 0x104, (const u8*)&color);
 
     if (frame < 7) {
         alpha = 0.0f;
@@ -352,7 +352,7 @@ mode12:
     panelSize[1] = 89.0f;
     func_0021e170(work + 0x144, panelPosition, panelDirection, panelSize);
     color.a = (unsigned char)(alpha * 255.0f);
-    func_0021d950(work + 0x144, &color);
+    func_0021d950(work + 0x144, (const u8*)&color);
 
     if (frame < 7) {
         scale = 1.0f;
@@ -373,7 +373,7 @@ mode12:
     panelSize[1] = 89.0f * scale;
     func_0021e170(work + 0x184, panelPosition, panelDirection, panelSize);
     color.a = (unsigned char)(alpha * 255.0f);
-    func_0021d950(work + 0x184, &color);
+    func_0021d950(work + 0x184, (const u8*)&color);
 done:
     return;
 }

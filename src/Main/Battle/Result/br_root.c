@@ -256,7 +256,7 @@ extern void func_004c3880(void* matrix);
 extern s32 datGetFlag_y2(u32 flag);
 extern void* func_001e8e80(RuntimeWork* rawWork, void* material);
 extern RuntimeWork* func_001ee2e0(const void* data);
-extern RuntimeWork* func_001eeb90();
+extern RuntimeWork* func_001eeb90(RuntimeWork* input);
 extern void func_001eee40(RuntimeWork* work);
 extern void func_001eefc0(void* node);
 extern void func_00100ec0(void* resource);

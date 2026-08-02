@@ -54,11 +54,11 @@ extern u32 FUN_00233d70_u32(s32);
 extern u32 FUN_0021cca0_u32(u32, u32);
 static u32* sBrPersona; // DAT_007ce380
 void brPersonaDestroy();
-u32 FUN_001749a0();
-u32 FUN_003c9850();
+void* FUN_001749a0(s16 personaId);
+u32 FUN_003c9850(int param_1, int param_2, u16 param_3, u16 param_4);
 void FUN_003c9b00();
-void FUN_003c9cd0();
-void FUN_003c9d00();
+void FUN_003c9cd0(u64 param_1, u32 param_2);
+void FUN_003c9d00(u32 param_1, u32 param_2);
 
 static void brHeroSetColor(void* object, u8 r, u8 g, u8 b, u8 a)
 {

@@ -13,10 +13,10 @@ static u32* sBrPersona; // DAT_007ce380
 
 void brPersonaDestroy();
 u32 FUN_001749a0();
-u32 FUN_003c9850();
+u32 FUN_003c9850(int param_1, int param_2, u16 param_3, u16 param_4);
 void FUN_003c9b00();
 void FUN_003c9cd0();
-void FUN_003c9d00();
+void FUN_003c9d00(u32 param_1, u32 param_2);
 
 // FUN_00264d80
 void brPersonaInit(u32* param_1)

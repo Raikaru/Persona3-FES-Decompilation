@@ -5,22 +5,22 @@
 
 void kwlnInitGameData(void);
 u32 opRootCreateTask(KwlnTask* task);
-extern u32 H_Malloc();
+extern void* H_Malloc(size_t size);
 extern u32 kwlnCreateTaskWithAutoPriority();
 extern u32 kwlnInitTaskEx();
 extern void kwlnAddTaskChild();
-extern void kwlnSetClearColor();
-extern void opResInit();
+extern void kwlnSetClearColor(u8 r, u8 g, u8 b, u8 a);
+extern void opResInit(void* work);
 extern void opLogoInit();
 extern void opTitleInit();
 extern void opWaitInit();
 extern void opMenuInit();
 extern void opFadeInit();
-extern void opFadeSetColor();
+extern void opFadeSetColor(const RwRGBA* color);
 extern void opFadeIn();
 extern void H_Fade_FadeIn();
-extern void H_Fade_SetType();
-extern void H_Fade_SetDuration();
+extern void H_Fade_SetType(s16 type);
+extern void H_Fade_SetDuration(s16 duration);
 extern void opResRequestLogo();
 
 

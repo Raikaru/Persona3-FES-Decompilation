@@ -162,7 +162,7 @@ void FUN_00227d10();
 void FUN_00238980();
 void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, const float* origin);
 void FUN_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* layout);
-extern void FUN_003b1360();
+extern int FUN_003b1360(void *param_1, u32 param_2, u32 param_3);
 extern u32 FUN_00239140(s32);
 extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
 extern void FUN_003b0e20(u32 resource, u32 color);

@@ -100,7 +100,7 @@ void func_0031f5c0(void* data);
 /* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
 
 void FUN_0048a2a0(void);
-void FUN_004916d0();
+u64 FUN_004916d0(void *param_1,void *param_2,void *param_3);
 u64 FUN_00316410(u64 param_1);
 void FUN_004c3760(void);
 typedef struct MdlAnimResourceEntry
@@ -5422,7 +5422,7 @@ void FUN_00317a20(Model* param_1)
       FUN_00313ca0(iVar8 + 0x35c,iVar8 + 0xec);
       iStack_18 = iVar8 + 0xd0;
       uStack_14 = 0;
-      FUN_004916d0(*(u32 *)(iVar8 + 0xdc),0x315f50,&iStack_18);
+      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x315f50,&iStack_18);
       if (((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) || (*(u8 *)(iVar8 + 0xd3) == 0xff)) {
         iVar9 = *(int *)(iVar8 + 0xe0);
         if (iVar9 == 0) {
@@ -5448,7 +5448,7 @@ void FUN_00317a20(Model* param_1)
         bVar5 = true;
         if ((*(u16 *)(iVar8 + 0xd8) & 0x8000) != 0) {
           iStack_8 = 1;
-          FUN_004916d0(*(u32 *)(iVar8 + 0xdc),0x316360,&iStack_8);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x316360,&iStack_8);
           if (iStack_8 != 0) {
             bVar5 = false;
           }
@@ -5511,7 +5511,7 @@ void FUN_00317a20(Model* param_1)
             (piVar11 = (int *)(iVar9 + 0x3b8), *(int *)(iVar9 + 0x3b8) != 0)) &&
            (lVar7 = FUN_00319770(param_1,uVar10), lVar7 != 0)) {
           iStack_c = 1;
-          FUN_004916d0(*(u32 *)(*piVar11 + 0xdc),0x316360,&iStack_c);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(*piVar11 + 0xdc),(void*)0x316360,&iStack_c);
           if (iStack_c == 0) {
             FUN_00318ad0(*piVar11,iVar8 + 0xd0);
             if ((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) {

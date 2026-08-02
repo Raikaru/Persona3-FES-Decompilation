@@ -5353,7 +5353,7 @@ extern void FUN_0040e3f0(f32, f32, f32, f32, s32, s32, u8, s32, s32, s32, s32);
 extern int iGpffffb730_y2;
 extern int iGpffffb7f4;
 extern int iGpffffb800;
-extern void H_Dbprt_FmtLog();
+extern void H_Dbprt_FmtLog(const char* fmt, ...);
 extern float uGpffffaa78;
 extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
