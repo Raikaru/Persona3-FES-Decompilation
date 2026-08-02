@@ -9538,14 +9538,11 @@ void FUN_0042adb0(int param_1)
   float fVar11;
 
   YajimaVec3 posCamera;
-
   YajimaVec3 transformed;
-
   YajimaVec3 delta;
-
   YajimaVec3 posTarget;
-  YajimaVec4 rotScratch;
 
+  YajimaVec4 rotScratch;
   u32 uStack_20;
 
   float fStack_18;
@@ -16473,7 +16470,8 @@ u64 FUN_004312b0(int param_1)
   iVar2 = *(int *)((int)param_1 + 0x3c);
   bVar8 = 0;
   iVar3 = *(int *)(iVar2 + 4);
-  if ((*(u32 *)(DAT_008717e8_abs + iVar3 * 0x70) != 0) && (*(u32 *)(DAT_008717f4_abs + iVar3 * 0x70) != 0)) {
+  if ((*(u32 *)(DAT_008717e8_abs + iVar3 * 0x70) != 0) &&
+      (*(u32 *)(DAT_008717f4_abs + iVar3 * 0x70) != 0)) {
     bVar8 = 1;
   }
   if ((bVar8) && (*(char *)(iVar2 + 0x1215) != '\x01')) {
@@ -25850,13 +25848,9 @@ void FUN_0044af60(u32 param_1)
   u32 lVar10;
   int iVar11;
   int iVar12;
-  u32 uStack_30;
-  u32 uStack_2c;
-  u32 uStack_28;
-  u8 auStack_20 [16];
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
+  YVec3f uStack_10;
+  YVec3f uStack_30;
+  float auStack_20 [4];
   
   iVar1 = *(int *)((int)param_1 + 0x3c);
   iVar11 = *(char *)(iVar1 + 1) * 0x1c0;
@@ -25870,15 +25864,9 @@ void FUN_0044af60(u32 param_1)
     *(u8 *)(iVar1 + 0x5d) = uVar3;
     FUN_001ad940(&uStack_10,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4_abs + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    *(u32 *)(iVar1 + 0x50) = uStack_10;
-    *(u32 *)(iVar1 + 0x54) = uStack_c;
-    *(u32 *)(iVar1 + 0x58) = uStack_8;
-    *(u32 *)(iVar1 + 0x60) = *(u32 *)(iVar1 + 0x50);
-    *(u32 *)(iVar1 + 100) = *(u32 *)(iVar1 + 0x54);
-    *(u32 *)(iVar1 + 0x68) = *(u32 *)(iVar1 + 0x58);
-    *(u32 *)(iVar1 + 0x6c) = *(u32 *)(iVar1 + 0x60);
-    *(u32 *)(iVar1 + 0x70) = *(u32 *)(iVar1 + 100);
-    *(u32 *)(iVar1 + 0x74) = *(u32 *)(iVar1 + 0x68);
+    *(YVec3f *)(iVar1 + 0x50) = uStack_10;
+    *(YVec3f *)(iVar1 + 0x60) = *(YVec3f *)(iVar1 + 0x50);
+    *(YVec3f *)(iVar1 + 0x6c) = *(YVec3f *)(iVar1 + 0x60);
     ((u8 *)DAT_0095c210)[*(char *)(iVar1 + 1)] = 0;
     *(u8 *)(iVar1 + 4) = 1;
   case 1:
@@ -25953,11 +25941,11 @@ void FUN_0044af60(u32 param_1)
     uVar3 = FUN_001ad910(*(u32 *)(*(int *)((u8 *)DAT_0086edf4_abs + iVar11) + 0x1e0));
     uVar4 = FUN_001ad920(*(u32 *)
                           (*(int *)((u8 *)DAT_0086edf4_abs + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_20,
+    FUN_001ad940(&uStack_30,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4_abs + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     uVar5 = FUN_0044f120(*(RwV3d *)(*(int *)((u8 *)DAT_0086ef08 + *(char *)(iVar1 + 1) * 0x1c0) + 0x100));
     uVar6 = FUN_0044f170(*(RwV3d *)(*(int *)((u8 *)DAT_0086ef08 + iVar11) + 0x100));
-    lVar10 = FUN_00453ed0(*(u8 *)(iVar1 + 1),uVar3,uVar4,(u32 *)auStack_20,uVar5,uVar6);
+    lVar10 = FUN_00453ed0(*(u8 *)(iVar1 + 1),uVar3,uVar4,(u32 *)&uStack_30,uVar5,uVar6);
     if (lVar10 == 1) {
       *(u8 *)(iVar1 + 4) = 6;
     }
@@ -25972,10 +25960,8 @@ void FUN_0044af60(u32 param_1)
            (float)(int)*(short *)(*(int *)(iVar1 + 0x94) * 4 + iVar1 + 0xc9a) * 800.0f;
       uVar7 = FUN_0044f120(*(RwV3d *)(iVar1 + 0x6c));
       uVar8 = FUN_0044f170(*(RwV3d *)(iVar1 + 0x6c));
-      FUN_001bf220(&uStack_30,uVar7,uVar8);
-      *(u32 *)(iVar1 + 0x6c) = uStack_30;
-      *(u32 *)(iVar1 + 0x70) = uStack_2c;
-      *(u32 *)(iVar1 + 0x74) = uStack_28;
+      FUN_001bf220(auStack_20,uVar7,uVar8);
+      *(YVec3f *)(iVar1 + 0x6c) = *(YVec3f *)auStack_20;
       *(u8 *)(iVar1 + 4) = 7;
     }
     else {

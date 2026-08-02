@@ -6983,6 +6983,7 @@ void func_00116f50(int param_1)
 void* func_00116f80(KwlnTask* task)
 {
     int* work;
+    int* workBase;
     int state;
     int result;
     u32 nodeValue;
@@ -6992,22 +6993,23 @@ void* func_00116f80(KwlnTask* task)
     int frame;
 
     work = *(int**)((int)task + 0x3c);
+    workBase = work + 5;
     switch (*work)
     {
     case 0:
-        func_0018bc10(666.0f, work + 5, 0, 2, 0,
+        func_0018bc10(666.0f, workBase, 0, 2, 0,
                       0x42f0000044268000, 0x42f00000433b0000, 0, 0, 0, 0);
         *work = 1;
         break;
 
     case 1:
-        result = FUN_0018b700(work + 5);
+        result = FUN_0018b700(workBase);
         if (result != 0)
         {
-            convertedA = FUN_00530da0(work[0x11]);
-            convertedB = FUN_00530da0(work[0x13]);
+            convertedA = FUN_00530da0(workBase[0xc]);
+            convertedB = FUN_00530da0(workBase[0xe]);
             FUN_005225a8(0x5d6e20, convertedA, convertedB);
-            if (work[0xd] == work[0xb])
+            if (workBase[8] == workBase[6])
             {
                 work[1] = 0;
                 *work = 2;
@@ -7015,8 +7017,8 @@ void* func_00116f80(KwlnTask* task)
             nodeValue = (u32)func_001158b0(0, work[4], 0);
             node = (int)nodeValue;
             *(u32*)(node + 0x2c) = 0x42c80000;
-            *(int*)(node + 0x10) = work[0x13];
-            *(int*)(node + 0x14) = work[0x14];
+            *(int*)(node + 0x10) = workBase[0xe];
+            *(int*)(node + 0x14) = workBase[0xf];
             *(u16*)(node + 0x24) = 0x10;
             *(u16*)(node + 0x26) = 0x60;
             state = (4 - (work[0xd] - work[0xb])) * 0x19;
@@ -7032,7 +7034,7 @@ void* func_00116f80(KwlnTask* task)
         break;
 
     case 2:
-        result = FUN_0018b700(work + 5);
+        result = FUN_0018b700(workBase);
         if (result != 0)
         {
             nodeValue = (u32)func_001158b0(0, work[4], 0);
@@ -7068,8 +7070,8 @@ void* func_00116f80(KwlnTask* task)
             node = (int)nodeValue;
             *(float*)(node + 0x20) = (float)state;
             *(u32*)(node + 0x2c) = 0x42c80000;
-            *(int*)(node + 0x10) = work[0x13];
-            *(int*)(node + 0x14) = work[0x14];
+            *(int*)(node + 0x10) = workBase[0xe];
+            *(int*)(node + 0x14) = workBase[0xf];
             *(u16*)(node + 0x24) = 0x10;
             *(u16*)(node + 0x26) = 0x60;
             *(u8*)(node + 0x18) = 0;
@@ -7079,14 +7081,14 @@ void* func_00116f80(KwlnTask* task)
         break;
 
     case 3:
-        result = FUN_0018b700(work + 5);
+        result = FUN_0018b700(workBase);
         if (result != 0)
         {
             nodeValue = (u32)func_001158b0(0, work[4], 0);
             node = (int)nodeValue;
             *(u32*)(node + 0x2c) = 0x42c80000;
-            *(int*)(node + 0x10) = work[0x13];
-            *(int*)(node + 0x14) = work[0x14];
+            *(int*)(node + 0x10) = workBase[0xe];
+            *(int*)(node + 0x14) = workBase[0xf];
             *(u16*)(node + 0x24) = 0x10;
             *(u16*)(node + 0x26) = 0x60;
             *(u8*)(node + 0x18) = 0;
@@ -7095,17 +7097,17 @@ void* func_00116f80(KwlnTask* task)
         }
         if (work[3] != 0)
         {
-            func_0018bc10(100.0f, work + 5, 0, 2, 2,
+            func_0018bc10(100.0f, workBase, 0, 2, 2,
                           0x42f00000433b0000, 0x42f00000433b0000, 0, 0, 0, 0);
             *work = 4;
         }
         break;
 
     case 4:
-        result = FUN_0018b700(work + 5);
+        result = FUN_0018b700(workBase);
         if (result != 0)
         {
-            if (work[0xd] == work[0xb])
+            if (workBase[8] == workBase[6])
             {
                 work[1] = 0;
                 return (void*)-1;
@@ -7113,11 +7115,11 @@ void* func_00116f80(KwlnTask* task)
             nodeValue = (u32)func_001158b0(0, work[4], 0);
             node = (int)nodeValue;
             *(u32*)(node + 0x2c) = 0x42c80000;
-            *(int*)(node + 0x10) = work[0x13];
-            *(int*)(node + 0x14) = work[0x14];
+            *(int*)(node + 0x10) = workBase[0xe];
+            *(int*)(node + 0x14) = workBase[0xf];
             *(u16*)(node + 0x24) = 0x10;
             *(u16*)(node + 0x26) = 0x60;
-            *(char*)(node + 0x18) = (char)work[0x15];
+            *(char*)(node + 0x18) = (char)workBase[0x10];
             FUN_001127d0(nodeValue, 1);
             func_00115980((int*)nodeValue);
         }
@@ -7495,7 +7497,6 @@ u32 func_001193c0(void)
 void* func_001193d0(KwlnTask* task)
 {
     MaestroMarkSpriteWork* work;
-    s32 frame;
     s32 duration;
     s32 scale;
 
@@ -7527,9 +7528,8 @@ void* func_001193d0(KwlnTask* task)
     case 1:
         if (func_0018b700(&work->animation) != 0)
         {
-            frame = work->animation.frame - work->animation.startFrame;
             duration = work->animation.endFrame - work->animation.startFrame;
-            scale = 0x34cc - (0x24cc * frame) / duration;
+            scale = 0x34cc - (0x24cc * (work->animation.frame - work->animation.startFrame)) / duration;
             {
                 MaestroRenderNode* node;
                 node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
@@ -7540,7 +7540,7 @@ void* func_001193d0(KwlnTask* task)
                 node->yScale = (u16)scale;
                 node->pivotX = (s16)((scale * 0x10) >> 12);
                 node->pivotY = (s16)((scale * 0x60) >> 12);
-                node->angle = (f32)((frame * 0x1e) / duration - 0x32);
+                node->angle = (f32)(((work->animation.frame - work->animation.startFrame) * 0x1e) / duration - 0x32);
                 node->alphaCutoff = 0;
                 func_001127d0(node, true);
                 func_00115980((int*)node);

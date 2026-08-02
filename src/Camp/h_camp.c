@@ -12566,7 +12566,7 @@ void* FUN_001355c0(KwlnTask* task)
     s32 key;
     void* knownText;
     void* resource;
-    char path[256];
+    char path[272];
 
     work = (u32*)task->workData;
     switch (work[0]) {
@@ -16013,7 +16013,7 @@ void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 a
   float originX;
   float originY;
   CampBits packedPosition;
-  char textBuffer[272];
+  char textBuffer[240];
   packedPosition = position;
   originX = packedPosition.f[0];
   originY = packedPosition.f[1];
@@ -16316,7 +16316,7 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
 {
   void* parent;
   CampPair origin;
-  char textBuffer[272];
+  char textBuffer[240];
   u8 category;
   s32 value;
   u32 colorBase;
@@ -28807,7 +28807,7 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 void* FUN_00164920(KwlnTask* task)
 {
     CampSkillInnerWork* work;
-    char path[0xF0];
+    char path[0x100];
     u32 fileSize;
     s32 parserReady;
     s32 complete;

@@ -2665,8 +2665,6 @@ void func_001e3f10(RuntimeTask* task)
     u16 resourceId;
     f32 distance;
     f32 angle;
-    f32 x;
-    f32 y;
 
     work = (RuntimeControllerWork*)task->workData;
     switch (work->state)
@@ -2826,32 +2824,30 @@ void func_001e3f10(RuntimeTask* task)
         case 5:
             axis = D_00684260;
             input = DAT_007e094c;
-            x = (f32)DAT_007e095e[1] * 2.0f - 128.0f;
-            y = (f32)DAT_007e095e[0] * 2.0f - 128.0f;
+            base.z = (f32)DAT_007e095e[1] * 2.0f - 128.0f;
+            base.x = (f32)DAT_007e095e[0] * 2.0f - 128.0f;
             if ((input & 0x1000) != 0)
             {
-                x = -128.0f;
+                base.z = -128.0f;
             }
             if ((input & 0x4000) != 0)
             {
-                x = 128.0f;
+                base.z = 128.0f;
             }
             if ((input & 0x8000) != 0)
             {
-                y = -128.0f;
+                base.x = -128.0f;
             }
             if ((input & 0x2000) != 0)
             {
-                y = 128.0f;
+                base.x = 128.0f;
             }
-            base.x = y;
             base.y = 0.0f;
-            base.z = x;
             camera = func_00198590();
             frame = *(void**)((u8*)camera + 4);
             angle = func_001a5aa0(func_004cb2f0(frame));
-            if (x < -48.0f || x > 48.0f ||
-                y < -48.0f || y > 48.0f)
+            if (base.z < -48.0f || base.z > 48.0f ||
+                base.x < -48.0f || base.x > 48.0f)
             {
                 matrixFlags = *(u32*)&rotation.values[3];
                 rotation.values[0] = 1.0f;
@@ -2875,14 +2871,14 @@ void func_001e3f10(RuntimeTask* task)
                 direction.y = -direction.y;
                 direction.z = -direction.z;
                 func_004c6be0(&direction, &direction, &rotation);
-                distance = (x + y) * D_007CB118[0] / 2.0f;
+                distance = (base.z + base.x) * D_007CB118[0] / 2.0f;
                 func_001addf0(
                     distance, work->controller, &direction);
             }
-            if (x < -48.0f || x > 48.0f)
+            if (base.z < -48.0f || base.z > 48.0f)
             {
                 position = D_00684260;
-                distance = y * D_007CB118[1];
+                distance = base.x * D_007CB118[1];
                 func_001adff0(
                     distance, work->controller, &position);
             }

@@ -1938,7 +1938,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             model = 0;
             for (i = 0; ; i++)
             {
-                npc = *(u32*)(0x0086b180 + i * 4 + currentActor * 0xc4 + currentArea * 0x310 + 0x60);
+                npc = *(u32*)(0x0086b180 + i * 4 + currentActor * 0xc4 +
+                              currentArea * 0x310 + 0x60);
                 if (npc == 0) break;
                 if (PTR_U32((void*)npc, 0) != 0)
                 {
@@ -1947,7 +1948,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     offset.z = *(f32*)((u8*)npc + 0x114) - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.z;
                     if (RwV3dLength(&offset) < 200.0f)
                     {
-                        model = *(u32*)(0x0086b1e0 + i * 4 + currentActor * 0xc4 + currentArea * 0x310);
+                        model = *(u32*)(0x0086b1e0 + i * 4 +
+                                         currentActor * 0xc4 + currentArea * 0x310);
                         break;
                     }
                 }
