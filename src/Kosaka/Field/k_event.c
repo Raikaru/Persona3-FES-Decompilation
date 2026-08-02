@@ -1074,6 +1074,7 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
     s32 rawZ;
     s32 x;
     s32 z;
+    s32 offset;
 
     viewerPos = &mdlGetMatrix(unit->mdl)->pos;
     x = 0;
@@ -1099,9 +1100,10 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
     }
     cell = DAT_0086b180_abs + z * 0x310 + x * 0xc4;
     i = 0;
-    while (*(void**)(cell + 0x60 + i * sizeof(void*)) != NULL)
+    offset = 0;
+    while (*(void**)(cell + 0x60 + offset) != NULL)
     {
-        objectSlot = (void**)(cell + 0x60 + i * sizeof(void*));
+        objectSlot = (void**)(cell + 0x60 + offset);
         delta.x = *(f32*)((u8*)*objectSlot + 0x10c) -
                   mdlGetMatrix(unit->mdl)->pos.x;
         delta.y = *(f32*)((u8*)*objectSlot + 0x110) -
@@ -1110,9 +1112,10 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
                   mdlGetMatrix(unit->mdl)->pos.z;
         if (func_004c6ac0(&delta) < maxDist)
         {
-            return *(void**)(cell + 0x1e0 + i * sizeof(void*));
+            return *(void**)(cell + 0x1e0 + offset);
         }
         i++;
+        offset += sizeof(void*);
     }
     return NULL;
 }

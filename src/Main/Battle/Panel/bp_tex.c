@@ -3950,7 +3950,6 @@ void FUN_002265D0(void)
     s32 j;
     f32 stateAlpha;
     f32 transAlpha;
-    f32 rowOffset;
     f32 rowStep;
     f32 ratio;
     f32 y150;
@@ -3959,7 +3958,7 @@ void FUN_002265D0(void)
     f32 quadBaseX;
     f32 quadBaseY;
     f32 panelAlpha;
-
+    f32 rowOffset;
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);

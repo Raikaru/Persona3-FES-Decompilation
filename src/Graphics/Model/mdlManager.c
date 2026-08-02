@@ -6774,9 +6774,14 @@ u32 func_00319970(Model* param_1)
 
   u32 *puVar14;
 
-  int iStack_50;
+  struct {
+    int value;
+    u32 field;
+  } stackPair;
 
-  u32 uStack_4c;
+#define iStack_50 stackPair.value
+#define uStack_4c stackPair.field
+
 
   u16 uStack_30;
 
@@ -6792,12 +6797,16 @@ u32 func_00319970(Model* param_1)
 
   int iStack_c;
 
-  u16 uStack_6;
+  struct {
+    u16 field_00;
+    u16 field_02;
+    u16 field_04;
+  } shortPair;
 
-  u16 uStack_4;
+#define uStack_6 shortPair.field_00
+#define uStack_4 shortPair.field_02
+#define uStack_2 shortPair.field_04
 
-  
-  u16 uStack_2;
 
   
 
@@ -7464,6 +7473,11 @@ u32 func_00319970(Model* param_1)
   return 1;
 
 }
+#undef uStack_6
+#undef uStack_4
+#undef uStack_2
+#undef iStack_50
+#undef uStack_4c
 #pragma opt_lifetimes reset
 #pragma pop
 #pragma pop

@@ -3459,8 +3459,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
     FUN_003f25e0_i(task,choice,option_flags | 0x2000);
   }
 
-  source_count = *(int *)(source_bytes + 0x18);
-  for (i = 0; i < source_count; i++) {
+  for (i = 0; i < *(int *)(source_bytes + 0x18); i++) {
     entry = (int *)(((u32 **)&PTR_DAT_006ac9f0)[source_index * 9] + i * 0xc);
     if (entry == (int *)0) {
       break;
@@ -3487,8 +3486,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
   if (choice != (int *)0) {
     FUN_003f2320_i(task,choice);
   }
-  source_count = (u8)FUN_003f03e0(param_1);
-  for (i = 1; i <= source_count; i++) {
+  for (i = 1; i <= (u8)FUN_003f03e0(param_1); i++) {
     entry = (int *)(*(int *)(*(int *)(source_bytes + 0x20) + 8) + i * 0x20);
     if (entry != (int *)0) {
       uGpffffb9a8 = (u8)i | 0x300;
@@ -6618,8 +6616,8 @@ void FUN_003f8a00(int param_1,int param_2,u32 param_3,int param_4,int param_5
   u16 uVar3;
 
   u32 *puVar4;
-
   u32 *puVar5;
+
 
   int lVar6;
 
@@ -19293,8 +19291,8 @@ void FUN_0040cc30(u64 param_1,int param_2,int *param_3)
   int iVar2;
 
   int iVar3;
-
   int iVar4;
+
 
   u32 *puVar5;
 
@@ -19323,8 +19321,8 @@ void FUN_0040cc30(u64 param_1,int param_2,int *param_3)
     iVar2 = param_3[3];
 
     iVar3 = *(int *)(iVar2 + 0x24);
-
     iVar4 = *(int *)(iVar3 + 0x44);
+
 
     switch(*(u32 *)(param_2 + 0x10)) {
 

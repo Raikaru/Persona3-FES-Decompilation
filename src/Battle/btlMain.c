@@ -135,6 +135,10 @@ typedef struct BtlMainRecovery
     s32 hpDelta;
     s32 spDelta;
     u32 flags;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
 } BtlMainRecovery;
 
 struct BtlMainColorWork
@@ -657,11 +661,10 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     BtlUnit* unit;
     BtlPacket* movePacket;
     BtlPacket* packet;
-    RwV3d homePos;
     RwV3d unitPos;
-    RwV3d targetPos;
-    RwV3d direction;
     RtQuat unitRot;
+    RwV3d homePos;
+    RwV3d direction;
     RtQuat baseRot;
     u8 hasSkill24d;
     u8 hasSkill24e;
@@ -714,10 +717,10 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
             direction.y = unitPos.y - homePos.y;
             direction.z = unitPos.z - homePos.z;
             FUN_004c69f0(&direction, &direction);
-            targetPos.x = direction.x * 150.0f + homePos.x;
-            targetPos.y = direction.y * 150.0f + homePos.y;
-            targetPos.z = direction.z * 150.0f + homePos.z;
-            btlUnitSetPos(unit, &targetPos);
+            direction.x = direction.x * 150.0f + homePos.x;
+            direction.y = direction.y * 150.0f + homePos.y;
+            direction.z = direction.z * 150.0f + homePos.z;
+            btlUnitSetPos(unit, &direction);
             movePacket = FUN_002819d0(DAT_007cad78, unit, &unitPos, 8);
             btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
             packet = FUN_002822b0(unit, &unitRot, 0);

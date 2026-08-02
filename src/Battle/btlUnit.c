@@ -518,14 +518,13 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     u16 charId;
     f32 distance;
     f32 scale;
-    RwV3d origin;
     RwV3d firstOffset;
-    RwV3d secondOffset;
-    RwV3d transformed;
     RwV3d scaledOffset;
     RwV3d positionValue;
     RwV3d center;
     RtQuat rotation;
+    f32 firstOffsetX;
+    f32 firstOffsetZ;
 
     charId = unit->charId;
 
@@ -540,45 +539,45 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
             btlUnitGetSphereWorldCenter(source, &center);
             center.y -= source->unk_8c * source->scale * 0.5f;
             entry = DAT_007ce42c + ((charId * 11) * 8) + mode * 6;
-            secondOffset.x = (f32)*(s16*)(entry + 0x0c);
-            secondOffset.y = (f32)*(s16*)(entry + 0x0e);
-            secondOffset.z = (f32)*(s16*)(entry + 0x10);
-            scaledOffset.x = secondOffset.x * unit->scale;
-            scaledOffset.y = secondOffset.y * unit->scale;
-            scaledOffset.z = secondOffset.z * unit->scale;
-            RtQuatTransformVectors(&transformed, &scaledOffset, 1, &source->rot);
-            position->x = transformed.x + center.x;
-            position->y = transformed.y + center.y;
-            position->z = transformed.z + center.z;
+            scaledOffset.x = (f32)*(s16*)(entry + 0x0c);
+            scaledOffset.y = (f32)*(s16*)(entry + 0x0e);
+            scaledOffset.z = (f32)*(s16*)(entry + 0x10);
+            scaledOffset.x *= unit->scale;
+            scaledOffset.y *= unit->scale;
+            scaledOffset.z *= unit->scale;
+            RtQuatTransformVectors(&firstOffset, &scaledOffset, 1, &source->rot);
+            position->x = firstOffset.x + center.x;
+            position->y = firstOffset.y + center.y;
+            position->z = firstOffset.z + center.z;
         }
     }
     else
     {
-        func_002802d0(target, source, &origin);
+        func_002802d0(target, source, &center);
         distance = func_002812d0(unit, target, tableIndex) + 50.0f;
         rotation.real = 0.0f;
-        func_002d1de0((RwV3d*)&rotation, &source->pos, &origin);
+        func_002d1de0((RwV3d*)&rotation, &source->pos, &center);
         RtQuatTransformVectors(&firstOffset, &D_006978A0, 1, &rotation);
-        firstOffset.x *= distance;
-        firstOffset.z *= distance;
+        firstOffsetX = firstOffset.x * distance;
+        firstOffsetZ = firstOffset.z * distance;
 
         entry = DAT_007ce42c + ((charId * 11) * 8);
         scale = (f32)*(s16*)(entry + 0x0c) * unit->scale;
-        RtQuatTransformVectors(&secondOffset, &D_00697870, 1, &rotation);
-        secondOffset.x *= scale;
-        secondOffset.y *= scale;
-        secondOffset.z *= scale;
+        RtQuatTransformVectors(&firstOffset, &D_00697870, 1, &rotation);
+        firstOffset.x *= scale;
+        firstOffset.y *= scale;
+        firstOffset.z *= scale;
 
-        positionValue.x = origin.x + firstOffset.x + secondOffset.x;
+        positionValue.x = center.x + firstOffsetX + firstOffset.x;
         positionValue.y = 0.0f;
-        positionValue.z = origin.z + firstOffset.z + secondOffset.z;
+        positionValue.z = center.z + firstOffsetZ + firstOffset.z;
         if (position != NULL)
         {
             *position = positionValue;
         }
         if (rotationOut != NULL)
         {
-            func_002d1de0((RwV3d*)rotationOut, &positionValue, &origin);
+            func_002d1de0((RwV3d*)rotationOut, &positionValue, &center);
         }
     }
 }

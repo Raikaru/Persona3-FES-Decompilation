@@ -10261,8 +10261,8 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         break;
     case 3:
         {
-            s32 itemCount;
             s32 firstItem;
+            s32 itemCount;
             s16 equipmentIdx;
             s32 row;
             s32 selected;
@@ -17966,7 +17966,6 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     u32 textColor;
     u32 value;
     u32 denominator;
-    s16 statValue;
     s32 statIndex;
     s32 gaugeWidth;
     s32 selected;
@@ -18018,8 +18017,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x32:
     case 0x3c:
         statIndex = (menuCode - 0x1e) / 10;
-        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
-        resourceText = FUN_00177790_y2(statValue);
+        resourceText = FUN_00177790_y2(*(s16*)((const u8*)menu + 0x0c + statIndex * 4));
         textColor = (0xffU - item->alpha) | 0xffffff00;
         sprintf(textBuffer, DAT_007cb66c, resourceText);
         campDrawTextAlt((s32)item->x, (s32)item->y + 3, textColor,
@@ -18031,8 +18029,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x33:
     case 0x3d:
         statIndex = (menuCode - 0x1f) / 10;
-        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
-        value = FUN_0016c4f0(statValue) & 0xffff;
+        value = FUN_0016c4f0(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
             campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
@@ -18050,8 +18047,8 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                             value % 10 + 0xb, item->alpha,
                             item->x + 32.0f, item->y,
                             depth);
-        value = FUN_0016c4f0(statValue) & 0xffff;
-        denominator = FUN_0016c5f0_y6(statValue) & 0xffff;
+        value = FUN_0016c4f0(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
+        denominator = FUN_0016c5f0_y6(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
         gaugeWidth = 0x4c - (value * 0x4c) / denominator;
         campDrawSprite_subb(parent, DAT_00833A50[1], 0xd, item->alpha,
                        item->x + 50.0f, item->y + 2.0f,
@@ -18073,8 +18070,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x34:
     case 0x3e:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
-        value = FUN_0016c570(statValue) & 0xffff;
+        value = FUN_0016c570(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
             campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
@@ -18092,8 +18088,8 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                             value % 10 + 0xb, item->alpha,
                             item->x + 32.0f, item->y,
                             depth);
-        value = FUN_0016c570(statValue) & 0xffff;
-        denominator = func_0016c670(statValue) & 0xffff;
+        value = FUN_0016c570(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
+        denominator = func_0016c670(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0xffff;
         gaugeWidth = 0x4c - (value * 0x4c) / denominator;
         campDrawSprite_subb(parent, DAT_00833A50[1], 0xd, item->alpha,
                        item->x + 50.0f, item->y + 2.0f,
@@ -18115,8 +18111,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x35:
     case 0x3f:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
-        rank = FUN_0016c470(statValue);
+        rank = FUN_0016c470(*(s16*)((const u8*)menu + 0x0c + statIndex * 4));
         if (rank > 9) {
             campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
                                 rank / 10 + 0xb, item->alpha,
@@ -18126,12 +18121,12 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                             rank % 10 + 0xb, item->alpha,
                             item->x + 16.0f, item->y,
                             depth);
-        if ((FUN_0016c970(statValue) & 0x80000) != 0) {
+        if ((FUN_0016c970(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0x80000) != 0) {
             icon = 0xe;
-        } else if ((FUN_0016c970(statValue) & 0x80) != 0) {
+        } else if ((FUN_0016c970(*(s16*)((const u8*)menu + 0x0c + statIndex * 4)) & 0x80) != 0) {
             icon = 0xf;
         } else {
-            statType = FUN_0016c920(statValue);
+            statType = FUN_0016c920(*(s16*)((const u8*)menu + 0x0c + statIndex * 4));
             if (statType == 5) {
                 icon = 1;
             } else if (statType == 4) {

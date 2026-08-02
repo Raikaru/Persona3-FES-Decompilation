@@ -2513,21 +2513,34 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
             int i;
             for (i = 0; i < 4; ++i)
             {
-                float *edge = (float *)(node + i * 0x130 + 0x08);
-                float *next = (float *)(node + (((i + 1) & 3) * 0x130) + 0x08);
-                int side_a = FUN_002d2990(edge, next, param_2);
-                int side_b = FUN_002d2990(edge, next, param_3);
+                int side_a;
+                int side_b;
+
+                side_a = FUN_002d2990(
+                    (float *)(node + i * 0x130 + 0x08),
+                    (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
+                    param_2);
+                side_b = FUN_002d2990(
+                    (float *)(node + i * 0x130 + 0x08),
+                    (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
+                    param_3);
 
                 if (side_a != side_b)
                 {
-                    side_a = FUN_002d2990(param_2, param_3, edge);
-                    side_b = FUN_002d2990(param_2, param_3, next);
+                    side_a = FUN_002d2990(
+                        param_2, param_3,
+                        (float *)(node + i * 0x130 + 0x08));
+                    side_b = FUN_002d2990(
+                        param_2, param_3,
+                        (float *)(node + (((i + 1) & 3) * 0x130) + 0x08));
                     if (side_a != side_b)
                     {
                         return 1;
                     }
                 }
-                if (FUN_002d2470_call(param_1, param_2, param_3, edge) != 0)
+                if (FUN_002d2470_call(
+                        param_1, param_2, param_3,
+                        (float *)(node + i * 0x130 + 0x08)) != 0)
                 {
                     return 1;
                 }
@@ -2882,10 +2895,10 @@ void FUN_002d32b0(float param_1)
             u8 *record = node + i * 0x130;
             float *point = (float *)(record + 0x08);
             float bestDistance = 7000.0f;
+            RwV2d bestDirection;
             float candidateX = 0.0f;
             float candidateY = 0.0f;
             float candidateZ = 0.0f;
-            RwV2d bestDirection;
             u8 *bestPoint = NULL;
 
             for (other = *(u8 **)(iGpffffb6fc + 0x2cc); other != NULL; other = *(u8 **)(other + 0x4cc))
@@ -2972,10 +2985,9 @@ void FUN_002d32b0(float param_1)
     {
         u8 *playerRecord = iGpffffb6fc + i * 0x130;
         float *start = (float *)(playerRecord + 0x2d0);
-        float bestDistance = 7000.0f;
         float *bestPoint = NULL;
         RwV2d bestDirection;
-
+        float bestDistance = 7000.0f;
         for (other = *(u8 **)(iGpffffb6fc + 0x2cc); other != NULL; other = *(u8 **)(other + 0x4cc))
         {
             for (j = 0; j < 4; ++j)
@@ -3162,7 +3174,7 @@ u32 FUN_002d4040(BtlUnit* unit)
 // FUN_002d41c0 NONMATCHING
 u32 FUN_002d41c0(RwV2d* output, f32 radius)
 {
-    RwV2d points[128];
+    RwV2d points[130];
     RwV2d previousDelta;
     RwV2d currentDelta;
     RwV2d previousUnit;
