@@ -452,7 +452,30 @@ extern u8 D_006A2BD0_abs[];
 extern const char D_006A2BE8[];
 #pragma alias D_006A2BE8_abs D_006A2BE8
 extern u8 D_006A2BE8_abs[];
-
+extern const char D_006A2C20[];
+#pragma alias D_006A2C20_abs D_006A2C20
+extern u8 D_006A2C20_abs[];
+extern const char D_006A2C40[];
+#pragma alias D_006A2C40_abs D_006A2C40
+extern u8 D_006A2C40_abs[];
+extern const char D_006A2C60[];
+#pragma alias D_006A2C60_abs D_006A2C60
+extern u8 D_006A2C60_abs[];
+extern const char D_006A2C80[];
+#pragma alias D_006A2C80_abs D_006A2C80
+extern u8 D_006A2C80_abs[];
+extern const char D_006A2CA0[];
+#pragma alias D_006A2CA0_abs D_006A2CA0
+extern u8 D_006A2CA0_abs[];
+extern const char D_006A2CC0[];
+#pragma alias D_006A2CC0_abs D_006A2CC0
+extern u8 D_006A2CC0_abs[];
+extern const char D_006A2CE0[];
+#pragma alias D_006A2CE0_abs D_006A2CE0
+extern u8 D_006A2CE0_abs[];
+extern const char D_006A2D00[];
+#pragma alias D_006A2D00_abs D_006A2D00
+extern u8 D_006A2D00_abs[];
 // FUN_003b5df0
 u32 MT_Scene_GetTotalResInList(u32 resType)
 {
@@ -460,7 +483,6 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     s32 total;
     ResrcManager* resManager;
     u32 type;
-
     type = resType;
     total = 0;
     resManager = gMtScene->resManager;
@@ -468,7 +490,6 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     {
         return 0;
     }
-
     // ??? wtf is the point of this loop
     for (i = 0; i < RESRC_TYPE_MAX; i++)
     {
@@ -477,18 +498,10 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
             total += resrcMngGetTotalResInList(resManager, i);
         }
     }
-
     return total;
 }
 #undef FUN_003b5e90
 // FUN_003B5E90
-
-
-
-
-
-
-
 u16 FUN_003b5e90(u16 param_1)
 {
     u16 uVar1;
@@ -500,14 +513,12 @@ u16 FUN_003b5e90(u16 param_1)
         FUN_005225a8(D_006A2BB0_abs);
         return 0;
     }
-
     typeId = uVar1 & 0xffff;
     if (((s32)(typeId & RESRC_TYPE_MASK) >> 10) != 8)
     {
         FUN_005225a8(D_006A2BD0_abs);
         return 0;
     }
-
     lVar2 = resrcMngCreateRes(gMtScene->resManager, uVar1);
     if (lVar2 == 0)
     {
@@ -517,7 +528,6 @@ u16 FUN_003b5e90(u16 param_1)
     {
         FUN_0019d3f0(D_006A2BE8_abs, 0x1d7);
     }
-
     return uVar1;
 }
 #define FUN_003b5e90(...) ((u32 (*)(...))FUN_003b5e90)(__VA_ARGS__)
@@ -528,7 +538,6 @@ u16 FUN_003b5f70(u16 param_1)
     u16 resTypeId;
     ResrcManager* resManager;
     Resrc* res;
-
     resTypeId = (param_1 & RESRC_ID_MASK) | 0x1c00;
     resManager = gMtScene->resManager;
     if (resManager == NULL)
@@ -536,28 +545,20 @@ u16 FUN_003b5f70(u16 param_1)
         printf("not found active resmanager\n");
         return 0;
     }
-
     res = resrcMngCreateRes(resManager, resTypeId);
     if (res == NULL)
     {
         return 0;
     }
-
     *(u32*)((u8*)res + 0x100) = 0x420c0000;
     return resTypeId;
 }
 #define FUN_003b5f70(...) ((u32 (*)(...))FUN_003b5f70)(__VA_ARGS__)
-
-
-
-
-
 // FUN_003b6000
 void MT_Scene_003b6000(u16 resId, Model* mdl)
 {
     MT_Scene_CreateResModelChar(resId, 0, mdl);
 }
-
 // FUN_003b6030
 u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
 {
@@ -565,7 +566,6 @@ u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
     u16 resTypeId;
     ResrcModelChar* res;
     RwV3d translation = {0};
-
     resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELCHAR);
     
     resManager = gMtScene->resManager;
@@ -1198,16 +1198,16 @@ void FUN_003b7090(u64 param_1)
 
 {
 
-  u32 resource;
+  int iVar6;
   u32 scene;
   u32 uVar2;
   u32 uVar3;
   u32 *puVar4;
-  int iVar6;
+  u32 resource;
 
   scene = *(u32 *)(PTR_DAT_007cd540 + 8);
   if (scene == 0) {
-    FUN_005225a8(0x6a2bb0);
+    FUN_005225a8(D_006A2BB0_abs);
   }
   else {
     if (scene == 0) {
@@ -1264,7 +1264,7 @@ void FUN_003b7090(u64 param_1)
 
         }
 
-        FUN_005225a8(0x6a2c20,uVar2);
+        FUN_005225a8(D_006A2C20_abs,uVar2);
 
         break;
 
@@ -1276,7 +1276,7 @@ void FUN_003b7090(u64 param_1)
 
         puVar4[0x46] = 0;
 
-        FUN_005225a8(0x6a2c20,uVar2);
+        FUN_005225a8(D_006A2C20_abs,uVar2);
 
         break;
 
@@ -1326,7 +1326,7 @@ void FUN_003b7090(u64 param_1)
 
         }
 
-        FUN_005225a8(0x6a2c20,uVar2);
+        FUN_005225a8(D_006A2C20_abs,uVar2);
 
         break;
 
@@ -1344,7 +1344,7 @@ void FUN_003b7090(u64 param_1)
 
           puVar4[0x41] = 0;
 
-          FUN_005225a8(0x6a2c40,resource);
+          FUN_005225a8(D_006A2C40_abs,resource);
 
         }
 
@@ -1374,7 +1374,7 @@ void FUN_003b7090(u64 param_1)
 
         }
 
-        FUN_005225a8(0x6a2c60,uVar2);
+        FUN_005225a8(D_006A2C60_abs,uVar2);
 
         break;
 
@@ -1386,7 +1386,7 @@ void FUN_003b7090(u64 param_1)
 
           puVar4[0x41] = 0;
 
-          FUN_005225a8(0x6a2c80,resource);
+          FUN_005225a8(D_006A2C80_abs,resource);
 
         }
 
@@ -1400,7 +1400,7 @@ void FUN_003b7090(u64 param_1)
 
           puVar4[0x58] = 0;
 
-          FUN_005225a8(0x6a2ca0,resource);
+          FUN_005225a8(D_006A2CA0_abs,resource);
 
         }
 
@@ -1410,7 +1410,7 @@ void FUN_003b7090(u64 param_1)
 
       case 0x15:
 
-        FUN_005225a8(0x6a2cc0,resource);
+        FUN_005225a8(D_006A2CC0_abs,resource);
 
         break;
 
@@ -1420,7 +1420,7 @@ void FUN_003b7090(u64 param_1)
 
       case 0x10:
 
-        FUN_005225a8(0x6a2ce0,resource);
+        FUN_005225a8(D_006A2CE0_abs,resource);
 
         break;
 
@@ -1436,7 +1436,7 @@ void FUN_003b7090(u64 param_1)
 
         FUN_004c3880(puVar4[0x42]);
 
-        FUN_005225a8(0x6a2d00,resource);
+        FUN_005225a8(D_006A2D00_abs,resource);
 
       }
       FUN_003b5360(scene,resource);

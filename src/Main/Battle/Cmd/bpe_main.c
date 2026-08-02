@@ -509,11 +509,14 @@ void func_00249c10(void* work)
     };
     u8* base;
     u8* camera;
-    void* cameraMatrix;
+    union Pointer {
+        void* cameraMatrix;
+        f32* position;
+    };
     void* frame;
     void* matrix;
-    f32* position;
     u8* color;
+    union Pointer pointer;
     f32 deltaX;
     f32 deltaY;
     f32 deltaZ;
@@ -527,15 +530,15 @@ void func_00249c10(void* work)
     if ((~*(u32*)(base + 0x604) & 1u) != 0) {
         return;
     }
-    cameraMatrix = func_004cb2f0(*(void**)(camera + 4));
+    pointer.cameraMatrix = func_004cb2f0(*(void**)(camera + 4));
     frame = *(void**)(*(u8**)(base + 0x600) + 4);
     matrix = func_004c38c0();
-    func_004c32a0(matrix, cameraMatrix);
+    func_004c32a0(matrix, pointer.cameraMatrix);
 
     local.origin[2] = 100.0f;
     local.origin[0] = 0.0f;
     local.origin[1] = 0.0f;
-    RwV3dTransformPoint(local.transformed.data, local.origin, cameraMatrix);
+    RwV3dTransformPoint(local.transformed.data, local.origin, pointer.cameraMatrix);
 
     deltaX = local.transformed.data[0] - *(f32*)(base + 0x608);
     deltaY = local.transformed.data[1] - *(f32*)(base + 0x60c);
@@ -547,7 +550,7 @@ void func_00249c10(void* work)
     {
 
         color = local.colors.data;
-        position = (f32*)local.positions.data;
+        pointer.position = (f32*)local.positions.data;
         for (i = 0; i < 0x80; i++) {
             f32* particle;
             f32* particleY;
@@ -574,10 +577,10 @@ void func_00249c10(void* work)
             } else if (particleZ[0] > 150.0f) {
                 particleZ[0] -= 300.0f;
             }
-            position[0] = local.transformed.data[0] + *(f32*)(base + i * 0xc);
-            position[1] = local.transformed.data[1] + particleY[0];
-            position[2] = local.transformed.data[2] + *(f32*)(base + i * 0xc + 8);
-            RwV3dTransformPoint(local.point, position, matrix);
+            pointer.position[0] = local.transformed.data[0] + *(f32*)(base + i * 0xc);
+            pointer.position[1] = local.transformed.data[1] + particleY[0];
+            pointer.position[2] = local.transformed.data[2] + *(f32*)(base + i * 0xc + 8);
+            RwV3dTransformPoint(local.point, pointer.position, matrix);
 
             if (local.point[2] < 100.0f) {
                 if (local.point[2] < 40.0f) {
@@ -610,7 +613,7 @@ void func_00249c10(void* work)
             color[2] = *(u8*)(base + 0x616);
             color[3] = (u8)((f32)*(u8*)(base + 0x617) * alpha);
             color += local.colors.stride;
-            position = (f32*)((u8*)position + local.positions.stride);
+            pointer.position = (f32*)((u8*)pointer.position + local.positions.stride);
         }
     }
 

@@ -757,7 +757,6 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     s32 mode;
     s32 i;
     s32 scratch[8];
-
     node = param_1->list->links;
     mode = param_1->mode;
     memset(scratch, 0, sizeof(scratch));
@@ -767,10 +766,12 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
         for (i = 0; i < param_1->capacity; i++) {
             if (fclCombineListGetValue(param_1, i) ==
                 (s32)data->selection_detail) {
-                goto da570_found;
+                break;
             }
         }
-        i = -1;
+        if (i == param_1->capacity) {
+            i = -1;
+        }
 da570_found:
         if (i == -1) {
             scratch[param_1->used] = (s32)data->selection_detail;
@@ -782,7 +783,6 @@ da570_found:
         node = node->next;
     }
 }
-
 /* Removing this worsens FUN_003da700 (nd2097 -> nd2101) - measured W161. */
 /* Array declaration orders selected_ids/list/transformed: nd1960-1968, object3740/window3712 (all over by28); no win - measured W419. */
 #pragma opt_loop_invariants on

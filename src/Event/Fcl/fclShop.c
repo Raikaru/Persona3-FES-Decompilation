@@ -5875,7 +5875,7 @@ u64 FUN_003ed5a0(u64 param_1,u64 param_2)
 
 }
 
-// FUN_003ED5E0 NONMATCHING
+// FUN_003ED5E0
 
 
 u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
@@ -6076,31 +6076,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
         else {
 
-          if (((DAT_007e094e[0] & 4) == 0) && ((DAT_007e0958[0] & 4) == 0)) {
-
-            if ((((DAT_007e094e[0] & 8) != 0) || ((DAT_007e0958[0] & 8) != 0)) &&
-
-               (cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8)), cVar3 == '\x01')) {
-
-              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
-              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
-              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
-
-              if (lVar5 != 0) {
-
-                func_0010a4e0(0,0,0,5);
-
-                *(u32 *)(iVar2 + 0x18) = 0;
-
-                FUN_003c9e70(*(u32 *)(iVar2 + 8),0);
-
-              }
-
-            }
-
-          }
-
-          else {
+          if (((DAT_007e094e[0] & 4) != 0) || ((DAT_007e0958[0] & 4) != 0)) {
 
             cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8));
 
@@ -6117,6 +6093,30 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
                 *(u32 *)(iVar2 + 0x18) = 1;
 
                 FUN_003c9e70(*(u32 *)(iVar2 + 8),1);
+
+              }
+
+            }
+
+          }
+
+          else {
+
+            if ((((DAT_007e094e[0] & 8) != 0) || ((DAT_007e0958[0] & 8) != 0)) &&
+
+               (cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8)), cVar3 == '\x01')) {
+
+              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
+              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
+              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
+
+              if (lVar5 != 0) {
+
+                func_0010a4e0(0,0,0,5);
+
+                *(u32 *)(iVar2 + 0x18) = 0;
+
+                FUN_003c9e70(*(u32 *)(iVar2 + 8),0);
 
               }
 

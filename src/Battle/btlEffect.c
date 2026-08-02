@@ -2088,24 +2088,24 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
   u32 uVar3 = 0;
   u64 uVar4 = 0;
   int iVar5 = 0;
-  float fVar6 = 0;
   float fVar7 = 0;
+  float fVar6 = 0;
   float fStack_8 = 0;
   float fStack_4 = 0;
   
-  if (0.0f <= *param_5) {
-    param_5[3] = *param_5;
-    param_5[2] = param_5[1];
-    *param_5 = -1.0f;
-    *(u16 *)(param_5 + 4) = 0;
-  }
+  if (*param_5 < 0.0f) goto initial_done;
+  param_5[3] = *param_5;
+  param_5[2] = param_5[1];
+  *param_5 = -1.0f;
+  *(u16 *)(param_5 + 4) = 0;
+initial_done:
   sVar1 = *(short *)(param_5 + 4);
   if ((sVar1 >= 0) && (sVar1 < 0x1c)) {
-    if (sVar1 >= 0x10) {
-      param_5[1] = param_5[3];
+    if (sVar1 < 0x10) {
+      param_5[1] = ((float)(int)sVar1 / 16.0f) * (param_5[3] - param_5[2]) + param_5[2] + 0.0f;
     }
     else {
-      param_5[1] = ((float)(int)sVar1 / 16.0f) * (param_5[3] - param_5[2]) + param_5[2] + 0.0f;
+      param_5[1] = param_5[3];
     }
     if ((func_001fef10(*(u32 *)(param_3 + 0xa8),&fStack_8) != 0) &&
         (param_4 != '\0')) {

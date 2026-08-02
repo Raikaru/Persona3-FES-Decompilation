@@ -47,7 +47,7 @@ extern s32 FUN_003951d0(s32 id);
 extern s32 FUN_003bdd50(void);
 extern s32 FUN_00172c50(void *out);
 extern s32 FUN_0017ddf0(void *first, void *second);
-extern s32 FUN_003be2a0(s32 arg0, s32 arg1, u64 id, s32 arg3, u32 arg4);
+extern s32 FUN_003be2a0(s32 arg0, s32 arg1, u32 id, s32 arg3, u32 arg4);
 extern s32 FUN_00395200(s32 max);
 extern s32 FUN_001717b0(void);
 extern s32 FUN_00395230(s32 max);
@@ -75,7 +75,7 @@ u8 * FUN_003c2780(u32 param_1);
 u32  FUN_003c28a0(u32 param_1,u32 param_2,int param_3,int param_4,int param_5,int *param_6);
 u32 FUN_003c2ab0(u32 param_1,u32 param_2);
 u32 FUN_003c2b40(int *param_1,int *param_2);
-u8 FUN_003c2c50(u32 param_1);
+u32 FUN_003c2c50(u32 param_1);
 u32 FUN_003c2df0(u32 param_1);
 u32 * FUN_003c2ee0(s32 param_1);
 u32 * FUN_003c3050(u32 param_1);
@@ -92,7 +92,7 @@ u32 * FUN_003c3390(void);
 #define FUN_003c28a0(...) ((u32 (*)(...))FUN_003c28a0)(__VA_ARGS__)
 #define FUN_003c2ab0(...) ((u32 (*)(...))FUN_003c2ab0)(__VA_ARGS__)
 #define FUN_003c2b40(...) ((u32 (*)(...))FUN_003c2b40)(__VA_ARGS__)
-#define FUN_003c2c50(...) ((u8 (*)(...))FUN_003c2c50)(__VA_ARGS__)
+#define FUN_003c2c50(...) ((u32 (*)(...))FUN_003c2c50)(__VA_ARGS__)
 #define FUN_003c2df0(...) ((u32 (*)(...))FUN_003c2df0)(__VA_ARGS__)
 #define FUN_003c2ee0(...) ((u32 * (*)(...))FUN_003c2ee0)(__VA_ARGS__)
 #define FUN_003c3050(...) ((u32 * (*)(...))FUN_003c3050)(__VA_ARGS__)
@@ -508,7 +508,7 @@ LAB_003c2c00:
 // FUN_003C2C50
 
 
-u8 FUN_003c2c50(u32 param_1)
+u32 FUN_003c2c50(u32 param_1)
 {
   char cVar1;
   int *piVar3;
@@ -608,7 +608,7 @@ u32 * FUN_003c2ee0(s32 param_1)
 
 {
 
-  u8 bVar1;
+  int bVar1;
 
   u32 *puVar2;
 
@@ -618,9 +618,9 @@ u32 * FUN_003c2ee0(s32 param_1)
 
   int iVar4;
 
-  short sStack_4;
-
   short sStack_2;
+
+  short sStack_4;
 
   
 
@@ -686,7 +686,13 @@ u32 * FUN_003c2ee0(s32 param_1)
 
     }
 
-    if (bVar1) {
+    if (!bVar1) {
+
+      puVar2 = (u32 *)0x0;
+
+    }
+
+    else {
 
       lVar3 = FUN_003be2a0(0,0,param_1,7,0x95b79c);
 
@@ -703,12 +709,6 @@ u32 * FUN_003c2ee0(s32 param_1)
         puVar2 = (u32 *)DAT_0095b790_abs;
 
       }
-
-    }
-
-    else {
-
-      puVar2 = (u32 *)0x0;
 
     }
 

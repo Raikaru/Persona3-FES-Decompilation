@@ -568,7 +568,7 @@ extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 #pragma alias FUN_00388df0_evt FUN_00388df0
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
 #pragma alias FUN_003b8ff0_evt FUN_003b8ff0
-extern u32 FUN_003b8ff0_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
+extern u32 FUN_003b8ff0_evt(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,int param_6,float param_7);
 #pragma alias FUN_003b9260_evt FUN_003b9260
 extern u32 FUN_003b9260_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
 #pragma alias FUN_003b8ff0_evt_wide FUN_003b8ff0
@@ -1227,9 +1227,9 @@ u32 lVar4;
 
     FUN_00521408(auStack_60,0,0x20);
 
-    *(u8 *)(puVar5 + 8) = auStack_60[0x14];
+    *(u8 *)(puVar5 + 8) = *(u32 *)(auStack_60 + 0x14);
 
-    *(u8 *)((int)puVar5 + 0x11) = auStack_60[0x18];
+    *(u8 *)((int)puVar5 + 0x11) = *(u32 *)(auStack_60 + 0x18);
 
     puVar5[10] = *(u32 *)auStack_60;
 
@@ -1247,7 +1247,7 @@ u32 lVar4;
 
     *(f32 *)(puVar5 + 0x10) = *(f32 *)(auStack_60 + 0xc);
 
-    *(u8 *)(puVar5 + 0x12) = auStack_60[0x1c];
+    *(u8 *)(puVar5 + 0x12) = *(u32 *)(auStack_60 + 0x1c);
 
     break;
 
@@ -1296,9 +1296,9 @@ u32 lVar4;
   case 0x29:
 
     *(u8 *)(puVar5 + 8) = 0;
-
-    FUN_0038d790(lVar2);
-
+    if (*(char *)(puVar5 + 8) == '\0') {
+      FUN_0038d790(lVar2);
+    }
     break;
 
   default:
@@ -5219,19 +5219,19 @@ void FUN_003658b0(u32 param_1,int param_2)
 
 {
 
+  int *piVar5;
+
   u16 *puVar1;
+
+  u32 uVar4;
 
   u32 uVar2;
 
   u32 lVar3;
 
-  u32 uVar4;
-
-  int *piVar5;
-
   float fVar6;
 
-  
+
 
   for (piVar5 = *(int **)(param_2 + 0x84); piVar5 != (int *)0x0; piVar5 = (int *)piVar5[0x25]) {
 
@@ -5275,10 +5275,10 @@ void FUN_003658b0(u32 param_1,int param_2)
               else {
                 fVar6 = (float)(int)(short)puVar1[0xd] / 100.0f;
               }
-              FUN_003b8ff0_evt(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
-                           *(char *)((int)puVar1 + 0x15) == '\0',puVar1[0xc]);
-              break;
+              FUN_003b8ff0_evt(lVar3,0,(char)puVar1[10],(short)puVar1[0xb],
+                           *(char *)((int)puVar1 + 0x15) == '\0',(short)puVar1[0xc],fVar6);
             }
+
             ;
 
           }
@@ -12491,7 +12491,7 @@ void FUN_0036d030(int param_1)
 
   int iVar4;
 
-  
+
 
   if (param_1 != 0) {
 
@@ -12561,21 +12561,21 @@ void FUN_0036d030(int param_1)
 
     uVar1 = *(u32 *)(iVar4 + 4);
 
-    if (((((((uVar1 & 1) == 0) && ((uVar1 & 0x20) == 0)) && ((uVar1 & 0x200) == 0)) &&
+    if (!(((((((uVar1 & 1) == 0) && ((uVar1 & 0x20) == 0)) && ((uVar1 & 0x200) == 0)) &&
 
          (((uVar1 & 0x400) == 0 && ((uVar1 & 0x800) == 0)))) &&
 
         (((uVar1 & 0x1000) == 0 && (((uVar1 & 0x20000) == 0 && ((uVar1 & 0x2000) == 0)))))) &&
 
-       (((uVar1 & 0x4000) == 0 && ((uVar1 & 0x8000) == 0)))) {
+       (((uVar1 & 0x4000) == 0 && ((uVar1 & 0x8000) == 0))))) {
 
-      iVar3 = 0;
+      iVar3 = 1;
 
     }
 
     else {
 
-      iVar3 = 1;
+      iVar3 = 0;
 
     }
 
@@ -12583,15 +12583,15 @@ void FUN_0036d030(int param_1)
 
       *(int *)(iVar4 + 0x77c) = iVar3;
 
-      if (iVar3 != 1) {
+      if (iVar3 == 1) {
 
-        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 
       else {
 
-        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 

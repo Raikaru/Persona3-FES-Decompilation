@@ -363,8 +363,8 @@ extern void FUN_003c8dc0(u32);
 u32 FUN_003c8400(u32 param_1,int param_2)
 {
   u32 lVar2;
-  int iVar4;
   int iVar3;
+  int iVar4;
   u32 *puVar5;
   int iVar6;
 

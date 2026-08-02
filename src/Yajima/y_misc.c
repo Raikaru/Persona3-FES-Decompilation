@@ -92,6 +92,10 @@ static inline uintptr_t Yajima_AddOffsetFirst(uintptr_t offset, uintptr_t base)
 {
   return offset + base;
 }
+static inline u32 Yajima_AddIntOffsetFirst(u32 offset, u32 base)
+{
+  return offset + base;
+}
 extern f32 sinf(f32 value);
 extern f32 FUN_001126b0_y2(u32 param_1);
 extern f32 FUN_00112740_y2(u32 param_1);
@@ -28682,10 +28686,9 @@ u32 FUN_00452a70(char param_1,char param_2)
 /* measured opt_loop_invariants on: 880/864 nd650; off: 864/864 nd109; + opt_lifetimes on: 864/864 nd77; retained */
 #pragma opt_loop_invariants off
 #pragma opt_lifetimes on
-// FUN_00452F70 NONMATCHING
+// FUN_00452F70
 
 void FUN_00452f70(u32 *param_1,int param_2)
-
 {
   int iVar1;
   int iVar2;
@@ -28696,8 +28699,13 @@ void FUN_00452f70(u32 *param_1,int param_2)
   u32 uVar5;
   u32 uVar7;
   u32 uVar8;
-  YVec3f direction;
   YVec3f position;
+  YVec3f direction1;
+  YVec3f direction2;
+  YVec3f direction3;
+  YVec3f direction4;
+  u32 secondColumn;
+  u32 secondRow;
   
   iVar1 = *(int *)(param_2 + 0x3c);
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
@@ -28718,49 +28726,50 @@ void FUN_00452f70(u32 *param_1,int param_2)
     }
   }
 LAB_00453278:
-  for (uVar6 = uVar7; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
-    columnOffset = uVar6 * 0x10;
-    for (uVar5 = uVar8; (int)uVar5 < (int)(uVar8 + 2); uVar5 = uVar5 + 1) {
-      iVar3 = uVar5 * 0x100;
+  for (secondColumn = uVar7; (int)secondColumn < (int)(uVar7 + 2); secondColumn = secondColumn + 1) {
+    secondRow = uVar8;
+    columnOffset = secondColumn * 0x10;
+    for (; (int)secondRow < (int)(uVar8 + 2); secondRow = secondRow + 1) {
+      iVar3 = secondRow * 0x100;
       iVar2 = FUN_001b9120_u32();
-      iVar2 = columnOffset + iVar2;
+      iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2);
       iVar2 = iVar2 + iVar3;
       if (((*(u8 *)(iVar2 + 0x53) & 1) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         (iVar2 = FUN_001b9120_u32(), iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2), iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + -0xb6) != 8)) {
-        FUN_001bf220(&position,uVar6,uVar5 - 1);
-        FUN_001bf220(&direction,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = direction;
+        FUN_001bf220(&position,secondColumn,secondRow - 1);
+        FUN_001bf220(&direction1,secondColumn,secondRow);
+        *(YVec3f *)(iVar1 + 0x34) = direction1;
       }
       iVar2 = FUN_001b9120_u32();
-      iVar2 = columnOffset + iVar2;
+      iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2);
       iVar2 = iVar2 + iVar3;
       if (((*(u8 *)(iVar2 + 0x53) & 2) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         (iVar2 = FUN_001b9120_u32(), iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2), iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x3a) != 8)) {
-        FUN_001bf220(&position,uVar6 - 1,uVar5);
-        FUN_001bf220(&direction,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = direction;
+        FUN_001bf220(&position,secondColumn - 1,secondRow);
+        FUN_001bf220(&direction2,secondColumn,secondRow);
+        *(YVec3f *)(iVar1 + 0x34) = direction2;
       }
       iVar2 = FUN_001b9120_u32();
-      iVar2 = columnOffset + iVar2;
+      iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2);
       iVar2 = iVar2 + iVar3;
       if (((*(u8 *)(iVar2 + 0x53) & 4) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         (iVar2 = FUN_001b9120_u32(), iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2), iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x14a) != 8)) {
-        FUN_001bf220(&position,uVar6,uVar5 + 1);
-        FUN_001bf220(&direction,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = direction;
+        FUN_001bf220(&position,secondColumn,secondRow + 1);
+        FUN_001bf220(&direction3,secondColumn,secondRow);
+        *(YVec3f *)(iVar1 + 0x34) = direction3;
       }
       iVar2 = FUN_001b9120_u32();
-      iVar2 = columnOffset + iVar2;
+      iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2);
       iVar2 = iVar2 + iVar3;
       if (((*(u8 *)(iVar2 + 0x53) & 8) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         (iVar2 = FUN_001b9120_u32(), iVar2 = Yajima_AddIntOffsetFirst(columnOffset, iVar2), iVar2 = iVar2 + iVar3,
          *(u8 *)(iVar2 + 0x5a) != 8)) {
-        FUN_001bf220(&position,uVar6 + 1,uVar5);
-        FUN_001bf220(&direction,uVar6,uVar5);
-        *(YVec3f *)(iVar1 + 0x34) = direction;
+        FUN_001bf220(&position,secondColumn + 1,secondRow);
+        FUN_001bf220(&direction4,secondColumn,secondRow);
+        *(YVec3f *)(iVar1 + 0x34) = direction4;
       }
     }
   }
