@@ -1465,7 +1465,7 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
         u32 z;
         u32 pad;
     } stackVec[4];
-    u32 auStack_30[8];
+    u32 auStack_30[16];
     u32 auStack_70[16];
     u32 *src;
     u32 *dst;
@@ -1875,10 +1875,10 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   if (FUN_004c69f0_mt_scene(&transformedAt.x, &normalized.x) == 0.0f) {
     FUN_0019d3f0("mt_scene.c", 0x66d);
   }
-  transformedDifference.x = transformedAt.x - worldAxis.x;
-  transformedDifference.y = transformedAt.y - worldAxis.y;
-  transformedDifference.z = transformedAt.z - worldAxis.z;
-  if (FUN_004c6ac0_mt_scene(&transformedDifference.x) <= DAT_007caf24) {
+    finalDifference.x = transformedAt.x - worldAxis.x;
+    finalDifference.y = transformedAt.y - worldAxis.y;
+    finalDifference.z = transformedAt.z - worldAxis.z;
+    if (FUN_004c6ac0_mt_scene(&finalDifference.x) <= DAT_007caf24) {
     angle3 = 0.0f;
   } else {
     angle3 = FUN_0052e9e8_mt_scene(transformedAt.z * worldAxis.z +

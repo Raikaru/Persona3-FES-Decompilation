@@ -7177,7 +7177,6 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
 {
     BtlPacket* packet;
     BtlPacket* callbackPacket;
-    BtlAction* selected = (BtlAction*)action->movedAwayFromHome;
     u16 partyIds[3];
     f32 setup[16];
     u32 i;
@@ -7205,8 +7204,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = func_002e3990();
     packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlVoice002e2be0(selected, 4, 0, 0, 0);
+    packet = btlVoice002e2be0((BtlAction*)action->movedAwayFromHome, 4, 0, 0, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_002dd100(10, 2, 0x12);
@@ -7237,7 +7235,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     timer = ACTION_S16(action, 0x490);
     if (timer == 0)
     {
-        FUN_001fef90(selected->unit->charId);
+        FUN_001fef90(((BtlAction*)action->movedAwayFromHome)->unit->charId);
         ACTION_S16(action, 0x490) = -1;
     }
     else if (timer > 0)
@@ -7269,7 +7267,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     }
     else
     {
-        packet = btlVoice002e2be0(selected, 6, 0, 0, 0);
+        packet = btlVoice002e2be0((BtlAction*)action->movedAwayFromHome, 6, 0, 0, 0);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = func_002e3d10();
         packet->unk_00 = 0xa;

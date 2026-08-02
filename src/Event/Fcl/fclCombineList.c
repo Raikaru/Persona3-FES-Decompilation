@@ -2343,6 +2343,7 @@ void fclCombineList003df220(FclAnimationNode* node, s32 value, s32 preset,
                              s32 source_value, s16 direction, s16 duration)
 {
     float radians;
+    float cosine;
 
     K_ASSERT(node != 0, 0xb1b);
     if ((node->flags & 4) == 0) return;
@@ -2360,7 +2361,8 @@ void fclCombineList003df220(FclAnimationNode* node, s32 value, s32 preset,
         node->requested_z = direction;
         node->divisor = 10;
         radians = 0.017453292f * (float)node->requested_z;
-        node->interpolated_x = (s16)(320.0f + 1000.0f * cosf(radians));
+        cosine = 1000.0f * cosf(radians);
+        node->interpolated_x = (s16)(320.0f + cosine);
         node->interpolated_y = (s16)(508.0f - 1000.0f * sinf(radians));
         node->flags |= 2;
     } else if (preset == 1) {
@@ -2372,7 +2374,8 @@ void fclCombineList003df220(FclAnimationNode* node, s32 value, s32 preset,
         node->requested_z = direction;
         node->divisor = 10;
         radians = 0.017453292f * (float)node->requested_z;
-        node->interpolated_x = (s16)(320.0f + 1000.0f * cosf(radians));
+        cosine = 1000.0f * cosf(radians);
+        node->interpolated_x = (s16)(320.0f + cosine);
         node->interpolated_y = (s16)(508.0f - 1000.0f * sinf(radians));
         node->flags |= 2;
     }

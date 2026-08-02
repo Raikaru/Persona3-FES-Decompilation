@@ -7457,19 +7457,17 @@ u16 func_002c6ba0(int param_1)
   int iVar3 = 0;
   int iVar4 = 0;
   u32 uVar5 = 0;
-  int iVar6 = 0;
   u32 uVar7 = 0;
   u32 uVar8 = 0;
   int aiStack_10 [4];
   
   uVar1 = *(u16 *)(*(int *)((int)param_1 + 0x30) + 0xa4);
-  iVar6 = (int)(DAT_007ce41c + ((u32)uVar1 * 0x28 + (u32)uVar1) * 4);
   uVar8 = 0;
   while( true ) {
     if (1 < uVar8) {
       return '\0';
     }
-    iVar3 = iVar6 + uVar8 * 0x14;
+    iVar3 = (int)(DAT_007ce41c + ((u32)uVar1 * 0x29) * 4) + uVar8 * 0x14;
     for (uVar7 = 0; uVar7 < 3; uVar7 = uVar7 + 1 & 0xffff) {
       uVar2 = *(u32 *)(iVar3 + 4 + uVar7 * 4);
       uVar5 = uVar2 >> 0x18;

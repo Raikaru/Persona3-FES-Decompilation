@@ -2886,7 +2886,7 @@ void FUN_00321360(u32 param_1)
 
   int *piVar10;
 
-  u32 auStack_30 [12];
+  u32 auStack_30 [40];
 
   
 
@@ -7240,8 +7240,10 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
   u8 scaled[16];
 
   u8 transformed[16];
+  float fVar4;
 
   
+  fVar4 = 5.0f;
 
   *(float *)param_2[6] = param_1;
 
@@ -7319,11 +7321,11 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
 
         __asm__ volatile (
             ".set noreorder           \n"
-            "lui $v0, 0x40a0          \n"
+            "mfc1 $v0, %0            \n"
             "qmtc2.ni $v0, vf2        \n"
             "vaddx.y vf10, vf0, vf2x  \n"
             ".set reorder"
-            : : : "v0", "vf2", "vf10"
+            : : "f" (fVar4) : "v0", "vf2", "vf10"
         );
 
       }
@@ -21405,11 +21407,11 @@ u32 FUN_00335540(int param_1)
 
   u32 uVar2;
 
-  u32 uVar3;
+  u64 uVar3;
 
-  u32 uVar4;
+  u64 uVar4;
 
-  u32 uVar5;
+  u64 uVar5;
 
   int iVar6;
 
@@ -22492,11 +22494,11 @@ u64 FUN_00336920(int param_1)
 
   u32 uVar2;
 
-  u32 uVar3;
+  u64 uVar3;
 
-  u32 uVar4;
+  u64 uVar4;
 
-  u32 uVar5;
+  u64 uVar5;
 
   int iVar6;
 
@@ -24200,8 +24202,10 @@ void FUN_003387c0(int param_1)
   float factor;
 
   u32 uVar18;
+  u8 *work;
 
   
+  work = DAT_0069c4d0_abs;
 
   piVar2 = *(int **)(param_1 + 0x3c);
 
@@ -24239,28 +24243,28 @@ void FUN_003387c0(int param_1)
 
       for (uVar11 = 0; uVar11 < uVar7; uVar11 = uVar11 + 1) {
 
-        *(float *)(DAT_0069c4d0_abs + 0) = *(float *)(iVar9 + 0xc);
-        *(float *)(DAT_0069c4d0_abs + 4) = *(float *)(iVar9 + 0x10);
-        *(float *)(DAT_0069c4d0_abs + 8) = *(float *)(iVar9 + 0x14);
+        *(float *)(work + 0) = *(float *)(iVar9 + 0xc);
+        *(float *)(work + 4) = *(float *)(iVar9 + 0x10);
+        *(float *)(work + 8) = *(float *)(iVar9 + 0x14);
         __asm__ volatile (
             ".set noreorder                      \n"
             "lqc2 vf10, 0(%0)                   \n"
             "vmove.xyzw vf12, vf10              \n"
             ".set reorder"
             :
-            : "r" (DAT_0069c4d0_abs)
+            : "r" (work)
             : "vf10", "vf12", "memory"
         );
-        *(float *)(DAT_0069c4d0_abs + 0) = *(float *)(iVar9 + 0x24);
-        *(float *)(DAT_0069c4d0_abs + 4) = *(float *)(iVar9 + 0x28);
-        *(float *)(DAT_0069c4d0_abs + 8) = *(float *)(iVar9 + 0x2c);
+        *(float *)(work + 0) = *(float *)(iVar9 + 0x24);
+        *(float *)(work + 4) = *(float *)(iVar9 + 0x28);
+        *(float *)(work + 8) = *(float *)(iVar9 + 0x2c);
         __asm__ volatile (
             ".set noreorder                      \n"
             "lqc2 vf11, 0(%0)                   \n"
             "sqc2 vf10, 0(%0)                   \n"
             ".set reorder"
             :
-            : "r" (DAT_0069c4d0_abs)
+            : "r" (work)
             : "vf10", "vf11", "memory"
         );
         puVar10[6] = DAT_0069c4d0;
@@ -24284,7 +24288,7 @@ void FUN_003387c0(int param_1)
             "sqc2 vf10, 0(%1)                   \n"
             ".set reorder"
             :
-            : "f" (*pfVar12 * factor), "r" (DAT_0069c4d0_abs)
+            : "f" (*pfVar12 * factor), "r" (work)
             : "v0", "vf0", "vf2", "vf10", "vf11", "vf12", "ACC", "Q",
               "memory"
         );
@@ -29736,7 +29740,6 @@ void FUN_0033e8e0(int param_1)
             fVar24 = pfVar16[5];
 
             fVar21 = (float)FUN_0052e6d8_f32(fVar22);
-
             fVar22 = (float)FUN_0052e878_f32(fVar22);
 
             vuPoint[0] = fVar21 * fVar23;
@@ -37729,6 +37732,7 @@ void FUN_00347d60(void)
   float fStack_18;
 
   float afStack_10 [4];
+  float *base;
 
   
 
@@ -37742,6 +37746,7 @@ void FUN_00347d60(void)
     afStack_10[2] = DAT_007caf84 * DAT_007ce554;
 
     afStack_10[3] = DAT_007caf84 * DAT_007ce558;
+    base = (float *)&DAT_007ce568;
 
     for (iVar1 = 0; iVar1 < 2; iVar1 = iVar1 + 1) {
 
@@ -37755,7 +37760,7 @@ void FUN_00347d60(void)
 
         fVar4 = fVar3 * fVar5 + fVar5 * fVar4 * 0.5f;
 
-        pfVar2 = (float *)(&DAT_007ce568 + iVar1);
+        pfVar2 = base + iVar1;
 
         fVar3 = *pfVar2;
 
@@ -45858,16 +45863,17 @@ void FUN_00351e70(int param_1)
 
   float fVar7;
 
-  float fVar8;
-  float alphaF;
-
-  float fVar9;
-
   float fVar10;
 
   float fVar11;
 
   float fVar12;
+
+  float fVar8;
+
+  float fVar9;
+
+  float alphaF;
 
   
 
@@ -45890,6 +45896,7 @@ void FUN_00351e70(int param_1)
       fVar8 = 1.0f - fVar11;
 
       fVar9 = 1.0f - fVar10;
+      alphaF = 1.0f - fVar12;
 
       for (uVar3 = 0; uVar3 < uVar2; uVar3 = uVar3 + 1) {
 
@@ -45913,7 +45920,7 @@ void FUN_00351e70(int param_1)
 
         fVar7 = (float)FUN_00358030(0);
 
-        fVar7 = (fVar12 * fVar7 + (1.0f - fVar12) + 0.0f) * 255.0f;
+        fVar7 = (fVar12 * fVar7 + alphaF + 0.0f) * 255.0f;
 
         if (fVar7 < 2.1474836e+09f) {
 

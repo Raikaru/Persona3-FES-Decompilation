@@ -1105,7 +1105,6 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     u16 tier;
     FldUnit* unit;
     FldUnit* current;
-    DatUnitEc* enemy;
     const u8* spawn;
     char message[0x100];
     typedef struct
@@ -1129,19 +1128,18 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     }
 
     enemyId = (u16)encounter;
-    enemy = datUnitCreateEc(enemyId);
-    unit->genusBase = (DatUnitGenusBase*)enemy;
+    unit->genusBase = (DatUnitGenusBase*)datUnitCreateEc(enemyId);
     unit->encount = &gEncountTbl[enemyId];
     unit->charId = 0;
-    if (enemy->base.count >= 4)
+    if (((DatUnitEc*)unit->genusBase)->base.count >= 4)
     {
         unit->scaleIdx = 3;
     }
-    else if (enemy->base.count >= 2)
+    else if (((DatUnitEc*)unit->genusBase)->base.count >= 2)
     {
         unit->scaleIdx = 2;
     }
-    else if (enemy->base.count == 1)
+    else if (((DatUnitEc*)unit->genusBase)->base.count == 1)
     {
         unit->scaleIdx = 1;
     }
@@ -1185,13 +1183,13 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
                         800.0f);
 
     levelSum = 0;
-    for (i = 0; i < enemy->base.count; i++)
+    for (i = 0; i < ((DatUnitEc*)unit->genusBase)->base.count; i++)
     {
-        levelSum += enemy->units[i].level;
+        levelSum += ((DatUnitEc*)unit->genusBase)->units[i].level;
     }
-    if (enemy->base.count != 0)
+    if (((DatUnitEc*)unit->genusBase)->base.count != 0)
     {
-        unit->unk_184 = levelSum / enemy->base.count;
+        unit->unk_184 = levelSum / ((DatUnitEc*)unit->genusBase)->base.count;
     }
     if (unit->unk_18c == 3)
     {
@@ -2272,9 +2270,7 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
     u8* modelResource;
     u8* scene;
     u8 materialFlag;
-    void* table;
     u16 modelId;
-    RwV3d gridPos;
     if (work == NULL)
     {
         return;
@@ -2283,27 +2279,28 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
     src = (const u8*)source;
     materialFlag = *(u8*)(*(u32*)(dst + 0x11c) + 7);
     scene = func_001b9120();
-    table = func_00317450((void*)*(u32*)(scene + 0x11ec + ((materialFlag & 1) != 0) * 4));
-    modelId = func_003b65d0(resourceId, table);
+    modelId = func_003b65d0(resourceId,
+                            func_00317450((void*)*(u32*)(scene + 0x11ec +
+                                                         ((materialFlag & 1) != 0) * 4)));
     *(u16*)(dst + 8) = modelId;
     modelResource = (u8*)func_003b5d10(modelId);
     func_00319230((void*)*(u32*)(modelResource + 0x104), 3);
     func_00318a50(*(void**)(dst + 0x10c), *(void**)(modelResource + 0x104),
                    (void*)&DAT_00683960, 2);
     func_00318a30(*(void**)(modelResource + 0x104), (void*)(src + 0x100), 2);
-    table = func_00317450(uGpffffb52c);
-    *(u32*)(modelResource + 0x12c) = (u32)table;
-    func_00318a50(*(void**)(dst + 0x10c), table, (void*)&DAT_00683960, 2);
-    func_00318a90(table, (void*)&DAT_00683970, 2);
-    func_00318a30(table, (void*)(src + 0x100), 2);
-    *(u32*)(dst + 0x134) = (u32)table;
-    func_00317730(table);
-    gridPos.x = *(f32*)(src + 0x100);
-    gridPos.y = *(f32*)(src + 0x108);
+    *(u32*)(modelResource + 0x12c) = (u32)func_00317450(uGpffffb52c);
+    func_00318a50(*(void**)(dst + 0x10c),
+                  *(void**)(modelResource + 0x12c),
+                  (void*)&DAT_00683960, 2);
+    func_00318a90(*(void**)(modelResource + 0x12c),
+                  (void*)&DAT_00683970, 2);
+    func_00318a30(*(void**)(modelResource + 0x12c), (void*)(src + 0x100), 2);
+    *(u32*)(dst + 0x134) = *(u32*)(modelResource + 0x12c);
+    func_00317730(*(void**)(modelResource + 0x12c));
     scene = func_001b9120();
     *(u32*)(modelResource + 0x100) = (u32)func_003b5d10(
-        *(u16*)(scene + (s32)((gridPos.y + 400.0f) / 800.0f) * 0x100 +
-                       (s32)((gridPos.x + 400.0f) / 800.0f) * 0x10 + 0x4c));
+        *(u16*)(scene + (s32)(((*(f32*)(src + 0x108)) + 400.0f) / 800.0f) * 0x100 +
+                       (s32)(((*(f32*)(src + 0x100)) + 400.0f) / 800.0f) * 0x10 + 0x4c));
     func_001a0150(modelId, 1);
     iGpffffb598++;
 }

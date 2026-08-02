@@ -186,8 +186,8 @@ void opMenu0026a2c0(void)
     s32 i;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
-    work = (s32*)sOpMenu;
     sprite = opResGetTitleSprite(0);
+    work = (s32*)sOpMenu;
     if ((work[0] & 1) == 0)
         return;
 

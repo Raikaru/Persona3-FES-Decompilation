@@ -9461,9 +9461,8 @@ u8 FUN_0042aa40(int param_1, u32 param_2, u32 param_3)
   }
   return result;
 }
-
 // W419 YMisc4 negative: swapped address-add operands in FUN_0042ac60 to match retail addu ordering; nd 2 -> 230, object 332 -> 340/window336; rejected.
-// W419 YMisc4 negative: splitting the case-index load address expression in FUN_0042AC60 regressed normalized_diff 1 -> 163 bytes, object 332 -> 336/window336 (rate .003012 -> .485119); reverted.
+// W419 YMisc4 negative: splitting the case-index load address expression in FUN_0042ac60 regressed normalized_diff 1 -> 163 bytes, object 332 -> 336/window336 (rate .003012 -> .485119); reverted.
 // FUN_0042AC60
 
 
@@ -28594,10 +28593,8 @@ u32 FUN_00452a70(char param_1,char param_2)
   u32 uStack_50;
   u32 uStack_4c;
   u32 uStack_48;
-  u8 auStack_40 [8];
-  float fStack_38;
-  u8 auStack_30 [4];
-  float fStack_2c;
+  YVec3f auStack_40;
+  YVec3f auStack_30;
   float afStack_20 [4];
   float fStack_10;
   float fStack_c;
@@ -28609,10 +28606,10 @@ u32 FUN_00452a70(char param_1,char param_2)
   piVar11 = (int *)((u8 *)DAT_008717f4 + param_2 * 0x70);
   FUN_001ad940(afStack_20,*(u32 *)(*piVar11 + 0x1e0));
   fStack_10 = afStack_20[0] - *(float *)(iVar1 + 0x1c);
-  FUN_001ad940(auStack_30,*(u32 *)(*piVar11 + 0x1e0));
-  fStack_c = fStack_2c - *(float *)(iVar1 + 0x20);
-  FUN_001ad940(auStack_40,*(u32 *)(*piVar11 + 0x1e0));
-  fStack_8 = fStack_38 - *(float *)(iVar1 + 0x24);
+  FUN_001ad940(&auStack_30,*(u32 *)(*piVar11 + 0x1e0));
+  fStack_c = auStack_30.y - *(float *)(iVar1 + 0x20);
+  FUN_001ad940(&auStack_40,*(u32 *)(*piVar11 + 0x1e0));
+  fStack_8 = auStack_40.z - *(float *)(iVar1 + 0x24);
   fVar12 = (float)FUN_004c69f0(&fStack_10,&fStack_10);
   if (1600.0f <= fVar12) {
     FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0));

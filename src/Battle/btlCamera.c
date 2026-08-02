@@ -5028,6 +5028,7 @@ void func_002ac920(BtlCamera* camera, long unused)
     BtlUnit* chosen;
     s32 mode;
 
+    f32 planeDot;
     (void)unused;
     action = camera->action;
     source = action->unit;
@@ -5051,11 +5052,11 @@ void func_002ac920(BtlCamera* camera, long unused)
     work.secondPoint.y = work.direction.y * work.f7 + work.targetCenter.y;
     work.secondPoint.z = work.direction.z * work.f7 + work.targetCenter.z;
 
-    work.f13 = work.direction.x * work.cameraHorizontal.first +
+    planeDot = work.direction.x * work.cameraHorizontal.first +
                work.direction.z * work.cameraHorizontal.second;
     work.f7 = 0.0f;
 
-    if (0.0f <= work.f13)
+    if (0.0f <= planeDot)
     {
         work.basePoint = work.sourceCenter;
         work.f2 = work.basePoint.y;
@@ -5139,7 +5140,7 @@ void func_002ac920(BtlCamera* camera, long unused)
     work.direction.y *= work.f9;
     work.direction.z *= work.f9;
 
-    if (0.0f <= work.f13)
+    if (0.0f <= planeDot)
     {
         if (work.f12 < 0.0f)
         {

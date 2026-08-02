@@ -2249,8 +2249,8 @@ u32 FUN_003a4360(u32 param_1,int param_2)
     }
 
     *puVar1 = *puVar1 & 0xffefffff;
-
     puVar1 = (u32 *)*piVar2;
+
 
     if (puVar1 == (u32 *)0x0) {
 
@@ -2259,8 +2259,8 @@ u32 FUN_003a4360(u32 param_1,int param_2)
     }
 
     *puVar1 = *puVar1 | 0x400000;
-
     puVar1 = (u32 *)*piVar2;
+
 
     if (puVar1 == (u32 *)0x0) {
 
@@ -6156,10 +6156,10 @@ void FUN_003aa370(int param_1,u64 param_2);
 void FUN_003aa720(int param_1);
 void FUN_003aaae0(int param_1);
 void FUN_003ab2a0(int param_1,u32 param_2);
-void FUN_003ab320(int param_1);
+void FUN_003ab320(u8 *param_1);
 void FUN_003abb10(int param_1);
 void FUN_003ac240(int param_1,u64 param_2);
-void FUN_003ac350(int param_1,u64 param_2);
+void FUN_003ac350(u8 *param_1,u32 param_2);
 void FUN_003ac500(int param_1,u64 param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,int param_7);
 void FUN_003ac590(void);
@@ -8291,18 +8291,16 @@ void FUN_003ab2a0(int param_1,u32 param_2)
 // FUN_003AB320 NONMATCHING
 
 
-void FUN_003ab320(int param_1)
+void FUN_003ab320(u8 *param_1)
 {
   int *piVar1;
   int iVar3;
-  int mode;
   int iVar2;
   float fVar4;
   float fVar5;
 
   piVar1 = *(int **)(param_1 + 8);
-  mode = *piVar1;
-  switch (mode) {
+  switch (*piVar1) {
   case 0:
     break;
   case 1:
@@ -8770,13 +8768,14 @@ void FUN_003ac240(int param_1,u64 param_2)
 // FUN_003AC350 NONMATCHING
 
 
-void FUN_003ac350(int param_1,u64 param_2)
+void FUN_003ac350(u8 *param_1,u32 param_2)
 
 
 
 {
 
   u32 *puVar1;
+  u32 *p1;
 
   int iVar2;
 
@@ -8787,12 +8786,13 @@ void FUN_003ac350(int param_1,u64 param_2)
   
 
   puVar1 = *(u32 **)(param_1 + 8);
+  p1 = puVar1 + 1;
 
   puVar1[0x18] = (*(int *)(param_1 + 0x38) << 5) >> 7;
 
   for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
 
-    FUN_003b4b40(puVar1 + 1,puVar1 + 0x11,iVar2 * 4 + 0x6a2100,iVar2 * 4 + 0x6a2110,
+    FUN_003b4b40(p1,puVar1 + 0x11,iVar2 * 4 + 0x6a2100,iVar2 * 4 + 0x6a2110,
 
                  *(u32 *)(param_1 + 0xc),param_2);
 

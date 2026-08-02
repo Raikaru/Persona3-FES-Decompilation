@@ -806,13 +806,7 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
     u64 modelPacketUID;
     u64 formationPacketUID;
     u64 lastPacketUID;
-    u16 enemyCount;
     u32 firstUnit;
-    enemyCount = 0;
-    for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
-    {
-        enemyCount++;
-    }
     firstUnit = 1;
     modelPacketUID = 0;
     formationPacketUID = 0;
@@ -831,9 +825,21 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
             }
             else
             {
-                (*(u8*)((u8*)(formationPacket) + (0x10))) = 5;
-                (*(u64*)((u8*)(formationPacket) + (0x18))) = formationPacketUID;
-                (*(u16*)((u8*)(formationPacket) + (0x48))) = enemyCount < 4 ? 8 : 4;
+                {
+                    u16 enemyCount;
+                    BtlUnit* countUnit;
+                    enemyCount = 0;
+                    for (countUnit = gBtl->unitLists[1].head;
+                         countUnit != ((void*)0);
+                         countUnit = countUnit->next)
+                    {
+                        enemyCount++;
+                    }
+
+                    (*(u8*)((u8*)(formationPacket) + (0x10))) = 5;
+                    (*(u64*)((u8*)(formationPacket) + (0x18))) = formationPacketUID;
+                    (*(u16*)((u8*)(formationPacket) + (0x48))) = enemyCount < 4 ? 8 : 4;
+                }
             }
             formationPacketUID = formationPacket->uid;
             packet = FUN_00285d30(unit, 0x3FFFFFFFFFFFFFFF, 8, 0, 3, 1);

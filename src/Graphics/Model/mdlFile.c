@@ -4337,6 +4337,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
   u32 uVar8;
 
   u8 auStack_100 [256];
+  int *entry;
 
   
 
@@ -4368,10 +4369,11 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
     case 1:
       if (iVar7 == 0) {
         uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
+        entry = (int *)uVar4;
         FUN_00521408(uVar4,0,0x20);
-        iVar7 = (int)uVar4;
+        iVar7 = (int)entry;
         *(u32 *)(iVar7 + 4) = 1;
-        *(short *)(iVar7 + 8) = (short)param_2;
+        *(short *)((char *)entry + 8) = (short)param_2;
         *(short *)(iVar7 + 10) = (short)param_3;
         *(u16 *)(iVar7 + 0xc) = 1;
         *param_1 = iVar7;
@@ -4424,10 +4426,11 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
     case 2:
       if (iVar7 == 0) {
         uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
+        entry = (int *)uVar4;
         FUN_00521408(uVar4,0,0x20);
-        iVar7 = (int)uVar4;
+        iVar7 = (int)entry;
         *(u32 *)(iVar7 + 4) = 1;
-        *(short *)(iVar7 + 8) = (short)param_2;
+        *(short *)((char *)entry + 8) = (short)param_2;
         *(short *)(iVar7 + 10) = (short)param_3;
         *(u16 *)(iVar7 + 0xc) = 2;
         *param_1 = iVar7;

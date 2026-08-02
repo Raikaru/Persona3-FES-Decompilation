@@ -104,7 +104,6 @@ void FUN_0022c8a0(u32* object_param)
     table3 = FUN_0021c3f0(3);
     table5 = FUN_0021c3f0(5);
     {
-        u32 styleTable = FUN_0021c450(*(u16*)(object + 4));
 
     if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0x10) {
@@ -443,7 +442,7 @@ void FUN_0022c8a0(u32* object_param)
     }
     color3 = *(u32*)color;
     {
-        void* resource = (void*)FUN_0021cca0(styleTable, 0);
+        void* resource = (void*)FUN_0021cca0(FUN_0021c450(*(u16*)(object + 4)), 0);
         rect[0] = 30.0f + pos2X;
         rect[1] = 15.0f + pos2Y;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
@@ -469,7 +468,7 @@ void FUN_0022c8a0(u32* object_param)
     FUN_0021d950(object + 0x10, colorTmp);
 
     {
-        void* resource = (void*)FUN_0021cca0(styleTable, 1);
+        void* resource = (void*)FUN_0021cca0(FUN_0021c450(*(u16*)(object + 4)), 1);
         rect[0] = pos2X;
         rect[1] = pos2Y;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
