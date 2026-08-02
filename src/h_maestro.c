@@ -2998,18 +2998,28 @@ u32 func_00110510(KwlnTask* task)
     {
         for (i = 0; i < (s32)work->resourceCount; i++)
         {
+            s8* records;
             s8 recordType;
 
-            while ((recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1]) != -1)
+            records = (s8*)work->resources[i];
+record_read:
+            recordType = records[work->recordIndices[i] * 18 + 1];
+            if (recordType != -1)
             {
-                if (recordType == -2)
-                {
-                    return false;
-                }
-                work->recordIndices[i]++;
+                goto record_body;
             }
             work->recordIndices[i]++;
             work->completedRecords++;
+            goto record_done;
+record_body:
+            if (recordType == -2)
+            {
+                return false;
+            }
+            work->recordIndices[i]++;
+            goto record_read;
+record_done:
+            ;
         }
     }
 

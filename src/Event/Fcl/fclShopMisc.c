@@ -4726,7 +4726,6 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
   short *psVar8;
 
   short *psVar7;
-
   int iVar4;
 
   u32 uVar9;
@@ -4736,6 +4735,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
     u8 text[24];
     char flags[8];
   } scratch;
+  int copyCount;
 
   
 
@@ -4743,7 +4743,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
   pcVar5 = scratch.flags;
 
-  iVar4 = 5;
+  copyCount = 5;
 
   do {
 
@@ -4751,13 +4751,13 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
     pcVar6 = pcVar6 + 1;
 
-    iVar4 = iVar4 + -1;
+    copyCount = copyCount + -1;
 
     *pcVar5 = cVar1;
 
     pcVar5 = pcVar5 + 1;
 
-  } while (0 < iVar4);
+  } while (0 < copyCount);
 
   psVar8 = DAT_006aef30_abs;
 
@@ -4799,12 +4799,12 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
   for (uVar9 = 0; (int)uVar9 < 4; uVar9 = uVar9 + 1) {
 
-    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) !=
+    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << uVar9)) !=
 
         0) {
 
-      sprintf((char *)scratch.text,&DAT_007cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
-      FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
+      sprintf((char *)scratch.text,&DAT_007cd900,*(short *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
                    (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
 
@@ -4858,6 +4858,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
     u8 text[24];
     char flags[8];
   } scratch;
+  int copyCount;
 
   
 
@@ -4865,7 +4866,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
   pcVar5 = scratch.flags;
 
-  iVar4 = 5;
+  copyCount = 5;
 
   do {
 
@@ -4873,13 +4874,13 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
     pcVar6 = pcVar6 + 1;
 
-    iVar4 = iVar4 + -1;
+    copyCount = copyCount + -1;
 
     *pcVar5 = cVar1;
 
     pcVar5 = pcVar5 + 1;
 
-  } while (0 < iVar4);
+  } while (0 < copyCount);
 
   psVar8 = DAT_006aef40_abs;
 
@@ -4919,12 +4920,12 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
   for (uVar9 = 0; (int)uVar9 < 4; uVar9 = uVar9 + 1) {
 
-    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) !=
+    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << uVar9)) !=
 
         0) {
 
-      sprintf((char *)scratch.text,&DAT_007cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
-      FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
+      sprintf((char *)scratch.text,&DAT_007cd900,*(short *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
                    (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
 
@@ -5975,16 +5976,17 @@ void FUN_003f7730(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   iVar2 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
 
-  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3],0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3],0);
 
-  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 1],0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 1],0);
 
-  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 2],0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 2],0);
 
-  sprintf((char *)auStack_10,&DAT_007cd954,*(u16 *)(iVar2 + 0xe));
-
-  FUN_0040eb50(0,(int)param_1 + 0x8b,(int)param_2 + 0xc,param_3,1,auStack_10,1);
-
+  sprintf((char *)auStack_10,&DAT_007cd954,*(short *)(iVar2 + 0xe));
+  iVar3 = (int)param_1 + 0x8b;
+  iVar2 = (int)param_2;
+  iVar2 = iVar2 + 0xc;
+  FUN_0040eb50_f32(0.0f,iVar3,iVar2,param_3,1,auStack_10,1);
   return;
 
 }
@@ -11237,10 +11239,8 @@ void FUN_003ff460(int param_1,u32 param_2)
 
     puVar1 = *(u32 **)(*(int *)(iVar6 + 0x14) + 0x1c);
     lVar5 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
-
     if (lVar5 != 0) {
-
-      iVar2 = *(int *)(*(int *)((int)lVar5 + 0x14) + 0x1c);
+      iVar2 = *(int *)(*(int *)(lVar5 + 0x14) + 0x1c);
 
       bVar3 = 0;
       if (*(short *)((int)puVar1 + 0x16) == *(short *)(iVar2 + 0x16)) {
@@ -12666,8 +12666,8 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
 
 void FUN_00400a90(int x,int y,int alpha,int task,u32 *entry)
 {
-  int selected;
   int xOffset;
+  int selected;
   int drawAlpha;
   int config;
   int spriteConfig;
@@ -12693,8 +12693,10 @@ void FUN_00400a90(int x,int y,int alpha,int task,u32 *entry)
   if ((*flags & 1) != 0) {
     drawAlpha = (int)((float)drawAlpha * fGpffff8090);
   }
-  FUN_003ff630_f32(1.0f,x + xOffset,y,0,drawAlpha,*(short *)(spriteConfig + 8),
-                   (short)(*entry - 1),selected | 2);
+  x = x + xOffset;
+  duration = *(short *)(spriteConfig + 8);
+  divisor = (short)(*entry - 1);
+  FUN_003ff630_f32(1.0f,x,y,0,drawAlpha,duration,divisor,selected | 2);
 }
 
 // FUN_00400B90 NONMATCHING

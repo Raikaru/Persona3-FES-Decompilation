@@ -323,13 +323,11 @@ u64 FUN_0077fe80(u8 *param_1,u32 param_2,u32 param_3)
     }
   }
   end = param_2 + param_3;
-  if (param_3 < end) {
-    i = 0;
-    do {
-      dst[i] = ((u8 *)0x800747b0)[param_3];
-      i = i + 1;
-      param_3 = param_3 + 1;
-    } while (param_3 < end);
+  i = 0;
+  while (param_3 < end) {
+    dst[i] = ((u8 *)0x800747b0)[param_3];
+    i = i + 1;
+    param_3 = param_3 + 1;
   }
   state = *(u64 *)uRam80074700_abs;
   if ((((long)(state << 0x1a) >> 0x20) & 7U) == 0) {
@@ -359,13 +357,9 @@ void FUN_0077ff28(u8 *param_1,u32 param_2,u32 param_3)
     }
   }
   param_2 = start + param_3;
-  if (param_3 < param_2) {
-    i = 0;
-    do {
-      ((u8 *)0x800747b0)[param_3] = src[i];
-      param_3 = param_3 + 1;
-      i = i + 1;
-    } while (param_3 < param_2);
+  for (i = 0; param_3 < param_2; i = i + 1) {
+    ((u8 *)0x800747b0)[param_3] = src[i];
+    param_3 = param_3 + 1;
   }
 }
 

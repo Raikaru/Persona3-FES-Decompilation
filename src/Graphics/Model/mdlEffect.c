@@ -2350,6 +2350,8 @@ extern u8 gp0xffffb854;
 extern u32 gp0xffffb884;
 extern u32 gp0xffffb888;
 extern f32 iGpffff81bc;
+#pragma alias iGpffff81bc_sda iGpffff81bc
+extern f32 iGpffff81bc_sda __attribute__((section(".sdata")));
 extern u8* iGpffff9d4c;
 extern u8* iGpffffb6fc;
 extern u8* iGpffffb850;
@@ -5258,10 +5260,10 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
   int material;
   u32 *meshEntries;
   int materialEntry;
-  u32 baseVertex;
-  int outerIndex;
   int rowIndex;
   int tripletIndex;
+  int outerIndex;
+  u32 baseVertex;
   u32 *meshEntry;
   u16 *triplet;
   u16 rowBase;
@@ -11049,6 +11051,11 @@ float FUN_0032a540(char *param_1,int param_2,int param_3)
 
 
 
+static inline u32 mdlEffectCallA120(u32 count, char *base, u32 *scratch, int index)
+{
+  return FUN_0032a120(base,scratch,index,(int)count);
+}
+
 // FUN_0032A770 NONMATCHING
 
 
@@ -11074,8 +11081,7 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
   
 
-  uVar1 = FUN_0032a120((char *)(param_2 + 0x2c),(u32 *)(param_2 + 0x50),(int)(param_3),(long)(*(u32 *)(param_2 + 0xb8)));
-
+  uVar1 = mdlEffectCallA120(*(u32 *)(param_2 + 0xb8),(char *)(param_2 + 0x2c),(u32 *)(param_2 + 0x50),(int)(param_3));
   *(u32 *)(param_1[1] + 4) = uVar1;
 
   fVar2 = FUN_0032a540((char *)(param_2 + 0x60),param_3,*(u32 *)(param_2 + 0xb8));
@@ -11101,17 +11107,15 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
     __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vtmp) : "memory");
     fStack_10 = vtmp[0];
     fStack_c = vtmp[1];
-    if ((fStack_10 == 0.0f) && (fStack_c == 0.0f)) {
-
-      *(u32 *)(param_1[1] + 0xc) = 0;
-
-    }
-
-    else {
-
-      *(float *)(param_1[1] + 0xc) = FUN_0052ea18_f32(fStack_c);
-
-    }
+    if (fStack_10 != 0.0f) goto calculate;
+    if (fStack_c == 0.0f) goto zero;
+calculate:
+    *(float *)(param_1[1] + 0xc) = FUN_0052ea18_f32(fStack_c);
+    goto finish;
+zero:
+    *(u32 *)(param_1[1] + 0xc) = 0;
+finish:
+    ;
 
   }
 
@@ -18616,9 +18620,9 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
 u32 *FUN_003325d0(int *arg0)
 {
-  int *model;
-  int *work;
   u32 *result;
+  int *work;
+  int *model;
   u32 count;
   int extra;
 
@@ -30982,7 +30986,7 @@ void FUN_003402c0(int param_1)
 
 /* opt_loop_invariants on: FUN_003403b0 596B -> 580B, under its 592B window. */
 #pragma opt_loop_invariants on
-// FUN_003403B0 NONMATCHING
+// FUN_003403B0
 
 
 void FUN_003403b0(int param_1,int param_2)
@@ -30997,9 +31001,9 @@ void FUN_003403b0(int param_1,int param_2)
 
   int iVar3;
 
-  float *pfVar4;
-
   u32 uVar5;
+
+  float *pfVar4;
 
   
 
@@ -38645,7 +38649,12 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
 
 
-// FUN_00348F30 NONMATCHING
+static inline f32 mdlEffectScaleFirst(f32 factor, f32 value)
+{
+  return factor * value;
+}
+
+// FUN_00348F30
 
 
 void FUN_00348f30(int param_1,float *param_2)
@@ -38663,6 +38672,7 @@ void FUN_00348f30(int param_1,float *param_2)
   float fVar4;
 
   float fVar5;
+
   float *output;
 
   
@@ -38671,7 +38681,7 @@ void FUN_00348f30(int param_1,float *param_2)
 
   *(u32 *)param_2 = iVar1 % (*(u32 *)(param_1 + 4) + 1);
 
-  param_2[1] = iGpffff81bc;
+  param_2[1] = iGpffff81bc_sda;
   output = param_2 + 2;
 
   ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
@@ -38686,11 +38696,19 @@ void FUN_00348f30(int param_1,float *param_2)
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar5 = fVar3 * (fVar2 - 0.5f) * 2.0f + *(float *)(param_1 + 0x1c) + 0.0f;
+  fVar2 = fVar2 - 0.5f;
+
+  fVar2 = mdlEffectScaleFirst(2.0f, fVar2);
+
+  fVar5 = fVar3 * fVar2 + *(float *)(param_1 + 0x1c) + 0.0f;
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar2 = fVar3 * (fVar2 - 0.5f) * 2.0f + *(float *)(param_1 + 0x20) + 0.0f;
+  fVar2 = fVar2 - 0.5f;
+
+  fVar2 = mdlEffectScaleFirst(2.0f, fVar2);
+
+  fVar2 = fVar3 * fVar2 + *(float *)(param_1 + 0x20) + 0.0f;
 
   output[5] = fVar5;
   output[6] = fVar2;

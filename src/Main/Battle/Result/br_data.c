@@ -867,7 +867,7 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
 
   if ((level < 0) || (level >= 0x15)) {
 
-    FUN_0019d3f0(0x684c28,0x20b);
+    K_ASSERT(false, 0x20b);
 
   }
 
@@ -883,20 +883,18 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   }
 
   else if (param_4 == 0x22a) {
-
     fVar5 = 0.5;
 
   }
 
   else if (param_4 == 0x22b) {
-
     fVar5 = 1.0;
 
   }
 
   else {
 
-    FUN_0019d3f0(0x684c28,0x243);
+    K_ASSERT(false, 0x243);
 
   }
 
@@ -914,22 +912,23 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
     fVar3 = fGpffff8070;
     break;
   default:
-    FUN_0019d3f0(0x684c28,0x24e);
+    K_ASSERT(false, 0x24e);
     break;
   }
 
   if ((*puVar1 & 0x80) != 0) {
 
-    fVar4 = (float)param_3;
-    iVar2 = (int)(fVar3 * fVar4 * fVar5);
+    fVar4 = (f32)param_3;
+    fVar4 = brDataMul(fVar4, fVar5);
+    fVar4 = brDataMul(fVar3, fVar4);
+    iVar2 = (int)fVar4;
 
   }
-
   else {
-
-    fVar4 = (float)param_3 * fVar4;
-    iVar2 = (int)(fVar5 * fVar4 * fVar3);
-
+    fVar4 = brDataMul((f32)param_3, fVar4);
+    fVar4 = brDataMul(fVar5, fVar4);
+    fVar4 = brDataMul(fVar3, fVar4);
+    iVar2 = (int)fVar4;
   }
 
   if (0xffff < iVar2) {

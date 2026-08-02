@@ -1359,12 +1359,12 @@ void FUN_002a4c70(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 angle;
     f32 ratio;
     f32 sideOffset;
-    f32 scale;
     f32 x;
     f32 xSquared;
     f32 r;
     f32 r2;
     f32 nearAngle;
+    f32 scale;
     f32 radius;
 
     unit = *(BtlUnit**)((u8*)camera->action + 0x30);

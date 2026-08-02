@@ -1007,7 +1007,7 @@ u32 func_001faea0(void)
       func_001fb130(uVar2,0xcd);
     }
   default:
-    FUN_0019d3f0(0x684ba8,0x2ca);
+    K_ASSERT(false, 0x2ca);
     break;
   }
   lVar4 = FUN_0017d800();

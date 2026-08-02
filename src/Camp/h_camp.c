@@ -13131,13 +13131,13 @@ static void campDrawCardText(f32 scale, f32 x, f32 y, u32 color,
 // FUN_001365B0 NONMATCHING
 void FUN_001365b0(KwlnTask* task)
 {
-    u8* work;
     s32 i;
     u8* slot;
     void** pendingPtr;
     void** requestPtr;
     void* pending;
     void* request;
+    u8* work;
     void* record;
     KwlnTask* queued;
     void (*fn)(void*);

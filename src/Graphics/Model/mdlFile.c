@@ -5922,19 +5922,19 @@ void FUN_00320640(f32 param_1,f32 param_2,int *param_3)
 
 {
 
-  u16 uVar1;
+  int iVar7;
 
   int *piVar2;
 
-  u32 uVar3;
+  u32 uVar6;
 
   int iVar4;
 
   u32 uVar5;
 
-  u32 uVar6;
+  u32 uVar3;
 
-  int iVar7;
+  u16 uVar1;
 
   
 
