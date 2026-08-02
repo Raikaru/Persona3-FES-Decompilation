@@ -5624,14 +5624,14 @@ u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
 
       else {
 
-        iVar4 = param_4 * 2 + param_1;
+        iVar4 = mtEvtAddOffsetFirst(param_4 * 2,param_1);
 
         puVar5 = (u16 *)(iVar4 + 0x7b8);
 
         lVar3 = FUN_00316910(5,*puVar5,0);
 
         if (lVar3 == 0) {
-          iVar4 = param_4 * 4 + param_1;
+          iVar4 = mtEvtAddOffsetFirst(param_4 * 4,param_1);
           FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(iVar4 + 0x790),
                        *(u32 *)(iVar4 + 0x7cc),1);
         }
@@ -5724,7 +5724,7 @@ void FUN_0039eaa0(int param_1)
       combinedValue = baseValue + entryValue;
       extraValue = entry->unk_14;
       *(short *)((int)output + count * 2 + 0x18) = count + 31000;
-      *(int *)mtEvtAddBaseFirst((int)output,count * 4) = combinedValue;
+      *(int *)((int)output + count * 4 + 4) = combinedValue;
       output[count + 9] = extraValue;
       *output = *output + 1;
     }

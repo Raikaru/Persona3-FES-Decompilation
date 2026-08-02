@@ -2551,7 +2551,7 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
  * $s5,0x4cc($s5) versus lw $s1,0x4cc($s1); +656 bnez $s5 versus bnez
  * $s1.  Declaration reorder measured nd22 at 712/720 (rate 0.030899);
  * formal-parameter flip measured nd34 at 712/720 (rate 0.047753). */
-// FUN_002d2c10 NONMATCHING
+// FUN_002d2c10
 int FUN_002d2c10(float *param_1, float *param_2)
 {
     u8 *node;
@@ -2614,10 +2614,11 @@ int FUN_002d2c10(float *param_1, float *param_2)
         float *next;
         float *edge;
         u8 *node2;
+        int j;
         for (node2 = *(u8 **)(iGpffffb6fc + 0x2cc); node2 != NULL; node2 = *(u8 **)(node2 + 0x4cc))
-        for (i = 0; i < 4; ++i)
+        for (j = 0; j < 4; ++j)
         {
-            record = node2 + i * 0x130;
+            record = node2 + j * 0x130;
             edge = (float *)(record + 0x08);
 
             if (edge == param_1)
