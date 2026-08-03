@@ -534,22 +534,6 @@ void func_0024adf0(void)
             break;
         }
 
-        work[5]++;
-        wave = fGpffff8248 *
-            (-((f32)work[5] / 50.0f) * 2.0f);
-        ((f32*)work)[0x3EC] = func_0052e878(wave) * -300.0f;
-        ((f32*)work)[0x3EE] = func_0052e6d8(wave) * -300.0f;
-        ((f32*)work)[0x3ED] =
-            func_0052e6d8(fGpffff8248 *
-                ((f32)work[5] / 30.0f) * 2.0f) *
-            400.0f + 100.0f;
-
-        color.r = 0xFF;
-        color.g = 0xFF;
-        color.b = 0xFF;
-        color.a = (u8)(opacity * 255.0f);
-        func_0020cc80(frame, &color);
-
         switch (work[2])
         {
         case 1:
@@ -568,6 +552,22 @@ void func_0024adf0(void)
             angle = 0.0f;
             break;
         }
+        work[5]++;
+        wave = fGpffff8248 *
+            (-((f32)work[5] / 50.0f) * 2.0f);
+        ((f32*)work)[0x3EC] = func_0052e878(wave) * -300.0f;
+        ((f32*)work)[0x3EE] = func_0052e6d8(wave) * -300.0f;
+        ((f32*)work)[0x3ED] =
+            func_0052e6d8(fGpffff8248 *
+                ((f32)work[5] / 30.0f) * 2.0f) *
+            400.0f + 100.0f;
+
+        color.r = 0xFF;
+        color.g = 0xFF;
+        color.b = 0xFF;
+        color.a = (u8)(opacity * 255.0f);
+        func_0020cc80(frame, &color);
+
         func_004bdde0(angle, (u8*)work + 0x2C, &rotation, 0);
         if ((work[1] & 0x80) != 0)
         {

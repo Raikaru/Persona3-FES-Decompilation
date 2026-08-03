@@ -2106,7 +2106,7 @@ void func_0016e670(s16 socialLink)
 
     if (gGlobalWork.heroStatus.socialLinkStat[index] <= 0)
     {
-        K_ABORT(D_005E3260, 0x620);
+        printf(D_005E3260, __FILE__, 0x620);
         return;
     }
     base = (s8*)&gGlobalWork + 0x10c;

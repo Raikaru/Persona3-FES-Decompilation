@@ -1507,19 +1507,22 @@ void func_0010d6f0(s16 index, s16 fileIndex)
 void func_0010d7b0(s16 index, s16 fileIndex, void* data0, u32 data0Size,
                    void* data1, u32 data1Size, void* data2, u32 data2Size)
 {
-    if (sSfdDecodeSlots[index].status != 0)
+    HSfdDecodeSlot* slot;
+
+    slot = &sSfdDecodeSlots_abs[index];
+    if ((slot->state == 1) && (slot->status != 0))
     {
         func_0010d950(index);
     }
 
-    sSfdDecodeSlots[index].fileIndex = fileIndex;
-    sSfdDecodeSlots[index].state = 8;
-    sSfdDecodeSlots[index].resource = data0;
-    sSfdDecodeSlots[index].aux = data1;
-    sSfdDecodeSlots[index].sourceData = data2;
-    sSfdDecodeSlots[index].inputSize = data0Size;
-    sSfdDecodeSlots[index].intermediateSize = data1Size;
-    sSfdDecodeSlots[index].outputSize = data2Size;
+    sSfdDecodeSlots_abs[index].fileIndex = fileIndex;
+    sSfdDecodeSlots_abs[index].state = 8;
+    sSfdDecodeSlots_abs[index].resource = data0;
+    sSfdDecodeSlots_abs[index].aux = data1;
+    sSfdDecodeSlots_abs[index].sourceData = data2;
+    sSfdDecodeSlots_abs[index].inputSize = data0Size;
+    sSfdDecodeSlots_abs[index].intermediateSize = data1Size;
+    sSfdDecodeSlots_abs[index].outputSize = data2Size;
 }
 
 /* Scoped loop-invariant pragma measured W330: without nd113, with nd106 (obj 184/192). */
@@ -3083,7 +3086,6 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     func_004a6200(effectResources[destinationIndex], &locals.uv[0], &locals.uv[2], &locals.uv[4], &locals.uv[6]);
 }
 
-/* W419 GP scalar alias for D_005D58A8 was unchanged: nd1162, object1548/window1696. */
 // FUN_001107D0 NONMATCHING
 void* func_001107d0(KwlnTask* task)
 {
@@ -3179,22 +3181,34 @@ void* func_001107d0(KwlnTask* task)
 
             if (work->createCustomPriorityTask != 0)
             {
+                u8* records;
+                s16 resourceCount;
+                u32 resourceTaskPriority;
+
+                records = work->records;
+                resourceCount = *(s16*)(work->archiveHeader + 8);
+                resourceTaskPriority = work->resourceTaskPriority;
                 resourceWork = (MaestroResourceWork*)MAESTRO_ALLOC(1, sizeof(MaestroResourceWork), 0x40000);
                 resourceTask = NULL;
                 if (resourceWork != NULL)
                 {
-                    resourceTask = kwlnTaskCreate(task, D_005D5898, work->resourceTaskPriority,
+                    resourceTask = kwlnTaskCreate(task, D_005D5898, resourceTaskPriority,
                                                   func_0010f6c0, func_001102e0, resourceWork);
                     if (resourceTask != NULL)
                     {
-                        resourceWork->resourceIndex = (u32)work->records;
-                        resourceWork->resourceCount = (u32)work->recordCount;
+                        resourceWork->resourceIndex = (u32)records;
+                        resourceWork->resourceCount = (u32)resourceCount;
                     }
                 }
                 work->resourceTask = resourceTask;
             }
             else
             {
+                u8* records;
+                s16 resourceCount;
+
+                records = work->records;
+                resourceCount = *(s16*)(work->archiveHeader + 8);
                 resourceWork = (MaestroResourceWork*)MAESTRO_ALLOC(1, sizeof(MaestroResourceWork), 0x40000);
                 resourceTask = NULL;
                 if (resourceWork != NULL)
@@ -3203,8 +3217,8 @@ void* func_001107d0(KwlnTask* task)
                                                   func_0010f6c0, func_001102e0, resourceWork);
                     if (resourceTask != NULL)
                     {
-                        resourceWork->resourceIndex = (u32)work->records;
-                        resourceWork->resourceCount = (u32)work->recordCount;
+                        resourceWork->resourceIndex = (u32)records;
+                        resourceWork->resourceCount = (u32)resourceCount;
                     }
                 }
                 work->resourceTask = resourceTask;

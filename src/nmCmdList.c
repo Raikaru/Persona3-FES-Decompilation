@@ -2089,14 +2089,13 @@ void FUN_003c7990(long param_1)
 
   int extraout_v0_hi_00;
 
+  u8 *lVar5;
   u8 *lVar6;
 
-  u8 *lVar5;
 
   
 
   lVar5 = FUN_003c7d50_direct();
-
   piVar4 = (int *)lVar5;
 
   if ((lVar5 != 0) && (-1 < *piVar4)) {

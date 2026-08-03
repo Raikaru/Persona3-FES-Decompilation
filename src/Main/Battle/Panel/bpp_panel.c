@@ -96,7 +96,6 @@ void FUN_0022c8a0(u32* object_param)
     f32 pos2X, pos2Y;
     f32 pos3X, pos3Y;
     f32 colorF;
-    f32 blendF3;
     s32 colorI;
 
     object = (u8*)object_param;
@@ -153,6 +152,7 @@ void FUN_0022c8a0(u32* object_param)
 
     {
         f32 g;
+        f32 blendF3;
         blendF3 = *(f32*)(object + 0x850);
         g = 1.0f - (2.0f * blendF3 - blendF3 * blendF3);
         *(f32*)(object + 0x520) = 180.0f * g;
@@ -365,7 +365,7 @@ void FUN_0022c8a0(u32* object_param)
                 colorI = (s32)colorF;
             }
             color[2] = (u8)colorI;
-            colorF = 255.0f * blendF3;
+            colorF = 255.0f * *(f32*)(object + 0x850);
             if (2147483648.0f <= colorF) {
                 colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
             } else {
@@ -1982,9 +1982,6 @@ void FUN_0022fa80(u32* object)
         FUN_0021d8e0(base, rect);
         FUN_0021d8e0(base + 256, rect);
 
-        // Pre-fetch resource for slot copies
-        slot_resource = FUN_0021cca0(table, 12);
-
         // 3-slot resource assignment
         for (i = 0; i < 3; i++) {
             u32 cnt = *(u32*)(base + i * 4 + 0x500) + 1;
@@ -1993,7 +1990,6 @@ void FUN_0022fa80(u32* object)
                 u32 rtype;
                 u32 inner;
 
-                rtype = RpRandom() % 6;
                 // Per-slot alpha write (retail pattern: alpha before resource fetch)
                 {
                     f32 a = (f32)cnt / 40.0f;
@@ -2010,6 +2006,10 @@ void FUN_0022fa80(u32* object)
                     colour[2] = 0xFF; colour[3] = (u8)(s32)(alpha * 255.0f);
                     FUN_0021d950(base + i * 256, colour);
                 }
+
+                // Fetch the slot resource after the alpha write.
+                slot_resource = FUN_0021cca0(table, 12);
+                rtype = RpRandom() % 6;
 
                 // Collision avoidance
                 for (inner = 0; inner < 3; inner++) {
@@ -2473,6 +2473,8 @@ void FUN_0022fa80(u32* object)
             rect2[1] = 255.0f * D_0068E4F0[i * 4 + 3];
             rect2[2] = 255.0f * D_0068E4F0[i * 4 + 0];
             rect2[3] = 255.0f * D_0068E4F0[i * 4 + 1];
+            sinf(angle);
+            cosf(angle);
             FUN_0021e170(base + i * 256, rect0, rect1, rect2);
         }
         break;

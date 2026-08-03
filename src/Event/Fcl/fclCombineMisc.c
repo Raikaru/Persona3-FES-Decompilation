@@ -631,7 +631,8 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
   char *pcVar13;
 
-  int aiStack_20 [4];
+  int aiStack_20 [3];
+  int swap;
   char acStack_8 [6];
 
   
@@ -700,13 +701,13 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
                   + 2) < *(u8 *)(DAT_007ce420 + (u32)*(u16 *)(iVar11 + 2) * 0xe + 2))))) {
 
-      aiStack_20[3] = iVar11;
+      swap = iVar11;
 
       cVar1 = acStack_8[sVar10 * 2 + 1];
 
       aiStack_20[acStack_8[sVar10 * 2]] = aiStack_20[cVar1];
 
-      aiStack_20[cVar1] = aiStack_20[3];
+      aiStack_20[cVar1] = swap;
 
     }
 
@@ -1638,9 +1639,11 @@ u32 FUN_003d72f0(u16 *param_1)
 
     bVar3 = *(u8 *)((u32)param_1[1] * 0xe + DAT_007ce420 + 0xc);
 
+    uVar4 = (u32)((int)((u32)bVar3 * (int)sVar1) / 100);
+
     iVar5 = RpRandom();
 
-    if ((u32)(((iVar5 % 0xffff) * 100) / 0xffff) < (u32)((int)((u32)bVar3 * (int)sVar1) / 100)) {
+    if ((u32)(((iVar5 % 0xffff) * 100) / 0xffff) < uVar4) {
 
       bVar2 = 0;
 

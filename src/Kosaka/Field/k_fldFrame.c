@@ -160,7 +160,7 @@ typedef struct FldFrameCollisionCollector
     u32 mode;
     u32 count;
     u32 blockingCount;
-    u8 tail[0x28];
+    u8 tail[0x88];
     void* owner;
 } FldFrameCollisionCollector;
 typedef struct FldFrameCollisionQuery

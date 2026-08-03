@@ -78,6 +78,9 @@ extern u16 func_003b6030(u32 id, u32 mode, void* model);
 extern u16 func_003b65d0(u16 id, void* table);
 extern void* func_003b5d10(u16 resourceId);
 extern void* func_00318b60(void* model);
+/* Preserve the retail matrix-return ABI while targeting mdlGetMatrix. */
+#pragma alias func_00318b60_u64 func_00318b60
+extern u64 func_00318b60_u64(void* model);
 extern s32 func_00318ed0(void* model, s32 index, RwV3d* position);
 extern u64 func_00318b70(void* model);
 extern void func_00318a30(void* dst, void* src, u32 count);
@@ -600,8 +603,8 @@ void* func_001cd9a0(u32 charId)
         }
     case 2:
         {
-            u16 type = 1;
-            u16 id = (u16)charId;
+        u16 type = 1;
+        u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 6 || PTR_DAT_007cd540[0] == 7)
         {
             type = 9;
@@ -1956,7 +1959,7 @@ void func_001d1360(void)
             *resource = (ResrcModelChar*)func_003b5d10(resourceId);
             func_00318a90(*model, &DAT_00683780[unit->scaleIdx], 2);
             *(RwMatrix*)func_00318b60(*model) = unit->matBeforeBtl;
-            func_004c2f10(func_00318b70(*model));
+            func_004c2f10(func_00318b60_u64(*model));
             func_001a0dc0((*resource)->base.resTypeId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);

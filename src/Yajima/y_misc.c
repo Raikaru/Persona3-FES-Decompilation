@@ -30373,12 +30373,12 @@ u32 uStack_c;
 u32 uStack_8;
 
 cVar11 = (char)param_2;
-iVar10 = *(int *)(*(int *)((u8 *)DAT_0087190c + cVar11 * 0x1c0) + 0x3c);
+iVar10 = *(int *)(*(int *)((u8 *)DAT_0087190c + param_2 * 0x1c0) + 0x3c);
 cVar2 = *(char *)(iVar10 + 0x123b) + '\x01';
 *(char *)(iVar10 + 0x123b) = cVar2;
 cVar9 = (char)param_3;
 if (cVar2 < '2') {
-  FUN_001ad940(&uStack_20,*(u32 *)(((u8 *)DAT_008717f4)[cVar11 * 0x70] + 0x1e0));
+  FUN_001ad940(&uStack_20,*(u32 *)(((u8 *)DAT_008717f4)[param_2 * 0x70] + 0x1e0));
   *(u32 *)(iVar10 + 0x123c) = uStack_20;
   *(u32 *)(iVar10 + 0x1240) = uStack_1c;
   *(u32 *)(iVar10 + 0x1244) = uStack_18;
@@ -30394,9 +30394,9 @@ else {
     if ((((u8 *)DAT_008717e8)[iVar10 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar10 * 0x70] != 0)) {
       bVar1 = 1;
     }
-    if ((bVar1) && ((long)iVar10 != (long)cVar11)) {
+    if ((bVar1) && ((long)iVar10 != (long)param_2)) {
       cVar2 = FUN_004573d0((char)iVar10);
-      if ((cVar9 == cVar2) && (cVar2 = FUN_00457390((char)iVar10), cVar2 == '\x03')) {
+      if ((param_3 == cVar2) && (cVar2 = FUN_00457390((char)iVar10), cVar2 == '\x03')) {
         return;
       }
     }
@@ -30421,17 +30421,17 @@ else {
     iVar6 = FUN_001b9120_u32();
     FUN_001a9760_typed((void *)(*(u32 *)(iVar6 + 0x10)),6,(void *)(&uStack_10),uVar12,uVar8);
     uVar4 = FUN_0043b980(param_2,param_3);
-    FUN_0017b860_typed(*(u16 *)((u8 *)DAT_00871948 + cVar11 * 0x1c0),
+    FUN_0017b860_typed(*(u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0),
                  *(u16 *)((u8 *)DAT_00871948 + iVar10),uVar4,0);
-    sVar3 = FUN_0017b500_ret(*(u16 *)((u8 *)DAT_00871948 + cVar11 * 0x1c0),uVar4);
+    sVar3 = FUN_0017b500_ret(*(u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0),uVar4);
     if (sVar3 == 1) {
-      puVar13 = (u16 *)((u8 *)DAT_00871948 + cVar11 * 0x1c0);
+      puVar13 = (u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0);
       sVar3 = FUN_0016c4f0(*puVar13);
       sVar5 = FUN_0017b5b0(*puVar13,uVar4);
       FUN_0016cf40_typed(*puVar13,sVar3 - sVar5);
     }
     else if (sVar3 == 2) {
-      puVar13 = (u16 *)((u8 *)DAT_00871948 + cVar11 * 0x1c0);
+      puVar13 = (u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0);
       sVar3 = FUN_0016c570_typed(*puVar13);
       sVar5 = FUN_0017b5b0(*puVar13,uVar4);
       FUN_0016cf90_typed(*puVar13,sVar3 - sVar5);

@@ -416,14 +416,14 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
 // FUN_00210D90 NONMATCHING
 void bsaMain00210d90(BsaWork* work)
 {
-    u32 tables[3];
+    u32 table0;
     u32 table1;
     u32 table2;
     s32* p;
     u32 image;
     u32 resource;
     f32 alpha;
-    f32* alphaSource;
+    f32 alpha255Value;
     f32 slide;
     f32 iconAlpha;
     f32 x;
@@ -437,7 +437,7 @@ void bsaMain00210d90(BsaWork* work)
     f32 labelY;
 
     p = (s32*)work->words;
-    tables[0] = func_0021c3f0(6);
+    table0 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
     if ((p[1] & BSA_FLAG_ACTIVE) == 0)
@@ -447,8 +447,8 @@ void bsaMain00210d90(BsaWork* work)
     slide = 0.0f;
     iconAlpha = 1.0f;
     bsaTransition(p, &alpha, &slide, &iconAlpha);
-    alphaSource = &alpha;
-    #define alpha255 (*alphaSource * 255.0f)
+    alpha255Value = alpha * 255.0f;
+    #define alpha255 alpha255Value
     base = (p[0] == 0) ? 180.0f : 0.0f;
 
     image = func_0021cca0(table2, 0x1f);
@@ -613,7 +613,7 @@ void bsaMain00210d90(BsaWork* work)
             bsaPlaceQuad(p, i * 0x80 + 0xc50, image, panelBaseX + 58.0f, groupY, -1.0f, -1.0f, alpha255);
             bsaPlaceQuad(p, i * 0x80 + 0xc90, image, panelBaseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, alpha255);
             if (i < (s32)p[0xd]) {
-                image = func_0021cca0(tables[0],
+                image = func_0021cca0(table0,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
                 rect[0] = panelBaseX + 54.0f;
                 rect[1] = (f32)(i & 3) * 30.0f + 271.0f;
