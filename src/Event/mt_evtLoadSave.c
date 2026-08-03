@@ -3003,14 +3003,14 @@ void FUN_00390c90(int param_1,int param_2)
 
 {
 
-  u16 event_type;
+  s16 event_type;
   u16 event_id;
+  int object;
   u32 token;
-  u8 *object;
-  u8 *record;
-  u32 *source_word;
-  int i;
   int stride;
+  u32 *source_word;
+  int record;
+  int i;
   s16 value_0;
   s16 value_1;
   s16 value_2;
@@ -3038,9 +3038,9 @@ void FUN_00390c90(int param_1,int param_2)
       else {
         event_id = *(u16 *)(*(int *)(param_1 + 0x9c) + stride * 4 + 2);
       }
-      object = (u8 *)FUN_00361350_direct(token,event_id,param_2);
+      object = (int)FUN_00361350_direct(token,event_id,param_2);
       stride = i * 0x3c;
-      record = (u8 *)*(int *)(param_1 + 0x9c) + stride;
+      record = *(int *)(param_1 + 0x9c) + stride;
       value_0 = *(s16 *)(record + 0xc);
       value_1 = *(s16 *)(record + 0xe);
       value_2 = *(s16 *)(record + 0x10);

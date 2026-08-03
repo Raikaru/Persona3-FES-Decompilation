@@ -2516,61 +2516,73 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
 
     {
         KWindowQuad* quad;
+        s32 right;
 
         quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
-        quad[1].vertex[0].x = (f32)(localRect.x + localRect.w - 2);
+        right = localRect.x + localRect.w;
+        quad[1].vertex[0].x = (f32)(right - 2);
         quad[1].vertex[0].y = (f32)localRect.y;
-        quad[1].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[1].vertex[1].x = (f32)right;
         quad[1].vertex[1].y = (f32)localRect.y;
-        quad[1].vertex[2].x = (f32)(localRect.x + localRect.w - 2);
+        quad[1].vertex[2].x = (f32)(right - 2);
         quad[1].vertex[2].y = (f32)(localRect.y + 2);
-        quad[1].vertex[3].x = (f32)(localRect.x + localRect.w);
+        quad[1].vertex[3].x = (f32)right;
         quad[1].vertex[3].y = (f32)(localRect.y + 2);
         func_001e7b10(&quad[1], func_001e7c20(-16));
     }
 
     {
         KWindowQuad* quad;
+        s32 bottom;
+        s32 right;
 
         quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        bottom = localRect.y + localRect.h;
+        right = localRect.x + localRect.w;
         quad[2].vertex[0].x = (f32)localRect.x;
-        quad[2].vertex[0].y = (f32)(localRect.y + localRect.h - 2);
-        quad[2].vertex[1].x = (f32)(localRect.x + localRect.w);
-        quad[2].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
+        quad[2].vertex[0].y = (f32)(bottom - 2);
+        quad[2].vertex[1].x = (f32)right;
+        quad[2].vertex[1].y = (f32)(bottom - 2);
         quad[2].vertex[2].x = (f32)localRect.x;
-        quad[2].vertex[2].y = (f32)(localRect.y + localRect.h);
-        quad[2].vertex[3].x = (f32)(localRect.x + localRect.w);
-        quad[2].vertex[3].y = (f32)(localRect.y + localRect.h);
+        quad[2].vertex[2].y = (f32)bottom;
+        quad[2].vertex[3].x = (f32)right;
+        quad[2].vertex[3].y = (f32)bottom;
         func_001e7b10(&quad[2], func_001e7c20(-16));
     }
 
     {
         KWindowQuad* quad;
+        s32 bottom;
 
         quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        bottom = localRect.y + localRect.h;
         quad[3].vertex[0].x = (f32)localRect.x;
-        quad[3].vertex[0].y = (f32)(localRect.y + localRect.h - 2);
+        quad[3].vertex[0].y = (f32)(bottom - 2);
         quad[3].vertex[1].x = (f32)(localRect.x + 2);
-        quad[3].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
+        quad[3].vertex[1].y = (f32)(bottom - 2);
         quad[3].vertex[2].x = (f32)localRect.x;
-        quad[3].vertex[2].y = (f32)(localRect.y + localRect.h);
+        quad[3].vertex[2].y = (f32)bottom;
         quad[3].vertex[3].x = (f32)(localRect.x + 2);
-        quad[3].vertex[3].y = (f32)(localRect.y + localRect.h);
+        quad[3].vertex[3].y = (f32)bottom;
         func_001e7b10(&quad[3], func_001e7c20(-16));
     }
 
     {
         KWindowQuad* quad;
+        s32 bottom;
+        s32 right;
 
         quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        bottom = localRect.y + localRect.h;
+        right = localRect.x + localRect.w;
         quad[4].vertex[0].x = (f32)localRect.x;
         quad[4].vertex[0].y = (f32)localRect.y;
-        quad[4].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[4].vertex[1].x = (f32)right;
         quad[4].vertex[1].y = (f32)localRect.y;
         quad[4].vertex[2].x = (f32)localRect.x;
-        quad[4].vertex[2].y = (f32)(localRect.y + localRect.h);
-        quad[4].vertex[3].x = (f32)(localRect.x + localRect.w);
-        quad[4].vertex[3].y = (f32)(localRect.y + localRect.h);
+        quad[4].vertex[2].y = (f32)bottom;
+        quad[4].vertex[3].x = (f32)right;
+        quad[4].vertex[3].y = (f32)bottom;
         func_001e7b10(&quad[4], func_001e7c20(-32));
     }
 

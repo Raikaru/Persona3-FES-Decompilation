@@ -1824,7 +1824,6 @@ cleanup:
 // FUN_001b2f00 NONMATCHING
 u32 FUN_001b2f00(u32* resource)
 {
-    u32 payload;
     u32 i;
     u32 pending;
     u32 object;
@@ -1835,25 +1834,22 @@ u32 FUN_001b2f00(u32* resource)
     u32 result;
 
     pending = 0;
-    payload = resource[0x290];
-    if (payload == 0)
+    if (resource[0x290] == 0)
     {
         return 1;
     }
-    if (*(u32*)(payload + 0x84) != 0)
+    if (*(u32*)(resource[0x290] + 0x84) != 0)
     {
-        if (*(u32*)(payload + 0x120) != 0)
+        if (*(u32*)(resource[0x290] + 0x120) != 0)
         {
             FUN_0019d3f0(D_00678DF8, 0x534);
         }
-        state = 0;
-        kind = 0;
-        object = FUN_0010c3a0(payload, &state, &kind);
+        object = FUN_0010c3a0(resource[0x290], &state, &kind);
         if (state == 1)
         {
-            FUN_004d0dc0(object, 0x1a13b0, payload + 0x120);
+            FUN_004d0dc0(object, 0x1a13b0, resource[0x290] + 0x120);
             FUN_004d0d10(object);
-            *(u32*)(payload + 0x84) = 0;
+            *(u32*)(resource[0x290] + 0x84) = 0;
             if (kind != 0)
             {
                 FUN_004c5780(kind, 0);
@@ -1864,15 +1860,13 @@ u32 FUN_001b2f00(u32* resource)
             pending = 1;
         }
     }
-    for (i = 0; i < *(u32*)(payload + 0x8c); i++)
+    for (i = 0; i < *(u32*)(resource[0x290] + 0x8c); i++)
     {
-        object = *(u32*)(payload + i * 4 + 0x90);
+        object = *(u32*)(resource[0x290] + i * 4 + 0x90);
         if (object == 0)
         {
             continue;
         }
-        state = 0;
-        kind = 0;
         loaded = FUN_0010c3a0(object, &state, &kind);
         if (state == 1)
         {
@@ -1897,7 +1891,7 @@ u32 FUN_001b2f00(u32* resource)
             {
                 resource[4] = loaded;
             }
-            *(u32*)(payload + i * 4 + 0x90) = 0;
+            *(u32*)(resource[0x290] + i * 4 + 0x90) = 0;
             resource[0] |= 1;
             if (kind != 0)
             {
@@ -1909,15 +1903,13 @@ u32 FUN_001b2f00(u32* resource)
             pending++;
         }
     }
-    for (i = 0; i < *(u32*)(payload + 0x98); i++)
+    for (i = 0; i < *(u32*)(resource[0x290] + 0x98); i++)
     {
-        object = *(u32*)(payload + i * 4 + 0x9c);
+        object = *(u32*)(resource[0x290] + i * 4 + 0x9c);
         if (object == 0)
         {
             continue;
         }
-        state = 0;
-        kind = 0;
         loaded = FUN_0010c3a0(object, &state, &kind);
         if (state == 1)
         {
@@ -1944,7 +1936,7 @@ u32 FUN_001b2f00(u32* resource)
             {
                 resource[4] = loaded;
             }
-            *(u32*)(payload + i * 4 + 0x9c) = 0;
+            *(u32*)(resource[0x290] + i * 4 + 0x9c) = 0;
             if (kind != 0)
             {
                 FUN_004c5780(kind, 0);
@@ -1955,7 +1947,7 @@ u32 FUN_001b2f00(u32* resource)
             pending++;
         }
     }
-    *(u32*)(payload + 0x11c) = 0;
+    *(u32*)(resource[0x290] + 0x11c) = 0;
     if (pending != 0)
     {
         return 0;
@@ -1971,7 +1963,7 @@ u32 FUN_001b2f00(u32* resource)
     }
     if (iGpffffb470 == 0)
     {
-        FUN_00100ec0(*(u32*)(payload + 0x80));
+        FUN_00100ec0(*(u32*)(resource[0x290] + 0x80));
     }
     resource[0x288] = 0x3f800000;
     resource[0x289] = 0x3f800000;

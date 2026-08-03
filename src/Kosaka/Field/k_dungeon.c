@@ -72,7 +72,7 @@ extern f32 K_FldFrame_CtlGetSphereCollisRadius(KwlnTask* collisCtlTask);
 extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
 extern void* func_001ad220(void* object, const RwV3d* point, void* result);
 extern void* func_00198590(void);
-extern void* func_004cb2f0(void* camera);
+extern RwMatrix* func_004cb2f0(void* camera);
 extern void func_004c69f0(RwV3d* out, const RwV3d* in);
 extern void* func_00318b00(void* model);
 extern void* func_00318b80(void* model);
@@ -2945,7 +2945,7 @@ void* func_001c0d70(KwlnTask* task)
     KwlnTask* child;
     u8* fadeWork;
     void* camera;
-    void* cameraFrame;
+    RwMatrix* cameraFrame;
     RwV3d collisionPosition;
     RwV4d collisionQueryPosition;
     RwV3d cameraPosition;
@@ -2983,8 +2983,8 @@ void* func_001c0d70(KwlnTask* task)
         K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
     camera = kwlnGetMainCamera();
     cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
-    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
-    cameraDirection = *(RwV3d*)cameraFrame;
+    cameraPosition = cameraFrame->pos;
+    cameraDirection = cameraFrame->right;
     func_004c69f0(&cameraDirection, &cameraDirection);
     cameraDirection.x *= 100.0f;
     cameraDirection.y *= 100.0f;
@@ -3004,7 +3004,7 @@ void* func_001c0d70(KwlnTask* task)
         {
             model = modelFld->model;
             memset(queryData, 0, 0x208);
-            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+            cameraPosition = cameraFrame->pos;
 
             cameraPosition.x += cameraDirection.x;
             cameraPosition.y += cameraDirection.y;
@@ -3012,7 +3012,7 @@ void* func_001c0d70(KwlnTask* task)
             func_001ad050(mdlGetClump(model), &collisionQueryPosition,
                           &cameraPosition, queryData);
 
-            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+            cameraPosition = cameraFrame->pos;
             cameraPosition.x -= cameraDirection.x;
             cameraPosition.y -= cameraDirection.y;
             cameraPosition.z -= cameraDirection.z;
@@ -3067,7 +3067,7 @@ void* func_001c0d70(KwlnTask* task)
         }
         modelFld = (DungeonModelFld*)modelFld->base.next;
     }
-    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
+    cameraPosition = cameraFrame->pos;
 
     while (fld != NULL)
     {
@@ -3075,13 +3075,11 @@ void* func_001c0d70(KwlnTask* task)
         {
             u32 i;
             u8* entry;
-            u8* fieldData;
 
-            fieldData = (u8*)fld->unk_160;
             i = 0;
-            while (i < *(u32*)(fieldData + 0x14))
+            while (i < *(u32*)((u8*)fld->unk_160 + 0x14))
             {
-                entry = *(u8**)(fieldData + 0x98 + i * 4);
+                entry = *(u8**)((u8*)fld->unk_160 + 0x98 + i * 4);
                 if (entry != NULL)
                 {
                     K_Dungeon_ProcessFieldNodes(

@@ -597,6 +597,7 @@ static void brPanel00236390(void)
     f32 shift2;
     f32 scale;
     f32 textWidth;
+    f32 textBase;
     f32 root2;
     f32 baseShift;
     f32 progressShift;
@@ -779,8 +780,9 @@ static void brPanel00236390(void)
     sprintf(text, "%d", *(s32*)(work + 0x2664));
     length = (s32)strlen(text);
     textWidth = (f32)(length * 23);
-    rect[0] = 350.0f - (textWidth + 40.0f +
-                        (f32)*(s32*)((u8*)frame + 0xc)) / 2.0f + scoreShift;
+    textBase = 350.0f - (textWidth + 40.0f +
+                         (f32)*(s32*)((u8*)frame + 0xc)) / 2.0f;
+    rect[0] = textBase + scoreShift;
     rect[1] = 154.0f;
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);

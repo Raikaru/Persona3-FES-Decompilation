@@ -181,8 +181,8 @@ void FUN_0025da30(void)
   u32 uVar7;
 
   float fVar8;
-
   float unaff_f22;
+
 
   float in_f21;
 
@@ -306,7 +306,6 @@ void FUN_0025da30(void)
   color[2] = 0xff;
 
   fVar6 = in_f21 * 255.0f;
-
   if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
 
   FUN_0021d950(puVar2 + 0x104,&color[0]);

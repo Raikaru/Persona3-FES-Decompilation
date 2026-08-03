@@ -3270,7 +3270,7 @@ void func_002e7330(int param_1)
   u16 uVar3;
   u32 uVar4;
   s32 lVar5;
-  u16 uVar6;
+  u32 uVar6;
   int iVar7;
   u8 *unaff_s1_lo;
   
@@ -3347,11 +3347,12 @@ void func_002e7330(int param_1)
     case 10:
       unaff_s1_lo = DAT_00698d40;
     }
+    uVar6 = 1;
     if (FUN_002fdfa0(iVar1) != 0) {
-      uVar6 = 5;
+      uVar6 |= 4;
     }
     else {
-      uVar6 = 9;
+      uVar6 |= 8;
     }
     FUN_002b6bf0(iVar7 + 0xec,*(int *)(iVar7 + 0xe0),*(u32 *)(*(int *)(iVar7 + 0xe0) + 0x38),
                  unaff_s1_lo,uVar6);
@@ -3465,7 +3466,6 @@ void func_002e7890(u32 param_1)
   } BtlVoicePlayback;
   BtlVoiceCameraWork *work;
   BtlAction *action;
-  BtlUnit *unit;
   BtlUnit *persona;
   u16 index;
   u16 mode;
@@ -3477,14 +3477,13 @@ void func_002e7890(u32 param_1)
 
   work = (BtlVoiceCameraWork *)(uintptr_t)param_1;
   action = work->action;
-  unit = action->unit;
-  persona = unit->personaUnit;
+  persona = action->unit->personaUnit;
 
-  if ((action != NULL) && (unit->genus == 0)) {
+  if ((action != NULL) && (action->unit->genus == 0)) {
     for (index = 0; index < action->target.targetedCount; index++) {
       BtlUnit *targetUnit = action->target.targetedActions[index]->unit;
       if (targetUnit->genus == 1)
-        FUN_0027fcf0(targetUnit, &unit->pos);
+        FUN_0027fcf0(targetUnit, &action->unit->pos);
     }
   }
 
@@ -3522,7 +3521,7 @@ void func_002e7890(u32 param_1)
     {
     BtlVoicePlayback playbackA;
     randomIndex = FUN_002ffbc0(2);
-    voiceType = unit->unk_9f0;
+    voiceType = action->unit->unk_9f0;
     voiceData = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18)) +
                 (voiceType * 0x68) +
                 ((randomIndex & 0xffff) * 0x34) + 4;
@@ -3536,7 +3535,7 @@ void func_002e7890(u32 param_1)
     action = work->action;
     if ((action->unk_1a & 1) == 0)
       break;
-    if (unit->genus == 0) {
+    if (action->unit->genus == 0) {
       BtlVoicePlayback playbackB;
       voiceData = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18)) + 0x3ac + 4;
       btlVoicePlayCameraVoice(voiceData, playbackB.startTransform,

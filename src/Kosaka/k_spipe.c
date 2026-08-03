@@ -1351,7 +1351,6 @@ u32 func_0019ab80(RwCamera* camera,
                   u32 depthAlpha,
                   FldShadowProjectionWork* work)
 {
-    RwMatrix* projectionMatrix;
     RwV3d scale;
     RwV3d translation;
     f32 viewWidth;
@@ -1389,18 +1388,17 @@ u32 func_0019ab80(RwCamera* camera,
     if (frame != NULL)
     {
         work->projectionNormal = frame->modelling.pos;
-        func_004c32a0(projectionMatrix, &frame->modelling);
-
         viewWidth = camera->viewWindow.x;
+        func_004c32a0(&work->projectionMatrix, &frame->modelling);
         scale.x = -0.5f / viewWidth;
         scale.y = scale.x;
         scale.z = 1.0f / (projectionHalf + viewWidth);
-        RwMatrixScale(projectionMatrix, &scale, rwCOMBINEPOSTCONCAT);
+        RwMatrixScale(&work->projectionMatrix, &scale, rwCOMBINEPOSTCONCAT);
 
         translation.x = 0.5f;
         translation.y = 0.5f;
         translation.z = 0.0f;
-        RwMatrixTranslate(projectionMatrix, &translation, rwCOMBINEPOSTCONCAT);
+        RwMatrixTranslate(&work->projectionMatrix, &translation, rwCOMBINEPOSTCONCAT);
     }
 
     work->depthAlpha = (s32)depthAlpha;

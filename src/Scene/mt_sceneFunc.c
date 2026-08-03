@@ -1704,6 +1704,8 @@ void FUN_003b9610(Resrc* param_1)
 
   u16 *puVar5;
 
+  int iVar10;
+
   int iVar6;
 
   int iVar7;
@@ -1712,14 +1714,20 @@ void FUN_003b9610(Resrc* param_1)
 
   char cVar9;
 
-  int iVar10;
-
   float fVar11;
 
   float fVar12;
 
 
+
+  float fVar13;
+
+  float fVar14;
+
+  float fVar15;
+
   struct {
+    u32 m_uStack_pad[0xc];
     float m_fStack_88;
     float m_fStack_84;
     float m_fStack_80;
@@ -2025,7 +2033,12 @@ void FUN_003b9610(Resrc* param_1)
 
         fVar11 = (float)*(u32 *)(puVar8 + 0x40);
 
-        stack.m_fStack_74 = stack.m_fStack_74 / fVar11;
+        fVar13 = stack.m_fStack_78 / fVar11;
+
+        fVar14 = stack.m_fStack_74 / fVar11;
+
+        fVar15 = stack.m_fStack_70 / fVar11;
+
 
         switch(*(u8 *)((int)puVar8 + 0x7d)) {
 
@@ -2033,11 +2046,12 @@ void FUN_003b9610(Resrc* param_1)
 
           uVar1 = *(u32 *)(puVar8 + 0x42);
 
-          stack.m_fStack_88 = (stack.m_fStack_78 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x32);
+          stack.m_fStack_88 = fVar13 * (float)uVar1 + *(float *)(puVar8 + 0x32);
 
-          stack.m_fStack_84 = stack.m_fStack_74 * (float)uVar1 + *(float *)(puVar8 + 0x34);
+          stack.m_fStack_84 = fVar14 * (float)uVar1 + *(float *)(puVar8 + 0x34);
 
-          stack.m_fStack_80 = (stack.m_fStack_70 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x36);
+          stack.m_fStack_80 = fVar15 * (float)uVar1 + *(float *)(puVar8 + 0x36);
+
 
           break;
 
@@ -2057,11 +2071,11 @@ void FUN_003b9610(Resrc* param_1)
 
                                        *(u8 *)((int)puVar8 + 0x7d));
 
-          stack.m_fStack_88 = (stack.m_fStack_78 / fVar11) * fVar12 + *(float *)(puVar8 + 0x32);
+          stack.m_fStack_88 = fVar13 * fVar12 + *(float *)(puVar8 + 0x32);
 
-          stack.m_fStack_84 = stack.m_fStack_74 * fVar12 + *(float *)(puVar8 + 0x34);
+          stack.m_fStack_84 = fVar14 * fVar12 + *(float *)(puVar8 + 0x34);
 
-          stack.m_fStack_80 = (stack.m_fStack_70 / fVar11) * fVar12 + *(float *)(puVar8 + 0x36);
+          stack.m_fStack_80 = fVar15 * fVar12 + *(float *)(puVar8 + 0x36);
 
         }
 

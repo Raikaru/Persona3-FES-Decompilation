@@ -41195,13 +41195,13 @@ void FUN_0034c390(float *param_1)
 
     uStack_4 = uStack_10;
 
-    FUN_00318ad0_u32(*(u32 *)((int)param_1 + 0x94),&uStack_4);
+    FUN_00318ad0_u32(*(u32 *)(param_1 + 0x25),&uStack_4);
 
     fVar4 = (float)FUN_0032a540((char *)(param_1 + 0x18),fVar3,fVar1);
 
     FUN_003296a0((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 4));
 
-    FUN_00318a70_u32(*(u32 *)((int)param_1 + 0x94),auStack_60,0);
+    FUN_00318a70_u32(*(u32 *)(param_1 + 0x25),auStack_60,0);
 
     fStack_20 = param_1[8] * (fVar4 / 10.0f);
 
@@ -41209,7 +41209,7 @@ void FUN_0034c390(float *param_1)
 
     fStack_18 = fStack_20;
 
-    FUN_00318a90_u32(*(u32 *)((int)param_1 + 0x94),&fStack_20,2);
+    FUN_00318a90_u32(*(u32 *)(param_1 + 0x25),&fStack_20,2);
 
     fStack_20 = *param_1;
 
@@ -41217,7 +41217,7 @@ void FUN_0034c390(float *param_1)
 
     fStack_18 = param_1[2];
 
-    FUN_00318a30_u32(*(u32 *)((int)param_1 + 0x94),&fStack_20,2);
+    FUN_00318a30_u32(*(u32 *)(param_1 + 0x25),&fStack_20,2);
 
     if (*(char *)(param_1 + 0x24) == '\0') {
 
@@ -41231,9 +41231,9 @@ void FUN_0034c390(float *param_1)
 
     }
 
-    FUN_003189f0_f32(param_1[9],*(u32 *)((int)param_1 + 0x94),0);
+    FUN_003189f0_f32(param_1[9],*(u32 *)(param_1 + 0x25),0);
 
-    FUN_00317a20((Model *)*(u32 *)((int)param_1 + 0x94));
+    FUN_00317a20((Model *)*(u32 *)(param_1 + 0x25));
 
     param_1[9] = 0.0f;
 
@@ -41343,9 +41343,11 @@ u32 FUN_0034c670(int param_1)
   int iVar8;
   u32 *puVar9;
 
+  u32 (*allocator)(...);
   
 
-  uVar3 = (*DAT_00960178_abs)(0xa4,0x40000);
+  allocator = DAT_00960178_u32;
+  uVar3 = (*allocator)(0xa4,0x40000);
 
   FUN_00521408(uVar3,0,0xa4);
 
@@ -41405,7 +41407,7 @@ u32 FUN_0034c670(int param_1)
 
     if ((lVar5 != 0) && (lVar5 = FUN_003245f0((int)(param_1)), lVar5 != 0)) {
 
-      uVar2 = (*DAT_00960178_abs)(*(int *)(pauVar7[2] + 8) << 2,0x40000);
+      uVar2 = (*allocator)(*(int *)(pauVar7[2] + 8) << 2,0x40000);
 
       *(u32 *)(pauVar7[9] + 0xc) = uVar2;
 
@@ -48709,8 +48711,8 @@ void FUN_00355f30(int *param_1)
 
   u64 uVar4;
 
-  bool bVar5;
 
+  bool bVar5;
   float *pfVar6;
 
   long lVar7;
