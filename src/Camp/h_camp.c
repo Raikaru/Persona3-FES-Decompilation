@@ -12378,16 +12378,16 @@ void FUN_00134d80(KwlnTask* task)
         }
     } else {
         resource = (void*)work[work[1] + 2];
-        if (resource == NULL) {
+        if (resource != NULL) {
+            archive = (void*)work[0x30];
+            h_campQueueResourceTaskForCurrent(resource, archive);
+            work[0x30] = 0;
+        } else {
             archive = (void*)work[0x30];
             if (archive != NULL) {
                 H_Cdvd_Destroy((HCdvd*)archive);
                 work[0x30] = 0;
             }
-        } else {
-            archive = (void*)work[0x30];
-            h_campQueueResourceTaskForCurrent(resource, archive);
-            work[0x30] = 0;
         }
     }
     RwFree(work);

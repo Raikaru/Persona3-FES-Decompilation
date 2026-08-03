@@ -1438,7 +1438,18 @@ u32 FUN_002dbb00(BtlUnit* param_1)
             firstCount++;
         }
     }
-    if (count == 0)
+    if (count != 0)
+    {
+        if (firstCount < 2)
+        {
+            result = candidates[datCalcRand(firstCount)];
+        }
+        else
+        {
+            result = (datGetFlag(0x141) == 0) ? 0x3d4 : 0x209;
+        }
+    }
+    else
     {
         count = 0;
         for (slot = 0; slot < 10; slot++)
@@ -1463,14 +1474,6 @@ u32 FUN_002dbb00(BtlUnit* param_1)
             result = candidates[datCalcRand(count)];
             break;
         }
-    }
-    else if (firstCount < 2)
-    {
-        result = candidates[datCalcRand(firstCount)];
-    }
-    else
-    {
-        result = (datGetFlag(0x141) == 0) ? 0x3d4 : 0x209;
     }
     return result;
 }

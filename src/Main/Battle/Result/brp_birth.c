@@ -457,6 +457,27 @@ void func_0024adf0(void)
                 work[2] = 10;
             }
             break;
+        case 10:
+            if (brpRes0024c040() == 0)
+            {
+                func_003c72d0(brpRes0024c090());
+                func_003c7bc0(1,
+                    func_00173220((s16)work[3]));
+                func_003c7430(
+                    func_0017d790((s16)work[3]));
+                work[2] = 0xB;
+            }
+            break;
+        case 0xB:
+            func_003c7990(1);
+            if (func_003c7850() == 0)
+            {
+                func_003c7650(1);
+                func_003c77a0();
+                work[2] = 7;
+                work[1] &= ~1;
+            }
+            break;
         case 8:
             if (H_Fade_IsFadeOutDone() != 0)
             {
@@ -482,27 +503,6 @@ void func_0024adf0(void)
                 }
                 work[1] &= ~1;
                 work[2] = 0;
-            }
-            break;
-        case 10:
-            if (brpRes0024c040() == 0)
-            {
-                func_003c72d0(brpRes0024c090());
-                func_003c7bc0(1,
-                    func_00173220((s16)work[3]));
-                func_003c7430(
-                    func_0017d790((s16)work[3]));
-                work[2] = 0xB;
-            }
-            break;
-        case 0xB:
-            func_003c7990(1);
-            if (func_003c7850() == 0)
-            {
-                func_003c7650(1);
-                func_003c77a0();
-                work[2] = 7;
-                work[1] &= ~1;
             }
             break;
         default:

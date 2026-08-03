@@ -104,29 +104,8 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
     FUN_0016f1f0(0xa17, 0);
   } } break; case 2: if (param_3 != 0) { switch (pbVar8[2]) {
   case 0:
-    if (bVar1 == 2) {
-      lVar6 = FUN_0016e100(pbVar8[1]);
-      if (lVar6 == 1) {
-        uVar7 = FUN_0016ef20();
-        FUN_0016e7a0(pbVar8[1], uVar7);
-      }
-      pbVar8[8] = 4;
-    } else if (bVar1 == 1) {
-      FUN_00395170(0x989);
-      lVar6 = FUN_003be1a0(param_1);
-      if (lVar6 == 1) {
-        bVar1 = pbVar8[1];
-        FUN_0016e920(bVar1);
-        cVar4 = FUN_0016e850(bVar1);
-        if ((char)DAT_006a3340_abs[(short)(u16)bVar1] < cVar4)
-          FUN_0016f1f0(0xa2d, 1);
-        else
-          FUN_0016f1f0(0xa2d, 0);
-        pbVar8[8] = 2;
-      } else {
-        pbVar8[8] = 4;
-      }
-    } else if (bVar1 == 0) {
+    switch (bVar1) {
+    case 0:
       lVar6 = FUN_00172750(pbVar8 + 0x24);
       if (lVar6 == 1) {
         lVar6 = FUN_00172a30();
@@ -150,7 +129,32 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
           pbVar8[8] = 4;
         }
       }
-    } else {
+      break;
+    case 1:
+      FUN_00395170(0x989);
+      lVar6 = FUN_003be1a0(param_1);
+      if (lVar6 == 1) {
+        bVar1 = pbVar8[1];
+        FUN_0016e920(bVar1);
+        cVar4 = FUN_0016e850(bVar1);
+        if ((char)DAT_006a3340_abs[(short)(u16)bVar1] < cVar4)
+          FUN_0016f1f0(0xa2d, 1);
+        else
+          FUN_0016f1f0(0xa2d, 0);
+        pbVar8[8] = 2;
+      } else {
+        pbVar8[8] = 4;
+      }
+      break;
+    case 2:
+      lVar6 = FUN_0016e100(pbVar8[1]);
+      if (lVar6 == 1) {
+        uVar7 = FUN_0016ef20();
+        FUN_0016e7a0(pbVar8[1], uVar7);
+      }
+      pbVar8[8] = 4;
+      break;
+    default:
       FUN_0019d3f0("comuEventExec.c", 0x14a);
     }
     break;

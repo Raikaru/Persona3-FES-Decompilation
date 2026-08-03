@@ -14114,61 +14114,12 @@ void FUN_0032d840(int param_1)
 
       iVar9 = *(int *)pauVar16[1];
 
-      if (iVar9 != -2) {
+      switch (iVar9) {
 
-        if (iVar9 != -1) {
+      case -2:
+        break;
 
-          uStack_28 = *(u32 *)(*pauVar16 + 8);
-
-          uStack_24 = *(u32 *)(*pauVar16 + 0xc);
-
-          uStack_30 = (u32)*(u64 *)*pauVar16;
-
-          uStack_2c = (u32)((u32)*(u64 *)*pauVar16 >> 0x20);
-
-          __asm__ volatile ("lqc2 $vf11, 0(%0)" : : "r"(pauVar16) : "vf11", "memory");
-
-          fVar19 = fVar22 * (float)iVar9 + pfVar15[3] + 0.0f;
-
-          if (fVar19 < 0.0f) {
-
-            fVar19 = 0.0f;
-
-          }
-
-          vuVec[1] = fVar19 * pfVar15[1];
-
-          vuVec[0] = fVar19 * *pfVar15;
-
-          vuVec[2] = fVar19 * pfVar15[2];
-
-          vuVec[1] = (fVar19 * pfVar15[1] + 0.0f) - fVar24 * (float)iVar9;
-
-          __asm__ volatile (
-              ".set noreorder              \n"
-              "lqc2       $vf10, 0(%0)      \n"
-              "vadd.xyzw  $vf10, $vf10, $vf11 \n"
-              "sqc2       $vf10, 0(%1)      \n"
-              ".set reorder"
-              :
-              : "r"(vuVec), "r"(pauVar16)
-              : "vf10", "memory");
-
-          FUN_0032a770(pauVar16,(int)(pauVar4),iVar9,(u8 (*)[16])(&uStack_30));
-
-          *(float *)(pauVar16[1] + 8) = *(float *)(pauVar16[1] + 8) * pfVar15[4];
-
-          *(float *)(pauVar16[1] + 0xc) = *(float *)(pauVar16[1] + 0xc) * pfVar15[6];
-
-          *(float *)(pauVar16[1] + 0xc) = *(float *)(pauVar16[1] + 0xc) + pfVar15[5];
-
-          FUN_0032a890(param_1,(u64)(pauVar16));
-
-          *(int *)pauVar16[1] = iVar9 + 1;
-
-        }
-
-        else {
+      case -1:
 
           if (iVar14 != 0) {
 
@@ -14409,9 +14360,58 @@ void FUN_0032d840(int param_1)
             iVar14 = iVar14 + -1;
 
           }
+                break;
 
-        }
+      default:
 
+          uStack_28 = *(u32 *)(*pauVar16 + 8);
+
+          uStack_24 = *(u32 *)(*pauVar16 + 0xc);
+
+          uStack_30 = (u32)*(u64 *)*pauVar16;
+
+          uStack_2c = (u32)((u32)*(u64 *)*pauVar16 >> 0x20);
+
+          __asm__ volatile ("lqc2 $vf11, 0(%0)" : : "r"(pauVar16) : "vf11", "memory");
+
+          fVar19 = fVar22 * (float)iVar9 + pfVar15[3] + 0.0f;
+
+          if (fVar19 < 0.0f) {
+
+            fVar19 = 0.0f;
+
+          }
+
+          vuVec[1] = fVar19 * pfVar15[1];
+
+          vuVec[0] = fVar19 * *pfVar15;
+
+          vuVec[2] = fVar19 * pfVar15[2];
+
+          vuVec[1] = (fVar19 * pfVar15[1] + 0.0f) - fVar24 * (float)iVar9;
+
+          __asm__ volatile (
+              ".set noreorder              \n"
+              "lqc2       $vf10, 0(%0)      \n"
+              "vadd.xyzw  $vf10, $vf10, $vf11 \n"
+              "sqc2       $vf10, 0(%1)      \n"
+              ".set reorder"
+              :
+              : "r"(vuVec), "r"(pauVar16)
+              : "vf10", "memory");
+
+          FUN_0032a770(pauVar16,(int)(pauVar4),iVar9,(u8 (*)[16])(&uStack_30));
+
+          *(float *)(pauVar16[1] + 8) = *(float *)(pauVar16[1] + 8) * pfVar15[4];
+
+          *(float *)(pauVar16[1] + 0xc) = *(float *)(pauVar16[1] + 0xc) * pfVar15[6];
+
+          *(float *)(pauVar16[1] + 0xc) = *(float *)(pauVar16[1] + 0xc) + pfVar15[5];
+
+          FUN_0032a890(param_1,(u64)(pauVar16));
+
+          *(int *)pauVar16[1] = iVar9 + 1;
+                break;
       }
 
       pfVar15 = pfVar15 + 7;

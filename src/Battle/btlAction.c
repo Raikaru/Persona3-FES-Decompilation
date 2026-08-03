@@ -2569,15 +2569,15 @@ persona_dispatch_genus_match:
 
 genus0_action:
     victimUnit = target->unit;
-    personaUnit = victimUnit->personaUnit;
+    personaUnit = actionUnit->personaUnit;
     personaActionType = func_002d6290(action);
 
-    func_00284040(personaUnit, victimUnit, (s16)specificId, personaActionType);
+    func_00284040(personaUnit, actionUnit, (s16)specificId, personaActionType);
 
     personaActionType = FUN_002d63b0(personaUnit, specificId, personaActionType);
 
-    FUN_0027ffb0(victimUnit, &spE0);
-    FUN_00280480(victimUnit->personaUnit, victimUnit, &spD0);
+    FUN_0027ffb0(actionUnit, &spE0);
+    FUN_00280480(victimUnit, actionUnit, &spD0);
     moveSpeed = FUN_002d1ed0(&spE0, &spD0);
     {
         f32 vz = victimUnit->pos.z;
@@ -2632,7 +2632,9 @@ check_distance_threshold:
 
 compute_vector_offset:
     {
-        FUN_0027f940(personaUnit, victimUnit, actionUnit, personaActionType, &sp110, NULL, 2);
+        FUN_0027f940(personaUnit, actionUnit, victimUnit, personaActionType, &sp110, NULL, 2);
+        moveSpeed = FUN_002d1ed0(&sp110, &spD0);
+        FUN_0027f940(personaUnit, actionUnit, NULL, -1, &sp110, NULL, 0);
 
         spE0.x = sp110.x - spE0.x;
         spE0.y = 0.0f;
@@ -2649,10 +2651,10 @@ compute_vector_offset:
         goto final_dispatch;
     }
 
+
 final_dispatch:
     {
         u16 field_6E;
-
         if (someFlag != 0)
         {
             btlAction0028a780(action);
@@ -2731,10 +2733,7 @@ enemy_packet_dispatch:
 
         if (isSkillType == 0)
         {
-            packet = btlUnitCreateMovePacket(actionUnit, &sp120, moveSpeed, someFlag);
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_0);
-            goto camera_dispatch;
+            goto create_posrotcol_packet;
         }
     }
 
@@ -7203,6 +7202,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = func_002e3990();
         packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = btlVoice002e2be0((BtlAction*)action->movedAwayFromHome, 4, 0, 0, 0);
         packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);

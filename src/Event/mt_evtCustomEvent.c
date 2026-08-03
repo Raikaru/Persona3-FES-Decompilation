@@ -2854,6 +2854,24 @@ u32 FUN_0039a8a0(int param_1)
 
     break;
 
+  case 0x1c:
+
+    lVar10 = FUN_0039f6e0(puVar11);
+
+    if (lVar10 == 1) {
+
+      puVar3[0x234] = 0;
+
+      uVar8 = FUN_003bee80(*(u16 *)(puVar3 + 0x223),puVar3 + 0x233);
+
+      puVar3[0x235] = uVar8;
+
+      *puVar3 = 0x1a;
+
+    }
+
+    break;
+
   case 0x1a:
 
     if ((int)puVar3[0x234] >= (int)puVar3[0x233]) {
@@ -2915,24 +2933,6 @@ u32 FUN_0039a8a0(int param_1)
     }
 
     FUN_003c7b90();
-
-    break;
-
-  case 0x1c:
-
-    lVar10 = FUN_0039f6e0(puVar11);
-
-    if (lVar10 == 1) {
-
-      puVar3[0x234] = 0;
-
-      uVar8 = FUN_003bee80(*(u16 *)(puVar3 + 0x223),puVar3 + 0x233);
-
-      puVar3[0x235] = uVar8;
-
-      *puVar3 = 0x1a;
-
-    }
 
     break;
 

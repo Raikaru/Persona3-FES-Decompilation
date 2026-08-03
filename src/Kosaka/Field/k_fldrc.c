@@ -2231,51 +2231,39 @@ first_check:
 second_body:
     record = (u8*)resource + secondIndex * 0x18;
     type = *(u16*)(record + 0x11c);
-    if (type == 0)
+    if (type == 0 || type == 2)
     {
-        goto stream_model;
-    }
-    if (type == 2)
-    {
-        goto stream_model;
-    }
-    if (type != 1)
-    {
-        goto second_increment;
-    }
-    if (*(u32*)(record + 0x130) == 0)
-    {
-        goto second_increment;
-    }
-    if (iGpffffb470 == 0)
-    {
-        object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
-        *(u32*)(record + 0x12c) = object;
+        object = *(u32*)(record + 0x128);
         matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-        FUN_0034fdf0(object, matrix + 0x30);
-        FUN_00100ec0(*(u32*)(record + 0x130));
+        FUN_00318a70(object, matrix, 0);
+        FUN_00319230(object, 3);
+        if ((*(u16*)(record + 0x11e) & 1) == 0)
+        {
+            FUN_003182d0(object, 0, 0, 8, 1);
+        }
+        else
+        {
+            FUN_003189f0(0, object, 0);
+        }
     }
-    else
+    else if (type == 1 && *(u32*)(record + 0x130) != 0)
     {
-        object = FUN_0034fcd0();
-        *(u32*)(record + 0x12c) = object;
-        matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-        FUN_0034fdf0(object, matrix + 0x30);
-    }
-    *(u32*)(record + 0x130) = 0;
-    goto second_increment;
-stream_model:
-    object = *(u32*)(record + 0x128);
-    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
-    FUN_00318a70(object, matrix, 0);
-    FUN_00319230(object, 3);
-    if ((*(u16*)(record + 0x11e) & 1) == 0)
-    {
-        FUN_003182d0(object, 0, 0, 8, 1);
-    }
-    else
-    {
-        FUN_003189f0(0, object, 0);
+        if (iGpffffb470 == 0)
+        {
+            object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
+            *(u32*)(record + 0x12c) = object;
+            matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+            FUN_0034fdf0(object, matrix + 0x30);
+            FUN_00100ec0(*(u32*)(record + 0x130));
+        }
+        else
+        {
+            object = FUN_0034fcd0();
+            *(u32*)(record + 0x12c) = object;
+            matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+            FUN_0034fdf0(object, matrix + 0x30);
+        }
+        *(u32*)(record + 0x130) = 0;
     }
 second_increment:
     secondIndex++;
