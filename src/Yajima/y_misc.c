@@ -13366,6 +13366,8 @@ extern s32 FUN_0017b5b0(u32 param_1, u32 param_2);
 extern code FUN_0017b660;
 #pragma alias FUN_0017b660_2arg FUN_0017b660
 extern long FUN_0017b660_2arg(u16 param_1, u16 param_2);
+#pragma alias FUN_0017b660_i32 FUN_0017b660
+extern long FUN_0017b660_i32(u16 param_1, int param_2);
 #pragma alias FUN_0017b660_1arg FUN_0017b660
 extern long FUN_0017b660_1arg(u16 param_1);
 #pragma alias FUN_0017b660_s16 FUN_0017b660
@@ -21345,7 +21347,7 @@ short FUN_0043c180(char param_1)
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
           if (((uVar1 != 0) && (uVar1 == 0xcd)) &&
-              (FUN_0017b660_s16(*(s16 *)(row + 0x1a8)) == 0)) {
+              (FUN_0017b660_i32(*(s16 *)(row + 0x1a8),uVar1) == 0)) {
             uVar3 = FUN_0016c570_s16(*(s16 *)(row + 0x1a8));
             if (uVar8 < uVar3) {
               sVar9 = (short)iVar11;
@@ -21401,7 +21403,7 @@ short FUN_0043c340(char param_1)
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
           if (((uVar1 != 0) && (uVar1 == 0xcc)) &&
-              (FUN_0017b660_s16(*(s16 *)(row + 0x1a8)) == 0)) {
+              (FUN_0017b660_i32(*(s16 *)(row + 0x1a8),uVar1) == 0)) {
             uVar3 = FUN_0016c570_s16(*(s16 *)(row + 0x1a8));
             if (uVar8 < uVar3) {
               sVar9 = (short)iVar11;

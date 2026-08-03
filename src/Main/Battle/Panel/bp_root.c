@@ -424,6 +424,7 @@ static u8* panelMiscWork(void)
 {
     return *(u8**)0x007CE3EC;
 }
+
 static KwlnTask* sBtlPanelTask; // 007ce2e4
 
 void* FUN_001fd890(KwlnTask*);
@@ -517,7 +518,6 @@ void* FUN_001fd890(KwlnTask* task)
         work[0] &= ~0x401u;
     }
     misc = (u32*)panelMiscWork();
-    K_ASSERT(misc != NULL, 0x164);
     if ((misc[3] & 0x80) && !(misc[3] & 0x800))
     {
         return NULL;

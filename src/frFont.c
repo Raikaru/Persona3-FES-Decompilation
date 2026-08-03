@@ -214,6 +214,7 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4);
 void FUN_003b1300(void *param_1);
 void FUN_003b1330(void *param_1,u32 param_2);
 int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
+u64 FUN_003b38f0(f32 param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,u32 param_8);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
@@ -318,8 +319,11 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 static inline int frFontAddOffset(int offset, int glyph_count) {
   return offset + glyph_count;
 }
+static inline s8 *frFontBlockOffset(int offset, s8 *base) {
+  return base + offset;
+}
 /* The helper parameter order presents the retail addu operand order. */
-// FUN_003AFAD0 NONMATCHING
+// FUN_003AFAD0
 
 
 void FUN_003afad0(int slot_id, int font_data, int resource)
@@ -343,7 +347,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   id = slot_id;
   slot = &gFrFontManagerData_abs[0].slots[id];
   if (id >= 9) {
-    FUN_0035ac50(DAT_006a27a0);
+    FUN_0035ac50(DAT_006a27a0, id);
   }
 
   slot->resource = (void *)resource;
@@ -821,7 +825,7 @@ void FUN_003b01d0(int param_1,int param_2)
 
     if (cVar1 != '\0') {
 
-      iVar4 = (int)*((s8 *)slot->block0 + param_2);
+      iVar4 = (int)*frFontBlockOffset(param_2, (s8 *)slot->block0);
 
       iVar5 = iVar4 * 0x10;
 
@@ -2038,7 +2042,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
         }
 
-        FUN_003b38f0(*(u32 *)(puVar2 + 0x14),iVar6 + iVar8 + *(int *)(iVar4 + 4),
+        FUN_003b38f0(*(f32 *)(puVar2 + 0x14),iVar6 + iVar8 + *(int *)(iVar4 + 4),
 
                      iVar3 + *(int *)(iVar4 + 8),iVar4,*(u8 *)(iVar4 + 0x14),
 

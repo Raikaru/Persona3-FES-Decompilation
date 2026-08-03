@@ -13475,18 +13475,18 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     (void)frame;
     p.packed = position;
     FUN_00172160(id);
-    kind = (u8)DAT_005E3220[id] - 1;
+    kind = DAT_005E3220[id] - 1;
     resource = DAT_00833A80[kind];
     if (resource == NULL) {
         return;
     }
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
-    if (FUN_001717C0(id) == NULL) {
-        hCampMainDrawQuad7(alpha, color, p.value.x + 24.0f, p.value.y + 23.0f,
-                     0x40, 0x40, resource);
-    } else {
+    if (FUN_001717C0(id) != NULL) {
         hCampMainDrawTexQuadPtr(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
+    } else {
+        hCampMainDrawQuad7(alpha, color, p.value.x + 24.0f, p.value.y + 23.0f,
+                     0x40, 0x40, resource);
     }
     if (FUN_00172160(id) != NULL) {
         campDrawCardSprite(DAT_00833B54, 0, alpha,
