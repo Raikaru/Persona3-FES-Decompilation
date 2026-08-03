@@ -25,6 +25,7 @@ extern void func_004c32a0(void* destination, const void* source);
 extern void func_004cb750(void* frame, const void* translation, s32 mode);
 extern f32 sqrtf(f32 value);
 extern void func_004c3880(void* matrix);
+static inline f32 bpeAdd(f32 left, f32 right) { return left + right; }
 extern void func_004c3760(void* matrix, void* source, s32 mode);
 extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
 extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
@@ -579,7 +580,7 @@ void func_00249c10(void* work)
             }
             pointer.position[0] = local.transformed.data[0] + *(f32*)(base + i * 0xc);
             pointer.position[1] = local.transformed.data[1] + particleY[0];
-            pointer.position[2] = local.transformed.data[2] + *(f32*)(base + i * 0xc + 8);
+            pointer.position[2] = bpeAdd(*(f32*)(base + i * 0xc + 8), local.transformed.data[2]);
             RwV3dTransformPoint(local.point, pointer.position, matrix);
 
             if (local.point[2] < 100.0f) {

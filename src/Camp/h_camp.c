@@ -25532,26 +25532,33 @@ void FUN_0015DA70(void *param_1)
                     (size_t)i * 0x2a8, 0x444, 0);
         } else {
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x2ac, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x2ac, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x2f0, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x2f0, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x334, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x334, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x378, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x378, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x3bc, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x3bc, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x400, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x400, 0);
             camp_list_store_u32(
-                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-                    (size_t)i * 0x2a8, 0x444, 0);
+                (uintptr_t)camp_draw_ptr_add(
+                    (void*)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    (size_t)i * 0x2a8), 0x444, 0);
         }
     }
 

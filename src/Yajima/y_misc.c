@@ -6528,15 +6528,15 @@ u64 FUN_004260a0(int param_1)
 
   int lVar10;
 
-  u32 *puVar11;
-
-  u32 *puVar12;
-
-  u32 auStack_60 [16];
+  YajimaVec4 ambientColor;
 
   YajimaVec4 directionalColor;
 
-  YajimaVec4 ambientColor;
+  u32 auStack_60 [16];
+
+  u32 *puVar11;
+
+  u32 *puVar12;
 
   
 

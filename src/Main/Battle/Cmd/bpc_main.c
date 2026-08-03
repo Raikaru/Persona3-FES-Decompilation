@@ -46,6 +46,10 @@ extern BpcRenderQuad D_0096009C;
 extern f32 DAT_007caf38;
 extern u32 DAT_007ce4e8;
 extern u8* DAT_007ce410;
+static inline u32 bpcAddBaseFirst(u32 base, u32 offset)
+{
+  return base + offset;
+}
 
 extern int func_001ff430(u32 id);
 extern u32 func_0021c3f0(s32 texture);
@@ -609,15 +613,15 @@ void FUN_002441b0(u32 param_1)
   uVar5 = *puVar2;
   uVar5 = uVar5 & 0xfffffffb;
   *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xfffffff3;
+  uVar5 = uVar5 & 0xfffffff7;
   *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xffffffe3;
+  uVar5 = uVar5 & 0xffffffef;
   *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xffffffc3;
+  uVar5 = uVar5 & 0xffffffdf;
   *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xffffffc1;
+  uVar5 = uVar5 & 0xfffffffd;
   *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xfffffec1;
+  uVar5 = uVar5 & 0xfffffeff;
   *puVar2 = uVar5;
   if (puVar2[2] == 1) {
     *puVar2 = *puVar2 | 2;
@@ -678,7 +682,8 @@ void FUN_002441b0(u32 param_1)
     func_0021d3b0(puVar2 + 0x1af0,uVar7);
   }
   for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-    iVar6 = func_001ff430(puVar2[iVar4 + 4]);
+    iVar6 = func_001ff430(*(u32 *)((u8 *)(uintptr_t)bpcAddBaseFirst(
+        (u32)puVar2, (u32)(iVar4 * 4)) + 0x10));
     if (*(char *)(iVar6 + 0xa2) == '\0') {
       bppMain0020f7d0(*(u16 *)(*(int *)(iVar6 + 0xa2c) + 2));
     }
