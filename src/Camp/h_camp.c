@@ -24578,6 +24578,7 @@ void *FUN_0015B430(KwlnTask *task)
     u32 selected;
     u32 allReady;
     bool inputHeld;
+    s32 recordOffset;
     CampMenuScratch scratch;
     void *fileData;
 
@@ -24796,7 +24797,9 @@ void *FUN_0015B430(KwlnTask *task)
         selected = work->selectedPanel;
         allReady = 1;
         for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
+            CampMenuEntry *entry;
+            recordOffset = index * CAMP_MENU_ENTRY_SIZE;
+            entry = (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) + recordOffset);
             if (entry->enabled != 0) {
                 if (func_0018b700(entry) != 0) {
                     FUN_00155830(entry, &work->archiveBlob0, index, selected,
@@ -24869,7 +24872,9 @@ void *FUN_0015B430(KwlnTask *task)
         selected = work->selectedPanel;
         allReady = 1;
         for (index = 0; index < CAMP_MENU_ENTRY_COUNT; index++) {
-            CampMenuEntry *entry = camp_menu_entry(work, index);
+            CampMenuEntry *entry;
+            recordOffset = index * CAMP_MENU_ENTRY_SIZE;
+            entry = (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) + recordOffset);
             if (entry->enabled != 0) {
                 if (func_0018b700(entry) != 0) {
                     FUN_00155830(entry, &work->archiveBlob0, index, selected,

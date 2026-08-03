@@ -3398,16 +3398,12 @@ u32 FUN_003cda00(void)
 }
 #define FUN_003cda00(...) ((u32 (*)(...))FUN_003cda00)(__VA_ARGS__)
 #undef FUN_003cda60
-// Addressing-signal audit: retail has the same $gp color load and $gp data address.
-// Residual +48..+60 is aggregate load/store scheduling; +216..+244 is JAL setup order.
-// Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
-// W389 hand tests: translation z volatile load held nd12; volatile handle sequencing regressed nd12 -> nd16; both reverted.
-// W414 argument-order probes: hoisting arg3 pointer before/after argument locals left nd12 unchanged; explicit handle/pointer locals regressed nd12 -> nd16; reverted.
+// W447 argument-materialisation ordering: scoped handle/firstArg locals preserve retail's lhu, zero, pointer setup for both calls.
 
 #pragma push
 /* W389 sweep: opt_propagation off measured nd20/obj320 -> nd12/obj320 (window 320). */
 #pragma opt_propagation off
-// FUN_003CDA60 NONMATCHING
+// FUN_003CDA60
 
 
 void FUN_003cda60(u32 param_1)
@@ -3455,8 +3451,20 @@ void FUN_003cda60(u32 param_1)
 
   *(FclMiscRGBA *)(iVar2 + 0x80) = color.rgba;
 
-  fclMisc6bc80Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x84));
-  fclMisc6bdb0Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x94));
+  {
+    u16 handle;
+    u32 firstArg;
+    handle = *(u16 *)(iVar2 + 0xc);
+    firstArg = 0;
+    fclMisc6bc80Call(firstArg,handle,(void *)(iVar2 + 0x84));
+  }
+  {
+    u16 handle;
+    u32 firstArg;
+    handle = *(u16 *)(iVar2 + 0xc);
+    firstArg = 0;
+    fclMisc6bdb0Call(firstArg,handle,(void *)(iVar2 + 0x94));
+  }
 
   FUN_00194b20(param_1,&DAT_007cd720,0x147c,
                 fclMiscE2a0Callback,fclMiscF080Callback,uVar1);

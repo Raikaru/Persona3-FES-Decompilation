@@ -96,6 +96,10 @@ static inline u32 Yajima_AddIntOffsetFirst(u32 offset, u32 base)
 {
   return offset + base;
 }
+static inline float Yajima_AddFloatFirst(float first, float second)
+{
+  return first + second;
+}
 extern f32 sinf(f32 value);
 extern f32 FUN_001126b0_y2(u32 param_1);
 extern f32 FUN_00112740_y2(u32 param_1);
@@ -3195,7 +3199,7 @@ u32 FUN_0041a730(u64 param_1,int param_2)
     if (((*puVar1 & uVar3) != 0) &&
 
        (FUN_004bdde0(0xc1f00000,iVar2 + 0x10,&position),
-       (float)*(int *)(param_2 + 0xc) == ((float)(int)(uVar4 << 1) + 6.0f) - 1.0f)) {
+       (float)*(int *)(param_2 + 0xc) == (Yajima_AddFloatFirst((float)(int)(uVar4 << 1), 6.0f)) - 1.0f)) {
 
       *puVar1 = *puVar1 & ~uVar3;
 

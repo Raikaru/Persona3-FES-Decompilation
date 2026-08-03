@@ -11,6 +11,8 @@
 extern u32 DAT_008717e8;
 extern u8 DAT_008717f0[];
 extern u32 DAT_008717f4;
+#pragma alias D_008717F4_abs DAT_008717f4
+extern u8 D_008717F4_abs[];
 extern f32 fGpffff844c;
 extern f32 fGpffff8450;
 extern f32 fGpffff82fc;
@@ -602,7 +604,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 if (ROOT_U32(work, 0x38) == 0)
                 {
                     FUN_001d5f30(FIELD_U32(D_00869F64),
-                                 *(u32*)(void*)FIELD_U32(0x008717f4));
+                                 *(u32*)(void*)FIELD_U32(D_008717F4_abs));
                     FUN_001d6270(fldRootTask, 1, -1);
                     ROOT_U32(work, 0) = 8;
                 }
