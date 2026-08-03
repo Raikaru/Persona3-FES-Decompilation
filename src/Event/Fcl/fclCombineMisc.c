@@ -1115,9 +1115,9 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
       uStack_1e = *(u16 *)((int)param_3 + 2);
       uStack_1c = *(u16 *)((int)param_4 + 2);
       iVar4 = DAT_007ce420 + 3;
-      sVar2 = FUN_003d7ac0(cVar1,((u32)*(u8 *)(iVar4 + (u32)uStack_1c * 0xe) +
-                                 (u32)*(u8 *)(iVar4 + (u32)uStack_20 * 0xe) +
-                                 (u32)*(u8 *)(iVar4 + (u32)uStack_1e * 0xe)) / 3 + 5 & 0xff,
+      sVar2 = FUN_003d7ac0(cVar1,((int)*(u8 *)(iVar4 + (int)uStack_1c * 0xe) +
+                                 (int)*(u8 *)(iVar4 + (int)uStack_20 * 0xe) +
+                                 (int)*(u8 *)(iVar4 + (int)uStack_1e * 0xe)) / 3 + 5 & 0xff,
                            &uStack_20);
       if (sVar2 != 0) {
         FUN_00176680(param_1,sVar2);

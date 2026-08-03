@@ -728,12 +728,9 @@ void func_00272810(void)
             }
             break;
         case 2:
-            if (brpSeqU32(0x24) == 1)
+            switch (brpSeqU32(0x24))
             {
-                if (func_00279700() == 0)
-                    func_00273800();
-            }
-            else if (brpSeqU32(0x24) == 0)
+            case 0:
             {
                 u32 slot;
                 u32 last;
@@ -765,6 +762,12 @@ void func_00272810(void)
                         brpSeqPutU32(0x24, 1);
                     }
                 }
+                break;
+            }
+            case 1:
+                if (func_00279700() == 0)
+                    func_00273800();
+                break;
             }
             break;
         case 3:

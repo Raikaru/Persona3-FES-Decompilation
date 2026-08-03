@@ -1786,8 +1786,16 @@ void func_002fa510(BtlAction* action, s32 mode)
         BtlUnit* unit = action->unit;
         if ((action->unk_1a & 1) != 0 && unit->genus == 1)
         {
-            if (unit->charId == 0x106 || unit->charId == 0x105)
+            switch (unit->charId)
             {
+            case 0x115:
+                if (mode == 1)
+                {
+                    func_002e4220(0x2eabf0, 0x2eb250, action);
+                }
+                break;
+            case 0x106:
+            case 0x105:
                 if (mode == 0)
                 {
                     if (func_002e4250() != 0)
@@ -1796,10 +1804,7 @@ void func_002fa510(BtlAction* action, s32 mode)
                     }
                     func_002e4220(0x2eba50, 0x2ebec0, action);
                 }
-            }
-            else if (unit->charId == 0x115 && mode == 1)
-            {
-                func_002e4220(0x2eabf0, 0x2eb250, action);
+                break;
             }
         }
         break;

@@ -2531,7 +2531,7 @@ void func_001d2610(void)
     }
     if (*(u32*)DAT_0086e580 == 0)
     {
-        if (K_Scene_001a0250() == 0)
+        if (func_001a02c0() == 0)
         {
             scene = func_001b9120();
             *(u16*)(scene + 0x44) = 100;

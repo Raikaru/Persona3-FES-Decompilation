@@ -4505,7 +4505,42 @@ void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
 
   if ((!bVar2) && ((*param_1 == 0 || ((*(u16 *)(*param_1 + 0xe) & 1) == 0)))) {
 
-    if (uVar7 == 2) {
+    if (uVar7 == 1) {
+
+      if (*param_1 == 0) {
+
+        uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
+
+        FUN_00521408(uVar4,0,0x20);
+
+
+        *(u32 *)(uVar4 + 4) = 1;
+
+        *(short *)(uVar4 + 8) = (short)param_2;
+
+        *(short *)(uVar4 + 10) = (short)param_3;
+
+        *(u16 *)(uVar4 + 0xc) = 1;
+
+        *param_1 = (int)uVar4;
+
+      }
+
+      puVar1 = (u32 *)*param_1;
+
+      uVar4 = (*DAT_00960178_abs)(param_5,0x40000);
+
+      *puVar1 = (int)uVar4;
+
+      FUN_00521250(uVar4,param_4,param_5);
+
+      *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) & 0xfffd;
+
+      *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) | 1;
+
+    }
+
+    else if (uVar7 == 2) {
 
       if (*param_1 == 0) {
 
@@ -4556,41 +4591,6 @@ void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
       *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) | 8;
 
       *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) | 2;
-
-    }
-
-    else if (uVar7 == 1) {
-
-      if (*param_1 == 0) {
-
-        uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
-
-        FUN_00521408(uVar4,0,0x20);
-
-
-        *(u32 *)(uVar4 + 4) = 1;
-
-        *(short *)(uVar4 + 8) = (short)param_2;
-
-        *(short *)(uVar4 + 10) = (short)param_3;
-
-        *(u16 *)(uVar4 + 0xc) = 1;
-
-        *param_1 = (int)uVar4;
-
-      }
-
-      puVar1 = (u32 *)*param_1;
-
-      uVar4 = (*DAT_00960178_abs)(param_5,0x40000);
-
-      *puVar1 = (int)uVar4;
-
-      FUN_00521250(uVar4,param_4,param_5);
-
-      *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) & 0xfffd;
-
-      *(u16 *)(*param_1 + 0xe) = *(u16 *)(*param_1 + 0xe) | 1;
 
     }
 
@@ -6268,13 +6268,7 @@ LAB_003209a8:
 
   iVar4 = readData.size * readData.field_18;
 
-  if (piVar8[3] != 0) {
-
-    FUN_004c5620(param_1,iVar4);
-
-  }
-
-  else {
+  if (piVar8[3] == 0) {
 
     *piVar8 = readData.size;
 
@@ -6287,6 +6281,12 @@ LAB_003209a8:
     piVar8[3] = (int)uVar11;
 
     FUN_004c5250(param_1,(void *)(unsigned int)uVar11,iVar4);
+
+  }
+
+  else {
+
+    FUN_004c5620(param_1,iVar4);
 
   }
 

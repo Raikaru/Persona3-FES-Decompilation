@@ -5999,27 +5999,27 @@ u32 func_00115f00(KwlnTask* param_1)
 
     lVar4 = FUN_0017d800();
 
-    if ((lVar4 == 0) || (puVar1[1] != 9)) {
+    if ((lVar4 != 0) && (puVar1[1] == 9)) {
 
-      lVar4 = FUN_0017d800();
-
-      if ((lVar4 == 0) || (puVar1[1] != 1)) {
-
-        FUN_00523ac8(auStack_110,0x5d6c90,puVar1[1]);
-
-      }
-
-      else {
-
-        FUN_00523ac8(auStack_110,0x5d6c70);
-
-      }
+      FUN_00523ac8(auStack_110,0x5d6c40);
 
     }
 
     else {
 
-      FUN_00523ac8(auStack_110,0x5d6c40);
+      lVar4 = FUN_0017d800();
+
+      if ((lVar4 != 0) && (puVar1[1] == 1)) {
+
+        FUN_00523ac8(auStack_110,0x5d6c70);
+
+      }
+
+      else {
+
+        FUN_00523ac8(auStack_110,0x5d6c90,puVar1[1]);
+
+      }
 
     }
 

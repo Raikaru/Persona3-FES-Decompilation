@@ -9097,10 +9097,8 @@ u64 FUN_00369320(u64 param_1,int param_2,int param_3)
 
     iVar4 = *(int *)(iVar5 + 0x104);
 
-    if (iVar4 == 0xb) {
-      FUN_00397510(param_3,iVar2);
-      FUN_00393f30(param_3,0x36e690);
-      FUN_0036f640(param_3);
+    if (iVar4 == 5) {
+      *(int *)(iVar5 + 0xc) = iVar2 + 1;
       FUN_0036f640(param_3);
       return 0;
     }
@@ -9111,8 +9109,10 @@ u64 FUN_00369320(u64 param_1,int param_2,int param_3)
       FUN_0036f640(param_3);
       return 0;
     }
-    if (iVar4 == 5) {
-      *(int *)(iVar5 + 0xc) = iVar2 + 1;
+    if (iVar4 == 0xb) {
+      FUN_00397510(param_3,iVar2);
+      FUN_00393f30(param_3,0x36e690);
+      FUN_0036f640(param_3);
       FUN_0036f640(param_3);
       return 0;
     }
