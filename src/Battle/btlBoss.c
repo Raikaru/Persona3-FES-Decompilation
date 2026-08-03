@@ -660,6 +660,7 @@ const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
 }
 
 #pragma opt_loop_invariants on
+
 /* W414/W421 floor: baseline verify nd2 at 376/384 (rate 0.005319).
  * The only residuals are +136 and +276: ours addiu $v0,$zero,1 versus
  * retail daddiu $v0,$zero,1.  This is literal-width code generation, not

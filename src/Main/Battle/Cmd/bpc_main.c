@@ -1408,9 +1408,9 @@ void FUN_00245ea0(void)
   u32 uVar2;
   u32 uVar3;
   int iVar4;
+  u32 uVar7;
   int iVar5;
   u32 uVar6;
-  u32 uVar7;
   u32 uVar8;
   uint uVar9;
   uint uVar10;
@@ -1456,8 +1456,9 @@ void FUN_00245ea0(void)
     uVar10 = puVar1[1];
     if (uVar10 == 2) {
       uVar10 = ~*puVar11;
-      if ((((uVar10 & 0x400) == 0) || ((uVar10 & 0x20) == 0)) || ((uVar10 & 0x80) == 0))
-      goto LAB_00246060;
+      if ((((uVar10 & 0x400) == 0) || ((uVar10 & 0x20) == 0)) ||
+          ((uVar10 & 0x80) == 0))
+        goto LAB_00246060;
     }
     else {
       if ((uVar10 == 1) || (uVar10 == 0)) {

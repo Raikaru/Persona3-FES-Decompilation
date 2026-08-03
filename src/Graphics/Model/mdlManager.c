@@ -1949,6 +1949,8 @@ u32 func_00312f90(u32 param_1)
 
 
 // W419 measured helper probes: integer static-inline operand-order variants were best unchanged at nd1/object416/window416 (rate 0.00240); base+offset variants regressed to nd25/object416/window416 (rate 0.06010) and nd224/object412/window416 (rate 0.54369). No variant landed.
+
+
 // FUN_00313090 NONMATCHING
 
 
@@ -1968,6 +1970,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   short sVar5;
 
+
   
 
   puVar4 = (u16 *)param_2;
@@ -1978,10 +1981,10 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   if (piVar1 != (int *)0x0) {
 
+
     if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
         (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
-
       if ((*puVar4 & 1) == 0) {
 
         if (((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) && ((s64)sVar5 >= 0)) {

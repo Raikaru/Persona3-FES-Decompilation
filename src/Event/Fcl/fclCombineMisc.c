@@ -2381,7 +2381,7 @@ LAB_003d7f94:
 #pragma opt_lifetimes reset
 #pragma pop
 
-// FUN_003D8080 NONMATCHING
+// FUN_003D8080
 
 
 u32 FUN_003d8080(int param_1,int param_2,int param_3)
@@ -2450,7 +2450,7 @@ s32 lVar6;
   else {
     uVar1 = *(u16 *)result;
     uVar1 = uVar1 | *(u16 *)((u8 *)param_1 + 4);
-    memcpy(result,iVar7 + 4,0x34);
+    memcpy(result,(void *)((u8 *)iVar7 + 4),0x34);
     *(u16 *)result = uVar1;
     if (bVar3) {
       FUN_00175130(*(u16 *)(iVar7 + 6));

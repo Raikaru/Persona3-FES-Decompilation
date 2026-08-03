@@ -13842,7 +13842,7 @@ u32 FUN_00433160(int param_1);
 u32 FUN_00433810_y2(char param_1,char param_2);
 u32 FUN_004339d0(int param_1);
 u32 FUN_00433de0(int param_1);
-u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4);
+u32 FUN_00434770(int param_3,float param_1,float param_2,float *param_4);
 u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4);
 u32 FUN_004352e0(void);
 u32 FUN_00437e20(char param_1);
@@ -15235,7 +15235,7 @@ u32 FUN_00433160(int param_1);
 u32 FUN_00433810_y2(char param_1,char param_2);
 u32 FUN_004339d0(int param_1);
 u32 FUN_00433de0(int param_1);
-u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4);
+u32 FUN_00434770(int param_3,float param_1,float param_2,float *param_4);
 u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4);
 u32 FUN_004352e0(void);
 u32 FUN_00437e20(char param_1);
@@ -17972,7 +17972,7 @@ void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float 
 #pragma opt_common_subs off
 // FUN_00434770 NONMATCHING
 
-u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
+u32 FUN_00434770(int param_3,float param_1,float param_2,float *param_4)
 {
   int iVar1;
   int iVar2;
@@ -19178,7 +19178,7 @@ LAB_004363c0:
         }
       }
       iVar12 = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + (char)(cVar3 + '\x01') * 0x1c0));
-      lVar13 = FUN_00434770(125.0f,200.0f,param_1,(float *)(iVar12 + 0x30));
+      lVar13 = FUN_00434770(param_1,125.0f,200.0f,(float *)(iVar12 + 0x30));
       if (lVar13 != 0) {
         *(u8 *)(iVar2 + 0x1223) = 0xb;
       }
@@ -19219,7 +19219,7 @@ LAB_004363c0:
         }
       }
       iVar12 = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + (char)(cVar3 + '\x01') * 0x1c0));
-      lVar13 = FUN_00434770(125.0f,200.0f,param_1,(float *)(iVar12 + 0x30));
+      lVar13 = FUN_00434770(param_1,125.0f,200.0f,(float *)(iVar12 + 0x30));
       if (lVar13 != 0) {
         *(u8 *)(iVar2 + 0x1223) = 0xb;
       }
@@ -19254,7 +19254,7 @@ LAB_004363c0:
     }
     else if (cVar3 == '\x01') {
       iVar12 = FUN_00318b60(*(u32 *)(*(int *)(iVar2 + 8) + 0x128));
-      lVar13 = FUN_00434770(125.0f,200.0f,param_1,(float *)(iVar12 + 0x30));
+      lVar13 = FUN_00434770(param_1,125.0f,200.0f,(float *)(iVar12 + 0x30));
       if (lVar13 != 0) {
         *(u8 *)(iVar2 + 0x1223) = 0xb;
       }

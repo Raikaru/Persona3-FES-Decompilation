@@ -2079,6 +2079,11 @@ void func_002bcde0(u64 param_1,u32 *param_2)
 
 /* W357 measured func_002bce10: opt_lifetimes on nd332/592B -> nd130/584B; window 592B. */
 #pragma opt_lifetimes on
+static inline f32 btlEffectAddFloatFirst(f32 left, f32 right)
+{
+  return left + right;
+}
+
 // FUN_002bce10 NONMATCHING
 
 void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5)
@@ -2110,12 +2115,12 @@ initial_done:
     if ((func_001fef10(*(u32 *)(param_3 + 0xa8),&fStack_8) != 0) &&
         (param_4 != '\0')) {
       fVar6 = param_5[1];
-      param_2 = fStack_4 + param_2;
+      param_2 = btlEffectAddFloatFirst(fStack_4, param_2);
       uVar3 = func_0021c3f0_u32(1);
       uVar3 = func_0021cca0_u32(uVar3,1);
       uVar4 = func_0021cce0(uVar3);
       iVar5 = (int)uVar3;
-      fVar7 = (fStack_8 + param_1) - (float)(*(int *)(iVar5 + 0xc) >> 1);
+      fVar7 = btlEffectAddFloatFirst(fStack_8, param_1) - (float)(*(int *)(iVar5 + 0xc) >> 1);
       func_002bc9c0_long(fVar7,param_2,(float)*(int *)(iVar5 + 0xc),(float)*(int *)(iVar5 + 0x10),
                    (float)*(int *)(iVar5 + 0x14),(float)*(int *)(iVar5 + 0x18),0xffffffffffffffff,
                    uVar4);
@@ -7344,22 +7349,22 @@ u32 func_002c65d0(int param_1)
       lVar8 = func_00300530_u32(*(u32 *)(*(int *)(iVar9 + 0x30) + 0xa2c));
       switch (lVar8) {
       case 2:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 20.0f);
         break;
       case 4:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 30.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 30.0f);
         break;
       case 8:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 50.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 50.0f);
         break;
       case 0x10:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 30.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 30.0f);
         break;
       case 0x20:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 20.0f);
         break;
       case 0x40:
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
+        *psVar12 = (short)(int)btlEffectAddFloatFirst((float)(int)*psVar12, 20.0f);
         break;
       }
     }

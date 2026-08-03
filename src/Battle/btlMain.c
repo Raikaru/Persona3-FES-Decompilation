@@ -4225,6 +4225,11 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
 }
 
+static inline u8* btlMainAddFirst(u8* base, u32 offset)
+{
+    return base + offset;
+}
+
 // FUN_002A2A20 NONMATCHING
 
 
@@ -4258,7 +4263,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   for (uVar3 = 0; uVar3 < 4; uVar3++) {
     fVar6 = *(float *)((u8 *)afStack_10 + (u32)uVar3 * 4 + 0);
     currentAddress = (u32)uVar2 * 0x1c;
-    currentAddress = currentAddress + (u32)param_2;
+    currentAddress = (u32)btlMainAddFirst(param_2, currentAddress);
     fVar4 = *(float *)(currentAddress + 8) * fVar6;
     fVar5 = *(float *)(currentAddress + 0xc) * fVar6;
     fVar7 = *(float *)(currentAddress + 4);

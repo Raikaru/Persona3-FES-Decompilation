@@ -94,6 +94,12 @@ extern void func_004d7f60(s32 state, u32 value);
         drawColor[3] = (alpha); \
         func_0021d950((destination), drawColor); \
     } while (0)
+static inline u8* bsaEnemyAddress(u32 offset)
+{
+    return (u8*)(offset + (u32)DAT_007ce410);
+}
+
+
 
 
 
@@ -167,19 +173,19 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     }
 
     /* Retail 0x0134-0x031c: re-read the stored enemy id for each table access. */
-    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 2) != 0)
+    if (((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->analyzeFlags & 2)
         p[1] |= BSA_FLAG_TOP_LABEL;
-    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x40) != 0)
+    if (((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->analyzeFlags & 0x40)
         p[1] |= BSA_FLAG_RESOURCE;
-    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 8) != 0)
+    if (((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->analyzeFlags & 8)
         p[1] |= BSA_FLAG_STATUS;
-    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x10) != 0)
+    if (((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->analyzeFlags & 0x10)
         p[1] |= BSA_FLAG_PERSONA;
-    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x20) != 0)
+    if (((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->analyzeFlags & 0x20)
         p[1] |= BSA_FLAG_AILMENT;
     p[0x1310] = DAT_007ce410[*(u16*)(p + 3) * 0x3e + 3];
-    p[0x1394] = ((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].unk_04;
-    p[0x1498] = ((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].unk_06;
+    p[0x1394] = ((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->unk_04;
+    p[0x1498] = ((BtlEnemyData*)bsaEnemyAddress((u32)*(u16*)(p + 3) * 0x3e))->unk_06;
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0: slotId = 0; break;

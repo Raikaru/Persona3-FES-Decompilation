@@ -7923,7 +7923,8 @@ void func_0018c150(KwlnTask* task)
     u32 maxHp;
     u32 sp;
     u32 maxSp;
-    s32 width;
+    s32 hpWidth;
+    s32 spWidth;
 
     object = (void*)task;
     transition = (GsTransition*)GS_PTR(object, 0x70);
@@ -7985,24 +7986,24 @@ void func_0018c150(KwlnTask* task)
 
     hp = datGetHp(pcId);
     maxHp = datGetMaxHp(pcId);
-    width = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
-    if (width != 0x20)
+    hpWidth = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
+    sp = datGetSp(pcId);
+    maxSp = func_0016c670(pcId);
+    spWidth = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
+    if (hpWidth != 0x20)
     {
         func_00113a30(transition->depth - 1.0f,
                       0xffffff00,
-                      transition->position.valueF[0] + (f32)width + 50.0f,
-                      transition->position.valueF[1] + 46.0f, 0x20 - width, 0x14);
+                      transition->position.valueF[0] + (f32)hpWidth + 50.0f,
+                      transition->position.valueF[1] + 46.0f, 0x20 - hpWidth, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 1, transition->alpha, transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 46.0f, transition->depth);
-    sp = datGetSp(pcId);
-    maxSp = func_0016c670(pcId);
-    width = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
-    if (width != 0x20)
+    if (spWidth != 0x20)
     {
         func_00113a30(transition->depth - 3.0f,
                       0xffffff00,
-                      transition->position.valueF[0] + (f32)width + 50.0f,
-                      transition->position.valueF[1] + 51.0f, 0x20 - width, 0x14);
+                      transition->position.valueF[0] + (f32)spWidth + 50.0f,
+                      transition->position.valueF[1] + 51.0f, 0x20 - spWidth, 0x14);
     }
     gsDrawSprite(GS_PTR(object, 0x2c), 2, transition->alpha, transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }

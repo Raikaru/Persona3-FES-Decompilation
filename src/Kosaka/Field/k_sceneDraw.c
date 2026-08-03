@@ -2001,6 +2001,7 @@ u32 func_001a11d0()
 }
 
 
+
 // FUN_001a1210 NONMATCHING
 void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position, const RwV3d* upVector)
 {

@@ -89,7 +89,7 @@ u32 func_001fba70(u16 param_1);
 int func_001fbca0(u16 param_1);
 u8 * func_001fbd50(u16 param_1,int param_2);
 int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode);
-int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,long param_6);
+int func_001fbfa0(int param_1,int param_2,int param_3,u16 param_4,int param_5,long param_6);
 void func_001fc1f0(void);
 u8 func_001fc230(DatPersonaWork* persona);
 u32 func_001fc3c0(DatPersonaWork* persona);
@@ -819,7 +819,7 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
 // FUN_001FBFA0 NONMATCHING
 
 
-int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,long param_6)
+int func_001fbfa0(int param_1,int param_2,int param_3,u16 param_4,int param_5,long param_6)
 
 
 
@@ -874,28 +874,19 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   fVar4 = *(float *)(iGpffffb7ac + level * 4);
   fVar5 = 0.0f;
 
-  param_4 = (u16)param_4;
-
-  if (param_4 == 0x229) {
-
-    fVar5 = 0.25f;
-
-  }
-
-  else if (param_4 == 0x22a) {
-    fVar5 = 0.5f;
-
-  }
-
-  else if (param_4 == 0x22b) {
+  switch (param_4) {
+  case 0x22b:
     fVar5 = 1.0f;
-
-  }
-
-  else {
-
+    break;
+  case 0x22a:
+    fVar5 = 0.5f;
+    break;
+  case 0x229:
+    fVar5 = 0.25f;
+    break;
+  default:
     K_ASSERT(false, 0x243);
-
+    break;
   }
 
   switch (param_6) {
@@ -931,12 +922,8 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
     iVar2 = (int)fVar4;
   }
 
-  if (0xffff < iVar2) {
-
+  if (iVar2 >= 0x10000)
     iVar2 = 0xffff;
-
-  }
-
   return iVar2;
 
 }

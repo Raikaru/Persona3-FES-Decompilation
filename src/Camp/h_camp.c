@@ -14373,6 +14373,11 @@ static inline void campDrawSprite(void* resource, s32 frame, u32 alpha, f32 x, f
 {
     hCampMainDrawSprite7(NULL, resource, frame, alpha, x, y, scale);
 }
+static inline void campDrawSpriteWithParent(void* parent, void* resource, s32 frame, u32 alpha,
+                                            f32 x, f32 y, f32 scale)
+{
+    hCampMainDrawSprite7(parent, resource, frame, alpha, x, y, scale);
+}
 extern s32 FUN_0016DBA0(s16 id);
 extern void* FUN_00172160(s32 id);
 extern void* FUN_001717C0(s32 id);
@@ -14770,6 +14775,9 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8)
 {
+#define campDrawSprite(resource, frame, alpha, x, y, scale) \
+    campDrawSpriteWithParent(parent, resource, frame, alpha, x, y, scale)
+    void* parent;
     CampPackedPosition position;
     const s32* item;
     s32 id;
@@ -14842,6 +14850,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     hCampMainDrawText(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
                  0xFFFFFFFF, 6, 1, textBuffer, 0x10, -1);
 
+#undef campDrawSprite
     rowY = position.y + 415.0f;
     campDrawSprite(D_00833B68, 0, 0,
                    96.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
