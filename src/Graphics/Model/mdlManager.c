@@ -5238,7 +5238,7 @@ void mdl00317730(Model* mdl)
         }
         for (i = 0; i < 4; i++)
         {
-            resources = mdl->animSlots[i].anim.resources;
+            resources = *(MdlAnimResourceSet**)(mdlManagerAdd((u32)mdl, (u32)((i * 39) << 2)) + 0x11c);
             if (resources != NULL)
             {
                 func_00311480(resources, mdl);
@@ -5248,7 +5248,7 @@ void mdl00317730(Model* mdl)
 
         for (i = 0; i < 5; i++)
         {
-            if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
+            if ((*(u8*)((u8*)mdlManagerAdd((u32)mdl, (u32)(i * 12)) + 0x3b4) & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL &&
                 mdl00319770(mdl, i))
             {
                 *(RwMatrix*)((u8*)mdl->attachedWpns[i].wpnMdl + 0x40) = mdl->identityMat;

@@ -465,6 +465,8 @@ typedef struct PanelSkillRow
 
 u8* gBcmWork; // 007ce2e8
 extern u8* DAT_007ce3ec;
+#pragma alias DAT_007ce3ec_abs DAT_007ce3ec
+extern u8 DAT_007ce3ec_abs[];
 
 s32 FUN_0017d2e0_y2();
 void FUN_00201A50(void);
@@ -1783,7 +1785,7 @@ void FUN_00201C30(void)
 
 static u8* panelMiscWork(void)
 {
-    return *(u8**)0x007CE3EC;
+    return *(u8**)DAT_007ce3ec_abs;
 }
 
 

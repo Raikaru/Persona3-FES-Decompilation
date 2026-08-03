@@ -12557,15 +12557,15 @@ void FUN_0036d030(int param_1)
 
       *(int *)(iVar4 + 0x77c) = iVar3;
 
-      if (iVar3 == 1) {
+      if (iVar3 == 0) {
 
-        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 
       else {
 
-        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 

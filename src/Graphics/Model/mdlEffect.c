@@ -38840,7 +38840,7 @@ void FUN_00349260(int param_1,float *param_2)
   fVar2 = (float)FUN_00358030(0);
 
   fVar2 = fVar2 - 0.5f;
-  fVar2 = fVar2 * 2.0f;
+  fVar2 = mdlEffectScaleFirst(2.0f,fVar2);
   fVar6 = fGpffff8168 * fVar2;
 
   fVar3 = *(float *)(param_1 + 0x30);

@@ -30,7 +30,7 @@ void FUN_002fd520(int param_1);
 u32 FUN_002fd660(void);
 u32 FUN_002fd7c0(void);
 void FUN_002fd820(void);
-u32 FUN_00289860(void);
+u32 FUN_00289860(BtlAction* action);
 void FUN_002fd8a0(BtlAction* action);
 u32 FUN_002fdb70(void);
 u32 FUN_002fdb90(void);
@@ -3231,7 +3231,7 @@ void FUN_002fd820(void)
 }
 
 /* BtlCore2 W419 negative: fd8a0 direct action->unit expressions held nd43 at 716/720B; retain cached data local. */
-// FUN_002FD8A0 NONMATCHING
+// FUN_002FD8A0
 void FUN_002fd8a0(BtlAction* action)
 {
     BtlUnit* data;
@@ -3248,7 +3248,7 @@ void FUN_002fd8a0(BtlAction* action)
                 {
                 case 0x10b:
                 case 0x10c:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3265,7 +3265,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0x108:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3282,7 +3282,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0x10f:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3299,7 +3299,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0x110:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3316,7 +3316,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0x126:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3333,7 +3333,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0xe9:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3350,7 +3350,7 @@ void FUN_002fd8a0(BtlAction* action)
                 switch (data->charId)
                 {
                 case 0xea:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;
@@ -3374,7 +3374,7 @@ void FUN_002fd8a0(BtlAction* action)
                 case 0xee:
                 case 0xef:
                 case 0xf0:
-                    FUN_00289860();
+                    FUN_00289860(action);
                     break;
                 default:
                     break;

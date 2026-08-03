@@ -98,6 +98,10 @@ static inline u8* bsaEnemyAddress(u32 offset)
 {
     return (u8*)(offset + (u32)DAT_007ce410);
 }
+static inline u32 bsaAddBaseFirst(u32 base, u32 offset)
+{
+    return base + offset;
+}
 
 
 
@@ -213,7 +217,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
             category = 2;
         else
             category = 5;
-        p[0x159c + i] = category;
+        *(u32 *)((u8 *)(uintptr_t)bsaAddBaseFirst((u32)p, (u32)(i * 4)) + 0x5670) = category;
     }
     /* Retail 0x0498-0x04b8: reload calc for the result and slot list. */
     p[0x17e8] = (u32)(s32)func_003082f0(

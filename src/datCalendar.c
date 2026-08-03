@@ -6375,6 +6375,13 @@ u32 func_00188be0(void)
 extern void func_001140d0(f32 depthOffset, u32 rgba, f32 x, f32 y,
                           s32 width, s32 height, const void* texture);
 
+/* The two case-3/case-5 additions require retail's offset-first operand order. */
+/* Keep this helper static inline so it does not add a call or change the window. */
+static inline f32 datCalendarAddOffsetFirst(f32 offset, f32 base)
+{
+    return offset + base;
+}
+
 // FUN_00188C30 NONMATCHING
 void* func_00188c30(KwlnTask* task)
 {
@@ -6432,7 +6439,8 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 4;
             }
             fVar1 = 189.0f - (f32)(puVar1[1] + -8) / 2.0f;
-            fVar2 = ((f32)(puVar1[1] + -8) * 4.0f) / 2.0f + 16.0f;
+            fVar2 = datCalendarAddOffsetFirst(
+                ((f32)(puVar1[1] + -8) * 4.0f) / 2.0f, 16.0f);
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
             iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
@@ -6468,7 +6476,8 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 6;
             }
             fVar1 = 185.0f - ((f32)(puVar1[1] + -0xe) * 2.0f) / 2.0f;
-            fVar2 = ((f32)(puVar1[1] + -0xe) * 7.0f) / 2.0f + 9.0f;
+            fVar2 = datCalendarAddOffsetFirst(
+                ((f32)(puVar1[1] + -0xe) * 7.0f) / 2.0f, 9.0f);
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
             iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)

@@ -672,6 +672,7 @@ void FUN_0039f410(int *param_1)
   u32 uVar4;
 
   int iVar5;
+  int quarter;
 
   
 
@@ -697,17 +698,19 @@ void FUN_0039f410(int *param_1)
           break;
         case 1:
           iVar2 = FUN_003a4b90(iVar2,iVar5,0);
-          iVar5 = iVar2 >> 5;
-          if (iVar2 >> 4 < 0) {
-            iVar5 = (iVar2 >> 4) + 1 >> 1;
+          quarter = iVar2 >> 4;
+          iVar5 = quarter >> 1;
+          if (quarter < 0) {
+            iVar5 = (quarter + 1) >> 1;
           }
           FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x8a0);
           break;
         case 2:
           iVar2 = FUN_003a4b90(iVar2,iVar5,0);
-          iVar5 = iVar2 >> 5;
-          if (iVar2 >> 4 < 0) {
-            iVar5 = (iVar2 >> 4) + 1 >> 1;
+          quarter = iVar2 >> 4;
+          iVar5 = quarter >> 1;
+          if (quarter < 0) {
+            iVar5 = (quarter + 1) >> 1;
           }
           FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x5f0);
           break;

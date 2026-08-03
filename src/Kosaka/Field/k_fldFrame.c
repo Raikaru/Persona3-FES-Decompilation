@@ -3994,8 +3994,8 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
 }
 
 // Replacing both 12-byte typed memcpy calls with direct RwV3d stores removes the retail-extra calls but worsens normalized_diff 363 -> 379 (object 784 -> 792, window 800); retain typed helpers (measured W414).
-// FUN_001AFA20 NONMATCHING
-u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
+// FUN_001AFA20
+u32 func_001afa20(KwlnTask* task, const RwV3d* position, f32 duration)
 {
     FldFrameMoveWork* work;
     RwV3d line[2];

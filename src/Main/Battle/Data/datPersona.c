@@ -44,6 +44,11 @@ static inline void datPersonaCollectValidSkills(u8* skillData, u16* skills,
         }
     }
 }
+
+static inline u8* datPersonaAddOffset(u32 offset, u8* base)
+{
+    return (u8*)((u32)offset + (u32)base);
+}
 #include "Main/Battle/Data/datCalc.h"
 #pragma alias func_001754a0_y2 func_001754a0
 #pragma alias FUN_00173280_y2 FUN_00173280
@@ -2031,8 +2036,8 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
             K_ASSERT((*(u16*)(persona_i + 2) >= 0xc0) &&
                      (*(u16*)(persona_i + 2) <= 0xdf), 0x5a4);
             scenarioLevel =
-                *(u16*)((u32)*(u16*)(persona_i + 2) * 0x26e +
-                         DAT_007ce430 - 0x1d280);
+                *(u16*)(datPersonaAddOffset((u32)*(u16*)(persona_i + 2) * 0x26e,
+                                             DAT_007ce430) - 0x1d280);
             K_ASSERT(scenarioLevel > 1 && scenarioLevel < 0xb, 0x5a6);
             result = *(s32*)((u32)scenarioLevel * 0x188 + DAT_007ce434 +
                              (u32)(level & 0xffff) * 4 - 0x318);

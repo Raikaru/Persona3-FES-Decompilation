@@ -1026,6 +1026,11 @@ void func_0020cda0(u8* work)
 }
 
 #pragma push
+static inline f32 gcModelMul(f32 left, f32 right)
+{
+    return left * right;
+}
+
 #pragma opt_lifetimes on
 // FUN_0020cf20 NONMATCHING
 void func_0020cf20(void* destination, PanelTransform* transform)
@@ -1176,7 +1181,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
                     alpha = 1.0f;
                 }
                 alphaByte = color[3];
-                alpha *= (f32)alphaByte;
+                alpha = gcModelMul((f32)alphaByte, alpha);
                 outputAlpha = (u8)(u32)alpha;
                 vertex[0x0c] = outputAlpha;
                 vertex[0x0d] = outputAlpha;
