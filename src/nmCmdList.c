@@ -2266,7 +2266,7 @@ void FUN_003c7c90(int param_1)
 
       FUN_003a3e90(*puVar2,0x800000);
 
-      FUN_003a3e10(*puVar2,0x100000);
+      FUN_003a3e90(*puVar2,0x100000);
 
       *(u8 *)((int)puVar2 + 5) = 0;
 

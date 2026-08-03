@@ -1398,37 +1398,22 @@ void FUN_0022fa80(u32* object)
             f32 pos_x = 66.0f + offset_x;
             f32 pos_y = 11.0f + offset_y;
             for (i = 0; i < 3; i++) {
-                f32 t = (f32)*(u32*)(base + i * 4 + 0x300);
-                f32 angle;
-                f32 s, c;
-                f32 x0, y0, x1, y1, x2, y2, x3, y3;
-                f32 w, h;
-
-                t = t / 30.0f;
-                angle = (1.0f - t) * 3.14159265f;
-                s = sinf(angle);
-                c = cosf(angle);
+                f32 x0, y0, x1, y1;
 
                 x0 = D_0068E4F0[i * 4 + 0];
                 y0 = D_0068E4F0[i * 4 + 1];
                 x1 = D_0068E4F0[i * 4 + 2];
                 y1 = D_0068E4F0[i * 4 + 3];
-                x2 = D_0068E4F0[i * 4 + 2];
-                y2 = D_0068E4F0[i * 4 + 3];
-                x3 = D_0068E4F0[i * 4 + 0];
-                y3 = D_0068E4F0[i * 4 + 1];
 
-                rect_work[0] = pos_x + x0 * c - y0 * s;
-                rect_work[1] = pos_y + x0 * s + y0 * c;
-                rect_work[2] = pos_x + x1 * c - y1 * s;
-                rect_work[3] = pos_y + x1 * s + y1 * c;
-                rect_work[4] = pos_x + x2 * c - y2 * s;
-                rect_work[5] = pos_y + x2 * s + y2 * c;
-                rect_work[6] = pos_x + x3 * c - y3 * s;
-                rect_work[7] = pos_y + x3 * s + y3 * c;
+                rect_work[0] = pos_x + x0;
+                rect_work[1] = pos_y + y0;
+                rect_work[2] = pos_x + x1;
+                rect_work[3] = pos_y + y1;
+                rect_work[4] = pos_x + x1;
+                rect_work[5] = pos_y + y1;
+                rect_work[6] = pos_x + x0;
+                rect_work[7] = pos_y + y0;
 
-                w = (f32)((u32*)resource)[3];
-                h = (f32)((u32*)resource)[4];
                 rect_work[8] = 255.0f * x1;
                 rect_work[9] = 255.0f * y1;
                 rect_work[10] = 255.0f * x0;
@@ -1525,6 +1510,8 @@ void FUN_0022fa80(u32* object)
                 rect2[2] = 255.0f * x0;
                 rect2[3] = 255.0f * y0;
 
+                sinf(angle);
+                cosf(angle);
                 FUN_0021e170(base + s3 * 512, rect0, rect1, rect2);
             }
         }
@@ -1570,6 +1557,8 @@ void FUN_0022fa80(u32* object)
                 rect2[2] = 255.0f * x0;
                 rect2[3] = 255.0f * y0;
 
+                sinf(angle);
+                cosf(angle);
                 FUN_0021e170(base + s3 * 512 + 256, rect0, rect1, rect2);
             }
         }
@@ -1710,6 +1699,8 @@ void FUN_0022fa80(u32* object)
                 rect2[2] = 255.0f * x0;
                 rect2[3] = 255.0f * y0;
 
+                sinf(angle);
+                cosf(angle);
                 FUN_0021e170(base + i * 256, rect0, rect1, rect2);
             }
         }
@@ -1819,6 +1810,8 @@ void FUN_0022fa80(u32* object)
             }
 
             // Draw rect
+            sinf(angle);
+            cosf(angle);
             FUN_0021d890(base + i * 256, rect);
 
             // Alpha computation based on counter
@@ -1963,6 +1956,8 @@ void FUN_0022fa80(u32* object)
                 rect2[2] = 255.0f * x0;
                 rect2[3] = 255.0f * y0;
 
+                sinf(angle);
+                cosf(angle);
                 FUN_0021e170(base + i * 256, rect0, rect1, rect2);
             }
         }
@@ -2101,6 +2096,8 @@ void FUN_0022fa80(u32* object)
                 rect2[2] = 255.0f * 0.0f;
                 rect2[3] = 255.0f * 0.0f;
 
+                sinf(angle);
+                cosf(angle);
                 FUN_0021e170(base, rect0, rect1, rect2);
             }
         }

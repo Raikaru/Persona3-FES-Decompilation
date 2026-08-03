@@ -5065,7 +5065,7 @@ void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
   }
   if (param_3 != 0) {
     FUN_003296a0_typed(&other,param_3);
-    RwMatrixMultiply(param_1,&local,&other);
+    FUN_004c2f30(param_1,&local,&other);
   } else {
     var_6 = &local;
     var_5 = 8;
@@ -11818,7 +11818,7 @@ void FUN_0032af30(int param_1)
                   "sqc2         $vf10, 0(%1)              \n"
                   ".set reorder"
                   :
-                  : "r"((u8 *)0x0069c4f0), "r"(vuVec)
+                  : "r"((u8 *)DAT_0069c4a0_abs + 0x50), "r"(vuVec)
                   : "vf10", "ACC", "memory");
 
               *pfVar14 = vuVec[0];
@@ -17935,7 +17935,7 @@ void FUN_00331650(int param_1)
                   "sqc2         $vf10, 0(%1)              \n"
                   ".set reorder"
                   :
-                  : "r"((u8 *)0x0069c500), "r"(vuVec)
+                  : "r"((u8 *)DAT_0069c4a0_abs + 0x60), "r"(vuVec)
                   : "vf10", "ACC", "memory");
 
               *pfVar13 = vuVec[0];
@@ -20039,7 +20039,7 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
         "vaddz.x vf2, vf2, vf2z\n"
         "qmfc2.ni %0, vf2"
         : "=r"(dotBits)
-        : "r"((u8 *)0x0069c4c0), "r"(param_2)
+        : "r"((u8 *)DAT_0069c4a0_abs + 0x20), "r"(param_2)
         : "vf2", "vf10", "vf11");
     fVar13 = fGpffff8110 * *(float *)&dotBits;
     *(float *)&DAT_0069c4d0_abs[0] = puVar9[3];
@@ -22848,7 +22848,7 @@ void FUN_00336e80(int param_1)
         "vmulq.xyz vf10, vf10, Q\n"
         "sqc2 vf10, 0(%3)"
         : "=r"(dotBits)
-        : "r"((u8 *)0x0069c4c0), "r"(*(u32 *)(iVar12 + 0x84)), "r"(stack160)
+        : "r"((u8 *)DAT_0069c4a0_abs + 0x20), "r"(*(u32 *)(iVar12 + 0x84)), "r"(stack160)
         : "vf0", "vf2", "vf10", "vf11", "ACC", "Q", "memory");
 
     fVar18 = 2.0f;
@@ -29914,7 +29914,7 @@ void FUN_0033e8e0(int param_1)
                 "ppacb       %1, $zero, %1       \n"
                 ".set reorder"
                 : "=&r"(packed1), "=&r"(packed0)
-                : "r"((u8 *)0x0069c4a0), "r"(vuColor1), "r"(vuColor0), "f"(fVar21)
+                : "r"((u8 *)DAT_0069c4a0_abs), "r"(vuColor1), "r"(vuColor0), "f"(fVar21)
                 : "vf2", "vf10", "vf11", "memory");
             *puVar14 = packed1;
             puVar14[1] = packed1;
@@ -30857,7 +30857,7 @@ void FUN_0033f860(int param_1)
                 "ppacb       %1, $zero, %1       \n"
                 ".set reorder"
                 : "=&r"(packed1), "=&r"(packed0)
-                : "r"((u8 *)0x0069c4a0), "r"(vuColor1), "r"(vuColor0), "f"(fVar18)
+                : "r"((u8 *)DAT_0069c4a0_abs), "r"(vuColor1), "r"(vuColor0), "f"(fVar18)
                 : "vf2", "vf10", "vf11", "memory");
 
             *puVar11 = packed1;

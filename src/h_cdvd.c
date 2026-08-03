@@ -250,7 +250,7 @@ u32 H_Cdvd_FileExists(const char* path)
     char uppercasePath[256];
     ADXF adxf;
 
-    H_Dbprt_FmtLog(" Exist %s\n", path);
+    printf(" Exist %s\n", path);
     H_Cdvd_BuildPathUppercase(path, unusedUppercasePath);
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
     func_00101100(uppercasePath, fileName, dir);
@@ -259,12 +259,12 @@ u32 H_Cdvd_FileExists(const char* path)
     adxf = func_0053c910(fileName, 0);
     if (adxf == NULL)
     {
-        H_Dbprt_FmtLog(" FALSE \n");
+        printf(" FALSE \n");
         return false;
     }
 
     func_0053cdd0(adxf);
-    H_Dbprt_FmtLog(" TRUE \n");
+    printf(" TRUE \n");
     return true;
 }
 

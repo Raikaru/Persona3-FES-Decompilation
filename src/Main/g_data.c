@@ -1845,13 +1845,13 @@ void func_0016dfb0(s16 socialLink)
     {
         func_0016e410(socialLink, 1);
         socialLinkValue = socialLink;
-        FUN_00171E90(socialLinkValue, 0);
         FUN_00171C40(socialLinkValue, 0);
         FUN_00172200_s16(socialLinkValue, 0);
+        FUN_00171E90(socialLinkValue, 0);
         for (rank = 1; rank <= 10; rank++)
         {
-            FUN_001724A0(socialLinkValue, rank, false);
             FUN_001723A0(socialLinkValue, rank, false);
+            FUN_001724A0(socialLinkValue, rank, false);
         }
         finalSocialLink = socialLink;
         FUN_001723A0(finalSocialLink, 1, true);

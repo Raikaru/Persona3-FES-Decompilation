@@ -661,9 +661,6 @@ void H_Dbprt_Flush()
 #pragma opt_lifetimes on
 /* Removing this worsens FUN_00104420 (nd244 -> nd268) - measured W161. */
 #pragma opt_loop_invariants on
-// Reconstructed inline four-vertex glyph batching and render-state setup.
-// Residual 28-byte overrun / normalized diff reflects MWCC scheduling and
-// register allocation around UV arithmetic and loop control.
 // FUN_00104420 NONMATCHING
 void H_Dbprt_Main()
 {
@@ -744,7 +741,6 @@ void H_Dbprt_Main()
                     vertices[3].u.els.u = u1;
                     vertices[3].u.els.v = v1;
                 }
-
                 D_009600A0_abs[0](rwPRIMTYPETRISTRIP, vertices, 4);
             }
         }
@@ -873,11 +869,11 @@ static void H_Dbprt_DrawText3D(void)
                         vertices[vertex].u.els.v = uv[vertex].y;
                     }
                 }
-
                 RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
-            }
-        }
 
+            }
+
+        }
         text = text->next;
     }
 }
@@ -1397,33 +1393,6 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             break;
         }
 
-        work->alphaTimer--;
-        if (work->alphaTimer <= 0)
-        {
-            work->alphaPhase = work->alphaPhase == 0;
-            work->alphaIndex++;
-            if (work->alphaIndex >= 6)
-            {
-                work->alphaIndex = 0;
-            }
-            switch (work->alphaIndex)
-            {
-            case 0:
-                work->alphaTimer = 3;
-                break;
-            case 1:
-                work->alphaTimer = 100;
-                break;
-            case 2:
-            case 3:
-            case 4:
-                work->alphaTimer = 2;
-                break;
-            default:
-                work->alphaTimer = 80;
-                break;
-            }
-        }
 
         switch (work->characterId)
         {
@@ -1519,6 +1488,33 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         overlayVertices[3].u.els.v = 1.0f;
         (*setRenderState)(1, (u32)((HChrdspTexture*)work->resources[1])->raster);
         (*drawPrimitive)(rwPRIMTYPETRISTRIP, overlayVertices, 4);
+        work->alphaTimer--;
+        if (work->alphaTimer <= 0)
+        {
+            work->alphaPhase = work->alphaPhase == 0;
+            work->alphaIndex++;
+            if (work->alphaIndex >= 6)
+            {
+                work->alphaIndex = 0;
+            }
+            switch (work->alphaIndex)
+            {
+            case 0:
+                work->alphaTimer = 3;
+                break;
+            case 1:
+                work->alphaTimer = 100;
+                break;
+            case 2:
+            case 3:
+            case 4:
+                work->alphaTimer = 2;
+                break;
+            default:
+                work->alphaTimer = 80;
+                break;
+            }
+        }
 
         if ((work->resourceIndex < HCHRDP_LAYER_COUNT) ||
             (work->color.a != 255) || (work->drawTopLayer == 0))

@@ -555,7 +555,7 @@ void sflPsel00261480(void)
     color[3] = (u8)(alpha * 255.0f);
     FUN_0021d950(sflPselBytes(work, 0x110), color);
 
-    switch (mode) {
+    switch ((s32)work[1]) {
     case 0:
         channelFloat = (256.0f / diagonal) / diagonal;
         points[0] = 320.0f;

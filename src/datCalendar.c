@@ -1363,7 +1363,7 @@ KwlnTask* func_0017fc70(KwlnTask* clndTask)
             }
             else
             {
-                H_Dbprt_FmtLog("calendar: no late-night event");
+                printf("calendar: no late-night event");
                 {
                     u8 time = datGetTime() & 0xff;
                     actionTask = func_003c1ab0(task, time);
@@ -1932,7 +1932,7 @@ KwlnTask* func_00180ee0(KwlnTask* clndTask)
     KwlnTask* task = clndTask;
     KwlnTask* actionTask = NULL;
 
-    H_Dbprt_FmtLog("calendar: morning");
+    printf("calendar: morning");
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, true);
     datSetFlag(0xa82, false);
@@ -2044,7 +2044,7 @@ KwlnTask* func_00181310(KwlnTask* clndTask)
 
     if (datGetSkipToTarget() == 0)
     {
-        H_Dbprt_FmtLog(D_005E3E70);
+        printf(D_005E3E70);
         eventIndex = clndFindAndExecSiteibiEvents();
         if (eventIndex != -1)
         {
@@ -2318,7 +2318,6 @@ typedef struct
 } CalendarFieldSequenceData;
 
 extern const char D_005E3F00[];
-extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
 #pragma alias DAT_007e094e_abs DAT_007e094e
 #pragma alias DAT_007e0952_abs DAT_007e0952
@@ -4976,7 +4975,6 @@ void* func_00186190(KwlnTask* task)
     u32 archiveEntry;
     void* source;
     s32 alpha;
-    s32 timer;
     work = (CalendarMoonWork*)task->workData;
     switch (work->state)
     {
@@ -4999,13 +4997,13 @@ void* func_00186190(KwlnTask* task)
             break;
 
         case 2:
-            timer = ++work->timer;
-            alpha = ((5 - timer) * 0xff) / 5;
+            ++work->timer;
+            alpha = ((5 - work->timer) * 0xff) / 5;
             func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
-            if (timer == 5)
+            if (work->timer == 5)
             {
                 work->timer = 0;
                 work->state = 3;
@@ -5013,12 +5011,12 @@ void* func_00186190(KwlnTask* task)
             break;
 
         case 3:
-            timer = ++work->timer;
+            ++work->timer;
             func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
-            if (timer == 5)
+            if (work->timer == 5)
             {
                 work->timer = 0;
                 work->state = 4;
@@ -5043,9 +5041,9 @@ void* func_00186190(KwlnTask* task)
         case 4:
         {
             f32 _x;
-            timer = ++work->timer;
-            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * 300.0f;
-            alpha = (timer * 0xff) / 10;
+            ++work->timer;
+            _x = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 10)) / 180.0f) * 300.0f;
+            alpha = (work->timer * 0xff) / 10;
             func_00186a40(work->resource,
                           clndPackPosition(&position, _x, 0.0f),
                           alpha,
@@ -5054,7 +5052,7 @@ void* func_00186190(KwlnTask* task)
                           position,
                           alpha,
                           (s16)work->selectedValue);
-            if (timer == 10)
+            if (work->timer == 10)
             {
                 work->selectedValue = work->targetValue;
                 work->timer = 0;
@@ -5066,6 +5064,7 @@ void* func_00186190(KwlnTask* task)
         case 5:
         {
             f32 _x;
+            s32 timer;
             timer = ++work->timer;
             timer = 10 - timer;
             _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * -300.0f;
@@ -5082,12 +5081,12 @@ void* func_00186190(KwlnTask* task)
         }
 
         case 6:
-            timer = ++work->timer;
+            ++work->timer;
             func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           0, (s16)work->selectedValue);
-            if (timer < 10)
+            if (work->timer < 10)
             {
-                alpha = 0xff - (timer * 0xff) / 10;
+                alpha = 0xff - (work->timer * 0xff) / 10;
                 func_00186bd0(work->resource,
                               clndPackPosition(&position, 0.0f, 0.0f),
                               alpha,
@@ -5100,7 +5099,7 @@ void* func_00186190(KwlnTask* task)
                               0,
                               (s16)work->selectedValue);
             }
-            if (timer == 20)
+            if (work->timer == 20)
             {
                 work->timer = 0;
                 if (work->selectedValue == work->targetValue)
@@ -5121,23 +5120,21 @@ void* func_00186190(KwlnTask* task)
 
         case 7:
         {
-            f32 _x;
-            f32 _y;
-            timer = ++work->timer;
-            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) *
-                 CLND_MOON_X_SCALE;
-            _y = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) *
-                 CLND_MOON_Y_SCALE;
-            alpha = (timer * 0xff) / 5;
+            ++work->timer;
+            position.x = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
+                         CLND_MOON_X_SCALE;
+            position.y = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
+                         CLND_MOON_Y_SCALE;
+            alpha = (work->timer * 0xff) / 5;
             func_00186a40(work->resource,
-                          clndPackPosition(&position, _x, _y),
+                          position,
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
                           position,
                           alpha,
                           (s16)work->selectedValue);
-            if (timer == 5)
+            if (work->timer == 5)
             {
                 return KWLNTASK_STOP;
             }
@@ -5145,13 +5142,13 @@ void* func_00186190(KwlnTask* task)
         }
 
         case 8:
-            timer = ++work->timer;
-            alpha = (timer * 0xff) / 10;
+            ++work->timer;
+            alpha = (work->timer * 0xff) / 10;
             func_00186a40(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
             func_00186bd0(work->resource, clndPackPosition(&position, 0.0f, 0.0f),
                           alpha, (s16)work->selectedValue);
-            if (timer == 10)
+            if (work->timer == 10)
             {
                 work->timer = 0;
                 work->state = 9;
@@ -5600,10 +5597,18 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     (*setState)(2, 4);
     (*setState)(0xe, 0);
 
-    local[0] = (RwV3d){-15.0f, -22.0f, 0.0f};
-    local[1] = (RwV3d){15.0f, -22.0f, 0.0f};
-    local[2] = (RwV3d){-15.0f, 22.0f, 0.0f};
-    local[3] = (RwV3d){15.0f, 22.0f, 0.0f};
+    local[0].x = -15.0f;
+    local[0].y = -22.0f;
+    local[0].z = 0.0f;
+    local[1].x = 15.0f;
+    local[1].y = -22.0f;
+    local[1].z = 0.0f;
+    local[2].x = -15.0f;
+    local[2].y = 22.0f;
+    local[2].z = 0.0f;
+    local[3].x = 15.0f;
+    local[3].y = 22.0f;
+    local[3].z = 0.0f;
 
     while (angle > 180)
     {
@@ -7616,7 +7621,7 @@ void func_0018b7b0(void* transition, f32* position)
         {
             phase = 90.0f;
         }
-        phase = cosf((DAT_007caf38 * phase) / 180.0f);
+        phase = sinf((DAT_007caf38 * phase) / 180.0f);
         if (elapsed == total)
         {
             position[0] = GS_F32(transition, 0x30);
@@ -7639,7 +7644,7 @@ void func_0018b7b0(void* transition, f32* position)
         {
             phase = 90.0f;
         }
-        phase = sinf((DAT_007caf38 * phase) / 180.0f);
+        phase = cosf((DAT_007caf38 * phase) / 180.0f);
         if (elapsed == total)
         {
             position[0] = GS_F32(transition, 0x28);

@@ -276,11 +276,11 @@ extern void func_0019c320(f32 value, void* controller);
 extern s32 func_001a4380(void* task, u32 id);
 extern char D_006842D0[];
 extern void func_004c2f10(void* matrix);
-extern char D_00684120[];
-extern char D_00684128[];
-extern char D_00684220[];
-extern char D_00684270[];
-extern char D_00684290[];
+extern char D_00684120[8];
+extern char D_00684128[8];
+extern char D_00684220[8];
+extern char D_00684270[8];
+extern char D_00684290[8];
 extern RuntimeVec3 D_00684260;
 extern void* DAT_0096017c[];
 extern s32* PTR_DAT_007cd540;
@@ -3445,7 +3445,6 @@ state2:
     }
     firstAxis.x = x;
     secondAxis.x = y;
-
     camera = func_00198590();
     frame = *(void**)((u8*)camera + 4);
     angle = func_001a5aa0(func_004cb2f0(frame));
@@ -5567,10 +5566,10 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             func_0019d3f0(D_006844F8, 0x3df);
         }
-        for (index1 = 0; index1 < count; index1++)
+        for (index = 0; index < count; index++)
         {
-            amount1 = (f32)index1 / (f32)(count - 1);
-            func_001ed0f0(amount1, (RuntimeWork*)work, 1, color1);
+            amount = (f32)index / (f32)(count - 1);
+            func_001ed0f0(amount, (RuntimeWork*)work, 1, color1);
             color1 += 8;
         }
     }
@@ -5583,8 +5582,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         f32 denominator2;
         f32 step2;
         f32 amount2;
-        u8* cursor2;
         u8* sample2;
+        u8* cursor2;
 
         color2 = *(u8**)((u8*)renderObject + 0x30);
         count2 = *(u32*)((u8*)work->config + 0xc);

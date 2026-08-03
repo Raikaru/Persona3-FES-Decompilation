@@ -3607,19 +3607,18 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
   int iVar5;
 
+  struct {
+    u8 bStack_10;
+    u8 bStack_f;
+    u16 uStack_e;
+    u32 uStack_c;
+  } stack;
+
   u8 *puVar6;
 
   u32 uVar7;
 
   u32 uVar8;
-
-  u8 bStack_10;
-
-  u8 bStack_f;
-
-  u16 uStack_e;
-
-  u32 uStack_c;
 
   int iStack_4;
 
@@ -3631,13 +3630,13 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
   case 0:
 
-    dat0017d6d0(param_1,&bStack_10);
+    dat0017d6d0(param_1,&stack.bStack_10);
 
     break;
 
   default:
 
-    FUN_0017d700(param_1,0,&bStack_10);
+    FUN_0017d700(param_1,0,&stack.bStack_10);
 
     break;
 
@@ -3667,7 +3666,7 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
   }
 
-  uStack_e = *(u16 *)(&bStack_10 + 2);
+  stack.uStack_e = *(u16 *)(&stack.bStack_10 + 2);
 
   for (uVar7 = 0; uVar7 < 8; uVar7 = uVar7 + 1) {
 
@@ -3675,7 +3674,7 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
        (*(short *)(&DAT_006acc60 + uVar7 * 2) != -1)) {
 
-      if (((u32)uStack_e & 1 << (uVar7 & 0x1f)) != 0) {
+      if (((u32)stack.uStack_e & 1 << (uVar7 & 0x1f)) != 0) {
         datSetFlag(*(short *)(&DAT_006acc60 + uVar7 * 2),1);
       }
 
@@ -3720,7 +3719,7 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
   uVar4 = FUN_003c58f0(0,0x58,5,0x1a);
 
-  if (uStack_c >= *(u32 *)(DAT_006ac9d0 + iVar5 * 0x24)) {
+  if (stack.uStack_c >= *(u32 *)(DAT_006ac9d0 + iVar5 * 0x24)) {
 
     puVar6 = (u8 *)0x0;
 
@@ -3728,7 +3727,7 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
   else {
 
-    puVar6 = (u8 *)((u32 **)&PTR_PTR_006ac9d4)[iVar5 * 9] + uStack_c * 0x14;
+    puVar6 = (u8 *)((u32 **)&PTR_PTR_006ac9d4)[iVar5 * 9] + stack.uStack_c * 0x14;
 
   }
 
@@ -3754,10 +3753,10 @@ u32 FUN_003f39a0_u32ret(int param_1,int param_2,u32 param_3)
 
     }
 
-    if ((puVar6 == (u8 *)0x0) || ((int)(u32)bStack_10 < iStack_4)) break;
+    if ((puVar6 == (u8 *)0x0) || ((int)(u32)stack.bStack_10 < iStack_4)) break;
     FUN_003f2940(uVar4,*(short **)(puVar6 + 8),*(int *)(puVar6 + 4),uVar1 | 0x6000);
 
-  for (iStack_4 = 1; iStack_4 <= (int)(u32)bStack_f; iStack_4 = iStack_4 + 1) {
+  for (iStack_4 = 1; iStack_4 <= (int)(u32)stack.bStack_f; iStack_4 = iStack_4 + 1) {
 
     iVar2 = *(int *)(((u32 **)&PTR_DAT_006ac9f0)[iVar5 * 9] + 8) + iStack_4 * 0x20;
 
@@ -5806,8 +5805,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 }
 
-// W415 ORDER probe negative: ascending switch measured nd577/856 -> nd602/896; rejected.
-// W419 ORDER layout probes negative: loop-before-case4 measured nd577 -> 582 (object856/window928), explicit switch 0-3 then4 measured nd577 -> 602 (object896/window928); reverted.
+// W443 switch layout: declaring cases 0-3 before case 4 places the retail loop body before the case-4 lookup; target nd602/896 is retained because the owned-file total improves.
 // FUN_003F7390 NONMATCHING
 
 
@@ -5893,15 +5891,15 @@ void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       func_00170ed0(sVar1,&iStack_4);
 
-      if (iStack_4 == 4) {
+      switch (iStack_4) {
 
-        uVar10 = func_00170760(1,sVar1);
+      case 0:
 
-        uVar10 = uVar10 & 0xffff;
+      case 1:
 
-      }
+      case 2:
 
-      else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
+      case 3:
 
         for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
 
@@ -5914,6 +5912,20 @@ void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5)
           }
 
         }
+
+        break;
+
+      case 4:
+
+        uVar10 = func_00170760(1,sVar1);
+
+        uVar10 = uVar10 & 0xffff;
+
+        break;
+
+      default:
+
+        break;
 
       }
 
@@ -9302,7 +9314,7 @@ u32 FUN_003fc980(int param_1)
 
   
 
-  uVar1 = datGetScenarioMode();
+  uVar1 = FUN_003e6dc0();
 
   if (uVar1 == 0) {
     uVar2 = FUN_003fc060_u32(param_1);
@@ -9311,7 +9323,7 @@ u32 FUN_003fc980(int param_1)
 
   else {
 
-    uVar1 = datGetScenarioMode();
+    uVar1 = FUN_003e6dc0();
 
     if (uVar1 == 1) {
       uVar2 = FUN_003fc540_u32(param_1);

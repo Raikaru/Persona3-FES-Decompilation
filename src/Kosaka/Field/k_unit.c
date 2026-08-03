@@ -1629,9 +1629,8 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
 {
     u8* node;
     u8* best;
-    RwV3d heroPos;
     RwV3d* nodePos;
-    RwMatrix* modelMatrix;
+    RwV3d* enemyPos;
     RwV3d delta;
     f32 bestDistance;
     f32 distance;
@@ -1652,7 +1651,6 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
     {
         if (func_001d0e40() < (u32)targetCount)
         {
-            heroPos = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos;
             bestDistance = 1.1754944e-38f;
             node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
             while (node != NULL)
@@ -1662,10 +1660,12 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
                 {
                     if (gFldUnitsPc[index].genusBase != NULL && gFldUnitsPc[index].resrc != NULL)
                     {
-                        modelMatrix = mdlGetMatrix(gFldUnitsPc[index].mdl);
-                        delta.x = nodePos->x - modelMatrix->pos.x;
-                        delta.y = nodePos->y - modelMatrix->pos.y;
-                        delta.z = nodePos->z - modelMatrix->pos.z;
+                        delta.x = nodePos->x -
+                                  mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.x;
+                        delta.y = nodePos->y -
+                                  mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.y;
+                        delta.z = nodePos->z -
+                                  mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.z;
                         if (RwV3dLength(&delta) < threshold)
                         {
                             break;
@@ -1684,8 +1684,9 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
                     {
                         if (gFldUnitsEc[index].genusBase != NULL)
                         {
-                            distance = FldUnit_NodeDistance(nodePos,
-                                &mdlGetMatrix(gFldUnitsEc[index].mdl)->pos);
+                            enemyPos =
+                                (RwV3d*)((u8*)gFldUnitsEc[index].unk_168 + 0x100);
+                            distance = FldUnit_NodeDistance(nodePos, enemyPos);
                             if (distance < threshold)
                             {
                                 break;
@@ -2636,33 +2637,8 @@ void func_001d2a10(void)
     {
         return;
     }
-    if (K_Scene_001a0250() == 0)
+    if (K_Scene_001a0250() != 0)
     {
-        slot = 0;
-        for (i = 0; i < FLDUNIT_EC_MAX; i++)
-        {
-            if (ecUnits[i].genusBase != NULL)
-            {
-                if (slot >= 0x18) { K_ASSERT(0, 0xa47); break; }
-                DAT_0086b180[slot++] = &ecUnits[i];
-            }
-        }
-        slot = 0;
-        for (i = 0; i < 0x20; i++)
-        {
-            record = DAT_0086be80 + i * 0x138;
-            if (*(u32*)record == 1)
-            {
-                if (slot >= 0x18) { K_ASSERT(0, 0xa52); break; }
-                DAT_0086b180[0x18 + slot++] = record;
-            }
-        }
-        if (*(u32*)DAT_0086e580 == 1)
-        {
-            DAT_0086b180[0x30] = DAT_0086e580;
-        }
-        return;
-    }
     recordExtent = -80.0f;
     for (j = 0; j < 4; j++)
     {
@@ -2746,6 +2722,33 @@ void func_001d2a10(void)
                 }
             }
         }
+    }
+    }
+    else
+    {
+        slot = 0;
+        for (i = 0; i < FLDUNIT_EC_MAX; i++)
+        {
+            if (ecUnits[i].genusBase != NULL)
+            {
+                if (slot >= 0x18) { K_ASSERT(0, 0xa47); break; }
+                DAT_0086b180[slot++] = &ecUnits[i];
+            }
+        }
+        slot = 0;
+        for (i = 0; i < 0x20; i++)
+        {
+            record = DAT_0086be80 + i * 0x138;
+            if (*(u32*)record == 1)
+            {
+                if (slot >= 0x18) { K_ASSERT(0, 0xa52); break; }
+                DAT_0086b180[0x18 + slot++] = record;
+            }
+        }
+    }
+    if (*(u32*)DAT_0086e580 == 1)
+    {
+        DAT_0086b180[0x30] = DAT_0086e580;
     }
     (void)reaper;
 }

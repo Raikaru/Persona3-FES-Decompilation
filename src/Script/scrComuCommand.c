@@ -1199,8 +1199,8 @@ u32 scrComu0035f880(void)
         goto Render;
 
     Charm:
-        oldStr = h_camp_getCharmLevelString(oldLevel);
-        newStr = h_camp_getCharmLevelString(newLevel);
+        oldStr = h_camp_getCourageLevelString(oldLevel);
+        newStr = h_camp_getCourageLevelString(newLevel);
         goto Render;
 
     Academic:
@@ -1209,8 +1209,8 @@ u32 scrComu0035f880(void)
         goto Render;
 
     Courage:
-        oldStr = h_camp_getCourageLevelString(oldLevel);
-        newStr = h_camp_getCourageLevelString(newLevel);
+        oldStr = h_camp_getCharmLevelString(oldLevel);
+        newStr = h_camp_getCharmLevelString(newLevel);
 
     Render:
         FUN_003a4220(handle, 0, oldStr);

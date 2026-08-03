@@ -5191,7 +5191,7 @@ void func_003176c0(Model* mdl)
     RwFrame* frame;
 
     frame = *(RwFrame**)((u8*)mdl->clump + 4);
-    RwMatrixMultiply(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
+    FUN_004c2f30(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
     func_004cb7f0(frame, &matrix, 0);
     func_003197c0(mdl, &matrix);
 }

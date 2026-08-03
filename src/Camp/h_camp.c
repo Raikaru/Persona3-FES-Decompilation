@@ -4535,6 +4535,8 @@ extern s32 FUN_00177360();
 extern s32 FUN_00173220_y2();
 extern u8 FUN_00173280(s32 personaId);
 extern void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx);
+#pragma alias FUN_001733b0_s32 FUN_001733b0
+extern s32 FUN_001733b0_s32(DatPersonaWork* persona, s32 skillIdx);
 extern s32 FUN_00173340();
 extern s32 FUN_00173330();
 extern s32 FUN_00173580();
@@ -7887,31 +7889,31 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0:
-            value = FUN_00173660(persona, 0);
+            value = FUN_001733b0_s32(persona, 0);
             break;
         case 1:
-            value = FUN_00173660(persona, 1);
+            value = FUN_001733b0_s32(persona, 1);
             break;
         case 2:
-            value = FUN_00173660(persona, 2);
+            value = FUN_001733b0_s32(persona, 2);
             break;
         case 3:
-            value = FUN_00173660(persona, 3);
+            value = FUN_001733b0_s32(persona, 3);
             break;
         case 4:
-            value = FUN_00173660(persona, 4);
+            value = FUN_001733b0_s32(persona, 4);
             break;
         case 5:
-            value = FUN_00173660(persona, 5);
+            value = FUN_001733b0_s32(persona, 5);
             break;
         case 6:
-            value = FUN_00173660(persona, 6);
+            value = FUN_001733b0_s32(persona, 6);
             break;
         case 7:
-            value = FUN_00173660(persona, 8);
+            value = FUN_001733b0_s32(persona, 8);
             break;
         case 8:
-            value = FUN_00173660(persona, 9);
+            value = FUN_001733b0_s32(persona, 9);
             break;
         }
         frame = 15;

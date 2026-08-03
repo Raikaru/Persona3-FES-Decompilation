@@ -599,9 +599,9 @@ void opWait0026eed0(void)
     OpWaitWork* work;
     void* atlas;
     void* frame;
-    union {
-        f32 points[8];
+    struct {
         f32 rect[4];
+        f32 points[8];
     } geometry;
     union {
         u8 rgba[4];
