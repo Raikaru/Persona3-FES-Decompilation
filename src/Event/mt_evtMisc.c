@@ -5832,6 +5832,8 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
   f32 fVar18;
 
   f32 fVar19;
+  
+  f32 fVar20;
 
   u32 matrix_c0[16];
 
@@ -6203,9 +6205,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_40[3] = matrix_40[3] | 0x20003;
 
+        fVar20 = *(float *)(&DAT_009588c8 + iVar6);
+
         FUN_004c31b0_cc10(matrix_40,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0_cc10(matrix_40,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
+        FUN_004c31b0_cc10(matrix_40,D_006A2A60,fVar20,1);
 
         puVar9 = matrix_40;
 
@@ -6343,9 +6347,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_80[3] = matrix_80[3] | 0x20003;
 
+        fVar20 = *(float *)(&DAT_009588c8 + iVar6);
+
         FUN_004c31b0_cc10(matrix_80,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0_cc10(matrix_80,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
+        FUN_004c31b0_cc10(matrix_80,D_006A2A60,fVar20,1);
 
         puVar12 = matrix_80;
 
@@ -6423,9 +6429,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
         matrix_c0[3] = matrix_c0[3] | 0x20003;
 
+        fVar20 = *(float *)(&DAT_009588c8 + iVar6);
+
         FUN_004c31b0_cc10(matrix_c0,D_006A2A70,*(float *)(&DAT_009588cc + iVar6),1);
 
-        FUN_004c31b0_cc10(matrix_c0,D_006A2A60,*(float *)(&DAT_009588c8 + iVar6),1);
+        FUN_004c31b0_cc10(matrix_c0,D_006A2A60,fVar20,1);
 
         puVar12 = matrix_c0;
 

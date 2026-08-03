@@ -2979,7 +2979,6 @@ void* func_001e4b40(void* parent)
 s32 func_001e4bc0(RuntimeTask* task)
 {
     RuntimeControllerWork* work;
-    FieldRuntimeResourceNode* node;
     FieldRuntimeResourceNode* selected;
     void* manager;
     void* object;
@@ -3007,6 +3006,8 @@ s32 func_001e4bc0(RuntimeTask* task)
     switch (work->state)
     {
         case 0:
+        {
+            FieldRuntimeResourceNode* node;
             manager = func_001e1840();
             node = *(FieldRuntimeResourceNode**)manager;
             work->count = 0;
@@ -3035,7 +3036,11 @@ s32 func_001e4bc0(RuntimeTask* task)
             }
             break;
 
+        }
+
         case 1:
+        {
+            FieldRuntimeResourceNode* node;
             index = 0;
             while (index < work->count)
             {
@@ -3108,12 +3113,15 @@ s32 func_001e4bc0(RuntimeTask* task)
                 work->state = 6;
             }
             break;
+        }
 
         case 2:
             work->state++;
             break;
 
         case 3:
+        {
+            FieldRuntimeResourceNode* node;
             value = *(u32*)func_001a41b0(work->windowTask, 4);
             work->angle = (f32)(s32)value;
             func_001ad8c0(work->angle, work->controller);
@@ -3187,6 +3195,7 @@ s32 func_001e4bc0(RuntimeTask* task)
                 work->state = 0;
             }
             break;
+        }
 
         case 4:
             clear = (u8*)&base;
@@ -3289,6 +3298,8 @@ s32 func_001e4bc0(RuntimeTask* task)
             break;
 
         case 5:
+        {
+            FieldRuntimeResourceNode* node;
             if ((DAT_007e094e & 0x40) != 0)
             {
                 result = (u32)func_001a4510(work->secondaryTask);
@@ -3310,6 +3321,7 @@ s32 func_001e4bc0(RuntimeTask* task)
                 }
             }
             break;
+        }
 
         case 6:
             return -1;
@@ -3394,8 +3406,7 @@ state1:
         if (func_001a4510(work->windowTask) == 1)
         {
             resourceId = (u16)*func_001a41b0(work->windowTask, 0);
-            resourceId = (u16)((resourceId & 0x3ff) | 0x2000);
-            if (func_001e29e0(resourceId) != NULL)
+            if (func_001e29e0((u16)((resourceId & 0x3ff) | 0x2000)) != NULL)
             {
                 func_001a1540(0, 0, 0xb4, D_00684380);
                 return 0;

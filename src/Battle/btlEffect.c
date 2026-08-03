@@ -5942,7 +5942,7 @@ u32 func_002c3770(u32 param_1,u32 param_2)
   int iVar11 = 0;
   u32 uVar12 = 0;
   float fVar13 = 0;
-  float afStack_60[24];
+  float afStack_60[32];
   
   extern u32 func_002ffbc0(u32);
   iVar11 = (int)param_1;

@@ -1700,8 +1700,8 @@ void fclCombineList003dd800(s32 x, s32 y, s32 alpha, FclOwner* owner,
     record.candidate_data = candidate_data;
     record.owner = owner;
     record.candidate = candidate;
-    FUN_003e0680((u64)(u32)(void *)candidate_data->callback_target,
-                  (code*)fclCombineList003dd260, (u64)(u32)(void *)&record);
+    FUN_003e0680((u32)(void *)candidate_data->callback_target,
+                  (code*)fclCombineList003dd260, (u32)(void *)&record);
 }
 
 // FUN_003dd9e0

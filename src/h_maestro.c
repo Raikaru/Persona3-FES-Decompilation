@@ -3066,8 +3066,8 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     work = (MaestroResourceWork*)param_1;
     func_004ac120(work->parsedResources[sourceIndex], locals.source);
     func_004ac120(work->parsedResources[destinationIndex], locals.destination);
-    effectResources = work->effectResources;
 
+    effectResources = work->effectResources;
     texture = *(void**)((u8*)effectResources[destinationIndex] + 0x68);
     if (texture == NULL)
     {

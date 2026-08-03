@@ -15,6 +15,14 @@ the report already records.
     python tools/reloc_audit.py --report build/baselines/W442_gate.json \
         [--out build/wip/reloc_audit.md] [--status MATCH] [--first-party]
 
+**This comparison is only valid for MATCH functions.** `retail_target` is read at
+our object's relocation OFFSET. When a function matches, our layout equals
+retail's, so that offset names the same instruction in both and the comparison is
+exact. When it does not match, our instructions have shifted, the offset lands on
+some unrelated retail word, and the "retail target" is meaningless — you will see
+impossible addresses like `0x01080060`. The tool therefore defaults to
+`--status MATCH`; overriding that produces mostly noise.
+
 `--status MATCH` is the important mode: those are the functions the campaign
 currently believes are finished.
 """
@@ -45,7 +53,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--report", required=True)
     ap.add_argument("--out")
-    ap.add_argument("--status", default="", help="only audit rows with this status")
+    ap.add_argument("--status", default="MATCH",
+                    help="only audit rows with this status; defaults to MATCH, "
+                         "which is the only status the comparison is valid for. "
+                         "Pass --status '' to override and see the noise.")
     ap.add_argument("--first-party", action="store_true")
     args = ap.parse_args()
 

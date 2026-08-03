@@ -9391,8 +9391,8 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
   short *psVar3;
   int iVar4;
   int iVar5;
-  int limit;
   int extraout_t0;
+  int limit;
 
   iVar5 = (int)param_3;
   piVar2 = *(int **)(iVar5 + 0x164);
@@ -13768,8 +13768,8 @@ code * FUN_0036e690(int param_1)
 {
 
   int iVar1;
-
   bool bVar2;
+
 
   code *pcVar3;
 
@@ -13916,38 +13916,23 @@ code * FUN_0036e690(int param_1)
                 uVar6 = *(u32 *)(iVar1 + 4);
 
                 if (((((((uVar6 & 1) == 0) && ((uVar6 & 0x20) == 0)) && ((uVar6 & 0x200) == 0)) &&
-
                      (((uVar6 & 0x400) == 0 && ((uVar6 & 0x800) == 0)))) &&
-
                     (((uVar6 & 0x1000) == 0 && (((uVar6 & 0x20000) == 0 && ((uVar6 & 0x2000) == 0)))
-
                      ))) && (((uVar6 & 0x4000) == 0 && ((uVar6 & 0x8000) == 0)))) {
-
                   bVar2 = false;
-
                 }
-
                 else {
-
                   bVar2 = true;
-
                 }
-
                 if (bVar2) {
-
                   if ((uVar6 & 1) != 0) {
-
                     *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) & 0xfffffffe;
-
                   }
-
                 }
-
                 else {
-
                   *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) | 1;
-
                 }
+
 
               }
 

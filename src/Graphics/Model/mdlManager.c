@@ -450,12 +450,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
   float fVar22;
 
   float fVar23;
-
   float fVar24;
 
   float fVar25;
 
   float fVar26;
+
+
   float qxx;
   float qyy;
   float qzz;
@@ -3722,7 +3723,6 @@ void func_003151d0(Model* param_1)
   color[2] = 0;
 
   fVar15 = ((float)((u32)*(u8 *)(iVar11 + 0x3a8) * (u32)*(u8 *)(iVar11 + 0xd3)) / 65025.0f) *
-
            255.0f;
 
   if (fVar15 < 2.1474836e+09f) {
@@ -4823,7 +4823,6 @@ Model* func_00316c70(u16 modelType,u16 id,void* archive,u32 readMode)
   }
   return mdl;
 }
-
 #pragma push
 #pragma opt_loop_invariants on
 // FUN_00316e00 NONMATCHING
@@ -6765,9 +6764,6 @@ u32 func_00319970(Model* param_1)
 
     if (iStack_50 == -0xf0fff1f) {
 
-      iVar4 = piVar2[0xe];
-
-      iVar11 = *(int *)(*piVar2 + 0xc);
 
       if (*(int *)(iVar12 + ((u32)*(u16 *)(piVar2 + 7) * 0x28 - (u32)*(u16 *)(piVar2 + 7)) *
 
@@ -6793,7 +6789,7 @@ u32 func_00319970(Model* param_1)
 
       }
 
-      uVar5 = func_0031dff0(iVar4 + iVar11,uStack_4c);
+      uVar5 = func_0031dff0(piVar2[0xe] + *(int *)(*piVar2 + 0xc),uStack_4c);
 
       *(u32 *)
 
@@ -6808,15 +6804,16 @@ u32 func_00319970(Model* param_1)
 
     else if (iStack_50 == -0xf0fff20) {
 
+
       func_004c5250(*piVar2,&uStack_30,0x14);
 
       func_004c5620(*piVar2,uStack_28);
 
       uVar1 = uStack_2;
-
       iVar4 = piVar2[0xe];
 
       iVar11 = *(int *)(*piVar2 + 0xc);
+
 
       if ((*(int *)(iVar12 + 0xdc) == 0) && (piVar2[5] == 0)) {
 

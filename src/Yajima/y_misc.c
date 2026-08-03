@@ -3076,10 +3076,10 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
     func_0010a4e0(1,0,6,1);
 
   }
-
   fVar2 = center.z;
 
   fVar10 = center.y;
+
 
   for (uVar8 = 0; (int)uVar8 < (int)puVar1[1]; uVar8 = uVar8 + 1) {
 
@@ -7729,7 +7729,6 @@ u32 FUN_004281f0(u32 param_1)
 
   u32 uVar26;
 
-  float fVar27;
   YajimaVec3 vec;
 
   YajimaVec3 vec2;
@@ -8559,51 +8558,51 @@ u32 FUN_004281f0(u32 param_1)
 
             if (pcVar1[0x865] != '\0') {
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a0d0((float)cVar6,(float *)(pcVar1 + 0x868));
-              fVar27 = *(float *)(pcVar1 + 0x85c) +
-                       (float)(cVar6 * iVar17) + fVar24;
+              fVar24 = *(float *)(pcVar1 + 0x85c) +
+                       (float)(cVar6 * iVar17) +
+                       FUN_0042a0d0((float)cVar6,(float *)(pcVar1 + 0x868));
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a3f0((float)cVar6,(float *)(pcVar1 + 0xb10));
-              fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
+              fVar24 -= FUN_0042a3f0((float)cVar6,(float *)(pcVar1 + 0xb10)) +
+                        (float)((int)cVar6 << 1);
               iVar7 = (int)cVar6;
               iVar13 = iVar7;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              packedCoord.x = (float)(iVar13 >> 1) + fVar27 - 6.0f;
+              packedCoord.x = (float)(iVar13 >> 1) + fVar24 - 6.0f;
 
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a180((float)cVar6,(u32 *)(pcVar1 + 0x868));
-              fVar27 = *(float *)(pcVar1 + 0x860) +
-                       (float)(cVar6 * iVar15) + fVar24;
+              fVar24 = *(float *)(pcVar1 + 0x860) +
+                       (float)(cVar6 * iVar15) +
+                       FUN_0042a180((float)cVar6,(u32 *)(pcVar1 + 0x868));
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a4a0((float)cVar6,(u32 *)(pcVar1 + 0xb10));
-              fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
+              fVar24 -= FUN_0042a4a0((float)cVar6,(u32 *)(pcVar1 + 0xb10)) +
+                        (float)((int)cVar6 << 1);
               iVar13 = (int)cVar6;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              packedCoord.y = (float)(iVar13 >> 1) + fVar27;
+              packedCoord.y = (float)(iVar13 >> 1) + fVar24;
             }
             else {
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_00429ef0((float)cVar6,0);
-              fVar27 = *(float *)(pcVar1 + 0x85c) +
-                       (float)(cVar6 * iVar17) + fVar24;
+              fVar24 = *(float *)(pcVar1 + 0x85c) +
+                       (float)(cVar6 * iVar17) +
+                       FUN_00429ef0((float)cVar6,0);
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a3f0((float)cVar6,(float *)(pcVar1 + 0xb10));
-              fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
+              fVar24 -= FUN_0042a3f0((float)cVar6,(float *)(pcVar1 + 0xb10)) +
+                        (float)((int)cVar6 << 1);
               iVar7 = (int)cVar6;
               iVar13 = iVar7;
               if (cVar6 < '\0') iVar13 = iVar7 + 1;
-              packedCoord.x = (float)(iVar13 >> 1) + fVar27 - 6.0f;
+              packedCoord.x = (float)(iVar13 >> 1) + fVar24 - 6.0f;
 
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_00429fe0((float)cVar6,0);
-              fVar27 = *(float *)(pcVar1 + 0x860) +
-                       (float)(cVar6 * iVar15) + fVar24;
+              fVar24 = *(float *)(pcVar1 + 0x860) +
+                       (float)(cVar6 * iVar15) +
+                       FUN_00429fe0((float)cVar6,0);
               cVar6 = pcVar1[0xb29];
-              fVar24 = FUN_0042a4a0((float)cVar6,(u32 *)(pcVar1 + 0xb10));
-              fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
+              fVar24 -= FUN_0042a4a0((float)cVar6,(u32 *)(pcVar1 + 0xb10)) +
+                        (float)((int)cVar6 << 1);
               iVar13 = (int)cVar6;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              packedCoord.y = (float)(iVar13 >> 1) + fVar27;
+              packedCoord.y = (float)(iVar13 >> 1) + fVar24;
             }
 
             packedCoord.y = packedCoord.y - 6.0f;
@@ -21194,15 +21193,19 @@ short FUN_0043bda0(char param_1,char param_2)
   short selected;
   u8 *actor;
   u8 *target;
+  u16 *actorId;
+  u16 *targetId;
   u8 auStack_c [4];
   u8 auStack_8 [4];
   u8 auStack_4 [4];
 
   selected = -1;
   actor = DAT_008717a0_rows_abs[(char)param_1];
-  entry = (short *)FUN_00173380_typed(*(u16 *)(actor + 0x1a8));
+  actorId = (u16 *)(actor + 0x1a8);
+  entry = (short *)FUN_00173380_typed(*actorId);
   i = 0;
   target = DAT_008717a0_rows_abs[(char)param_2];
+  targetId = (u16 *)(target + 0x1a8);
   do {
     if (7 < i) {
       return selected;
@@ -21210,16 +21213,16 @@ short FUN_0043bda0(char param_1,char param_2)
     value = entry[i];
     if (value != 0) {
       if (value == 0xcc) {
-        result = FUN_0017b660_1arg(*(u16 *)(actor + 0x1a8));
+        result = FUN_0017b660_1arg(*actorId);
         if ((result == 0) &&
-           (FUN_0017be10(*(u16 *)(actor + 0x1a8), *(u16 *)(target + 0x1a8),
+           (FUN_0017be10(*actorId, *targetId,
                          entry[i],0,auStack_4,auStack_8,auStack_c), selected != 0xcd)) {
           selected = entry[i];
         }
       }
       else if ((value == 0xcd) &&
-              (result = FUN_0017b660_1arg(*(u16 *)(actor + 0x1a8)), result == 0)) {
-        FUN_0017be10(*(u16 *)(actor + 0x1a8), *(u16 *)(target + 0x1a8),
+              (result = FUN_0017b660_1arg(*actorId), result == 0)) {
+        FUN_0017be10(*actorId, *targetId,
                      entry[i],0,auStack_4,auStack_8,auStack_c);
         return entry[i];
       }
@@ -27481,7 +27484,7 @@ u8 FUN_0044fab0(int param_1)
 
 {
   int iVar1;
-  u8 uVar2;
+  u32 uVar2;
   char cVar3;
   int lVar4;
   u32 uVar5;

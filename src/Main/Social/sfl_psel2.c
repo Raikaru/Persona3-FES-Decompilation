@@ -353,7 +353,6 @@ void sflPsel00261480(void)
     resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x34);
     mode = (s32)work[1];
     diagonal = 1.4142135f;
-
     switch (mode) {
     case 0:
         alpha = 1.0f;
@@ -442,7 +441,7 @@ void sflPsel00261480(void)
     points[3] = (f32)sflPselReadS32(resource34, 0x10);
     FUN_0021d8e0(sflPselBytes(work, 0x610), points);
     sflPselSetAlpha(sflPselBytes(work, 0x610), (u8)(alpha * 255.0f));
-
+ 
     switch (mode) {
     case 0:
         if ((s32)work[2] < 8) {

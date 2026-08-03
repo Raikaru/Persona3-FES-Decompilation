@@ -1148,11 +1148,10 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 
 
 
-// FUN_00301540 NONMATCHING
+// FUN_00301540
 void FUN_00301540(int param_1,u32 param_2)
 
 {
-  u16 iVar1;
   u16 offset;
   s32 check;
   s32 uVar2;
@@ -1165,8 +1164,7 @@ void FUN_00301540(int param_1,u32 param_2)
     if (!(check < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x438);
     }
-    iVar1 = (int)check >> 1;
-    offset = iVar1 & 0xffff;
+    offset = (int)check >> 1;
     uVar2 = check;
     if ((uVar2 & 1) != 0) {
       *(u8 *)(offset + param_1 + 0x1c) = *(u8 *)(offset + param_1 + 0x1c) & 0xf;
@@ -1177,7 +1175,7 @@ void FUN_00301540(int param_1,u32 param_2)
     if (!(check < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
-    offset = iVar1 & 0xffff;
+    offset = (int)check >> 1;
     if ((uVar2 & 1) != 0) {
       *(u8 *)(offset + param_1 + 0x29) = *(u8 *)(offset + param_1 + 0x29) & 0xf;
     }
@@ -3599,8 +3597,12 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
 
 
 #pragma opt_lifetimes reset
+static inline u32 datCalcAddIndexBase(u32 index, u32 base)
+{
+  return index + base;
+}
 /* W367 measured: opt_lifetimes on nd1919 -> 1916, object 4928/5008; baseline object 4928/5008. */
-// FUN_00306bc0 NONMATCHING
+// FUN_00306bc0
 u32
 FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 param_6,
             s32 param_7)
@@ -3630,7 +3632,7 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
     if (!((s32)(param_1 & 0xffff) < 0x1d0)) {
       FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
     }
-    iVar2 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
+    iVar2 = datCalcAddIndexBase(((u32)param_1 & 0xffff) * 0x2c, DAT_007ce3f8);
     if (*(u8 *)(iVar2 + 0x18) == 2) {
       goto datCalc_00306bc0_body;
     }

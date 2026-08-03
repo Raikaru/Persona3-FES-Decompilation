@@ -4385,6 +4385,7 @@ void FUN_00227F30(void)
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
     panelAlpha = *(f32*)(work + 0x7214);
     baseX = 38.0f;
     baseY = 237.0f;
