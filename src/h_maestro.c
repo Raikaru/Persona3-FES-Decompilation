@@ -2971,8 +2971,14 @@ u32 func_001104d0(KwlnTask* task)
     return false;
 }
 
+static inline s8* maestroLoadRecords(s8** out, MaestroResourceWork* work, s32 index)
+{
+    *out = (s8*)work->resources[index];
+    return *out;
+}
+
 #pragma opt_loop_invariants on
-// FUN_00110510 NONMATCHING
+// FUN_00110510
 u32 func_00110510(KwlnTask* task)
 {
     s32 i;
@@ -2986,8 +2992,8 @@ u32 func_00110510(KwlnTask* task)
             s8* records;
             s8 recordType;
 
-            records = (s8*)work->resources[i];
 record_read:
+            records = maestroLoadRecords(&records, work, i);
             recordType = records[work->recordIndices[i] * 18 + 1];
             if (recordType != -1)
             {

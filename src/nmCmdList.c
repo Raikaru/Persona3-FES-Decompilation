@@ -425,7 +425,7 @@ u64 FUN_003c60f0(int param_1)
 // W419 staged call-argument locals for FUN_003c6120; nd28/object324 was unchanged.
 // W420 reversed mixed-argument static inline helper measured nd29/object324/window336; commutative OR helper measured nd32/object324/window336; reverted.
 // W423 color-first FUN_003b2cb0 ABI alias (scale,color,active,x,y,...) matches retail setup order; nd28 -> 5, object324/window336; retained.
-// FUN_003C6120 NONMATCHING
+// FUN_003C6120
 
 u32 FUN_003c6120(int param_1,int param_2)
 {
@@ -465,9 +465,10 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    FUN_003b2cb0_color_first(0.0f,puVar2[4] | 0xffffff00,
+    FUN_003b2cb0_color_first(0.0f,puVar2[0],puVar2[1],
+                             puVar2[4] | 0xffffff00,
                              (u32)(param_2 == *(int *)(param_1 + 0xc)),
-                             puVar2[0],puVar2[1],4,puVar2[2],0x10,0);
+                             4,puVar2[2],0x10,0);
   }
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;

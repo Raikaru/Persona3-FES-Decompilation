@@ -15803,9 +15803,10 @@ void FUN_00404470(short param_1)
 }
 
 
+static inline u32 fclShopAddTableOffset(u32 offset, u32 base) { return offset + base; }
 // Confirmed b210 floor: only +0xd0 differs in commutative addu operand order
 // (`addu $v0,$v1,$v0` versus `$v0,$v0,$v1`); all table loads and remaining words match.
-// FUN_004044C0 NONMATCHING
+// FUN_004044C0
 
 
 void FUN_004044c0(short param_1)
@@ -15860,7 +15861,8 @@ void FUN_004044c0(short param_1)
 
   table = PTR_DAT_007cd8f0_ptr;
   tableOffset = *psVar4 * 0x40;
-  table = table + tableOffset;
+  table = (u8 *)((u32)table);
+  table = (u8 *)fclShopAddTableOffset((u32)tableOffset,(u32)table);
   uVar1 = *(short *)(table + 0x38);
   uVar3 = FUN_003e6dc0();
   FUN_003f0d60(uVar3,uVar1);

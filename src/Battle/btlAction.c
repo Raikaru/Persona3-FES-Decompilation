@@ -6104,6 +6104,7 @@ void btlActionInitStateError(BtlAction* action)
 }
 /* W373 pragma sweep nd/obj: base 366/768; singles LI=366/768 CS=308/756 LT=366/768 PR=451/752 SR=366/768 DA=510/748; retain CS off. */
 #pragma opt_common_subs off
+
 // FUN_00295c00 NONMATCHING
 void btlActionUpdateStateError(BtlAction* action)
 {
@@ -7178,7 +7179,9 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     u32 i;
     u32 special;
     s16 timer;
+    u64 actionUID;
 
+    actionUID = action->uid;
     if (action->unk_488 == 0)
     {
         if (btlPacketCountById(0xc03) != 0)
@@ -7186,47 +7189,46 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
             return;
         }
         i = 0;
-    while (i < ACTION_U16(gBtl, 0xb98))
-    {
-        partyIds[i] = ((BtlAction*)ACTION_U32(gBtl, 0xb88 + i * 4))->unit->charId;
-        i++;
-    }
-    while (i < 3)
-    {
-        partyIds[i] = 0;
-        i++;
-    }
-    packet = func_002e3b50(partyIds[0], partyIds[1], partyIds[2]);
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = func_002e3990();
-    packet->actionUID = action->uid;
-    packet = btlVoice002e2be0((BtlAction*)action->movedAwayFromHome, 4, 0, 0, 0);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = FUN_002dd100(10, 2, 0x12);
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    callbackPacket = func_0027f410((u32)btlActionInitStateRoundUpMes, action);
-    btlPacketRegister(callbackPacket, BTLPACKET_TYPE_1);
+        while (i < ACTION_U16(gBtl, 0xb98))
+        {
+            partyIds[i] = ((BtlAction*)ACTION_U32(gBtl, 0xb88 + i * 4))->unit->charId;
+            i++;
+        }
+        while (i < 3)
+        {
+            partyIds[i] = 0;
+            i++;
+        }
+        packet = func_002e3b50(partyIds[0], partyIds[1], partyIds[2]);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = func_002e3990();
+        packet->actionUID = actionUID;
+        packet = btlVoice002e2be0((BtlAction*)action->movedAwayFromHome, 4, 0, 0, 0);
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002dd100(10, 2, 0x12);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        callbackPacket = func_0027f410((u32)btlActionInitStateRoundUpMes, action);
+        btlPacketRegister(callbackPacket, BTLPACKET_TYPE_1);
 
-    setup[0] = DAT_007cb050[0];
-    setup[1] = DAT_007cb050[1];
-    setup[2] = DAT_007cb050[2];
-    setup[3] = 3;
-    setup[4] = DAT_007cb050[3];
-    setup[5] = DAT_007cb050[4];
-    setup[6] = DAT_007cb050[5];
-    setup[8] = DAT_007cb050[6];
-    setup[9] = DAT_007cb050[7];
-    setup[10] = DAT_007cb050[8];
-    setup[12] = DAT_007cb050[9];
-    setup[13] = DAT_007cb050[10];
-    setup[14] = DAT_007cb050[11];
-    func_002b9600(setup);
-    packet = func_002bb2f0(ACTION_U32(gBtl, 0xd10), action->unit, 0,
-                           callbackPacket->uid, 0xc000);
-    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-    action->unk_488 = 1;
-
+        setup[0] = DAT_007cb050[0];
+        setup[1] = DAT_007cb050[1];
+        setup[2] = DAT_007cb050[2];
+        setup[3] = 3;
+        setup[4] = DAT_007cb050[3];
+        setup[5] = DAT_007cb050[4];
+        setup[6] = DAT_007cb050[5];
+        setup[8] = DAT_007cb050[6];
+        setup[9] = DAT_007cb050[7];
+        setup[10] = DAT_007cb050[8];
+        setup[12] = DAT_007cb050[9];
+        setup[13] = DAT_007cb050[10];
+        setup[14] = DAT_007cb050[11];
+        func_002b9600(setup);
+        packet = func_002bb2f0(ACTION_U32(gBtl, 0xd10), action->unit, 0,
+                               callbackPacket->uid, 0xc000);
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+        action->unk_488 = 1;
     }
     timer = ACTION_S16(action, 0x490);
     if (timer == 0)
@@ -7238,7 +7240,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     {
         ACTION_S16(action, 0x490) = timer - 1;
     }
-    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) != NULL)
+    if (btlPacketFindFirstByActionUID(actionUID, BTL_UIDMAX) != NULL)
     {
         return;
     }
@@ -7255,7 +7257,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     if (FUN_001ff120() == 0)
     {
         packet = FUN_002d7fb0(action, 2);
-        packet->actionUID = action->uid;
+        packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         ACTION_U32(gBtl->camera.action, 0x494) = ACTION_U32(action, 0x484);
         gBtl->camera.action->unk_16 = 0x1d;
@@ -7268,7 +7270,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
         packet = func_002e3d10();
         packet->unk_00 = 0xa;
         ACTION_U16(packet, 8) = 0xc06;
-        packet->actionUID = action->uid;
+        packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         special = 1;
     }
@@ -7277,12 +7279,12 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     packet = func_002e3a90();
     if (special != 0)
     {
-        packet->actionUID = action->uid;
+        packet->actionUID = actionUID;
     }
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     packet = FUN_00288950(NULL, 1);
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     action->unk_18 &= ~8;
     if (func_002d1a70() == 1)
