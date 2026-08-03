@@ -2122,10 +2122,10 @@ void func_003132c0(u8* param_1)
   if (resources != NULL) {
     for (i = 0; i < *(u32*)resources; i = i + 1) {
       if (resources->primary[i] != NULL) {
-        func_0031d790();
+        func_0031d790(resources->primary[i]);
       }
       if (resources->secondary[i] != NULL) {
-        func_0031e130();
+        func_0031e130(resources->secondary[i]);
       }
     }
     (*DAT_0096017c)(resources);
@@ -2133,11 +2133,11 @@ void func_003132c0(u8* param_1)
   }
 
   if (anim->oldInterp != NULL) {
-    func_004b6eb0();
+    func_004b6eb0(anim->oldInterp);
     anim->oldInterp = NULL;
   }
   if (anim->nextInterp != NULL) {
-    func_004b6eb0();
+    func_004b6eb0(anim->nextInterp);
     anim->nextInterp = NULL;
   }
 
@@ -2150,7 +2150,7 @@ void func_003132c0(u8* param_1)
         rtAnim = entry->rtAnim;
         if ((rtAnim != NULL) && ((*(u32*)entry->unkData & 1) == 0) &&
             (rtAnim != &DAT_009571d0)) {
-          func_004b6980();
+          func_004b6980(rtAnim);
         }
       }
       (*DAT_0096017c)(table);
@@ -2159,7 +2159,7 @@ void func_003132c0(u8* param_1)
   }
 
   if (((anim->flags & 2) != 0) && (anim->hierarchy != NULL)) {
-    func_004663d0();
+    func_004663d0(anim->hierarchy);
     anim->hierarchy = NULL;
   }
 

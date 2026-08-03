@@ -26,7 +26,7 @@ extern u8 *FUN_003b5d10_evt_main(u16 param_1);
 #pragma alias FUN_0039f710_evt_main FUN_0039f710
 extern u32 FUN_0039f710_evt_main(int *param_1);
 #pragma alias FUN_003bb390_evt FUN_003bb390
-extern void FUN_003bb390_evt(float param_1,u32 param_2);
+extern void FUN_003bb390_evt(u32 param_1,u16 param_2,float param_3);
 extern u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3);
 #pragma alias FUN_004c31b0_evt_main FUN_004c31b0
 extern void FUN_004c31b0_evt_main(void *matrix, void *axis, f32 angle, s32 mode);
@@ -5154,7 +5154,7 @@ u16 * FUN_003655f0(u32 param_1,int param_2,int param_3)
           break;
         case 1:
           if ((int)(puVar4[10] & 0xfc00) >> 10 != 0) {
-            FUN_003bb390_evt((float)(int)(short)puVar4[0xb],0x1e58);
+            FUN_003bb390_evt(0x1e58,puVar4[10],(float)(int)(short)puVar4[0xb]);
             FUN_005225a8(DAT_0069d720_abs);
           }
           break;
@@ -12557,15 +12557,15 @@ void FUN_0036d030(int param_1)
 
       *(int *)(iVar4 + 0x77c) = iVar3;
 
-      if (iVar3 == 0) {
+      if (iVar3 != 0) {
 
-        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 
       else {
 
-        FUN_00362120(0,*(u32 *)(iVar4 + 0x18),param_1);
+        FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
 
       }
 
@@ -14409,7 +14409,7 @@ void FUN_0036f000(int param_1)
 
   }
 
-  if ((*(int *)(iVar3 + 0x938) != 0) && (lVar2 = FUN_00195460(), lVar2 == 1)) {
+  if ((*(int *)(iVar3 + 0x938) != 0) && (lVar2 = FUN_00195460(*(u32 *)(iVar3 + 0x938)), lVar2 == 1)) {
 
     FUN_00195020(*(u32 *)(iVar3 + 0x938));
 

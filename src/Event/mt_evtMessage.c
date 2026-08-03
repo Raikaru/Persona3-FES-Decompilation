@@ -716,7 +716,7 @@ void FUN_0039f410(int *param_1)
           break;
         }
         FUN_003a30c0(param_1[2],param_1[4],0);
-        FUN_003a27c0(param_1[2]);
+        FUN_003a27c0(param_1[2],-1);
         param_1[3] = 2;
       } else {
         param_1[3] = 3;
@@ -738,19 +738,19 @@ void FUN_0039f410(int *param_1)
 
     case 3:
 
-      if (param_1[5] < 0) {
-
-        param_1[3] = 5;
-
-      }
-
-      else {
+      if (param_1[5] >= 0) {
 
         FUN_003a3c10(iVar2,0);
 
         FUN_003a37c0(iVar2,param_1[5]);
 
         param_1[3] = 4;
+
+      }
+
+      else {
+
+        param_1[3] = 5;
 
       }
 

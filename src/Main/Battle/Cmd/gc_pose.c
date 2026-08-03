@@ -426,7 +426,6 @@ void func_0024dc90(void* camera)
                     for (i = 0; i < 3; i++) {
                         pose = poses[i];
                         if (pose != NULL && (pose[2] & 2) == 0) {
-                            K_ASSERT(list[0x82] < 0x80, 0x212);
                             list[list[0x82] + 2] = (u32)pose;
                             list[0x82]++;
                             queued = 1;

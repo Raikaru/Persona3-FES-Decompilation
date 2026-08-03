@@ -5271,6 +5271,7 @@ int iVar5;
 u32 auStack_20 [6];
 
 FclShopBgCallbackPair *puStack_8;
+
 float fVar0;
 
 float fVar1;
@@ -5280,6 +5281,7 @@ float fVar1;
 call_param_1 = param_1;
 
 call_param_2 = param_2;
+
 iVar1 = *(int *)((int)param_2 + 0xc);
 
 ppuVar7 = (u8 **)&PTR_FUN_006b1830;
@@ -5307,15 +5309,13 @@ do {
 } while (0 < iVar5);
 
 
-puStack_8 = (FclShopBgCallbackPair *)(auStack_20 + 6);
 fVar1 = DAT_007cda64_f;
 
 fVar0 = *(float *)((u8 *)&DAT_007cda64_f + 4);
 
-*(float *)(auStack_20 + 6) = fVar1;
-
-*(float *)(auStack_20 + 7) = fVar0;
-
+puStack_8 = (FclShopBgCallbackPair *)puVar6;
+*(float *)(&puStack_8->callbacks) = fVar1;
+*(float *)(&puStack_8->count) = fVar0;
 *(u32 *)(auStack_20 + 6) = (u32)auStack_20;
 
 iVar5 = *(int *)(iVar1 + 0x4c) >> 1;

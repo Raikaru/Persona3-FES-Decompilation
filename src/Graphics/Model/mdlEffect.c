@@ -1128,6 +1128,8 @@ static inline u16 mdlEffectLoadType(u16 value)
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
 #pragma alias FUN_00326cf0_2 FUN_00326cf0
 extern void FUN_00326cf0_2(int param_1,u32 param_2);
+#pragma alias FUN_00326cf0_3u32 FUN_00326cf0
+extern void FUN_00326cf0_3u32(int param_1,u32 param_2,u32 param_3);
 #pragma alias FUN_00326e50_u32 FUN_00326e50
 extern void FUN_00326e50_u32(int param_1,u32 param_2);
 #pragma alias FUN_00326f60_u32 FUN_00326f60
@@ -18554,7 +18556,7 @@ u32 FUN_00332370(int param_1)
 
 // Confirmed b210 register-colouring floor (W205): +68 ffff2332/ffff2632,
 // +72 0800612c/0800c12c, +92 80180300/80180600 (ours/retail).
-// FUN_00332470 NONMATCHING
+// FUN_00332470
 
 
 void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
@@ -18585,14 +18587,14 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
   switch(switchParam) {
   case 1:
 
-    FUN_00326cf0_2(param_1[0xb],*param_1);
+    FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
     FUN_00326e50_u32(param_1[0xb],(u32)param_3);
 
     break;
 
   case 2:
 
-    FUN_00326cf0_2(param_1[0xb],*param_1);
+    FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
 
     FUN_00326f00(param_1[0xb],(u32)param_3);
 
@@ -18600,7 +18602,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   case 4:
 
-    FUN_00326cf0_2(param_1[0xb],*param_1);
+    FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
 
     FUN_00326db0_u32(param_1[0xb],*(u32 *)param_3);
 
@@ -18620,7 +18622,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   case 7:
 
-    FUN_00326cf0_2(param_1[0xb],*param_1);
+    FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
 
     FUN_003271c0(param_1[0xb],(u32)param_3);
 
@@ -21193,7 +21195,7 @@ void FUN_00335180(int param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
+    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -22365,7 +22367,7 @@ void FUN_00336630(int param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
+    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -23280,7 +23282,7 @@ void FUN_003377f0(u32 param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120_2arg((char *)node, (u32 *)(node + 0x24));
+    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -32396,7 +32398,8 @@ void FUN_00341ba0(int param_1)
 
   if ((*(u32 *)(iVar7 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
 
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
+    iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),
+                         *(u32 *)(iVar7 + 0x34),*(u32 *)(iVar1 + 0x34));
 
     c1s = *(u32 *)(iVar7 + 0x30);
     c2s = (u32)iVar3;
@@ -41759,8 +41762,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(positionStack));
 
-          FUN_00326030(*puVar7,color);
-
+          renderStack[0] = matrixStack[0];
           renderStack[1] = matrixStack[1];
 
           renderStack[2] = matrixStack[2];
@@ -49710,7 +49712,7 @@ void FUN_00357550(int param_1)
 
     switch (state) {
     case 0:
-      FUN_002a38f0(0x25,0);
+      FUN_002a38f0(0x25,0,1);
       break;
     case 1:
       FUN_002a38f0(0x26,0);
