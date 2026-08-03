@@ -2787,30 +2787,16 @@ create_posrotcol_packet:
             }
         }
 
-        packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag);
+        packet = btlUnitCreateMovePacket(actionUnit, &sp120, moveSpeed, someFlag);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_0);
     }
 
 camera_dispatch:
-    if (packet == NULL && isSkillType != 0)
-    {
-        if (isFirstSpecial != 0)
-        {
-            goto do_camera_packet_0x13;
-        }
-        goto do_camera_packet_0x12;
-    }
-
     if (isFirstSpecial != 0)
     {
         goto do_camera_packet_0x13;
     }
-
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    goto epilogue;
 
 do_camera_packet_0x12:
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);

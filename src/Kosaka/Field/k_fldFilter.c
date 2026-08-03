@@ -482,13 +482,14 @@ void* FUN_001d5220(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
     RwV3d target;
+    RwV3d curveTarget;
     RwV3d cameraPos;
     RwV3d translation;
     RwV3d delta;
     RwV3d projection;
     RwV3d curvePosition;
-    RwV3d point0;
-    RwV3d point1;
+    RwV3d* point0;
+    RwV3d* point1;
     RwV3d cross;
     RwCamera* mainCamera;
     RwFrame* mainFrame;
@@ -497,6 +498,9 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     s32 previous;
     s32 next;
     s32 moved;
+    f32 deltaX;
+    f32 deltaY;
+    f32 deltaZ;
     f32 horizontalDistance;
     f32 verticalDistance;
     f32 amount;
@@ -506,6 +510,10 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     f32 lineLength;
     f32 crossLength;
     f32 debugDot;
+    s32 debugLineLengthValue;
+    s32 debugCrossLengthValue;
+    s32 debugAmountValue;
+    s32 debugDotValue;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
     if (work->playerResrc == NULL)
@@ -555,9 +563,9 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 func_004cb420(work->parentFrame, kwlnGetMainCamera()->object.object.parent);
             }
 
-            cameraPos.x += work->posOffset.x;
-            cameraPos.y += work->posOffset.y;
-            cameraPos.z += work->posOffset.z;
+            target.x += work->posOffset.x;
+            target.y += work->posOffset.y;
+            target.z += work->posOffset.z;
             delta.x = target.x - cameraPos.x;
             delta.y = target.y - cameraPos.y;
             delta.z = target.z - cameraPos.z;
@@ -599,7 +607,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             break;
 
         case 3:
-            K_FldFrame_CtlCopyPos(&target, work->playerResrc->collisCtlTask);
+            K_FldFrame_CtlCopyPos(&curveTarget, work->playerResrc->collisCtlTask);
             nearest = FUN_001d5140(cameraTask);
             curve = *(void**)((u8*)K_Field_Get() + 0x116c);
             if (curve != NULL && *(void**)((u8*)curve + 0xa1c) != NULL)
@@ -614,43 +622,44 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 {
                     next = 8;
                 }
-                point0 = work->cameraPoints[previous];
-                point1 = work->cameraPoints[next];
-                delta.x = point1.x - point0.x;
-                delta.y = point1.y - point0.y;
-                delta.z = point1.z - point0.z;
-                projection.x = target.x - point0.x;
-                projection.y = target.y - point0.y;
-                projection.z = target.z - point0.z;
-                denominator = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
+                point0 = &work->cameraPoints[previous];
+                point1 = &work->cameraPoints[next];
+                deltaX = point1->x - point0->x;
+                deltaY = point1->y - point0->y;
+                deltaZ = point1->z - point0->z;
+                projection.x = curveTarget.x - point0->x;
+                projection.y = curveTarget.y - point0->y;
+                projection.z = curveTarget.z - point0->z;
+                denominator = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
                 if (denominator != 0.0f)
                 {
-                    fraction = (projection.x * delta.x + projection.y * delta.y +
-                                projection.z * delta.z) / denominator;
-                    cross.x = delta.y * projection.z -
-                              delta.z * projection.y;
-                    cross.y = delta.z * projection.x -
-                              delta.x * projection.z;
-                    cross.z = delta.x * projection.y -
-                              delta.y * projection.x;
+                    fraction = (projection.x * deltaX + projection.y * deltaY +
+                                projection.z * deltaZ) / denominator;
+                    cross.x = deltaY * projection.z -
+                              deltaZ * projection.y;
+                    cross.y = deltaZ * projection.x -
+                              deltaX * projection.z;
+                    cross.z = deltaX * projection.y -
+                              deltaY * projection.x;
                     lineLength = sqrtf(denominator);
                     crossLength = sqrtf(cross.x * cross.x +
                                         cross.y * cross.y +
                                         cross.z * cross.z);
-                    projection.x = point0.x + delta.x * fraction - point0.x;
-                    projection.y = point0.y + delta.y * fraction - point0.y;
-                    projection.z = point0.z + delta.z * fraction - point0.z;
+                    projection.x = point0->x + deltaX * fraction - point0->x;
+                    projection.y = point0->y + deltaY * fraction - point0->y;
+                    projection.z = point0->z + deltaZ * fraction - point0->z;
                     amount = crossLength / lineLength;
                     fraction = amount;
-                    debugDot = delta.x * projection.x + delta.y * projection.y +
-                               delta.z * projection.z;
-                    printf(D_00683A48,
-                           func_00530da0(lineLength),
-                           func_00530da0(crossLength),
-                           func_00530da0(amount),
-                           func_00530da0(debugDot));
-                    dot = delta.x * projection.x + delta.y * projection.y +
-                          delta.z * projection.z;
+                    debugDot = deltaX * projection.x + deltaY * projection.y +
+                               deltaZ * projection.z;
+                    debugLineLengthValue = func_00530da0(lineLength);
+                    debugCrossLengthValue = func_00530da0(crossLength);
+                    debugAmountValue = func_00530da0(amount);
+                    debugDotValue = func_00530da0(debugDot);
+                    printf(D_00683A48, debugLineLengthValue, debugCrossLengthValue,
+                           debugAmountValue, debugDotValue);
+                    dot = deltaX * projection.x + deltaY * projection.y +
+                          deltaZ * projection.z;
                     if (dot < 0.0f)
                     {
                         fraction = 0.0f;
@@ -675,8 +684,8 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                     curve = *(void**)((u8*)K_Field_Get() + 0x116c);
                     FUN_0048d480(fraction, *(void**)((u8*)curve + 0xa1c), 10, &curvePosition, 0);
                     K_Draw_SetPointCenter(work->pointTask0, &curvePosition);
-                    K_Draw_SetPointCenter(work->pointTask1, &point0);
-                    K_Draw_SetPointCenter(work->pointTask2, &point1);
+                    K_Draw_SetPointCenter(work->pointTask1, point0);
+                    K_Draw_SetPointCenter(work->pointTask2, point1);
                 }
             }
             break;
@@ -688,8 +697,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
 
 filter_done:
     K_Draw_SetCylinderDrawEnabled(cameraTask->child, (work->flags & 0x80000000) != 0);
-    cameraPos = *K_FldCamera_GetPos(cameraTask);
-    K_Draw_SetCylinderCenter(cameraTask->child, &cameraPos);
+    K_Draw_SetCylinderCenter(cameraTask->child, K_FldCamera_GetPos(cameraTask));
     K_Draw_SetCylinderRadius(cameraTask->child, work->xzDeadZone);
     K_Draw_SetCylinderHeight(cameraTask->child, work->yDeadZone);
     return KWLNTASK_CONTINUE;

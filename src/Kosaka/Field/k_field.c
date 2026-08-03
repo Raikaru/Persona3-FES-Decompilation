@@ -9,7 +9,7 @@
 #include "Main/g_data.h"
 #include "rw/rprandom.h"
 extern u32 DAT_008717e8;
-extern u32 DAT_008717f0;
+extern u8 DAT_008717f0[];
 extern u32 DAT_008717f4;
 extern f32 fGpffff844c;
 extern f32 fGpffff8450;
@@ -89,6 +89,9 @@ extern RwMatrix* FUN_00318b60(void* model);
 extern u32 FUN_001d5a90(KwlnTask* task);
 extern void func_001d8cb0(void);
 extern u32 DAT_007ce24c;
+#pragma alias DAT_007ce24c_abs DAT_007ce24c
+extern u8 DAT_007ce24c_abs[];
+extern u8 DAT_007cc2a0[];
 extern u32 K_FldDungeon_GetCurrentFloor(void);
 extern s16 FUN_0016DD60(s32 index);
 typedef struct DungeonPattern DungeonPattern;
@@ -347,11 +350,11 @@ void func_001b9140(u16 majorId, u16 minorId)
             cameraMatrix = (RwMatrix*)func_004cb2f0(
                 kwlnGetMainCamera()->object.object.parent);
             cameraPosition = cameraMatrix->pos;
-            delta.x = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.x -
+            delta.x = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(DAT_008717f0)))->pos.x -
                       cameraPosition.x;
-            delta.y = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.y -
+            delta.y = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(DAT_008717f0)))->pos.y -
                       cameraPosition.y;
-            delta.z = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.z -
+            delta.z = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(DAT_008717f0)))->pos.z -
                       cameraPosition.z;
             distance = RwV3dLength(&delta);
             if (distance < 720.0f)
@@ -482,7 +485,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                              (s16)work->majorId) != 0)
             {
                 ROOT_U32(work, 0x28) = 0;
-                FIELD_U32(0x007ce24c) = 0;
+                FIELD_U32(DAT_007ce24c_abs) = 0;
                 if (ROOT_U32(work, 0x38) == 0 &&
                     FIELD_U32(D_0086AFA8) != 0)
                 {
@@ -545,7 +548,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 ROOT_U32(work, 0x24) = 0;
                 if (MT_Scene_TryLoadFinish() != 0)
                 {
-                    FIELD_U32(0x007ce24c) = 3;
+                    FIELD_U32(DAT_007ce24c_abs) = 3;
                     if (ROOT_U32(work, 0x38) == 0 &&
                         FIELD_U32(D_0086AFA8) != 0)
                     {
@@ -619,7 +622,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             break;
 
         case 8:
-            FIELD_U32(0x007ce24c) = 1;
+            FIELD_U32(DAT_007ce24c_abs) = 1;
             if (ROOT_U32(work, 0x38) == 0 && FIELD_U32(D_0086AFA8) != 0)
             {
                 if ((work->majorId < 0x14 ||
@@ -666,7 +669,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             if (ROOT_U32(work, 0x38) != 0 || request == 0 ||
                 kwlnTaskExists((KwlnTask*)request) != 1)
             {
-                FIELD_U32(0x00869f7c) =
+                FIELD_U32(D_00869F78 + 0x04) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)FIELD_U32(0x008717f4) + 0x1e0));
                 FUN_0016f1f0(0x1411, 0);
                 FIELD_U32(D_00869F84) = (u32)FUN_001d36f0(fldRootTask);
@@ -689,7 +692,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     ROOT_U32(work, 0x48) = FUN_004579b0(fldRootTask);
                 }
                 FIELD_U32(D_00869F78) =
-                    FUN_00429d40(fldRootTask, FIELD_U32(0x007cc2a0));
+                    FUN_00429d40(fldRootTask, FIELD_U32(DAT_007cc2a0));
                 ROOT_U32(work, 0) = 0x0a;
             }
             /* fall through */
@@ -744,7 +747,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
         case 11:
             if (FUN_00108710() != 0)
             {
-                FIELD_U32(0x007ce24c) = 2;
+                FIELD_U32(DAT_007ce24c_abs) = 2;
                 if (FIELD_U32(D_0086AFA8) != 0)
                 {
                     if ((work->majorId < 0x14 ||
@@ -811,9 +814,9 @@ void* func_001b9480(KwlnTask* fldRootTask)
             FUN_001da000(FIELD_U32(D_00869F80), 0);
             FUN_004532d0(0);
             FUN_004350e0(0, 0);
-            if (FIELD_U32(0x00869f78) != 0 && FIELD_U32(0x00869f74) == 0)
+            if (FIELD_U32(D_00869F78) != 0 && FIELD_U32(D_00869F78 - 0x04) == 0)
             {
-                FUN_00429e80(FIELD_U32(0x00869f78), 1);
+                FUN_00429e80(FIELD_U32(D_00869F78), 1);
             }
             if (FIELD_U32(D_00869F88) != 0)
             {
@@ -869,7 +872,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 FUN_001d5f30(FIELD_U32(D_00869F64),
                              *(u32*)(void*)FIELD_U32(0x008717f4));
                 FUN_001d6270(fldRootTask, 1, -1);
-                FIELD_U32(0x007ce24c) = 1;
+                FIELD_U32(DAT_007ce24c_abs) = 1;
                 if (FIELD_U32(D_0086AFA8) != 0)
                 {
                     ROOT_U32(work, 0x40) =
@@ -884,7 +887,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
             request = ROOT_U32(work, 0x40);
             if (request == 0 || kwlnTaskExists((KwlnTask*)request) != 1)
             {
-                FIELD_U32(0x00869f7c) =
+                FIELD_U32(D_00869F78 + 0x04) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)FIELD_U32(0x008717f4) + 0x1e0));
                 func_001b9140(work->majorId, work->minorId);
                 FUN_001085c0();

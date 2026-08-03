@@ -1781,7 +1781,7 @@ u32 func_001c5400()
 // FUN_001c5460
 u32 K_Cmd_GET_BGM()
 {
-    scrSetIntReturnVal(H_Snd_GetCurrentBgmId());
+    scrSetIntReturnVal(func_001099a0());
 
     return true;
 }
@@ -1792,7 +1792,7 @@ u32 K_Cmd_PLAY_BGM()
     s16 currBgm;
     s32 reqBgm;
 
-    currBgm = H_Snd_GetCurrentBgmId();
+    currBgm = func_001099a0();
 
     if (currBgm != scrGetIntPara(0))
     {

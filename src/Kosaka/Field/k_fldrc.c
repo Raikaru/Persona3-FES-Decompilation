@@ -51,6 +51,7 @@ extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70
 extern f32 DAT_00678f70_abs[];
 extern char D_00678E30[];
+extern char D_00678FF0[];
 typedef struct FldrcColor
 {
     f32 value[3];
@@ -241,6 +242,7 @@ extern char D_00679030_abs[];
 #pragma alias D_00679040_abs D_00679040
 extern char D_00679040_abs[];
 extern char D_00679040[];
+extern char D_00679010[];
 extern char D_00679060[];
 extern char D_00678DA0[];
 extern char D_00678DC0[];
@@ -254,6 +256,15 @@ extern char D_00678E50_abs[];
 extern char D_00678E70_abs[];
 #pragma alias D_00678E90_abs D_00678E90
 extern char D_00678E90_abs[];
+extern char D_00678EB0[];
+extern char D_00678EC8[];
+extern char D_00678ED8[];
+extern char D_00678EE8[];
+extern char D_00678EF8[];
+extern char D_00678F08[];
+extern char D_00678F18[];
+extern char D_00678F30[];
+extern char D_00678F40[];
 extern char D_00678E50[];
 extern char D_00678E70[];
 extern char D_00678E90[];
@@ -522,7 +533,7 @@ static inline void fldrc_apply_field_config(u32 config)
     }
     if (version < 0x10004)
     {
-        FUN_001a1540(0, 0, 0x178, 0x678ff0);
+        FUN_001a1540(0, 0, 0x178, D_00678FF0);
     }
 }
 static u32 fldrc_event_override(u16 group, u32 id)
@@ -2059,16 +2070,16 @@ void FUN_001b3480(u32 resource)
     for (group = 0; group < *(u32*)(resource + 0x14); group++)
     {
         entry = resource + group * 4;
-        count = FUN_001a6c00(*(u32*)(entry + 0x18), 0x678e50);
+        count = FUN_001a6c00(*(u32*)(entry + 0x18), D_00678E50_abs);
         for (i = 0; i < count; i++)
         {
-            FUN_001a6e90(&query[0], *(u32*)(entry + 0x18), 0x678eb0, i);
+            FUN_001a6e90(&query[0], *(u32*)(entry + 0x18), D_00678EB0, i);
             active = query[0];
             if (active == 0)
             {
                 continue;
             }
-            FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), 0x678e70, i);
+            FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), D_00678E70_abs, i);
             id = query[1];
             if (id == 0)
             {
@@ -2077,24 +2088,24 @@ void FUN_001b3480(u32 resource)
             *(u16*)(resource +
                     *(u32*)(resource + 0x118) * 0x18 + 0x120) =
                 (u16)id;
-            FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), 0x678e90, i);
+            FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), D_00678E90_abs, i);
             overlay = query[2];
             if (overlay != 0)
             {
                 *(u16*)(resource +
                         *(u32*)(resource + 0x118) * 0x18 + 0x11e) = 2;
             }
-            FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), 0x678e50, i);
+            FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), D_00678E50_abs, i);
             mode = query[3];
             if (mode == 0)
             {
                 if (iGpffffb470 == 0)
                 {
-                    FUN_00524270(path, 0x678ec8);
+                    FUN_00524270(path, D_00678EC8);
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678ed8, id);
+                    FUN_00523ac8(token, D_00678ED8, id);
                     FUN_00523e68(path, token);
                     *(u32*)(resource +
                             *(u32*)(resource + 0x118) * 0x18 + 0x128) =
@@ -2102,11 +2113,11 @@ void FUN_001b3480(u32 resource)
                 }
                 else
                 {
-                    FUN_00524270(path, 0x678ee8);
+                    FUN_00524270(path, D_00678EE8);
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678ed8, id);
+                    FUN_00523ac8(token, D_00678ED8, id);
                     FUN_00523e68(path, token);
                     metadata = 0;
                     stream = FUN_001021c0(path, &metadata);
@@ -2119,11 +2130,11 @@ void FUN_001b3480(u32 resource)
             {
                 if (iGpffffb470 == 0)
                 {
-                    FUN_00524270(path, 0x678ef8);
+                    FUN_00524270(path, D_00678EF8);
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678f08, id);
+                    FUN_00523ac8(token, D_00678F08, id);
                     FUN_00523e68(path, token);
                     *(u32*)(resource +
                             *(u32*)(resource + 0x118) * 0x18 + 0x130) =
@@ -2137,11 +2148,11 @@ void FUN_001b3480(u32 resource)
                 }
                 else
                 {
-                    FUN_00524270(path, 0x678f18);
+                    FUN_00524270(path, D_00678F18);
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, 0x678f08, id);
+                    FUN_00523ac8(token, D_00678F08, id);
                     FUN_00523e68(path, token);
                     metadata = 0;
                     *(u32*)(resource +
@@ -2151,15 +2162,15 @@ void FUN_001b3480(u32 resource)
             }
             else if (mode == 2)
             {
-                FUN_00524270(path, 0x678f30);
-                FUN_00523ac8(token, 0x678ed8, id);
+                FUN_00524270(path, D_00678F30);
+                FUN_00523ac8(token, D_00678ED8, id);
                 FUN_00523e68(path, token);
                 fieldId = (id + 1000) & 0xffff;
                 *(u32*)(resource +
                         *(u32*)(resource + 0x118) * 0x18 + 0x128) =
                     FUN_00316b40(4, fieldId, path, 0);
             }
-            FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), 0x678f40, i);
+            FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), D_00678F40, i);
             flags = query[4];
             if (mode == 0)
             {
@@ -3402,11 +3413,11 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
         return 1;
     }
 
-    FUN_00523ac8(path, 0x679010, *PTR_DAT_007cd540, archiveEntry);
+    FUN_00523ac8(path, D_00679010, *PTR_DAT_007cd540, archiveEntry);
     current = (s32)*PTR_DAT_007cd540;
     if ((current > 0x32) && (current < 0x3b))
     {
-        FUN_00523ac8(path, 0x679010, current - 0x1e, 0);
+        FUN_00523ac8(path, D_00679010, current - 0x1e, 0);
     }
     config = FUN_001021c0(path, path);
     if (config != 0)

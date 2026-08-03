@@ -2144,10 +2144,8 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
             if (unit->genus != 1) return -1;
             switch (unit->charId)
             {
-                case 0x101:
-                    return (s32)DAT_00699C20[index];
-                case 0x102:
-                    return (s32)DAT_00699C3A[index];
+                case 0x103:
+                    return (s32)DAT_00699C90[index];
             }
             return -1;
         }
@@ -2156,8 +2154,10 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
             if (unit->genus != 1) return -1;
             switch (unit->charId)
             {
-                case 0x103:
-                    return (s32)DAT_00699C90[index];
+                case 0x101:
+                    return (s32)DAT_00699C20[index];
+                case 0x102:
+                    return (s32)DAT_00699C3A[index];
             }
             return -1;
         }

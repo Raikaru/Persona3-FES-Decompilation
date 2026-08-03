@@ -30,6 +30,7 @@ extern s32 func_001c0040(void);
 extern u32 RpRandom(void);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
+extern u8 DAT_008717e8[];
 extern u8* DAT_007ce4ac;
 extern u8* DAT_007ce4b0;
 extern u8* DAT_007ce4b4;
@@ -166,7 +167,7 @@ extern void FUN_001d59e0(KwlnTask* cameraTask);
 #pragma alias memset_y2 memset
 
 
-#define CAMERA_DATA_U32(address) (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32*)(uintptr_t)(address))
+#define CAMERA_DATA_U32(address) (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32*)(DAT_008717e8 + ((address) - 0x008717e8)))
 #define CAMERA_FIELD_IDS (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32**)(uintptr_t)0x007cd540)
 #define CAMERA_UP_AXIS ((const RwV3d*)(uintptr_t)0x00683a98)
 
@@ -207,6 +208,7 @@ extern void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 extern void FUN_004cb890(RwFrame* frame, f32 amount, const RwV3d* axis, u32 mode);
 extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode);
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
+extern void thunk_FUN_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern s32 func_00530da0(f32 value);
 extern s32 func_0052e118(s32 value);
 extern s32 func_0045ec00(s32 left, s32 right);
@@ -607,7 +609,7 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
         }
         else
         {
-            FUN_0019d3f0((const char*)(uintptr_t)0x00683a78, 0x34e);
+            FUN_0019d3f0(D_00683A78, 0x34);
         }
     }
     else
@@ -961,7 +963,7 @@ void func_001d70a0(void)
     }
 
     K_View_SetFov(kwlnGetMainCamera(), resource->fov);
-    func_004c2330(&matrix, resource->matrix);
+    thunk_FUN_004c2330(&matrix, resource->matrix);
     FUN_004cb7f0((RwFrame*)kwlnGetMainCamera()->object.object.parent,
                  &matrix, 0);
     func_001d5c10(K_Field_Get()->cameraCtlTask, resource->type);

@@ -357,6 +357,7 @@ extern void (*DAT_0096017c[])(void*);
 extern u32 DAT_0096017c_abs[];
 extern u8 D_0086B180[];
 extern u8 D_008717A0[];
+extern u8 DAT_00871948[];
 extern RwV3d D_008717D0;
 extern u8 DAT_0086be80[0x2700];
 #pragma alias DAT_0086eda0_units DAT_0086eda0
@@ -370,6 +371,8 @@ extern u32 gFldScrSize;
 extern u32 DAT_007ce294;
 extern u32 D_007CE284;
 extern u32 D_007CE23C;
+extern u8 DAT_007ce238[];
+extern u8 DAT_007ce210[];
 extern u32 D_007CE274;
 #pragma alias D_008717E8_abs D_008717E8
 extern u8 D_008717E8_abs[];
@@ -2076,7 +2079,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                             currentActor = PTR_S32((void*)PTR_U32((void*)npc, 0x1fc), 0x70);
                             if (currentActor != -1)
                             {
-                                EVENT_WORD(0x18) = FUN_0035bc00(10, D_007CE23C, DATA_U32(0x007ce238), currentActor);
+                                EVENT_WORD(0x18) = FUN_0035bc00(10, D_007CE23C, DATA_U32(DAT_007ce238), currentActor);
 
                                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
@@ -2440,7 +2443,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 EVENT_WORD(9) = (model != 0 && FUN_002ff790(PTR_U32((void*)model, 0x48)) != true) ? model : 0;
                 if (EVENT_WORD(9) != 0)
                 {
-                    if (DATA_U32(0x007ce210) == 0)
+                    if (DATA_U32(DAT_007ce210) == 0)
                     {
                         FUN_001d37f0((KwlnTask*)FIELD_WORD(0x24), true);
                         FUN_004532d0(true);
@@ -2555,10 +2558,10 @@ case8_teardown:
                 {
                     for (i = 0; i < 9; i++)
                     {
-                        if (((u32*)0x0086bdc0)[i] != 0)
+                        if (((u32*)DAT_0086bdc0)[i] != 0)
                         {
-                            FUN_001b3c90(((u32*)0x0086bdc0)[i]);
-                            ((u32*)0x0086bdc0)[i] = 0;
+                            FUN_001b3c90(((u32*)DAT_0086bdc0)[i]);
+                            ((u32*)DAT_0086bdc0)[i] = 0;
                         }
                     }
                 }
@@ -2638,8 +2641,8 @@ case8_teardown:
                         {
                             if (*(u32*)(D_008717A0 + i * 0x1c0 + 0x48) != 0 && FUN_002ff790(*(u32*)(D_008717A0 + i * 0x1c0 + 0x48)) == true && FUN_0016f190(0xc21) == true)
                             {
-                                FUN_0016cf40(*(u16*)((u8*)0x00871948 + i * 0x1c0));
-                                FUN_0016d9d0(*(u16*)((u8*)0x00871948 + i * 0x1c0), 0x80000);
+                                FUN_0016cf40(*(u16*)(DAT_00871948 + i * 0x1c0));
+                                FUN_0016d9d0(*(u16*)(DAT_00871948 + i * 0x1c0), 0x80000);
                             }
                         }
                         FUN_001c03f0();
@@ -2768,7 +2771,7 @@ case8_teardown:
             else
             {
                 FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 7, true);
-                FUN_005225a8(0x00683750, (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0));
+                FUN_005225a8(D_00683730 + 0x20, (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0));
             }
             if (FUN_003c7850() == false)
             {

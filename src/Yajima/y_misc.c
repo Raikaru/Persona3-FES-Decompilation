@@ -2442,7 +2442,7 @@ u32 FUN_00419790(int param_1,int param_2)
 
   RwMatrixTranslate((void*)auStack_70,(void*)&uStack_10,2);
 
-  RwMatrixMultiply((void*)auStack_70,(void*)auStack_70,(void*)iVar3);
+  FUN_004c2f30((void*)auStack_70,(void*)auStack_70,(void*)iVar3);
 
   mdl00318a70(*(u32 *)(iVar2 + 8),auStack_70,0);
 
@@ -2583,13 +2583,13 @@ u32 FUN_00419a70(u64 param_1,int *param_2)
 
   if (*(int *)(iVar1 + 0xc) != 0) {
 
-    H_Fade_FadeIn();
+    H_Fade_FadeOut();
 
   }
 
   else {
 
-    H_Fade_FadeOut();
+    H_Fade_FadeIn();
 
   }
 
@@ -30467,6 +30467,7 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
   YRuntimeUnitRow *selfRow;
   YRuntimeUnitRow *targetRow;
   YRuntimeUnitRow *loopRow;
+  YRuntimeUnitRow *rowBase;
   u64 uVar14;
   u64 uVar15;
   YVec3f target;
@@ -30474,7 +30475,8 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
   YVec3f midpoint;
   
   cVar13 = (char)param_2;
-  selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
+  rowBase = DAT_008717a0_unit_rows;
+  selfRow = &rowBase[(int)cVar13];
   iVar1 = *(int *)((u8 *)selfRow->unit + 0x3c);
   iVar11 = 1;
   cVar10 = (char)param_3;
@@ -30482,7 +30484,7 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
     if (3 < (long)iVar11) {
       sVar4 = FUN_0043bda0(param_2,param_3);
       if (sVar4 != -1) {
-        targetRow = &DAT_008717a0_unit_rows[(int)cVar10];
+        targetRow = &rowBase[(int)cVar10];
         FUN_001ad940(&target,*(u32 *)((u8 *)targetRow->unk_054 + 0x1e0));
         uVar14 = 0xffffffffffffffff;
         FUN_00318ed0_typed(*(u32 *)((u8 *)targetRow->unk_054 + 0x128),2,(float *)(&origin));
@@ -30531,7 +30533,7 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
       return;
     }
     bVar2 = 0;
-    loopRow = &DAT_008717a0_unit_rows[iVar11];
+    loopRow = &rowBase[iVar11];
     if ((loopRow->unk_048 != 0) && (loopRow->unk_054 != 0)) {
       bVar2 = 1;
     }

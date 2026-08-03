@@ -473,7 +473,7 @@ void func_0027a6a0(u32* work, char* text, s32 align)
                 {
                     u32 handle = func_003b0970(token, style, (s8)mode, 0, 0);
                     frFontSetTextScale(handle, 0.0f);
-                    func_003b0e54(handle, 0xffffffff);
+                    thunk_FUN_003b0e54(handle, 0xffffffff);
                     *(u32*)((u8*)work + count * 8 + 8) = handle;
                     *(f32*)((u8*)work + 4 + count * 8) = width;
                     count++;
@@ -540,7 +540,7 @@ void func_0027aa00(u32* work, const u8* color)
     packed = (u32)color[0] << 24 | (u32)color[1] << 16 |
              (u32)color[2] << 8 | (u32)color[3];
     for (i = 0; i < (s32)work[0x84 / 4]; i++) {
-        func_003b0e54(*(u32*)((u8*)work + i * 8 + 8), packed);
+        thunk_FUN_003b0e54(*(u32*)((u8*)work + i * 8 + 8), packed);
     }
 }
 

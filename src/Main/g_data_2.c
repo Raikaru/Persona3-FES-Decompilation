@@ -685,6 +685,11 @@ extern s8* puGpffffb704;
 extern u8 D_0083A6FC[];
 extern u8 DAT_0083a6ec[];
 extern u8 DAT_00836794[];
+extern u8 D_008367A7[];
+extern u8 D_0083A734[];
+extern u8 D_0083A834[];
+extern u8 D_0083A8C4[];
+extern u8 D_0083A8F0[];
 extern u8 DAT_0083a598[];
 extern u8 DAT_00836268[];
 extern u8 DAT_0083a47c[];
@@ -740,42 +745,42 @@ typedef struct DateRecord
 
 static ResourceEntry* resource_entries(void)
 {
-    return (ResourceEntry*)PTRP(0x00836794);
+    return (ResourceEntry*)PTRP(DAT_00836794 + 0);
 }
 
 static s16* resource_levels(void)
 {
-    return (s16*)PTRP(0x00836798);
+    return (s16*)PTRP(DAT_00836794 + 4);
 }
 
 static u8* compendium_record(s32 id)
 {
-    return PTR8(0x00836e1c) + id * 0x34;
+    return PTR8(DAT_00836e1c) + id * 0x34;
 }
 
 static u8* code_list(void)
 {
-    return PTR8(0x008367a7);
+    return PTR8(D_008367A7);
 }
 
 static u32* bit_list(void)
 {
-    return PTR32(0x0083a8c4);
+    return PTR32(D_0083A8C4);
 }
 
 static u32* pair_bits(void)
 {
-    return PTR32(0x0083a8f0);
+    return PTR32(D_0083A8F0);
 }
 
 static PairCounter* pair_counters(void)
 {
-    return (PairCounter*)PTR8(0x0083a734);
+    return (PairCounter*)PTR8(D_0083A734);
 }
 
 static DateRecord* date_records(void)
 {
-    return (DateRecord*)PTR8(0x0083a834);
+    return (DateRecord*)PTR8(D_0083A834);
 }
 
 static s32 bit_index(s32 value)
@@ -929,7 +934,7 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     header[9] = (U32(DAT_0083a47c) & 0x2000000) != 0 ? 2 :
                 ((U32(DAT_0083a47c) & 0x20000) != 0 ? 1 : 0);
     header[10] = (u8)FUN_0017d7b0();
-    header[11] = (u8)U32(0x0083a6ec);
+    header[11] = (u8)U32(DAT_0083a6ec + 0);
     for (i = 0; i < 0x12; i++)
         header[0x0c + i] = DAT_00836200[i];
     for (i = 0; i < 0x12; i++)
@@ -1124,10 +1129,10 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
             if (size == 8) FUN_00521250(DAT_00836212 + 0x57a, data, 8);
             break;
         case 6:
-            if (size == 6000) FUN_00521250(PTRP(0x00836794), data, size);
+            if (size == 6000) FUN_00521250(PTRP(DAT_00836794 + 0), data, size);
             break;
         case 7:
-            if (size == 600) FUN_00521250(PTRP(0x00836798), data, size);
+            if (size == 600) FUN_00521250(PTRP(DAT_00836794 + 4), data, size);
             break;
         case 8:
             if (size == 2) FUN_00521250(DAT_00836212 + 0x58a, data, size);

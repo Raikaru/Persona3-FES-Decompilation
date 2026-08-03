@@ -2326,23 +2326,6 @@ void func_0010ec50(KwlnTask* task)
             record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
             if (record->command != -1)
             {
-                if ((record->command == 2) && (draw == 0))
-                {
-                    draw = 1;
-                    func_004a62e0(*(void**)(entry + 0x148),
-                                  typedWork->runtimeResources[colorState]);
-                    out0 = 0;
-                    zero = *(f32*)((u8*)work - 0x7cf8);
-                    out1 = zero;
-                    out2 = zero;
-                    out3 = zero;
-                    out4 = zero;
-                    out5 = 0;
-                    out6 = 0;
-                    out7 = 0;
-                    func_004a6200_y2(*(void**)(entry + 0x148),
-                                     &out0, &out2, &out4, &out6);
-                }
 
                 frames = *(u8**)(entry + 8);
                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
@@ -2430,6 +2413,23 @@ void func_0010ec50(KwlnTask* task)
                         break;
 
                     case 2:
+                        if ((record->command == 2) && (draw == 0))
+                        {
+                            draw = 1;
+                            func_004a62e0(*(void**)(entry + 0x148),
+                                          typedWork->runtimeResources[colorState]);
+                            out0 = 0;
+                            zero = *(f32*)((u8*)work - 0x7cf8);
+                            out1 = zero;
+                            out2 = zero;
+                            out3 = zero;
+                            out4 = zero;
+                            out5 = 0;
+                            out6 = 0;
+                            out7 = 0;
+                            func_004a6200_y2(*(void**)(entry + 0x148),
+                                             &out0, &out2, &out4, &out6);
+                        }
                         *(s32*)(entry + 0x288) = record->type;
                         frames = *(u8**)(entry + 8);
                         frameOffset = (u32)(frame * 0x12);
@@ -5420,8 +5420,6 @@ void func_00115350(f32 depth,
                 v->u.els.color.b = tmpB + tmpB;
             }
             v->u.els.color.a = alpha0f;
-            v->u.els.scrVertex.x = points[0][0];
-            v->u.els.scrVertex.y = points[0][1];
             break;
         case 1:
             v->u.els.scrVertex.z = z;
@@ -5442,8 +5440,6 @@ void func_00115350(f32 depth,
                 v->u.els.color.b = tmpB + tmpB;
             }
             v->u.els.color.a = alpha1f;
-            v->u.els.scrVertex.x = points[1][0];
-            v->u.els.scrVertex.y = points[1][1];
             break;
         case 2:
             v->u.els.scrVertex.z = z;
@@ -5464,8 +5460,6 @@ void func_00115350(f32 depth,
             }
             v->u.els.color.b = blue;
             v->u.els.color.a = alpha2f;
-            v->u.els.scrVertex.x = points[2][0];
-            v->u.els.scrVertex.y = points[2][1];
             break;
         case 3:
             v->u.els.scrVertex.z = z;
@@ -5474,10 +5468,14 @@ void func_00115350(f32 depth,
             v->u.els.color.g = (f32)(u32)g;
             v->u.els.color.b = blue;
             v->u.els.color.a = alpha3f;
-            v->u.els.scrVertex.x = points[3][0];
-            v->u.els.scrVertex.y = points[3][1];
             break;
     }
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.x = points[i][0];
+        vertices[i].u.els.scrVertex.y = points[i][1];
     }
 
     (*setState)(1, 0);
@@ -6541,12 +6539,6 @@ u32 func_001167f0(u32 param_1)
 
       break;
 
-    case 8:
-
-      FUN_00523ac8(auStack_110,0x5d6d80);
-
-      break;
-
     case 9:
 
       lVar4 = FUN_0017d800();
@@ -6564,6 +6556,12 @@ u32 func_001167f0(u32 param_1)
       }
 
       break;
+    case 8:
+
+      FUN_00523ac8(auStack_110,0x5d6d80);
+
+      break;
+
 
     case 10:
 
@@ -6639,12 +6637,6 @@ u32 func_001167f0(u32 param_1)
 
         break;
 
-      case 8:
-
-        uStack_a = 5;
-
-        break;
-
       case 9:
 
         lVar4 = FUN_0017d800();
@@ -6662,6 +6654,12 @@ u32 func_001167f0(u32 param_1)
         }
 
         break;
+      case 8:
+
+        uStack_a = 5;
+
+        break;
+
 
       case 10:
 
@@ -6696,6 +6694,10 @@ u32 func_001167f0(u32 param_1)
       *puVar1 = 3;
 
     }
+
+    break;
+
+  case 3:
 
     break;
 
@@ -6736,6 +6738,7 @@ u32 func_001167f0(u32 param_1)
       return 0xffffffff;
 
     }
+
 
   }
 
@@ -7479,6 +7482,8 @@ void* func_001193d0(KwlnTask* task)
     MaestroMarkSpriteWork* work;
     s32 duration;
     s32 scale;
+    MaestroRenderNode* node;
+
 
     work = (MaestroMarkSpriteWork*)task->workData;
     switch (work->state)
@@ -7511,7 +7516,6 @@ void* func_001193d0(KwlnTask* task)
             duration = work->animation.endFrame - work->animation.startFrame;
             scale = 0x34cc - (0x24cc * (work->animation.frame - work->animation.startFrame)) / duration;
             {
-                MaestroRenderNode* node;
                 node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
                 node->depth = work->animation.depth;
                 node->x = work->animation.x;
@@ -7536,7 +7540,6 @@ void* func_001193d0(KwlnTask* task)
     case 2:
         work->frame++;
         {
-            MaestroRenderNode* node;
             node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
             node->depth = work->animation.depth;
             node->x = work->animation.x;
@@ -7558,7 +7561,6 @@ void* func_001193d0(KwlnTask* task)
     case 3:
         work->frame++;
         {
-            MaestroRenderNode* node;
             node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
             node->depth = work->animation.depth;
             node->x = work->animation.x;
@@ -7580,7 +7582,6 @@ void* func_001193d0(KwlnTask* task)
     case 4:
         work->frame++;
         {
-            MaestroRenderNode* node;
             node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
             node->depth = work->animation.depth;
             node->x = work->animation.x;

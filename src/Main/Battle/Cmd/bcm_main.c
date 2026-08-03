@@ -3436,7 +3436,7 @@ void FUN_00205000(void)
             slot = work + i * 8;
             *(u32*)(slot + 0x370) = handle;
             handle = func_003b0970(
-                ((u32*)0x00684efc)[*(u32*)(row + 0x10) - 1],
+                DAT_00684efc[*(u32*)(row + 0x10) - 1],
                 2, alpha, 0, 0);
             func_003b2c60(handle, 0.0f);
             func_003b0e20(handle, -1);
@@ -4076,18 +4076,17 @@ void FUN_00206740(void)
     for (mode = 0; mode < 3; mode++)
     {
         row = (u32*)(work + 0x408 + count * 4);
-        if (mode == 0)
+        switch (mode)
         {
+        case 0:
             *row = 0;
             count++;
-        }
-        else if (mode == 1)
-        {
+            break;
+        case 1:
             *row = 1;
             count++;
-        }
-        else if (mode == 2)
-        {
+            break;
+        case 2:
             if (*(u32*)(work + 0x20) == 1)
             {
                 persona = datPersonaGetByPcId(6);
@@ -4104,6 +4103,7 @@ void FUN_00206740(void)
                     count++;
                 }
             }
+            break;
         }
     }
     *(u32*)(work + 0x420) = count;

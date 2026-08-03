@@ -546,6 +546,27 @@ void func_002392d0(void)
      * State 1 has six independently animated title panels.  Retail lays
      * these out in this non-address order (the first two are the top pair).
      */
+    if (work[3] == 2 || work[3] == 3 || work[3] == 4) {
+        panelScale = normFade;
+        rect[0] = 0.0f;
+        rect[1] = 220.0f;
+        rect[2] = 640.0f;
+        rect[3] = 238.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x4610), rect);
+        color.a = (u8)(panelScale * 0.2f * 255.0f);
+        func_0021d950(GROUND_PTR(work, 0x4610), &color);
+    }
+    if (work[3] == 3 || work[3] == 4) {
+        panelScale = normFade;
+        panelPhase = 1.0f - panelScale;
+        rect[0] = 0.0f;
+        rect[1] = 206.0f + panelPhase * 40.0f;
+        rect[2] = 640.0f;
+        rect[3] = 223.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x4710), rect);
+        color.a = (u8)(panelScale * 0.4f * 255.0f);
+        func_0021d950(GROUND_PTR(work, 0x4710), &color);
+    }
     if (work[3] == 1 && (work[0] & 1) != 0) {
         if ((s32)work[1] < 4)
             panelPhase = (f32)work[1] / 4.0f;
@@ -813,27 +834,6 @@ void func_002392d0(void)
             }
         }
     }
-    if (work[3] == 2 || work[3] == 3 || work[3] == 4) {
-        panelScale = normFade;
-        rect[0] = 0.0f;
-        rect[1] = 220.0f;
-        rect[2] = 640.0f;
-        rect[3] = 238.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x4610), rect);
-        color.a = (u8)(panelScale * 0.2f * 255.0f);
-        func_0021d950(GROUND_PTR(work, 0x4610), &color);
-    }
-    if (work[3] == 3 || work[3] == 4) {
-        panelScale = normFade;
-        panelPhase = 1.0f - panelScale;
-        rect[0] = 0.0f;
-        rect[1] = 206.0f + panelPhase * 40.0f;
-        rect[2] = 640.0f;
-        rect[3] = 223.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x4710), rect);
-        color.a = (u8)(panelScale * 0.4f * 255.0f);
-        func_0021d950(GROUND_PTR(work, 0x4710), &color);
-    }
 
     /*
      * The six narrow strips are the final transition layer.  Retail
@@ -979,15 +979,9 @@ void func_0023b990(void)
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     stateTable = (const u32*)D_00960090_abs;
-    drawTable = (const u32*)D_0096009C_abs;
-    
-    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
-    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
-    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
-    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
 
     state = work[3];
@@ -1001,11 +995,10 @@ void func_0023b990(void)
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflResGetGroundRaster(0));
+        drawTable = (const u32*)D_0096009C_abs;
         for (i = 0; i < 6; i++) {
             void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
-            drawTable = (const u32*)D_0096009C_abs;
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 1, 2);
-            drawTable = (const u32*)D_0096009C_abs;
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 2, 3);
         }
         break;
@@ -1025,6 +1018,7 @@ void func_0023b990(void)
     if (state >= 1 && state <= 5) {
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflResGetGroundRaster(2));
+        drawTable = (const u32*)D_0096009C_abs;
         for (i = 0; i < 48; i++) {
             u8* particle = (u8*)work + 0xd10 + i * SFL_GROUND_PARTICLE_STRIDE;
             if ((GROUND_U32(particle, 0) & 1) != 0) {
@@ -1037,11 +1031,8 @@ void func_0023b990(void)
                     RpSkyRenderStateSet(2, 0x48);
                 }
                 if (particleType <= 2) {
-                    
-                    drawTable = (const u32*)D_0096009C_abs;
                     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                         particle + 0x10, 4, 0, 1, 2);
-                    drawTable = (const u32*)D_0096009C_abs;
                     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                         particle + 0x10, 4, 0, 2, 3);
                 }
@@ -1052,10 +1043,10 @@ void func_0023b990(void)
     switch (state) {
     case 3:
     case 4:
-        RpSkyRenderStateSet(3, 0x717fb);
-        RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflResGetEffectRaster(4));
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
         for (i = 0; i < 7; i++) {
             for (j = 0; j < 4; j++) {
                 drawTable = (const u32*)D_0096009C_abs;

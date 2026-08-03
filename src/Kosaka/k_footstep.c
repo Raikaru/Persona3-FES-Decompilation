@@ -160,6 +160,7 @@ extern u8 D_00960094_abs[];
 #pragma alias D_009600A0_abs D_009600A0
 extern u8 D_009600A0_abs[];
 extern Model* D_008717F0;
+extern u8 DAT_008717e8[];
 extern u32 D_00875A50[RESRC_ID_MASK + 1];
 extern u8 D_006791A0[];
 extern u8 D_0067B160[];
@@ -891,7 +892,7 @@ void* func_001dc6f0(KwlnTask* task)
         if (func_001a9180(work->eplTask) != 0)
         {
             RwV3d pos;
-            pos = mdlGetMatrix(*(Model**)0x008717F0)->pos;
+            pos = mdlGetMatrix(*(Model**)(DAT_008717e8 + 8))->pos;
             pos.y += 240.0f;
             func_001a9390(work->eplTask, func_001a91b0(work->eplTask, &pos), 5);
             work->timer = 0;
@@ -1383,9 +1384,12 @@ void func_001dd8e0(void)
 
         valid = 0;
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL)
+        if (unit->genusBase != NULL)
         {
-            valid = 1;
+            if (unit->resrc != NULL)
+            {
+                valid = 1;
+            }
         }
         if (0 < valid)
         {
@@ -2145,7 +2149,11 @@ footstep_case1_default_e630:
         {
             result = 1;
         }
-        else if (datGetFlag(0xC2F) == 1 || major == 33)
+        else if (datGetFlag(0xC2F) == 1)
+        {
+            result = 1;
+        }
+        else if (gMtScene->fldMajorId == 33)
         {
             result = 1;
         }
@@ -2157,7 +2165,11 @@ footstep_case1_default_e630:
 
     case 7:
         major = gMtScene->fldMajorId;
-        if ((major == 14 && gMtScene->fldMinorId == 5) || major == 33)
+        if (major == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        else if (major == 33)
         {
             result = 1;
         }
@@ -2168,9 +2180,27 @@ footstep_case1_default_e630:
         break;
 
     case 10:
+        major = gMtScene->fldMajorId;
+        if (major == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        else
+        {
+            result = 3;
+        }
+        break;
+
     case 13:
         major = gMtScene->fldMajorId;
-        result = (major == 14 && gMtScene->fldMinorId == 5) ? 1 : 3;
+        if (major == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        else
+        {
+            result = 3;
+        }
         break;
 
     case 6:
@@ -3014,9 +3044,9 @@ void* func_001dfa70(KwlnTask* task)
                 scratch.position[0] = frame->modelling.pos.x;
                 scratch.position[1] = frame->modelling.pos.y;
                 scratch.position[2] = frame->modelling.pos.z;
-                scratch.inverse[0] = -scratch.position[0];
-                scratch.inverse[1] = -scratch.position[1];
-                scratch.inverse[2] = -scratch.position[2];
+                scratch.inverse[0] = scratch.position[0] * -1.0f;
+                scratch.inverse[1] = scratch.position[1] * -1.0f;
+                scratch.inverse[2] = scratch.position[2] * -1.0f;
                 func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
                 func_004cb890(frame, 0.0f, rotationAxis, 0);
                 func_004cb750(frame, (RwV3d*)scratch.position, 2);
@@ -3029,9 +3059,9 @@ void* func_001dfa70(KwlnTask* task)
                 scratch.position[0] = frame->modelling.pos.x;
                 scratch.position[1] = frame->modelling.pos.y;
                 scratch.position[2] = frame->modelling.pos.z;
-                scratch.inverse[0] = -scratch.position[0];
-                scratch.inverse[1] = -scratch.position[1];
-                scratch.inverse[2] = -scratch.position[2];
+                scratch.inverse[0] = scratch.position[0] * -1.0f;
+                scratch.inverse[1] = scratch.position[1] * -1.0f;
+                scratch.inverse[2] = scratch.position[2] * -1.0f;
                 func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
                 func_004cb890(frame, 180.0f, rotationAxis, 0);
                 func_004cb750(frame, (RwV3d*)scratch.position, 2);
@@ -3044,9 +3074,9 @@ void* func_001dfa70(KwlnTask* task)
                 scratch.position[0] = frame->modelling.pos.x;
                 scratch.position[1] = frame->modelling.pos.y;
                 scratch.position[2] = frame->modelling.pos.z;
-                scratch.inverse[0] = -scratch.position[0];
-                scratch.inverse[1] = -scratch.position[1];
-                scratch.inverse[2] = -scratch.position[2];
+                scratch.inverse[0] = scratch.position[0] * -1.0f;
+                scratch.inverse[1] = scratch.position[1] * -1.0f;
+                scratch.inverse[2] = scratch.position[2] * -1.0f;
                 func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
                 func_004cb890(frame, 90.0f, rotationAxis, 0);
                 func_004cb750(frame, (RwV3d*)scratch.position, 2);
@@ -3059,9 +3089,9 @@ void* func_001dfa70(KwlnTask* task)
                 scratch.position[0] = frame->modelling.pos.x;
                 scratch.position[1] = frame->modelling.pos.y;
                 scratch.position[2] = frame->modelling.pos.z;
-                scratch.inverse[0] = -scratch.position[0];
-                scratch.inverse[1] = -scratch.position[1];
-                scratch.inverse[2] = -scratch.position[2];
+                scratch.inverse[0] = scratch.position[0] * -1.0f;
+                scratch.inverse[1] = scratch.position[1] * -1.0f;
+                scratch.inverse[2] = scratch.position[2] * -1.0f;
                 func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
                 func_004cb890(frame, 270.0f, rotationAxis, 0);
                 func_004cb750(frame, (RwV3d*)scratch.position, 2);
@@ -3132,9 +3162,9 @@ void* func_001dfa70(KwlnTask* task)
                 scratch.position[0] = frame->modelling.pos.x;
                 scratch.position[1] = frame->modelling.pos.y;
                 scratch.position[2] = frame->modelling.pos.z;
-                scratch.inverse[0] = -scratch.position[0];
-                scratch.inverse[1] = -scratch.position[1];
-                scratch.inverse[2] = -scratch.position[2];
+                scratch.inverse[0] = scratch.position[0] * -1.0f;
+                scratch.inverse[1] = scratch.position[1] * -1.0f;
+                scratch.inverse[2] = scratch.position[2] * -1.0f;
                 func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
                 func_004cb890(frame, angle, rotationAxis, 2);
                 func_004cb750(frame, (RwV3d*)scratch.translation, 2);

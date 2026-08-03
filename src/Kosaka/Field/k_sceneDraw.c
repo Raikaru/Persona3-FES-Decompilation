@@ -4,6 +4,7 @@
 #include "Kosaka/k_assert.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
+extern RwRGBA* func_001985d0(void);
 #include "Graphics/Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
@@ -15,6 +16,7 @@
 #include "h_dbprt.h"
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
+extern u8 DAT_00678ab8[];
 extern u32 D_00960184_y2[];
 extern void (*D_0096017c)(void* memory);
 #pragma alias D_00960090_abs D_00960090
@@ -1204,7 +1206,7 @@ void func_0019f8f0(const RwRGBAReal* color)
         func_001a0040(1, 1);
     }
 
-    clearColor = *kwlnGetClearColor();
+    clearColor = *func_001985d0();
     fogColor = ((u32)DAT_007ce0f4 << 24) |
                ((u32)DAT_007ce0e8 << 16) |
                ((u32)DAT_007ce0ec << 8) |
@@ -2008,9 +2010,13 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3d* up;
 
     up = &defaultUp;
-    *(s64*)&defaultUp = *(s64*)0x00678ab8;
-    defaultUp.z = *(f32*)0x00678ac0;
-    if (upVector != NULL)
+    *(s64*) &defaultUp = *(s64*)DAT_00678ab8;
+    defaultUp.z = *(f32*)(DAT_00678ab8 + 8);
+    if (upVector == NULL)
+    {
+        up = &defaultUp;
+    }
+    else
     {
         up = (RwV3d*)upVector;
     }

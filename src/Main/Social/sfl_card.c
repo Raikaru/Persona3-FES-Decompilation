@@ -2226,7 +2226,7 @@ void bpTexApplyGlobalAlpha(f32 amount, void* node)
     rgba.g = (u8)(((s32)((u8*)&color)[1] - 0xff) * amount + 255.0f);
     rgba.b = (u8)(((s32)((u8*)&color)[2] - 0xff) * amount + 255.0f);
     rgba.a = (u8)(((s32)((u8*)&color)[3] - 0xff) * amount + 255.0f);
-    bpTexCollect(node, leaves, &count);
+    bpTexCollectLeafPos(node, leaves, &count);
     for (i = 0; i < count; i++)
     {
         func_0020cc80(leaves[i], &rgba);

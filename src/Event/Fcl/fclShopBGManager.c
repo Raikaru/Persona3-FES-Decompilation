@@ -1477,7 +1477,23 @@ if (param_3 != 0) {
 
   sVar1 = *(short *)((int)param_3 + 6);
 
-  if (sVar1 == 4) {
+  switch (sVar1) {
+
+  case 1:
+
+    memcpy((void *)iVar2,asStack_80,0x3c);
+
+    *(u16 *)(iVar2 + 0x3c) = 0;
+
+    *(u16 *)(iVar2 + 0x3e) = 0;
+
+    break;
+
+  case 2:
+
+    break;
+
+  case 4:
 
     memcpy((void *)iVar2,asStack_100,0x3c);
 
@@ -1485,15 +1501,11 @@ if (param_3 != 0) {
 
     *(u16 *)(iVar2 + 0x3e) = 0;
 
-  }
+    break;
 
-  else if ((sVar1 != 2) && (sVar1 == 1)) {
+  default:
 
-    memcpy((void *)iVar2,asStack_80,0x3c);
-
-    *(u16 *)(iVar2 + 0x3c) = 0;
-
-    *(u16 *)(iVar2 + 0x3e) = 0;
+    break;
 
   }
 
@@ -2524,7 +2536,23 @@ if (param_3 != 0) {
 
   sVar1 = *(short *)((int)param_3 + 6);
 
-  if (sVar1 == 4) {
+  switch (sVar1) {
+
+  case 1:
+
+    memcpy((void *)iVar2,asStack_50,0x24);
+
+    *(u16 *)(iVar2 + 0x24) = 0;
+
+    *(u16 *)(iVar2 + 0x26) = 0;
+
+    break;
+
+  case 2:
+
+    break;
+
+  case 4:
 
     memcpy((void *)iVar2,asStack_a0,0x24);
 
@@ -2532,15 +2560,11 @@ if (param_3 != 0) {
 
     *(u16 *)(iVar2 + 0x26) = 0;
 
-  }
+    break;
 
-  else if ((sVar1 != 2) && (sVar1 == 1)) {
+  default:
 
-    memcpy((void *)iVar2,asStack_50,0x24);
-
-    *(u16 *)(iVar2 + 0x24) = 0;
-
-    *(u16 *)(iVar2 + 0x26) = 0;
+    break;
 
   }
 
@@ -3757,15 +3781,15 @@ u64 FUN_00414e10(int param_1,int param_2)
 
   u32 *puVar9;
 
-  u8 **appuStack_70 [6];
+  u32 auStack_40 [6];
+
+  u8 **appuStack_70 [12];
 
   u8 **ppuStack_58;
 
   u8 **ppuStack_50;
 
   u8 **ppuStack_48;
-
-  u32 auStack_40 [6];
 
   u8 *puStack_28;
 
@@ -4474,45 +4498,45 @@ u8 **ppuStack_38;
 
 u8 **ppuStack_30;
 
-u8 *puStack_28;
+float puStack_28;
 
-u8 *puStack_24;
+float puStack_24;
 
-u8 *puStack_20;
+float puStack_20;
 
-u8 *puStack_1c;
+float puStack_1c;
 
-u8 *puStack_18;
+float puStack_18;
 
-u8 *puStack_10;
+float puStack_10;
 
-u8 *puStack_c;
+float puStack_c;
 
-u8 *puStack_8;
+float puStack_8;
 
-u8 *puStack_4;
+float puStack_4;
 
 
 
 iVar1 = *(int *)((int)param_2 + 0xc);
 
-puStack_4 = (u8 *)(PTR_FUN_007cda28);
+puStack_4 = *(float *)(PTR_FUN_007cda28);
 
-puStack_10 = (u8 *)(PTR_FUN_007cda30);
+puStack_10 = *(float *)(PTR_FUN_007cda30);
 
-puStack_c = (u8 *)(PTR_FUN_007cda34);
+puStack_c = *(float *)(PTR_FUN_007cda34);
 
-puStack_20 = (u8 *)(PTR_FUN_006b16c8);
+puStack_20 = *(float *)(PTR_FUN_006b16c8);
 
-puStack_1c = (u8 *)(PTR_FUN_006b16cc);
+puStack_1c = *(float *)(PTR_FUN_006b16cc);
 
-puStack_18 = (u8 *)(PTR_FUN_006b16d0);
+puStack_18 = *(float *)(PTR_FUN_006b16d0);
 
-puStack_8 = (u8 *)(PTR_FUN_007cda38);
+puStack_8 = *(float *)(PTR_FUN_007cda38);
 
-puStack_28 = (u8 *)(PTR_FUN_007cda40);
+puStack_28 = *(float *)(PTR_FUN_007cda40);
 
-puStack_24 = (u8 *)(PTR_FUN_007cda44);
+puStack_24 = *(float *)(PTR_FUN_007cda44);
 
 puVar7 = &DAT_006b16e0;
 
@@ -4538,15 +4562,15 @@ do {
 
 } while (0 < iVar5);
 
-appuStack_50[0] = &puStack_4;
+appuStack_50[0] = (u8 **)&puStack_4;
 
-appuStack_50[2] = &puStack_10;
+appuStack_50[2] = (u8 **)&puStack_10;
 
-appuStack_50[4] = &puStack_20;
+appuStack_50[4] = (u8 **)&puStack_20;
 
-ppuStack_38 = &puStack_8;
+ppuStack_38 = (u8 **)&puStack_8;
 
-ppuStack_30 = &puStack_28;
+ppuStack_30 = (u8 **)&puStack_28;
 
 iVar5 = *(int *)(iVar1 + 0x98) >> 1;
 
