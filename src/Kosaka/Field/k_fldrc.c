@@ -2049,9 +2049,7 @@ void FUN_001b3480(u32 resource)
     u32 i;
     u32 query[16];
     u32 active;
-    u32 id;
     u32 overlay;
-    u32 mode;
     u32 flags;
     u32 metadata;
     u32 stream;
@@ -2072,14 +2070,13 @@ void FUN_001b3480(u32 resource)
                 continue;
             }
             FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), D_00678E70_abs, i);
-            id = query[1];
-            if (id == 0)
+            if (query[1] == 0)
             {
                 FUN_0019d3f0(D_00678DF8, 0x60a);
             }
             *(u16*)(resource +
                     *(u32*)(resource + 0x118) * 0x18 + 0x120) =
-                (u16)id;
+                (u16)query[1];
             FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), D_00678E90_abs, i);
             overlay = query[2];
             if (overlay != 0)
@@ -2088,8 +2085,7 @@ void FUN_001b3480(u32 resource)
                         *(u32*)(resource + 0x118) * 0x18 + 0x11e) = 2;
             }
             FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), D_00678E50_abs, i);
-            mode = query[3];
-            if (mode == 0)
+            if (query[3] == 0)
             {
                 if (iGpffffb470 == 0)
                 {
@@ -2097,11 +2093,11 @@ void FUN_001b3480(u32 resource)
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, D_00678ED8, id);
+                    FUN_00523ac8(token, D_00678ED8, query[1]);
                     FUN_00523e68(path, token);
                     *(u32*)(resource +
                             *(u32*)(resource + 0x118) * 0x18 + 0x128) =
-                        FUN_00316b40(4, (u16)id, path, 0);
+                        FUN_00316b40(4, (u16)query[1], path, 0);
                 }
                 else
                 {
@@ -2109,16 +2105,16 @@ void FUN_001b3480(u32 resource)
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, D_00678ED8, id);
+                    FUN_00523ac8(token, D_00678ED8, query[1]);
                     FUN_00523e68(path, token);
                     metadata = 0;
                     stream = FUN_001021c0(path, &metadata);
                     *(u32*)(resource +
                             *(u32*)(resource + 0x118) * 0x18 + 0x128) =
-                        FUN_00316bd0(4, (u16)id, stream, metadata, 0);
+                        FUN_00316bd0(4, (u16)query[1], stream, metadata, 0);
                 }
             }
-            else if (mode == 1)
+            else if (query[3] == 1)
             {
                 if (iGpffffb470 == 0)
                 {
@@ -2126,7 +2122,7 @@ void FUN_001b3480(u32 resource)
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, D_00678F08, id);
+                    FUN_00523ac8(token, D_00678F08, query[1]);
                     FUN_00523e68(path, token);
                     *(u32*)(resource +
                             *(u32*)(resource + 0x118) * 0x18 + 0x130) =
@@ -2144,7 +2140,7 @@ void FUN_001b3480(u32 resource)
                     FUN_00523ac8(token, &gp0xffff9550,
                                  *(u16*)(resource + 4));
                     FUN_00523e68(path, token);
-                    FUN_00523ac8(token, D_00678F08, id);
+                    FUN_00523ac8(token, D_00678F08, query[1]);
                     FUN_00523e68(path, token);
                     metadata = 0;
                     *(u32*)(resource +
@@ -2152,19 +2148,19 @@ void FUN_001b3480(u32 resource)
                         FUN_001021c0(path, &metadata);
                 }
             }
-            else if (mode == 2)
+            else if (query[3] == 2)
             {
                 FUN_00524270(path, D_00678F30);
-                FUN_00523ac8(token, D_00678ED8, id);
+                FUN_00523ac8(token, D_00678ED8, query[1]);
                 FUN_00523e68(path, token);
-                fieldId = (id + 1000) & 0xffff;
+                fieldId = (query[1] + 1000) & 0xffff;
                 *(u32*)(resource +
                         *(u32*)(resource + 0x118) * 0x18 + 0x128) =
                     FUN_00316b40(4, fieldId, path, 0);
             }
             FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), D_00678F40, i);
             flags = query[4];
-            if (mode == 0)
+            if (query[3] == 0)
             {
                 *(u16*)(resource +
                         *(u32*)(resource + 0x118) * 0x18 + 0x11e) |=

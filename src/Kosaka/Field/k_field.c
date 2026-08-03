@@ -1203,7 +1203,9 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
     u32 y;
     u32 rotation;
     u32 rotationCount;
-    u8 temp[8];
+    u8 temp22[8];
+    u8 temp12[8];
+    u8 temp33[8];
     u8* cell;
     u8 value;
     u8 low;
@@ -1236,14 +1238,14 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
         while (rotationCount != 0)
         {
             rotationCount--;
-            dungeonCopyQuad(temp, dungeonPatternCell(pattern, 0, 0) + 0x0e);
+            dungeonCopyQuad(temp22, dungeonPatternCell(pattern, 0, 0) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 0, 0) + 0x0e,
                             dungeonPatternCell(pattern, 1, 0) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 1, 0) + 0x0e,
                             dungeonPatternCell(pattern, 1, 1) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 1, 1) + 0x0e,
                             dungeonPatternCell(pattern, 0, 1) + 0x0e);
-            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp);
+            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp22);
         }
     }
     else if (pattern->raw[1] == 1 && pattern->raw[2] == 2)
@@ -1259,10 +1261,10 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
         }
         else if (rotation == 2)
         {
-            dungeonCopyQuad(temp, dungeonPatternCell(pattern, 0, 0) + 0x0e);
+            dungeonCopyQuad(temp12, dungeonPatternCell(pattern, 0, 0) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 0, 0) + 0x0e,
                             dungeonPatternCell(pattern, 0, 1) + 0x0e);
-            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp);
+            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp12);
         }
         else if (rotation == 3)
         {
@@ -1281,7 +1283,7 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
         while (rotationCount != 0)
         {
             rotationCount--;
-            dungeonCopyQuad(temp, dungeonPatternCell(pattern, 0, 0) + 0x0e);
+            dungeonCopyQuad(temp33, dungeonPatternCell(pattern, 0, 0) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 0, 0) + 0x0e,
                             dungeonPatternCell(pattern, 1, 0) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 1, 0) + 0x0e,
@@ -1296,7 +1298,7 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
                             dungeonPatternCell(pattern, 0, 2) + 0x0e);
             dungeonCopyQuad(dungeonPatternCell(pattern, 0, 2) + 0x0e,
                             dungeonPatternCell(pattern, 0, 1) + 0x0e);
-            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp);
+            dungeonCopyQuad(dungeonPatternCell(pattern, 0, 1) + 0x0e, temp33);
         }
     }
 

@@ -1273,16 +1273,15 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         u32 found = 0;
-        void* object = item->object;
-        if (object != NULL)
+        if (item->object != NULL)
         {
-            void* resources = *(void**)((u8*)object + 0x18);
+            void* resources = *(void**)((u8*)item->object + 0x18);
             if (resources != NULL)
             {
                 func_004932c0(resources, (KClumpCallback)kclump_alpha_callback, &found);
                 if (found == 0)
                 {
-                    sphere = func_004912b0(object);
+                    sphere = func_004912b0(item->object);
                     if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
                     {
                         if (item->enabled == 1)
@@ -1292,8 +1291,8 @@ void func_001a8140(void* state, u32 mode)
                         if ((item->flags == 0 || item->colorScale[0] == 1.0f) &&
                             *(u32*)((u8*)&D_007CC1F8 + 8) == 1)
                         {
-                            void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
-                            (*resourceCall)(object);
+                            void (**resourceCall)(void*) = (void (**)(void*))((u8*)item->object + 0x48);
+                            (*resourceCall)(item->object);
                         }
                         if (item->enabled == 1)
                         {

@@ -410,7 +410,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
   u16 auStack_40 [8];
 
-  int aiStack_30 [9];
+  int aiStack_30 [8];
 
   u8 auStack_c [4];
 
@@ -432,7 +432,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     uVar1 = *param_2;
 
-    lVar7 = FUN_0017b660(*(u16 *)(iVar13 + 2),uVar1);
+    lVar7 = FUN_0017b660(*(s16 *)(iVar13 + 2),uVar1);
 
     if (lVar7 != 0) {
 
@@ -440,20 +440,20 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     }
 
-    sVar3 = FUN_0017b5b0(*(u16 *)(iVar13 + 2),uVar1);
+    sVar3 = FUN_0017b5b0(*(s16 *)(iVar13 + 2),uVar1);
 
-    FUN_0017b860(*(u16 *)(iVar13 + 2),*(u16 *)(iVar13 + 2),uVar1,0);
+    FUN_0017b860(*(s16 *)(iVar13 + 2),*(s16 *)(iVar13 + 2),uVar1,0);
 
-    sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
+    sVar4 = FUN_0017b500(*(s16 *)(iVar13 + 2),uVar1);
 
     switch (sVar4) {
     case 1:
-      sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-      FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+      sVar4 = FUN_0016c4f0(*(s16 *)(iVar13 + 2));
+      FUN_0016cf40(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
       break;
     case 2:
-      sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-      FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+      sVar4 = FUN_0016c570(*(s16 *)(iVar13 + 2));
+      FUN_0016cf90(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
       break;
     }
   }
@@ -494,7 +494,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     for (iVar11 = 0; iVar11 < iVar10; iVar11 = iVar11 + 1) {
 
-      FUN_0017be10(*(u16 *)(iVar13 + 2),*(u16 *)(iVar13 + 2),auStack_40[iVar11],0,
+      FUN_0017be10(*(s16 *)(iVar13 + 2),*(s16 *)(iVar13 + 2),auStack_40[iVar11],0,
 
                    &iStack_4,auStack_8,auStack_c);
 
@@ -524,7 +524,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     uVar1 = auStack_40[iVar11];
 
-    FUN_0017be10(*(u16 *)(iVar13 + 2),*(u16 *)(iVar13 + 2),uVar1,0,&iStack_4,auStack_8
+    FUN_0017be10(*(s16 *)(iVar13 + 2),*(s16 *)(iVar13 + 2),uVar1,0,&iStack_4,auStack_8
 
                  ,auStack_c);
 
@@ -532,7 +532,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     if (((int)(((uVar6 & 0xffff) * 0x50) / 100) < iStack_4) || (iVar9 == 0)) {
 
-      lVar7 = FUN_0017b660(*(u16 *)(iVar13 + 2),uVar1);
+      lVar7 = FUN_0017b660(*(s16 *)(iVar13 + 2),uVar1);
 
       if (lVar7 != 0) {
 
@@ -540,20 +540,20 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
       }
 
-      sVar3 = FUN_0017b5b0(*(u16 *)(iVar13 + 2),uVar1);
+      sVar3 = FUN_0017b5b0(*(s16 *)(iVar13 + 2),uVar1);
 
-      FUN_0017b860(*(u16 *)(iVar13 + 2),*(u16 *)(iVar13 + 2),uVar1,0);
+      FUN_0017b860(*(s16 *)(iVar13 + 2),*(s16 *)(iVar13 + 2),uVar1,0);
 
-      sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
+      sVar4 = FUN_0017b500(*(s16 *)(iVar13 + 2),uVar1);
 
       switch (sVar4) {
       case 1:
-        sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-        FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        sVar4 = FUN_0016c4f0(*(s16 *)(iVar13 + 2));
+        FUN_0016cf40(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
         break;
       case 2:
-        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        sVar4 = FUN_0016c570(*(s16 *)(iVar13 + 2));
+        FUN_0016cf90(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
         break;
       }
 
@@ -561,7 +561,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     else {
 
-      lVar7 = FUN_0017b660(*(u16 *)(iVar13 + 2),auStack_50[0]);
+      lVar7 = FUN_0017b660(*(s16 *)(iVar13 + 2),auStack_50[0]);
 
       if (lVar7 != 0) {
 
@@ -569,20 +569,20 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
       }
 
-      sVar3 = FUN_0017b5b0(*(u16 *)(iVar13 + 2),auStack_50[0]);
+      sVar3 = FUN_0017b5b0(*(s16 *)(iVar13 + 2),auStack_50[0]);
 
-      FUN_0017b860(*(u16 *)(iVar13 + 2),*(u16 *)(iVar13 + 2),auStack_50[0],0);
+      FUN_0017b860(*(s16 *)(iVar13 + 2),*(s16 *)(iVar13 + 2),auStack_50[0],0);
 
-      sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),auStack_50[0]);
+      sVar4 = FUN_0017b500(*(s16 *)(iVar13 + 2),auStack_50[0]);
 
       switch (sVar4) {
       case 1:
-        sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-        FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        sVar4 = FUN_0016c4f0(*(s16 *)(iVar13 + 2));
+        FUN_0016cf40(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
         break;
       case 2:
-        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        sVar4 = FUN_0016c570(*(s16 *)(iVar13 + 2));
+        FUN_0016cf90(*(s16 *)(iVar13 + 2),sVar4 - sVar3);
         break;
       }
 

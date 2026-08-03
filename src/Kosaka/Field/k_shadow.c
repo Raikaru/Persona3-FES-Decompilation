@@ -87,6 +87,8 @@ extern void (*D_00960090_abs[])(u32 state, u32 value);
 extern u32 D_00960184[];
 #pragma alias D_00960184_abs D_00960184
 extern u8 D_00960184_abs[];
+#pragma alias ShadowCalloc D_00960184
+extern void* (*ShadowCalloc)(u32 count, u32 size, u32 hint);
 extern RwRGBA DAT_007cc144;
 #pragma alias DAT_007cc144_abs DAT_007cc144
 extern u8 DAT_007cc144_abs[];
@@ -561,13 +563,15 @@ static void K_FldShadow_SubmitFieldGeometry(const RwV3d* position,
 // FUN_0019beb0 NONMATCHING
 KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
 {
+    s32 sourceIndex;
     KwlnTask* task;
     FldShadowRenderTex* shadow;
     Resrc* source;
     RwV3d sourcePosition;
-    s32 sourceIndex;
 
-    shadow = (FldShadowRenderTex*)RwCalloc(1, sizeof(FldShadowRenderTex), rwMEMHINTDUR_GLOBAL);
+    sourceIndex = 0;
+    shadow = (FldShadowRenderTex*)ShadowCalloc(1, sizeof(FldShadowRenderTex),
+                                               rwMEMHINTDUR_GLOBAL);
     if (shadow == NULL)
     {
         return NULL;
@@ -577,7 +581,6 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
     shadow->resTypeId = resTypeId;
     shadow->mode = (u16)param_3;
 
-    sourceIndex = 0;
     source = MT_Scene_GetResListHead(RESRC_TYPE_19);
     while (source != NULL)
     {
@@ -666,12 +669,13 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
 
             func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
             shadow->camera->frameBuffer = shadow->raster;
-            shadow->unk_48 = RwCalloc(1, 0x54d0, rwMEMHINTDUR_GLOBAL);
+            shadow->unk_48 = ShadowCalloc(1, 0x54d0, rwMEMHINTDUR_GLOBAL);
             break;
 
         case 4:
         case 3:
-            shadow->radius = (f32*)RwCalloc(1, sizeof(RwV3d), rwMEMHINTDUR_GLOBAL);
+            shadow->radius = (f32*)ShadowCalloc(1, sizeof(RwV3d),
+                                                 rwMEMHINTDUR_GLOBAL);
             shadow->radius[0] = 30.0f;
             break;
     }

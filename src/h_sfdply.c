@@ -1490,8 +1490,8 @@ void func_0010c7d0(HSfdQueueSlot* slot)
     while (slot->state != 1)
     {
     }
-    entry = slot->entry;
 
+    entry = slot->entry;
     switch (entry->kind)
     {
         case 0:

@@ -2998,11 +2998,7 @@ void FUN_00390920(int param_1,int param_2)
 
 
 void FUN_00390c90(int param_1,int param_2)
-
-
-
 {
-
   s16 event_type;
   u16 event_id;
   int object;
@@ -3050,7 +3046,7 @@ void FUN_00390c90(int param_1,int param_2)
       stack.value_2 = value_2;
       stack.value_3 = value_3;
       *(s16 *)(object + 8) = stack.value_0;
-      *(s16 *)(object + 10) = stack.value_1;
+      *(s16 *)(object + 0xa) = stack.value_1;
       *(s16 *)(object + 0xc) = stack.value_2;
       *(s16 *)(object + 0xe) = stack.value_3;
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
@@ -3086,7 +3082,6 @@ void FUN_00390c90(int param_1,int param_2)
   }
 
   return;
-
 }
 #define FUN_00390c90(...) ((void (*)(...))FUN_00390c90)(__VA_ARGS__)
 #undef FUN_00390ef0

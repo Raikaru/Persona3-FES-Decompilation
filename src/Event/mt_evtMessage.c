@@ -50,6 +50,8 @@ extern void FUN_003a3e90_typed(s32, u32);
 extern u8 *FUN_003c3f80(int param_1);
 extern u8 *FUN_0013bcb0(u64 param_1, u64 param_2);
 extern void FUN_003189f0(u32 param_1, int param_2, float param_3);
+#pragma alias FUN_003189f0_f32_evtmsg FUN_003189f0
+extern void FUN_003189f0_f32_evtmsg(float param_1, u32 param_2, float param_3);
 #pragma alias FUN_0019d3f0_ptr FUN_0019d3f0
 extern void FUN_0019d3f0_ptr(void *param_1, int param_2);
 extern s8 FUN_0016dba0(s16 param_1);
@@ -1347,6 +1349,7 @@ u64 FUN_003a0220(int param_1)
     } bytes;
   } packedAngle;
 
+
   u32 uStack_4;
 
   
@@ -1418,7 +1421,6 @@ u64 FUN_003a0220(int param_1)
         uStack_c = 0x42c00000;
 
         FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
-
                      &uStack_28,*(u32 *)(iVar1 + 0x68),&uStack_4,0);
 
       }
@@ -1442,7 +1444,6 @@ u64 FUN_003a0220(int param_1)
         uStack_c = 0x42c00000;
 
         FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
-
                      &uStack_28,*(u32 *)(iVar1 + 0x6c),&uStack_4,0);
 
       }
@@ -1479,7 +1480,7 @@ u64 FUN_003a0220(int param_1)
 
         if (0 < *piVar8) {
 
-          FUN_0039ffc0_call(iVar1,(float *)(iVar1 + 0x94 + iVar9 * 4 + 0x30),*piVar8,*(u32 *)(iVar1 + 0x6c));
+          FUN_0039ffc0_call(iVar1,(float *)(iVar1 + iVar9 * 4 + 0xc4),*piVar8,*(u32 *)(iVar1 + 0x6c));
 
         }
 
@@ -1524,6 +1525,9 @@ void FUN_003a05b0(int param_1,int param_2)
   u16 *handle;
   RwMatrix matrix;
   RwV3d output;
+  float outputX;
+  float outputY;
+  float outputZ;
   RwV3d position;
   RwV3d direction;
   RwV3d up;
@@ -1555,30 +1559,34 @@ void FUN_003a05b0(int param_1,int param_2)
     up = matrix.up;
     position = matrix.pos;
     FUN_004c69f0(&direction,&direction);
-    output.x = position.x + direction.x * 800.0f;
-    output.y = position.y + direction.y * 800.0f;
-    output.z = position.z + direction.z * 800.0f;
+    outputX = position.x + direction.x * 800.0f;
+    outputY = position.y + direction.y * 800.0f;
+    outputZ = position.z + direction.z * 800.0f;
 
     a1 = FUN_00530da0_evtmsg(position.x);
     a2 = FUN_00530da0_evtmsg(position.y);
     a3 = FUN_00530da0_evtmsg(position.z);
-    a4 = FUN_00530da0_evtmsg(output.x);
-    a5 = FUN_00530da0_evtmsg(output.y);
-    a6 = FUN_00530da0_evtmsg(output.z);
-    a7 = FUN_00530da0_evtmsg(output.x - position.x);
-    a8 = FUN_00530da0_evtmsg(output.y - position.y);
-    a9 = FUN_00530da0_evtmsg(output.z - position.z);
+    a4 = FUN_00530da0_evtmsg(outputX);
+    a5 = FUN_00530da0_evtmsg(outputY);
+    a6 = FUN_00530da0_evtmsg(outputZ);
+    a7 = FUN_00530da0_evtmsg(outputX - position.x);
+    a8 = FUN_00530da0_evtmsg(outputY - position.y);
+    a9 = FUN_00530da0_evtmsg(outputZ - position.z);
     FUN_005225a8(0x6a1890,a1,a2,a3,a4,a5,a6,a7,a8,a9);
 
     if (param_2 == 3) {
-      output.x -= up.x * 85.0f;
-      output.y -= up.y * 85.0f;
-      output.z -= up.z * 85.0f;
+      outputX -= up.x * 85.0f;
+      outputY -= up.y * 85.0f;
+      outputZ -= up.z * 85.0f;
     } else {
-      output.x -= up.x * 240.0f;
-      output.y -= up.y * 240.0f;
-      output.z -= up.z * 240.0f;
+      outputX -= up.x * 240.0f;
+      outputY -= up.y * 240.0f;
+      outputZ -= up.z * 240.0f;
     }
+
+    output.x = outputX;
+    output.y = outputY;
+    output.z = outputZ;
 
     FUN_003b7ac0(&matrix,work1,work2);
     FUN_003b78b0(*handle,&output,work1);
@@ -1598,19 +1606,15 @@ void FUN_003a05b0(int param_1,int param_2)
 
 void FUN_003a0960(int param_1,int param_2,u64 param_3)
 {
-  u16 handle;
   u32 object;
   int iVar1;
   u8 *clear;
   u16 *message;
-  u16 *handlePtr;
   RwV3d position;
 
   iVar1 = *(int *)(param_2 * 4 + param_1 + 0x74);
   if (iVar1 != 0) {
-    handlePtr = (u16 *)(param_2 * 2 + param_1 + 0xec);
-    handle = FUN_003b64c0(param_2 + 0xfaU & 0xffff,iVar1,0);
-    *handlePtr = handle;
+    *(u16 *)(param_2 * 2 + param_1 + 0xec) = FUN_003b64c0(param_2 + 0xfaU & 0xffff,iVar1,0);
     object = FUN_003b5d10(param_3);
     clear = (u8 *)&position;
     iVar1 = sizeof(position);
@@ -1641,7 +1645,7 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
         break;
       }
       FUN_003b78b0(*(u16 *)(param_2 * 2 + param_1 + 0xec),&position,0);
-      FUN_003b9550(*handlePtr,1);
+      FUN_003b9550(*(u16 *)(param_2 * 2 + param_1 + 0xec),1);
     }
   }
 }
@@ -1869,6 +1873,7 @@ u32 FUN_003a0e90(int param_1)
   u32 *puVar6;
 
   int iVar7;
+  int iVar10;
 
   float fVar8;
 
@@ -2450,19 +2455,13 @@ u32 FUN_003a0e90(int param_1)
 
       if (*(int *)(iVar1 + 0xe8) != 0) {
 
-        for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0xe4); iVar7 = iVar7 + 1) {
-
-          puVar6 = (u32 *)(*(int *)(iVar1 + 0xe8) + iVar7 * 0x10);
-
-          uVar9 = *puVar6;
-
+        for (iVar10 = 0; iVar10 < *(int *)(iVar1 + 0xe4); iVar10 = iVar10 + 1) {
+          fVar8 = *(float *)puVar6;
           if (puVar6[2] == 0) {
-
             FUN_003b82c0(puVar6[3],0);
-
           }
 
-          FUN_003189f0(uVar9,*(u32 *)(*(int *)(iVar1 + 0xe8) + iVar7 * 0x10 + 4),0);
+          FUN_003189f0_f32_evtmsg(fVar8,*(u32 *)(*(int *)(iVar1 + 0xe8) + iVar10 * 0x10 + 4),0.0f);
 
         }
 

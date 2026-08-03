@@ -789,8 +789,8 @@ static void brPanel00236390(void)
     brPanel00235ff0(work + 0x520, 7, *(s32*)(work + 0x2664), 0, rect);
     BR_PANEL_SET_COLOR(work + 0x520, alpha);
     sprintf(text2, "%d", *(s32*)(work + 0x2664));
-    length = (s32)strlen(text2);
 
+    length = (s32)strlen(text2);
     frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 40.0f + textWidth +
               40.0f - 0.0f + scoreShift;

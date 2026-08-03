@@ -1709,29 +1709,34 @@ void btlActionUpdateStateCommand(BtlAction* action)
 // FUN_0028c310 NONMATCHING
 void btlActionInitStateTarget(BtlAction* action)
 {
-    int specificId = action->target.specificId;
-    BtlAction* selected;
+    int specificId;
     u16 i;
     BtlPacket* packet;
+    BtlAction* selected;
 
     if (action->target.commandId == 4)
     {
         FUN_002bfcb0(action, (BtlTarget*)action->unkData3, 2, 0, 0);
+        specificId = action->target.specificId;
         if (specificId == 0)
         {
             specificId = -1;
         }
     }
-    else if (ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 1 ||
-             ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 2)
-    {
-        FUN_002bfcb0(action, (BtlTarget*)action->unkData3,
-                      ACTION_U8(gBtl, 0x16fd + specificId * 0x2c),
-                      ACTION_U8(gBtl, 0x16fe + specificId * 0x2c), 0);
-    }
     else
     {
-        FUN_002bff60(action, (BtlTarget*)action->unkData3, specificId, 0);
+        specificId = action->target.specificId;
+        if (ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 1 ||
+            ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 2)
+        {
+            FUN_002bfcb0(action, (BtlTarget*)action->unkData3,
+                         ACTION_U8(gBtl, 0x16fd + specificId * 0x2c),
+                         ACTION_U8(gBtl, 0x16fe + specificId * 0x2c), 0);
+        }
+        else
+        {
+            FUN_002bff60(action, (BtlTarget*)action->unkData3, specificId, 0);
+        }
     }
     FUN_002c0970((BtlTarget*)action->unkData3);
     if (ACTION_U8(gBtl, 0x16fc + action->target.specificId * 0x2c) == 1 ||
@@ -6989,11 +6994,11 @@ u32 FUN_00297a50(BtlAction* action)
 // FUN_00297a60 NONMATCHING
 void btlActionInitStateRoundUpMes(BtlAction* action)
 {
-    BtlPacket* pkt;
-    BtlPacket* rootPkt;
+    BtlUnit* unit;
     BtlAction* selected;
     BtlAction* candidate;
-    BtlUnit* unit;
+    BtlPacket* pkt;
+    BtlPacket* rootPkt;
     u16 i;
     u16 count;
     u32 changeForm;

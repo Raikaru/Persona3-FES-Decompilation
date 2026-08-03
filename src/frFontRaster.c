@@ -309,7 +309,6 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
   }
 
   afStack_140[2] = fVar12 + afStack_140[2];
-
   if (param_7 >= 0) {
 
     fStack_12c = (float)(int)param_7;
@@ -322,7 +321,8 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
 
   }
 
-  fStack_12c = fVar11 + fStack_12c;
+  fStack_124 = fVar11 + fStack_12c;
+
 
   iVar5 = (int)param_4;
 
@@ -336,7 +336,6 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
 
   fStack_128 = afStack_140[2];
 
-  fStack_124 = fStack_12c;
 
   if (*(int *)(iVar5 + 0x1c) == 0) {
 

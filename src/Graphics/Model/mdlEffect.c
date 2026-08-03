@@ -6614,7 +6614,7 @@ void FUN_00325500(u64 param_1)
 
   
 
-  pauVar8 = (u8 (*) [16])(u32)param_1;
+  pauVar8 = (u8 (*)[16])(u32)param_1;
 
   if (0 < *(int *)(pauVar8[8] + 4)) {
 
@@ -12902,7 +12902,6 @@ void FUN_0032c340(int param_1)
 
     }
 
-    fVar24 = -1.0f;
 
     fVar22 = DAT_007cae50_f32;
 
@@ -13079,7 +13078,7 @@ void FUN_0032c340(int param_1)
 
                 if ((uVar13 & 1) != 0) {
 
-                  pfVar19[0xf] = pfVar19[0xf] * fVar24;
+                  pfVar19[0xf] = pfVar19[0xf] * -1.0f;
 
                 }
 
@@ -17213,8 +17212,8 @@ void FUN_00330c40(int param_1)
 
     fVar25 = -1.0f;
 
-    fVar32 = 1.0f;
 
+    fVar32 = 1.0f;
     fVar27 = fGpffff8168;
 
     for (uVar21 = 0; uVar21 < uVar2; uVar21 = uVar21 + 1) {
@@ -21535,8 +21534,7 @@ u32 FUN_00335540(int param_1)
 
       puVar8[1] = (uVar4 & 0xffffff) | (u32)fVar16 << 0x18;
 
-      fVar13 = (float)(uVar3 >> 0x18) * fVar13;
-
+      fVar16 = (float)(uVar3 >> 0x18) * fVar13;
 
       puVar8[2] = (uVar3 & 0xffffff) | (int)fVar13 << 0x18;
 
@@ -42752,6 +42750,7 @@ void FUN_0034dc00(u64 param_1)
     if (*(short *)(iVar4 + 0xc) == 3) {
 
       if ((*(u32 *)(iVar7 + 0xc) & 1) != 0) {
+
         uVar12 = DAT_007caf08;
 
         FUN_003322f0((int)(iVar7),(u32 *)(&auStack_90));
@@ -42764,17 +42763,17 @@ void FUN_0034dc00(u64 param_1)
 
         fVar8 = DAT_007cadc0;
 
+
         auVar3 = _lqc2(auStack_80);
 
         auStack_d0 = _sqc2(extraout_vf28_00);
-
-        auStack_c0 = _sqc2(extraout_vf29_00);
 
         auStack_b0 = _sqc2(extraout_vf30_00);
 
         auStack_a0 = _sqc2(auVar3);
 
         fVar11 = 0.5f;
+
 
         for (iVar7 = 0; iVar7 < iVar1; iVar7 = iVar7 + 1) {
 

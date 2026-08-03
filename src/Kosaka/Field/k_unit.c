@@ -1849,7 +1849,7 @@ void func_001d0e50(s32 isDungeon)
             scale = light;
             func_00318a90((*resource)->baseMdl, &scale, 2);
             func_004cb420(func_00318b70(*model),
-                         func_00318b70((*resource)->baseMdl));
+                          func_00318b70((*resource)->baseMdl));
             func_00317730((*resource)->baseMdl);
             if (func_002ff790(*genusBase) == 0)
             {
@@ -2434,8 +2434,9 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
     u8* best;
     RwV3d heroPos;
     RwV3d delta;
-    f32 distance;
     f32 bestDistance;
+    f32 distance;
+    f32 innerDistance;
     s32 i;
     s32 slot;
 
@@ -2463,9 +2464,9 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
             {
                 if (*(u32*)DAT_0086e580 == 1)
                 {
-                    delta.x = pos->x - *(f32*)(DAT_0086e580 + 0x104);
-                    delta.y = pos->y - *(f32*)(DAT_0086e580 + 0x108);
-                    delta.z = pos->z - *(f32*)(DAT_0086e580 + 0x10c);
+                    delta.x = pos->x - heroPos.x;
+                    delta.y = pos->y - heroPos.y;
+                    delta.z = pos->z - heroPos.z;
                     if (RwV3dLength(&delta) < 500.0f)
                     {
                         node = *(u8**)(node + 0xf8);
@@ -2478,16 +2479,16 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
                     u8* record = DAT_0086be80 + i * 0x138;
                     if (*(u32*)record != 0)
                     {
-                        delta.x = pos->x - *(f32*)(record + 0x10c);
-                        delta.y = pos->y - *(f32*)(record + 0x110);
-                        delta.z = pos->z - *(f32*)(record + 0x114);
-                        distance = RwV3dLength(&delta);
-                        if (distance < 100.0f)
+                        delta.x = pos->x - heroPos.x;
+                        delta.y = pos->y - heroPos.y;
+                        delta.z = pos->z - heroPos.z;
+                        innerDistance = RwV3dLength(&delta);
+                        if (innerDistance < 100.0f)
                         {
                             bestDistance = -1.0f;
                             break;
                         }
-                        bestDistance += distance;
+                        bestDistance += innerDistance;
                     }
                 }
                 if (bestDistance >= 0.0f && (best == NULL || distance > bestDistance))

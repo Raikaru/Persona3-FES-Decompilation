@@ -249,6 +249,7 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     f32 angle;
     u32 saveAndRestoreRenderState_p = saveAndRestoreRenderState;
     const RwMatrix* mat_p = mat;
+    const RwMatrix* cameraMat;
     RwIm2DVertex vertices[21];
     f32 zScale;
     u32* currSavedRenderState;
@@ -262,7 +263,6 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     u32 i;
     f32 farPlane;
     RwMatrix localMat;
-    const RwMatrix* cameraMat;
     const PrimRenderState* currRenderState;
     const PrimRenderState* currRenderState_c;
     RwSphere sphere;
@@ -438,6 +438,8 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
 void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;
+    u32 stateIndex;
+    u32 restoreIndex;
     const PrimRenderState* currRenderState;
     u32* currSavedRenderState;
     u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
@@ -447,9 +449,10 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
     RwV3d lineStart;
     f32 heightStep;
     f32 angle;
+    f32 angle2;
+    f32 oppositeAngle;
     f32 negHalfHeight;
     f32 halfHeight;
-
     sphere.radius = (radius > height) ? radius : height;
     sphere.center.x = center->x;
     sphere.center.y = center->y;
@@ -461,10 +464,10 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
 
     if (saveAndRestoreRenderState)
     {
-        for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
+        for (stateIndex = 0; stateIndex < PRIM_RENDERSTATE_COUNT; stateIndex++)
         {
-            currRenderState = &sRenderStates[i];
-            currSavedRenderState = &savedRenderStates[i];
+            currRenderState = &sRenderStates[stateIndex];
+            currSavedRenderState = &savedRenderStates[stateIndex];
             RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
             RwRenderStateSet(currRenderState->renderState, currRenderState->val);
         }
@@ -485,8 +488,9 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
         circleCenter.y += heightStep;
     }
     angle = 0.0f;
+    i = 0;
     negHalfHeight = -height * 0.5f;
-    for (i = 0; i < 10; i++)
+    for (; i < 10; i++)
     {
         lineStart.x = radius * cosf(angle);
         lineStart.y = negHalfHeight;
@@ -504,16 +508,16 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
         angle += g18deg + g18deg;
     }
 
-    angle = 0.0f;
+    angle2 = 0.0f;
     for (i = 0; i < 5; i++)
     {
-        lineStart.x = radius * cosf(angle);
+        lineStart.x = radius * cosf(angle2);
         lineStart.y = negHalfHeight;
-        lineStart.z = radius * sinf(angle);
-        angle += gPI;
-        lineEnd.x = radius * cosf(angle);
+        lineStart.z = radius * sinf(angle2);
+        oppositeAngle = gPI + angle2;
+        lineEnd.x = radius * cosf(oppositeAngle);
         lineEnd.y = negHalfHeight;
-        lineEnd.z = radius * sinf(angle);
+        lineEnd.z = radius * sinf(oppositeAngle);
         lineStart.x += center->x;
         lineStart.y += center->y;
         lineStart.z += center->z;
@@ -525,13 +529,13 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
         lineStart.y += height;
         lineEnd.y += height;
         primLine3D(&lineStart, &lineEnd, color, false);
-        angle += g18deg + g18deg;
+        angle2 += g18deg + g18deg;
     }
     if (saveAndRestoreRenderState)
     {
-        for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
+        for (restoreIndex = 0; restoreIndex < PRIM_RENDERSTATE_COUNT; restoreIndex++)
         {
-            RwRenderStateSet(sRenderStates[i].renderState, savedRenderStates[i]);
+            RwRenderStateSet(sRenderStates[restoreIndex].renderState, savedRenderStates[restoreIndex]);
         }
     }
 }

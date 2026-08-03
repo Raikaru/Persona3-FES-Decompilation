@@ -307,7 +307,6 @@ void FUN_0025da30(void)
 
   fVar6 = in_f21 * 255.0f;
   if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
-
   FUN_0021d950(puVar2 + 0x104,&color[0]);
 
   iVar3 = FUN_00260900(puVar2[2],0x35);
@@ -375,9 +374,7 @@ void FUN_0025da30(void)
   color[2] = 0xff;
 
   fVar6 = in_f21 * 255.0f;
-
   if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
-
   FUN_0021d950(puVar2 + 0x144,&color[0]);
 
   iVar3 = FUN_00260900(puVar2[2],0x36);
@@ -445,9 +442,7 @@ void FUN_0025da30(void)
   color[2] = 0xff;
 
   fVar6 = in_f21 * 255.0f;
-
   if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
-
   FUN_0021d950(puVar2 + 0x184,&color[0]);
 
   switch (puVar2[1]) { case 0: if ((int)puVar2[3] < 8) {
@@ -631,9 +626,7 @@ void FUN_0025da30(void)
   color[2] = 0x46;
 
   in_f21 = in_f21 * 255.0f;
-
   if (in_f21 <= 2.1474836e+09f) { color[3] = (u8)(int)in_f21; } else { color[3] = (u8)(int)(in_f21 - 2.1474836e+09f); }
-
   FUN_0021d950(puVar2 + 0x44,&color[0]);
 
   switch (puVar2[1]) { case 0: quad[0] = 320.0f;

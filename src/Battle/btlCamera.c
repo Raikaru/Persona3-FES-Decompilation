@@ -6226,10 +6226,10 @@ void func_002aef80(BtlCamera* camera, int param_2)
                               &fStack_18,&fStack_4,&auStack_8,1);
   func_00280050(iVar1,&fStack_58);
   fVar4 = *(float *)(iVar1 + 0x2c);
-  fVar6 = *(float *)(iVar1 + 0x8c);
+  fVar6 = *(float *)(iVar1 + 0x8c) * fVar4;
   fVar7 = *(float *)(iVar1 + 0x90) * fVar4;
   func_00280050(*(undefined4 *)(iVar2 + 0x30),&fStack_68);
-  fStack_54 = fStack_54 + fVar6 * fVar4 * 0.5f;
+  fStack_54 = fStack_54 + fVar6 * 0.5f;
   if (fStack_14 < fStack_54) {
     fStack_14 = fStack_54 * 0.5f;
   }

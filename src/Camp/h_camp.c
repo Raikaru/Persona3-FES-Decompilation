@@ -6344,7 +6344,6 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     s32 bright;
     s32 val;
     s32 drewHundreds;
-    f32 dx;
     f32 dy;
     u32 parent;
     void* font;
@@ -6365,48 +6364,42 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                              position.x + 85.0f, dy, alpha);
     /* Draw current HP digits */
     val = datGetHp(pcId);
-    dx = position.x + 79.0f;
     drewHundreds = 0;
     if (val >= 100) {
         drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha);
+                                 (u32)(u8)fade, position.x + 79.0f, dy, alpha);
         val %= 100;
-        dx += 15.0f;
     }
     if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha);
+                                 (u32)(u8)fade, position.x + 94.0f, dy, alpha);
         val %= 10;
-        dx += 15.0f;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)fade, dx, dy, alpha);
+                             (u32)(u8)fade, position.x + 109.0f, dy, alpha);
     /* Draw max HP digits */
     val = datGetMaxHp(pcId);
-    dx = position.x + 138.0f;
     drewHundreds = 0;
     if (val >= 100) {
         drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
-                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
+                                     (u32)(u8)fade, position.x + 138.0f, dy, alpha, 0x66);
         val %= 100;
-        dx += 15.0f;
     }
     if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
-                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
+                                     (u32)(u8)fade, position.x + 153.0f, dy, alpha, 0x66);
         val %= 10;
-        dx += 15.0f;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha, 0x66);
+                                 (u32)(u8)fade, position.x + 168.0f, dy, alpha, 0x66);
 }
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
@@ -19340,11 +19333,10 @@ void h_campDrawStatusComparison(int param_1)
     CampBits spe8;
     s32 iVar1;
     f32 fVar2;
-
     pair.x = 379.0f;
     pair.y = 12.0f;
     start.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    pair.x = pair.x + -100.0f;
     campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
                        start.u, *(u64*)&pair, 0, 0, 0, 10);
 
@@ -31004,30 +30996,32 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
     s32 row;
     s32 selected;
     s32 recordIndex;
-    u8* record;
+    s32 recordOffset;
     s32 condition;
     u32 type;
     u32 mainSprite;
     u32 textId;
+    u32 inverseAlpha;
+    void* parent;
     u32* drawData;
     undefined1 text[0x100];
     x = *(f32*)&param_3;
     y = *(f32*)((u8*)&param_3 + 4);
     drawData = (u32*)param_2;
-
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
+    inverseAlpha = 0xffU - (u32)param_5;
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x48,
                        (u8)param_5, x + 36.0f, y + 242.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x49,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x49,
                        (u8)param_5, x + 348.0f, y + 242.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4a,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4a,
                        (u8)param_5, x + 55.0f, y + 252.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4b,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4b,
                        (u8)param_5, x + 55.0f, y + 286.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4c,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4c,
                        (u8)param_5, x + 198.0f, y + 286.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4d,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4d,
                        (u8)param_5, x + 55.0f, y + 313.0f, param_1);
-    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4e,
+    FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4e,
                        (u8)param_5, x + 198.0f, y + 313.0f, param_1);
 
     totalCount = *(s32*)((u8*)param_4 + 0x2d64);
@@ -31035,8 +31029,8 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
         row = *(s32*)((u8*)param_4 + 0x2d6c);
         selected = *(s32*)((u8*)param_4 + 0x2d68);
         recordIndex = row + selected;
-        record = (u8*)param_4 + recordIndex * 0x24;
-        type = *(u32*)(record + 0x78);
+        recordOffset = recordIndex * 0x24;
+        type = *(u32*)((u8*)param_4 + recordOffset + 0x78);
 
         /* jtbl_007B6400 selects the main selected-persona icon. */
         mainSprite = 0x51;
@@ -31064,72 +31058,71 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
         case 20: mainSprite = 0x5a; break;
         default: break;
         }
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], mainSprite,
+        FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], mainSprite,
                            (u8)param_5, x + 127.0f, y + 253.0f, param_1);
-
-        condition = *(s8*)((u8*)record + 0x7e);
+        condition = *(s8*)((u8*)param_4 + recordOffset + 0x7e);
         if (condition == 2) {
-            textId = *(undefined2*)((u8*)record + 0x86);
+            textId = *(undefined2*)((u8*)param_4 + recordOffset + 0x86);
             FUN_00523ac8_data(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
                              (s32)(y + 313.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (u8)(inverseAlpha & 0xffU), 4,
                              (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
         } else if (condition == 1) {
-            textId = *(undefined2*)((u8*)record + 0x84);
+            textId = *(undefined2*)((u8*)param_4 + recordOffset + 0x84);
             FUN_00523ac8_data(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
                              (s32)(y + 313.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (u8)(inverseAlpha & 0xffU), 4,
                              (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
         } else if (condition == 0) {
-            textId = *(undefined2*)((u8*)record + 0x80);
+            textId = *(undefined2*)((u8*)param_4 + recordOffset + 0x80);
             FUN_00523ac8_data(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
                              (s32)(y + 286.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (u8)(inverseAlpha & 0xffU), 4,
                              (const char*)text, 0);
-            textId = *(undefined2*)((u8*)record + 0x82);
+            textId = *(undefined2*)((u8*)param_4 + recordOffset + 0x82);
             FUN_00523ac8_data(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
                              (s32)(y + 286.0f + 8.0f),
-                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
+                             (u8)(inverseAlpha & 0xffU), 4,
                              (const char*)text, 0);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
         } else {
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 286.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
-            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+            FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 198.0f + 74.0f,
                                y + 313.0f + 8.0f, param_1);
         }
@@ -31137,21 +31130,21 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
         rowY = y + 356.0f;
         barY = x + 55.0f;
         campDataDrawDigits(param_1, (s32)barY, (s32)rowY,
-                           (0xffU - (u32)param_5) | 0xffffff00U, 1, 10, 1,
-                           (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
-                                 *(undefined2*)((u8*)record + 100)));
+                           inverseAlpha | 0xffffff00U, 1, 10, 1,
+                           (u32)((*(undefined1*)((u8*)param_4 + recordOffset + 0x7c) << 16) |
+                                 *(undefined2*)((u8*)param_4 + recordOffset + 100)));
     } else {
         /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+        FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                            (u8)param_5, x + 55.0f + 74.0f,
                            y + 286.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+        FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                            (u8)param_5, x + 198.0f + 74.0f,
                            y + 286.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+        FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                            (u8)param_5, x + 55.0f + 74.0f,
                            y + 313.0f + 8.0f, param_1);
-        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+        FUN_001159f0_typed(parent, (void*)(uintptr_t)drawData[1], 0x4f,
                            (u8)param_5, x + 198.0f + 74.0f,
                            y + 313.0f + 8.0f, param_1);
     }
