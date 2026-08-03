@@ -72,7 +72,7 @@ void FUN_00251060(void)
 
 }
 
-// FUN_002510D0 NONMATCHING
+// FUN_002510D0
 void FUN_002510d0(void)
 {
     BpTutWork* work;
@@ -109,7 +109,7 @@ void FUN_002510d0(void)
                 }
                 switch (work->type) {
                 case 0:
-                    FUN_003c74e0();
+                    FUN_003c74e0(1);
                     break;
                 case 1:
                     FUN_003c74e0(6);
@@ -141,7 +141,7 @@ void FUN_002510d0(void)
                         case 3:
                             switch (work->type) {
                             case 0:
-                                FUN_003c7430();
+                                FUN_003c7430(2);
                                 break;
                             case 2:
                                 FUN_003c7430(0xd);
@@ -152,7 +152,7 @@ void FUN_002510d0(void)
                             }
                             switch (work->type) {
                             case 0:
-                                FUN_003c74e0();
+                                FUN_003c74e0(3);
                                 break;
                             case 2:
                                 FUN_003c74e0(0xe);
@@ -205,7 +205,7 @@ void FUN_002510d0(void)
                         case 3:
                             switch (work->type) {
                             case 0:
-                                FUN_003c7430();
+                                FUN_003c7430(2);
                                 break;
                             case 2:
                                 FUN_003c7430(0xd);
@@ -216,7 +216,7 @@ void FUN_002510d0(void)
                             }
                             switch (work->type) {
                             case 0:
-                                FUN_003c74e0();
+                                FUN_003c74e0(3);
                                 break;
                             case 2:
                                 FUN_003c74e0(0xe);

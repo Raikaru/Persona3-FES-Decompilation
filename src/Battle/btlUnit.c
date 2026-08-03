@@ -1031,6 +1031,7 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
         u32 genus2;
         f32 invCount;
 
+        invCount = 1.0f / (f32)count;
         center.x = sumX * invCount;
         center.y = sumY * invCount;
         center.z = sumZ * invCount;

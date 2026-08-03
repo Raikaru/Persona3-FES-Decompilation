@@ -297,6 +297,8 @@ void opWait0026e000(void)
     void* loopQuad;
     u32 frameId;
     s32 i;
+    void (**postSetState)(u32 state, u32 value);
+    void (**postSetQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (OpWaitWork*)sOpWait;
@@ -349,15 +351,18 @@ void opWait0026e000(void)
     }
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*setState)(1, opWaitGetTitleRasterU32(0xc));
-    (*setQuad)(work->quads[3], 4, 0, 1, 2);
-    (*setQuad)(work->quads[3], 4, 0, 2, 3);
+    frame = opWaitGetTitleRasterU32(0xc);
+    postSetState = (void (**)(u32, u32))D_00960090;
+    (*postSetState)(1, frame);
+    postSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
+    (*postSetQuad)(work->quads[3], 4, 0, 1, 2);
+    (*postSetQuad)(work->quads[3], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*setState)(1, opWaitGetTitleRasterU32(0xc));
-    (*setQuad)(work->quads[4], 4, 0, 1, 2);
-    (*setQuad)(work->quads[4], 4, 0, 2, 3);
-    (*setState)(1, opWaitGetTitleRasterU32(0xd));
+    (*postSetState)(1, opWaitGetTitleRasterU32(0xc));
+    (*postSetQuad)(work->quads[4], 4, 0, 1, 2);
+    (*postSetQuad)(work->quads[4], 4, 0, 2, 3);
+    (*postSetState)(1, opWaitGetTitleRasterU32(0xd));
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_002699d0(work->resources[0]);
