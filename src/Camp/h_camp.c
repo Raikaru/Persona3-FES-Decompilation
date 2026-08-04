@@ -8074,9 +8074,9 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
     f32 rankCountX;
     f32 rankCountY;
     f32 equippedX;
-    f32 equippedY;
     f32 equippedTextX;
     f32 equippedTextY;
+    f32 equippedY;
     f32 separatorX;
     f32 separatorY;
 
@@ -25252,6 +25252,7 @@ void FUN_0015C520(void *param_1, s32 param_2)
 void FUN_0015C840(void *param_1)
 {
     const uintptr_t list = (uintptr_t)param_1;
+    s32 entry_count = 0;
     s16 previous_mode = DAT_00836ba8;
     typedef struct CampC840Entry {
         u32 words[5];
@@ -25259,7 +25260,6 @@ void FUN_0015C840(void *param_1)
     CampC840Entry saved_entry;
     CampC840Entry candidate_entry;
     CampC840Entry swap_entry;
-    s32 entry_count = 0;
     s32 item_index = 0;
     s32 i;
     s32 j;
@@ -25910,34 +25910,22 @@ void FUN_0015E6E0(CampSystemDrawWork *work)
 {
     void *draw;
     f32 tailHeight;
-    f32 x;
-    f32 y;
     u64 first;
     u64 second;
     s32 i;
     s32 base;
 
     draw = camp_draw_ptr32(work->records);
-    x = 22.0f;
-    y = 29.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y += 50.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(22.0f, 29.0f);
+    second = camp_draw_concat44_f32(22.0f, 79.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
                  first, second, 0, 0);
-    x = 22.0f;
-    y = 27.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y += 55.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(22.0f, 27.0f);
+    second = camp_draw_concat44_f32(22.0f, 82.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 1,
                  first, second, 0, 0);
-    x = 447.0f;
-    y = 410.0f;
-    first = camp_draw_concat44_f32(x, y);
-    x += 57.0f;
-    y -= 8.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(447.0f, 410.0f);
+    second = camp_draw_concat44_f32(504.0f, 402.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
                  first, second, 0, 0);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
@@ -26094,34 +26082,22 @@ void FUN_0015F320(CampSystemDrawWork *work)
 {
     void *draw;
     f32 tailHeight;
-    f32 x;
-    f32 y;
     u64 first;
     u64 second;
     s32 i;
     s32 base;
 
     draw = camp_draw_ptr32(work->records);
-    x = 22.0f;
-    y = 79.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y -= 50.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(22.0f, 79.0f);
+    second = camp_draw_concat44_f32(22.0f, 29.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 1,
                  first, second, 0, 0);
-    x = 22.0f;
-    y = 77.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y -= 50.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(22.0f, 77.0f);
+    second = camp_draw_concat44_f32(22.0f, 27.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 2,
                  first, second, 0, 0);
-    x = 402.0f;
-    y = 504.0f;
-    first = camp_draw_concat44_f32(x, y);
-    x += 9.0f;
-    y -= 57.0f;
-    second = camp_draw_concat44_f32(x, y);
+    first = camp_draw_concat44_f32(402.0f, 504.0f);
+    second = camp_draw_concat44_f32(411.0f, 447.0f);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
                  first, second, 0, 0);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,

@@ -875,10 +875,10 @@ void func_00217780(void)
     u8* work;
     u32 texture;
     s32 i;
+    f32 panelOrigin[2];
     u8 color[8];
     u8 color2[4];
     f32 origin[4];
-    f32 panelOrigin[2];
     f32 scrollY;
     u8* frame;
 
@@ -887,13 +887,14 @@ void func_00217780(void)
     texture = sflResGetPersonaChangeSprite();
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
+        frame = (u8*)(work + 0x10 +
+                      *(u32*)(work + 0x52e0 +
+                              (i + *(u32*)(work + 0x5c60)) * 4) *
+                          0x10);
         panelOrigin[0] = 198.0f;
         panelOrigin[1] = (f32)(i * 0x21) + 90.0f;
         func_00218b20(work + 0x150 + i * 0x910,
-                      (u32*)(work + 0x10 +
-                             *(u32*)(work + 0x52e0 +
-                                     (i + *(u32*)(work + 0x5c60)) * 4) *
-                                 0x10),
+                      (u32*)frame,
                       *(u32*)(work + 0x5c68) == (u32)(i + *(u32*)(work + 0x5c60)),
                       panelOrigin, *(f32*)(work + 0x5c40));
     }
@@ -909,13 +910,14 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5440, origin);
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
+    scrollY = *(f32*)(work + 0x5c40);
+    color2[0] = 0xff;
+    color2[1] = 0xff;
+    color2[2] = 0xff;
+    color2[3] = (u8)(255.0f * scrollY);
     for (i = 0; i < 2; i++)
     {
-        func_0021d950(work + 0x5340 + i * 0x40, color);
+        func_0021d950(work + 0x5340 + i * 0x100, color2);
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x38);
     origin[0] = 13.0f;
@@ -929,13 +931,13 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5640, origin);
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
+    color2[0] = 0xff;
+    color2[1] = 0xff;
+    color2[2] = 0xff;
+    color2[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
-        func_0021d950(work + 0x5540 + i * 0x40, color);
+        func_0021d950(work + 0x5540 + i * 0x100, color2);
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x33);
     origin[0] = 421.0f;
@@ -957,7 +959,7 @@ void func_00217780(void)
     color2[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
-        func_0021d950(work + 0x5840 + i * 0x40, color2);
+        func_0021d950(work + 0x5840 + i * 0x100, color2);
     }
     origin[0] = 559.0f;
     origin[1] = 404.0f;
@@ -968,7 +970,7 @@ void func_00217780(void)
     color2[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
-        func_0021d950(work + 0x5a40 + i * 0x40, color2);
+        func_0021d950(work + 0x5a40 + i * 0x100, color2);
     }
     if ((*(u32*)work & 8) != 0)
     {

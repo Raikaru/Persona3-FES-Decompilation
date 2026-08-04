@@ -5397,10 +5397,12 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
   int iVar8;
 
   int lVar9;
+ 
+
 
 
   int lVar12;
-
+ 
 
   u32 uVar13;
   u32 uVar14;
@@ -8553,8 +8555,7 @@ int FUN_003fb6b0(u64 param_1)
 
   u32 *puVar5;
 
-  long lVar6;
-
+  int lVar6;
   float fVar7;
 
   u8 auStack_20 [32];
@@ -8564,7 +8565,6 @@ int FUN_003fb6b0(u64 param_1)
   iVar3 = 0;
 
   lVar6 = 0;
-
   puVar5 = (u32 *)param_1;
 
   uVar1 = *puVar5;
@@ -17920,7 +17920,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
       uVar3 = FUN_0017cf00();
 
       sprintf((char *)wideText,&gp0xffffac10,uVar3);
-      FUN_0040ec20_y2(0.0f,iVar6,iVar5,uVar11 & 0xff,0,wideText,1,0x26,(code)0x40a7c0);
+      FUN_0040ec20_y2(0.0f,iVar6,iVar5,uVar11 & 0xff,0,wideText,1,0x26,(code)FUN_0040a7c0);
 
       break;
 

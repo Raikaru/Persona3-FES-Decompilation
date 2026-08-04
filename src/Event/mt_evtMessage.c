@@ -1864,7 +1864,7 @@ u32 FUN_003a0e90(int param_1)
 
   int iVar1;
 
-  u8 uVar2;
+  s8 uVar2;
 
   char cVar3;
 
@@ -1902,7 +1902,7 @@ u32 FUN_003a0e90(int param_1)
 
   case 0:
 
-    FUN_00194b20_evtmsg_typed(param_1,(const char *)0x6a18c0,0x106f,(u64 (*)(int))0x3a0220,0,(void *)iVar1);
+    FUN_00194b20_evtmsg_typed(param_1,(const char *)0x6a18c0,0x106f,(u64 (*)(int))FUN_003a0220,0,(void *)iVar1);
 
     *puVar6 = 1;
 

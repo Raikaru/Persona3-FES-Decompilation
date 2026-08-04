@@ -4236,6 +4236,11 @@ void FUN_003e6400_y2(u32 param_1,u8* param_2)
 
   int iVar18;
 
+  f32 fVar20;
+
+  f32 fVar21;
+
+  f32 fVar22;
 
   FclShopStack stack;
 
@@ -4269,11 +4274,17 @@ void FUN_003e6400_y2(u32 param_1,u8* param_2)
 
   iVar7 = FUN_003c5460(DAT_007ce688);
 
-  uStack_10 = DAT_006a6f10;
+  fVar20 = DAT_006a6f18;
 
-  uStack_c = DAT_006a6f14;
+  fVar21 = DAT_006a6f14;
 
-  uStack_8 = DAT_006a6f18;
+  fVar22 = DAT_006a6f10;
+
+  uStack_10 = fVar22;
+
+  uStack_c = fVar21;
+
+  uStack_8 = fVar20;
 
   uStack_20 = DAT_006a6f20;
 

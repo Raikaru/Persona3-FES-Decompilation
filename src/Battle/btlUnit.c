@@ -1301,9 +1301,9 @@ u32 btlUnitUpdateMovePacket(void* work)
 {
     BtlUnitPacketMove* packet;
     BtlUnit* unit;
-    RwV3d target;
-    RwV3d direction;
     RwV3d start;
+    RwV3d direction;
+    RwV3d target;
     RwV3d end;
 
     packet = (BtlUnitPacketMove*)work;
@@ -3559,8 +3559,8 @@ void btlUnitInitModelPacket(void* work)
 // FUN_002850f0 NONMATCHING
 u32 btlUnitUpdateModelPacket(void* work)
 {
-    BtlUnitPacketModel* packet;
-    BtlUnit* unit;
+BtlUnitPacketModel* packet;
+BtlUnit* unit;
     Model* mdl;
     const BtlUnitAnimInfo* animInfo;
     s16 animId;

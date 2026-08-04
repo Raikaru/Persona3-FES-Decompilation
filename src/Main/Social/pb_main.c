@@ -604,7 +604,7 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
   extern void FUN_0017be10(int param_1, int param_2, u16 param_3, int param_4,
                            void* param_5, void* param_6, void* param_7);
 
-  u16 uVar1;
+  s16 uVar1;
 
   u32 uVar2;
 
@@ -614,7 +614,7 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   u16 uVar5;
 
-  int iVar6;
+  int iVar10;
 
   s32 lVar7;
 
@@ -622,15 +622,13 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   int iVar9;
 
-  int iVar10;
+  int iVar6;
 
   int iVar11;
 
-  u32 auStack_70 [8];
-
-  u32 auStack_50 [8];
-
   int aiStack_30 [8];
+  u32 auStack_70 [8];
+  u32 auStack_50 [8];
 
   u8 auStack_c [4];
 
@@ -670,30 +668,22 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
       lVar7 = FUN_0017c070(*(u16 *)(iVar11 + 8));
 
-      if (lVar7 == 0) {
-
+      if (lVar7 != 0) {
         auStack_50[iVar6] = uVar2;
-
         iVar6 = iVar6 + 1;
-
       }
-
       else {
-
         auStack_70[iVar9] = uVar2;
-
         iVar9 = iVar9 + 1;
-
       }
 
     }
 
     for (iVar10 = 0; iVar10 < iVar6; iVar10 = iVar10 + 1) {
 
-      iVar11 = FUN_00170e90(*(u16 *)(param_2 + iVar10));
+      iVar11 = FUN_00170e90(*(s16 *)(param_2 + iVar10));
 
-      uVar1 = *(u16 *)((int)param_1 + 2);
-
+      uVar1 = *(s16 *)((int)param_1 + 2);
       FUN_0017be10(uVar1,uVar1,*(u16 *)(iVar11 + 8),1,&iStack_4,auStack_8,auStack_c);
 
       aiStack_30[iVar10] = ((uVar4 & 0xffff) + iStack_4) - (uVar5 & 0xffff);
@@ -722,22 +712,17 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
     iVar6 = FUN_00170e90(*(u16 *)(param_2 + iVar10));
 
-    uVar1 = *(u16 *)((int)param_1 + 2);
-
-    FUN_0017be10(uVar1,uVar1,*(u16 *)(iVar6 + 8),1,&iStack_4,auStack_8,auStack_c);
+    uVar1 = *(u16 *)(iVar6 + 8);
+    iVar3 = *(s16 *)((int)param_1 + 2);
+    FUN_0017be10(iVar3,iVar3,uVar1,1,&iStack_4,auStack_8,auStack_c);
 
     iStack_4 = iStack_4 + (uVar4 & 0xffff);
 
-    if (((int)(((uVar5 & 0xffff) * 0x50) / 100) < iStack_4) || (iVar9 == 0)) {
-
-      func_001fccc0(param_1,param_1,auStack_50[iVar10]);
-
-    }
-
-    else {
-
+    if (!(((int)(((uVar5 & 0xffff) * 0x50) / 100) < iStack_4) || (iVar9 == 0))) {
       func_001fccc0(param_1,param_1,auStack_70[0]);
-
+    }
+    else {
+      func_001fccc0(param_1,param_1,auStack_50[iVar10]);
     }
 
   }

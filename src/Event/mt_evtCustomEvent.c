@@ -29,6 +29,8 @@ extern char DAT_006a1620[];
 extern char DAT_006a1640[];
 extern u32 DAT_006a11d4;
 extern u32 DAT_007cd488;
+#pragma alias DAT_007cd488_f32 DAT_007cd488
+extern f32 DAT_007cd488_f32;
 extern u32 DAT_007ce420;
 extern u32 DAT_007ce618;
 extern u32 DAT_007e0952;
@@ -81,8 +83,8 @@ extern void FUN_003196f0_ea20(int,u32);
 extern void FUN_005225a8_eaa0(const char *,...);
 #pragma alias FUN_00388000_d1c0 FUN_00388000
 extern void FUN_00388000_d1c0();
-#pragma alias FUN_00388000_d1c0_typed FUN_00388000
-extern void FUN_00388000_d1c0_typed(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 param_6,u32 *param_7,u32 param_8);
+#pragma alias FUN_00388000_2f FUN_00388000
+extern void FUN_00388000_2f(float param_1,float param_2,float *param_3,float *param_4,float *param_5,float *param_6,u32 param_7,u32 *param_8,u32 param_9);
 #pragma alias FUN_003b91c0_a5c0 FUN_003b91c0
 extern u64 FUN_003b91c0_a5c0(float,u16,u32,u32,u32,u32,u32);
 #pragma alias FUN_003b89f0_evt_f32 FUN_003b89f0
@@ -4440,10 +4442,11 @@ void FUN_0039d1c0(int param_1)
   RwV2d uv1;
   union {
     u32 value;
+    f32 real;
     u8 bytes[4];
   } color;
 
-  color.value = (u32)DAT_007cd488;
+  color.real = DAT_007cd488_f32;
   if (0 < *(int *)(param_1 + 0x18)) {
     color.bytes[3] = (u8)*(int *)(param_1 + 0x18);
 
@@ -4458,7 +4461,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.515625f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(5.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 137.0f;
@@ -4468,7 +4471,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.515625f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(5.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 504.0f;
@@ -4478,7 +4481,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.578125f;
     uv1.y = 0.65625f;
-    FUN_00388000_d1c0_typed(5.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(5.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 0) {
@@ -4498,7 +4501,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.0078125f;
     uv1.x = 0.83203125f;
     uv1.y = 0.2109375f;
-    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(4.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 1) {
@@ -4518,7 +4521,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.21875f;
     uv1.x = 0.625f;
     uv1.y = 0.421875f;
-    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(4.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     position.x = 341.0f;
@@ -4529,7 +4532,7 @@ void FUN_0039d1c0(int param_1)
     uv0.y = 0.4296875f;
     uv1.x = 0.46484375f;
     uv1.y = 0.6328125f;
-    FUN_00388000_d1c0_typed(4.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
+    FUN_00388000_2f(4.0f, 0.0f, (float *)&position, (float *)&size, (float *)&uv0, (float *)&uv1,
                             *(u32 *)(param_1 + 0x14), &color.value, 0);
   }
 }

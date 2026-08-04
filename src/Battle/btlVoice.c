@@ -6254,7 +6254,7 @@ u32 func_002ed360(u64 *param_1)
   *(u64 *)((int)uVar14 + 0x60) = uVar18;
   FUN_0027ed20(uVar14,3);
   if (bVar3) {
-    uVar14 = FUN_0027f410(0x2ecc20,*(u32 *)(puVar16 + 6));
+    uVar14 = FUN_0027f410((u32)func_002ecc20,*(u32 *)(puVar16 + 6));
     *(u64 *)((int)uVar14 + 0x60) = uVar18;
     FUN_0027ed20(uVar14,1);
   }
@@ -6441,7 +6441,7 @@ u32 func_002ed360(u64 *param_1)
   *(u64 *)(puVar7 + 8) = *(u64 *)(puVar8 + 0x58);
   *(u64 *)(puVar7 + 0x60) = uVar18;
   FUN_0027ed20(uVar14,1);
-  uVar14 = FUN_0027f410(0x2ecf80,param_1);
+  uVar14 = FUN_0027f410((u32)func_002ecf80,param_1);
   puVar8 = (u8 *)uVar14;
   *puVar8 = 4;
   *(u64 *)(puVar8 + 8) = *(u64 *)(puVar7 + 0x58);
@@ -6450,7 +6450,7 @@ u32 func_002ed360(u64 *param_1)
   *(u64 *)(puVar8 + 0x60) = uVar18;
   FUN_0027ed20(uVar14,1);
   if (bVar3) {
-    uVar14 = FUN_0027f410(0x2ecbe0,*(u32 *)(puVar16 + 6));
+    uVar14 = FUN_0027f410((u32)func_002ecbe0,*(u32 *)(puVar16 + 6));
     puVar7 = (u8 *)uVar14;
     *puVar7 = 4;
     *(u64 *)(puVar7 + 8) = *(u64 *)(puVar8 + 0x58);
@@ -7756,7 +7756,7 @@ void func_002f05f0(BtlAction *action)
     effectPacket->actionUID = actionUID;
     btlPacketRegister(effectPacket, 2);
 
-    packet = FUN_0027f410_packet_voice(0x2efd20, (u32)action->unit);
+    packet = FUN_0027f410_packet_voice((u32)func_002efd20, (u32)action->unit);
     packet->unk_00 = 5;
     packet->parentUID = effectPacket->uid;
     packet->preUpdateDelay = 0x78;
@@ -7943,7 +7943,7 @@ void func_002f0ea0(u64 *param_1)
     FUN_0027ed20(uVar8,1);
   }
   if (!bVar2) {
-    uVar8 = (u32)FUN_0027f410_packet_voice(0x2efdb0,(u32)(uintptr_t)iVar14);
+    uVar8 = (u32)FUN_0027f410_packet_voice((u32)func_002efdb0,(u32)(uintptr_t)iVar14);
     *(u8 *)uVar8 = 4;
     *(u64 *)((u8 *)uVar8 + 8) = *(u64 *)(iVar4 + 0x58);
     FUN_0027ed20(uVar8,1);

@@ -2302,10 +2302,10 @@ void FUN_003625e0(void)
 
   int iVar2;
 
-  RwMatrix matrix;
   RwV4d direction;
   RwV4d rotationY;
   RwV4d rotationX;
+  RwMatrix matrix;
   RwV3d transformed;
 
   
@@ -2434,6 +2434,7 @@ void FUN_003628f0(void)
   int iVar7;
 
   f32 fVar8;
+
   RwMatrix matrix;
 
   RwV3d outputA;
@@ -2451,7 +2452,6 @@ void FUN_003628f0(void)
   RwV4d stack30;
 
   RwV4d stack20;
-
   u32 auStack_100 [16];
 
   
@@ -4249,6 +4249,8 @@ u16 * FUN_003646d0(u32 param_1,int param_2)
 
   u16 uVar2;
 
+  u16 *puVar11;
+
   u16 *puVar3;
 
   u8 *puVar4;
@@ -4264,8 +4266,6 @@ u16 * FUN_003646d0(u32 param_1,int param_2)
   u8 *puVar9;
 
   u32 uVar10;
-
-  u16 *puVar11;
 
   f32 uVar12;
 
@@ -5588,9 +5588,9 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
   int iVar10;
 
-  int iStack_8;
-
   int iStack_4;
+
+  int iStack_8;
 
   
 
@@ -9112,7 +9112,7 @@ u64 FUN_00369320(u64 param_1,int param_2,int param_3)
     }
     if (iVar4 == 0xb) {
       FUN_00397510(param_3,iVar2);
-      FUN_00393f30(param_3,0x36e690);
+      FUN_00393f30(param_3,(code *)FUN_0036e690);
       FUN_0036f640(param_3);
       FUN_0036f640(param_3);
       return 0;
@@ -12786,7 +12786,7 @@ code * FUN_0036d5f0(void)
 
   code *pcVar5;
 
-  u32 uVar6;
+  int lVar13;
 
   int lVar7;
 
@@ -12800,7 +12800,7 @@ code * FUN_0036d5f0(void)
 
   int iVar12;
 
-  int lVar13;
+  u32 uVar6;
 
   int iVar14;
 
@@ -13446,7 +13446,7 @@ switchD_0036db68_caseD_10:
 
       FUN_00397510(iVar1,*(int *)(iVar3 + 0x14));
 
-      FUN_00393f30(iVar1,0x36e690);
+      FUN_00393f30(iVar1,(code *)FUN_0036e690);
 
     }
 

@@ -297,6 +297,26 @@ const BtlCameraStateEntry gBtlBossCameraStateEntries[3][BTLCAMERA_STATE_MAX] =
         {NULL, NULL, 1, 0, NULL},
     },
 };
+extern void func_002e9c20(BtlAction* action);
+extern u32 func_002e9f10(BtlAction* action);
+extern void func_002eabf0(void);
+extern u32 func_002eb250(BtlAction* action);
+extern void func_002eba50(BtlAction* action);
+extern u32 func_002ebec0(BtlAction* action);
+extern void func_002ee640(BtlAction* action);
+extern u32 func_002eea10(BtlAction* action);
+extern void func_002ef000(BtlAction* action);
+extern u32 func_002ef250(BtlAction* action);
+extern void func_002f0ea0(u64* param_1);
+extern u32 func_002f14a0(BtlAction* action);
+extern void func_002f3320(BtlAction* action);
+extern u32 func_002f3520(BtlAction* action);
+extern void func_002f2b90(BtlAction* action);
+extern u32 func_002f3190(BtlAction* action);
+extern void func_002f5660(BtlAction* action);
+extern u32 func_002f5870(BtlAction* action);
+extern void func_002f6840(BtlAction* action);
+extern u32 func_002f6ab0(BtlAction* action);
 extern void func_00288f80(BtlUnit* unit, s32 value);
 extern void func_002f4490(BtlAction* action);
 extern void func_002f5330(int param_1);
@@ -1777,7 +1797,7 @@ void func_002fa510(BtlAction* action, s32 mode)
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
             (unit->charId == 0x102 || unit->charId == 0x101) && mode == 1)
         {
-            func_002e4220(0x2e9c20, 0x2e9f10, action);
+            func_002e4220((u32)func_002e9c20, (u32)func_002e9f10, action);
         }
         break;
     }
@@ -1791,7 +1811,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             case 0x115:
                 if (mode == 1)
                 {
-                    func_002e4220(0x2eabf0, 0x2eb250, action);
+                    func_002e4220((u32)func_002eabf0, (u32)func_002eb250, action);
                 }
                 break;
             case 0x106:
@@ -1802,7 +1822,7 @@ void func_002fa510(BtlAction* action, s32 mode)
                     {
                         action = NULL;
                     }
-                    func_002e4220(0x2eba50, 0x2ebec0, action);
+                    func_002e4220((u32)func_002eba50, (u32)func_002ebec0, action);
                 }
                 break;
             }
@@ -1816,7 +1836,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             (unit->charId == 0x10a || unit->charId == 0x109) &&
             mode == 1 && func_002e4250() == 0)
         {
-            func_002e4220(0x2ee640, 0x2eea10, action);
+            func_002e4220((u32)func_002ee640, (u32)func_002eea10, action);
         }
         break;
     }
@@ -1827,7 +1847,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             (unit->charId == 0x10c || unit->charId == 0x10b) &&
             mode != 0 && func_002e4250() == 0)
         {
-            func_002e4220(0x2ef000, 0x2ef250, action);
+            func_002e4220((u32)func_002ef000, (u32)func_002ef250, action);
         }
         break;
     }
@@ -1840,7 +1860,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             slot = *(u16*)((u8*)gBtl + 0xb50);
             *(BtlAction**)((u8*)gBtl + 0xb44 + slot * 4) = action;
             *(u16*)((u8*)gBtl + 0xb50) = slot + 1;
-            func_002e4220(0x2f0ea0, 0x2f14a0, action);
+            func_002e4220((u32)func_002f0ea0, (u32)func_002f14a0, action);
         }
         break;
     }
@@ -1852,11 +1872,11 @@ void func_002fa510(BtlAction* action, s32 mode)
         {
             if (*(u16*)((u8*)0x0069a1d0 + *(u16*)((u8*)gBtl + 0xb48) * 4) == 0)
             {
-                func_002e4220(0x2f3320, 0x2f3520, action);
+                func_002e4220((u32)func_002f3320, (u32)func_002f3520, action);
             }
             else
             {
-                func_002e4220(0x2f2b90, 0x2f3190, action);
+                func_002e4220((u32)func_002f2b90, (u32)func_002f3190, action);
             }
         }
         break;
@@ -1878,7 +1898,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             case 0xf0:
                 if (mode != 0 && func_002e4250() == 0)
                 {
-                    func_002e4220(0x2f5660, 0x2f5870, action);
+                    func_002e4220((u32)func_002f5660, (u32)func_002f5870, action);
                 }
                 break;
             }
@@ -1892,7 +1912,7 @@ void func_002fa510(BtlAction* action, s32 mode)
             mode != 0 && func_002e4250() == 0)
         {
             *(void**)((u8*)gBtl + 0xb4c) = NULL;
-            func_002e4220(0x2f6840, 0x2f6ab0, action);
+            func_002e4220((u32)func_002f6840, (u32)func_002f6ab0, action);
         }
         break;
     }

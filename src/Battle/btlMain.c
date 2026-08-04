@@ -2795,8 +2795,8 @@ u32 FUN_002a0440(float *param_1)
 
 {
 
-  int iVar7;
 
+  int iVar7;
   u32 uVar9;
 
   float fVar16;
@@ -2807,8 +2807,8 @@ u32 FUN_002a0440(float *param_1)
 
   
 
-  iVar7 = (int)(uintptr_t)DAT_007ce3ec;
 
+  iVar7 = (int)(uintptr_t)DAT_007ce3ec;
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 2) == 0) {
 
     uVar9 = 1;
