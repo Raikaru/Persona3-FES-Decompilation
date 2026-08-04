@@ -1299,19 +1299,21 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             }
         }
         archiveEntry = func_001022e0(work->archive, work->resourceIndex);
-        if (archiveEntry == NULL)
+        if (archiveEntry != NULL)
+        {
+            archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+            sprintf(work->texturePath, "bustup/%s", archiveEntry);
+            work->asyncRequest = func_0010c1a0(0, work->texturePath, NULL, 0, NULL,
+                                               NULL, 0, NULL, NULL, "h_chrdsp.c",
+                                               (void*)0x9F);
+            work->state = HCHRDP_STATE_PARSE_LAYER;
+        }
+        else
         {
             H_Cdvd_Destroy(work->archive);
             work->archive = NULL;
             work->state = HCHRDP_STATE_UNAVAILABLE;
-            break;
         }
-        archiveEntry = func_001022e0(work->archive, work->resourceIndex);
-        sprintf(work->texturePath, "bustup/%s", archiveEntry);
-        work->asyncRequest = func_0010c1a0(0, work->texturePath, NULL, 0, NULL,
-                                           NULL, 0, NULL, "h_chrdsp.c", NULL,
-                                           (void*)0x9F);
-        work->state = HCHRDP_STATE_PARSE_LAYER;
         break;
 
     case HCHRDP_STATE_PARSE_LAYER:

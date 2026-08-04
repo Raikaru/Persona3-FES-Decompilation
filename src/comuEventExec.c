@@ -50,7 +50,7 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
   int bVar1;
   int iVar2;
   int iVar3;
-  char cVar4;
+  int cVar4;
   u16 uVar5;
   s32 lVar6;
   u32 uVar7;
@@ -63,11 +63,13 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
   bVar1 = pbVar8[8];
   iVar3 = *(int *)(pbVar8 + 0xc);
 
-  switch (iVar3) { case 0: { FUN_0016e920(*pbVar8);
+  switch (iVar3) { case 0: {
+  short state0Value;
+  FUN_0016e920(*pbVar8);
   FUN_001727e0();
-  bVar1 = *pbVar8;
-  cVar4 = FUN_0016e850(bVar1);
-  if ((char)DAT_006a3340_abs[(short)(u16)bVar1] < cVar4)
+  state0Value = *pbVar8;
+  cVar4 = FUN_0016e850(state0Value);
+  if ((char)DAT_006a3340_abs[(short)(u16)state0Value] < cVar4)
     FUN_0016f1f0(0xa2d, 1);
   else
     FUN_0016f1f0(0xa2d, 0);

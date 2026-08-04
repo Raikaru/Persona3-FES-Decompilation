@@ -2400,7 +2400,7 @@ void btlActionUpdateStateReady(BtlAction* action)
 
 /* W373 pragma sweep nd/obj: base 1396/1948; singles LI=1444/1992 CS=1459/2020 LT=1362/1936 PR=1397/1948 SR=1396/1948 DA=1396/1964; retain LT on. */
 #pragma opt_lifetimes on
-/* Retail algorithm: target distance/facing, helper-offset chain, camera dispatch, and move-speed packet; implemented 2052/2112 bytes (97%); remaining register/layout differences. */
+/* Retail algorithm: target distance/facing, helper-offset chain, camera dispatch, and move-speed packet; implemented 1976/2112 bytes (94%); remaining register/layout differences. */
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
@@ -2499,13 +2499,13 @@ position_section:
 
         checkDist = FUN_002d1ed0(&spE0, &spD0);
 
-        if (checkDist > 500.0f)
+        if (checkDist < 500.0f)
         {
-            isSkillType = someFlag;
-            someFlag = 0;
+            extraOffset = checkDist;
             goto unified_end;
         }
-        extraOffset = checkDist;
+        isSkillType = someFlag;
+        someFlag = 0;
         goto unified_end;
     }
 
@@ -2659,10 +2659,6 @@ compute_vector_offset:
 final_dispatch:
     {
         u16 field_6E;
-        if (someFlag != 0)
-        {
-            btlAction0028a780(action);
-        }
 
         field_6E = action->target.specificId;
         if ((iGpffffb708[(u32)field_6E * 0x2c] & 2) == 0)
@@ -2755,6 +2751,7 @@ create_posrotcol_packet:
             
             distanceType2 = (FUN_002d5e10(actionUnit) == 0) ? 4 : 11;
             extraOffset += FUN_002812d0(actionUnit, victimUnit, distanceType2);
+            btlAction0028a780(action);
             FUN_0027ffb0(victimUnit, &spE0);
             FUN_00280480(actionUnit, victimUnit, &spD0);
 
@@ -2786,20 +2783,13 @@ create_posrotcol_packet:
             speedIndex2 = iGpffffb728[actionUnit->datUnit->id].moveSpeed[isSkillType].speedIndex;
         }
         moveSpeed = D_00693300[speedIndex2];
-        if ((localFlag == 1) && (isFirstSpecial == 0))
-        {
-            moveSpeed = moveSpeed * uGpffff8088;
-            moveSpeed = moveSpeed * 1.25f;
-            packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_0);
-            goto camera_dispatch;
-        }
-
-        spA0.x = extraOffset;
-
         if (localFlag == 1)
         {
+            if (isFirstSpecial == 0)
+            {
+                moveSpeed = moveSpeed * uGpffff8088;
+                moveSpeed = moveSpeed * 1.25f;
+            }
             packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_0);

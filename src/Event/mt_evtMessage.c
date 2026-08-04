@@ -985,7 +985,6 @@ void FUN_0039f950(int param_1)
   
 
   iVar3 = FUN_003b5d50(1);
-
   iVar5 = 0;
 
 
