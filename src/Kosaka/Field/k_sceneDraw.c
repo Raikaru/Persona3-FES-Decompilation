@@ -58,6 +58,7 @@ extern void func_00493370(void* renderLayout, s32 state);
 extern f32 func_001a4600(void* camera);
 extern u32 func_00195790(void);
 extern void func_004d7f60(s32 state, u32 value);
+extern void FUN_00521408(void* destination, s32 value, u32 size);
 extern void (*D_00960090)(u32 state, u32 value);
 extern RwCamera* kwlnGetMainCamera_y2(void);
 typedef struct KWindowQuad
@@ -697,6 +698,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
     secondaryDirectionalColor = func_00198580()->color;
     secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
 
+    FUN_00521408(charList, 0, sizeof(charList));
     charCount = 0;
     while (charRes != NULL)
     {
@@ -719,14 +721,9 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
     {
         func_004944b0(kwlnGetAmbientLight(), &charLight->ambientColor);
         func_004944b0(func_00198580(), &charLight->directionalColor);
-        func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(charLight, 0x160));
         RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
                          SCENEDRAW_RESRC_MATRIX(charLight, 0x120),
                          rwCOMBINEREPLACE);
-        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
-                         SCENEDRAW_RESRC_MATRIX(charLight, 0x170),
-                         rwCOMBINEREPLACE);
-
         charRes = charList[i];
         flags = charRes->base.flags;
         if (flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT)

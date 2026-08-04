@@ -13368,6 +13368,8 @@ extern code FUN_0017b660;
 extern long FUN_0017b660_2arg(u16 param_1, u16 param_2);
 #pragma alias FUN_0017b660_i32 FUN_0017b660
 extern long FUN_0017b660_i32(u16 param_1, int param_2);
+#pragma alias FUN_0017b660_i32_s16 FUN_0017b660
+extern long FUN_0017b660_i32_s16(s16 param_1, int param_2);
 #pragma alias FUN_0017b660_1arg FUN_0017b660
 extern long FUN_0017b660_1arg(u16 param_1);
 #pragma alias FUN_0017b660_s16 FUN_0017b660
@@ -21310,23 +21312,24 @@ void FUN_0043bf50(int param_1)
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
 /* W420 negative: declaration permutations stayed nd17/object436/window448/rate0.038991; player-character probe nd279/object444/window448/rate0.628378 versus baseline nd17/object436/window448/rate0.038991; reverted. */
-// FUN_0043C180 NONMATCHING
+// FUN_0043C180
 
 short FUN_0043c180(char param_1)
 
 {
   int uVar1;
   u32 bVar2;
-  u16 uVar3;
+  u32 uVar3;
   u16 *puVar4;
   u8 *sourceRow;
   u8 *checkRow;
   int iVar11;
   int iVar10;
   short sVar9;
-  u16 uVar8;
+  u32 uVar8;
   int player;
   u8 *row;
+  u8 *row2;
   sVar9 = 0;
   uVar8 = 0;
   iVar11 = 1;
@@ -21343,13 +21346,15 @@ short FUN_0043c180(char param_1)
       if ((bVar2 == 1) &&
           (FUN_001c7160_f32_u32(500.0f,sourceRow,checkRow) == 1)) {
         row = DAT_008717a0_rows_abs[iVar11];
-        puVar4 = FUN_00173380_typed(*(u16 *)(row + 0x1a8));
+        row2 = row;
+        puVar4 = FUN_00173380_typed(*(u16 *)(row2 + 0x1a8));
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
           if (((uVar1 != 0) && (uVar1 == 0xcd)) &&
-              (FUN_0017b660_i32(*(s16 *)(row + 0x1a8),uVar1) == 0)) {
-            uVar3 = FUN_0016c570_s16(*(s16 *)(row + 0x1a8));
-            if (uVar8 < uVar3) {
+              (FUN_0017b660_i32_s16(*(s16 *)(row2 + 0x1a8),uVar1) == 0)) {
+            uVar3 = FUN_0016c570_s16(*(s16 *)(row2 + 0x1a8));
+            uVar3 = (u16)uVar3;
+            if ((s32)(u16)uVar8 < (s32)uVar3) {
               sVar9 = (short)iVar11;
               uVar8 = uVar3;
             }
@@ -21365,23 +21370,24 @@ short FUN_0043c180(char param_1)
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
-// FUN_0043C340 NONMATCHING
+// FUN_0043C340
 
 short FUN_0043c340(char param_1)
 
 {
   int uVar1;
   u32 bVar2;
-  u16 uVar3;
+  u32 uVar3;
   u16 *puVar4;
   u8 *sourceRow;
   u8 *checkRow;
   int iVar11;
   int iVar10;
   short sVar9;
-  u16 uVar8;
+  u32 uVar8;
   u8 *row;
   int player;
+  u8 *row2;
 
   sVar9 = 0;
   uVar8 = 0;
@@ -21399,13 +21405,15 @@ short FUN_0043c340(char param_1)
       if ((bVar2 == 1) &&
           (FUN_001c7160_f32_u32(500.0f,sourceRow,checkRow) == 1)) {
         row = DAT_008717a0_rows_abs[iVar11];
-        puVar4 = FUN_00173380_typed(*(u16 *)(row + 0x1a8));
+        row2 = row;
+        puVar4 = FUN_00173380_typed(*(u16 *)(row2 + 0x1a8));
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
           if (((uVar1 != 0) && (uVar1 == 0xcc)) &&
-              (FUN_0017b660_i32(*(s16 *)(row + 0x1a8),uVar1) == 0)) {
-            uVar3 = FUN_0016c570_s16(*(s16 *)(row + 0x1a8));
-            if (uVar8 < uVar3) {
+              (FUN_0017b660_i32_s16(*(s16 *)(row2 + 0x1a8),uVar1) == 0)) {
+            uVar3 = FUN_0016c570_s16(*(s16 *)(row2 + 0x1a8));
+            uVar3 = (u16)uVar3;
+            if ((s32)(u16)uVar8 < (s32)uVar3) {
               sVar9 = (short)iVar11;
               uVar8 = uVar3;
             }

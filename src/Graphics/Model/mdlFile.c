@@ -3768,8 +3768,8 @@ void FUN_0031d9c0(int *param_1,u32 *param_2)
 
         fVar9 = 2.0f / (quat[0] * quat[0] + quat[1] * quat[1] +
                         quat[2] * quat[2] + quat[3] * quat[3]);
-        fVar10 = quat[0] * fVar9;
         fVar8 = quat[1] * fVar9;
+        fVar10 = quat[0] * fVar9;
         fVar9 = quat[2] * fVar9;
         p_yw = fVar8 * quat[3];
         p_xw = fVar10 * quat[3];
@@ -6406,17 +6406,17 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 
 u32 FUN_00320de0(u32 param_1,u32 *param_2)
 {
+  s32 dataIndex;
+  s32 materialIndex;
+  char *data;
+  char *name;
+  u32 material;
   s32 materialCount;
   s32 arrayCount;
-  s32 dataCount;
-  s32 arrayIndex;
-  s32 materialIndex;
-  s32 dataIndex;
-  u32 material;
-  void *userData;
-  char *name;
-  char *data;
   u32 geometry;
+  s32 arrayIndex;
+  void *userData;
+  s32 dataCount;
   geometry = *(u32 *)((u32)param_1 + 0x18);
   materialCount = *(s32 *)(geometry + 0x24);
   materialIndex = 0;

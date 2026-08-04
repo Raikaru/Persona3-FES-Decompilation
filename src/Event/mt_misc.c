@@ -3384,8 +3384,8 @@ void FUN_00396f50(int param_1)
           break;
         default:
           FUN_00111500();
-          *entry = 0;
           *state_ptr = 0;
+          *entry = 0;
           break;
         }
       }
