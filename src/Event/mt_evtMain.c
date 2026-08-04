@@ -11337,7 +11337,7 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
 {
 
-  u8 bVar1;
+  u32 bVar1;
 
   char cVar2;
 

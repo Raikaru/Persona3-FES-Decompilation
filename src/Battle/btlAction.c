@@ -1241,8 +1241,8 @@ BtlPacket* result;
     BtlPacket* chain;
     BtlTargetResult work;
     s32 stat;
-    u32 messageId;
-    u32 tableIndex;
+    u64 messageId;
+    u64 tableIndex;
     s16 voice;
     if (gBtl->flags & 0x80000)
         return;

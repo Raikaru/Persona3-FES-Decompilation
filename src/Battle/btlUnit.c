@@ -3831,10 +3831,10 @@ u32 btlUnitUpdate00285d30Packet(void* work)
 {
     BtlUnitPacket00285d30* packet;
     BtlUnit* unit;
-    s16 rgbStart;
-    s16 rgbDuration;
-    s16 alphaStart;
-    s16 alphaDuration;
+    s32 rgbStart;
+    s32 rgbDuration;
+    s32 alphaStart;
+    s32 alphaDuration;
     s16 end;
     f32 factor;
     s16 counter;
@@ -5789,7 +5789,7 @@ void FUN_002891e0(void)
 
   u32 uVar3;
 
-  u8 bVar4;
+  u32 bVar4;
 
   int iVar5;
 

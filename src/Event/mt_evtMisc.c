@@ -5801,7 +5801,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
   int iVar6;
 
-  bool bVar3;
+  u32 bVar3;
 
   u32 *puVar4;
 

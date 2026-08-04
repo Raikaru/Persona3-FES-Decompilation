@@ -9712,7 +9712,7 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
 
   u32 *puVar4;
 
-  u8 bVar5;
+  u32 bVar5;
 
   u32 uVar6;
 
