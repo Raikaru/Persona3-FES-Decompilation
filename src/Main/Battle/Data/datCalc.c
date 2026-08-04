@@ -1282,12 +1282,8 @@ float FUN_00301880(u32 param_1,u32 param_2,u32 param_3)
   float fVar6;
   
   uVar4 = param_2 & 0xff;
-  if (0x14 < (s32)uVar4) {
-    FUN_0019d3f0(0x69aa80,0x4e8);
-  }
-  if (0x14 < (s32)uVar4) {
-    FUN_0019d3f0(0x69aa80,0x4b8);
-  }
+  K_ASSERT(uVar4 <= 0x14, 0x4e8);
+  K_ASSERT(uVar4 <= 0x14, 0x4b8);
   puVar5 = (u16 *)param_1;
   if ((s32)uVar4 < 0x11) {
     cVar2 = FUN_00300f60(param_1,param_2);
@@ -1295,9 +1291,7 @@ float FUN_00301880(u32 param_1,u32 param_2,u32 param_3)
   else {
     cVar2 = (*(u32 *)(puVar5 + 10) & 1 << ((u32)uVar4 & 0x1f)) != 0;
   }
-  if ((cVar2 < -1) || ('\x01' < cVar2)) {
-    FUN_0019d3f0(0x69aa80,0x4ec);
-  }
+  K_ASSERT(cVar2 >= -1 && cVar2 <= 1, 0x4ec);
   bVar1 = (*puVar5 & 4) != 0;
   fVar6 = 1.0;
   if (uVar4 == 0x14) {

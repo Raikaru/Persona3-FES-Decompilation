@@ -5004,12 +5004,12 @@ u32 func_002bb0b0(u32 *param_1)
     }
     else {
       if ((*puVar1 & 0x40) == 0) {
-        if ((*(u16 *)(param_1 + 8) & 0x4000) != 0) {
-          iVar2 = param_1[7] + 1;
-        }
-        else {
+        if ((*(u16 *)(param_1 + 8) & 0x4000) == 0) {
           iVar2 = func_002b9370(*param_1,0);
           iVar2 = iVar2 << 1;
+        }
+        else {
+          iVar2 = param_1[7] + 1;
         }
         if ((((param_1[2] != 0) && (param_1[2] * 2 + -0xd <= (int)param_1[7])) ||
             ((*(long *)(param_1 + 4) != 0 &&
@@ -5027,7 +5027,7 @@ u32 func_002bb0b0(u32 *param_1)
         }
         else if (param_1[7] == 2) {
           *puVar1 = *puVar1 | 0xb0;
-          *(u32 *)(puVar1 + 2) = (u32)((u32)((long)*(int *)(puVar1 + 2) << 0x28) >> 0x28);
+          *(u32 *)(puVar1 + 2) = (u32)(((u64)*(u32 *)(puVar1 + 2) << 0x28) >> 0x28);
         }
         param_1[7] = param_1[7] + 2;
       }

@@ -12008,7 +12008,7 @@ int FUN_0037e1b0(int param_1,int param_2,int param_3)
 
   iVar1 = 0;
 
-  FUN_0036f900(param_1,param_2,0x14,5,0,1,param_3,(int)(code *)FUN_0037df50,0);
+  FUN_0036f900(param_1,param_2,0x14,5,0,1,param_3,(int)(code *)FUN_0037df50,(code *)FUN_0037df50);
 
   iVar2 = (int)param_3;
 
@@ -12881,7 +12881,7 @@ int FUN_0037f3d0(int param_1,int param_2,int param_3)
 
   
 
-  FUN_0036f900(param_1,param_2,0x14,5,0,1,param_3,(int)(code *)FUN_0037f050,0);
+  FUN_0036f900(param_1,param_2,0x14,5,0,1,param_3,(int)(code *)FUN_0037f050,(code *)FUN_0037f050);
 
   iVar1 = (int)param_3;
 
@@ -13153,7 +13153,7 @@ int FUN_0037fae0(u64 param_1,u64 param_2,u64 param_3)
 
   iVar2 = 0;
 
-  FUN_0036f900(param_1,param_2,0x17,0xc,0,1,param_3,(int)(code *)FUN_0037f5e0,0);
+  FUN_0036f900(param_1,param_2,0x17,0xc,0,1,param_3,(int)(code *)FUN_0037f5e0,(code *)FUN_0037f5e0);
 
   iVar4 = (int)param_3;
 
@@ -13738,7 +13738,7 @@ int FUN_003806f0(int param_1,int param_2,int param_3)
 
   iVar2 = 0;
 
-  FUN_0036f900(param_1,param_2,0x17,10,0,1,param_3,(int)(code *)FUN_00380310,0);
+  FUN_0036f900(param_1,param_2,0x17,10,0,1,param_3,(int)(code *)FUN_00380310,(code *)FUN_00380310);
 
   iVar4 = (int)param_3;
 
@@ -14281,7 +14281,7 @@ int FUN_00381280(int param_1,int param_2,int param_3)
 
   iVar2 = 0;
 
-  FUN_0036f900(param_1,param_2,0x1d,7,0,1,param_3,(int)(code *)FUN_003810a0,0);
+  FUN_0036f900(param_1,param_2,0x1d,7,0,1,param_3,(int)(code *)FUN_003810a0,(code *)FUN_003810a0);
 
   iVar4 = (int)param_3;
 
@@ -14871,7 +14871,7 @@ int FUN_003820e0(int param_1,int param_2,int param_3)
 
   iVar3 = 0;
 
-  FUN_0036f900(param_1,param_2,0x19,0xd,0,1,param_3,(int)(code *)FUN_00381bf0,0);
+  FUN_0036f900(param_1,param_2,0x19,0xd,0,1,param_3,(int)(code *)FUN_00381bf0,(code *)FUN_00381bf0);
 
   iVar1 = (int)param_3;
 
@@ -15126,7 +15126,7 @@ int FUN_00382500(int param_1,int param_2,int param_3)
 
   iVar2 = 0;
 
-  FUN_0036f900(param_1,param_2,0x1e,5,0,1,param_3,(int)(code *)FUN_00382320,0);
+  FUN_0036f900(param_1,param_2,0x1e,5,0,1,param_3,(int)(code *)FUN_00382320,(code *)FUN_00382320);
 
   iVar1 = (int)param_3;
 

@@ -1506,7 +1506,7 @@ void func_0010d7b0(s16 index, s16 fileIndex, void* data0, u32 data0Size,
     HSfdDecodeSlot* slot;
 
     slot = &sSfdDecodeSlots_abs[index];
-    if ((slot->state == 1) && (slot->status != 0))
+    if ((sSfdDecodeSlots_abs[index].state == 1) && (sSfdDecodeSlots_abs[index].status != 0))
     {
         func_0010d950(index);
     }

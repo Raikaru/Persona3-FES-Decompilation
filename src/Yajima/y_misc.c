@@ -7603,7 +7603,7 @@ void FUN_00427e60_y2(int param_1,u8 param_2)
 
 /* W327 measured: opt_loop_invariants on reduces normalized_diff 574 -> 566 (object 896/896 -> 872/896). */
 #pragma opt_loop_invariants on
-// FUN_00427E70 NONMATCHING
+// FUN_00427E70
 
 
 void FUN_00427e70_y2(float depth, u32 color, float x, float y, int width, int height,
@@ -7615,9 +7615,9 @@ void FUN_00427e70_y2(float depth, u32 color, float x, float y, int width, int he
   int camera;
   int i;
   u32 red;
-  u32 green;
-  u32 blue;
-  u32 alpha;
+  u8 green;
+  u8 blue;
+  u8 alpha;
   float reciprocalZ;
 
   camera = kwlnGetMainCamera();
@@ -18445,15 +18445,16 @@ char FUN_00435440(char param_1)
 u16 FUN_00435660(char param_1)
 {
   short sVar1;
-  u8 bVar2;
+  int bVar2;
   u32 uVar3;
   int iVar4;
   char cVar6;
   int lVar8;
   YRuntimeUnitRow *target;
   YRuntimeUnitRow *entry;
+  lVar8 = 0;
   target = &DAT_008717a0_unit_rows[(int)param_1];
-  for (lVar8 = 0; lVar8 < 4; lVar8 = lVar8 + 1) {
+  for (; lVar8 < 4; lVar8 = lVar8 + 1) {
     if (lVar8 != param_1) {
       bVar2 = 0;
       entry = &DAT_008717a0_unit_rows[lVar8];

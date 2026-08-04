@@ -7992,7 +7992,7 @@ u32 func_002f14a0(BtlAction* action)
          actionIndex = (actionIndex + 1) & 0xffff)
     {
         current = *(BtlAction**)(iGpffffb6fc + (actionIndex & 0xffff) * 4 + 0xb44);
-        if (current != btlActionCurrent())
+        if (current != btlOrderGetActionPlaying())
         {
             if ((current->unit->flags3 & BTLUNIT_FLAG3_ENDURE) != 0)
             {

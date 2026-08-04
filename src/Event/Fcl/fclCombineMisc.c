@@ -2077,15 +2077,15 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
       else {
 
-        if ((uVar2 & 2) == 0) {
+        if ((uVar2 & 2) != 0) {
 
-          bVar3 = 1;
+          bVar3 = 0;
 
         }
 
         else {
 
-          bVar3 = 0;
+          bVar3 = 1;
 
         }
 
@@ -2261,15 +2261,15 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
       else {
 
-        if ((uVar2 & 2) == 0) {
+        if ((uVar2 & 2) != 0) {
 
-          bVar3 = 1;
+          bVar3 = 0;
 
         }
 
         else {
 
-          bVar3 = 0;
+          bVar3 = 1;
 
         }
 
