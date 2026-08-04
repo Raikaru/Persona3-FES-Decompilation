@@ -7583,6 +7583,22 @@ void FUN_003aa370(int param_1,u64 param_2)
 
 {
 
+  extern u8 DAT_006a1fd0_abs[];
+
+  extern u8 DAT_006a1fe0_abs[];
+  extern u8 DAT_006a2040_abs[];
+
+  extern u8 DAT_006a2050_abs[];
+
+  extern u8 DAT_006a2000_abs[];
+
+  extern u8 DAT_006a1ff0_abs[];
+
+  extern u8 DAT_006a2020_abs[];
+
+  extern u8 DAT_006a2030_abs[];
+
+  extern u8 DAT_006a2010_abs[];
   u32 *puVar1;
 
   int iVar2;
@@ -7605,7 +7621,7 @@ void FUN_003aa370(int param_1,u64 param_2)
   rect[1] = *(u32 *)(param_1 + 0x14);
   rect[2] = *(u32 *)(param_1 + 0x18);
   rect[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4d10(rect,0x6a1fd0,*(u32 *)(param_1 + 0xc),0x490,param_2);
+  FUN_003b4d10(rect,DAT_006a1fd0_abs,*(u32 *)(param_1 + 0xc),0x490,param_2);
 
   iVar2 = *(int *)(param_1 + 0x38) * 0x26;
   scaled = iVar2 >> 7;
@@ -7618,13 +7634,13 @@ void FUN_003aa370(int param_1,u64 param_2)
   rect[1] = *(u32 *)(param_1 + 0x14);
   rect[2] = rect[0] + 0x10c0;
   rect[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4d10(rect,0x6a1fe0,*(u32 *)(param_1 + 0xc),0x680,param_2);
+  FUN_003b4d10(rect,DAT_006a1fe0_abs,*(u32 *)(param_1 + 0xc),0x680,param_2);
 
   rect[0] = *(int *)(param_1 + 0x10) + -0x140;
   rect[1] = *(int *)(param_1 + 0x14) + 0x48;
   rect[2] = rect[0] + 0xc80;
   rect[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4e90(rect,0x6a2040,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2040_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   if ((0 < *(int *)(param_1 + 0x28)) &&
       (*(int *)(param_1 + 0x24) != *(int *)(param_1 + 0x14))) {
@@ -7639,7 +7655,7 @@ void FUN_003aa370(int param_1,u64 param_2)
   rect[1] = *(u32 *)(param_1 + 0x14);
   rect[2] = rect[0] + 0xc80;
   rect[3] = *(int *)(param_1 + 0x1c) + -0x48;
-  FUN_003b4e90(rect,0x6a2050,0x6a2000,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2050_abs,DAT_006a2000_abs,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   iVar2 = *(int *)(param_1 + 0x38) * 0x46;
   scaled = iVar2 >> 7;
@@ -7652,25 +7668,25 @@ void FUN_003aa370(int param_1,u64 param_2)
   rect[1] = *(int *)(param_1 + 0x14) + -0xb8;
   rect[2] = rect[0] + 0x1b80;
   rect[3] = *(int *)(param_1 + 0x14) + 8;
-  FUN_003b4e90(rect,0x6a2040,0x6a1ff0,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2040_abs,DAT_006a1ff0_abs,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   rect[0] = *(int *)(param_1 + 0x10) + 0x8b0;
   rect[3] = *(int *)(param_1 + 0x14);
   rect[1] = rect[3] + -0x10;
   rect[2] = rect[0] + 0x710;
-  FUN_003b4e90(rect,0x6a2020,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2020_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
   rect[0] = rect[2];
   rect[2] = rect[2] + 0x1040;
-  FUN_003b4e90(rect,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2030_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   rect[0] = *(int *)(param_1 + 0x10) + 0x1020;
   rect[3] = *(int *)(param_1 + 0x1c);
   rect[1] = rect[3] + -0x10;
   rect[2] = rect[0] + 0x710;
-  FUN_003b4e90(rect,0x6a2010,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2010_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
   rect[2] = rect[0];
   rect[0] = rect[0] + -0x1220;
-  FUN_003b4e90(rect,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  FUN_003b4e90(rect,DAT_006a2030_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   return;
 

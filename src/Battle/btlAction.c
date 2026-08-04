@@ -2064,9 +2064,9 @@ void btlActionInitStateSupport(BtlAction* action)
 // FUN_0028d080 NONMATCHING
 void btlActionUpdateStateSupport(BtlAction* action)
 {
-BtlPacket* packet;
-    s32 messageId = 0;
-    s32 special = 0;
+    BtlPacket* packet;
+    s32 messageId;
+    s32 special;
     s32 work[7];
     s8 status;
     BtlUnit* unit;
@@ -2077,6 +2077,8 @@ BtlPacket* packet;
     }
     unit = action->unit;
     status = FUN_00302f50(unit->datUnit);
+    messageId = 0;
+    special = 0;
     switch (status)
     {
         case 0: case 1: messageId = unit->genus == UNIT_GENUS_PC ? 0x16 : 0x17; FUN_00301540(unit->datUnit, 0); FUN_00301540(unit->datUnit, 1); break;

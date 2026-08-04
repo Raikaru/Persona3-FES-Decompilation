@@ -4740,6 +4740,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
     char flags[8];
   } scratch;
   int copyCount;
+  short *position;
 
   
 
@@ -4808,9 +4809,10 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
         0) {
 
       sprintf((char *)scratch.text,&DAT_007cd900,*(short *)(iVar4 + uVar9 * 2 + 0x14));
-      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)scratch.positions[uVar9 * 2],
+      position = scratch.positions + uVar9 * 2;
+      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)position[0],
 
-                   (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
+                   (int)param_2 + (int)position[1],param_3,1,scratch.text,2);
 
     }
 
@@ -4863,6 +4865,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
     char flags[8];
   } scratch;
   int copyCount;
+  short *position;
 
   
 
@@ -4929,9 +4932,10 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
         0) {
 
       sprintf((char *)scratch.text,&DAT_007cd900,*(short *)(iVar4 + uVar9 * 2 + 0x14));
-      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)scratch.positions[uVar9 * 2],
+      position = scratch.positions + uVar9 * 2;
+      FUN_0040eb50_f32(0.0f,(int)param_1 + (int)position[0],
 
-                   (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
+                   (int)param_2 + (int)position[1],param_3,1,scratch.text,2);
 
     }
 
@@ -13951,87 +13955,44 @@ LAB_00401ea8:
   }
 
   else {
-
     rawKey = *(short *)param_2;
-
     j = 0;
-
     key2 = rawKey & 0xffff;
-
     snapshot = *(u_long128 *)DAT_006af180_abs;
-
     srcB = (u16 *)&snapshot;
-
     dstB = auStack_20;
-
     iVar8 = 4;
-
     goto copy2;
-
     for (;;) {
-
       if (key2 == uVar11) {
-
         found = 1;
-
         goto LAB_00401fa8;
-
       }
-
       j = j + 1;
-
 copy2:
-
       cnt = iVar8;
-
       puVar15 = srcB;
-
       puVar14 = dstB;
-
       do {
-
         tmpA = ((s16 *)puVar15)[0];
-
         tmpB = ((s16 *)puVar15)[1];
-
         puVar15 = puVar15 + 2;
-
         cnt = cnt + -1;
-
         *puVar14 = tmpA;
-
         puVar14[1] = tmpB;
-
         puVar14 = puVar14 + 2;
-
       } while (0 < cnt);
-
       if (j >= 8) {
-
         uVar11 = 0;
-
-      }
-
-      else {
-
+      } else {
         uVar11 = (u32)auStack_20[j];
-
       }
-
       uVar11 &= 0xffff;
-
-
-
       if (uVar11 == 0) {
-
         found = 0;
-
         goto LAB_00401fa8;
-
       }
-
     }
-
 LAB_00401fa8:
 
     if (found) {

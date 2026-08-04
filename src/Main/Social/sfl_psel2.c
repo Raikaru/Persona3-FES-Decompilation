@@ -256,7 +256,6 @@ void sflPsel00260e00(void)
     work = sSflPsel;
     if (((~*work) & 1) != 0)
         return;
-
     texture = sflResGetPersonaChangeSprite();
     state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(9, 2);

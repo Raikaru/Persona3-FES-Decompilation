@@ -3892,7 +3892,7 @@ void FUN_002257F0(void)
 
             obj2 = *(u32*)(overlay0 + 0x564);
             if (obj2 != 0) {
-                colour = (u32)alphaByte | 0xffffff00u;
+                colour = ((u32)alphaByte & 0xffu) | 0xffffff00u;
                 FUN_003b0e20(obj2, colour);
 
                 rect[0] = 171.0f + posA[0] + 27.0f;

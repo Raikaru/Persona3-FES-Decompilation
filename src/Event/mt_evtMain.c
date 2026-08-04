@@ -12604,7 +12604,6 @@ void FUN_0036d030(int param_1)
       else {
 
         FUN_00362120(1,*(u32 *)(iVar4 + 0x18),param_1);
-
       }
 
       FUN_005225a8(DAT_0069de20);
@@ -14417,7 +14416,7 @@ void FUN_0036f000(int param_1)
 
   FUN_0035ae80();
 
-  while (iVar1 = *(int *)(iVar3 + 0x84), iVar1 != 0) {
+  for (iVar1 = *(int *)(iVar3 + 0x84); iVar1 != 0; iVar1 = *(int *)(iVar3 + 0x84)) {
 
     while (*(int *)(iVar1 + 0x6c) != 0) {
 
@@ -14430,6 +14429,7 @@ void FUN_0036f000(int param_1)
     FUN_00386b70(0,7,0x9c);
 
   }
+
 
   if (*(int *)(iVar3 + 8) != 0) {
 

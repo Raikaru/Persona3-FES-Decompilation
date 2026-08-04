@@ -2052,6 +2052,7 @@ void FUN_00395950(int param_1)
   int iVar7;
 
 
+
   float fVar9;
 
   u32 uStack_690;
@@ -2238,6 +2239,7 @@ void FUN_00395950(int param_1)
         }
 
       }
+
 
       for (iVar6 = 0; iVar6 < (int)(u32)*(u8 *)(iVar2 + 1); iVar6 = iVar6 + 1) {
 

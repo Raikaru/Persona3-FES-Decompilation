@@ -1053,7 +1053,6 @@ void func_0020cf20(void* destination, PanelTransform* transform)
     s32 width;
     s32 alternating;
     u8* vertex;
-
     *(u64*)&axisZ = *(const u64*)D_0068E0C8_abs;
     axisZ.z = *(f32*)(D_0068E0C8_abs + 8);
     camera = kwlnGetMainCamera();
