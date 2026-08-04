@@ -4290,7 +4290,7 @@ void func_001127d0(void* param_1, u32 enabled)
     f32 polynomial;
     f32 cosine;
     f32 sine;
-    u32 i;
+    s32 i;
     u32 packedColor;
     s32 red;
     s32 green;

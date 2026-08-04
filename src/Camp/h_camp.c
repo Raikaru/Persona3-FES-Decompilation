@@ -6522,7 +6522,7 @@ void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
                                s32 fade)
 {
     s32 i;
-    u32 offset;
+    s32 offset;
     s32 angle;
     f32 radius;
     f32 sine;
@@ -18062,8 +18062,8 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     const char* resourceText;
     u16 resourceItemId;
     u32 textColor;
-    u32 value;
-    u32 denominator;
+    s32 value;
+    s32 denominator;
     s32 statIndex;
     s32 gaugeWidth;
     s32 selected;
