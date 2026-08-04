@@ -105,8 +105,8 @@ void H_Pad_Poll(HPad* pad)
     s32 port;
     s32 slot;
     u8 actuatorData[2];
-    u8 hasDigitalInput;
-    u8 hasAnalogSticks;
+    u32 hasDigitalInput;
+    u32 hasAnalogSticks;
     u16 actuator0;
     u16 actuator1;
     sRDataPort1[0] = 0xFF;

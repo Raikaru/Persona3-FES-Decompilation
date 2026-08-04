@@ -13345,7 +13345,7 @@ void FUN_0032ce10(int param_1)
 
 {
 
-  char cVar1;
+  s32 cVar1;
 
   u32 uVar2;
 
@@ -34171,7 +34171,7 @@ void FUN_00343d60(int param_1)
 
   u16 *puVar6;
 
-  bool bVar7;
+  u32 bVar7;
 
   float fVar8;
   float alphaF;

@@ -1868,7 +1868,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
   typedef unsigned int FusionU128 __attribute__((mode(TI)));
 
 
-  u8 bVar2;
+  u32 bVar2;
 
   int iVar3;
 

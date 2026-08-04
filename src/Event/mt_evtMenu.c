@@ -4621,7 +4621,7 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
   int iVar1;
 
-  bool bVar2;
+  u32 bVar2;
 
   u8 *puVar3;
 
