@@ -459,6 +459,15 @@ static inline void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
     rect[3] = (f32)bpPanelFrameHeight(frame);
     func_0021d8e0(destination, rect);
 }
+static inline void bpPanelSetRectBuffered(void* destination, f32* rect,
+                                          f32 x, f32 y, void* frame)
+{
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = (f32)bpPanelFrameWidth(frame);
+    rect[3] = (f32)bpPanelFrameHeight(frame);
+    func_0021d8e0(destination, rect);
+}
 static inline void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
 {
     u8 color[4];
@@ -567,6 +576,51 @@ static inline void bpPanelSetRotatedQuad(void* destination,
     f32 cosine;
     f32 sourceX[4];
     f32 sourceY[4];
+    s32 i;
+
+    width = (f32)bpPanelFrameWidth(frame);
+    height = (f32)bpPanelFrameHeight(frame);
+    sourceX[0] = left;
+    sourceY[0] = top;
+    sourceX[1] = left + width;
+    sourceY[1] = top;
+    sourceX[2] = left + width;
+    sourceY[2] = top + height;
+    sourceX[3] = left;
+    sourceY[3] = top + height;
+    for (i = 0; i < 4; i += 2)
+    {
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
+        vertices[i * 2] = centerX + (sourceX[i] - centerX) * cosine -
+                          (sourceY[i] - centerY) * sine;
+        vertices[i * 2 + 1] = centerY + (sourceX[i] - centerX) * sine +
+                              (sourceY[i] - centerY) * cosine;
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
+        vertices[(i + 1) * 2] = centerX + (sourceX[i + 1] - centerX) * cosine -
+                                (sourceY[i + 1] - centerY) * sine;
+        vertices[(i + 1) * 2 + 1] =
+            centerY + (sourceX[i + 1] - centerX) * sine +
+            (sourceY[i + 1] - centerY) * cosine;
+    }
+    func_0021d890(destination, vertices);
+}
+static inline void bpPanelSetRotatedQuadBuffered(void* destination,
+                                                  f32* vertices,
+                                                  f32* sourceX,
+                                                  f32* sourceY,
+                                                  f32 centerX,
+                                                  f32 centerY,
+                                                  f32 left,
+                                                  f32 top,
+                                                  void* frame,
+                                                  f32 angle)
+{
+    f32 width;
+    f32 height;
+    f32 sine;
+    f32 cosine;
     s32 i;
 
     width = (f32)bpPanelFrameWidth(frame);
@@ -1607,20 +1661,26 @@ void func_0021f3c0(void)
     words[0] &= ~1;
 }
 
-/* W419 prologue diagnosis: ours frame 0x1f0/496B saves s0-s7 and f20-f27;
- * retail frame 0xd0/208B saves s0-s4 and f20-f31. Whole-body
- * reconstruction; scoped-temporary probe stayed nd7333/10000B, window
- * 10064B, rate 0.733300 (no code change). */
+/* W454 frame work: buffered rect/quad scratch and direct previous reads
+ * reduced this function from 0x1f0/496B, nd7333 to 0x110/272B, nd7288.
+ * Retail remains 0xd0/208B; the frame excess is now s5-s7 vs f28-f31. */
 // FUN_0021f410 NONMATCHING
 void func_0021f410(void)
 {
+#define bpPanelSetRect(destination, x, y, frame) \
+    bpPanelSetRectBuffered(destination, rect, x, y, frame)
+#define bpPanelSetRotatedQuad(destination, centerX, centerY, left, top, frame, angle) \
+    bpPanelSetRotatedQuadBuffered(destination, vertices, sourceX, sourceY, centerX, centerY, left, top, frame, angle)
     u8* work;
     u8 color[4];
+    f32 rect[4];
+    f32 vertices[8];
+    f32 sourceX[4];
+    f32 sourceY[4];
     void* texture;
     void* frame;
     u32 mode;
     u32 sub;
-    u32 previous;
     s32 timerA;
     s32 timerB;
     s32 timerC;
@@ -1697,7 +1757,35 @@ void func_0021f410(void)
     mode = *(u32*)(work + 0x4630);
     sub = *(u32*)(work + 0x463c);
     timerB = *(u32*)(work + 0x4650);
-    bpPanelGetCenter(work, mode, sub, (f32)timerB, &centerX, &centerY);
+    if (sub != 0 && !bpPanelInTransition(sub))
+    {
+        K_ASSERT(false, 0x185);
+        centerX = 103.0f;
+        centerY = 361.0f;
+    }
+    else if (mode == 3)
+    {
+        if (sub == 0)
+        {
+            centerX = 61.5f + 41.5f * (f32)timerB / 3.0f;
+            centerY = 388.5f - 27.5f * (f32)timerB / 3.0f;
+        }
+        else
+        {
+            centerX = 103.0f - 41.5f * (f32)timerB / 3.0f;
+            centerY = 361.0f + 27.5f * (f32)timerB / 3.0f;
+        }
+    }
+    else if (sub == 0)
+    {
+        centerX = 103.0f;
+        centerY = 361.0f;
+    }
+    else
+    {
+        centerX = 61.5f;
+        centerY = 388.5f;
+    }
     baseX = centerX + 57.0f;
     baseY = centerY;
     frame = func_0021cca0(texture, 0x10);
@@ -2010,8 +2098,7 @@ void func_0021f410(void)
         func_002265d0();
         break;
     }
-    previous = *(u32*)(work + 0x4640);
-    switch (previous)
+    switch (*(u32*)(work + 0x4640))
     {
     case 0:
         break;
@@ -2066,20 +2153,19 @@ void func_0021f410(void)
         break;
     }
     sub = *(u32*)(work + 0x463c);
-    previous = *(u32*)(work + 0x4640);
-    if (sub == 2 || (sub == 0 && previous == 2 && *(u32*)(work + 0x4650) < 3))
+    if (sub == 2 || (sub == 0 && *(u32*)(work + 0x4640) == 2 && *(u32*)(work + 0x4650) < 3))
     {
         func_00228e40();
     }
-    else if (sub == 1 || (sub == 0 && previous == 1 && *(u32*)(work + 0x4650) < 3))
+    else if (sub == 1 || (sub == 0 && *(u32*)(work + 0x4640) == 1 && *(u32*)(work + 0x4650) < 3))
     {
         func_0022a2b0();
     }
-    else if (sub == 4 || (sub == 0 && previous == 4 && *(u32*)(work + 0x4650) < 3))
+    else if (sub == 4 || (sub == 0 && *(u32*)(work + 0x4640) == 4 && *(u32*)(work + 0x4650) < 3))
     {
         func_00224940();
     }
-    else if (sub == 3 || (sub == 0 && previous == 3 && *(u32*)(work + 0x4650) < 3))
+    else if (sub == 3 || (sub == 0 && *(u32*)(work + 0x4640) == 3 && *(u32*)(work + 0x4650) < 3))
     {
         func_00223290();
     }
@@ -2110,6 +2196,8 @@ void func_0021f410(void)
             break;
         }
     }
+#undef bpPanelSetRotatedQuad
+#undef bpPanelSetRect
 }
 
 // FUN_00221b60

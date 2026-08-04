@@ -1804,8 +1804,17 @@ void* func_001aaf30(const RwV3d* point, void* unused,
 s32 func_001ab390(void* collision, const RwV3d* pos,
                   RwV3d* translation, f32 sphereCollisRadius)
 {
+    typedef struct FldFrameCollisionCollectorSimple
+    {
+        RwV3d points[64];
+        RwV3d normals[64];
+        f32 distances[64];
+        u8 reserved[0x400];
+        u32 mode;
+        u32 count;
+    } FldFrameCollisionCollectorSimple;
     FldFrameCollisionQuery query;
-    FldFrameCollisionCollector collector;
+    FldFrameCollisionCollectorSimple collector;
     RwV3d diff;
     f32 correction;
     f32 adjustX;

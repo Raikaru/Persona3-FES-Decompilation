@@ -16399,15 +16399,9 @@ void FUN_00330190(u64 param_1)
 
   u32 uStack_24;
 
-  u32 uStack_20;
+  u32 auStack_10_0;
 
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  u8 auStack_10 [8];
+  u32 auStack_10_4;
 
   float fStack_8;
 
@@ -16587,15 +16581,15 @@ void FUN_00330190(u64 param_1)
 
             fVar20 = (float)FUN_00358030(0);
 
-            (*((u32 *)((u8 *)&auStack_10 + 0))) = (fVar20 - fVar26) * 2.0f;
+            auStack_10_0 = (fVar20 - fVar26) * 2.0f;
 
             fVar20 = (float)FUN_00358030(0);
 
-            (*((u32 *)((u8 *)&auStack_10 + 4))) = (fVar20 - fVar26) * 2.0f;
+            auStack_10_4 = (fVar20 - fVar26) * 2.0f;
 
             fStack_8 = (fVar20 - fVar26) * 2.0f;
 
-            auVar30 = _lqc2(auStack_10);
+            auVar30 = _lqc2(0);
 
             auVar29 = _vmul(auVar30,auVar30);
 
@@ -16611,11 +16605,13 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _vmulq(auVar30,uVar33);
 
-            *(u64 *)auStack_10 = auVar29._0_8_;
+            auStack_10_0 = auVar29._0_4_;
 
-            *(u32 *)*pauVar16 = (*((u32 *)((u8 *)&auStack_10 + 0)));
+            auStack_10_4 = auVar29._4_4_;
 
-            *(u32 *)(*pauVar16 + 4) = (*((u32 *)((u8 *)&auStack_10 + 4)));
+            *(u32 *)*pauVar16 = auStack_10_0;
+
+            *(u32 *)(*pauVar16 + 4) = auStack_10_4;
 
             *(float *)(*pauVar16 + 8) = fStack_8;
 
@@ -16676,15 +16672,15 @@ void FUN_00330190(u64 param_1)
 
             fVar20 = (float)FUN_00358030(0);
 
-            (*((u32 *)((u8 *)&auStack_10 + 0))) = (fVar20 - fVar26) * 2.0f;
+            auStack_10_0 = (fVar20 - fVar26) * 2.0f;
 
             fVar20 = (float)FUN_00358030(0);
 
-            (*((u32 *)((u8 *)&auStack_10 + 4))) = (fVar20 - fVar26) * 2.0f;
+            auStack_10_4 = (fVar20 - fVar26) * 2.0f;
 
             fStack_8 = (fVar20 - fVar26) * 2.0f;
 
-            auVar30 = _lqc2(auStack_10);
+            auVar30 = _lqc2(0);
 
             auVar29 = _vmul(auVar30,auVar30);
 
@@ -16722,7 +16718,9 @@ void FUN_00330190(u64 param_1)
 
             auVar29 = _sqc2(auVar29);
 
-            *(u_long128 *)*pauVar17 = *(u_long128 *)&auVar29;
+            *(u64 *)*pauVar17 = auVar29._0_8_;
+
+            *(u64 *)(*pauVar17 + 8) = auVar29._8_8_;
             fVar27 = (float)puVar4[0x1b];
 
             fVar20 = (float)FUN_00358030(0);
@@ -16813,14 +16811,6 @@ void FUN_00330190(u64 param_1)
 
         else {
 
-          uStack_20 = *(u32 *)*pauVar17;
-
-          uStack_1c = *(u32 *)(*pauVar17 + 4);
-
-          uStack_18 = *(u32 *)(*pauVar17 + 8);
-
-          uStack_14 = *(u32 *)(*pauVar17 + 0xc);
-
           fVar20 = *(float *)pauVar16[1];
 
           if (*(int *)pauVar17[1] < iVar7) {
@@ -16837,9 +16827,11 @@ void FUN_00330190(u64 param_1)
 
           }
 
-          *(u64 *)auStack_10 = *(u64 *)*pauVar16;
+          auStack_10_0 = *(u32 *)*pauVar16;
 
-          auVar32 = _lqc2(auStack_10);
+          auStack_10_4 = *(u32 *)(*pauVar16 + 4);
+
+          auVar32 = _lqc2(0);
 
           auVar31 = _lqc2(*pauVar17);
 
@@ -16954,7 +16946,7 @@ void FUN_00330190(u64 param_1)
           }
 
 
-          FUN_0032a770(pauVar17,(int)(puVar4),iVar9,(u8 (*)[16])(&uStack_20));
+          FUN_0032a770(pauVar17,(int)(puVar4),iVar9,(u8 (*)[16])(pauVar17));
 
           *(float *)(pauVar17[1] + 8) = *(float *)(pauVar17[1] + 8) * *(float *)pauVar16[2];
 
@@ -21720,11 +21712,15 @@ void FUN_00335a70(int param_1)
 
   float fStack_dc;
 
-  u8 auStack_a0 [8];
+  u32 auStack_a0_0;
+
+  u32 auStack_a0_4;
 
   float fStack_98;
 
-  u8 auStack_90 [8];
+  u32 auStack_90_0;
+
+  u32 auStack_90_4;
 
   u64 uStack_88;
 
@@ -21732,9 +21728,9 @@ void FUN_00335a70(int param_1)
 
   __int128 auStack_70;
 
-  __int128 auStack_60;
+  u32 auStack_50_0;
 
-  u8 auStack_50 [8];
+  u32 auStack_50_4;
 
   float fStack_48;
 
@@ -21857,15 +21853,15 @@ void FUN_00335a70(int param_1)
 
           fVar27 = FUN_0052e6d8_f32(fVar36);
 
-          (*((u32 *)((u8 *)&auStack_90 + 4))) = fVar32;
+          auStack_90_4 = fVar32;
 
-          (*((u32 *)((u8 *)&auStack_90 + 0))) = fVar34 * fVar27;
+          auStack_90_0 = fVar34 * fVar27;
 
           fVar27 = FUN_0052e878_f32(fVar36);
 
           (*((u32 *)((u8 *)&uStack_88 + 0))) = fVar34 * fVar27;
 
-          auVar43 = _lqc2(auStack_90);
+          auVar43 = _lqc2(0);
 
           _vmulabc(extraout_vf28,auVar43);
 
@@ -21873,11 +21869,12 @@ void FUN_00335a70(int param_1)
 
           auVar43 = _vmaddbc(extraout_vf30,auVar43);
 
-          *(u64 *)auStack_90 = auVar43._0_8_;
+          auStack_90_0 = auVar43._0_4_;
+          auStack_90_4 = auVar43._4_4_;
 
-          puVar20[1] = (*((u32 *)((u8 *)&auStack_90 + 0)));
+          puVar20[1] = auStack_90_0;
 
-          puVar20[2] = (*((u32 *)((u8 *)&auStack_90 + 4)));
+          puVar20[2] = auStack_90_4;
 
           puVar20[3] = (u32)uStack_88;
 
@@ -21955,18 +21952,19 @@ LAB_003365a0:
 
             fVar29 = FUN_0052e6d8_f32(fVar28);
 
-            (*((u32 *)((u8 *)&auStack_90 + 4))) = fVar32;
+            auStack_90_4 = fVar32;
 
-            (*((u32 *)((u8 *)&auStack_90 + 0))) = fVar34 * fVar29;
+            auStack_90_0 = fVar34 * fVar29;
 
             fVar28 = FUN_0052e878_f32(fVar28);
 
-            auVar42._0_8_ = *(u64 *)auStack_50;
+            auVar42._0_4_ = auStack_50_0;
+            auVar42._4_4_ = auStack_50_4;
             auVar42._8_8_ = 0;
 
             (*((u32 *)((u8 *)&uStack_88 + 0))) = fVar34 * fVar28;
 
-            auVar43 = _lqc2(auStack_90);
+            auVar43 = _lqc2(0);
 
             _vmulabc(extraout_vf28_00,auVar43);
 
@@ -21976,7 +21974,8 @@ LAB_003365a0:
 
             __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auVar43) : "memory");
 
-            *(u64 *)auStack_a0 = auVar44._0_8_;
+            auStack_a0_0 = auVar44._0_4_;
+            auStack_a0_4 = auVar44._4_4_;
 
             auVar41 = _vmul(auVar44,auVar44);
 
@@ -21992,17 +21991,17 @@ LAB_003365a0:
 
             auVar41 = _vmulq(auVar44,uVar36);
 
-            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auStack_60) : "memory");
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auStack_80) : "memory");
 
-            (*((u32 *)((u8 *)&auStack_50 + 4))) = (float)(*((u32 *)((u8 *)&auStack_a0 + 4))) - *(float *)(puVar20 + 2);
+            auStack_50_4 = (float)auStack_a0_4 - *(float *)(puVar20 + 2);
 
-            (*((u32 *)((u8 *)&auStack_50 + 0))) = (float)(*((u32 *)((u8 *)&auStack_a0 + 0))) - *(float *)(puVar20 + 1);
+            auStack_50_0 = (float)auStack_a0_0 - *(float *)(puVar20 + 1);
 
             uStack_44 = auVar42._12_4_;
 
             fStack_48 = fStack_98 - *(float *)(puVar20 + 3);
 
-            auVar41 = _lqc2(auStack_50);
+            auVar41 = _lqc2(0);
 
             auVar42 = _vmul(auVar41,auVar41);
 
@@ -22020,9 +22019,10 @@ LAB_003365a0:
 
             auVar44 = _vmove(auVar42);
 
-            auVar41 = _lqc2(auStack_60);
+            auVar41 = _lqc2(0);
 
-            *(u64 *)auStack_50 = auVar42._0_8_;
+            auStack_50_0 = auVar42._0_4_;
+            auStack_50_4 = auVar42._4_4_;
 
             _vopmula(auVar42,auVar41);
 
@@ -22106,15 +22106,15 @@ LAB_003365a0:
 
             *(float *)(puVar21 + 8) = fVar32;
 
-            (*((u32 *)((u8 *)&auStack_90 + 4))) = auVar43._4_4_;
+            auStack_90_4 = auVar43._4_4_;
 
             uStack_88 = auVar43._8_8_;
 
-            (*((u32 *)((u8 *)&auStack_90 + 0))) = auVar43._0_4_;
+            auStack_90_0 = auVar43._0_4_;
 
-            (*((u32 *)((u8 *)&auStack_90 + 4))) = (float)(*((u32 *)((u8 *)&auStack_90 + 4))) + *(float *)(puVar20 + 0xb);
+            auStack_90_4 = (float)auStack_90_4 + *(float *)(puVar20 + 0xb);
 
-            auVar43 = _lqc2(auStack_90);
+            auVar43 = _lqc2(0);
 
             for (iVar22 = 0; iVar22 < 5; iVar22 = iVar22 + 1) {
 
@@ -22140,9 +22140,9 @@ LAB_003365a0:
 
             }
 
-            puVar20[1] = (*((u32 *)((u8 *)&auStack_a0 + 0)));
+            puVar20[1] = auStack_a0_0;
 
-            puVar20[2] = (*((u32 *)((u8 *)&auStack_a0 + 4)));
+            puVar20[2] = auStack_a0_4;
 
             *(float *)(puVar20 + 3) = fStack_98;
 
@@ -22190,9 +22190,9 @@ LAB_003365a0:
 
               fVar29 = fVar29 + fVar23;
 
-              FUN_00358340_vec(fVar35, &auStack_60);
+              FUN_00358340_vec(fVar35, &auStack_80);
 
-              auVar43 = _lqc2(auStack_50);
+              auVar43 = _lqc2(0);
 
               _vmulabc(extraout_vf28_01,auVar43);
 
@@ -22204,7 +22204,7 @@ LAB_003365a0:
 
               FUN_00358340_vec(fStack_dc, &auStack_70);
 
-              auVar42 = _lqc2(auStack_50);
+              auVar42 = _lqc2(0);
 
               _vmulabc(extraout_vf28_02,auVar42);
 
@@ -22212,9 +22212,10 @@ LAB_003365a0:
 
               auVar42 = _vmaddbc(extraout_vf30_02,auVar42);
 
-              *(u64 *)auStack_50 = auVar42._0_8_;
+              auStack_50_0 = auVar42._0_4_;
+              auStack_50_4 = auVar42._4_4_;
 
-              auVar42 = _lqc2(auStack_a0);
+              auVar42 = _lqc2(0);
 
               auVar41 = _vmove(auVar42);
 
@@ -22224,7 +22225,8 @@ LAB_003365a0:
 
               auVar42 = _vmaddbc(extraout_vf30_02,auVar42);
 
-              *(u64 *)auStack_a0 = auVar42._0_8_;
+              auStack_a0_0 = auVar42._0_4_;
+              auStack_a0_4 = auVar42._4_4_;
 
               auVar42 = _vsub(auVar42,auVar41);
 

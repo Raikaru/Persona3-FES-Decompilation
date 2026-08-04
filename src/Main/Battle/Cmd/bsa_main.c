@@ -422,14 +422,14 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
     }
 }
 
-/* W418 width negative: bsaMain00210D90 i s16 nd9548/12512B -> 9958/12728B (over 12528B). */
+/* W454 frame work: direct origin scratch and a direct word-pointer parameter
+ * reduce this function from 0x120/288B, nd7333 to 0x110/272B, nd7328. */
 // FUN_00210D90 NONMATCHING
-void bsaMain00210d90(BsaWork* work)
+void bsaMain00210d90(s32* p)
 {
     u32 table0;
     u32 table1;
     u32 table2;
-    s32* p;
     u32 image;
     u32 resource;
     f32 alpha;
@@ -442,11 +442,11 @@ void bsaMain00210d90(BsaWork* work)
     f32 value;
     s32 i;
     f32 rect[4];
+    f32 origin[2];
     u8 drawColor[4];
     u8 cachedAlpha;
     f32 labelY;
 
-    p = (s32*)work->words;
     table0 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
@@ -475,7 +475,6 @@ void bsaMain00210d90(BsaWork* work)
     image = func_0021cca0(table2, 0x28);
     bsaPlaceQuad(p, 0x510, image, 18.0f, 54.0f + base + slide, -1.0f, -1.0f, iconAlpha * 255.0f);
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
-        f32 origin[2];
         origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
         origin[1] = 62.0f + base;
         bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
@@ -491,7 +490,6 @@ void bsaMain00210d90(BsaWork* work)
         bsaPlaceQuad(p, 0x18ec, image, 140.0f, labelY, -1.0f, -1.0f, cachedAlpha);
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
-        f32 origin[2];
         origin[0] = 162.0f;
         origin[1] = base + 113.0f;
         bpIFont00238a50(p + 0x1398, 4, p[0x1394], 1, origin);
@@ -506,7 +504,6 @@ void bsaMain00210d90(BsaWork* work)
         bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f, -1.0f, -1.0f, cachedAlpha);
     }
     if ((p[1] & BSA_FLAG_PERSONA) == 0) {
-        f32 origin[2];
         origin[0] = 162.0f;
         origin[1] = base + 130.0f;
         bpIFont00238a50(p + 0x149c, 4, p[0x1498], 1, origin);
