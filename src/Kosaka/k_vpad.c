@@ -6515,7 +6515,7 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
 
     vel0 = func_001ecd90(queue, param2, 0);
     vel1 = func_001ecd90(queue, param2, 1);
-    sideBool = (vel0 <= vel1) ? 1 : 0;
+    sideBool = (vel0 > vel1) ? 0 : 1;
 
     if (queue->count == 2)
     {

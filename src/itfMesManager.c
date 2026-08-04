@@ -3317,41 +3317,41 @@ void FUN_003a5980(u32 *param_1)
 
   *(u8 *)((int)puVar9 + 0x35) = uVar2;
 
-  if ((*(u8 *)((int)puVar9 + 0x35) & 2) == 0) {
-
-    *puVar9 = *puVar9 & 0xfffeffff;
-
-  }
-
-  else {
+  if ((*(u8 *)((int)puVar9 + 0x35) & 2) != 0) {
 
     *puVar9 = *puVar9 | 0x10000;
 
   }
 
-  uVar6 = FUN_003b2a00(0xc0);
+  else {
 
-  if (uVar6 == 0) {
-
-    *puVar9 = *puVar9 & 0xf7ffffff;
+    *puVar9 = *puVar9 & 0xfffeffff;
 
   }
 
-  else {
+  uVar6 = FUN_003b2a00(0xc0);
+
+  if (uVar6 != 0) {
 
     *puVar9 = *puVar9 | 0x8000000;
 
   }
 
-  if ((uVar6 & 0x80) == 0) {
+  else {
 
-    *puVar9 = *puVar9 & 0xfbffffff;
+    *puVar9 = *puVar9 & 0xf7ffffff;
+
+  }
+
+  if ((uVar6 & 0x80) != 0) {
+
+    *puVar9 = *puVar9 | 0x4000000;
 
   }
 
   else {
 
-    *puVar9 = *puVar9 | 0x4000000;
+    *puVar9 = *puVar9 & 0xfbffffff;
 
   }
 

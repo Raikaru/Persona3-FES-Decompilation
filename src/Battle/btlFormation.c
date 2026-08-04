@@ -4638,15 +4638,15 @@ void func_002ba3a0(int param_1)
     for (uVar13 = 0; uVar13 < uVar2; uVar13 = uVar13 + 1) {
       if ((*(u32 *)(pcVar11 + 0x10) < uVar6) && (*pcVar11 != -2)) {
         if (*piVar12 == 0) {
-          if (((*(u16 *)(*piVar10 + 0x630) & 4) == 0) || (*pcVar11 == -3)) {
-            iVar14 = func_00325920_u32(*(u32 *)(pcVar11 + 4));
-            *piVar12 = iVar14;
-            bVar7 = true;
-          }
-          else {
+          if (((*(u16 *)(*piVar10 + 0x630) & 4) != 0) && (*pcVar11 != -3)) {
             *piVar12 = *(int *)(pcVar11 + 4);
             bVar7 = false;
             *pcVar11 = -3;
+          }
+          else {
+            iVar14 = func_00325920_u32(*(u32 *)(pcVar11 + 4));
+            *piVar12 = iVar14;
+            bVar7 = true;
           }
           if (((*(char *)(piVar10[1] + 0x10) != '\0') && (iVar3 != 0)) &&
              ((cVar1 = pcVar11[8], cVar1 == '\a' ||

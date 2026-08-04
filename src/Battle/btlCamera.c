@@ -976,8 +976,8 @@ void FUN_002a3e80(u8* param_2,u8* param_3,u8* param_4,u32 param_5,float param_1)
                 }
                 index = (index + 1) & 0xffff;
               }
-              if (index_value == *(u16 *)(param_2 + 0x6a)) goto next_unit;
-            }
+              if (index_value != *(u16 *)(param_2 + 0x6a))
+              {
 
             if ((*(u8 *)((u8 *)unit + 0xa2) !=
                  *(u8 *)(*(u8 **)(param_2 + 0x30) + 0xa2)) ||
@@ -985,7 +985,13 @@ void FUN_002a3e80(u8* param_2,u8* param_3,u8* param_4,u32 param_5,float param_1)
 
             FUN_0027f790(unit, 2);
             if (flag10 == 0) *(u8 *)((u8 *)unit + 0x37) = 0xff;
+              }
+              else
+              {
+                goto next_unit;
+              }
           }
+            }
           else {
 geometry:
             if ((param_3 != 0) && (param_4 != 0)) {
@@ -4119,11 +4125,11 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   iVar2 = *(int *)(*(int *)(iVar9 + 0xe0) + 0x30);
   iVar3 = *(int *)(iVar2 + 0xa00);
   lVar6 = FUN_002a3520_result(iVar9);
-  if ((lVar6 == 0) && (lVar6 = FUN_002a3550_s32((u8*)camera), lVar6 == 0)) {
-    bVar4 = 0;
+  if ((lVar6 != 0) || (lVar6 = FUN_002a3550_s32((u8*)camera), lVar6 != 0)) {
+    bVar4 = 1;
   }
   else {
-    bVar4 = 1;
+    bVar4 = 0;
   }
   bVar5 = 0;
   btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), &centerA);

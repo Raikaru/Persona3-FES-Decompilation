@@ -9184,7 +9184,6 @@ u64 FUN_003fc540(int param_1)
   
 
   if ((*(u32 *)(param_1 + 4) & 1) != 0) {
-
     uVar1 = *(s16 *)(param_1 + 0x94);
 
     FUN_0040e3c0_f32(0.0f,0x2b,0x1c,uVar1,0x42,0);
@@ -9274,6 +9273,7 @@ u64 FUN_003fc540(int param_1)
       iVar4 = iVar4 + 0x42;
 
     }
+
 
 
   }
@@ -14477,7 +14477,7 @@ void FUN_00402800(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int uVar2;
 
@@ -14503,13 +14503,11 @@ void FUN_00402800(int param_1)
 
   cVar1 = *(char *)(iVar3 + 10);
 
-  if (cVar1 == '\x04') {
+  if (cVar1 != '\x04') {
 
-    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
-  }
 
-  else if (cVar1 == '\x03') {
+  if (cVar1 == '\x03') {
 
     sprintf((char *)auStack_20,&gp0xffffac10,*(u32 *)(iVar3 + 0xc));
 
@@ -14537,6 +14535,10 @@ void FUN_00402800(int param_1)
 
     sprintf((char *)auStack_20,&gp0xfffface0,uVar6);
 
+  }
+  }
+  else {
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
   }
 
   FUN_003a4220(uVar5,0,auStack_20);
@@ -14645,7 +14647,7 @@ void FUN_00402c80(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int uVar2;
 
@@ -14667,13 +14669,11 @@ void FUN_00402c80(int param_1)
   iVar4 = FUN_00403880_i(param_1);
   cVar1 = *(char *)(iVar3 + 10);
 
-  if (cVar1 == '\x04') {
+  if (cVar1 != '\x04') {
 
-    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
-  }
 
-  else if (cVar1 == '\x03') {
+  if (cVar1 == '\x03') {
 
     sprintf((char *)auStack_20,&gp0xffffac10,*(u32 *)(iVar3 + 0xc));
 
@@ -14701,6 +14701,10 @@ void FUN_00402c80(int param_1)
 
     sprintf((char *)auStack_20,&gp0xfffface0,uVar5);
 
+  }
+  }
+  else {
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
   }
 
   FUN_003c7bc0(0,auStack_20);

@@ -22708,7 +22708,7 @@ static inline u32 campDrawAlpha8(const CampMenuDrawItem* item)
 
 static inline void campSprite(const CampMenuDrawItem* item, f32 x, f32 y)
 {
-    campMenuDrawSprite(0, NULL, 0, item->alpha, x, y, item->scale);
+    campMenuDrawSprite(0, NULL, 0, campDrawAlpha8(item), x, y, item->scale);
 }
 
 static inline void campSpriteAlt(const CampMenuDrawItem* item, f32 x, f32 y)

@@ -1251,11 +1251,9 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
 
     temp20 = y << 8;
     temp19 = x << 4;
-    if (*(u8*)((u8*)K_Field_Get() + temp20 + temp19 + 0x48) != 0 ||
-        sDungeonGenerationFailed == 1)
+    if (*(u8*)((u8*)K_Field_Get() + temp20 + temp19 + 0x48) == 0 &&
+        sDungeonGenerationFailed != 1)
     {
-        return;
-    }
     if (x == 0 || x == 0xf || y == 0 || y == 0xf)
     {
         return;
@@ -1474,6 +1472,7 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
             }
         }
         return;
+    }
     }
 }
 #pragma opt_lifetimes reset

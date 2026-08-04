@@ -1330,7 +1330,7 @@ u32 FUN_003d6c90(int param_1)
 
 {
 
-  int iVar1;
+  u32 iVar1;
 
   int lVar2;
 
@@ -1338,8 +1338,28 @@ u32 FUN_003d6c90(int param_1)
 
   lVar2 = datGetFlag(0xbdd);
 
-  if (lVar2 == 0) {
+  if (lVar2 != 0) {
 
+
+  switch (param_1) {
+  case 0:
+    iVar1 = RpRandom();
+    if ((int)(((iVar1 % 0xffff) * 0x24) / 0xffff) < 6) {
+      return 1;
+    }
+    break;
+  case 1:
+    iVar1 = RpRandom();
+    if ((int)(((iVar1 % 0xffff) * 9) / 0xffff) < 3) {
+      return 1;
+    }
+    break;
+  case 2:
+    RpRandom();
+    break;
+  }
+  }
+  else {
     if (param_1 == 2) {
 
       RpRandom();
@@ -1350,7 +1370,7 @@ u32 FUN_003d6c90(int param_1)
 
       iVar1 = RpRandom();
 
-      if ((iVar1 % 0xffff << 10) / 0xffff < 0x20) {
+      if ((int)((iVar1 % 0xffff << 10) / 0xffff) < 0x20) {
 
         return 1;
 
@@ -1358,38 +1378,14 @@ u32 FUN_003d6c90(int param_1)
 
     }
 
-    else if ((param_1 == 0) && (iVar1 = RpRandom(), (iVar1 % 0xffff << 0xc) / 0xffff < 0x40)) {
+    else if ((param_1 == 0) && (iVar1 = RpRandom(), (int)((iVar1 % 0xffff << 0xc) / 0xffff) < 0x40)) {
 
       return 1;
 
     }
 
-  }
-
-  else if (param_1 == 2) {
-
-    RpRandom();
 
   }
-
-  else if (param_1 == 1) {
-
-    iVar1 = RpRandom();
-
-    if (((iVar1 % 0xffff) * 9) / 0xffff < 3) {
-
-      return 1;
-
-    }
-
-  }
-
-  else if ((param_1 == 0) && (iVar1 = RpRandom(), ((iVar1 % 0xffff) * 0x24) / 0xffff < 6)) {
-
-    return 1;
-
-  }
-
   return 0;
 
 }
@@ -1639,8 +1635,12 @@ u32 FUN_003d72f0(u16 *param_1)
 
   bVar3 = datGetLevel(1);
 
-  if (9 < bVar3) {
+  if (bVar3 <= 9) {
+    return 0;
 
+
+  }
+  else {
     uVar4 = clndGetCurrentMoonPhase();
 
     sVar1 = *(short *)(DAT_006a53d0 + (uVar4 & 0xff) * 2);
@@ -1692,7 +1692,6 @@ LAB_003d7430:
     }
 
   }
-
   return 0;
 
 }
