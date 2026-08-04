@@ -2279,21 +2279,14 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 8:
 
-    if ((int)puVar1[1] < (int)puVar1[2]) {
-
+    if ((int)puVar1[2] > (int)puVar1[1]) {
       puVar1[1] = puVar1[1] + 1;
-
+      break;
     }
 
-    else {
-
-      FUN_003b91c0(1.0f,*(u16 *)(puVar1 + 3),0,0x13,0,0,0);
-
-      FUN_003b9320(1.0f,*(u16 *)(puVar1 + 3),0,0x14,0,1,0);
-
-      *puVar1 = 9;
-
-    }
+    FUN_003b91c0(1.0f,*(u16 *)(puVar1 + 3),0,0x13,0,0,0);
+    FUN_003b9320(1.0f,*(u16 *)(puVar1 + 3),0,0x14,0,1,0);
+    *puVar1 = 9;
 
     break;
 
@@ -2433,7 +2426,7 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 0x14:
 
-    if ((int)puVar1[1] < (int)puVar1[2]) {
+    if ((int)puVar1[2] > (int)puVar1[1]) {
 
       puVar1[1] = puVar1[1] + 1;
 

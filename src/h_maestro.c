@@ -4269,11 +4269,11 @@ f32 func_00112740(void* param_1)
 void func_001127d0(void* param_1, u32 enabled)
 {
     MaestroRenderNode* node;
-    RwV2d uv[4];
-    RwV3d local[4];
-    RwV3d transformed[4];
     RwV3d positions[4];
     RwIm2DVertex vertices[4];
+    RwV3d local[4];
+    RwV3d transformed[4];
+    RwV2d uv[4];
     RwMatrix* matrix;
     RwCamera* camera;
     void* resource;
@@ -5222,10 +5222,10 @@ void func_00114e70(s32 orientation,
     RwIm2DVertex vertices[4];
     f32 corners[4][2];
     f32 textureCoordinates[4][2];
-    struct {
-        u64 swap0;
-        u64 swap1;
-    } swaps;
+    u64 swap0;
+    u64 swap1;
+    u64 swap2;
+    u64 swap3;
     f32 farX;
     f32 farY;
     f32 recipZ;
@@ -5294,30 +5294,30 @@ void func_00114e70(s32 orientation,
 
     if (orientation == 2)
     {
-        swaps.swap0 = *(u64*)&textureCoordinates[0][0];
+        swap0 = *(u64*)&textureCoordinates[0][0];
         textureCoordinates[0][0] = textureCoordinates[2][0];
         textureCoordinates[0][1] = textureCoordinates[2][1];
-        textureCoordinates[2][0] = ((f32*)&swaps.swap0)[0];
-        textureCoordinates[2][1] = ((f32*)&swaps.swap0)[1];
-        swaps.swap0 = *(u64*)&textureCoordinates[1][0];
+        textureCoordinates[2][0] = ((f32*)&swap0)[0];
+        textureCoordinates[2][1] = ((f32*)&swap0)[1];
+        swap1 = *(u64*)&textureCoordinates[1][0];
         textureCoordinates[1][0] = textureCoordinates[3][0];
         textureCoordinates[1][1] = textureCoordinates[3][1];
-        textureCoordinates[3][0] = ((f32*)&swaps.swap0)[0];
-        textureCoordinates[3][1] = ((f32*)&swaps.swap0)[1];
+        textureCoordinates[3][0] = ((f32*)&swap1)[0];
+        textureCoordinates[3][1] = ((f32*)&swap1)[1];
     }
 
     if (orientation == 1)
     {
-        swaps.swap1 = *(u64*)&textureCoordinates[0][0];
+        swap2 = *(u64*)&textureCoordinates[0][0];
         textureCoordinates[0][0] = textureCoordinates[1][0];
         textureCoordinates[0][1] = textureCoordinates[1][1];
-        textureCoordinates[1][0] = ((f32*)&swaps.swap1)[0];
-        textureCoordinates[1][1] = ((f32*)&swaps.swap1)[1];
-        swaps.swap1 = *(u64*)&textureCoordinates[2][0];
+        textureCoordinates[1][0] = ((f32*)&swap2)[0];
+        textureCoordinates[1][1] = ((f32*)&swap2)[1];
+        swap3 = *(u64*)&textureCoordinates[2][0];
         textureCoordinates[2][0] = textureCoordinates[3][0];
         textureCoordinates[2][1] = textureCoordinates[3][1];
-        textureCoordinates[3][0] = ((f32*)&swaps.swap1)[0];
-        textureCoordinates[3][1] = ((f32*)&swaps.swap1)[1];
+        textureCoordinates[3][0] = ((f32*)&swap3)[0];
+        textureCoordinates[3][1] = ((f32*)&swap3)[1];
     }
 
     for (i = 0; i < 4; i++)

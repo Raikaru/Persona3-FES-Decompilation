@@ -1111,7 +1111,6 @@ void FUN_0039fbd0(int param_1)
   u8 color[4];
 
   work = param_1 + 0x94;
-  pfVar5 = (float *)&DAT_006a1850;
   pfVar4 = afStack_50 + 8;
   iVar3 = 4;
   do {
@@ -1184,7 +1183,7 @@ void FUN_0039fbd0(int param_1)
   afStack_50[6] = 1.0f;
   afStack_50[7] = 0.06640625f;
   FUN_003877c0(10.0f,40.0f,afStack_50 + 8,afStack_50,
-                     *(u32 *)(work - 0x28),color);
+                     *(u32 *)(param_1 + 0x6c),color);
 
   afStack_50[8] = 320.0f - fVar7 / 2.0f;
   afStack_50[9] = 243.0f;
@@ -1208,7 +1207,7 @@ void FUN_0039fbd0(int param_1)
   afStack_50[6] = 1.0f;
   afStack_50[7] = 0.63671875f;
   FUN_003877c0(9.0f,40.0f,afStack_50 + 8,afStack_50,
-                     *(u32 *)(work - 0x28),color);
+                     *(u32 *)(param_1 + 0x6c),color);
 }
 #define FUN_0039fbd0(...) ((void (*)(...))FUN_0039fbd0)(__VA_ARGS__)
 #undef FUN_0039ffc0
@@ -1324,6 +1323,7 @@ u64 FUN_003a0220(int param_1)
   int *piVar8;
 
   int iVar9;
+  int iVar10;
 
   float fVar10;
 
@@ -1450,9 +1450,10 @@ u64 FUN_003a0220(int param_1)
 
       }
 
+      iVar10 = iVar1 + 0x94;
       for (iVar9 = 0; iVar9 < 1; iVar9 = iVar9 + 1) {
 
-        iVar4 = iVar1 + 0x94 + iVar9 * 4;
+        iVar4 = iVar10 + iVar9 * 4;
 
         piVar8 = (int *)(iVar4 + 0x34);
 

@@ -4982,6 +4982,7 @@ void FUN_00229B40(void)
     u32 state;
     void (**setStatePtr)(u32, u32);
     void (**setStatePtr2)(u32, u32);
+    void (**setStatePtrLoop)(u32, u32);
     void (**setQuadPtr)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
@@ -5018,8 +5019,8 @@ void FUN_00229B40(void)
         }
         BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 1, 2);
         BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
-        setStatePtr = (void (**)(u32, u32))D_00960090_abs;
-        BCM_29_STATE(1, FUN_00239140(1));
+        setStatePtrLoop = (void (**)(u32, u32))D_00960090_abs;
+        (*setStatePtrLoop)(1, FUN_00239140(1));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         BCM_29_QUAD((u32*)(record + 0x110), 4, 0, 1, 2);
@@ -5029,7 +5030,7 @@ void FUN_00229B40(void)
         BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 1, 2);
         BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 2, 3);
         resource = FUN_0021cca0(table6, 0x2b);
-        BCM_29_STATE(1, FUN_0021cce0(resource));
+        (*setStatePtrLoop)(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         BCM_29_QUAD((u32*)(record + 0x410), 4, 0, 1, 2);

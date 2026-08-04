@@ -10756,7 +10756,7 @@ void FUN_00329ed0(float *param_1)
 
   fVar5 = param_1[5] + *param_1 + param_1[10] + 1.0f;
 
-  if (1.0f <= fVar5) {
+  if (fVar5 >= 1.0f) {
 
     fVar5 = sqrtf(fVar5) * 2.0f;
 
@@ -38229,7 +38229,7 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
 /* opt_loop_invariants on: FUN_00348760 504B -> 488B, under its 496B window. */
 #pragma opt_loop_invariants on
-// FUN_00348760 NONMATCHING
+// FUN_00348760
 void FUN_00348760(u8 *param_1,float *param_2)
 
 
@@ -38244,14 +38244,14 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
   u8 bVar4;
 
-  float fVar5;
+  float fVar8;
 
   int iVar6;
 
   u32 uVar7;
   float *pfVar9;
 
-  float fVar8;
+  float fVar5;
   float alphaF;
 
   
@@ -38272,7 +38272,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
   uVar7 = 0;
 
-  do {
+  while (uVar7 < 4) {
 
     pfVar9 = param_2 + uVar7 * 0x10;
 
@@ -38289,7 +38289,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
     uVar7 = uVar7 + 1;
 
-  } while (uVar7 < 4);
+  }
 
   param_2[0] = *(float *)(param_1 + 0x18);
   param_2[1] = *(float *)(param_1 + 0x1c);
@@ -38465,7 +38465,7 @@ void FUN_00348950(u8 *param_1,float *param_2)
 
 /* opt_loop_invariants on: FUN_00348bd0 468B -> 452B, under its 464B window. */
 #pragma opt_loop_invariants on
-// FUN_00348BD0 NONMATCHING
+// FUN_00348BD0
 void FUN_00348bd0(u8 *param_1,float *param_2)
 
 
@@ -38480,14 +38480,14 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
 
   u8 bVar4;
 
-  float fVar5;
+  float fVar8;
 
   int iVar6;
 
   u32 uVar7;
   float *pfVar9;
 
-  float fVar8;
+  float fVar5;
   float alphaF;
 
   
@@ -38508,7 +38508,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
 
   uVar7 = 0;
 
-  do {
+  while (uVar7 < 4) {
 
     pfVar9 = param_2 + uVar7 * 0x10;
 
@@ -38525,7 +38525,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
 
     uVar7 = uVar7 + 1;
 
-  } while (uVar7 < 4);
+  }
   param_2[0] = *(float *)(param_1 + 8);
   param_2[1] = *(float *)(param_1 + 0xc);
   param_2[0x10] = *(float *)(param_1 + 8);

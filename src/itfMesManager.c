@@ -2235,6 +2235,7 @@ u32 FUN_003a4360(u32 param_1,int param_2)
   
 
 
+
   if (param_2 == 7) {
 
     FUN_003a4990(param_1,7,0);
@@ -4470,143 +4471,75 @@ short * FUN_003a6c10(int param_1,short *param_2)
 
 
 void FUN_003a6ca0(int param_1,int param_2,int param_3)
-
-
-
 {
-
-  if (param_2 == 5) {
-
-    *(u32 *)(param_1 + 0xc) = 0;
-
-    *(u32 *)(param_1 + 0x10) = 0;
-
-    *(u32 *)(param_1 + 0x14) = 0x2580;
-
-    *(u32 *)(param_1 + 0x18) = 0x640;
-
-    *(u32 *)(param_1 + 0x1c) = 0;
-
-    *(u32 *)(param_1 + 0x20) = 0;
-
-    *(u32 *)(param_1 + 0x24) = 0;
-
+  switch (param_2) {
+  default:
+    *(u32 *)(param_1 + 0xc) = 0xfffffc70;
+    *(u32 *)(param_1 + 0x10) = 0xffffff80;
+    *(u32 *)(param_1 + 0x14) = 0x1a30;
+    *(u32 *)(param_1 + 0x18) = 0x288;
+    *(u32 *)(param_1 + 0x1c) = 0x80;
+    *(u32 *)(param_1 + 0x20) = 0x80;
+    *(u32 *)(param_1 + 0x24) = 0x80;
     if (param_3 < 1) {
-
       param_3 = 0x80;
-
     }
-
     *(int *)(param_1 + 0x28) = param_3;
-
-  }
-
-  else if (param_2 == 4) {
-
-    *(u32 *)(param_1 + 0xc) = 0;
-
-    *(u32 *)(param_1 + 0x10) = 0;
-
-    *(u32 *)(param_1 + 0x14) = 0;
-
-    *(u32 *)(param_1 + 0x18) = 0;
-
-    *(u32 *)(param_1 + 0x1c) = 0;
-
-    *(u32 *)(param_1 + 0x20) = 0;
-
-    *(u32 *)(param_1 + 0x24) = 0;
-
+    break;
+  case 1:
+    *(u32 *)(param_1 + 0xc) = 0xfffffc70;
+    *(u32 *)(param_1 + 0x10) = 0xffffff80;
+    *(u32 *)(param_1 + 0x14) = 0x1a30;
+    *(u32 *)(param_1 + 0x18) = 0x288;
+    *(u32 *)(param_1 + 0x1c) = 0x80;
+    *(u32 *)(param_1 + 0x20) = 0x80;
+    *(u32 *)(param_1 + 0x24) = 0x80;
     if (param_3 < 1) {
-
       param_3 = 0x80;
-
     }
-
     *(int *)(param_1 + 0x28) = param_3;
-
-  }
-
-  else if (param_2 == 2) {
-
+    break;
+  case 2:
     *(u32 *)(param_1 + 0xc) = 0xfffff9f0;
-
     *(u32 *)(param_1 + 0x10) = 0xffffff80;
-
     *(u32 *)(param_1 + 0x14) = 0x1cb0;
-
     *(u32 *)(param_1 + 0x18) = 0x288;
-
     *(u32 *)(param_1 + 0x1c) = 0x80;
-
     *(u32 *)(param_1 + 0x20) = 0x80;
-
     *(u32 *)(param_1 + 0x24) = 0x80;
-
     if (param_3 < 1) {
-
       param_3 = 0x80;
-
     }
-
     *(int *)(param_1 + 0x28) = param_3;
-
-  }
-
-  else if (param_2 == 1) {
-
-    *(u32 *)(param_1 + 0xc) = 0xfffffc70;
-
-    *(u32 *)(param_1 + 0x10) = 0xffffff80;
-
-    *(u32 *)(param_1 + 0x14) = 0x1a30;
-
-    *(u32 *)(param_1 + 0x18) = 0x288;
-
-    *(u32 *)(param_1 + 0x1c) = 0x80;
-
-    *(u32 *)(param_1 + 0x20) = 0x80;
-
-    *(u32 *)(param_1 + 0x24) = 0x80;
-
+    break;
+  case 4:
+    *(u32 *)(param_1 + 0xc) = 0;
+    *(u32 *)(param_1 + 0x10) = 0;
+    *(u32 *)(param_1 + 0x14) = 0;
+    *(u32 *)(param_1 + 0x18) = 0;
+    *(u32 *)(param_1 + 0x1c) = 0;
+    *(u32 *)(param_1 + 0x20) = 0;
+    *(u32 *)(param_1 + 0x24) = 0;
     if (param_3 < 1) {
-
       param_3 = 0x80;
-
     }
-
     *(int *)(param_1 + 0x28) = param_3;
-
-  }
-
-  else {
-
-    *(u32 *)(param_1 + 0xc) = 0xfffffc70;
-
-    *(u32 *)(param_1 + 0x10) = 0xffffff80;
-
-    *(u32 *)(param_1 + 0x14) = 0x1a30;
-
-    *(u32 *)(param_1 + 0x18) = 0x288;
-
-    *(u32 *)(param_1 + 0x1c) = 0x80;
-
-    *(u32 *)(param_1 + 0x20) = 0x80;
-
-    *(u32 *)(param_1 + 0x24) = 0x80;
-
+    break;
+  case 5:
+    *(u32 *)(param_1 + 0xc) = 0;
+    *(u32 *)(param_1 + 0x10) = 0;
+    *(u32 *)(param_1 + 0x14) = 0x2580;
+    *(u32 *)(param_1 + 0x18) = 0x640;
+    *(u32 *)(param_1 + 0x1c) = 0;
+    *(u32 *)(param_1 + 0x20) = 0;
+    *(u32 *)(param_1 + 0x24) = 0;
     if (param_3 < 1) {
-
       param_3 = 0x80;
-
     }
-
     *(int *)(param_1 + 0x28) = param_3;
-
+    break;
   }
-
   return;
-
 }
 #define FUN_003a6ca0(...) ((void (*)(...))FUN_003a6ca0)(__VA_ARGS__)
 #undef FUN_003a6e30
