@@ -2154,6 +2154,8 @@ void FUN_003897f0(int param_1)
 
 {
 
+  int iVar17;
+
   int iVar1;
 
   u32 *puVar2;
@@ -2185,8 +2187,6 @@ void FUN_003897f0(int param_1)
   u16 *puVar15;
 
   u16 *puVar16;
-
-  int iVar17;
 
   
 
@@ -5799,13 +5799,13 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
   u32 uVar2;
 
+  int iVar6;
+
   bool bVar3;
 
   u32 *puVar4;
 
   u32 *puVar5;
-
-  int iVar6;
 
   int iVar7;
 
@@ -5843,6 +5843,8 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
   
 
+  iVar6 = -1;
+
   bVar3 = false;
 
   if (param_2 != (u16 *)0x0) {
@@ -5853,7 +5855,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
     }
 
-    for (iVar7 = 0; iVar6 = -1, iVar7 < 3; iVar7 = iVar7 + 1) {
+    for (iVar7 = 0; iVar7 < 3; iVar7 = iVar7 + 1) {
 
       if ((*(int *)(&DAT_009588b0 + iVar7 * 0x40) == 3) &&
 

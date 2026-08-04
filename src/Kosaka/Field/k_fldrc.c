@@ -30,6 +30,7 @@ typedef u8 undefined1;
 typedef u16 undefined2;
 typedef u32 undefined4;
 typedef u64 undefined8;
+typedef int (*code)(...);
 extern void* (*DAT_00960184)(u32, ...);
 #pragma alias DAT_00960184_abs DAT_00960184
 extern u8 DAT_00960184_abs[];
@@ -106,6 +107,7 @@ extern u32 FUN_0019fe20();
 extern u32 FUN_0019fe70();
 extern u32 FUN_0019fec0();
 extern u32 FUN_001a01c0();
+extern void func_001a13b0(void);
 extern u32 FUN_001a14c0();
 extern u32 FUN_001a1540();
 extern u32 FUN_001a6350();
@@ -1785,12 +1787,12 @@ void FUN_001b2b90(u32 resource)
                 break;
             case 0x23:
                 entry = FUN_004bda10((u32)header);
-                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0dc0(entry, (int)(code *)func_001a13b0, payload + 0x120);
                 FUN_004d0d10(entry);
                 break;
             case 0x16:
                 entry = FUN_004c8680((u32)header);
-                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0dc0(entry, (int)(code *)func_001a13b0, payload + 0x120);
                 FUN_004d0d10(entry);
                 break;
             case 0x0c:
@@ -1847,7 +1849,7 @@ u32 FUN_001b2f00(u32* resource)
         object = FUN_0010c3a0(resource[0x290], &state, &kind);
         if (state == 1)
         {
-            FUN_004d0dc0(object, 0x1a13b0, resource[0x290] + 0x120);
+            FUN_004d0dc0(object, (int)(code *)func_001a13b0, resource[0x290] + 0x120);
             FUN_004d0d10(object);
             *(u32*)(resource[0x290] + 0x84) = 0;
             if (kind != 0)

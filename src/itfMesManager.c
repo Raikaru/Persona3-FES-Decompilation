@@ -4760,7 +4760,6 @@ void FUN_003a7120(u32 *param_1)
   int lVar2;
 
   int iVar3;
-  u32 *object;
 
   u8 auStack_10[16];
 
@@ -4768,8 +4767,9 @@ void FUN_003a7120(u32 *param_1)
 
   u16 uStack_2;
 
-  object = (u32 *)param_1;
+  u32 *object;
 
+  object = (u32 *)param_1;
   if ((char)object[0xd] == '\x01') {
 
     uVar1 = *object;

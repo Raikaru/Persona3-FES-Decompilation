@@ -3287,13 +3287,13 @@ void func_002b96e0(int param_1,u32 param_2)
 void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
                    u32 param_6)
 {
+  u8 *out = (u8 *)(u32)param_6;
   u8 bVar1 = *(u8 *)(param_5 + 2);
   float fVar3 = 0.0f;
   float fStack_10[4];
   float uStack_20[4];
   float vectorWork[4];
   float origin[4];
-  u8 *out = (u8 *)(u32)param_6;
 
   if (*(u8 *)(param_5 + 1) == 4) {
     if (bVar1 == 8) {
@@ -4994,7 +4994,7 @@ u32 func_002bb0b0(u32 *param_1)
   u32 uVar3 = 0;
   long lVar4 = 0;
   
-  if (func_002b9350(*param_1) == 0) {
+  if (func_002b9350_u32(*param_1) == 0) {
     uVar3 = 0;
   }
   else {

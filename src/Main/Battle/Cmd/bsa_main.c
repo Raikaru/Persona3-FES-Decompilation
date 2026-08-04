@@ -607,23 +607,27 @@ void bsaMain00210d90(s32* p)
 
         for (i = 0; i < 8; i++) {
             f32 baseX;
-            f32 groupX;
-            f32 groupY;
-            f32 panelBaseX;
             baseX = (i / 4) == 0 ? 0.0f : 270.0f;
-            panelBaseX = baseX;
-            groupX = baseX + 46.0f;
-            groupY = (f32)(i & 3) * 30.0f + 292.0f;
             image = func_0021cca0(table2, 0x23);
-            bsaPlaceQuad(p, i * 0x80 + 0x850, image, groupX, groupY, -1.0f, -1.0f, alpha255);
-            bsaPlaceQuad(p, i * 0x80 + 0x890, image, groupX, groupY - 17.0f, -1.0f, 17.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0x850, image, baseX + 46.0f,
+                         (f32)(i & 3) * 30.0f + 292.0f,
+                         -1.0f, -1.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0x890, image, baseX + 46.0f,
+                         (f32)(i & 3) * 30.0f + 292.0f - 17.0f,
+                         -1.0f, 17.0f, alpha255);
             image = func_0021cca0(table2, 0x25);
-            bsaPlaceQuad(p, i * 0x80 + 0xc50, image, panelBaseX + 58.0f, groupY, -1.0f, -1.0f, alpha255);
-            bsaPlaceQuad(p, i * 0x80 + 0xc90, image, panelBaseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0xc50, image,
+                         baseX + 58.0f,
+                         (f32)(i & 3) * 30.0f + 292.0f,
+                         -1.0f, -1.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0xc90, image,
+                         baseX + 58.0f + BSA_FRAME_W(image),
+                         (f32)(i & 3) * 30.0f + 292.0f,
+                         236.0f, -1.0f, alpha255);
             if (i < (s32)p[0xd]) {
                 image = func_0021cca0(table0,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
-                rect[0] = panelBaseX + 54.0f;
+                rect[0] = baseX + 54.0f;
                 rect[1] = (f32)(i & 3) * 30.0f + 271.0f;
                 rect[2] = BSA_FRAME_W(image);
                 rect[3] = BSA_FRAME_H(image);
@@ -634,18 +638,30 @@ void bsaMain00210d90(s32* p)
             }
             if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
                 if (i < (s32)p[0xd]) {
-                    func_003b0d70(p[i + 5], (s32)((panelBaseX + 89.0f) * 16.0f),
-                                  (s32)((groupY - 18.0f) * 8.0f));
+                    func_003b0d70(p[i + 5], (s32)((baseX + 89.0f) * 16.0f),
+                                  (s32)((((f32)(i & 3) * 30.0f + 292.0f - 18.0f) * 8.0f)));
                     func_003b0e20(p[i + 5], 0xffffff00u | bsaAlpha(alpha255));
                 }
             } else {
                 image = func_0021cca0(table2, 0x32);
-                bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image, panelBaseX + 142.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
+                bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image,
+                             baseX + 142.0f,
+                             (f32)(i & 3) * 30.0f + 292.0f - 14.0f,
+                             -1.0f, -1.0f, alpha255);
                 image = func_0021cca0(table2, 0x35);
-                bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image, panelBaseX + 101.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
-                bsaPlaceQuad(p, i * 0x100 + 0x1cac, image, panelBaseX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f, 103.0f, -1.0f, alpha255);
+                bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image,
+                             baseX + 101.0f,
+                             (f32)(i & 3) * 30.0f + 292.0f - 14.0f,
+                             -1.0f, -1.0f, alpha255);
+                bsaPlaceQuad(p, i * 0x100 + 0x1cac, image,
+                             baseX + 101.0f + BSA_FRAME_W(image),
+                             (f32)(i & 3) * 30.0f + 292.0f - 14.0f,
+                             103.0f, -1.0f, alpha255);
                 image = func_0021cca0(table2, 0x36);
-                bsaPlaceQuad(p, i * 0x100 + 0x1cec, image, panelBaseX + 208.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
+                bsaPlaceQuad(p, i * 0x100 + 0x1cec, image,
+                             baseX + 208.0f,
+                             (f32)(i & 3) * 30.0f + 292.0f - 14.0f,
+                             -1.0f, -1.0f, alpha255);
             }
         }
     }

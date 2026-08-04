@@ -49,6 +49,8 @@ static inline u8* datPersonaAddOffset(u32 offset, u8* base)
 {
     return (u8*)((u32)offset + (u32)base);
 }
+
+
 #include "Main/Battle/Data/datCalc.h"
 #pragma alias func_001754a0_y2 func_001754a0
 #pragma alias FUN_00173280_y2 FUN_00173280

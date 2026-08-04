@@ -31,6 +31,7 @@ extern void* jtbl_00960178[];
 extern RwMatrix* FUN_004c2f30(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
 extern RwV3d* FUN_004c6be0(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
 extern s32 func_001a6c00(void* object, const char* name);
+extern void func_001a13b0(void);
 extern char DAT_007cca08[1];
 #pragma alias DAT_007cca08_abs DAT_007cca08
 extern char DAT_007cca08_abs[];
@@ -2466,7 +2467,7 @@ void func_003138e0(MdlAnim* param_1,s16 param_2,u16 param_3,u16 param_4)
 
     func_004b74c0(0,*(u32 *)(*(int *)(puVar6 + 0x10) + 0x20));
 
-    func_004b7010(*(u32 *)(*(int *)(puVar6 + 0x10) + 0x20),0x313090,param_1);
+    func_004b7010(*(u32 *)(*(int *)(puVar6 + 0x10) + 0x20),func_00313090,param_1);
 
   }
 
@@ -3276,7 +3277,7 @@ LAB_0031494c:
 
           if (lVar6 == 0) {
 
-            func_004b7010(lVar8,0x314170,param_2);
+            func_004b7010(lVar8,func_00314170,param_2);
 
             *(u8 **)(iVar11 + 0x40) = &LAB_00314020;
 
@@ -3286,7 +3287,7 @@ LAB_0031494c:
 
           else {
 
-            func_004b7010(lVar8,0x3140c0,param_2);
+            func_004b7010(lVar8,func_003140c0,param_2);
 
             *(u32 *)(iVar11 + 0x40) = *(u32 *)(*piVar10 + 0x10);
 
@@ -3322,9 +3323,9 @@ LAB_0031494c:
 
     }
 
-    func_004916d0(param_1,0x314650,0);
+    func_004916d0(param_1,(void *)func_00314650,0);
 
-    func_004916d0(param_1,0x314510,0);
+    func_004916d0(param_1,(void *)func_00314510,0);
 
   }
 
@@ -3425,13 +3426,13 @@ void func_00314d30(void* param_1)
             if ((*(u8 **)((int)lVar4 + 0x40) == LAB_00314020_abs) &&
                (*(u8 **)((int)lVar4 + 0x44) == LAB_00314060_abs)) {
 
-              func_004b7010(lVar4,0x314170,param_1);
+              func_004b7010(lVar4,func_00314170,param_1);
 
             }
 
             else {
 
-              func_004b7010(lVar4,0x3140c0,param_1);
+              func_004b7010(lVar4,func_003140c0,param_1);
 
             }
 
@@ -3450,7 +3451,7 @@ void func_00314d30(void* param_1)
             if ((*(u8 **)(iVar6 + 0x40) == LAB_00314020_abs) &&
                (*(u8 **)(iVar6 + 0x44) == LAB_00314060_abs)) {
 
-              func_004b7010(lVar4,0x314170,param_1);
+              func_004b7010(lVar4,func_00314170,param_1);
 
               func_004b7240_frame(fVar7,lVar4);
 
@@ -3458,7 +3459,7 @@ void func_00314d30(void* param_1)
 
             else {
 
-              func_004b7010(lVar4,0x3140c0,param_1);
+              func_004b7010(lVar4,func_003140c0,param_1);
 
               if ((*(u8 **)(iVar6 + 0x40) != LAB_003140a0_abs) &&
                  (*(u8 **)(iVar6 + 0x44) != LAB_003140b0_abs)) {
@@ -5327,7 +5328,7 @@ void FUN_00317a20(Model* param_1)
       FUN_00313ca0(iVar8 + 0x35c,iVar8 + 0xec);
       stackPair.value = iVar8 + 0xd0;
       stackPair.field = 0;
-      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x315f50,&stackPair.value);
+      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)func_00315f50,&stackPair.value);
       if (((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) || (*(u8 *)(iVar8 + 0xd3) == 0xff)) {
         iVar9 = *(int *)(iVar8 + 0xe0);
         if (iVar9 == 0) {
@@ -5353,7 +5354,7 @@ void FUN_00317a20(Model* param_1)
         bVar5 = true;
         if ((*(u16 *)(iVar8 + 0xd8) & 0x8000) != 0) {
           iStack_8 = 1;
-          FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void*)0x316360,&iStack_8);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)func_00316360,&iStack_8);
           if (iStack_8 != 0) {
             bVar5 = false;
           }
@@ -5416,7 +5417,7 @@ void FUN_00317a20(Model* param_1)
             (piVar11 = (int *)(iVar9 + 0x3b8), *(int *)(iVar9 + 0x3b8) != 0)) &&
            (lVar7 = FUN_00319770(param_1,uVar10), lVar7 != 0)) {
           iStack_c = 1;
-          FUN_004916d0((void *)(unsigned int)*(u32 *)(*piVar11 + 0xdc),(void*)0x316360,&iStack_c);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(*piVar11 + 0xdc),(void *)func_00316360,&iStack_c);
           if (iStack_c == 0) {
             FUN_00318ad0(*piVar11,iVar8 + 0xd0);
             if ((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) {
@@ -5981,7 +5982,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
       if (iVar8 != iVar3) {
         callbackData.result = 0;
         callbackData.expected = iVar8;
-        func_004cb6e0(iVar10,0x315010,&callbackData);
+        func_004cb6e0(iVar10,(void *)func_00315010,&callbackData);
         iVar10 = callbackData.result;
       }
       if (iVar10 == 0) {
@@ -7360,8 +7361,7 @@ u32 func_00319970(Model* param_1)
       else if (iStack_50 == 0x23) {
 
         uVar9 = (void *)func_004bda10(*piVar2);
-
-        func_004d0dc0(uVar9,0x1a13b0,piVar2 + 0x10);
+        func_004d0dc0(uVar9,(code *)func_001a13b0,piVar2 + 0x10);
 
         func_004d0d10(uVar9);
 
@@ -7372,8 +7372,7 @@ u32 func_00319970(Model* param_1)
         if ((*(u16 *)(iVar12 + 0xd8) & 0x4000) != 0) {
 
           uVar9 = (void *)func_004c8680(*piVar2);
-
-          func_004d0dc0(uVar9,0x1a13b0,piVar2 + 0x10);
+          func_004d0dc0(uVar9,(code *)func_001a13b0,piVar2 + 0x10);
 
           func_004d0d10(uVar9);
 
@@ -7493,7 +7492,7 @@ int func_0031aad0(Model* param_1)
 
     if (stackPair.value == 1) {
 
-      func_004d0dc0(uVar8,0x1a13b0,iVar2 + 0x40);
+      func_004d0dc0(uVar8,(code *)func_001a13b0,iVar2 + 0x40);
 
       func_004d0d10(uVar8);
 

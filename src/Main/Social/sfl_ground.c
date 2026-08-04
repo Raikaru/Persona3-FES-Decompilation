@@ -991,8 +991,8 @@ void func_0023b990(void)
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
-
     state = work[3];
+
     switch (state) {
     case 1:
     case 2:
