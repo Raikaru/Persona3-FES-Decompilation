@@ -1405,6 +1405,7 @@ void FUN_00245e50(void)
 #pragma push
 #pragma opt_propagation off
 /* W419 negative probe: DAT_007caf38 float-array .sdata alias left FUN_00245EA0 at nd6938/9468B, window9712B, rate73.28%; reverted. */
+/* Retail decodes three status-icon switches plus four flag-conditioned coordinate switches; all 9708/9712 bytes of the draw tail are represented, with only scheduler residuals remaining. */
 // FUN_00245EA0 NONMATCHING
 void FUN_00245ea0(void)
 
@@ -2063,21 +2064,27 @@ LAB_00247ba8:
     iVar5 = iVar5 + 1;
   }
   if ((*puVar1 & 2) != 0) {
-    if ((*puVar1 & 4) == 0) {
-      iVar5 = 0x135;
-    }
-    else {
+    uVar10 = ((*puVar1 & 4) != 0);
+    switch (uVar10) {
+    case 1:
       iVar5 = 0x113;
+      break;
+    case 0:
+      iVar5 = 0x135;
+      break;
     }
     fVar17 = (float)iVar5;
     iVar5 = func_003b19d0(puVar1[0x1b30]);
     fVar18 = (float)iVar5;
     fVar20 = fVar18 / 2.0f;
-    if ((*puVar1 & 4) == 0) {
-      fVar19 = (fVar17 - fVar20) - 57.0f;
-    }
-    else {
+    uVar10 = ((*puVar1 & 4) != 0);
+    switch (uVar10) {
+    case 1:
       fVar19 = 145.0f;
+      break;
+    case 0:
+      fVar19 = (fVar17 - fVar20) - 57.0f;
+      break;
     }
     iVar5 = func_0021cca0(uVar7,0x43);
     afStack_30[0].y = 100.0f;
@@ -2090,13 +2097,16 @@ LAB_00247ba8:
     auStack_4[2] = 0xff;
     auStack_4[3] = 0xff;
     func_0021d950(puVar1 + 0x19b0,&auStack_4[0]);
-    if ((*puVar1 & 4) == 0) {
-      afStack_30[0].x = (float)*(int *)(iVar5 + 0xc) + fVar19;
-      afStack_30[1].x = ((fVar17 + fVar20 + 57.0f) - 16.0f) - afStack_30[0].x;
-    }
-    else {
+    uVar10 = ((*puVar1 & 4) != 0);
+    switch (uVar10) {
+    case 1:
       afStack_30[0].x = (float)*(int *)(iVar5 + 0xc) + 145.0f;
       afStack_30[1].x = 286.0f;
+      break;
+    case 0:
+      afStack_30[0].x = (float)*(int *)(iVar5 + 0xc) + fVar19;
+      afStack_30[1].x = ((fVar17 + fVar20 + 57.0f) - 16.0f) - afStack_30[0].x;
+      break;
     }
     afStack_30[0].y = 100.0f;
     afStack_30[1].y = (float)*(int *)(iVar5 + 0x10);
@@ -2106,11 +2116,14 @@ LAB_00247ba8:
     auStack_4[2] = 0xff;
     auStack_4[3] = 0xff;
     func_0021d950(puVar1 + 0x19f0,&auStack_4[0]);
-    if ((*puVar1 & 4) == 0) {
-      fVar19 = (fVar17 + fVar20 + 57.0f) - 16.0f;
-    }
-    else {
+    uVar10 = ((*puVar1 & 4) != 0);
+    switch (uVar10) {
+    case 1:
       fVar19 = 451.0f;
+      break;
+    case 0:
+      fVar19 = (fVar17 + fVar20 + 57.0f) - 16.0f;
+      break;
     }
     iVar5 = func_0021cca0(uVar7,0x44);
     afStack_30[0].y = 100.0f;
@@ -2124,13 +2137,16 @@ LAB_00247ba8:
     auStack_4[3] = 0xff;
     func_0021d950(puVar1 + 0x1a30,&auStack_4[0]);
     iVar5 = func_0021cca0(uVar7,0);
-    if ((*puVar1 & 4) == 0) {
-      afStack_30[0].x = (fVar17 - fVar20) - 86.0f;
-      afStack_30[1].x = (fVar17 + fVar20 + 86.0f) - afStack_30[0].x;
-    }
-    else {
+    uVar10 = ((*puVar1 & 4) != 0);
+    switch (uVar10) {
+    case 1:
       afStack_30[0].x = 116.0f;
       afStack_30[1].x = (float)((*(int *)(iVar5 + 0xc) * 0x4f6) / 100);
+      break;
+    case 0:
+      afStack_30[0].x = (fVar17 - fVar20) - 86.0f;
+      afStack_30[1].x = (fVar17 + fVar20 + 86.0f) - afStack_30[0].x;
+      break;
     }
     afStack_30[0].y = 54.0f;
     afStack_30[1].y = (float)((*(int *)(iVar5 + 0x10) * 0x186) / 100);
@@ -2166,11 +2182,14 @@ LAB_00247ba8:
     func_0021d950(puVar1 + 0x1af0,&auStack_4[0]);
     if ((*puVar1 & 4) != 0) {
       uVar10 = puVar1[0x1b31];
-      if (uVar10 == 0) {
-        iVar5 = func_0021cca0(uVar7,0x3c);
-      }
-      else {
+      switch (uVar10) {
+      case 1:
+      case 2:
         iVar5 = func_0021cca0(uVar7,0x3b);
+        break;
+      case 0:
+        iVar5 = func_0021cca0(uVar7,0x3c);
+        break;
       }
       afStack_30[0].x = 278.0f;
       afStack_30[0].y = 113.0f;
@@ -2183,11 +2202,14 @@ LAB_00247ba8:
       auStack_4[3] = 0xff;
       func_0021d950(puVar1 + 0x1b34,&auStack_4[0]);
       uVar10 = puVar1[0x1b32];
-      if (uVar10 == 0) {
-        iVar5 = func_0021cca0(uVar7,0x3e);
-      }
-      else {
+      switch (uVar10) {
+      case 1:
+      case 2:
         iVar5 = func_0021cca0(uVar7,0x3d);
+        break;
+      case 0:
+        iVar5 = func_0021cca0(uVar7,0x3e);
+        break;
       }
       afStack_30[0].x = 337.0f;
       afStack_30[0].y = 113.0f;
@@ -2200,11 +2222,14 @@ LAB_00247ba8:
       auStack_4[3] = 0xff;
       func_0021d950(puVar1 + 0x1b74,&auStack_4[0]);
       uVar10 = puVar1[0x1b33];
-      if (uVar10 == 0) {
-        iVar5 = func_0021cca0(uVar7,0x40);
-      }
-      else {
+      switch (uVar10) {
+      case 1:
+      case 2:
         iVar5 = func_0021cca0(uVar7,0x3f);
+        break;
+      case 0:
+        iVar5 = func_0021cca0(uVar7,0x40);
+        break;
       }
       afStack_30[0].x = 396.0f;
       afStack_30[0].y = 113.0f;
@@ -2218,14 +2243,16 @@ LAB_00247ba8:
       func_0021d950(puVar1 + 0x1bb4,&auStack_4[0]);
       for (iVar12 = 0; iVar12 < 3; iVar12 = iVar12 + 1) {
         uVar10 = puVar1[iVar12 + 0x1b31];
-        if (uVar10 == 0) {
-          iVar5 = func_0021cca0(uVar7,0x41);
-        }
-        else if (uVar10 == 2) {
-          iVar5 = func_0021cca0(uVar3,0x12);
-        }
-        else if (uVar10 == 1) {
+        switch (uVar10) {
+        case 1:
           iVar5 = func_0021cca0(uVar3,0x11);
+          break;
+        case 2:
+          iVar5 = func_0021cca0(uVar3,0x12);
+          break;
+        case 0:
+          iVar5 = func_0021cca0(uVar7,0x41);
+          break;
         }
         afStack_30[0].x = (float)iVar12 * 59.0f + 304.0f;
         afStack_30[0].y = 113.0f;

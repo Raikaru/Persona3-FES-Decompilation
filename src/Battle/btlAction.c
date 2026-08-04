@@ -97,6 +97,8 @@ void func_00280050(BtlUnit* unit, RwV3d* dst);
 s32 func_002d4cc0(u16 unitId);
 u64 func_002b9640(u8* data);
 BtlPacket* func_002a1db0(u32 a);
+extern void* func_0029ec50(u16);
+extern BtlPacket* func_002a1280(void*, u32);
 extern RwV3d D_006978A0;
 
 extern u32 func_002e4430(BtlAction* action, s32 skillId, u32 param_3);
@@ -2398,6 +2400,7 @@ void btlActionUpdateStateReady(BtlAction* action)
 
 /* W373 pragma sweep nd/obj: base 1396/1948; singles LI=1444/1992 CS=1459/2020 LT=1362/1936 PR=1397/1948 SR=1396/1948 DA=1396/1964; retain LT on. */
 #pragma opt_lifetimes on
+/* Retail algorithm: target distance/facing, helper-offset chain, camera dispatch, and move-speed packet; implemented 2052/2112 bytes (97%); remaining register/layout differences. */
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
@@ -2419,6 +2422,7 @@ void btlActionInitStateMoveTarget(BtlAction* action)
     u16 someFlag;
     u16 isSkillType;
     u16 isFirstSpecial;
+    u16 speedIndex2;
     BtlPacket* packet;
     RwV3d spE0;
     RwV3d spD0;
@@ -2746,6 +2750,11 @@ create_posrotcol_packet:
 
         if (victim != NULL)
         {
+            u16 distanceType2;
+            victimUnit = victim->unit;
+            
+            distanceType2 = (FUN_002d5e10(actionUnit) == 0) ? 4 : 11;
+            extraOffset += FUN_002812d0(actionUnit, victimUnit, distanceType2);
             FUN_0027ffb0(victimUnit, &spE0);
             FUN_00280480(actionUnit, victimUnit, &spD0);
 
@@ -2770,6 +2779,21 @@ create_posrotcol_packet:
         else
         {
             extraOffset = extraOffset * 1.25f;
+        }
+        speedIndex2 = 2;
+        if (actionUnit->genus == UNIT_GENUS_EC)
+        {
+            speedIndex2 = iGpffffb728[actionUnit->datUnit->id].moveSpeed[isSkillType].speedIndex;
+        }
+        moveSpeed = D_00693300[speedIndex2];
+        if ((localFlag == 1) && (isFirstSpecial == 0))
+        {
+            moveSpeed = moveSpeed * uGpffff8088;
+            moveSpeed = moveSpeed * 1.25f;
+            packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+            goto camera_dispatch;
         }
 
         spA0.x = extraOffset;
@@ -7343,20 +7367,24 @@ void btlActionInitStateRoundUp(BtlAction* action)
 /* Pair nd/obj: LI+CS=1925/2688 LI+LT=1805/2592 LI+PR=1840/2712 LI+SR=1888/2704 LI+DA=1888/2704 CS+LT=1766/2576 CS+PR=1923/2688 CS+SR=1923/2688 CS+DA=1923/2688 LT+PR=1809/2600 LT+SR=1813/2592 LT+DA=1813/2592 PR+SR=1815/2712 PR+DA=1815/2712 SR+DA=1892/2704; retain CS+LT. */
 #pragma opt_common_subs off
 #pragma opt_lifetimes on
+/* Retail algorithm: build camera/voice/area packet chain, per-target loops, and final wait packet; implemented 2780/2784 bytes (99%); remaining register/order differences. */
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
 {
     /* Retail passes the scalar in f12 here, unlike the unit-first callers of this symbol. */
     extern BtlPacket* FUN_00284200(f32, BtlUnit*, u16, u16, u16);
     BtlPacket* packet;
+    BtlPacket* rootPacket;
     BtlUnit* actionUnit;
     u64 actionUID = action->uid;
     BtlPacket* skillPacket;
+    BtlPacket* targetLinkPacket;
     BtlPacket* voicePacket;
     BtlAction* target;
     BtlAction* current;
     u32 rootH;
     u32 stackBuf[3];
+    u16 specificId;
     u16 i;
     u16 j;
     u32 posX;
@@ -7388,13 +7416,13 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002e3c80();
-    packet->unk_00 = 0xa;
-    ACTION_U16(packet, 8) = 0xc06;
-    ACTION_U8(packet, 0x10) = 0xa;
-    ACTION_U16(packet, 0x18) = 0xc05;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    rootPacket = FUN_002e3c80();
+    rootPacket->unk_00 = 0xa;
+    ACTION_U16(rootPacket, 8) = 0xc06;
+    ACTION_U8(rootPacket, 0x10) = 0xa;
+    ACTION_U16(rootPacket, 0x18) = 0xc05;
+    rootPacket->actionUID = actionUID;
+    btlPacketRegister(rootPacket, BTLPACKET_TYPE_1);
 
     voicePacket = btlVoice002e2be0((BtlAction*)ACTION_U32(action, 0x494), 5, 0, 0, 0);
     voicePacket->unk_00 = 5;
@@ -7420,13 +7448,17 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
     packet = FUN_002dd100(0xc, 2, ACTION_U32(action, 0x498) ? 0x13 : 0x14);
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    mode = (u32)func_002d4cc0(0);
-    mode += (u32)func_002b9640((u8*)action + 0xc8);
-    if (mode == 0xffffffff)
-    {
-        extraWork[0] = mode;
-    }
-
+    specificId = (u16)func_002d4cc0(0);
+    packet = func_002a1280(func_0029ec50(specificId), 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = func_002a1b00(action, specificId, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     for (i = 0; i < action->target.targetedCount; i++)
     {
@@ -7454,11 +7486,11 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
         packet->parentUID = skillPacket->uid;
         packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002baf90(rootH, actionUnit, target->unit, 1, 0);
-        packet->unk_00 = 4;
-        packet->parentUID = skillPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        targetLinkPacket = FUN_002baf90(rootH, actionUnit, target->unit, 1, 0);
+        targetLinkPacket->unk_00 = 4;
+        targetLinkPacket->parentUID = skillPacket->uid;
+        targetLinkPacket->actionUID = actionUID;
+        btlPacketRegister(targetLinkPacket, BTLPACKET_TYPE_1);
 
 
         for (j = 0; j < ACTION_U8(target, 0xc8); j++)
@@ -7554,13 +7586,32 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
             }
 
+            FUN_002d5dc0(extraWork);
+            extraWork[3] = 0x10000;
+            packet = FUN_002d7e20((BtlAction*)target->unit, (BtlAction*)target->unit, extraWork, 1, 1);
+            packet->unk_00 = 4;
+            packet->parentUID = skillPacket->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
             packet = func_002a1b00(action, target->uid, 0x10);
             packet->unk_00 = 4;
             packet->parentUID = skillPacket->uid;
             packet->actionUID = actionUID;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            if (((*(u16*)extraWork) & 2) != 0)
+            {
+                packet = FUN_00284200(1.0f, target->unit, 10, 0, 0);
+                packet->unk_00 = 4;
+                packet->parentUID = skillPacket->uid;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                packet = FUN_00284c90(target->unit);
+                packet->unk_00 = 4;
+                packet->parentUID = skillPacket->uid;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
         }
-        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     }
 
     packet = FUN_0029fa50(0x10);
@@ -7589,7 +7640,9 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_002bc950(0, 0, 0);
     packet->unk_00 = 4;
-    packet->parentUID = packet->uid;
+    packet->parentUID = skillPacket->uid;
+    packet->preUpdateWait.type = 4;
+    packet->preUpdateWait.value = targetLinkPacket->uid;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 

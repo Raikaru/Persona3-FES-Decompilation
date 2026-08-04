@@ -6336,32 +6336,36 @@ done:;
 #pragma opt_common_subs off
 /* opt_propagation off: default nd765/1040B -> off nd729/1040B; retained. */
 #pragma opt_propagation off
+/* Retail formats the HP label, optional gauge, separator, and current-value
+ * digits; all four draw phases are reconstructed, with only register coloring
+ * and the remaining frame gap still differing. */
 // FUN_001236A0 NONMATCHING
 void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
+    f32 y;
     char text[0x100];
     s32 bright;
     s32 val;
     s32 drewHundreds;
-    f32 dy;
-    u32 parent;
     void* font;
+    u32 parent;
 
-    FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
+    y = position.y;
     bright = 0xff - fade;
+    FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
     campStatusDrawTextCall(alpha - 1.0f, (s32)(position.x + 125.0f),
-                           (s32)(position.y + 36.0f),
+                           (s32)(y + 36.0f),
                            bright | 0xffffff00, 10, 1, text, 0x10, 0x78);
     if (barOffset != 0) {
-        campStatusDrawGaugeCall(alpha - 1.0f, position.y + 196.0f +
+        campStatusDrawGaugeCall(alpha - 1.0f, y + 196.0f +
                                 (f32)(0x4c - barOffset),
                                 position.x + 59.0f, 0xffffff00, barOffset, 10);
     }
-    dy = (70.0f + position.y) - 12.0f;
     /* Separator */
     campStatusDrawSpriteCall(parent, DAT_00833B90, 4, (u32)(u8)fade,
-                             position.x + 85.0f, dy, alpha);
+                             position.x + 195.0f,
+                             (71.0f + y) - 12.0f, alpha);
     /* Draw current HP digits */
     val = datGetHp(pcId);
     drewHundreds = 0;
@@ -6369,18 +6373,21 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
         drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)fade, position.x + 79.0f, dy, alpha);
+                                 (u32)(u8)fade, position.x + 79.0f,
+                                 (71.0f + y) - 12.0f, alpha);
         val %= 100;
     }
     if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)fade, position.x + 94.0f, dy, alpha);
+                                 (u32)(u8)fade, position.x + 94.0f,
+                                 (71.0f + y) - 12.0f, alpha);
         val %= 10;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)fade, position.x + 109.0f, dy, alpha);
+                             (u32)(u8)fade, position.x + 109.0f,
+                             (71.0f + y) - 12.0f, alpha);
     /* Draw max HP digits */
     val = datGetMaxHp(pcId);
     drewHundreds = 0;
@@ -6388,18 +6395,21 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
         drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
-                                     (u32)(u8)fade, position.x + 138.0f, dy, alpha, 0x66);
+                                     (u32)(u8)fade, position.x + 138.0f,
+                                     (71.0f + y) - 12.0f, alpha, 0x66);
         val %= 100;
     }
     if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
-                                     (u32)(u8)fade, position.x + 153.0f, dy, alpha, 0x66);
+                                     (u32)(u8)fade, position.x + 153.0f,
+                                     (71.0f + y) - 12.0f, alpha, 0x66);
         val %= 10;
     }
     font = campStatusGetFont(2);
     campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
-                                 (u32)(u8)fade, position.x + 168.0f, dy, alpha, 0x66);
+                                 (u32)(u8)fade, position.x + 168.0f,
+                                 (71.0f + y) - 12.0f, alpha, 0x66);
 }
 #pragma opt_propagation reset
 #pragma opt_common_subs reset
@@ -6551,6 +6561,9 @@ void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
 
 /* opt_dead_assignments off: default nd1292/1728B -> off nd1246/1748B; retained. */
 #pragma opt_dead_assignments off
+/* Retail branches by phase for HP and SP fades, retaining separate interim
+ * and steady calculations before physical/bad-status draws; that branch-local
+ * call structure is reconstructed, with ABI/coloring differences remaining. */
 // FUN_00124370 NONMATCHING
 void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                        s16 pcId, s32 phase)
@@ -6656,13 +6669,15 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                 hpBarOffset = ratio;
             }
             hpBarOffset = 0x4c - hpBarOffset;
+            h_campStatusDrawHp(transitionPosition, alpha, pcId,
+                               hpBarOffset, hpFade);
         } else {
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             hpBarOffset = 0x4c - hpScaled / maxHp;
+            h_campStatusDrawHp(transitionPosition, alpha, pcId,
+                               hpBarOffset, hpFade);
         }
-        h_campStatusDrawHp(transitionPosition, alpha, pcId,
-                           hpBarOffset, hpFade);
     }
 
     if (phase > 14) {
@@ -6680,13 +6695,15 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                 spBarOffset = ratio;
             }
             spBarOffset = 0x4c - spBarOffset;
+            h_campStatusDrawSp(transitionPosition, alpha, pcId,
+                               spBarOffset, spFade);
         } else {
             spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
             maxSp = (s32)(u32)func_0016c670(pcId);
             spBarOffset = 0x4c - spScaled / maxSp;
+            h_campStatusDrawSp(transitionPosition, alpha, pcId,
+                               spBarOffset, spFade);
         }
-        h_campStatusDrawSp(transitionPosition, alpha, pcId,
-                           spBarOffset, spFade);
         if (phase < 19) {
             spFade = 0xff - ((phase - 15) * 0xff) / 4;
         } else {
@@ -7470,89 +7487,99 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 /* W419 global-mode probe: DAT_00833B94 GP loads nd956/object1360/1680
  * (rate .703) -> absolute loads nd999/object1428/1680 (rate .700);
  * retained as the rate-improving retail addressing mode. */
+/* Retail emits repeated header sprites, five parameter rows, labels, panel
+ * resources, equipment, and one footer text pass; those draw/resource passes
+ * are reconstructed, with the remaining gap confined to code shape. */
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 {
-    u32 drawParent;
-    u32 drawAlpha;
-    s16 footerAlpha;
     s16 count;
+    s16 footerAlpha;
     s32 inverseAlpha;
-    f32 left;
-    f32 right;
-    f32 top;
     CampVec2 bottomPosition;
     char text[264];
 
-    drawParent = 0x42c80000;
-    drawAlpha = (u8)alpha;
-    left = position.x + 21.0f;
-    right = position.x + 127.0f;
-    top = position.y + 49.0f;
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16, drawAlpha,
-                             left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19, drawAlpha,
-                             right, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x16, drawAlpha,
-                             left, top, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x19, drawAlpha,
-                             right, top, 100.0f);
-
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x16, (u8)alpha,
+                             position.x + 21.0f,
+                             (position.y + 68.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x19, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 68.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x16, (u8)alpha,
+                             position.x + 21.0f,
+                             (position.y + 68.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x19, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 68.0f) - 19.0f, 100.0f);
+    
     count = (s16)FUN_00177280(FUN_0016c6f0(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count - 1, drawAlpha,
-                             position.x + 129.0f, position.y + 72.0f,
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, count - 1, (u8)alpha,
+                             position.x + 129.0f,
+                             (position.y + 91.0f) - 19.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
-                             right, position.y + 63.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
-                             left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x17, drawAlpha,
-                             left, position.y + 97.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1a, drawAlpha,
-                             right, position.y + 97.0f, 100.0f);
-
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1c, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 82.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1d, (u8)alpha,
+                             position.x + 128.0f + (f32)((count - 1) * 20),
+                             (position.y + 116.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x17, (u8)alpha,
+                             position.x + 21.0f,
+                             (position.y + 116.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1a, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 116.0f) - 19.0f, 100.0f);
+    
     count = (s16)FUN_001772F0(FUN_0016c740(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 6, drawAlpha,
-                             position.x + 129.0f, position.y + 120.0f,
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, count + 6, (u8)alpha,
+                             position.x + 129.0f,
+                             (position.y + 139.0f) - 19.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
-                             right, position.y + 111.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1c, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 130.0f) - 19.0f, 100.0f);
     campStatusDrawSpriteCall(
-        drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
+        0x42c80000, *(void**)DAT_00833B94_abs, 0x1d, (u8)alpha,
         position.x + 128.0f + (f32)((count - 1) * 20),
-        position.y + 111.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x18, drawAlpha,
-                             left, position.y + 147.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1b, drawAlpha,
-                             right, position.y + 147.0f, 100.0f);
-
+        (position.y + 130.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x18, (u8)alpha,
+                             position.x + 21.0f,
+                             (position.y + 166.0f) - 19.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1b, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 166.0f) - 19.0f, 100.0f);
+    
     count = (s16)FUN_00177360(FUN_0016c790(parent));
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, count + 13, drawAlpha,
-                             position.x + 129.0f, position.y + 170.0f,
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, count + 13, (u8)alpha,
+                             position.x + 129.0f,
+                             (position.y + 189.0f) - 19.0f,
                              100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B94_abs, 0x1c, drawAlpha,
-                             right, position.y + 161.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B94_abs, 0x1c, (u8)alpha,
+                             position.x + 127.0f,
+                             (position.y + 180.0f) - 19.0f, 100.0f);
     campStatusDrawSpriteCall(
-        drawParent, *(void**)DAT_00833B94_abs, 0x1d, drawAlpha,
+        0x42c80000, *(void**)DAT_00833B94_abs, 0x1d, (u8)alpha,
         position.x + 128.0f + (f32)((count - 1) * 20),
-        position.y + 161.0f, 100.0f);
+        (position.y + 180.0f) - 19.0f, 100.0f);
+
 
     bottomPosition = position;
     footerAlpha = (s16)alpha;
     inverseAlpha = 0xff - footerAlpha;
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B90_abs, 0x11,
-                             (u8)footerAlpha,
-                             bottomPosition.x + 51.0f,
-                             bottomPosition.y + 339.0f, 100.0f);
-    campStatusDrawSpriteCall(drawParent, *(void**)DAT_00833B90_abs, 0x22,
-                             (u8)footerAlpha,
-                             bottomPosition.x + 305.0f,
-                             bottomPosition.y + 339.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B90_abs, 0x11,
+                 (u8)footerAlpha,
+                 bottomPosition.x + 51.0f,
+                 bottomPosition.y + 339.0f, 100.0f);
+    campStatusDrawSpriteCall(0x42c80000, *(void**)DAT_00833B90_abs, 0x22,
+                 (u8)footerAlpha,
+                 bottomPosition.x + 305.0f,
+                 bottomPosition.y + 339.0f, 100.0f);
     FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));
     campStatusDrawFooterText(100.0f,
                              (s32)(bottomPosition.x + 305.0f),
-                             (s32)(bottomPosition.x + 341.0f),
+                             (s32)(bottomPosition.y + 339.0f + 2.0f),
                              (u8)inverseAlpha, 4, text, 1);
+
 }
 
 #pragma opt_loop_invariants reset
@@ -8146,10 +8173,16 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
 }
 
 #pragma pop
+/* Retail performs an equipment pass before the rank loop and a second
+ * equipment pass after it, followed by one footer pair/text pass; all are
+ * reconstructed, with the remaining frame/register gap still differing. */
 // FUN_00129B30 NONMATCHING
 void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                 void* persona, s32 frame)
 {
+    u32 parentTop;
+    u32 parentRow;
+    u32 parentBottom;
     f32 drawX;
     f32 drawY;
     u32 i;
@@ -8214,15 +8247,15 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
             alpha = 0;
             drawX = position.x;
         }
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 0,
+        campStatusDrawSpriteCall(parentTop, DAT_00833B74, 0,
                                  (u8)alpha, 34.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 10,
+        campStatusDrawSpriteCall(parentTop, DAT_00833B74, 10,
                                  (u8)alpha, 50.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 11,
+        campStatusDrawSpriteCall(parentTop, DAT_00833B74, 11,
                                  (u8)alpha, 212.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 1,
+        campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 1,
                                  (u8)alpha, 561.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 5,
+        campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 5,
                                  (u8)alpha, 361.0f, 415.0f, 100.0f);
         drawPos.x = drawX;
         drawPos.y = position.y;
@@ -8278,10 +8311,10 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                 drawX = position.x;
             }
             drawY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
-            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14,
+            campStatusDrawSpriteCall(parentRow, DAT_00833B98, 0x14,
                                      (u8)alpha, drawX + 104.0f, drawY,
                                      scale);
-            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x15,
+            campStatusDrawSpriteCall(parentRow, DAT_00833B98, 0x15,
                                      (u8)alpha, drawX + 333.0f, drawY,
                                      scale);
             glyph = (void*)FUN_001158b0_y2(0, DAT_00833B98, 0x18);
@@ -8290,14 +8323,16 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
             *((f32*)glyph + 5) = drawY + 1.0f;
             *((u8*)glyph + 0x18) = (u8)alpha;
             *((s16*)glyph + 0x0e) = (s16)((rank * 0xe3) / 99);
-            FUN_001127d0(glyph, 1);
-            FUN_00115980_y2(glyph);
-        }
+            parentRow = (u32)glyph;
+            FUN_001127d0((void*)parentRow, 1);
+            FUN_00115980_y2((void*)parentRow);
     }
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
+    }
+    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11,
                              (u8)alpha, bottomPos.x + 21.0f,
                              bottomPos.y + 86.0f, scale);
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22,
+    campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22,
                              (u8)alpha, bottomPos.x + 275.0f,
                              bottomPos.y + 86.0f, scale);
     bottomPos.y += 88.0f;
@@ -8309,23 +8344,25 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         FUN_00523ac8(text, gp0xffff8978, rank);
     }
     FUN_0040eb50(0x42c80000, (s32)bottomPos.x + 275,
-                 (s32)bottomPos.y, 0xff - alpha,
-                 4, text, 1);
+                 (s32)bottomPos.y, 0xff - alpha, 4, text, 1);
 }
 
 /* opt_propagation off: default nd1164/1536B -> off nd1090/1528B; retained. */
 #pragma opt_propagation off
+/* Retail gates this entry pass at frame five, reuses one loop for nine icons
+ * and five rank rows, then performs one equipment/footer pass; that algorithm
+ * is reconstructed, with register coloring still differing. */
 // FUN_0012A560 NONMATCHING
 void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                               void* persona, s32 frame)
 {
-    u32 parentTop = 0x42c80000;
-    u32 parentBottom = 0x42c80000;
-    s32 alpha;
-    s32 icon;
     s32 row;
+    s32 alpha;
+    u32 parentTop;
+    s32 rowOffset;
     s32 value;
     s32 length;
+    u32 parentBottom;
     char text[0x100];
     void* glyph;
     CampVec2 drawPosition;
@@ -8353,8 +8390,8 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     footerX = drawPosition.x + 287.0f;
     footerY = drawPosition.y + 280.0f;
     alpha = (frame * 0xff) / 5;
-    for (icon = 0; icon < 9; icon++) {
-        h_campStatusRenderStatIcon(drawPosition, scale, icon, alpha);
+    for (row = 0; row < 9; row++) {
+        h_campStatusRenderStatIcon(drawPosition, scale, row, alpha);
     }
     campStatusDrawSpriteCall(parentTop, DAT_00833B74, 0, alpha,
                              34.0f, 415.0f, 100.0f);
@@ -8394,22 +8431,24 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
         }
         rowLeftX = valuePosition.x + 104.0f;
         rowRightX = valuePosition.x + 333.0f;
-        rowY = valuePosition.y + 129.0f + (f32)(row * 19) - 25.0f;
+        rowOffset = row * 19;
+        rowY = valuePosition.y + 129.0f + (f32)rowOffset - 25.0f;
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x14, alpha,
                                  rowLeftX, rowY, scale);
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, alpha,
                                  rowRightX, rowY, scale);
+        length = (value * 0xe3) / 99;
         glyph = (void*)FUN_001158b0_y2(0, DAT_00833B98, 0x18);
+        parentTop = (u32)glyph;
         *((f32*)glyph + 11) = scale;
         glyphX = drawPosition.x + 108.0f;
-        glyphY = rowY + 1.0f;
+        glyphY = position.y + 129.0f + (f32)rowOffset - 25.0f + 1.0f;
         *((f32*)glyph + 4) = glyphX;
         *((f32*)glyph + 5) = glyphY;
         *((u8*)glyph + 0x18) = (u8)alpha;
-        length = (value * 0xe3) / 99;
         *((s16*)glyph + 0x0e) = (s16)length;
-        FUN_001127d0(glyph, 1);
-        FUN_00115980_y2(glyph);
+        FUN_001127d0((void*)parentTop, 1);
+        FUN_00115980_y2((void*)parentTop);
     }
     equipmentPosition = drawPosition;
     h_campStatusDrawEquipment(equipmentPosition, scale, NULL, persona, alpha);
@@ -8428,6 +8467,7 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     }
     FUN_0040eb50(parentBottom, (s32)footerX, (s32)footerY,
                  0xff - alpha, 4, text, 1);
+
 }
 
 #pragma opt_propagation reset
@@ -10655,6 +10695,7 @@ s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
 #undef H_Cdvd_Destroy
 #undef RpSkyRenderStateSet
 #pragma pop
+/* Retail has a 16-state status dispatch; all decoded state bodies are present, with ABI/frame and physical switch layout still differing. */
 // FUN_001311D0 NONMATCHING
 void* FUN_001311d0(KwlnTask* task)
 {
@@ -14486,11 +14527,13 @@ void FUN_00139DC0(f32 param_1)
 #pragma opt_propagation off
 #pragma opt_dead_assignments off
 /* W419 global-mode probe: D_00833B44/B58/B60/B64/B68/BA4 GP loads nd2789/object3628/4112 (rate .768743); absolute aliases nd2793/object3704/4112 (rate .754050); retained. */
+/* W455 ABI reconstruction: the packed coordinate is a CampPackedPosition in a0 and the fourth argument is s32; 3756/4112 bytes (91.4%) are implemented, with only register coloring and the animation tail remaining. */
 // FUN_00139FC0 NONMATCHING
-void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
+void FUN_00139FC0(f32 param_1, CampPackedPosition param_2, const s32* param_3, s32 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8, s32 param_9)
 {
     CampPackedPosition position;
+    u64 packedPosition;
     const s32* item;
     s32 id;
     s32 i;
@@ -14515,8 +14558,8 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     FUN_00139DC0(param_1);
     hCampMainDrawSpriteAlpha(0, 0, param_1);
 
-    position.x = campPackedX(param_2);
-    position.y = campPackedY(param_2);
+    position = param_2;
+    packedPosition = *(u64*)&position;
     itemOffset = param_5 + param_6;
     item = param_3 + itemOffset;
     id = *item;
@@ -14537,8 +14580,8 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
         else
         {
-            FUN_00138EE0(param_1, param_2, id, 0);
-            FUN_001392D0(param_1, param_2, 0, DAT_005E3220[id]);
+            FUN_00138EE0(param_1, packedPosition, id, 0);
+            FUN_001392D0(param_1, packedPosition, 0, DAT_005E3220[id]);
         }
     }
 
@@ -14552,7 +14595,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         {
             alpha = 0;
         }
-        FUN_00139660(param_1, param_2, id, param_7, alpha);
+        FUN_00139660(param_1, packedPosition, id, param_7, alpha);
     }
 
     if (param_9 < 2)
@@ -15986,6 +16029,7 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 /* opt_loop_invariants on + opt_propagation off: baseline nd3969/object5348/5488 -> nd3552/object5076/5488; retained W389. */
 #pragma opt_loop_invariants on
 #pragma opt_propagation off
+/* W455 retail-row reconstruction: category-2 selected/unselected atlas frames are 0x33/0x32 with decoded alpha and row coordinates; 5116/5488 bytes (93.2%) are implemented, with the trailing digit loop and epilogue remaining. */
 // FUN_0013d1a0 NONMATCHING
 
 void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 alpha)
@@ -16151,7 +16195,8 @@ LAB_0013db80:
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
         }
         else {
-          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x33, xIcon,
+                                 yValue + (float)textureIndex);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
           if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
@@ -16264,7 +16309,8 @@ LAB_0013e450:
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
         }
         else {
-          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x32, xIcon,
+                                 yValue + (float)textureIndex);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
           if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
@@ -19310,73 +19356,98 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
     }
 }
 
-/* Retail offsets 0x148c10-0x1496dc: comparison draws retain one packed
- * start coordinate per call and recompute the -100.0f x shift in place. */
-/* W373 pragma sweep: default nd2111/object2708/2784; common_subs off nd2059/object2740/2784; propagation off nd1906/object2424/2784. Retained propagation off. */
+/* Retail offsets 0x148c10-0x1496dc: two comparison panels retain one packed
+ * start coordinate per call, shift it by -100.0f in place, and clear inactive
+ * rows. Recovered aggregate pair copies add 92 bytes (2516/2784, 90.4%);
+ * the remaining 268 bytes are compiler/lifetime scheduling differences. */
 #pragma opt_propagation off
 // FUN_00148C10 NONMATCHING
 void h_campDrawStatusComparison(int param_1)
 {
     CampPair pair;
-    CampBits start;
-    CampBits sp48;
-    CampBits sp50;
-    CampBits sp58;
-    CampBits sp60;
-    CampBits sp68;
-    CampBits sp70;
-    CampBits sp78;
-    CampBits sp80;
-    CampBits sp88;
-    CampBits sp90;
-    CampBits sp98;
-    CampBits spa0;
-    CampBits spa8;
-    CampBits spb0;
-    CampBits spb8;
-    CampBits spc0;
-    CampBits spc8;
-    CampBits spd0;
-    CampBits spd8;
-    CampBits spe0;
-    CampBits spe8;
+    struct {
+        CampBits start;
+        CampBits sp48;
+        CampBits sp50;
+        CampBits sp58;
+        CampBits sp60;
+        CampBits sp68;
+        CampBits sp70;
+        CampBits sp78;
+        CampBits sp80;
+        CampBits sp88;
+        CampBits sp90;
+        CampBits sp98;
+        CampBits spa0;
+        CampBits spa8;
+        CampBits spb0;
+        CampBits spb8;
+        CampBits spc0;
+        CampBits spc8;
+        CampBits spd0;
+        CampBits spd8;
+        CampBits spe0;
+        CampBits spe8;
+    } pairSlots;
+#define start pairSlots.start
+#define sp48 pairSlots.sp48
+#define sp50 pairSlots.sp50
+#define sp58 pairSlots.sp58
+#define sp60 pairSlots.sp60
+#define sp68 pairSlots.sp68
+#define sp70 pairSlots.sp70
+#define sp78 pairSlots.sp78
+#define sp80 pairSlots.sp80
+#define sp88 pairSlots.sp88
+#define sp90 pairSlots.sp90
+#define sp98 pairSlots.sp98
+#define spa0 pairSlots.spa0
+#define spa8 pairSlots.spa8
+#define spb0 pairSlots.spb0
+#define spb8 pairSlots.spb8
+#define spc0 pairSlots.spc0
+#define spc8 pairSlots.spc8
+#define spd0 pairSlots.spd0
+#define spd8 pairSlots.spd8
+#define spe0 pairSlots.spe0
+#define spe8 pairSlots.spe8
     s32 iVar1;
     f32 fVar2;
     pair.x = 379.0f;
     pair.y = 12.0f;
     start.u = *(u64*)&pair;
-    pair.x = pair.x + -100.0f;
+    start.f[0] = start.f[0] + -100.0f;
     campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
                        start.u, *(u64*)&pair, 0, 0, 0, 10);
 
     pair.x = 13.0f;
     pair.y = 27.0f;
     sp48.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp48.f[0] = sp48.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x44),
                   0, 2, 2, sp48.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 112.0f;
     pair.y = 27.0f;
     sp50.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp50.f[0] = sp50.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x88),
                   0, 2, 2, sp50.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 135.0f;
     pair.y = 27.0f;
     sp58.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp58.f[0] = sp58.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0xcc),
                   0, 2, 2, sp58.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 278.0f;
     pair.y = 27.0f;
     sp60.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp60.f[0] = sp60.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x110),
                   0, 2, 2, sp60.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 301.0f;
     pair.y = 27.0f;
     sp68.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp68.f[0] = sp68.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x154),
                   0, 2, 2, sp68.u, *(u64*)&pair, 0, 0, 0, 10);
 
@@ -19389,7 +19460,7 @@ void h_campDrawStatusComparison(int param_1)
             pair.x = 30.0f;
             pair.y = fVar2;
             sp70.u = *(u64*)&pair;
-            pair.x = pair.x + (-100.0f);
+            sp70.f[0] = sp70.f[0] + (-100.0f);
             func_0018bc10(100.0f,
                           (void*)(*(int *)(param_1 + 0xc0) +
                                   (iVar1 + 10) * 0x44),
@@ -19400,25 +19471,25 @@ void h_campDrawStatusComparison(int param_1)
     pair.x = 104.0f;
     pair.y = 61.0f;
     sp78.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp78.f[0] = sp78.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x550),
                   0, 2, 2, sp78.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 124.0f;
     pair.y = 219.0f;
     sp80.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp80.f[0] = sp80.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x594),
                   0, 2, 2, sp80.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 226.0f;
     pair.y = 415.0f;
     sp88.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp88.f[0] = sp88.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x83c),
                   0, 2, 2, sp88.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 339.0f;
     pair.y = 415.0f;
     sp90.u = *(u64*)&pair;
-    pair.x = pair.x + (-100.0f);
+    sp90.f[0] = sp90.f[0] + (-100.0f);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x880),
                   0, 2, 2, sp90.u, *(u64*)&pair, 0, 0, 0, 10);
 
@@ -19502,15 +19573,33 @@ void h_campDrawStatusComparison(int param_1)
                   0, 2, 1, spe8.u, *(u64*)&pair, 0, 0, 0, 10);
 }
 #pragma opt_propagation reset
-
-/* Reconstructed retail aggregate temporaries and per-entry coordinate updates.
- * The original decompiler output passed packed constants directly, losing the
- * contiguous stack-pair writes visible in retail.  The aggregate copy/update
- * sequence and the repeated loop calls survive without any volatile qualifier
- * (measured: dropping volatile improved normalized_diff by 359 with the file's
- * MATCH count unchanged), so plain locals are used here.
- * The resulting instruction layout remains NONMATCHING, but retains the
- * recovered second-loop entry update rather than silently omitting it. */
+#undef spe8
+#undef spe0
+#undef spd8
+#undef spd0
+#undef spc8
+#undef spc0
+#undef spb8
+#undef spb0
+#undef spa8
+#undef spa0
+#undef sp98
+#undef sp90
+#undef sp88
+#undef sp80
+#undef sp78
+#undef sp70
+#undef sp68
+#undef sp60
+#undef sp58
+#undef sp50
+#undef sp48
+#undef start
+/* Retail offsets 0x1496f0-0x14a42c draw 27 transitions in two panels:
+ * each entry writes a packed coordinate aggregate, first-panel card rows use
+ * frame values 7..10 (the final row uses 9..10), second-panel rows use 8..10,
+ * and inactive slots are cleared. Recovered 48 bytes (3308/3488, 94.8%);
+ * the remaining 180 bytes are compiler/lifetime scheduling differences. */
 /* W373 pragma sweep: default nd2626/object3276/3488; propagation off nd2567/object3104/3488; dead_assignments off nd2513/object3260/3488; propagation+dead_assignments nd2567/object3104/3488. Retained dead_assignments off. */
 #pragma opt_dead_assignments off
 // FUN_001496F0 NONMATCHING
@@ -19571,16 +19660,16 @@ void h_campDrawPersonaOverview(int param_1)
                               (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1e) * 0x44), 1,
                               fVar5 + 8.0f, 65.0f, 100.0f);
       pair.x = fVar5 + 31.0f;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 0, 7, 10);
       pair.x = fVar5 + 45.0f;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 0, 7, 10);
       pair.x = fVar5 + 64.0f;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 0, 7, 10);
       iVar2 = iVar3 * 0x2a8;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x948) = 0;
       pair.x = fVar5 + 2.0f;
       pair.y = 14.0f;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 0, 9, 10);
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x950) = 0;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x994) = 0;
     }
@@ -19601,17 +19690,17 @@ void h_campDrawPersonaOverview(int param_1)
   CAMP_DRAW_CALC_FIRST_AT(spb8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 1,
                        217.0f, 415.0f, 100.0f);
 
-  CAMP_DRAW_CALC_FIRST_AT(spc0, 100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spc8, 100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 2,
                        281.0f, 12.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spb0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spd0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 2,
                        -87.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spc8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spd8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 2,
                        28.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spa8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spe0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 2,
                        35.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spd0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spe8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 2,
                        173.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spa0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spf0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 2,
                        201.0f, 27.0f, 100.0f);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (*(int *)(param_1 + 0x1c) + -1 >= iVar3) {
@@ -19619,18 +19708,18 @@ void h_campDrawPersonaOverview(int param_1)
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2e8) = 0;
       pair.x = 610.0f;
       pair.y = fVar5;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 11) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 0, 8, 10);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 11) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 0, 8, 10);
     }
     else {
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2ac) = 0;
     }
   }
-  CAMP_DRAW_CALC_FIRST_AT(spd8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,
+CAMP_DRAW_CALC_FIRST_AT(sp100, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,
                        -53.0f, 61.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spe0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 2,
+  CAMP_DRAW_CALC_FIRST_AT(sp110, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 2,
                        126.0f, 415.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spe8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
+  CAMP_DRAW_CALC_FIRST_AT(sp118, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
                        461.0f, 415.0f, 100.0f);
 }
 #pragma opt_dead_assignments reset
@@ -19730,6 +19819,7 @@ void h_campDrawPersonaEquipment(int param_1)
 
 /* W373 pragma sweep: default nd2051/object2752/2768; propagation off nd2032/object2540/2768. Retained propagation off. */
 #pragma opt_propagation off
+
 // FUN_0014B210 NONMATCHING
 void h_campDrawPersonaList(int param_1)
 {
@@ -19739,7 +19829,6 @@ void h_campDrawPersonaList(int param_1)
     CampBits u0, u1, u2, u3, u4, u5, ul;
     CampBits u6, u7, u8, u9;
     s32 i;
-
 CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 1,
                              379.0f, 12.0f, -100.0f);
 CAMP_DRAW_CALC_FIRST_AT(t1, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 1,
@@ -21165,6 +21254,7 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 
 /* W373 pragma sweep: default nd15152/object19752/20384; propagation off nd14933/object19144/20384; dead_assignments off nd15142/object19748/20384; propagation+dead_assignments nd14933/object19144/20384. Retained propagation off. */
 #pragma opt_propagation off
+/* Retail's menu task draws each transition from decoded per-state coordinate/frame tables; cases 15 and 18 now use the aggregate sequence, while other state layout remains mismatched. */
 // FUN_0014F7D0 NONMATCHING
 u32 h_campUpdateSystemMenuTask_148(int param_1)
 
@@ -21482,15 +21572,13 @@ u32 h_campUpdateSystemMenuTask_148(int param_1)
     pair.f[0] = 87.0f;
     pair.f[1] = 92.0f;
     tmp98.u = pair.u;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1,
-                  tmp98.u, pair.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, tmp98.u, pair.u, 0, 0, 0, 10);
     pair.u = 0x42b8000042ae0000ULL;
     tmp80.u = pair.u;
     tmp80.f[1] -= 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, tmp80.u, pair.u, 0, 0, 0, 10);
     pair.u = 0x42b8000043c20000ULL;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1,
-                  *(u64*)&pair, *(u64*)&pair, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 0, 0, 10);
     pair.u = 0x42b8000043c20000ULL;
     tmp88.u = pair.u;
     tmp88.f[1] -= 600.0f;
@@ -21873,21 +21961,70 @@ u32 h_campUpdateSystemMenuTask_148(int param_1)
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     puVar1[0x52] = 0;
     h_campDrawItemFrameSelected((int)puVar1);
-    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, 0xc2cc000041b00000, 0x4346000041b00000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 1, 0x428a000041c80000, 0x43b8800041c80000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, 0x4244000000000000, 0x4244000000000000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, 0x4224000043b48000, 0x4224000042740000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, 0x42240000440f0000, 0x4224000043880000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 1, 0x4224000044554000, 0x42240000440a4000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 1, 0x42ba000042480000, 0x42ba000042480000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1dc), 0, 2, 1, 0xc34f0000424c0000, 0x42ba0000424c0000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x220), 0, 2, 1, 0x42d8000043820000, 0x42d8000042700000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x264), 0, 2, 1, 0x4379000042480000, 0x4379000042480000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2a8), 0, 2, 1, 0x4380000042820000, 0x4380000042820000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2ec), 0, 2, 1, 0x41e80000441ac000, 0x43a48000441ac000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x330), 0, 2, 1, 0x43aa0000426c0000, 0x43aa0000426c0000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x374), 0, 2, 1, 0x43a6800042ee0000, 0x43a6800042ee0000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 1, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 10);
+    pair.f[0] = 22.0f;
+    pair.f[1] = 198.0f;
+    tmp108.u = pair.u;
+    tmp108.f[1] -= 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, tmp108.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 25.0f;
+    iVar7 = 0x171;
+    pair.f[1] = (f32)iVar7;
+    tmp110.u = pair.u;
+    tmp110.f[1] -= 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 1, tmp110.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 49.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 61.0f;
+    pair.f[1] = 41.0f;
+    tmp118.u = pair.u;
+    tmp118.f[0] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, tmp118.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 272.0f;
+    pair.f[1] = 41.0f;
+    tmp120.u = pair.u;
+    tmp120.f[0] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, tmp120.u, pair.u, 0, 0, 2, 12);
+    iVar7 = 0x229;
+    pair.f[0] = (f32)iVar7;
+    pair.f[1] = 41.0f;
+    tmp128.u = pair.u;
+    tmp128.f[0] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 1, tmp128.u, pair.u, 0, 0, 4, 14);
+    pair.f[0] = 50.0f;
+    pair.f[1] = 93.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 1, pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 51.0f;
+    pair.f[1] = 93.0f;
+    tmp130.u = pair.u;
+    tmp130.f[1] -= 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1dc), 0, 2, 1, tmp130.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 260.0f;
+    pair.f[1] = 108.0f;
+    tmp138.u = pair.u;
+    tmp138.f[0] -= 200.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x220), 0, 2, 1, tmp138.u, pair.u, 0, 0, 5, 10);
+    pair.f[0] = 50.0f;
+    pair.f[1] = 249.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x264), 0, 2, 1, pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 65.0f;
+    pair.f[1] = 256.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2a8), 0, 2, 1, pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 619.0f;
+    pair.f[1] = 29.0f;
+    tmp140.u = pair.u;
+    tmp140.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2ec), 0, 2, 1, tmp140.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 59.0f;
+    pair.f[1] = 340.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x330), 0, 2, 1, pair.u, pair.u, 0, 0, 10, 15);
+    pair.f[0] = 119.0f;
+    pair.f[1] = 333.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x374), 0, 2, 1, pair.u, pair.u, 0, 0, 13, 17);
+    pair.f[0] = 31.0f;
+    iVar7 = 0x181;
+    pair.f[1] = (f32)iVar7;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 1, pair.u, pair.u, 0, 0, 0, 10);
     *puVar1 = 0x16;
     break;
   case 0x16:
@@ -21941,39 +22078,85 @@ u32 h_campUpdateSystemMenuTask_148(int param_1)
   case 0x18:
     FUN_00159900(puVar1[4],puVar1 + 5,puVar1[0x52]);
     h_campDrawItemFrame((int)puVar1);
-    pair.u = 0x43f9000041b00000ULL;
+    pair.f[0] = 22.0f;
+    pair.f[1] = 198.0f;
     tmp108.u = pair.u;
-    tmp108.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 2, tmp108.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x4427400041c80000ULL;
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 2,
+                  tmp108.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 25.0f;
+    iVar7 = 0x171;
+    pair.f[1] = (f32)iVar7;
     tmp110.u = pair.u;
-    tmp110.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 2, tmp110.u, pair.u, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 2, 0x4244000000000000, 0x4244000000000000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 2, 0x4224000042740000, 0x4224000042740000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 2, 0x4224000043880000, 0x4224000043880000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 2, 0x42240000440a4000, 0x42240000440a4000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 2, 0x42ba000042480000, 0x42ba000042480000, 0, 0, 0, 10);
-    pair.u = 0x43c48000424c0000ULL;
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 2,
+                  tmp110.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 49.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 3);
+    pair.f[0] = 61.0f;
+    pair.f[1] = 41.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 272.0f;
+    pair.f[1] = 41.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 2, 12);
+    iVar7 = 0x229;
+    pair.f[0] = (f32)iVar7;
+    pair.f[1] = 41.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 4, 14);
+    pair.f[0] = 50.0f;
+    pair.f[1] = 93.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 51.0f;
+    pair.f[1] = 93.0f;
     tmp118.u = pair.u;
-    tmp118.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1dc), 0, 2, 2, tmp118.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x441d4000441ac000ULL;
-    tmp120.u = pair.u;
-    tmp120.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2ec), 0, 2, 2, tmp120.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x44200000426c0000ULL;
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1dc), 0, 2, 2,
+                  tmp118.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 60.0f;
+    pair.f[1] = 108.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x220), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 50.0f;
+    pair.f[1] = 249.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x264), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 65.0f;
+    pair.f[1] = 256.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2a8), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    iVar7 = 0x26b;
+    pair.f[0] = (f32)iVar7;
+    iVar7 = 0x149;
+    pair.f[1] = (f32)iVar7;
     tmp128.u = pair.u;
-    tmp128.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x330), 0, 2, 2, tmp128.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x441e400042ee0000ULL;
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2ec), 0, 2, 2,
+                  tmp128.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 59.0f;
+    iVar7 = 340;
+    pair.f[1] = (f32)iVar7;
     tmp130.u = pair.u;
-    tmp130.f[0] -= 300.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x374), 0, 2, 2, tmp130.u, pair.u, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x220), 0, 2, 2, 0x42d8000042700000, 0x42d8000042700000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x264), 0, 2, 2, 0x4379000042480000, 0x4379000042480000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x2a8), 0, 2, 2, 0x4380000042820000, 0x4380000042820000, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 2, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 10);
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x330), 0, 2, 2,
+                  tmp130.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 119.0f;
+    iVar7 = 333;
+    pair.f[1] = (f32)iVar7;
+    tmp138.u = pair.u;
+    pair.f[1] += 300.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x374), 0, 2, 2,
+                  tmp138.u, pair.u, 0, 0, 0, 10);
+    pair.f[0] = 31.0f;
+    iVar7 = 0x181;
+    pair.f[1] = (f32)iVar7;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
     *puVar1 = 0x19;
     break;
   case 0x19:

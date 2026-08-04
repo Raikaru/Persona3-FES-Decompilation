@@ -2129,8 +2129,9 @@ encounter_default:
     return 0;
 }
 
+/* Retail algorithm: genus-gated encounter jump table returns 16-bit values from per-character tables; implemented 2980/2992 bytes (99%); remaining 12-byte tail/layout gap. */
 // FUN_002fb860 NONMATCHING
-s64 func_002fb860(BtlUnit* unit, u16 index)
+s16 func_002fb860(BtlUnit* unit, u16 index)
 {
     u16 encounterId = btlBossGetEncounterId();
     switch (encounterId)
@@ -2141,17 +2142,7 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
             switch (unit->charId)
             {
                 case 0x100:
-                    return (s32)DAT_00699BF0[index];
-            }
-            return -1;
-        }
-        case 0x1a1:
-        {
-            if (unit->genus != 1) return -1;
-            switch (unit->charId)
-            {
-                case 0x103:
-                    return (s32)DAT_00699C90[index];
+                    return (s16)DAT_00699BF0[index];
             }
             return -1;
         }
@@ -2164,6 +2155,16 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
                     return (s32)DAT_00699C20[index];
                 case 0x102:
                     return (s32)DAT_00699C3A[index];
+            }
+            return -1;
+        }
+        case 0x1a1:
+        {
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x103:
+                    return (s32)DAT_00699C90[index];
             }
             return -1;
         }

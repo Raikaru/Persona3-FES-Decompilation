@@ -3350,9 +3350,10 @@ void* func_001e5850(void* parent)
         (void*)func_001e4bc0, (void*)func_001e5820, work);
 }
 
-// The transition task builds a 0x20-by-0x20 input window, resolves a field
-// resource, then drives a position task from the two analog axes.  The
-// remaining work is the original resource-specific path after offset 0x704.
+// Retail dispatches states 0-3 in a linear chain, with state 2's 0x20
+// cleanup and 0x40 task-node branches sharing the final epilogue.  The
+// reconstructed state machine and both input branches are implemented;
+// residual differences are register/layout choices in the resource path.
 // FUN_001E58D0 NONMATCHING
 s32 func_001e58d0(RuntimeTask* task)
 {
@@ -3382,155 +3383,146 @@ s32 func_001e58d0(RuntimeTask* task)
     switch (work->state)
     {
         case 0:
-            break;
+            work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
+            func_001a3dc0(work->windowTask, D_00684330, 2);
+            func_001a3bf0(work->windowTask, 1);
+            work->state++;
+            return 0;
         case 1:
-            goto state1;
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
+            {
+                if (func_001a4510(work->windowTask) == 1)
+                {
+                    resourceId = (u16)*func_001a41b0(work->windowTask, 0);
+                    if (func_001e29e0((u16)((resourceId & 0x3ff) | 0x2000)) != NULL)
+                    {
+                        func_001a1540(0, 0, 0xb4, D_00684380);
+                        return 0;
+                    }
+                    work->resourceId = func_003b5e90(resourceId);
+                    func_003b5d10(work->resourceId);
+                    work->positionTask = func_001a4cd0(0);
+                    func_00195020(work->windowTask);
+                    work->state++;
+                    return 0;
+                }
+            }
+            if ((input & 0x20) != 0)
+            {
+                work->state = 3;
+            }
+            return 0;
         case 2:
-            goto state2;
+            axis = *(RuntimeVec3*)D_00684370;
+            firstAxis.x = 0.0f;
+            firstAxis.y = 0.0f;
+            firstAxis.z = 0.0f;
+            secondAxis.x = 0.0f;
+            secondAxis.y = 0.0f;
+            secondAxis.z = 0.0f;
+            input = *(u8*)(&DAT_007e095e[0]);
+            x = (f32)input * 2.0f - 128.0f;
+            input = *(u8*)(&DAT_007e0960[0]);
+            y = (f32)input * 2.0f - 128.0f;
+            if ((DAT_007e094c & 0x1000) != 0)
+            {
+                x = -128.0f;
+            }
+            if ((DAT_007e094c & 0x4000) != 0)
+            {
+                x = 128.0f;
+            }
+            if ((DAT_007e094c & 0x8000) != 0)
+            {
+                y = -128.0f;
+            }
+            if ((DAT_007e094c & 0x2000) != 0)
+            {
+                y = 128.0f;
+            }
+            firstAxis.x = x;
+            secondAxis.x = y;
+            camera = func_00198590();
+            frame = *(void**)((u8*)camera + 4);
+            angle = func_001a5aa0(func_004cb2f0(frame));
+            if (x < -48.0f || x > 48.0f || y < -48.0f || y > 48.0f)
+            {
+                matrixFlags = *(u32*)&rotation.values[3];
+                rotation.values[0] = 1.0f;
+                rotation.values[5] = 1.0f;
+                rotation.values[10] = 1.0f;
+                rotation.values[1] = 0.0f;
+                rotation.values[2] = 0.0f;
+                rotation.values[4] = 0.0f;
+                rotation.values[6] = 0.0f;
+                rotation.values[8] = 0.0f;
+                rotation.values[9] = 0.0f;
+                rotation.values[12] = 0.0f;
+                rotation.values[13] = 0.0f;
+                rotation.values[14] = 0.0f;
+                matrixFlags |= 0x20003;
+                *(u32*)&rotation.values[3] = matrixFlags;
+                func_004c31b0(&rotation, &axis, angle, 2);
+                direction = firstAxis;
+                func_004c69f0(&direction, &direction);
+                direction.x = -direction.x;
+                direction.y = -direction.y;
+                direction.z = -direction.z;
+                func_004c6be0(&direction, &direction, &rotation);
+                distance = (x + y) * 1.0f / 2.0f;
+                K_Draw_MovePositionInDir(distance, work->positionTask, &direction);
+            }
+            if (x < -48.0f || x > 48.0f)
+            {
+                K_Draw_RotatePosition(work->positionTask, &axis, y * 1.0f);
+            }
+            input = DAT_007e094c;
+            if ((input & 6) != 0)
+            {
+                K_Draw_CopyPositionCenter(&center, work->positionTask);
+                adjusted = center;
+                adjusted.y -= 10.0f;
+                K_Draw_SetPositionPos(work->positionTask, &adjusted);
+            }
+            if ((input & 9) != 0)
+            {
+                K_Draw_CopyPositionCenter(&center, work->positionTask);
+                adjusted = center;
+                adjusted.y += 10.0f;
+                K_Draw_SetPositionPos(work->positionTask, &adjusted);
+            }
+            if ((input & 0x80) != 0)
+            {
+                func_001a5000(work->positionTask);
+            }
+            if ((input & 0x20) != 0)
+            {
+                func_003b7090(work->resourceId);
+                func_00195020(work->positionTask);
+                work->state = 0;
+            }
+            else if ((input & 0x40) != 0)
+            {
+                taskNode = func_001e2a20();
+                taskNode->resourceId = work->resourceId;
+                taskNode->task = work->positionTask;
+                positionMatrix = (RuntimeMatrix*)K_Draw_GetPositionMatrix(
+                    work->positionTask);
+                taskNode->matrix = *positionMatrix;
+                angles.value.x = func_001a5b30(&taskNode->matrix);
+                angles.value.y = func_001a5aa0(&taskNode->matrix);
+                angles.value.z = func_001a5bc0(&taskNode->matrix);
+                func_003b78b0(taskNode->resourceId, (u8*)taskNode + 0x40,
+                             &angles.value);
+                work->state = 0;
+            }
+            return 0;
         case 3:
             return -1;
         default:
             return 0;
     }
-
-    work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-    func_001a3dc0(work->windowTask, D_00684330, 2);
-    func_001a3bf0(work->windowTask, 1);
-    work->state++;
-    return 0;
-
-state1:
-    input = DAT_007e094e;
-    if ((input & 0x40) != 0)
-    {
-        if (func_001a4510(work->windowTask) == 1)
-        {
-            resourceId = (u16)*func_001a41b0(work->windowTask, 0);
-            if (func_001e29e0((u16)((resourceId & 0x3ff) | 0x2000)) != NULL)
-            {
-                func_001a1540(0, 0, 0xb4, D_00684380);
-                return 0;
-            }
-            work->resourceId = func_003b5e90(resourceId);
-            func_003b5d10(work->resourceId);
-            work->positionTask = func_001a4cd0(0);
-            func_00195020(work->windowTask);
-            work->state++;
-            return 0;
-        }
-    }
-    if ((input & 0x20) != 0)
-    {
-        work->state = 3;
-    }
-    return 0;
-
-state2:
-    axis = *(RuntimeVec3*)D_00684370;
-
-    firstAxis.x = 0.0f;
-    firstAxis.y = 0.0f;
-    firstAxis.z = 0.0f;
-    secondAxis.x = 0.0f;
-    secondAxis.y = 0.0f;
-    secondAxis.z = 0.0f;
-    input = *(u8*)(&DAT_007e095e[0]);
-    x = (f32)input * 2.0f - 128.0f;
-    input = *(u8*)(&DAT_007e0960[0]);
-    y = (f32)input * 2.0f - 128.0f;
-    if ((DAT_007e094c & 0x1000) != 0)
-    {
-        x = -128.0f;
-    }
-    if ((DAT_007e094c & 0x4000) != 0)
-    {
-        x = 128.0f;
-    }
-    if ((DAT_007e094c & 0x8000) != 0)
-    {
-        y = -128.0f;
-    }
-    if ((DAT_007e094c & 0x2000) != 0)
-    {
-        y = 128.0f;
-    }
-    firstAxis.x = x;
-    secondAxis.x = y;
-    camera = func_00198590();
-    frame = *(void**)((u8*)camera + 4);
-    angle = func_001a5aa0(func_004cb2f0(frame));
-    if (x < -48.0f || x > 48.0f || y < -48.0f || y > 48.0f)
-    {
-        matrixFlags = *(u32*)&rotation.values[3];
-        rotation.values[0] = 1.0f;
-        rotation.values[5] = 1.0f;
-        rotation.values[10] = 1.0f;
-        rotation.values[1] = 0.0f;
-        rotation.values[2] = 0.0f;
-        rotation.values[4] = 0.0f;
-        rotation.values[6] = 0.0f;
-        rotation.values[8] = 0.0f;
-        rotation.values[9] = 0.0f;
-        rotation.values[12] = 0.0f;
-        rotation.values[13] = 0.0f;
-        rotation.values[14] = 0.0f;
-        matrixFlags |= 0x20003;
-        *(u32*)&rotation.values[3] = matrixFlags;
-        func_004c31b0(&rotation, &axis, angle, 2);
-        direction = firstAxis;
-        func_004c69f0(&direction, &direction);
-        direction.x = -direction.x;
-        direction.y = -direction.y;
-        direction.z = -direction.z;
-        func_004c6be0(&direction, &direction, &rotation);
-        distance = (x + y) * 1.0f / 2.0f;
-        K_Draw_MovePositionInDir(distance, work->positionTask, &direction);
-    }
-    if (x < -48.0f || x > 48.0f)
-    {
-        K_Draw_RotatePosition(work->positionTask, &axis, y * 1.0f);
-    }
-    input = DAT_007e094c;
-    if ((input & 6) != 0)
-    {
-        K_Draw_CopyPositionCenter(&center, work->positionTask);
-        adjusted = center;
-        adjusted.y -= 10.0f;
-        K_Draw_SetPositionPos(work->positionTask, &adjusted);
-    }
-    if ((input & 9) != 0)
-    {
-        K_Draw_CopyPositionCenter(&center, work->positionTask);
-        adjusted = center;
-        adjusted.y += 10.0f;
-        K_Draw_SetPositionPos(work->positionTask, &adjusted);
-    }
-    if ((input & 0x80) != 0)
-    {
-        func_001a5000(work->positionTask);
-    }
-    if ((input & 0x20) != 0)
-    {
-        func_003b7090(work->resourceId);
-        func_00195020(work->positionTask);
-        work->state = 0;
-    }
-    if ((input & 0x40) != 0)
-    {
-        taskNode = func_001e2a20();
-        taskNode->resourceId = work->resourceId;
-        taskNode->task = work->positionTask;
-        positionMatrix = (RuntimeMatrix*)K_Draw_GetPositionMatrix(
-            work->positionTask);
-        taskNode->matrix = *positionMatrix;
-        angles.value.x = func_001a5b30(&taskNode->matrix);
-        angles.value.y = func_001a5aa0(&taskNode->matrix);
-        angles.value.z = func_001a5bc0(&taskNode->matrix);
-        func_003b78b0(taskNode->resourceId, (u8*)taskNode + 0x40,
-                     &angles.value);
-        work->state = 0;
-    }
-    return 0;
 }
 
 // FUN_001E6000

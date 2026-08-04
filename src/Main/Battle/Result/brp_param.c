@@ -305,6 +305,10 @@ static inline u8 opFadeColorByte(f32 value)
 {
     return (u8)(u32)value;
 }
+static inline f32 opFadeMul(f32 left, f32 right)
+{
+    return left * right;
+}
 
 // FUN_00276d30
 void func_00276d30(void)
@@ -440,6 +444,10 @@ void func_002770f0(void)
     func_002771f0();
 }
 
+/* W455 reconstruction: retail resets the list-entry color each iteration,
+ * switches to c7/b9 resource colors before the resource loop, and computes all
+ * four panel13 channels from alpha. Implemented those decoded blocks; 104 bytes
+ * remain in later layout and scheduling differences. */
 // FUN_002771f0 NONMATCHING
 void func_002771f0(void)
 {
@@ -497,9 +505,17 @@ void func_002771f0(void)
         layout[2] = (f32)opTexW(tex8, 0x12);
         layout[3] = (f32)opTexH(tex8, 0x12);
         func_0021d8e0(listEntry, layout);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = 0xff;
         func_0021d950(listEntry, color);
     }
 
+    color[0] = 0xc7;
+    color[1] = 0xb9;
+    color[2] = 0xff;
+    color[3] = 0xff;
     for (i = 0; i < OP_S32(work, 0x3738); i++)
     {
         f32 x = (f32)(i / 4) * 190.0f + 44.0f;
@@ -511,10 +527,6 @@ void func_002771f0(void)
                       ((u32)color[1] << 16) | ((u32)color[0] << 24));
     }
 
-    color[0] = 0xc7;
-    color[1] = 0xb9;
-    color[2] = 0xff;
-    color[3] = 0xff;
 
     if ((OP_U32(work, 0) & 2) != 0)
     {
@@ -536,10 +548,10 @@ void func_002771f0(void)
             f32 y = 169.0f;
             func_003b0d70_y2(OP_U32(work, 0x3950), (s32)(x * 16.0f), (s32)(y * 16.0f));
         }
-        color[0] = (u8)(alpha * 55.0f + 199.0f);
-        color[1] = (u8)(alpha * 70.0f + 185.0f);
-        color[2] = (u8)(alpha * -95.0f + 255.0f);
-        color[3] = 0xff;
+        color[0] = (u8)(opFadeMul(alpha, 55.0f) + 199.0f);
+        color[1] = (u8)(opFadeMul(alpha, 70.0f) + 185.0f);
+        color[2] = (u8)(opFadeMul(alpha, -95.0f) + 255.0f);
+        color[3] = (u8)(opFadeMul(alpha, 255.0f) + 255.0f);
         func_003b0e20(OP_U32(work, 0x3950),
                       (u32)color[3] | ((u32)color[2] << 8) |
                       ((u32)color[1] << 16) | ((u32)color[0] << 24));

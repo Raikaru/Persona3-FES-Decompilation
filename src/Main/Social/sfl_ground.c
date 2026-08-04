@@ -338,6 +338,7 @@ void sflGround00239280(void)
     sSflGround = NULL;
 }
 
+/* Retail frame-gates the first overlay before the final 255-alpha pass; implemented 99.2%, strip replay remains. */
 // FUN_002392D0 NONMATCHING
 void func_002392d0(void)
 {
@@ -961,7 +962,14 @@ void func_002392d0(void)
         func_0021d950(GROUND_PTR(work, 0x69f0), &color);
     }
 
-    color.a = (u8)(128.0f * panelFade);
+    if ((s32)work[1] < 30) {
+        normFade = (f32)work[1] / 30.0f;
+        color.a = (u8)(normFade * 255.0f);
+        func_0024a230(GROUND_PTR(work, SFL_GROUND_WORK_SIZE), &color);
+    } else {
+        normFade = 1.0f;
+    }
+    color.a = (u8)(255.0f * panelFade);
     func_0024a230(GROUND_PTR(work, SFL_GROUND_WORK_SIZE), &color);
     func_00249c10(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 }

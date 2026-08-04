@@ -41,11 +41,13 @@ u8 * FUN_003c3fe0(int param_1);
 #pragma push
 // W419 state-2 switch-shaped dispatch probe worsened 1436/2516 to 1466/2540 (rate 57.07% to 57.72%); if/else form retained.
 /* W420 negative: duplicating the shared state-1 case body for states 0,2..7 produced nd1603/object2756 against window2752 (rate .5707 -> .5814); reverted. */
+/* W455 retail state-one dispatch has eight distinct jump-table targets, so
+ * repeated state assignments are kept as separate case bodies below. */
 // FUN_003C33C0 NONMATCHING
 
 u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
 {
-  u8 bVar1;
+  int bVar1;
   int iVar2;
   int iVar3;
   char cVar4;
@@ -72,12 +74,6 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
   pbVar8[8] = 0;
   *(int *)(pbVar8 + 0xc) = 1; } break; case 1: { switch (pbVar8[2]) {
   case 0:
-  case 2:
-  case 3:
-  case 4:
-  case 5:
-  case 6:
-  case 7:
     if (bVar1 < 4) {
       *(int *)(pbVar8 + 0xc) = 2;
     } else {
@@ -88,6 +84,48 @@ u8 FUN_003c33c0(u8 *param_1, int *param_2, long param_3)
     if (bVar1 < 4) {
       if (bVar1 == 0)
         FUN_001725a0(*pbVar8);
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 2:
+    if (bVar1 < 4) {
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 3:
+    if (bVar1 < 4) {
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 4:
+    if (bVar1 < 4) {
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 5:
+    if (bVar1 < 4) {
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 6:
+    if (bVar1 < 4) {
+      *(int *)(pbVar8 + 0xc) = 2;
+    } else {
+      *(int *)(pbVar8 + 0xc) = 3;
+    }
+    break;
+  case 7:
+    if (bVar1 < 4) {
       *(int *)(pbVar8 + 0xc) = 2;
     } else {
       *(int *)(pbVar8 + 0xc) = 3;

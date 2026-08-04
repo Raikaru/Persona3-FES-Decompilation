@@ -422,6 +422,7 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
     }
 }
 
+/* Retail tail decoding adds the second resource/icon pass and panel recolour; the first pass is implemented, with the tail now reconstructed from 0x2584 onward. */
 /* W454 frame work: direct origin scratch and a direct word-pointer parameter
  * reduce this function from 0x120/288B, nd7333 to 0x110/272B, nd7328. */
 // FUN_00210D90 NONMATCHING
@@ -724,6 +725,151 @@ void bsaMain00210d90(s32* p)
         for (i = 0; i < 8; i++) {
             func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
             func_0021dd60(p + i * 0x80 + 0x25ec, fill);
+        }
+    }
+    /*
+     * Retail 0x2584-0x2e9c: after the first panel pass, draw the resource
+     * strip again, then rebuild the panel rectangles and apply the overlay
+     * colours.  The word offsets below are the byte offsets in retail.
+     */
+    {
+        s32 j;
+        f32 panelBaseX;
+        f32 groupY;
+        u8 fill2[16];
+
+        image = func_0021cca0(table2, 0x25);
+        rect[0] = base + 58.0f;
+        rect[1] = base + 89.0f;
+        rect[2] = BSA_FRAME_W(image);
+        rect[3] = BSA_FRAME_H(image);
+        func_0021d8e0(p + 0xc50, rect);
+        drawColor[0] = 0xff; drawColor[1] = 0xff; drawColor[2] = 0xff;
+        drawColor[3] = bsaAlpha(alpha255);
+        func_0021d950(p + 0xc50, drawColor);
+        rect[0] += BSA_FRAME_W(image);
+        rect[2] = 236.0f;
+        func_0021d8e0(p + 0xc90, rect);
+        func_0021d950(p + 0xc90, drawColor);
+
+        for (j = 0; j < 8; j++) {
+            panelBaseX = (j / 4) == 0 ? 0.0f : 270.0f;
+            groupY = (f32)(j & 3) * 30.0f + 292.0f;
+            if (j < (s32)p[0xd]) {
+                image = func_0021cca0(
+                    table0, *(s16*)((u8*)p + j * 2 + 0xa6b8));
+                rect[0] = panelBaseX + 54.0f;
+                rect[1] = (f32)(j & 3) * 30.0f + 271.0f;
+                rect[2] = BSA_FRAME_W(image);
+                rect[3] = BSA_FRAME_H(image);
+                func_0021d8e0(p + j * 0x40 + 0x1050, rect);
+                drawColor[0] = 0xa9; drawColor[1] = 0xb5; drawColor[2] = 0xc5;
+                drawColor[3] = bsaAlpha(alpha255);
+                func_0021d950(p + j * 0x40 + 0x1050, drawColor);
+            }
+            if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
+                if (j < (s32)p[0xd]) {
+                    func_003b0d70(
+                        p[j + 5], (s32)((panelBaseX + 89.0f) * 16.0f),
+                        (s32)((groupY - 18.0f) * 8.0f));
+                    func_003b0e20(p[j + 5], 0xffffff00u | bsaAlpha(alpha255));
+                }
+            } else {
+                image = func_0021cca0(table2, 0x32);
+                bsaPlaceQuad(
+                    p, j * 0x100 + 0x1c2c, image,
+                    panelBaseX + 142.0f, groupY - 14.0f,
+                    -1.0f, -1.0f, alpha255);
+                image = func_0021cca0(table2, 0x35);
+                bsaPlaceQuad(
+                    p, j * 0x100 + 0x1c6c, image,
+                    panelBaseX + 101.0f, groupY - 14.0f,
+                    -1.0f, -1.0f, alpha255);
+                bsaPlaceQuad(
+                    p, j * 0x100 + 0x1cac, image,
+                    panelBaseX + 101.0f + BSA_FRAME_W(image),
+                    groupY - 14.0f, 103.0f, -1.0f, alpha255);
+                image = func_0021cca0(table2, 0x36);
+                bsaPlaceQuad(
+                    p, j * 0x100 + 0x1cec, image,
+                    panelBaseX + 208.0f, groupY - 14.0f,
+                    -1.0f, -1.0f, alpha255);
+            }
+        }
+
+        switch (p[0]) {
+        case 0:
+            rect[0] = -1.0f; rect[1] = 219.0f;
+            rect[2] = 51.0f; rect[3] = 190.0f;
+            break;
+        case 1:
+            rect[0] = -1.0f; rect[1] = 39.0f;
+            rect[2] = 51.0f; rect[3] = 370.0f;
+            break;
+        }
+        func_0021d8e0(p + 0x242c, rect);
+        switch (p[0]) {
+        case 0:
+            rect[0] = 50.0f; rect[1] = 219.0f;
+            rect[2] = 500.0f; rect[3] = 190.0f;
+            break;
+        case 1:
+            rect[0] = 50.0f; rect[1] = 39.0f;
+            rect[2] = 500.0f; rect[3] = 370.0f;
+            break;
+        }
+        func_0021d8e0(p + 0x246c, rect);
+        groupY = base + 54.0f;
+        rect[0] = 53.0f; rect[1] = groupY; rect[2] = 220.0f; rect[3] = 97.0f;
+        func_0021d8e0(p + 0x24ac, rect);
+        rect[0] = (f32)0x111; rect[1] = groupY;
+        rect[2] = 120.0f; rect[3] = 97.0f;
+        func_0021d8e0(p + 0x24ec, rect);
+        groupY = base + 158.0f;
+        rect[0] = 53.0f; rect[1] = groupY; rect[2] = 220.0f; rect[3] = 54.0f;
+        func_0021d8e0(p + 0x252c, rect);
+        rect[0] = (f32)0x111; rect[1] = groupY;
+        rect[2] = 130.0f; rect[3] = 54.0f;
+        func_0021d8e0(p + 0x256c, rect);
+        for (j = 0; j < 8; j++) {
+            panelBaseX = (j / 4) == 0 ? 0.0f : 270.0f;
+            groupY = (f32)(j & 3) * 30.0f + (f32)0x113;
+            rect[0] = panelBaseX + 53.0f; rect[1] = groupY;
+            rect[2] = 118.0f; rect[3] = 26.0f;
+            func_0021d8e0(p + j * 0x80 + 0x25ac, rect);
+            rect[0] += 118.0f; rect[2] = 200.0f;
+            func_0021d8e0(p + j * 0x80 + 0x25ec, rect);
+        }
+
+        drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
+        drawColor[3] = bsaAlpha(alpha255);
+        fill2[0] = drawColor[0]; fill2[1] = drawColor[1];
+        fill2[2] = drawColor[2]; fill2[3] = drawColor[3];
+        fill2[4] = drawColor[0]; fill2[5] = drawColor[1];
+        fill2[6] = drawColor[2]; fill2[7] = 0;
+        fill2[8] = drawColor[0]; fill2[9] = drawColor[1];
+        fill2[10] = drawColor[2]; fill2[11] = 0;
+        fill2[12] = drawColor[0]; fill2[13] = drawColor[1];
+        fill2[14] = drawColor[2]; fill2[15] = drawColor[3];
+        func_0021d950(p + 0x242c, drawColor);
+        func_0021dd60(p + 0x246c, fill2);
+        drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
+        drawColor[3] = bsaAlpha(alpha * 204.0f);
+        fill2[0] = drawColor[0]; fill2[1] = drawColor[1];
+        fill2[2] = drawColor[2]; fill2[3] = drawColor[3];
+        fill2[4] = drawColor[0]; fill2[5] = drawColor[1];
+        fill2[6] = drawColor[2]; fill2[7] = 0;
+        fill2[8] = drawColor[0]; fill2[9] = drawColor[1];
+        fill2[10] = drawColor[2]; fill2[11] = 0;
+        fill2[12] = drawColor[0]; fill2[13] = drawColor[1];
+        fill2[14] = drawColor[2]; fill2[15] = drawColor[3];
+        func_0021d950(p + 0x24ac, drawColor);
+        func_0021dd60(p + 0x24ec, fill2);
+        func_0021d950(p + 0x252c, drawColor);
+        func_0021dd60(p + 0x256c, fill2);
+        for (j = 0; j < 8; j++) {
+            func_0021d950(p + j * 0x80 + 0x25ac, drawColor);
+            func_0021dd60(p + j * 0x80 + 0x25ec, fill2);
         }
     }
     #undef alpha255

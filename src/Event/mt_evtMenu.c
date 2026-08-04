@@ -11336,6 +11336,8 @@ void FUN_0037cf50(u32 *param_1,u32 *param_2,u32 *param_3)
 /* opt_propagation off: default nd748/1044B -> nd714/1044B; retained. */
 #pragma push
 #pragma opt_propagation off
+/* W455 retail else-path continues through the shared output-counter
+ * increment after the three vector stores; that tail is now represented. */
 // FUN_0037CFE0 NONMATCHING
 
 
@@ -11445,6 +11447,7 @@ void FUN_0037cfe0(void)
       DAT_0095874c_f32_abs[outputIndex] = *baseX + offsetFull.x;
       DAT_00958750_f32_abs[outputIndex] = *baseY + offsetFull.y;
       DAT_00958754_f32_abs[outputIndex] = *baseZ + offsetFull.z;
+      (((u8 *)&DAT_00958700_abs)[1]) = (((u8 *)&DAT_00958700_abs)[1]) + 1;
     }
   }
 }

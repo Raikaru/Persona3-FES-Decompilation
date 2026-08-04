@@ -4224,6 +4224,12 @@ extern u8 D_00960094_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern f32 D_00960088;
 extern const f32 DAT_007caf38;
+extern f32 DAT_007cad38;
+extern f32 DAT_007cad40;
+extern f32 DAT_007cad44;
+extern f32 DAT_007cad48;
+extern f32 DAT_007cae04;
+extern f32 DAT_007cae08;
 extern RwV3d D_005D6C28;
 extern const char D_005E3F38[];
 extern const char* D_005E4150[];
@@ -5572,6 +5578,9 @@ KwlnTask* func_00187550(KwlnTask* parent)
  * measured 1616/1520 nd1188 and exceeded the window; retained calls.
  * Replacing the stack axis with D_005D6C28 measured 1416/1520 nd893
  * (rate 0.63065) versus baseline 1452/1520 nd935 (rate 0.64394); retained. */
+/* W455 retail path uses EE cosine/sine Horner polynomials, a separate
+ * transformed-vector copy loop, scale-only loop, and vertex-fill loop;
+ * implemented here, with residuals limited to layout and register code. */
 // FUN_001875F0 NONMATCHING
 void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
 {
@@ -5584,7 +5593,14 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     f32 angleRadians;
     f32 scale;
     f32 radians;
+    f32 angleSquared;
+    f32 polynomial;
+    f32 cosine;
+    f32 sine;
+    f32* coefficients;
     s32 i;
+    s32 j;
+    s32 k;
     void (**setState)(u32, u32);
 
     camera = kwlnGetMainCamera();
@@ -5612,76 +5628,76 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     local[3].x = 15.0f;
     local[3].y = 22.0f;
     local[3].z = 0.0f;
+    for (k = 0; k < 4; k++)
+    {
+        transformed[k] = local[k];
+    }
 
-    while (angle > 180)
+    while ((f32)angle > 180.0f)
     {
         angle -= 360;
     }
-    while (angle < -180)
+    while ((f32)angle < -180.0f)
     {
         angle += 360;
     }
     angleRadians = DAT_007caf38 * (f32)angle / 180.0f;
+    angleSquared = angleRadians * angleRadians;
+    coefficients = &gRadToDegFactor;
+    polynomial = coefficients[4] + coefficients[3] * angleSquared;
+    polynomial = coefficients[149] + angleSquared * polynomial;
+    polynomial = coefficients[150] + angleSquared * polynomial;
+    polynomial = coefficients[7] + angleSquared * polynomial;
+    polynomial = coefficients[151] + angleSquared * polynomial;
+    cosine = 1.0f - angleSquared * (0.5f - angleSquared * polynomial);
+    polynomial = DAT_007cae04 * angleSquared + DAT_007cad38;
+    polynomial = polynomial * angleSquared + DAT_007cae08;
+    polynomial = polynomial * angleSquared + DAT_007cad40;
+    polynomial = polynomial * angleSquared + DAT_007cad44;
+    polynomial = polynomial * angleSquared + DAT_007cad48;
+    sine = angleRadians + (angleSquared * angleRadians) * polynomial;
     matrix = func_004c38c0();
-    func_004c2fc0(1.0f - cosf(angleRadians),
-                  sinf(angleRadians),
+    func_004c2fc0(1.0f - cosine,
+                  sine,
                   matrix,
                   &D_005D6C28,
                   rwCOMBINEREPLACE);
     func_004c6c20(transformed, local, 4, matrix);
     func_004c3880(matrix);
-
-    while (scaleAngle > 180)
+    if ((f32)scaleAngle > 180.0f)
     {
         scaleAngle -= 360;
     }
-    while (scaleAngle < -180)
+    if ((f32)scaleAngle < -180.0f)
     {
         scaleAngle += 360;
     }
     radians = DAT_007caf38 * (f32)scaleAngle / 180.0f;
-    scale = cosf(radians);
+    angleSquared = radians * radians;
+    coefficients = &gRadToDegFactor;
+    polynomial = coefficients[4] + coefficients[3] * angleSquared;
+    polynomial = coefficients[149] + angleSquared * polynomial;
+    polynomial = coefficients[150] + angleSquared * polynomial;
+    polynomial = coefficients[7] + angleSquared * polynomial;
+    polynomial = coefficients[151] + angleSquared * polynomial;
+    scale = 1.0f - angleSquared * (0.5f - angleSquared * polynomial);
     for (i = 0; i < 4; i++)
     {
         transformed[i].x *= scale;
-        vertices[i].u.els.scrVertex.x = transformed[i].x + 585.0f;
-        vertices[i].u.els.scrVertex.y = transformed[i].y + 406.0f;
-        vertices[i].u.els.scrVertex.z = D_00960088;
-        vertices[i].u.els.camVertex_z = recipZ;
-        vertices[i].u.els.u = 0.0f;
-        vertices[i].u.els.v = 0.0f;
-        vertices[i].u.els.recipZ = recipZ;
-        vertices[i].u.els.color.r = 14.0f;
-        vertices[i].u.els.color.g = 139.0f;
-        vertices[i].u.els.color.b = 236.0f;
-        vertices[i].u.els.color.a = (f32)alpha;
     }
-    (*setState)(1, 0);
-    D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
-    if (scaleAngle > 180)
+    for (j = 0; j < 4; j++)
     {
-        scaleAngle -= 360;
-    }
-    if (scaleAngle < -180)
-    {
-        scaleAngle += 360;
-    }
-    radians = DAT_007caf38 * (f32)scaleAngle / 180.0f;
-    scale = 1.0f - radians * radians * 0.5f;
-    for (i = 0; i < 4; i++)
-    {
-        transformed[i].x *= scale;
-        vertices[i].u.els.scrVertex.x = transformed[i].x + 585.0f;
-        vertices[i].u.els.scrVertex.y = transformed[i].y + 406.0f;
-        vertices[i].u.els.scrVertex.z = D_00960088;
-        vertices[i].u.els.camVertex_z = recipZ;
-        vertices[i].u.els.u = 0.0f;
-        vertices[i].u.els.v = 0.0f;
-        vertices[i].u.els.recipZ = recipZ;
-        vertices[i].u.els.color.r = 14.0f;
-        vertices[i].u.els.color.g = 139.0f;
-        vertices[i].u.els.color.b = 236.0f;
-        vertices[i].u.els.color.a = (f32)alpha;
+        vertices[j].u.els.scrVertex.x = transformed[j].x + 585.0f;
+        vertices[j].u.els.scrVertex.y = transformed[j].y + 406.0f;
+        vertices[j].u.els.scrVertex.z = D_00960088;
+        vertices[j].u.els.camVertex_z = recipZ;
+        vertices[j].u.els.u = 0.0f;
+        vertices[j].u.els.v = 0.0f;
+        vertices[j].u.els.recipZ = recipZ;
+        vertices[j].u.els.color.r = 14.0f;
+        vertices[j].u.els.color.g = 139.0f;
+        vertices[j].u.els.color.b = 236.0f;
+        vertices[j].u.els.color.a = (f32)alpha;
     }
     (*setState)(1, 0);
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
