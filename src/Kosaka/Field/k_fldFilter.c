@@ -37,7 +37,7 @@ extern FilterQuad sFilterGrid[FLDFILTER_GRID_HEIGHT][FLDFILTER_GRID_WIDTH];
 extern u8 sFilterGrid_abs[];
 
 /* This word belongs to the neighbouring field-resource work block. */
-extern u32 gp0xffff95d8;
+extern s32 gp0xffff95d8;
 extern f32 fGpffff8248;
 #define FLDFILTER_ALPHA gp0xffff95d8
 
@@ -172,14 +172,14 @@ void K_FldFilter_Main()
     s32 y;
     s32 vertex;
     s32 channel;
-    u32 packed0;
-    u32 packed1;
-    u32 packed2;
-    u32 packed3;
-    u32 oldPacked0;
-    u32 oldPacked1;
-    u32 oldPacked2;
-    u32 oldPacked3;
+    s32 packed0;
+    s32 packed1;
+    s32 packed2;
+    s32 packed3;
+    s32 oldPacked0;
+    s32 oldPacked1;
+    s32 oldPacked2;
+    s32 oldPacked3;
     s32 oldRed0;
     s32 oldGreen0;
     s32 oldBlue0;

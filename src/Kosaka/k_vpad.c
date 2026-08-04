@@ -5545,8 +5545,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     case 0:
     {
         u8* color;
-        u32 count;
-        u32 index;
+        s32 count;
+        s32 index;
         f32 amount;
         u8* color1;
         u32 index1;
@@ -5580,9 +5580,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     case 1:
     {
         u8* color2;
-        u32 count2;
-        u32 index2;
-        u32 tail2;
+        s32 count2;
+        s32 index2;
+        s32 tail2;
         f32 denominator2;
         f32 step2;
         f32 amount2;
@@ -5639,9 +5639,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     case 2:
     {
         u8* color3;
-        u32 count3;
-        u32 index3;
-        u32 tail3;
+        s32 count3;
+        s32 index3;
+        s32 tail3;
         f32 denominator3;
         f32 step3;
         f32 amount3;
@@ -5688,8 +5688,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         break;
     }
     {
-        u32 clearCount;
-        u32 clearIndex;
+        s32 clearCount;
+        s32 clearIndex;
         u8* clearBase;
         u8* clearCursor;
         u8* clearEnd;
@@ -5768,15 +5768,15 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         RuntimeVec3 sample0;
         RuntimeVec3 sample1;
         RuntimeVec3 blended;
-        u32 count;
-        u32 index;
+        s32 count;
+        s32 index;
         u32 section;
         f32 fraction;
         f32 amount;
         f32 denominator;
         RuntimeVec3* gridEnd;
-        u32 gridIndex;
-        u32 segmentIndex;
+        s32 gridIndex;
+        s32 segmentIndex;
         s32 segmentCount;
 
         switch (work->state)
@@ -5871,8 +5871,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             f32 weight;
             f32 inverseWeight;
             f32 scale;
-            u32 limit;
-            u32 scratchIndex;
+            s32 limit;
+            s32 scratchIndex;
 
             surface = *(RuntimeVec3**)((u8*)renderObject + 0x70);
             limit = count;
@@ -5969,7 +5969,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             f32 x;
             f32 y;
             f32 z;
-            u32 pointCount;
+            s32 pointCount;
 
             pointCount = count;
             if (pointCount > 1 && vertices != NULL &&
@@ -6046,7 +6046,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             }
         }
         {
-            u32 curveIndex;
+            s32 curveIndex;
             u8* curveRecord;
             RuntimeVec3 curve0;
             RuntimeVec3 curve1;
@@ -6095,7 +6095,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             RuntimeVec3 edge0;
             RuntimeVec3 edge1;
             RuntimeVec3 normal0;
-            u32 geometryIndex;
+            s32 geometryIndex;
 
             geometryIndex = 0;
             edge0.x = vector2[geometryIndex].x -
@@ -6148,7 +6148,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             func_004c69f0(&edge1, &edge1);
             if (count != 0 && vector0 != NULL && vector1 != NULL)
             {
-                u32 recordIndex;
+                s32 recordIndex;
                 u8* recordBase;
 
                 recordBase = (u8*)vertices;
@@ -6202,7 +6202,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             work->vectors[4] != NULL && work->vectors[5] != NULL &&
             vector2 != NULL && vector3 != NULL)
         {
-            u32 curveIndex2;
+            s32 curveIndex2;
             u8* curveRecord2;
             RuntimeVec3 curveA;
             RuntimeVec3* curveB;
@@ -6258,7 +6258,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             u8* geometry;
             u8* cursor;
-            u32 geometryIndex;
+            s32 geometryIndex;
 
             geometry = (u8*)vertices;
             cursor = geometry + 0x3c;

@@ -48118,13 +48118,17 @@ void FUN_00354b80(int param_1)
 
       pfVar7 = (float *)FUN_0019fd40();
 
-      *pfVar7 = fVar10 * fVar16 + fVar20;
+      fVar18 = fVar10 * fVar16;
+      *pfVar7 = fVar18 + fVar20;
 
-      pfVar7[1] = fVar11 * fVar16 + fVar14;
+      fVar18 = fVar11 * fVar16;
+      pfVar7[1] = fVar18 + fVar14;
 
-      pfVar7[2] = fVar12 * fVar16 + fVar15;
+      fVar18 = fVar12 * fVar16;
+      pfVar7[2] = fVar18 + fVar15;
 
-      pfVar7[3] = fVar9 + fVar13 * fVar16;
+      fVar18 = fVar13 * fVar16;
+      pfVar7[3] = fVar9 + fVar18;
 
       fVar10 = pfVar5[4];
 
@@ -48214,13 +48218,17 @@ void FUN_00354b80(int param_1)
 
       pfVar7 = (float *)FUN_0019fd40();
 
-      *pfVar7 = fVar11 * fVar21 + fVar15;
+      fVar18 = fVar11 * fVar21;
+      *pfVar7 = fVar18 + fVar15;
 
-      pfVar7[1] = fVar12 * fVar21 + fVar20;
+      fVar18 = fVar12 * fVar21;
+      pfVar7[1] = fVar18 + fVar20;
 
-      pfVar7[2] = fVar13 * fVar21 + fVar10;
+      fVar18 = fVar13 * fVar21;
+      pfVar7[2] = fVar18 + fVar10;
 
-      pfVar7[3] = fVar9 + fVar14 * fVar21;
+      fVar18 = fVar14 * fVar21;
+      pfVar7[3] = fVar9 + fVar18;
 
       uVar3 = puVar2[3];
 

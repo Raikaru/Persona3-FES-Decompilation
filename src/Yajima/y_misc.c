@@ -18048,36 +18048,51 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
   if (param_2 <= fVar7) {
     cVar1 = *(char *)((int)(u8 *)DAT_007ce6e4 + *(int *)(iVar2 + 4) + 3);
     if (cVar1 == '\x03') {
-      result.x = start.x + delta.x * param_1;
-      result.y = fVar9 + delta.y * param_1;
-      result.z = fVar5 + delta.z * param_1;
+      fVar7 = delta.x * param_1;
+      result.x = start.x + fVar7;
+      fVar7 = delta.y * param_1;
+      result.y = fVar9 + fVar7;
+      fVar7 = delta.z * param_1;
+      result.z = fVar5 + fVar7;
     }
     else {
       axisX = *(float *)&uVar3;
       axisY = *(float *)((u8 *)&uVar3 + 4);
       if (cVar1 == '\x02') {
-        result.x = start.x + delta.x * 150.0f;
-        result.y = fVar9 + delta.y * 150.0f;
-        result.z = fVar5 + delta.z * 150.0f;
+        fVar7 = delta.x * 150.0f;
+        result.x = start.x + fVar7;
+        fVar7 = delta.y * 150.0f;
+        result.y = fVar9 + fVar7;
+        fVar7 = delta.z * 150.0f;
+        result.z = fVar5 + fVar7;
         delta.x = start.x - result.x;
         delta.y = fVar9 - result.y;
         delta.z = fVar5 - result.z;
         FUN_004c69f0((float *)&delta,(float *)&delta);
-        result.x = result.x + (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * 80.0f;
-        result.y = result.y + (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * 80.0f;
-        result.z = result.z + (delta.x * axisY - delta.y * axisX) * 80.0f;
+        fVar7 = (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * 80.0f;
+        result.x = result.x + fVar7;
+        fVar7 = (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * 80.0f;
+        result.y = result.y + fVar7;
+        fVar7 = (delta.x * axisY - delta.y * axisX) * 80.0f;
+        result.z = result.z + fVar7;
       }
       else if (cVar1 == '\x01') {
-        result.x = start.x + delta.x * 150.0f;
-        result.y = fVar9 + delta.y * 150.0f;
-        result.z = fVar5 + delta.z * 150.0f;
+        fVar7 = delta.x * 150.0f;
+        result.x = start.x + fVar7;
+        fVar7 = delta.y * 150.0f;
+        result.y = fVar9 + fVar7;
+        fVar7 = delta.z * 150.0f;
+        result.z = fVar5 + fVar7;
         delta.x = start.x - result.x;
         delta.y = fVar9 - result.y;
         delta.z = fVar5 - result.z;
         FUN_004c69f0((float *)&delta,(float *)&delta);
-        result.x = result.x + (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * -80.0f;
-        result.y = result.y + (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * -80.0f;
-        result.z = result.z + (delta.x * axisY - delta.y * axisX) * -80.0f;
+        fVar7 = (delta.y * *(float *)DAT_006b4620_abs - delta.z * axisY) * -80.0f;
+        result.x = result.x + fVar7;
+        fVar7 = (delta.z * axisX - delta.x * *(float *)DAT_006b4620_abs) * -80.0f;
+        result.y = result.y + fVar7;
+        fVar7 = (delta.x * axisY - delta.y * axisX) * -80.0f;
+        result.z = result.z + fVar7;
       }
     }
     uVar8 = FUN_001e13c0_typed();

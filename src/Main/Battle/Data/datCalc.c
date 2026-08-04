@@ -1277,7 +1277,7 @@ float FUN_00301880(u32 param_1,u32 param_2,u32 param_3)
   u8 bVar1;
   char cVar2;
   int iVar3;
-  u32 uVar4;
+  s32 uVar4;
   u16 *puVar5;
   float fVar6;
   
