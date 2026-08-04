@@ -3240,31 +3240,18 @@ u8 * FUN_003e9af0(u32 param_1,u32 param_2)
     lVar11 = FUN_003fb6b0(iVar6 + 0x18);
 
     if (lVar11 == 2) {
-
       *(u32 *)(iVar6 + 8) = 1;
-
       FUN_003c6ec0(uVar1);
-
       FUN_003fa1b0(uVar1);
-
       FUN_003ef970(2);
-
     }
-
     else if (lVar11 == 1) {
-
       *(u32 *)(iVar6 + 8) = 0x11;
-
       FUN_003f15d0(-*(int *)(iVar6 + 0x30),*(u32 *)(iVar6 + 0x20));
-
       FUN_003f1720(*(u16 *)(iVar6 + 0x24),*(u32 *)(iVar6 + 0x20));
-
       FUN_003f2d60(uVar1);
-
       FUN_003fa1b0(uVar1);
       FUN_003ef970(2);
-
-
     }
 
     break;

@@ -137,8 +137,8 @@ void FUN_003b3740(void)
 void FUN_003b3770(void)
 {
   int *previous;
-  int *current;
 
+  int *current;
   previous = (int *)0x0;
   current = *(int **)(iGpffffb954 + 8);
   while (current != (int *)0x0) {
