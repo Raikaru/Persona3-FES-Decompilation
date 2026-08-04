@@ -10467,6 +10467,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
         case 0xe:
 
+          *(u32 *)(iVar10 + 0x110) = 0;
+
+          FUN_0036f5f0(0x15,0xf,10,param_3);
+
           break;
 
         case 0xf:
@@ -10755,15 +10759,23 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
         case 0x14:
 
-          *(u32 *)(iVar10 + 0x108) = 0;
+          *(int *)(iVar10 + 0x118) = (int)(char)puVar9[10];
 
-          *(u32 *)(iVar10 + 0x110) = 0;
+          *(u32 *)(iVar10 + 0x11c) = 2;
 
-          FUN_0036f5f0(0x15,0xf,10,param_3);
+          *(char **)(iVar10 + 0x120) = s_ON_OFF_MODE_0069db58;
+
+          *(u8 **)(iVar10 + 0x124) = &gp0xffff9dd8;
+
+          FUN_0036f5f0(2,0x12,10,param_3);
 
           break;
 
         case 0x15:
+
+          *(u32 *)(iVar10 + 0x110) = 0;
+
+          FUN_0036f5f0(0x15,0xf,10,param_3);
 
           break;
 
@@ -10810,6 +10822,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
           break;
 
         case 0x18:
+
+          *(u32 *)(iVar10 + 0x110) = 0;
+
+          FUN_0036f5f0(0x15,0xf,10,param_3);
 
           break;
 

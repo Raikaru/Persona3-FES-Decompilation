@@ -31765,8 +31765,8 @@ void FUN_003407e0(int param_1)
             pfVar25[9] = DAT_0069c4d0_f32;
             pfVar25[10] = DAT_0069c4d4_f32;
             pfVar25[0xb] = DAT_0069c4d8_f32;
-
             fVar31 = ((float *)piVar26)[3];
+
 
             fVar36 = fVar31 * *(float *)(iVar5 + 0xa4);
 
@@ -32046,10 +32046,9 @@ void FUN_003407e0(int param_1)
               pfVar15 = pfVar25 + iVar14 * 3;
 
               *pfVar15 = 0.0f;
-
               pfVar15[1] = 0.0f;
-
               pfVar15[2] = 0.0f;
+
 
               puVar24[iVar14] = 0;
 
@@ -33540,89 +33539,56 @@ void FUN_00342a90(int param_1)
             fVar25 = FUN_0052e6d8_f32(fVar29);
             fVar26 = FUN_0052e878_f32(fVar29);
 
-            auVar36._4_4_ = fVar28;
-
             auVar36._0_4_ = fVar25 * fVar30;
-
+            auVar36._4_4_ = fVar28;
             auVar36._8_4_ = fVar26 * fVar30;
-
             auVar36._12_4_ = uStack_14;
 
-            auVar37 = _lqc2(auVar36);
+            auVar36 = _lqc2(auVar36);
 
-            auVar36 = _vmul(auVar37,auVar37);
-
-            _vmulabc(in_vf0,auVar36);
-
-            _vmaddabc(in_vf0,auVar36);
-
-            auVar36 = _vmaddbc(in_vf0,auVar36);
-
-            _vrsqrt(in_vf0,auVar36);
-
+            auVar37 = _vmul(auVar36,auVar36);
+            _vmulabc(in_vf0,auVar37);
+            _vmaddabc(in_vf0,auVar37);
+            auVar37 = _vmaddbc(in_vf0,auVar37);
+            _vrsqrt(in_vf0,auVar37);
             uVar39 = _vwaitq();
+            auVar37 = _vmulq(auVar36,uVar39);
 
-            auVar37 = _vmulq(auVar37,uVar39);
+            auVar38 = _qmtc2(fVar34);
+            auVar38 = _vmulbc(auVar37,auVar38);
+            auVar37 = _vmove(auVar38);
 
-            auVar36 = _qmtc2(fVar34);
+            auVar38._0_4_ = fVar25 * fVar32;
+            auVar38._4_4_ = fVar33;
+            auVar38._8_4_ = fVar26 * fVar32;
+            auVar38._12_4_ = uStack_4;
+            auVar38 = _lqc2(auVar38);
+            auVar36 = _vmove(auVar38);
 
-            auVar36 = _vmulbc(auVar37,auVar36);
-
-            auVar38 = _vmove(auVar36);
-
-            auVar37._4_4_ = fVar33;
-
-            auVar37._0_4_ = fVar25 * fVar32;
-
-            auVar37._8_4_ = fVar26 * fVar32;
-
-            auVar37._12_4_ = uStack_4;
-
-            auVar36 = _lqc2(auVar37);
-
-            auVar37 = _vmove(auVar36);
-
-            auVar36 = _vadd(auVar36,auVar38);
-
-            _DAT_0069c4d0 = _sqc2(auVar36);
-
+            auVar38 = _vadd(auVar38,auVar37);
+            _DAT_0069c4d0 = _sqc2(auVar38);
             puVar12[3] = DAT_0069c4d0;
-
             puVar12[4] = DAT_0069c4d4;
-
             puVar12[5] = DAT_0069c4d8;
 
-            auVar36 = _vadd(auVar36,auVar38);
-
-            _DAT_0069c4d0 = _sqc2(auVar36);
-
-            *puVar12 = DAT_0069c4d0;
-
+            auVar38 = _vadd(auVar38,auVar37);
+            _DAT_0069c4d0 = _sqc2(auVar38);
+            puVar12[0] = DAT_0069c4d0;
             puVar12[1] = DAT_0069c4d4;
-
             puVar12[2] = DAT_0069c4d8;
 
-            auVar36 = _vmove(auVar37);
-
-            auVar36 = _vsub(auVar36,auVar38);
-
-            _DAT_0069c4d0 = _sqc2(auVar36);
-
+            auVar38 = _vsub(auVar36,auVar37);
+            _DAT_0069c4d0 = _sqc2(auVar38);
             puVar12[6] = DAT_0069c4d0;
-
             puVar12[7] = DAT_0069c4d4;
-
             puVar12[8] = DAT_0069c4d8;
 
-            auVar36 = _vsub(auVar36,auVar38);
-
-            _DAT_0069c4d0 = _sqc2(auVar36);
-
+            auVar38 = _vsub(auVar38,auVar37);
+            _DAT_0069c4d0 = _sqc2(auVar38);
             puVar12[9] = DAT_0069c4d0;
-
             puVar12[10] = DAT_0069c4d4;
-
             puVar12[0xb] = DAT_0069c4d8;
+
 
             puVar12 = puVar12 + 0xc;
 
@@ -46880,65 +46846,56 @@ void FUN_00352f70(float *param_1)
 
   float fVar11;
 
-  u64 uStack_a0;
 
   float fStack_98;
 
-  float fStack_90;
+  float mdlStack_90[3];
 
-  float fStack_8c;
+  float mdlStack_80[3];
+  RwMatrix matrix;
 
-  float fStack_88;
+  float mdlStack_70[3];
 
-  float fStack_80;
+  float mdlStack_60[3];
 
-  float fStack_7c;
+  float mdlStack_50[3];
 
-  float fStack_78;
+  float mdlStack_40[3];
 
-  float fStack_70;
+  float mdlStack_30[3];
 
-  float fStack_6c;
+  float mdlStack_20[3];
 
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_50;
-
-  float fStack_4c;
-
-  float fStack_48;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
+  float mdlStack_10[3];
 
   u32 uStack_4;
+#define fStack_90 mdlStack_90[0]
+#define fStack_8c mdlStack_90[1]
+#define fStack_88 mdlStack_90[2]
+#define fStack_80 mdlStack_80[0]
+#define fStack_7c mdlStack_80[1]
+#define fStack_78 mdlStack_80[2]
+#define fStack_70 mdlStack_70[0]
+#define fStack_6c mdlStack_70[1]
+#define fStack_68 mdlStack_70[2]
+#define fStack_60 mdlStack_60[0]
+#define fStack_5c mdlStack_60[1]
+#define fStack_58 mdlStack_60[2]
+#define fStack_50 mdlStack_50[0]
+#define fStack_4c mdlStack_50[1]
+#define fStack_48 mdlStack_50[2]
+#define fStack_40 mdlStack_40[0]
+#define fStack_3c mdlStack_40[1]
+#define fStack_38 mdlStack_40[2]
+#define fStack_30 mdlStack_30[0]
+#define fStack_2c mdlStack_30[1]
+#define fStack_28 mdlStack_30[2]
+#define fStack_20 mdlStack_20[0]
+#define fStack_1c mdlStack_20[1]
+#define fStack_18 mdlStack_20[2]
+#define fStack_10 mdlStack_10[0]
+#define fStack_c mdlStack_10[1]
+#define fStack_8 mdlStack_10[2]
 
   
 
@@ -47008,9 +46965,8 @@ void FUN_00352f70(float *param_1)
 
     if (*piVar2 != 0) {
 
-      FUN_003296a0((u32 *)(&uStack_a0),(u8 (*) [16])(param_1 + 4));
-
-      FUN_00318a70(*piVar2,&uStack_a0,0);
+      FUN_003296a0((u32 *)(&matrix),(u8 (*) [16])(param_1 + 4));
+      FUN_00318a70(*piVar2,&matrix,0);
 
       fStack_20 = param_1[8] * *(float *)(entryAddress + 0x1c);
 
@@ -47119,7 +47075,9 @@ void FUN_00352f70(float *param_1)
 
             RwV3dNormalize(&fStack_30,&fStack_30);
 
-            uStack_a0 = CONCAT44(*(u32 *)&fStack_2c,*(u32 *)&fStack_30);
+            matrix.right.x = fStack_30;
+            matrix.right.y = fStack_2c;
+            matrix.right.z = fStack_28;
 
             fStack_98 = fStack_28;
 
@@ -47135,7 +47093,13 @@ void FUN_00352f70(float *param_1)
 
             fStack_38 = fStack_88;
 
-            RtQuatConvertFromMatrix(*(int *)(iVar6 + 0x9f4) + 0x38c,&uStack_a0);
+            matrix.up.x = fStack_90;
+            matrix.up.y = fStack_8c;
+            matrix.up.z = fStack_88;
+            matrix.at.x = fStack_80;
+            matrix.at.y = fStack_7c;
+            matrix.at.z = fStack_78;
+            RtQuatConvertFromMatrix(*(int *)(iVar6 + 0x9f4) + 0x38c,&matrix);
 
           }
 
@@ -47258,6 +47222,33 @@ void FUN_00352f70(float *param_1)
   return;
 
 }
+#undef fStack_90
+#undef fStack_8c
+#undef fStack_88
+#undef fStack_80
+#undef fStack_7c
+#undef fStack_78
+#undef fStack_70
+#undef fStack_6c
+#undef fStack_68
+#undef fStack_60
+#undef fStack_5c
+#undef fStack_58
+#undef fStack_50
+#undef fStack_4c
+#undef fStack_48
+#undef fStack_40
+#undef fStack_3c
+#undef fStack_38
+#undef fStack_30
+#undef fStack_2c
+#undef fStack_28
+#undef fStack_20
+#undef fStack_1c
+#undef fStack_18
+#undef fStack_10
+#undef fStack_c
+#undef fStack_8
 
 
 
@@ -48832,7 +48823,6 @@ void FUN_00355f30(int *param_1)
     if (*piVar2 != 0) {
 
       FUN_003296a0((u32 *)(&uStack_50),(u8 (*) [16])(param_1 + 4));
-
       FUN_00318a70(*piVar2,&uStack_50,0);
 
       fStack_10 = ((float *)param_1)[8] * ((float *)pfVar3)[5];

@@ -872,6 +872,47 @@ void bsaMain00210d90(s32* p)
             func_0021dd60(p + j * 0x80 + 0x25ec, fill2);
         }
     }
+    /*
+     * Retail repeats the panel colour pass after the first eight-slot loop.
+     * This second pass copies the same two colour patterns into fresh
+     * quadword scratch before applying them to the resource/status panels.
+     */
+    {
+        s32 j;
+        u8 fill3[16];
+
+        drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
+        drawColor[3] = bsaAlpha(alpha255);
+        fill3[0] = drawColor[0]; fill3[1] = drawColor[1];
+        fill3[2] = drawColor[2]; fill3[3] = drawColor[3];
+        fill3[4] = drawColor[0]; fill3[5] = drawColor[1];
+        fill3[6] = drawColor[2]; fill3[7] = 0;
+        fill3[8] = drawColor[0]; fill3[9] = drawColor[1];
+        fill3[10] = drawColor[2]; fill3[11] = 0;
+        fill3[12] = drawColor[0]; fill3[13] = drawColor[1];
+        fill3[14] = drawColor[2]; fill3[15] = drawColor[3];
+        func_0021d950(p + 0x242c, drawColor);
+        func_0021dd60(p + 0x246c, fill3);
+
+        drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
+        drawColor[3] = bsaAlpha(alpha * 204.0f);
+        fill3[0] = drawColor[0]; fill3[1] = drawColor[1];
+        fill3[2] = drawColor[2]; fill3[3] = drawColor[3];
+        fill3[4] = drawColor[0]; fill3[5] = drawColor[1];
+        fill3[6] = drawColor[2]; fill3[7] = 0;
+        fill3[8] = drawColor[0]; fill3[9] = drawColor[1];
+        fill3[10] = drawColor[2]; fill3[11] = 0;
+        fill3[12] = drawColor[0]; fill3[13] = drawColor[1];
+        fill3[14] = drawColor[2]; fill3[15] = drawColor[3];
+        func_0021d950(p + 0x24ac, drawColor);
+        func_0021dd60(p + 0x24ec, fill3);
+        func_0021d950(p + 0x252c, drawColor);
+        func_0021dd60(p + 0x256c, fill3);
+        for (j = 0; j < 8; j++) {
+            func_0021d950(p + j * 0x80 + 0x25ac, drawColor);
+            func_0021dd60(p + j * 0x80 + 0x25ec, fill3);
+        }
+    }
     #undef alpha255
 }
 

@@ -8995,57 +8995,57 @@ extern s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category);
 
 static inline void campEquipAnimateMain(u32* work, s32 mode)
 {
-    CampVec2 position;
+    CampVec2 positions[7];
     CampVec2 start;
 
-    position.x = 0.0f;
-    position.y = 60.0f;
-    start = position;
+    positions[0].x = 0.0f;
+    positions[0].y = 60.0f;
+    start = positions[0];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[0], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 0.0f;
-    position.y = 90.0f;
-    start = position;
+    positions[1].x = 0.0f;
+    positions[1].y = 90.0f;
+    start = positions[1];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[1], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 0.0f;
-    position.y = 120.0f;
-    start = position;
+    positions[2].x = 0.0f;
+    positions[2].y = 120.0f;
+    start = positions[2];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[2], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 0.0f;
-    position.y = 150.0f;
-    start = position;
+    positions[3].x = 0.0f;
+    positions[3].y = 150.0f;
+    start = positions[3];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[3], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 487.0f;
-    position.y = 234.0f;
-    start = position;
+    positions[4].x = 487.0f;
+    positions[4].y = 234.0f;
+    start = positions[4];
     start.x += 300.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[4], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 182.0f;
-    position.y = 242.0f;
-    start = position;
+    positions[5].x = 182.0f;
+    positions[5].y = 242.0f;
+    start = positions[5];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[5], *(u64*)&start, 0, 0, 0, 0);
 
-    position.x = 28.0f;
-    position.y = 415.0f;
-    start = position;
+    positions[6].x = 28.0f;
+    positions[6].y = 415.0f;
+    start = positions[6];
     start.x -= 600.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, mode,
-                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+                  *(u64*)&positions[6], *(u64*)&start, 0, 0, 0, 0);
 }
 static inline void campEquipInitializeMain(u32* work)
 {
@@ -9235,10 +9235,16 @@ static inline void campEquipAnimateList(u32* work, s32 mode)
     }
 }
 
+/* Retail state 5 stages five main transitions, updates the equipment sprite and
+ * then emits the remaining two transitions plus the panel transition; state 8
+ * has seven distinct main-transition position pairs.  Reconstructed 6032/6128
+ * bytes; remaining differences are in the prologue and switch layout.
+ */
 // FUN_0012C430 NONMATCHING
 void* FUN_0012c430(KwlnTask* task)
 {
     u32* work;
+
 
     work = (u32*)task->workData;
     switch (work[1]) {
@@ -9302,11 +9308,68 @@ void* FUN_0012c430(KwlnTask* task)
         work[6] = FUN_0012dc20(work);
         break;
     case 5:
-        campEquipAnimateMain(work, 2);
-        FUN_0012ddc0(work);
-        FUN_0012dc20(work);
-        func_0018bc10(100.0f, (void*)(work[0xb0]), 0, 2, 2, *(u64*)((u8*)work[0xb0] + 0x38), *(u64*)((u8*)work[0xb0] + 0x38), 0, 0, 0, 0);
-        work[1] = 6;
+        {
+
+            CampVec2 positions[7];
+            CampVec2 start;
+
+            positions[0].x = 0.0f;
+            positions[0].y = 60.0f;
+            start = positions[0];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 2,
+                          *(u64*)&positions[0], *(u64*)&start, 0, 0, 0, 0);
+
+            positions[1].x = 0.0f;
+            positions[1].y = 90.0f;
+            start = positions[1];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 2,
+                          *(u64*)&positions[1], *(u64*)&start, 0, 0, 0, 0);
+
+            positions[2].x = 0.0f;
+            positions[2].y = 120.0f;
+            start = positions[2];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 2,
+                          *(u64*)&positions[2], *(u64*)&start, 0, 0, 0, 0);
+
+            positions[3].x = 0.0f;
+            positions[3].y = 150.0f;
+            start = positions[3];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 2,
+                          *(u64*)&positions[3], *(u64*)&start, 0, 0, 0, 0);
+
+            positions[4].x = 487.0f;
+            positions[4].y = 234.0f;
+            start = positions[4];
+            start.x += 300.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 2,
+                          *(u64*)&positions[4], *(u64*)&start, 0, 0, 0, 0);
+
+            FUN_0012ddc0(work);
+            FUN_0012dc20(work);
+
+            positions[5].x = 182.0f;
+            positions[5].y = 242.0f;
+            start = positions[5];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 2,
+                          *(u64*)&positions[5], *(u64*)&start, 0, 0, 0, 0);
+
+            positions[6].x = 28.0f;
+            positions[6].y = 415.0f;
+            start = positions[6];
+            start.x -= 600.0f;
+            func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 2,
+                          *(u64*)&positions[6], *(u64*)&start, 0, 0, 0, 0);
+
+            func_0018bc10(100.0f, (void*)(work[0xb0]), 0, 2, 2,
+                          *(u64*)((u8*)work[0xb0] + 0x38),
+                          *(u64*)((u8*)work[0xb0] + 0x38), 0, 0, 0, 0);
+            work[1] = 6;
+        }
         break;
     case 6:
         FUN_0012ddc0(work);
@@ -13544,12 +13607,20 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
 /* W373 pragma sweep: default nd1925/object2620/2912; propagation off nd1922/object2564/2912. Retained propagation off. */
 /* W419 global-mode probe (not retained): DAT_00833B48 absolute nd1951/object2620/2912 (rate .744656) vs GP nd1922/object2564/2912 (rate .749610). */
 #pragma opt_propagation off
+/* W456: decoded retail packed-position temporaries are kept distinct for the
+ * header, transition, fade, and selected/unselected row phases. */
 // FUN_00137580 NONMATCHING
 void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
     CampMainPackedPosition input;
     volatile CampMainPackedPosition local;
+    CampMainPackedPosition entryPosition;
+    CampMainPackedPosition selectedPosition;
+    CampMainPackedPosition unselectedPosition;
+    CampMainPackedPosition basePosition;
+    CampMainPackedPosition transitionPosition;
+    CampMainPackedPosition fadePosition;
     CampMainQuadPosition headerStage;
     CampMainQuadPosition rowStage;
     CampMainQuadPosition footerStage;
@@ -13571,13 +13642,14 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     inputX = input.coordinates.x;
     inputY = input.coordinates.y;
     local.value = 0;
+    basePosition = local;
     headerStage.x = 0.0f;
     headerStage.y = 0.0f;
     headerStage.z = alpha;
     headerStage.w = 0.0f;
     FUN_001159f0_y2(NULL, DAT_00833B48, 0, 0,
-                 55.0f + headerStage.x,
-                 headerStage.y + 36.0f, headerStage.z);
+                 55.0f + basePosition.coordinates.x,
+                 basePosition.coordinates.y + 36.0f, headerStage.z);
     if (frame < 0x17) {
         for (i = 0; i < 5; i++) {
             visible = frame - i * 3;
@@ -13589,8 +13661,9 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                 local.coordinates.x = 0.0f;
                 fade = (8 - visible) * 25;
                 local.coordinates.y += (f32)fade;
-                rowStage.x = local.coordinates.x;
-                rowStage.y = local.coordinates.y;
+                transitionPosition = local;
+                rowStage.x = transitionPosition.coordinates.x;
+                rowStage.y = transitionPosition.coordinates.y;
                 rowStage.z = alpha;
                 rowStage.w = (f32)visible;
                 rotation = visible * 0x1000 / 8;
@@ -13610,8 +13683,9 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                 }
             } else {
                 local.coordinates.x = inputX;
-                rowStage.x = local.coordinates.x;
-                rowStage.y = local.coordinates.y;
+                transitionPosition = local;
+                rowStage.x = transitionPosition.coordinates.x;
+                rowStage.y = transitionPosition.coordinates.y;
                 rowStage.z = alpha;
                 rowStage.w = (f32)visible;
                 sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
@@ -13628,10 +13702,11 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         for (i = 0; i < 5; i++) {
             local.coordinates.x = inputX;
             local.coordinates.y = inputY + i * 64.0f + 49.0f;
+            transitionPosition = local;
             sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
             sprite->spriteScale = alpha;
-            sprite->x = local.coordinates.x;
-            sprite->y = local.coordinates.y + 24.0f;
+            sprite->x = transitionPosition.coordinates.x;
+            sprite->y = transitionPosition.coordinates.y + 24.0f;
             sprite->rotation = 0x1000;
             sprite->alpha = 0;
             FUN_001127D0(sprite, 1);
@@ -13643,10 +13718,11 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         fade = (10 - frame) * 0xff / 10;
         local.coordinates.x = (f32)(-(10 - frame) * 640 / 10);
         local.coordinates.y = 0.0f;
+        fadePosition = local;
         sprite = FUN_001158b0(NULL, DAT_00833B40, 1);
         sprite->spriteScale = alpha;
-        sprite->x = 218.0f + local.coordinates.x;
-        sprite->y = local.coordinates.y + 20.0f;
+        sprite->x = 218.0f + fadePosition.coordinates.x;
+        sprite->y = fadePosition.coordinates.y + 20.0f;
         sprite->rotation = 0x1f40;
         sprite->alpha = (u8)fade;
         FUN_001127D0(sprite, 1);
@@ -13676,28 +13752,33 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         visible = frame - (i * 3 + 8);
         local.coordinates.x = inputX;
         local.coordinates.y = inputY + i * 64.0f + 49.0f;
+        entryPosition = local;
         if (visible > 0 && visible < 8) {
             fade = (8 - visible) * 0xff / 8;
             if (slot == selected) {
+                selectedPosition = entryPosition;
                 FUN_001159f0_y2(NULL, DAT_00833B48, 0xe, (u32)fade,
-                             local.coordinates.x,
-                             local.coordinates.y + 24.0f, alpha);
-                FUN_00136a10(alpha, local.value, id, 1, fade);
-                FUN_00137300(alpha, local.value, id, 1, fade, 0);
+                             selectedPosition.coordinates.x,
+                             selectedPosition.coordinates.y + 24.0f, alpha);
+                FUN_00136a10(alpha, selectedPosition.value, id, 1, fade);
+                FUN_00137300(alpha, selectedPosition.value, id, 1, fade, 0);
             } else {
-                FUN_00136a10(alpha, local.value, id, 0, fade);
-                FUN_00137300(alpha, local.value, id, 0, fade, 0);
+                unselectedPosition = entryPosition;
+                FUN_00136a10(alpha, unselectedPosition.value, id, 0, fade);
+                FUN_00137300(alpha, unselectedPosition.value, id, 0, fade, 0);
             }
         } else if (visible >= 8) {
             if (slot == selected) {
+                selectedPosition = entryPosition;
                 FUN_001159f0_y2(NULL, DAT_00833B48, 0xe, 0,
-                             local.coordinates.x,
-                             local.coordinates.y + 24.0f, alpha);
-                FUN_00136a10(alpha, local.value, id, 1, 0);
-                FUN_00137300(alpha, local.value, id, 1, 0, 0);
+                             selectedPosition.coordinates.x,
+                             selectedPosition.coordinates.y + 24.0f, alpha);
+                FUN_00136a10(alpha, selectedPosition.value, id, 1, 0);
+                FUN_00137300(alpha, selectedPosition.value, id, 1, 0, 0);
             } else {
-                FUN_00136a10(alpha, local.value, id, 0, 0);
-                FUN_00137300(alpha, local.value, id, 0, 0, 0);
+                unselectedPosition = entryPosition;
+                FUN_00136a10(alpha, unselectedPosition.value, id, 0, 0);
+                FUN_00137300(alpha, unselectedPosition.value, id, 0, 0, 0);
             }
         }
     }
@@ -19849,6 +19930,11 @@ CAMP_DRAW_CALC_FIRST_AT(tl, 100.0f,
                                       (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
                                       1, 30.0f, 64.0f + (f32)(i * 0x55), -100.0f);
     }
+ 
+ 
+ 
+ 
+ 
 CAMP_DRAW_CALC_FIRST_AT(t6, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 1,
                              104.0f, 61.0f, -100.0f);
 CAMP_DRAW_CALC_FIRST_AT(t7, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 1,
@@ -24840,6 +24926,7 @@ void *FUN_0015B430(KwlnTask *task)
         }
         break;
 
+
     case 6:
         work->selectedPanel = 0;
         scratch.pair.f[0] = 21.0f;
@@ -25071,6 +25158,10 @@ void *FUN_0015B430(KwlnTask *task)
         if (allReady != 0) {
             return (void *)(uintptr_t)0xffffffffu;
         }
+        break;
+    case 3:
+    case 4:
+    case 5:
         break;
     }
 
@@ -27839,9 +27930,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                10, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -27871,9 +27963,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                6, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -27919,9 +28012,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                10, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -27943,9 +28037,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                6, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -27983,9 +28078,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                10, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -28007,9 +28103,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                6, 1, text, 0x10, 0x76);
 
             fx = record->x + 247.0f;
@@ -28045,9 +28142,10 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
             effect = func_0016f810(work->pcId, equipment);
             value = (s32)func_00171110(id, (s16)effect);
             sprintf(text, "%d", value);
+            value = (s32)((0xffU - record->alpha) | 0xffffff00U);
             FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
                                (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               value,
                                10, 1, text, 0x10, 0x76);
         }
         else
@@ -29758,8 +29856,10 @@ void* FUN_00167930(KwlnTask* task)
     KwlnTask* child;
     s16 fadeValue;
     void* persona;
-    RwV2d coordinates = {0.0f, 0.0f};
+    RwV2d coordinates;
 
+    coordinates.x = 0.0f;
+    coordinates.y = 0.0f;
     work = (CampBridgeScreenWork*)task->workData;
     switch (work->state) {
     case 0:

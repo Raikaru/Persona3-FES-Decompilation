@@ -2371,9 +2371,10 @@ void FUN_001b3e50(void* camera, u32* resource)
     fstate = (f32*)FUN_00198570();
     savedFog = *(RwV4d*)(fstate + 6);
     state = (u32*)FUN_00198570();
+    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
     for (count = 0; count < 16; count++)
     {
-        savedStates[count] = ((u32*)(*(u32*)((u8*)state + 4) + 0x10))[count];
+        savedStates[count] = stateData[count];
     }
     light = FUN_00198560();
     value = FUN_0019fd40();
@@ -2589,10 +2590,11 @@ void FUN_001b3e50(void* camera, u32* resource)
 // FUN_001b4720 NONMATCHING
 void FUN_001b4720(void* camera, u32* resource)
 {
-    u32 savedLight[4];
-    u32 savedFog[4];
+    RwV4d savedLight;
+    RwV4d savedFog;
     u32 savedStates[16];
     u32* state;
+    u32* stateData;
     u32 world;
     u32 light;
     u32 value;
@@ -2600,19 +2602,14 @@ void FUN_001b4720(void* camera, u32* resource)
     u32 count;
 
     state = (u32*)FUN_00198560();
-    savedLight[0] = state[6];
-    savedLight[1] = state[7];
-    savedLight[2] = state[8];
-    savedLight[3] = state[9];
+    savedLight = *(RwV4d*)(state + 6);
     state = (u32*)FUN_00198570();
-    savedFog[0] = state[6];
-    savedFog[1] = state[7];
-    savedFog[2] = state[8];
-    savedFog[3] = state[9];
+    savedFog = *(RwV4d*)(state + 6);
     state = (u32*)FUN_00198570();
+    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
     for (i = 0; i < 16; i++)
     {
-        savedStates[i] = ((u32*)(*(u32*)((u8*)state + 4) + 0x10))[i];
+        savedStates[i] = stateData[i];
     }
 
     light = FUN_00198560();

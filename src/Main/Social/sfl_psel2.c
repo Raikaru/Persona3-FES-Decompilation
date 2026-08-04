@@ -358,10 +358,10 @@ void sflPsel00261480(void)
         alpha = 1.0f;
         if ((s32)work[2] < 5) {
             points[0] = -(6.0f + (f32)sflPselReadS32(resource34, 0x10)) +
-                        ((f32)(s32)work[2] / 10.0f) *
+                        ((f32)(s32)work[2] / 5.0f) *
                         (12.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 6.0f + (f32)sflPselReadS32(resource34, 0x10) -
-                        ((f32)(s32)work[2] / 10.0f) *
+                        ((f32)(s32)work[2] / 5.0f) *
                         (f32)sflPselReadS32(resource34, 0x10);
         } else {
             points[0] = 6.0f;

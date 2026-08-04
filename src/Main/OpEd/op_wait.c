@@ -619,8 +619,8 @@ void opWait0026eed0(void)
 #define rect geometry.rect
 #define callback scratch.callback_data
 #define opWaitSetColor(quad, alpha) opWaitSetColor(quad, alpha, scratch.rgba)
-    f32 alpha;
     f32 phase;
+    f32 alpha;
     f32 x;
     f32 y;
     f32 width;

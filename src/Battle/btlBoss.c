@@ -2979,7 +2979,6 @@ u32 FUN_002fd2e0(int param_1, u16 param_2)
     int iVar4;
     KwlnTask* task;
     ScrData* scr;
-
     iVar4 = (int)(uintptr_t)((u8*)gBtlWork + (u32)param_2 * 4);
     if (*(s32*)(iVar4 + 0xb2c) == *(s32*)(param_1 + 8) &&
         *(s32*)(iVar4 + 0xb38) == *(s32*)(param_1 + 0x20))
@@ -3935,8 +3934,8 @@ u32 FUN_002fed10(int param_1)
             (*DAT_00960090)(8, 0);
             (*DAT_00960090)(0xc, 1);
             (*DAT_00960090)(1, 0);
-            FUN_004d7f60(2, 0x44);
-            FUN_004d7f60(3, 0x31801);
+            (*DAT_009600a0)(2, 0x44);
+            (*DAT_009600a0)(3, 0x31801);
             FUN_003294d0();
 
             local.colors[0] = 0xff;
@@ -3991,7 +3990,7 @@ u32 FUN_002fed10(int param_1)
         (*DAT_00960090)(0xc, 1);
         (*DAT_00960090)(1, 0);
         FUN_004d7f60(2, 0x44);
-        FUN_004d7f60(3, 0x31801);
+        (*DAT_009600a0)(3, 0x31801);
         FUN_002fe0b0(1.0f, (u8*)&DAT_007cc970, 0x44, 0x31801, 1);
 
         fade = (*(s16*)(state + 6) == 1) ? DAT_007ca4e4 : DAT_007ca564;

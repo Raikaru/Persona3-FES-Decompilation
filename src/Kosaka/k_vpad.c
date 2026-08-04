@@ -3642,6 +3642,7 @@ s32 func_001e60b0(RuntimeTask* task)
                 func_001a4dc0(*(void**)node, D_007CC338);
                 index++;
             }
+            func_00195020(work->windowTask);
             selected = *(u8**)func_001a41b0(
                 work->windowTask, func_001a4510(work->windowTask));
             func_003b5d10(*(u16*)(selected + 0x50));
