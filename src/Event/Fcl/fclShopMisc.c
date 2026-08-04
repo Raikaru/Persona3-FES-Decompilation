@@ -10880,7 +10880,7 @@ u64 FUN_003fee40(int param_1)
   return 0;
 }
 
-// FUN_003FEF30 NONMATCHING
+// FUN_003FEF30
 
 
 u32 FUN_003fef30(int param_1,int param_2)
@@ -10915,19 +10915,19 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   config = &fclShopStockConfig;
 
-  ppuVar5 = (u8 **)&config->default_data;
 
-  if (param_2 != 0) {
+  if (param_2 == 0) {
 
-    *(u16 *)(iVar2 + 6) = 0xfffd;
+    *(s16 *)(iVar2 + 6) = 0xfffe;
 
-    ppuVar5 = (u8 **)&config->alternate_data;
+    ppuVar5 = (u8 **)&config->default_data;
 
   }
-
   else {
 
-    *(u16 *)(iVar2 + 6) = 0xfffe;
+    *(s16 *)(iVar2 + 6) = 0xfffd;
+
+    ppuVar5 = (u8 **)&config->alternate_data;
 
   }
 
@@ -10952,13 +10952,10 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   }
 
-  lVar4 = FUN_003ff150_u32(param_1,param_2);
   if (param_2 == 0) {
 
     FUN_0017d610(param_1);
-
-
-    if (lVar4 != 0) {
+    if (lVar4 = FUN_003ff150_u32(param_1,param_2)) {
 
 
       FUN_003ff460((int)uVar3,lVar4);

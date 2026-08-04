@@ -1437,17 +1437,7 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
     uVar4 = *puVar2 & 0x300;
 
-    if (((*puVar2 & 0x200000) == 0) || ((uVar4 != 0 && (uVar4 != 0x300)))) {
-
-      uVar4 = *puVar2;
-
-      *puVar2 = uVar4 & 0xfffffff8;
-
-      *puVar2 = uVar4 & 0xfffffff8 | 3;
-
-    }
-
-    else {
+    if (((*puVar2 & 0x200000) != 0) && ((uVar4 == 0) || (uVar4 == 0x300))) {
 
       FUN_005225a8(DAT_006a1ae0_abs);
 
@@ -1460,6 +1450,16 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
       *puVar2 = uVar4 & 0xfffffff8;
 
       *puVar2 = uVar4 & 0xfffffff8 | 2;
+
+    }
+
+    else {
+
+      uVar4 = *puVar2;
+
+      *puVar2 = uVar4 & 0xfffffff8;
+
+      *puVar2 = uVar4 & 0xfffffff8 | 3;
 
     }
 

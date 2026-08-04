@@ -2071,9 +2071,9 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
         switch (iVar8) {
 
         case 0xf214:
-          if (bVar5 && (0 < *(int *)(puVar2 + 0x3c))) {
+          if (bVar5 && (0 < (iVar8 = *(int *)(puVar2 + 0x3c)))) {
 
-          *(int *)(puVar2 + 0x3c) = *(int *)(puVar2 + 0x3c) + -1;
+          *(int *)(puVar2 + 0x3c) = iVar8 + -1;
 
           bVar5 = 0;
 

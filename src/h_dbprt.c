@@ -773,10 +773,10 @@ static void H_Dbprt_DrawText3D(void)
     kwlnGetMainCamera();
     kwlnGetMainCamera();
 
+    text = sText3DList;
     kwlnPushCommonRenderStates();
     RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
 
-    text = sText3DList;
     while (true)
     {
         if (text == NULL)
