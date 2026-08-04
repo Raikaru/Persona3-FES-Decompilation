@@ -2811,13 +2811,11 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
     else {
 
-      FUN_0040e3f0(0,0,*(u32 *)(psVar8 + 4),*(u32 *)(psVar8 + 4),*psVar8,psVar8[1],
+      FUN_0040e3f0_i2f1i3f3(*psVar8,psVar8[1],0.0f,(u8)psVar8[2],
+                   asStack_10[iVar5],0,0,0,*(float *)(psVar8 + 4),0.0f,*(float *)(psVar8 + 4));
 
-                   (char)psVar8[2],asStack_10[iVar5],0,0,0);
-
-      FUN_0040e3f0(0,0,*(u32 *)(psVar8 + 4),*(u32 *)(psVar8 + 4),*psVar8,psVar8[1],
-
-                   (char)psVar8[2],asStack_10[iVar5 + 3],0,0,0);
+      FUN_0040e3f0_i2f1i3f3(*psVar8,psVar8[1],0.0f,(u8)psVar8[2],
+                   asStack_10[iVar5 + 3],0,0,0,*(float *)(psVar8 + 4),0.0f,*(float *)(psVar8 + 4));
 
     }
 

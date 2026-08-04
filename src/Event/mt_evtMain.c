@@ -13927,18 +13927,10 @@ code * FUN_0036e690(int param_1)
                      (((uVar6 & 0x400) == 0 && ((uVar6 & 0x800) == 0)))) &&
                     (((uVar6 & 0x1000) == 0 && (((uVar6 & 0x20000) == 0 && ((uVar6 & 0x2000) == 0)))
                      ))) && (((uVar6 & 0x4000) == 0 && ((uVar6 & 0x8000) == 0)))) {
-                  bVar2 = false;
-                }
-                else {
-                  bVar2 = true;
-                }
-                if (bVar2) {
-                  if ((uVar6 & 1) != 0) {
-                    *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) & 0xfffffffe;
-                  }
-                }
-                else {
                   *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) | 1;
+                }
+                else if ((uVar6 & 1) != 0) {
+                  *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) & 0xfffffffe;
                 }
 
 

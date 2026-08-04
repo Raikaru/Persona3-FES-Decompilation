@@ -94,9 +94,8 @@ static inline f32 opMenuClamp01(s32 value, s32 begin, s32 end)
     return (f32)(value - begin) / (f32)(end - begin);
 }
 
-static inline void opMenuSetRect(u32 offset, f32 x, f32 y, f32 width, f32 height)
+static inline void opMenuSetRect(f32* rect, u32 offset, f32 x, f32 y, f32 width, f32 height)
 {
-    f32 rect[4];
     rect[0] = x;
     rect[1] = y;
     rect[2] = width;
@@ -230,16 +229,16 @@ void opMenu0026a2c0(void)
 
     fade = *(s32*)((u8*)work + 0x91c);
     alpha = opMenuClamp01(fade, 0, 0x46);
-    opMenuSetRect(0x10, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuSetRect(rect, 0x10, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x10, alpha * 255.0f);
 
     pulse = func_0052e878(fGpffff8248 *
                           ((f32)*(s32*)((u8*)work + 0x914) / 500.0f) * 2.0f);
-    opMenuSetRect(0x110,
+    opMenuSetRect(rect, 0x110,
                   -320.0f - (1.0f - (f32)*(s32*)((u8*)work + 0x910) /
                             1300.0f) * 1100.0f,
                   0.0f, 1280.0f, 448.0f);
-    opMenuSetRect(0x210,
+    opMenuSetRect(rect, 0x210,
                   780.0f - (1.0f - (f32)*(s32*)((u8*)work + 0x910) /
                             1300.0f) * 1100.0f,
                   0.0f, 1280.0f, 448.0f);
@@ -281,10 +280,10 @@ void opMenu0026a2c0(void)
     opMenuColor((u8*)work + 0x610, alpha * 255.0f * 0.6f);
 
     alpha = opMenuClamp01(fade, 0x14, 0x32);
-    opMenuSetRect(0x710, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuSetRect(rect, 0x710, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x710, alpha * 204.0f);
     alpha = opMenuClamp01(fade, 0x0a, 0x50);
-    opMenuSetRect(0x810, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuSetRect(rect, 0x810, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x810, alpha * 255.0f);
 
     pulse = fade < 20 ? 750.0f :

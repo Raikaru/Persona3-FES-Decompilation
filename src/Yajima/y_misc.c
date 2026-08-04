@@ -10258,9 +10258,6 @@ void FUN_0042bd80(int param_1)
 
   int iVar7;
 
-
-  u8 *row;
-
   
 
   work = *(u8 **)((int)param_1 + 0x3c);
@@ -10269,7 +10266,6 @@ void FUN_0042bd80(int param_1)
 
     iVar6 = iVar7 * 0x100;
 
-    row = work + iVar7 * 0x80;
 
     for (iVar8 = 0; iVar8 < 0x10; iVar8 = iVar8 + 1) {
 
@@ -10281,7 +10277,7 @@ void FUN_0042bd80(int param_1)
 
         if (*(char *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x49) == '\x01') {
 
-          piVar5 = (int *)(row + iVar8 * 8 + 0x5c);
+          piVar5 = (int *)(work + iVar7 * 0x80 + iVar8 * 8 + 0x5c);
 
           if (*piVar5 != 0) {
 
@@ -10336,7 +10332,7 @@ void FUN_0042bd80(int param_1)
 
           *(u8 *)(*(int *)(*piVar5 + 0x3c) + 0x150) = 1;
 
-          *(u8 *)(row + iVar8 * 8 + 0x60) = 0;
+          *(u8 *)(work + iVar7 * 0x80 + iVar8 * 8 + 0x60) = 0;
 
         }
 
@@ -16463,9 +16459,7 @@ u64 FUN_004312b0(int param_1)
   short sVar6;
   int lVar7;
   u8 bVar8;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
+  YVec3f vector;
   
   iVar2 = *(int *)((int)param_1 + 0x3c);
   bVar8 = 0;
@@ -16515,10 +16509,8 @@ u64 FUN_004312b0(int param_1)
       else if (cVar1 == '\0') {
         uVar4 = FUN_001ad910(*(u32 *)(DAT_008717f4 + 0x1e0));
         uVar5 = FUN_001ad920(*(u32 *)(DAT_008717f4 + 0x1e0));
-        FUN_004311f0(&uStack_10,uVar4,uVar5);
-        *(u32 *)(iVar2 + 0xd0) = uStack_10;
-        *(u32 *)(iVar2 + 0xd4) = uStack_c;
-        *(u32 *)(iVar2 + 0xd8) = uStack_8;
+        FUN_004311f0(&vector,uVar4,uVar5);
+        *(YVec3f *)(iVar2 + 0xd0) = vector;
         uVar4 = FUN_0044f120(*(RwV3d *)(iVar2 + 0xd0));
         *(u8 *)(iVar2 + 0xdc) = uVar4;
         uVar4 = FUN_0044f170(*(RwV3d *)(iVar2 + 0xd0));
