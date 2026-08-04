@@ -2033,7 +2033,6 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
         if (param_2 == '\0') {
 
           iVar6 = FUN_003b0f50(puVar2,iVar4,*puVar2,puVar2[2]);
-
         }
 
         else {

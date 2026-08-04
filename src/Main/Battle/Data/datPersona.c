@@ -2039,8 +2039,9 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
                 *(u16*)(datPersonaAddOffset((u32)*(u16*)(persona_i + 2) * 0x26e,
                                              DAT_007ce430) - 0x1d280);
             K_ASSERT(scenarioLevel > 1 && scenarioLevel < 0xb, 0x5a6);
-            result = *(s32*)((u32)scenarioLevel * 0x188 + DAT_007ce434 +
-                             (u32)(level & 0xffff) * 4 - 0x318);
+            result = *(s32*)((u32)(level & 0xffff) * 4 +
+                             (u32)datPersonaAddOffset((u32)scenarioLevel * 0x188,
+                                                       DAT_007ce434) - 0x318);
         }
     }
 

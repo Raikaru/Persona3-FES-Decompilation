@@ -30821,6 +30821,8 @@ undefined4 FUN_0016A6A0(void)
 
 /* opt_lifetimes on: baseline nd1526/2180B -> on nd1518/2180B; retained. */
 #pragma opt_lifetimes on
+/* The six-argument form preserves the texture/sprite selectors carried
+ * in the otherwise untyped retail calls. */
 // FUN_0016A700 NONMATCHING
 void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
                   void* param_4, s32 param_5)
@@ -30844,8 +30846,6 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
     drawData = (u32*)param_2;
     textAlpha = 0xffU - (u32)param_5;
 
-    /* The six-argument form preserves the texture/sprite selectors carried
-     * in the otherwise untyped retail calls. */
     campDataDrawSpriteFade(x + 541.0f, y + 38.0f, param_1, (void*)(uintptr_t)drawData[1], 0x44, param_5);
     campDataDrawSpriteFade(x + 541.0f, y + 235.0f, param_1, (void*)(uintptr_t)drawData[1], 0x45, param_5);
 

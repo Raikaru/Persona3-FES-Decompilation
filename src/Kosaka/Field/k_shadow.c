@@ -1049,7 +1049,7 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         func_004c2fb0(ltm, ltm);                                                                        \
     } while (false)
 
-#define K_FldShadow_DrawMapBands(camera_)                                                                 \
+#define K_FldShadow_DrawMapBands(camera_, drawMiddle_)                                                    \
     do                                                                                                     \
     {                                                                                                      \
         f32 recipZ;                                                                                        \
@@ -1066,10 +1066,13 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         K_FldShadow_Draw(0.0f, 0.0f, 128.0f, 48.0f, RwIm2DGetNearScreenZ(), recipZ,                       \
                          &gShadowColors.col1, &gShadowColors.col2);                                      \
                                                                                                            \
-        RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)0x44);                                        \
-        RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)0x3c803);                                    \
-        K_FldShadow_Draw(0.0f, 48.0f, 128.0f, 76.0f, RwIm2DGetNearScreenZ(), recipZ,                      \
-                         &gShadowColors.col2, &gShadowColors.col3);                                      \
+        if ((drawMiddle_) != 0)                                                                           \
+        {                                                                                                 \
+            RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)0x44);                                    \
+            RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)0x3c803);                                \
+            K_FldShadow_Draw(0.0f, 48.0f, 128.0f, 76.0f, RwIm2DGetNearScreenZ(), recipZ,                  \
+                             &gShadowColors.col2, &gShadowColors.col3);                                  \
+        }                                                                                                 \
         K_FldShadow_Draw(0.0f, 76.0f, 128.0f, 128.0f, RwIm2DGetNearScreenZ(), recipZ,                     \
                          &gShadowColors.col3, &gShadowColors.col4);                                      \
                                                                                                            \
@@ -1121,7 +1124,7 @@ f32 func_0019c490(KwlnTask* renderTexTask)
             mdlSetColor((shadow_)->model, &originalColor);                                                \
         }                                                                                                  \
                                                                                                            \
-        K_FldShadow_DrawMapBands((shadow_)->camera);                                                      \
+        K_FldShadow_DrawMapBands((shadow_)->camera, (useCharRenderGuard_));                              \
         if (gFogEnabled == true)                                                                           \
         {                                                                                                  \
             RwRenderStateSet(rwRENDERSTATEFOGENABLE, (void*)false);                                      \

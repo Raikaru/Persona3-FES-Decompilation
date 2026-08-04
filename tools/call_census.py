@@ -45,7 +45,10 @@ from verify import REPO, RetailElf, load_config
 
 TP_PRE = ("rw/", "cri/", "sce/", "lib/")
 TP_F = {"crt0.c", "libc_core.c", "libcdvd.c"}
-HEXNAME = re.compile(r"^(?:FUN|func|sub)_([0-9a-fA-F]{8})$")
+# `FUN_0040e3c0`, and the `#pragma alias` retype variants `FUN_0040e3c0_u32`,
+# `FUN_00531230_typed`, `FUN_001b9120_u32` — all name the same retail address.
+# `thunk_` is deliberately excluded: its digits are the address it JUMPS TO.
+HEXNAME = re.compile(r"^(?:FUN|func|sub)_([0-9a-fA-F]{8})(?:_\w+)?$")
 
 
 def is3(f):
@@ -55,9 +58,42 @@ def is3(f):
     return n in TP_F or n.startswith(TP_PRE)
 
 
+def linked_elf_symbols(path=REPO / "build" / "slus21621.elf"):
+    """name -> address from our own linked executable's symbol table.
+
+    The build reproduces retail's sha1, so every symbol in it — including SDK
+    and RenderWare entry points that no config table names — sits at its retail
+    address. This is what turns `UNRESOLVED_SYMBOL` from 509 functions into a
+    handful.
+    """
+    if not path.exists():
+        return {}
+    d = path.read_bytes()
+    en = "<" if d[5] == 1 else ">"
+    eh = struct.unpack_from(en + "HHIIIIIHHHHHH", d, 16)
+    shoff, shentsize, shnum = eh[5], eh[10], eh[11]
+    secs = [struct.unpack_from(en + "IIIIIIIIII", d, shoff + i * shentsize)
+            for i in range(shnum)]
+    out = {}
+    for _nm, ty, _fl, _ad, off, sz, lnk, _inf, _al, ent in secs:
+        if ty != 2 or not ent:                       # SHT_SYMTAB
+            continue
+        stroff = secs[lnk][4]
+        for i in range(sz // ent):
+            st_name, st_value, _sz, st_info, _o, st_shndx = \
+                struct.unpack_from(en + "IIIBBH", d, off + i * ent)
+            if st_shndx == 0 or (st_info & 0xF) != 2:   # undefined / not STT_FUNC
+                continue
+            end = d.index(b"\0", stroff + st_name)
+            name = d[stroff + st_name:end].decode("ascii", "replace")
+            if name:
+                out.setdefault(name, st_value)
+    return out
+
+
 def load_symbols(rows):
-    """name -> address, from the recovered symbol tables and the gate itself."""
-    m = {}
+    """name -> address, from the linked ELF, the config tables and the gate."""
+    m = dict(linked_elf_symbols())
     for rel in ("config/symbol_addrs.txt", "config/symbols_recovered.txt"):
         p = REPO / rel
         if not p.exists():
