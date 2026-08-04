@@ -2363,6 +2363,7 @@ void func_002e5040(void)
 
 #pragma opt_propagation off
 /* W417 negative: inverting func_002e5060 branch layout measured nd1395 -> 1400 at object 1924/2112; retained order. */
+/* Retail algorithm: encounter guard, preset quaternion blend polynomial, and target-offset camera path; implemented 1916/2112 bytes (91%); remaining frame/branch-layout tail. */
 // FUN_002e5060 NONMATCHING
 void func_002e5060(BtlCamera* camera)
 {
@@ -2427,7 +2428,62 @@ void func_002e5060(BtlCamera* camera)
   unit = camera->action->unit;
   FUN_0027ffb0_btlVoice_typed(unit, (RwV3d *)&position);
   result = FUN_0030c3a0(unit->datUnit);
-  if ((result != 0) && (usePreset != 0)) {
+
+  if ((result == 0) || (usePreset == 0)) {
+    
+  position.y = (position.y + 0.0f) -
+               DAT_007cad20 * unit->unk_8c * unit->scale;
+  index = (s32)FUN_002ffbc0_btlVoice_typed(2);
+  voiceData = (u8 *)(*(u32 *)(DAT_007ce3ec + 0xb18) +
+                     index * 0x34 + 0x1a4);
+  if (usePreset != 0) {
+    FUN_002a4690(&startFrame.rot, voiceData + 4, voiceData + 0x10,
+                 D_00697880);
+    startFrame.pos = *(RwV3d *)(voiceData + 4);
+  } else {
+    FUN_002a4470((f32 *)&startFrame, (f32 *)&camera->pos);
+  }
+  FUN_002a4690(&endFrame.rot, &startFrame.pos, &position, D_00697880);
+  endFrame.pos = startFrame.pos;
+  FUN_004be310_btlVoice_typed((f32 *)&startFrame.rot, (f32 *)&endFrame.rot, blendOutput.values);
+  factorA = DAT_007cad7c;
+  factorB = DAT_007cadd0;
+  if (blendOutput.values[9] == 0.0f) {
+    tmp = DAT_007cad7c * blendOutput.values[8];
+    curve = tmp * tmp;
+    poly = curve *
+           (curve *
+            (curve *
+             (curve * (DAT_007cad34 * curve + DAT_007cad38 + 0.0f) +
+              DAT_007cad3c + 0.0f) +
+             DAT_007cad40 + 0.0f) +
+            DAT_007cad44 + 0.0f) +
+           DAT_007cad48 + 0.0f;
+    factorA = curve * tmp * poly + tmp + 0.0f;
+    tmp = DAT_007cadd0 * blendOutput.values[8];
+    curve = tmp * tmp;
+    poly = curve *
+           (curve *
+            (curve *
+             (curve * (DAT_007cad34 * curve + DAT_007cad38 + 0.0f) +
+              DAT_007cad3c + 0.0f) +
+             DAT_007cad40 + 0.0f) +
+            DAT_007cad44 + 0.0f) +
+           DAT_007cad48 + 0.0f;
+    factorB = curve * tmp * poly + tmp + 0.0f;
+  }
+  endFrame.rot.imag.x = blendOutput.values[0] * factorA + blendOutput.values[4] * factorB;
+  endFrame.rot.imag.y = blendOutput.values[1] * factorA + blendOutput.values[5] * factorB;
+  endFrame.rot.imag.z = blendOutput.values[2] * factorA + blendOutput.values[6] * factorB;
+  endFrame.rot.real = blendOutput.values[3] * factorA + blendOutput.values[7] * factorB;
+  if (usePreset != 0) {
+    FUN_00351bb0_btlVoice_typed(8);
+  }
+  FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
+  FUN_002a3110(camera, 2.0f);
+  return;
+  }
+  else {
     charId = unit->charId;
     if (((charId == 0x110) || (charId == 0x10b)) &&
         ((kind = (s16)FUN_00282c30(unit)), kind != 4)) {
@@ -2517,54 +2573,6 @@ void func_002e5060(BtlCamera* camera)
     FUN_002a3110(camera, 2.0f);
     return;
   }
-
-  position.y = (position.y + 0.0f) -
-               DAT_007cad20 * unit->unk_8c * unit->scale;
-  index = (s32)FUN_002ffbc0_btlVoice_typed(2);
-  voiceData = (u8 *)(*(u32 *)(DAT_007ce3ec + 0xb18) +
-                     index * 0x34 + 0x1a4);
-  if (usePreset != 0) {
-    FUN_002a4690(&startFrame.rot, voiceData + 4, voiceData + 0x10,
-                 D_00697880);
-    startFrame.pos = *(RwV3d *)(voiceData + 4);
-  } else {
-    FUN_002a4470((f32 *)&startFrame, (f32 *)&camera->pos);
-  }
-  FUN_002a4690(&endFrame.rot, &startFrame.pos, &position, D_00697880);
-  endFrame.pos = startFrame.pos;
-  FUN_004be310_btlVoice_typed((f32 *)&startFrame.rot, (f32 *)&endFrame.rot, blendOutput.values);
-  factorA = DAT_007cad7c;
-  factorB = DAT_007cadd0;
-  if (blendOutput.values[9] == 0.0f) {
-    tmp = DAT_007cad7c * blendOutput.values[8];
-    curve = tmp * tmp;
-    poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
-    poly = curve * poly + DAT_007cad3c + 0.0f;
-    poly = curve * poly + DAT_007cad40 + 0.0f;
-    poly = curve * poly + DAT_007cad44 + 0.0f;
-    poly = curve * poly + DAT_007cad48 + 0.0f;
-    factorA = curve * tmp;
-    factorA = factorA * poly + tmp + 0.0f;
-    tmp = DAT_007cadd0 * blendOutput.values[8];
-    curve = tmp * tmp;
-    poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
-    poly = curve * poly + DAT_007cad3c + 0.0f;
-    poly = curve * poly + DAT_007cad40 + 0.0f;
-    poly = curve * poly + DAT_007cad44 + 0.0f;
-    poly = curve * poly + DAT_007cad48 + 0.0f;
-    factorB = curve * tmp;
-    factorB = factorB * poly + tmp + 0.0f;
-  }
-  endFrame.rot.imag.x = blendOutput.values[0] * factorA + blendOutput.values[4] * factorB;
-  endFrame.rot.imag.y = blendOutput.values[1] * factorA + blendOutput.values[5] * factorB;
-  endFrame.rot.imag.z = blendOutput.values[2] * factorA + blendOutput.values[6] * factorB;
-  endFrame.rot.real = blendOutput.values[3] * factorA + blendOutput.values[7] * factorB;
-  if (usePreset != 0) {
-    FUN_00351bb0_btlVoice_typed(8);
-  }
-  FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
-  FUN_002a3110(camera, 2.0f);
-  return;
 }
 #pragma opt_propagation reset
 

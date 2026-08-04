@@ -4454,6 +4454,7 @@ void FUN_00227D10(void)
 
 
 
+/* Retail rebuild: six panel slots, state alpha, frame/scrollbar, and four two-part list rows are implemented. */
 // FUN_00227F30 NONMATCHING
 void FUN_00227F30(void)
 {
@@ -4471,6 +4472,8 @@ void FUN_00227F30(void)
     u8 color[4];
     s32 i;
     f32 alpha1;
+    f32 tailAlpha;
+    f32 listAlpha;
     u8 alphaByte;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
@@ -4496,10 +4499,10 @@ void FUN_00227F30(void)
         switch (i) {
         case 0: x += 11.0f; y += 4.0f; break;
         case 1: x += 11.0f; y += 75.0f; break;
-        case 2: x += 201.0f; y += 4.0f; break;
-        case 3: x += 201.0f; y += 75.0f; break;
-        case 4: x += 11.0f + (f32)*(s32*)((u8*)resource + 0xc); y += 4.0f; break;
-        case 5: x += 11.0f + (f32)*(s32*)((u8*)resource + 0xc); y += 75.0f; break;
+        case 2: x += 241.0f; y += 4.0f; break;
+        case 3: x += 241.0f; y += 75.0f; break;
+        case 4: x += (f32)*(s32*)((u8*)resource + 0xc); y += 4.0f; break;
+        case 5: x += (f32)*(s32*)((u8*)resource + 0xc); y += 75.0f; break;
         }
         rect[0] = x;
         rect[1] = y;
@@ -4575,8 +4578,8 @@ void FUN_00227F30(void)
 
     resource = (void*)FUN_0021cca0(table0, 0x1d);
     {
-        f32 top = (36.0f + baseY) - 3.0f;
-        f32 bottom = (91.0f + baseY) - 3.0f;
+        f32 top = (36.0f + baseY) - 4.0f;
+        f32 bottom = (91.0f + baseY) - 4.0f;
         rect[0] = 22.0f + baseX;
         if (*(s32*)(work + 0x6074) > 4) {
             f32 t = (f32)*(s32*)(work + 0x606c);
@@ -4593,7 +4596,14 @@ void FUN_00227F30(void)
     color[1] = 0xff;
     color[2] = 0xff;
 
-    color[3] = (u8)(u32)(255.0f * alpha1 * panelAlpha);
+    if (*(u32*)(work + 0x463c) == 0) {
+        tailAlpha = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 3 ||
+               *(u32*)(work + 0x463c) == 1 ||
+               *(u32*)(work + 0x463c) == 2) {
+        tailAlpha = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    }
+    color[3] = (u8)(u32)(255.0f * tailAlpha * panelAlpha);
 
     for (i = 0; i < 3; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x3430, color);
@@ -4623,7 +4633,14 @@ void FUN_00227F30(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * alpha1 * panelAlpha);
+    if (*(u32*)(work + 0x463c) == 0) {
+        listAlpha = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 3 ||
+               *(u32*)(work + 0x463c) == 1 ||
+               *(u32*)(work + 0x463c) == 2) {
+        listAlpha = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    }
+    color[3] = (u8)(u32)(255.0f * listAlpha * panelAlpha);
 
     for (i = 0; i < 4; ++i) {
         FUN_0021d950(work + i * 0x200 + 0x3830, color);

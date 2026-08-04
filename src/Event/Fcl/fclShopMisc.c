@@ -17702,6 +17702,8 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 #pragma opt_common_subs off
 /* Measured on FUN_0040A7F0: schedule off 3000B, schedule on 2748B (window 2992B). */
 #pragma schedule on
+/* W455 retail table has explicit empty cases 0xb and 0xc; the decoded
+ * case bodies 0 through 0xa and 0xd are already implemented. */
 // FUN_0040A7F0 NONMATCHING
 
 #define FUN_0040e3f0 FUN_0040e3f0_f32
@@ -17731,19 +17733,18 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   int iVar10;
 
   int uVar11;
-  union {
-    FclShopFloatPair pairs[3];
-    struct {
-      u32 words[6];
-      u8 text[24];
-    } detailed;
-    struct {
-      u32 words[6];
-      u8 text[16];
-    } simple;
-    u8 wide_text[32];
-  } scratch;
+  u8 scratch[112];
+  FclShopFloatPair *pairs;
+  u32 *words;
+  u8 *detailedText;
+  u8 *simpleText;
+  u8 *wideText;
 
+  pairs = (FclShopFloatPair *)(scratch + 0x68);
+  words = (u32 *)(scratch + 0x58);
+  detailedText = scratch + 0x40;
+  simpleText = scratch + 0x30;
+  wideText = scratch + 0x10;
 
   
 
@@ -17804,8 +17805,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
           iVar2 = *(int *)(*(int *)(iVar7 + 0x14) + 0x1c);
           uVar9 = (u32)bVar4;
-          scratch.pairs[2] = *(FclShopFloatPair *)&fGpffffacf0;
-          scratch.pairs[1] = *(FclShopFloatPair *)&fGpffffacf8;
+          pairs[1] = *(FclShopFloatPair *)&fGpffffacf0;
+          pairs[0] = *(FclShopFloatPair *)&fGpffffacf8;
  
 
           FUN_0040e3c0_u32(0.0f,iVar6,iVar10,uVar11 & 0xff,0x8e,
@@ -17816,12 +17817,12 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
           FUN_003b32d0_f32(0,iVar6 + 0xa3,iVar10 + 0x84,uVar11 | 0xffffff00,
 
-                       *(u8 *)(scratch.detailed.words + uVar9 + 4),1,
+                       *(u8 *)(words + uVar9 + 4),1,
 
                        iGpffffb7f4 + (u32)*(u16 *)(*(int *)(iVar2 + 4) + 2) * 0x11,0x10,0x6e);
 
-          sprintf((char *)scratch.detailed.text,&gp0xffffac10,*(u8 *)(*(int *)(iVar2 + 4) + 4));
-          FUN_0040eb50_f32(0,iVar6 + 0x174,iVar10 + 0x85,uVar11 & 0xff,scratch.detailed.words[uVar9 + 2],scratch.detailed.text,
+          sprintf((char *)detailedText,&gp0xffffac10,*(u8 *)(*(int *)(iVar2 + 4) + 4));
+          FUN_0040eb50_f32(0,iVar6 + 0x174,iVar10 + 0x85,uVar11 & 0xff,words[uVar9 + 2],detailedText,
 
                        1);
 
@@ -17866,14 +17867,14 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
         else {
 
 
-          scratch.pairs[0] = *(FclShopFloatPair *)&fGpffffad00;
+          *(FclShopFloatPair *)&words[0] = *(FclShopFloatPair *)&fGpffffad00;
 
-          sprintf((char *)scratch.simple.text,&gp0xffffac10,
+          sprintf((char *)simpleText,&gp0xffffac10,
 
                        *(u32 *)(*(int *)(*(int *)(iVar7 + 0x14) + 0x1c) + 8));
 
-          FUN_0040eb50_f32(0,iVar6 + 0x205,iVar10 + 0x85,uVar11 & 0xff,scratch.simple.words[iVar7 == iVar2],
-                       scratch.simple.text,9);
+          FUN_0040eb50_f32(0,iVar6 + 0x205,iVar10 + 0x85,uVar11 & 0xff,words[iVar7 == iVar2],
+                       simpleText,9);
 
         }
 
@@ -17939,6 +17940,13 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
       break;
 
+    case 8:
+
+      FUN_0040e3c0_u32(0.0f,iVar6,iVar5,uVar11 & 0xff,0x6b,0);
+
+      FUN_0040e3c0_u32(0.0f,iVar6,iVar5,uVar11 & 0xff,0x6c,0);
+
+      break;
     case 3:
 
       FUN_0040e3c0_u32(0.0f,iVar6,iVar5,uVar11 & 0xff,0x75,0);
@@ -17949,8 +17957,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
       uVar3 = FUN_0017cf00();
 
-      sprintf((char *)scratch.wide_text,&gp0xffffac10,uVar3);
-      FUN_0040ec20_y2(0.0f,iVar6,iVar5,uVar11 & 0xff,0,scratch.wide_text,1,0x26,(code)0x40a7c0);
+      sprintf((char *)wideText,&gp0xffffac10,uVar3);
+      FUN_0040ec20_y2(0.0f,iVar6,iVar5,uVar11 & 0xff,0,wideText,1,0x26,(code)0x40a7c0);
 
       break;
 
@@ -18028,13 +18036,6 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
       break;
 
-    case 8:
-
-      FUN_0040e3c0_u32(0.0f,iVar6,iVar5,uVar11 & 0xff,0x6b,0);
-
-      FUN_0040e3c0_u32(0.0f,iVar6,iVar5,uVar11 & 0xff,0x6c,0);
-
-      break;
 
     case 9:
 
@@ -18052,9 +18053,16 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
       break;
 
+    case 0xb:
+    case 0xc:
+
+      break;
+
     case 0xd:
 
-      if (puVar1[1] == 0xfffffff8) {
+      switch (puVar1[1]) {
+
+      case 0xfffffff8:
 
         if (*(u32 *)(iVar8 + 0x20) <= (u32)*(u16 *)(iVar7 + 0x10)) {
 
@@ -18070,23 +18078,27 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
         }
 
-      }
+        break;
 
-      else if (*(u32 *)(iVar8 + 0x20) <= (u32)*(u16 *)(iVar7 + 0x10)) {
+      default:
 
-        iVar7 = *(int *)(iVar8 + 0x28);
+        if (*(u32 *)(iVar8 + 0x20) <= (u32)*(u16 *)(iVar7 + 0x10)) {
 
-        FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + -0x54,iVar5 + -0x1c,uVar11 & 0xff,0x8a,0,0,0)
+          iVar7 = *(int *)(iVar8 + 0x28);
 
-        ;
+          FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + -0x54,iVar5 + -0x1c,uVar11 & 0xff,0x8a,0,0,0)
 
-        FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + -0x54,iVar5 + -0x1c,uVar11 & 0xff,0x8b,0,0,0)
+          ;
 
-        ;
+          FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + -0x54,iVar5 + -0x1c,uVar11 & 0xff,0x8b,0,0,0)
 
-        FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + 0x1be,iVar5 + 100 + (iVar7 * 0x7d) / 0xffff,
+          ;
 
-                     uVar11 & 0xff,0x8c,0,0,0);
+          FUN_0040e3f0(0,0,1.0f,1.0f,iVar6 + 0x1be,iVar5 + 100 + (iVar7 * 0x7d) / 0xffff,
+
+                       uVar11 & 0xff,0x8c,0,0,0);
+
+        }
 
       }
 

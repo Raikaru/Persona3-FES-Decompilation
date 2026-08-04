@@ -9439,6 +9439,8 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
 }
 
 
+/* W455 retail dispatch table maps event states 0xe, 0x15, and 0x18 to the
+ * shared empty target; keep those explicit no-op cases in the source. */
 // FUN_00369A20 NONMATCHING
 u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
@@ -10463,6 +10465,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           break;
 
+        case 0xe:
+
+          break;
+
         case 0xf:
 
           *(u32 *)(iVar10 + 0x170) = 0;
@@ -10757,6 +10763,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           break;
 
+        case 0x15:
+
+          break;
+
         case 0x16:
 
           *(u32 *)(iVar10 + 400) = 0;
@@ -10796,6 +10806,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
             FUN_0036f5f0(2,0x12,10,param_3);
             break;
           }
+
+          break;
+
+        case 0x18:
 
           break;
 

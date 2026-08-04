@@ -3813,6 +3813,10 @@ void FUN_0045a430(char param_1)
 /* W420 verified: offset-accurate YRuntimeWork view reduced FUN_0045a490 nd1323/object1788 to nd1291/object1776, window2128, rate .7399 -> .7269. */
 /* W420 negatives: removing/flattening rate use measured nd1343/object1820; pointer-cast field access measured nd1324/object1788; both reverted. */
 #pragma opt_propagation off
+/* Retail emits six records (base, 0x14, and offsets 0x54 through 0x57);
+ * each record reloads rate for its x/y positions and both 4096.0f conversions.
+ * The final 0x57 record now uses those independent reads: object 1784/2128
+ * (83.8%); the retail-only tail still begins at byte offset 0x6e4. */
 // FUN_0045A490 NONMATCHING
 
 void FUN_0045a490(void)
@@ -3977,10 +3981,9 @@ void FUN_0045a490(void)
     uVar3 = FUN_001158b0(0,puVar1->data0,*(char *)((u8 *)puVar1 + 0x57) + 10);
     iVar2 = (int)uVar3;
     *(char *)(iVar2 + 0x18) = (char)puVar1->value;
-    fVar7 = puVar1->rate;
-    *(float *)(iVar2 + 0x10) = fVar7 * 106.0f + fVar8 + 0.0f;
-    *(float *)(iVar2 + 0x14) = fVar7 * 20.0f + fVar6 + 0.0f;
-    fVar5 = fVar7 * 4096.0f;
+    *(float *)(iVar2 + 0x10) = puVar1->rate * 106.0f + fVar8 + 0.0f;
+    *(float *)(iVar2 + 0x14) = puVar1->rate * 20.0f + fVar6 + 0.0f;
+    fVar5 = puVar1->rate * 4096.0f;
     if (2147483648.0f <= fVar5) {
       uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }
@@ -3988,8 +3991,7 @@ void FUN_0045a490(void)
       uVar4 = (u16)(int)fVar5;
     }
     *(u16 *)(iVar2 + 0x28) = uVar4 & 0xff;
-    fVar7 = puVar1->rate;
-    fVar5 = fVar7 * 4096.0f;
+    fVar5 = puVar1->rate * 4096.0f;
     if (2147483648.0f <= fVar5) {
       uVar4 = (u16)(int)(fVar5 - 2.1474836e+09f);
     }

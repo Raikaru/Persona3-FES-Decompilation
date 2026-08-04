@@ -325,15 +325,20 @@ void func_00275cb0(void)
 
 
 
-/* W423 alphaScaled reuse: nd1104/1556B from nd924/1548B; alpha/offset declaration permutations: nd927/1548B; alphaScaled first-use: nd924/1548B; reverted. */
+/* W455 reconstruction: retail uses separate first- and second-stage alpha
+ * values for panel colors and converts the final 0xb resource dimensions
+ * through the decoded result frame. Implemented those accesses; 8 bytes remain
+ * in the callee-saved frame/layout difference. */
 // FUN_002760f0 NONMATCHING
 void func_002760f0(void)
 {
     f32 alphaScaled;
     f32 offset;
     f32 alpha;
+    f32 alpha2;
     u32 baseResource;
     u32 resource;
+    s32 *resourceData;
     u32* work;
     f32 rect[4];
     u8 color[4];
@@ -373,17 +378,17 @@ void func_002760f0(void)
         alpha = (OP_U32(work, 0) & 4) != 0 ? 1.0f : 0.0f;
     }
 
-    alphaScaled = alpha * 255.0f;
     resource = func_0021cca0(baseResource, 0);
     rect[0] = offset + 128.0f;
     rect[1] = 0.0f;
     rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 4, rect);
+    alphaScaled = alpha * 255.0f;
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(alpha * 255.0f);
+    color[3] = (u8)alphaScaled;
     func_0021d950(work + 4, color);
 
     resource = func_0021cca0(baseResource, 1);
@@ -392,10 +397,11 @@ void func_002760f0(void)
     rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x84, rect);
+    alphaScaled = alpha * 255.0f;
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(alpha * 255.0f);
+    color[3] = (u8)alphaScaled;
     func_0021d950(work + 0x84, color);
 
     if ((OP_U32(work, 0) & 2) != 0)
@@ -406,46 +412,49 @@ void func_002760f0(void)
         {
             s32 frame = OP_S32(work, 0x610);
             if (frame < 3)
-                alpha = 0.0f;
+                alpha2 = 0.0f;
             else if (frame < 6)
-                alpha = (f32)(frame - 3) / 3.0f;
+                alpha2 = (f32)(frame - 3) / 3.0f;
+            else if (frame < 6)
+                alpha2 = 1.0f;
             else if (frame < 0x24)
-                alpha = 1.0f - (f32)(frame - 6) / 30.0f;
+                alpha2 = 1.0f - (f32)(frame - 6) / 30.0f;
             else
-                alpha = 0.0f;
+                alpha2 = 0.0f;
             break;
         }
         case 1:
         {
             s32 frame = OP_S32(work, 0x610);
             if (frame < 0)
-                alpha = 0.0f;
+                alpha2 = 0.0f;
             else if (frame < 3)
-                alpha = (f32)frame / 3.0f;
+                alpha2 = (f32)frame / 3.0f;
+            else if (frame < 3)
+                alpha2 = 1.0f;
             else if (frame < 0x21)
-                alpha = 1.0f - (f32)(frame - 3) / 30.0f;
+                alpha2 = 1.0f - (f32)(frame - 3) / 30.0f;
             else
-                alpha = 0.0f;
+                alpha2 = 0.0f;
             break;
         }
         }
     }
     else
     {
-        alpha = 0.0f;
+        alpha2 = 0.0f;
     }
-
-    alphaScaled = alpha * 255.0f;
     resource = func_0021cca0(baseResource, 2);
     rect[0] = 128.0f;
     rect[1] = 0.0f;
     rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x44, rect);
+    alphaScaled = alpha2 * 255.0f;
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(alpha * 255.0f);
+    color[3] = (u8)alphaScaled;
     func_0021d950(work + 0x44, color);
 
     resource = func_0021cca0(baseResource, 3);
@@ -454,22 +463,23 @@ void func_002760f0(void)
     rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0xc4, rect);
+    alphaScaled = alpha2 * 255.0f;
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(alpha * 255.0f);
+    color[3] = (u8)alphaScaled;
     func_0021d950(work + 0xc4, color);
 
-    resource = func_0021cca0(baseResource, 0xb);
+    resourceData = (s32 *)(uintptr_t)func_0021cca0(baseResource, 0xb);
     rect[0] = 0.0f;
     rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
+    rect[2] = (f32)resourceData[3];
+    rect[3] = (f32)resourceData[4];
     func_0021d8e0(work + 0x104, rect);
-    rect[0] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[0] = (f32)resourceData[3];
     rect[1] = 0.0f;
     rect[2] = 650.0f;
-    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
+    rect[3] = (f32)resourceData[4];
     func_0021d8e0(work + 0x144, rect);
     color[0] = 0xff;
     color[1] = 0xff;

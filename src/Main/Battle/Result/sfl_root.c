@@ -484,7 +484,10 @@ typedef struct BrRootSetupParams {
 
 
 
-/* Retail 0x1f3270-0x1f4648: reconstructed result-card selection and reward dispatch. */
+/* W455 examination: retail selects result cards and dispatches reward requests;
+ * the source already covers that call skeleton (4896/5088 bytes). Left
+ * unchanged because the remaining 192-byte difference is stack layout/liveness,
+ * and adding padding would fabricate growth. */
 // FUN_001f3270 NONMATCHING
 void func_001f3270(KwlnTask *task)
 {

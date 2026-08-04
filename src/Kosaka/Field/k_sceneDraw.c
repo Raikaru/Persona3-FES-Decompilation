@@ -2106,7 +2106,10 @@ void* func_001a1540()
 
 
 
-/* W419 negative: swapping func_001a1550 owner/work declarations left nd2042/object2844/window3104 and the 0x80/s5..s0 prologue unchanged. */
+// Retail state 5 converts alphaStep to a clamped byte, increments alpha by
+// alphaStep/8 until the target, then advances state and copies both colors.
+// That state-5 update is reconstructed; remaining differences are layout and
+// register allocation in the other scene states.
 // FUN_001a1550 NONMATCHING
 void* func_001a1550(KwlnTask* task)
 {
@@ -2328,8 +2331,9 @@ void* func_001a1550(KwlnTask* task)
             if (work->colorB.a < (u8)work->alphaStep)
             {
                 alpha = work->colorB.a;
-                // colorB.a is u8, so alpha is never negative; use a plain float cast.
                 alphaValue = (f32)alpha;
+                alphaValue += work->alphaStep / 8.0f;
+                work->colorB.a = (u8)alphaValue;
             }
             else
             {

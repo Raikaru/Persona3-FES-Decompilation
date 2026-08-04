@@ -253,6 +253,8 @@ void opTitle002673f0(void)
 }
 
 // W419 negative probe: DAT_007cb164 float-array .sdata alias left opTitle00267430 at nd3280/6340B, window6640B, rate51.74%; reverted.
+/* W455 retail state-1 dispatch keeps the polygon transform path out of line;
+ * the explicit switch preserves that decoded branch skeleton. */
 // FUN_00267430 NONMATCHING
 void opTitle00267430(void)
 {
@@ -696,7 +698,9 @@ void opTitle00267430(void)
         color[3] = (u8)(alpha * 255.0f);
         func_0021d950(work + 0x144, color);
 
-        if (work[2] == 1)
+        switch (work[2])
+        {
+        case 1:
         {
             timer = work[1];
             if ((s32)timer < 0)
@@ -732,8 +736,9 @@ void opTitle00267430(void)
             layout[6] = 0.0f;
             layout[7] = 448.0f;
             opTitleSetPoly(work + 0x84, layout, scaleX, scaleY);
+            break;
         }
-        else
+        default:
         {
             timer = work[1];
             if (timer < 0x78)
@@ -754,6 +759,8 @@ void opTitle00267430(void)
             layout[2] = 640.0f;
             layout[3] = 448.0f;
             func_0021d8e0(work + 0x84, layout);
+            break;
+        }
         }
         (void)func_0021cca0_u32(resource, 0x11);
         color[0] = 0xff;
