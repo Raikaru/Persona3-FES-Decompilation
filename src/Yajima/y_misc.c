@@ -100,6 +100,10 @@ static inline float Yajima_AddFloatFirst(float first, float second)
 {
   return first + second;
 }
+static inline float Yajima_MulFloatFirst(float first, float second)
+{
+  return first * second;
+}
 extern f32 sinf(f32 value);
 extern f32 FUN_001126b0_y2(u32 param_1);
 extern f32 FUN_00112740_y2(u32 param_1);
@@ -1953,7 +1957,7 @@ u32 FUN_00418c10(u64 param_1,int *param_2)
 
 }
 
-// FUN_00418C70 NONMATCHING
+// FUN_00418C70
 
 
 u8 FUN_00418c70(int param_1,int *param_2)
@@ -1961,9 +1965,9 @@ u8 FUN_00418c70(int param_1,int *param_2)
   int iVar1;
   int iVar2;
   u32 uVar3;
-  int iVar4;
-  u32 *puVar5;
   u32 *puVar6;
+  u32 *puVar5;
+  int iVar4;
   float fVar9;
   u32 uVar10;
   float fVar11;
@@ -1998,18 +2002,18 @@ u8 FUN_00418c70(int param_1,int *param_2)
   fVar11 = *(f32 *)(param_2 + 0x18);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  fVar9 = 1.0f + fVar9;
-  afStack_b0[0] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11)) / 2.0f;
+  fVar9 = Yajima_AddFloatFirst(1.0f,fVar9);
+  afStack_b0[0] = fVar11 + (Yajima_MulFloatFirst(((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11),fVar9)) / 2.0f;
   fVar11 = *(f32 *)(param_2 + 0x19);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  fVar9 = 1.0f + fVar9;
-  afStack_b0[1] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11)) / 2.0f;
+  fVar9 = Yajima_AddFloatFirst(1.0f,fVar9);
+  afStack_b0[1] = fVar11 + (Yajima_MulFloatFirst(((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11),fVar9)) / 2.0f;
   fVar11 = *(f32 *)(param_2 + 0x1a);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  fVar9 = 1.0f + fVar9;
-  afStack_b0[2] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11)) / 2.0f;
+  fVar9 = Yajima_AddFloatFirst(1.0f,fVar9);
+  afStack_b0[2] = fVar11 + (Yajima_MulFloatFirst(((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11),fVar9)) / 2.0f;
   switch (*(char *)(iVar1 + 4)) {
   case '\x01':
   case '\x02':
@@ -2038,9 +2042,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
         puVar5[1] = uVar3;
         puVar5 = puVar5 + 2;
       } while (0 < iVar4);
-      matrix.pos.x = afStack_b0[0];
-      matrix.pos.y = afStack_b0[1];
-      matrix.pos.z = afStack_b0[2];
+      matrix.pos = *(RwV3d *)afStack_b0;
       FUN_004cb7f0(iVar2,&matrix,0);
       break;
     case '\x02':
@@ -8892,7 +8894,6 @@ u32 FUN_00429d40(u32 param_1,u64 param_2)
 
       for (sVar3 = 0; sVar3 < 3; sVar3 = sVar3 + 1) {
         *(u16 *)(puVar4 + sVar3 * 2 + 0x932) = 0;
-
       }
 
       puVar4[0x865] = 0;

@@ -761,7 +761,7 @@ void FUN_00386e40(int param_1,u32 param_2);
 void FUN_00386e50(void);
 void FUN_00386f70(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 *param_5,u8 *param_6);
-void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 *param_6,u8 *param_7,u32 param_8);
+void FUN_00388000(float param_1,float param_2,float *param_3,float *param_4,float *param_5,float *param_6,u32 *param_7,RwRGBA *param_8,u32 param_9);
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_00388ff0(int param_1);
 void FUN_003890e0(int param_1);
@@ -1255,7 +1255,7 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
 
 
 // FUN_00388000 NONMATCHING
-void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 *param_6,u8 *param_7,u32 param_8)
+void FUN_00388000(float param_1,float param_2,float *param_3,float *param_4,float *param_5,float *param_6,u32 *param_7,RwRGBA *param_8,u32 param_9)
 {
   f32 centerX;
   f32 centerY;
@@ -1289,11 +1289,11 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
   f32 afStack_70[4];
   f32 afStack_60[4];
 
-  fVar4 = *param_2;
-  fVar5 = *param_3;
-  fVar2 = param_2[1];
-  fVar3 = param_3[1];
-  color = *(RwRGBA *)param_7;
+  fVar4 = *param_3;
+  fVar5 = *param_4;
+  fVar2 = param_3[1];
+  fVar3 = param_4[1];
+  color = *param_8;
 
   left = (s32)fVar4;
   right = (s32)(fVar4 + fVar5);
@@ -1337,7 +1337,7 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   *(u32 *)&afStack_90[3] = *(u32 *)&afStack_90[3] | 0x20003;
 
-  ((void (*)(u32 *,f32 *,u32,int))FUN_004c31b0)(param_6,afStack_90,0x6a2a80,1);
+  ((void (*)(u32 *,f32 *,u32,int))FUN_004c31b0)(param_7,afStack_90,0x6a2a80,1);
 
   corners[0][0] = fStack_30;
   corners[0][1] = fStack_1c;
@@ -1362,18 +1362,18 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   camera = FUN_00198590();
 
-  texcoords[0][0] = param_4[0];
-  texcoords[0][1] = param_4[1];
-  texcoords[1][0] = param_5[0];
-  texcoords[1][1] = param_5[1];
-  texcoords[2][0] = param_4[0];
-  texcoords[2][1] = param_4[1];
-  texcoords[3][0] = param_5[0];
-  texcoords[3][1] = param_5[1];
-  texcoords[4][0] = param_5[0];
-  texcoords[4][1] = param_4[1];
-  texcoords[5][0] = param_4[0];
-  texcoords[5][1] = param_5[1];
+  texcoords[0][0] = param_5[0];
+  texcoords[0][1] = param_5[1];
+  texcoords[1][0] = param_6[0];
+  texcoords[1][1] = param_6[1];
+  texcoords[2][0] = param_5[0];
+  texcoords[2][1] = param_5[1];
+  texcoords[3][0] = param_6[0];
+  texcoords[3][1] = param_6[1];
+  texcoords[4][0] = param_6[0];
+  texcoords[4][1] = param_5[1];
+  texcoords[5][0] = param_5[0];
+  texcoords[5][1] = param_6[1];
 
 
   vertices[0].u.els.scrVertex.x = corners[0][0];
@@ -1443,16 +1443,16 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
   vertices[5].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   fn = (code *)&DAT_00960090_abs;
-  (*fn)(1,*param_6);
+  (*fn)(1,*param_7);
   (*fn)(7,2);
   (*fn)(0xc,1);
   (*fn)(6,1);
   (*fn)(8,1);
 
-  if (param_8 == 1) {
+  if (param_9 == 1) {
     FUN_004d7f60(2,0x48);
     FUN_004d7f60(3,0x71801);
-  } else if (param_8 == 0) {
+  } else if (param_9 == 0) {
     FUN_004d7f60(2,0x44);
     FUN_004d7f60(3,0x717fb);
   }

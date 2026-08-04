@@ -3653,7 +3653,7 @@ void FUN_002057C0(void)
                     if (*(u16*)(entry + 0xc) != 9)
                         continue;
                 }
-                else
+                else if (type == 0)
                 {
                     continue;
                 }

@@ -652,6 +652,7 @@ void opMenu0026d430(void)
     s32 i;
     u32 choice;
     u8* itemBase;
+    u32* itemValue;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
@@ -708,8 +709,9 @@ void opMenu0026d430(void)
     for (i = 0; i < 4; i++)
     {
         itemBase = (u8*)work + i * 0x310;
-        *(u32*)(itemBase + 0xb00) = i == work[0xaf8 / 4] ? 0 : 8;
-        *(u32*)(itemBase + 0xb04) = 0;
+        itemValue = (u32*)(itemBase + 0xb00);
+        *itemValue = i == work[0xaf8 / 4] ? 0 : 8;
+        itemValue[1] = 0;
         switch (i)
         {
         case 0:
@@ -775,8 +777,9 @@ void opMenu0026d430(void)
     for (i = 0; i < 2; i++)
     {
         itemBase = (u8*)work + i * 0x310;
-        *(u32*)(itemBase + 0x1a60) = i == work[0x1a50 / 4] ? 0 : 8;
-        *(u32*)(itemBase + 0x1a64) = 0;
+        itemValue = (u32*)(itemBase + 0x1a60);
+        *itemValue = i == work[0x1a50 / 4] ? 0 : 8;
+        itemValue[1] = 0;
         switch (i)
         {
         case 0:

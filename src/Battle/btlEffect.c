@@ -223,6 +223,8 @@ extern u64 func_002f6c20();
 extern u64 func_002fd820();
 extern u64 func_002ffbc0();
 #pragma alias func_002ffbc0_u16 func_002ffbc0
+#pragma alias func_002ffbc0_u32 func_002ffbc0
+extern u32 func_002ffbc0_u32(u32 max);
 extern u16 func_002ffbc0_u16(u32 max);
 #pragma alias func_002ffbc0_noarg func_002ffbc0
 extern u16 func_002ffbc0_noarg(void);
@@ -296,7 +298,7 @@ extern u64 func_0030bc20();
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern void func_003176c0(Model* mdl);
-extern u64 func_00317730();
+extern void func_00317730(u32 param_1);
 extern void FUN_00317a20(Model* param_1);
 extern u64 func_00318ad0();
 extern u32 func_00318b90(u32 param_1);
@@ -308,7 +310,7 @@ extern u64 func_00321320();
 extern u64 func_00324bd0();
 #pragma alias func_00324bd0_u32 func_00324bd0
 extern u32 func_00324bd0_u32(u32 param_1);
-extern u64 func_003252a0();
+extern void func_003252a0(u32 param_1);
 extern u64 func_00325500();
 extern u64 func_003257e0();
 extern u64 func_00325920();
@@ -1146,7 +1148,11 @@ typedef struct FormationLoadWork {
 
 /* W357 measured func_002bb3a0: opt_propagation off nd224/480B -> nd222/480B; window 480B. */
 #pragma opt_propagation off
-// FUN_002bb3a0 NONMATCHING
+static inline u32 btlEffectAndBaseFirst(u32 base, u32 mask)
+{
+  return base & mask;
+}
+// FUN_002bb3a0
 
 void func_002bb3a0(void)
 
@@ -1155,6 +1161,7 @@ void func_002bb3a0(void)
   u16 uVar1;
   u32 uVar3;
   u32 uStack_4;
+  u32 shiftAmount;
   
   for (puVar4 = *(u16 **)(iGpffffb6fc + 400); puVar4 != (u16 *)0x0;
       puVar4 = *(u16 **)(puVar4 + 0x10)) {
@@ -1163,7 +1170,7 @@ void func_002bb3a0(void)
     if ((uVar1 & 0x40) == 0) {
       if ((uVar1 & 0x100) != 0) {
         if ((u32)(u8)puVar4[4] * 0x1000000 < (uVar3 & 0xff000000)) {
-          uVar3 = uVar3 + (u32)(u8)puVar4[4] * -0x1000000;
+          uVar3 = uVar3 - (u32)(u8)puVar4[4] * 0x1000000;
         }
         else {
           uVar3 = uVar3 & 0xffffff;
@@ -1171,29 +1178,30 @@ void func_002bb3a0(void)
         }
       }
       else if ((uVar1 & 0x80) != 0) {
-        if ((u32)(u8)puVar4[4] * 0x1000000 >= -(uVar3 & 0xff000000) - 0x1000000) {
-          uVar3 = uVar3 & 0xffffff | 0xff000000;
-          *puVar4 = uVar1 & 0xfe7f;
+        shiftAmount = (u32)(u8)puVar4[4] * 0x1000000;
+        if (shiftAmount < -btlEffectAndBaseFirst(uVar3, 0xff000000) - 0x1000000) {
+          uVar3 = uVar3 + shiftAmount;
         }
         else {
-          uVar3 = uVar3 + (u32)(u8)puVar4[4] * 0x1000000;
+          uVar3 = uVar3 & 0xffffff | 0xff000000;
+          *puVar4 = uVar1 & 0xfe7f;
         }
       }
       if ((*puVar4 & 0x220) == 0x220) {
         if (*(int *)(puVar4 + 0xc) != 0) {
-          func_00317730();
+          func_00317730(*(u32 *)(puVar4 + 0xc));
         }
         if (*(int *)(puVar4 + 10) != 0) {
-          func_003252a0();
+          func_003252a0(*(u32 *)(puVar4 + 10));
         }
         if (*(int *)(puVar4 + 8) != 0) {
-          func_002ba3a0_void();
+          func_002ba3a0(*(int *)(puVar4 + 8));
         }
       }
     }
     if (((*puVar4 & 0x210) == 0x210) && ((uVar3 & 0xff000000) != 0)) {
-      uStack_4 = uVar3;
       if (*(int *)(puVar4 + 0xc) != 0) {
+        uStack_4 = uVar3;
         func_00318ad0(*(u32 *)(puVar4 + 0xc),&uStack_4);
         FUN_00317a20((Model*)(uintptr_t)*(u32 *)(puVar4 + 0xc));
       }
@@ -2082,6 +2090,10 @@ void func_002bcde0(u64 param_1,u32 *param_2)
 static inline f32 btlEffectAddFloatFirst(f32 left, f32 right)
 {
   return left + right;
+}
+static inline u32 btlEffectAddOffsetFirst(u32 offset, u32 base)
+{
+  return offset + base;
 }
 
 // FUN_002bce10 NONMATCHING
@@ -7314,14 +7326,14 @@ s32 func_002c6300(u32 param_1,u32 param_2,short param_3,s32 param_4)
 #pragma opt_loop_invariants on
 /* W357 measured func_002c65d0: opt_lifetimes on stacked with existing opt_loop_invariants on, nd125/1068B -> nd118/1068B; window 1072B. */
 #pragma opt_lifetimes on
-// FUN_002c65d0 NONMATCHING
+// FUN_002c65d0
 
 u32 func_002c65d0(int param_1)
 
 {
   short sVar1 = 0;
   short sVar2 = 0;
-  bool bVar3 = 0;
+  u32 bVar3 = 0;
   u16 uVar4 = 0;
   u16 uVar5 = 0;
   u32 uVar6 = 0;
@@ -7385,11 +7397,11 @@ u32 func_002c65d0(int param_1)
       }
     } while (bVar3);
     uVar11 = 0;
-    uVar6 = func_002ffbc0(iVar13);
+    uVar6 = func_002ffbc0_u32(iVar13);
     for (uVar10 = 0; uVar10 < *(u16 *)(param_1 + 0xc0); uVar10 = uVar10 + 1) {
       uVar11 = uVar11 + *(int *)(DAT_00696fb0_abs + uVar10 * 4);
       if (uVar6 < uVar11) {
-        return *(u32 *)(uVar10 * 4 + param_1 + 0x88);
+        return *(u32 *)(btlEffectAddOffsetFirst(uVar10 * 4, (u32)param_1) + 0x88);
       }
     }
   uVar7 = 0;
@@ -13216,7 +13228,6 @@ u32 func_002d03e0(void)
   u32 uVar4 = 0;
   u32 uVar5 = 0;
   u32 uVar6 = 0;
-  u32 specialMask;
   u32 uVar8 = 0;
   u32 uVar9 = 0;
   int iVar10 = 0;
@@ -13224,14 +13235,13 @@ u32 func_002d03e0(void)
   uVar5 = func_0035ed20_u32(0);
   iVar3 = func_0035ed20_u32(1);
   uVar6 = func_0035ed20_u32(2);
-  specialMask = uVar6 & 0x80000;
   iVar10 = 0;
   uVar9 = 0xfffffff;
   for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
     if (((*(u16 *)(iVar2 + 0x1a) & 1) != 0) &&
         ((*(u16 *)(iVar2 + 0x1a) & 8) != 0) &&
         (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) == 0) &&
-        ((specialMask != 0) ||
+        ((uVar6 & 0x80000) != 0 ||
          (func_0030b5a0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), 0) == 0))) {
       uVar8 = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
       uVar8 = uVar8 & 0xffff;

@@ -1514,8 +1514,6 @@ generate:
 
     *(u8*)((u8*)K_Field_Get() + 0x3c) = 0;
     *(u8*)((u8*)K_Field_Get() + 0x3d) = 0;
-    *(u8*)((u8*)K_Field_Get() + 0x3e) = 0;
-    *(u8*)((u8*)K_Field_Get() + 0x3f) = 0;
     do
     {
         startX = (s32)(RpRandom() % 12) + 2;
@@ -1525,6 +1523,8 @@ generate:
     } while (*(u8*)((u8*)K_Field_Get() +
                      startY * 0x100 + startX * 0x10 + 0x48) != 0);
     *(u8*)((u8*)K_Field_Get() + 0x40) = (u8)(RpRandom() & 3);
+    *(u8*)((u8*)K_Field_Get() + 0x3e) = 0;
+    *(u8*)((u8*)K_Field_Get() + 0x3f) = 0;
 
     do
     {

@@ -19110,7 +19110,7 @@ static inline u32 campFloatBits(f32 value)
         (tmp).u = *(u64*)&pair; \
         (tmp).f[0] = (tmp).f[0] + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           (tmp).u, *(u64*)&pair, 0, (tile), 0, 10); \
+                           *(u64*)&pair, (tmp).u, 0, (tile), 0, 10); \
     } while (0)
 extern s16 DAT_005e3b5e[];
 extern s32 DAT_005e3b64;

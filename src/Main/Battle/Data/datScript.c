@@ -141,7 +141,8 @@ u8 FUN_00302f50(u32 param_1);
 u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,u8 param_8);
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
+                 u16 param_5,u16 param_6);
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
 u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);

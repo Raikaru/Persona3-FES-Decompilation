@@ -98,7 +98,8 @@ u8 FUN_00302f50(u32 param_1);
 u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,u8 param_8);
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
+                 u16 param_5,u16 param_6);
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
 u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
@@ -3264,7 +3265,8 @@ LAB_00305f20:
 
 #pragma opt_lifetimes on
 // FUN_00306020 NONMATCHING
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
+                 u16 param_5,u16 param_6)
 
 {
   s16 uVar1;
@@ -3452,7 +3454,7 @@ u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   if ((param_2 != 0) && (param_3 != 0)) {
     lVar2 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
     lVar3 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
-    uVar4 = FUN_00306020(param_1,param_2,param_3,1);
+    uVar4 = FUN_00306020(param_1,param_2,param_3,1,1,0);
     if ((s32)(param_1 & 0xffff) >= 0x1d0) {
       FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
     }
@@ -3537,7 +3539,7 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   }
   lVar4 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
   lVar5 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
-  lVar6 = FUN_00306020(param_1,param_2,param_3,1);
+  lVar6 = FUN_00306020(param_1,param_2,param_3,1,1,0);
   if (!((s32)(param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
   }
@@ -6141,8 +6143,13 @@ u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4)
         if ((uVar1 == 3) || (uVar1 == 2)) {
           return 0;
         }
-        if ((uVar1 == 1) && ((cVar2 = FUN_00308c60(param_1), cVar2 == '\x06' || (cVar2 == '\a')))) {
-          return 0;
+        if (uVar1 == 1) {
+          cVar2 = FUN_00308c60(param_1);
+          switch (cVar2) {
+          case '\a':
+          case '\x06':
+            return 0;
+          }
         }
       }
       if ((param_4 == 4) || (param_4 == 2)) {

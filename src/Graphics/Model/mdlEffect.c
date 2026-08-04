@@ -5413,8 +5413,8 @@ u32 FUN_00324160(u8 *param_1)
 
   u16 *puVar10;
 
-  u32 color;
 
+  u32 color;
   int copy;
 
   int outer2;
@@ -18488,7 +18488,9 @@ void FUN_00332330(u16 *param_1)
 
 
 
+
 // FUN_00332370 NONMATCHING
+
 
 
 
@@ -22454,13 +22456,15 @@ void FUN_00336630(int param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
+          u8 outputAlpha;
           u8 red = ((volatile u8 *)&stack.output.chan)[0];
           u8 green = ((volatile u8 *)&stack.output.chan)[1];
           u8 blue = ((volatile u8 *)&stack.output.chan)[2];
+          outputAlpha = ((volatile u8 *)&stack.output.chan)[3];
           *(u8 *)(dst + 4) = red;
           *(u8 *)(dst + 5) = green;
           *(u8 *)(dst + 6) = blue;
-          *(u8 *)(dst + 7) = ((volatile u8 *)&stack.output.chan)[3];
+          *(u8 *)(dst + 7) = outputAlpha;
         } else {
           int dst;
           u8 red;
@@ -38829,7 +38833,8 @@ void FUN_00349260(int param_1,float *param_2)
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar5 = fGpffff80a4 * fVar4 + (((650.0f - fVar4) - fVar5) * fVar2 + fVar5 + 0.0f) * 0.5f;
+  fVar5 = (((650.0f - fVar4) - fVar5) * fVar2 + fVar5 + 0.0f) * 0.5f;
+  fVar5 = fGpffff80a4 * fVar4 + fVar5;
 
   fVar3 = fVar3 + fGpffff80a4 * fVar4;
 

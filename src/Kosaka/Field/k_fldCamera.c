@@ -1239,9 +1239,9 @@ u16* K_Encount_001d78c0(u32 param_1, u16 flag, u32 areaId)
     s32 var_16;
     s32 var_18;
     s32 var_4;
-    s32 var_4_2;
-    s32 var_6;
     u16* temp_5;
+    s32 var_6;
+    s32 var_4_2;
     u32 var_17;
     u32 temp_3_3;
     u16* var_19;

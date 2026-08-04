@@ -291,7 +291,10 @@ void* func_001b7e60(KwlnTask* task)
             memcpy(gFldDngFloorsData, request->fileMemory,
                    request->fileSize);
             H_Cdvd_Destroy(request);
-            work->request = NULL;
+            if (request != NULL)
+            {
+                work->request = NULL;
+            }
         }
         if (work->enemyTableRequest != NULL)
         {

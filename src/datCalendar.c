@@ -3207,6 +3207,7 @@ void func_00183840(void* resource,
                       baseX + 584.0f, baseY + 57.0f, 50.0f);
     }
 
+    frame = 0;
     switch (phase)
     {
         case 29:
@@ -3272,7 +3273,6 @@ void func_00183840(void* resource,
             frame = 17;
             break;
         default:
-            frame = 0;
             break;
     }
     drawY = baseY + 67.0f;

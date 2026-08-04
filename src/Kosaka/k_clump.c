@@ -1199,8 +1199,10 @@ void func_001a8140(void* state, u32 mode)
     }
     if (mode == 1)
     {
-        D_00960090(6, 1);
-        D_00960090(8, 1);
+        void (**renderState)(u32, ...);
+        renderState = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState)(6, 1);
+        (*renderState)(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x715fb);
@@ -1208,11 +1210,11 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         sphere = func_004912b0(item->object);
-        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 0);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
             if (D_007CC1F8 == 1)
             {
@@ -1222,7 +1224,7 @@ void func_001a8140(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 1);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1242,11 +1244,11 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         sphere = func_004912b0(item->object);
-        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 0);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
             if (*(u32*)((u8*)&D_007CC1F8 + 4) == 1)
             {
@@ -1256,7 +1258,7 @@ void func_001a8140(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 1);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1264,8 +1266,10 @@ void func_001a8140(void* state, u32 mode)
 
     if (mode == 1)
     {
-        D_00960090(6, 1);
-        D_00960090(8, 0);
+        void (**renderState2)(u32, ...);
+        renderState2 = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState2)(6, 1);
+        (*renderState2)(8, 0);
     }
     RpSkyRenderStateSet(2, (void*)0x42);
     RpSkyRenderStateSet(3, (void*)0x71801);
@@ -1275,18 +1279,18 @@ void func_001a8140(void* state, u32 mode)
         u32 found = 0;
         if (item->object != NULL)
         {
-            void* resources = *(void**)((u8*)item->object + 0x18);
+            void* resources = ((KClumpContainer*)item->object)->resources;
             if (resources != NULL)
             {
                 func_004932c0(resources, (KClumpCallback)kclump_alpha_callback, &found);
                 if (found == 0)
                 {
                     sphere = func_004912b0(item->object);
-                    if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+                    if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
                     {
                         if (item->enabled == 1)
                         {
-                            D_00960090(0xe, 0);
+                            (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
                         }
                         if ((item->flags == 0 || item->colorScale[0] == 1.0f) &&
                             *(u32*)((u8*)&D_007CC1F8 + 8) == 1)
@@ -1296,7 +1300,7 @@ void func_001a8140(void* state, u32 mode)
                         }
                         if (item->enabled == 1)
                         {
-                            D_00960090(0xe, 1);
+                            (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
                         }
                     }
                 }
@@ -1311,11 +1315,11 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         sphere = func_004912b0(item->object);
-        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 0);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
             if (item->flags == 1 && item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
             {
@@ -1332,7 +1336,7 @@ void func_001a8140(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 1);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1345,11 +1349,11 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         sphere = func_004912b0(item->object);
-        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 0);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
             if (item->flags == 1 && item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
             {
@@ -1366,7 +1370,7 @@ void func_001a8140(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe, 1);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;

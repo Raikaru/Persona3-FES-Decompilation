@@ -1251,6 +1251,7 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
 
   int iVar6;
+  int parent;
 
   int iVar8;
 
@@ -1338,6 +1339,7 @@ processFont:
 
       *(int *)(iVar3 + 0x24) = iVar6;
 
+      iVar6 = iVar3;
       *(int *)(iVar8 + 0xc) = *(int *)(iVar8 + 0xc) + *(int *)(iVar3 + 0xc);
 
       *(int *)(iVar8 + 0x18) = *(int *)(iVar8 + 0x18) + 1;
@@ -1346,11 +1348,11 @@ processFont:
 
       if (lVar4 != 0) {
 
-        iVar6 = *(int *)(iVar3 + 0x24);
+        parent = *(int *)(iVar3 + 0x24);
 
-        if (iVar6 != 0) {
+        if (parent != 0) {
 
-          *(int *)(iVar6 + 0xc) = *(int *)(iVar6 + 0xc) - (int)lVar4;
+          *(int *)(parent + 0xc) = *(int *)(parent + 0xc) - (int)lVar4;
 
         }
 
@@ -1358,7 +1360,6 @@ processFont:
 
       }
 
-      iVar6 = iVar3;
 
     }
 
@@ -1974,7 +1975,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
   int iVar8;
 
-  u8 bVar5;
+  char bVar5;
 
   
 
@@ -3072,8 +3073,8 @@ void FUN_003b22a0(u32 *param_1)
 
   if (*(char *)(param_1 + 7) != '\0') {
 
-    iVar6 = param_1[5];
 
+    iVar6 = param_1[5];
     lVar7 = FUN_003b0970_typed(&gp0xffffa838,0,*(s8 *)((int)param_1 + 0xd),
                          *(s8 *)((int)param_1 + 0xe),0);
 

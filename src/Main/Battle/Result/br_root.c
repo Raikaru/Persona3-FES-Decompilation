@@ -1843,23 +1843,20 @@ void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
-    u8 *entry;
     u8 *work;
     s32 i;
     s32 j;
     work = task->workData;
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
-        entry = work + i * 8 + 0x98;
-        if (dat00171360(BR_U16(entry, 0)) != 0) {
-            func_00171390(BR_U16(entry, 0));
+        if (dat00171360(BR_U16(work + i * 8 + 0x98, 0)) != 0) {
+            func_00171390(BR_U16(work + i * 8 + 0x98, 0));
         } else {
-            u8 *base = work + i * 8;
-            s32 level = (s32)(func_00170760(1, BR_S16(entry, 0)) & 0xffff);
-            level += BR_S32(base, 0x9c);
+            s32 level = (s32)(func_00170760(1, BR_S16(work + i * 8 + 0x98, 0)) & 0xffff);
+            level += BR_S32(work + i * 8, 0x9c);
             if (level >= 100) {
                 level = 99;
             }
-            func_00170860(1, BR_S16(entry, 0), (u16)level);
+            func_00170860(1, BR_S16(work + i * 8 + 0x98, 0), (u16)level);
         }
     }
     for (j = 0; j < (s32)BR_U32(work, 0x108); j++) {
@@ -2050,10 +2047,10 @@ void func_001f13b0(KwlnTask *task)
     s32 skill;
     s32 firstIndex;
     s32 indexCount;
+    s8 *current;
     s32 j;
     s32 learnedCount;
     u8 *entry;
-    u8 *current;
 
     /* Retail +0x24..+0x94: apply the hero's pending EXP before deriving
      * the resulting level, then print the level transition. */
@@ -2183,7 +2180,7 @@ void func_001f13b0(KwlnTask *task)
             func_001fb4b0(entry, 0x20, persona->level,
                           BR_U8((u8 *)work, 0x158), &firstIndex, &indexCount);
             work[0x150 / 4] = 0;
-            current = entry + firstIndex * 4;
+            current = (s8 *)(entry + firstIndex * 4);
             for (j = 0; j < indexCount; j++, current += 4) {
                 if (current[1] == 1) {
                     BR_U16((u8 *)work + work[0x150 / 4] * 2, 0x140) =

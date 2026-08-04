@@ -633,7 +633,8 @@ void FUN_002441b0(u32 param_1)
     puVar2[1] = (uint)param_1;
   }
   lVar8 = bpMisc001ff740();
-  if (lVar8 == 1) {
+  switch (lVar8) {
+  case 1:
     uVar9 = func_00174800(6);
     iVar4 = func_00173370(uVar9);
     iVar6 = func_00176a30(uVar9);
@@ -649,6 +650,7 @@ void FUN_002441b0(u32 param_1)
     if (iVar10 < iVar6) {
       *puVar2 = *puVar2 | 8;
     }
+    break;
   }
   if ((*puVar2 & 2) != 0) {
     iVar4 = func_001ff430(puVar2[4]);

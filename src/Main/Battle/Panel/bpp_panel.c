@@ -2615,7 +2615,6 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 2; i++) {
-            quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
