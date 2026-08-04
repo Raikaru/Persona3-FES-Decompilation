@@ -610,19 +610,12 @@ void FUN_002441b0(u32 param_1)
   }
   message = DAT_007cc468_sda;
   printf(message, param_1);
-  uVar5 = *puVar2;
-  uVar5 = uVar5 & 0xfffffffb;
-  *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xfffffff7;
-  *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xffffffef;
-  *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xffffffdf;
-  *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xfffffffd;
-  *puVar2 = uVar5;
-  uVar5 = uVar5 & 0xfffffeff;
-  *puVar2 = uVar5;
+  *puVar2 = *puVar2 & 0xfffffffb;
+  *puVar2 = *puVar2 & 0xfffffff7;
+  *puVar2 = *puVar2 & 0xffffffef;
+  *puVar2 = *puVar2 & 0xffffffdf;
+  *puVar2 = *puVar2 & 0xfffffffd;
+  *puVar2 = *puVar2 & 0xfffffeff;
   if (puVar2[2] == 1) {
     *puVar2 = *puVar2 | 2;
   }
@@ -659,7 +652,7 @@ void FUN_002441b0(u32 param_1)
     }
     switch (*(u8 *)(iVar4 + 0xa2)) {
     case 0:
-      unaff_s1_lo = func_001775a0(*(u16 *)(*(int *)(iVar4 + 0xa2c) + 2));
+      unaff_s1_lo = func_001775a0_s16(*(s16 *)(*(int *)(iVar4 + 0xa2c) + 2));
       break;
     case 1:
       uVar1 = *(ushort *)(*(int *)(iVar4 + 0xa2c) + 2);

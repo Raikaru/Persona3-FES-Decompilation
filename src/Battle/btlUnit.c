@@ -3589,15 +3589,13 @@ BtlUnit* unit;
 
     if (unit->mdl == NULL)
     {
-        if (!H_Cdvd_IsFileLoaded(packet->cdvd))
+        if (H_Cdvd_IsFileLoaded(packet->cdvd))
         {
-            return 0;
-        }
-
-        unit->mdl = func_00316c70(packet->type, packet->id, packet->cdvd, HCDVD_FILENORMAL);
-        if (packet->type == MODEL_TYPE_BTLCHAR)
-        {
-            func_0031c1d0(unit->mdl);
+            unit->mdl = func_00316c70(packet->type, packet->id, packet->cdvd, HCDVD_FILENORMAL);
+            if (packet->type == MODEL_TYPE_BTLCHAR)
+            {
+                func_0031c1d0(unit->mdl);
+            }
         }
         return 0;
     }

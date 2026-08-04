@@ -146,7 +146,7 @@ extern f32 DAT_0095affc;
 #pragma alias DAT_0095aff0_abs DAT_0095aff0
 extern u8 DAT_0095aff0_abs[];
 extern u32 DAT_0095b000;
-extern short * DAT_0095b070;
+extern u16 * DAT_0095b070;
 #pragma alias DAT_0095b070_ptr DAT_0095b070
 extern u8 DAT_0095b070_ptr[];
 extern u32 DAT_0095b074;
@@ -4889,7 +4889,7 @@ u32 FUN_003bd230(void)
 #define DAT_0095b720 (*(u32 *)DAT_0095b720_abs)
 #define DAT_0095b724 (*(u32 *)DAT_0095b724_abs)
 #define DAT_0095b728 (*(u32 *)DAT_0095b728_abs)
-#define DAT_0095b070 (*(short **)DAT_0095b070_abs)
+#define DAT_0095b070 (*(u16 **)DAT_0095b070_abs)
 
 #undef FUN_003bd280
 /* opt_loop_invariants on: measured nd 725 -> 716, object 1520/1520 -> 1516/1520; opt_lifetimes on alone: nd 725 -> 721, object 1520/1520 -> 1520/1520; stacked: nd 717, object 1516/1520 (worse than loop alone; retained loop only). */
@@ -4919,7 +4919,7 @@ void FUN_003bd280(void)
 
   FUN_001023a0(uVar1);
 
-  DAT_0095b070 = (short *)FUN_001021c0(PTR_s_event_comuTable_bin_007cd56c,auStack_4);
+  DAT_0095b070 = (u16 *)FUN_001021c0(PTR_s_event_comuTable_bin_007cd56c,auStack_4);
 
   DAT_0095b074 = FUN_001021c0(PTR_s_event_SiteibiEvent_bf_007cd570,auStack_4);
 
@@ -4927,7 +4927,7 @@ void FUN_003bd280(void)
 
     FUN_005225a8(0x6a3200);
 
-    DAT_0095b070 = (short *)0x0;
+    DAT_0095b070 = (u16 *)0x0;
 
   }
 

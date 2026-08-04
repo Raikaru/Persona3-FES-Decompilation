@@ -96,7 +96,7 @@ extern u32 FUN_00361ca0_evt(int param_1,u64 param_2);
 #pragma alias FUN_00530da0_evt FUN_00530da0
 extern u32 FUN_00530da0_evt(f32 param_1);
 void FUN_0038fa10(int param_1,u32 param_2);
-void FUN_0038ffb0(int param_1,int param_2);
+void FUN_0038ffb0(int param_1,u64 param_2);
 void FUN_003902c0(int param_1,int param_2);
 void FUN_003905f0(int param_1,int param_2);
 void FUN_00390920(int param_1,int param_2);
@@ -2229,12 +2229,13 @@ void FUN_0038fa10(int param_1,u32 param_2)
 // FUN_0038FFB0 NONMATCHING
 
 
-void FUN_0038ffb0(int param_1,int param_2)
+void FUN_0038ffb0(int param_1,u64 param_2)
 
 
 
 {
 
+  u32 *slot;
   u16 uVar1;
 
   u16 uVar2;
@@ -2260,9 +2261,10 @@ void FUN_0038ffb0(int param_1,int param_2)
 
   for (iVar9 = 0; iVar9 < 2; iVar9 = iVar9 + 1) {
 
-    iVar6 = FUN_00361ca0_evt(0x23,param_2);
+    slot = &aiStack_8[iVar9];
+    *slot = FUN_00361ca0_evt(0x23,param_2);
 
-    aiStack_8[iVar9] = iVar6;
+    iVar6 = *slot;
 
     *(u32 *)(iVar6 + 8) = 0xffffffff;
 

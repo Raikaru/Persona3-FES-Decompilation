@@ -843,7 +843,9 @@ u32 FUN_003af110(u64 param_1,int param_2)
 
   
 
-  if ((DAT_007cd500 & 0x80) != 0) {
+  if ((DAT_007cd500 & 0x80) == 0) {
+    return 0;
+  }
 
     cursor0 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
     bVar1 = cursor0[0] - 1;
@@ -913,7 +915,6 @@ u32 FUN_003af110(u64 param_1,int param_2)
       break;
     }
 
-}
 
   return 0;
 

@@ -10754,7 +10754,7 @@ void FUN_00329ed0(float *param_1)
 
   
 
-  fVar5 = param_1[5] + *param_1 + param_1[10] + 1.0f;
+  fVar5 = *param_1 + param_1[5] + param_1[10] + 1.0f;
 
   if (fVar5 >= 1.0f) {
 
@@ -10772,9 +10772,9 @@ void FUN_00329ed0(float *param_1)
 
   else {
 
-    uVar4 = param_1[5] < *param_1 ^ 1;
+    uVar4 = *param_1 > param_1[5] ^ 1;
 
-    if (param_1[uVar4 * 5] < param_1[10]) {
+    if (param_1[10] > param_1[uVar4 * 5]) {
 
       uVar4 = 2;
 
@@ -34239,19 +34239,19 @@ void FUN_00343d60(int param_1)
 
     if (uVar5 != 0) {
 
-      if ((*(char *)(iVar3 + 0xb8) == '\0') || (*(u32 *)(param_1 + 0x34) != 0)) {
+      if ((*(char *)(iVar3 + 0xb8) != '\0') && (*(u32 *)(param_1 + 0x34) == 0)) {
 
-        bVar7 = false;
+        bVar7 = true;
 
-        uStack_40 = *(u32 *)(iVar3 + 0x84);
+        uStack_40 = uVar4;
 
       }
 
       else {
 
-        bVar7 = true;
+        bVar7 = false;
 
-        uStack_40 = uVar4;
+        uStack_40 = *(u32 *)(iVar3 + 0x84);
 
       }
 

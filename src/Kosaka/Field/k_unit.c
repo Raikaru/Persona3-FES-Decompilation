@@ -1597,10 +1597,11 @@ s32 func_001d0720(s32 targetCount)
                 goto spawn;
             }
         }
-        if (ptr[1] != 0)
+        if (ptr[1] == 0)
         {
-            goto done;
+            goto spawn;
         }
+        return spawned;
     }
 
 spawn:

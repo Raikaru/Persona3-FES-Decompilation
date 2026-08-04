@@ -28864,7 +28864,7 @@ u32 FUN_004534b0(char param_1)
 {
   u8 bVar1;
   u8 *puVar2;
-  u32 uVar3;
+  u8 uVar3;
   u32 uVar4;
   int iVar5;
   int lVar6;
