@@ -9725,7 +9725,7 @@ u32 FUN_0037acc0(int param_1,int param_2,int param_3)
 }
 
 
-/* W416 ORDER shape probes rejected: ascending switch nd417 -> 427 and descending switch nd417 -> 389, both object 660/window656 (over-window); removing the final break did not reduce the descending 660-byte object. */
+/* W416 ORDER shape probes rejected: ascending switch nd417 -> 427 and descending switch nd417 -> 389, both object 660/window656 (over-window); removing the final break did not reduce the descending 660-byte object. W453 retained an ascending if/else-if chain (nd414, object/window 652/656). */
 // FUN_0037AD30 NONMATCHING
 
 
@@ -9746,7 +9746,20 @@ void FUN_0037ad30(int param_1,int param_2,int param_3,int param_4)
   if (*(int *)(param_4 + 0x220) == param_3) {
     uVar2 = 4;
   }
-  if (param_3 == 2) {
+  if (param_3 == 0) {
+    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar3, 0, (const char *)(void *)0x69f9b0);
+    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText((param_1 + 0xc) * 0xc, param_2 * 0xc, uVar3, uVar2, (const char *)&gp0xffffa068, (u32)apuStack_10[(char)uStack_4]);
+  }
+  else if (param_3 == 1) {
+    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar3, 0, (const char *)&gp0xffffa4e8);
+    FUN_00523ac8(auStack_50,&gp0xffffa4f0,(((u8 *)&uStack_4)[1]) + 1);
+    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    evtMenuDrawText((param_1 + 0xc) * 0xc, param_2 * 0xc, uVar3, uVar2, (const char *)&gp0xffffa068, (u32)auStack_50);
+  }
+  else if (param_3 == 2) {
     param_2 = param_2 * 0xc;
     uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, param_2, uVar3, 0, (const char *)&gp0xffffa4f8);
@@ -9759,19 +9772,6 @@ void FUN_0037ad30(int param_1,int param_2,int param_3,int param_4)
       uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
       evtMenuDrawText((param_1 + 0xc) * 0xc, param_2, uVar3, uVar2, (const char *)&gp0xffffa500);
     }
-  }
-  else if (param_3 == 1) {
-    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar3, 0, (const char *)&gp0xffffa4e8);
-    FUN_00523ac8(auStack_50,&gp0xffffa4f0,(((u8 *)&uStack_4)[1]) + 1);
-    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    evtMenuDrawText((param_1 + 0xc) * 0xc, param_2 * 0xc, uVar3, uVar2, (const char *)&gp0xffffa068, (u32)auStack_50);
-  }
-  else if (param_3 == 0) {
-    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar3, 0, (const char *)(void *)0x69f9b0);
-    uVar3 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    evtMenuDrawText((param_1 + 0xc) * 0xc, param_2 * 0xc, uVar3, uVar2, (const char *)&gp0xffffa068, (u32)apuStack_10[(char)uStack_4]);
   }
   return;
 }
@@ -14064,6 +14064,7 @@ void FUN_00380a30(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+/* W453 button-polarity chain reshaping: case-1, case-2, and case-3 positive tests lowered verify nd254 -> 175 without changing object/window 816/816; retained. */
 // FUN_00380D70 NONMATCHING
 
 
@@ -14104,12 +14105,10 @@ int FUN_00380d70(int param_1,int param_2,int param_3)
       }
       break;
     case 1:
-      if ((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) {
-        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
-          iVar2 = -1;
-        }
-      } else {
+      if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
         iVar2 = 1;
+      } else if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
+        iVar2 = -1;
       }
       iVar2 = *(int *)(iVar3 + 0x19c) + iVar2;
       if (2 < iVar2) {
@@ -14122,12 +14121,10 @@ int FUN_00380d70(int param_1,int param_2,int param_3)
       break;
     case 2:
       if (*(int *)(iVar3 + 0x198) != 1) {
-        if ((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) {
-          if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
-            iVar2 = -1;
-          }
-        } else {
+        if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
           iVar2 = 1;
+        } else if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
+          iVar2 = -1;
         }
         iVar2 = *(int *)(iVar3 + 0x1a0) + iVar2;
         if (9 < iVar2) {
@@ -14141,28 +14138,20 @@ int FUN_00380d70(int param_1,int param_2,int param_3)
       break;
     case 3:
       if (*(int *)(iVar3 + 0x198) != 1) {
-        if ((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) {
-          if ((*(u16 *)DAT_007e0952_abs & 8) == 0) {
-            if ((*(u16 *)DAT_007e0952_abs & 2) == 0) {
-              if ((*(u16 *)DAT_007e0952_abs & 0x8000) == 0) {
-                if ((*(u16 *)DAT_007e0952_abs & 4) == 0) {
-                  if ((*(u16 *)DAT_007e0952_abs & 1) != 0) {
-                    iVar2 = -100;
-                  }
-                } else {
-                  iVar2 = -10;
-                }
-              } else {
-                iVar2 = -1;
-              }
-            } else {
-              iVar2 = 100;
-            }
-          } else {
-            iVar2 = 10;
-          }
-        } else {
+        if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
           iVar2 = 1;
+        } else {
+          if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
+            iVar2 = 10;
+          } else if ((*(u16 *)DAT_007e0952_abs & 2) != 0) {
+            iVar2 = 100;
+          } else if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
+            iVar2 = -1;
+          } else if ((*(u16 *)DAT_007e0952_abs & 4) != 0) {
+            iVar2 = -10;
+          } else if ((*(u16 *)DAT_007e0952_abs & 1) != 0) {
+            iVar2 = -100;
+          }
         }
         iVar2 = *(int *)(iVar3 + 0x1a4) + iVar2;
         if (0xffff < iVar2) {

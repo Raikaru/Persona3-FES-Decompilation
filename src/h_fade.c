@@ -787,10 +787,10 @@ static void H_Fade_Custom()
     }
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
     alpha = (f32)((sFadeCounter * 255) / sFadeDuration);
+    i = 0;
     red = (f32)sFadeRed;
     green = (f32)sFadeGreen;
     blue = (f32)sFadeBlue;
-    i = 0;
     z = ((HFadeRwGlobals*)rwGlobals_abs)->zBufferNear - 100.0f;
     for (; i < 4; i++)
     {

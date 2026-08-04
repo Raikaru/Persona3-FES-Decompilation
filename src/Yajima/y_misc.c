@@ -12436,9 +12436,9 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
   iVar2 = *(int *)(param_1 + 0x3c);
 
-  if (((DAT_0086e580 == 1) && (sVar4 = FUN_0044f120_y2(DAT_0086e684_abs), param_2 == sVar4)) &&
+  if (((DAT_0086e580 == 1) && (sVar4 = FUN_0044f120_y2(&DAT_0086e684), param_2 == sVar4)) &&
 
-     (sVar4 = FUN_0044f170_y2(DAT_0086e684_abs), param_3 == sVar4)) {
+     (sVar4 = FUN_0044f170_y2(&DAT_0086e684), param_3 == sVar4)) {
 
     uVar7 = FUN_001158b0_y2(0,DAT_007ce6e4,5);
 
@@ -26655,8 +26655,8 @@ void FUN_0044d600(int param_1)
   u8 auStack_40 [16];
   
   
-  iVar2 = DAT_007ce290;
   iVar1 = *(int *)(param_1 + 0x3c);
+  iVar2 = DAT_007ce290;
   cVar3 = *(char *)(iVar1 + 3);
   switch (cVar3) {
   case '\0': {

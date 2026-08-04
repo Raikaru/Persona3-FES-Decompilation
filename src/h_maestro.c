@@ -5269,7 +5269,7 @@ void func_00114e70(s32 orientation,
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    z = D_00960088 - depth;
+    z = *(f32*)D_00960088_abs - depth;
 
     for (i = 0; i < 4; i++)
     {
