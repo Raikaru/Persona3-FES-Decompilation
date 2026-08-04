@@ -3155,7 +3155,7 @@ void FUN_00390ef0(int param_1,int param_2)
 /* W417 declaration-order probe (uVar6 before uVar12) worsened nd33 -> 65; reverted. */
 #pragma push
 #pragma opt_lifetimes on
-// FUN_00391080 NONMATCHING
+// FUN_00391080
 
 
 void FUN_00391080(u32 param_1,u32 param_2)
@@ -3165,7 +3165,7 @@ void FUN_00391080(u32 param_1,u32 param_2)
 {
 
 
-  u32 uVar12;
+  u32 uVar6;
   int iVar11;
 
 
@@ -3177,15 +3177,15 @@ void FUN_00391080(u32 param_1,u32 param_2)
 
   u32 uVar4;
 
-  u32 *puVar5;
+  u32 *puVar9;
 
-  u32 uVar6;
+  u32 uVar12;
  
   u32 uVar7;
 
   int iVar8;
 
-  u32 *puVar9;
+  u32 *puVar5;
 
   int iVar10;
 
@@ -3263,7 +3263,8 @@ void FUN_00391080(u32 param_1,u32 param_2)
 
       for (iVar11 = 0; iVar11 < *(int *)(iVar10 + 0x108); iVar11 = iVar11 + 1) {
 
-        puVar9 = (u32 *)(*(int *)(iVar10 + 0x104) + iVar11 * 0x14);
+        puVar9 = (u32 *)(*(int *)(iVar10 + 0x104));
+        puVar9 = puVar9 + iVar11 * 5;
 
         if (*(short *)((int)puVar9 + 2) != -1) {
 

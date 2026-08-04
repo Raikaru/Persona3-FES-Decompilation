@@ -9169,7 +9169,7 @@ u64 FUN_003fc540(int param_1)
 
 {
 
-  s16 uVar1;
+  s32 uVar1;
 
   const char *pcVar2;
 
@@ -9183,7 +9183,10 @@ u64 FUN_003fc540(int param_1)
 
   
 
-  if ((*(u32 *)(param_1 + 4) & 1) != 0) {
+  if ((*(u32 *)(param_1 + 4) & 1) == 0) {
+    return 0;
+  }
+  else {
     uVar1 = *(s16 *)(param_1 + 0x94);
 
     FUN_0040e3c0_f32(0.0f,0x2b,0x1c,uVar1,0x42,0);
