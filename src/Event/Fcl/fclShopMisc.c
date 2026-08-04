@@ -3159,6 +3159,9 @@ u64 FUN_003f2dc0(int param_1,int param_2)
 
   int sVar4;
 
+  int iVar9;
+  int iStack_4;
+
   struct {
     u16 key;
     u16 pad;
@@ -3169,9 +3172,6 @@ u64 FUN_003f2dc0(int param_1,int param_2)
   u32 uVar7;
 
   int lVar8;
-
-  int iVar9;
-  int iStack_4;
 
   
 
@@ -4598,8 +4598,8 @@ void FUN_003f55b0(int param_1,int param_2,int param_3,int param_4,int param_5,
   int iVar8;
   int iVar9;
   int iVar10;
-  u32 auStack_50[10];
   u8 auStack_20[24];
+  u32 auStack_50[10];
   FclShopFloatPair auStack_8;
 
   iVar9 = 5;

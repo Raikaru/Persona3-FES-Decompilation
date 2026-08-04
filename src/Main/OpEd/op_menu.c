@@ -75,9 +75,8 @@ static inline void opMenuPut(u32 offset, u32 value)
     *(u32*)opMenuData(offset) = value;
 }
 
-static inline void opMenuColor(void* quad, f32 alpha)
+static inline void opMenuColor(void* quad, f32 alpha, u8* color)
 {
-    u8 color[4];
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
@@ -103,10 +102,9 @@ static inline void opMenuSetRect(f32* rect, u32 offset, f32 x, f32 y, f32 width,
     func_0021d8e0(opMenuData(offset), rect);
 }
 
-static void opMenuSetPoly(u32 offset, f32 x, f32 y, f32 width, f32 height,
+static void opMenuSetPoly(f32* poly, u32 offset, f32 x, f32 y, f32 width, f32 height,
                           f32 angle, f32 scaleX, f32 scaleY)
 {
-    f32 poly[8];
     f32 centerX = width * 0.5f;
     f32 centerY = height * 0.5f;
     s32 i;
@@ -181,7 +179,9 @@ void opMenu0026a2c0(void)
     f32 angle;
     f32 pulse;
     f32 scale;
+    u8 color[4];
     f32 rect[6];
+    f32 poly[8];
     s32 i;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
@@ -230,7 +230,7 @@ void opMenu0026a2c0(void)
     fade = *(s32*)((u8*)work + 0x91c);
     alpha = opMenuClamp01(fade, 0, 0x46);
     opMenuSetRect(rect, 0x10, 0.0f, 0.0f, 640.0f, 448.0f);
-    opMenuColor((u8*)work + 0x10, alpha * 255.0f);
+    opMenuColor((u8*)work + 0x10, alpha * 255.0f, color);
 
     pulse = func_0052e878(fGpffff8248 *
                           ((f32)*(s32*)((u8*)work + 0x914) / 500.0f) * 2.0f);
@@ -242,15 +242,13 @@ void opMenu0026a2c0(void)
                   780.0f - (1.0f - (f32)*(s32*)((u8*)work + 0x910) /
                             1300.0f) * 1100.0f,
                   0.0f, 1280.0f, 448.0f);
-    opMenuColor((u8*)work + 0x110,
-                alpha * 255.0f * (pulse * 0.25f + fGpffff80c0));
-    opMenuColor((u8*)work + 0x210,
-                alpha * 255.0f * (pulse * 0.25f + fGpffff80c0));
+    opMenuColor((u8*)work + 0x110, alpha * 255.0f * (pulse * 0.25f + fGpffff80c0), color);
+    opMenuColor((u8*)work + 0x210, alpha * 255.0f * (pulse * 0.25f + fGpffff80c0), color);
 
     angle = fGpffff8248 *
             ((f32)*(s32*)((u8*)work + 0xae8) / 150.0f) * 2.0f;
     pulse = fGpffff8248 * ((func_0052e878(angle) * 1.5f) / 360.0f) * 2.0f;
-    opMenuSetPoly(0x310, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
+    opMenuSetPoly(poly, 0x310, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
                   fGpffff80c0, fGpffff80c0);
 
     angle = fGpffff8248 *
@@ -262,36 +260,36 @@ void opMenu0026a2c0(void)
             *(s32*)((u8*)work + 0xaec) < 0x5f)
             scale += fGpffff82fc *
                      (f32)(*(s32*)((u8*)work + 0xaec) - 0x41) / 30.0f;
-        opMenuSetPoly(0x410, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
+        opMenuSetPoly(poly, 0x410, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
                       scale, scale);
     }
-    opMenuColor((u8*)work + 0x310, 255.0f);
-    opMenuColor((u8*)work + 0x410, 255.0f);
+    opMenuColor((u8*)work + 0x310, 255.0f, color);
+    opMenuColor((u8*)work + 0x410, 255.0f, color);
 
     alpha = opMenuClamp01(fade, 0, 0x46);
     angle = fGpffff8248 *
             (fGpffff82fc + (f32)*(s32*)((u8*)work + 0xae4) / 150.0f) * 2.0f;
     pulse = fGpffff8248 * ((func_0052e878(angle) * 25.0f) / 360.0f) * 2.0f;
-    opMenuSetPoly(0x510, 0.0f, 0.0f, 640.0f, 448.0f,
+    opMenuSetPoly(poly, 0x510, 0.0f, 0.0f, 640.0f, 448.0f,
                   pulse, fGpffff819c, fGpffff819c);
-    opMenuSetPoly(0x610, 0.0f, 0.0f, 640.0f, 448.0f,
+    opMenuSetPoly(poly, 0x610, 0.0f, 0.0f, 640.0f, 448.0f,
                   pulse, fGpffff819c, fGpffff819c);
-    opMenuColor((u8*)work + 0x510, alpha * 255.0f);
-    opMenuColor((u8*)work + 0x610, alpha * 255.0f * 0.6f);
+    opMenuColor((u8*)work + 0x510, alpha * 255.0f, color);
+    opMenuColor((u8*)work + 0x610, alpha * 255.0f * 0.6f, color);
 
     alpha = opMenuClamp01(fade, 0x14, 0x32);
     opMenuSetRect(rect, 0x710, 0.0f, 0.0f, 640.0f, 448.0f);
-    opMenuColor((u8*)work + 0x710, alpha * 204.0f);
+    opMenuColor((u8*)work + 0x710, alpha * 204.0f, color);
     alpha = opMenuClamp01(fade, 0x0a, 0x50);
     opMenuSetRect(rect, 0x810, 0.0f, 0.0f, 640.0f, 448.0f);
-    opMenuColor((u8*)work + 0x810, alpha * 255.0f);
+    opMenuColor((u8*)work + 0x810, alpha * 255.0f, color);
 
     pulse = fade < 20 ? 750.0f :
             fade < 40 ? (1.0f - (f32)(fade - 20) / 20.0f) * 750.0f :
             0.0f;
     frame = func_0021cca0(sprite, 0x15);
     opMenuSetIcon(0x920, frame, pulse, 95.0f);
-    opMenuColor((u8*)work + 0x920, 255.0f);
+    opMenuColor((u8*)work + 0x920, 255.0f, color);
 
     alpha = opMenuClamp01(fade, 0x14, 0x28);
     if ((work[0] & 0x20) == 0)
@@ -305,26 +303,22 @@ void opMenu0026a2c0(void)
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 0x1c);
         opMenuSetIcon(0x1a70, frame, 26.0f + slide, 345.0f);
-        opMenuColor((u8*)work + 0x1a70,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0x1a70, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 0x1d);
         opMenuSetIcon(0x1b70, frame, 26.0f + slide, 345.0f);
-        opMenuColor((u8*)work + 0x1b70,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1b70, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
 
         slot = (u8*)work + 0x1d70;
         shown = opMenuClamp01((s32)fade, 0x19, 0x23);
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 0x1e);
         opMenuSetIcon(0x1d80, frame, 26.0f + slide, 383.0f);
-        opMenuColor((u8*)work + 0x1d80,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0x1d80, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 0x1f);
         opMenuSetIcon(0x1e80, frame, 26.0f + slide, 383.0f);
-        opMenuColor((u8*)work + 0x1e80,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1e80, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
     }
     else
     {
@@ -337,77 +331,63 @@ void opMenu0026a2c0(void)
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 0);
         opMenuSetIcon(0xb10, frame, 20.0f + slide, 298.0f);
-        opMenuColor((u8*)work + 0xb10,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0xb10, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 1);
         opMenuSetIcon(0xc10, frame, 20.0f + slide, 298.0f);
-        opMenuColor((u8*)work + 0xc10,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0xc10, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
         frame = func_0021cca0(sprite, 6);
         opMenuSetIcon(0xd10, frame, 20.0f + slide, 298.0f);
-        opMenuColor((u8*)work + 0xd10,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0xd10, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
 
         slot = (u8*)work + 0xe10;
         shown = opMenuClamp01((s32)fade, 0x19, 0x23);
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 2);
         opMenuSetIcon(0xe20, frame, 20.0f + slide, 323.0f);
-        opMenuColor((u8*)work + 0xe20,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0xe20, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 3);
         opMenuSetIcon(0xf20, frame, 20.0f + slide, 323.0f);
-        opMenuColor((u8*)work + 0xf20,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0xf20, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
         frame = func_0021cca0(sprite, 7);
         opMenuSetIcon(0x1020, frame, 20.0f + slide, 323.0f);
-        opMenuColor((u8*)work + 0x1020,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1020, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
 
         slot = (u8*)work + 0x1120;
         shown = opMenuClamp01((s32)fade, 0x1e, 0x28);
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 4);
         opMenuSetIcon(0x1130, frame, 20.0f + slide, 346.0f);
-        opMenuColor((u8*)work + 0x1130,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0x1130, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 5);
         opMenuSetIcon(0x1230, frame, 20.0f + slide, 346.0f);
-        opMenuColor((u8*)work + 0x1230,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1230, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
         frame = func_0021cca0(sprite, 8);
         opMenuSetIcon(0x1330, frame, 20.0f + slide, 346.0f);
-        opMenuColor((u8*)work + 0x1330,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1330, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
 
         slot = (u8*)work + 0x1430;
         shown = opMenuClamp01((s32)fade, 0x23, 0x2d);
         slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
         frame = func_0021cca0(sprite, 0x19);
         opMenuSetIcon(0x1440, frame, 20.0f + slide, 371.0f);
-        opMenuColor((u8*)work + 0x1440,
-                    (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
-                    255.0f * shown);
+        opMenuColor((u8*)work + 0x1440, (1.0f - (f32)*(s32*)(slot + 4) / 16.0f) *
+        255.0f * shown, color);
         frame = func_0021cca0(sprite, 0x1a);
         opMenuSetIcon(0x1540, frame, 20.0f + slide, 371.0f);
-        opMenuColor((u8*)work + 0x1540,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1540, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
         frame = func_0021cca0(sprite, 0x1b);
         opMenuSetIcon(0x1640, frame, 20.0f + slide, 371.0f);
-        opMenuColor((u8*)work + 0x1640,
-                    (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown);
+        opMenuColor((u8*)work + 0x1640, (f32)*(s32*)(slot + 4) / 16.0f * 255.0f * shown, color);
 
         frame = func_0021cca0(sprite, 0x22);
         opMenuSetIcon(0x1750, frame, 323.0f, 115.0f);
         frame = func_0021cca0(sprite, 0x23);
         opMenuSetIcon(0x1850, frame, 323.0f, 115.0f);
-        opMenuColor((u8*)work + 0x1750,
-                    (f32)work[0x1740 / 4] / 8.0f * 255.0f);
-        opMenuColor((u8*)work + 0x1850,
-                    (f32)work[0x1740 / 4] / 8.0f * 255.0f);
+        opMenuColor((u8*)work + 0x1750, (f32)work[0x1740 / 4] / 8.0f * 255.0f, color);
+        opMenuColor((u8*)work + 0x1850, (f32)work[0x1740 / 4] / 8.0f * 255.0f, color);
     }
 
     rect[0] = 0.0f;

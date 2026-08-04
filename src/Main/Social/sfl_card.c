@@ -2827,7 +2827,6 @@ void bpTexApplyActions(void)
     f32 offsetsA[3];
     s32 difference;
     u32 tempIndex;
-    u32* direct[8];
     u32* directOut[8];
     struct
     {

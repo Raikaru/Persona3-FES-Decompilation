@@ -160,8 +160,9 @@ typedef struct FldFrameCollisionCollector
     u32 mode;
     u32 count;
     u32 blockingCount;
-    u8 tail[0x88];
+    u8 tail0[0x28];
     void* owner;
+    u8 tail1[0x60];
 } FldFrameCollisionCollector;
 typedef struct FldFrameCollisionQuery
 {
@@ -1844,7 +1845,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     {
         memset_k_fldFrame_typed(&collector.points[i], 0, sizeof(RwV3d));
         memset_k_fldFrame_typed(&collector.normals[i], 0, sizeof(RwV3d));
-        collector.distances[i] = 1.0e30f;
+        collector.distances[i] = fGpffff820c;
     }
     collector.count = 0;
     if (collision == NULL)
@@ -1855,7 +1856,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     func_00464020(collision, (u8*)&query + 0x20, func_001aaf30, &collector);
     for (i = 0; i < (s32)collector.count; i++)
     {
-        if (collector.distances[i] < 1.0e30f)
+        if (collector.distances[i] < fGpffff820c)
         {
             diff.x = query.center.x - collector.points[i].x;
             diff.y = query.center.y - collector.points[i].y;

@@ -921,14 +921,8 @@ extern long FUN_001c6450(u32 param_1, u32 param_2, u32 param_3, void *param_4);
  extern u32 FUN_001c6450_f32(u32 param_1,void *param_2,float param_3,float param_4);
 extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
- #pragma alias FUN_001c6720_u32 FUN_001c6720
- extern u32 FUN_001c6720_u32(u32 param_1,u32 param_2);
-#pragma alias FUN_001c6720_f32 FUN_001c6720
-extern u32 FUN_001c6720_f32(u32 param_1,float param_2);
-#pragma alias FUN_001c6720_f32first FUN_001c6720
-extern u32 FUN_001c6720_f32first(float param_1,u32 param_2);
 extern u32 FUN_001c65e0_typed(void *param_1);
-extern long FUN_001c6720(u32 param_1, u32 param_2);
+extern u32 FUN_001c6720(u32 param_1, float param_2);
 extern code FUN_001c6d70;
 extern code FUN_001c6dd0;
 #pragma alias FUN_001c6d70_typed FUN_001c6d70
@@ -5504,12 +5498,12 @@ u8 FUN_0045e170(int param_1)
 u32 FUN_0045e3e0(int param_1)
 
 {
-  u32 *puVar1;
+  int *puVar1;
   int lVar2;
   int iVar3;
   float fVar4;
   
-  puVar1 = *(u32 **)((int)param_1 + 0x3c);
+  puVar1 = *(int **)((int)param_1 + 0x3c);
   if (DAT_007ce718 == 0) {
     return 0;
   }

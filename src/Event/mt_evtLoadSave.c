@@ -2681,14 +2681,14 @@ void FUN_003905f0(int param_1,int param_2)
 
         iVar9 = *(int *)(param_1 + 0x9c) + iVar7;
 
-        half4.f0 = *(s16 *)(iVar9 + 0xc);
-        half4.f1 = *(s16 *)(iVar9 + 0xe);
-        half4.f2 = *(s16 *)(iVar9 + 0x10);
-        half4.f3 = *(s16 *)(iVar9 + 0x12);
-        *(s16 *)(iVar5 + 8) = half4.f0;
-        *(s16 *)(iVar5 + 10) = half4.f1;
-        *(s16 *)(iVar5 + 0xc) = half4.f2;
-        *(s16 *)(iVar5 + 0xe) = half4.f3;
+        half4.f0 = *(short *)(iVar9 + 0xc);
+        half4.f1 = *(short *)(iVar9 + 0xe);
+        half4.f2 = *(short *)(iVar9 + 0x10);
+        half4.f3 = *(short *)(iVar9 + 0x12);
+        *(short *)(iVar5 + 8) = half4.f0;
+        *(short *)(iVar5 + 0xa) = half4.f1;
+        *(short *)(iVar5 + 0xc) = half4.f2;
+        *(short *)(iVar5 + 0xe) = half4.f3;
 
         if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) != 4) {
 

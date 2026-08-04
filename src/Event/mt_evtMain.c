@@ -561,6 +561,9 @@ extern void FUN_0038c540_evt(int param_1,int param_2,int param_3,u32 param_4,f32
 #pragma alias FUN_003b8310_evt FUN_003b8310
 extern u32 FUN_003b8310_evt(u16 param_1,int param_2);
 extern u32 FUN_003b5d10_evt(u32 param_1);
+u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4);
+f32 FUN_00318870(u32 param_1,u16 param_2);
+u32 FUN_003185b0(u32 param_1,u16 param_2);
 #pragma alias FUN_00360ed0_evt FUN_00360ed0
 extern u32 FUN_00360ed0_evt(u32 param_1);
 #pragma alias FUN_003b9550_evt FUN_003b9550
@@ -5894,7 +5897,7 @@ u16 * FUN_00366540(u32 param_1,int param_2,int param_3,int param_4)
         }
         iStack_4 = 0;
         uStack_8 = 0;
-        lVar2 = FUN_003976f0(param_1,*(char *)((int)puVar1 + 0x15),&iStack_4,&uStack_8);
+        lVar2 = FUN_003976f0(param_1,*(char *)((int)puVar1 + 0x15),(u32 *)&iStack_4,(u32 *)&uStack_8);
         if (lVar2 == 0) {
           goto next;
         }
@@ -5924,8 +5927,6 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5)
 
 {
 
-  u32 bVar1;
-
   char cVar2;
 
   u32 lVar3;
@@ -5943,6 +5944,8 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5)
   int unaff_s8;
 
   float fVar9;
+
+  u32 bVar1;
 
   int uStack_20;
 
@@ -6011,7 +6014,7 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5)
 
           else if (cVar2 == '\x01') {
 
-            lVar3 = FUN_003976f0(param_4,*(char *)((int)puVar5 + 0x15),auStack_4,&iStack_8);
+            lVar3 = FUN_003976f0(param_4,*(char *)((int)puVar5 + 0x15),(u32 *)auStack_4,(u32 *)&iStack_8);
 
             if (lVar3 != 1) goto LAB_00366928;
 
@@ -6053,7 +6056,7 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5)
 
               if ((cVar2 != '\x01') ||
 
-                 (lVar3 = FUN_003976f0(param_4,(char)puVar5[0x12],&uStack_c,&iStack_10), lVar3 != 1)
+                 (lVar3 = FUN_003976f0(param_4,(char)puVar5[0x12],&uStack_c,(u32 *)&iStack_10), lVar3 != 1)
 
                  ) goto LAB_00366928;
 
@@ -9393,6 +9396,7 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
   int iVar4;
   int iVar5;
   int extraout_t0;
+
   int limit;
 
   iVar5 = (int)param_3;
@@ -9433,7 +9437,7 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
       psVar3[1] = (short)*(u32 *)(iVar5 + 0x16c);
       break;
     }
-    FUN_0036f640(param_3);
+    FUN_0036f640_evt(param_3);
   }
   return 0;
 }

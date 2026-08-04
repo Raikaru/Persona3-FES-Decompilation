@@ -1638,7 +1638,7 @@ void func_001bd950(void)
     fieldResource = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     heroResource = (ResrcModelChar*)MT_Scene_GetRes(0x400);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-    modelNpc = MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    modelNpc = MT_Scene_GetResListHead(RESRC_TYPE_11);
 
     if (heroResource != NULL)
     {
