@@ -1529,6 +1529,15 @@ void func_001aaac0(KwlnTask* task, u32 value)
  * 348 sll, 392 addu). W422 offsetPc/offsetEc split, shared-offset merge,
  * and signed offset split each gave 9 differing fndiff words at
  * object524/window528; the a2/a3 role cycle remains. */
+/* W463 direct residual: K_FldFrame_IsPointInTriangle has one differing word,
+ * at function offset +56. Candidate emits an unconditional b +104 directly
+ * to the join; retail emits b +68, chaining through the arm-exit branch at
+ * +68 which itself goes to +104. All other 207 function words are identical.
+ * Measured shape probes from nd1: axis-shape nd6/832; inner-invert nd10/832;
+ * conditional-expression nd9/832; single-case-switch variants nd643/856 and
+ * nd627/872 (both over the 832-byte window); explicit join-goto nd1/832;
+ * semantically-wrong mirrored outer condition nd2/832; symmetric nested-if
+ * nd22/832. */
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
