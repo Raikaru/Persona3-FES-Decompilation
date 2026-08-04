@@ -84,6 +84,10 @@ static inline u8* sflPselBytes(u32* work, u32 offset)
 {
     return (u8*)work + offset;
 }
+static inline u8* sflPselAddOffset(u32 offset, u8* base)
+{
+    return (u8*)((u32)offset + (u32)base);
+}
 
 static u32 sflPselReadU32(const void* object, u32 offset)
 {
@@ -414,14 +418,16 @@ void func_00215fc0(void)
                 }
                 else if ((DAT_007e0952_a[0] & 8) != 0)
                 {
-                    u32 current = *(u32*)(work + 0x5c68);
-                    u32 total = *(u32*)(work + 0x5c6c);
+                    s32 current = *(u32*)(work + 0x5c68);
+                    s32 total = *(u32*)(work + 0x5c6c);
                     if (current < total - 1)
                     {
                         current++;
                         *(u32*)(work + 0x5c68) = current;
-                        if (current >= *(u32*)(work + 0x5c60) + *(u32*)(work + 0x5c64) - 1 &&
-                            *(u32*)(work + 0x5c60) < total - *(u32*)(work + 0x5c64))
+                        if (current >= (s32)*(u32*)(work + 0x5c60) +
+                                (s32)*(u32*)(work + 0x5c64) - 1 &&
+                            (s32)*(u32*)(work + 0x5c60) < total -
+                                (s32)*(u32*)(work + 0x5c64))
                         {
                             (*(u32*)(work + 0x5c60))++;
                         }
@@ -433,20 +439,21 @@ void func_00215fc0(void)
                     }
                     updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
-                    sflPersonaSetPersona((u16)*(u16*)(work + 0x10 +
-                                                *(u32*)(work + 0x52e0 + *(u32*)(work + 0x5c68) * 4) *
-                                                    0x10 + 4));
+                    sflPersonaSetPersona((u16)*(u16*)sflPselAddOffset(
+                        0x14 + *(u32*)(work + 0x52e0 +
+                                       *(u32*)(work + 0x5c68) * 4) * 0x10,
+                        work));
                 }
                 else if ((DAT_007e0952_a[0] & 4) != 0)
                 {
-                    u32 current = *(u32*)(work + 0x5c68);
-                    u32 total = *(u32*)(work + 0x5c6c);
+                    s32 current = *(u32*)(work + 0x5c68);
+                    s32 total = *(u32*)(work + 0x5c6c);
                     if (current > 0)
                     {
                         current--;
                         *(u32*)(work + 0x5c68) = current;
-                        if (*(u32*)(work + 0x5c60) >= current &&
-                            *(u32*)(work + 0x5c60) > 0)
+                        if ((s32)*(u32*)(work + 0x5c60) >= current &&
+                            (s32)*(u32*)(work + 0x5c60) > 0)
                         {
                             (*(u32*)(work + 0x5c60))--;
                         }

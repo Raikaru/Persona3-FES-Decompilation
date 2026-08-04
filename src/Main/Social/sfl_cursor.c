@@ -105,9 +105,9 @@ void FUN_0025a130(void)
   f32 f14;
   u32 *puVar1;
   f32 fVar4;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_10;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_18;
-  volatile /* Removing this function's qualifier batch worsens FUN_0025A130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_14;
+  volatile f32 fStack_10;
+  volatile f32 fStack_18;
+  volatile f32 fStack_14;
 
   K_ASSERT(sSflCursor != NULL, 0x47);
   puVar1 = sSflCursor;

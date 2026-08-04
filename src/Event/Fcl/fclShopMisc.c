@@ -6869,6 +6869,8 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 {
 
   short sVar1;
+  u32 *puVar2;
+
 
 
   int lVar3;
@@ -6890,6 +6892,7 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
   iVar7 = 0;
 
   iVar6 = param_4;
+  puVar2 = *(u32 **)(*(int *)(iVar6 + 0x24) + 0x44);
 
 
   lVar3 = FUN_003c6e10(param_4);
@@ -6912,7 +6915,7 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
       uVar8 = (iVar4 * 0xff) / 5;
     }
     if (*(int *)(iVar6 + 0xc) == param_5) {
-      FUN_0040e3c0(0,param_1,param_2,uVar8 & 0xff,0x17,0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,uVar8 & 0xff,0x17,0);
       FUN_003f55b0(iVar5,param_2,iVar7,param_4,param_5,1);
     } else {
       FUN_003f55b0(iVar5,param_2,iVar7,param_4,param_5,0);
@@ -6922,7 +6925,7 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
     iVar5 = param_1 + (int)(short)*(u16 *)(*(int *)(iVar6 + 0x24) + 0x6c);
     iVar7 = param_2 + (int)*(short *)(*(int *)(iVar6 + 0x24) + 0x6e);
     if (*(int *)(iVar6 + 0xc) == param_5) {
-      FUN_0040e3c0(0,iVar5,iVar7,(u8)param_3,0x17,0);
+      FUN_0040e3c0_f32(0.0f,iVar5,iVar7,(u8)param_3,0x17,0);
       FUN_003f55b0(iVar5,iVar7,param_3,param_4,param_5,1);
     } else {
       FUN_003f55b0(iVar5,iVar7,param_3,param_4,param_5,0);
@@ -6930,8 +6933,8 @@ void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5)
     break;
   case 1:
     if (*(int *)(iVar6 + 0xc) == param_5) {
-      if ((*(u32 *)(*(int *)(iVar6 + 0x24) + 0x44) & 1) == 0) {
-        FUN_0040e3c0(0,param_1,param_2,(u8)param_3,0x17,0);
+      if ((*puVar2 & 1) == 0) {
+        FUN_0040e3c0_f32(0.0f,param_1,param_2,(u8)param_3,0x17,0);
       }
       FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,1);
     } else {

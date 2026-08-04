@@ -127,7 +127,7 @@ void FUN_0024c110(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * fade);
+    color[3] = (u8)(255.0f * fade);
     func_0021d950(work + 0x110, color);
 
     if (*(s32*)(work + 0xc) < 10) {
@@ -195,7 +195,7 @@ void FUN_0024c110(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * baseY);
+    color[3] = (u8)(255.0f * baseY);
     func_0021d950(work + 0x210, color);
     timer = *(s32*)(work + 0xc);
 
@@ -258,7 +258,7 @@ void FUN_0024c110(void)
     *(f32*)(work + 0x374) = (f32)color[1];
     *(f32*)(work + 0x378) = (f32)color[2];
     *(f32*)(work + 0x37c) = (f32)color[3];
-    color[3] = (u8)(u32)(255.0f * baseX);
+    color[3] = (u8)(255.0f * baseX);
     *(f32*)(work + 0x3b0) = (f32)color[0];
     *(f32*)(work + 0x3b4) = (f32)color[1];
     *(f32*)(work + 0x3b8) = (f32)color[2];

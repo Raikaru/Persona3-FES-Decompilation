@@ -78,6 +78,9 @@ extern int FUN_00194b20();
 
 extern void FUN_003877c0(float param_1, float param_2, float *param_3, float *param_4,
                          u32 param_5, u8 *param_6);
+extern void FUN_00388000(float z, float alpha, float *pos, float *size,
+                         float *uv0, float *uv1, u32 *texturePtr,
+                         RwRGBA *color, u32 flags);
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
@@ -1286,8 +1289,9 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
 
   ((u8 *)&uStack_4)[3] = uVar3;
 
-  FUN_00388000(0x40800000,*(u32 *)(param_1 + 0xac),&fStack_10,&fStack_18,&uStack_20,
-               &uStack_28,param_4,&uStack_4,0);
+  FUN_00388000(4.0f, (f32)*(float *)(param_1 + 0xac), &fStack_10, &fStack_18,
+               (float *)&uStack_20, (float *)&uStack_28, (u32 *)param_4,
+               (RwRGBA *)&uStack_4, 0);
 
   *param_2 = DAT_007caf30 * (float)param_3;
 
@@ -1422,8 +1426,9 @@ u64 FUN_003a0220(int param_1)
 
         uStack_c = 0x42c00000;
 
-        FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
-                     &uStack_28,*(u32 *)(iVar1 + 0x68),&uStack_4,0);
+        FUN_00388000(5.0f, (f32)*(float *)(iVar1 + 0xac), afStack_18 + 2, afStack_18,
+                     (float *)&uStack_20, (float *)&uStack_28,
+                     (u32 *)*(u32 *)(iVar1 + 0x68), (RwRGBA *)&uStack_4, 0);
 
       }
 
@@ -1445,8 +1450,9 @@ u64 FUN_003a0220(int param_1)
 
         uStack_c = 0x42c00000;
 
-        FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
-                     &uStack_28,*(u32 *)(iVar1 + 0x6c),&uStack_4,0);
+        FUN_00388000(5.0f, (f32)*(float *)(iVar1 + 0xac), afStack_18 + 2, afStack_18,
+                     (float *)&uStack_20, (float *)&uStack_28,
+                     (u32 *)*(u32 *)(iVar1 + 0x6c), (RwRGBA *)&uStack_4, 0);
 
       }
 

@@ -1159,7 +1159,7 @@ void FUN_00386e40(int param_1,u32 param_2);
 void FUN_00386e50(void);
 void FUN_00386f70(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_003877c0(float param_1,int param_2,int param_3,u32 *param_4,u8 *param_5);
-void FUN_00388000(float param_1,u32 param_2,float *param_3,float *param_4,u32 *param_5 ,u32 *param_6,u32 *param_7,u8 *param_8,long param_9);
+void FUN_00388000(float param_1,float param_2,float *param_3,float *param_4,float *param_5,float *param_6,u32 *param_7,RwRGBA *param_8,u32 param_9);
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_00388ff0(int param_1);
 void FUN_003890e0(int param_1);

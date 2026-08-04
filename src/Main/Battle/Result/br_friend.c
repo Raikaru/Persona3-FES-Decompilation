@@ -1006,6 +1006,7 @@ u32 func_001faea0(void)
     if (*(u16 *)(iVar5 + 2) == 0xcc) {
       func_001fb130(uVar2,0xcd);
     }
+    break;
   default:
     K_ASSERT(false, 0x2ca);
     break;
