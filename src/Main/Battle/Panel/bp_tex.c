@@ -3455,6 +3455,7 @@ void FUN_00225040(void)
     s32 j;
     void (**setState)(u32, u32);
     void (**setQuad)(u32*, u32, u32, u32, u32);
+    void (**setQuad2)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -3487,8 +3488,9 @@ void FUN_00225040(void)
         texture = FUN_0021cce0(resource);
         (*setState)(1, texture);
 
-        (*setQuad)((u32*)record, 4, 0, 1, 2);
-        (*setQuad)((u32*)record, 4, 0, 2, 3);
+        setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad2)((u32*)record, 4, 0, 1, 2);
+        (*setQuad2)((u32*)record, 4, 0, 2, 3);
 
         texture = FUN_00239140(1);
         (*setState)(1, texture);

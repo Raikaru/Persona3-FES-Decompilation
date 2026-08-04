@@ -5629,11 +5629,11 @@ void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float para
   int *piVar2;
 
 
-  u32 uVar3;
+  u32 uVar5;
 
   int iVar4;
 
-  u32 uVar5;
+  u32 uVar3;
 
   int *callbacks;
 
@@ -5840,9 +5840,9 @@ void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3)
 
   int iVar5;
 
-  u32 uVar6;
-
   u32 uVar7;
+
+  u32 uVar6;
 
   
 

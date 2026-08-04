@@ -1416,7 +1416,7 @@ void func_001f7170(void)
 // FUN_001f7210 NONMATCHING
 void func_001f7210(void)
 {
-    u8 *work = sBrReward;
+    u8 *work;
     u32 slot;
     u32 entry_idx;
     u8 *entry;
@@ -1443,7 +1443,8 @@ void func_001f7210(void)
     s16 *apply_ptr;
     u32 amount;
     u32 new_val;
-    K_ASSERT(work != NULL, 0x8c);
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     debug_val = 0;
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
@@ -2617,7 +2618,8 @@ void sflResult001f9a80(void)
             float scale[3];
             float origin[2] = {(float)i * 220.0f + 320.0f, 184.0f};
             float rect[4];
-            float quad[3];
+            float axis[3];
+            float rotation[4];
             f32 frame;
 
             scale[0] = 10.0f;
@@ -2628,11 +2630,11 @@ void sflResult001f9a80(void)
             func_0020c400_y2(sprite + 0xc, rect, frame, origin);
             rect[1] += 100.0f;
             sflResSetSpritePosition_y2(sprite + 0xc, rect);
-            quad[0] = 0.0f;
-            quad[1] = 1.0f;
-            quad[2] = 0.0f;
-            func_004bdde0(180.0f, quad, quad, 0);
-            sflResSetSpriteRotation_y2(sprite + 0xc, quad);
+            axis[0] = 0.0f;
+            axis[1] = 1.0f;
+            axis[2] = 0.0f;
+            func_004bdde0(180.0f, rotation, axis, 0);
+            sflResSetSpriteRotation_y2(sprite + 0xc, rotation);
         }
         *(u32*)(base + 0x36d8) = 0;
         *(u32*)(base + 0x36dc) = 0;

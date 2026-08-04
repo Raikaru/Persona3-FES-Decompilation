@@ -65,16 +65,42 @@ def bodies(rows):
 
 
 def chains(text):
-    """Longest run of `X == const` tests on one subject. Returns (subj, consts)."""
+    """Longest SYNTACTIC else-if run on one subject. Returns (subj, consts).
+
+    Must be nesting-aware. The first version simply grouped every `X == const`
+    test in the body, which reported mt_evtMenu `003760a0` as a 40-case chain
+    when it is several independent nested chains, and op_root `00265030` as a
+    3-case chain when those are singleton checks in mutually exclusive branches.
+    Both cost a lane a probe. A run only counts when each test after the first
+    is an `else if` at the SAME brace depth as its predecessor.
+    """
+    depth, runs, cur = 0, [], None
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        m = IFEQ.match(text, i) if c in "ie" else None
+        if m:
+            subj = " ".join(m.group(1).split())
+            k = int(m.group(2), 0)
+            chained = m.group(0).lstrip().startswith("else")
+            if (cur and chained and cur["depth"] == depth
+                    and cur["subj"] == subj):
+                cur["ks"].append(k)
+            else:
+                cur = {"depth": depth, "subj": subj, "ks": [k]}
+                runs.append(cur)
+            i = m.end()
+            continue
+        i += 1
     best = ("", [])
-    bysubj = {}
-    for m in IFEQ.finditer(text):
-        subj = " ".join(m.group(1).split())
-        bysubj.setdefault(subj, []).append(int(m.group(2), 0))
-    for subj, ks in bysubj.items():
-        uniq = list(dict.fromkeys(ks))
+    for r in runs:
+        uniq = list(dict.fromkeys(r["ks"]))
         if len(uniq) > len(best[1]):
-            best = (subj, uniq)
+            best = (r["subj"], uniq)
     return best
 
 

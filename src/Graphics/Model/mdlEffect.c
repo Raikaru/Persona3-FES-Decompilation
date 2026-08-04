@@ -38570,7 +38570,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
 
 
 
-// FUN_00348DA0 NONMATCHING
+// FUN_00348DA0
 
 
 void FUN_00348da0(int param_1,u32 *param_2)
@@ -38586,13 +38586,13 @@ void FUN_00348da0(int param_1,u32 *param_2)
   u8 auStack_210 [256];
 
   u32 uStack_4;
-  void (**setState)(int, int);
+  void (**setState)(int, u32);
   void (**setBuffer)(int, void *, int, void *, int);
 
   
 
   FUN_004d81b0(2,&uStack_4);
-  setState = (void (**)(int, int))DAT_00960090_abs;
+  setState = (void (**)(int, u32))DAT_00960090_abs;
   (*setState)(1,*param_2);
 
   FUN_003294d0();

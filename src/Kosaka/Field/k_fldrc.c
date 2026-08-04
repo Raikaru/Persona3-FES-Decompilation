@@ -2371,14 +2371,9 @@ void FUN_001b3e50(void* camera, u32* resource)
     fstate = (f32*)FUN_00198570();
     savedFog = *(RwV4d*)(fstate + 6);
     state = (u32*)FUN_00198570();
-    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
-    savedState = savedStates;
-    for (count = 8; count > 0; count--)
+    for (count = 0; count < 16; count++)
     {
-        savedState[0] = stateData[0];
-        savedState[1] = stateData[1];
-        stateData += 2;
-        savedState += 2;
+        savedStates[count] = ((u32*)(*(u32*)((u8*)state + 4) + 0x10))[count];
     }
     light = FUN_00198560();
     value = FUN_0019fd40();

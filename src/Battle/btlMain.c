@@ -586,18 +586,31 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     encount = &gEncountTbl[*(u16*)((u8*)gBtl->startInfo.enmUnits + 8)];
     encountFlags = *(u32*)encount;
     useSpecialFormation = 0;
-    if ((encountFlags & 0x20) == 0)
+    if ((encountFlags & 0x20) != 0)
+    {
+        if ((encountFlags & 0x10) != 0)
+        {
+            FUN_0029a690(1);
+        }
+        else
+        {
+            FUN_002fac80();
+            (*(u16*)((u8*)gBtl + (0x1a))) = 0;
+        }
+    }
+    else
     {
         battleMode = FUN_002d50c0();
         (*(u16*)((u8*)gBtl + (0x1a))) = battleMode;
-        if (battleMode == 2)
+        if (battleMode == 0)
         {
-            FUN_0029a690(1);
-            gBtl->order.flags |= 4;
-            if ((encountFlags & 0x200) == 0)
+            FUN_0029a750();
+            if ((gBtl->startInfo.unk_00 & 4) != 0)
             {
-                FUN_001febf0(1);
-                gBtl->flags |= 0x100000;
+                for (j = 0; j < FUN_002ffbc0(0xc); j++)
+                {
+                    FUN_0029abe0(FUN_0029ad20());
+                }
             }
         }
         else if (battleMode == 1)
@@ -612,26 +625,16 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
             }
             useSpecialFormation = 1;
         }
-        else if (battleMode == 0)
+        else if (battleMode == 2)
         {
-            FUN_0029a750();
-            if ((gBtl->startInfo.unk_00 & 4) != 0)
+            FUN_0029a690(1);
+            gBtl->order.flags |= 4;
+            if ((encountFlags & 0x200) == 0)
             {
-                for (j = 0; j < FUN_002ffbc0(0xc); j++)
-                {
-                    FUN_0029abe0(FUN_0029ad20());
-                }
+                FUN_001febf0(1);
+                gBtl->flags |= 0x100000;
             }
         }
-    }
-    else if ((encountFlags & 0x10) == 0)
-    {
-        FUN_002fac80();
-        (*(u16*)((u8*)gBtl + (0x1a))) = 0;
-    }
-    else
-    {
-        FUN_0029a690(1);
     }
     if ((gBtl->startInfo.unk_00 & 8) != 0)
     {
