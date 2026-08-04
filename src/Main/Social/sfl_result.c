@@ -2343,7 +2343,7 @@ void sflResult001f9100_y2(void)
 /* W418 rate choice: direct-return rewrites for cases 8+12 improved 465/1212B (0.3837) to 400/1188B (0.3367); case 10 was reverted because its 444/1200B (0.3700) combination was worse. Cases 1/3 direct-return probes regressed to nd632/1168B and nd495/1168B. */
 #pragma push
 #pragma opt_lifetimes on
-// FUN_001f9170 NONMATCHING
+// FUN_001f9170
 u32 sflResult001f9170(u32 player)
 {
     s32 j;
@@ -2353,7 +2353,7 @@ u32 sflResult001f9170(u32 player)
     s32 memberCount;
     flags = (char*)func_00209d00() + player * 0x1a;
     i = 0;
-    for (; i <= 0xc; i++) {
+    for (; i < 0xd; i++) {
         if (flags[i * 2] == 0) {
             continue;
         }
@@ -2410,7 +2410,7 @@ u32 sflResult001f9170(u32 player)
             break;
         case 7: {
             u16 condition = datGetPhysicalCondition(1);
-            if ((u32)(u16)(condition - 3) < 3) {
+            if ((u32)(condition - 3) < 3) {
                 return 1;
             }
             break;
@@ -2420,8 +2420,11 @@ u32 sflResult001f9170(u32 player)
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition == 3 || condition == 4 || condition == 5) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 9: {
@@ -2452,8 +2455,11 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetPhysicalCondition(members[j]) != 2) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         }

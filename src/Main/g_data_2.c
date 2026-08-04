@@ -1105,9 +1105,10 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
     return true;
 }
 
-// FUN_00179360 NONMATCHING
+// FUN_00179360
 void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
 {
+    u32 group;
     (void)saveType;
 
     /* Scalar records: retail bodies 0x179ad8..0x17a01c. */
@@ -1232,8 +1233,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x800:
         case 0x900:
         case 0xa00:
+            group = id >> 8;
             if (size == 4)
-                FUN_00521250(D_00834010 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + (group - 1) * 0x364, data, size);
             break;
         case 0x101:
         case 0x201:
@@ -1245,8 +1247,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x801:
         case 0x901:
         case 0xa01:
+            group = id >> 8;
             if (size == 0x50)
-                FUN_00521250(D_00834010 + 4 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 4 + (group - 1) * 0x364, data, size);
             break;
         case 0x102:
         case 0x202:
@@ -1258,8 +1261,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x802:
         case 0x902:
         case 0xa02:
+            group = id >> 8;
             if (size == 8)
-                FUN_00521250(D_00834010 + 0x54 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x54 + (group - 1) * 0x364, data, size);
             break;
         case 0x103:
         case 0x203:
@@ -1271,8 +1275,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x803:
         case 0x903:
         case 0xa03:
+            group = id >> 8;
             if (size == 0x50)
-                FUN_00521250(D_00834010 + 0x5c + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x5c + (group - 1) * 0x364, data, size);
             break;
         case 0x104:
         case 0x204:
@@ -1284,8 +1289,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x804:
         case 0x904:
         case 0xa04:
+            group = id >> 8;
             if (size == 0x30)
-                FUN_00521250(D_00834010 + 0xac + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0xac + (group - 1) * 0x364, data, size);
             break;
         case 0x105:
         case 0x205:
@@ -1297,8 +1303,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x805:
         case 0x905:
         case 0xa05:
+            group = id >> 8;
             if (size == 0x34)
-                FUN_00521250(D_00834010 + 0xdc + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0xdc + (group - 1) * 0x364, data, size);
             break;
         case 0x106:
         case 0x206:
@@ -1310,8 +1317,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x806:
         case 0x906:
         case 0xa06:
+            group = id >> 8;
             if (size == 0x10)
-                FUN_00521250(D_00834010 + 0x110 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x110 + (group - 1) * 0x364, data, size);
             break;
         case 0x107:
         case 0x207:
@@ -1323,8 +1331,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x807:
         case 0x907:
         case 0xa07:
+            group = id >> 8;
             if (size == 0x10)
-                FUN_00521250(D_00834010 + 0x120 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x120 + (group - 1) * 0x364, data, size);
             break;
         case 0x108:
         case 0x208:
@@ -1336,8 +1345,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x808:
         case 0x908:
         case 0xa08:
+            group = id >> 8;
             if (size == 0x50)
-                FUN_00521250(D_00834010 + 0x130 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x130 + (group - 1) * 0x364, data, size);
             break;
         case 0x109:
         case 0x209:
@@ -1349,8 +1359,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x809:
         case 0x909:
         case 0xa09:
+            group = id >> 8;
             if (size == 0x190)
-                FUN_00521250(D_00834010 + 0x180 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x180 + (group - 1) * 0x364, data, size);
             break;
         case 0x10a:
         case 0x20a:
@@ -1362,8 +1373,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x80a:
         case 0x90a:
         case 0xa0a:
+            group = id >> 8;
             if (size == 0x50)
-                FUN_00521250(D_00834010 + 0x310 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x310 + (group - 1) * 0x364, data, size);
             break;
         case 0x10b:
         case 0x20b:
@@ -1375,8 +1387,9 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
         case 0x80b:
         case 0x90b:
         case 0xa0b:
+            group = id >> 8;
             if (size == 4)
-                FUN_00521250(D_00834010 + 0x360 + ((id >> 8) - 1) * 0x364, data, size);
+                FUN_00521250(D_00834010 + 0x360 + (group - 1) * 0x364, data, size);
             break;
 
         case 0x1000:

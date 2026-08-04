@@ -3317,9 +3317,9 @@ void FUN_00204CC0(void)
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
+    rowBase = work + 0x4a90;
     K_ASSERT((*(u32*)work & 0x10) != 0, 0xd47);
     FUN_00205000();
-    rowBase = work + 0x4a90;
     for (i = 0; i < *(u32*)(work + 0x3ac); i++)
     {
         entry = work + (*(u32*)(work + 0x76f8) + i) * 0x18 + 0x2e0;
@@ -3604,8 +3604,8 @@ void FUN_002057C0(void)
     u8* work;
     u8* entry;
     u32 i;
-    u32 count;
     u32 id;
+    u32 count;
     u32 handle;
     u32 type;
     u32 index;
@@ -3622,34 +3622,40 @@ void FUN_002057C0(void)
         case 7:
         case 9:
             break;
+        case 6:
+            if (datGetFlag(0x121a) == 0) continue;
+            break;
         case 2:
-            if (datGetFlag(0x121b) != 0) continue;
+            if (datGetFlag(0x121b) == 0) continue;
             break;
         case 3:
-            if (datGetFlag(0x121c) != 0) continue;
+            if (datGetFlag(0x121c) == 0) continue;
             break;
         case 4:
-            if (datGetFlag(0x121d) != 0) continue;
+            if (datGetFlag(0x121d) == 0) continue;
             break;
         case 5:
-            if (datGetFlag(0x121e) != 0) continue;
-            break;
-        case 6:
-            if (datGetFlag(0x121a) != 0) continue;
             break;
         case 8:
+            if (datGetFlag(0x121e) == 0) continue;
             break;
         case 10:
-            entry = work + work[0x7700 / 4] * 0x18 + 0x2e0;
+            entry = work + *(u32*)(work + 0x7700) * 0x18 + 0x2e0;
             type = *(u32*)(entry + 4);
             if (type != 2)
             {
                 if (type == 1)
                 {
                     if (*(u16*)(entry + 0xc) == 3)
+                        break;
+                    if (datGetScenarioMode() == 0)
                         continue;
-                    if (datGetScenarioMode() != 0 && *(u16*)(entry + 0xc) == 9)
+                    if (*(u16*)(entry + 0xc) != 9)
                         continue;
+                }
+                else
+                {
+                    continue;
                 }
             }
             else
@@ -3682,7 +3688,7 @@ void FUN_002057C0(void)
         *(u32*)(work + 0x3d8 + i * 4) = handle;
     }
     *(u32*)(work + 0x77ac) = 0;
-    entry = work + work[0x7700 / 4] * 0x18 + 0x2e0;
+    entry = work + *(u32*)(work + 0x7700) * 0x18 + 0x2e0;
     type = *(u32*)(entry + 4);
     if (type == 1)
     {
@@ -3705,7 +3711,7 @@ void FUN_002057C0(void)
     *(u32*)(work + 0x7730) = *(u32*)(work + 0x400);
     *(u32*)(work + 0x7738) = *(u32*)(work + 0x404);
     func_00208570(work + 0x7728);
-    entry = work + work[0x7700 / 4] * 0x18 + 0x2e0;
+    entry = work + *(u32*)(work + 0x7700) * 0x18 + 0x2e0;
     type = *(u32*)(entry + 4);
     if (type == 1)
     {

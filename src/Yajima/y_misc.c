@@ -1969,8 +1969,8 @@ u8 FUN_00418c70(int param_1,int *param_2)
   float fVar11;
   f32 fVar12;
   RwMatrix matrix;
-  float afStack_a8 [2];
   float afStack_b0 [3];
+  float afStack_a8 [2];
 
   iVar4 = param_2[1];
   iVar1 = *param_2;
@@ -1995,21 +1995,21 @@ u8 FUN_00418c70(int param_1,int *param_2)
       break;
     }
   }
-  fVar11 = (float)param_2[0x18];
+  fVar11 = *(f32 *)(param_2 + 0x18);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  afStack_b0[0] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11) *
-                       (fVar9 + 1.0f)) / 2.0f;
-  fVar11 = (float)param_2[0x19];
+  fVar9 = 1.0f + fVar9;
+  afStack_b0[0] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11)) / 2.0f;
+  fVar11 = *(f32 *)(param_2 + 0x19);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  afStack_b0[1] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11) *
-                      (fVar9 + 1.0f)) / 2.0f;
-  fVar11 = (float)param_2[0x1a];
+  fVar9 = 1.0f + fVar9;
+  afStack_b0[1] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11)) / 2.0f;
+  fVar11 = *(f32 *)(param_2 + 0x1a);
   fVar9 = (float)sinf(fGpffff81fc +
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-  afStack_b0[2] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11) *
-                      (fVar9 + 1.0f)) / 2.0f;
+  fVar9 = 1.0f + fVar9;
+  afStack_b0[2] = fVar11 + (fVar9 * ((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11)) / 2.0f;
   switch (*(char *)(iVar1 + 4)) {
   case '\x01':
   case '\x02':
@@ -2019,8 +2019,8 @@ u8 FUN_00418c70(int param_1,int *param_2)
     afStack_a8[0] = (float)(*(int *)(iVar1 + 0xc) / 0xffff);
     afStack_a8[1] = (float)(*(int *)(iVar1 + 0x10) / 0xffff);
     fVar12 = (float)(*(int *)(iVar1 + 0x14) / 0xffff);
-    fVar12 = func_0020c500((const f32 *)(iVar4 + 8),fVar12);
-    func_0020c320(iVar4 + 8,afStack_a8,fVar12,afStack_b0);
+    fVar12 = func_0020c500(*(const f32 **)(iVar4 + 8),fVar12);
+    func_0020c320(*(s32 *)(iVar4 + 8),afStack_a8,fVar12,afStack_b0);
     sflResSetSpritePosition((void *)*(u32 *)(iVar4 + 8),afStack_b0);
     break;
   case '@':
@@ -2042,6 +2042,8 @@ u8 FUN_00418c70(int param_1,int *param_2)
       matrix.pos.y = afStack_b0[1];
       matrix.pos.z = afStack_b0[2];
       FUN_004cb7f0(iVar2,&matrix,0);
+      break;
+    case '\x02':
       break;
     }
     break;

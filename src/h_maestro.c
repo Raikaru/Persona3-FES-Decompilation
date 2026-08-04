@@ -3687,6 +3687,9 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
         work->state = HMAESTRO_STATE_IDLE;
         goto restore_continue;
 
+    case HMAESTRO_STATE_IDLE:
+        goto restore_continue;
+
     case HMAESTRO_STATE_DRAW:
         break;
 
