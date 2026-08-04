@@ -210,11 +210,10 @@ void FUN_003b0e54(int param_1,u32 param_2);
 u16 FUN_003b0e70(s16 param_1);
 u16 FUN_003b0e90(u16 param_1);
 u32 FUN_003b0ec0(int param_1);
-int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4);
 void FUN_003b1300(void *param_1);
 void FUN_003b1330(void *param_1,u32 param_2);
 int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
-u64 FUN_003b38f0(f32 param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,u32 param_8);
+u64 FUN_003b38f0(f32 param_1,int param_2,int param_3,u8 *param_4,int param_5,int param_6,int param_7,u32 param_8);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
@@ -271,7 +270,6 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
-#define FUN_003b0f50(...) ((int (*)(...))FUN_003b0f50)(__VA_ARGS__)
 #define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
 #define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
@@ -1903,7 +1901,6 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4)
   return iVar10;
 
 }
-#define FUN_003b0f50(...) ((int (*)(...))FUN_003b0f50)(__VA_ARGS__)
 #undef FUN_003b1300
 #undef FUN_003b1330
 #undef FUN_003b1360
@@ -1957,6 +1954,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
 
 {
+  extern int FUN_003b0f50(u8 *param_1,u8 *param_2,u8 param_3,u8 param_4);
 
   char cVar1;
 
@@ -1964,7 +1962,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
   int iVar3;
 
-  int iVar4;
+  u8 *iVar4;
 
   int iVar9;
 
@@ -2028,9 +2026,9 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
       cVar1 = puVar2[3];
 
-      for (iVar4 = *(int *)(puVar2 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
+      for (iVar4 = *(u8 **)(puVar2 + 0x1c); iVar4 != (u8 *)0x0; iVar4 = *(u8 **)(iVar4 + 0x28)) {
 
-        if (param_2 == '\0') {
+        if ((char)param_2 == '\0') {
 
           iVar6 = FUN_003b0f50(puVar2,iVar4,*puVar2,puVar2[2]);
         }
@@ -3069,9 +3067,7 @@ void FUN_003b22a0(u32 *param_1)
   
 
   if ((param_1[5] == 0) || (*(int *)(param_1[5] + 0x1c) == 0)) {
-
     *(u8 *)(param_1 + 7) = 0;
-
   }
 
   if (*(char *)(param_1 + 7) != '\0') {

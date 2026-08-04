@@ -1754,36 +1754,39 @@ u32 FUN_00399c40(int param_1)
 
         uVar9 = (u8)uVar6;
 
-        if (iVar11 == 7) {
+        switch (iVar11) {
 
-          FUN_00174710(uVar5,4,uVar9);
-
-        }
-
-        else if (iVar11 == 6) {
-
-          FUN_00174710(uVar5,3,uVar9);
-
-        }
-
-        else if (iVar11 == 5) {
-
-          FUN_00174710(uVar5,2,uVar9);
-
-        }
-
-        else if (iVar11 == 4) {
-
-          FUN_00174710(uVar5,1,uVar9);
-
-        }
-
-        else if (iVar11 == 3) {
+        case 3:
 
           FUN_00174710(uVar5,0,uVar9);
 
-        }
+          break;
 
+        case 4:
+
+          FUN_00174710(uVar5,1,uVar9);
+
+          break;
+
+        case 5:
+
+          FUN_00174710(uVar5,2,uVar9);
+
+          break;
+
+        case 6:
+
+          FUN_00174710(uVar5,3,uVar9);
+
+          break;
+
+        case 7:
+
+          FUN_00174710(uVar5,4,uVar9);
+
+          break;
+
+        }
       }
 
     }

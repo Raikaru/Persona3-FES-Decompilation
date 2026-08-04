@@ -148,10 +148,44 @@ def our_calls(row, syms):
     return out, unresolved
 
 
-def classify(ours, retail):
+def addressed_symbols(row, syms):
+    """Addresses our object MATERIALISES rather than calls.
+
+    A `HI16`/`LO16` pair on a function symbol means we load its address and
+    reach it with `jalr`, where retail emits a direct `jal`. The census sees
+    only the missing `R_MIPS_26` and calls that `MISSING`, which is wrong: the
+    call is present, the DECLARATION is. frFont `FUN_003b1360` was misread that
+    way for a whole wave — both sides prepare identical arguments at offsets
+    340/344/348/352, then retail emits `jal 003b0f50` at 364 while we
+    materialise the address at 356/360 and `jalr` at 364.
+    """
+    out = set()
+    for rel in row.get("relocations") or []:
+        if rel.get("type") == "R_MIPS_26":
+            continue
+        rec = rel.get("symbol_record") or {}
+        if rec.get("sym_type") != 2:            # STT_FUNC only
+            continue
+        name = rel["symbol"]
+        if name in syms:
+            out.add(syms[name])
+        else:
+            m = HEXNAME.match(name)
+            if m:
+                out.add(int(m.group(1), 16))
+    return out
+
+
+def classify(ours, retail, addressed):
     co, cr = Counter(x for x in ours if x is not None), Counter(retail)
     phantom = co - cr
     missing = cr - co
+    # A "missing" target whose address we materialise is not missing at all:
+    # we call it through a pointer where retail calls it by name. That is a
+    # declaration defect, and a different fix from supplying an absent call.
+    indirect = Counter({t: c for t, c in missing.items() if t in addressed})
+    if indirect and len(indirect) == len(missing) and not phantom:
+        return "INDIRECT", phantom, indirect
     if phantom or missing:
         return ("PHANTOM" if phantom else "MISSING"), phantom, missing
     if [x for x in ours if x is not None] != retail:
@@ -187,7 +221,7 @@ def main():
             totals["UNRESOLVED_SYMBOL"] += 1
             continue
         rc = retail_calls(elf, int(r["addr"], 16), r["window"])
-        kind, phantom, missing = classify(ours, rc)
+        kind, phantom, missing = classify(ours, rc, addressed_symbols(r, syms))
         totals[kind] += 1
         if kind != "CLEAN" and (not args.kind or kind == args.kind):
             found.append((r, kind, phantom, missing, len(ours), len(rc)))
@@ -221,7 +255,16 @@ def main():
                      ", ".join(f"`{t:08x}`×{c}" if c > 1 else f"`{t:08x}`"
                                for t, c in sorted(phantom.items())))
             L.append("")
-        if missing:
+        if missing and kind == "INDIRECT":
+            L.append("**called through a pointer (retail calls by name):** " +
+                     ", ".join(f"`{t:08x}`×{c}" if c > 1 else f"`{t:08x}`"
+                               for t, c in sorted(missing.items())))
+            L.append("")
+            L.append("Our object materialises this address and reaches it with "
+                     "`jalr`. Fix the DECLARATION so the callee is an ordinary "
+                     "prototyped function at the call site, not the call.")
+            L.append("")
+        elif missing:
             L.append("**missing (retail only):** " +
                      ", ".join(f"`{t:08x}`×{c}" if c > 1 else f"`{t:08x}`"
                                for t, c in sorted(missing.items())))

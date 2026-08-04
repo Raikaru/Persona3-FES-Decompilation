@@ -857,6 +857,17 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
+
+        /*
+         * Strip 0 rect: set after strip 1 colour to match retail interleave.
+         */
+        stripFade = (f32)(work[0x1abc] % 240) / 240.0f;
+        rect0[0] = (1.0f - stripFade) * 1659.0f - 503.0f;
+        rect0[1] = 0.0f;
+        rect0[2] = 503.0f;
+        rect0[3] = 44.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect0);
+
         func_0021d950(GROUND_PTR(work, 0x64f0), &color);
 
         /*
@@ -869,18 +880,6 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
-        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
-
-        /*
-         * Strip 0 rect: set after strip 1 colour to match retail interleave.
-         */
-        stripFade = (f32)(work[0x1abc] % 240) / 240.0f;
-        rect0[0] = (1.0f - stripFade) * 1659.0f - 503.0f;
-        rect0[1] = 0.0f;
-        rect0[2] = 503.0f;
-        rect0[3] = 44.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect0);
-
         /*
          * Strip 1 rect: after strip 0 rect.  stripFade and rect0 live
          * until here, doubling register pressure.
@@ -892,6 +891,7 @@ void func_002392d0(void)
         rect1[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x65f0), rect1);
 
+        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
         /*
          * Strip 2: offset 0x66f0, phase offset +80, rect[1]=0.
          */
@@ -901,13 +901,13 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
-        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 0.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x66f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
 
         /*
          * Strip 3: offset 0x67f0, phase offset +160, rect[1]=404.
@@ -918,13 +918,13 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
-        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
         panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 404.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x67f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
 
         /*
          * Strip 4: offset 0x68f0, phase offset +80, rect[1]=404.
@@ -935,13 +935,13 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
-        func_0021d950(GROUND_PTR(work, 0x68f0), &color);
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 404.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x68f0), &color);
 
         /*
          * Strip 5: offset 0x69f0, phase offset +80, rect[1]=404.
@@ -952,13 +952,13 @@ void func_002392d0(void)
             else _normFade = (f32)work[1] / 30.0f;
             color.a = (u8)(_normFade * 255.0f);
         }
-        func_0021d950(GROUND_PTR(work, 0x69f0), &color);
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 404.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x69f0), &color);
     }
 
     color.a = (u8)(128.0f * panelFade);

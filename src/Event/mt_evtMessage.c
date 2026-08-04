@@ -978,29 +978,29 @@ void FUN_0039f950(int param_1)
 
   int iVar3;
 
-  int iVar4;
-
   int iVar5;
+
+  int iVar4;
 
   
 
-  iVar1 = FUN_003b5d50(1);
+  iVar3 = FUN_003b5d50(1);
 
   iVar5 = 0;
 
+
+  for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xf8)) {
+
+    iVar5 = iVar5 + 1;
+
+  }
+
+  for (iVar3 = FUN_003b5d50(3); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xf8)) {
+
+    iVar5 = iVar5 + 1;
+
+  }
   iVar4 = 0;
-
-  for (; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-    iVar5 = iVar5 + 1;
-
-  }
-
-  for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-    iVar5 = iVar5 + 1;
-
-  }
 
   if (iVar5 != 0) {
 
