@@ -419,17 +419,17 @@ static inline void MaestroEffectRequestFiles(
 
     if (datGetScenarioMode() != 0)
     {
-        if (work->effectCount == 0)
+        switch (work->effectCount)
         {
+        case 0:
             if (work->effectIds[0] == 9)
                 sprintf(path, D_005D6E60, work->effectIds[0]);
             else
                 sprintf(path, D_005D6E90, work->effectIds[0]);
             work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
             work->cdvd[0] = H_Cdvd_Request(D_005D6EC0, HCDVD_FILEARCHIVE);
-        }
-        else if (work->effectCount == 1)
-        {
+        break;
+        case 1:
             if (work->effectIds[0] == 9)
                 sprintf(path, D_005D6E60, work->effectIds[0]);
             else
@@ -441,9 +441,8 @@ static inline void MaestroEffectRequestFiles(
                 sprintf(path, D_005D6E90, work->effectIds[1]);
             work->cdvd[2] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
             work->cdvd[0] = H_Cdvd_Request(D_005D6EE0, HCDVD_FILEARCHIVE);
-        }
-        else
-        {
+        break;
+        case 2:
             if (work->effectIds[0] == 9)
                 sprintf(path, D_005D6E60, work->effectIds[0]);
             else
@@ -460,6 +459,7 @@ static inline void MaestroEffectRequestFiles(
                 sprintf(path, D_005D6E90, work->effectIds[2]);
             work->cdvd[3] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
             work->cdvd[0] = H_Cdvd_Request(D_005D6F00, HCDVD_FILEARCHIVE);
+        break;
         }
     }
     else

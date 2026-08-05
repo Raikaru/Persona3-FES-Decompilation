@@ -3785,10 +3785,11 @@ void FUN_00205D60(void)
         if (*(u32*)(work + 0x7700) == i + *(u32*)(work + 0x76f8))
         {
             K_ASSERT(gBcmWork != NULL, 0x164);
-            if ((*work & 1) != 0 || (*work & 0x20000000) != 0)
+            color = (s32)0x8080ffff;
+            if ((*work & 1) != 0)
                 color = 0xffff;
-            else
-                color = (s32)0x8080ffff;
+            if ((*work & 0x20000000) != 0)
+                color = 0xffff;
         }
         else
         {
