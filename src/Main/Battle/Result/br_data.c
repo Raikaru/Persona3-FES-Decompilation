@@ -384,14 +384,14 @@ u16 func_001fb560(u32 param_1)
 
   u16 uVar5;
 
-  int iVar6;
+  u32 iVar6;
 
   u32 uVar7;
 
 
   u32 uVar8;
 
-  int iVar9;
+  u32 iVar9;
 
   u32 uVar10;
 

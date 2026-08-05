@@ -7947,10 +7947,10 @@ void func_0018c150(KwlnTask* task)
     f32 cosine;
     void* sprite;
     GsSprite* node;
-    u32 hp;
-    u32 maxHp;
-    u32 sp;
-    u32 maxSp;
+    s32 hp;
+    s32 maxHp;
+    s32 sp;
+    s32 maxSp;
     s32 hpWidth;
     s32 spWidth;
 

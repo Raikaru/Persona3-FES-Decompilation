@@ -212,6 +212,7 @@ u16 FUN_001752b0(void);
 void FUN_003c9e30(u32 param_1,int param_2,s8 param_3);
 f32 func_00171510(s16 row, s16 column);
 void FUN_003eff00(u64 param_1,u8 *param_2);
+u8 func_0016f810(s16 pcId, s32 equipmentIdx);
 u8 * FUN_003efff0(int param_1);
 #pragma alias FUN_003efff0_u64 FUN_003efff0
 u8 * FUN_003efff0_u64(u64 param_1);
