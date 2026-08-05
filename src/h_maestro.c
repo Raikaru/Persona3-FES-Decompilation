@@ -2412,7 +2412,7 @@ void func_0010ec50(KwlnTask* task)
                         break;
 
                     case 2:
-                        if ((record->command == 2) && (draw == 0))
+                        if (draw == 0)
                         {
                             draw = 1;
                             func_004a62e0(*(void**)(entry + 0x148),
@@ -6053,56 +6053,57 @@ u32 func_00115f00(KwlnTask* param_1)
 
       iVar5 = puVar1[1];
 
-      if (iVar5 == 0xea) {
+      switch (iVar5) {
+      case 0xea: {
 
         uStack[2] = 0xb;
         uStack[3] = 6;
 
       }
-
-      else if (iVar5 == 0xe9) {
+      break;
+      case 0xe9: {
 
         uStack[2] = 0xb;
         uStack[3] = 5;
 
       }
-
-      else if (iVar5 == 0x67) {
+      break;
+      case 0x67: {
 
         uStack[2] = 0xb;
         uStack[3] = 3;
 
       }
-
-      else if (iVar5 == 0x11) {
+      break;
+      case 0x11: {
 
         uStack[2] = 0xb;
         uStack[3] = 2;
 
       }
-
-      else if (iVar5 == 0x10) {
+      break;
+      case 0x10: {
 
         uStack[2] = 0xb;
         uStack[3] = 1;
 
       }
-
-      else if (iVar5 == 0xf) {
+      break;
+      case 0xf: {
 
         uStack[2] = 0xb;
         uStack[3] = 0;
 
       }
-
-      else if (iVar5 == 10) {
+      break;
+      case 10: {
 
         uStack[2] = 10;
         uStack[3] = 8;
 
       }
-
-      else if (iVar5 == 9) {
+      break;
+      case 9: {
 
         lVar4 = FUN_0017d800();
 
@@ -6121,57 +6122,57 @@ u32 func_00115f00(KwlnTask* param_1)
         }
 
       }
-
-      else if (iVar5 == 8) {
+      break;
+      case 8: {
 
         uStack[2] = 10;
         uStack[3] = 6;
 
       }
-
-      else if (iVar5 == 7) {
+      break;
+      case 7: {
 
         uStack[2] = 10;
         uStack[3] = 5;
 
       }
-
-      else if (iVar5 == 6) {
+      break;
+      case 6: {
 
         uStack[2] = 10;
         uStack[3] = 9;
 
       }
-
-      else if (iVar5 == 5) {
+      break;
+      case 5: {
 
         uStack[2] = 10;
         uStack[3] = 4;
 
       }
-
-      else if (iVar5 == 4) {
+      break;
+      case 4: {
 
         uStack[2] = 10;
         uStack[3] = 3;
 
       }
-
-      else if (iVar5 == 3) {
+      break;
+      case 3: {
 
         uStack[2] = 10;
         uStack[3] = 2;
 
       }
-
-      else if (iVar5 == 2) {
+      break;
+      case 2: {
 
         uStack[2] = 10;
         uStack[3] = 1;
 
       }
-
-      else if (iVar5 == 1) {
+      break;
+      case 1: {
 
         lVar4 = FUN_0017d800();
 
@@ -6188,6 +6189,23 @@ u32 func_00115f00(KwlnTask* param_1)
           uStack[3] = 0;
 
         }
+
+      }
+      break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       }
 

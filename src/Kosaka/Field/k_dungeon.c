@@ -1867,7 +1867,7 @@ void func_001bd950(void)
     {
         Resrc* parent;
         parent = *(Resrc**)((u8*)modelNpc + 0x100);
-        if (parent != NULL && (parent->flags & 2) != 0)
+        if ((parent->flags & 2) != 0)
         {
             modelNpc->flags |= 2;
         }

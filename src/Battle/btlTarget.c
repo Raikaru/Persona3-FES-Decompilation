@@ -7277,8 +7277,11 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     }
     if ((*(u16*)(iGpffffb6fc + 0xa16) & 1) != 0)
     {
-        if ((s32)*(s16*)(iGpffffb6fc + 0xa24) == (s32)param_2 ||
-            (s32)*(s16*)(iGpffffb6fc + 0xa2c) == (s32)param_2)
+        if ((s32)*(s16*)(iGpffffb6fc + 0xa24) == (s32)param_2)
+        {
+            return 1;
+        }
+        if ((s32)*(s16*)(iGpffffb6fc + 0xa2c) == (s32)param_2)
         {
             return 1;
         }
