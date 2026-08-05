@@ -1103,7 +1103,7 @@ u32 func_001ce960(void)
 FldUnit* func_001cf940(u32 encounter, void* unitData)
 {
     s32 i;
-    s32 levelSum;
+    u32 levelSum;
     u16 enemyId;
     u16 tier;
     FldUnit* unit;

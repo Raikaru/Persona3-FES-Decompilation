@@ -372,7 +372,7 @@ extern u8 *PTR_s_SPEED_007cd228;
 extern u8 *PTR_s_START_0069e100;
 extern u8 *PTR_s_START_0069ee24;
 extern u8 *PTR_s_START_007ccf50;
-extern u32 fGpffff80d0;
+extern f32 fGpffff80d0;
 extern u32 fGpffff8294;
 extern u32 fGpffff8438;
 extern u8 gp0xffff9d98;

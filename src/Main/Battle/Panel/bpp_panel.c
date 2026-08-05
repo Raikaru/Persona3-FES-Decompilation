@@ -1219,7 +1219,7 @@ void FUN_0022f3b0(u32* object)
         randVal = RpRandom() % 30;
         *(u32*)(dst + 0x20c) = randVal;
         for (i = 0; i < 2; ++i) {
-            u32 value = randVal + (i * 15 * 2) / 2;
+            s32 value = randVal + (i * 15 * 2) / 2;
             *(u32*)(dst + 0x200 + i * 4) = value;
             *(u32*)(dst + 0x200 + i * 4) = value % 30;
         }

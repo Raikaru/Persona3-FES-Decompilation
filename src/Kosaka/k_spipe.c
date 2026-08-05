@@ -1564,7 +1564,7 @@ u32 func_0019ab80(RwCamera* camera,
     }
 
     count = work->vertexCount;
-    work->triangleCount = (s32)(count + work->flushedTriangles * 600) / 3;
+    work->triangleCount = (u32)(count + work->flushedTriangles * 600) / 3;
     if (count != 0)
     {
         (*stateSet)(1, (u32)(uintptr_t)raster);

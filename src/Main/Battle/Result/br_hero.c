@@ -616,12 +616,11 @@ void brHero00263db0(void)
     renderQuad(w + 0x144, 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1c));
     setRenderState(1, texture);
-    renderQuad(w + 0x244, 4, 0, 1, 2);
-    renderQuad(w + 0x244, 4, 0, 2, 3);
-    renderQuad(w + 0x284, 4, 0, 1, 2);
-    renderQuad(w + 0x284, 4, 0, 2, 3);
-    renderQuad(w + 0x2c4, 4, 0, 1, 2);
-    renderQuad(w + 0x2c4, 4, 0, 2, 3);
+    for (i = 0; i < 3; i++)
+    {
+        renderQuad(w + i * 0x40 + 0x244, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x244, 4, 0, 2, 3);
+    }
     texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1d));
     setRenderState(1, texture);
     for (i = 0; i < 3; i++)
