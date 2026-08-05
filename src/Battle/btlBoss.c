@@ -3700,6 +3700,7 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
     f32 right;
     f32 bottom;
     f32 recipZ;
+    f32 neg;
     u32 value;
 
     camera = (u8*)kwlnGetMainCamera();
@@ -3714,7 +3715,8 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
     bottom = 448.0f;
     if (param_1 != 0.0f)
     {
-        left = param_1 * -320.0f + DAT_007caf5c;
+        neg = 320.0f;
+        left = param_1 * -neg + DAT_007caf5c;
         top = param_1 * -224.0f + DAT_007caf60;
         right = param_1 * 320.0f + DAT_007caf5c;
         bottom = param_1 * 224.0f + DAT_007caf60;
