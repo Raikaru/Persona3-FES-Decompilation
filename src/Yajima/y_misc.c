@@ -1806,7 +1806,7 @@ u8 FUN_00418510(int param_1,int *param_2)
     sflResSetSpritePosition((void *)*(u32 *)(iVar2 + 8),(float *)&position);
     break;
   case '@':
-    if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
+    if (*(char *)(iVar3 + 5) == '\x01') {
       FUN_004cb750_typed(uVar5,&position,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
     }
     break;

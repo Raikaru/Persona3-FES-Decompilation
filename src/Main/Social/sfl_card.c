@@ -1189,6 +1189,8 @@ void FUN_00253a40(void)
     if ((*puVar1 & 0x40) != 0) {
 
       switch(puVar1[0x4a1c]) {
+      case 0:
+        break;
 
       case 1:
 

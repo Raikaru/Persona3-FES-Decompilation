@@ -2291,7 +2291,9 @@ u64 FUN_003709d0(int param_1,int param_2,u8 *param_3)
   iVar7 = (int)param_3;
 
 
-  if (*(int *)(iVar7 + 0x23c) == 0) {
+  switch (*(int *)(iVar7 + 0x23c)) {
+
+  case 0:
 
     return 0xffffffffffffffff;
 

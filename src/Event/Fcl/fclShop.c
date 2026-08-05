@@ -2377,12 +2377,6 @@ LAB_003e8b7c:
         *(u32 *)(iVar4 + 8) = 0;
 
     default:
-      if (!bVar2) {
-
-        return (u8 *)0x0;
-
-      }
-
       break;
 
       }

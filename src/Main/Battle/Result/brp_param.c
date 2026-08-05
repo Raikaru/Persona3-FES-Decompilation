@@ -768,7 +768,9 @@ void func_00278550(void)
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);
     tex1 = brRes00234630(1);
-    if ((work->flags & 1) == 0 || (work->flags & 0x40) != 0)
+    if ((work->flags & 1) == 0)
+        return;
+    if ((work->flags & 0x40) != 0)
         return;
     state = (code *)&D_00960090_abs;
     D_00960090(0x14, 2);
