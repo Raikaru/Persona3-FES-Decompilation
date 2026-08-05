@@ -5051,7 +5051,7 @@ void* func_00186190(KwlnTask* task)
         {
             f32 _x;
             ++work->timer;
-            _x = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 10)) / 180.0f) * 300.0f;
+            _x = sinf((DAT_007caf38_gs * (f32)((work->timer * 0x5a) / 10)) / 180.0f) * 300.0f;
             alpha = (work->timer * 0xff) / 10;
             func_00186a40(work->resource,
                           clndPackPosition(&position, _x, 0.0f),
@@ -5076,7 +5076,7 @@ void* func_00186190(KwlnTask* task)
             s32 timer;
             timer = ++work->timer;
             timer = 10 - timer;
-            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * -300.0f;
+            _x = sinf((DAT_007caf38_gs * (f32)((timer * 0x5a) / 10)) / 180.0f) * -300.0f;
             func_00186a40(work->resource,
                           clndPackPosition(&position, _x, 0.0f),
                           (timer * 0xff) / 10,
@@ -5130,9 +5130,9 @@ void* func_00186190(KwlnTask* task)
         case 7:
         {
             ++work->timer;
-            position.x = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
+            position.x = sinf((DAT_007caf38_gs * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
                          CLND_MOON_X_SCALE;
-            position.y = sinf((DAT_007caf38 * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
+            position.y = sinf((DAT_007caf38_gs * (f32)((work->timer * 0x5a) / 5)) / 180.0f) *
                          CLND_MOON_Y_SCALE;
             alpha = (work->timer * 0xff) / 5;
             func_00186a40(work->resource,

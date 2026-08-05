@@ -273,7 +273,7 @@ u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3);
 #pragma alias FUN_003f2f70_i FUN_003f2f70
 u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
  #pragma alias FUN_003f33d0_i FUN_003f33d0
- u64 FUN_003f33d0_i(int param_1,u32 param_2);
+ u32 FUN_003f33d0_i(int param_1,u32 param_2);
  #pragma alias FUN_003f3970_i FUN_003f3970
  u32 FUN_003f3970_i(int param_1,u32 param_2);
  #pragma alias FUN_003f39a0_i FUN_003f39a0
@@ -293,7 +293,7 @@ extern int fclShopNmlistRemove(int *list,int *head,int node);
 // Measured FUN_00400740: direct call nd8; alias alone nd8; typed byte-pointer a1 nd0 (object 432).
 #pragma alias FUN_003c49e0_ro FUN_003c49e0
 extern int FUN_003c49e0_ro(int *list,int *head,int node);
-u64 FUN_003f33d0(int param_1,u32 param_2);
+u32 FUN_003f33d0(int param_1,u32 param_2);
 u64 FUN_003f3970(long param_1,u32 param_2);
 u64 FUN_003f39a0(long param_1,long param_2,u32 param_3);
 void FUN_003f3dc0(int param_1,int *param_2);
@@ -3401,7 +3401,7 @@ ret:
 // FUN_003F33D0 NONMATCHING
 
 
-u64 FUN_003f33d0(int param_1,u32 param_2)
+u32 FUN_003f33d0(int param_1,u32 param_2)
 {
   u32 option_flags;
   u32 task;

@@ -5065,10 +5065,10 @@ void func_002ac920(BtlCamera* camera, long unused)
 
     planeDot = work.direction.x * work.cameraHorizontal.first +
                work.direction.z * work.cameraHorizontal.second;
-    work.f7 = 0.0f;
 
     if (0.0f <= planeDot)
     {
+        work.f7 = 0.0f;
         work.basePoint = work.sourceCenter;
         work.f2 = work.basePoint.y;
         work.f8 = 1.5f;

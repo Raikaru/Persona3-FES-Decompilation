@@ -3056,7 +3056,6 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
     MaestroResourceWork* work;
     struct
     {
-        u8 pad[0x10];
         f32 destination[4];
         f32 source[4];
         f32 uv[8];
@@ -3067,9 +3066,9 @@ void func_00110650_y2(void* param_1, s32 sourceIndex, s32 destinationIndex)
 
     work = (MaestroResourceWork*)param_1;
     func_004ac120(work->parsedResources[sourceIndex], locals.source);
+    effectResources = work->effectResources;
     func_004ac120(work->parsedResources[destinationIndex], locals.destination);
 
-    effectResources = work->effectResources;
     texture = *(void**)((u8*)effectResources[destinationIndex] + 0x68);
     if (texture == NULL)
     {

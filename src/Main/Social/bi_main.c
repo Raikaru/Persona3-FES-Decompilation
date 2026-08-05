@@ -170,6 +170,7 @@ void func_0023f540(void)
     f32 projected[2];
     f32 transform[4];
     RwV2d layout[4];
+    f32 rect[4];
     f32 x;
     f32 y;
     f32 alpha;
@@ -221,16 +222,16 @@ void func_0023f540(void)
         } else {
             BI_U32(slot, 0) |= BI_SLOT_HIDDEN;
         }
-        layout[0].x = projected[0] - 1.0f;
-        layout[0].y = projected[1] - 100.0f;
-        layout[1].x = 2.0f;
-        layout[1].y = 200.0f;
-        func_0021d8e0(slot + 0xd40, (f32*)layout);
-        layout[0].x = projected[0] - 100.0f;
-        layout[0].y = projected[1] - 1.0f;
-        layout[1].x = 200.0f;
-        layout[1].y = 2.0f;
-        func_0021d8e0(slot + 0xe40, (f32*)layout);
+        rect[0] = projected[0] - 1.0f;
+        rect[1] = projected[1] - 100.0f;
+        rect[2] = 2.0f;
+        rect[3] = 200.0f;
+        func_0021d8e0(slot + 0xd40, rect);
+        rect[0] = projected[0] - 100.0f;
+        rect[1] = projected[1] - 1.0f;
+        rect[2] = 200.0f;
+        rect[3] = 2.0f;
+        func_0021d8e0(slot + 0xe40, rect);
 
         if ((BI_U32(slot, 0) & BI_SLOT_READY) == 0) {
             continue;

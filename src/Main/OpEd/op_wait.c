@@ -1176,7 +1176,8 @@ void func_00271230(u32* param)
     angle = func_0052ea18(y, x);
     distance = sqrtf(y * y + x * x);
     wave = func_00269c80(angle + fGpffff8248 *
-                         (distance / 300.0f - width) * 2.0f);
+                         (distance / 300.0f -
+                          (f32)*(s32*)(context + 0x2c) / 180.0f) * 2.0f);
     wave2 = func_00269c80((f32)*(s32*)(context + 0x30) / 30.0f * 3.0f -
                           distance / 100.0f);
     wave = func_00269c80(fGpffff8248 *

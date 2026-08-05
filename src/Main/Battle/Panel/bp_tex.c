@@ -4460,7 +4460,7 @@ void FUN_00227F30(void)
 {
     u8* work;
     u32 table0;
-    void* resource;
+    BpTexFrameData* resource;
     f32 panelAlpha;
     f32 baseX;
     f32 baseY;
@@ -4501,19 +4501,19 @@ void FUN_00227F30(void)
         case 1: x += 11.0f; y += 75.0f; break;
         case 2: x += 241.0f; y += 4.0f; break;
         case 3: x += 241.0f; y += 75.0f; break;
-        case 4: x += (f32)*(s32*)((u8*)resource + 0xc); y += 4.0f; break;
-        case 5: x += (f32)*(s32*)((u8*)resource + 0xc); y += 75.0f; break;
+        case 4: x += (f32)resource->width; y += 4.0f; break;
+        case 5: x += (f32)resource->width; y += 75.0f; break;
         }
         rect[0] = x;
         rect[1] = y;
         switch (i) {
         case 0: case 1: case 2: case 3:
-            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            rect[2] = (f32)resource->width;
+            rect[3] = (f32)resource->height;
             break;
         case 4: case 5:
             rect[2] = 42.0f;
-            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            rect[3] = (f32)resource->height;
             break;
         }
         FUN_0021d8e0(work + i * 0x100 + 0x2e30, rect);
@@ -4560,19 +4560,19 @@ void FUN_00227F30(void)
     y = 32.0f + baseY;
     rect[0] = x;
     rect[1] = y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    rect[2] = (f32)resource->width;
+    rect[3] = (f32)resource->height;
     FUN_0021d8e0(work + 0x3430, rect);
 
     rect[0] = x;
     rect[1] = 102.0f + baseY;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    rect[2] = (f32)resource->width;
+    rect[3] = (f32)resource->height;
     FUN_0021d8e0(work + 0x3530, rect);
 
     rect[0] = x;
     rect[1] = 16.0f + y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+    rect[2] = (f32)resource->width;
     rect[3] = 54.0f;
     FUN_0021d8e0(work + 0x3630, rect);
 
@@ -4591,7 +4591,7 @@ void FUN_00227F30(void)
         }
     }
     rect[2] = (f32)(*(s32*)((u8*)resource + 0xc) * 5);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    rect[3] = (f32)resource->height;
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
@@ -4618,14 +4618,14 @@ void FUN_00227F30(void)
             y = listY0 + (f32)(i * 26);
             rect[0] = listX;
             rect[1] = y;
-            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            rect[2] = (f32)resource->width;
+            rect[3] = (f32)resource->height;
             FUN_0021d8e0(work + i * 0x200 + 0x3830, rect);
 
-            rect[0] = listX + (f32)*(s32*)((u8*)resource + 0xc);
+            rect[0] = listX + (f32)resource->width;
             rect[1] = y;
             rect[2] = 276.0f;
-            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            rect[3] = (f32)resource->height;
             FUN_0021d8e0(work + i * 0x200 + 0x3930, rect);
         }
     }
