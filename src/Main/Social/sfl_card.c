@@ -2500,6 +2500,7 @@ void bpTexUpdateNode(void* nodeData)
     s32 finalCount;
     s32 i;
     f32 phase;
+    f32 neg;
     volatile /* Removing this qualifier worsens bpTexUpdateNode (NONMATCHING nd1885 -> NONMATCHING nd1919, size 2488 -> 2472) - measured W170. */ f32 offsets[3];
     f32 position[4];
     f32 direction[3];
@@ -2519,7 +2520,8 @@ void bpTexUpdateNode(void* nodeData)
     work = BP_TEX_GLOBAL;
     node = (u32*)nodeData;
     phase = (f32)BP_TEX_S32(work, 0x12680) / 300.0f;
-    offsets[0] = func_0052e878(DAT_007caf38 * phase * -2.0f) * -1000.0f;
+    neg = -(DAT_007caf38 * phase * 2.0f);
+    offsets[0] = func_0052e878(neg) * -1000.0f;
     offsets[1] = func_0052e6d8(DAT_007caf38 *
                                ((f32)BP_TEX_S32(work, 0x12680) / 80.0f) * 2.0f) *
                  100.0f + 120.0f;

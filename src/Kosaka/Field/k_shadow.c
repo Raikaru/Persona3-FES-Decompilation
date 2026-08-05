@@ -1001,6 +1001,7 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         RwV3d translation;                                                                              \
         RwMatrix* ltm;                                                                                  \
         f32 scale;                                                                                      \
+        f32 neg;                                                                                      \
                                                                                                         \
         cameraFrame = (RwFrame*)(shadow_)->camera->object.object.parent;                               \
         if ((useCustom_) != 0)                                                                          \
@@ -1036,10 +1037,12 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         }                                                                                                \
         RwCameraSetViewWindow((shadow_)->camera, &viewWindow);                                          \
                                                                                                          \
-        translation.x = (modelPosition_)->x - cameraFrame->modelling.pos.x;                            \
-        translation.y = (modelPosition_)->y + ((shadow_)->projectionDistance / 2.0f) -                \
-                        cameraFrame->modelling.pos.y;                                                  \
-        translation.z = (modelPosition_)->z - cameraFrame->modelling.pos.z;                           \
+        neg = -cameraFrame->modelling.pos.x;                                                            \
+        translation.x = (modelPosition_)->x + neg;                                                     \
+        neg = -cameraFrame->modelling.pos.y;                                                            \
+        translation.y = (modelPosition_)->y + ((shadow_)->projectionDistance / 2.0f) + neg;            \
+        neg = -cameraFrame->modelling.pos.z;                                                            \
+        translation.z = (modelPosition_)->z + neg;                                                     \
         translation.x += cameraFrame->modelling.at.x * ((shadow_)->camera->farPlane * -0.5f);         \
         translation.y += cameraFrame->modelling.at.y * ((shadow_)->camera->farPlane * -0.5f);         \
         translation.z += cameraFrame->modelling.at.z * ((shadow_)->camera->farPlane * -0.5f);         \
