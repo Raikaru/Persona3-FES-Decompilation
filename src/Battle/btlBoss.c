@@ -3777,7 +3777,7 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
     *(f32*)(vertices[3] + 0x14) = scaleY;
     *(f32*)(vertices[3] + 0x18) = recipZ;
 
-    (*DAT_009600a0)(4, vertices, 4);
+    (*(void (**)(...))DAT_009600a0_abs)(4, vertices, 4);
     (*setState)(1, 0);
 }
 

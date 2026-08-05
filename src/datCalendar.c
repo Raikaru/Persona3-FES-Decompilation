@@ -3010,6 +3010,9 @@ extern void func_001842c0(KwlnTask* task,
                           s32 frame,
                           void* context);
 
+#pragma alias D_00960094_cal_abs D_00960094
+extern u8 D_00960094_cal_abs[];
+
 /* W357 measured opt_common_subs off: without nd707/object1052, with nd633/object1068; window 1072; retained. */
 #pragma opt_common_subs off
 /* W363 callback-address probe: direct D_00960090/D_00960094 calls 1068/1072 nd633;
@@ -3030,7 +3033,7 @@ void* func_00183410(KwlnTask* task)
         return KWLNTASK_CONTINUE;
     }
 
-    D_00960094(14, &oldState);
+    (*(void (**)(u32, void*))D_00960094_cal_abs)(14, &oldState);
     setState = D_00960090;
     setState(14, 0);
     work->frame = (work->frame + 1) % 0x168;
