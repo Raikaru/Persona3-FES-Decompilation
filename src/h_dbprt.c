@@ -1138,11 +1138,11 @@ static void H_Dbprt_DrawLog(void)
     vertices[3].u.els.scrVertex.y = sLogBoxPos.y + 196.0f;
     hDbprtDrawPrimitiveSlot[0](rwPRIMTYPETRISTRIP, vertices, 4);
     
+    drawPrimitive = hDbprtDrawPrimitiveSlot;
     kwlnPushCommonRenderStates();
     (*setState)(rwRENDERSTATETEXTURERASTER, (u32)sFontRaster);
 
     color.r = 255;
-    drawPrimitive = hDbprtDrawPrimitiveSlot;
     color.g = 255;
     color.b = 255;
     color.a = 255;

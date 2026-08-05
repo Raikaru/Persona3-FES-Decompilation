@@ -11546,6 +11546,9 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
   RwV3d direction2 = {0};
 
   RwV3d direction1 = {0};
+  f32 directionProductX;
+  f32 directionProductY;
+  f32 directionProductZ;
 
 
 
@@ -11639,14 +11642,17 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
       
       if ((DAT_007e094c & 0x1000) != 0) {
       
+        directionProductX = direction1.x * 5.0f;
+        directionProductY = direction1.y * 5.0f;
+        directionProductZ = direction1.z * 5.0f;
         for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
       
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x + direction1.x * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x + directionProductX;
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y + direction1.y * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y + directionProductY;
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z + direction1.z * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z + directionProductZ;
       
         }
       
@@ -11656,14 +11662,17 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
       
         if ((DAT_007e094c & 0x4000) != 0) {
       
+          directionProductX = direction1.x * 5.0f;
+          directionProductY = direction1.y * 5.0f;
+          directionProductZ = direction1.z * 5.0f;
           for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
       
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x - direction1.x * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x - directionProductX;
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y - direction1.y * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y - directionProductY;
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z - direction1.z * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z - directionProductZ;
       
           }
       
@@ -11673,14 +11682,17 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
       
       if ((uVar3 & 0x2000) != 0) {
       
+        directionProductX = direction2.x * 5.0f;
+        directionProductY = direction2.y * 5.0f;
+        directionProductZ = direction2.z * 5.0f;
         for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
       
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x - direction2.x * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x - directionProductX;
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y - direction2.y * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y - directionProductY;
           ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z =
-              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z - direction2.z * 5.0f;
+              ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z - directionProductZ;
       
         }
       
@@ -11690,14 +11702,17 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
       
         if ((uVar3 & 0x8000) != 0) {
       
+          directionProductX = direction2.x * 5.0f;
+          directionProductY = direction2.y * 5.0f;
+          directionProductZ = direction2.z * 5.0f;
           for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
       
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x + direction2.x * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].x + directionProductX;
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y + direction2.y * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].y + directionProductY;
             ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z =
-                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z + direction2.z * 5.0f;
+                ((RwV3d *)DAT_00958704_f32_abs)[iVar10].z + directionProductZ;
       
           }
       

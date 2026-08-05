@@ -9409,32 +9409,26 @@ void* FUN_0012c430(KwlnTask* task)
         break;
     case 10:
         if ((*(u16*)DAT_007e094e_abs & 0x40) != 0) {
-            s16 pcId;
-            s16 category;
             u16 oldMaxHp;
             u16 oldHp;
             u16 oldMaxSp;
             u16 oldSp;
-            u16 newIndex;
             u16 newMaxHp;
             u16 newMaxSp;
 
             FUN_0010a4e0_y6(0, 0, 0, 7);
-            pcId = *(s16*)((u8*)work + 0x12);
-            category = *(s16*)((u8*)work + 0x1c);
-            newIndex = *(u16*)((u8*)work + 0x28 + (work[9] + work[8]) * 2);
-            oldMaxHp = (u16)FUN_0016c5f0(pcId);
-            oldHp = (u16)FUN_0016c4f0_y6(pcId);
-            oldMaxSp = (u16)func_0016c670(pcId);
-            oldSp = (u16)FUN_0016c570_y6(pcId);
-            datSetEquipmentIdx(pcId, category, newIndex);
-            newMaxHp = (u16)FUN_0016c5f0(pcId);
+            oldMaxHp = (u16)FUN_0016c5f0(((CampEquipWork*)work)->pcId);
+            oldHp = (u16)FUN_0016c4f0_y6(((CampEquipWork*)work)->pcId);
+            oldMaxSp = (u16)func_0016c670(((CampEquipWork*)work)->pcId);
+            oldSp = (u16)FUN_0016c570_y6(((CampEquipWork*)work)->pcId);
+            datSetEquipmentIdx(((CampEquipWork*)work)->pcId, ((CampEquipWork*)work)->selectedCategory, *(u16*)((u8*)work + 0x28 + (work[9] + work[8]) * 2));
+            newMaxHp = (u16)FUN_0016c5f0(((CampEquipWork*)work)->pcId);
             if (oldMaxHp != newMaxHp) {
-                FUN_0016cf40(pcId, (s16)((oldHp * FUN_0016c5f0(pcId)) / oldMaxHp));
+                FUN_0016cf40(((CampEquipWork*)work)->pcId, (s16)((oldHp * FUN_0016c5f0(((CampEquipWork*)work)->pcId)) / oldMaxHp));
             }
-            newMaxSp = (u16)func_0016c670(pcId);
+            newMaxSp = (u16)func_0016c670(((CampEquipWork*)work)->pcId);
             if (oldMaxSp != newMaxSp) {
-                FUN_0016cf90(pcId, (s16)((oldSp * func_0016c670(pcId)) / oldMaxSp));
+                FUN_0016cf90(((CampEquipWork*)work)->pcId, (s16)((oldSp * func_0016c670(((CampEquipWork*)work)->pcId)) / oldMaxSp));
             }
         } else if ((*(u16*)DAT_007e094e_abs & 0x20) != 0) {
             FUN_0010a4e0_y6(0, 0, 0, 2);

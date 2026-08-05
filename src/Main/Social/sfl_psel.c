@@ -189,8 +189,8 @@ void func_00215b00(void)
         DatPersonaWork* persona;
         u8* entry;
 
-        persona = datPersonaGetHeroPersona((s16)i);
         entry = work + 0x10 + count * 0x10;
+        persona = datPersonaGetHeroPersona((s16)i);
         *(u32*)entry = 0;
         *(u16*)(entry + 4) = persona->id;
         if (persona->id != hero->id)

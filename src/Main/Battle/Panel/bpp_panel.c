@@ -83,12 +83,8 @@ void FUN_0022c8a0(u32* object_param)
     u8* object;
     u32 table5;
     f32 rect[4];
-    union {
-        u8 values[4];
-        u8 temp[4];
-    } colorScratch;
-#define color colorScratch.values
-#define colorTmp colorScratch.temp
+    u8 color[4];
+    u8 colorTmp[4];
     u32 color1;
     u32 color2;
     u32 color3;
@@ -101,7 +97,6 @@ void FUN_0022c8a0(u32* object_param)
     object = (u8*)object_param;
     K_ASSERT((*(u32*)object & 1) != 0, 0x1cd);
     table3 = FUN_0021c3f0(3);
-    table5 = FUN_0021c3f0(5);
     {
 
     if (*(u32*)object & 0x20) {
@@ -491,6 +486,7 @@ void FUN_0022c8a0(u32* object_param)
 
 
 
+    table5 = FUN_0021c3f0(5);
     {
         void* resource = (void*)FUN_0021cca0(table5, 2);
         rect[0] = 65.0f + pos1X;
@@ -636,8 +632,6 @@ void FUN_0022c8a0(u32* object_param)
     if (*(u32*)object & 4) {
         FUN_0022fa80((u32*)object);
     }
-#undef colorTmp
-#undef color
 }
 
 // W212: matched-sibling vtable transfer changed nd 1383 -> 1343 and
