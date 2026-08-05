@@ -2678,7 +2678,7 @@ void func_001e3f10(RuntimeTask* task)
             break;
 
         case 1:
-            if ((DAT_007e094e & 0x40) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
             {
                 result = (u32)func_001a4510(work->windowTask);
                 if (result == 0)
@@ -2698,14 +2698,14 @@ void func_001e3f10(RuntimeTask* task)
                     work->state = 3;
                 }
             }
-            if ((DAT_007e094e & 0x20) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x20) != 0)
             {
                 work->state = 6;
             }
             break;
 
         case 2:
-            if ((DAT_007e094e & 0x40) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
             {
                 result = (u32)func_001a4510(work->windowTask);
                 if (result == 7)
@@ -2748,14 +2748,14 @@ void func_001e3f10(RuntimeTask* task)
                     break;
                 }
             }
-            if ((DAT_007e094e & 0x20) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x20) != 0)
             {
                 work->state = 6;
             }
             break;
 
         case 3:
-            if ((DAT_007e094e & 0x40) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
             {
                 result = (u32)func_001a4510(work->windowTask);
                 if (result == 1)
@@ -2782,7 +2782,7 @@ void func_001e3f10(RuntimeTask* task)
                     break;
                 }
             }
-            if ((DAT_007e094e & 0x20) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x20) != 0)
             {
                 work->state = 6;
             }

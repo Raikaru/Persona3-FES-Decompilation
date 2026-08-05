@@ -3313,8 +3313,8 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
     switch (iVar1) {
     case 0:
-      if ((DAT_007e0952 & 0x8000) == 0) {
-        if ((DAT_007e0952 & 0x2000) != 0) {
+      if (((*(u16 *)DAT_007e0952_abs & 0x8000) == 0)) {
+        if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0)) {
           if (iVar3 >= 6) {
             iVar3 = 0;
           }
@@ -3339,8 +3339,8 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
     case 1:
       switch(iVar3) {
       case 0:
-        if ((DAT_007e0952 & 0x8000) == 0) {
-          if ((DAT_007e0952 & 0x2000) != 0) {
+        if (((*(u16 *)DAT_007e0952_abs & 0x8000) == 0)) {
+          if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0)) {
             iVar6 = 1;
           }
         }
@@ -3361,8 +3361,8 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
       case 3:
       case 4:
       case 5:
-        if ((DAT_007e0952 & 0x8000) == 0) {
-          if ((DAT_007e0952 & 0x2000) != 0) {
+        if (((*(u16 *)DAT_007e0952_abs & 0x8000) == 0)) {
+          if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0)) {
             iVar6 = 1;
           }
         }
@@ -3379,8 +3379,8 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
       }
       break;
     case 2:
-      if ((DAT_007e0952 & 0x8000) == 0) {
-        if ((DAT_007e0952 & 0x2000) != 0) {
+      if (((*(u16 *)DAT_007e0952_abs & 0x8000) == 0)) {
+        if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0)) {
           if (uVar5 >= 10) {
             uVar5 = 0;
           }
@@ -3398,7 +3398,7 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
       *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;
       break;
     case 3:
-      if (((DAT_007e0952 & 0x8000) != 0) || ((DAT_007e0952 & 0x2000) != 0)) {
+      if (((( *(u16 *)DAT_007e0952_abs & 0x8000) != 0) || ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0))) {
         *(u32 *)(iVar7 + 0x19c) = (u32)(*(int *)(iVar7 + 0x19c) == 0);
       }
       break;
@@ -3408,9 +3408,9 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
     *(int *)(iVar7 + 0x198) = iVar3;
 
-    if ((DAT_007e0952 & 0x1000) == 0) {
+    if (((*(u16 *)DAT_007e0952_abs & 0x1000) == 0)) {
 
-      if ((DAT_007e0952 & 0x4000) != 0) {
+      if (((*(u16 *)DAT_007e0952_abs & 0x4000) != 0)) {
 
         if (*(int *)(iVar7 + 0x214) >= 3) {
 

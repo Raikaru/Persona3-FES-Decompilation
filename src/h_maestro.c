@@ -4917,6 +4917,7 @@ void func_00114450(f32 depth,
     f32 z;
     f32 tmp;
     void (**setState)(u32, u32);
+    void (**drawPrimitive)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
     s8 r;
     s8 g;
     s8 b;
@@ -5097,9 +5098,10 @@ void func_00114450(f32 depth,
     vertices[7].u.els.u = 1.0f;
     vertices[7].u.els.v = 1.0f;
 
+    drawPrimitive = (void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_abs;
     (*setState)(1, *textureState);
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, &vertices[4], 4);
+    (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*drawPrimitive)(rwPRIMTYPETRISTRIP, &vertices[4], 4);
 }
 #pragma opt_loop_invariants off
 

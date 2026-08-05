@@ -74,6 +74,8 @@ extern f32 DAT_00693868[];
 extern f32 DAT_00697880;
 extern f32 DAT_00697888;
 extern f32 DAT_00697884;
+#pragma alias DAT_00697880_abs DAT_00697880
+extern f32 DAT_00697880_abs[];
 extern f32 DAT_007caee8;
 extern f32 DAT_007caf08;
 extern f32 DAT_007caf88;
@@ -2139,8 +2141,8 @@ void FUN_0029ee20(u32 param_1)
       FUN_004c69f0(&direction,&direction);
       matrix.at = direction;
       cross.x = DAT_00697884 * direction.z - DAT_00697888 * direction.y;
-      cross.y = DAT_00697888 * direction.x - DAT_00697880 * direction.z;
-      cross.z = DAT_00697880 * direction.y - DAT_00697884 * direction.x;
+      cross.y = DAT_00697888 * direction.x - DAT_00697880_abs[0] * direction.z;
+      cross.z = DAT_00697880_abs[0] * direction.y - DAT_00697884 * direction.x;
       FUN_004c69f0(&cross,&cross);
       matrix.right = cross;
       matrix.up.x = direction.y * cross.z - direction.z * cross.y;
