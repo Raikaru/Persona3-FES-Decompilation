@@ -1148,18 +1148,20 @@ void func_00271230(u32* param)
     f32 transformedY;
     f32 alpha;
     f32 recipZ;
+    f32 neg;
 
     context = (u8*)(uintptr_t)param[3];
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / camera->nearPlane;
     width = (f32)*(s32*)(context + 0x2c) / 180.0f;
+    neg = -width;
     height = (f32)*(s32*)(context + 0x30) / 512.0f;
     x = *(f32*)&param[1] * 640.0f - 100.0f;
     y = *(f32*)&param[2] * 448.0f - 100.0f;
     angle = func_0052ea18(y, x);
     distance = sqrtf(y * y + x * x);
     wave = func_00269c80(fGpffff8248 *
-                         (distance / 1200.0f - width) * 2.0f) * 20.0f;
+                         (distance / 1200.0f + neg) * 2.0f) * 20.0f;
     if (wave > 0.0f)
         wave = -wave;
     scale = distance + wave * (y / 400.0f);
@@ -1175,9 +1177,9 @@ void func_00271230(u32* param)
     y = *(f32*)&param[2] * 448.0f - 255.0f;
     angle = func_0052ea18(y, x);
     distance = sqrtf(y * y + x * x);
+    neg = -((f32)*(s32*)(context + 0x2c) / 180.0f);
     wave = func_00269c80(angle + fGpffff8248 *
-                         (distance / 300.0f -
-                          (f32)*(s32*)(context + 0x2c) / 180.0f) * 2.0f);
+                         (distance / 300.0f + neg) * 2.0f);
     wave2 = func_00269c80((f32)*(s32*)(context + 0x30) / 30.0f * 3.0f -
                           distance / 100.0f);
     wave = func_00269c80(fGpffff8248 *

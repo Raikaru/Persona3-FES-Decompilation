@@ -1804,7 +1804,9 @@ void FUN_003b9610(Resrc* param_1)
 
       cVar9 = (char)puVar8[0x28];
 
-      if (cVar9 == '\0') {
+      switch (cVar9) {
+      case 0:
+        {
 
         stack.m_fStack_38 = stack.m_fStack_18 - stack.m_fStack_28;
 
@@ -1859,8 +1861,10 @@ void FUN_003b9610(Resrc* param_1)
         FUN_003b7460(puVar8,puVar8 + 2,0,0);
 
       }
+        break;
 
-      else if (cVar9 == '\x01') {
+      case 1:
+        {
 
         stack.m_fStack_38 = stack.m_fStack_18 - *(float *)(puVar8 + 0x16);
 
@@ -1953,8 +1957,10 @@ void FUN_003b9610(Resrc* param_1)
         FUN_003b7460(puVar8,puVar8 + 2,0,0);
 
       }
+        break;
 
-      else if (cVar9 == '\x02') {
+      case 2:
+        {
 
         FUN_003bc220_scene_typed((char *)*(u32 *)(puVar8 + 0x2a),*(float *)(puVar8 + 0x2e),
                      *(float *)(puVar8 + 0x30),&stack.m_uStack_58,&stack.m_uStack_68);
@@ -2002,7 +2008,9 @@ void FUN_003b9610(Resrc* param_1)
         }
 
       }
+        break;
 
+    }
     }
 
     if ((*(u32 *)(puVar8 + 0x14) & 4) != 0) {

@@ -2838,8 +2838,7 @@ void* func_00314170(void* param_1, void* param_2)
         if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
               (*(int *)(*piVar1 + (short)puVar3[2] * 8) != 0)) &&
              ((*puVar3 & 1) == 0)) &&
-            ((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3) &&
-              (0 <= (short)puVar3[2])))) {
+            ((0 <= (short)puVar3[2]))) {
 
           func_004b74c0_typed(*(f32 *)(*piVar4 + 0xc),param_1);
           *(u8 *)(puVar3 + 1) = 1;

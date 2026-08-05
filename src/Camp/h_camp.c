@@ -20866,7 +20866,7 @@ u32 h_campUpdateNewItemTask(int param_1)
     lVar11 = FUN_003c7850();
     if (lVar11 == 0) {
       lVar11 = FUN_003c7610();
-      if ((lVar11 != 1) && (lVar11 == 0)) {
+      if (lVar11 == 0) {
         FUN_00141590_y3(puVar1[0x2a]);
       }
       FUN_003c7700();
@@ -30700,7 +30700,7 @@ undefined4 FUN_00169470(KwlnTask* param_1)
     case 4:
         if (FUN_003c7850() == 0) {
             s32 waitState = FUN_003c7610();
-            if (waitState != 1 && waitState == 0) {
+            if (waitState == 0) {
                 s32 current = work->list->records[
                     work->list->cursor + work->list->selected].secondaryValue;
                 s32 selected = work->list->selected;

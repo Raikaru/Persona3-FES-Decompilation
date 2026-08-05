@@ -289,7 +289,7 @@ u32 FUN_00410e70(u32 param_1,int param_2,int param_3)
 
     }
 
-    else if ((lVar4 != 2) && (lVar4 == 1)) {
+    else if (lVar4 == 1) {
       H_Maestro_SetAlphaMult(0x3f800000,puVar1[3]);
 
     }
@@ -1782,7 +1782,7 @@ if (param_3 != 0) {
 
   }
 
-  else if ((sVar1 != 2) && (sVar1 == 1)) {
+  else if (sVar1 == 1) {
 
     memcpy((void *)iVar2,asStack_60,0x30);
 
