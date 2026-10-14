@@ -1224,19 +1224,19 @@ void func_00279ac0(u32 value)
 }
 
 // FUN_00279AF0
-u32 func_00279af0(const u32* work, u32 index)
+u32 brpParamGetEntry(const u32* work, u32 index)
 {
     return *(const u32 *)(index * sizeof(u32) + work[2]);
 }
 
 // FUN_00279b10
-u32 func_00279b10(const u32* work)
+u32 brpParamReadWord4(const u32* work)
 {
     return work[4];
 }
 
 // FUN_00279b20
-u32 func_00279b20(const u32* work)
+u32 brpParamReadWord1(const u32* work)
 {
     return work[1];
 }
