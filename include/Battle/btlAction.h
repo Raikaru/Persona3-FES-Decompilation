@@ -66,9 +66,9 @@ struct BtlAction
     u16 pendingState;        // 0x0e. See enum 'BtlActionState'
     u16 oldState;            // 0x10
     u16 pendingStateTimer;   // 0x12
-    u16 unk_14;              // 0x14
+    u16 state;              // 0x14
     s16 unk_16;              // 0x16
-    u16 unk_18;              // 0x18
+    u16 flags;              // 0x18
     u16 unk_1a;              // 0x1a
     u32 stateTimer;          // 0x1c
     u32 unk_20;              // 0x20
