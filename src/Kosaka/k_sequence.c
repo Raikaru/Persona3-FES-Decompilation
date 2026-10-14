@@ -185,7 +185,7 @@ extern undefined8 FUN_004cb890(undefined8 param_1);
 extern undefined4 FUN_004d0d10(int param_1);
 extern undefined8 FUN_004d0dc0(undefined8 param_1, void* param_2, undefined8 param_3);
 extern u32 FUN_004d7f60();
-extern u64 FUN_0051e0f0(u64 param_1);
+extern u64 atoi(u64 param_1);
 extern u32 FUN_00523ac8();
 extern u32 FUN_00523e68();
 extern u32 FUN_00524270();
