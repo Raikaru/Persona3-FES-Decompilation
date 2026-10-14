@@ -5,6 +5,7 @@
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/Battle/Data/datUnit.h"
 #include "Battle/btlVoice.h"
+#include "Battle/btlMain.h"
 #include "temporary.h"
 
 extern f32 sqrtf(f32 value);
@@ -1695,9 +1696,6 @@ extern u64 FUN_0029a1d0();
 #pragma alias FUN_0029a1d0_u32 FUN_0029a1d0
 extern u32 FUN_0029a1d0_u32(u32 param_1);
 extern u64 FUN_0029ea20();
-extern u64 FUN_0029ea30();
-extern u64 FUN_0029ea40();
-extern float *FUN_0029ea50();
 extern void FUN_002a2170(u16 *param_1,f32 *param_2);
 extern u64 FUN_002a38f0();
 extern u64 FUN_002a3a80();
