@@ -61,9 +61,9 @@ extern void func_00239280(void);
 extern void func_002392d0(void);
 extern void func_0023b990(void);
 extern void func_0023d240(void);
-extern void func_0020a800(void* frame);
+extern void sflDataSetupFramePanel(void* frame);
 extern void func_0020c5f0(void* frame, s32 value, s32 count);
-extern void func_00209f00(void* frame);
+extern void sflDataSetupLayoutPanel(void* frame);
 extern void func_0020c590(void* frame, u16 value);
 extern void func_0020cd50(void* frame, void* resource);
 extern void func_00219d90(void);
@@ -149,12 +149,12 @@ void func_0024a870(void)
     switch (work[0])
     {
     case 0:
-        func_00209f00(work + 7);
+        sflDataSetupLayoutPanel(work + 7);
         frame = (u8*)work + 0x1C;
         func_0020c590(frame, *(u16*)((u8*)work + 0x0C));
         break;
     case 1:
-        func_0020a800(work + 7);
+        sflDataSetupFramePanel(work + 7);
         frame = (u8*)work + 0x1C;
         func_0020c5f0(frame, 0, 0xE);
         break;
