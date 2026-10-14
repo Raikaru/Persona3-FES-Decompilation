@@ -10590,90 +10590,59 @@ void FUN_00329d60(float param_1,u8 (*param_2) [16])
 
 
 void FUN_00329ed0(float *param_1)
-
-
-
 {
-  u8 uVar1;
+  float trace;
+  float quat[4];
+  u8 selected;
+  s32 i, j, k;
+  s32 oi, oj, ok;
+  u8 *ri, *rj, *rk;
+  f32 dj, delta, radicand, sum;
+  f32 root;
+  f32 identity;
+  f32 zero;
 
-  u8 uVar2;
+  trace = *param_1 + param_1[5] + param_1[10] + 1.0f;
 
-  u8 uVar4;
-
-  float fVar5;
-
-  float *row4;
-
-  float *row1;
-
-  float *row2;
-
-  float afStack_10 [4];
-
-  
-
-  fVar5 = *param_1 + param_1[5] + param_1[10] + 1.0f;
-
-  if (fVar5 >= 1.0f) {
-
-    fVar5 = sqrtf(fVar5) * 2.0f;
-
-    afStack_10[3] = -(fVar5 / 4.0f);
-
-    afStack_10[0] = (param_1[6] - param_1[9]) / fVar5;
-
-    afStack_10[1] = (param_1[8] - param_1[2]) / fVar5;
-
-    afStack_10[2] = (param_1[1] - param_1[4]) / fVar5;
-
-  }
-
-  else {
-
-    uVar4 = *param_1 > param_1[5] ^ 1;
-
-    if (param_1[10] > param_1[uVar4 * 5]) {
-
-      uVar4 = 2;
-
+  if (trace >= 1.0f) {
+    trace = sqrtf(trace) * 2.0f;
+    quat[3] = -(trace / 4.0f);
+    quat[0] = (param_1[6] - param_1[9]) / trace;
+    quat[1] = (param_1[8] - param_1[2]) / trace;
+    quat[2] = (param_1[1] - param_1[4]) / trace;
+  } else {
+    selected = (((*param_1 > param_1[5]) ? 1 : 0) ^ 1) & 0xFF;
+    if (param_1[10] > *(float *)((u8 *)param_1 + selected * 16 + selected * 4)) {
+      selected = 2;
     }
-
-    uVar1 = (uVar4 + 1) % 3;
-
-    uVar2 = (uVar1 + 1) % 3;
-
-    row1 = param_1 + uVar1 * 4;
-
-    row4 = param_1 + uVar4 * 4;
-
-    row2 = param_1 + uVar2 * 4;
-
-    fVar5 = sqrtf(((row4[uVar4] - row1[uVar1]) - row2[uVar2]) + 1.0f) * 2.0f;
-
-    if (fVar5 == 0.0f) {
-
-      afStack_10[uVar4] = 1.0f;
-
-      afStack_10[uVar1] = 0.0f;
-
-      afStack_10[uVar2] = 0.0f;
-
-      afStack_10[3] = 0.0f;
-
+    i = (u8)selected;
+    j = (u8)((i + 1) % 3);
+    k = (u8)((j + 1) % 3);
+    oj = j * 4;
+    rj = (u8 *)param_1 + j * 16;
+    dj = *(f32 *)(rj + oj);
+    oi = i * 4;
+    ri = (u8 *)param_1 + i * 16;
+    delta = *(f32 *)(ri + oi) - dj;
+    ok = k * 4;
+    rk = (u8 *)param_1 + k * 16;
+    radicand = delta - *(f32 *)(rk + ok);
+    identity = 1.0f;
+    sum = identity + radicand;
+    root = sqrtf(sum);
+    root = 2.0f * root;
+    zero = 0.0f;
+    if (zero != root) {
+      *(f32 *)((u8 *)quat + oi) = root / 4.0f;
+      *(f32 *)((u8 *)quat + oj) = (*(f32 *)(ri + oj) + *(f32 *)(rj + oi)) / root;
+      *(f32 *)((u8 *)quat + ok) = (*(f32 *)(ri + ok) + *(f32 *)(rk + oi)) / root;
+      quat[3] = -((*(f32 *)(rj + ok) - *(f32 *)(rk + oj)) / root);
+    } else {
+      *(f32 *)((u8 *)quat + oi) = identity;
+      *(f32 *)((u8 *)quat + oj) = zero;
+      *(f32 *)((u8 *)quat + ok) = zero;
+      quat[3] = zero;
     }
-
-    else {
-
-      afStack_10[uVar4] = fVar5 / 4.0f;
-
-      afStack_10[uVar1] = (row4[uVar1] + row1[uVar4]) / fVar5;
-
-      afStack_10[uVar2] = (row4[uVar2] + row2[uVar4]) / fVar5;
-
-      afStack_10[3] = -((row1[uVar2] - row2[uVar1]) / fVar5);
-
-    }
-
   }
 
   __asm__ volatile (
@@ -10681,7 +10650,7 @@ void FUN_00329ed0(float *param_1)
       "lqc2 vf10, 0(%0)        \n"
       ".set reorder"
       :
-      : "r" (afStack_10)
+      : "r" (quat)
       : "vf10", "memory"
   );
 
