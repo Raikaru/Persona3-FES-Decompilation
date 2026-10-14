@@ -47,7 +47,7 @@ extern u8 *DAT_007ce644;
 void FUN_003b35e0(int param_1);
 void FUN_003b3740(void);
 void FUN_003b3770(void);
-u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3);
+u32 frFontFindOrLoadEntry(u32 param_1,u32 param_2,u32 param_3);
 u32 FUN_003b3dd0(u32 param_1,int param_2);
 u32 FUN_003b3e00(u32 param_1,int param_2);
 u32 FUN_003b3e60(u32 param_1,u32 param_2,u32 param_3);
@@ -57,7 +57,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 #define FUN_003b3740(...) ((void (*)(...))FUN_003b3740)(__VA_ARGS__)
 #define FUN_003b3770(...) ((void (*)(...))FUN_003b3770)(__VA_ARGS__)
 #define FUN_003b38f0(...) ((u64 (*)(...))FUN_003b38f0)(__VA_ARGS__)
-#define FUN_003b3d60(...) ((long (*)(...))FUN_003b3d60)(__VA_ARGS__)
+#define frFontFindOrLoadEntry(...) ((long (*)(...))frFontFindOrLoadEntry)(__VA_ARGS__)
 #define FUN_003b3dd0(...) ((long (*)(...))FUN_003b3dd0)(__VA_ARGS__)
 #define FUN_003b3e00(...) ((u32 (*)(...))FUN_003b3e00)(__VA_ARGS__)
 #define FUN_003b3e60(...) ((u32 (*)(...))FUN_003b3e60)(__VA_ARGS__)
@@ -309,11 +309,11 @@ FUN_003b38f0(float depthBias, int xFixed, int yFixed, u8 *drawState, int cacheKe
 #pragma opt_lifetimes reset
 #pragma opt_loop_invariants reset
 #define FUN_003b38f0(...) ((u64 (*)(...))FUN_003b38f0)(__VA_ARGS__)
-#undef FUN_003b3d60
+#undef frFontFindOrLoadEntry
 // FUN_003B3D60
 
 
-u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3)
+u32 frFontFindOrLoadEntry(u32 param_1,u32 param_2,u32 param_3)
 {
   u32 result;
 
@@ -328,7 +328,7 @@ u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3)
   return result;
 }
 
-#define FUN_003b3d60(...) ((long (*)(...))FUN_003b3d60)(__VA_ARGS__)
+#define frFontFindOrLoadEntry(...) ((long (*)(...))frFontFindOrLoadEntry)(__VA_ARGS__)
 #undef FUN_003b3dd0
 // FUN_003B3DD0
 
