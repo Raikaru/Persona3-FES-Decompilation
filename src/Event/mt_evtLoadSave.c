@@ -1340,7 +1340,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
     if (lVar2 != 0) {
 
-      FUN_004c0370(lVar2);
+      RwFclose(lVar2);
 
     }
 
@@ -1358,7 +1358,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
     if (lVar3 != 0) {
 
-      FUN_004c0370(lVar3);
+      RwFclose(lVar3);
 
     }
 
