@@ -3688,8 +3688,8 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
                   u64 param_5)
 {
     u8* camera;
-    void* viewport;
     void (**setState)(...);
+    void* viewport;
     u8 padding[0x10];
     u8 vertices[4][0x40];
     f32 scaleX;
@@ -3722,14 +3722,14 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
     }
 
 
-    (*setState)(7, 2);
-    (*setState)(0x14, 1);
-    (*setState)(0xe, 0);
-    (*setState)(6, 0);
-    (*setState)(8, 0);
-    (*setState)(9, param_5);
-    (*setState)(0xc, 1);
-    (*setState)(1, viewport);
+    (*setState)(rwRENDERSTATESHADEMODE, 2);
+    (*setState)(rwRENDERSTATECULLMODE, 1);
+    (*setState)(rwRENDERSTATEFOGENABLE, 0);
+    (*setState)(rwRENDERSTATEZTESTENABLE, 0);
+    (*setState)(rwRENDERSTATEZWRITEENABLE, 0);
+    (*setState)(rwRENDERSTATETEXTUREFILTER, param_5);
+    (*setState)(rwRENDERSTATEVERTEXALPHAENABLE, 1);
+    (*setState)(rwRENDERSTATETEXTURERASTER, viewport);
     FUN_004d7f60(2, param_3);
     FUN_004d7f60(3, param_4);
     recipZ = 1.0f / *(f32*)(camera + 0x84);
@@ -3779,7 +3779,7 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
     *(f32*)(vertices[3] + 0x18) = recipZ;
 
     (*(void (**)(...))DAT_009600a0_abs)(4, vertices, 4);
-    (*setState)(1, 0);
+    (*setState)(rwRENDERSTATETEXTURERASTER, 0);
 }
 
 
