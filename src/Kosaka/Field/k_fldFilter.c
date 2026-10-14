@@ -88,6 +88,7 @@ typedef struct FldFilterCameraWork
     ResrcModelChar* playerResrc;// 0xcc
 } FldFilterCameraWork;
 
+#pragma opt_propagation off
 // FUN_001d4460 NONMATCHING
 static void K_FldFilter_InitQuads(RwCamera* camera)
 {
@@ -142,6 +143,7 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
         y++;
     }
 }
+#pragma opt_propagation on
 
 // FUN_001d4560
 void K_FldFilter_Init()
