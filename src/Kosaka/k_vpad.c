@@ -5145,10 +5145,6 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
 
     RuntimeGeometryWork* work;
     RuntimeGeometry* geometry;
-    u8* triangle;
-    u8* color;
-    f32* texCoord;
-    f32* texCoordBase;
     u32 format;
     s32 triangleCount;
     s32 vertexCount;
@@ -5161,6 +5157,10 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
     f32 step;
     f32 amount;
 
+    u8* triangle;
+    u8* color;
+    f32* texCoord;
+    f32* texCoordBase;
     work = (RuntimeGeometryWork*)rawWork;
     format = 0x4a;
     if ((*work->config->flags & 1) != 0)
