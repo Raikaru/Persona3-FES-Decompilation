@@ -6921,7 +6921,7 @@ int FUN_0051e0e0(int param_1)
 #pragma schedule on
 #pragma optimization_level 3
 // FUN_0051E0F0 NONMATCHING
-u64 FUN_0051e0f0(u64 param_1)
+u64 atoi(u64 param_1)
 {
   return (u64)FUN_00525c50(param_1,0,10);
 }
@@ -8251,7 +8251,7 @@ void FUN_0051fff0(int *param_1,u64 param_2,u64 param_3)
   long lVar1;
   
   DAT_009acc20 = 0;
-  lVar1 = FUN_00503918(param_2,param_3);
+  lVar1 = fstat(param_2,param_3);
   if ((lVar1 == -1) && (DAT_009acc20 != 0)) {
     *param_1 = DAT_009acc20;
   }
