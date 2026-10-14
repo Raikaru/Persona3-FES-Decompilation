@@ -116,7 +116,7 @@ extern s32 FUN_003082f0_one(s32 param_1);
 u32 FUN_003083f0(u32 param_1,u32 param_2);
 u8 FUN_003086c0(void *param_1,u32 param_2);
 u32 FUN_003086f0(u32 param_1,u32 param_2);
-u32 FUN_00308860(u16 param_1);
+u32 datCalcIsSpecialItem(u16 param_1);
 u8 FUN_003088b0(u16 param_1);
 u16 FUN_00308930(u16 *param_1);
 u8 FUN_00308a50(u16 param_1);
@@ -147,7 +147,7 @@ int FUN_0030c0c0(void);
 s32 FUN_0030c220(s32 param_1);
 u8 FUN_0030c2a0(u32 param_1);
 u32 FUN_0030c3a0(u16 *param_1);
-void FUN_0030c440(void);
+void datCalcInitializeCharacters(void);
 void FUN_0030c490(u16 param_1);
 void FUN_0030c520(void);
 void FUN_0030c930(void);
@@ -4599,7 +4599,7 @@ done:
 
 
 // FUN_00308860
-u32 FUN_00308860(u16 param_1)
+u32 datCalcIsSpecialItem(u16 param_1)
 
 {
   u32 uVar1;
@@ -6712,7 +6712,7 @@ u32 FUN_0030c3a0(u16 *param_1)
 
 
 // FUN_0030c440
-void FUN_0030c440(void)
+void datCalcInitializeCharacters(void)
 
 {
   u16 uVar1;
