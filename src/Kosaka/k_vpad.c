@@ -5179,32 +5179,7 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
     geometry = func_00493710(
         vertexCount, triangleCount, (void*)(uintptr_t)format);
     triangle = geometry->triangles;
-    if (work->mode == 2)
-    {
-        func_00493210(geometry, triangle, 0, 3, 2);
-        func_00493210(geometry, triangle + 8, 2, 4, 1);
-        triangle += 0x10;
-        baseIndex = 2;
-        for (index = 0; index < work->config->count; index++)
-        {
-            nextBase = baseIndex + 3;
-            func_00493210(geometry, triangle, baseIndex, baseIndex + 1,
-                          nextBase);
-            func_00493210(geometry, triangle + 8, baseIndex, nextBase,
-                          baseIndex + 2);
-            func_00493210(geometry, triangle + 0x10, baseIndex + 1,
-                          baseIndex + 4, nextBase);
-            func_00493210(geometry, triangle + 0x18, baseIndex + 2,
-                          nextBase, baseIndex + 5);
-            triangle += 0x20;
-            baseIndex += 3;
-        }
-        func_00493210(geometry, triangle, baseIndex, baseIndex + 1,
-                      baseIndex + 3);
-        func_00493210(geometry, triangle + 8, baseIndex, baseIndex + 3,
-                      baseIndex + 2);
-    }
-    else if (work->mode == 1)
+    if (work->mode == 2 || work->mode == 1)
     {
         func_00493210(geometry, triangle, 0, 3, 2);
         func_00493210(geometry, triangle + 8, 2, 4, 1);
@@ -5252,19 +5227,7 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
         triangle += 8;
     }
 
-    if (work->mode == 2)
-    {
-        color = geometry->colors;
-        for (index = 0; index < vertexCount; index++)
-        {
-            color[0] = 0;
-            color[1] = 0;
-            color[2] = 0;
-            color[3] = 0;
-            color += 4;
-        }
-    }
-    else if (work->mode == 1)
+    if (work->mode == 2 || work->mode == 1)
     {
         color = geometry->colors;
         for (index = 0; index < vertexCount; index++)
@@ -5306,49 +5269,7 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
 
     if ((*work->config->flags & 1) != 0)
     {
-        if (work->mode == 2)
-        {
-            texCoordBase = geometry->texCoords;
-            vertexCount = work->config->count * 3 + 6;
-            denominator = (f32)work->config->count + 0.5f;
-            texCoordBase[0] = 0.0f;
-            texCoordBase[1] = 0.0f;
-            texCoordBase[2] = 0.0f;
-            texCoordBase[3] = 1.0f;
-            texCoordBase[4] = 0.0f;
-            texCoordBase[5] = 0.5f;
-            endIndex = vertexCount * 2;
-            texCoordBase[endIndex - 6] = 1.0f;
-            texCoordBase[endIndex - 5] = 0.0f;
-            texCoordBase[endIndex - 4] = 1.0f;
-            texCoordBase[endIndex - 3] = 1.0f;
-            texCoordBase[endIndex - 2] = 1.0f;
-            texCoordBase[endIndex - 1] = 0.5f;
-
-            step = 1.0f / denominator;
-            amount = 0.5f / denominator;
-            texCoord = texCoordBase;
-            for (index = 0; index < work->config->count; index++)
-            {
-                texCoord[6] = amount;
-                texCoord[7] = 0.0f;
-                texCoord[8] = amount;
-                texCoord[9] = 1.0f;
-                amount += step;
-                texCoord += 6;
-            }
-
-            texCoord = texCoordBase + 10;
-            amount = step;
-            for (index = 0; index < work->config->count; index++)
-            {
-                texCoord[0] = amount;
-                texCoord[1] = 0.5f;
-                amount += step;
-                texCoord += 6;
-            }
-        }
-        else if (work->mode == 1)
+        if (work->mode == 2 || work->mode == 1)
         {
             texCoordBase = geometry->texCoords;
             vertexCount = work->config->count * 3 + 6;
