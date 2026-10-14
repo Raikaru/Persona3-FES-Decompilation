@@ -37578,148 +37578,89 @@ u32 FUN_00348340(u8 *spriteRec,float *verts)
   u32 corner;
   float fVar8;
   float alphaF;
-  float fVar9;
-  float fVar10;
+  float rotA;
+  float rotB;
   float fVar11;
-  float fVar12;
-  float fVar13;
-  float fVar14;
-  float fVar15;
+  float rightX;
+  float originY;
+  float leftX;
+  float originX;
   float color0;
   float color1;
   float color2;
   float color3;
-
   if ((((*(float *)(spriteRec + 0x18) > 640.0f) ||
         (*(float *)(spriteRec + 0x1c) > 448.0f)) ||
        (*(float *)(spriteRec + 0x20) < 0.0f)) ||
       (*(float *)(spriteRec + 0x24) < 0.0f)) {
-
     result = 0;
-
   }
-
   else {
-
     colorByte0 = *spriteRec;
     colorByte1 = spriteRec[1];
     colorByte2 = spriteRec[2];
     colorByte3 = spriteRec[3];
     ctx = (int)FUN_00198590();
-
     fVar11 = *(float *)&DAT_00960088;
-
     fVar8 = *(float *)(ctx + 0x80);
     color0 = (float)colorByte0;
     color1 = (float)colorByte1;
     color2 = (float)colorByte2;
     color3 = (float)colorByte3;
-
     for (corner = 0; corner < 4; corner = corner + 1) {
-
       verts[corner * 0x10 + 6] = 1.0f / fVar8;
-
       verts[corner * 0x10 + 8] = color0;
-
       verts[corner * 0x10 + 9] = color1;
-
       verts[corner * 0x10 + 10] = color2;
-
       verts[corner * 0x10 + 0xb] = color3;
-
       verts[corner * 0x10 + 2] = fVar11;
-
     }
-
-    fVar15 = *(float *)(spriteRec + 0x10) / *(float *)DAT_00957bac_abs;
-
-    fVar13 = *(float *)(spriteRec + 0x14) / *(float *)DAT_00957bb0_abs;
-
+    originX = *(float *)(spriteRec + 0x10) / *(float *)DAT_00957bac_abs;
+    originY = *(float *)(spriteRec + 0x14) / *(float *)DAT_00957bb0_abs;
     fVar11 = *(float *)(spriteRec + 0xc);
-    fVar14 = fVar11 * (*(float *)(spriteRec + 0x18) / *(float *)DAT_00957bac_abs - fVar15);
-    fVar8 = fVar11 * (*(float *)(spriteRec + 0x1c) / *(float *)DAT_00957bb0_abs - fVar13);
-
-    fVar12 = fVar11 * (*(float *)(spriteRec + 0x20) / *(float *)DAT_00957bac_abs - fVar15);
-
-    fVar11 = fVar11 * (*(float *)(spriteRec + 0x24) / *(float *)DAT_00957bb0_abs - fVar13);
-
-
-    if (((fabsf(fVar14 - fVar12) <= 0.0f) || (fabsf(fVar8 - fVar11) <= 0.0f)) ||
-       ((7.0f <= fabsf(fVar14 - fVar12) || (7.0f <= fabsf(fVar8 - fVar11))))) {
-
+    leftX = fVar11 * (*(float *)(spriteRec + 0x18) / *(float *)DAT_00957bac_abs - originX);
+    fVar8 = fVar11 * (*(float *)(spriteRec + 0x1c) / *(float *)DAT_00957bb0_abs - originY);
+    rightX = fVar11 * (*(float *)(spriteRec + 0x20) / *(float *)DAT_00957bac_abs - originX);
+    fVar11 = fVar11 * (*(float *)(spriteRec + 0x24) / *(float *)DAT_00957bb0_abs - originY);
+    if (((fabsf(leftX - rightX) <= 0.0f) || (fabsf(fVar8 - fVar11) <= 0.0f)) ||
+       ((7.0f <= fabsf(leftX - rightX) || (7.0f <= fabsf(fVar8 - fVar11))))) {
       result = 0;
-
     }
-
     else {
-
       *verts = *(float *)(spriteRec + 0x18);
-
       verts[1] = *(float *)(spriteRec + 0x1c);
-
       verts[0x10] = *(float *)(spriteRec + 0x18);
-
       verts[0x11] = *(float *)(spriteRec + 0x24);
-
       verts[0x20] = *(float *)(spriteRec + 0x20);
-
       verts[0x21] = *(float *)(spriteRec + 0x24);
-
       verts[0x30] = *(float *)(spriteRec + 0x20);
-
       verts[0x31] = *(float *)(spriteRec + 0x1c);
-
       if (*(float *)(spriteRec + 8) != 0.0f) {
-
-        fVar9 = FUN_0052e6d8_f32(*(float *)(spriteRec + 8));
-        fVar10 = FUN_0052e878_f32(*(float *)(spriteRec + 8));
-
-        verts[4] = fVar15 + (fVar14 * fVar9 - fVar8 * fVar10);
-
-        verts[5] = fVar13 + fVar14 * fVar10 + fVar8 * fVar9;
-
-        verts[0x14] = fVar15 + (fVar14 * fVar9 - fVar11 * fVar10);
-
-        verts[0x15] = fVar13 + fVar14 * fVar10 + fVar11 * fVar9;
-
-        verts[0x24] = fVar15 + (fVar12 * fVar9 - fVar11 * fVar10);
-
-        verts[0x25] = fVar13 + fVar12 * fVar10 + fVar11 * fVar9;
-
-        verts[0x34] = fVar15 + (fVar12 * fVar9 - fVar8 * fVar10);
-
-        verts[0x35] = fVar13 + fVar12 * fVar10 + fVar8 * fVar9;
-
+        rotA = FUN_0052e6d8_f32(*(float *)(spriteRec + 8));
+        rotB = FUN_0052e878_f32(*(float *)(spriteRec + 8));
+        verts[4] = originX + (leftX * rotA - fVar8 * rotB);
+        verts[5] = originY + leftX * rotB + fVar8 * rotA;
+        verts[0x14] = originX + (leftX * rotA - fVar11 * rotB);
+        verts[0x15] = originY + leftX * rotB + fVar11 * rotA;
+        verts[0x24] = originX + (rightX * rotA - fVar11 * rotB);
+        verts[0x25] = originY + rightX * rotB + fVar11 * rotA;
+        verts[0x34] = originX + (rightX * rotA - fVar8 * rotB);
+        verts[0x35] = originY + rightX * rotB + fVar8 * rotA;
       }
-
       else {
-
-        verts[4] = fVar14 + fVar15;
-
-        verts[5] = fVar8 + fVar13;
-
-        verts[0x14] = fVar14 + fVar15;
-
-        verts[0x15] = fVar11 + fVar13;
-
-        verts[0x24] = fVar12 + fVar15;
-
-        verts[0x25] = fVar11 + fVar13;
-
-        verts[0x34] = fVar12 + fVar15;
-
-        verts[0x35] = fVar8 + fVar13;
-
+        verts[4] = leftX + originX;
+        verts[5] = fVar8 + originY;
+        verts[0x14] = leftX + originX;
+        verts[0x15] = fVar11 + originY;
+        verts[0x24] = rightX + originX;
+        verts[0x25] = fVar11 + originY;
+        verts[0x34] = rightX + originX;
+        verts[0x35] = fVar8 + originY;
       }
-
       result = 1;
-
     }
-
   }
-
   return result;
-
 }
 
 
