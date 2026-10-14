@@ -1068,12 +1068,13 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 u32 FUN_003d6740(void *dst,void *entryA,void *entryB,void *entryC)
 {
   u32 status;
-  u16 resultId;
+  u32 resultId;
   u32 result;
   int tableBase;
   u16 sampleA;
   u16 sampleB;
   u16 sampleC;
+  u16 sampleBlock[12];
   u16 sampleIds[3];
 
   sampleIds[0] = *(u16 *)((int)entryA + 2);
@@ -1095,21 +1096,24 @@ u32 FUN_003d6740(void *dst,void *entryA,void *entryB,void *entryC)
       result = 0;
     }
     else {
-      memset(&sampleA,0,0x18);
+      memset(sampleBlock,0,0x18);
       sampleA = *(u16 *)((int)entryA + 2);
+      sampleBlock[0] = sampleA;
       sampleB = *(u16 *)((int)entryB + 2);
+      sampleBlock[1] = sampleB;
       sampleC = *(u16 *)((int)entryC + 2);
+      sampleBlock[2] = sampleC;
       tableBase = DAT_007ce420 + 3;
-      resultId = FUN_003d7ac0(status,((int)*(u8 *)(tableBase + (int)sampleC * 0xe) +
+      resultId = (u16)FUN_003d7ac0(status,((int)*(u8 *)(tableBase + (int)sampleC * 0xe) +
                                  (int)*(u8 *)(tableBase + (int)sampleA * 0xe) +
                                  (int)*(u8 *)(tableBase + (int)sampleB * 0xe)) / 3 + 5 & 0xff,
-                           &sampleA);
-      if (resultId != 0) {
-        FUN_00176680(dst,resultId);
-        result = 1;
+                           sampleBlock);
+      if (resultId == 0) {
+        result = 0;
       }
       else {
-        result = 0;
+        FUN_00176680(dst,resultId);
+        result = 1;
       }
     }
   }
