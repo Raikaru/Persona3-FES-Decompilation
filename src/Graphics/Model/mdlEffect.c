@@ -909,7 +909,7 @@ u32 FUN_00320230(void);
 void FUN_00320290(int param_1);
 void FUN_00320380(float param_1,int *param_2);
 void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3);
-void FUN_00320640(u32 param_1,u32 param_2,int *param_3);
+void FUN_00320640(f32 scale1, f32 scale2, int *nodeHead);
 void FUN_00320770(int *param_1);
 f32 FUN_00320810(u8 **nodeHead);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
