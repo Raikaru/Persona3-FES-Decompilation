@@ -4016,10 +4016,8 @@ void FUN_002a2660(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags)
   ring[0x3a] = 0;
   ring[0x3b] = 0;
   ring[0x3c] = 0;
-  ring[0x40] = 0;
-  ring[0x41] = 0;
-  ring[0x3e] = 0;
-  ring[0x3f] = 0;
+  *(u32 *)((u8 *)ring + 0x80) = 0;
+  *(u32 *)((u8 *)ring + 0x7c) = 0;
 
   if (ring[0x3b] < 4) {
     slot = ring[0x3c];
