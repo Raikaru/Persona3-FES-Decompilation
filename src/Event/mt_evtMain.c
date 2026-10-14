@@ -512,7 +512,7 @@ code * FUN_0036ed30(int param_1);
 code * FUN_0036edd0(void);
 code * FUN_0036ee30(void);
 float FUN_0038a220(int param_1);
-float FUN_0038a900(int param_1);
+float evtCommandParamF32(int param_1);
 u8 FUN_003b86c0(f32 param_1, u32 param_2, u32 param_3);
 u32 FUN_003b8730(f32 param_1, u16 param_2, void *param_3);
 u32 FUN_003b89f0(f32 param_1, u16 param_2, char *param_3, u32 param_4);
@@ -651,7 +651,7 @@ u32 FUN_003844b0(int param_1,int param_2,int param_3);
 u32 FUN_003849e0(int param_1,int param_2,int param_3);
 u32 FUN_00384d30(u64 param_1,u64 param_2,u64 param_3);
 u32 FUN_003851f0(int param_1,int param_2,int param_3);
-u32 FUN_00386cd0(void);
+u32 evtSlotTableIdle(void);
 u32 FUN_00386e10(int param_1);
 u32 FUN_00386e30(int param_1);
 u32 FUN_0038a0b0(int param_1);
@@ -888,10 +888,10 @@ extern u16 *FUN_00362290_2390();
 extern u16 *FUN_00362310_2390();
 #pragma alias FUN_0038c830_2390 FUN_0038c830
 extern void FUN_0038c830_2390(int param_1,int param_2);
-void FUN_0038ca00(void);
+void sceneLightSlotsReset(void);
 void FUN_0038ca80(u64 param_1);
 void FUN_0038cc10(int param_1,u16 *param_2,long param_3);
-void FUN_0038d560(long param_1,long param_2,u32 param_3,u32 *param_4, u32 *param_5,u32 *param_6);
+void sceneLightSlotSet(long param_1,long param_2,u32 param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038d6b0(long param_1,u32 param_2);
 void FUN_0038d720(int param_1);
 void FUN_0038d790(int param_1);
@@ -3472,7 +3472,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
               if (param_3 != 0) {
 
-                FUN_0038d560(param_1[1],1,0,(u32 *)0x958440,(u32 *)0x958450,(u32 *)0x958460);
+                sceneLightSlotSet(param_1[1],1,0,(u32 *)0x958440,(u32 *)0x958450,(u32 *)0x958460);
 
               }
 
@@ -3532,7 +3532,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
               }
 
-              FUN_0038d560(param_1[1],*(u8 *)((int)param_1 + 0x22),lVar3,(u32 *)0x958440,(u32 *)0x958450,
+              sceneLightSlotSet(param_1[1],*(u8 *)((int)param_1 + 0x22),lVar3,(u32 *)0x958440,(u32 *)0x958450,
 
                            (u32 *)0x958460);
 
@@ -4318,7 +4318,7 @@ u16 * FUN_003646d0(u32 param_1,int param_2)
 
     case '\x01':
 
-      uVar12 = FUN_0038a900(*(u8 *)((int)puVar11 + 0x15));
+      uVar12 = evtCommandParamF32(*(u8 *)((int)puVar11 + 0x15));
 
       uStack_4 = 0;
 
@@ -4591,7 +4591,7 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
       uStack_c = *(u32 *)(puVar11 + 0xe);
       uStack_8 = *(u32 *)(puVar11 + 0x10);
       if (*(char *)((int)puVar11 + 0x15) == '\0') {
-        uVar12 = FUN_0038a900(puVar11[0xb]);
+        uVar12 = evtCommandParamF32(puVar11[0xb]);
         lVar8 = FUN_003b8730(uVar12,*(u16 *)(param_2 + 0xc),&uStack_10);
         if (lVar8 == 1) {
           *(u32 *)(param_2 + 100) = (u32)(*(char *)((int)puVar11 + 0x25) != '\0');
@@ -4622,7 +4622,7 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
     case '\x01':
       FUN_0038d840((char *)(*(u32 *)(puVar11 + 0x20)),(u8 *)acStack_170,0);
       if (*(char *)((int)puVar11 + 0x15) == '\0') {
-        uVar12 = FUN_0038a900(puVar11[0xb]);
+        uVar12 = evtCommandParamF32(puVar11[0xb]);
         uVar4 = puVar11[0x12];
         cVar1 = *(char *)((int)puVar11 + 0x25);
         if ((char)puVar11[0x1a] != '\0') {
@@ -6219,7 +6219,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
   *(u32 *)(iVar6 + 0x278) = 0;
 
-  FUN_0038ca00();
+  sceneLightSlotsReset();
 
   FUN_00366970(param_1,param_2);
 
@@ -14348,7 +14348,7 @@ void FUN_0036f000(int param_1)
 
   FUN_003970d0();
 
-  FUN_0038ca00();
+  sceneLightSlotsReset();
 
   iVar3 = (int)param_1;
 
@@ -14517,7 +14517,7 @@ void FUN_0036f260(void)
 
   FUN_00386b70_evt_main(*puVar3,0,0x990);
 
-  FUN_00386cd0();
+  evtSlotTableIdle();
 
   FUN_005225a8_evt_main(&D_0069E088);
 
