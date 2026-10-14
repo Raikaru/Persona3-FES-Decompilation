@@ -2347,29 +2347,29 @@ s32 FUN_002d2470(const f32* a, const f32* b, const f32* point, f32 tolerance)
 }
 
 // FUN_002d25c0 NONMATCHING
-s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
+s32 FUN_002d25c0(const u8* pointA, const u8* pointB)
 {
     s32 result;
     s32 i;
-    u8* list;
+    u8* node;
 
     result = 0;
-    list = *(u8**)(iGpffffb6fc + 0x2cc);
+    node = *(u8**)(iGpffffb6fc + 0x2cc);
     do
     {
 
-        if ((list == NULL) || (result != 0))
+        if ((node == NULL) || (result != 0))
         {
             return result;
         }
         for (i = 0; i < 4; i++)
         {
-            u8* cell = list + i * 0x130;
+            u8* cell = node + i * 0x130;
             const f32* cellPoint = (const f32*)(cell + 8);
 
             if ((0.0f < *(f32*)(cell + 0x1c)) &&
-                ((const u8*)cellPoint != param_1) &&
-                ((const u8*)cellPoint != param_2))
+                ((const u8*)cellPoint != pointA) &&
+                ((const u8*)cellPoint != pointB))
             {
                 RwV2d delta;
                 const f32* otherPoint;
@@ -2379,26 +2379,26 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
                 s32 side2;
                 s32 intersects;
 
-                delta.x = *cellX - *(const f32*)(param_1 + 8);
-                delta.y = *cellY - *(const f32*)(param_1 + 0xc);
+                delta.x = *cellX - *(const f32*)(pointA + 8);
+                delta.y = *cellY - *(const f32*)(pointA + 0xc);
                 if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                 {
-                    delta.x = *cellX - *(const f32*)(param_2 + 8);
-                    delta.y = *cellY - *(const f32*)(param_2 + 0xc);
+                    delta.x = *cellX - *(const f32*)(pointB + 8);
+                    delta.y = *cellY - *(const f32*)(pointB + 0xc);
                     if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                     {
                         otherPoint = *(const f32**)(cell + 0x18);
                         side1 = FUN_002d2990(cellPoint, otherPoint,
-                                             (const f32*)(param_1 + 8));
+                                             (const f32*)(pointA + 8));
                         side2 = FUN_002d2990(cellPoint, otherPoint,
-                                             (const f32*)(param_2 + 8));
+                                             (const f32*)(pointB + 8));
                         if (side1 != side2)
                         {
-                            side1 = FUN_002d2990((const f32*)(param_1 + 8),
-                                                 (const f32*)(param_2 + 8),
+                            side1 = FUN_002d2990((const f32*)(pointA + 8),
+                                                 (const f32*)(pointB + 8),
                                                  cellPoint);
-                            side2 = FUN_002d2990((const f32*)(param_1 + 8),
-                                                 (const f32*)(param_2 + 8),
+                            side2 = FUN_002d2990((const f32*)(pointA + 8),
+                                                 (const f32*)(pointB + 8),
                                                  otherPoint);
                             if (side1 != side2)
                             {
@@ -2425,32 +2425,32 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
 
         if (result == 0)
         {
-            if ((((*(const f32*)(param_1 + 8) <= *(f32*)(list + 8)) ||
-                  (*(const f32*)(param_1 + 0xc) <= *(f32*)(list + 0xc))) ||
-                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_1 + 8)) ||
-                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_1 + 0xc)))) &&
-                (((*(const f32*)(param_2 + 8) <= *(f32*)(list + 8)) ||
-                  (*(const f32*)(param_2 + 0xc) <= *(f32*)(list + 0xc))) ||
-                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_2 + 8)) ||
-                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_2 + 0xc)))))
+            if ((((*(const f32*)(pointA + 8) <= *(f32*)(node + 8)) ||
+                  (*(const f32*)(pointA + 0xc) <= *(f32*)(node + 0xc))) ||
+                 ((*(f32*)(node + 0x268) <= *(const f32*)(pointA + 8)) ||
+                  (*(f32*)(node + 0x26c) <= *(const f32*)(pointA + 0xc)))) &&
+                (((*(const f32*)(pointB + 8) <= *(f32*)(node + 8)) ||
+                  (*(const f32*)(pointB + 0xc) <= *(f32*)(node + 0xc))) ||
+                 ((*(f32*)(node + 0x268) <= *(const f32*)(pointB + 8)) ||
+                  (*(f32*)(node + 0x26c) <= *(const f32*)(pointB + 0xc)))))
             {
                 for (i = 0; i < 4; i++)
                 {
                     const f32* edgeA =
-                        (const f32*)(list + (((i + 1U) & 3) * 0x130) + 8);
-                    const f32* edgeB = (const f32*)(list + i * 0x130 + 8);
+                        (const f32*)(node + (((i + 1U) & 3) * 0x130) + 8);
+                    const f32* edgeB = (const f32*)(node + i * 0x130 + 8);
                     s32 side1 = FUN_002d2990(edgeB, edgeA,
-                                             (const f32*)(param_1 + 8));
+                                             (const f32*)(pointA + 8));
                     s32 side2 = FUN_002d2990(edgeB, edgeA,
-                                             (const f32*)(param_2 + 8));
+                                             (const f32*)(pointB + 8));
                     s32 intersects;
 
                     if (side1 != side2)
                     {
-                        side1 = FUN_002d2990((const f32*)(param_1 + 8),
-                                             (const f32*)(param_2 + 8), edgeB);
-                        side2 = FUN_002d2990((const f32*)(param_1 + 8),
-                                             (const f32*)(param_2 + 8), edgeA);
+                        side1 = FUN_002d2990((const f32*)(pointA + 8),
+                                             (const f32*)(pointB + 8), edgeB);
+                        side2 = FUN_002d2990((const f32*)(pointA + 8),
+                                             (const f32*)(pointB + 8), edgeA);
                         if (side1 != side2)
                         {
                             intersects = 1;
@@ -2473,7 +2473,7 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
             }
         }
 
-        list = *(u8**)(list + 0x4cc);
+        node = *(u8**)(node + 0x4cc);
     } while (1);
     return result;
 }
@@ -2495,20 +2495,20 @@ nonpositive:
 }
 
 // FUN_002d2a00 NONMATCHING
-int FUN_002d2a00(float param_1, float *param_2, float *param_3)
+int FUN_002d2a00(float radius, float *pointA, float *pointB)
 {
     u8 *node;
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        if (((param_2[0] <= *(float *)(node + 0x08)) ||
-             (param_2[1] <= *(float *)(node + 0x0c)) ||
-             (*(float *)(node + 0x268) <= param_2[0]) ||
-             (*(float *)(node + 0x26c) <= param_2[1])) &&
-            ((param_3[0] <= *(float *)(node + 0x08)) ||
-             (param_3[1] <= *(float *)(node + 0x0c)) ||
-             (*(float *)(node + 0x268) <= param_3[0]) ||
-             (*(float *)(node + 0x26c) <= param_3[1])))
+        if (((pointA[0] <= *(float *)(node + 0x08)) ||
+             (pointA[1] <= *(float *)(node + 0x0c)) ||
+             (*(float *)(node + 0x268) <= pointA[0]) ||
+             (*(float *)(node + 0x26c) <= pointA[1])) &&
+            ((pointB[0] <= *(float *)(node + 0x08)) ||
+             (pointB[1] <= *(float *)(node + 0x0c)) ||
+             (*(float *)(node + 0x268) <= pointB[0]) ||
+             (*(float *)(node + 0x26c) <= pointB[1])))
         {
             int i;
             for (i = 0; i < 4; ++i)
@@ -2519,19 +2519,19 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
                 side_a = FUN_002d2990(
                     (float *)(node + i * 0x130 + 0x08),
                     (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
-                    param_2);
+                    pointA);
                 side_b = FUN_002d2990(
                     (float *)(node + i * 0x130 + 0x08),
                     (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
-                    param_3);
+                    pointB);
 
                 if (side_a != side_b)
                 {
                     side_a = FUN_002d2990(
-                        param_2, param_3,
+                        pointA, pointB,
                         (float *)(node + i * 0x130 + 0x08));
                     side_b = FUN_002d2990(
-                        param_2, param_3,
+                        pointA, pointB,
                         (float *)(node + (((i + 1) & 3) * 0x130) + 0x08));
                     if (side_a != side_b)
                     {
@@ -2539,7 +2539,7 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
                     }
                 }
                 if (FUN_002d2470_call(
-                        param_1, param_2, param_3,
+                        radius, pointA, pointB,
                         (float *)(node + i * 0x130 + 0x08)) != 0)
                 {
                     return 1;
@@ -2695,7 +2695,7 @@ int FUN_002d2ee0(const float *param_1, const float *param_2, const float *param_
 }
 
 // FUN_002d2f50 NONMATCHING
-u32 FUN_002d2f50(float param_1, u8 *param_2)
+u32 FUN_002d2f50(float threshold, u8 *source)
 {
     u16 count = 0;
     u16 i;
@@ -2707,18 +2707,18 @@ u32 FUN_002d2f50(float param_1, u8 *param_2)
         {
             float *point = (float *)(node + i * 0x130 + 0x08);
 
-            if ((point != (float *)param_2) &&
+            if ((point != (float *)source) &&
                 (0.0f < *(float *)(node + i * 0x130 + 0x1c)) &&
-                (param_1 <= *(float *)(node + i * 0x130 + 0x20)) &&
-                (FUN_002d25c0(param_2, (const u8*)point) == 0))
+                (threshold <= *(float *)(node + i * 0x130 + 0x20)) &&
+                (FUN_002d25c0(source, (const u8*)point) == 0))
             {
                 RwV2d delta;
                 float length;
-                delta.x = *(float *)(param_2 + 0x08) - *(float *)(node + i * 0x130 + 0x10);
-                delta.y = *(float *)(param_2 + 0x0c) - *(float *)(node + i * 0x130 + 0x14);
+                delta.x = *(float *)(source + 0x08) - *(float *)(node + i * 0x130 + 0x10);
+                delta.y = *(float *)(source + 0x0c) - *(float *)(node + i * 0x130 + 0x14);
                 length = FUN_004c6af0((f32*)&delta);
-                *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
-                *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = (u8 *)point;
+                *(float *)(source + 0xb0 + ((u32)count * 4)) = length;
+                *(u8 **)(source + 0x30 + ((u32)count * 4)) = (u8 *)point;
                 count = (u16)(count + 1);
             }
         }
@@ -2728,46 +2728,46 @@ u32 FUN_002d2f50(float param_1, u8 *param_2)
     {
         float *point = (float *)(iGpffffb6fc + i * 0x130 + 0x2d0);
 
-        if ((point != (float *)param_2) &&
+        if ((point != (float *)source) &&
             (0.0f < *(float *)(iGpffffb6fc + i * 0x130 + 0x2e4)) &&
-            (FUN_002d25c0(param_2, (const u8*)point) == 0))
+            (FUN_002d25c0(source, (const u8*)point) == 0))
         {
             RwV2d delta;
             float length;
-            delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2d8);
-            delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2dc);
+            delta.x = *(float *)(source + 0x08) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2d8);
+            delta.y = *(float *)(source + 0x0c) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2dc);
             length = FUN_004c6af0((f32*)&delta);
-            *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
-            *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = (u8 *)point;
+            *(float *)(source + 0xb0 + ((u32)count * 4)) = length;
+            *(u8 **)(source + 0x30 + ((u32)count * 4)) = (u8 *)point;
             count = (u16)(count + 1);
         }
     }
 
-    if ((iGpffffb6fc + 0x790 != param_2) && (FUN_002d25c0(param_2, iGpffffb6fc + 0x790) == 0))
+    if ((iGpffffb6fc + 0x790 != source) && (FUN_002d25c0(source, iGpffffb6fc + 0x790) == 0))
     {
         RwV2d delta;
         float length;
-        delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + 0x798);
-        delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + 0x79c);
+        delta.x = *(float *)(source + 0x08) - *(float *)(iGpffffb6fc + 0x798);
+        delta.y = *(float *)(source + 0x0c) - *(float *)(iGpffffb6fc + 0x79c);
         length = FUN_004c6af0((f32*)&delta);
-        *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
-        *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x790;
+        *(float *)(source + 0xb0 + ((u32)count * 4)) = length;
+        *(u8 **)(source + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x790;
         count = (u16)(count + 1);
     }
 
-    if ((iGpffffb6fc + 0x8c0 != param_2) && (FUN_002d25c0(param_2, iGpffffb6fc + 0x8c0) == 0))
+    if ((iGpffffb6fc + 0x8c0 != source) && (FUN_002d25c0(source, iGpffffb6fc + 0x8c0) == 0))
     {
         RwV2d delta;
         float length;
-        delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + 0x8c8);
-        delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + 0x8cc);
+        delta.x = *(float *)(source + 0x08) - *(float *)(iGpffffb6fc + 0x8c8);
+        delta.y = *(float *)(source + 0x0c) - *(float *)(iGpffffb6fc + 0x8cc);
         length = FUN_004c6af0((f32*)&delta);
-        *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
-        *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x8c0;
+        *(float *)(source + 0xb0 + ((u32)count * 4)) = length;
+        *(u8 **)(source + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x8c0;
         count = (u16)(count + 1);
     }
 
-    *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = NULL;
+    *(u8 **)(source + 0x30 + ((u32)count * 4)) = NULL;
     return count;
 }
 
