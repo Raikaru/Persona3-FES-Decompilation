@@ -28983,7 +28983,7 @@ uint FUN_004f90b8(void)
       if (cVar1 == '\0') break;
     }
     FUN_00508900(lVar3);
-    lVar3 = FUN_0051e0f0(auStack_149 + uVar2);
+    lVar3 = atoi(auStack_149 + uVar2);
     uVar2 = (uint)(0x1315670 < lVar3);
   }
   return uVar2;
@@ -36084,7 +36084,7 @@ asm undefined4 FUN_00503910(void)
 
 #pragma schedule on
 // FUN_00503918 NONMATCHING
-undefined4 FUN_00503918(undefined4 param_1,undefined8 *param_2)
+undefined4 fstat(undefined4 param_1,undefined8 *param_2)
 {
   ((u32 *)param_2)[1] = 0x2000;
   param_2[9] = 0;
