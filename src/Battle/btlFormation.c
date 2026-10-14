@@ -2781,44 +2781,65 @@ void LAB_002b8970(u32 *work)
   (*(u16 *)(unit + 0xa0))++;
 }
 
-// FUN_002b8990 NONMATCHING
-
-undefined4 FUN_002b8990(undefined4 *param_1)
+typedef struct BtlFormationPlacementWork
 {
-  undefined4 uVar2;
-  undefined4 uVar3;
-  s16 functionIndex;
-  int hasSecondUnit;
-  s16 uVar5;
-  short actionMode;
-  u32 lVar7;
-  undefined1 auStack_20 [16];
-  undefined1 auStack_10 [16];
-  
-  uVar2 = *param_1;
-  uVar3 = *(undefined4 *)(param_1[1] + 0x30);
-  functionIndex = *(s16 *)(param_1 + 3);
-  hasSecondUnit = param_1[2] != 0;
-  uVar5 = FUN_00284040(uVar2,uVar3,functionIndex,hasSecondUnit);
-  lVar7 = FUN_002d63b0(uVar2,functionIndex,hasSecondUnit);
-  if (lVar7 == 0) {
-    actionMode = FUN_00284040(uVar2,uVar3,functionIndex,hasSecondUnit);
-    if ((actionMode == 3) || (actionMode == 1)) {
-      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,1);
+    BtlUnit* actor;           // 0x00
+    BtlAction* targetAction;  // 0x04
+    BtlAction* partnerAction; // 0x08
+    u16 action;               // 0x0c
+} BtlFormationPlacementWork;
+
+// Per-step placement callback: places the actor and returns 1 once placed.
+// FUN_002b8990
+u32 btlFormationPlaceStep(BtlFormationPlacementWork* placement)
+{
+    BtlFormationPlacementWork* work;
+    BtlUnit* actor;
+    BtlUnit* unit;
+    s32 category;
+    s32 kind;
+    u16 actionBits;
+    s32 paired;
+    s16 mode;
+    struct
+    {
+        RtQuat rotation;
+        RwV3d position;
+    } frame;
+
+    work = placement;
+    actor = work->actor;
+    unit = work->targetAction->unit;
+    actionBits = work->action;
+    paired = work->partnerAction != NULL;
+    mode = (s16)actionBits;
+    category = (s16)FUN_00284040((s32)actor, unit, mode, paired);
+    if (FUN_002d63b0((s32)actor, mode, paired) == 0)
+    {
+        kind = (s16)FUN_00284040((s32)actor, unit, mode, paired);
+        switch (kind)
+        {
+        case 0:
+        case 2:
+            FUN_0027f940(actor, unit, NULL, category, &frame.position, &frame.rotation, 0);
+            break;
+        case 1:
+        case 3:
+            FUN_0027f940(actor, unit, NULL, category, &frame.position, &frame.rotation, 1);
+            break;
+        }
+        btlUnitSetRot(actor, &frame.rotation);
+        btlUnitSetPos(actor, &frame.position);
     }
-    else if ((actionMode == 2) || (actionMode == 0)) {
-      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,0);
+    else
+    {
+        FUN_0027f940(actor, unit, work->partnerAction->unit, category, &frame.position, &frame.rotation, 2);
+        btlUnitSetRot(actor, &frame.rotation);
+        btlUnitSetPos(actor, &frame.position);
     }
-    FUN_0027f680(uVar2,auStack_10);
-    FUN_0027f650(uVar2,auStack_20);
-  }
-  else {
-    FUN_0027f940(uVar2,uVar3,*(undefined4 *)(param_1[2] + 0x30),uVar5,auStack_20,auStack_10,2);
-    FUN_0027f680(uVar2,auStack_10);
-    FUN_0027f650(uVar2,auStack_20);
-  }
-  return 1;
+    return 1;
 }
+
 
 // FUN_002b8b50
 void LAB_002b8b50(u32 *work)
@@ -2839,7 +2860,7 @@ void FUN_002b8b70(undefined4 param_1,undefined4 param_2,undefined4 param_3,undef
   
   iVar2 = FUN_0027ec10(0xb02,0x10);
   *(undefined1 **)(iVar2 + 0x68) = (undefined1*)LAB_002b8970;
-  *(code **)(iVar2 + 0x6c) = (code *)FUN_002b8990;
+  *(code **)(iVar2 + 0x6c) = (code *)btlFormationPlaceStep;
   *(undefined1 **)(iVar2 + 0x70) = (undefined1*)LAB_002b8b50;
   puVar1 = *(undefined4 **)(iVar2 + 0x78);
   *puVar1 = param_1;
