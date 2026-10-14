@@ -46,5 +46,8 @@ void btlMainSetStateNon();
 
 void btlMainLoadScene();
 u32 btlMainTryLoadFinishScene();
+void* FUN_0029ea30(void);
+void* FUN_0029ea40(void);
+void* FUN_0029ea50(void);
 
 #endif
