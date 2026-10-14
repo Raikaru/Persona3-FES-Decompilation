@@ -54,7 +54,7 @@ s32 FUN_003d5cd0(u32 *param_1);
 u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3);
 u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4);
 u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3);
-u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4);
+u32 FUN_003d6740(void *dst,void *entryA,void *entryB,void *entryC);
 u8 FUN_003d6910(void *param_1,int param_2,int *param_3);
 u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3);
 u32 FUN_003d6c90(int param_1);
@@ -1065,72 +1065,56 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 // FUN_003D6740 NONMATCHING
 
 
-u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
-
-
-
+u32 FUN_003d6740(void *dst,void *entryA,void *entryB,void *entryC)
 {
+  u32 status;
+  u16 resultId;
+  u32 result;
+  int tableBase;
+  u16 sampleA;
+  u16 sampleB;
+  u16 sampleC;
+  u16 sampleIds[3];
 
-  u32 cVar1;
+  sampleIds[0] = *(u16 *)((int)entryA + 2);
+  sampleIds[1] = *(u16 *)((int)entryB + 2);
+  sampleIds[2] = *(u16 *)((int)entryC + 2);
 
-  u16 sVar2;
-
-  u32 uVar3;
-
-  int iVar4;
-
-  u16 uStack_20;
-  u16 uStack_1e;
-  u16 uStack_1c;
-  u16 uStack_8[3];
-
-  
-
-  uStack_8[0] = *(u16 *)((int)param_2 + 2);
-
-  uStack_8[1] = *(u16 *)((int)param_3 + 2);
-
-  uStack_8[2] = *(u16 *)((int)param_4 + 2);
-
-  if ((((param_1 == 0) || (param_2 == 0)) || (param_3 == 0)) || (param_4 == 0)) {
-
+  if ((((dst == 0) || (entryA == 0)) || (entryB == 0)) || (entryC == 0)) {
     K_Assert(DAT_006a5f70,0x1a0);
-
   }
 
-  cVar1 = FUN_003d6200(param_1,1,uStack_8,3);
-
-  if (cVar1 != '\0') {
-    uVar3 = 2;
+  status = FUN_003d6200(dst,1,sampleIds,3);
+  if (status != '\0') {
+    result = 2;
   }
   else {
-    cVar1 = FUN_003d5e60(param_2,param_3,param_4);
-    if (cVar1 == '\0') {
-      memset(param_1,0,0x34);
-      uVar3 = 0;
+    status = FUN_003d5e60(entryA,entryB,entryC);
+    if (status == '\0') {
+      memset(dst,0,0x34);
+      result = 0;
     }
     else {
-      memset(&uStack_20,0,0x18);
-      uStack_20 = *(u16 *)((int)param_2 + 2);
-      uStack_1e = *(u16 *)((int)param_3 + 2);
-      uStack_1c = *(u16 *)((int)param_4 + 2);
-      iVar4 = DAT_007ce420 + 3;
-      sVar2 = FUN_003d7ac0(cVar1,((int)*(u8 *)(iVar4 + (int)uStack_1c * 0xe) +
-                                 (int)*(u8 *)(iVar4 + (int)uStack_20 * 0xe) +
-                                 (int)*(u8 *)(iVar4 + (int)uStack_1e * 0xe)) / 3 + 5 & 0xff,
-                           &uStack_20);
-      if (sVar2 != 0) {
-        FUN_00176680(param_1,sVar2);
-        uVar3 = 1;
+      memset(&sampleA,0,0x18);
+      sampleA = *(u16 *)((int)entryA + 2);
+      sampleB = *(u16 *)((int)entryB + 2);
+      sampleC = *(u16 *)((int)entryC + 2);
+      tableBase = DAT_007ce420 + 3;
+      resultId = FUN_003d7ac0(status,((int)*(u8 *)(tableBase + (int)sampleC * 0xe) +
+                                 (int)*(u8 *)(tableBase + (int)sampleA * 0xe) +
+                                 (int)*(u8 *)(tableBase + (int)sampleB * 0xe)) / 3 + 5 & 0xff,
+                           &sampleA);
+      if (resultId != 0) {
+        FUN_00176680(dst,resultId);
+        result = 1;
       }
       else {
-        uVar3 = 0;
+        result = 0;
       }
     }
   }
 
-  return uVar3;
-
+  return result;
 }
 #pragma opt_propagation reset
 #pragma pop
