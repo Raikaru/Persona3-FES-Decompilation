@@ -7,22 +7,22 @@ u32 FUN_0040ec50(float param_1,int param_2,u32 param_3,u32 param_4,
                  u32 param_10);
 /* FUSION_EXACT_PROTOS */
 u32 FUN_003c8b50();
-extern void FUN_003c9240(int *);
+extern void fclMiscReleaseHandle(int *);
 extern u64 FUN_003c9290(int *,u64,u64);
-extern s8 FUN_003c9340(int *);
-extern void FUN_003c9390(int *);
-extern u32 FUN_003c9460(int *);
+extern s8 fclMiscHandleState(int *);
+extern void fclMiscUpdateHandle(int *);
+extern u32 fclMiscCloseHandle(int *);
 #pragma alias fclMisc9fe0Call FUN_003c9fe0
 extern void fclMisc9fe0Call(int *);
-#pragma alias fclMisc9240Call FUN_003c9240
+#pragma alias fclMisc9240Call fclMiscReleaseHandle
 extern void fclMisc9240Call(int *);
 #pragma alias fclMisc9290Call FUN_003c9290
 extern u64 fclMisc9290Call(int *,u32,u32);
-#pragma alias fclMisc9340Call FUN_003c9340
+#pragma alias fclMisc9340Call fclMiscHandleState
 extern u32 fclMisc9340Call(int *);
-#pragma alias fclMisc9390Call FUN_003c9390
+#pragma alias fclMisc9390Call fclMiscUpdateHandle
 extern void fclMisc9390Call(int *);
-#pragma alias fclMisc9460DirectCall FUN_003c9460
+#pragma alias fclMisc9460DirectCall fclMiscCloseHandle
 extern u32 fclMisc9460DirectCall(int *);
 #include "Kosaka/k_assert.h"
 
@@ -266,9 +266,9 @@ extern void fclMiscAssertCall(u32, u32);
 extern void fclMisc3174e0Call(s32);
 #pragma alias fclMisc11f30Call FUN_00111f30
 extern u32 fclMisc11f30Call(s16 *);
-#pragma alias fclMisc9460Call FUN_003c9460
+#pragma alias fclMisc9460Call fclMiscCloseHandle
 extern u32 fclMisc9460Call(u32 *);
-#pragma alias fclMisc8d80Int FUN_003c8d80
+#pragma alias fclMisc8d80Int fclMiscPendingIsEmpty
 extern u32 fclMisc8d80Int(void);
 #pragma alias fclMisc8550Call FUN_003c8550
 extern u64 fclMisc8550Call(u32);
@@ -283,15 +283,15 @@ extern u64 fclMisc8550Call(u32);
 #define FUN_003c88d0(...) ((void (*)(...))FUN_003c88d0)(__VA_ARGS__)
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
 #define FUN_003c8b50(...) ((u32 (*)(...))FUN_003c8b50)(__VA_ARGS__)
-#define FUN_003c8d80(...) ((u8 (*)(...))FUN_003c8d80)(__VA_ARGS__)
+#define fclMiscPendingIsEmpty(...) ((u8 (*)(...))fclMiscPendingIsEmpty)(__VA_ARGS__)
 #define FUN_003c8da0(...) ((void (*)(...))FUN_003c8da0)(__VA_ARGS__)
-#define FUN_003c8dc0(...) ((void (*)(...))FUN_003c8dc0)(__VA_ARGS__)
-#undef FUN_003c8d80
-extern u8 FUN_003c8d80(void);
-#define FUN_003c8d80(...) ((u8 (*)(...))FUN_003c8d80)(__VA_ARGS__)
-#undef FUN_003c8dc0
-extern void FUN_003c8dc0(u32);
-#define FUN_003c8dc0(...) ((void (*)(...))FUN_003c8dc0)(__VA_ARGS__)
+#define fclMiscSetWord14(...) ((void (*)(...))fclMiscSetWord14)(__VA_ARGS__)
+#undef fclMiscPendingIsEmpty
+extern u8 fclMiscPendingIsEmpty(void);
+#define fclMiscPendingIsEmpty(...) ((u8 (*)(...))fclMiscPendingIsEmpty)(__VA_ARGS__)
+#undef fclMiscSetWord14
+extern void fclMiscSetWord14(u32);
+#define fclMiscSetWord14(...) ((void (*)(...))fclMiscSetWord14)(__VA_ARGS__)
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
 #define FUN_003c8ea0(...) ((u16 (*)(...))FUN_003c8ea0)(__VA_ARGS__)
@@ -302,11 +302,11 @@ extern void FUN_003c8dc0(u32);
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #define FUN_003c91b0(...) ((u8 (*)(...))FUN_003c91b0)(__VA_ARGS__)
-#define FUN_003c9240(...) ((void (*)(...))FUN_003c9240)(__VA_ARGS__)
+#define fclMiscReleaseHandle(...) ((void (*)(...))fclMiscReleaseHandle)(__VA_ARGS__)
 #define FUN_003c9290(...) ((u64 (*)(...))FUN_003c9290)(__VA_ARGS__)
-#define FUN_003c9340(...) ((s8 (*)(...))FUN_003c9340)(__VA_ARGS__)
-#define FUN_003c9390(...) ((void (*)(...))FUN_003c9390)(__VA_ARGS__)
-#define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
+#define fclMiscHandleState(...) ((s8 (*)(...))fclMiscHandleState)(__VA_ARGS__)
+#define fclMiscUpdateHandle(...) ((void (*)(...))fclMiscUpdateHandle)(__VA_ARGS__)
+#define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
 #define FUN_003c94e0(...) ((u32 (*)(...))FUN_003c94e0)(__VA_ARGS__)
 #define FUN_003c9570(...) ((void (*)(...))FUN_003c9570)(__VA_ARGS__)
 #define FUN_003c9790(...) ((u8 (*)(...))FUN_003c9790)(__VA_ARGS__)
@@ -570,8 +570,8 @@ void FUN_003c88d0(void)
 extern u64 FUN_003c8770(u32, s32);
 #undef FUN_003c8810
 extern u64 FUN_003c8810(int *);
-#undef FUN_003c8dc0
-extern void FUN_003c8dc0(u32);
+#undef fclMiscSetWord14
+extern void fclMiscSetWord14(u32);
 #undef FUN_003c8400
 extern u32 FUN_003c8400();
 #undef FUN_003c8b50
@@ -593,7 +593,7 @@ u64 FUN_003c89a0(void)
             result = fclMisc8d80Int();
             if (result != 0) {
                 piVar2[1] &= ~2;
-                FUN_003c8dc0(0);
+                fclMiscSetWord14(0);
                 FUN_003c4a90(*piVar2, *piVar2 + 4);
                 for (iVar4 = 0; iVar4 < 0xb; iVar4++) {
                     FUN_003c8770((u32)piVar2, iVar4);
@@ -753,11 +753,11 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
 
 }
 #define FUN_003c8b50(...) ((u32 (*)(...))FUN_003c8b50)(__VA_ARGS__)
-#undef FUN_003c8d80
+#undef fclMiscPendingIsEmpty
 // FUN_003C8D80
 
 
-u8 FUN_003c8d80(void)
+u8 fclMiscPendingIsEmpty(void)
 
 
 
@@ -766,7 +766,7 @@ u8 FUN_003c8d80(void)
   return *(int *)(*(int *)(iGpffffb98c + 0x18) + 4) == 0;
 
 }
-#define FUN_003c8d80(...) ((u8 (*)(...))FUN_003c8d80)(__VA_ARGS__)
+#define fclMiscPendingIsEmpty(...) ((u8 (*)(...))fclMiscPendingIsEmpty)(__VA_ARGS__)
 #undef FUN_003c8da0
 // FUN_003C8DA0
 
@@ -783,11 +783,11 @@ void FUN_003c8da0(u32 param_1)
 
 }
 #define FUN_003c8da0(...) ((void (*)(...))FUN_003c8da0)(__VA_ARGS__)
-#undef FUN_003c8dc0
+#undef fclMiscSetWord14
 // FUN_003C8DC0
 
 
-void FUN_003c8dc0(u32 param_1)
+void fclMiscSetWord14(u32 param_1)
 
 
 
@@ -798,7 +798,7 @@ void FUN_003c8dc0(u32 param_1)
   return;
 
 }
-#define FUN_003c8dc0(...) ((void (*)(...))FUN_003c8dc0)(__VA_ARGS__)
+#define fclMiscSetWord14(...) ((void (*)(...))fclMiscSetWord14)(__VA_ARGS__)
 #undef FUN_003c8dd0
 // FUN_003C8DD0
 
@@ -954,8 +954,8 @@ void FUN_003c8f70(void)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
 #undef FUN_003c8fa0
-#undef FUN_003c9460
-u32 FUN_003c9460();
+#undef fclMiscCloseHandle
+u32 fclMiscCloseHandle();
 // FUN_003C8FA0
 
 
@@ -966,12 +966,12 @@ void FUN_003c8fa0(void)
   if (*(int *)(*piGpffffb98c + 4) != 0) {
     context = *(u8 **)(*(int *)(*piGpffffb98c + 4) + 0x14);
     if ((*(u32 *)(context + 4) & 2) != 0) {
-      FUN_003c9460(context + 0x10);
+      fclMiscCloseHandle(context + 0x10);
       *(u32 *)(context + 4) |= 4;
     }
   }
 }
-#define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
+#define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
 static inline f32 fclMiscMulFirst(f32 left, f32 right) { return left * right; }
@@ -1068,18 +1068,18 @@ u8 FUN_003c91b0(u8 *state, u32 resource)
   return 0;
 }
 #define FUN_003c91b0(...) ((u8 (*)(...))FUN_003c91b0)(__VA_ARGS__)
-#undef FUN_003c9240
-#undef FUN_003c9460
-u32 FUN_003c9460();
+#undef fclMiscReleaseHandle
+#undef fclMiscCloseHandle
+u32 fclMiscCloseHandle();
 // FUN_003C9240
 
 
-void FUN_003c9240(int *param_1)
+void fclMiscReleaseHandle(int *param_1)
 
 
 
 {
-  FUN_003c9460(param_1);
+  fclMiscCloseHandle(param_1);
 
 
   if (*param_1 >= 0) {
@@ -1097,8 +1097,8 @@ void FUN_003c9240(int *param_1)
   return;
 
 }
-#define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
-#define FUN_003c9240(...) ((void (*)(...))FUN_003c9240)(__VA_ARGS__)
+#define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
+#define fclMiscReleaseHandle(...) ((void (*)(...))fclMiscReleaseHandle)(__VA_ARGS__)
 #undef FUN_003c9290
 // FUN_003C9290
 
@@ -1117,11 +1117,11 @@ u64 FUN_003c9290(int *param_1,u64 param_2,u64 param_3)
 }
 
 #define FUN_003c9290(...) ((u64 (*)(...))FUN_003c9290)(__VA_ARGS__)
-#undef FUN_003c9340
+#undef fclMiscHandleState
 // FUN_003C9340
 
 
-s8 FUN_003c9340(int *param_1)
+s8 fclMiscHandleState(int *param_1)
 {
   s8 result;
 
@@ -1136,10 +1136,10 @@ s8 FUN_003c9340(int *param_1)
   }
   return result;
 }
-#define FUN_003c9340(...) ((s8 (*)(...))FUN_003c9340)(__VA_ARGS__)
-#undef FUN_003c9390
+#define fclMiscHandleState(...) ((s8 (*)(...))fclMiscHandleState)(__VA_ARGS__)
+#undef fclMiscUpdateHandle
 // FUN_003C9390
-void FUN_003c9390(int *param_1)
+void fclMiscUpdateHandle(int *param_1)
 {
   int state;
   s8 mode;
@@ -1170,12 +1170,12 @@ void FUN_003c9390(int *param_1)
     break;
   }
 }
-#define FUN_003c9390(...) ((void (*)(...))FUN_003c9390)(__VA_ARGS__)
-#undef FUN_003c9460
+#define fclMiscUpdateHandle(...) ((void (*)(...))fclMiscUpdateHandle)(__VA_ARGS__)
+#undef fclMiscCloseHandle
 // FUN_003C9460
 
 
-u32 FUN_003c9460(u32 *param_1)
+u32 fclMiscCloseHandle(u32 *param_1)
 {
   u32 result;
 
@@ -1194,7 +1194,7 @@ u32 FUN_003c9460(u32 *param_1)
   }
   return result;
 }
-#define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
+#define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
 #undef FUN_003c94e0
 #pragma alias DAT_0095be90_abs DAT_0095be90
 extern u8 DAT_0095be90_abs[];
