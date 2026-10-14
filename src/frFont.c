@@ -72,6 +72,7 @@ extern const char DAT_006a27a0[];
 extern const char DAT_006a27d0[];
 extern const char DAT_006a2800[];
 extern u8 DAT_006a2830[];
+extern u8 DAT_006a2860[];
 extern u32 DAT_007cd4f8;
 #pragma alias DAT_007cd4f8_abs DAT_007cd4f8
 extern u8 DAT_007cd4f8_abs[];
@@ -1106,7 +1107,7 @@ int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
   puVar7 = (u8 *)FUN_003b46b0(DAT_0095ae1c_abs[0]);
   DAT_0095ae14_abs[0] = DAT_0095ae14_abs[0] + 1;
   if (puVar7 == (u8 *)0) {
-    FUN_0019d400(0x6a2860,0x6a2730,0x743);
+    FUN_0019d400(DAT_006a2860, DAT_006a2730, 0x743);
   }
   *(u16 *)puVar7 = param_1;
   puVar7[0x15] = param_2;
