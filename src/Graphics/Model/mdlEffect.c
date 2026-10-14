@@ -10789,7 +10789,7 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 
 
 #pragma opt_propagation off
-// FUN_0032A540 NONMATCHING
+// FUN_0032A540
 float FUN_0032a540(char *curve,int frame,int duration)
 {
   u8 mode;
@@ -10833,10 +10833,12 @@ float FUN_0032a540(char *curve,int frame,int duration)
     } else {
       int t2 = (int)(*(float *)(curve + 0x20) * fDuration);
       if (frame < t2) {
-        float denom = (float)(t2 - t1);
         from = *(float *)(curve + 0x14);
         to = *(float *)(curve + 0x1c);
-        t = (float)(frame - t1) / denom;
+        {
+          float denom = (float)(t2 - t1);
+          t = (float)(frame - t1) / denom;
+        }
       } else {
         float denom;
         from = *(float *)(curve + 0x1c);
