@@ -5149,7 +5149,6 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
     s32 triangleCount;
     s32 vertexCount;
     s32 index;
-    RuntimeVec4 bounds;
     s32 baseIndex;
     s32 endIndex;
     s16 nextBase;
@@ -5356,11 +5355,11 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
         }
     }
 
-    bounds.x = 0.0f;
-    bounds.y = 0.0f;
-    bounds.z = 0.0f;
-    bounds.w = 1000000000;
-    *(RuntimeVec4*)((u8*)geometry->frame + 4) = bounds;
+    {
+        RuntimeVec4 bounds = {0.0f, 0.0f, 0.0f, 1000000000.0f};
+
+        *(RuntimeVec4*)((u8*)geometry->frame + 4) = bounds;
+    }
     return geometry;
 }
 
