@@ -239,7 +239,7 @@ u32 FUN_003b2430(void *param_1);
 void FUN_003b2900(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003b2940(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7,u32 param_8);
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8 param_6,u8 param_7,u32 param_8,  u32 param_9);
-u32 FUN_003b2a00(u32 param_1);
+u32 frFontMaskFlags(u32 param_1);
 void FUN_003b2a10(int param_1,u32 param_2);
 u64 FUN_003b2a30(void *param_1,u32 param_2);
 s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
@@ -296,7 +296,7 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b2900(...) ((void (*)(...))FUN_003b2900)(__VA_ARGS__)
 #define FUN_003b2940(...) ((void (*)(...))FUN_003b2940)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
-#define FUN_003b2a00(...) ((u32 (*)(...))FUN_003b2a00)(__VA_ARGS__)
+#define frFontMaskFlags(...) ((u32 (*)(...))frFontMaskFlags)(__VA_ARGS__)
 #define FUN_003b2a10(...) ((void (*)(...))FUN_003b2a10)(__VA_ARGS__)
 #define FUN_003b2a30(...) ((u64 (*)(...))FUN_003b2a30)(__VA_ARGS__)
 #define FUN_003b2bf0(...) ((u8 (*)(...))FUN_003b2bf0)(__VA_ARGS__)
@@ -1003,7 +1003,7 @@ void FUN_003b0430(int param_1,u32 param_2)
 
       FUN_003b47b0(uVar5,param_2,(&DAT_0095ad0c)[(u32)bVar1 * 8],auStack_10);
 
-      lVar4 = FUN_003b3d60(param_2,uVar5,*(u8 *)(param_1 + 0x14));
+      lVar4 = frFontFindOrLoadEntry(param_2,uVar5,*(u8 *)(param_1 + 0x14));
 
       if (lVar4 == 0) {
 
@@ -3538,11 +3538,11 @@ void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,
 }
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
-#undef FUN_003b2a00
+#undef frFontMaskFlags
 // FUN_003B2A00
 
 
-u32 FUN_003b2a00(u32 param_1)
+u32 frFontMaskFlags(u32 param_1)
 
 
 
@@ -3551,7 +3551,7 @@ u32 FUN_003b2a00(u32 param_1)
   return uGpffffa7f8 & param_1;
 
 }
-#define FUN_003b2a00(...) ((u32 (*)(...))FUN_003b2a00)(__VA_ARGS__)
+#define frFontMaskFlags(...) ((u32 (*)(...))frFontMaskFlags)(__VA_ARGS__)
 #undef FUN_003b2a10
 // FUN_003B2A10
 
