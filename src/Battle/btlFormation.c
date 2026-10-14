@@ -633,21 +633,21 @@ extern u32 func_002c0f40_call(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                               long param_5,code *param_6,long param_7);
 extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
 extern bool func_002c12f0(int param_1,int param_2);
-extern bool func_002c22d0(int param_1,int param_2);
-extern bool func_002c28a0(int param_1,int param_2);
+extern bool btlCond_MYUSESKIL(int param_1,int param_2);
+extern bool btlCond_MYID(int param_1,int param_2);
 extern u32 func_002c1360(int param_1,int param_2);
 extern bool func_002c13d0(int param_1,int param_2);
 extern void func_002c1440(int param_1,u32 param_2);
 extern void func_002c1490(int param_1,u32 param_2);
 extern void func_002c14f0(int param_1,u32 param_2);
 extern bool func_002c1550(int param_1,u32 param_2);
-extern bool func_002c1590(int param_1,u32 param_2);
-extern bool func_002c15e0(int param_1,u32 param_2);
-extern bool func_002c1650(int param_1,u32 param_2);
-extern bool func_002c16a0(int param_1,u32 param_2);
+extern bool btlCond_FRLV_O(int param_1,u32 param_2);
+extern bool btlCond_ENLV_O(int param_1,u32 param_2);
+extern bool btlCond_FRCNT(int param_1,u32 param_2);
+extern bool btlCond_ENCNT(int param_1,u32 param_2);
 extern void func_002c1710(int param_1);
-extern void func_002c1740(int param_1,u32 param_2);
-extern void func_002c17b0(int param_1,u32 param_2);
+extern void btlCond_FRBAD(int param_1,u32 param_2);
+extern void btlCond_ENBAD(int param_1,u32 param_2);
 extern bool func_002c1850(int param_1,u64 param_2);
 extern u32 func_002c1960(int param_1,u32 param_2);
 extern u32 func_002c1a30(int param_1,u32 param_2);
@@ -655,7 +655,7 @@ extern u32 func_002c1b10(int param_1,u32 param_2);
 extern u32 func_002c1bf0(int param_1,u32 param_2);
 extern bool func_002c1ce0(int param_1,int param_2);
 extern u64 func_002c1d80(void);
-extern bool func_002c1d90(int param_1);
+extern bool btlCond_SENSEI(int param_1);
 extern bool func_002c1e10(int param_1,short param_2);
 extern bool func_002c1e50(int param_1,short param_2);
 extern bool func_002c1e90(int param_1,short param_2);
@@ -673,11 +673,11 @@ extern void func_002c2220(int param_1,u32 param_2);
 extern void func_002c2270(int param_1,u32 param_2);
 extern void func_002c2310(int param_1,u32 param_2);
 extern void func_002c2360(int param_1,u32 param_2);
-extern u32 func_002c23c0(int param_1);
+extern u32 btlCond_MYGROUP(int param_1);
 extern void func_002c2420(int param_1,u32 param_2);
 extern void func_002c2470(int param_1,u32 param_2);
 extern u32 func_002c2510(int param_1);
-extern bool func_002c25d0(int param_1);
+extern bool btlCond_MORE(int param_1);
 extern void func_002c25e0(int param_1,u32 param_2);
 extern void func_002c2630(int param_1,u32 param_2);
 extern void func_002c2690(int param_1,u32 param_2);
@@ -691,15 +691,15 @@ extern bool func_002c29e0(int param_1,int param_2);
 extern bool func_002c2b20(int param_1,u16 param_2);
 extern void func_002c2be0(int param_1,u32 param_2);
 extern void func_002c2c40(int param_1,u32 param_2);
-extern void func_002c2ca0(int param_1,u32 param_2);
+extern void btlCond_ENWEAK_DW_PAI(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,u32 param_2);
 extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
-extern void func_002c30f0(int param_1,u16 param_2);
+extern void btlCond_MYNOMAL(int param_1,u16 param_2);
 extern void func_002c3120(int param_1,u16 param_2);
 extern void func_002c3150(int param_1,u32 param_2);
 extern void func_002c31b0(int param_1,u32 param_2);
-extern void func_002c3210(int param_1,u32 param_2);
-extern bool func_002c3270(int param_1);
+extern void btlCond_ENNOMAL_DW(int param_1,u32 param_2);
+extern bool btlCond_ANALYZE(int param_1);
 extern u32 func_002c32c0(int param_1);
 extern u32 func_002c32e0(int param_1);
 extern u32 func_002c3300(int param_1,u32 param_2);
@@ -1218,7 +1218,7 @@ extern void func_002ad680(BtlCamera* camera);
 extern void func_002ad770(BtlCamera* camera);
 extern void func_002adc30(BtlCamera* camera);
 extern void btlCameraNoop002adc70(void);
-extern void func_002adc80(BtlCamera* camera);
+extern void btlAct_SKILL_EXEC_ONE(BtlCamera* camera);
 extern void btlCameraNoop002adcc0(void);
 extern void func_002adcd0(BtlCamera* camera);
 extern void func_002ADD00(void);
@@ -1242,13 +1242,13 @@ extern void FUN_002b2800(BtlCamera *camera);
 extern void FUN_002b2880(int param_1);
 extern void FUN_002b2940(void *arg0);
 extern void FUN_002b2ea0(void);
-extern void FUN_002b32c0(u16* camera);
+extern void btlAct_TARGET(u16* camera);
 extern void func_002b3330(void);
 extern void FUN_002b3340(BtlCamera* camera);
 extern void FUN_002b3680(void);
 extern void FUN_002b3690(BtlCamera* camera);
 extern void FUN_002b3980(BtlCamera* camera);
-extern void FUN_002b3c60(BtlCamera* camera);
+extern void btlAct_WIN_P(BtlCamera* camera);
 extern void FUN_002b3f80(BtlCamera* camera);
 extern void FUN_002b41e0(BtlCamera* camera);
 extern void FUN_002b4720(int param_1);
@@ -1292,16 +1292,16 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {func_002ac540, func_002ac6e0, 1, 1, "SKILL_EXEC_PC"}, // SKILL_EXEC_PC
     {func_002ad680, func_002ad770, 1, 1, "SKILL_EXEC_EC"}, // SKILL_EXEC_EC
     {func_002adc30, (void(*)(BtlCamera*))btlCameraNoop002adc70, 1, 0, "SKILL_EXEC_ONE"}, // SKILL_EXEC_ONE
-    {func_002adc80, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
+    {btlAct_SKILL_EXEC_ONE, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
     {func_002adcd0, (void(*)(BtlCamera*))func_002ADD00, 1, 1, "SKILL_EXEC_PS"}, // SKILL_EXEC_PS
     {func_002ae260, (void(*)(BtlCamera*))func_002ae4c0, 1, 1, "PERSONA"}, // PERSONA
     {func_002ae4d0, (void(*)(BtlCamera*))func_002ae730, 1, 1, "OVERLIMIT"}, // OVERLIMIT
     {func_002ae150, (void(*)(BtlCamera*))func_002ae250, 0, 1, "COMMAND"}, // COMMAND
     {func_002af7f0, func_002af850, 0, 1, "TARGET"}, // TARGET
-    {(void(*)(BtlCamera*))FUN_002b32c0, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
+    {(void(*)(BtlCamera*))btlAct_TARGET, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
     {FUN_002b3340, (void(*)(BtlCamera*))FUN_002b3680, 0, 1, "RESET"}, // RESET
     {FUN_002b3980, NULL, 1, 0, "WIN"}, // WIN
-    {FUN_002b3c60, NULL, 1, 0, "CONDITION"}, // CONDITION
+    {btlAct_WIN_P, NULL, 1, 0, "CONDITION"}, // CONDITION
     {FUN_002b3f80, NULL, 1, 1, "ORDER"}, // ORDER
     {(void(*)(BtlCamera*))FUN_002b55d0, (void(*)(BtlCamera*))FUN_002b5600, 0, 1, "CHANGE FORM"}, // CHANGE FORM
     {(void(*)(BtlCamera*))FUN_002b5650, (void(*)(BtlCamera*))FUN_002b56e0, 0, 1, "NYX FEATHER"}, // NYX FEATHER
