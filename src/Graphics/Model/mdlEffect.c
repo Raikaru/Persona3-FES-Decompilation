@@ -45252,7 +45252,7 @@ void FUN_00351e70(int param_1)
 
         fVar7 = (float)FUN_00358030(0);
 
-        fVar7 = fVar7 * 65535.0f;
+        fVar7 = mdlMulFirst(65535.0f, fVar7);
 
         if (fVar7 < 2.1474836e+09f) {
 
