@@ -1,4 +1,5 @@
 #include "temporary.h"
+#include "fr_font_internal.h"
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -213,7 +214,6 @@ u32 FUN_003b0ec0(int param_1);
 void FUN_003b1300(void *param_1);
 void FUN_003b1330(void *param_1,u32 param_2);
 int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
-u64 FUN_003b38f0(f32 param_1,int param_2,int param_3,u8 *param_4,int param_5,int param_6,int param_7,u32 param_8);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
