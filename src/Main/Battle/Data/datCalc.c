@@ -93,7 +93,7 @@ float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
 u8 FUN_00301ca0(u32 param_1,u32 param_2);
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
 void FUN_00302c50(u32 param_1);
-void FUN_00302d40(u32 param_1);
+void FUN_00302d40(u32 unit);
 u8 FUN_00302f50(u32 param_1);
 u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,u8 param_8);
@@ -1710,52 +1710,52 @@ void FUN_00302c50(u32 param_1)
 
 // FUN_00302d40 NONMATCHING
 
-void FUN_00302d40(u32 param_1)
+void FUN_00302d40(u32 unit)
 
 {
-  char cVar1;
-  char bVar2;
-  short iVar3;
-  s32 uVar4;
-  u32 uVar5;
-  int iVar6;
+  char flagSet;
+  char nibble;
+  short nibbleIndex;
+  s32 kindIndex;
+  u32 kind;
+  int unitBase;
   
-  for (uVar5 = 0; uVar5 < 0x11; uVar5 = uVar5 + 1) {
-    uVar4 = uVar5 & 0xff;
-    if (!(uVar4 < 0x15)) {
+  for (kind = 0; kind < 0x11; kind = kind + 1) {
+    kindIndex = kind & 0xff;
+    if (!(kindIndex < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x4b8);
     }
-    iVar6 = (int)param_1;
-    if (uVar4 < 0x11) {
-      cVar1 = FUN_00300f60(param_1,(u8)uVar5);
+    unitBase = (int)unit;
+    if (kindIndex < 0x11) {
+      flagSet = FUN_00300f60(unit,(u8)kind);
     }
     else {
-      cVar1 = (*(u32 *)(iVar6 + 0x14) & 1 << (uVar5 & 0xff)) != 0;
+      flagSet = (*(u32 *)(unitBase + 0x14) & 1 << (kind & 0xff)) != 0;
     }
-    if (!(uVar4 < 0x15)) {
+    if (!(kindIndex < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x421);
     }
-    iVar3 = (int)(uVar5 & 0xff) >> 1;
-    if ((uVar5 & 1) != 0) {
-      bVar2 = (u8)((int)(u32)*(u8 *)(iVar6 + iVar3 + 0x29) >> 4);
+    nibbleIndex = (int)(kind & 0xff) >> 1;
+    if ((kind & 1) != 0) {
+      nibble = (u8)((int)(u32)*(u8 *)(unitBase + nibbleIndex + 0x29) >> 4);
     }
     else {
-      bVar2 = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf;
+      nibble = *(u8 *)(unitBase + nibbleIndex + 0x29) & 0xf;
     }
-    if ((cVar1 != '\0') && (bVar2 < 0xf)) {
-      if (!(uVar4 < 0x15)) {
+    if ((flagSet != '\0') && (nibble < 0xf)) {
+      if (!(kindIndex < 0x15)) {
         FUN_0019d3f0((u32)D_0069aa80, 0x455);
       }
-      bVar2 = bVar2 + 1;
-      if (bVar2 < 0) {
+      nibble = nibble + 1;
+      if (nibble < 0) {
         FUN_0019d3f0((u32)D_0069aa80, 0x456);
       }
-      if ((uVar5 & 1) != 0) {
-        *(u8 *)(iVar6 + iVar3 + 0x29) =
-             *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf | bVar2 * '\x10';
+      if ((kind & 1) != 0) {
+        *(u8 *)(unitBase + nibbleIndex + 0x29) =
+             *(u8 *)(unitBase + nibbleIndex + 0x29) & 0xf | nibble * '\x10';
       }
       else {
-        *(u8 *)(iVar6 + iVar3 + 0x29) = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf0 | bVar2 & 0xf;
+        *(u8 *)(unitBase + nibbleIndex + 0x29) = *(u8 *)(unitBase + nibbleIndex + 0x29) & 0xf0 | nibble & 0xf;
       }
     }
   }
