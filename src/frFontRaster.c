@@ -136,58 +136,58 @@ void FUN_003b3740(void)
 
 void FUN_003b3770(void)
 {
-  int *previous;
+  u32 *previous;
+  u32 *current;
 
-  int *current;
-  previous = (int *)0x0;
-  current = *(int **)(iGpffffb954 + 8);
-  while (current != (int *)0x0) {
-    if (((current[0] & 1) == 0) || (current[4] == 0)) {
-      *(short *)((char *)current + 10) = *(short *)((char *)current + 10) - 1;
+  previous = (u32 *)0x0;
+  current = *(u32 **)(iGpffffb954 + 8);
+  while (current != (u32 *)0x0) {
+    if (((*current & 1) == 0) || (current[4] == 0)) {
+      *(short *)((int)current + 10) = *(short *)((int)current + 10) - 1;
     }
-    if (*(short *)((char *)current + 10) < 0) {
-      if (previous == (int *)0x0) {
-        *(int *)(iGpffffb954 + 8) = current[6];
+    if (*(short *)((int)current + 10) < 0) {
+      if (previous == (u32 *)0x0) {
+        *(u32 *)(iGpffffb954 + 8) = current[6];
         if (*(int *)(iGpffffb954 + 8) == 0) {
           *(int *)(iGpffffb954 + 0xc) = 0;
         }
         if (*(int *)(iGpffffb954 + 0x14) != 0) {
-          *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
-          *(int **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
         } else {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
-        current = *(int **)(iGpffffb954 + 8);
-        previous = (int *)0x0;
+        previous = (u32 *)0x0;
+        current = *(u32 **)(iGpffffb954 + 8);
       } else if (current[6] == 0) {
-        *(int **)(iGpffffb954 + 0xc) = previous;
+        *(u32 **)(iGpffffb954 + 0xc) = previous;
         previous[6] = 0;
         if (*(int *)(iGpffffb954 + 0x14) != 0) {
-          *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
-          *(int **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
         } else {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
-        current = (int *)0x0;
+        current = (u32 *)0x0;
       } else {
         previous[6] = current[6];
         if (*(int *)(iGpffffb954 + 0x14) != 0) {
-          *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
-          *(int **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
         } else {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
+          *(u32 **)(iGpffffb954 + 0x14) = current;
+          *(u32 **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
-        current = (int *)previous[6];
+        current = (u32 *)previous[6];
       }
     } else {
       previous = current;
-      current = (int *)current[6];
+      current = (u32 *)current[6];
     }
   }
 }
