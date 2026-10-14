@@ -1143,7 +1143,7 @@ void func_00280da0(BtlUnit* unit)
             pointIndex++;
         }
 
-        if ((unit->unk_c4 & 1) != 0)
+        if ((unit->stateFlags & 1) != 0)
         {
             pointIndex = pointCount - 1;
         }
@@ -1206,7 +1206,7 @@ void func_00280da0(BtlUnit* unit)
     angleDelta = angle - currentAngle;
     angleMagnitude = func_005318a0(btlUnitFabs(func_00530da0(angleDelta)));
 
-    if (angleMagnitude <= 5.0f || (unit->unk_c4 & 2) != 0)
+    if (angleMagnitude <= 5.0f || (unit->stateFlags & 2) != 0)
     {
         func_004bdde0(&targetRot, &D_00697880, 0, angle);
         unit->rot = targetRot;
@@ -1324,10 +1324,10 @@ u32 btlUnitUpdateMovePacket(void* work)
         case 1:
             func_002d4800(&unit->unk_ec);
             *(f32*)&unit->unk_e8 = packet->unk_1c;
-            unit->unk_c4 = packet->flags;
+            unit->stateFlags = packet->flags;
             unit->unk_cc = 2.0f * (13.5f * packet->speed);
 
-            if (!(unit->unk_c4 & 1))
+            if (!(unit->stateFlags & 1))
             {
                 unit->unk_ec.x = unit->pos.x;
                 unit->unk_ec.y = unit->pos.z;
@@ -1392,7 +1392,7 @@ u32 btlUnitUpdateMovePacket(void* work)
         case 1:
             func_002d4800(&unit->unk_ec);
             *(f32*)&unit->unk_e8 = packet->unk_1c;
-            unit->unk_c4 = packet->flags;
+            unit->stateFlags = packet->flags;
             unit->unk_cc = 2.0f * (13.5f * packet->speed);
             ((f32*)&start)[0] = unit->pos.x;
             ((f32*)&start)[1] = unit->pos.z;
@@ -1750,7 +1750,7 @@ u32 btlUnitUpdateRotatePacket(void* work)
         unit->targetRot = packet->rot;
         unit->unk_4f8 = 0;
         unit->unk_e8 = 0;
-        unit->unk_c4 = flags;
+        unit->stateFlags = flags;
         unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_ROTATE;
     }
 
@@ -1877,7 +1877,7 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
                 unit->targetRot = packet->targetUnit->pos;
             }
 
-            unit->unk_c4 |= packet->flags;
+            unit->stateFlags |= packet->flags;
             unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_ROTATE;
         }
     }
@@ -1962,7 +1962,7 @@ void func_002826d0(BtlUnit* unit)
             if (!btlUnit00282cd0(unit))
             {
                 btlUnitAnimate(unit, 1, 4,
-                               (unit->unk_c4 & 4) != 0 ? 2.0f : 1.0f, 1);
+                               (unit->stateFlags & 4) != 0 ? 2.0f : 1.0f, 1);
             }
         }
         else if (btlUnit00282cd0(unit) && !btlUnit00282c60(unit))
@@ -6072,7 +6072,7 @@ BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
     btlAction00299e30(action);
     FUN_00299d60(action, 1);
     if (charId == 1) {
-      action->unk_14 = 5;
+      action->state = 5;
       gBtl->actionList.head = action;
     }
     {
