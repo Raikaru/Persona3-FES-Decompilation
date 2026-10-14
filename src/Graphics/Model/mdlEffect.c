@@ -10853,6 +10853,7 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
   u32 uVar1;
   float fVar2;
+  u32 size;
 
 
 
@@ -10868,13 +10869,15 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
   uVar1 = mdlEffectCallA120(*(u32 *)(param_2 + 0xb8),(char *)(param_2 + 0x2c),(u32 *)(param_2 + 0x50),(int)(param_3));
   *(u32 *)(param_1[1] + 4) = uVar1;
 
-  fVar2 = FUN_0032a540((char *)(param_2 + 0x60),param_3,*(u32 *)(param_2 + 0xb8));
+  size = *(u32 *)(param_2 + 0xb8);
+  fVar2 = FUN_0032a540((char *)(param_2 + 0x60),param_3,size);
 
   *(float *)(param_1[1] + 8) = fVar2;
 
   if (*(u8 *)(param_2 + 0x9c) != 2) {
 
-    fVar2 = FUN_0032a540((char *)(param_2 + 0x8c),param_3,*(u32 *)(param_2 + 0xb8));
+    size = *(u32 *)(param_2 + 0xb8);
+    fVar2 = FUN_0032a540((char *)(param_2 + 0x8c),param_3,size);
 
     *(float *)(param_1[1] + 0xc) = fVar2;
 
@@ -10891,15 +10894,11 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
     __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vtmp) : "memory");
     fStack_10 = vtmp[0];
     fStack_c = vtmp[1];
-    if (fStack_10 != 0.0f) goto calculate;
-    if (fStack_c == 0.0f) goto zero;
-calculate:
-    *(float *)(param_1[1] + 0xc) = FUN_0052ea18_f32(fStack_c);
-    goto finish;
-zero:
-    *(u32 *)(param_1[1] + 0xc) = 0;
-finish:
-    ;
+    if ((fStack_10 != 0.0f) || (fStack_c != 0.0f)) {
+      *(float *)(param_1[1] + 0xc) = FUN_0052ea18_f32(fStack_c);
+    } else {
+      *(u32 *)(param_1[1] + 0xc) = 0;
+    }
 
   }
 
