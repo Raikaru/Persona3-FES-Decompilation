@@ -70,7 +70,6 @@ extern PanelVec3 D_0068E0F8;
 #pragma alias D_0068E0F8_abs D_0068E0F8
 extern u8 D_0068E0F8_abs[];
 extern void* func_004cb2f0(void* model);
-extern void FUN_004c6be0(void* out, const void* in, const void* matrix);
 extern void RpSkyRenderStateSet(s32 state, void* value);
 extern void printf(const char*, ...);
 extern int sprintf(char*, const char*, ...);
@@ -1072,8 +1071,8 @@ void func_0020cf20(void* destination, PanelTransform* transform)
         f32 facing;
 
         if (transform->model != NULL) {
-            FUN_004c6be0(&localPoint, &transform->translation,
-                         func_004cb2f0(transform->model));
+            RwV3dTransformPoint((RwV3d*)&localPoint, (const RwV3d*)&transform->translation,
+                                (const RwMatrix*)func_004cb2f0(transform->model));
         } else {
             localPoint = transform->translation;
         }
@@ -1094,7 +1093,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
         localPoint.x = 0.0f;
         localPoint.y = 0.0f;
         localPoint.z = 100.0f;
-        FUN_004c6be0(&transformedPoint, &localPoint, matrix);
+        RwV3dTransformPoint((RwV3d*)&transformedPoint, (const RwV3d*)&localPoint, (const RwMatrix*)matrix);
         func_004c6c60(&transformedAxis, &axisZ, matrix);
         RwV3dNormalize((RwV3d*)&transformedAxis, (const RwV3d*)&transformedAxis);
 
@@ -1131,7 +1130,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
                 localPoint.x -= 3.0f;
                 localPoint.y = fGpffff8338 * ((f32)row / 8.0f - 0.5f);
                 localPoint.z = 0.0f;
-                FUN_004c6be0(&transformedPoint, &localPoint, matrix);
+                RwV3dTransformPoint((RwV3d*)&transformedPoint, (const RwV3d*)&localPoint, (const RwMatrix*)matrix);
 
                 cameraDirection.x = transformedPoint.x - cameraPosition->x;
                 cameraDirection.y = transformedPoint.y - cameraPosition->y;
