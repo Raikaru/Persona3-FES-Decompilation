@@ -250,7 +250,7 @@ extern void func_004c6c20(RuntimeVec3* destination,
                           RuntimeMatrix* matrix);
 extern RuntimeVec3 D_00684400;
 extern void func_00318d10(void* context, void* object, RuntimeMatrix* matrix);
-extern void func_00492d10(void* manager, void* frame);
+extern void RpAtomicSetFrame(void* manager, void* frame);
 extern void func_00491a80(void* manager);
 extern void* func_001e1840(void);
 extern void FUN_00521250(void* destination, const void* source, u32 size);
@@ -376,7 +376,7 @@ extern void* func_00494be0(void);
 extern void func_00494d50(void* material, void* texture);
 extern void* func_004caf10(void);
 extern void func_004933d0(void* geometry);
-extern void func_00493370(void* renderObject, u32 state);
+extern void RpGeometryLock(void* renderObject, u32 state);
 extern void func_004cb930(void* geometry);
 extern void func_004cb7f0(void* geometry, void* matrix, s32 mode);
 extern void* func_00318b60(void* owner);
@@ -1146,7 +1146,7 @@ RuntimeWork* func_001eeb90(RuntimeWork* input)
             }
             work->renderObjects[index * 2] = func_00491880();
             func_004919b0(work->renderObjects[index * 2], geometry, 0);
-            func_00492d10(work->renderObjects[index * 2], func_004caf10());
+            RpAtomicSetFrame(work->renderObjects[index * 2], func_004caf10());
             func_00493b60(geometry);
             func_001ed8a0(work->entries + index * 0x4c, geometry);
             func_004933d0(geometry);
