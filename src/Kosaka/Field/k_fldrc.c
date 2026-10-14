@@ -192,7 +192,7 @@ extern undefined8 FUN_004cb890(undefined8 param_1);
 extern undefined4 FUN_004d0d10(int param_1);
 extern u32 FUN_004d0dc0();
 extern u32 FUN_004d7f60();
-extern u32 FUN_0051e0f0();
+extern u32 atoi();
 extern u32 FUN_00523ac8();
 extern u32 FUN_00523e68();
 extern u32 FUN_00524270();
@@ -1688,12 +1688,12 @@ void* FUN_001b2860(char* path)
         digits[1] = end[3];
         digits[2] = end[4];
         digits[3] = 0;
-        *(u16*)(resource + 4) = (u16)FUN_0051e0f0(digits);
+        *(u16*)(resource + 4) = (u16)atoi(digits);
         digits[0] = end[6];
         digits[1] = end[7];
         digits[2] = end[8];
         digits[3] = 0;
-        *(u16*)(resource + 6) = (u16)FUN_0051e0f0(digits);
+        *(u16*)(resource + 6) = (u16)atoi(digits);
     }
     else
     {
