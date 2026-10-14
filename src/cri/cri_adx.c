@@ -7850,7 +7850,7 @@ void FUN_00535888(long param_1)
 // FUN_005358E0 NONMATCHING
 
 
-void ADXAMP_Start(u32 *param_1)
+void ADXAMP_Start(u32 *amp)
 
 
 
@@ -7876,11 +7876,11 @@ void ADXAMP_Start(u32 *param_1)
 
   lVar6 = 0;
 
-  bVar1 = *(u8 *)((int)param_1 + 2);
+  bVar1 = *(u8 *)((int)amp + 2);
 
-  if ('\0' < *(char *)((int)param_1 + 2)) {
+  if ('\0' < *(char *)((int)amp + 2)) {
 
-    puVar5 = param_1 + 5;
+    puVar5 = amp + 5;
 
     do {
 
@@ -7890,19 +7890,19 @@ void ADXAMP_Start(u32 *param_1)
 
       lVar6 = (long)((int)lVar6 + 1);
 
-      bVar1 = *(u8 *)((int)param_1 + 2);
+      bVar1 = *(u8 *)((int)amp + 2);
 
-    } while (lVar6 < *(char *)((int)param_1 + 2));
+    } while (lVar6 < *(char *)((int)amp + 2));
 
   }
 
   iVar3 = (u32)bVar1 << 0x18;
 
-  param_1[0xb] = 0;
+  amp[0xb] = 0;
 
   lVar6 = 0;
 
-  puVar5 = param_1;
+  puVar5 = amp;
 
   if (0 < iVar3) {
 
@@ -7924,9 +7924,9 @@ void ADXAMP_Start(u32 *param_1)
 
       puVar5 = puVar5 + 1;
 
-    } while (lVar6 < *(char *)((int)param_1 + 2));
+    } while (lVar6 < *(char *)((int)amp + 2));
 
-    iVar3 = (u32)*(u8 *)((int)param_1 + 2) << 0x18;
+    iVar3 = (u32)*(u8 *)((int)amp + 2) << 0x18;
 
   }
 
@@ -7934,7 +7934,7 @@ void ADXAMP_Start(u32 *param_1)
 
   if (0 < iVar3) {
 
-    puVar5 = param_1 + 3;
+    puVar5 = amp + 3;
 
     piVar2 = (int *)*puVar5;
 
@@ -7954,7 +7954,7 @@ void ADXAMP_Start(u32 *param_1)
 
       (**(code **)(*piVar2 + 0x1c))(piVar2,0,&uStack_40);
 
-      if (*(char *)((int)param_1 + 2) <= lVar6) break;
+      if (*(char *)((int)amp + 2) <= lVar6) break;
 
       piVar2 = (int *)*puVar5;
 
@@ -7962,7 +7962,7 @@ void ADXAMP_Start(u32 *param_1)
 
   }
 
-  *(u8 *)((int)param_1 + 1) = 2;
+  *(u8 *)((int)amp + 1) = 2;
 
   return;
 
@@ -8063,13 +8063,13 @@ void FUN_00535a88(u32 *param_1)
 // FUN_00535D18 NONMATCHING
 
 
-void ADXAMP_ExecHndl(int param_1)
+void ADXAMP_ExecHndl(int amp)
 
 
 
 {
 
-  if (*(char *)(param_1 + 1) == '\x02') {
+  if (*(char *)(amp + 1) == '\x02') {
 
     ((code)FUN_00535a88)();
 
@@ -8391,21 +8391,21 @@ void FUN_00535fc0(int param_1)
 
 
 
-void ADXB_SetAhxDecSmpl(int param_1,int param_2)
+void ADXB_SetAhxDecSmpl(int adxb, int nsmpl)
 
 
 
 {
 
-  if (*(int *)(param_1 + 0xb4) != 0) {
+  if (*(int *)(adxb + 0xb4) != 0) {
 
-    (*(code *)(u32)DAT_007836bc)(*(int *)(param_1 + 0xb4));
+    (*(code *)(u32)DAT_007836bc)(*(int *)(adxb + 0xb4));
 
   }
 
-  *(int *)(param_1 + 0xb8) = param_2;
+  *(int *)(adxb + 0xb8) = nsmpl;
 
-  *(int *)(param_1 + 0xbc) = param_2 / 0x60;
+  *(int *)(adxb + 0xbc) = nsmpl / 0x60;
 
   return;
 
@@ -9240,13 +9240,13 @@ void FUN_00536868(int param_1)
 // FUN_005369E8 NONMATCHING
 
 
-void ADXB_ExecOneAiff(int param_1)
+void ADXB_ExecOneAiff(int adxb)
 
 
 
 {
 
-  if (*(short *)(param_1 + 0x9c) == 1) {
+  if (*(short *)(adxb + 0x9c) == 1) {
 
     ((code)FUN_00536868)();
 
@@ -9428,7 +9428,7 @@ u8 * FUN_00536a10(u8 *param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5
 // FUN_00536D28 NONMATCHING
 
 
-u32 ADXB_CheckAu(u64 param_1)
+u32 ADXB_CheckAu(u8 *buf)
 
 
 
@@ -9440,9 +9440,9 @@ u32 ADXB_CheckAu(u64 param_1)
 
 
 
-  lVar2 = FUN_005211b8(param_1,0x7c1178,4);
+  lVar2 = FUN_005211b8(buf,0x7c1178,4);
 
-  if ((lVar2 == 0) || (lVar2 = FUN_005211b8(param_1,0x7c1180,4), lVar2 == 0)) {
+  if ((lVar2 == 0) || (lVar2 = FUN_005211b8(buf,0x7c1180,4), lVar2 == 0)) {
 
     uVar1 = 1;
 
@@ -9951,7 +9951,7 @@ void FUN_00537128(int param_1)
 // FUN_005372A8 NONMATCHING
 
 
-void ADXB_ExecOneAuUlaw(int param_1)
+void ADXB_ExecOneAuUlaw(int adxb)
 
 
 
@@ -9983,45 +9983,45 @@ void ADXB_ExecOneAuUlaw(int param_1)
 
 
 
-  iVar10 = *(int *)(param_1 + 4);
+  iVar10 = *(int *)(adxb + 4);
 
-  pbVar8 = *(u8 **)(param_1 + 0x48);
+  pbVar8 = *(u8 **)(adxb + 0x48);
 
   if (iVar10 == 1) {
 
-    lVar3 = FUN_0054cd80(*(u32 *)(param_1 + 8));
+    lVar3 = FUN_0054cd80(*(u32 *)(adxb + 8));
 
     if (lVar3 == 0) {
 
-      (**(code **)(param_1 + 0x78))
+      (**(code **)(adxb + 0x78))
 
-                (*(u32 *)(param_1 + 0x7c),param_1 + 0x68,param_1 + 0x6c,param_1 + 0x70);
+                (*(u32 *)(adxb + 0x7c),adxb + 0x68,adxb + 0x6c,adxb + 0x70);
 
-      iVar10 = *(int *)(param_1 + 0x68);
+      iVar10 = *(int *)(adxb + 0x68);
 
-      iVar11 = *(int *)(param_1 + 0x60) - iVar10;
+      iVar11 = *(int *)(adxb + 0x60) - iVar10;
 
-      if (*(int *)(param_1 + 0x6c) < iVar11) {
+      if (*(int *)(adxb + 0x6c) < iVar11) {
 
-        iVar11 = *(int *)(param_1 + 0x6c);
+        iVar11 = *(int *)(adxb + 0x6c);
 
       }
 
-      iVar1 = *(int *)(param_1 + 0x5c);
+      iVar1 = *(int *)(adxb + 0x5c);
 
-      if (*(int *)(param_1 + 0x4c) < iVar11) {
+      if (*(int *)(adxb + 0x4c) < iVar11) {
 
-        iVar11 = *(int *)(param_1 + 0x4c);
+        iVar11 = *(int *)(adxb + 0x4c);
 
       }
 
       puVar12 = (u16 *)(iVar1 + iVar10 * 2);
 
-      cVar4 = *(char *)(param_1 + 0xe);
+      cVar4 = *(char *)(adxb + 0xe);
 
-      if (*(char *)(param_1 + 0xe) == '\x02') {
+      if (*(char *)(adxb + 0xe) == '\x02') {
 
-        iVar2 = *(int *)(param_1 + 100);
+        iVar2 = *(int *)(adxb + 100);
 
         iVar9 = 0;
 
@@ -10047,7 +10047,7 @@ void ADXB_ExecOneAuUlaw(int param_1)
 
           } while (iVar9 < iVar11);
 
-          cVar4 = *(char *)(param_1 + 0xe);
+          cVar4 = *(char *)(adxb + 0xe);
 
         }
 
@@ -10071,7 +10071,7 @@ void ADXB_ExecOneAuUlaw(int param_1)
 
           } while (iVar10 < iVar11);
 
-          cVar4 = *(char *)(param_1 + 0xe);
+          cVar4 = *(char *)(adxb + 0xe);
 
         }
 
@@ -10079,17 +10079,17 @@ void ADXB_ExecOneAuUlaw(int param_1)
 
       iVar10 = 2;
 
-      *(u32 *)(param_1 + 4) = 2;
+      *(u32 *)(adxb + 4) = 2;
 
-      *(int *)(param_1 + 0x90) = iVar11;
+      *(int *)(adxb + 0x90) = iVar11;
 
-      *(int *)(param_1 + 0x94) = iVar11 * cVar4;
+      *(int *)(adxb + 0x94) = iVar11 * cVar4;
 
     }
 
     else {
 
-      iVar10 = *(int *)(param_1 + 4);
+      iVar10 = *(int *)(adxb + 4);
 
     }
 
@@ -10097,13 +10097,13 @@ void ADXB_ExecOneAuUlaw(int param_1)
 
   if (iVar10 == 2) {
 
-    (**(code **)(param_1 + 0x80))
+    (**(code **)(adxb + 0x80))
 
-              (*(u32 *)(param_1 + 0x84),*(u32 *)(param_1 + 0x94),
+              (*(u32 *)(adxb + 0x84),*(u32 *)(adxb + 0x94),
 
-               *(u32 *)(param_1 + 0x90));
+               *(u32 *)(adxb + 0x90));
 
-    *(u32 *)(param_1 + 4) = 3;
+    *(u32 *)(adxb + 4) = 3;
 
   }
 
@@ -10428,15 +10428,15 @@ void FUN_00537790(void)
 
 // FUN_00537838
 #pragma schedule on
-int adxb_DefAddWr(int param_1,u64 param_2,int param_3)
+int adxb_DefAddWr(int obj, s32 nbyte, int nsmpl)
 {
-  int value_8c = *(int *)(param_1 + 0x8c);
-  int value_88 = *(int *)(param_1 + 0x88);
+  int value_8c = *(int *)(obj + 0x8c);
+  int value_88 = *(int *)(obj + 0x88);
 
-  value_8c += param_3;
-  value_88 += param_3;
-  *(int *)(param_1 + 0x8c) = value_8c;
-  *(int *)(param_1 + 0x88) = value_88;
+  value_8c += nsmpl;
+  value_88 += nsmpl;
+  *(int *)(obj + 0x8c) = value_8c;
+  *(int *)(obj + 0x88) = value_88;
   return value_8c;
 }
 #pragma schedule off
@@ -10566,7 +10566,7 @@ FUN_00537890(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 // FUN_005379B0 NONMATCHING
 
 
-void ADXB_Destroy(long param_1)
+void ADXB_Destroy(long adxb)
 
 
 
@@ -10578,9 +10578,9 @@ void ADXB_Destroy(long param_1)
 
 
 
-  if (param_1 != 0) {
+  if (adxb != 0) {
 
-    puVar2 = (u16 *)param_1;
+    puVar2 = (u16 *)adxb;
 
     uVar1 = *(u32 *)(puVar2 + 4);
 
@@ -10588,7 +10588,7 @@ void ADXB_Destroy(long param_1)
 
     ADXPD_Destroy(uVar1);
 
-    FUN_00521408(param_1,0,0x104);
+    FUN_00521408(adxb,0,0x104);
 
     *puVar2 = 0;
 
@@ -10806,7 +10806,7 @@ LAB_00537c80:
 // FUN_00537CF0
 
 
-asm void ADXB_SetDefPrm(int param_1)
+asm void ADXB_SetDefPrm(int adxb)
 {
   .set noreorder
   .word 0x3c027fff
@@ -11004,7 +11004,7 @@ asm u32 FUN_00537f38(int param_1)
 // FUN_00537F40
 
 
-asm u8 ADXB_GetNumChan(int param_1)
+asm u8 ADXB_GetNumChan(int adxb)
 {
   .set noreorder
   .word 0x8082000e
@@ -11036,7 +11036,7 @@ s8 FUN_00537f70(int param_1)
 // FUN_00537F78
 
 
-asm u32 ADXB_GetOutBps(int param_1)
+asm u32 ADXB_GetOutBps(int adxb)
 {
   .set noreorder
   .word 0x84850098
@@ -11124,7 +11124,7 @@ u32 FUN_00538008(int param_1)
 // FUN_00538010
 
 
-asm u32 ADXB_GetLpStartOfst(long param_1)
+asm u32 ADXB_GetLpStartOfst(long adxb)
 {
   .set noreorder
   .word 0x10800002
@@ -11176,13 +11176,13 @@ u32 FUN_00538038(int param_1)
 // FUN_00538040
 
 
-s16 ADXB_GetDefOutVol(int param_1)
+s16 ADXB_GetDefOutVol(int adxb)
 
 
 
 {
 
-  return *(s16 *)(param_1 + 0xe0);
+  return *(s16 *)(adxb + 0xe0);
 
 }
 #pragma optimization_level 2
@@ -11194,7 +11194,7 @@ s16 ADXB_GetDefOutVol(int param_1)
 // FUN_00538048
 
 
-asm s16 ADXB_GetDefPan(int param_1, int param_2)
+asm s16 ADXB_GetDefPan(int adxb, int param_2)
 {
   .set noreorder
   .word 0x00052840
@@ -11218,15 +11218,15 @@ int FUN_00538058(int param_1)
 // FUN_00538060 NONMATCHING
 
 
-void ADXB_TakeSnapshot(int param_1)
+void ADXB_TakeSnapshot(int adxb)
 
 
 
 {
 
-  ((code)ADXPD_GetDly)(*(u32 *)(param_1 + 8),param_1 + 0xac,param_1 + 0xb0);
+  ((code)ADXPD_GetDly)(*(u32 *)(adxb + 8),adxb + 0xac,adxb + 0xb0);
 
-  ((code)FUN_0054cd20)(*(u32 *)(param_1 + 8),param_1 + 0xa6,param_1 + 0xa8,param_1 + 0xaa);
+  ((code)FUN_0054cd20)(*(u32 *)(adxb + 8),adxb + 0xa6,adxb + 0xa8,adxb + 0xaa);
 
   return;
 
@@ -11239,17 +11239,17 @@ void ADXB_TakeSnapshot(int param_1)
 // FUN_005380A0 NONMATCHING
 
 
-void ADXB_RestoreSnapshot(int param_1)
+void ADXB_RestoreSnapshot(int adxb)
 
 
 
 {
 
-  ((code)ADXPD_SetDly)(*(u32 *)(param_1 + 8),param_1 + 0xac,param_1 + 0xb0);
+  ((code)ADXPD_SetDly)(*(u32 *)(adxb + 8),adxb + 0xac,adxb + 0xb0);
 
-  FUN_0054cd10(*(u32 *)(param_1 + 8),*(u16 *)(param_1 + 0xa6),
+  FUN_0054cd10(*(u32 *)(adxb + 8),*(u16 *)(adxb + 0xa6),
 
-               *(u16 *)(param_1 + 0xa8),*(u16 *)(param_1 + 0xaa));
+               *(u16 *)(adxb + 0xa8),*(u16 *)(adxb + 0xaa));
 
   return;
 
@@ -11465,7 +11465,7 @@ u32 FUN_005382c0(int param_1)
 // FUN_005382C8
 
 
-asm void ADXB_EntryData(int param_1,u32 param_2,int param_3)
+asm void ADXB_EntryData(int adxb, u32 buf, int nbyte)
 {
   .set noreorder
   .word 0x0080382d
@@ -11509,7 +11509,7 @@ asm void ADXB_EntryData(int param_1,u32 param_2,int param_3)
 // FUN_00538348
 
 
-asm void ADXB_Start(int param_1)
+asm void ADXB_Start(int adxb)
 {
   .set noreorder
   .word 0x8c820004
@@ -11527,21 +11527,21 @@ asm void ADXB_Start(int param_1)
 // FUN_00538360 NONMATCHING
 
 
-void ADXB_Stop(int param_1)
+void ADXB_Stop(int adxb)
 
 
 
 {
 
-  if (*(int *)(param_1 + 0xe8) != 0) {
+  if (*(int *)(adxb + 0xe8) != 0) {
 
     (*(code *)(u32)DAT_007838e0)();
 
   }
 
-  ADXPD_Stop(*(u32 *)(param_1 + 8));
+  ADXPD_Stop(*(u32 *)(adxb + 8));
 
-  *(u32 *)(param_1 + 4) = 0;
+  *(u32 *)(adxb + 4) = 0;
 
   return;
 
@@ -11554,19 +11554,19 @@ void ADXB_Stop(int param_1)
 // FUN_005383A8 NONMATCHING
 
 
-void ADXB_Reset(int param_1)
+void ADXB_Reset(int adxb)
 
 
 
 {
 
-  if (*(int *)(param_1 + 4) == 3) {
+  if (*(int *)(adxb + 4) == 3) {
 
-    ADXPD_Reset(*(u32 *)(param_1 + 8));
+    ADXPD_Reset(*(u32 *)(adxb + 8));
 
-    *(u32 *)(param_1 + 0x8c) = 0;
+    *(u32 *)(adxb + 0x8c) = 0;
 
-    *(u32 *)(param_1 + 4) = 0;
+    *(u32 *)(adxb + 4) = 0;
 
   }
 
@@ -11582,13 +11582,13 @@ void ADXB_Reset(int param_1)
 // FUN_005383E8
 
 
-u32 ADXB_GetDecDtLen(int param_1)
+u32 ADXB_GetDecDtLen(int adxb)
 
 
 
 {
 
-  return *(u32 *)(param_1 + 0x94);
+  return *(u32 *)(adxb + 0x94);
 
 }
 #pragma optimization_level 2
@@ -11601,13 +11601,13 @@ u32 ADXB_GetDecDtLen(int param_1)
 // FUN_005383F0
 
 
-u32 ADXB_GetDecNumSmpl(int param_1)
+u32 ADXB_GetDecNumSmpl(int adxb)
 
 
 
 {
 
-  return *(u32 *)(param_1 + 0x90);
+  return *(u32 *)(adxb + 0x90);
 
 }
 #pragma optimization_level 2
@@ -11679,7 +11679,7 @@ void FUN_00538410(int param_1,u64 param_2)
 // FUN_00538460 NONMATCHING
 
 
-void ADXB_EvokeExpandSte(int param_1,int param_2)
+void ADXB_EvokeExpandSte(int adxb, int nblk)
 
 
 
@@ -11691,13 +11691,13 @@ void ADXB_EvokeExpandSte(int param_1,int param_2)
 
 
 
-  uVar1 = *(u32 *)(param_1 + 8);
+  uVar1 = *(u32 *)(adxb + 8);
 
-  iVar2 = *(int *)(param_1 + 0x5c) + *(int *)(param_1 + 0x68) * 2;
+  iVar2 = *(int *)(adxb + 0x5c) + *(int *)(adxb + 0x68) * 2;
 
-  ADXPD_EntrySte(uVar1,*(u32 *)(param_1 + 0x48),param_2 << 1,iVar2,
+  ADXPD_EntrySte(uVar1,*(u32 *)(adxb + 0x48),nblk << 1,iVar2,
 
-               iVar2 + *(int *)(param_1 + 100) * 2);
+               iVar2 + *(int *)(adxb + 100) * 2);
 
   ADXPD_Start(uVar1);
 
@@ -11878,7 +11878,7 @@ asm void FUN_00538618(u16 *param_1,u16 *param_2,int param_3)
 // FUN_00538648 NONMATCHING
 
 
-void ADXB_CopyExtraBufSte(u64 param_1,int param_2,int param_3,u64 param_4)
+void ADXB_CopyExtraBufSte(s16 *obuf, int obsize, int obdist, s32 nxsmpl)
 
 
 
@@ -11888,11 +11888,11 @@ void ADXB_CopyExtraBufSte(u64 param_1,int param_2,int param_3,u64 param_4)
 
 
 
-  iVar1 = (int)param_1;
+  iVar1 = (int)obuf;
 
-  ((code)FUN_00538618)(param_1,iVar1 + param_2 * 2,param_4);
+  ((code)FUN_00538618)(obuf,iVar1 + obsize * 2,nxsmpl);
 
-  ((code)FUN_00538618)(iVar1 + param_3 * 2,iVar1 + (param_3 + param_2) * 2,param_4);
+  ((code)FUN_00538618)(iVar1 + obdist * 2,iVar1 + (obdist + obsize) * 2,nxsmpl);
 
   return;
 
@@ -11905,13 +11905,13 @@ void ADXB_CopyExtraBufSte(u64 param_1,int param_2,int param_3,u64 param_4)
 // FUN_005386B8 NONMATCHING
 
 
-void ADXB_CopyExtraBufMono(int param_1,int param_2,u64 param_3,u64 param_4)
+void ADXB_CopyExtraBufMono(int obuf, int obsize, s32 xsize, s32 nxsmpl)
 
 
 
 {
 
-  ((code)FUN_00538618)(param_1,param_1 + param_2 * 2,param_4);
+  ((code)FUN_00538618)(obuf,obuf + obsize * 2,nxsmpl);
 
   return;
 
@@ -12640,7 +12640,7 @@ void FUN_00538d78(int param_1)
 // FUN_00538EF0 NONMATCHING
 
 
-u8 ADXB_CheckSpsd(u64 param_1)
+u8 ADXB_CheckSpsd(void *buf)
 
 
 
@@ -12650,7 +12650,7 @@ u8 ADXB_CheckSpsd(u64 param_1)
 
 
 
-  lVar1 = FUN_005211b8(param_1,0x7c1a10,4);
+  lVar1 = FUN_005211b8(buf,0x7c1a10,4);
 
   return lVar1 == 0;
 
@@ -13445,7 +13445,7 @@ u32 FUN_005396f8(u64 param_1)
 // FUN_00539760 NONMATCHING
 
 
-void ADXB_ExecOneWav(int param_1)
+void ADXB_ExecOneWav(int adxb)
 
 
 
@@ -13455,7 +13455,7 @@ void ADXB_ExecOneWav(int param_1)
 
 
 
-  sVar1 = *(short *)(param_1 + 0x9c);
+  sVar1 = *(short *)(adxb + 0x9c);
 
   if (sVar1 == 2) {
 
@@ -13743,7 +13743,7 @@ asm u32 FUN_005399b8(short *param_1,int param_2,u16 *param_3)
 // FUN_00539AE0
 
 
-asm u32 ADX_DecodeInfo(u8 *param_1,long param_2,short *param_3,u8 *param_4,char *param_5, char *param_6,u8 *param_7,u32 *param_8,u32 *param_9,int *param_10)
+asm u32 ADX_DecodeInfo(u8 *data, s32 len, short *hdrlen, u8 *fmt, s8 *bps, s8 *blksiz, u8 *nch, u32 *sfreq, u32 *nsmpl, int *blksmpl)
 {
   .set noreorder
   .word 0x28a50010
@@ -13819,7 +13819,7 @@ asm u32 ADX_DecodeInfo(u8 *param_1,long param_2,short *param_3,u8 *param_4,char 
 // FUN_00539BE0 NONMATCHING
 
 
-u32 ADX_DecodeInfoExADPCM2(u16 *param_1,long param_2,u16 *param_3)
+u32 ADX_DecodeInfoExADPCM2(u16 *ibuf, s32 ibuflen, u16 *cof)
 
 
 
@@ -13831,13 +13831,13 @@ u32 ADX_DecodeInfoExADPCM2(u16 *param_1,long param_2,u16 *param_3)
 
   uVar1 = 0xffffffff;
 
-  if (((0x11 < param_2) && (uVar1 = 0xfffffffe, (u16)(*param_1 >> 8 | *param_1 << 8) == 0x8000))
+  if (((0x11 < ibuflen) && (uVar1 = 0xfffffffe, (u16)(*ibuf >> 8 | *ibuf << 8) == 0x8000))
 
-     && (uVar1 = 0xffffffff, 0xd < (short)CONCAT21(param_1[1],*(u8 *)((int)param_1 + 3)))) {
+     && (uVar1 = 0xffffffff, 0xd < (short)CONCAT21(ibuf[1],*(u8 *)((int)ibuf + 3)))) {
 
     uVar1 = 0;
 
-    *param_3 = param_1[8] >> 8 | param_1[8] << 8;
+    *cof = ibuf[8] >> 8 | ibuf[8] << 8;
 
   }
 
@@ -14305,7 +14305,7 @@ long FUN_0053a138(u64 param_1,long param_2,u32 *param_3,u64 *param_4,u16 *param_
 // FUN_0053A358
 
 
-asm u32 ADX_DecodeFooter(u16 *param_1,long param_2,short *param_3)
+asm u32 ADX_DecodeFooter(u16 *ibuf, s32 ibuflen, short *dlen)
 {
   .set noreorder
   .word 0x28a50010
@@ -15188,13 +15188,13 @@ void FUN_0053ade0(u32 param_1,u32 param_2)
 // FUN_0053AE08 NONMATCHING
 
 
-void ADXERR_CallErrFunc1(u64 param_1)
+void ADXERR_CallErrFunc1(u64 msg)
 
 
 
 {
 
-  FUN_00524828(0x784958,param_1,0xff);
+  FUN_00524828(0x784958,msg,0xff);
 
   if ((int)DAT_00784950 != 0x0) {
 
@@ -15215,15 +15215,15 @@ void ADXERR_CallErrFunc1(u64 param_1)
 // FUN_0053AE60 NONMATCHING
 
 
-void ADXERR_CallErrFunc2(u64 param_1,u64 param_2)
+void ADXERR_CallErrFunc2(u64 msg1, u64 msg2)
 
 
 
 {
 
-  FUN_00524828(0x784958,param_1,0xff);
+  FUN_00524828(0x784958,msg1,0xff);
 
-  FUN_005244c0(0x784958,param_2,0xff);
+  FUN_005244c0(0x784958,msg2,0xff);
 
   if ((int)DAT_00784950 != 0x0) {
 
@@ -15250,7 +15250,7 @@ void ADXERR_CallErrFunc2(u64 param_1,u64 param_2)
 
 
 
-void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
+void ADXERR_ItoA(int val, u8 *str, int len)
 
 
 
@@ -15268,25 +15268,25 @@ void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
 
 
 
-  *param_2 = (char)(param_1 % 10);
+  *str = (char)(val % 10);
 
-  if (param_1 / 10 == 0) {
+  if (val / 10 == 0) {
 
-    *param_2 = 0;
+    *str = 0;
 
   }
 
   else {
 
-    iVar2 = param_1 / 10;
+    iVar2 = val / 10;
 
     for (iVar4 = 1; iVar4 < 0x20; iVar4 = iVar4 + 1) {
 
-      param_2[iVar4] = (char)(iVar2 % 10);
+      str[iVar4] = (char)(iVar2 % 10);
 
       if (iVar2 / 10 == 0) {
 
-        param_2[iVar4] = 0;
+        str[iVar4] = 0;
 
         break;
 
@@ -15300,9 +15300,9 @@ void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
 
   iVar2 = FUN_00524388(0x997008);
 
-  if (param_3 + -1 <= iVar2) {
+  if (len + -1 <= iVar2) {
 
-    iVar2 = param_3 + -1;
+    iVar2 = len + -1;
 
   }
 
@@ -15316,7 +15316,7 @@ void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
 
     do {
 
-      puVar3 = param_2 + iVar4;
+      puVar3 = str + iVar4;
 
       iVar4 = iVar4 + 1;
 
@@ -15330,7 +15330,7 @@ void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
 
   }
 
-  param_2[iVar4] = 0;
+  str[iVar4] = 0;
 
   return;
 
@@ -15343,7 +15343,7 @@ void ADXERR_ItoA(int param_1,u8 *param_2,int param_3)
 // FUN_0053AFD8 NONMATCHING
 
 
-void ADXERR_ItoA2(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
+void ADXERR_ItoA2(s32 param_1, s32 param_2, u64 str, s32 len)
 
 
 
@@ -15355,17 +15355,17 @@ void ADXERR_ItoA2(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 
 
-  ((code)ADXERR_ItoA)(param_1,param_3,param_4);
+  ((code)ADXERR_ItoA)(param_1,str,len);
 
-  iVar1 = FUN_00524388(param_3);
+  iVar1 = FUN_00524388(str);
 
-  FUN_005244c0(param_3,0x7c1a80,((int)param_4 - iVar1) + -1);
+  FUN_005244c0(str,0x7c1a80,((int)len - iVar1) + -1);
 
-  iVar1 = FUN_00524388(param_3);
+  iVar1 = FUN_00524388(str);
 
-  iVar2 = FUN_00524388(param_3);
+  iVar2 = FUN_00524388(str);
 
-  ((code)ADXERR_ItoA)(param_2,(int)param_3 + iVar1,4 - iVar2);
+  ((code)ADXERR_ItoA)(param_2,(int)str + iVar1,4 - iVar2);
 
   return;
 
@@ -15904,7 +15904,7 @@ asm int FUN_0053b5a8(int param_1)
 // FUN_0053B5D0 NONMATCHING
 
 
-void adxf_SetCmdHstry(int param_1,long param_2,u32 param_3,u32 param_4,u32 param_5)
+void adxf_SetCmdHstry(int cmd, s32 sub, u32 adxf, u32 prm1, u32 prm2)
 
 
 
@@ -15926,25 +15926,25 @@ void adxf_SetCmdHstry(int param_1,long param_2,u32 param_3,u32 param_4,u32 param
 
   iVar1 = (u32)DAT_007853c8 * 0x10;
 
-  if (param_2 == 0) {
+  if (sub == 0) {
 
-    *(short *)((u8 *)(u32)&DAT_007853a8 + param_1 * 2) = *(short *)((u8 *)(u32)&DAT_007853a8 + param_1 * 2) + 1;
+    *(short *)((u8 *)(u32)&DAT_007853a8 + cmd * 2) = *(short *)((u8 *)(u32)&DAT_007853a8 + cmd * 2) + 1;
 
   }
 
-  ((u8 *)(u32)&DAT_007852a8)[iVar1] = (char)param_1;
+  ((u8 *)(u32)&DAT_007852a8)[iVar1] = (char)cmd;
 
   DAT_007853c8 = (u32 *)(((u8 *)(u32)DAT_007853c8) + 1);
 
-  ((u8 *)(u32)&DAT_007852a9)[iVar1] = (char)param_2;
+  ((u8 *)(u32)&DAT_007852a9)[iVar1] = (char)sub;
 
-  *(u32 *)((u8 *)(u32)&DAT_007852b4 + iVar1) = param_5;
+  *(u32 *)((u8 *)(u32)&DAT_007852b4 + iVar1) = prm2;
 
-  *(u32 *)((u8 *)(u32)&DAT_007852ac + iVar1) = param_3;
+  *(u32 *)((u8 *)(u32)&DAT_007852ac + iVar1) = adxf;
 
-  *(u32 *)((u8 *)(u32)&DAT_007852b0 + iVar1) = param_4;
+  *(u32 *)((u8 *)(u32)&DAT_007852b0 + iVar1) = prm1;
 
-  *(u16 *)((u8 *)(u32)&DAT_007852aa + iVar1) = *(u16 *)((u8 *)(u32)&DAT_007853a8 + param_1 * 2);
+  *(u16 *)((u8 *)(u32)&DAT_007852aa + iVar1) = *(u16 *)((u8 *)(u32)&DAT_007853a8 + cmd * 2);
 
   return;
 
@@ -15981,7 +15981,7 @@ asm void adxf_wait_1ms(void)
 // FUN_0053B6B0 NONMATCHING
 
 
-u32 adxf_ChkPrmPt(u32 param_1,long param_2)
+u32 adxf_ChkPrmPt(u32 ptid, void *ptinfo)
 
 
 
@@ -15991,9 +15991,9 @@ u32 adxf_ChkPrmPt(u32 param_1,long param_2)
 
 
 
-  if (param_1 < 0x100) {
+  if (ptid < 0x100) {
 
-    if (param_2 != 0) {
+    if (ptinfo != 0) {
 
       return 0;
 
@@ -17178,13 +17178,13 @@ u64 FUN_0053c720(u64 param_1)
 // FUN_0053C758 NONMATCHING
 
 
-u32 ADXF_GetPtinfoSize(int param_1)
+u32 ADXF_GetPtinfoSize(int ptid)
 
 
 
 {
 
-  return *(u32 *)(*(int *)((u8 *)(u32)&DAT_00784ea0 + param_1 * 4) + 4);
+  return *(u32 *)(*(int *)((u8 *)(u32)&DAT_00784ea0 + ptid * 4) + 4);
 
 }
 
@@ -17720,7 +17720,7 @@ long FUN_0053ccc0(u64 param_1,u64 param_2)
 // FUN_0053CD60 NONMATCHING
 
 
-void adxf_CloseSjStm(int param_1)
+void adxf_CloseSjStm(int adxf)
 
 
 
@@ -17732,15 +17732,15 @@ void adxf_CloseSjStm(int param_1)
 
 
 
-  piVar2 = *(int **)(param_1 + 8);
+  piVar2 = *(int **)(adxf + 8);
 
-  if ((piVar2 != (int *)0x0) && (*(char *)(param_1 + 2) == '\0')) {
+  if ((piVar2 != (int *)0x0) && (*(char *)(adxf + 2) == '\0')) {
 
     if ((int)DAT_007852a0 == 1) {
 
-      FUN_0053b060(*(u32 *)(param_1 + 0x24),*(u32 *)(param_1 + 0x28));
+      FUN_0053b060(*(u32 *)(adxf + 0x24),*(u32 *)(adxf + 0x28));
 
-      piVar2 = *(int **)(param_1 + 8);
+      piVar2 = *(int **)(adxf + 8);
 
       iVar1 = *piVar2;
 
@@ -17752,7 +17752,7 @@ void adxf_CloseSjStm(int param_1)
 
     }
 
-    *(u32 *)(param_1 + 8) = 0;
+    *(u32 *)(adxf + 8) = 0;
 
     (**(code **)(iVar1 + 0xc))(piVar2);
 
@@ -17792,7 +17792,7 @@ void FUN_0053cdd0(u64 param_1)
 // FUN_0053CE00 NONMATCHING
 
 
-void ADXF_Close(long param_1)
+void ADXF_Close(long adxf)
 
 
 
@@ -17804,15 +17804,15 @@ void ADXF_Close(long param_1)
 
 
 
-  adxf_SetCmdHstry(3,0,param_1,0xffffffffffffffff,0xffffffffffffffff);
+  adxf_SetCmdHstry(3,0,adxf,0xffffffffffffffff,0xffffffffffffffff);
 
-  if (param_1 != 0) {
+  if (adxf != 0) {
 
-    puVar2 = (u8 *)param_1;
+    puVar2 = (u8 *)adxf;
 
     if (puVar2[1] == '\x02') {
 
-      FUN_0053d450(param_1);
+      FUN_0053d450(adxf);
 
       iVar1 = *(int *)(puVar2 + 4);
 
@@ -17836,9 +17836,9 @@ void ADXF_Close(long param_1)
 
     }
 
-    FUN_00521408(param_1,0,0x44);
+    FUN_00521408(adxf,0,0x44);
 
-    adxf_SetCmdHstry(3,1,param_1,0xffffffffffffffff,0xffffffffffffffff);
+    adxf_SetCmdHstry(3,1,adxf,0xffffffffffffffff,0xffffffffffffffff);
 
     return;
 
@@ -18996,7 +18996,7 @@ u64 FUN_0053da90(u64 param_1,u64 param_2)
 // FUN_0053DAD8 NONMATCHING
 
 
-u32 ADXF_GetNumReqSct(long param_1,u32 *param_2)
+u32 ADXF_GetNumReqSct(long adxf, u32 *seekpos)
 
 
 
@@ -19006,11 +19006,11 @@ u32 ADXF_GetNumReqSct(long param_1,u32 *param_2)
 
 
 
-  if (param_1 == 0) {
+  if (adxf == 0) {
 
     ADXERR_CallErrFunc1(0x7c20a8);
 
-    *param_2 = 0;
+    *seekpos = 0;
 
     uVar1 = 0xfffffffd;
 
@@ -19018,9 +19018,9 @@ u32 ADXF_GetNumReqSct(long param_1,u32 *param_2)
 
   else {
 
-    *param_2 = *(u32 *)((int)param_1 + 0x18);
+    *seekpos = *(u32 *)((int)adxf + 0x18);
 
-    uVar1 = *(u32 *)((int)param_1 + 0x1c);
+    uVar1 = *(u32 *)((int)adxf + 0x1c);
 
   }
 
@@ -19159,7 +19159,7 @@ u8 ADXF_GetStat(long param_1)
 // FUN_0053DBF8 NONMATCHING
 
 
-u32 adxf_ChkPrmGfr(u32 param_1,int param_2)
+u32 adxf_ChkPrmGfr(u32 ptid, int flid)
 
 
 
@@ -19169,9 +19169,9 @@ u32 adxf_ChkPrmGfr(u32 param_1,int param_2)
 
 
 
-  if (param_1 < 0x100) {
+  if (ptid < 0x100) {
 
-    if (*(int *)((u8 *)(u32)&DAT_00784ea0 + (int)param_1 * 4) == 0) {
+    if (*(int *)((u8 *)(u32)&DAT_00784ea0 + (int)ptid * 4) == 0) {
 
       uVar1 = 0x7c2130;
 
@@ -19179,7 +19179,7 @@ u32 adxf_ChkPrmGfr(u32 param_1,int param_2)
 
     else {
 
-      if ((-1 < param_2) && (param_2 < *(int *)(*(int *)((u8 *)(u32)&DAT_00784ea0 + (int)param_1 * 4) + 8))) {
+      if ((-1 < flid) && (flid < *(int *)(*(int *)((u8 *)(u32)&DAT_00784ea0 + (int)ptid * 4) + 8))) {
 
         return 0;
 
@@ -19473,13 +19473,13 @@ void FUN_0053df50(u64 param_1,u64 param_2)
 // FUN_0053DF90 NONMATCHING
 
 
-void ADXF_SetReqRdSct(int param_1,u32 param_2)
+void ADXF_SetReqRdSct(int adxf, u32 nsct)
 
 
 
 {
 
-  if (*(char *)(param_1 + 1) == '\x02') {
+  if (*(char *)(adxf + 1) == '\x02') {
 
     ADXERR_CallErrFunc1(0x7c2180);
 
@@ -19487,7 +19487,7 @@ void ADXF_SetReqRdSct(int param_1,u32 param_2)
 
   }
 
-  *(u32 *)(param_1 + 0x2c) = param_2;
+  *(u32 *)(adxf + 0x2c) = nsct;
 
   return;
 
@@ -23872,17 +23872,17 @@ void FUN_005419f8(void)
 // FUN_00541A10 NONMATCHING
 
 
-void ADXRNA_Destroy(u64 param_1)
+void ADXRNA_Destroy(u64 rna)
 
 
 
 {
 
-  FUN_00560d20(param_1,0);
+  FUN_00560d20(rna,0);
 
-  FUN_00560c88(param_1,0);
+  FUN_00560c88(rna,0);
 
-  ((code)FUN_00560af8)(param_1);
+  ((code)FUN_00560af8)(rna);
 
   return;
 
@@ -24537,7 +24537,7 @@ u8 * FUN_00541e28(u32 param_1,int param_2,u32 *param_3)
 // FUN_00541FA8 NONMATCHING
 
 
-void ADXSJD_Destroy(long param_1)
+void ADXSJD_Destroy(long sjd)
 
 
 
@@ -24547,13 +24547,13 @@ void ADXSJD_Destroy(long param_1)
 
 
 
-  if (param_1 != 0) {
+  if (sjd != 0) {
 
-    iVar1 = *(int *)((int)param_1 + 4);
+    iVar1 = *(int *)((int)sjd + 4);
 
     if (iVar1 != 0) {
 
-      *(u32 *)((int)param_1 + 4) = 0;
+      *(u32 *)((int)sjd + 4) = 0;
 
       ADXB_Destroy(iVar1);
 
@@ -24561,7 +24561,7 @@ void ADXSJD_Destroy(long param_1)
 
     FUN_00539818();
 
-    FUN_00521408(param_1,0,0xa8);
+    FUN_00521408(sjd,0,0xa8);
 
     FUN_00539830();
 
@@ -24622,17 +24622,17 @@ void FUN_00542010(int param_1,u64 param_2)
 // FUN_00542060 NONMATCHING
 
 
-void ADXSJD_SetMaxDecSmpl(int param_1,u64 param_2)
+void ADXSJD_SetMaxDecSmpl(int sjd, s32 nsmpl)
 
 
 
 {
 
-  *(int *)(param_1 + 0x38) = (int)param_2;
+  *(int *)(sjd + 0x38) = (int)nsmpl;
 
-  ((code)ADXB_SetAhxDecSmpl)(*(u32 *)(param_1 + 4));
+  ((code)ADXB_SetAhxDecSmpl)(*(u32 *)(sjd + 4));
 
-  FUN_00535e08(*(u32 *)(param_1 + 4),param_2);
+  FUN_00535e08(*(u32 *)(sjd + 4),nsmpl);
 
   return;
 
@@ -24645,15 +24645,15 @@ void ADXSJD_SetMaxDecSmpl(int param_1,u64 param_2)
 // FUN_005420A0 NONMATCHING
 
 
-void ADXSJD_TermSupply(int param_1)
+void ADXSJD_TermSupply(int sjd)
 
 
 
 {
 
-  FUN_00536080(*(u32 *)(param_1 + 4));
+  FUN_00536080(*(u32 *)(sjd + 4));
 
-  FUN_00535e28(*(u32 *)(param_1 + 4));
+  FUN_00535e28(*(u32 *)(sjd + 4));
 
   return;
 
@@ -24666,7 +24666,7 @@ void ADXSJD_TermSupply(int param_1)
 // FUN_005420D0 NONMATCHING
 
 
-void ADXSJD_Start(int param_1)
+void ADXSJD_Start(int sjd)
 
 
 
@@ -24674,7 +24674,7 @@ void ADXSJD_Start(int param_1)
 
   ((code)FUN_00541de8)();
 
-  *(u8 *)(param_1 + 1) = 1;
+  *(u8 *)(sjd + 1) = 1;
 
   return;
 
@@ -24687,15 +24687,15 @@ void ADXSJD_Start(int param_1)
 // FUN_00542100 NONMATCHING
 
 
-void ADXSJD_Stop(int param_1)
+void ADXSJD_Stop(int sjd)
 
 
 
 {
 
-  ADXB_Stop(*(u32 *)(param_1 + 4));
+  ADXB_Stop(*(u32 *)(sjd + 4));
 
-  *(u8 *)(param_1 + 1) = 0;
+  *(u8 *)(sjd + 1) = 0;
 
   return;
 
@@ -25398,7 +25398,7 @@ void FUN_005428c0(int param_1)
 // FUN_00542A88 NONMATCHING
 
 
-void adxsjd_rawexec_end(int param_1)
+void adxsjd_rawexec_end(int sjd)
 
 
 
@@ -25414,7 +25414,7 @@ void adxsjd_rawexec_end(int param_1)
 
 
 
-  uVar1 = *(u32 *)(param_1 + 4);
+  uVar1 = *(u32 *)(sjd + 4);
 
   iVar2 = FUN_00537fe8(uVar1);
 
@@ -25422,7 +25422,7 @@ void adxsjd_rawexec_end(int param_1)
 
   iVar4 = ADXB_GetDecNumSmpl(uVar1);
 
-  iVar2 = iVar2 - *(int *)(param_1 + 0x34);
+  iVar2 = iVar2 - *(int *)(sjd + 0x34);
 
   if (iVar4 < iVar2) {
 
@@ -25430,11 +25430,11 @@ void adxsjd_rawexec_end(int param_1)
 
   }
 
-  *(int *)(param_1 + 0x34) = *(int *)(param_1 + 0x34) + iVar2;
+  *(int *)(sjd + 0x34) = *(int *)(sjd + 0x34) + iVar2;
 
-  *(int *)(param_1 + 0x2c) = *(int *)(param_1 + 0x2c) + iVar2;
+  *(int *)(sjd + 0x2c) = *(int *)(sjd + 0x2c) + iVar2;
 
-  *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + iVar3;
+  *(int *)(sjd + 0x30) = *(int *)(sjd + 0x30) + iVar3;
 
   return;
 
@@ -26069,9 +26069,9 @@ void FUN_005430a8(int param_1,u32 param_2,u32 param_3)
 // FUN_005430B8
 
 #pragma optimization_level 3
-void ADXSJD_SetTrapNumSmpl(int param_1,u32 param_2)
+void ADXSJD_SetTrapNumSmpl(int sjd, u32 nsmpl)
 {
-  *(u32 *)(param_1 + 0x3c) = param_2;
+  *(u32 *)(sjd + 0x3c) = nsmpl;
 }
 #pragma optimization_level 2
 
@@ -26091,9 +26091,9 @@ u32 FUN_005430c0(int param_1)
 #pragma optimization_level 3
 // FUN_005430C8
 
-void ADXSJD_SetTrapCnt(int param_1,u32 param_2)
+void ADXSJD_SetTrapCnt(int sjd, u32 cnt)
 {
-  *(u32 *)(param_1 + 0x40) = param_2;
+  *(u32 *)(sjd + 0x40) = cnt;
 }
 #pragma optimization_level 2
 
@@ -26113,9 +26113,9 @@ u32 FUN_005430d0(int param_1)
 #pragma optimization_level 3
 // FUN_005430D8
 
-void ADXSJD_SetTrapDtLen(int param_1,u32 param_2)
+void ADXSJD_SetTrapDtLen(int sjd, u32 len)
 {
-  *(u32 *)(param_1 + 0x44) = param_2;
+  *(u32 *)(sjd + 0x44) = len;
 }
 #pragma optimization_level 2
 
@@ -26337,7 +26337,7 @@ asm u32 FUN_005431d8(int param_1)
 // FUN_005431F0 NONMATCHING
 
 
-u64 ADXSJD_GetLpStartOfst(long param_1)
+u64 ADXSJD_GetLpStartOfst(long sjd)
 
 
 
@@ -26347,9 +26347,9 @@ u64 ADXSJD_GetLpStartOfst(long param_1)
 
 
 
-  if (param_1 != 0) {
+  if (sjd != 0) {
 
-    uVar1 = ADXB_GetLpStartOfst(*(u32 *)((int)param_1 + 4));
+    uVar1 = ADXB_GetLpStartOfst(*(u32 *)((int)sjd + 4));
 
     return uVar1;
 
@@ -26421,7 +26421,7 @@ void FUN_00543250(int param_1)
 // FUN_00543268 NONMATCHING
 
 
-u64 ADXSJD_GetDefOutVol(int param_1)
+u64 ADXSJD_GetDefOutVol(int sjd)
 
 
 
@@ -26433,9 +26433,9 @@ u64 ADXSJD_GetDefOutVol(int param_1)
 
 
 
-  lVar1 = FUN_00538038(*(u32 *)(param_1 + 4));
+  lVar1 = FUN_00538038(*(u32 *)(sjd + 4));
 
-  if ((lVar1 < 1) || (1 < *(u8 *)(param_1 + 1) - 2)) {
+  if ((lVar1 < 1) || (1 < *(u8 *)(sjd + 1) - 2)) {
 
     uVar2 = 0;
 
@@ -26443,7 +26443,7 @@ u64 ADXSJD_GetDefOutVol(int param_1)
 
   else {
 
-    uVar2 = (u16)ADXB_GetDefOutVol(*(u32 *)(param_1 + 4));
+    uVar2 = (u16)ADXB_GetDefOutVol(*(u32 *)(sjd + 4));
 
   }
 
@@ -26458,7 +26458,7 @@ u64 ADXSJD_GetDefOutVol(int param_1)
 // FUN_005432C0 NONMATCHING
 
 
-u64 ADXSJD_GetDefPan(int param_1,u64 param_2)
+u64 ADXSJD_GetDefPan(int sjd, s32 param_2)
 
 
 
@@ -26470,9 +26470,9 @@ u64 ADXSJD_GetDefPan(int param_1,u64 param_2)
 
 
 
-  lVar1 = FUN_00538038(*(u32 *)(param_1 + 4));
+  lVar1 = FUN_00538038(*(u32 *)(sjd + 4));
 
-  if ((lVar1 < 1) || (1 < *(u8 *)(param_1 + 1) - 2)) {
+  if ((lVar1 < 1) || (1 < *(u8 *)(sjd + 1) - 2)) {
 
     uVar2 = 0xffffffffffffff80;
 
@@ -26480,7 +26480,7 @@ u64 ADXSJD_GetDefPan(int param_1,u64 param_2)
 
   else {
 
-    uVar2 = ADXB_GetDefPan(*(u32 *)(param_1 + 4),param_2);
+    uVar2 = ADXB_GetDefPan(*(u32 *)(sjd + 4),param_2);
 
   }
 
@@ -27432,17 +27432,17 @@ LAB_00543c5c:
 // FUN_00543C90 NONMATCHING
 
 
-void adxsje_prdflt_destroy(long param_1)
+void adxsje_prdflt_destroy(long prd)
 
 
 
 {
 
-  if (param_1 != 0) {
+  if (prd != 0) {
 
-    *(u8 *)param_1 = 0;
+    *(u8 *)prd = 0;
 
-    FUN_00521408(param_1,0,0x90);
+    FUN_00521408(prd,0,0x90);
 
     return;
 
@@ -29449,7 +29449,7 @@ void FUN_005453d8(long param_1)
 // FUN_00545448 NONMATCHING
 
 
-void ADXSJE_Start(int param_1)
+void ADXSJE_Start(int sje)
 
 
 
@@ -29473,7 +29473,7 @@ void ADXSJE_Start(int param_1)
 
 
 
-  iVar2 = *(int *)(param_1 + 0x58);
+  iVar2 = *(int *)(sje + 0x58);
 
   iVar6 = 0;
 
@@ -29483,11 +29483,11 @@ void ADXSJE_Start(int param_1)
 
     do {
 
-      iVar3 = *(int *)(param_1 + 0x68) << 1;
+      iVar3 = *(int *)(sje + 0x68) << 1;
 
       if (0 < iVar3) {
 
-        puVar4 = (u32 *)(param_1 + 4 + iVar5);
+        puVar4 = (u32 *)(sje + 4 + iVar5);
 
         piVar1 = (int *)*puVar4;
 
@@ -29509,11 +29509,11 @@ void ADXSJE_Start(int param_1)
 
         FUN_00521408(uStack_50,0,iStack_4c);
 
-        piVar1 = *(int **)(param_1 + 4 + iVar5);
+        piVar1 = *(int **)(sje + 4 + iVar5);
 
         (**(code **)(*piVar1 + 0x20))(piVar1,1,&uStack_50);
 
-        iVar2 = *(int *)(param_1 + 0x58);
+        iVar2 = *(int *)(sje + 0x58);
 
       }
 
@@ -29525,15 +29525,15 @@ void ADXSJE_Start(int param_1)
 
   }
 
-  *(u32 *)(param_1 + 0x28) = 0;
+  *(u32 *)(sje + 0x28) = 0;
 
-  *(u8 *)(param_1 + 1) = 1;
+  *(u8 *)(sje + 1) = 1;
 
-  *(u32 *)(param_1 + 0x2c) = 0;
+  *(u32 *)(sje + 0x2c) = 0;
 
-  *(u32 *)(param_1 + 0x30) = 0;
+  *(u32 *)(sje + 0x30) = 0;
 
-  *(u8 *)(param_1 + 3) = 0;
+  *(u8 *)(sje + 3) = 0;
 
   return;
 
@@ -29544,7 +29544,7 @@ void ADXSJE_Start(int param_1)
 
 
 // FUN_00545570
-asm void ADXSJE_Stop(int param_1)
+asm void ADXSJE_Stop(int sje)
 {
   .set noreorder
   addiu $v0, $zero, 1
@@ -30648,21 +30648,21 @@ void FUN_00546058(u64 param_1)
 // FUN_00546088 NONMATCHING
 
 
-void ADXSTM_Destroy(long param_1)
+void ADXSTM_Destroy(long stm)
 
 
 
 {
 
-  if (param_1 != 0) {
+  if (stm != 0) {
 
     ((code)FUN_00546638)();
 
-    FUN_005462e0(param_1);
+    FUN_005462e0(stm);
 
-    *(u8 *)param_1 = 0;
+    *(u8 *)stm = 0;
 
-    FUN_00521408(param_1,0,0x60);
+    FUN_00521408(stm,0,0x60);
 
     return;
 
@@ -30704,7 +30704,7 @@ void FUN_005460e0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 // FUN_00546150 NONMATCHING
 
 
-void adxstm_BindFileNw(int param_1,u32 param_2,u32 param_3,u32 param_4,int param_5)
+void adxstm_BindFileNw(int stm, u32 fname, u32 dir, u32 ofst, int nsct)
 
 
 
@@ -30712,17 +30712,17 @@ void adxstm_BindFileNw(int param_1,u32 param_2,u32 param_3,u32 param_4,int param
 
   FUN_00545bf0();
 
-  *(u32 *)(param_1 + 0xc) = param_4;
+  *(u32 *)(stm + 0xc) = ofst;
 
-  *(int *)(param_1 + 0x14) = param_5;
+  *(int *)(stm + 0x14) = nsct;
 
-  *(u32 *)(param_1 + 0x50) = param_2;
+  *(u32 *)(stm + 0x50) = fname;
 
-  *(u32 *)(param_1 + 0x54) = param_3;
+  *(u32 *)(stm + 0x54) = dir;
 
-  *(u8 *)(param_1 + 0x45) = 1;
+  *(u8 *)(stm + 0x45) = 1;
 
-  *(int *)(param_1 + 0x10) = param_5 << 0xb;
+  *(int *)(stm + 0x10) = nsct << 0xb;
 
   FUN_00545c08();
 
@@ -30810,7 +30810,7 @@ void FUN_00546270(u64 param_1)
 // FUN_005462A0 NONMATCHING
 
 
-void adxstm_release_nw(int param_1)
+void adxstm_release_nw(int stm)
 
 
 
@@ -30820,13 +30820,13 @@ void adxstm_release_nw(int param_1)
 
   FUN_00545bf0();
 
-  if (*(char *)(param_1 + 0x49) == '\x01') {
+  if (*(char *)(stm + 0x49) == '\x01') {
 
-    *(u8 *)(param_1 + 0x46) = 1;
+    *(u8 *)(stm + 0x46) = 1;
 
   }
 
-  *(u8 *)(param_1 + 0x45) = 0;
+  *(u8 *)(stm + 0x45) = 0;
 
   FUN_00545c08();
 
@@ -30864,7 +30864,7 @@ void FUN_005462e0(u64 param_1)
 // FUN_00546310 NONMATCHING
 
 
-void adxstm_release(u64 param_1)
+void adxstm_release(u64 stm)
 
 
 
@@ -30876,15 +30876,15 @@ void adxstm_release(u64 param_1)
 
   ((code)FUN_00546638)();
 
-  FUN_00546270(param_1);
+  FUN_00546270(stm);
 
-  cVar1 = *(char *)((int)param_1 + 0x49);
+  cVar1 = *(char *)((int)stm + 0x49);
 
   while (cVar1 != '\0') {
 
     FUN_0053e0b8();
 
-    cVar1 = *(char *)((int)param_1 + 0x49);
+    cVar1 = *(char *)((int)stm + 0x49);
 
   }
 
@@ -31210,7 +31210,7 @@ void FUN_005465a0(u64 param_1)
 // FUN_005465D0 NONMATCHING
 
 
-void adxstm_stop_nw(u32 *param_1)
+void adxstm_stop_nw(u32 *stm)
 
 
 
@@ -31218,13 +31218,13 @@ void adxstm_stop_nw(u32 *param_1)
 
   FUN_00545bf0();
 
-  if ((*param_1 & 0xffff00) == 0x10200) {
+  if ((*stm & 0xffff00) == 0x10200) {
 
-    *(u8 *)(param_1 + 0x12) = 1;
+    *(u8 *)(stm + 0x12) = 1;
 
-    if (*(char *)((int)param_1 + 0x47) == '\x01') {
+    if (*(char *)((int)stm + 0x47) == '\x01') {
 
-      *(u8 *)((int)param_1 + 0x47) = 0;
+      *(u8 *)((int)stm + 0x47) = 0;
 
     }
 
@@ -31232,7 +31232,7 @@ void adxstm_stop_nw(u32 *param_1)
 
   else {
 
-    *(u8 *)((int)param_1 + 1) = 1;
+    *(u8 *)((int)stm + 1) = 1;
 
   }
 
@@ -34254,23 +34254,23 @@ void FUN_005484e0(u64 param_1,u64 param_2)
 // FUN_00548520 NONMATCHING
 
 
-void ADXT_StartSj(long param_1,long param_2)
+void ADXT_StartSj(long adxt, long param_2)
 
 
 
 {
 
-  if ((param_1 != 0) && (param_2 != 0)) {
+  if ((adxt != 0) && (param_2 != 0)) {
 
     ((code)FUN_005486a8)();
 
     FUN_00539818();
 
-    FUN_00548318(param_1,param_2);
+    FUN_00548318(adxt,param_2);
 
-    *(u8 *)((int)param_1 + 2) = 3;
+    *(u8 *)((int)adxt + 2) = 3;
 
-    FUN_0054a968(param_1,1);
+    FUN_0054a968(adxt,1);
 
     FUN_00539830();
 
@@ -34641,7 +34641,7 @@ void FUN_00548838(u64 param_1,u64 param_2,u64 param_3)
 // FUN_00548888 NONMATCHING
 
 
-void ADXT_GetTimeSfreq(int param_1,int *param_2,u32 *param_3)
+void ADXT_GetTimeSfreq(int adxt, int *ncount, u32 *tscale)
 
 
 
@@ -34657,29 +34657,29 @@ void ADXT_GetTimeSfreq(int param_1,int *param_2,u32 *param_3)
 
 
 
-  if (*(u8 *)(param_1 + 1) - 3 < 2) {
+  if (*(u8 *)(adxt + 1) - 3 < 2) {
 
-    ((code)FUN_00541aa8)(*(u32 *)(param_1 + 0xc));
+    ((code)FUN_00541aa8)(*(u32 *)(adxt + 0xc));
 
-    iVar2 = *(int *)(param_1 + 0x88);
+    iVar2 = *(int *)(adxt + 0x88);
 
   }
 
   else {
 
-    if (*(u8 *)(param_1 + 1) == 5) {
+    if (*(u8 *)(adxt + 1) == 5) {
 
-      iVar2 = ((code)FUN_00543178)(*(u32 *)(param_1 + 4));
+      iVar2 = ((code)FUN_00543178)(*(u32 *)(adxt + 4));
 
-      uVar1 = *(u32 *)(param_1 + 4);
+      uVar1 = *(u32 *)(adxt + 4);
 
-      *param_2 = iVar2;
+      *ncount = iVar2;
 
       uVar3 = FUN_00543100(uVar1);
 
-      uVar1 = *(u32 *)(param_1 + 4);
+      uVar1 = *(u32 *)(adxt + 4);
 
-      *param_3 = uVar3;
+      *tscale = uVar3;
 
       lVar4 = ((code)FUN_00543130)(uVar1);
 
@@ -34689,23 +34689,23 @@ void ADXT_GetTimeSfreq(int param_1,int *param_2,u32 *param_3)
 
       }
 
-      *param_2 = *param_2 * (0x10 / (int)lVar4);
+      *ncount = *ncount * (0x10 / (int)lVar4);
 
     }
 
     else {
 
-      *param_2 = 0;
+      *ncount = 0;
 
-      *param_3 = 1;
+      *tscale = 1;
 
     }
 
-    iVar2 = *(int *)(param_1 + 0x88);
+    iVar2 = *(int *)(adxt + 0x88);
 
   }
 
-  *param_2 = *param_2 + iVar2;
+  *ncount = *ncount + iVar2;
 
   return;
 
@@ -35545,7 +35545,7 @@ u64 FUN_005492c8(u64 param_1,u64 param_2)
 // FUN_00549310 NONMATCHING
 
 
-u16 ADXT_GetOutPan(long param_1,int param_2)
+u16 ADXT_GetOutPan(long adxt, int param_2)
 
 
 
@@ -35555,7 +35555,7 @@ u16 ADXT_GetOutPan(long param_1,int param_2)
 
 
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c29d8);
 
@@ -35565,7 +35565,7 @@ u16 ADXT_GetOutPan(long param_1,int param_2)
 
   else {
 
-    uVar1 = *(u16 *)(param_2 * 2 + (int)param_1 + 0x42);
+    uVar1 = *(u16 *)(param_2 * 2 + (int)adxt + 0x42);
 
   }
 
@@ -35603,7 +35603,7 @@ void FUN_00549350(u64 param_1,u64 param_2)
 // FUN_00549390 NONMATCHING
 
 
-void ADXT_SetOutBalance(long param_1,long param_2)
+void ADXT_SetOutBalance(long adxt, s32 bal)
 
 
 
@@ -35613,7 +35613,7 @@ void ADXT_SetOutBalance(long param_1,long param_2)
 
 
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c2a08);
 
@@ -35621,17 +35621,17 @@ void ADXT_SetOutBalance(long param_1,long param_2)
 
   }
 
-  iVar1 = (int)param_1;
+  iVar1 = (int)adxt;
 
-  if (param_2 < -0xf) {
+  if (bal < -0xf) {
 
     *(u16 *)(iVar1 + 0x46) = 0xfff1;
 
   }
 
-  else if (param_2 < 0x10) {
+  else if (bal < 0x10) {
 
-    *(short *)(iVar1 + 0x46) = (short)param_2;
+    *(short *)(iVar1 + 0x46) = (short)bal;
 
   }
 
@@ -36173,13 +36173,13 @@ void FUN_005497f8(u64 param_1,u64 param_2)
 // FUN_00549838 NONMATCHING
 
 
-void ADXT_SetSvrFreq(long param_1,u32 param_2)
+void ADXT_SetSvrFreq(long adxt, u32 freq)
 
 
 
 {
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c2ac8);
 
@@ -36187,9 +36187,9 @@ void ADXT_SetSvrFreq(long param_1,u32 param_2)
 
   }
 
-  *(u32 *)((int)param_1 + 0x38) = param_2;
+  *(u32 *)((int)adxt + 0x38) = freq;
 
-  DAT_00793b20 = param_2;
+  DAT_00793b20 = freq;
 
   return;
 
@@ -36831,7 +36831,7 @@ u64 FUN_00549e30(u64 param_1)
 // FUN_00549E68 NONMATCHING
 
 
-u32 ADXT_IsCompleted(long param_1)
+u32 ADXT_IsCompleted(long adxt)
 
 
 
@@ -36841,7 +36841,7 @@ u32 ADXT_IsCompleted(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c2c50);
 
@@ -36851,7 +36851,7 @@ u32 ADXT_IsCompleted(long param_1)
 
   else {
 
-    uVar1 = (u32)(*(char *)((int)param_1 + 1) == '\x05');
+    uVar1 = (u32)(*(char *)((int)adxt + 1) == '\x05');
 
   }
 
@@ -36991,7 +36991,7 @@ u64 FUN_00549ff8(u64 param_1)
 // FUN_0054A030 NONMATCHING
 
 
-u16 ADXT_GetErrCode(long param_1)
+u16 ADXT_GetErrCode(long adxt)
 
 
 
@@ -37001,7 +37001,7 @@ u16 ADXT_GetErrCode(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c2c80);
 
@@ -37011,7 +37011,7 @@ u16 ADXT_GetErrCode(long param_1)
 
   else {
 
-    uVar1 = *(u16 *)((int)param_1 + 0x60);
+    uVar1 = *(u16 *)((int)adxt + 0x60);
 
   }
 
@@ -37591,7 +37591,7 @@ u64 FUN_0054a530(u64 param_1)
 // FUN_0054A568 NONMATCHING
 
 
-u8 ADXT_GetStatPause(long param_1)
+u8 ADXT_GetStatPause(long adxt)
 
 
 
@@ -37601,7 +37601,7 @@ u8 ADXT_GetStatPause(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (adxt == 0) {
 
     ADXERR_CallErrFunc1(0x7c2e08);
 
@@ -37611,7 +37611,7 @@ u8 ADXT_GetStatPause(long param_1)
 
   else {
 
-    uVar1 = *(u8 *)((int)param_1 + 0x72);
+    uVar1 = *(u8 *)((int)adxt + 0x72);
 
   }
 
@@ -38389,7 +38389,7 @@ void FUN_0054ab78(long param_1)
 // FUN_0054ABA8 NONMATCHING
 
 
-u32 ADXT_IsHeader(u64 param_1,long param_2,int *param_3)
+u32 ADXT_IsHeader(u8 *data, s32 size, int *hdrsiz)
 
 
 
@@ -38415,9 +38415,9 @@ u32 ADXT_IsHeader(u64 param_1,long param_2,int *param_3)
 
   uVar1 = 0;
 
-  if ((1 < param_2) && ((u16)(*(u16 *)param_1 >> 8 | *(u16 *)param_1 << 8) == 0x8000)) {
+  if ((1 < size) && ((u16)(*(u16 *)data >> 8 | *(u16 *)data << 8) == 0x8000)) {
 
-    lVar2 = ((code)ADX_DecodeInfo)(param_1,param_2,&sStack_30,&uStack_2e,&uStack_2d,&uStack_2c,auStack_2b,
+    lVar2 = ((code)ADX_DecodeInfo)(data,size,&sStack_30,&uStack_2e,&uStack_2d,&uStack_2c,auStack_2b,
 
                          auStack_20);
 
@@ -38431,7 +38431,7 @@ u32 ADXT_IsHeader(u64 param_1,long param_2,int *param_3)
 
       uVar1 = 1;
 
-      *param_3 = (int)sStack_30;
+      *hdrsiz = (int)sStack_30;
 
     }
 
@@ -38448,7 +38448,7 @@ u32 ADXT_IsHeader(u64 param_1,long param_2,int *param_3)
 // FUN_0054AC40
 
 
-asm u32 ADXT_IsEndcode(u16 *param_1,long param_2,u32 *param_3)
+asm u32 ADXT_IsEndcode(u16 *data, s32 size, u32 *ecsiz)
 {
   .set noreorder
   .word 0x00a0382d
@@ -38596,7 +38596,7 @@ int FUN_0054acd8(int param_1,int param_2,int param_3)
 // FUN_0054AE80 NONMATCHING
 
 
-void ADXT_SetOutputMono(u32 param_1)
+void ADXT_SetOutputMono(u32 flag)
 
 
 
@@ -38618,7 +38618,7 @@ void ADXT_SetOutputMono(u32 param_1)
 
   iVar5 = 0xf;
 
-  DAT_00787560 = param_1;
+  DAT_00787560 = flag;
 
   do {
 
@@ -39296,7 +39296,7 @@ void adxt_trap_entry_lps(u64 param_1)
 // FUN_0054B748 NONMATCHING
 
 
-void adxt_trap_entry(int param_1)
+void adxt_trap_entry(int obj)
 
 
 
@@ -39320,9 +39320,9 @@ void adxt_trap_entry(int param_1)
 
 
 
-  uVar1 = *(u32 *)(param_1 + 4);
+  uVar1 = *(u32 *)(obj + 4);
 
-  piVar2 = *(int **)(param_1 + 0x14);
+  piVar2 = *(int **)(obj + 0x14);
 
   uVar4 = FUN_005431d8(uVar1);
 
@@ -39330,11 +39330,11 @@ void adxt_trap_entry(int param_1)
 
   iVar3 = FUN_00543220(uVar1);
 
-  if (*(u8 *)(param_1 + 2) - 2 < 2) {
+  if (*(u8 *)(obj + 2) - 2 < 2) {
 
-    if (*(char *)(param_1 + 0x6c) == '\0') {
+    if (*(char *)(obj + 0x6c) == '\0') {
 
-      ADXSJD_SetTrapNumSmpl(*(u32 *)(param_1 + 4),0xffffffffffffffff);
+      ADXSJD_SetTrapNumSmpl(*(u32 *)(obj + 4),0xffffffffffffffff);
 
       return;
 
@@ -39350,9 +39350,9 @@ void adxt_trap_entry(int param_1)
 
   }
 
-  (**(code **)(iVar6 + 0x18))(piVar2,1,*(u32 *)(param_1 + 0x50));
+  (**(code **)(iVar6 + 0x18))(piVar2,1,*(u32 *)(obj + 0x50));
 
-  if (iStack_4c < *(int *)(param_1 + 0x50)) {
+  if (iStack_4c < *(int *)(obj + 0x50)) {
 
     ADXERR_CallErrFunc1(0x7c3040);
 
@@ -39362,7 +39362,7 @@ void adxt_trap_entry(int param_1)
 
   ADXSJD_SetTrapCnt(uVar1,0);
 
-  *(int *)(param_1 + 0x90) = iVar3 - (int)uVar4;
+  *(int *)(obj + 0x90) = iVar3 - (int)uVar4;
 
   ((code)ADXSJD_SetTrapNumSmpl)(uVar1);
 
@@ -39370,7 +39370,7 @@ void adxt_trap_entry(int param_1)
 
   FUN_00542f88(uVar1,uVar4);
 
-  if (*(char *)(param_1 + 2) == '\x02') {
+  if (*(char *)(obj + 2) == '\x02') {
 
     (**(code **)(*piVar2 + 0x14))(piVar2);
 
@@ -39382,7 +39382,7 @@ void adxt_trap_entry(int param_1)
 
   FUN_005433c0(uVar1);
 
-  *(int *)(param_1 + 0x4c) = *(int *)(param_1 + 0x4c) + 1;
+  *(int *)(obj + 0x4c) = *(int *)(obj + 0x4c) + 1;
 
   return;
 
@@ -40747,13 +40747,13 @@ u32 * FUN_0054cbc8(void)
 // FUN_0054CC98 NONMATCHING
 
 
-void ADXPD_SetCoef(int param_1,u64 param_2,u64 param_3)
+void ADXPD_SetCoef(int param_1, s32 sfreq, s32 cutoff)
 
 
 
 {
 
-  ((code)FUN_00539858)(param_3,param_2,param_1 + 0x30,param_1 + 0x32);
+  ((code)FUN_00539858)(cutoff,sfreq,param_1 + 0x30,param_1 + 0x32);
 
   return;
 
@@ -40916,7 +40916,7 @@ asm u32 FUN_0054cd88(int param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5
 // FUN_0054CDB8
 
 
-asm u32 ADXPD_EntrySte(int param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5 )
+asm u32 ADXPD_EntrySte(int param_1, u32 param_2, u32 nblk, u32 out0, u32 out1)
 {
   .set noreorder
   .word 0x8c82000c
@@ -53284,7 +53284,7 @@ u32 getDevice(u64 param_1)
 // FUN_00555D10 NONMATCHING
 
 
-void toUpperStr(u8 *param_1)
+void toUpperStr(u8 *src)
 
 
 
@@ -53302,7 +53302,7 @@ void toUpperStr(u8 *param_1)
 
   uVar3 = 0;
 
-  pbVar2 = param_1;
+  pbVar2 = src;
 
   if (iVar1 != -1) {
 
@@ -53316,7 +53316,7 @@ void toUpperStr(u8 *param_1)
 
       }
 
-      pbVar2 = param_1 + uVar3;
+      pbVar2 = src + uVar3;
 
     } while (uVar3 < iVar1 + 1U);
 
@@ -55310,7 +55310,7 @@ u64 FUN_00557050(long param_1)
 // FUN_00557110 NONMATCHING
 
 
-u8 * cvFsGetDevName(long param_1)
+u8 * cvFsGetDevName(long cvfs)
 
 
 
@@ -55324,7 +55324,7 @@ u8 * cvFsGetDevName(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (cvfs == 0) {
 
     FUN_00555918(0x7c4280);
 
@@ -55336,7 +55336,7 @@ u8 * cvFsGetDevName(long param_1)
 
     iVar2 = 0;
 
-    if ((u32)DAT_00997658 != *(int *)param_1) {
+    if ((u32)DAT_00997658 != *(int *)cvfs) {
 
       iVar3 = 1;
 
@@ -55344,7 +55344,7 @@ u8 * cvFsGetDevName(long param_1)
 
         iVar2 = iVar3 * 0x10;
 
-        if ((0x1f < iVar3) || (((u8 *)(u32)&DAT_00997658)[iVar3 * 4] == *(int *)param_1)) break;
+        if ((0x1f < iVar3) || (((u8 *)(u32)&DAT_00997658)[iVar3 * 4] == *(int *)cvfs)) break;
 
         iVar3 = iVar3 + 1;
 
@@ -58209,7 +58209,7 @@ char * FUN_00559280(u32 param_1,u32 param_2)
 // FUN_00559370 NONMATCHING
 
 
-void DTR_Destroy(u8 *param_1)
+void DTR_Destroy(u8 *dtr)
 
 
 
@@ -58217,7 +58217,7 @@ void DTR_Destroy(u8 *param_1)
 
   FUN_005617c0();
 
-  *param_1 = 0;
+  *dtr = 0;
 
   FUN_005617d8();
 
@@ -58232,7 +58232,7 @@ void DTR_Destroy(u8 *param_1)
 // FUN_00559398
 
 
-asm void DTR_Start(int param_1)
+asm void DTR_Start(int dtr)
 {
   .set noreorder
   .word 0x24020001
@@ -58395,7 +58395,7 @@ u64 FUN_00559508(void)
 // FUN_00559588 NONMATCHING
 
 
-u32 dtx_create_rmt(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
+u32 dtx_create_rmt(u32 param_1, u32 eewk, u32 iopwk, u32 wklen)
 
 
 
@@ -58403,11 +58403,11 @@ u32 dtx_create_rmt(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
   DAT_009979c0 = param_1;
 
-  DAT_009979c4 = param_2;
+  DAT_009979c4 = eewk;
 
-  DAT_009979c8 = param_3;
+  DAT_009979c8 = iopwk;
 
-  DAT_009979cc = param_4;
+  DAT_009979cc = wklen;
 
   ((code)FUN_00507230)(0x7a19e0,2,0,0x9979c0,0x10,0x997ac0,4,0);
 
@@ -58422,13 +58422,13 @@ u32 dtx_create_rmt(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 // FUN_005595F8 NONMATCHING
 
 
-void dtx_destroy_rmt(u32 param_1)
+void dtx_destroy_rmt(u32 dtx)
 
 
 
 {
 
-  DAT_009979c0 = param_1;
+  DAT_009979c0 = dtx;
 
   FUN_00507230(0x7a19e0,3,0,0x9979c0,4,0x997ac0,0,0);
 
@@ -59198,7 +59198,7 @@ void FUN_00559f48(void)
 // FUN_00559FD8 NONMATCHING
 
 
-void dvci_to_large_to_yen(u8 *param_1)
+void dvci_to_large_to_yen(u8 *fname)
 
 
 
@@ -59218,7 +59218,7 @@ void dvci_to_large_to_yen(u8 *param_1)
 
   uVar4 = 0;
 
-  pbVar3 = param_1;
+  pbVar3 = fname;
 
   if (uVar1 != 0) {
 
@@ -59242,7 +59242,7 @@ void dvci_to_large_to_yen(u8 *param_1)
 
       }
 
-      pbVar3 = param_1 + uVar4;
+      pbVar3 = fname + uVar4;
 
     } while (uVar4 < uVar1);
 
@@ -61005,7 +61005,7 @@ u8 FUN_0055b5c8(u64 param_1)
 // FUN_0055B5F0 NONMATCHING
 
 
-void dvCiSetRdMode(u8 param_1,u8 param_2,u8 param_3,u32 param_4)
+void dvCiSetRdMode(u8 nrtry, u8 speed, u8 dtype, u32 param_4)
 
 
 
@@ -61013,11 +61013,11 @@ void dvCiSetRdMode(u8 param_1,u8 param_2,u8 param_3,u32 param_4)
 
   DAT_007a2a74 = param_4;
 
-  DAT_007a2a72 = param_3;
+  DAT_007a2a72 = dtype;
 
-  DAT_007a2a70 = param_1;
+  DAT_007a2a70 = nrtry;
 
-  DAT_007a2a71 = param_2;
+  DAT_007a2a71 = speed;
 
   return;
 
@@ -63634,19 +63634,19 @@ long LSC_Create(long param_1)
 // FUN_0055D3A8 NONMATCHING
 
 
-void LSC_Destroy(long param_1)
+void LSC_Destroy(long lsc)
 
 
 
 {
 
-  if (param_1 != 0) {
+  if (lsc != 0) {
 
     ((code)LSC_Stop)();
 
-    *(u8 *)param_1 = 0;
+    *(u8 *)lsc = 0;
 
-    FUN_00521408(param_1,0,0x238);
+    FUN_00521408(lsc,0,0x238);
 
     return;
 
@@ -63703,7 +63703,7 @@ void FUN_0055d400(u64 param_1,u64 param_2)
 // FUN_0055D428 NONMATCHING
 
 
-int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 param_5)
+int LSC_EntryFileRange(long lsc, long fname, u32 dir, u32 ofst, u32 nsct)
 
 
 
@@ -63727,7 +63727,7 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5568);
 
@@ -63737,13 +63737,13 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
   else {
 
-    iVar8 = (int)param_1;
+    iVar8 = (int)lsc;
 
     iVar1 = -1;
 
     if (*(int *)(iVar8 + 0x24) < 0x10) {
 
-      if (param_2 == 0) {
+      if (fname == 0) {
 
         ((code)FUN_0055dbe8)(0x7c5598);
 
@@ -63767,7 +63767,7 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
         iVar5 = iVar8 + iVar1 * 0x20;
 
-        *(int *)(iVar5 + 0x3c) = (int)param_2;
+        *(int *)(iVar5 + 0x3c) = (int)fname;
 
         iVar2 = *(int *)((iVar7 + (iVar2 >> 4) * -0x10) * 0x20 + iVar8 + 0x38);
 
@@ -63781,7 +63781,7 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
         *(int *)(iVar5 + 0x38) = iVar1;
 
-        uVar3 = FUN_00524388(param_2);
+        uVar3 = FUN_00524388(fname);
 
         *(u32 *)(iVar5 + 0x40) = 0;
 
@@ -63791,7 +63791,7 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
           do {
 
-            pbVar4 = (u8 *)((int)param_2 + uVar6);
+            pbVar4 = (u8 *)((int)fname + uVar6);
 
             uVar6 = uVar6 + 1;
 
@@ -63801,15 +63801,15 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 
         }
 
-        *(u32 *)(iVar5 + 0x48) = param_4;
+        *(u32 *)(iVar5 + 0x48) = ofst;
 
-        *(u32 *)(iVar5 + 0x4c) = param_5;
+        *(u32 *)(iVar5 + 0x4c) = nsct;
 
         *(u32 *)(iVar5 + 0x54) = 0;
 
         *(u32 *)(iVar5 + 0x50) = 0;
 
-        *(u32 *)(iVar5 + 0x44) = param_3;
+        *(u32 *)(iVar5 + 0x44) = dir;
 
         iVar7 = *(int *)(iVar8 + 0x1c) + 1;
 
@@ -63848,7 +63848,7 @@ int LSC_EntryFileRange(long param_1,long param_2,u32 param_3,u32 param_4,u32 par
 // FUN_0055D5C0 NONMATCHING
 
 
-void lsc_ClearEntry(long param_1)
+void lsc_ClearEntry(long lsc)
 
 
 
@@ -63858,7 +63858,7 @@ void lsc_ClearEntry(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c55c8);
 
@@ -63866,7 +63866,7 @@ void lsc_ClearEntry(long param_1)
 
   }
 
-  iVar1 = (int)param_1;
+  iVar1 = (int)lsc;
 
   if (*(char *)(iVar1 + 1) == '\0') {
 
@@ -63952,7 +63952,7 @@ void FUN_0055d600(long param_1)
 // FUN_0055D668 NONMATCHING
 
 
-void LSC_Stop(long param_1)
+void LSC_Stop(long lsc)
 
 
 
@@ -63962,7 +63962,7 @@ void LSC_Stop(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5628);
 
@@ -63970,7 +63970,7 @@ void LSC_Stop(long param_1)
 
   }
 
-  iVar1 = (int)param_1;
+  iVar1 = (int)lsc;
 
   if (*(char *)(iVar1 + 1) == '\0') {
 
@@ -64000,7 +64000,7 @@ void LSC_Stop(long param_1)
 
 LAB_0055d6d0:
 
-  lsc_ClearEntry(param_1);
+  lsc_ClearEntry(lsc);
 
   *(u32 *)(iVar1 + 0x34) = 0;
 
@@ -64015,13 +64015,13 @@ LAB_0055d6d0:
 // FUN_0055D6F0 NONMATCHING
 
 
-void LSC_Pause(long param_1,long param_2)
+void LSC_Pause(long lsc, s32 param_2)
 
 
 
 {
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5658);
 
@@ -64031,13 +64031,13 @@ void LSC_Pause(long param_1,long param_2)
 
   if (param_2 == 1) {
 
-    *(u8 *)((int)param_1 + 4) = 1;
+    *(u8 *)((int)lsc + 4) = 1;
 
   }
 
   else {
 
-    *(u8 *)((int)param_1 + 4) = 0;
+    *(u8 *)((int)lsc + 4) = 0;
 
   }
 
@@ -64163,7 +64163,7 @@ u32 FUN_0055d7c0(long param_1)
 // FUN_0055D7F0 NONMATCHING
 
 
-u32 LSC_GetStmId(long param_1,int param_2)
+u32 LSC_GetStmId(long lsc, int param_2)
 
 
 
@@ -64177,7 +64177,7 @@ u32 LSC_GetStmId(long param_1,int param_2)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c56e8);
 
@@ -64185,7 +64185,7 @@ u32 LSC_GetStmId(long param_1,int param_2)
 
   }
 
-  else if ((param_2 < 0) || (iVar3 = (int)param_1, *(int *)(iVar3 + 0x24) <= param_2)) {
+  else if ((param_2 < 0) || (iVar3 = (int)lsc, *(int *)(iVar3 + 0x24) <= param_2)) {
 
     ((code)FUN_0055dbe8)(0x7c5718);
 
@@ -64220,7 +64220,7 @@ u32 LSC_GetStmId(long param_1,int param_2)
 // FUN_0055D880 NONMATCHING
 
 
-u32 LSC_GetStmFname(long param_1,int param_2)
+u32 LSC_GetStmFname(long lsc, int sid)
 
 
 
@@ -64234,7 +64234,7 @@ u32 LSC_GetStmFname(long param_1,int param_2)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5740);
 
@@ -64244,11 +64244,11 @@ u32 LSC_GetStmFname(long param_1,int param_2)
 
   else {
 
-    piVar3 = (int *)((int)param_1 + 0x38);
+    piVar3 = (int *)((int)lsc + 0x38);
 
     iVar2 = 0;
 
-    if (*piVar3 != param_2) {
+    if (*piVar3 != sid) {
 
       iVar2 = 1;
 
@@ -64256,7 +64256,7 @@ u32 LSC_GetStmFname(long param_1,int param_2)
 
         piVar3 = piVar3 + 8;
 
-        if ((0xf < iVar2) || (*piVar3 == param_2)) break;
+        if ((0xf < iVar2) || (*piVar3 == sid)) break;
 
         iVar2 = iVar2 + 1;
 
@@ -64274,7 +64274,7 @@ u32 LSC_GetStmFname(long param_1,int param_2)
 
     else {
 
-      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)param_1 + 0x3c);
+      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)lsc + 0x3c);
 
     }
 
@@ -64291,7 +64291,7 @@ u32 LSC_GetStmFname(long param_1,int param_2)
 // FUN_0055D918 NONMATCHING
 
 
-u32 LSC_GetStmStat(long param_1,int param_2)
+u32 LSC_GetStmStat(long lsc, int param_2)
 
 
 
@@ -64305,7 +64305,7 @@ u32 LSC_GetStmStat(long param_1,int param_2)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c57a0);
 
@@ -64315,7 +64315,7 @@ u32 LSC_GetStmStat(long param_1,int param_2)
 
   else {
 
-    piVar3 = (int *)((int)param_1 + 0x38);
+    piVar3 = (int *)((int)lsc + 0x38);
 
     iVar2 = 0;
 
@@ -64345,7 +64345,7 @@ u32 LSC_GetStmStat(long param_1,int param_2)
 
     else {
 
-      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)param_1 + 0x50);
+      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)lsc + 0x50);
 
     }
 
@@ -64362,7 +64362,7 @@ u32 LSC_GetStmStat(long param_1,int param_2)
 // FUN_0055D9B0 NONMATCHING
 
 
-u32 LSC_GetStmRdSct(long param_1,int param_2)
+u32 LSC_GetStmRdSct(long lsc, int sid)
 
 
 
@@ -64376,7 +64376,7 @@ u32 LSC_GetStmRdSct(long param_1,int param_2)
 
 
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5800);
 
@@ -64386,11 +64386,11 @@ u32 LSC_GetStmRdSct(long param_1,int param_2)
 
   else {
 
-    piVar3 = (int *)((int)param_1 + 0x38);
+    piVar3 = (int *)((int)lsc + 0x38);
 
     iVar2 = 0;
 
-    if (*piVar3 != param_2) {
+    if (*piVar3 != sid) {
 
       iVar2 = 1;
 
@@ -64398,7 +64398,7 @@ u32 LSC_GetStmRdSct(long param_1,int param_2)
 
         piVar3 = piVar3 + 8;
 
-        if ((0xf < iVar2) || (*piVar3 == param_2)) break;
+        if ((0xf < iVar2) || (*piVar3 == sid)) break;
 
         iVar2 = iVar2 + 1;
 
@@ -64416,7 +64416,7 @@ u32 LSC_GetStmRdSct(long param_1,int param_2)
 
     else {
 
-      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)param_1 + 0x54);
+      uVar1 = *(u32 *)(iVar2 * 0x20 + (int)lsc + 0x54);
 
     }
 
@@ -64433,13 +64433,13 @@ u32 LSC_GetStmRdSct(long param_1,int param_2)
 // FUN_0055DA48 NONMATCHING
 
 
-void LSC_SetFlowLimit(long param_1,int param_2)
+void LSC_SetFlowLimit(long lsc, int min_val)
 
 
 
 {
 
-  if (param_1 == 0) {
+  if (lsc == 0) {
 
     ((code)FUN_0055dbe8)(0x7c5860);
 
@@ -64447,9 +64447,9 @@ void LSC_SetFlowLimit(long param_1,int param_2)
 
   }
 
-  if ((-1 < param_2) && (param_2 <= *(int *)((int)param_1 + 0x18))) {
+  if ((-1 < min_val) && (min_val <= *(int *)((int)lsc + 0x18))) {
 
-    *(int *)((int)param_1 + 0x14) = param_2;
+    *(int *)((int)lsc + 0x14) = min_val;
 
     return;
 
@@ -65080,7 +65080,7 @@ void FUN_0055dfb8(u64 param_1)
 // FUN_0055E0C0 NONMATCHING
 
 
-void lsc_ExecHndl(u64 param_1)
+void lsc_ExecHndl(u64 lsc)
 
 
 
@@ -65094,7 +65094,7 @@ void lsc_ExecHndl(u64 param_1)
 
 
 
-  iVar2 = (int)param_1;
+  iVar2 = (int)lsc;
 
   if (((*(char *)(iVar2 + 4) != '\x01') && (*(char *)(iVar2 + 1) == '\x02')) &&
 
@@ -65114,7 +65114,7 @@ void lsc_ExecHndl(u64 param_1)
 
     if (*(int *)(iVar1 * 0x20 + iVar3 + 0x40) == 2) {
 
-      FUN_0055dfb8(param_1);
+      FUN_0055dfb8(lsc);
 
       iVar1 = *(int *)(iVar2 + 0x20);
 
@@ -65122,7 +65122,7 @@ void lsc_ExecHndl(u64 param_1)
 
     if (*(int *)(iVar1 * 0x20 + iVar3 + 0x40) == 0) {
 
-      FUN_0055ddc8(param_1);
+      FUN_0055ddc8(lsc);
 
       return;
 
@@ -65342,7 +65342,7 @@ void FUN_0055e320(void)
 // FUN_0055E390 NONMATCHING
 
 
-u32 sfmps_IsInTerm(u64 param_1)
+u32 sfmps_IsInTerm(u64 sfd)
 
 
 
@@ -65352,7 +65352,7 @@ u32 sfmps_IsInTerm(u64 param_1)
 
 
 
-  FUN_0055e220(param_1,(long)auStack_20);
+  FUN_0055e220(sfd,(long)auStack_20);
 
   return *(u32 *)((u8 *)&auStack_20 + 0);
 
@@ -65647,7 +65647,7 @@ u32 FUN_0055e580(long param_1,int param_2,long param_3)
 // FUN_0055E640 NONMATCHING
 
 
-u32 dvCiTell(long param_1)
+u32 dvCiTell(void *obj)
 
 
 
@@ -65657,7 +65657,7 @@ u32 dvCiTell(long param_1)
 
 
 
-  if (param_1 == 0) {
+  if (obj == 0) {
 
     FUN_0055e1d8(0,0x7c5b00);
 
@@ -65667,7 +65667,7 @@ u32 dvCiTell(long param_1)
 
   else {
 
-    uVar1 = *(u32 *)((int)param_1 + 0x10);
+    uVar1 = *(u32 *)((int)obj + 0x10);
 
   }
 
@@ -66151,7 +66151,7 @@ u32 FUN_0055eaf0(u32 callback, u32 argument)
 // FUN_0055EB08 NONMATCHING
 
 
-void pl2enc_err(u64 param_1)
+void pl2enc_err(u64 msg)
 
 
 
@@ -66159,7 +66159,7 @@ void pl2enc_err(u64 param_1)
 
   if ((int)DAT_007a843c != 0x0) {
 
-    (*(code *)(u32)DAT_007a843c)(DAT_007a8440,param_1);
+    (*(code *)(u32)DAT_007a843c)(DAT_007a8440,msg);
 
   }
 
@@ -73754,7 +73754,7 @@ int FUN_00563ba8(long param_1)
 // FUN_00563C28
 
 
-asm void SJ_SplitChunk(u64 *param_1,int param_2,int *param_3,int *param_4)
+asm void SJ_SplitChunk(u64 *src, int param_2, int *param_3, int *param_4)
 {
   .set noreorder
   .word 0x68820007
@@ -73977,17 +73977,17 @@ LAB_00563f10:
 // FUN_00563F38 NONMATCHING
 
 
-u32 SJRBF_CreateRmt(u32 param_1,u32 param_2,u32 param_3)
+u32 SJRBF_CreateRmt(u32 buf, u32 bsize, u32 xsize)
 
 
 
 {
 
-  DAT_00999c00 = param_1;
+  DAT_00999c00 = buf;
 
-  DAT_00999c04 = param_2;
+  DAT_00999c04 = bsize;
 
-  DAT_00999c08 = param_3;
+  DAT_00999c08 = xsize;
 
   FUN_00559c10(0x20,0x999c00,3,0x999d00,1);
 
@@ -74002,15 +74002,15 @@ u32 SJRBF_CreateRmt(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00563F90 NONMATCHING
 
 
-u32 SJMEM_CreateRmt(u32 param_1,u32 param_2)
+u32 SJMEM_CreateRmt(u32 data, u32 dtsize)
 
 
 
 {
 
-  DAT_00999c00 = param_1;
+  DAT_00999c00 = data;
 
-  DAT_00999c04 = param_2;
+  DAT_00999c04 = dtsize;
 
   FUN_00559c10(0x21,0x999c00,2,0x999d00,1);
 
@@ -74121,7 +74121,7 @@ void SJRMT_Reset(u32 param_1)
 // FUN_00564108 NONMATCHING
 
 
-void SJRMT_GetChunk(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
+void SJRMT_GetChunk(u32 param_1, u32 param_2, u32 nbyte, u32 *param_4)
 
 
 
@@ -74135,7 +74135,7 @@ void SJRMT_GetChunk(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
 
   DAT_00999c04 = param_2;
 
-  DAT_00999c08 = param_3;
+  DAT_00999c08 = nbyte;
 
   FUN_00559c10(0x26,0x999c00,3,0x999d00,2);
 
@@ -74208,7 +74208,7 @@ u32 SJRMT_GetNumData(u32 param_1,u32 param_2)
 
 u32
 
-SJRMT_IsGetChunk(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
+SJRMT_IsGetChunk(u32 param_1, u32 param_2, u32 nbyte, u32 *rbyte)
 
 
 
@@ -74218,11 +74218,11 @@ SJRMT_IsGetChunk(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
 
   DAT_00999c04 = param_2;
 
-  DAT_00999c08 = param_3;
+  DAT_00999c08 = nbyte;
 
   FUN_00559c10(0x2a,0x999c00,3,0x999d00,1);
 
-  *param_4 = DAT_00999d04;
+  *rbyte = DAT_00999d04;
 
   return DAT_00999d00;
 
@@ -74480,7 +74480,7 @@ void FUN_005646c0(void)
 // FUN_00564738 NONMATCHING
 
 
-char * SJX_Create(u32 param_1,u32 param_2,u32 param_3)
+char * SJX_Create(u32 sjsrc, u32 sjdst, u32 lin)
 
 
 
@@ -74534,17 +74534,17 @@ char * SJX_Create(u32 param_1,u32 param_2,u32 param_3)
 
     FUN_00521408(pcVar2,0,0x14);
 
-    *(u32 *)(pcVar2 + 4) = param_1;
+    *(u32 *)(pcVar2 + 4) = sjsrc;
 
-    *(u32 *)(pcVar2 + 0xc) = param_3;
+    *(u32 *)(pcVar2 + 0xc) = lin;
 
-    *(u32 *)(pcVar2 + 8) = param_2;
+    *(u32 *)(pcVar2 + 8) = sjdst;
 
-    uStack_40 = param_1;
+    uStack_40 = sjsrc;
 
-    uStack_3c = param_2;
+    uStack_3c = sjdst;
 
-    uStack_38 = param_3;
+    uStack_38 = lin;
 
     pcStack_34 = pcVar2;
 
@@ -74963,13 +74963,13 @@ void FUN_00564aa8(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 // FUN_00564B50 NONMATCHING
 
 
-void svm_call_err1(u64 param_1)
+void svm_call_err1(u64 msg)
 
 
 
 {
 
-  FUN_00524828(0x7b2678,param_1,0x7f);
+  FUN_00524828(0x7b2678,msg,0x7f);
 
   if ((int)DAT_0099a0b0 != 0x0) {
 
@@ -75478,15 +75478,15 @@ void FUN_00565158(int param_1,u32 param_2,u32 param_3)
 // FUN_005651B0 NONMATCHING
 
 
-void SVM_GotoSvrBorder(int param_1)
+void SVM_GotoSvrBorder(int svtype)
 
 
 
 {
 
-  if (*(code **)((u8 *)(u32)&DAT_0099a060 + param_1 * 8) != (code *)0x0) {
+  if (*(code **)((u8 *)(u32)&DAT_0099a060 + svtype * 8) != (code *)0x0) {
 
-    (**(code **)((u8 *)(u32)&DAT_0099a060 + param_1 * 8))(*(u32 *)((u8 *)(u32)&DAT_0099a064 + param_1 * 8));
+    (**(code **)((u8 *)(u32)&DAT_0099a060 + svtype * 8))(*(u32 *)((u8 *)(u32)&DAT_0099a064 + svtype * 8));
 
   }
 
@@ -95589,7 +95589,7 @@ void FUN_00575958(int param_1,u32 param_2)
 // FUN_005759B0 NONMATCHING
 
 
-void MPS_SetSystemFn(int param_1,u32 param_2,u32 param_3)
+void MPS_SetSystemFn(int mps, u32 param_2, u32 obj)
 
 
 
@@ -95603,9 +95603,9 @@ void MPS_SetSystemFn(int param_1,u32 param_2,u32 param_3)
 
   if (lVar1 == 0) {
 
-    *(u32 *)(param_1 + 0xe8) = param_3;
+    *(u32 *)(mps + 0xe8) = obj;
 
-    *(u32 *)(param_1 + 0xe4) = param_2;
+    *(u32 *)(mps + 0xe4) = param_2;
 
   }
 
@@ -95620,7 +95620,7 @@ void MPS_SetSystemFn(int param_1,u32 param_2,u32 param_3)
 // FUN_00575A00 NONMATCHING
 
 
-void MPS_SetPsMapFn(int param_1,u32 param_2,u32 param_3)
+void MPS_SetPsMapFn(int mps, u32 param_2, u32 obj)
 
 
 
@@ -95634,9 +95634,9 @@ void MPS_SetPsMapFn(int param_1,u32 param_2,u32 param_3)
 
   if (lVar1 == 0) {
 
-    *(u32 *)(param_1 + 0xf0) = param_3;
+    *(u32 *)(mps + 0xf0) = obj;
 
-    *(u32 *)(param_1 + 0xec) = param_2;
+    *(u32 *)(mps + 0xec) = param_2;
 
   }
 
@@ -95651,7 +95651,7 @@ void MPS_SetPsMapFn(int param_1,u32 param_2,u32 param_3)
 // FUN_00575A50 NONMATCHING
 
 
-void MPS_SetPesFn(int param_1,u32 param_2,u32 param_3)
+void MPS_SetPesFn(int mps, u32 param_2, u32 obj)
 
 
 
@@ -95665,9 +95665,9 @@ void MPS_SetPesFn(int param_1,u32 param_2,u32 param_3)
 
   if (lVar1 == 0) {
 
-    *(u32 *)(param_1 + 0xf8) = param_3;
+    *(u32 *)(mps + 0xf8) = obj;
 
-    *(u32 *)(param_1 + 0xf4) = param_2;
+    *(u32 *)(mps + 0xf4) = param_2;
 
   }
 
@@ -95682,9 +95682,7 @@ void MPS_SetPesFn(int param_1,u32 param_2,u32 param_3)
 // FUN_00575AA0 NONMATCHING
 
 
-void MPS_DecHd(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
-
-                 u64 param_5)
+void MPS_DecHd(u64 mps, u8 *adr, s32 len, s32 *used, s32 *flags)
 
 
 
@@ -95694,9 +95692,9 @@ void MPS_DecHd(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 
 
-  *(u32 *)param_4 = 0;
+  *(u32 *)used = 0;
 
-  *(u32 *)param_5 = 0;
+  *(u32 *)flags = 0;
 
   lVar1 = ((code)MPSLIB_CheckHn)();
 
@@ -95708,7 +95706,7 @@ void MPS_DecHd(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  (**(code **)((int)param_1 + 0xd4))(param_1,param_2,param_3,param_4,param_5);
+  (**(code **)((int)mps + 0xd4))(mps,adr,len,used,flags);
 
   return;
 
@@ -98718,7 +98716,7 @@ u64 FUN_00577d10(long param_1,u64 *param_2)
 // FUN_00577DB0 NONMATCHING
 
 
-u32 MPSLIB_CheckHn(long param_1)
+u32 MPSLIB_CheckHn(long mps)
 
 
 
@@ -98728,11 +98726,11 @@ u32 MPSLIB_CheckHn(long param_1)
 
 
 
-  DAT_0099b2b4 = (u32)((int *)param_1);
+  DAT_0099b2b4 = (u32)((int *)mps);
 
   uVar1 = 0xffffffff;
 
-  if ((param_1 != 0) && (*(int *)param_1 != 1)) {
+  if ((mps != 0) && (*(int *)mps != 1)) {
 
     uVar1 = 0;
 
@@ -98989,7 +98987,7 @@ void FUN_00577f78(u32 *param_1)
 // FUN_00577FC8 NONMATCHING
 
 
-u32 MPV_CheckDelim(u8 *param_1)
+u32 MPV_CheckDelim(u8 *mask)
 
 
 
@@ -99001,7 +98999,7 @@ u32 MPV_CheckDelim(u8 *param_1)
 
 
 
-  iVar1 = CONCAT31(CONCAT21(CONCAT11(*param_1,param_1[1]),param_1[2]),param_1[3]);
+  iVar1 = CONCAT31(CONCAT21(CONCAT11(*mask,mask[1]),mask[2]),mask[3]);
 
   uVar2 = 4;
 
@@ -100784,7 +100782,7 @@ asm void FUN_005793e8(int param_1,int param_2,u32 param_3,u32 param_4,u32 param_
 // FUN_00579410
 
 
-asm void MPV_SetPicUsrBuf(int param_1,u32 param_2,u32 param_3)
+asm void MPV_SetPicUsrBuf(int mpv, u32 buf, u32 bufsiz)
 {
   .set noreorder
   .word 0x248403e8
@@ -101000,7 +100998,7 @@ u64 FUN_00579660(u64 param_1)
 // FUN_005796D0 NONMATCHING
 
 
-u64 MPV_DecodePicAtr(u64 param_1,u32 *param_2,int *param_3)
+u64 MPV_DecodePicAtr(u64 mpv, u32 *param_2, int *used)
 
 
 
@@ -101022,13 +101020,13 @@ u64 MPV_DecodePicAtr(u64 param_1,u32 *param_2,int *param_3)
 
   if (lVar3 != 0) {
 
-    uVar4 = FUN_00579450(param_1,lVar3);
+    uVar4 = FUN_00579450(mpv,lVar3);
 
     iVar2 = (**(code **)(*(int *)lVar3 + 0x24))(lVar3,1);
 
     iVar1 = *(int *)lVar3;
 
-    *param_3 = param_2[1] - iVar2;
+    *used = param_2[1] - iVar2;
 
     (**(code **)(iVar1 + 0xc))(lVar3);
 
@@ -103781,7 +103779,7 @@ void FUN_0057b710(int param_1,u32 param_2)
 // FUN_0057B760 NONMATCHING
 
 
-u64 MPV_GetCond(long param_1,int param_2,u32 *param_3)
+u64 MPV_GetCond(long mpv, int param_2, u32 *val)
 
 
 
@@ -103795,7 +103793,7 @@ u64 MPV_GetCond(long param_1,int param_2,u32 *param_3)
 
 
 
-  if (param_1 == 0) {
+  if (mpv == 0) {
 
     puVar3 = (u8 *)(u32)&DAT_0099b2c0;
 
@@ -103813,11 +103811,11 @@ u64 MPV_GetCond(long param_1,int param_2,u32 *param_3)
 
     }
 
-    puVar3 = (u8 *)((int)param_1 + 400);
+    puVar3 = (u8 *)((int)mpv + 400);
 
   }
 
-  *param_3 = *(u32 *)(puVar3 + param_2 * 4);
+  *val = *(u32 *)(puVar3 + param_2 * 4);
 
   return 0;
 
@@ -103830,7 +103828,7 @@ u64 MPV_GetCond(long param_1,int param_2,u32 *param_3)
 // FUN_0057B7F0 NONMATCHING
 
 
-u32 MPVLIB_CheckHn(long param_1)
+u32 MPVLIB_CheckHn(long mpv)
 
 
 
@@ -103840,11 +103838,11 @@ u32 MPVLIB_CheckHn(long param_1)
 
 
 
-  DAT_0099b31c = (int)param_1;
+  DAT_0099b31c = (int)mpv;
 
   uVar1 = 0xffffffff;
 
-  if ((param_1 != 0) && (*(int *)((int)param_1 + 0x188) == 2)) {
+  if ((mpv != 0) && (*(int *)((int)mpv + 0x188) == 2)) {
 
     uVar1 = 0;
 
@@ -104228,7 +104226,7 @@ void FUN_0057bad8(void)
 // FUN_0057BAF0 NONMATCHING
 
 
-u32 UTY_MulDiv(u32 param_1,u32 param_2,long param_3)
+u32 UTY_MulDiv(u32 param_1, u32 param_2, s32 param_3)
 
 
 
@@ -105270,7 +105268,7 @@ int FUN_0057c570(u64 param_1)
 // FUN_0057C628 NONMATCHING
 
 
-int mwsfcre_CalcWorkSfx(u64 param_1)
+int mwsfcre_CalcWorkSfx(u64 cprm)
 
 
 
@@ -105282,9 +105280,9 @@ int mwsfcre_CalcWorkSfx(u64 param_1)
 
 
 
-  iVar1 = ((code)FUN_005827f0)(*(u32 *)((int)param_1 + 8),*(u32 *)((int)param_1 + 0xc));
+  iVar1 = ((code)FUN_005827f0)(*(u32 *)((int)cprm + 8),*(u32 *)((int)cprm + 0xc));
 
-  lVar2 = FUN_005833e8(param_1);
+  lVar2 = FUN_005833e8(cprm);
 
   if (lVar2 == 1) {
 
@@ -106716,7 +106714,7 @@ LAB_0057d908:
 // FUN_0057D960 NONMATCHING
 
 
-u32 mwsfcre_ChkMallocFn(int param_1)
+u32 mwsfcre_ChkMallocFn(int cprm)
 
 
 
@@ -106732,7 +106730,7 @@ u32 mwsfcre_ChkMallocFn(int param_1)
 
   uVar2 = 0;
 
-  if (*(int *)(param_1 + 0x18) == 0) {
+  if (*(int *)(cprm + 0x18) == 0) {
 
     uVar2 = 0xffffffff;
 
@@ -110511,7 +110509,7 @@ u64 FUN_005800f0(int param_1)
 // FUN_00580130 NONMATCHING
 
 
-u64 mwPlySfdStart(int param_1)
+u64 mwPlySfdStart(int mwply)
 
 
 
@@ -110523,7 +110521,7 @@ u64 mwPlySfdStart(int param_1)
 
 
 
-  lVar1 = ((code)FUN_005972b0)(*(u32 *)(param_1 + 0x3c));
+  lVar1 = ((code)FUN_005972b0)(*(u32 *)(mwply + 0x3c));
 
   uVar2 = 0;
 
@@ -111194,7 +111192,7 @@ void FUN_00580878(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-void MWSFPLY_SetFlowLimit(u64 param_1)
+void MWSFPLY_SetFlowLimit(u64 mwply)
 
 
 
@@ -111206,7 +111204,7 @@ void MWSFPLY_SetFlowLimit(u64 param_1)
 
 
 
-  uVar1 = *(u32 *)((int)param_1 + 0x1c8);
+  uVar1 = *(u32 *)((int)mwply + 0x1c8);
 
   uVar2 = FUN_00531720(uVar1);
 
@@ -111214,7 +111212,7 @@ void MWSFPLY_SetFlowLimit(u64 param_1)
 
   uVar2 = FUN_005317d0(uVar2);
 
-  ((code)FUN_005816f0)(param_1,uVar2,uVar1);
+  ((code)FUN_005816f0)(mwply,uVar2,uVar1);
 
   return;
 
@@ -111227,7 +111225,7 @@ void MWSFPLY_SetFlowLimit(u64 param_1)
 // FUN_00580958 NONMATCHING
 
 
-void mwPlyChkSupply(int param_1)
+void mwPlyChkSupply(int mwply)
 
 
 
@@ -111239,11 +111237,11 @@ void mwPlyChkSupply(int param_1)
 
 
 
-  uVar1 = *(u32 *)(param_1 + 0x3c);
+  uVar1 = *(u32 *)(mwply + 0x3c);
 
-  if ((*(int *)(param_1 + 0x40) != 0) &&
+  if ((*(int *)(mwply + 0x40) != 0) &&
 
-     (lVar2 = ((code)FUN_00586610)(*(int *)(param_1 + 0x40)), lVar2 == 3)) {
+     (lVar2 = ((code)FUN_00586610)(*(int *)(mwply + 0x40)), lVar2 == 3)) {
 
     SFD_TermSupply(uVar1);
 
@@ -115300,7 +115298,7 @@ asm void FUN_00583470(int param_1)
 // FUN_005834A0 NONMATCHING
 
 
-u32 MWSFTAG_SetAinfSj(int param_1)
+u32 MWSFTAG_SetAinfSj(int mwply)
 
 
 
@@ -115324,9 +115322,9 @@ u32 MWSFTAG_SetAinfSj(int param_1)
 
     uVar2 = 0;
 
-    if (*(int *)(param_1 + 0x17c) != 0) {
+    if (*(int *)(mwply + 0x17c) != 0) {
 
-      lVar1 = FUN_0059c8e0(*(u32 *)(param_1 + 0x3c),2,*(int *)(param_1 + 0x17c),0);
+      lVar1 = FUN_0059c8e0(*(u32 *)(mwply + 0x3c),2,*(int *)(mwply + 0x17c),0);
 
       uVar2 = 0xffffffff;
 
@@ -117340,7 +117338,7 @@ void FUN_00584c38(long param_1)
 // FUN_00584C80 NONMATCHING
 
 
-void MWSST_StartSj(int param_1)
+void MWSST_StartSj(int sst)
 
 
 
@@ -117360,7 +117358,7 @@ void MWSST_StartSj(int param_1)
 
     if ((lVar2 != 0) && (pcVar1 = *(code **)((int)lVar2 + 0x14), pcVar1 != (code *)0x0)) {
 
-      (*pcVar1)(*(u32 *)(param_1 + 0x14),*(u32 *)(param_1 + 0xc));
+      (*pcVar1)(*(u32 *)(sst + 0x14),*(u32 *)(sst + 0xc));
 
     }
 
@@ -117377,7 +117375,7 @@ void MWSST_StartSj(int param_1)
 // FUN_00584CD8 NONMATCHING
 
 
-void mwsst_Stop(int param_1)
+void mwsst_Stop(int sst)
 
 
 
@@ -117397,7 +117395,7 @@ void mwsst_Stop(int param_1)
 
     if ((lVar2 != 0) && (pcVar1 = *(code **)((int)lVar2 + 0x18), pcVar1 != (code *)0x0)) {
 
-      (*pcVar1)(*(u32 *)(param_1 + 0x14));
+      (*pcVar1)(*(u32 *)(sst + 0x14));
 
     }
 
@@ -117414,7 +117412,7 @@ void mwsst_Stop(int param_1)
 // FUN_00584D30 NONMATCHING
 
 
-u64 MWSST_GetOutVol(int param_1)
+u64 MWSST_GetOutVol(int sst)
 
 
 
@@ -117450,7 +117448,7 @@ u64 MWSST_GetOutVol(int param_1)
 
       else {
 
-        uVar3 = (*pcVar1)(*(u32 *)(param_1 + 0x14));
+        uVar3 = (*pcVar1)(*(u32 *)(sst + 0x14));
 
       }
 
@@ -117506,7 +117504,7 @@ void FUN_00584d98(int param_1,u64 param_2,u64 param_3)
 // FUN_00584E08 NONMATCHING
 
 
-void MWSST_Pause(int param_1,u64 param_2)
+void MWSST_Pause(int sst, s32 param_2)
 
 
 
@@ -117526,7 +117524,7 @@ void MWSST_Pause(int param_1,u64 param_2)
 
     if ((lVar2 != 0) && (pcVar1 = *(code **)((int)lVar2 + 0x24), pcVar1 != (code *)0x0)) {
 
-      (*pcVar1)(*(u32 *)(param_1 + 0x14),param_2);
+      (*pcVar1)(*(u32 *)(sst + 0x14),param_2);
 
     }
 
@@ -117543,7 +117541,7 @@ void MWSST_Pause(int param_1,u64 param_2)
 // FUN_00584E68 NONMATCHING
 
 
-void MWSST_SetOutVol(int param_1,u64 param_2)
+void MWSST_SetOutVol(int sst, s32 vol)
 
 
 
@@ -117563,7 +117561,7 @@ void MWSST_SetOutVol(int param_1,u64 param_2)
 
     if ((lVar2 != 0) && (pcVar1 = *(code **)((int)lVar2 + 0x28), pcVar1 != (code *)0x0)) {
 
-      (*pcVar1)(*(u32 *)(param_1 + 0x14),param_2);
+      (*pcVar1)(*(u32 *)(sst + 0x14),vol);
 
     }
 
@@ -117580,7 +117578,7 @@ void MWSST_SetOutVol(int param_1,u64 param_2)
 // FUN_00584EC8 NONMATCHING
 
 
-u64 MWSST_GetStat(int param_1)
+u64 MWSST_GetStat(int sst)
 
 
 
@@ -117616,7 +117614,7 @@ u64 MWSST_GetStat(int param_1)
 
       else {
 
-        uVar3 = (*pcVar1)(*(u32 *)(param_1 + 0x14));
+        uVar3 = (*pcVar1)(*(u32 *)(sst + 0x14));
 
       }
 
@@ -117884,7 +117882,7 @@ u32 FUN_005851c0(u32 param_1)
 // FUN_005851D0 NONMATCHING
 
 
-u8 mwsst_IsValid(int *param_1)
+u8 mwsst_IsValid(int *sst)
 
 
 
@@ -117904,9 +117902,9 @@ u8 mwsst_IsValid(int *param_1)
 
     bVar1 = 0;
 
-    if (*param_1 == 1) {
+    if (*sst == 1) {
 
-      bVar1 = param_1[5] != 0;
+      bVar1 = sst[5] != 0;
 
     }
 
@@ -119399,7 +119397,7 @@ void FUN_005860d0(void)
 // FUN_005860E8 NONMATCHING
 
 
-void MWSFSVR_SetMwsfdSvrFlg(u32 param_1)
+void MWSFSVR_SetMwsfdSvrFlg(u32 flg)
 
 
 
@@ -119411,7 +119409,7 @@ void MWSFSVR_SetMwsfdSvrFlg(u32 param_1)
 
   iVar1 = ((code)FUN_0057f740)();
 
-  *(u32 *)(iVar1 + 0x58) = param_1;
+  *(u32 *)(iVar1 + 0x58) = flg;
 
   return;
 
@@ -120117,25 +120115,25 @@ void FUN_005866c8(int param_1)
 // FUN_00586800 NONMATCHING
 
 
-void SFD_SetAdxtPara(u32 *param_1)
+void SFD_SetAdxtPara(u32 *para)
 
 
 
 {
 
-  DAT_009a6ed0 = *param_1;
+  DAT_009a6ed0 = *para;
 
-  DAT_009a6ed8 = param_1[2] + 0x1f & 0xffffffe0;
+  DAT_009a6ed8 = para[2] + 0x1f & 0xffffffe0;
 
-  DAT_009a6ed4 = param_1[1];
+  DAT_009a6ed4 = para[1];
 
-  DAT_009a6edc = param_1[3];
+  DAT_009a6edc = para[3];
 
-  DAT_009a6ee8 = param_1[6] + 0x1f & 0xffffffe0;
+  DAT_009a6ee8 = para[6] + 0x1f & 0xffffffe0;
 
-  DAT_009a6ee0 = param_1[4];
+  DAT_009a6ee0 = para[4];
 
-  DAT_009a6ee4 = param_1[5];
+  DAT_009a6ee4 = para[5];
 
   return;
 
@@ -120691,7 +120689,7 @@ LAB_00586e3c:
 // FUN_00586E78 NONMATCHING
 
 
-int sfadxt_SearchEndcode(int param_1,int param_2,u32 *param_3)
+int sfadxt_SearchEndcode(int data, int lim, u32 *endflg)
 
 
 
@@ -120707,27 +120705,27 @@ int sfadxt_SearchEndcode(int param_1,int param_2,u32 *param_3)
 
   iVar2 = 0;
 
-  *param_3 = 0;
+  *endflg = 0;
 
   while( 1 ) {
 
-    if (param_2 <= iVar2) {
+    if (lim <= iVar2) {
 
       return iVar2;
 
     }
 
-    lVar1 = ((code)ADXT_IsEndcode)(param_1,0x12,auStack_40);
+    lVar1 = ((code)ADXT_IsEndcode)(data,0x12,auStack_40);
 
     if (lVar1 != 0) break;
 
     iVar2 = iVar2 + 0x12;
 
-    param_1 = param_1 + 0x12;
+    data = data + 0x12;
 
   }
 
-  *param_3 = 1;
+  *endflg = 1;
 
   return iVar2;
 
@@ -120943,7 +120941,7 @@ LAB_0058719c:
 // FUN_00587218 NONMATCHING
 
 
-u32 sfadxt_GetAudioInf(u64 param_1,u32 *param_2,u32 *param_3)
+u32 sfadxt_GetAudioInf(u64 sfd, u32 *nch, u32 *sfreq)
 
 
 
@@ -120963,9 +120961,9 @@ u32 sfadxt_GetAudioInf(u64 param_1,u32 *param_2,u32 *param_3)
 
     uVar1 = 0;
 
-    *param_2 = *(u32 *)((int)lVar2 + 0xc);
+    *nch = *(u32 *)((int)lVar2 + 0xc);
 
-    *param_3 = *(u32 *)((int)lVar2 + 0x10);
+    *sfreq = *(u32 *)((int)lVar2 + 0x10);
 
   }
 
@@ -121315,7 +121313,7 @@ void FUN_00587618(int param_1,u64 param_2)
 // FUN_00587638 NONMATCHING
 
 
-void sfadxt_AnalyAhdr(int param_1)
+void sfadxt_AnalyAhdr(int sfd)
 
 
 
@@ -121335,7 +121333,7 @@ void sfadxt_AnalyAhdr(int param_1)
 
   if ((lVar3 != 0) && (piVar4 = (int *)lVar3, *piVar4 == 0)) {
 
-    uVar1 = **(u32 **)(param_1 + 0x2004);
+    uVar1 = **(u32 **)(sfd + 0x2004);
 
     lVar3 = ((code)FUN_005876f0)(uVar1);
 
@@ -121405,7 +121403,7 @@ u8 FUN_005876f0(void)
 // FUN_00587718 NONMATCHING
 
 
-void sfadxt_UpdateSvrFreq(u64 param_1)
+void sfadxt_UpdateSvrFreq(u64 sfd)
 
 
 
@@ -121419,11 +121417,11 @@ void sfadxt_UpdateSvrFreq(u64 param_1)
 
 
 
-  puVar1 = *(u32 **)((int)param_1 + 0x2004);
+  puVar1 = *(u32 **)((int)sfd + 0x2004);
 
   uVar2 = *puVar1;
 
-  iVar3 = SFSET_GetCond(param_1,0x1b);
+  iVar3 = SFSET_GetCond(sfd,0x1b);
 
   if (puVar1[0x11] != iVar3) {
 
@@ -121549,7 +121547,7 @@ long FUN_00587780(u64 param_1)
 
 
 
-u64 sfadxt_InitInf(u64 param_1,u32 *param_2)
+u64 sfadxt_InitInf(u64 sfd, u32 *param_2)
 
 
 
@@ -121605,7 +121603,7 @@ u64 sfadxt_InitInf(u64 param_1,u32 *param_2)
 
     param_2[0xf] = (u32)((code)FUN_00586b58);
 
-    iVar3 = (int)param_1 + 0x1020;
+    iVar3 = (int)sfd + 0x1020;
 
     param_2[0x11] = 0xffffffff;
 
@@ -121629,25 +121627,25 @@ u64 sfadxt_InitInf(u64 param_1,u32 *param_2)
 
     param_2[0x12] = 0;
 
-    uStack_60 = SFSET_GetCond(param_1,0x3f);
+    uStack_60 = SFSET_GetCond(sfd,0x3f);
 
     uStack_58 = 1000000;
 
-    uStack_50 = SFSET_GetCond(param_1,0x40);
+    uStack_50 = SFSET_GetCond(sfd,0x40);
 
     uStack_48 = 1000000;
 
-    uStack_40 = SFSET_GetCond(param_1,0x41);
+    uStack_40 = SFSET_GetCond(sfd,0x41);
 
     uStack_38 = 1000000;
 
-    uStack_30 = SFSET_GetCond(param_1,0x42);
+    uStack_30 = SFSET_GetCond(sfd,0x42);
 
     uStack_28 = 1000000;
 
     FUN_0059bcf0(iVar3);
 
-    uVar2 = SFSET_GetCond(param_1,0x48);
+    uVar2 = SFSET_GetCond(sfd,0x48);
 
     ((code)FUN_0059be10)(iVar3,uVar2);
 
@@ -121659,11 +121657,11 @@ u64 sfadxt_InitInf(u64 param_1,u32 *param_2)
 
     SFTST_SetAdjPoff(iVar3,&uStack_30);
 
-    uVar2 = SFSET_GetCond(param_1,0x3e);
+    uVar2 = SFSET_GetCond(sfd,0x3e);
 
     SFTST_SetMovaveRange(iVar3,uVar2);
 
-    uVar2 = SFSET_GetCond(param_1,0x3d);
+    uVar2 = SFSET_GetCond(sfd,0x3d);
 
     FUN_005a1868(uVar2);
 
@@ -121949,13 +121947,13 @@ u64 FUN_00587dc8(u64 param_1)
 // FUN_00587DE8 NONMATCHING
 
 
-u64 SFADXT_Stop(int param_1)
+u64 SFADXT_Stop(int sfd)
 
 
 
 {
 
-  FUN_00548678(**(u32 **)(param_1 + 0x2004));
+  FUN_00548678(**(u32 **)(sfd + 0x2004));
 
   return 0;
 
@@ -122249,7 +122247,7 @@ void FUN_00588168(u64 param_1,u64 param_2,u64 param_3)
 // FUN_005881F8 NONMATCHING
 
 
-u64 SFD_GetOutPan(u64 param_1,u64 param_2)
+u64 SFD_GetOutPan(u64 sfd, s32 param_2)
 
 
 
@@ -122265,13 +122263,13 @@ u64 SFD_GetOutPan(u64 param_1,u64 param_2)
 
   if (lVar1 == 0) {
 
-    lVar1 = SFSET_GetCond(param_1,6);
+    lVar1 = SFSET_GetCond(sfd,6);
 
     uVar2 = 0;
 
     if (lVar1 != 0) {
 
-      uVar2 = (**(code **)(*(int *)((int)param_1 + 0x2114) + 8))(param_1,param_2);
+      uVar2 = (**(code **)(*(int *)((int)sfd + 0x2114) + 8))(sfd,param_2);
 
     }
 
@@ -122335,7 +122333,7 @@ void FUN_00588270(u64 param_1,u64 param_2)
 // FUN_005882F0 NONMATCHING
 
 
-u64 SFD_GetOutVol(u64 param_1)
+u64 SFD_GetOutVol(u64 sfd)
 
 
 
@@ -122351,13 +122349,13 @@ u64 SFD_GetOutVol(u64 param_1)
 
   if (lVar1 == 0) {
 
-    lVar1 = SFSET_GetCond(param_1,6);
+    lVar1 = SFSET_GetCond(sfd,6);
 
     uVar2 = 0;
 
     if (lVar1 != 0) {
 
-      uVar2 = (**(code **)(*(int *)((int)param_1 + 0x2114) + 0x10))(param_1);
+      uVar2 = (**(code **)(*(int *)((int)sfd + 0x2114) + 0x10))(sfd);
 
     }
 
@@ -122382,7 +122380,7 @@ u64 SFD_GetOutVol(u64 param_1)
 // FUN_00588360 NONMATCHING
 
 
-void SFAOAP_SetSpeed(u64 param_1,u64 param_2)
+void SFAOAP_SetSpeed(u64 sfd, s32 speed)
 
 
 
@@ -122394,13 +122392,13 @@ void SFAOAP_SetSpeed(u64 param_1,u64 param_2)
 
 
 
-  lVar2 = SFSET_GetCond(param_1,6);
+  lVar2 = SFSET_GetCond(sfd,6);
 
   if ((lVar2 != 0) &&
 
-     (pcVar1 = *(code **)(*(int *)((int)param_1 + 0x2114) + 0x14), pcVar1 != (code *)0x0)) {
+     (pcVar1 = *(code **)(*(int *)((int)sfd + 0x2114) + 0x14), pcVar1 != (code *)0x0)) {
 
-    (*pcVar1)(param_1,param_2);
+    (*pcVar1)(sfd,speed);
 
   }
 
@@ -122431,7 +122429,7 @@ u64 FUN_005883c0(void)
 // FUN_005883C8 NONMATCHING
 
 
-void SFADXT_Create(u64 param_1)
+void SFADXT_Create(u64 sfd)
 
 
 
@@ -122441,11 +122439,11 @@ void SFADXT_Create(u64 param_1)
 
 
 
-  lVar1 = SFSET_GetCond(param_1,6);
+  lVar1 = SFSET_GetCond(sfd,6);
 
   if (lVar1 != 0) {
 
-    FUN_00588408(param_1);
+    FUN_00588408(sfd);
 
     return;
 
@@ -124651,7 +124649,7 @@ int FUN_00589d58(u64 param_1,u64 param_2)
 // FUN_00589D80 NONMATCHING
 
 
-void SFBUF_GetFlowCnt(u64 param_1,int *param_2,int *param_3)
+void SFBUF_GetFlowCnt(u64 param_1, int *wcnt, int *rcnt)
 
 
 
@@ -124673,9 +124671,9 @@ void SFBUF_GetFlowCnt(u64 param_1,int *param_2,int *param_3)
 
     if (lVar3 == 0) {
 
-      *param_2 = 0;
+      *wcnt = 0;
 
-      *param_3 = 0;
+      *rcnt = 0;
 
     }
 
@@ -124685,11 +124683,11 @@ void SFBUF_GetFlowCnt(u64 param_1,int *param_2,int *param_3)
 
       iVar1 = *(int *)param_1;
 
-      *param_2 = iVar2;
+      *wcnt = iVar2;
 
       iVar1 = (**(code **)(iVar1 + 0x24))(param_1,1);
 
-      *param_3 = *param_2 - iVar1;
+      *rcnt = *wcnt - iVar1;
 
     }
 
@@ -124699,11 +124697,11 @@ void SFBUF_GetFlowCnt(u64 param_1,int *param_2,int *param_3)
 
     iVar1 = ((code)FUN_00562e10)(param_1);
 
-    *param_2 = iVar1;
+    *wcnt = iVar1;
 
     iVar1 = FUN_00562e10(param_1,0,1);
 
-    *param_3 = iVar1;
+    *rcnt = iVar1;
 
   }
 
@@ -124860,7 +124858,7 @@ u64 SFD_SetConcatPlay(u64 param_1)
 // FUN_00589FD0 NONMATCHING
 
 
-u8 SFCON_IsEndcodeSkip(u64 param_1)
+u8 SFCON_IsEndcodeSkip(u64 sfd)
 
 
 
@@ -124870,7 +124868,7 @@ u8 SFCON_IsEndcodeSkip(u64 param_1)
 
 
 
-  lVar1 = SFSET_GetCond(param_1,0x31);
+  lVar1 = SFSET_GetCond(sfd,0x31);
 
   return lVar1 != 0;
 
@@ -124883,7 +124881,7 @@ u8 SFCON_IsEndcodeSkip(u64 param_1)
 // FUN_00589FF0 NONMATCHING
 
 
-u64 SFCON_IsSystemEndcodeSkip(u64 param_1)
+u64 SFCON_IsSystemEndcodeSkip(u64 sfd)
 
 
 
@@ -124895,9 +124893,9 @@ u64 SFCON_IsSystemEndcodeSkip(u64 param_1)
 
 
 
-  lVar1 = SFSET_GetCond(param_1,0x31);
+  lVar1 = SFSET_GetCond(sfd,0x31);
 
-  if ((lVar1 != 0) || (lVar1 = SFSET_GetCond(param_1,0x38), uVar2 = 0, lVar1 != 0)) {
+  if ((lVar1 != 0) || (lVar1 = SFSET_GetCond(sfd,0x38), uVar2 = 0, lVar1 != 0)) {
 
     uVar2 = 1;
 
@@ -124914,7 +124912,7 @@ u64 SFCON_IsSystemEndcodeSkip(u64 param_1)
 // FUN_0058A038 NONMATCHING
 
 
-u64 SFCON_IsVideoEndcodeSkip(u64 param_1)
+u64 SFCON_IsVideoEndcodeSkip(u64 sfd)
 
 
 
@@ -124926,9 +124924,9 @@ u64 SFCON_IsVideoEndcodeSkip(u64 param_1)
 
 
 
-  lVar1 = SFSET_GetCond(param_1,0x31);
+  lVar1 = SFSET_GetCond(sfd,0x31);
 
-  if ((lVar1 != 0) || (lVar1 = SFSET_GetCond(param_1,0x39), uVar2 = 0, lVar1 != 0)) {
+  if ((lVar1 != 0) || (lVar1 = SFSET_GetCond(sfd,0x39), uVar2 = 0, lVar1 != 0)) {
 
     uVar2 = 1;
 
@@ -124945,7 +124943,7 @@ u64 SFCON_IsVideoEndcodeSkip(u64 param_1)
 // FUN_0058A080 NONMATCHING
 
 
-void SFCON_UpdateConcatTime(int param_1,int param_2)
+void SFCON_UpdateConcatTime(int sfd, int param_2)
 
 
 
@@ -124961,23 +124959,23 @@ void SFCON_UpdateConcatTime(int param_1,int param_2)
 
   ((code)FUN_0058c100)(auStack_30);
 
-  param_2 = *(int *)(param_1 + 0xe94) + param_2;
+  param_2 = *(int *)(sfd + 0xe94) + param_2;
 
-  iVar2 = *(int *)(param_1 + 0xe98) + 1;
+  iVar2 = *(int *)(sfd + 0xe98) + 1;
 
-  *(int *)(param_1 + 0xe94) = param_2;
+  *(int *)(sfd + 0xe94) = param_2;
 
   iVar1 = iVar2;
 
   if (iVar2 < 0) {
 
-    iVar1 = *(int *)(param_1 + 0xe98) + 0x20;
+    iVar1 = *(int *)(sfd + 0xe98) + 0x20;
 
   }
 
-  *(int *)((iVar2 + (iVar1 >> 5) * -0x20) * 4 + param_1 + 0xe9c) = param_2;
+  *(int *)((iVar2 + (iVar1 >> 5) * -0x20) * 4 + sfd + 0xe9c) = param_2;
 
-  *(int *)(param_1 + 0xe98) = iVar2;
+  *(int *)(sfd + 0xe98) = iVar2;
 
   ((code)FUN_0058c118)(auStack_30);
 
@@ -124992,7 +124990,7 @@ void SFCON_UpdateConcatTime(int param_1,int param_2)
 // FUN_0058A108 NONMATCHING
 
 
-u8 SFCON_WriteTotSmplQue(int param_1,u32 param_2,u32 param_3)
+u8 SFCON_WriteTotSmplQue(int sfd, u32 val, u32 last)
 
 
 
@@ -125010,7 +125008,7 @@ u8 SFCON_WriteTotSmplQue(int param_1,u32 param_2,u32 param_3)
 
   ((code)FUN_0058c100)(auStack_40);
 
-  iVar1 = *(int *)(param_1 + 0xf24);
+  iVar1 = *(int *)(sfd + 0xf24);
 
   iVar3 = iVar1;
 
@@ -125020,15 +125018,15 @@ u8 SFCON_WriteTotSmplQue(int param_1,u32 param_2,u32 param_3)
 
   }
 
-  bVar2 = iVar1 - *(int *)(param_1 + 0xf28) < 0x20;
+  bVar2 = iVar1 - *(int *)(sfd + 0xf28) < 0x20;
 
   if (bVar2) {
 
-    *(u32 *)(param_1 + 0xf1c) = param_3;
+    *(u32 *)(sfd + 0xf1c) = last;
 
-    *(u32 *)((iVar1 + (iVar3 >> 5) * -0x20) * 4 + param_1 + 0xf2c) = param_2;
+    *(u32 *)((iVar1 + (iVar3 >> 5) * -0x20) * 4 + sfd + 0xf2c) = val;
 
-    *(int *)(param_1 + 0xf24) = *(int *)(param_1 + 0xf24) + 1;
+    *(int *)(sfd + 0xf24) = *(int *)(sfd + 0xf24) + 1;
 
   }
 
@@ -125045,7 +125043,7 @@ u8 SFCON_WriteTotSmplQue(int param_1,u32 param_2,u32 param_3)
 // FUN_0058A1C0 NONMATCHING
 
 
-u32 SFCON_ReadTotSmplQue(int param_1,u32 *param_2,u32 *param_3)
+u32 SFCON_ReadTotSmplQue(int sfd, u32 *val, u32 *last)
 
 
 
@@ -125063,11 +125061,11 @@ u32 SFCON_ReadTotSmplQue(int param_1,u32 *param_2,u32 *param_3)
 
   ((code)FUN_0058c100)(auStack_40);
 
-  if (*(int *)(param_1 + 0xf24) - *(int *)(param_1 + 0xf28) < 1) {
+  if (*(int *)(sfd + 0xf24) - *(int *)(sfd + 0xf28) < 1) {
 
     uVar3 = 0;
 
-    *param_2 = 0xffffffff;
+    *val = 0xffffffff;
 
   }
 
@@ -125075,9 +125073,9 @@ u32 SFCON_ReadTotSmplQue(int param_1,u32 *param_2,u32 *param_3)
 
     uVar3 = 1;
 
-    *param_3 = *(u32 *)(param_1 + 0xf1c);
+    *last = *(u32 *)(sfd + 0xf1c);
 
-    iVar1 = *(int *)(param_1 + 0xf28);
+    iVar1 = *(int *)(sfd + 0xf28);
 
     iVar2 = iVar1;
 
@@ -125087,9 +125085,9 @@ u32 SFCON_ReadTotSmplQue(int param_1,u32 *param_2,u32 *param_3)
 
     }
 
-    *param_2 = *(u32 *)((iVar1 + (iVar2 >> 5) * -0x20) * 4 + param_1 + 0xf2c);
+    *val = *(u32 *)((iVar1 + (iVar2 >> 5) * -0x20) * 4 + sfd + 0xf2c);
 
-    *(int *)(param_1 + 0xf28) = *(int *)(param_1 + 0xf28) + 1;
+    *(int *)(sfd + 0xf28) = *(int *)(sfd + 0xf28) + 1;
 
   }
 
@@ -125514,7 +125512,7 @@ int FUN_0058a658(u64 param_1,u64 param_2,u64 param_3)
 // FUN_0058A740 NONMATCHING
 
 
-void sfcre_MpsMuxRate(u64 param_1,u64 param_2,u32 *param_3)
+void sfcre_MpsMuxRate(u8 *param_1, s32 param_2, u32 *mux_rate)
 
 
 
@@ -125542,7 +125540,7 @@ void sfcre_MpsMuxRate(u64 param_1,u64 param_2,u32 *param_3)
 
     ((code)FUN_00577f78)(lVar1);
 
-    *param_3 = uStack_44;
+    *mux_rate = uStack_44;
 
   }
 
@@ -126814,7 +126812,7 @@ int FUN_0058b510(int param_1)
 // FUN_0058B560 NONMATCHING
 
 
-void SFHDS_ProcessHdr(u64 param_1)
+void SFHDS_ProcessHdr(u64 fhd)
 
 
 
@@ -126824,11 +126822,11 @@ void SFHDS_ProcessHdr(u64 param_1)
 
 
 
-  lVar1 = FUN_0059d098((int)param_1 + 0x94,*(u32 *)((int)param_1 + 0x90));
+  lVar1 = FUN_0059d098((int)fhd + 0x94,*(u32 *)((int)fhd + 0x90));
 
   if (lVar1 != 0) {
 
-    FUN_0058b5c8(lVar1,param_1);
+    FUN_0058b5c8(lVar1,fhd);
 
     ((code)FUN_0059d160)(lVar1);
 
@@ -127325,7 +127323,7 @@ asm int FUN_0058bbb0(int param_1)
 // FUN_0058BBE8
 
 
-asm u32 SFHDS_GetColType(int param_1)
+asm u32 SFHDS_GetColType(int sfd)
 {
   .set noreorder
   .word 0x8c830078
@@ -128000,13 +127998,13 @@ u64 FUN_0058c138(void)
 // FUN_0058C140 NONMATCHING
 
 
-u64 SFMEM_ExecServer(int param_1)
+u64 SFMEM_ExecServer(int sfd)
 
 
 
 {
 
-  FUN_00589cb0(param_1,*(u32 *)(param_1 + 0x1f44),1);
+  FUN_00589cb0(sfd,*(u32 *)(sfd + 0x1f44),1);
 
   return 0;
 
@@ -130908,7 +130906,7 @@ int FUN_0058e200(int param_1)
 
 
 // FUN_0058E250
-asm u32 SFMPS_GetConcatCnt(int param_1)
+asm u32 SFMPS_GetConcatCnt(int sfd)
 {
   .set noreorder
   lw $v1, 0x1f7c($a0)
@@ -131130,7 +131128,7 @@ asm void FUN_0058e4a0(int param_1,int param_2,int param_3,int *param_4)
 // FUN_0058E530 NONMATCHING
 
 
-void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
+void SFD_SetMpvCond(long sfd, s32 param_2, s32 val)
 
 
 
@@ -131146,7 +131144,7 @@ void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
 
   uVar2 = 0;
 
-  if (param_1 != 0) {
+  if (sfd != 0) {
 
     lVar1 = ((code)FUN_0058c060)();
 
@@ -131158,7 +131156,7 @@ void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
 
     }
 
-    uVar2 = **(u32 **)((int)param_1 + 0x1fc0);
+    uVar2 = **(u32 **)((int)sfd + 0x1fc0);
 
   }
 
@@ -131166,7 +131164,7 @@ void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
 
   if (param_2 != 5) {
 
-    uVar3 = param_3;
+    uVar3 = val;
 
   }
 
@@ -131174,7 +131172,7 @@ void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
 
   if (lVar1 != 0) {
 
-    FUN_0058be40(param_1,0xffffffffff000f12);
+    FUN_0058be40(sfd,0xffffffffff000f12);
 
     return;
 
@@ -131191,7 +131189,7 @@ void SFD_SetMpvCond(long param_1,long param_2,u64 param_3)
 // FUN_0058E5E8 NONMATCHING
 
 
-u32 SFMPV_SaveCond(int param_1,int param_2,u32 param_3)
+u32 SFMPV_SaveCond(int sfd, int tbl, u32 size)
 
 
 
@@ -131207,15 +131205,15 @@ u32 SFMPV_SaveCond(int param_1,int param_2,u32 param_3)
 
 
 
-  iVar1 = **(int **)(param_1 + 0x1fc0);
+  iVar1 = **(int **)(sfd + 0x1fc0);
 
   uVar2 = 0;
 
   if (iVar1 != 0) {
 
-    uVar2 = param_3 >> 2;
+    uVar2 = size >> 2;
 
-    if (0x10 < param_3 >> 2) {
+    if (0x10 < size >> 2) {
 
       uVar2 = 0x10;
 
@@ -131229,11 +131227,11 @@ u32 SFMPV_SaveCond(int param_1,int param_2,u32 param_3)
 
         iVar3 = iVar4 + 1;
 
-        ((code)MPV_GetCond)(iVar1,iVar4,param_2);
+        ((code)MPV_GetCond)(iVar1,iVar4,tbl);
 
         iVar4 = iVar3;
 
-        param_2 = param_2 + 4;
+        tbl = tbl + 4;
 
       } while (iVar3 < (int)uVar2);
 
@@ -131252,7 +131250,7 @@ u32 SFMPV_SaveCond(int param_1,int param_2,u32 param_3)
 // FUN_0058E670 NONMATCHING
 
 
-void SFMPV_RestoreCond(int param_1,u32 *param_2,int param_3)
+void SFMPV_RestoreCond(int sfd, u32 *tbl, int param_3)
 
 
 
@@ -131266,23 +131264,23 @@ void SFMPV_RestoreCond(int param_1,u32 *param_2,int param_3)
 
 
 
-  iVar1 = **(int **)(param_1 + 0x1fc0);
+  iVar1 = **(int **)(sfd + 0x1fc0);
 
   if ((iVar1 != 0) && (0 < param_3)) {
 
-    uVar2 = *param_2;
+    uVar2 = *tbl;
 
     iVar3 = 0;
 
     while( 1 ) {
 
-      param_2 = param_2 + 1;
+      tbl = tbl + 1;
 
       ((code)FUN_0057b648)(iVar1,iVar3,uVar2);
 
       if (param_3 <= iVar3 + 1) break;
 
-      uVar2 = *param_2;
+      uVar2 = *tbl;
 
       iVar3 = iVar3 + 1;
 
@@ -131344,9 +131342,7 @@ u64 SFD_GetNumFrm(u64 param_1,u32 *param_2)
 
 u64
 
-SFD_SetVideoUsrSj(int param_1,u64 param_2,u64 param_3,u64 param_4,u64 param_5
-
-            )
+SFD_SetVideoUsrSj(int sfd, s32 param_2, u32 param_3, u32 param_4, u32 param_5)
 
 
 
@@ -131368,7 +131364,7 @@ SFD_SetVideoUsrSj(int param_1,u64 param_2,u64 param_3,u64 param_4,u64 param_5
 
   }
 
-  FUN_005793e8(**(u32 **)(param_1 + 0x1fc0),param_2,param_3,param_4,param_5);
+  FUN_005793e8(**(u32 **)(sfd + 0x1fc0),param_2,param_3,param_4,param_5);
 
   return 0;
 
@@ -131707,7 +131703,7 @@ void FUN_0058eb10(u64 param_1)
 // FUN_0058EB80 NONMATCHING
 
 
-void sfmpv_DecUsrHdr(u64 param_1)
+void sfmpv_DecUsrHdr(u64 sfd)
 
 
 
@@ -131727,13 +131723,13 @@ void sfmpv_DecUsrHdr(u64 param_1)
 
 
 
-  puVar1 = *(u32 **)((int)param_1 + 0x1fc0);
+  puVar1 = *(u32 **)((int)sfd + 0x1fc0);
 
   uVar2 = *puVar1;
 
-  iStack_40 = SFSET_GetCond(param_1,0x5d);
+  iStack_40 = SFSET_GetCond(sfd,0x5d);
 
-  lVar3 = SFSET_GetCond(param_1,0x5e);
+  lVar3 = SFSET_GetCond(sfd,0x5e);
 
   uStack_3c = (u32)lVar3;
 
@@ -132553,7 +132549,7 @@ asm int FUN_0058f458(u32 *param_1,u32 param_2)
 // FUN_0058F4C0 NONMATCHING
 
 
-u64 sfmpv_ChkRingSpace(u64 param_1)
+u64 sfmpv_ChkRingSpace(u64 sfd)
 
 
 
@@ -132569,15 +132565,15 @@ u64 sfmpv_ChkRingSpace(u64 param_1)
 
 
 
-  uVar1 = *(u32 *)((int)param_1 + 0x1fc8);
+  uVar1 = *(u32 *)((int)sfd + 0x1fc8);
 
-  iVar2 = FUN_00589510(param_1,uVar1);
+  iVar2 = FUN_00589510(sfd,uVar1);
 
-  iVar3 = FUN_00589d30(param_1,uVar1);
+  iVar3 = FUN_00589d30(sfd,uVar1);
 
-  if (iVar2 - iVar3 < *(int *)((int)param_1 + 0x28)) {
+  if (iVar2 - iVar3 < *(int *)((int)sfd + 0x28)) {
 
-    uVar4 = FUN_0058be40(param_1,0xffffffffff000f1c);
+    uVar4 = FUN_0058be40(sfd,0xffffffffff000f1c);
 
     return uVar4;
 
@@ -133375,7 +133371,7 @@ int FUN_0058fd60(u64 param_1)
 // FUN_0058FE08 NONMATCHING
 
 
-void sfmpv_SkipEndcode(u64 param_1,u64 param_2)
+void sfmpv_SkipEndcode(u64 sfd, u64 param_2)
 
 
 
@@ -133423,7 +133419,7 @@ LAB_0058fe94:
 
     (**(code **)(*piVar3 + 0x20))(param_2,0,&uStack_40);
 
-    FUN_0058fec8(param_1,4);
+    FUN_0058fec8(sfd,4);
 
   } while( 1 );
 
@@ -141124,7 +141120,7 @@ u32 FUN_00595788(int param_1)
 // FUN_005957D8 NONMATCHING
 
 
-void SFD_Pause(u64 param_1,long param_2)
+void SFD_Pause(u64 sfd, s32 param_2)
 
 
 
@@ -141148,7 +141144,7 @@ void SFD_Pause(u64 param_1,long param_2)
 
   }
 
-  iVar3 = (int)param_1;
+  iVar3 = (int)sfd;
 
   uVar2 = 1;
 
@@ -141162,7 +141158,7 @@ void SFD_Pause(u64 param_1,long param_2)
 
     *(int *)(iVar3 + 0x50) = (int)param_2;
 
-    FUN_00595868(param_1,uVar2);
+    FUN_00595868(sfd,uVar2);
 
     *(u32 *)(iVar3 + 0x44) = 1;
 
@@ -141353,7 +141349,7 @@ asm u64 FUN_005959d0(int param_1)
 // FUN_005959E0 NONMATCHING
 
 
-u64 SFD_SetSpeed(u64 param_1,u64 param_2)
+u64 SFD_SetSpeed(u64 sfd, s32 speed)
 
 
 
@@ -141375,9 +141371,9 @@ u64 SFD_SetSpeed(u64 param_1,u64 param_2)
 
   }
 
-  SFTIM_SetSpeed(param_1,param_2);
+  SFTIM_SetSpeed(sfd,speed);
 
-  SFAOAP_SetSpeed(param_1,param_2);
+  SFAOAP_SetSpeed(sfd,speed);
 
   return 0;
 
@@ -141528,7 +141524,7 @@ void FUN_00595ba0(void)
 // FUN_00595BC0
 
 
-asm u8 SFD_IsHnSvrWait(int param_1)
+asm u8 SFD_IsHnSvrWait(int sfd)
 {
   .set noreorder
   .word 0x8c830048
@@ -141603,7 +141599,7 @@ u64 SFD_IsSvrWait(void)
 // FUN_00595C60 NONMATCHING
 
 
-u64 SFD_ExecOne(u64 param_1)
+u64 SFD_ExecOne(u64 sfd)
 
 
 
@@ -141625,7 +141621,7 @@ u64 SFD_ExecOne(u64 param_1)
 
   }
 
-  ((code)FUN_00595d10)(param_1,0xffffffffff000138);
+  ((code)FUN_00595d10)(sfd,0xffffffffff000138);
 
   return 0;
 
@@ -141915,7 +141911,7 @@ u32 FUN_00595e98(u64 param_1)
 // FUN_00595F58 NONMATCHING
 
 
-u32 sfply_IsPrepared(u64 param_1)
+u32 sfply_IsPrepared(u64 sfd)
 
 
 
@@ -141935,27 +141931,27 @@ u32 sfply_IsPrepared(u64 param_1)
 
   uVar5 = 1;
 
-  lVar2 = SFSET_GetCond(param_1,5);
+  lVar2 = SFSET_GetCond(sfd,5);
 
   if (lVar2 != 0) {
 
-    uVar5 = FUN_0059bc88(param_1,6);
+    uVar5 = FUN_0059bc88(sfd,6);
 
-    uVar3 = FUN_0059bcb8(param_1,6);
+    uVar3 = FUN_0059bcb8(sfd,6);
 
     uVar5 = uVar5 | uVar3;
 
   }
 
-  lVar2 = SFSET_GetCond(param_1,6);
+  lVar2 = SFSET_GetCond(sfd,6);
 
   uVar3 = 1;
 
   if (lVar2 != 0) {
 
-    uVar3 = FUN_0059bc88(param_1,7);
+    uVar3 = FUN_0059bc88(sfd,7);
 
-    uVar4 = FUN_0059bcb8(param_1,7);
+    uVar4 = FUN_0059bcb8(sfd,7);
 
     uVar3 = uVar3 | uVar4;
 
@@ -141980,7 +141976,7 @@ u32 sfply_IsPrepared(u64 param_1)
 // FUN_00596008 NONMATCHING
 
 
-void ADXSJD_ExecHndl(u64 param_1)
+void ADXSJD_ExecHndl(u64 sjd)
 
 
 
@@ -141988,9 +141984,9 @@ void ADXSJD_ExecHndl(u64 param_1)
 
   ((code)FUN_00596038)();
 
-  FUN_005960e0(param_1);
+  FUN_005960e0(sjd);
 
-  FUN_00596168(param_1);
+  FUN_00596168(sjd);
 
   return;
 
@@ -142597,7 +142593,7 @@ u8 FUN_00596460(u64 param_1)
 // FUN_005965E0 NONMATCHING
 
 
-u8 sfply_IsBpaOff(u64 param_1)
+u8 sfply_IsBpaOff(u64 sfd)
 
 
 
@@ -142623,25 +142619,25 @@ u8 sfply_IsBpaOff(u64 param_1)
 
   if (lVar4 == 0) {
 
-    lVar4 = SFSET_GetCond(param_1,5);
+    lVar4 = SFSET_GetCond(sfd,5);
 
-    if ((lVar4 == 1) && (lVar4 = sfply_IsVidBufFull(param_1), lVar4 != 0)) {
+    if ((lVar4 == 1) && (lVar4 = sfply_IsVidBufFull(sfd), lVar4 != 0)) {
 
       return 1;
 
     }
 
-    lVar4 = SFSET_GetCond(param_1,6);
+    lVar4 = SFSET_GetCond(sfd,6);
 
-    if ((lVar4 != 1) || (lVar4 = FUN_00596818(param_1), lVar4 == 0)) {
+    if ((lVar4 != 1) || (lVar4 = FUN_00596818(sfd), lVar4 == 0)) {
 
-      FUN_0059a168(param_1,&uStack_30,auStack_2c);
+      FUN_0059a168(sfd,&uStack_30,auStack_2c);
 
-      uVar1 = *(u32 *)((int)param_1 + 0xfb8);
+      uVar1 = *(u32 *)((int)sfd + 0xfb8);
 
-      iVar2 = *(int *)((int)param_1 + 0xfb4);
+      iVar2 = *(int *)((int)sfd + 0xfb4);
 
-      uVar5 = SFSET_GetCond(param_1,0x45);
+      uVar5 = SFSET_GetCond(sfd,0x45);
 
       iVar3 = UTY_MulDiv(uVar5,uVar1,1000000);
 
@@ -142664,7 +142660,7 @@ u8 sfply_IsBpaOff(u64 param_1)
 // FUN_005966C0 NONMATCHING
 
 
-u64 sfply_IsTermAny(u64 param_1)
+u64 sfply_IsTermAny(u64 sfd)
 
 
 
@@ -142680,17 +142676,17 @@ u64 sfply_IsTermAny(u64 param_1)
 
 
 
-  lVar1 = SFSET_GetCond(param_1,5);
+  lVar1 = SFSET_GetCond(sfd,5);
 
-  if ((lVar1 != 0) && (lVar1 = FUN_0059bcb8(param_1,6), lVar1 != 0)) {
+  if ((lVar1 != 0) && (lVar1 = FUN_0059bcb8(sfd,6), lVar1 != 0)) {
 
     return 1;
 
   }
 
-  lVar1 = SFSET_GetCond(param_1,6);
+  lVar1 = SFSET_GetCond(sfd,6);
 
-  if ((lVar1 == 0) || (lVar1 = FUN_0059bcb8(param_1,7), lVar1 == 0)) {
+  if ((lVar1 == 0) || (lVar1 = FUN_0059bcb8(sfd,7), lVar1 == 0)) {
 
     uVar4 = 0;
 
@@ -142698,7 +142694,7 @@ u64 sfply_IsTermAny(u64 param_1)
 
       uVar3 = uVar4 + 1;
 
-      lVar1 = FUN_00589d10(param_1,uVar4);
+      lVar1 = FUN_00589d10(sfd,uVar4);
 
       if (lVar1 != 0) goto LAB_0059671c;
 
@@ -142867,7 +142863,7 @@ void FUN_00596898(u64 param_1)
 // FUN_00596908 NONMATCHING
 
 
-u8 sfply_IsEndTime(u64 param_1)
+u8 sfply_IsEndTime(u64 sfd)
 
 
 
@@ -142889,13 +142885,13 @@ u8 sfply_IsEndTime(u64 param_1)
 
   bVar3 = 0;
 
-  iVar1 = *(int *)((int)param_1 + 0xa5c);
+  iVar1 = *(int *)((int)sfd + 0xa5c);
 
-  uVar2 = *(u32 *)((int)param_1 + 0xa60);
+  uVar2 = *(u32 *)((int)sfd + 0xa60);
 
   if (iVar1 != -4) {
 
-    ((code)FUN_0059a168)(param_1,&iStack_30,auStack_2c);
+    ((code)FUN_0059a168)(sfd,&iStack_30,auStack_2c);
 
     bVar3 = 0;
 
@@ -143941,7 +143937,7 @@ void FUN_00597340(u64 param_1)
 // FUN_00597368 NONMATCHING
 
 
-void SFD_Stop(u64 param_1)
+void SFD_Stop(u64 sfd)
 
 
 
@@ -143961,9 +143957,9 @@ void SFD_Stop(u64 param_1)
 
   }
 
-  ((code)FUN_005973c0)(param_1,0xffffffffff000133);
+  ((code)FUN_005973c0)(sfd,0xffffffffff000133);
 
-  *(u32 *)((int)param_1 + 0x44) = 1;
+  *(u32 *)((int)sfd + 0x44) = 1;
 
   return;
 
@@ -144045,7 +144041,7 @@ asm u32 FUN_00597438(void)
 // FUN_00597448 NONMATCHING
 
 
-long sfply_StopTr(u64 param_1)
+long sfply_StopTr(u64 sfd)
 
 
 
@@ -144057,9 +144053,9 @@ long sfply_StopTr(u64 param_1)
 
 
 
-  iVar2 = (int)param_1;
+  iVar2 = (int)sfd;
 
-  if ((*(int *)(iVar2 + 0x48) != 4) || (lVar1 = FUN_0059bc20(param_1,7,7,0,0), lVar1 == 0)) {
+  if ((*(int *)(iVar2 + 0x48) != 4) || (lVar1 = FUN_0059bc20(sfd,7,7,0,0), lVar1 == 0)) {
 
     lVar1 = 0;
 
@@ -144413,7 +144409,7 @@ long FUN_005974a8(u64 *param_1)
 // FUN_00597878 NONMATCHING
 
 
-void SFD_GetSupplyInf(u64 param_1,u64 param_2)
+void SFD_GetSupplyInf(u64 sfd, u64 inf)
 
 
 
@@ -144433,7 +144429,7 @@ void SFD_GetSupplyInf(u64 param_1,u64 param_2)
 
   }
 
-  FUN_0059bc20(param_1,0,9,param_2,0);
+  FUN_0059bc20(sfd,0,9,inf,0);
 
   return;
 
@@ -144446,7 +144442,7 @@ void SFD_GetSupplyInf(u64 param_1,u64 param_2)
 // FUN_005978E8 NONMATCHING
 
 
-void SFD_AddSupply(u64 param_1,u64 param_2,u64 param_3)
+void SFD_AddSupply(u64 sfd, s32 adr, s32 nbyte)
 
 
 
@@ -144466,7 +144462,7 @@ void SFD_AddSupply(u64 param_1,u64 param_2,u64 param_3)
 
   }
 
-  FUN_0059bc20(param_1,0,10,param_2,param_3);
+  FUN_0059bc20(sfd,0,10,adr,nbyte);
 
   return;
 
@@ -144479,7 +144475,7 @@ void SFD_AddSupply(u64 param_1,u64 param_2,u64 param_3)
 // FUN_00597968 NONMATCHING
 
 
-u64 SFD_TermSupply(u64 param_1)
+u64 SFD_TermSupply(u64 sfd)
 
 
 
@@ -144503,15 +144499,15 @@ u64 SFD_TermSupply(u64 param_1)
 
   }
 
-  uVar1 = *(u32 *)((int)param_1 + 0x1f44);
+  uVar1 = *(u32 *)((int)sfd + 0x1f44);
 
-  lVar2 = FUN_00589d10(param_1,uVar1);
+  lVar2 = FUN_00589d10(sfd,uVar1);
 
   if (lVar2 != 1) {
 
-    FUN_00589cf0(param_1,uVar1,1);
+    FUN_00589cf0(sfd,uVar1,1);
 
-    *(u32 *)((int)param_1 + 0x44) = 1;
+    *(u32 *)((int)sfd + 0x44) = 1;
 
   }
 
@@ -144904,7 +144900,7 @@ u64 FUN_00597dc8(u64 param_1,int param_2)
 // FUN_00597E20 NONMATCHING
 
 
-void SFD_SetSupplySj(u64 param_1,u64 param_2)
+void SFD_SetSupplySj(u64 sfd, u64 sup)
 
 
 
@@ -144924,7 +144920,7 @@ void SFD_SetSupplySj(u64 param_1,u64 param_2)
 
   }
 
-  FUN_00588d38(param_1,param_2);
+  FUN_00588d38(sfd,sup);
 
   return;
 
@@ -146611,7 +146607,7 @@ void FUN_005990a8(void)
 // FUN_005990C0 NONMATCHING
 
 
-u32 SFD_GetHnStat(int param_1)
+u32 SFD_GetHnStat(int sfd)
 
 
 
@@ -146629,7 +146625,7 @@ u32 SFD_GetHnStat(int param_1)
 
   }
 
-  return *(u32 *)(param_1 + 0x48);
+  return *(u32 *)(sfd + 0x48);
 
 }
 
@@ -146742,7 +146738,7 @@ void FUN_005991b8(u64 param_1,u64 param_2)
 // FUN_00599240 NONMATCHING
 
 
-void SFSET_SetCond(int param_1,int param_2,u32 param_3)
+void SFSET_SetCond(int sfd, int param_2, u32 val)
 
 
 
@@ -146756,7 +146752,7 @@ void SFSET_SetCond(int param_1,int param_2,u32 param_3)
 
   if (lVar1 != 0) {
 
-    *(u32 *)(param_2 * 4 + param_1 + 0xa0c) = param_3;
+    *(u32 *)(param_2 * 4 + sfd + 0xa0c) = val;
 
   }
 
@@ -146771,7 +146767,7 @@ void SFSET_SetCond(int param_1,int param_2,u32 param_3)
 // FUN_00599290 NONMATCHING
 
 
-void sfset_SetCondDef(int param_1,int param_2,u32 param_3)
+void sfset_SetCondDef(int sfd, int param_2, u32 val)
 
 
 
@@ -146785,7 +146781,7 @@ void sfset_SetCondDef(int param_1,int param_2,u32 param_3)
 
   if (lVar1 != 0) {
 
-    *(u32 *)(param_2 * 4 + param_1 + 0xb9c) = param_3;
+    *(u32 *)(param_2 * 4 + sfd + 0xb9c) = val;
 
   }
 
@@ -146845,7 +146841,7 @@ u64 FUN_005992e0(u64 param_1,int param_2,long param_3)
 // FUN_00599368 NONMATCHING
 
 
-u64 SFD_GetCond(long param_1,u64 param_2,u32 *param_3)
+u64 SFD_GetCond(long sfd, s32 param_2, u32 *val)
 
 
 
@@ -146859,9 +146855,9 @@ u64 SFD_GetCond(long param_1,u64 param_2,u32 *param_3)
 
 
 
-  if (param_1 == 0) {
+  if (sfd == 0) {
 
-    *param_3 = *(u32 *)((u8 *)(u32)&DAT_007b4570 + (int)param_2 * 4);
+    *val = *(u32 *)((u8 *)(u32)&DAT_007b4570 + (int)param_2 * 4);
 
   }
 
@@ -146877,9 +146873,9 @@ u64 SFD_GetCond(long param_1,u64 param_2,u32 *param_3)
 
     }
 
-    uVar1 = SFSET_GetCond(param_1,param_2);
+    uVar1 = SFSET_GetCond(sfd,param_2);
 
-    *param_3 = uVar1;
+    *val = uVar1;
 
   }
 
@@ -146975,7 +146971,7 @@ void FUN_00599418(int param_1,u64 *param_2)
 // FUN_005994F0 NONMATCHING
 
 
-u64 SFD_GetPlyInf(int param_1,u64 *param_2)
+u64 SFD_GetPlyInf(int sfd, u64 *inf)
 
 
 
@@ -147003,7 +146999,7 @@ u64 SFD_GetPlyInf(int param_1,u64 *param_2)
 
   }
 
-  puVar3 = (u64 *)(param_1 + 0x950);
+  puVar3 = (u64 *)(sfd + 0x950);
 
   do {
 
@@ -147013,21 +147009,21 @@ u64 SFD_GetPlyInf(int param_1,u64 *param_2)
 
     uVar5 = puVar3[3];
 
-    *param_2 = *puVar3;
+    *inf = *puVar3;
 
-    param_2[1] = uVar2;
+    inf[1] = uVar2;
 
-    param_2[2] = uVar4;
+    inf[2] = uVar4;
 
-    param_2[3] = uVar5;
+    inf[3] = uVar5;
 
     puVar3 = puVar3 + 4;
 
-    param_2 = param_2 + 4;
+    inf = inf + 4;
 
-  } while (puVar3 != (u64 *)(param_1 + 0x9f0));
+  } while (puVar3 != (u64 *)(sfd + 0x9f0));
 
-  *param_2 = *puVar3;
+  *inf = *puVar3;
 
   return 0;
 
@@ -147868,7 +147864,7 @@ void FUN_00599d70(u64 param_1,int param_2,int *param_3,u32 *param_4)
 // FUN_00599E08 NONMATCHING
 
 
-u8 SFTIM_IsStagnant(u64 param_1)
+u8 SFTIM_IsStagnant(u64 sfd)
 
 
 
@@ -147882,7 +147878,7 @@ u8 SFTIM_IsStagnant(u64 param_1)
 
   if (lVar1 != 0) {
 
-    FUN_0058be40(param_1,0xffffffffff000222);
+    FUN_0058be40(sfd,0xffffffffff000222);
 
   }
 
@@ -148290,7 +148286,7 @@ u64 FUN_0059a200(u64 param_1,u64 param_2,u64 param_3)
 // FUN_0059A298 NONMATCHING
 
 
-u64 sftim_GetTimeNone(u64 param_1,u32 *param_2,u32 *param_3)
+u64 sftim_GetTimeNone(u64 sfd, u32 *ncount, u32 *tscale)
 
 
 
@@ -148304,9 +148300,9 @@ u64 sftim_GetTimeNone(u64 param_1,u32 *param_2,u32 *param_3)
 
   if (lVar1 != 0) {
 
-    *param_2 = 0xfffffffe;
+    *ncount = 0xfffffffe;
 
-    *param_3 = 1;
+    *tscale = 1;
 
   }
 
@@ -148452,7 +148448,7 @@ u64 FUN_0059a360(u64 param_1,u32 *param_2,u32 *param_3)
 // FUN_0059A458
 
 
-asm u32 SFTIM_ChkRegularTime(int param_1,u32 *param_2,u32 *param_3)
+asm u32 SFTIM_ChkRegularTime(int sfd, u32 *ncount, u32 *tscale)
 {
   .set noreorder
   .word 0x8c830048
@@ -148519,7 +148515,7 @@ void FUN_0059a4a8(int param_1)
 // FUN_0059A508 NONMATCHING
 
 
-void SFD_SetUsrIsSkipFn(int param_1,u32 param_2)
+void SFD_SetUsrIsSkipFn(int sfd, u32 param_2)
 
 
 
@@ -148539,7 +148535,7 @@ void SFD_SetUsrIsSkipFn(int param_1,u32 param_2)
 
   }
 
-  *(u32 *)(param_1 + 0xd48) = param_2;
+  *(u32 *)(sfd + 0xd48) = param_2;
 
   return;
 
@@ -148612,7 +148608,7 @@ u64 FUN_0059a578(u64 param_1,long param_2)
 // FUN_0059A600 NONMATCHING
 
 
-u64 SFD_SetExtClockFn(u64 param_1,long param_2,u32 param_3,u32 param_4)
+u64 SFD_SetExtClockFn(u64 sfd, long param_2, u32 wrap, u32 obj)
 
 
 
@@ -148636,17 +148632,17 @@ u64 SFD_SetExtClockFn(u64 param_1,long param_2,u32 param_3,u32 param_4)
 
   }
 
-  iVar3 = (int)param_1;
+  iVar3 = (int)sfd;
 
   if (param_2 == 0) {
 
-    SFSET_SetCond(param_1,0x47,1);
+    SFSET_SetCond(sfd,0x47,1);
 
-    SFSET_SetCond(param_1,0xf,1);
+    SFSET_SetCond(sfd,0xf,1);
 
-    *(u32 *)(iVar3 + 0x1018) = param_4;
+    *(u32 *)(iVar3 + 0x1018) = obj;
 
-    *(u32 *)(iVar3 + 0x1014) = param_3;
+    *(u32 *)(iVar3 + 0x1014) = wrap;
 
     *(u32 *)(iVar3 + 0x1004) = 0;
 
@@ -148654,15 +148650,15 @@ u64 SFD_SetExtClockFn(u64 param_1,long param_2,u32 param_3,u32 param_4)
 
   else {
 
-    *(u32 *)(iVar3 + 0x1018) = param_4;
+    *(u32 *)(iVar3 + 0x1018) = obj;
 
     *(int *)(iVar3 + 0x1004) = (int)param_2;
 
-    *(u32 *)(iVar3 + 0x1014) = param_3;
+    *(u32 *)(iVar3 + 0x1014) = wrap;
 
-    SFSET_SetCond(param_1,0xf,5);
+    SFSET_SetCond(sfd,0xf,5);
 
-    SFSET_SetCond(param_1,0x47,0);
+    SFSET_SetCond(sfd,0x47,0);
 
   }
 
@@ -148838,7 +148834,7 @@ asm void FUN_0059a860(int param_1,u32 param_2,int param_3)
 // FUN_0059A870 NONMATCHING
 
 
-void SFTIM_Tc2Time(u64 param_1,u64 param_2,u64 param_3)
+void SFTIM_Tc2Time(u64 param_1, s32 *ncount, s32 *tscale)
 
 
 
@@ -148854,9 +148850,9 @@ void SFTIM_Tc2Time(u64 param_1,u64 param_2,u64 param_3)
 
     FUN_0058be40(0,0xffffffffff000221);
 
-    *(u32 *)param_2 = 0;
+    *(u32 *)ncount = 0;
 
-    *(u32 *)param_3 = 1;
+    *(u32 *)tscale = 1;
 
   }
 
@@ -148864,7 +148860,7 @@ void SFTIM_Tc2Time(u64 param_1,u64 param_2,u64 param_3)
 
     (**(code **)((u8 *)(u32)&DAT_007ca2e8 + (iVar1 * 2 + ((int *)param_1)[1]) * 4))
 
-              (*(u32 *)((u8 *)(u32)&DAT_007ca2c0 + iVar1 * 4),param_1,param_2,param_3);
+              (*(u32 *)((u8 *)(u32)&DAT_007ca2c0 + iVar1 * 4),param_1,ncount,tscale);
 
   }
 
@@ -149087,7 +149083,7 @@ void FUN_0059acf0(int param_1)
 // FUN_0059AD40 NONMATCHING
 
 
-void SFTIM_GetTimeOneFrmVideo(int param_1,u32 *param_2,u32 *param_3)
+void SFTIM_GetTimeOneFrmVideo(int sfd, u32 *ncount, u32 *tscale)
 
 
 
@@ -149097,21 +149093,21 @@ void SFTIM_GetTimeOneFrmVideo(int param_1,u32 *param_2,u32 *param_3)
 
 
 
-  if (*(int *)(param_1 + 0x920) == 0) {
+  if (*(int *)(sfd + 0x920) == 0) {
 
-    *param_2 = 0;
+    *ncount = 0;
 
-    *param_3 = 0x7512;
+    *tscale = 0x7512;
 
     return;
 
   }
 
-  uVar1 = *(u32 *)((u8 *)(u32)&DAT_007ca2c0 + *(int *)(param_1 + 0x920) * 4);
+  uVar1 = *(u32 *)((u8 *)(u32)&DAT_007ca2c0 + *(int *)(sfd + 0x920) * 4);
 
-  *param_2 = 1000;
+  *ncount = 1000;
 
-  *param_3 = uVar1;
+  *tscale = uVar1;
 
   return;
 
@@ -149124,7 +149120,7 @@ void SFTIM_GetTimeOneFrmVideo(int param_1,u32 *param_2,u32 *param_3)
 // FUN_0059AD80 NONMATCHING
 
 
-void SFD_GetFps(int param_1,u32 *param_2)
+void SFD_GetFps(int sfd, u32 *fps)
 
 
 
@@ -149134,7 +149130,7 @@ void SFD_GetFps(int param_1,u32 *param_2)
 
 
 
-  *param_2 = 0xffffffff;
+  *fps = 0xffffffff;
 
   lVar1 = ((code)FUN_0058c060)();
 
@@ -149146,9 +149142,9 @@ void SFD_GetFps(int param_1,u32 *param_2)
 
   }
 
-  if (*(int *)(param_1 + 0x920) != 0) {
+  if (*(int *)(sfd + 0x920) != 0) {
 
-    *param_2 = *(u32 *)((u8 *)(u32)&DAT_007ca2c0 + *(int *)(param_1 + 0x920) * 4);
+    *fps = *(u32 *)((u8 *)(u32)&DAT_007ca2c0 + *(int *)(sfd + 0x920) * 4);
 
   }
 
@@ -149677,9 +149673,9 @@ u8 FUN_0059b300(u64 param_1)
 
 
 #pragma schedule on
-void SFTIM_SetSpeed(int object, u32 value)
+void SFTIM_SetSpeed(int sfd, u32 speed)
 {
-  *(u32 *)(object + 0xfdc) = value;
+  *(u32 *)(sfd + 0xfdc) = speed;
 }
 #pragma schedule off
 
@@ -149834,7 +149830,7 @@ asm void FUN_0059b4b0(long *param_1,long param_2)
 // FUN_0059B4F0 NONMATCHING
 
 
-void SFTRN_Init(u64 *param_1,u64 param_2)
+void SFTRN_Init(u64 *dst, u64 src)
 
 
 
@@ -149852,7 +149848,7 @@ void SFTRN_Init(u64 *param_1,u64 param_2)
 
 
 
-  puVar2 = (u64 *)param_2;
+  puVar2 = (u64 *)src;
 
   uVar3 = puVar2[1];
 
@@ -149860,13 +149856,13 @@ void SFTRN_Init(u64 *param_1,u64 param_2)
 
   uVar5 = puVar2[3];
 
-  *param_1 = *puVar2;
+  *dst = *puVar2;
 
-  param_1[1] = uVar3;
+  dst[1] = uVar3;
 
-  param_1[2] = uVar4;
+  dst[2] = uVar4;
 
-  param_1[3] = uVar5;
+  dst[3] = uVar5;
 
   uVar3 = puVar2[5];
 
@@ -149874,15 +149870,15 @@ void SFTRN_Init(u64 *param_1,u64 param_2)
 
   uVar1 = *(u32 *)(puVar2 + 7);
 
-  param_1[4] = puVar2[4];
+  dst[4] = puVar2[4];
 
-  param_1[5] = uVar3;
+  dst[5] = uVar3;
 
-  param_1[6] = uVar4;
+  dst[6] = uVar4;
 
-  *(u32 *)(param_1 + 7) = uVar1;
+  *(u32 *)(dst + 7) = uVar1;
 
-  ((code)FUN_0059b5a0)(param_2,0);
+  ((code)FUN_0059b5a0)(src,0);
 
   return;
 
@@ -150705,17 +150701,17 @@ void FUN_0059bcf0(u64 param_1)
 // FUN_0059BDD0 NONMATCHING
 
 
-void sftst_ResetHist(int param_1)
+void sftst_ResetHist(int tst)
 
 
 
 {
 
-  FUN_00521408(param_1 + 0x18,0,0xf0);
+  FUN_00521408(tst + 0x18,0,0xf0);
 
-  *(u32 *)(param_1 + 0x14) = 0;
+  *(u32 *)(tst + 0x14) = 0;
 
-  *(int *)(param_1 + 0x19c) = *(int *)(param_1 + 0x19c) + 1;
+  *(int *)(tst + 0x19c) = *(int *)(tst + 0x19c) + 1;
 
   return;
 
@@ -150742,7 +150738,7 @@ void FUN_0059be10(u32 *output, u32 value)
 // FUN_0059BE18
 
 
-asm void SFTST_SetTolerance(int param_1,u64 *param_2)
+asm void SFTST_SetTolerance(int tst, u64 *param_2)
 {
   .set noreorder
   .word 0xdca20000
@@ -150760,7 +150756,7 @@ asm void SFTST_SetTolerance(int param_1,u64 *param_2)
 // FUN_0059BE30
 
 
-asm void SFTST_SetExcessErr(int param_1,u64 *param_2)
+asm void SFTST_SetExcessErr(int tst, u64 *param_2)
 {
   .set noreorder
   .word 0xdca20000
@@ -150778,7 +150774,7 @@ asm void SFTST_SetExcessErr(int param_1,u64 *param_2)
 // FUN_0059BE48
 
 
-asm void SFTST_SetAdjStart(int param_1,u64 *param_2)
+asm void SFTST_SetAdjStart(int tst, u64 *param_2)
 {
   .set noreorder
   .word 0xdca20000
@@ -150796,7 +150792,7 @@ asm void SFTST_SetAdjStart(int param_1,u64 *param_2)
 // FUN_0059BE60
 
 
-asm void SFTST_SetAdjPoff(int param_1,u64 *param_2)
+asm void SFTST_SetAdjPoff(int tst, u64 *param_2)
 {
   .set noreorder
   .word 0xdca20000
@@ -150814,7 +150810,7 @@ asm void SFTST_SetAdjPoff(int param_1,u64 *param_2)
 // FUN_0059BE78
 
 
-asm void SFTST_SetMovaveRange(int param_1, long param_2)
+asm void SFTST_SetMovaveRange(int tst, s32 range)
 {
   .set noreorder
   .word 0x5ca00001
@@ -150852,7 +150848,7 @@ void FUN_0059be90(int object, u32 value)
 // FUN_0059BE98 NONMATCHING
 
 
-void SFTST_GoNextFrame(int param_1,u64 *param_2)
+void SFTST_GoNextFrame(int tst, u64 *frm)
 
 
 
@@ -150864,13 +150860,13 @@ void SFTST_GoNextFrame(int param_1,u64 *param_2)
 
 
 
-  if (*(int *)(param_1 + 0xc) == 0) {
+  if (*(int *)(tst + 0xc) == 0) {
 
-    uVar1 = FUN_0052ea78(*(u64 *)(param_1 + 0x130),*param_2);
+    uVar1 = FUN_0052ea78(*(u64 *)(tst + 0x130),*frm);
 
-    lVar2 = FUN_0052eeb0(uVar1,param_2[1]);
+    lVar2 = FUN_0052eeb0(uVar1,frm[1]);
 
-    *(long *)(param_1 + 0x128) = *(long *)(param_1 + 0x128) + lVar2;
+    *(long *)(tst + 0x128) = *(long *)(tst + 0x128) + lVar2;
 
   }
 
@@ -152757,7 +152753,7 @@ u64 FUN_0059d2b0(u64 param_1,u32 *param_2)
 // FUN_0059D3A0 NONMATCHING
 
 
-void SFH_IsExistStmId(int param_1,u8 param_2,u32 *param_3)
+void SFH_IsExistStmId(int sfh, u8 param_2, u32 *flag)
 
 
 
@@ -152769,9 +152765,9 @@ void SFH_IsExistStmId(int param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *flag = 0;
 
-  uVar1 = *(u32 *)(param_1 + 4);
+  uVar1 = *(u32 *)(sfh + 4);
 
   lVar2 = ((code)FUN_0059d240)();
 
@@ -152781,13 +152777,13 @@ void SFH_IsExistStmId(int param_1,u8 param_2,u32 *param_3)
 
     if (lVar2 == 0) {
 
-      *param_3 = 0;
+      *flag = 0;
 
     }
 
     else {
 
-      *param_3 = 1;
+      *flag = 1;
 
     }
 
@@ -152804,7 +152800,7 @@ void SFH_IsExistStmId(int param_1,u8 param_2,u32 *param_3)
 // FUN_0059D410 NONMATCHING
 
 
-u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_IsEffFtrInf(u64 sfh, u8 param_2, u32 *flag)
 
 
 
@@ -152816,7 +152812,7 @@ u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  if (*(int *)((int)param_1 + 0xc) < 0x6e) {
+  if (*(int *)((int)sfh + 0xc) < 0x6e) {
 
     return 0;
 
@@ -152826,7 +152822,7 @@ u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
 
   if (lVar2 == 0xc0) {
 
-    lVar2 = ((code)sfh_GetElem)(param_1,param_2);
+    lVar2 = ((code)sfh_GetElem)(sfh,param_2);
 
     if (lVar2 == 0) {
 
@@ -152836,7 +152832,7 @@ u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
 
     uVar1 = ((code)sfh_IsEffFtrAud)(param_2,lVar2);
 
-    *param_3 = uVar1;
+    *flag = uVar1;
 
   }
 
@@ -152848,7 +152844,7 @@ u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
 
     }
 
-    lVar2 = ((code)sfh_GetElem)(param_1,param_2);
+    lVar2 = ((code)sfh_GetElem)(sfh,param_2);
 
     if (lVar2 == 0) {
 
@@ -152858,7 +152854,7 @@ u64 SFH_IsEffFtrInf(u64 param_1,u8 param_2,u32 *param_3)
 
     uVar1 = ((code)sfh_IsEffFtrVid)(param_2,lVar2);
 
-    *param_3 = uVar1;
+    *flag = uVar1;
 
   }
 
@@ -153807,7 +153803,7 @@ u8 FUN_0059ddf0(u64 param_1,u8 param_2,u64 param_3)
 // FUN_0059DE68 NONMATCHING
 
 
-void sfh_GetElem(int param_1,u64 param_2)
+void sfh_GetElem(int sfh, u32 param_2)
 
 
 
@@ -153819,7 +153815,7 @@ void sfh_GetElem(int param_1,u64 param_2)
 
 
 
-  uVar1 = *(u32 *)(param_1 + 4);
+  uVar1 = *(u32 *)(sfh + 4);
 
   lVar2 = ((code)FUN_0059d240)();
 
@@ -153842,7 +153838,7 @@ void sfh_GetElem(int param_1,u64 param_2)
 // FUN_0059DEC0 NONMATCHING
 
 
-u64 SFH_AnlyElemCodecAud(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyElemCodecAud(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -153856,9 +153852,9 @@ u64 SFH_AnlyElemCodecAud(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -153872,7 +153868,7 @@ u64 SFH_AnlyElemCodecAud(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x19);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x19);
 
     }
 
@@ -153889,7 +153885,7 @@ u64 SFH_AnlyElemCodecAud(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059DF30 NONMATCHING
 
 
-u64 SFH_AnlyElemLayer(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyElemLayer(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -153903,9 +153899,9 @@ u64 SFH_AnlyElemLayer(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -153921,7 +153917,7 @@ u64 SFH_AnlyElemLayer(u64 param_1,u8 param_2,u32 *param_3)
 
         uVar3 = 1;
 
-        *param_3 = (u32)*(u8 *)((int)lVar1 + 0x1a);
+        *val = (u32)*(u8 *)((int)lVar1 + 0x1a);
 
       }
 
@@ -153946,7 +153942,7 @@ u64 SFH_AnlyElemLayer(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059DFB0 NONMATCHING
 
 
-u64 SFH_AnlyElemChNum(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyElemChNum(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -153960,9 +153956,9 @@ u64 SFH_AnlyElemChNum(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -153976,7 +153972,7 @@ u64 SFH_AnlyElemChNum(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x1b);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x1b);
 
     }
 
@@ -154040,7 +154036,7 @@ u64 FUN_0059e020(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E090 NONMATCHING
 
 
-u64 SFH_AnlyElemCodecVid(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyElemCodecVid(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154054,9 +154050,9 @@ u64 SFH_AnlyElemCodecVid(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154070,7 +154066,7 @@ u64 SFH_AnlyElemCodecVid(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x19);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x19);
 
     }
 
@@ -154213,7 +154209,7 @@ u64 FUN_0059e178(u64 param_1,u8 param_2,u32 *param_3,u32 *param_4)
 // FUN_0059E228 NONMATCHING
 
 
-u64 SFH_AnlyElemPicRate(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyElemPicRate(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154229,9 +154225,9 @@ u64 SFH_AnlyElemPicRate(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar2 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar2 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar4 = 0;
 
@@ -154245,7 +154241,7 @@ u64 SFH_AnlyElemPicRate(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar1 = getPicRate(*(u8 *)((int)lVar2 + 0x1f));
 
-      *param_3 = uVar1;
+      *val = uVar1;
 
       uVar4 = 1;
 
@@ -154264,7 +154260,7 @@ u64 SFH_AnlyElemPicRate(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E298 NONMATCHING
 
 
-u64 SFH_AnlyFtrColType(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrColType(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154278,9 +154274,9 @@ u64 SFH_AnlyFtrColType(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154294,7 +154290,7 @@ u64 SFH_AnlyFtrColType(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x21);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x21);
 
     }
 
@@ -154311,7 +154307,7 @@ u64 SFH_AnlyFtrColType(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E308 NONMATCHING
 
 
-u64 SFH_AnlyFtrPicType(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrPicType(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154325,9 +154321,9 @@ u64 SFH_AnlyFtrPicType(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154341,7 +154337,7 @@ u64 SFH_AnlyFtrPicType(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x22);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x22);
 
     }
 
@@ -154358,7 +154354,7 @@ u64 SFH_AnlyFtrPicType(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E378 NONMATCHING
 
 
-u64 SFH_AnlyFtrFixFlg(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrFixFlg(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154372,9 +154368,9 @@ u64 SFH_AnlyFtrFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154388,7 +154384,7 @@ u64 SFH_AnlyFtrFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = *(u8 *)((int)lVar1 + 0x23) & 1;
+      *val = *(u8 *)((int)lVar1 + 0x23) & 1;
 
     }
 
@@ -154405,7 +154401,7 @@ u64 SFH_AnlyFtrFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E3E8 NONMATCHING
 
 
-u64 SFH_AnlyFtrShcFixFlg(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrShcFixFlg(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154419,9 +154415,9 @@ u64 SFH_AnlyFtrShcFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154435,7 +154431,7 @@ u64 SFH_AnlyFtrShcFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)((*(u8 *)((int)lVar1 + 0x23) & 0x10) != 0);
+      *val = (u32)((*(u8 *)((int)lVar1 + 0x23) & 0x10) != 0);
 
     }
 
@@ -154452,7 +154448,7 @@ u64 SFH_AnlyFtrShcFixFlg(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E460 NONMATCHING
 
 
-u64 SFH_AnlyFtrExpand(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrExpand(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154466,9 +154462,9 @@ u64 SFH_AnlyFtrExpand(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0;
+  *val = 0;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154482,7 +154478,7 @@ u64 SFH_AnlyFtrExpand(u64 param_1,u8 param_2,u32 *param_3)
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x24);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x24);
 
     }
 
@@ -154499,7 +154495,7 @@ u64 SFH_AnlyFtrExpand(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E4D0 NONMATCHING
 
 
-u64 SFH_AnlyFtrGopN(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrGopN(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154515,9 +154511,9 @@ u64 SFH_AnlyFtrGopN(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar2 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar2 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar4 = 0;
 
@@ -154531,11 +154527,11 @@ u64 SFH_AnlyFtrGopN(u64 param_1,u8 param_2,u32 *param_3)
 
       bVar1 = *(u8 *)((int)lVar2 + 0x25);
 
-      *param_3 = (u32)bVar1;
+      *val = (u32)bVar1;
 
       if (0x3f < bVar1) {
 
-        *param_3 = 0xffffffff;
+        *val = 0xffffffff;
 
       }
 
@@ -154556,7 +154552,7 @@ u64 SFH_AnlyFtrGopN(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E558 NONMATCHING
 
 
-u64 SFH_AnlyFtrGopM(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrGopM(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154572,9 +154568,9 @@ u64 SFH_AnlyFtrGopM(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar2 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar2 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar4 = 0;
 
@@ -154588,11 +154584,11 @@ u64 SFH_AnlyFtrGopM(u64 param_1,u8 param_2,u32 *param_3)
 
       bVar1 = *(u8 *)((int)lVar2 + 0x26);
 
-      *param_3 = (u32)bVar1;
+      *val = (u32)bVar1;
 
       if (0x3f < bVar1) {
 
-        *param_3 = 0xffffffff;
+        *val = 0xffffffff;
 
       }
 
@@ -154613,7 +154609,7 @@ u64 SFH_AnlyFtrGopM(u64 param_1,u8 param_2,u32 *param_3)
 // FUN_0059E5E0 NONMATCHING
 
 
-u64 SFH_AnlyFtrFxType(u64 param_1,u8 param_2,u32 *param_3)
+u64 SFH_AnlyFtrFxType(u64 sfh, u8 param_2, u32 *val)
 
 
 
@@ -154627,9 +154623,9 @@ u64 SFH_AnlyFtrFxType(u64 param_1,u8 param_2,u32 *param_3)
 
 
 
-  *param_3 = 0xffffffff;
+  *val = 0xffffffff;
 
-  lVar1 = ((code)sfh_GetElem)(param_1,param_2);
+  lVar1 = ((code)sfh_GetElem)(sfh,param_2);
 
   uVar3 = 0;
 
@@ -154639,11 +154635,11 @@ u64 SFH_AnlyFtrFxType(u64 param_1,u8 param_2,u32 *param_3)
 
     uVar3 = 0;
 
-    if ((lVar2 != 0) && (uVar3 = 0, 0xd1 < *(int *)((int)param_1 + 0xc))) {
+    if ((lVar2 != 0) && (uVar3 = 0, 0xd1 < *(int *)((int)sfh + 0xc))) {
 
       uVar3 = 1;
 
-      *param_3 = (u32)*(u8 *)((int)lVar1 + 0x27);
+      *val = (u32)*(u8 *)((int)lVar1 + 0x27);
 
     }
 
@@ -154697,7 +154693,7 @@ u32 getPicRate(u32 param_1)
 // FUN_0059E6E0 NONMATCHING
 
 
-u8 sfh_IsEffFtrAud(u64 param_1,int param_2)
+u8 sfh_IsEffFtrAud(u32 param_1, int elem)
 
 
 
@@ -154713,7 +154709,7 @@ u8 sfh_IsEffFtrAud(u64 param_1,int param_2)
 
   bVar1 = 0;
 
-  if ((lVar2 == 0xc0) && (bVar1 = *(u8 *)(param_2 + 0x20) != 0, 1 < *(u8 *)(param_2 + 0x20))) {
+  if ((lVar2 == 0xc0) && (bVar1 = *(u8 *)(elem + 0x20) != 0, 1 < *(u8 *)(elem + 0x20))) {
 
     bVar1 = 0;
 
@@ -154730,7 +154726,7 @@ u8 sfh_IsEffFtrAud(u64 param_1,int param_2)
 // FUN_0059E720 NONMATCHING
 
 
-u8 sfh_IsEffFtrVid(u64 param_1,int param_2)
+u8 sfh_IsEffFtrVid(u32 param_1, int elem)
 
 
 
@@ -154746,7 +154742,7 @@ u8 sfh_IsEffFtrVid(u64 param_1,int param_2)
 
   bVar1 = 0;
 
-  if ((lVar2 == 0xe0) && (bVar1 = *(u8 *)(param_2 + 0x20) != 0, 1 < *(u8 *)(param_2 + 0x20))) {
+  if ((lVar2 == 0xe0) && (bVar1 = *(u8 *)(elem + 0x20) != 0, 1 < *(u8 *)(elem + 0x20))) {
 
     bVar1 = 0;
 
@@ -155192,7 +155188,7 @@ asm void FUN_0059ea80(int param_1)
 // FUN_0059EAF8 NONMATCHING
 
 
-u32 sfxcnv_IsCnvUpHalf(int param_1)
+u32 sfxcnv_IsCnvUpHalf(int sfx)
 
 
 
@@ -155202,7 +155198,7 @@ u32 sfxcnv_IsCnvUpHalf(int param_1)
 
 
 
-  iVar1 = *(int *)(param_1 + 4);
+  iVar1 = *(int *)(sfx + 4);
 
   if (iVar1 != 0x61) {
 
@@ -156750,7 +156746,7 @@ u32 FUN_0059fcb0(long value)
 // FUN_0059FCC0 NONMATCHING
 
 
-void SFX_Destroy(long param_1)
+void SFX_Destroy(long sfx)
 
 
 
@@ -156762,9 +156758,9 @@ void SFX_Destroy(long param_1)
 
 
 
-  if (param_1 != 0) {
+  if (sfx != 0) {
 
-    puVar2 = (u32 *)param_1;
+    puVar2 = (u32 *)sfx;
 
     uVar1 = puVar2[0xc];
 
@@ -156789,7 +156785,7 @@ void SFX_Destroy(long param_1)
 // FUN_0059FD10 NONMATCHING
 
 
-void SFXLIB_Error(u64 param_1,u64 param_2,u64 param_3)
+void SFXLIB_Error(u64 sfx, u64 frm, u64 msg)
 
 
 
@@ -156799,7 +156795,7 @@ void SFXLIB_Error(u64 param_1,u64 param_2,u64 param_3)
 
   if ((int)DAT_007b4928 != 0x0) {
 
-    (*(code *)(u32)DAT_007b4928)(DAT_007b492c,param_3);
+    (*(code *)(u32)DAT_007b4928)(DAT_007b492c,msg);
 
   }
 
@@ -156981,7 +156977,7 @@ u32 FUN_0059fe58(int param_1)
 // FUN_0059FE60 NONMATCHING
 
 
-void SFX_SetTagInf(int param_1,u32 param_2,u32 param_3)
+void SFX_SetTagInf(int sfx, u32 param_2, u32 param_3)
 
 
 
@@ -157001,11 +156997,11 @@ void SFX_SetTagInf(int param_1,u32 param_2,u32 param_3)
 
 
 
-  *(u32 *)(param_1 + 0x18) = param_2;
+  *(u32 *)(sfx + 0x18) = param_2;
 
-  *(u32 *)(param_1 + 0x1c) = param_3;
+  *(u32 *)(sfx + 0x1c) = param_3;
 
-  uVar1 = *(u32 *)(param_1 + 0x24);
+  uVar1 = *(u32 *)(sfx + 0x24);
 
   uStack_40 = param_2;
 
@@ -157025,7 +157021,7 @@ void SFX_SetTagInf(int param_1,u32 param_2,u32 param_3)
 
   }
 
-  *(u32 *)(param_1 + 0x14) = 1;
+  *(u32 *)(sfx + 0x14) = 1;
 
   return;
 
