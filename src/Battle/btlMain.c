@@ -56,7 +56,7 @@ extern void FUN_002a1e00_typed(f32* out, f32* first, f32* second, f32 weight);
 u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
 void FUN_002a2170(u16 *param_1,f32 *param_2);
 void FUN_002a2290(u16 *param_1,f32 *param_2,f32 *param_3,u16 param_4);
-void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u16 param_6  );
+void FUN_002a2660(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags);
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1);
 void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1);
 void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1);
@@ -4004,236 +4004,134 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 
 void FUN_002a2660(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags)
 {
-
   u16 slot;
-
-  u32 *src;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
+  u32 *record;
+  u32 word1;
+  u32 word2;
+  u32 word4;
+  u32 word5;
+  u32 word6;
 
   *ring = flags;
-
   ring[0x3a] = 0;
-
   ring[0x3b] = 0;
-
   ring[0x3c] = 0;
-
   ring[0x40] = 0;
-
   ring[0x41] = 0;
-
   ring[0x3e] = 0;
-
   ring[0x3f] = 0;
 
   if (ring[0x3b] < 4) {
-
     slot = ring[0x3c];
-
-    src = (u32 *)rec0;
-
+    record = (u32 *)rec0;
     if (rec0 != 0) {
-
-      uVar3 = src[1];
-
-      uVar4 = src[2];
-
-      *(u32 *)(ring + (u32)slot * 0xe + 2) = *src;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 4) = uVar3;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 6) = uVar4;
-
+      word1 = record[1];
+      word2 = record[2];
+      *(u32 *)(ring + (u32)slot * 0xe + 2) = *record;
+      *(u32 *)(ring + (u32)slot * 0xe + 4) = word1;
+      *(u32 *)(ring + (u32)slot * 0xe + 6) = word2;
       if ((*ring & 1) == 0) {
-
         FUN_0048d370(*(u32 *)(ring + 0x4c),slot,rec0);
-
       }
-
     }
-
-
-      uVar5 = src[4];
-      uVar3 = src[5];
-      uVar4 = src[6];
-      *(u32 *)(ring + (u32)slot * 0xe + 8) = src[3];
-      *(u32 *)(ring + (u32)slot * 0xe + 10) = uVar5;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xc) = uVar3;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xe) = uVar4;
-
-
+    word4 = record[4];
+    word5 = record[5];
+    word6 = record[6];
+    *(u32 *)(ring + (u32)slot * 0xe + 8) = record[3];
+    *(u32 *)(ring + (u32)slot * 0xe + 10) = word4;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xc) = word5;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xe) = word6;
     slot = slot + 1;
-
     if (3 < slot) {
-
       slot = 0;
-
     }
-
     ring[0x3c] = slot;
-
     ring[0x3b] = ring[0x3b] + 1;
-
   }
 
   if (ring[0x3b] < 4) {
-
     slot = ring[0x3c];
-
-    src = (u32 *)rec1;
-
+    record = (u32 *)rec1;
     if (rec1 != 0) {
-
-      uVar3 = src[1];
-
-      uVar4 = src[2];
-
-      *(u32 *)(ring + (u32)slot * 0xe + 2) = *src;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 4) = uVar3;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 6) = uVar4;
-
+      word1 = record[1];
+      word2 = record[2];
+      *(u32 *)(ring + (u32)slot * 0xe + 2) = *record;
+      *(u32 *)(ring + (u32)slot * 0xe + 4) = word1;
+      *(u32 *)(ring + (u32)slot * 0xe + 6) = word2;
       if ((*ring & 1) == 0) {
-
         FUN_0048d370(*(u32 *)(ring + 0x4c),slot,rec1);
-
       }
-
     }
-
-
-      uVar5 = src[4];
-      uVar3 = src[5];
-      uVar4 = src[6];
-      *(u32 *)(ring + (u32)slot * 0xe + 8) = src[3];
-      *(u32 *)(ring + (u32)slot * 0xe + 10) = uVar5;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xc) = uVar3;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xe) = uVar4;
-
-
+    word4 = record[4];
+    word5 = record[5];
+    word6 = record[6];
+    *(u32 *)(ring + (u32)slot * 0xe + 8) = record[3];
+    *(u32 *)(ring + (u32)slot * 0xe + 10) = word4;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xc) = word5;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xe) = word6;
     slot = slot + 1;
-
     if (3 < slot) {
-
       slot = 0;
-
     }
-
     ring[0x3c] = slot;
-
     ring[0x3b] = ring[0x3b] + 1;
-
   }
 
   if (ring[0x3b] < 4) {
-
     slot = ring[0x3c];
-
-    src = (u32 *)rec2;
-
+    record = (u32 *)rec2;
     if (rec2 != 0) {
-
-      uVar3 = src[1];
-
-      uVar4 = src[2];
-
-      *(u32 *)(ring + (u32)slot * 0xe + 2) = *src;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 4) = uVar3;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 6) = uVar4;
-
+      word1 = record[1];
+      word2 = record[2];
+      *(u32 *)(ring + (u32)slot * 0xe + 2) = *record;
+      *(u32 *)(ring + (u32)slot * 0xe + 4) = word1;
+      *(u32 *)(ring + (u32)slot * 0xe + 6) = word2;
       if ((*ring & 1) == 0) {
-
         FUN_0048d370(*(u32 *)(ring + 0x4c),slot,rec2);
-
       }
-
     }
-
-
-      uVar5 = src[4];
-      uVar3 = src[5];
-      uVar4 = src[6];
-      *(u32 *)(ring + (u32)slot * 0xe + 8) = src[3];
-      *(u32 *)(ring + (u32)slot * 0xe + 10) = uVar5;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xc) = uVar3;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xe) = uVar4;
-
-
+    word4 = record[4];
+    word5 = record[5];
+    word6 = record[6];
+    *(u32 *)(ring + (u32)slot * 0xe + 8) = record[3];
+    *(u32 *)(ring + (u32)slot * 0xe + 10) = word4;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xc) = word5;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xe) = word6;
     slot = slot + 1;
-
     if (3 < slot) {
-
       slot = 0;
-
     }
-
     ring[0x3c] = slot;
-
     ring[0x3b] = ring[0x3b] + 1;
-
   }
 
   if (ring[0x3b] < 4) {
-
     slot = ring[0x3c];
-
-    src = (u32 *)rec3;
-
+    record = (u32 *)rec3;
     if (rec3 != 0) {
-
-      uVar3 = src[1];
-
-      uVar4 = src[2];
-
-      *(u32 *)(ring + (u32)slot * 0xe + 2) = *src;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 4) = uVar3;
-
-      *(u32 *)(ring + (u32)slot * 0xe + 6) = uVar4;
-
+      word1 = record[1];
+      word2 = record[2];
+      *(u32 *)(ring + (u32)slot * 0xe + 2) = *record;
+      *(u32 *)(ring + (u32)slot * 0xe + 4) = word1;
+      *(u32 *)(ring + (u32)slot * 0xe + 6) = word2;
       if ((*ring & 1) == 0) {
-
         FUN_0048d370(*(u32 *)(ring + 0x4c),slot,rec3);
-
       }
-
     }
-
-
-      uVar5 = src[4];
-      uVar3 = src[5];
-      uVar4 = src[6];
-      *(u32 *)(ring + (u32)slot * 0xe + 8) = src[3];
-      *(u32 *)(ring + (u32)slot * 0xe + 10) = uVar5;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xc) = uVar3;
-      *(u32 *)(ring + (u32)slot * 0xe + 0xe) = uVar4;
-
-
+    word4 = record[4];
+    word5 = record[5];
+    word6 = record[6];
+    *(u32 *)(ring + (u32)slot * 0xe + 8) = record[3];
+    *(u32 *)(ring + (u32)slot * 0xe + 10) = word4;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xc) = word5;
+    *(u32 *)(ring + (u32)slot * 0xe + 0xe) = word6;
     slot = slot + 1;
-
     if (3 < slot) {
-
       slot = 0;
-
     }
-
     ring[0x3c] = slot;
-
     ring[0x3b] = ring[0x3b] + 1;
-
   }
-
-  return;
-
 }
 
 static inline u8* btlMainAddFirst(u8* base, u32 offset)
