@@ -933,12 +933,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 RpAtomicSetFrame(u64 param_1);
+u64 FUN_00492d10(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 RpGeometryLock(u64 param_1,u16 param_2);
+u64 FUN_00493370(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u64 FUN_00493b40(u64 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -2479,12 +2479,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 RpAtomicSetFrame(u64 param_1);
+u64 FUN_00492d10(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 RpGeometryLock(u64 param_1,u16 param_2);
+u64 FUN_00493370(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u64 FUN_00493b40(u64 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -28814,7 +28814,7 @@ void FUN_00488550(int *param_1,int param_2,int param_3,int param_4,u32 param_5)
   if ((param_5 & 0x800000) == 0x800000) {
     iVar12 = *(int *)(iVar1 + 0x5c);
     iVar13 = **(int **)(param_2 + DAT_007ce770);
-    ((code)RpGeometryLock)(iVar1,2);
+    ((code)FUN_00493370)(iVar1,2);
     iVar12 = *(int *)(iVar12 + 0x14);
     if (param_4 < iVar13) {
       if (8 < iVar13 - param_4) {
@@ -29015,22 +29015,22 @@ void FUN_00488550(int *param_1,int param_2,int param_3,int param_4,u32 param_5)
   param_1[3] = (u32)((param_5 & 0x10) == 0x10);
   iVar12 = *(int *)(iVar1 + 0x5c);
   if (*param_1 != 0) {
-    ((code)RpGeometryLock)(iVar1,2);
+    ((code)FUN_00493370)(iVar1,2);
     param_1[4] = *(int *)(iVar12 + 0x14);
     param_1[5] = 0xc;
   }
   if (param_1[2] != 0) {
-    ((code)RpGeometryLock)(iVar1,8);
+    ((code)FUN_00493370)(iVar1,8);
     param_1[8] = *(int *)(iVar1 + 0x30);
     param_1[9] = 4;
   }
   if (param_1[1] != 0) {
-    ((code)RpGeometryLock)(iVar1,0x10);
+    ((code)FUN_00493370)(iVar1,0x10);
     param_1[6] = *(int *)(iVar1 + 0x34);
     param_1[7] = 8;
   }
   if (param_1[3] != 0) {
-    ((code)RpGeometryLock)(iVar1,4);
+    ((code)FUN_00493370)(iVar1,4);
     param_1[10] = *(int *)(iVar12 + 0x18);
     param_1[0xb] = 0xc;
   }
