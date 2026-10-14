@@ -37478,7 +37478,7 @@ void FUN_00348100(int *param_1)
 
 
 
-// FUN_00348110 NONMATCHING
+// FUN_00348110
 
 
 
@@ -37489,56 +37489,35 @@ void FUN_00348110(int *animBlock,u32 frame)
 {
   int frameCount;
   u32 span;
+  float ratio;
+  float scale;
 
   frameCount = *animBlock;
-  if (((int)frame <= frameCount) || (frameCount == 0)) {
-    DAT_007cca48 = 1.0f;
-
-
-    if (0 < frameCount) {
-
-      if (frame >= (u32)animBlock[2]) {
-
-        span = animBlock[3];
-        DAT_007cca48 = 1.0f;
-
-
-        if (frameCount - span < frame) {
-
-          if (span == 0) {
-
-            DAT_007cca48 = 0.0f;
-
-          }
-
-          else {
-
-            DAT_007cca48 = (float)(int)(frameCount - frame) / (float)span;
-
-          }
-
-        }
-
-      }
-
-      else {
-
-        DAT_007cca48 = (float)(int)frame / (float)(u32)animBlock[2];
-
-      }
-
+  ratio = 1.0f;
+  if (frameCount < (int)frame) {
+    if (frameCount != 0) {
+      return;
     }
-
-    DAT_007ce558 = (float)*(u16 *)(animBlock + 1) * 10.0f;
-
-    DAT_007ce554 = (DAT_007ce558 * 4.0f) / 10.0f;
-
-    DAT_007ce54c = 1;
-
   }
-
-  return;
-
+  if (0 < frameCount) {
+    if (frame < (u32)animBlock[2]) {
+      ratio = (float)(int)frame / (float)(u32)animBlock[2];
+    } else {
+      span = animBlock[3];
+      if ((u32)(frameCount - span) < frame) {
+        if (span != 0) {
+          ratio = (float)(frameCount - (int)frame) / (float)span;
+        } else {
+          ratio = 0.0f;
+        }
+      }
+    }
+  }
+  scale = 10.0f * (float)*(u16 *)(animBlock + 1);
+  DAT_007ce558 = scale;
+  DAT_007ce554 = (4.0f * scale) / 10.0f;
+  DAT_007cca48 = ratio;
+  DAT_007ce54c = 1;
 }
 
 
