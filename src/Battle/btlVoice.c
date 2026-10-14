@@ -9601,7 +9601,7 @@ void func_002f4890(BtlAction* action)
         unit = action->unit;
         if (unit->genus != UNIT_GENUS_EC)
         {
-            action->unk_18 |= 0x40;
+            action->flags |= 0x40;
         }
         else
         {
