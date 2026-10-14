@@ -303,11 +303,11 @@ void func_00279d60(void)
                 {
                     entry = func_0027a4a0();
                     align = align != 0;
-                    text = func_00279af0((const u32*)(uintptr_t)stream, work[0x482]);
+                    text = brpParamGetEntry((const u32*)(uintptr_t)stream, work[0x482]);
                     func_0027a6a0(entry, (char*)(uintptr_t)text, align);
                     frame = work[0x482];
                     work[0x482] = frame + 1;
-                    if (frame + 1 == func_00279b20((const u32*)(uintptr_t)stream)) {
+                    if (frame + 1 == brpParamReadWord1((const u32*)(uintptr_t)stream)) {
                         work[0x488] = (u32)entry;
                         work[0] |= 4;
                     }
@@ -554,7 +554,7 @@ u32 func_0027aaa0(void)
     K_ASSERT(sOpTailB != NULL, 0x58);
     work = sOpTailB;
     stream = func_0027b070();
-    base = func_00279b10((const u32*)(uintptr_t)stream);
+    base = brpParamReadWord4((const u32*)(uintptr_t)stream);
     return *(u8*)(uintptr_t)(base + work[0x120c / 4]);
 }
 
@@ -568,7 +568,7 @@ s32 func_0027ab10(void)
     K_ASSERT(sOpTailB != NULL, 0x58);
     work = sOpTailB;
     stream = func_0027b070();
-    base = func_00279b10((const u32*)(uintptr_t)stream);
+    base = brpParamReadWord4((const u32*)(uintptr_t)stream);
     return *(u8*)(uintptr_t)(work[0x120c / 4] + base + 1);
 }
 
@@ -584,7 +584,7 @@ void func_0027ab80(void)
     K_ASSERT(sOpTailB != NULL, 0x58);
     work = sOpTailB;
     stream = func_0027b070();
-    base = func_00279b10((const u32*)(uintptr_t)stream);
+    base = brpParamReadWord4((const u32*)(uintptr_t)stream);
     offset = work[0x120c / 4];
     command = *(u8*)(uintptr_t)(base + offset);
     switch (command) {
