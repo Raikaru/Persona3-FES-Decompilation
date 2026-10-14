@@ -1035,7 +1035,7 @@ void btlActionInitStateStart(BtlAction* action)
     u64 actionUID = action->uid;
     u32 flags;
     s16 var_2;
-    if (action->unk_18 & 0x8000)
+    if (action->flags & 0x8000)
     {
         btlActionSetState(action, BTLACTION_STATE_END);
         return;
@@ -1076,7 +1076,7 @@ void btlActionInitStateStart(BtlAction* action)
     }
     if (action->unk_28 == 0)
     {
-        action->unk_18 |= 0x400;
+        action->flags |= 0x400;
         action->unk_1a &= ~0x40;
     }
     else if ((ACTION_U32(gBtl, 0x10) & 0x20) == 0)
@@ -1089,7 +1089,7 @@ void btlActionInitStateStart(BtlAction* action)
     if (action->passiveSkillsFlags == 0 && (flags & 0x80000) == 0)
     {
         btlActionSetState(action, (s8)FUN_00302f50(unit->datUnit) < 0 ?
-                                  (FUN_002dc070(action) ? BTLACTION_STATE_BAD : action->unk_14) :
+                                  (FUN_002dc070(action) ? BTLACTION_STATE_BAD : action->state) :
                                   BTLACTION_STATE_SUPPORT);
     }
     if (var_2 != 0)
@@ -1400,11 +1400,11 @@ void btlActionInitStateStartHome(BtlAction* action)
 
     if ((gBtl->flags & 0x2000) && (action->unk_1a & 1) && unit->genus == UNIT_GENUS_PC)
     {
-        action->unk_14 = BTLACTION_STATE_AUTO;
+        action->state = BTLACTION_STATE_AUTO;
     }
     if (FUN_0029a3e0(action) != 0)
     {
-        btlActionSetState(action, action->unk_14);
+        btlActionSetState(action, action->state);
         return;
     }
     btlUnit0027f7c0(unit, &homePos, NULL, NULL);
@@ -1432,7 +1432,7 @@ void btlActionInitStateStartHome(BtlAction* action)
     }
     else
     {
-        btlActionSetState(action, action->unk_14);
+        btlActionSetState(action, action->state);
     }
 
 }
@@ -1450,7 +1450,7 @@ void btlActionUpdateStateStartHome(BtlAction* action)
         rotPacket->actionUID = action->uid;
         btlPacketRegister(rotPacket, BTLPACKET_TYPE_1);
 
-        btlActionSetState(action, action->unk_14);
+        btlActionSetState(action, action->state);
     }
 }
 
@@ -1670,7 +1670,7 @@ void btlActionUpdateStateCommand(BtlAction* action)
     }
     else if (command == 5)
     {
-        action->unk_18 |= 2;
+        action->flags |= 2;
         FUN_001fef70();
         FUN_001fea70();
         FUN_002bf650();
@@ -1853,7 +1853,7 @@ void btlActionUpdateStateTarget(BtlAction* action)
     }
     else
     {
-        action->unk_18 |= 2;
+        action->flags |= 2;
         FUN_001fef70();
         FUN_001fea70();
         FUN_001fe8d0();
@@ -1965,11 +1965,11 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
             break;
         case 6:
             FUN_002e2d40();
-            if ((action->unk_18 & 4) == 0)
+            if ((action->flags & 4) == 0)
             {
                 FUN_001fe4a0();
                 FUN_002bed10();
-                btlActionSetState(action, action->unk_14);
+                btlActionSetState(action, action->state);
             }
             else
             {
@@ -2010,10 +2010,10 @@ void btlActionUpdateStateAI(BtlAction* action)
             action->unit->genus == UNIT_GENUS_EC &&
             action->target.commandId == 1)
         {
-            action->unk_18 |= 0x4000;
+            action->flags |= 0x4000;
         }
 
-        action->unk_18 |= 2;
+        action->flags |= 2;
         btlActionSetState(action, BTLACTION_STATE_READY);
     }
 }
@@ -2044,10 +2044,10 @@ void btlActionUpdateStateAuto(BtlAction* action)
 
     if (gBtl->flags & 0x4000000)
     {
-        action->unk_18 |= 0x4000;
+        action->flags |= 0x4000;
     }
 
-    action->unk_18 |= 2;
+    action->flags |= 2;
     btlActionSetState(action, BTLACTION_STATE_READY);
 }
 
@@ -2237,7 +2237,7 @@ void btlActionUpdateStateBad(BtlAction* action)
         }
         btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, action->unit, 1), BTLPACKET_TYPE_1);
         btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(action->unit, 0), BTLPACKET_TYPE_1);
-        action->unk_18 |= 0x200;
+        action->flags |= 0x200;
         action->movedAwayFromHome = 0;
         action->unk_488 = 1;
         return;
@@ -2282,7 +2282,7 @@ void btlActionUpdateStateBad(BtlAction* action)
         else
         {
             FUN_002d1660(action, &action->target, badStatus);
-            action->unk_18 |= 2;
+            action->flags |= 2;
             result = FUN_002dc830(action);
             if (result > 0)
             {
@@ -2341,11 +2341,11 @@ void btlActionUpdateStateReady(BtlAction* action)
             return;
         }
     }
-    if ((action->unk_18 & 4) == 0)
+    if ((action->flags & 4) == 0)
     {
         FUN_002d15e0(action->target.targetedActions);
     }
-    action->unk_18 &= ~2;
+    action->flags &= ~2;
     command = action->target.commandId;
     switch (command)
     {
@@ -2359,12 +2359,12 @@ void btlActionUpdateStateReady(BtlAction* action)
             {
                 if (FUN_00289f40(action) == 0)
                 {
-                    action->unk_18 |= 0x10;
+                    action->flags |= 0x10;
                     btlActionSetState(action, BTLACTION_STATE_MOVEHOME);
                 }
                 else
                 {
-                    action->unk_18 &= ~0x10;
+                    action->flags &= ~0x10;
                     btlActionSetState(action, BTLACTION_STATE_MOVETARGET);
                 }
             }
@@ -2389,11 +2389,11 @@ void btlActionUpdateStateReady(BtlAction* action)
     if ((command == 1 || command == 2 || command == 3) &&
         FUN_0028a3e0(action) != 0)
     {
-        action->unk_18 |= 8;
+        action->flags |= 8;
     }
     else
     {
-        action->unk_18 &= ~8;
+        action->flags &= ~8;
     }
 }
 
@@ -2458,7 +2458,7 @@ void btlActionInitStateMoveTarget(BtlAction* action)
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    action->unk_18 |= 0x200;
+    action->flags |= 0x200;
 
     battleStateTable = iGpffffb708;
     if ((battleStateTable[(u32)specificId * 0x2c] & 2) != 0)
@@ -2536,7 +2536,7 @@ distance_section:
         distance = FUN_002812d0(actionUnit, victimUnit, distanceType);
         extraOffset = distance;
 
-        if ((action->unk_18 & 0x4000) != 0)
+        if ((action->flags & 0x4000) != 0)
         {
             isFirstSpecial = 1;
         }
@@ -2544,7 +2544,7 @@ distance_section:
     }
 
 unified_end:
-    if ((action->unk_18 & 0x4000) != 0)
+    if ((action->flags & 0x4000) != 0)
     {
         isFirstSpecial = 1;
     }
@@ -2614,7 +2614,7 @@ position_check_thresholds:
         {
             goto compute_vector_offset;
         }
-        action->unk_18 |= 0x10;
+        action->flags |= 0x10;
         someFlag = 0;
         goto final_dispatch;
     }
@@ -2648,7 +2648,7 @@ compute_vector_offset:
 
         if (extraOffset > moveSpeed)
         {
-            action->unk_18 |= 0x10;
+            action->flags |= 0x10;
             someFlag = 0;
         }
         goto final_dispatch;
@@ -2827,7 +2827,7 @@ do_camera_packet_0x13:
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
 
 epilogue:
-    action->unk_18 &= ~0x10;
+    action->flags &= ~0x10;
 }
 #pragma opt_lifetimes reset
 // FUN_0028e740
@@ -3064,7 +3064,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     sp258 = 0;
     sp190 = -1;
     sp180 = -1;
-    unk1f0 = (action->unk_18 & 0x4000) != 0;
+    unk1f0 = (action->flags & 0x4000) != 0;
     var_f20 = unk1f0 ? 1.75f : 1.0f;
     victim = action->target.targetedActions[0];
     basis = ACTION_U32(victim, 0xd4) != 0 ? action : victim;
@@ -3131,7 +3131,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
         packet = btlUnitCreateLookAtDeactivatePacket(action->unit, 0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        action->unk_18 |= 0x200;
+        action->flags |= 0x200;
         sp240 = 0;
         for (sp240 = 0; sp240 < groupCount; sp240++)
         {
@@ -3677,7 +3677,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
                 packet->actionUID = actionUID;
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
             }
-            if (sp240 == 0 && !(action->unk_18 & 4))
+            if (sp240 == 0 && !(action->flags & 4))
             {
                 packet = FUN_002d7fb0(action, ACTION_U8(action, 0xca));
                 packet->unk_00 = 5;
@@ -4240,7 +4240,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
     temp_s0 = action->uid;
     btlAction0028a780(action);
     sp438 = func_002b8f90(1);
-    if (action->unk_18 & 0x100) {
+    if (action->flags & 0x100) {
         var_s6 = -1;
     }
     sp310 = 1;
@@ -4286,7 +4286,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         temp_v0_7 = btlUnitCreateLookAtDeactivatePacket(action->unit, 0U);
         temp_v0_7->actionUID = action->uid;
         btlPacketRegister(temp_v0_7, 1U);
-        action->unk_18 |= 0x200;
+        action->flags |= 0x200;
         temp_v0_8 = func_002d8330(action);
         temp_v0_8->actionUID = temp_s0;
         btlPacketRegister(temp_v0_8, 1U);
@@ -4312,18 +4312,18 @@ void btlActionUpdateStateSkill(BtlAction *action) {
     if ((sp1D0 == 1) && (var_s6 != -1)) {
         if ((sp1C0 == 0) && (sp1A0 == 0)) {
             if (var_s6 == 0) {
-                if (!(action->unk_18 & 0x40) && ((temp_s2 = func_002ddc80(action->unit->charId), (func_002d5eb0(action) != 0)) || (temp_s2 != 0))) {
+                if (!(action->flags & 0x40) && ((temp_s2 = func_002ddc80(action->unit->charId), (func_002d5eb0(action) != 0)) || (temp_s2 != 0))) {
                     var_s1 = (s16)func_002e33f0(action);
                     if ((var_s1 != -1) && ((datCalcRand(0x64U) < 0x14U) || (temp_s2 != 0))) {
                         sp2F0 = 1;
-                        action->unk_18 |= 0x40;
+                        action->flags |= 0x40;
                     }
                 }
-            } else if ((var_s6 == 1) && !(action->unk_18 & 0x40)) {
+            } else if ((var_s6 == 1) && !(action->flags & 0x40)) {
                 var_s1 = (s16)func_002e33f0(action);
                 if (var_s1 != -1) {
                     sp2F0 = 1;
-                    action->unk_18 |= 0x40;
+                    action->flags |= 0x40;
                 }
             }
             if (func_002fcaa0(action, &sp528) == 0) {
@@ -4437,7 +4437,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                 temp_v0_22->actionUID = temp_s0;
                 btlPacketRegister(temp_v0_22, 1U);
             }
-            temp_v0_23 = func_002b8900(action, (action->unk_18 & 0x10) != 0, 1);
+            temp_v0_23 = func_002b8900(action, (action->flags & 0x10) != 0, 1);
             temp_v0_23->unk_00 = 4;
             temp_v0_23->parentUID = var_s3_2;
             temp_v0_23->preUpdateDelay = var_s2_2 - (var_s2_2 >> 3);
@@ -4802,7 +4802,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         var_s1 = 0;
         var_s2 = ((s64) (func_002835e0(action->unit, var_s2_3 & 0xFFFF, 1.0f) << 0x30) >> 0x30) + 6;
         if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
-            temp_v0_76 = func_002b8900(action, (action->unk_18 & 0x10) != 0, 1);
+            temp_v0_76 = func_002b8900(action, (action->flags & 0x10) != 0, 1);
             sp218 = temp_v0_76;
             temp_v0_76->unk_00 = 4;
             temp_v0_76->parentUID = var_s3->uid;
@@ -4839,7 +4839,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         var_s5 = 0;
         var_s1 = 0;
         var_s2 = 0;
-        if (action->unk_18 & 0x100) {
+        if (action->flags & 0x100) {
             temp_v0_80 = func_002e35d0(6, (*(u16*)((u8*)datPersonaGetByPcId(6) + 2)));
             sp21C = temp_v0_80;
             temp_v0_80->unk_00 = 4;
@@ -5083,7 +5083,7 @@ loop_306:
                 temp_v0_108->actionUID = action->uid;
                 btlPacketRegister(temp_v0_108, 1U);
             }
-            action->unk_18 |= 0x200;
+            action->flags |= 0x200;
         } else if ((sp230 == 0) && (var_s6 == 0)) {
             temp_a0_9 = func_002d1600(&action->target) & 0xFFFF;
             if (temp_a0_9 == 2) {
@@ -5275,7 +5275,7 @@ loop_302:
                 temp_v0_127->actionUID = temp_s0;
                 btlPacketRegister(temp_v0_127, 1U);
             }
-            if ((sp230 == 0) && (spB0 == 0) && !(action->unk_18 & 4)) {
+            if ((sp230 == 0) && (spB0 == 0) && !(action->flags & 4)) {
                 temp_v0_128 = func_002d7fb0(action, ACTION_U8(action, 0xca));
                 temp_v0_128->unk_00 = 5;
                 temp_v0_128->parentUID = var_s3->uid;
@@ -6083,14 +6083,14 @@ void btlActionInitStateAssist(BtlAction* action)
     ACTION_U16(packet, 0x4a) = 100;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    action->unk_18 |= 2;
+    action->flags |= 2;
 }
 // FUN_00295b20
 void btlActionUpdateStateAssist(BtlAction* action)
 {
     if (btlPacketCountById(0x506) == 0 && btlPacketCountById(0x800) == 0)
     {
-        action->unk_18 |= 0x100;
+        action->flags |= 0x100;
         btlActionSetState(action, BTLACTION_STATE_READY);
     }
 }
@@ -6398,7 +6398,7 @@ void btlActionInitStateEscapeMes(BtlAction* action)
     packet = btlUnitCreateLookAtUnitPacket(action->unit, gBtl->actionList.head->unit, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    action->unk_18 |= 0x200;
+    action->flags |= 0x200;
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_ESCAPEMES);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
@@ -6470,8 +6470,8 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
     else
     {
         btlPacketRegister(btlVoice002e2be0(action, 3, 0, 0, 0), BTLPACKET_TYPE_1);
-        action->unk_18 |= 0x80;
-        btlActionSetState(action, action->unk_14);
+        action->flags |= 0x80;
+        btlActionSetState(action, action->state);
     }
 }
 
@@ -6552,7 +6552,7 @@ void btlActionUpdateStateEscape(BtlAction* action)
                 {
                     if ((mode & 2) != 0 && current != action)
                     {
-                        current->unk_18 |= 0x8000;
+                        current->flags |= 0x8000;
                     }
                     escapeActions[count] = current;
                     count++;
@@ -6570,14 +6570,14 @@ void btlActionUpdateStateEscape(BtlAction* action)
         else
         {
             count = 1;
-            action->unk_18 |= 0x20;
+            action->flags |= 0x20;
             action->unk_1a &= ~8;
         }
         break;
 
     case UNIT_GENUS_EC:
         count = 1;
-        action->unk_18 |= 0x20;
+        action->flags |= 0x20;
         action->unk_1a &= ~8;
         break;
     }
@@ -6886,10 +6886,10 @@ void btlActionUpdateStatePersona(BtlAction* action)
     {
         if (action->unit->genus == UNIT_GENUS_PC)
         {
-            action->unk_18 &= ~0x400;
+            action->flags &= ~0x400;
         }
 
-        btlActionSetState(action, action->unk_14);
+        btlActionSetState(action, action->state);
     }
 }
 // FUN_00297750
@@ -7299,7 +7299,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     packet = FUN_00288950(NULL, 1);
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    action->unk_18 &= ~8;
+    action->flags &= ~8;
     if (func_002d1a70() == 1)
     {
         gBtl->flags |= 0x4000;
@@ -7658,19 +7658,19 @@ void btlActionUpdateStatePacket(BtlAction* action)
 // FUN_00299170
 void btlActionInitStateEnd(BtlAction* action)
 {
-    if (action->unk_18 & 0x4000)
+    if (action->flags & 0x4000)
     {
         gBtl->flags |= 0x400000;
         *(u16*)((u8*)gBtl + 0x18) |= 6;
-        action->unk_18 &= ~0x4000;
+        action->flags &= ~0x4000;
     }
-    action->unk_18 &= ~0x100;
+    action->flags &= ~0x100;
 
-    if (action->unk_18 & 0x200)
+    if (action->flags & 0x200)
     {
         gBtl->flags |= 0x400000;
         *(u16*)((u8*)gBtl + 0x18) |= 0x20;
-        action->unk_18 &= ~0x200;
+        action->flags &= ~0x200;
     }
 
     if (FUN_002e4330(action) != 0)
@@ -7681,7 +7681,7 @@ void btlActionInitStateEnd(BtlAction* action)
     }
     else
     {
-        action->unk_18 &= 0xc7ff;
+        action->flags &= 0xc7ff;
     }
 }
 // FUN_00299270
@@ -7689,7 +7689,7 @@ void btlActionUpdateStateEnd(BtlAction* action)
 {
     if ((gBtl->flags & 0x80) == 0)
     {
-        if ((action->unk_18 & 8) && FUN_0028a200(action) != 0)
+        if ((action->flags & 8) && FUN_0028a200(action) != 0)
         {
             if (btlPacketCountById(0x504) != 0)
             {
@@ -7703,14 +7703,14 @@ void btlActionUpdateStateEnd(BtlAction* action)
             return;
         }
 
-        if ((action->unk_18 & 0x8004) == 0)
+        if ((action->flags & 0x8004) == 0)
         {
             action->unk_20++;
         }
 
         if (FUN_0027d380() == 0)
         {
-            if ((action->unk_18 & 0x8004) == 0)
+            if ((action->flags & 0x8004) == 0)
             {
                 if ((&action->unk_28)[1] > 0)
                 {
@@ -7746,10 +7746,10 @@ void btlActionUpdateStateEnd(BtlAction* action)
             gBtl->flags |= 0x80;
         }
 
-        action->unk_18 &= 0x7fff;
+        action->flags &= 0x7fff;
         if ((gBtl->flags & 0x80) == 0)
         {
-            if ((action->unk_18 & 0x20) == 0)
+            if ((action->flags & 0x20) == 0)
             {
                 btlActionSetState(action, 0x20);
             }
@@ -7980,7 +7980,7 @@ void btlActionUpdateStateExit(BtlAction* action)
         switch (unit->genus)
         {
             case UNIT_GENUS_PC:
-                if (action->unk_18 & 0x20)
+                if (action->flags & 0x20)
                 {
                     found = NULL;
                     for (i = 0; i < 4; i++)
@@ -8090,13 +8090,13 @@ void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay)
 // FUN_00299e30
 void btlAction00299e30(BtlAction* action)
 {
-    action->unk_18 |= (1 << 0);
+    action->flags |= (1 << 0);
 }
 
 // FUN_00299e50
 void btlAction00299e50(BtlAction* action)
 {
-    action->unk_18 &= ~(1 << 0);
+    action->flags &= ~(1 << 0);
 }
 
 // FUN_00299e70
@@ -8118,7 +8118,7 @@ BtlAction* btlActionCreate()
     btlTargetInit(&action->target);
 
     action->pendingState = BTLACTION_STATE_NON;
-    action->unk_14 = 8;
+    action->state = 8;
     action->uid = btlGetUID();
 
     if (sNextId >= BTLACTION_IDMAX)
@@ -8193,7 +8193,7 @@ void btlActionUpdateAll()
 
         if (canUpdateAction && !(curr->unk_1a & (1 << 2)))
         {
-            if (curr->unk_18 & (1 << 0))
+            if (curr->flags & (1 << 0))
             {
                 stateEntry = &sActionStateTable[curr->currState];
                 stateEntry->update(curr);
