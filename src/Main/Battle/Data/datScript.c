@@ -7,7 +7,7 @@ static u8* sUnk_007ce3f8;  // iGpffffb708
 extern u16 DAT_009571a4_y2;
 extern u32 DAT_00957198;
 extern void FUN_0035f060(u32 value);
-extern void FUN_0030c440(void);
+extern void datCalcInitializeCharacters(void);
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/g_data.h"
 #include "Graphics/Effect/effMisc.h"
@@ -161,7 +161,7 @@ extern s32 FUN_003082f0_one(s32 param_1);
 u32 FUN_003083f0(u32 param_1,u32 param_2);
 u8 FUN_003086c0(void *param_1,u32 param_2);
 u32 FUN_003086f0(u32 param_1,u32 param_2);
-u32 FUN_00308860(u16 param_1);
+u32 datCalcIsSpecialItem(u16 param_1);
 u8 FUN_003088b0(u16 param_1);
 u16 FUN_00308930(u16 *param_1);
 u8 FUN_00308a50(u16 param_1);
@@ -1411,6 +1411,6 @@ u8 datScriptIsCurrent(ScrData* scr)
 u32 datScriptRestorePartyCommand(void)
 
 {
-  FUN_0030c440();
+  datCalcInitializeCharacters();
   return 1;
 }
