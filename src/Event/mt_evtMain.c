@@ -6110,9 +6110,9 @@ LAB_00366928:;
 
 
 #pragma opt_lifetimes reset
-/* W367 pragma probe: opt_lifetimes on nd 135 -> 125; off nd 135; object 300/336. */
+/* W367 pragma probe: opt_lifetimes on -> MATCH; off -> nd 23 (measured). */
 #pragma opt_lifetimes on
-// FUN_00366970 NONMATCHING
+// FUN_00366970
 
 
 void FUN_00366970(u32 param_1,u32 param_2)
@@ -6134,10 +6134,12 @@ void FUN_00366970(u32 param_1,u32 param_2)
         }
         event = *(u8 **)(event + 0x94);
       }
-      if (matched != NULL) {
+      if (matched == NULL) {
+        candidate = *(u8 **)(candidate + 0xf8);
+      } else {
         FUN_00366660(param_1,(u32)candidate,(u32)event,param_2,0);
+        candidate = *(u8 **)(candidate + 0xf8);
       }
-      candidate = *(u8 **)(candidate + 0xf8);
     }
 
     candidate = (u8 *)FUN_003b5d50(3);
@@ -6151,10 +6153,12 @@ void FUN_00366970(u32 param_1,u32 param_2)
         }
         event = *(u8 **)(event + 0x94);
       }
-      if (matched != NULL) {
+      if (matched == NULL) {
+        candidate = *(u8 **)(candidate + 0xf8);
+      } else {
         FUN_00366660(param_1,(u32)candidate,(u32)event,param_2,0);
+        candidate = *(u8 **)(candidate + 0xf8);
       }
-      candidate = *(u8 **)(candidate + 0xf8);
     }
   }
 }
