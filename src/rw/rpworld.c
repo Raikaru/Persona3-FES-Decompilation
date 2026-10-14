@@ -897,12 +897,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 RpAtomicSetFrame(u64 param_1);
+u64 FUN_00492d10(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 RpGeometryLock(u64 param_1,u16 param_2);
+u64 FUN_00493370(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u32 FUN_00493b40(u32 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -2541,12 +2541,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 RpAtomicSetFrame(u64 param_1);
+u64 FUN_00492d10(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 RpGeometryLock(u64 param_1,u16 param_2);
+u64 FUN_00493370(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u32 FUN_00493b40(u32 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -6891,7 +6891,7 @@ u64 FUN_004908d0(u64 param_1,int param_2)
       param_1 = 0;
     }
     else {
-      ((code)RpAtomicSetFrame)(lVar2,*(u32 *)(iVar1 + 0xa0));
+      ((code)FUN_00492d10)(lVar2,*(u32 *)(iVar1 + 0xa0));
       ((code)FUN_00491ff0)(*(u32 *)(param_2 + 4),lVar2);
     }
   }
@@ -7122,7 +7122,7 @@ long FUN_00490dc0(u64 param_1,int *param_2,int *param_3)
           iVar1 = param_3[1];
         }
         else {
-          ((code)RpAtomicSetFrame)(lVar2,*(u32 *)(*param_2 + iStack_50 * 4));
+          ((code)FUN_00492d10)(lVar2,*(u32 *)(*param_2 + iStack_50 * 4));
           iVar1 = param_3[1];
         }
         if (iVar1 == 0) {
@@ -7458,7 +7458,7 @@ long FUN_00491880(void)
     *(u32 *)(puVar2 + 0x14) = 0;
     puVar2[2] = 5;
     puVar2[3] = 1;
-    ((code)RpAtomicSetFrame)(lVar1,0);
+    ((code)FUN_00492d10)(lVar1,0);
     *(u32 *)(puVar2 + 0x18) = 0;
     *(u32 *)(puVar2 + 0x28) = 0;
     *(u32 *)(puVar2 + 0x1c) = 0;
@@ -7585,7 +7585,7 @@ long FUN_00491b40(u64 param_1)
     puVar4[3] = puVar5[3];
     *(u32 *)(puVar4 + 4) = 0;
     puVar4[2] = puVar5[2];
-    ((code)RpAtomicSetFrame)(lVar2,0);
+    ((code)FUN_00492d10)(lVar2,0);
     iVar1 = *(int *)(puVar5 + 0x18);
     if (iVar1 != *(int *)(puVar4 + 0x18)) {
       if (iVar1 != 0) {
@@ -8230,7 +8230,7 @@ void FUN_00492d00(u32 param_1)
 
 // FUN_00492D10 NONMATCHING
 
-u64 RpAtomicSetFrame(u64 param_1)
+u64 FUN_00492d10(u64 param_1)
 
 {
   ((code)FUN_004d1840)();
@@ -8247,7 +8247,7 @@ u32 FUN_00492d50(u64 param_1)
   
   iVar1 = (int)param_1;
   *(short *)(iVar1 + 0xe) = *(short *)(iVar1 + 0xe) + 1;
-  ((code)RpGeometryLock)(param_1,0xfff);
+  ((code)FUN_00493370)(param_1,0xfff);
   ((code)FUN_004c6560)(0x77dd20,param_1);
   if (*(int *)(iVar1 + 0x5c) != 0) {
     (*DAT_0096017c)();
@@ -8474,7 +8474,7 @@ u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3)
 
 // FUN_00493370 NONMATCHING
 
-u64 RpGeometryLock(u64 param_1,u16 param_2)
+u64 FUN_00493370(u64 param_1,u16 param_2)
 
 {
   int iVar1;
@@ -25450,7 +25450,7 @@ u32 FUN_004af940(int param_1)
   if (iVar1 != 0) {
     iVar2 = *(int *)(iVar1 + 4);
     if (iVar2 != 0) {
-      ((code)RpAtomicSetFrame)(iVar1,0);
+      ((code)FUN_00492d10)(iVar1,0);
       ((code)FUN_004caf80)(iVar2);
     }
     ((code)FUN_00491a80)(*(u32 *)(param_1 + 0xb8));
@@ -25819,7 +25819,7 @@ u64 FUN_004affe0(u64 param_1,u64 param_2,long param_3)
   uVar13 = ((code)FUN_004aae60)();
   ((code)FUN_004cb7f0)(uVar12,uVar13,0);
   uVar13 = ((code)FUN_00491880)();
-  ((code)RpAtomicSetFrame)(uVar13,uVar12);
+  ((code)FUN_00492d10)(uVar13,uVar12);
   ((code)FUN_004919b0)(uVar13,*(u32 *)(iVar7 + 8),0);
   *(int *)(iVar17 + 0xb8) = (int)uVar13;
   return param_1;
