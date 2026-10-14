@@ -2956,7 +2956,7 @@ case16_second_action_done:
                     if (FUN_001dd600() == true) FIELD_WORD(0x28) = (u32)func_0018bff0(fldEventTask);
                     if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), true);
                     if ((gMtScene->fldMajorId == 0x20 && gMtScene->fldMinorId == 2) ||
-                        (gMtScene->fldMajorId == 0x27 && (gMtScene->fldMinorId == 1 || gMtScene->fldMinorId == 3))) FUN_0030c440();
+                        (gMtScene->fldMajorId == 0x27 && (gMtScene->fldMinorId == 1 || gMtScene->fldMinorId == 3))) datCalcInitializeCharacters();
                     fldEvent->eventType = 0x1a;
                 }
             }
