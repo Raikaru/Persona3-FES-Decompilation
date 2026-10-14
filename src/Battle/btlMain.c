@@ -262,7 +262,7 @@ BtlPacket* FUN_002bd480();
 BtlPacket* FUN_002d7e20(BtlAction* action, BtlAction* param_2, BtlMainRecovery* recovery, u32 param_4, u32 param_5);
 BtlPacket* FUN_002bd230();
 BtlPacket* FUN_002bdbd0();
-BtlPacket* FUN_002e2be0();
+BtlPacket* btlVoiceCreatePacket();
 BtlPacket* FUN_002db890();
 BtlPacket* FUN_002bc7e0();
 BtlPacket* FUN_002dd100();
@@ -1294,7 +1294,7 @@ void btlMainInitStateWin(BtlStateWork* work)
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
     packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = FUN_002e2be0(winner, 7, 0, 0, 0);
+    packet = btlVoiceCreatePacket(winner, 7, 0, 0, 0);
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
     packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
@@ -1497,7 +1497,7 @@ void btlMainInitStateCondition(BtlStateWork* work)
             messagePacket = 0x12;
             break;
     }
-    packet = FUN_002e2be0(action, messagePacket, 0, 0, 0);
+    packet = btlVoiceCreatePacket(action, messagePacket, 0, 0, 0);
     (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     lastPacketUID = packet->uid;
