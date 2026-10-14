@@ -48,7 +48,7 @@ extern void* func_001a1550(KwlnTask* task);
 extern f32 func_001e7c20(s32 scale);
 extern void func_001e7b10(void* quad, f32 scale);
 extern void func_004933d0(void* renderLayout);
-extern void func_00493370(void* renderLayout, s32 state);
+extern void RpGeometryLock(void* renderLayout, s32 state);
 extern void* func_001e78c0(s32 width, s32 height);
 extern void func_001e7aa0(void* work, s32 index, void* data);
 extern void* func_00494be0(void);
@@ -362,7 +362,7 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     {
         return;
     }
-    func_00493370(layout, 2);
+    RpGeometryLock(layout, 2);
     quad = layout->quadStore->quad;
     top = (f32)(manager->y + 2 + manager->cursor * 12);
     bottom = top + 12.0f;
