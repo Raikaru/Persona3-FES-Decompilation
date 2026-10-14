@@ -20918,7 +20918,7 @@ LAB_003350f0:
 // W408 measurement: splitting the VU asm block around `inv255 = DAT_007cae4c` fixes the load order (nd19 -> nd12; object 612/624 unchanged).
 // Negative probes: direct global input regressed to nd224; volatile-cast load stayed nd19; pointer-cast with the split also stayed nd12.
 // The remaining six rows are the same register-colouring family as FUN_003377f0 (nd43), a confirmed b210 floor; this is a LOAD-ORDER fix, not a register fix.
-// FUN_00335180 NONMATCHING
+// FUN_00335180
 
 void FUN_00335180(int param_1)
 {
@@ -20958,7 +20958,7 @@ void FUN_00335180(int param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
+    alpha = FUN_0032a120((char *)node, (u32 *)((u8 *)node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
