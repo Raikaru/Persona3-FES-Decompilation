@@ -1264,7 +1264,7 @@ void btlMainInitStateWin(BtlStateWork* work)
     BtlPacket* packet;
 
     winner = FUN_0029ad20();
-    if ((winner->unk_18 & 4) != 0)
+    if ((winner->flags & 4) != 0)
     {
         winner = FUN_0029ad50();
     }
