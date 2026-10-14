@@ -4127,160 +4127,81 @@ void FUN_00322a20(int param_1)
 // FUN_00322AB0 NONMATCHING
 
 
-void FUN_00322ab0(int *param_1,u8 *param_2,float *param_3)
-
-
-
+void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
 {
+  short pivotX;
+  short pivotY;
+  short keyW;
+  short keyH;
+  int *animBlock;
+  u32 *track;
+  int joint;
+  short *key;
+  u32 frame;
+  float scaleY;
+  float scaleX;
 
-  short sVar1;
-
-  short sVar2;
-
-  short sVar3;
-
-  short sVar4;
-
-  int *piVar5;
-
-  u32 *puVar6;
-
-  int iVar7;
-
-  short *psVar8;
-
-  u32 uVar9;
-
-  float fVar10;
-
-  float fVar11;
-
-  
-
-  piVar5 = (int *)*param_1;
-
-  puVar6 = (u32 *)*(int *)(param_2 + 0xc);
-
-  if ((puVar6[4] & 0x10000000) == 0) {
-
-    if (*(int *)(param_2 + 8) < 1) {
-
-      uVar9 = *(int *)(param_2 + 4) + 1;
-
-      *(u32 *)(param_2 + 4) = uVar9;
-
-      if (puVar6[3] <= uVar9) {
-
-        if ((puVar6[4] & 0x10) == 0) {
-
-          *(u32 *)(param_2 + 4) = 0;
-
+  animBlock = (int *)*animRef;
+  track = (u32 *)*(int *)(cursor + 0xc);
+  if ((track[4] & 0x10000000) == 0) {
+    if (*(int *)(cursor + 8) < 1) {
+      frame = *(int *)(cursor + 4) + 1;
+      *(u32 *)(cursor + 4) = frame;
+      if (track[3] <= frame) {
+        if ((track[4] & 0x10) == 0) {
+          *(u32 *)(cursor + 4) = 0;
         }
-
         else {
-
-          *(u16 *)(param_1 + 5) = 0;
-
-          *(int *)(param_2 + 4) = puVar6[3] + -1;
-
+          *(u16 *)(animRef + 5) = 0;
+          *(int *)(cursor + 4) = track[3] + -1;
         }
-
       }
-
-      *(int *)(param_2 + 8) =
-
-           (int)*(short *)(*(int *)(param_2 + 4) * 0x18 + *(int *)(param_2 + 0x10) + 0x12);
-
+      *(int *)(cursor + 8) =
+           (int)*(short *)(*(int *)(cursor + 4) * 0x18 + *(int *)(cursor + 0x10) + 0x12);
     }
-
     else {
-
-      *(int *)(param_2 + 8) = *(int *)(param_2 + 8) + -1;
-
+      *(int *)(cursor + 8) = *(int *)(cursor + 8) + -1;
     }
-
-    psVar8 = (short *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 4) * 0x18);
-
-    if ((puVar6[4] & 1) == 0) {
-
-      fVar10 = -(*(f32*)&sMdlNanBits);
-
+    key = (short *)(*(int *)(cursor + 0x10) + *(int *)(cursor + 4) * 0x18);
+    if ((track[4] & 1) == 0) {
+      scaleY = -(*(f32*)&sMdlNanBits);
     }
-
     else {
-
-      fVar10 = *(float *)(*piVar5 + puVar6[1] + *(int *)(param_2 + 4) * 4);
-
+      scaleY = *(float *)(*animBlock + track[1] + *(int *)(cursor + 4) * 4);
     }
-
-    param_3[0xb] = fVar10;
-
-    piVar5 = *(int **)(piVar5[5] + psVar8[8] * 4);
-
-    iVar7 = *piVar5;
-
-    fVar11 = (float)*(int *)(iVar7 + 0xc);
-
-    fVar10 = (float)*(int *)(iVar7 + 0x10);
-
-    if ((puVar6[4] & 2) == 0) {
-
-      if ((puVar6[4] & 4) == 0) {
-
-        *(u16 *)(param_3 + 10) = 1;
-
+    pose[0xb] = scaleY;
+    joint = *(int *)(*(int *)(animBlock[5] + key[8] * 4));
+    scaleX = (float)*(int *)(joint + 0xc);
+    scaleY = (float)*(int *)(joint + 0x10);
+    if ((track[4] & 2) == 0) {
+      if ((track[4] & 4) == 0) {
+        *(u16 *)(pose + 10) = 1;
       }
-
       else {
-
-        *(u16 *)(param_3 + 10) = 3;
-
+        *(u16 *)(pose + 10) = 3;
       }
-
     }
-
     else {
-
-      *(u16 *)(param_3 + 10) = 2;
-
+      *(u16 *)(pose + 10) = 2;
     }
-
-    param_3[4] = *(float *)(psVar8 + 10);
-
-    sVar1 = psVar8[2];
-
-    sVar2 = psVar8[3];
-
-    sVar3 = *psVar8;
-
-    sVar4 = psVar8[1];
-
-    param_3[6] = (float)((int)psVar8[4] >> 4) / fVar11;
-
-    param_3[7] = (float)((int)psVar8[5] >> 4) / fVar10;
-
-    param_3[8] = (float)((int)psVar8[6] >> 4) / fVar11;
-
-    param_3[9] = (float)((int)psVar8[7] >> 4) / fVar10;
-
-    *param_3 = (float)(int)sVar3 / 2.0f - (float)(int)sVar1;
-
-    param_3[1] = (float)(int)sVar4 / 2.0f - (float)(int)sVar2;
-
-    param_3[2] = (float)(int)sVar3 / 2.0f;
-
-    param_3[3] = (float)(int)sVar4 / 2.0f;
-
-    param_3[0xc] = fVar11;
-
-    param_3[0xd] = fVar10;
-
-    *(u32 *)(param_3 + 5) = (u32)piVar5;
-
+    pose[4] = *(float *)(key + 10);
+    pivotX = key[2];
+    pivotY = key[3];
+    keyW = *key;
+    keyH = key[1];
+    pose[6] = (float)((int)key[4] >> 4) / scaleX;
+    pose[7] = (float)((int)key[5] >> 4) / scaleY;
+    pose[8] = (float)((int)key[6] >> 4) / scaleX;
+    pose[9] = (float)((int)key[7] >> 4) / scaleY;
+    pose[0] = (float)(int)keyW / 2.0f - (float)(int)pivotX;
+    pose[1] = (float)(int)keyH / 2.0f - (float)(int)pivotY;
+    pose[2] = (float)(int)keyW / 2.0f;
+    pose[3] = (float)(int)keyH / 2.0f;
+    pose[0xc] = scaleX;
+    pose[0xd] = scaleY;
+    *(u32 *)(pose + 5) = (u32)animBlock;
   }
-
   return;
-
 }
 
 
@@ -5389,101 +5310,54 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 // FUN_00324160 NONMATCHING
 
 
-u32 FUN_00324160(u8 *param_1)
-
-
-
+u32 FUN_00324160(u8 *effect)
 {
-
-  int outer1;
-
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  int iVar5;
-
-  u16 *puVar6;
-
-  u16 *puVar7;
-
-  u16 *puVar10;
-
-
+  int slot;
+  int colorTable;
+  int srcBuf;
+  int dstBuf;
+  u32 handle;
+  int offset;
+  u16 *dst;
+  u16 *src;
+  u16 *dstCursor;
   u32 color;
-  int copy;
+  int entry;
+  int colorIndex;
+  int vertexIndex;
 
-  int outer2;
-
-  int inner;
-
-  
-
-  uVar4 = FUN_00323c20(*(u16 *)(param_1 + 0x1c),*(u16 *)(param_1 + 8),
-
-                       *(u16 *)(param_1 + 10),*(u32 *)(param_1 + 4));
-
-  iVar1 = *(int *)((int)uVar4 + 0x28);
-
-  iVar2 = *(int *)(*(int *)(param_1 + 0x10) + 0x18);
-
-  iVar3 = *(int *)(*(int *)((int)uVar4 + 0x10) + 0x18);
-
-  for (outer1 = 0; outer1 < *(short *)(param_1 + 0x1c); outer1 = outer1 + 1) {
-
-    iVar5 = (int)outer1 * 4;
-
-    if (**(int **)(*(int *)(param_1 + 0x28) + iVar5) != 0) {
-
-      FUN_00494d50(*(u32 *)(iVar1 + iVar5),
-                    **(int **)(*(int *)(param_1 + 0x28) + iVar5));
-
+  handle = FUN_00323c20(*(u16 *)(effect + 0x1c), *(u16 *)(effect + 8),
+                        *(u16 *)(effect + 10), *(u32 *)(effect + 4));
+  colorTable = *(int *)((int)handle + 0x28);
+  srcBuf = *(int *)(*(int *)(effect + 0x10) + 0x18);
+  dstBuf = *(int *)(*(int *)((int)handle + 0x10) + 0x18);
+  for (slot = 0; slot < *(short *)(effect + 0x1c); slot = slot + 1) {
+    offset = (int)slot * 4;
+    if (**(int **)(*(int *)(effect + 0x28) + offset) != 0) {
+      FUN_00494d50(*(u32 *)(colorTable + offset),
+                   **(int **)(*(int *)(effect + 0x28) + offset));
     }
-
   }
-
-  FUN_00493370(iVar2,1);
-
-  puVar7 = *(u16 **)(iVar2 + 0x2c);
-
-  puVar10 = *(u16 **)(iVar3 + 0x2c);
-
-  puVar6 = puVar10;
-
-  for (copy = 0; copy < *(short *)(param_1 + 0x20); copy = copy + 1) {
-
-    *puVar6 = *puVar7;
-
-    puVar6[1] = puVar7[1];
-
-    puVar6[2] = puVar7[2];
-
-    puVar7 = puVar7 + 4;
-
-    puVar6 = puVar6 + 4;
-
+  FUN_00493370(srcBuf, 1);
+  src = *(u16 **)(srcBuf + 0x2c);
+  dstCursor = *(u16 **)(dstBuf + 0x2c);
+  dst = dstCursor;
+  for (entry = 0; entry < *(short *)(effect + 0x20); entry = entry + 1) {
+    *dst = *src;
+    dst[1] = src[1];
+    dst[2] = src[2];
+    src = src + 4;
+    dst = dst + 4;
   }
-
-  for (outer2 = 0; outer2 < *(short *)(param_1 + 0x1c); outer2 = outer2 + 1) {
-    color = *(u32 *)(iVar1 + (int)outer2 * 4);
-    for (inner = 0; inner < *(short *)(param_1 + 10); inner = inner + 1) {
-
-      FUN_00493230(iVar3,(int)puVar10,color);
-
-      puVar10 = puVar10 + 4;
-
+  for (colorIndex = 0; colorIndex < *(short *)(effect + 0x1c); colorIndex = colorIndex + 1) {
+    color = *(u32 *)(colorTable + (int)colorIndex * 4);
+    for (vertexIndex = 0; vertexIndex < *(short *)(effect + 10); vertexIndex = vertexIndex + 1) {
+      FUN_00493230(dstBuf, (int)dstCursor, color);
+      dstCursor = dstCursor + 4;
     }
-
   }
-
-  FUN_004933d0(iVar2);
-
-  return uVar4;
-
+  FUN_004933d0(srcBuf);
+  return handle;
 }
 
 
@@ -32894,150 +32768,77 @@ void FUN_00342480(int param_1)
 // FUN_00342550 NONMATCHING
 
 
-void FUN_00342550(int param_1,int param_2)
-
-
-
+void FUN_00342550(int effect,int params)
 {
+  u32 layerCount;
+  int buf;
+  u32 *colorBase;
+  float *vertBase;
+  u16 *drawObj;
+  u32 sampleCount;
+  float *vertCursor;
+  u32 *colorCursor;
+  u32 sample;
+  int fadeInEnd;
+  int fadeOutStart;
+  float alpha;
+  float stepWidth;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  u32 *puVar3;
-
-  float *puVar4;
-
-  u16 *puVar5;
-
-  u32 uVar6;
-
-  float *puVar7;
-
-  u32 *puVar8;
-
-  u32 uVar9;
-
-  int uVar10;
-
-  int uVar11;
-
-  float fVar12;
-
-  float fVar13;
-
-  
-
-  uVar1 = *(u32 *)(param_2 + 0x38);
-
-  if (uVar1 != 0) {
-
-    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff8);
-
-    iVar2 = *(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18);
-
-    puVar3 = *(u32 **)(iVar2 + 0x30);
-
-    puVar4 = *(float **)(iVar2 + 0x34);
-
-    fVar13 = *(float *)(param_2 + 0x90) / 3.0f;
-
-    iVar2 = *(int *)(param_2 + 0x8c);
-
-    uVar10 = (int)(*(float *)(param_2 + 0x78) * (float)iVar2);
-
-    uVar11 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
-
-    uVar6 = iVar2 + 1;
-
-    puVar7 = puVar4;
-
-    puVar8 = puVar3;
-
-    for (uVar9 = 0; uVar9 < uVar6; uVar9 = uVar9 + 1) {
-
-      if (uVar9 >= uVar10) {
-
-        fVar12 = 1.0f;
-
-        if (uVar11 < uVar9) {
-
-          fVar12 = (float)(iVar2 - uVar9) / (float)(int)(iVar2 - uVar11);
-
+  layerCount = *(u32 *)(params + 0x38);
+  if (layerCount != 0) {
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
+    colorBase = *(u32 **)(buf + 0x30);
+    vertBase = *(float **)(buf + 0x34);
+    stepWidth = *(float *)(params + 0x90) / 3.0f;
+    buf = *(int *)(params + 0x8c);
+    fadeInEnd = (int)(*(float *)(params + 0x78) * (float)buf);
+    fadeOutStart = (int)(*(float *)(params + 0x7c) * (float)buf);
+    sampleCount = buf + 1;
+    vertCursor = vertBase;
+    colorCursor = colorBase;
+    for (sample = 0; sample < sampleCount; sample = sample + 1) {
+      if (sample >= fadeInEnd) {
+        alpha = 1.0f;
+        if (fadeOutStart < sample) {
+          alpha = (float)(buf - sample) / (float)(int)(buf - fadeOutStart);
         }
-
       }
-
       else {
-
-        fVar12 = (float)uVar9 / (float)(int)uVar10;
-
+        alpha = (float)sample / (float)(int)fadeInEnd;
       }
-
-      *puVar8 = 0xffffff;
-
-      fVar12 = fVar12 * 255.0f;
-
-      if (2.1474836e+09f <= fVar12) {
-
-        fVar12 = fVar12 - 2.1474836e+09f;
-
+      *colorCursor = 0xffffff;
+      alpha = alpha * 255.0f;
+      if (2.1474836e+09f <= alpha) {
+        alpha = alpha - 2.1474836e+09f;
       }
-
-      puVar8[1] = (u32)fVar12 << 0x18 | 0xffffff;
-
-      *(u8 *)(puVar8 + 2) = *(u8 *)(puVar8 + 1);
-
-      *(u8 *)((int)puVar8 + 9) = *(u8 *)((int)puVar8 + 5);
-
-      *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 6);
-
-      *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 7);
-
-      puVar8[3] = 0xffffff;
-
-      puVar8 = puVar8 + 4;
-
-      *puVar7 = 0;
-
-      puVar7[2] = fVar13;
-
-      puVar7[4] = fVar13 * 2.0f;
-
-      puVar7[6] = fVar13 * 3.0f;
-
-      puVar7 = puVar7 + 8;
-
+      colorCursor[1] = (u32)alpha << 0x18 | 0xffffff;
+      *(u8 *)(colorCursor + 2) = *(u8 *)(colorCursor + 1);
+      *(u8 *)((int)colorCursor + 9) = *(u8 *)((int)colorCursor + 5);
+      *(u8 *)((int)colorCursor + 10) = *(u8 *)((int)colorCursor + 6);
+      *(u8 *)((int)colorCursor + 0xb) = *(u8 *)((int)colorCursor + 7);
+      colorCursor[3] = 0xffffff;
+      colorCursor = colorCursor + 4;
+      *vertCursor = 0;
+      vertCursor[2] = stepWidth;
+      vertCursor[4] = stepWidth * 2.0f;
+      vertCursor[6] = stepWidth * 3.0f;
+      vertCursor = vertCursor + 8;
     }
-
-    for (uVar9 = 1; uVar9 < uVar1; uVar9 = uVar9 + 1) {
-
-      FUN_00521250(puVar8,puVar3,uVar6 * 0x10);
-
-      puVar8 = puVar8 + uVar6 * 4;
-
-      FUN_00521250(puVar7,puVar4,uVar6 * 0x20);
-
-      puVar7 = puVar7 + uVar6 * 8;
-
+    for (sample = 1; sample < layerCount; sample = sample + 1) {
+      FUN_00521250(colorCursor,colorBase,sampleCount * 0x10);
+      colorCursor = colorCursor + sampleCount * 4;
+      FUN_00521250(vertCursor,vertBase,sampleCount * 0x20);
+      vertCursor = vertCursor + sampleCount * 8;
     }
-
-    puVar5 = *(u16 **)(param_1 + 4);
-
-    iVar2 = *(int *)(*(int *)(puVar5 + 8) + 0x18);
-
-    FUN_004933d0(iVar2);
-
-    if ((*puVar5 & 4) != 0) {
-
-      *(u16 *)(iVar2 + 0xc) = *(u16 *)(iVar2 + 0xc) | 1;
-
+    drawObj = *(u16 **)(effect + 4);
+    buf = *(int *)(*(int *)(drawObj + 8) + 0x18);
+    FUN_004933d0(buf);
+    if ((*drawObj & 4) != 0) {
+      *(u16 *)(buf + 0xc) = *(u16 *)(buf + 0xc) | 1;
     }
-
   }
-
   return;
-
 }
 
 
