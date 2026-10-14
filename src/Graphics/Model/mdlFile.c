@@ -140,7 +140,7 @@ static u8 bGpffffb854, bGpffffb855, bGpffffb856, bGpffffb857;
 extern f32 DAT_007cae4c;
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
-void FUN_0031d790(u32 *param_1);
+void mdlEffectListDestroy(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
@@ -148,10 +148,10 @@ u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
 void FUN_0031d9c0(int *param_1,u32 *param_2);
 void FUN_0031dc80(int *param_1,u32 param_2);
-void FUN_0031dce0(u32 *param_1);
+void mdlEffectListCallFlagged(u32 *param_1);
 void FUN_0031dd40(int *param_1,u32 *param_2);
-void FUN_0031dda0(int *param_1,float *param_2);
-void FUN_0031de30(u32 *param_1);
+void mdlEffectListSetUniformScale(int *param_1,float *param_2);
+void mdlEffectListReleaseNodes(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
 void FUN_0031df80(u32 *param_1);
 extern void FUN_0034fcf0_i(int param_1);
@@ -788,7 +788,7 @@ u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
-s8 FUN_00352c70(int param_1,u8 *param_2);
+s8 btlEplUnitIsSelected(int param_1,u8 *param_2);
 extern u32 FUN_00352c70_u32(int param_1,u8 *param_2);
 u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4);
 u32 FUN_00352eb0(int param_1);
@@ -967,10 +967,10 @@ extern u32 FUN_00491ea0(u64 param_1);
 extern void FUN_00491ea0_u32(u32 param_1);
 extern long FUN_004920a0(u64 param_1);
 extern u32 FUN_004920a0_u32(u32 param_1);
-extern u64 FUN_00492d10(u64 param_1);
+extern u64 RpAtomicSetFrame(u64 param_1);
 extern u64 FUN_00493210();
 extern u64 FUN_00493230(u64 param_1,int param_2,long param_3);
-extern u64 FUN_00493370(u64 param_1,u16 param_2);
+extern u64 RpGeometryLock(u64 param_1,u16 param_2);
 extern u64 FUN_004933d0(u64 param_1);
 extern u8 * FUN_00493710(int param_1,int param_2,u32 param_3);
 extern u32 FUN_00493710_u32(u32 param_1,u32 param_2,u32 param_3);
@@ -2721,7 +2721,7 @@ u32 func_0031c1d0(int param_1)
 #pragma alias FUN_0034c670_u32 FUN_0034c670
 #pragma alias FUN_0034db30_i FUN_0034db30
 #pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
-#pragma alias FUN_00352c70_u32 FUN_00352c70
+#pragma alias FUN_00352c70_u32 btlEplUnitIsSelected
 #pragma alias FUN_00102100_mdl FUN_00102100
 #pragma alias FUN_0010a4e0_model FUN_0010a4e0
 #pragma alias FUN_00198580_u32 FUN_00198580
@@ -3533,9 +3533,9 @@ u32 FUN_0031d700(int *param_1)
 // FUN_0031D790
 
 
-void FUN_0031d790(u32 *param_1)
+void mdlEffectListDestroy(u32 *param_1)
 {
-  FUN_0031de30(param_1);
+  mdlEffectListReleaseNodes(param_1);
 
   DAT_0096017c_abs[0](param_1);
 }
@@ -3818,7 +3818,7 @@ void FUN_0031dc80(int *param_1,u32 param_2)
 // FUN_0031DCE0
 
 
-void FUN_0031dce0(u32 *param_1)
+void mdlEffectListCallFlagged(u32 *param_1)
 
 
 
@@ -3862,7 +3862,7 @@ void FUN_0031dd40(int *param_1,u32 *param_2)
 // FUN_0031DDA0
 
 
-void FUN_0031dda0(int *param_1,float *param_2)
+void mdlEffectListSetUniformScale(int *param_1,float *param_2)
 {
     int current;
     float average;
@@ -3878,7 +3878,7 @@ void FUN_0031dda0(int *param_1,float *param_2)
 // FUN_0031DE30
 
 
-void FUN_0031de30(u32 *param_1)
+void mdlEffectListReleaseNodes(u32 *param_1)
 {
     int *current;
     int *next;
