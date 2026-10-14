@@ -88,7 +88,7 @@ extern u8 FUN_00301230_narrow(u8 *unit,u8 kind,s8 delta);
 void FUN_00301540(int param_1,u32 param_2);
 void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
-void FUN_00301870(int param_1);
+void datCalcClearField18(int param_1);
 float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
 u8 FUN_00301ca0(u32 param_1,u32 param_2);
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
@@ -164,7 +164,7 @@ void FUN_0030d380(void);
 void FUN_0030d460(void);
 void FUN_0030d4a0(void);
 void FUN_0030d4e0(void);
-void FUN_0030d610(void);
+void datCalcFormulaRatioOfProducts(void);
 void FUN_0030d760(void);
 void FUN_0030db80(void);
 void FUN_0030ddf0(void);
@@ -1257,7 +1257,7 @@ s8 FUN_00301750(int param_1,u32 param_2)
 
 #pragma alias FUN_00301230_narrow FUN_00301230
 // FUN_00301870
-void FUN_00301870(int param_1)
+void datCalcClearField18(int param_1)
 
 {
   *(u32 *)(param_1 + 0x18) = 0;
@@ -7167,7 +7167,7 @@ void FUN_0030d4e0(void)
 
 
 // FUN_0030d610
-void FUN_0030d610(void)
+void datCalcFormulaRatioOfProducts(void)
 {
   s32 lVar1;
   float fVar2;
