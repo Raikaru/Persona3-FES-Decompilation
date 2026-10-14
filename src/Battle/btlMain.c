@@ -2113,10 +2113,9 @@ void FUN_0029ee20(u32 unitHandle)
       unitPos = *(RwV3d *)(iVar4 + 0x54);
       FUN_0027ffb0(unitHandle,&targetPos);
       clampY = targetPos.y + 5.0f;
-      if (targetPos.y + 5.0f < unitPos.y) {
-        clampY = unitPos.y;
+      if (!(clampY < unitPos.y)) {
+        unitPos.y = clampY;
       }
-      unitPos.y = clampY;
       direction.x = targetPos.x - unitPos.x;
       direction.y = targetPos.y - unitPos.y;
       direction.z = targetPos.z - unitPos.z;
