@@ -852,7 +852,7 @@ static __inline void mdlVuModulateStacked40V1(u32 c2)
 #endif
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
-void mdlEffectListDestroy(u32 *param_1);
+void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
@@ -860,10 +860,10 @@ u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
 void FUN_0031d9c0(int *param_1,u32 *param_2);
 void FUN_0031dc80(int *param_1,u32 param_2);
-void mdlEffectListCallFlagged(u32 *param_1);
+void FUN_0031dce0(u32 *param_1);
 void FUN_0031dd40(int *param_1,u32 *param_2);
-void mdlEffectListSetUniformScale(int *param_1,float *param_2);
-void mdlEffectListReleaseNodes(u32 *param_1);
+void FUN_0031dda0(int *param_1,float *param_2);
+void FUN_0031de30(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
 void FUN_0031df80(u32 *param_1);
 #pragma alias FUN_0034fcf0_i FUN_0034fcf0
@@ -1593,8 +1593,8 @@ u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
-s8 btlEplUnitIsSelected(int param_1,u8 *param_2);
-#pragma alias FUN_00352c70_u32 btlEplUnitIsSelected
+s8 FUN_00352c70(int param_1,u8 *param_2);
+#pragma alias FUN_00352c70_u32 FUN_00352c70
 extern u32 FUN_00352c70_u32(int param_1,u8 *param_2);
 u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4);
 u32 FUN_00352eb0(int param_1);
@@ -1808,10 +1808,10 @@ extern void FUN_00491ea0_u32(u32 param_1);
 extern long FUN_004920a0(u64 param_1);
 #pragma alias FUN_004920a0_u32 FUN_004920a0
 extern u32 FUN_004920a0_u32(u32 param_1);
-extern u64 RpAtomicSetFrame();
+extern u64 FUN_00492d10();
 extern u64 FUN_00493210();
 extern u64 FUN_00493230();
-extern u64 RpGeometryLock();
+extern u64 FUN_00493370();
 extern u64 FUN_004933d0();
 extern u8 *FUN_00493710(int param_1,int param_2,u32 param_3);
 #pragma alias FUN_00493710_u32 FUN_00493710
@@ -4473,7 +4473,7 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3)
   uVar6 = FUN_00493710_u32(param_1,param_2,param_3);
 
 
-  RpAtomicSetFrame(uVar5,uVar4);
+  FUN_00492d10(uVar5,uVar4);
 
   fStack_90 = 0.0f;
 
@@ -4704,7 +4704,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   *(int *)(puVar1 + 6) = (int)uVar4;
 
-  RpAtomicSetFrame(*(u32 *)(puVar1 + 8),uVar4);
+  FUN_00492d10(*(u32 *)(puVar1 + 8),uVar4);
 
 
 
@@ -4780,7 +4780,7 @@ u32 FUN_00323640(u16 *instance)
 
     }
 
-    RpGeometryLock(srcBlock,1);
+    FUN_00493370(srcBlock,1);
 
     srcVerts = *(u16 **)(srcBlock + 0x2c);
 
@@ -5101,7 +5101,7 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
   }
 
-  RpAtomicSetFrame(uVar5,uVar2);
+  FUN_00492d10(uVar5,uVar2);
 
   iVar1 = *(int *)((int)uVar6 + 0x5c);
   lighting.color.r = 0.0f;
@@ -5320,7 +5320,7 @@ u32 FUN_00324160(u8 *effect)
                    **(int **)(*(int *)(effect + 0x28) + offset));
     }
   }
-  RpGeometryLock(srcBuf, 1);
+  FUN_00493370(srcBuf, 1);
   src = *(u16 **)(srcBuf + 0x2c);
   dstCursor = *(u16 **)(dstBuf + 0x2c);
   dst = dstCursor;
@@ -19356,7 +19356,7 @@ void FUN_00333420(int param_1,int *param_2)
 
   puVar3 = *(u16 **)(param_1 + 0x10);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),8);
+  FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),8);
 
   uVar2 = puVar3[0xe];
 
@@ -19502,7 +19502,7 @@ void FUN_00333420(int param_1,int *param_2)
 
   puVar3 = *(u16 **)(param_1 + 0x14);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),8);
+  FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),8);
 
   piVar5 = *(int **)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x30);
 
@@ -20099,9 +20099,9 @@ void FUN_003341c0(int param_1)
 
   FUN_00329740((u32 *)(param_1));
 
-  RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 0x10) + 0x10) + 0x18),10);
+  FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 0x10) + 0x10) + 0x18),10);
 
-  RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 0x14) + 0x10) + 0x18),10);
+  FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 0x14) + 0x10) + 0x18),10);
 
   return;
 
@@ -20618,7 +20618,7 @@ LAB_003350f0:
 
             fVar30 = fVar31;
 
-            RpGeometryLock(*(u32 *)(*(int *)(puVar5 + 8) + 0x18),2);
+            FUN_00493370(*(u32 *)(*(int *)(puVar5 + 8) + 0x18),2);
 
             puVar16 = *(u32 **)
 
@@ -21667,7 +21667,7 @@ LAB_003365a0:
 
             uVar2 = puVar6[4];
 
-            RpGeometryLock(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),2);
+            FUN_00493370(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),2);
 
             puVar21 = *(u32 **)
 
@@ -22650,7 +22650,7 @@ void FUN_00336e80(int param_1)
 
           iVar10 = (int)(short)puVar3[4] / 5 >> 1;
 
-          RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),2);
+          FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),2);
 
           puVar11 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -23601,7 +23601,7 @@ void FUN_00337fd0(int param_1)
 
     }
 
-    RpGeometryLock(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
+    FUN_00493370(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
 
     puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -24012,9 +24012,9 @@ void FUN_003387c0(int param_1)
     factor = (float)iVar5 / (float)iVar6;
 
 
-    RpGeometryLock(*(u32 *)(*(int *)(puVar4 + 8) + 0x18),2);
+    FUN_00493370(*(u32 *)(*(int *)(puVar4 + 8) + 0x18),2);
 
-    RpGeometryLock(*(u32 *)(*(int *)(*piVar3 + 0x10) + 0x18),2);
+    FUN_00493370(*(u32 *)(*(int *)(*piVar3 + 0x10) + 0x18),2);
 
     uVar7 = *(u32 *)(iVar13 + 0x38);
 
@@ -24511,7 +24511,7 @@ void FUN_00338ea0(int param_1)
 
     }
 
-    RpGeometryLock(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
+    FUN_00493370(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
 
     puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -24912,7 +24912,7 @@ void FUN_003397d0(int param_1)
   puVar4 = (u32 *)**(u32 **)(param_1 + 0x3c);
   puVar1 = (u16 *)(*(u32 **)(param_1 + 0x3c))[1];
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
   FUN_00521408(*(volatile /* Removing this qualifier loses FUN_003397d0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
@@ -25071,7 +25071,7 @@ void FUN_003399a0(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       fVar7 = fGpffff81a0;
 
@@ -25557,7 +25557,7 @@ void FUN_0033a3e0(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
   FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
@@ -25769,7 +25769,7 @@ void FUN_0033a5b0(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       puVar11 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -26211,7 +26211,7 @@ void FUN_0033b0d0(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
   FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
@@ -26395,7 +26395,7 @@ void FUN_0033b2a0(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       puVar13 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -26885,7 +26885,7 @@ void FUN_0033bda0(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
   FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
@@ -26943,7 +26943,7 @@ void FUN_0033be90(int param_1,int param_2)
 
   if (uVar1 != 0) {
 
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
@@ -27225,7 +27225,7 @@ void FUN_0033c1a0(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       puVar15 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -27668,7 +27668,7 @@ void FUN_0033cb20(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
   FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
@@ -27726,7 +27726,7 @@ void FUN_0033cc10(int param_1,int param_2)
 
   if (uVar1 != 0) {
 
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
@@ -28023,7 +28023,7 @@ void FUN_0033cf00(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       fVar16 = DAT_007cae90;
 
@@ -28405,7 +28405,7 @@ void FUN_0033d890(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
   FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
@@ -28463,7 +28463,7 @@ void FUN_0033d980(int param_1,int param_2)
 
   if (uVar1 != 0) {
 
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
@@ -28713,7 +28713,7 @@ void FUN_0033dc70(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       puVar12 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -29184,7 +29184,7 @@ void FUN_0033e700(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   FUN_00521408(*(volatile /* Removing this qualifier loses FUN_0033e700 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
@@ -29361,7 +29361,7 @@ void FUN_0033e8e0(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       fVar7 = DAT_007cae90;
 
@@ -29872,7 +29872,7 @@ void FUN_0033f4a0(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   FUN_00521408(*(volatile /* Removing this qualifier loses FUN_0033f4a0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
@@ -29930,7 +29930,7 @@ void FUN_0033f590(int param_1,int param_2)
 
   if (uVar1 != 0) {
 
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
@@ -30276,7 +30276,7 @@ void FUN_0033f860(int param_1)
 
       }
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar3 + 8) + 0x18),10);
 
       fVar16 = DAT_007cae90;
 
@@ -30754,7 +30754,7 @@ void FUN_003402c0(int param_1)
 
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
 
-  RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
+  FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
   FUN_00521408(*(volatile /* Removing this qualifier loses FUN_003402c0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
@@ -30811,7 +30811,7 @@ void FUN_003403b0(int param_1,int param_2)
 
   if (uVar1 != 0) {
 
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     pfVar4 = *(float **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
@@ -31232,7 +31232,7 @@ void FUN_003407e0(int param_1)
       }
 
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar7 + 8) + 0x18),10);
+      FUN_00493370(*(u32 *)(*(int *)(puVar7 + 8) + 0x18),10);
 
       pfVar25 = *(float **)(*(int *)(*(int *)(*(int *)(puVar7 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -32658,7 +32658,7 @@ void FUN_00342550(int effect,int params)
 
   layerCount = *(u32 *)(params + 0x38);
   if (layerCount != 0) {
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
     buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
     colorBase = *(u32 **)(buf + 0x30);
     vertBase = *(float **)(buf + 0x34);
@@ -32956,7 +32956,7 @@ void FUN_00342a90(int param_1)
 
       fVar18 = *(float *)(iVar3 + 0xf4);
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
+      FUN_00493370(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
 
       fVar9 = fGpffff8160;
 
@@ -33591,7 +33591,7 @@ void FUN_00343860(int effect,int params)
 
   layerCount = *(u32 *)(params + 0x38);
   if (layerCount != 0) {
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
     buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
     colorBase = *(u32 **)(buf + 0x30);
     vertBase = *(float **)(buf + 0x34);
@@ -33869,7 +33869,7 @@ void FUN_00343d60(int param_1)
 
       fVar30 = *(float *)(iVar3 + 0xe4);
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
+      FUN_00493370(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
 
       fVar8 = fGpffff8160;
 
@@ -34509,7 +34509,7 @@ void FUN_00344b70(int effect,int params)
 
   layerCount = *(u32 *)(params + 0x38);
   if (layerCount != 0) {
-    RpGeometryLock(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
     buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
     colorBase = *(u32 **)(buf + 0x30);
     vertBase = *(float **)(buf + 0x34);
@@ -34826,7 +34826,7 @@ void FUN_003450d0(int param_1)
 
       fVar21 = *(float *)(iVar3 + 0xd4);
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
+      FUN_00493370(*(u32 *)(*(int *)(puVar6 + 8) + 0x18),0xff2);
 
       fVar9 = DAT_007cae50;
 
@@ -36330,7 +36330,7 @@ void FUN_00346530(int param_1)
 
     }
 
-    RpGeometryLock(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),0xff2);
+    FUN_00493370(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),0xff2);
 
     pfVar4 = *(float **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -36560,7 +36560,7 @@ u32 FUN_00347170(u64 param_1)
 
   **(u16 **)(pauVar7[5] + 8) = **(u16 **)(pauVar7[5] + 8) & 0xfffb;
 
-  RpGeometryLock(*(u32 *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18),8);
+  FUN_00493370(*(u32 *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18),8);
 
   puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18) + 0x30);
 
@@ -36777,7 +36777,7 @@ void FUN_003473b0(u8 (*param_1) [16])
           : "r"(vuColor1), "r"(vuColor2), "f"(DAT_007cae4c), "r"(vuScale)
           : "vf2", "vf10", "vf11", "memory");
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),0xff2);
+      FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),0xff2);
 
       pfVar16 = *(float **)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -44460,7 +44460,7 @@ void FUN_003505d0(int *param_1)
 
     }
 
-    RpGeometryLock(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),0xff2);
+    FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),0xff2);
 
     pfVar12 = *(float **)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -45506,7 +45506,7 @@ void FUN_003520a0(u64 param_1)
 
       uVar3 = *(u32 *)(iVar1 + 0x38);
 
-      RpGeometryLock(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
+      FUN_00493370(*(u32 *)(*(int *)(puVar2 + 8) + 0x18),2);
 
       puVar12 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
@@ -45940,7 +45940,7 @@ void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00352C70 NONMATCHING
 
 
-s8 btlEplUnitIsSelected(int target,u8 *filter)
+s8 FUN_00352c70(int target,u8 *filter)
 {
   u16 slot;
   u32 candidate;
