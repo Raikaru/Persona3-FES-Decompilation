@@ -2087,7 +2087,7 @@ void FUN_0029ec80(u32 index, u32* colorA, u32* colorB)
 
 void FUN_0029ee20(u32 unitHandle)
 {
-  char mode;
+  u8 mode;
   float clampY;
   u32 *packet;
   int iVar4;
@@ -2096,10 +2096,11 @@ void FUN_0029ee20(u32 unitHandle)
   u32 uVar7;
   u32 uVar8;
   RwMatrix matrix;
-  RwV3d unitPos;
   RwV3d targetPos;
-  RwV3d direction;
+  RwV3d unitPos;
+  RwV3d delta;
   RwV3d cross;
+  RwV3d direction;
 
   if (((*(u32 *)(DAT_007ce3ec + 0xc) & 2) != 0) &&
 
@@ -2116,9 +2117,10 @@ void FUN_0029ee20(u32 unitHandle)
       if (!(clampY < unitPos.y)) {
         unitPos.y = clampY;
       }
-      direction.x = targetPos.x - unitPos.x;
-      direction.y = targetPos.y - unitPos.y;
-      direction.z = targetPos.z - unitPos.z;
+      delta.x = targetPos.x - unitPos.x;
+      delta.y = targetPos.y - unitPos.y;
+      delta.z = targetPos.z - unitPos.z;
+      direction = delta;
       FUN_004c69f0(&direction,&direction);
       matrix.at = direction;
       cross.x = DAT_00697884 * direction.z - DAT_00697888 * direction.y;
