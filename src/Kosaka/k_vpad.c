@@ -5160,12 +5160,7 @@ void* func_001e8e80(RuntimeWork* rawWork, void* material)
 
     triangleCount = 0;
     vertexCount = 0;
-    if (work->mode == 2)
-    {
-        triangleCount = work->config->count * 4 + 4;
-        vertexCount = work->config->count * 3 + 6;
-    }
-    else if (work->mode == 1)
+    if (work->mode == 2 || work->mode == 1)
     {
         triangleCount = work->config->count * 4 + 4;
         vertexCount = work->config->count * 3 + 6;
