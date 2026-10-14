@@ -33636,14 +33636,14 @@ void FUN_00343860(int effect,int params)
     vertCursor = vertBase;
     colorCursor = colorBase;
     for (sample = 0; sample < sampleCount; sample = sample + 1) {
-      if (sample >= fadeInEnd) {
-        alpha = 1.0f;
-        if (fadeOutStart < sample) {
-          alpha = (float)(buf - sample) / (float)(int)(buf - fadeOutStart);
-        }
+      if (sample < (u32)fadeInEnd) {
+        alpha = (float)sample / (float)fadeInEnd;
+      }
+      else if ((u32)fadeOutStart < sample) {
+        alpha = (float)(buf - sample) / (float)(int)(buf - fadeOutStart);
       }
       else {
-        alpha = (float)sample / (float)(int)fadeInEnd;
+        alpha = 1.0f;
       }
       *colorCursor = white;
       alpha = alpha * 255.0f;
