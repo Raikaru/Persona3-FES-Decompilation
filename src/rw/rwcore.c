@@ -6458,7 +6458,7 @@ undefined4 FUN_004d3fc0(int param_1)
       puVar5 = puVar5 + 1;
     } while (uVar8 < uVar4);
   }
-  uVar2 = FUN_004c3b50(0x5c,0x400,4,0x30411);
+  uVar2 = RwFreeListCreate(0x5c,0x400,4,0x30411);
   *(undefined4 *)(param_1 + 0x4004) = uVar2;
   uVar2 = (*DAT_00960188)(*(undefined4 *)(param_1 + 0x4004),0x30411);
   *(undefined4 *)(param_1 + 0x4000) = uVar2;
@@ -8428,7 +8428,7 @@ void FUN_004d6b10(void)
 #pragma push
 #pragma schedule on
 // FUN_004D6B60 NONMATCHING
-int FUN_004d6b60(uint param_1)
+int _rwSkyFindMSB(uint param_1)
 
 {
   int iVar1;
@@ -9273,7 +9273,7 @@ long FUN_004d8320(float param_1,long param_2)
 }
 
 // FUN_004D83C0 NONMATCHING
-undefined8 FUN_004d83c0(undefined8 param_1,long param_2,long param_3)
+undefined8 skyGetSizeTexCB(undefined8 param_1,long param_2,long param_3)
 
 {
   long lVar1;
@@ -15551,7 +15551,7 @@ undefined4 FUN_004e40b0(void)
 }
 
 // FUN_004E4130 NONMATCHING
-void FUN_004e4130(void)
+void _rwSkyRasterInitiateStop(void)
 
 {
   if (DAT_007ceae8 != 0) {
@@ -16241,9 +16241,9 @@ void FUN_004e4e90(int param_1)
   uint in_register_00000304;
   
   iVar8 = (int)(param_1 + DAT_007ceaa8);
-  iVar1 = FUN_004d6b60(*(int *)(param_1 + 0xc) + -1);
+  iVar1 = _rwSkyFindMSB(*(int *)(param_1 + 0xc) + -1);
   uVar7 = 1 << (iVar1 + 1U & 0x1f);
-  iVar1 = FUN_004d6b60(*(int *)(param_1 + 0x10) + -1);
+  iVar1 = _rwSkyFindMSB(*(int *)(param_1 + 0x10) + -1);
   iVar9 = 1 << (iVar1 + 1U & 0x1f);
   iVar1 = *(int *)(param_1 + 0x14);
   if (*(int *)(iVar8 + 0x38) != 0) {
@@ -16264,10 +16264,10 @@ void FUN_004e4e90(int param_1)
   if (uVar6 == 0) {
     uVar6 = 1;
   }
-  uVar2 = FUN_004d6b60(uVar7);
-  iVar5 = FUN_004d6b60(iVar9);
+  uVar2 = _rwSkyFindMSB(uVar7);
+  iVar5 = _rwSkyFindMSB(iVar9);
   *(uint *)(iVar8 + 8) = uVar6 << 0xe | (uVar2 & 0xf) << 0x1a | iVar5 << 0x1e;
-  uVar6 = FUN_004d6b60(iVar9);
+  uVar6 = _rwSkyFindMSB(iVar9);
   *(int *)(iVar8 + 0xc) = (int)(uVar6 & 0xf) >> 2;
   *(undefined2 *)(iVar8 + 0x14) = 0;
   bVar3 = *(byte *)(param_1 + 0x23) & 0x6f;
@@ -18531,12 +18531,12 @@ undefined4 FUN_004e98a0(int param_1,undefined8 param_2,undefined8 param_3)
     }
     *(byte *)(param_1 + 0x23) = bVar7;
     *(byte *)(param_1 + 0x23) = *(byte *)(param_1 + 0x23) | bVar2 & 0x90;
-    uVar3 = FUN_004d6b60(*(undefined4 *)(iVar8 + 4));
+    uVar3 = _rwSkyFindMSB(*(undefined4 *)(iVar8 + 4));
     *(int *)(param_1 + 0xc) = 1 << (uVar3 & 0x1f);
     if (0x400 < *(int *)(param_1 + 0xc)) {
       *(undefined4 *)(param_1 + 0xc) = 0x400;
     }
-    uVar3 = FUN_004d6b60(*(undefined4 *)(iVar8 + 8));
+    uVar3 = _rwSkyFindMSB(*(undefined4 *)(iVar8 + 8));
     *(int *)(param_1 + 0x10) = 1 << (uVar3 & 0x1f);
     if (0x400 < *(int *)(param_1 + 0x10)) {
       *(undefined4 *)(param_1 + 0x10) = 0x400;
@@ -24682,7 +24682,7 @@ undefined4 FUN_004f1e10(void)
 #pragma optimization_level 2
 
 // FUN_004F1E20 NONMATCHING
-undefined8 FUN_004f1e20(undefined8 param_1,undefined4 *param_2,undefined4 *param_3)
+undefined8 RpSkyTexGetTex0(undefined8 param_1,undefined4 *param_2,undefined4 *param_3)
 
 {
   int iVar1;
@@ -36240,7 +36240,7 @@ void FUN_00503b98(ulong param_1,ulong param_2)
 }
 
 // FUN_00503C30
-asm uint FUN_00503c30(void)
+asm uint QueryIntrContext(void)
 {
   .set noreorder
   mfc0 $v0, $12
@@ -36584,7 +36584,7 @@ long FUN_005042a0(undefined8 param_1,undefined8 param_2)
   int iStack_68;
   int iStack_64;
   
-  lVar1 = FUN_00503c30();
+  lVar1 = QueryIntrContext();
   if (lVar1 != 0) {
     return -1;
   }
