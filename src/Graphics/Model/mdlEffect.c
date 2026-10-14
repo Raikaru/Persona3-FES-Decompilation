@@ -4129,14 +4129,15 @@ void FUN_00322a20(int param_1)
 
 void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
 {
-  short pivotX;
-  short pivotY;
-  short keyW;
-  short keyH;
+  float pivotX;
+  float pivotY;
+  float keyW;
+  float keyH;
   int *animBlock;
   u32 *track;
   int *jointPtr;
-  int *joint;
+  u8 *joint;
+  int keyBase;
   short *key;
   u32 frame;
   s32 scaleBits;
@@ -4162,7 +4163,8 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
     } else {
       *(int *)(cursor + 8) = *(int *)(cursor + 8) - 1;
     }
-    key = (short *)(*(int *)(cursor + 0x10) + *(int *)(cursor + 4) * 0x18);
+    keyBase = *(int *)(cursor + 0x10);
+    key = (short *)(keyBase + *(int *)(cursor + 4) * 0x18);
     if ((track[4] & 1) != 0) {
       scaleBits = *(s32 *)(*animBlock + track[1] + *(int *)(cursor + 4) * 4);
     } else {
@@ -4170,7 +4172,7 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
     }
     *(s32 *)(pose + 0xb) = scaleBits;
     jointPtr = *(int **)(animBlock[5] + key[8] * 4);
-    joint = (int *)*jointPtr;
+    joint = (u8 *)*jointPtr;
     scaleX = (float)*(int *)(joint + 0xc);
     scaleY = (float)*(int *)(joint + 0x10);
     if ((track[4] & 2) != 0) {
@@ -4181,18 +4183,20 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
       *(u16 *)(pose + 10) = 1;
     }
     pose[4] = *(float *)(key + 10);
-    pivotX = key[2];
-    pivotY = key[3];
-    keyW = key[0];
-    keyH = key[1];
+  pivotX = (float)key[2];
+  pivotY = (float)key[3];
+  keyW = (float)key[0];
+  keyH = (float)key[1];
     pose[6] = (float)((int)key[4] >> 4) / scaleX;
     pose[7] = (float)((int)key[5] >> 4) / scaleY;
     pose[8] = (float)((int)key[6] >> 4) / scaleX;
     pose[9] = (float)((int)key[7] >> 4) / scaleY;
-    pose[0] = (float)(int)keyW / 2.0f - (float)(int)pivotX;
-    pose[1] = (float)(int)keyH / 2.0f - (float)(int)pivotY;
-    pose[2] = (float)(int)keyW / 2.0f;
-    pose[3] = (float)(int)keyH / 2.0f;
+  keyW = keyW / 2.0f;
+  keyH = keyH / 2.0f;
+  pose[0] = keyW - pivotX;
+  pose[1] = keyH - pivotY;
+  pose[2] = keyW;
+  pose[3] = keyH;
     pose[0xc] = scaleX;
     pose[0xd] = scaleY;
     *(u32 *)(pose + 5) = (u32)jointPtr;
