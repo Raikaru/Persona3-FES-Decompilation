@@ -2799,58 +2799,49 @@ void* func_003140c0(void* param_1,u16 *param_2)
 // FUN_00314170 NONMATCHING
 
 
-void* func_00314170(void* param_1, void* param_2)
-
-
-
+void* func_00314170(void* animPtr, void* entryPtr)
 {
+  int *table;
+  long index;
+  u16 *entry;
+  int *anim;
 
-  int *piVar1;
-
-  long lVar2;
-
-  u16 *puVar3;
-
-  int *piVar4;
-
-  
-
-  piVar4 = (int *)param_1;
-  func_004b6ec0(param_1,*piVar4);
-  piVar4[0x10] = (int)&LAB_00314020;
-  piVar4[0x11] = (int)&LAB_00314060;
+  anim = (int *)animPtr;
+  func_004b6ec0(animPtr,*anim);
+  anim[0x10] = (int)&LAB_00314020;
+  anim[0x11] = (int)&LAB_00314060;
 
 
-  if (param_2 != 0) {
+  if (entryPtr != 0) {
 
-    puVar3 = (u16 *)param_2;
+    entry = (u16 *)entryPtr;
 
-    piVar1 = *(int **)(puVar3 + 0xc);
+    table = *(int **)(entry + 0xc);
 
-    if ((((piVar1 == (int *)0x0) || ((long)(u32)*(u16 *)(piVar1 + 3) <= (long)(short)puVar3[2])
+    if ((((table == (int *)0x0) || ((long)(u32)*(u16 *)(table + 3) <= (long)(short)entry[2])
 
-         ) || (*(int *)(*piVar1 + (short)puVar3[2] * 8) == 0)) || ((*puVar3 & 1) == 0)) {
+         ) || (*(int *)(*table + (short)entry[2] * 8) == 0)) || ((*entry & 1) == 0)) {
 
-      piVar1 = *(int **)(puVar3 + 0xc);
-      if (piVar1 != (int *)0x0) {
+      table = *(int **)(entry + 0xc);
+      if (table != (int *)0x0) {
 
-        lVar2 = (long)(short)puVar3[2];
-        if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
-              (*(int *)(*piVar1 + (short)puVar3[2] * 8) != 0)) &&
-             ((*puVar3 & 1) == 0)) &&
-            ((0 <= (short)puVar3[2]))) {
+        index = (long)(short)entry[2];
+        if ((((index < (long)(u32)*(u16 *)(table + 3)) &&
+              (*(int *)(*table + (short)entry[2] * 8) != 0)) &&
+             ((*entry & 1) == 0)) &&
+            ((0 <= (short)entry[2]))) {
 
-          func_004b74c0_typed(*(f32 *)(*piVar4 + 0xc),param_1);
-          *(u8 *)(puVar3 + 1) = 1;
+          func_004b74c0_typed(*(f32 *)(*anim + 0xc),animPtr);
+          *(u8 *)(entry + 1) = 1;
         }
       }
-      return param_1;
+      return animPtr;
 
     }
 
   }
 
-  return param_1;
+  return animPtr;
 
 }
 
@@ -3509,66 +3500,54 @@ void* func_00315010(void* object, void* data)
 // FUN_00315090 NONMATCHING
 
 
-u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
-
-
-
+u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
 {
-
-  int iVar1;
-
-  int iVar2;
-
+  int expected;
+  int current;
   u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
+  u32 srcMatrix;
+  u32 idx;
   u32 index_for_address;
   u16 count;
-  int iVar6;
-
-  int iVar7;
-
+  int handle;
+  int entry;
   struct {
     int result;
     int expected;
   } callbackData;
 
-  
-
-  count = *param_2;
-  uVar5 = 0;
-  while ((u16)uVar5 < count) {
-    index_for_address = uVar5 & 0xffff;
-    if ((param_3 & 0xffff) == *(u32 *)(*(int *)(param_2 + 2) + index_for_address * 0x50 + 0x40)) {
+  count = *table;
+  idx = 0;
+  while ((u16)idx < count) {
+    index_for_address = idx & 0xffff;
+    if ((key & 0xffff) == *(u32 *)(*(int *)(table + 2) + index_for_address * 0x50 + 0x40)) {
       break;
     }
-    uVar5 = uVar5 + 1 & 0xffff;
+    idx = idx + 1 & 0xffff;
   }
 
-  if (uVar5 == *param_2) {
+  if (idx == *table) {
     return 0;
   }
 
-  iVar7 = *(int *)(param_2 + 2) + uVar5 * 0x50;
-  iVar1 = *(int *)(iVar7 + 0x44);
-  iVar6 = *(int *)(param_4 + 4);
-  iVar2 = func_00466720(iVar6);
+  entry = *(int *)(table + 2) + idx * 0x50;
+  expected = *(int *)(entry + 0x44);
+  handle = *(int *)(resource + 4);
+  current = func_00466720(handle);
 
-  if (iVar1 != iVar2) {
+  if (expected != current) {
     callbackData.result = 0;
-    callbackData.expected = iVar1;
-    func_004cb6e0(iVar6,(void *)func_00315010,&callbackData);
-    iVar6 = callbackData.result;
+    callbackData.expected = expected;
+    func_004cb6e0(handle,(void *)func_00315010,&callbackData);
+    handle = callbackData.result;
   }
 
-  if (iVar6 == 0) {
+  if (handle == 0) {
     return 0;
   }
 
-  uVar4 = func_004cb2f0(iVar6);
-  FUN_004c2f30(param_1,(const RwMatrix*)iVar7,(const RwMatrix*)uVar4);
+  srcMatrix = func_004cb2f0(handle);
+  FUN_004c2f30(outMatrix,(const RwMatrix*)entry,(const RwMatrix*)srcMatrix);
   return 1;
 
 }
@@ -4242,88 +4221,70 @@ Model* func_00315ed0(Model* param_1)
 #pragma push
 #pragma opt_dead_assignments off
 // FUN_00315F50 NONMATCHING
-u32 func_00315f50(void* param_1,u32 *param_2)
-
-
-
+u32 func_00315f50(void* clump,u32 *context)
 {
-
-  int iVar1;
-
-  u32 uVar2;
-
-  u8 *pbVar3;
-
-  int iVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
+  int clumpBase;
+  u32 atomicCount;
+  u8 *colour;
+  int atomic;
+  u32 matUsrInt;
+  u32 i;
   float fVar7;
-
   float fVar8;
-
   float fVar9;
-
   float fVar10;
-
   float fVar11;
-
   float fVar12;
-
   float fVar13;
   RwRGBA color;
 
-  
+  clumpBase = *(int *)((int)clump + 0x18);
 
-  iVar1 = *(int *)((int)param_1 + 0x18);
+  *(u32 *)(clumpBase + 8) = *(u32 *)(clumpBase + 8) | 0x40;
 
-  *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) | 0x40;
+  atomicCount = *(u32 *)(clumpBase + 0x24);
 
-  uVar2 = *(u32 *)(iVar1 + 0x24);
+  colour = (u8 *)*context;
 
-  pbVar3 = (u8 *)*param_2;
+  fVar12 = DAT_007caf08 * (float)*colour;
 
-  fVar12 = DAT_007caf08 * (float)*pbVar3;
+  fVar13 = DAT_007caf08 * (float)colour[1];
 
-  fVar13 = DAT_007caf08 * (float)pbVar3[1];
+  fVar10 = DAT_007caf08 * (float)colour[2];
 
-  fVar10 = DAT_007caf08 * (float)pbVar3[2];
+  fVar11 = DAT_007caf08 * (float)colour[3];
 
-  fVar11 = DAT_007caf08 * (float)pbVar3[3];
+  for (i = 0; i < atomicCount; i = i + 1) {
 
-  for (uVar6 = 0; uVar6 < uVar2; uVar6 = uVar6 + 1) {
+    atomic = *(int *)(*(int *)(clumpBase + 0x20) + i * 4);
 
-    iVar4 = *(int *)(*(int *)(iVar1 + 0x20) + uVar6 * 4);
-
-    uVar5 = K_Clump_MatUsrDataGetInt(iVar4,0x69aba0);
-    color = *(RwRGBA *)&uVar5;
+    matUsrInt = K_Clump_MatUsrDataGetInt(atomic,0x69aba0);
+    color = *(RwRGBA *)&matUsrInt;
 
     fVar9 = DAT_007caf08 * (float)color.g;
     fVar7 = DAT_007caf08 * (float)color.b;
 
     fVar8 = fVar11;
 
-    if ((*(u16 *)(param_2 + 1) & 1) == 0) {
+    if ((*(u16 *)(context + 1) & 1) == 0) {
 
       fVar8 = DAT_007caf08 * (float)color.a * fVar11;
 
     }
 
-    *(char *)(iVar4 + 4) =
+    *(char *)(atomic + 4) =
 
          (char)(int)(DAT_007caf08 * (float)color.r * fVar12 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 5) = (char)(int)(fVar9 * fVar13 * 255.0f + 0.5f);
+    *(char *)(atomic + 5) = (char)(int)(fVar9 * fVar13 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 6) = (char)(int)(fVar7 * fVar10 * 255.0f + 0.5f);
+    *(char *)(atomic + 6) = (char)(int)(fVar7 * fVar10 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 7) = (char)(int)(fVar8 * 255.0f + 0.5f);
+    *(char *)(atomic + 7) = (char)(int)(fVar8 * 255.0f + 0.5f);
 
   }
 
-  return (u32)param_1;
+  return (u32)clump;
 
 }
 #pragma opt_dead_assignments reset
@@ -5855,55 +5816,42 @@ RpClump* mdlGetClump(Model* mdl)
 // FUN_00318B90 NONMATCHING
 
 
-u32 func_00318b90(u32 param_1)
-
-
-
+u32 func_00318b90(u32 mdl)
 {
+  int *animSet;
+  u8 *animData;
+  u32 hit;
+  int slotAddr;
+  int mdlAddr;
+  int slotMdl;
+  u32 i;
 
-  int *piVar1;
+  mdlAddr = (int)mdl;
+  animSet = *(int **)(mdlAddr + 0x118);
 
-  u8 *puVar2;
+  if ((animSet != (int *)0x0) &&
+      (*(short *)(mdlAddr + 0xf0) < *(u16 *)(animSet + 1)) &&
+      ((animData = *(u8 **)(*animSet + 0x40 + *(short *)(mdlAddr + 0xf0) * 0x50),
+        animData != (u8 *)0x0)) &&
+      (animData != (u8 *)&DAT_009571d0)) {
 
-  u32 uVar3;
+    func_00466ef0(*(u32 *)(mdlAddr + 0x10c));
 
-  int lVar4;
+    for (i = 0; i < 5; i = i + 1 & 0xffff) {
+      slotAddr = mdlAddr + i * 0xc;
 
-  int iVar5;
+      if ((((*(u8 *)(slotAddr + 0x3b4) & 1) != 0) && (*(int *)(slotAddr + 0x3b8) != 0)) &&
+         (hit = mdl00319770((Model*)mdl,i), hit != 0)) {
 
-  int iVar6;
+        slotMdl = *(int *)(slotAddr + 0x3b8);
+        animSet = *(int **)(slotMdl + 0x118);
 
-  u32 uVar7;
+        if (((animSet != (int *)0x0) &&
+            (*(short *)(slotMdl + 0xf0) < *(u16 *)(animSet + 1))) &&
+           ((animData = *(u8 **)(*animSet + *(short *)(slotMdl + 0xf0) * 0x50 + 0x40),
+            animData != (u8 *)0x0 && (animData != (u8 *)&DAT_009571d0)))) {
 
-  
-
-  iVar6 = (int)param_1;
-
-  piVar1 = *(int **)(iVar6 + 0x118);
-
-  if ((piVar1 != (int *)0x0) &&
-      (*(short *)(iVar6 + 0xf0) < *(u16 *)(piVar1 + 1)) &&
-      ((puVar2 = *(u8 **)(*piVar1 + 0x40 + *(short *)(iVar6 + 0xf0) * 0x50),
-        puVar2 != (u8 *)0x0)) &&
-      (puVar2 != (u8 *)&DAT_009571d0)) {
-
-    func_00466ef0(*(u32 *)(iVar6 + 0x10c));
-
-    for (uVar7 = 0; uVar7 < 5; uVar7 = uVar7 + 1 & 0xffff) {
-      iVar5 = iVar6 + uVar7 * 0xc;
-
-      if ((((*(u8 *)(iVar5 + 0x3b4) & 1) != 0) && (*(int *)(iVar5 + 0x3b8) != 0)) &&
-         (lVar4 = mdl00319770((Model*)param_1,uVar7), lVar4 != 0)) {
-
-        iVar5 = *(int *)(iVar5 + 0x3b8);
-        piVar1 = *(int **)(iVar5 + 0x118);
-
-        if (((piVar1 != (int *)0x0) &&
-            (*(short *)(iVar5 + 0xf0) < *(u16 *)(piVar1 + 1))) &&
-           ((puVar2 = *(u8 **)(*piVar1 + *(short *)(iVar5 + 0xf0) * 0x50 + 0x40),
-            puVar2 != (u8 *)0x0 && (puVar2 != (u8 *)&DAT_009571d0)))) {
-
-          func_00466ef0(*(u32 *)(iVar5 + 0x10c));
+          func_00466ef0(*(u32 *)(slotMdl + 0x10c));
         }
       }
     }
@@ -5925,58 +5873,58 @@ u32 func_00318b90(u32 param_1)
 // FUN_00318D10 NONMATCHING
 
 
-u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
+u32 func_00318d10(u8* mdl,u32 key,u32* outMatrix)
 {
-  u16 *puVar1;
-  u32 uVar2;
+  u16 *attach;
+  u32 word1;
   int iVar3;
   u32 uVar4;
-  u32 *puVar5;
-  u32 uVar6;
-  int lVar7;
+  u32 *src;
+  u32 srcMatrix;
+  int resource;
   int iVar8;
-  u32 uVar9;
+  u32 entry;
   int iVar10;
-  int iVar11;
+  int entryPtr;
   struct {
     int result;
     int expected;
   } callbackData;
 
-  puVar1 = *(u16 **)(param_1 + 0x3f0);
-  if (puVar1 == (u16 *)0x0) {
-    lVar7 = func_001a69a0(*(u32 *)(param_1 + 0xdc),0x69abb8,param_2);
-    if (lVar7 == 0) {
+  attach = *(u16 **)(mdl + 0x3f0);
+  if (attach == (u16 *)0x0) {
+    resource = func_001a69a0(*(u32 *)(mdl + 0xdc),0x69abb8,key);
+    if (resource == 0) {
       uVar4 = 0;
     }
     else {
-      puVar5 = (u32 *)func_004cb2f0(lVar7);
+      src = (u32 *)func_004cb2f0(resource);
       iVar8 = 8;
       do {
-        uVar4 = *puVar5;
-        uVar2 = puVar5[1];
-        puVar5 = puVar5 + 2;
+        uVar4 = *src;
+        word1 = src[1];
+        src = src + 2;
         iVar8 = iVar8 + -1;
-        *param_3 = uVar4;
-        param_3[1] = uVar2;
-        param_3 = param_3 + 2;
+        *outMatrix = uVar4;
+        outMatrix[1] = word1;
+        outMatrix = outMatrix + 2;
       } while (0 < iVar8);
       uVar4 = 1;
     }
   }
   else {
-    uVar9 = 0;
-    while ((uVar9 < *puVar1 &&
-           ((param_2 & 0xffff) != *(u32 *)(*(int *)(puVar1 + 2) + uVar9 * 0x50 + 0x40)))) {
-      uVar9 = uVar9 + 1 & 0xffff;
+    entry = 0;
+    while ((entry < *attach &&
+           ((key & 0xffff) != *(u32 *)(*(int *)(attach + 2) + entry * 0x50 + 0x40)))) {
+      entry = entry + 1 & 0xffff;
     }
-    if (uVar9 == *puVar1) {
+    if (entry == *attach) {
       uVar4 = 0;
     }
     else {
-      iVar11 = *(int *)(puVar1 + 2) + uVar9 * 0x50;
-      iVar8 = *(int *)(iVar11 + 0x44);
-      iVar10 = *(int *)(*(int *)(param_1 + 0xdc) + 4);
+      entryPtr = *(int *)(attach + 2) + entry * 0x50;
+      iVar8 = *(int *)(entryPtr + 0x44);
+      iVar10 = *(int *)(*(int *)(mdl + 0xdc) + 4);
       iVar3 = func_00466720(iVar10);
       if (iVar8 != iVar3) {
         callbackData.result = 0;
@@ -5988,8 +5936,8 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
         uVar4 = 0;
       }
       else {
-        uVar6 = func_004cb2f0(iVar10);
-        FUN_004c2f30((RwMatrix*)param_3,(const RwMatrix*)iVar11,(const RwMatrix*)uVar6);
+        srcMatrix = func_004cb2f0(iVar10);
+        FUN_004c2f30((RwMatrix*)outMatrix,(const RwMatrix*)entryPtr,(const RwMatrix*)srcMatrix);
         uVar4 = 1;
       }
     }
