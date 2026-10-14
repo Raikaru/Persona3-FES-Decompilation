@@ -482,7 +482,7 @@ code * FUN_0036ed30(u64 param_1);
 code * FUN_0036edd0(void);
 code * FUN_0036ee30(void);
 float FUN_0038a220(int param_1);
-float FUN_0038a900(int param_1);
+float evtCommandParamF32(int param_1);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
 int FUN_00361f20(int param_1);
@@ -582,7 +582,7 @@ u32 FUN_003844b0(int param_1,int param_2,int param_3);
 u32 FUN_003849e0(int param_1,int param_2,int param_3);
 u32 FUN_00384d30(u64 param_1,u64 param_2,u64 param_3);
 u32 FUN_003851f0(int param_1,int param_2,int param_3);
-u32 FUN_00386cd0(void);
+u32 evtSlotTableIdle(void);
 u32 FUN_00386e10(int param_1);
 u32 FUN_00386e30(int param_1);
 u32 FUN_0038a0b0(int param_1);
@@ -791,10 +791,10 @@ void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4);
 extern void FUN_0038c460_reordered(int param_1,int param_2,u32 *param_3,u8 **param_4);
 void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038c830(int param_1,long param_2);
-void FUN_0038ca00(void);
+void sceneLightSlotsReset(void);
 void FUN_0038ca80(int param_1);
 void FUN_0038cc10(int param_1,u16 *param_2,int param_3);
-void FUN_0038d560(int param_1,int param_2,u32 param_3,f32 *param_4, f32 *param_5,f32 *param_6);
+void sceneLightSlotSet(int param_1,int param_2,u32 param_3,f32 *param_4, f32 *param_5,f32 *param_6);
 void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
 void FUN_0038d790(int param_1);
@@ -899,7 +899,7 @@ done_index:
 // FUN_00386CD0
 
 
-u32 FUN_00386cd0(void)
+u32 evtSlotTableIdle(void)
 
 
 
@@ -3356,7 +3356,7 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
 // FUN_0038A900
 
 
-float FUN_0038a900(int param_1)
+float evtCommandParamF32(int param_1)
 
 
 
@@ -5686,7 +5686,7 @@ switchD_0038c8e0_caseD_0:
 // FUN_0038CA00
 
 
-void FUN_0038ca00(void)
+void sceneLightSlotsReset(void)
 {
   f32 fVar1;
   f32 fVar2;
@@ -6475,7 +6475,7 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 // FUN_0038D560
 
 
-void FUN_0038d560(int param_1,int param_2,u32 param_3,f32 *param_4,
+void sceneLightSlotSet(int param_1,int param_2,u32 param_3,f32 *param_4,
                  f32 *param_5,f32 *param_6)
 
 
