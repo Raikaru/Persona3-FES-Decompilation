@@ -2366,60 +2366,51 @@ s32 FUN_002d25c0(const u8* pointA, const u8* pointB)
         {
             u8* cell = node + i * 0x130;
             const f32* cellPoint = (const f32*)(cell + 8);
+            const f32* cellX = (const f32*)(cell + 0x10);
+            const f32* cellY = (const f32*)(cell + 0x14);
+            const f32* otherPoint;
+            RwV2d delta;
+            s32 side1;
+            s32 side2;
+            s32 intersects;
 
-            if ((0.0f < *(f32*)(cell + 0x1c)) &&
-                ((const u8*)cellPoint != pointA) &&
-                ((const u8*)cellPoint != pointB))
+            if (!(0.0f < *(f32*)(cell + 0x1c)))
             {
-                RwV2d delta;
-                const f32* otherPoint;
-                const f32* cellX = (const f32*)(cell + 0x10);
-                const f32* cellY = (const f32*)(cell + 0x14);
-                s32 side1;
-                s32 side2;
-                s32 intersects;
-
-                delta.x = *cellX - *(const f32*)(pointA + 8);
-                delta.y = *cellY - *(const f32*)(pointA + 0xc);
-                if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
+                continue;
+            }
+            if (((const u8*)cellPoint == pointA) || ((const u8*)cellPoint == pointB))
+            {
+                continue;
+            }
+            delta.x = *cellX - *(const f32*)(pointA + 8);
+            delta.y = *cellY - *(const f32*)(pointA + 0xc);
+            if (FUN_004c6af0((f32*)&delta) < 1.0f)
+            {
+                continue;
+            }
+            delta.x = *cellX - *(const f32*)(pointB + 8);
+            delta.y = *cellY - *(const f32*)(pointB + 0xc);
+            if (FUN_004c6af0((f32*)&delta) < 1.0f)
+            {
+                continue;
+            }
+            otherPoint = *(const f32**)(cell + 0x18);
+            side1 = FUN_002d2990(cellPoint, otherPoint, (const f32*)(pointA + 8));
+            side2 = FUN_002d2990(cellPoint, otherPoint, (const f32*)(pointB + 8));
+            intersects = 0;
+            if (side1 != side2)
+            {
+                side1 = FUN_002d2990((const f32*)(pointA + 8), (const f32*)(pointB + 8), cellPoint);
+                side2 = FUN_002d2990((const f32*)(pointA + 8), (const f32*)(pointB + 8), otherPoint);
+                if (side1 != side2)
                 {
-                    delta.x = *cellX - *(const f32*)(pointB + 8);
-                    delta.y = *cellY - *(const f32*)(pointB + 0xc);
-                    if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
-                    {
-                        otherPoint = *(const f32**)(cell + 0x18);
-                        side1 = FUN_002d2990(cellPoint, otherPoint,
-                                             (const f32*)(pointA + 8));
-                        side2 = FUN_002d2990(cellPoint, otherPoint,
-                                             (const f32*)(pointB + 8));
-                        if (side1 != side2)
-                        {
-                            side1 = FUN_002d2990((const f32*)(pointA + 8),
-                                                 (const f32*)(pointB + 8),
-                                                 cellPoint);
-                            side2 = FUN_002d2990((const f32*)(pointA + 8),
-                                                 (const f32*)(pointB + 8),
-                                                 otherPoint);
-                            if (side1 != side2)
-                            {
-                                intersects = 1;
-                            }
-                            else
-                            {
-                                intersects = 0;
-                            }
-                        }
-                        else
-                        {
-                            intersects = 0;
-                        }
-                        if (intersects != 0)
-                        {
-                            result = 1;
-                            break;
-                        }
-                    }
+                    intersects = 1;
                 }
+            }
+            if (intersects != 0)
+            {
+                result = 1;
+                break;
             }
         }
 
