@@ -664,7 +664,7 @@ u32 FUN_002a3850(int param_1)
   }
   return 0;
 }
-/* W419 negative: narrowed btlCameraSetState loop variable var_7 from u64 to u32; nd36 -> 184 at object 388/400. */
+/* W419 negative: narrowed btlCameraSetState loop variable var_7 from u64 to u32; nd36 -> 184 at object 388/400. measured: u16 historyIdx with s32 n and the donor-style while ((n = i) == 0) loop: nd 13 -> 69. */
 // FUN_002a38f0 NONMATCHING
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
