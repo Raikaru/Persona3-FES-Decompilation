@@ -13220,10 +13220,10 @@ u32 func_002d0270(void)
 u32 func_002d03e0(void)
 
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  int iVar3 = 0;
-  u32 uVar4 = 0;
+  u16 thresholdPct = 0;
+  int node = 0;
+  int scale = 0;
+  u32 measure = 0;
   u32 minCost = 0;
   u32 flags = 0;
   u32 cost = 0;
@@ -13231,27 +13231,27 @@ u32 func_002d03e0(void)
   int bestNode = 0;
 
   minCost = func_0035ed20_u32(0);
-  iVar3 = func_0035ed20_u32(1);
+  scale = func_0035ed20_u32(1);
   flags = func_0035ed20_u32(2);
   bestNode = 0;
   bestCost = 0xfffffff;
-  for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
-    if (((*(u16 *)(iVar2 + 0x1a) & 1) != 0) &&
-        ((*(u16 *)(iVar2 + 0x1a) & 8) != 0) &&
-        (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) == 0) &&
+  for (node = *(int *)(DAT_007ce3ec + 0x14c); node != 0; node = *(int *)(node + 0x4a8)) {
+    if (((*(u16 *)(node + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(node + 0x1a) & 8) != 0) &&
+        (*(u8 *)(*(int *)(node + 0x30) + 0xa2) == 0) &&
         ((flags & 0x80000) != 0 ||
-         (func_0030b5a0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), 0) == 0))) {
-      cost = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
+         (func_0030b5a0(*(u32 *)(*(int *)(node + 0x30) + 0xa2c), 0) == 0))) {
+      cost = func_002ffd70(*(u32 *)(*(int *)(node + 0x30) + 0xa2c));
       cost = cost & 0xffff;
       if ((minCost <= cost) &&
-          (uVar1 = *(u16 *)(*(int *)(*(int *)(iVar2 + 0x30) + 0xa2c) + 8),
-           uVar4 = func_002ffdf0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c)),
-           (u32)uVar1 * 100 <= (uVar4 & 0xffff) * iVar3) &&
+          (thresholdPct = *(u16 *)(*(int *)(*(int *)(node + 0x30) + 0xa2c) + 8),
+           measure = func_002ffdf0(*(u32 *)(*(int *)(node + 0x30) + 0xa2c)),
+           (u32)thresholdPct * 100 <= (measure & 0xffff) * scale) &&
           ((flags == 0) ||
-           (func_00300580(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), flags) != 0)) &&
+           (func_00300580(*(u32 *)(*(int *)(node + 0x30) + 0xa2c), flags) != 0)) &&
           (cost < bestCost)) {
         bestCost = cost;
-        bestNode = iVar2;
+        bestNode = node;
       }
     }
   }
