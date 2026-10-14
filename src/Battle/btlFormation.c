@@ -1345,7 +1345,6 @@ extern u16 FUN_002d1600(int);
 extern u32 FUN_002d6290(int);
 extern u32 FUN_002d62d0(int);
 extern u32 FUN_002d6370(s16);
-extern u32 FUN_002d63b0(int, s16, int);
 typedef struct BtlCameraTargetingWork
 {
     BtlCameraKeyFrame first;
@@ -1387,7 +1386,6 @@ extern u64 FUN_0019d400();
 extern u32 FUN_0027ec10();
 extern u64 FUN_0027f650();
 extern u64 FUN_0027f680();
-extern u64 FUN_0027f940();
 extern u64 FUN_00280050();
 extern u64 FUN_00280130();
 extern u64 FUN_00280200();
@@ -1397,7 +1395,6 @@ extern u64 FUN_00281270();
 extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
 extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
-extern s16 FUN_00284040();
 extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
@@ -2501,32 +2498,32 @@ u32 FUN_002b7c50(u32 *work)
                 if (persona != NULL)
                 {
                     tableIndex = (s16)specificId;
-                    moved = FUN_002d63b0((int)(uintptr_t)persona,
-                                         (s16)tableIndex, 1);
-                    relation = (s16)FUN_00284040(persona, source,
+                    moved = btlCommandIsMovement(persona,
+                                                 (s16)tableIndex, 1);
+                    relation = (s16)btlCommandGetPlacementCategory(persona, source,
                                                  (s64)tableIndex, 1);
                     radius = radius - radius2;
                     if (moved == 0)
                     {
-                        relation2 = FUN_00284040(persona, source,
+                        relation2 = btlCommandGetPlacementCategory(persona, source,
                                                  (s64)(s16)specificId, 1);
                         if ((relation2 == 3) || (relation2 == 1))
                         {
-                            FUN_0027f940(persona, source, target,
-                                         (s64)(s16)relation,
+                            btlUnitComputePlacement(persona, source, target,
+                                         relation,
                                          &workPos, 0, 1);
                         }
                         else if ((relation2 == 2) || (relation2 == 0))
                         {
-                            FUN_0027f940(persona, source, target,
-                                         (s64)(s16)relation,
+                            btlUnitComputePlacement(persona, source, target,
+                                         relation,
                                          &workPos, 0, 0);
                         }
                     }
                     else
                     {
-                        FUN_0027f940(persona, source, target,
-                                     (s64)(s16)relation,
+                        btlUnitComputePlacement(persona, source, target,
+                                     relation,
                                      &workPos, 0, 2);
                     }
                     direction.x = workPos.x - targetCenter.x;
@@ -2550,7 +2547,7 @@ u32 FUN_002b7c50(u32 *work)
                     else
                     {
                         radius2 = persona->sphereRadius * persona->scale;
-                        FUN_0027f940(persona, source, NULL, -1,
+                        btlUnitComputePlacement(persona, source, NULL, -1,
                                      &workPos, 0, 0);
                         workPos.x = center.x;
                         workPos.y = center.y;
@@ -2813,19 +2810,19 @@ u32 btlFormationPlaceStep(BtlFormationPlacementWork* placement)
     actionBits = work->action;
     paired = work->partnerAction != NULL;
     mode = (s16)actionBits;
-    category = (s16)FUN_00284040((s32)actor, unit, mode, paired);
-    if (FUN_002d63b0((s32)actor, mode, paired) == 0)
+    category = (s16)btlCommandGetPlacementCategory(actor, unit, mode, paired);
+    if (btlCommandIsMovement(actor, mode, paired) == 0)
     {
-        kind = (s16)FUN_00284040((s32)actor, unit, mode, paired);
+        kind = (s16)btlCommandGetPlacementCategory(actor, unit, mode, paired);
         switch (kind)
         {
         case 0:
         case 2:
-            FUN_0027f940(actor, unit, NULL, category, &frame.position, &frame.rotation, 0);
+            btlUnitComputePlacement(actor, unit, NULL, category, &frame.position, &frame.rotation, 0);
             break;
         case 1:
         case 3:
-            FUN_0027f940(actor, unit, NULL, category, &frame.position, &frame.rotation, 1);
+            btlUnitComputePlacement(actor, unit, NULL, category, &frame.position, &frame.rotation, 1);
             break;
         }
         btlUnitSetRot(actor, &frame.rotation);
@@ -2833,7 +2830,7 @@ u32 btlFormationPlaceStep(BtlFormationPlacementWork* placement)
     }
     else
     {
-        FUN_0027f940(actor, unit, work->partnerAction->unit, category, &frame.position, &frame.rotation, 2);
+        btlUnitComputePlacement(actor, unit, work->partnerAction->unit, category, &frame.position, &frame.rotation, 2);
         btlUnitSetRot(actor, &frame.rotation);
         btlUnitSetPos(actor, &frame.position);
     }

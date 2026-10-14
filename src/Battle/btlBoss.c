@@ -47,7 +47,6 @@ u8 FUN_00301750(int datUnit, u32 flag);
 u32 FUN_002d6370(s16 commandId);
 u32 FUN_003088b0(u16 commandId);
 s32 FUN_002d6290(void);
-s32 FUN_002d63b0(BtlUnit* unit, s32 commandId, s32 param_3);
 /* Single-precision. Left implicitly declared these promoted their float
    argument to double, emitting fptodp calls retail does not make. */
 extern f32 FUN_0052e6d8(f32 x);
@@ -3445,7 +3444,7 @@ s32 FUN_002fdbb0(BtlAction* action, BtlUnit* unit)
     {
         if ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 1) != 0)
         {
-            return !FUN_002d63b0(unit, ((s16*)&action->target)[27],
+            return !btlCommandIsMovement(unit, (s32)((s16*)&action->target)[27],
                                  FUN_002d6290());
         }
         if (FUN_002d6290() == 0 &&

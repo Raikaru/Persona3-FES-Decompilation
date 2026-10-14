@@ -360,7 +360,6 @@ BtlPacket* func_002a1280(void* param_1, u32 param_2);
 BtlPacket* func_002a1b00(BtlAction* action, u16 param_2, u32 param_3);
 void func_002bb6f0(u16 param_1, void* param_2);
 BtlPacket* func_0027f2f0(void);
-extern u64 FUN_0027f940();
 extern void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos);
 extern void FUN_002b77c0(BtlUnit* unit);
 extern void FUN_00287490(BtlUnit* unit);
@@ -378,8 +377,6 @@ BtlPacket* func_002bb2f0(u32 param_1, BtlUnit* unit, u32 param_3, u64 param_4, u
 u32 FUN_002fdb70(void);
 u32 FUN_002fdb90(void);
 u32 FUN_002fde40(BtlAction* action, f32* position);
-extern s32 FUN_002d63b0(BtlUnit* unit, s32 param_2, s32 param_3);
-extern s64 func_00284040(BtlUnit* a, BtlUnit* b, s16 c, s32 d);
 void* FUN_00289650(u32 param_1, u16 param_2, u32 param_3);
 BtlPacket* btlSoundCreateSkillSEPacket(u16 skillId, u16 flags);
 BtlPacket* btlUnit00285d30(BtlUnit* unit, u32 targetCol, s16 param_3, s16 param_4, u8 mode, u8 flags);
@@ -2578,9 +2575,9 @@ genus0_action:
     personaUnit = actionUnit->personaUnit;
     personaActionType = func_002d6290(action);
 
-    func_00284040(personaUnit, actionUnit, (s16)specificId, personaActionType);
+    btlCommandGetPlacementCategory(personaUnit, actionUnit, (s16)specificId, personaActionType);
 
-    personaActionType = FUN_002d63b0(personaUnit, specificId, personaActionType);
+    personaActionType = btlCommandIsMovement(personaUnit, specificId, personaActionType);
 
     FUN_0027ffb0(actionUnit, &spE0);
     FUN_00280480(victimUnit, actionUnit, &spD0);
@@ -2638,9 +2635,9 @@ check_distance_threshold:
 
 compute_vector_offset:
     {
-        FUN_0027f940(personaUnit, actionUnit, victimUnit, personaActionType, &sp110, NULL, 2);
+        btlUnitComputePlacement(personaUnit, actionUnit, victimUnit, personaActionType, &sp110, NULL, 2);
         moveSpeed = FUN_002d1ed0(&sp110, &spD0);
-        FUN_0027f940(personaUnit, actionUnit, NULL, -1, &sp110, NULL, 0);
+        btlUnitComputePlacement(personaUnit, actionUnit, NULL, -1, &sp110, NULL, 0);
 
         spE0.x = sp110.x - spE0.x;
         spE0.y = 0.0f;
@@ -4484,7 +4481,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_29->actionUID = temp_s0;
             btlPacketRegister(temp_v0_29, 1U);
             temp_a1 = action->unit;
-            temp_v0_30 = (s16)func_00284040(temp_a1->personaUnit, temp_a1, temp_s7, sp2EC);
+            temp_v0_30 = (s16)btlCommandGetPlacementCategory(temp_a1->personaUnit, temp_a1, temp_s7, sp2EC);
             sp3F0 = (s16) temp_v0_30;
             temp_v0_31 = (s64) (func_002835e0(action->unit->personaUnit, temp_v0_30 & 0xFFFF, 1.0f) << 0x30) >> 0x30;
             sp3B0 = (s32) temp_v0_31;

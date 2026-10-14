@@ -1337,7 +1337,6 @@ extern u16 FUN_002d1600(int);
 extern u32 FUN_002d6290(int);
 extern u32 FUN_002d62d0(int);
 extern u32 FUN_002d6370(s16);
-extern u32 FUN_002d63b0(int, s16, int);
 
 /* W419 negative: moved FUN_002a4c70 radius before the other f32 locals; nd63 -> 73 at object 1972/1984 (rate .031947 -> .037018). */
 // FUN_002a4c70 NONMATCHING
@@ -2734,7 +2733,7 @@ u32 btlCameraSelectMode(BtlCamera* camera)
             return 2;
         }
         if (camera->action->unit->genus == 0 &&
-            FUN_002d63b0((int)camera->action->unit->personaUnit,
+            btlCommandIsMovement(camera->action->unit->personaUnit,
                         commandId, 1) == 0)
         {
             return 2;
@@ -3857,7 +3856,6 @@ extern u64 FUN_0019d400();
 extern u32 FUN_0027ec10();
 extern u64 FUN_0027f650();
 extern u64 FUN_0027f680();
-extern u64 FUN_0027f940();
 extern u64 FUN_00280050();
 extern u64 FUN_00280130();
 extern u64 FUN_00280200();
@@ -3867,7 +3865,6 @@ extern u64 FUN_00281270();
 extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
 extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
-extern s16 FUN_00284040();
 extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
