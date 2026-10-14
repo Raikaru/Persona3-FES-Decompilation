@@ -68,7 +68,7 @@ extern void FUN_003d74f0_i(int param_1, int param_2, int param_3);
 u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3);
 #pragma alias FUN_003d7ac0_u8 FUN_003d7ac0
 extern u32 FUN_003d7ac0_u8(u8 param_1,u8 param_2,u16 *param_3);
-u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3);
+u32 FUN_003d7da0(u8 arcana,u8 maxLevel,u16 *partyIds);
 u32 FUN_003d8080(int param_1,int param_2,int param_3);
 u32 FUN_003d8260(int param_1,u32 param_2);
 u32 FUN_003d8370(int param_1,u32 param_2,u32 param_3);
@@ -2193,181 +2193,91 @@ LAB_003d7cb4:
 // FUN_003D7DA0 NONMATCHING
 
 
-u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
-
-
-
+u32 FUN_003d7da0(u8 arcana,u8 maxLevel,u16 *partyIds)
 {
-
-  u8 bVar1;
-
-  u16 uVar2;
-
-  u8 bVar3;
-
-
-  int lVar5;
-
-  int iVar6;
-
-  u32 uVar7;
-
-  u32 uVar8;
-
-  u32 uVar9;
-
-  u16 uVar10;
-
+  u8 personaLevel;
+  u16 flags;
+  u8 eligible;
+  int flagValue;
+  int flagOffset;
+  u32 flagIndex;
+  u32 topId;
+  u32 bestId;
+  u16 personaId;
   int iVar11;
-
-  u8 *puVar12;
-
-  
-
-  uVar9 = 0;
-
-  uVar8 = 0;
-
-  for (uVar10 = 0; uVar10 < 0xc0; uVar10 = uVar10 + 1) {
-
-    iVar11 = (int)uVar10 * 0xe;
-
-    if (param_1 == ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.arcana) {
-
-      uVar2 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.flags;
-
-      if ((uVar2 & 1) != 0) {
-
-        bVar3 = 0;
-
+  u8 *flagEntry;
+  bestId = 0;
+  topId = 0;
+  for (personaId = 0; personaId < 0xc0; personaId = personaId + 1) {
+    iVar11 = (int)personaId * 0xe;
+    if (arcana == ((FclPersonaTableEntry *)DAT_007ce420)[personaId].fields.arcana) {
+      flags = ((FclPersonaTableEntry *)DAT_007ce420)[personaId].fields.flags;
+      if ((flags & 1) != 0) {
+        eligible = 0;
       }
-
       else {
-
-        if ((uVar2 & 2) != 0) {
-
-          bVar3 = 0;
-
+        if ((flags & 2) != 0) {
+          eligible = 0;
         }
-
         else {
-
-          bVar3 = 1;
-
+          eligible = 1;
         }
-
       }
-
-      if (bVar3) {
-
-        bVar3 = 1;
-
-        for (uVar7 = 0; uVar7 < 0x43; uVar7 = uVar7 + 1) {
-
-          iVar6 = uVar7 * 8;
-
-          puVar12 = DAT_006a5410 + iVar6;
-
-          if (uVar10 == (long)*(short *)(puVar12 + 4)) {
-
-            if ((*(s16 *)(puVar12 + 6) & 1) != 0) {
-
-              lVar5 = datGetFlag(*(u32 *)puVar12);
-
-              if (lVar5 == 0) {
-
-                bVar3 = 0;
-
+      if (eligible) {
+        eligible = 1;
+        for (flagIndex = 0; flagIndex < 0x43; flagIndex = flagIndex + 1) {
+          flagOffset = flagIndex * 8;
+          flagEntry = DAT_006a5410 + flagOffset;
+          if (personaId == (long)*(short *)(flagEntry + 4)) {
+            if ((*(s16 *)(flagEntry + 6) & 1) != 0) {
+              flagValue = datGetFlag(*(u32 *)flagEntry);
+              if (flagValue == 0) {
+                eligible = 0;
                 break;
-
               }
-
             }
-
-            else if ((*(s16 *)(puVar12 + 6) & 2) != 0) {
-
-              lVar5 = datGetFlag(*(u32 *)puVar12);
-
-              if (lVar5 == 1) {
-
-                bVar3 = 1;
-
+            else if ((*(s16 *)(flagEntry + 6) & 2) != 0) {
+              flagValue = datGetFlag(*(u32 *)flagEntry);
+              if (flagValue == 1) {
+                eligible = 1;
                 break;
-
               }
-
-              bVar3 = 0;
-
+              eligible = 0;
             }
-
           }
-
         }
-
-        if (bVar3) {
-
-          if ((uVar8 == 0) ||
-
-             (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level)
-
+        if (eligible) {
+          if ((topId == 0) ||
+             (((FclPersonaTableEntry *)DAT_007ce420)[topId].fields.level < ((FclPersonaTableEntry *)DAT_007ce420)[personaId].fields.level)
              ) {
-
-            uVar8 = uVar10;
-
+            topId = personaId;
           }
-
-          bVar1 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level;
-
-          if (bVar1 <= param_2) {
-
+          personaLevel = ((FclPersonaTableEntry *)DAT_007ce420)[personaId].fields.level;
+          if (personaLevel <= maxLevel) {
             for (iVar11 = 0; iVar11 < 0xc; iVar11 = iVar11 + 1) {
-
-              if (uVar10 == *(u16 *)(param_3 + iVar11 * 2)) {
-
-                bVar3 = 1;
-
+              if (personaId == *(u16 *)(partyIds + iVar11 * 2)) {
+                eligible = 1;
                 goto LAB_003d7f94;
-
               }
-
             }
-
-            bVar3 = 0;
-
+            eligible = 0;
 LAB_003d7f94:
-
-            if ((!bVar3) &&
-
-               ((uVar9 == 0 || (((FclPersonaTableEntry *)DAT_007ce420)[uVar9].fields.level < bVar1)))) {
-
-              uVar9 = uVar10;
-
+            if ((!eligible) &&
+               ((bestId == 0 || (((FclPersonaTableEntry *)DAT_007ce420)[bestId].fields.level < personaLevel)))) {
+              bestId = personaId;
             }
-
           }
-
         }
-
       }
-
     }
-
   }
-
-  if (uVar8 == 0) {
-
+  if (topId == 0) {
     K_Assert(DAT_006a5f70,0x47c);
-
   }
-
-  if ((uVar9 == 0) && (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < param_2)) {
-
-    uVar9 = uVar8;
-
+  if ((bestId == 0) && (((FclPersonaTableEntry *)DAT_007ce420)[topId].fields.level < maxLevel)) {
+    bestId = topId;
   }
-
-  return uVar9;
-
+  return bestId;
 }
 #pragma opt_lifetimes reset
 #pragma pop
