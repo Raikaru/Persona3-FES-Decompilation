@@ -267,7 +267,7 @@ extern void func_002ad680(BtlCamera* camera);
 extern void func_002ad770(BtlCamera* camera);
 extern void func_002adc30(BtlCamera* camera);
 extern void btlCameraNoop002adc70(void);
-extern void func_002adc80(BtlCamera* camera);
+extern void btlAct_SKILL_EXEC_ONE(BtlCamera* camera);
 extern void btlCameraNoop002adcc0(void);
 extern void func_002adcd0(BtlCamera* camera);
 extern void func_002ADD00(void);
@@ -291,13 +291,13 @@ extern void FUN_002b2800(BtlCamera *camera);
 extern void FUN_002b2880(int param_1);
 extern void FUN_002b2940(void *arg0);
 extern void FUN_002b2ea0(void);
-extern void FUN_002b32c0(u16* camera);
+extern void btlAct_TARGET(u16* camera);
 extern void func_002b3330(void);
 extern void FUN_002b3340(BtlCamera* camera);
 extern void FUN_002b3680(void);
 extern void FUN_002b3690(BtlCamera* camera);
 extern void FUN_002b3980(BtlCamera* camera);
-extern void FUN_002b3c60(BtlCamera* camera);
+extern void btlAct_WIN_P(BtlCamera* camera);
 extern void FUN_002b3f80(BtlCamera* camera);
 extern void FUN_002b41e0(BtlCamera* camera);
 extern void FUN_002b4720(int param_1);
@@ -314,7 +314,7 @@ extern void FUN_002b5650(int param_1);
 extern void FUN_002b56e0(u8* param_1);
 extern void FUN_002b58f0(BtlCamera* param_1);
 extern void FUN_002b5cd0(BtlCamera* camera);
-void FUN_002b6db0(int param_1);
+void btlCameraResetWork(int param_1);
 extern void FUN_002b6460(BtlCamera* camera);
 
 static const BtlCameraStateEntry sCameraStateEntries[] =
@@ -343,16 +343,16 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {func_002ac540, func_002ac6e0, 1, 1, "SKILL_EXEC_PC"}, // SKILL_EXEC_PC
     {func_002ad680, func_002ad770, 1, 1, "SKILL_EXEC_EC"}, // SKILL_EXEC_EC
     {func_002adc30, (void(*)(BtlCamera*))btlCameraNoop002adc70, 1, 0, "SKILL_EXEC_ONE"}, // SKILL_EXEC_ONE
-    {func_002adc80, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
+    {btlAct_SKILL_EXEC_ONE, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
     {func_002adcd0, (void(*)(BtlCamera*))func_002ADD00, 1, 1, "SKILL_EXEC_PS"}, // SKILL_EXEC_PS
     {func_002ae260, (void(*)(BtlCamera*))func_002ae4c0, 1, 1, "PERSONA"}, // PERSONA
     {func_002ae4d0, (void(*)(BtlCamera*))func_002ae730, 1, 1, "OVERLIMIT"}, // OVERLIMIT
     {func_002ae150, (void(*)(BtlCamera*))func_002ae250, 0, 1, "COMMAND"}, // COMMAND
     {func_002af7f0, func_002af850, 0, 1, "TARGET"}, // TARGET
-    {(void(*)(BtlCamera*))FUN_002b32c0, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
+    {(void(*)(BtlCamera*))btlAct_TARGET, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
     {FUN_002b3340, (void(*)(BtlCamera*))FUN_002b3680, 0, 1, "RESET"}, // RESET
     {FUN_002b3980, NULL, 1, 0, "WIN"}, // WIN
-    {FUN_002b3c60, NULL, 1, 0, "CONDITION"}, // CONDITION
+    {btlAct_WIN_P, NULL, 1, 0, "CONDITION"}, // CONDITION
     {FUN_002b3f80, NULL, 1, 1, "ORDER"}, // ORDER
     {(void(*)(BtlCamera*))FUN_002b55d0, (void(*)(BtlCamera*))FUN_002b5600, 0, 1, "CHANGE FORM"}, // CHANGE FORM
     {(void(*)(BtlCamera*))FUN_002b5650, (void(*)(BtlCamera*))FUN_002b56e0, 0, 1, "NYX FEATHER"}, // NYX FEATHER
@@ -1271,7 +1271,7 @@ void FUN_002a4a70(void)
     *(u16 *)(iGpffffb6fc + idx * 2 + 0x104) = 0;
   }
   *(u32 *)(iGpffffb6fc + 0xf4) = *(u32 *)(iGpffffb6fc + 0xf4) | 2;
-  FUN_002b6db0((int)(uintptr_t)(iGpffffb6fc + 0x10c));
+  btlCameraResetWork((int)(uintptr_t)(iGpffffb6fc + 0x10c));
   return;
 }
 
@@ -5580,7 +5580,7 @@ void btlCameraNoop002adc70(void)
 }
 
 // FUN_002ADC80
-void func_002adc80(BtlCamera* camera)
+void btlAct_SKILL_EXEC_ONE(BtlCamera* camera)
 
 {
   func_002ad880(camera,15.0f,2.0f,0.25f,400.0f);
@@ -8397,7 +8397,7 @@ void FUN_002b2eb0(int param_1, float *param_2)
 
 // FUN_002b32c0
 
-void FUN_002b32c0(u16* camera)
+void btlAct_TARGET(u16* camera)
 
 {
   struct {
@@ -8656,7 +8656,7 @@ void FUN_002b3980(BtlCamera* camera)
 
 // FUN_002b3c60
 
-void FUN_002b3c60(BtlCamera* camera)
+void btlAct_WIN_P(BtlCamera* camera)
 {
   RwV3d center;
   RwV3d transformed;
@@ -10267,7 +10267,7 @@ done:
 
 // FUN_002b6db0
 
-void FUN_002b6db0(int param_1)
+void btlCameraResetWork(int param_1)
 
 {
   FUN_00521408(param_1,0,0x14);
