@@ -191,7 +191,7 @@ extern s16 D_00690E20[];
 s16 FUN_002dc670(BtlAction* action);
 u32 FUN_002dc130(BtlAction* action);
 BtlPacket* FUN_002dd5e0();
-BtlPacket* btlVoiceCreatePacket();
+BtlPacket* FUN_002e2be0();
 BtlPacket* func_002e3fe0(u16 voiceId);
 u32 FUN_002e4310();
 BtlPacket* FUN_0027dc00();
