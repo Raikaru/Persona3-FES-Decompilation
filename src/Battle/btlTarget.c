@@ -4890,11 +4890,11 @@ u32 FUN_002d79a0(void *arg)
     oldDown = datCalcChkBadStatus(unit->datUnit, 0x200);
 
     if ((work->targetFlags & 2) != 0)
-        action->unk_18 |= 0x1000;
+        action->flags |= 0x1000;
     if ((work->targetFlags & 4) != 0)
-        action->unk_18 |= 0x800;
+        action->flags |= 0x800;
     if ((*(u32 *)(work->data + 8) & 0x100000) != 0)
-        action->unk_18 |= 0x2000;
+        action->flags |= 0x2000;
 
     if ((BTLT_B32(0xc) & 0x10) != 0)
     {
@@ -5674,7 +5674,7 @@ s32 FUN_002d8e80(BtlAction* action, s32 mode)
     {
         result = 0xe8;
     }
-    else if ((action->unk_18 & 0x1800) != 0)
+    else if ((action->flags & 0x1800) != 0)
     {
         result = 0xe9;
     }
