@@ -46688,6 +46688,18 @@ void FUN_003539c0(int param_1)
   u32 uVar4;
 
   u32 uVar5;
+  typedef struct
+  {
+    u8 c0;
+    u8 c1;
+    u8 c2;
+    u8 c3;
+  } MdlCol;
+  union
+  {
+    u32 word;
+    MdlCol rgba;
+  } colour;
 
   float *pfVar6;
 
@@ -46839,7 +46851,7 @@ void FUN_003539c0(int param_1)
 
       }
 
-      uVar4 = puVar3[2];
+      colour.word = puVar3[2];
 
       fVar14 = 1.0f - unaff_f20;
 
@@ -46849,13 +46861,13 @@ void FUN_003539c0(int param_1)
 
       fVar13 = pfVar2[3];
 
-      *pfVar6 = *pfVar2 * fVar14 + fGpffff815c * (float)(uVar4 & 0xff) * unaff_f20;
+      *pfVar6 = *pfVar2 * fVar14 + fGpffff815c * (float)colour.rgba.c0 * unaff_f20;
 
-      pfVar6[1] = fVar9 * fVar14 + fGpffff815c * (float)(uVar4 >> 8 & 0xff) * unaff_f20;
+      pfVar6[1] = fVar9 * fVar14 + fGpffff815c * (float)colour.rgba.c1 * unaff_f20;
 
-      pfVar6[2] = fVar10 * fVar14 + fGpffff815c * (float)(uVar4 >> 0x10 & 0xff) * unaff_f20;
+      pfVar6[2] = fVar10 * fVar14 + fGpffff815c * (float)colour.rgba.c2 * unaff_f20;
 
-      pfVar6[3] = fGpffff815c * (float)(uVar4 >> 0x18) * unaff_f20 + fVar13 * fVar14;
+      pfVar6[3] = fGpffff815c * (float)colour.rgba.c3 * unaff_f20 + fVar13 * fVar14;
 
       uVar4 = puVar3[3];
 
@@ -46877,25 +46889,25 @@ void FUN_003539c0(int param_1)
 
     else if ((iVar8 == 0) && (uVar4 == 0)) {
 
-      uVar4 = puVar3[2];
+      colour.word = puVar3[2];
 
-      *pfVar6 = fGpffff815c * (float)(uVar4 & 0xff);
+      *pfVar6 = fGpffff815c * (float)colour.rgba.c0;
 
-      pfVar6[1] = fGpffff815c * (float)(uVar4 >> 8 & 0xff);
+      pfVar6[1] = fGpffff815c * (float)colour.rgba.c1;
 
-      pfVar6[2] = fGpffff815c * (float)(uVar4 >> 0x10 & 0xff);
+      pfVar6[2] = fGpffff815c * (float)colour.rgba.c2;
 
-      pfVar6[3] = fGpffff815c * (float)(uVar4 >> 0x18);
+      pfVar6[3] = fGpffff815c * (float)colour.rgba.c3;
 
-      uVar4 = puVar3[3];
+      colour.word = puVar3[3];
 
-      pfVar6[4] = fGpffff815c * (float)(uVar4 & 0xff);
+      pfVar6[4] = fGpffff815c * (float)colour.rgba.c0;
 
-      pfVar6[5] = fGpffff815c * (float)(uVar4 >> 8 & 0xff);
+      pfVar6[5] = fGpffff815c * (float)colour.rgba.c1;
 
-      pfVar6[6] = fGpffff815c * (float)(uVar4 >> 0x10 & 0xff);
+      pfVar6[6] = fGpffff815c * (float)colour.rgba.c2;
 
-      pfVar6[7] = fGpffff815c * (float)(uVar4 >> 0x18);
+      pfVar6[7] = fGpffff815c * (float)colour.rgba.c3;
 
     }
 
