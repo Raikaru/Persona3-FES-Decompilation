@@ -4135,59 +4135,55 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
   short keyH;
   int *animBlock;
   u32 *track;
-  int joint;
+  int *jointPtr;
+  int *joint;
   short *key;
   u32 frame;
-  float scaleY;
+  s32 scaleBits;
   float scaleX;
+  float scaleY;
 
   animBlock = (int *)*animRef;
   track = (u32 *)*(int *)(cursor + 0xc);
   if ((track[4] & 0x10000000) == 0) {
     if (*(int *)(cursor + 8) < 1) {
-      frame = *(int *)(cursor + 4) + 1;
+      frame = *(u32 *)(cursor + 4) + 1;
       *(u32 *)(cursor + 4) = frame;
-      if (track[3] <= frame) {
-        if ((track[4] & 0x10) == 0) {
-          *(u32 *)(cursor + 4) = 0;
-        }
-        else {
+      if (frame >= track[3]) {
+        if ((track[4] & 0x10) != 0) {
           *(u16 *)(animRef + 5) = 0;
-          *(int *)(cursor + 4) = track[3] + -1;
+          *(u32 *)(cursor + 4) = track[3] - 1;
+        } else {
+          *(u32 *)(cursor + 4) = 0;
         }
       }
       *(int *)(cursor + 8) =
            (int)*(short *)(*(int *)(cursor + 4) * 0x18 + *(int *)(cursor + 0x10) + 0x12);
-    }
-    else {
-      *(int *)(cursor + 8) = *(int *)(cursor + 8) + -1;
+    } else {
+      *(int *)(cursor + 8) = *(int *)(cursor + 8) - 1;
     }
     key = (short *)(*(int *)(cursor + 0x10) + *(int *)(cursor + 4) * 0x18);
-    if ((track[4] & 1) == 0) {
-      scaleY = -(*(f32*)&sMdlNanBits);
+    if ((track[4] & 1) != 0) {
+      scaleBits = *(s32 *)(*animBlock + track[1] + *(int *)(cursor + 4) * 4);
+    } else {
+      scaleBits = -1;
     }
-    else {
-      scaleY = *(float *)(*animBlock + track[1] + *(int *)(cursor + 4) * 4);
-    }
-    pose[0xb] = scaleY;
-    joint = *(int *)(*(int *)(animBlock[5] + key[8] * 4));
+    *(s32 *)(pose + 0xb) = scaleBits;
+    jointPtr = *(int **)(animBlock[5] + key[8] * 4);
+    joint = (int *)*jointPtr;
     scaleX = (float)*(int *)(joint + 0xc);
     scaleY = (float)*(int *)(joint + 0x10);
-    if ((track[4] & 2) == 0) {
-      if ((track[4] & 4) == 0) {
-        *(u16 *)(pose + 10) = 1;
-      }
-      else {
-        *(u16 *)(pose + 10) = 3;
-      }
-    }
-    else {
+    if ((track[4] & 2) != 0) {
       *(u16 *)(pose + 10) = 2;
+    } else if ((track[4] & 4) != 0) {
+      *(u16 *)(pose + 10) = 3;
+    } else {
+      *(u16 *)(pose + 10) = 1;
     }
     pose[4] = *(float *)(key + 10);
     pivotX = key[2];
     pivotY = key[3];
-    keyW = *key;
+    keyW = key[0];
     keyH = key[1];
     pose[6] = (float)((int)key[4] >> 4) / scaleX;
     pose[7] = (float)((int)key[5] >> 4) / scaleY;
@@ -4199,9 +4195,8 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
     pose[3] = (float)(int)keyH / 2.0f;
     pose[0xc] = scaleX;
     pose[0xd] = scaleY;
-    *(u32 *)(pose + 5) = (u32)animBlock;
+    *(u32 *)(pose + 5) = (u32)jointPtr;
   }
-  return;
 }
 
 
