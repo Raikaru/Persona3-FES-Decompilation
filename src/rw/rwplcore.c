@@ -1264,7 +1264,7 @@ u64 FUN_004c0240(u64 param_1,u64 param_2)
   return uVar4;
 }
 // FUN_004C0370 NONMATCHING
-u64 FUN_004c0370(int param_1)
+u64 RwFclose(int param_1)
 
 {
   int iVar1;
@@ -4694,7 +4694,7 @@ bool FUN_004c5780(u64 param_1,long param_2)
     bVar4 = true;
   }
   else if (iVar1 == 2) {
-    lVar2 = FUN_004c0370(piVar3[3]);
+    lVar2 = RwFclose(piVar3[3]);
     bVar4 = lVar2 == 0;
   }
   else {
