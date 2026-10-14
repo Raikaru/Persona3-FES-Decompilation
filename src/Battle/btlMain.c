@@ -2325,6 +2325,14 @@ u32 FUN_0029f760(float *colorLerp)
   u32 done;
   float t;
   float invT;
+  float firstX;
+  float firstY;
+  float firstZ;
+  float firstW;
+  float secondX;
+  float secondY;
+  float secondZ;
+  float secondW;
 
 
 
@@ -2354,28 +2362,34 @@ u32 FUN_0029f760(float *colorLerp)
 
     if (*(u32 *)(colorLerp + 9) < *(u32 *)(colorLerp + 8)) {
       t = (float)*(u32 *)(colorLerp + 9) / (float)*(u32 *)(colorLerp + 8);
-
       invT = 1.0f - t;
-
-      color.r = colorLerp[0] * invT +
-                *(float *)(DAT_007ce3ec + 0x194) * t;
-      color.g = colorLerp[1] * invT +
-                *(float *)(DAT_007ce3ec + 0x198) * t;
-      color.b = colorLerp[2] * invT +
-                *(float *)(DAT_007ce3ec + 0x19c) * t;
-      color.a = colorLerp[3] * invT +
-                *(float *)(DAT_007ce3ec + 0x1a0) * t;
+      firstX = colorLerp[0] * invT;
+      firstY = colorLerp[1] * invT;
+      firstZ = colorLerp[2] * invT;
+      firstW = colorLerp[3] * invT;
+      secondX = *(float *)(DAT_007ce3ec + 0x194) * t;
+      secondY = *(float *)(DAT_007ce3ec + 0x198) * t;
+      secondZ = *(float *)(DAT_007ce3ec + 0x19c) * t;
+      secondW = *(float *)(DAT_007ce3ec + 0x1a0) * t;
+      color.r = firstX + secondX;
+      color.g = firstY + secondY;
+      color.b = firstZ + secondZ;
+      color.a = firstW + secondW;
       colorPtr = (RwRGBAReal *)FUN_0019fd40();
       *colorPtr = color;
 
-      color.r = colorLerp[4] * invT +
-                *(float *)(DAT_007ce3ec + 0x1a4) * t;
-      color.g = colorLerp[5] * invT +
-                *(float *)(DAT_007ce3ec + 0x1a8) * t;
-      color.b = colorLerp[6] * invT +
-                *(float *)(DAT_007ce3ec + 0x1ac) * t;
-      color.a = colorLerp[7] * invT +
-                *(float *)(DAT_007ce3ec + 0x1b0) * t;
+      firstX = colorLerp[4] * invT;
+      firstY = colorLerp[5] * invT;
+      firstZ = colorLerp[6] * invT;
+      firstW = colorLerp[7] * invT;
+      secondX = *(float *)(DAT_007ce3ec + 0x1a4) * t;
+      secondY = *(float *)(DAT_007ce3ec + 0x1a8) * t;
+      secondZ = *(float *)(DAT_007ce3ec + 0x1ac) * t;
+      secondW = *(float *)(DAT_007ce3ec + 0x1b0) * t;
+      color.r = firstX + secondX;
+      color.g = firstY + secondY;
+      color.b = firstZ + secondZ;
+      color.a = firstW + secondW;
       colorPtr = (RwRGBAReal *)FUN_0019fd70();
       *colorPtr = color;
 
