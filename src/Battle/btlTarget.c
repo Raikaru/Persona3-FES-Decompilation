@@ -2498,52 +2498,49 @@ nonpositive:
 int FUN_002d2a00(float radius, float *pointA, float *pointB)
 {
     u8 *node;
+    int i;
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        if (((pointA[0] <= *(float *)(node + 0x08)) ||
-             (pointA[1] <= *(float *)(node + 0x0c)) ||
-             (*(float *)(node + 0x268) <= pointA[0]) ||
-             (*(float *)(node + 0x26c) <= pointA[1])) &&
-            ((pointB[0] <= *(float *)(node + 0x08)) ||
-             (pointB[1] <= *(float *)(node + 0x0c)) ||
-             (*(float *)(node + 0x268) <= pointB[0]) ||
-             (*(float *)(node + 0x26c) <= pointB[1])))
+        if ((*(float *)(node + 0x08) < pointA[0]) &&
+            (*(float *)(node + 0x0c) < pointA[1]) &&
+            !(*(float *)(node + 0x268) <= pointA[0]) &&
+            !(*(float *)(node + 0x26c) <= pointA[1]))
         {
-            int i;
-            for (i = 0; i < 4; ++i)
+            continue;
+        }
+        if ((*(float *)(node + 0x08) < pointB[0]) &&
+            (*(float *)(node + 0x0c) < pointB[1]) &&
+            !(*(float *)(node + 0x268) <= pointB[0]) &&
+            !(*(float *)(node + 0x26c) <= pointB[1]))
+        {
+            continue;
+        }
+        for (i = 0; i < 4; i++)
+        {
+            int wrap = (i + 1) & 3;
+            float *edge = (float *)(node + i * 0x130 + 0x08);
+            float *next = (float *)(node + wrap * 0x130 + 0x08);
+            int intersects = 0;
+            int side_a = FUN_002d2990(edge, next, pointA);
+            int side_b = FUN_002d2990(edge, next, pointB);
+
+            if (side_a != side_b)
             {
-                int side_a;
-                int side_b;
-
-                side_a = FUN_002d2990(
-                    (float *)(node + i * 0x130 + 0x08),
-                    (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
-                    pointA);
-                side_b = FUN_002d2990(
-                    (float *)(node + i * 0x130 + 0x08),
-                    (float *)(node + (((i + 1) & 3) * 0x130) + 0x08),
-                    pointB);
-
+                side_a = FUN_002d2990(pointA, pointB, edge);
+                side_b = FUN_002d2990(pointA, pointB, next);
                 if (side_a != side_b)
                 {
-                    side_a = FUN_002d2990(
-                        pointA, pointB,
-                        (float *)(node + i * 0x130 + 0x08));
-                    side_b = FUN_002d2990(
-                        pointA, pointB,
-                        (float *)(node + (((i + 1) & 3) * 0x130) + 0x08));
-                    if (side_a != side_b)
-                    {
-                        return 1;
-                    }
+                    intersects = 1;
                 }
-                if (FUN_002d2470_call(
-                        radius, pointA, pointB,
-                        (float *)(node + i * 0x130 + 0x08)) != 0)
-                {
-                    return 1;
-                }
+            }
+            if (intersects != 0)
+            {
+                return 1;
+            }
+            if (FUN_002d2470_call(radius, pointA, pointB, edge) != 0)
+            {
+                return 1;
             }
         }
     }
