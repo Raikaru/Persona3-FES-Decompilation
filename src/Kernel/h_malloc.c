@@ -355,9 +355,6 @@ static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
     s32 blockCount;
     s32 tileCount;
     s32 loopCount;
-    s32 offsetA;
-    s32 offsetB;
-    s32 offsetC;
 
     loopCount = a6 >> 4;
     tileCount = a7 >> 4;
@@ -373,13 +370,8 @@ static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
     output = (u32*)(uintptr_t)(packet + 0x30);
     hmallocWriteScale(output, 0x10, (u32)(tileCount << 4));
     command = (u8*)(uintptr_t)(packet + 0x40);
-    offsetA = a8 >> 4;
-    offsetB = a9 >> 4;
-    imageOffset = source +
-                  (u32)a3 * ((u32)tileCount + (u32)offsetA) *
-                      (u32)offsetB;
-    offsetC = a10 >> 4;
-    imageOffset += (u32)offsetC;
+    imageOffset = source + (u32)((a8 >> 4) * (a3 * (tileCount + (a10 >> 4))));
+    imageOffset += (u32)(a3 * (a9 >> 4));
     blockCount = tileCount * 0x400;
     if (blockCount < 0)
     {
@@ -400,7 +392,8 @@ static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
                           imageOffset & 0x0fffffff, 0, 3, 0,
                           (u32)stride);
         command += 0x60;
-        imageOffset += (u32)a3 * ((u32)tileCount + 1);
+        imageOffset += (u32)(a3 * tileCount);
+        imageOffset += (u32)(a3 * (a10 >> 4));
     }
     hmallocPackHeader((u64*)command, 0, 0, 0, 0, 7, 0);
 }
