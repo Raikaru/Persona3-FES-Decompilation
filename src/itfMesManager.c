@@ -1716,7 +1716,7 @@ void FUN_003a37c0(int param_1,u32 param_2)
 
       FUN_003b2bf0(*puVar7,0,0xf340);
 
-      lVar5 = FUN_003b2a00(0x20);
+      lVar5 = frFontMaskFlags(0x20);
 
       if (lVar5 != 0) {
 
@@ -3313,7 +3313,7 @@ void FUN_003a5980(u32 *param_1)
 
   FUN_003a62b0_typed(uVar4,puVar9 + 9);
 
-  uVar2 = FUN_003b2a00(3);
+  uVar2 = frFontMaskFlags(3);
 
   *(u8 *)((int)puVar9 + 0x35) = uVar2;
 
@@ -3329,7 +3329,7 @@ void FUN_003a5980(u32 *param_1)
 
   }
 
-  uVar6 = FUN_003b2a00(0xc0);
+  uVar6 = frFontMaskFlags(0xc0);
 
   if (uVar6 != 0) {
 
@@ -3355,7 +3355,7 @@ void FUN_003a5980(u32 *param_1)
 
   }
 
-  lVar5 = FUN_003b2a00(4);
+  lVar5 = frFontMaskFlags(4);
 
   if ((lVar5 != 0) && ((code *)puVar9[0x79] != (code *)0x0)) {
 
@@ -3363,7 +3363,7 @@ void FUN_003a5980(u32 *param_1)
 
   }
 
-  FUN_003b2a00(8);
+  frFontMaskFlags(8);
 
   thunk_FUN_003a6360(uVar4,puVar9[3]);
 
@@ -3373,7 +3373,7 @@ void FUN_003a5980(u32 *param_1)
 
   *(u16 *)((int)puVar9 + 0x3a) = uVar3;
 
-  lVar5 = FUN_003b2a00(0x10);
+  lVar5 = frFontMaskFlags(0x10);
 
   if (lVar5 != 0) {
 
