@@ -23019,8 +23019,7 @@ LAB_00337768:
 
 
 
-// FUN_003377F0 NONMATCHING
-
+// FUN_003377F0
 void FUN_003377f0(u32 param_1)
 {
   u32 *entryHolder;
@@ -23059,7 +23058,7 @@ void FUN_003377f0(u32 param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
+    alpha = FUN_0032a120((char *)node, (u32 *)((u8 *)node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
