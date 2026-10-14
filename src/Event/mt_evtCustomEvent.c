@@ -5484,31 +5484,31 @@ u32 FUN_0039e6f0(void)
 void FUN_0039e700(u8 *param_1)
 {
   extern u8 DAT_006a1800[];
-  MtEvtCustomData *iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  u32 uVar5;
+  MtEvtCustomData *customData;
+  int count;
+  int combinedValue;
+  int entryValue;
+  u32 extraValue;
   MtEvtCustomEntry *entry;
   MtEvtCustomEntry *entries;
-  int iVar7;
+  int index;
   int outputAddress;
 
   *(u32 *)(param_1 + 0x78c) = 0;
-  iVar1 = *(MtEvtCustomData **)(param_1 + 8);
-  for (iVar7 = 0, entries = iVar1->entries; iVar7 < iVar1->entryCount; iVar7 = iVar7 + 1) {
-    entry = &entries[iVar7];
+  customData = *(MtEvtCustomData **)(param_1 + 8);
+  for (index = 0, entries = customData->entries; index < customData->entryCount; index = index + 1) {
+    entry = &entries[index];
     if (entry->type == 1) {
-      iVar2 = *(int *)(param_1 + 0x78c);
-      if (9 < iVar2) break;
-      iVar3 = iVar1->unk_10;
-      iVar4 = entry->unk_10;
-      iVar3 = iVar3 + iVar4;
-      uVar5 = entry->unk_14;
-      *(short *)(param_1 + iVar2 * 2 + 0x7b8) = iVar2 + 30000;
-      outputAddress = (int)param_1 + iVar2 * 4;
-      *(int *)(outputAddress + 0x790) = iVar3;
-      *(u32 *)(outputAddress + 0x7cc) = uVar5;
+      count = *(int *)(param_1 + 0x78c);
+      if (9 < count) break;
+      combinedValue = customData->unk_10;
+      entryValue = entry->unk_10;
+      combinedValue = combinedValue + entryValue;
+      extraValue = entry->unk_14;
+      *(short *)(param_1 + count * 2 + 0x7b8) = count + 30000;
+      outputAddress = (int)param_1 + count * 4;
+      *(int *)(outputAddress + 0x790) = combinedValue;
+      *(u32 *)(outputAddress + 0x7cc) = extraValue;
       *(int *)(param_1 + 0x78c) = *(int *)(param_1 + 0x78c) + 1;
     }
   }
