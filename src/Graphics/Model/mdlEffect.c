@@ -37792,8 +37792,8 @@ void FUN_00348950(u8 *spriteRec,float *verts)
   float *vert;
   float fVar8;
   float alphaF;
-  float fVar9;
-  float fVar10;
+  float texV0;
+  float texU0;
   float fVar11;
   float fVar12;
 
@@ -37832,19 +37832,19 @@ void FUN_00348950(u8 *spriteRec,float *verts)
   verts[0x30] = *(float *)(spriteRec + 0x20);
   verts[0x31] = *(float *)(spriteRec + 0x1c);
 
-  fVar10 = (*(float *)(spriteRec + 0x18) + fVar8) / *(float *)DAT_00957bac_abs;
-  fVar9 = (*(float *)(spriteRec + 0x1c) + fVar11) / *(float *)DAT_00957bb0_abs;
+  texU0 = (*(float *)(spriteRec + 0x18) + fVar8) / *(float *)DAT_00957bac_abs;
+  texV0 = (*(float *)(spriteRec + 0x1c) + fVar11) / *(float *)DAT_00957bb0_abs;
   fVar8 = (*(float *)(spriteRec + 0x20) + fVar8) / *(float *)DAT_00957bac_abs;
   fVar12 = (*(float *)(spriteRec + 0x24) + fVar11) / *(float *)DAT_00957bb0_abs;
 
-  ((float *)verts)[4] = fVar10;
-  ((float *)verts)[5] = fVar9;
-  ((float *)verts)[0x14] = fVar10;
+  ((float *)verts)[4] = texU0;
+  ((float *)verts)[5] = texV0;
+  ((float *)verts)[0x14] = texU0;
   ((float *)verts)[0x15] = fVar12;
   ((float *)verts)[0x24] = fVar8;
   ((float *)verts)[0x25] = fVar12;
   ((float *)verts)[0x34] = fVar8;
-  ((float *)verts)[0x35] = fVar9;
+  ((float *)verts)[0x35] = texV0;
 
   return;
 
