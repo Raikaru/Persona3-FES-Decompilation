@@ -1559,7 +1559,7 @@ u32 FUN_002dc070(BtlAction* action)
 u32 FUN_002dc130(BtlAction* action)
 {
     DatUnit* datUnit = action->unit->datUnit;
-    if ((action->unk_18 & 4) != 0)
+    if ((action->flags & 4) != 0)
     {
         return 0;
     }
