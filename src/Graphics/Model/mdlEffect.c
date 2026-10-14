@@ -46751,7 +46751,7 @@ void FUN_003539c0(int param_1)
 
       uVar1 = (u16)puVar3[1];
 
-      if (uVar1 >= uVar4) {
+      if (uVar4 <= uVar1) {
 
         if (uVar1 == 0) {
 
