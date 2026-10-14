@@ -636,7 +636,7 @@ u32 FUN_0045e8c0(u64 param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
 u32 FUN_00465590(int param_1,u64 param_2);
-u32 FUN_00466710(int param_1);
+u32 RpHAnimFrameGetHierarchy(int param_1);
 u32 FUN_00466720(int param_1);
 u32 FUN_00466730(u32 *param_1);
 u32 FUN_00469030(int param_1);
@@ -650,7 +650,7 @@ u32 FUN_00469a90(void);
 u32 FUN_00469ce0(void);
 u32 FUN_00469cf0(void);
 u32 FUN_0046a6c0(int param_1,u64 param_2,u64 param_3,u64 param_4);
-u32 FUN_0046a6f0(int param_1,u64 param_2,u64 param_3,u64 param_4);
+u32 _rpTeamDictionaryAtomicRights(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_0046a720(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_0046a750(u64 param_1);
 u32 FUN_0046a890(u64 param_1);
@@ -779,7 +779,7 @@ u64 FUN_004643b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_004654a0(u64 param_1,u64 param_2);
 u64 FUN_00465930(u64 param_1,u64 param_2);
 u64 FUN_00465a00(u64 param_1);
-u64 FUN_00465ae0(u64 param_1);
+u64 HAnimClose(u64 param_1);
 u64 FUN_00465bf0(u64 param_1,int param_2);
 u64 FUN_00465cf0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00465eb0(u64 param_1,u64 param_2,u32 param_3);
@@ -813,8 +813,8 @@ u64 FUN_00469840(u64 param_1,u32 param_2,u32 param_3);
 u64 FUN_00469940(u64 param_1,u32 *param_2,u32 *param_3);
 u64 FUN_004699b0(u64 param_1,u32 param_2,u32 param_3);
 u64 FUN_00469a10(u64 param_1,long param_2,long param_3);
-u64 FUN_00469d00(u64 param_1);
-u64 FUN_00469d60(u64 param_1);
+u64 _rpMatFXPipelineWorldSectorSetup(u64 param_1);
+u64 _rpMatFXPipelineAtomicSetup(u64 param_1);
 u64 FUN_00469e30(u64 param_1,int param_2);
 u64 FUN_00469fe0(u64 param_1);
 u64 FUN_0046a040(u64 param_1,int param_2);
@@ -910,7 +910,7 @@ u64 FUN_0048e750(long param_1,u64 param_2);
 u64 FUN_0048eab0(u64 param_1,int param_2);
 u64 FUN_0048eb50(u64 param_1,int param_2,int param_3);
 u64 FUN_0048ec20(u64 param_1,u64 param_2,int param_3,int param_4);
-u64 FUN_0048ecf0(u64 param_1,u64 param_2,int param_3,int param_4);
+u64 UserDataObjectStreamWrite(u64 param_1,u64 param_2,int param_3,int param_4);
 u64 FUN_0048f340(u64 param_1,int param_2);
 u64 FUN_0048f3c0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_0048f460(u64 param_1,int param_2);
@@ -933,12 +933,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 FUN_00492d10(u64 param_1);
+u64 RpAtomicSetFrame(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 FUN_00493370(u64 param_1,u16 param_2);
+u64 RpGeometryLock(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u64 FUN_00493b40(u64 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -1353,7 +1353,7 @@ void FUN_0049a920(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_0049a950(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_0049afa0(int param_1,u64 param_2);
 void FUN_0049be20(int param_1);
-void FUN_0049c680(void);
+void _rpWorldPipelineClose(void);
 void FUN_0049c9b0(void);
 void FUN_0049ca50(long param_1);
 void FUN_0049cab0(float param_1,u8 *param_2);
@@ -1365,9 +1365,9 @@ void FUN_004a0480(int param_1,int param_2);
 void FUN_004a05d0(int param_1,int param_2);
 void FUN_004a06c0(int param_1);
 void FUN_004a08f0(int param_1,int *param_2,int param_3,u32 param_4);
-void FUN_004a0dc0(int param_1);
+void RpMeshPS2AllInstanceCallBack(int param_1);
 void FUN_004a24a0(int param_1,int param_2);
-void FUN_004a2560(u64 param_1,int *param_2);
+void RwIm3DPS2AllResEntryAllocCallBack(u64 param_1,int *param_2);
 void FUN_004a3540(int param_1);
 void FUN_004a3f70(int param_1,u32 *param_2);
 void FUN_004a53b0(void);
@@ -1900,7 +1900,7 @@ extern code FUN_004c33d0;
 extern code FUN_004c35d0;
 extern code FUN_004c3880;
 extern code FUN_004c38c0;
-extern code FUN_004c3b50;
+extern code RwFreeListCreate;
 extern code FUN_004c3c30;
 extern code FUN_004c4200;
 extern code FUN_004c47e0;
@@ -1989,7 +1989,7 @@ extern code FUN_004d7f60;
 extern code FUN_004ec2b0;
 extern code FUN_004f0f30;
 extern code FUN_004f1020;
-extern code FUN_004f1e20;
+extern code RpSkyTexGetTex0;
 extern code FUN_004f1e40;
 extern code FUN_004f1ed0;
 extern code FUN_004f1f80;
@@ -2198,7 +2198,7 @@ u32 FUN_0045e8c0(u64 param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
 u32 FUN_00465590(int param_1,u64 param_2);
-u32 FUN_00466710(int param_1);
+u32 RpHAnimFrameGetHierarchy(int param_1);
 u32 FUN_00466720(int param_1);
 u32 FUN_00466730(u32 *param_1);
 u32 FUN_00469030(int param_1);
@@ -2212,7 +2212,7 @@ u32 FUN_00469a90(void);
 u32 FUN_00469ce0(void);
 u32 FUN_00469cf0(void);
 u32 FUN_0046a6c0(int param_1,u64 param_2,u64 param_3,u64 param_4);
-u32 FUN_0046a6f0(int param_1,u64 param_2,u64 param_3,u64 param_4);
+u32 _rpTeamDictionaryAtomicRights(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_0046a720(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_0046a750(u64 param_1);
 u32 FUN_0046a890(u64 param_1);
@@ -2341,7 +2341,7 @@ u64 FUN_004643b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_004654a0(u64 param_1,u64 param_2);
 u64 FUN_00465930(u64 param_1,u64 param_2);
 u64 FUN_00465a00(u64 param_1);
-u64 FUN_00465ae0(u64 param_1);
+u64 HAnimClose(u64 param_1);
 u64 FUN_00465bf0(u64 param_1,int param_2);
 u64 FUN_00465cf0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00465eb0(u64 param_1,u64 param_2,u32 param_3);
@@ -2375,8 +2375,8 @@ u64 FUN_00469840(u64 param_1,u32 param_2,u32 param_3);
 u64 FUN_00469940(u64 param_1,u32 *param_2,u32 *param_3);
 u64 FUN_004699b0(u64 param_1,u32 param_2,u32 param_3);
 u64 FUN_00469a10(u64 param_1,long param_2,long param_3);
-u64 FUN_00469d00(u64 param_1);
-u64 FUN_00469d60(u64 param_1);
+u64 _rpMatFXPipelineWorldSectorSetup(u64 param_1);
+u64 _rpMatFXPipelineAtomicSetup(u64 param_1);
 u64 FUN_00469e30(u64 param_1,int param_2);
 u64 FUN_00469fe0(u64 param_1);
 u64 FUN_0046a040(u64 param_1,int param_2);
@@ -2456,7 +2456,7 @@ u64 FUN_0048e750(long param_1,u64 param_2);
 u64 FUN_0048eab0(u64 param_1,int param_2);
 u64 FUN_0048eb50(u64 param_1,int param_2,int param_3);
 u64 FUN_0048ec20(u64 param_1,u64 param_2,int param_3,int param_4);
-u64 FUN_0048ecf0(u64 param_1,u64 param_2,int param_3,int param_4);
+u64 UserDataObjectStreamWrite(u64 param_1,u64 param_2,int param_3,int param_4);
 u64 FUN_0048f340(u64 param_1,int param_2);
 u64 FUN_0048f3c0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_0048f460(u64 param_1,int param_2);
@@ -2479,12 +2479,12 @@ u64 FUN_004919b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_00491ff0(u64 param_1,int param_2);
 u64 FUN_00492020(u64 param_1,int param_2);
 u64 FUN_00492060(u64 param_1,int param_2);
-u64 FUN_00492d10(u64 param_1);
+u64 RpAtomicSetFrame(u64 param_1);
 u64 FUN_00492e20(u64 param_1,float *param_2);
 u64 FUN_00493210(u64 param_1,u16 *param_2,u16 param_3,u16 param_4, u16 param_5);
 u64 FUN_00493230(u64 param_1,int param_2,long param_3);
 u64 FUN_004932c0(u64 param_1,code *param_2,u64 param_3);
-u64 FUN_00493370(u64 param_1,u16 param_2);
+u64 RpGeometryLock(u64 param_1,u16 param_2);
 u64 FUN_004933d0(u64 param_1);
 u64 FUN_00493b40(u64 param_1);
 u64 FUN_004944b0(u64 param_1,u32 *param_2);
@@ -2899,7 +2899,7 @@ void FUN_0049a920(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_0049a950(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_0049afa0(int param_1,u64 param_2);
 void FUN_0049be20(int param_1);
-void FUN_0049c680(void);
+void _rpWorldPipelineClose(void);
 void FUN_0049c9b0(void);
 void FUN_0049ca50(long param_1);
 void FUN_0049cab0(float param_1,u8 *param_2);
@@ -2911,9 +2911,9 @@ void FUN_004a0480(int param_1,int param_2);
 void FUN_004a05d0(int param_1,int param_2);
 void FUN_004a06c0(int param_1);
 void FUN_004a08f0(int param_1,int *param_2,int param_3,u32 param_4);
-void FUN_004a0dc0(int param_1);
+void RpMeshPS2AllInstanceCallBack(int param_1);
 void FUN_004a24a0(int param_1,int param_2);
-void FUN_004a2560(u64 param_1,int *param_2);
+void RwIm3DPS2AllResEntryAllocCallBack(u64 param_1,int *param_2);
 void FUN_004a3540(int param_1);
 void FUN_004a3f70(int param_1,u32 *param_2);
 void FUN_004a53b0(void);
@@ -3338,7 +3338,7 @@ u64 FUN_00465a00(u64 param_1)
 #pragma schedule on
 // FUN_00465AE0 NONMATCHING
 
-u64 FUN_00465ae0(u64 param_1)
+u64 HAnimClose(u64 param_1)
 
 {
   if (iGpffffba44 != 0) {
@@ -3351,7 +3351,7 @@ u64 FUN_00465ae0(u64 param_1)
 
 #pragma schedule on
 // FUN_00465B20
-int FUN_00465b20(int param_1)
+int HAnimConstructor(int param_1)
 {
   int result;
 
@@ -3824,7 +3824,7 @@ u64 FUN_00466640(u64 param_1)
 // FUN_00466710
 
 #pragma optimization_level 3
-u32 FUN_00466710(int param_1)
+u32 RpHAnimFrameGetHierarchy(int param_1)
 {
   return *(u32 *)(param_1 + iGpffffba40 + 4);
 }
@@ -5239,7 +5239,7 @@ u64 FUN_00468dc0(u64 param_1)
   
   piVar2 = (int *)((int)param_1 + iGpffffba4c);
   if (*piVar2 == 0) {
-    lVar1 = ((code)FUN_00469d60)();
+    lVar1 = ((code)_rpMatFXPipelineAtomicSetup)();
     if (lVar1 == 0) {
       param_1 = 0;
     }
@@ -5260,7 +5260,7 @@ u64 FUN_00468e30(u64 param_1)
   
   piVar2 = (int *)((int)param_1 + iGpffffba50);
   if (*piVar2 == 0) {
-    lVar1 = ((code)FUN_00469d00)();
+    lVar1 = ((code)_rpMatFXPipelineWorldSectorSetup)();
     if (lVar1 == 0) {
       param_1 = 0;
     }
@@ -5981,7 +5981,7 @@ u32 FUN_00469cf0(void)
 
 // FUN_00469D00 NONMATCHING
 
-u64 FUN_00469d00(u64 param_1)
+u64 _rpMatFXPipelineWorldSectorSetup(u64 param_1)
 
 {
   int iVar1;
@@ -6001,7 +6001,7 @@ u64 FUN_00469d00(u64 param_1)
 
 // FUN_00469D60 NONMATCHING
 
-u64 FUN_00469d60(u64 param_1)
+u64 _rpMatFXPipelineAtomicSetup(u64 param_1)
 
 {
   u32 uVar1;
@@ -6476,7 +6476,7 @@ u32 FUN_0046a6c0(int param_1,u64 param_2,u64 param_3,u64 param_4)
 #pragma optimization_level 3
 // FUN_0046A6F0
 
-u32 FUN_0046a6f0(int param_1,u64 param_2,u64 param_3,u64 param_4)
+u32 _rpTeamDictionaryAtomicRights(int param_1,u64 param_2,u64 param_3,u64 param_4)
 
 {
   u32 uVar1;
@@ -8795,7 +8795,7 @@ u64 FUN_0046cd90(int param_1)
   else {
     DAT_007cddc0 = DAT_007cddc0 | 0x10;
     DAT_007ceabc = *piVar3;
-    ((code)FUN_004f1e20)(*piVar3,(int)&uStack_18 + 4,&uStack_18);
+    ((code)RpSkyTexGetTex0)(*piVar3,(int)&uStack_18 + 4,&uStack_18);
     ((code)FUN_004f1e40)(*piVar3,0x7cea60,(char)piVar3[0x14]);
     DAT_007cea58 = (u32)((piVar3[0x14] & 0xf00U) == 0x300);
     if ((piVar3[0x14] & 0xf000U) == 0x3000) {
@@ -8804,7 +8804,7 @@ u64 FUN_0046cd90(int param_1)
   }
   DAT_007cea40 = DAT_007cea40 | 1;
   if (piVar2 != (int *)0x0) {
-    ((code)FUN_004f1e20)(*piVar2,(int)&uStack_20 + 4,&uStack_20);
+    ((code)RpSkyTexGetTex0)(*piVar2,(int)&uStack_20 + 4,&uStack_20);
     ((code)FUN_004f1e40)(*piVar2,&uStack_10,(char)piVar2[0x14]);
     uVar95 = (u32)((piVar2[0x14] & 0xf00U) == 0x300);
     if ((piVar2[0x14] & 0xf000U) == 0x3000) {
@@ -9544,7 +9544,7 @@ u64 FUN_0046d6f0(int param_1)
   else {
     DAT_007cddc0 = DAT_007cddc0 | 0x10;
     DAT_007ceabc = *piVar107;
-    ((code)FUN_004f1e20)(*piVar107,(int)&uStack_18 + 4,&uStack_18);
+    ((code)RpSkyTexGetTex0)(*piVar107,(int)&uStack_18 + 4,&uStack_18);
     ((code)FUN_004f1e40)(*piVar107,0x7cea60,(char)piVar107[0x14]);
     DAT_007cea58 = (u32)((piVar107[0x14] & 0xf00U) == 0x300);
     if ((piVar107[0x14] & 0xf000U) == 0x3000) {
@@ -9553,7 +9553,7 @@ u64 FUN_0046d6f0(int param_1)
   }
   DAT_007cea40 = DAT_007cea40 | 1;
   if (piVar4 != (int *)0x0) {
-    ((code)FUN_004f1e20)(*piVar4,(int)&uStack_20 + 4,&uStack_20);
+    ((code)RpSkyTexGetTex0)(*piVar4,(int)&uStack_20 + 4,&uStack_20);
     ((code)FUN_004f1e40)(*piVar4,&uStack_10,(char)piVar4[0x14]);
     uVar106 = (u32)((piVar4[0x14] & 0xf00U) == 0x300);
     if ((piVar4[0x14] & 0xf000U) == 0x3000) {
@@ -10328,7 +10328,7 @@ u64 FUN_0046e170(int param_1)
   else {
     DAT_007cddc0 = DAT_007cddc0 | 0x10;
     DAT_007ceabc = *(u32 *)lVar90;
-    ((code)FUN_004f1e20)(*(u32 *)lVar90,(int)&uStack_10 + 4,&uStack_10);
+    ((code)RpSkyTexGetTex0)(*(u32 *)lVar90,(int)&uStack_10 + 4,&uStack_10);
     ((code)FUN_004f1e40)(*(u32 *)lVar90,0x7cea60,*(u8 *)((u32 *)lVar90 + 0x14));
     DAT_007cea58 = (u32)((*(u32 *)((int)lVar90 + 0x50) & 0xf00) == 0x300);
     if ((*(u32 *)((int)lVar90 + 0x50) & 0xf000) == 0x3000) {
@@ -10337,7 +10337,7 @@ u64 FUN_0046e170(int param_1)
   }
   DAT_007cea40 = DAT_007cea40 | 1;
   if (piVar4 != (int *)0x0) {
-    ((code)FUN_004f1e20)(*piVar4,(int)&uStack_18 + 4,&uStack_18);
+    ((code)RpSkyTexGetTex0)(*piVar4,(int)&uStack_18 + 4,&uStack_18);
     ((code)FUN_004f1e40)(*piVar4,&uStack_8,(char)piVar4[0x14]);
     uVar93 = (u32)((piVar4[0x14] & 0xf00U) == 0x300);
     if ((piVar4[0x14] & 0xf000U) == 0x3000) {
@@ -14026,7 +14026,7 @@ u64 FUN_00472970(int param_1)
   else {
     uGpffffb0d0 = uGpffffb0d0 | 0x10;
     uGpffffbdcc = *(u32 *)lVar94;
-    ((code)FUN_004f1e20)(*(u32 *)lVar94,(int)&uStack_10 + 4,&uStack_10);
+    ((code)RpSkyTexGetTex0)(*(u32 *)lVar94,(int)&uStack_10 + 4,&uStack_10);
     ((code)FUN_004f1e40)(*(u32 *)lVar94,(u8 *)uGpffffbd70,*(u8 *)((u32 *)lVar94 + 0x14));
     uGpffffbd68 = (u32)((*(u32 *)((int)lVar94 + 0x50) & 0xf00) == 0x300);
     if ((*(u32 *)((int)lVar94 + 0x50) & 0xf000) == 0x3000) {
@@ -14035,7 +14035,7 @@ u64 FUN_00472970(int param_1)
   }
   uGpffffbd50 = uGpffffbd50 | 1;
   if (lVar100 != 0) {
-    ((code)FUN_004f1e20)(*(u32 *)lVar100,(int)&uStack_18 + 4,&uStack_18);
+    ((code)RpSkyTexGetTex0)(*(u32 *)lVar100,(int)&uStack_18 + 4,&uStack_18);
     ((code)FUN_004f1e40)(*(u32 *)lVar100,&uStack_8,*(u8 *)((u32 *)lVar100 + 0x14));
     uVar4 = *(u32 *)((int)lVar100 + 0x50);
     auVar72._8_8_ = auVar88._8_8_;
@@ -28814,7 +28814,7 @@ void FUN_00488550(int *param_1,int param_2,int param_3,int param_4,u32 param_5)
   if ((param_5 & 0x800000) == 0x800000) {
     iVar12 = *(int *)(iVar1 + 0x5c);
     iVar13 = **(int **)(param_2 + DAT_007ce770);
-    ((code)FUN_00493370)(iVar1,2);
+    ((code)RpGeometryLock)(iVar1,2);
     iVar12 = *(int *)(iVar12 + 0x14);
     if (param_4 < iVar13) {
       if (8 < iVar13 - param_4) {
@@ -29015,22 +29015,22 @@ void FUN_00488550(int *param_1,int param_2,int param_3,int param_4,u32 param_5)
   param_1[3] = (u32)((param_5 & 0x10) == 0x10);
   iVar12 = *(int *)(iVar1 + 0x5c);
   if (*param_1 != 0) {
-    ((code)FUN_00493370)(iVar1,2);
+    ((code)RpGeometryLock)(iVar1,2);
     param_1[4] = *(int *)(iVar12 + 0x14);
     param_1[5] = 0xc;
   }
   if (param_1[2] != 0) {
-    ((code)FUN_00493370)(iVar1,8);
+    ((code)RpGeometryLock)(iVar1,8);
     param_1[8] = *(int *)(iVar1 + 0x30);
     param_1[9] = 4;
   }
   if (param_1[1] != 0) {
-    ((code)FUN_00493370)(iVar1,0x10);
+    ((code)RpGeometryLock)(iVar1,0x10);
     param_1[6] = *(int *)(iVar1 + 0x34);
     param_1[7] = 8;
   }
   if (param_1[3] != 0) {
-    ((code)FUN_00493370)(iVar1,4);
+    ((code)RpGeometryLock)(iVar1,4);
     param_1[10] = *(int *)(iVar12 + 0x18);
     param_1[0xb] = 0xc;
   }
