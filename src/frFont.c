@@ -1099,9 +1099,9 @@ void FUN_003b05c0(u16 *param_1)
 
 int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
 {
+  u8 *puVar7;
   u16 uVar5;
   int iVar6;
-  u8 *puVar7;
 
   puVar7 = (u8 *)FUN_003b46b0(DAT_0095ae1c_abs[0]);
   DAT_0095ae14_abs[0] = DAT_0095ae14_abs[0] + 1;
