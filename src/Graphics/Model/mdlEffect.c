@@ -38273,7 +38273,7 @@ void FUN_00349090(int *param_1,float *param_2)
 void FUN_00349260(int emitter,float *particle)
 {
   u32 rnd;
-  float fVar2;
+  float factor;
   float *output;
   float posY;
   float angle;
@@ -38294,41 +38294,41 @@ void FUN_00349260(int emitter,float *particle)
 
   halfSize = (float)*(int *)(emitter + 0x28) * 0.5f;
 
-  fVar2 = (float)FUN_00358030(0);
+  factor = (float)FUN_00358030(0);
 
-  fVar2 = fVar2 - 0.5f;
-  fVar2 = mdlEffectScaleFirst(2.0f,fVar2);
-  angle = fGpffff8168 * fVar2;
+  factor = factor - 0.5f;
+  factor = mdlEffectScaleFirst(2.0f,factor);
+  angle = fGpffff8168 * factor;
 
   posX = *(float *)(emitter + 0x30);
 
-  fVar2 = (float)FUN_00358030(0);
+  factor = (float)FUN_00358030(0);
 
-  posX = (((810.0f - halfSize) - posX) * fVar2 + posX + 0.0f) * 0.5f;
+  posX = (((810.0f - halfSize) - posX) * factor + posX + 0.0f) * 0.5f;
 
   posY = *(float *)(emitter + 0x2c);
 
-  fVar2 = (float)FUN_00358030(0);
+  factor = (float)FUN_00358030(0);
 
-  posY = (((650.0f - halfSize) - posY) * fVar2 + posY + 0.0f) * 0.5f;
+  posY = (((650.0f - halfSize) - posY) * factor + posY + 0.0f) * 0.5f;
   posY = fGpffff80a4 * halfSize + posY;
 
   posX = posX + fGpffff80a4 * halfSize;
 
-  fVar2 = (float)FUN_0052e6d8_f32(angle);
+  factor = (float)FUN_0052e6d8_f32(angle);
 
-  posX = posX * fVar2 + *(float *)(emitter + 0x1c) + 0.0f;
+  posX = posX * factor + *(float *)(emitter + 0x1c) + 0.0f;
 
-  fVar2 = (float)FUN_0052e878_f32(angle);
+  factor = (float)FUN_0052e878_f32(angle);
 
-  fVar2 = posY * fVar2 + *(float *)(emitter + 0x20) + 0.0f;
+  factor = posY * factor + *(float *)(emitter + 0x20) + 0.0f;
 
   output[5] = posX;
-  output[6] = fVar2;
+  output[6] = factor;
   output[7] = posX - halfSize;
-  output[8] = fVar2 - halfSize;
+  output[8] = factor - halfSize;
   output[9] = posX + halfSize;
-  output[10] = fVar2 + halfSize;
+  output[10] = factor + halfSize;
 
   return;
 
