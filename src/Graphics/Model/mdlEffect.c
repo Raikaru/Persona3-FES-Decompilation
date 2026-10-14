@@ -4747,84 +4747,69 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 // FUN_00323640 NONMATCHING
 
 
-u32 FUN_00323640(u16 *param_1)
-
-
-
+u32 FUN_00323640(u16 *instance)
 {
+  u32 dataPtr;
+  int srcBlock;
+  int dstBlock;
+  u32 obj;
+  u16 *dstVerts;
+  u16 *srcVerts;
+  int vertIndex;
 
-  u32 uVar1;
+  if ((*instance & 2) != 0) {
+    obj = FUN_003234f0_u32(instance[5],*(u32 *)(instance + 2));
 
-  int iVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  u16 *puVar5;
-
-  u16 *puVar6;
-
-  int lVar7;
-
-  
-
-  if ((*param_1 & 2) != 0) {
-
-    uVar4 = FUN_003234f0_u32(param_1[5],*(u32 *)(param_1 + 2));
-
-    if (*(int *)**(u32 **)(*(int *)(*(int *)(param_1 + 8) + 0x18) + 0x20) != 0) {
-
-      FUN_00494d50(**(u32 **)(*(int *)(*(int *)((int)uVar4 + 0x10) + 0x18) + 0x20),
-                      *(int *)**(u32 **)(*(int *)(*(int *)(param_1 + 8) + 0x18) + 0x20));
+    if (*(int *)**(u32 **)(*(int *)(*(int *)(instance + 8) + 0x18) + 0x20) != 0) {
+      FUN_00494d50(**(u32 **)(*(int *)(*(int *)((int)obj + 0x10) + 0x18) + 0x20),
+                      *(int *)**(u32 **)(*(int *)(*(int *)(instance + 8) + 0x18) + 0x20));
 
     }
 
   }
 
   else {
+    obj = FUN_003230f0((short)instance[4],(short)instance[5],*(u32 *)(instance + 2));
 
-    uVar4 = FUN_003230f0((short)param_1[4],(short)param_1[5],*(u32 *)(param_1 + 2));
+    dataPtr = *(u32 *)((int)obj + 0x14);
 
-    uVar1 = *(u32 *)((int)uVar4 + 0x14);
+    srcBlock = *(int *)(*(int *)(instance + 8) + 0x18);
 
-    iVar2 = *(int *)(*(int *)(param_1 + 8) + 0x18);
+    dstBlock = *(int *)(*(int *)((int)obj + 0x10) + 0x18);
 
-    iVar3 = *(int *)(*(int *)((int)uVar4 + 0x10) + 0x18);
+    if (**(int **)(instance + 10) != 0) {
 
-    if (**(int **)(param_1 + 10) != 0) {
-
-      FUN_00494d50(uVar1,**(int **)(param_1 + 10));
-
-    }
-
-    FUN_00493370(iVar2,1);
-
-    puVar6 = *(u16 **)(iVar2 + 0x2c);
-
-    puVar5 = *(u16 **)(iVar3 + 0x2c);
-
-    for (lVar7 = 0; lVar7 < (short)param_1[5]; lVar7 = lVar7 + 1) {
-
-      *puVar5 = *puVar6;
-
-      puVar5[1] = puVar6[1];
-
-      puVar5[2] = puVar6[2];
-
-      FUN_00493230(iVar3,(int)puVar5,uVar1);
-
-      puVar6 = puVar6 + 4;
-
-      puVar5 = puVar5 + 4;
+      FUN_00494d50(dataPtr,**(int **)(instance + 10));
 
     }
 
-    FUN_004933d0(iVar2);
+    FUN_00493370(srcBlock,1);
+
+    srcVerts = *(u16 **)(srcBlock + 0x2c);
+
+    dstVerts = *(u16 **)(dstBlock + 0x2c);
+
+    for (vertIndex = 0; vertIndex < (short)instance[5]; vertIndex = vertIndex + 1) {
+
+      *dstVerts = *srcVerts;
+
+      dstVerts[1] = srcVerts[1];
+
+      dstVerts[2] = srcVerts[2];
+
+      FUN_00493230(dstBlock,(int)dstVerts,dataPtr);
+
+      srcVerts = srcVerts + 4;
+
+      dstVerts = dstVerts + 4;
+
+    }
+
+    FUN_004933d0(srcBlock);
 
   }
 
-  return uVar4;
+  return obj;
 
 }
 
@@ -10811,136 +10796,70 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 // FUN_0032A540 NONMATCHING
 
 
-float FUN_0032a540(char *param_1,int param_2,int param_3)
-
-
-
+float FUN_0032a540(char *curve,int frame,int duration)
 {
+  char curveType;
+  int durationFrames;
+  float result;
+  int bp1;
+  int bp2;
+  float segEnd;
+  float segStart;
 
-  char cVar1;
-
-  int iVar2;
-
-  float fVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  
-
-  iVar2 = (int)param_3;
-
-  if (param_3 == 0) {
-
-    fVar3 = *(float *)(param_1 + 4);
-
+  durationFrames = (int)duration;
+  if (duration == 0) {
+    result = *(float *)(curve + 4);
   }
-
   else {
-
-    fVar3 = (float)iVar2;
-
-    cVar1 = *param_1;
-
-    if (cVar1 == '\x02') {
-
-      iVar4 = (int)(*(float *)(param_1 + 0x18) * fVar3);
-
-      if (param_2 < iVar4) {
-
-        fVar7 = *(float *)(param_1 + 4);
-
-        fVar6 = *(float *)(param_1 + 0x14);
-
-        fVar3 = (float)param_2 / (float)iVar4;
-
+    result = (float)durationFrames;
+    curveType = *curve;
+    if (curveType == '\x02') {
+      bp1 = (int)(*(float *)(curve + 0x18) * result);
+      if (frame < bp1) {
+        segStart = *(float *)(curve + 4);
+        segEnd = *(float *)(curve + 0x14);
+        result = (float)frame / (float)bp1;
       }
-
       else {
-
-        iVar5 = (int)(*(float *)(param_1 + 0x20) * fVar3);
-
-        if (param_2 >= iVar5) {
-
-          fVar7 = *(float *)(param_1 + 0x1c);
-
-          fVar6 = *(float *)(param_1 + 8);
-
-          fVar3 = (float)(param_2 - iVar5) / (float)(iVar2 - iVar5);
-
+        bp2 = (int)(*(float *)(curve + 0x20) * result);
+        if (frame >= bp2) {
+          segStart = *(float *)(curve + 0x1c);
+          segEnd = *(float *)(curve + 8);
+          result = (float)(frame - bp2) / (float)(durationFrames - bp2);
         }
-
         else {
-
-          fVar7 = *(float *)(param_1 + 0x14);
-
-          fVar6 = *(float *)(param_1 + 0x1c);
-
-          fVar3 = (float)(param_2 - iVar4) / (float)(iVar5 - iVar4);
-
+          segStart = *(float *)(curve + 0x14);
+          segEnd = *(float *)(curve + 0x1c);
+          result = (float)(frame - bp1) / (float)(bp2 - bp1);
         }
-
       }
-
     }
-
-    else if (cVar1 == '\x01') {
-
-      iVar4 = (int)(*(float *)(param_1 + 0x18) * fVar3);
-
-      if (param_2 >= iVar4) {
-
-        fVar7 = *(float *)(param_1 + 0x14);
-
-        fVar6 = *(float *)(param_1 + 8);
-
-        fVar3 = (float)(param_2 - iVar4) / (float)(iVar2 - iVar4);
-
+    else if (curveType == '\x01') {
+      bp1 = (int)(*(float *)(curve + 0x18) * result);
+      if (frame >= bp1) {
+        segStart = *(float *)(curve + 0x14);
+        segEnd = *(float *)(curve + 8);
+        result = (float)(frame - bp1) / (float)(durationFrames - bp1);
       }
-
       else {
-
-        fVar7 = *(float *)(param_1 + 4);
-
-        fVar6 = *(float *)(param_1 + 0x14);
-
-        fVar3 = (float)param_2 / (float)iVar4;
-
+        segStart = *(float *)(curve + 4);
+        segEnd = *(float *)(curve + 0x14);
+        result = (float)frame / (float)bp1;
       }
-
     }
-
-    else if (cVar1 == '\0') {
-
-      fVar7 = *(float *)(param_1 + 4);
-
-      fVar6 = *(float *)(param_1 + 8);
-
-      fVar3 = (float)param_2 / fVar3;
-
+    else if (curveType == '\0') {
+      segStart = *(float *)(curve + 4);
+      segEnd = *(float *)(curve + 8);
+      result = (float)frame / result;
     }
-
     else {
-
-      fVar7 = *(float *)(param_1 + 4);
-
-      fVar6 = *(float *)(param_1 + 8);
-
-      fVar3 = 0.0f;
-
+      segStart = *(float *)(curve + 4);
+      segEnd = *(float *)(curve + 8);
+      result = 0.0f;
     }
-
-    fVar3 = fVar3 * (fVar6 - fVar7) + fVar7 + 0.0f;
-
+    result = result * (segEnd - segStart) + segStart + 0.0f;
   }
-
-  return fVar3;
-
+  return result;
 }
 
 
@@ -32523,55 +32442,42 @@ void FUN_003420c0(u32 param_1)
 // FUN_00342130 NONMATCHING
 
 
-u32 FUN_00342130(int param_1)
-
-
-
+u32 FUN_00342130(int effect)
 {
+  u32 typeId;
+  u32 instance;
+  u32 arg;
+  int base;
 
-  u32 uVar1;
+  base = (int)effect;
+  typeId = *(u32 *)(base + 0x38);
 
-  u32 uVar3;
+  if (DAT_0069c850[typeId].callback3 == (code)0) {
+    arg = *(u32 *)(base + 0x40);
 
-  u32 uVar2;
+    instance = FUN_00341f10(typeId & 0xffff,arg);
 
-  int iVar4;
+    base = (typeId & 0xffff) * 0x1c;
+    arg = DAT_0069c850[typeId & 0xffff].callback1(arg,0);
 
-  
+    *(u32 *)((int)instance + 0x3c) = arg;
 
-  iVar4 = (int)param_1;
-
-  uVar1 = *(u32 *)(iVar4 + 0x38);
-
-  if (DAT_0069c850[uVar1].callback3 == (code)0) {
-
-    uVar2 = *(u32 *)(iVar4 + 0x40);
-
-    uVar3 = FUN_00341f10(uVar1 & 0xffff,uVar2);
-
-    iVar4 = (uVar1 & 0xffff) * 0x1c;
-
-    uVar2 = DAT_0069c850[uVar1 & 0xffff].callback1(uVar2,0);
-
-    *(u32 *)((int)uVar3 + 0x3c) = uVar2;
-
-    DAT_0069c850[uVar1 & 0xffff].callback0(uVar3);
+    DAT_0069c850[typeId & 0xffff].callback0(instance);
 
   }
 
   else {
+    instance = FUN_00341f10(typeId & 0xffff,*(u32 *)(base + 0x40));
 
-    uVar3 = FUN_00341f10(uVar1 & 0xffff,*(u32 *)(iVar4 + 0x40));
+    arg = DAT_0069c850[*(int *)(base + 0x38)].callback3(effect);
 
-    uVar2 = DAT_0069c850[*(int *)(iVar4 + 0x38)].callback3(param_1);
+    *(u32 *)((int)instance + 0x3c) = arg;
 
-    *(u32 *)((int)uVar3 + 0x3c) = uVar2;
-
-    DAT_0069c850[*(int *)(iVar4 + 0x38)].callback0(uVar3);
+    DAT_0069c850[*(int *)(base + 0x38)].callback0(instance);
 
   }
 
-  return uVar3;
+  return instance;
 
 }
 
@@ -33704,135 +33610,69 @@ void FUN_00343790(int param_1)
 // FUN_00343860 NONMATCHING
 
 
-void FUN_00343860(int param_1,int param_2)
-
-
-
+void FUN_00343860(int effect,int params)
 {
-
-  u32 uVar1;
-
-  int iVar2;
-
-  u32 *puVar3;
-
-  float *puVar4;
-
-  u32 uVar5;
+  u32 layerCount;
+  int buf;
+  u32 *colorBase;
+  float *vertBase;
+  u32 sampleCount;
   u32 white;
+  float *vertCursor;
+  u32 *colorCursor;
+  u32 sample;
+  int fadeInEnd;
+  int fadeOutStart;
+  float alpha;
+  float stepWidth;
 
-
-  float *puVar6;
-
-  u32 *puVar7;
-
-  u32 uVar8;
-
-  int uVar9;
-
-  int uVar10;
-
-  float fVar11;
-
-  float fVar12;
-
-  
-
-  uVar1 = *(u32 *)(param_2 + 0x38);
-
-  if (uVar1 != 0) {
-
-    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff8);
-
-    iVar2 = *(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18);
-
-    puVar3 = *(u32 **)(iVar2 + 0x30);
-
-    puVar4 = *(float **)(iVar2 + 0x34);
-
-    fVar12 = *(float *)(param_2 + 0x90) / 3.0f;
-
-    iVar2 = *(int *)(param_2 + 0x8c);
-
-    uVar9 = (int)(*(float *)(param_2 + 0x78) * (float)iVar2);
-
-    uVar10 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
-
-    uVar5 = iVar2 + 1;
+  layerCount = *(u32 *)(params + 0x38);
+  if (layerCount != 0) {
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
+    colorBase = *(u32 **)(buf + 0x30);
+    vertBase = *(float **)(buf + 0x34);
+    stepWidth = *(float *)(params + 0x90) / 3.0f;
+    buf = *(int *)(params + 0x8c);
+    fadeInEnd = (int)(*(float *)(params + 0x78) * (float)buf);
+    fadeOutStart = (int)(*(float *)(params + 0x7c) * (float)buf);
+    sampleCount = buf + 1;
     white = 0xffffff;
-
-
-    puVar6 = puVar4;
-
-    puVar7 = puVar3;
-
-    for (uVar8 = 0; uVar8 < uVar5; uVar8 = uVar8 + 1) {
-
-      if (uVar8 >= uVar9) {
-
-        fVar11 = 1.0f;
-
-        if (uVar10 < uVar8) {
-
-          fVar11 = (float)(iVar2 - uVar8) / (float)(int)(iVar2 - uVar10);
-
+    vertCursor = vertBase;
+    colorCursor = colorBase;
+    for (sample = 0; sample < sampleCount; sample = sample + 1) {
+      if (sample >= fadeInEnd) {
+        alpha = 1.0f;
+        if (fadeOutStart < sample) {
+          alpha = (float)(buf - sample) / (float)(int)(buf - fadeOutStart);
         }
-
       }
-
       else {
-
-        fVar11 = (float)uVar8 / (float)(int)uVar9;
-
+        alpha = (float)sample / (float)(int)fadeInEnd;
       }
-
-      *puVar7 = white;
-
-      fVar11 = fVar11 * 255.0f;
-
-
-      puVar7[1] = (u32)fVar11 << 0x18 | white;
-
-      *(u8 *)(puVar7 + 2) = *(u8 *)(puVar7 + 1);
-
-      *(u8 *)((int)puVar7 + 9) = *(u8 *)((int)puVar7 + 5);
-
-      *(u8 *)((int)puVar7 + 10) = *(u8 *)((int)puVar7 + 6);
-
-      *(u8 *)((int)puVar7 + 0xb) = *(u8 *)((int)puVar7 + 7);
-
-      puVar7[3] = white;
-
-      puVar7 = puVar7 + 4;
-
-      *puVar6 = 0;
-
-      puVar6[2] = fVar12;
-
-      puVar6[4] = fVar12 * 2.0f;
-
-      puVar6[6] = fVar12 * 3.0f;
-
-      puVar6 = puVar6 + 8;
-
+      *colorCursor = white;
+      alpha = alpha * 255.0f;
+      colorCursor[1] = (u32)alpha << 0x18 | white;
+      *(u8 *)(colorCursor + 2) = *(u8 *)(colorCursor + 1);
+      *(u8 *)((int)colorCursor + 9) = *(u8 *)((int)colorCursor + 5);
+      *(u8 *)((int)colorCursor + 10) = *(u8 *)((int)colorCursor + 6);
+      *(u8 *)((int)colorCursor + 0xb) = *(u8 *)((int)colorCursor + 7);
+      colorCursor[3] = white;
+      colorCursor = colorCursor + 4;
+      *vertCursor = 0;
+      vertCursor[2] = stepWidth;
+      vertCursor[4] = stepWidth * 2.0f;
+      vertCursor[6] = stepWidth * 3.0f;
+      vertCursor = vertCursor + 8;
     }
-
-    for (uVar8 = 1; uVar8 < uVar1; uVar8 = uVar8 + 1) {
-
-      FUN_00521250(puVar7,puVar3,uVar5 * 0x10);
-
-      puVar7 = puVar7 + uVar5 * 4;
-
-      FUN_00521250(puVar6,puVar4,uVar5 * 0x20);
-
-      puVar6 = puVar6 + uVar5 * 8;
-
+    for (sample = 1; sample < layerCount; sample = sample + 1) {
+      FUN_00521250(colorCursor,colorBase,sampleCount * 0x10);
+      colorCursor = colorCursor + sampleCount * 4;
+      FUN_00521250(vertCursor,vertBase,sampleCount * 0x20);
+      vertCursor = vertCursor + sampleCount * 8;
     }
-
   }
-
   return;
-
 }
 
 
@@ -34688,150 +34528,77 @@ void FUN_00344AA0(int param_1)
 // FUN_00344B70 NONMATCHING
 
 
-void FUN_00344b70(int param_1,int param_2)
-
-
-
+void FUN_00344b70(int effect,int params)
 {
+  u32 layerCount;
+  int buf;
+  u32 *colorBase;
+  float *vertBase;
+  u16 *drawObj;
+  u32 sampleCount;
+  float *vertCursor;
+  u32 *colorCursor;
+  u32 sample;
+  int fadeInEnd;
+  int fadeOutStart;
+  float alpha;
+  float stepWidth;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  u32 *puVar3;
-
-  float *puVar4;
-
-  u16 *puVar5;
-
-  u32 uVar6;
-
-  float *puVar7;
-
-  u32 *puVar8;
-
-  u32 uVar9;
-
-  int uVar10;
-
-  int uVar11;
-
-  float fVar12;
-
-  float fVar13;
-
-  
-
-  uVar1 = *(u32 *)(param_2 + 0x38);
-
-  if (uVar1 != 0) {
-
-    FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff8);
-
-    iVar2 = *(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18);
-
-    puVar3 = *(u32 **)(iVar2 + 0x30);
-
-    puVar4 = *(float **)(iVar2 + 0x34);
-
-    fVar13 = *(float *)(param_2 + 0x90) / 3.0f;
-
-    iVar2 = *(int *)(param_2 + 0x8c);
-
-    uVar10 = (int)(*(float *)(param_2 + 0x78) * (float)iVar2);
-
-    uVar11 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
-
-    uVar6 = iVar2 + 1;
-
-    puVar7 = puVar4;
-
-    puVar8 = puVar3;
-
-    for (uVar9 = 0; uVar9 < uVar6; uVar9 = uVar9 + 1) {
-
-      if (uVar9 >= uVar10) {
-
-        fVar12 = 1.0f;
-
-        if (uVar11 < uVar9) {
-
-          fVar12 = (float)(iVar2 - uVar9) / (float)(int)(iVar2 - uVar11);
-
+  layerCount = *(u32 *)(params + 0x38);
+  if (layerCount != 0) {
+    FUN_00493370(*(u32 *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18),0xff8);
+    buf = *(int *)(*(int *)(*(int *)(effect + 4) + 0x10) + 0x18);
+    colorBase = *(u32 **)(buf + 0x30);
+    vertBase = *(float **)(buf + 0x34);
+    stepWidth = *(float *)(params + 0x90) / 3.0f;
+    buf = *(int *)(params + 0x8c);
+    fadeInEnd = (int)(*(float *)(params + 0x78) * (float)buf);
+    fadeOutStart = (int)(*(float *)(params + 0x7c) * (float)buf);
+    sampleCount = buf + 1;
+    vertCursor = vertBase;
+    colorCursor = colorBase;
+    for (sample = 0; sample < sampleCount; sample = sample + 1) {
+      if (sample >= fadeInEnd) {
+        alpha = 1.0f;
+        if (fadeOutStart < sample) {
+          alpha = (float)(buf - sample) / (float)(int)(buf - fadeOutStart);
         }
-
       }
-
       else {
-
-        fVar12 = (float)uVar9 / (float)(int)uVar10;
-
+        alpha = (float)sample / (float)(int)fadeInEnd;
       }
-
-      *puVar8 = 0xffffff;
-
-      fVar12 = fVar12 * 255.0f;
-
-      if (2.1474836e+09f <= fVar12) {
-
-        fVar12 = fVar12 - 2.1474836e+09f;
-
+      *colorCursor = 0xffffff;
+      alpha = alpha * 255.0f;
+      if (2.1474836e+09f <= alpha) {
+        alpha = alpha - 2.1474836e+09f;
       }
-
-      puVar8[1] = (u32)fVar12 << 0x18 | 0xffffff;
-
-      *(u8 *)(puVar8 + 2) = *(u8 *)(puVar8 + 1);
-
-      *(u8 *)((int)puVar8 + 9) = *(u8 *)((int)puVar8 + 5);
-
-      *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 6);
-
-      *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 7);
-
-      puVar8[3] = 0xffffff;
-
-      puVar8 = puVar8 + 4;
-
-      *puVar7 = 0;
-
-      puVar7[2] = fVar13;
-
-      puVar7[4] = fVar13 * 2.0f;
-
-      puVar7[6] = fVar13 * 3.0f;
-
-      puVar7 = puVar7 + 8;
-
+      colorCursor[1] = (u32)alpha << 0x18 | 0xffffff;
+      *(u8 *)(colorCursor + 2) = *(u8 *)(colorCursor + 1);
+      *(u8 *)((int)colorCursor + 9) = *(u8 *)((int)colorCursor + 5);
+      *(u8 *)((int)colorCursor + 10) = *(u8 *)((int)colorCursor + 6);
+      *(u8 *)((int)colorCursor + 0xb) = *(u8 *)((int)colorCursor + 7);
+      colorCursor[3] = 0xffffff;
+      colorCursor = colorCursor + 4;
+      *vertCursor = 0;
+      vertCursor[2] = stepWidth;
+      vertCursor[4] = stepWidth * 2.0f;
+      vertCursor[6] = stepWidth * 3.0f;
+      vertCursor = vertCursor + 8;
     }
-
-    for (uVar9 = 1; uVar9 < uVar1; uVar9 = uVar9 + 1) {
-
-      FUN_00521250(puVar8,puVar3,uVar6 * 0x10);
-
-      puVar8 = puVar8 + uVar6 * 4;
-
-      FUN_00521250(puVar7,puVar4,uVar6 * 0x20);
-
-      puVar7 = puVar7 + uVar6 * 8;
-
+    for (sample = 1; sample < layerCount; sample = sample + 1) {
+      FUN_00521250(colorCursor,colorBase,sampleCount * 0x10);
+      colorCursor = colorCursor + sampleCount * 4;
+      FUN_00521250(vertCursor,vertBase,sampleCount * 0x20);
+      vertCursor = vertCursor + sampleCount * 8;
     }
-
-    puVar5 = *(u16 **)(param_1 + 4);
-
-    iVar2 = *(int *)(*(int *)(puVar5 + 8) + 0x18);
-
-    FUN_004933d0(iVar2);
-
-    if ((*puVar5 & 4) != 0) {
-
-      *(u16 *)(iVar2 + 0xc) = *(u16 *)(iVar2 + 0xc) | 1;
-
+    drawObj = *(u16 **)(effect + 4);
+    buf = *(int *)(*(int *)(drawObj + 8) + 0x18);
+    FUN_004933d0(buf);
+    if ((*drawObj & 4) != 0) {
+      *(u16 *)(buf + 0xc) = *(u16 *)(buf + 0xc) | 1;
     }
-
   }
-
   return;
-
 }
 
 
@@ -37723,35 +37490,27 @@ void FUN_00348100(int *param_1)
 
 
 
-void FUN_00348110(int *param_1,u32 param_2)
-
-
-
+void FUN_00348110(int *animBlock,u32 frame)
 {
+  int frameCount;
+  u32 span;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  
-
-  iVar1 = *param_1;
-
-  if (((int)param_2 <= iVar1) || (iVar1 == 0)) {
+  frameCount = *animBlock;
+  if (((int)frame <= frameCount) || (frameCount == 0)) {
     DAT_007cca48 = 1.0f;
 
 
-    if (0 < iVar1) {
+    if (0 < frameCount) {
 
-      if (param_2 >= (u32)param_1[2]) {
+      if (frame >= (u32)animBlock[2]) {
 
-        uVar2 = param_1[3];
+        span = animBlock[3];
         DAT_007cca48 = 1.0f;
 
 
-        if (iVar1 - uVar2 < param_2) {
+        if (frameCount - span < frame) {
 
-          if (uVar2 == 0) {
+          if (span == 0) {
 
             DAT_007cca48 = 0.0f;
 
@@ -37759,7 +37518,7 @@ void FUN_00348110(int *param_1,u32 param_2)
 
           else {
 
-            DAT_007cca48 = (float)(int)(iVar1 - param_2) / (float)uVar2;
+            DAT_007cca48 = (float)(int)(frameCount - frame) / (float)span;
 
           }
 
@@ -37769,13 +37528,13 @@ void FUN_00348110(int *param_1,u32 param_2)
 
       else {
 
-        DAT_007cca48 = (float)(int)param_2 / (float)(u32)param_1[2];
+        DAT_007cca48 = (float)(int)frame / (float)(u32)animBlock[2];
 
       }
 
     }
 
-    DAT_007ce558 = (float)*(u16 *)(param_1 + 1) * 10.0f;
+    DAT_007ce558 = (float)*(u16 *)(animBlock + 1) * 10.0f;
 
     DAT_007ce554 = (DAT_007ce558 * 4.0f) / 10.0f;
 
@@ -37840,180 +37599,158 @@ void FUN_00348300(MdlAnimationCursor *param_1)
 
 
 // FUN_00348340 NONMATCHING
-u32 FUN_00348340(u8 *param_1,float *param_2)
-
-
+u32 FUN_00348340(u8 *spriteRec,float *verts)
 {
-
-  u8 bVar1;
-
-  u8 bVar2;
-
-  u8 bVar3;
-
-  u8 bVar4;
-  int iVar5;
-
-  u32 uVar6;
-
-  u32 uVar7;
-
+  u8 colorByte0;
+  u8 colorByte1;
+  u8 colorByte2;
+  u8 colorByte3;
+  int ctx;
+  u32 result;
+  u32 corner;
   float fVar8;
   float alphaF;
-
   float fVar9;
-
   float fVar10;
-
   float fVar11;
-
   float fVar12;
-
   float fVar13;
-
   float fVar14;
-
   float fVar15;
   float color0;
   float color1;
   float color2;
   float color3;
 
-  
+  if ((((*(float *)(spriteRec + 0x18) > 640.0f) ||
+        (*(float *)(spriteRec + 0x1c) > 448.0f)) ||
+       (*(float *)(spriteRec + 0x20) < 0.0f)) ||
+      (*(float *)(spriteRec + 0x24) < 0.0f)) {
 
-  if ((((*(float *)(param_1 + 0x18) > 640.0f) ||
-        (*(float *)(param_1 + 0x1c) > 448.0f)) ||
-       (*(float *)(param_1 + 0x20) < 0.0f)) ||
-      (*(float *)(param_1 + 0x24) < 0.0f)) {
-
-    uVar6 = 0;
+    result = 0;
 
   }
 
   else {
 
-    bVar1 = *param_1;
-
-    bVar2 = param_1[1];
-
-    bVar3 = param_1[2];
-
-    bVar4 = param_1[3];
-
-    iVar5 = (int)FUN_00198590();
+    colorByte0 = *spriteRec;
+    colorByte1 = spriteRec[1];
+    colorByte2 = spriteRec[2];
+    colorByte3 = spriteRec[3];
+    ctx = (int)FUN_00198590();
 
     fVar11 = *(float *)&DAT_00960088;
 
-    fVar8 = *(float *)(iVar5 + 0x80);
-    color0 = (float)bVar1;
-    color1 = (float)bVar2;
-    color2 = (float)bVar3;
-    color3 = (float)bVar4;
+    fVar8 = *(float *)(ctx + 0x80);
+    color0 = (float)colorByte0;
+    color1 = (float)colorByte1;
+    color2 = (float)colorByte2;
+    color3 = (float)colorByte3;
 
-    for (uVar7 = 0; uVar7 < 4; uVar7 = uVar7 + 1) {
+    for (corner = 0; corner < 4; corner = corner + 1) {
 
-      param_2[uVar7 * 0x10 + 6] = 1.0f / fVar8;
+      verts[corner * 0x10 + 6] = 1.0f / fVar8;
 
-      param_2[uVar7 * 0x10 + 8] = color0;
+      verts[corner * 0x10 + 8] = color0;
 
-      param_2[uVar7 * 0x10 + 9] = color1;
+      verts[corner * 0x10 + 9] = color1;
 
-      param_2[uVar7 * 0x10 + 10] = color2;
+      verts[corner * 0x10 + 10] = color2;
 
-      param_2[uVar7 * 0x10 + 0xb] = color3;
+      verts[corner * 0x10 + 0xb] = color3;
 
-      param_2[uVar7 * 0x10 + 2] = fVar11;
+      verts[corner * 0x10 + 2] = fVar11;
 
     }
 
-    fVar15 = *(float *)(param_1 + 0x10) / *(float *)DAT_00957bac_abs;
+    fVar15 = *(float *)(spriteRec + 0x10) / *(float *)DAT_00957bac_abs;
 
-    fVar13 = *(float *)(param_1 + 0x14) / *(float *)DAT_00957bb0_abs;
+    fVar13 = *(float *)(spriteRec + 0x14) / *(float *)DAT_00957bb0_abs;
 
-    fVar11 = *(float *)(param_1 + 0xc);
-    fVar14 = fVar11 * (*(float *)(param_1 + 0x18) / *(float *)DAT_00957bac_abs - fVar15);
-    fVar8 = fVar11 * (*(float *)(param_1 + 0x1c) / *(float *)DAT_00957bb0_abs - fVar13);
+    fVar11 = *(float *)(spriteRec + 0xc);
+    fVar14 = fVar11 * (*(float *)(spriteRec + 0x18) / *(float *)DAT_00957bac_abs - fVar15);
+    fVar8 = fVar11 * (*(float *)(spriteRec + 0x1c) / *(float *)DAT_00957bb0_abs - fVar13);
 
-    fVar12 = fVar11 * (*(float *)(param_1 + 0x20) / *(float *)DAT_00957bac_abs - fVar15);
+    fVar12 = fVar11 * (*(float *)(spriteRec + 0x20) / *(float *)DAT_00957bac_abs - fVar15);
 
-    fVar11 = fVar11 * (*(float *)(param_1 + 0x24) / *(float *)DAT_00957bb0_abs - fVar13);
+    fVar11 = fVar11 * (*(float *)(spriteRec + 0x24) / *(float *)DAT_00957bb0_abs - fVar13);
 
 
     if (((fabsf(fVar14 - fVar12) <= 0.0f) || (fabsf(fVar8 - fVar11) <= 0.0f)) ||
        ((7.0f <= fabsf(fVar14 - fVar12) || (7.0f <= fabsf(fVar8 - fVar11))))) {
 
-      uVar6 = 0;
+      result = 0;
 
     }
 
     else {
 
-      *param_2 = *(float *)(param_1 + 0x18);
+      *verts = *(float *)(spriteRec + 0x18);
 
-      param_2[1] = *(float *)(param_1 + 0x1c);
+      verts[1] = *(float *)(spriteRec + 0x1c);
 
-      param_2[0x10] = *(float *)(param_1 + 0x18);
+      verts[0x10] = *(float *)(spriteRec + 0x18);
 
-      param_2[0x11] = *(float *)(param_1 + 0x24);
+      verts[0x11] = *(float *)(spriteRec + 0x24);
 
-      param_2[0x20] = *(float *)(param_1 + 0x20);
+      verts[0x20] = *(float *)(spriteRec + 0x20);
 
-      param_2[0x21] = *(float *)(param_1 + 0x24);
+      verts[0x21] = *(float *)(spriteRec + 0x24);
 
-      param_2[0x30] = *(float *)(param_1 + 0x20);
+      verts[0x30] = *(float *)(spriteRec + 0x20);
 
-      param_2[0x31] = *(float *)(param_1 + 0x1c);
+      verts[0x31] = *(float *)(spriteRec + 0x1c);
 
-      if (*(float *)(param_1 + 8) != 0.0f) {
+      if (*(float *)(spriteRec + 8) != 0.0f) {
 
-        fVar9 = FUN_0052e6d8_f32(*(float *)(param_1 + 8));
-        fVar10 = FUN_0052e878_f32(*(float *)(param_1 + 8));
+        fVar9 = FUN_0052e6d8_f32(*(float *)(spriteRec + 8));
+        fVar10 = FUN_0052e878_f32(*(float *)(spriteRec + 8));
 
-        param_2[4] = fVar15 + (fVar14 * fVar9 - fVar8 * fVar10);
+        verts[4] = fVar15 + (fVar14 * fVar9 - fVar8 * fVar10);
 
-        param_2[5] = fVar13 + fVar14 * fVar10 + fVar8 * fVar9;
+        verts[5] = fVar13 + fVar14 * fVar10 + fVar8 * fVar9;
 
-        param_2[0x14] = fVar15 + (fVar14 * fVar9 - fVar11 * fVar10);
+        verts[0x14] = fVar15 + (fVar14 * fVar9 - fVar11 * fVar10);
 
-        param_2[0x15] = fVar13 + fVar14 * fVar10 + fVar11 * fVar9;
+        verts[0x15] = fVar13 + fVar14 * fVar10 + fVar11 * fVar9;
 
-        param_2[0x24] = fVar15 + (fVar12 * fVar9 - fVar11 * fVar10);
+        verts[0x24] = fVar15 + (fVar12 * fVar9 - fVar11 * fVar10);
 
-        param_2[0x25] = fVar13 + fVar12 * fVar10 + fVar11 * fVar9;
+        verts[0x25] = fVar13 + fVar12 * fVar10 + fVar11 * fVar9;
 
-        param_2[0x34] = fVar15 + (fVar12 * fVar9 - fVar8 * fVar10);
+        verts[0x34] = fVar15 + (fVar12 * fVar9 - fVar8 * fVar10);
 
-        param_2[0x35] = fVar13 + fVar12 * fVar10 + fVar8 * fVar9;
+        verts[0x35] = fVar13 + fVar12 * fVar10 + fVar8 * fVar9;
 
       }
 
       else {
 
-        param_2[4] = fVar14 + fVar15;
+        verts[4] = fVar14 + fVar15;
 
-        param_2[5] = fVar8 + fVar13;
+        verts[5] = fVar8 + fVar13;
 
-        param_2[0x14] = fVar14 + fVar15;
+        verts[0x14] = fVar14 + fVar15;
 
-        param_2[0x15] = fVar11 + fVar13;
+        verts[0x15] = fVar11 + fVar13;
 
-        param_2[0x24] = fVar12 + fVar15;
+        verts[0x24] = fVar12 + fVar15;
 
-        param_2[0x25] = fVar11 + fVar13;
+        verts[0x25] = fVar11 + fVar13;
 
-        param_2[0x34] = fVar12 + fVar15;
+        verts[0x34] = fVar12 + fVar15;
 
-        param_2[0x35] = fVar8 + fVar13;
+        verts[0x35] = fVar8 + fVar13;
 
       }
 
-      uVar6 = 1;
+      result = 1;
 
     }
 
   }
 
-  return uVar6;
+  return result;
 
 }
 
@@ -38134,120 +37871,71 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
 
 // FUN_00348950 NONMATCHING
-void FUN_00348950(u8 *param_1,float *param_2)
-
-
-
+void FUN_00348950(u8 *spriteRec,float *verts)
 {
-
-  u8 bVar1;
-
-  u8 bVar2;
-
-  u8 bVar3;
-
-  u8 bVar4;
-
-  float fVar5;
-
-  int iVar6;
-
-  u32 uVar7;
-  float *pfVar13;
-
+  u8 colorByte0;
+  u8 colorByte1;
+  u8 colorByte2;
+  u8 colorByte3;
+  float zValue;
+  int ctx;
+  u32 corner;
+  float *vert;
   float fVar8;
   float alphaF;
-
   float fVar9;
-
   float fVar10;
-
   float fVar11;
-
   float fVar12;
 
-  
-
-  bVar1 = *param_1;
-
-  bVar2 = param_1[1];
-
-  bVar3 = param_1[2];
-
-  bVar4 = param_1[3];
-
-  fVar12 = fGpffff8174 * *(float *)(param_1 + 8);
-
-  fVar11 = *(float *)(param_1 + 0xc);
-
+  colorByte0 = *spriteRec;
+  colorByte1 = spriteRec[1];
+  colorByte2 = spriteRec[2];
+  colorByte3 = spriteRec[3];
+  fVar12 = fGpffff8174 * *(float *)(spriteRec + 8);
+  fVar11 = *(float *)(spriteRec + 0xc);
   fVar8 = (float)FUN_0052e878_f32(fVar12);
-
   fVar8 = fVar11 * fVar8;
-
   fVar12 = (float)FUN_0052e6d8_f32(fVar12);
-
   fVar11 = fVar11 * fVar12;
+  ctx = (int)FUN_00198590();
+  fVar12 = 1.0f / *(float *)(ctx + 0x80);
+  zValue = *(float *)DAT_00960088_abs;
 
-  iVar6 = (int)FUN_00198590();
-
-  fVar12 = 1.0f / *(float *)(iVar6 + 0x80);
-
-  fVar5 = *(float *)DAT_00960088_abs;
-
-
-  uVar7 = 0;
-
+  corner = 0;
   do {
+    vert = verts + corner * 0x10;
+    vert[6] = fVar12;
+    vert[8] = (float)colorByte0;
+    vert[9] = (float)colorByte1;
+    vert[10] = (float)colorByte2;
+    vert[0xb] = (float)colorByte3;
+    vert[2] = zValue;
+    corner = corner + 1;
+  } while (corner < 4);
 
-    pfVar13 = param_2 + uVar7 * 0x10;
+  verts[0] = *(float *)(spriteRec + 0x18);
+  verts[1] = *(float *)(spriteRec + 0x1c);
+  verts[0x10] = *(float *)(spriteRec + 0x18);
+  verts[0x11] = *(float *)(spriteRec + 0x24);
+  verts[0x20] = *(float *)(spriteRec + 0x20);
+  verts[0x21] = *(float *)(spriteRec + 0x24);
+  verts[0x30] = *(float *)(spriteRec + 0x20);
+  verts[0x31] = *(float *)(spriteRec + 0x1c);
 
-    pfVar13[6] = fVar12;
+  fVar10 = (*(float *)(spriteRec + 0x18) + fVar8) / *(float *)DAT_00957bac_abs;
+  fVar9 = (*(float *)(spriteRec + 0x1c) + fVar11) / *(float *)DAT_00957bb0_abs;
+  fVar8 = (*(float *)(spriteRec + 0x20) + fVar8) / *(float *)DAT_00957bac_abs;
+  fVar12 = (*(float *)(spriteRec + 0x24) + fVar11) / *(float *)DAT_00957bb0_abs;
 
-    pfVar13[8] = (float)bVar1;
-
-    pfVar13[9] = (float)bVar2;
-
-    pfVar13[10] = (float)bVar3;
-
-    pfVar13[0xb] = (float)bVar4;
-    pfVar13[2] = fVar5;
-
-    uVar7 = uVar7 + 1;
-
-  } while (uVar7 < 4);
-
-  param_2[0] = *(float *)(param_1 + 0x18);
-  param_2[1] = *(float *)(param_1 + 0x1c);
-  param_2[0x10] = *(float *)(param_1 + 0x18);
-  param_2[0x11] = *(float *)(param_1 + 0x24);
-  param_2[0x20] = *(float *)(param_1 + 0x20);
-  param_2[0x21] = *(float *)(param_1 + 0x24);
-  param_2[0x30] = *(float *)(param_1 + 0x20);
-  param_2[0x31] = *(float *)(param_1 + 0x1c);
-
-  fVar10 = (*(float *)(param_1 + 0x18) + fVar8) / *(float *)DAT_00957bac_abs;
-
-  fVar9 = (*(float *)(param_1 + 0x1c) + fVar11) / *(float *)DAT_00957bb0_abs;
-
-  fVar8 = (*(float *)(param_1 + 0x20) + fVar8) / *(float *)DAT_00957bac_abs;
-
-  fVar12 = (*(float *)(param_1 + 0x24) + fVar11) / *(float *)DAT_00957bb0_abs;
-
-  ((float *)param_2)[4] = fVar10;
-
-  ((float *)param_2)[5] = fVar9;
-
-  ((float *)param_2)[0x14] = fVar10;
-
-  ((float *)param_2)[0x15] = fVar12;
-
-  ((float *)param_2)[0x24] = fVar8;
-
-  ((float *)param_2)[0x25] = fVar12;
-
-  ((float *)param_2)[0x34] = fVar8;
-
-  ((float *)param_2)[0x35] = fVar9;
+  ((float *)verts)[4] = fVar10;
+  ((float *)verts)[5] = fVar9;
+  ((float *)verts)[0x14] = fVar10;
+  ((float *)verts)[0x15] = fVar12;
+  ((float *)verts)[0x24] = fVar8;
+  ((float *)verts)[0x25] = fVar12;
+  ((float *)verts)[0x34] = fVar8;
+  ((float *)verts)[0x35] = fVar9;
 
   return;
 
@@ -38582,77 +38270,65 @@ void FUN_00349090(int *param_1,float *param_2)
 // FUN_00349260 NONMATCHING
 
 
-void FUN_00349260(int param_1,float *param_2)
-
-
-
+void FUN_00349260(int emitter,float *particle)
 {
-
-  u32 iVar1;
-
+  u32 rnd;
   float fVar2;
-
   float *output;
+  float posY;
+  float angle;
+  float posX;
+  float halfSize;
 
-  float fVar5;
+  rnd = FUN_00357fd0(0);
+  *(u32 *)particle = rnd % (*(u32 *)(emitter + 4) + 1);
 
-  float fVar6;
+  particle[1] = iGpffff81bc;
+  output = particle + 2;
 
-  float fVar3;
-  float fVar4;
+  ((int *)particle)[4] = *(int *)(emitter + 0x10);
 
-  
+  particle[5] = *(float *)(emitter + 0x14);
 
-  iVar1 = FUN_00357fd0(0);
+  ((int *)particle)[3] = *(int *)(emitter + 0xc);
 
-  *(u32 *)param_2 = iVar1 % (*(u32 *)(param_1 + 4) + 1);
-
-  param_2[1] = iGpffff81bc;
-  output = param_2 + 2;
-
-  ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
-
-  param_2[5] = *(float *)(param_1 + 0x14);
-
-  ((int *)param_2)[3] = *(int *)(param_1 + 0xc);
-
-  fVar4 = (float)*(int *)(param_1 + 0x28) * 0.5f;
+  halfSize = (float)*(int *)(emitter + 0x28) * 0.5f;
 
   fVar2 = (float)FUN_00358030(0);
 
   fVar2 = fVar2 - 0.5f;
   fVar2 = mdlEffectScaleFirst(2.0f,fVar2);
-  fVar6 = fGpffff8168 * fVar2;
+  angle = fGpffff8168 * fVar2;
 
-  fVar3 = *(float *)(param_1 + 0x30);
-
-  fVar2 = (float)FUN_00358030(0);
-
-  fVar3 = (((810.0f - fVar4) - fVar3) * fVar2 + fVar3 + 0.0f) * 0.5f;
-
-  fVar5 = *(float *)(param_1 + 0x2c);
+  posX = *(float *)(emitter + 0x30);
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar5 = (((650.0f - fVar4) - fVar5) * fVar2 + fVar5 + 0.0f) * 0.5f;
-  fVar5 = fGpffff80a4 * fVar4 + fVar5;
+  posX = (((810.0f - halfSize) - posX) * fVar2 + posX + 0.0f) * 0.5f;
 
-  fVar3 = fVar3 + fGpffff80a4 * fVar4;
+  posY = *(float *)(emitter + 0x2c);
 
-  fVar2 = (float)FUN_0052e6d8_f32(fVar6);
+  fVar2 = (float)FUN_00358030(0);
 
-  fVar3 = fVar3 * fVar2 + *(float *)(param_1 + 0x1c) + 0.0f;
+  posY = (((650.0f - halfSize) - posY) * fVar2 + posY + 0.0f) * 0.5f;
+  posY = fGpffff80a4 * halfSize + posY;
 
-  fVar2 = (float)FUN_0052e878_f32(fVar6);
+  posX = posX + fGpffff80a4 * halfSize;
 
-  fVar2 = fVar5 * fVar2 + *(float *)(param_1 + 0x20) + 0.0f;
+  fVar2 = (float)FUN_0052e6d8_f32(angle);
 
-  output[5] = fVar3;
+  posX = posX * fVar2 + *(float *)(emitter + 0x1c) + 0.0f;
+
+  fVar2 = (float)FUN_0052e878_f32(angle);
+
+  fVar2 = posY * fVar2 + *(float *)(emitter + 0x20) + 0.0f;
+
+  output[5] = posX;
   output[6] = fVar2;
-  output[7] = fVar3 - fVar4;
-  output[8] = fVar2 - fVar4;
-  output[9] = fVar3 + fVar4;
-  output[10] = fVar2 + fVar4;
+  output[7] = posX - halfSize;
+  output[8] = fVar2 - halfSize;
+  output[9] = posX + halfSize;
+  output[10] = fVar2 + halfSize;
 
   return;
 
@@ -46384,56 +46060,48 @@ void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00352C70 NONMATCHING
 
 
-s8 FUN_00352c70(int param_1,u8 *param_2)
-
-
-
+s8 FUN_00352c70(int target,u8 *filter)
 {
-
-  u16 uVar2;
-  u32 uVar3;
+  u16 slot;
+  u32 candidate;
   u32 *table;
 
-  
-
-  if (param_2[3] != '\0') {
-
+  if (filter[3] != '\0') {
     return true;
-
   }
-  uVar2 = 0;
+  slot = 0;
   table = DAT_00957bd0_abs;
 
-  for (; (u32)uVar2 < 3; uVar2++) {
-    uVar3 = table[uVar2 + 2];
-    if (uVar3 == 0) {
+  for (; (u32)slot < 3; slot++) {
+    candidate = table[slot + 2];
+    if (candidate == 0) {
       break;
     }
-    if ((((u32)param_2[2] & 1 << (uVar2 & 0x1f)) != 0) && (uVar3 == param_1)) {
+    if ((((u32)filter[2] & 1 << (slot & 0x1f)) != 0) && (candidate == target)) {
       return true;
     }
   }
 
-  if ((DAT_00957bd0_abs[0] != 0) && (*(u8 *)(param_1 + 0xa2) == *(u8 *)(DAT_00957bd0_abs[0] + 0xa2))) {
+  if ((DAT_00957bd0_abs[0] != 0) && (*(u8 *)(target + 0xa2) == *(u8 *)(DAT_00957bd0_abs[0] + 0xa2))) {
 
-    switch (*param_2) {
+    switch (*filter) {
     case 0:
       return false;
     case 1:
-      return DAT_00957bd0_abs[0] == param_1;
+      return DAT_00957bd0_abs[0] == target;
     case 2:
       return true;
     }
 
   }
 
-  if ((DAT_00957bd4_abs[0] != 0) && (*(u8 *)(param_1 + 0xa2) == *(u8 *)(DAT_00957bd4_abs[0] + 0xa2))) {
+  if ((DAT_00957bd4_abs[0] != 0) && (*(u8 *)(target + 0xa2) == *(u8 *)(DAT_00957bd4_abs[0] + 0xa2))) {
 
-    switch (param_2[1]) {
+    switch (filter[1]) {
     case 0:
       return false;
     case 1:
-      return DAT_00957bd4_abs[0] == param_1;
+      return DAT_00957bd4_abs[0] == target;
     case 2:
       return true;
     }
