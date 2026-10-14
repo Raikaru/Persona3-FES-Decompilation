@@ -399,7 +399,7 @@ u32 func_0027d380(void)
 
     for (action = gBtl->actionList.tail; action != NULL; action = action->prev)
     {
-        if ((action->unk_1a & 1) != 0 && (action->unk_18 & 0x20) == 0)
+        if ((action->unk_1a & 1) != 0 && (action->flags & 0x20) == 0)
         {
             unit = action->unit;
             if (datCalcIsDead(unit->datUnit, 0) != 0)
