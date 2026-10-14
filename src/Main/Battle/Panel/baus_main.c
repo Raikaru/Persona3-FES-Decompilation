@@ -191,7 +191,7 @@ static void panel_init_common(u8* work, u32 state)
 {
     s32 i;
 
-    func_00209ea0(work);
+    sflDataInitPanel(work);
     *(u32*)(work + 4) = state;
     func_0020c7b0(work + 0xe0);
     for (i = 0; i < 4; i++) {
