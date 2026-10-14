@@ -125,7 +125,7 @@ u32 FUN_0029a3e0(BtlAction* action)
         return 1;
     }
 
-    if ((action->unk_18 & 4) == 0 &&
+    if ((action->flags & 4) == 0 &&
         gBtl->order.actions2[BTLORDER_CURRENT] != NULL &&
         gBtl->order.actions2[BTLORDER_CURRENT] == action)
     {
@@ -480,10 +480,10 @@ void FUN_0029a750(void)
 #pragma opt_loop_invariants reset
 static inline void btlOrderFinishAction(BtlAction* action)
 {
-    if ((action->unk_18 & 4) != 0)
+    if ((action->flags & 4) != 0)
     {
         btlOrderRemoveAction(gBtl->order.actions2, BTL_MAXACTIONS, action);
-        action->unk_18 &= ~4;
+        action->flags &= ~4;
     }
     else if ((gBtl->flags & BTL_FLAG2_UNK08) != 0)
     {
@@ -503,7 +503,7 @@ void FUN_0029abe0(BtlAction* action)
 // FUN_0029ac70
 void FUN_0029ac70(BtlAction* action)
 {
-    if ((action->unk_18 & 4) != 0)
+    if ((action->flags & 4) != 0)
     {
         btlOrderFinishAction(action);
     }
@@ -609,7 +609,7 @@ void btlOrder0029ae40(void)
     {
         if (actions[BTLORDER_CURRENT]->currState == BTLACTION_STATE_STANDBY)
         {
-            actions[BTLORDER_CURRENT]->unk_18 |= 4;
+            actions[BTLORDER_CURRENT]->flags |= 4;
             btlActionSetState(actions[BTLORDER_CURRENT],
                               actions[BTLORDER_CURRENT]->unk_16);
             gBtl->order.turnNo++;
@@ -651,20 +651,20 @@ void btlOrder0029ae40(void)
             {
                 if ((gBtl->flags & 0x2000) != 0)
                 {
-                    actions[0]->unk_14 = 9;
+                    actions[0]->state = 9;
                 }
                 else if (gBtl->actionList.head == actions[0])
                 {
-                    actions[0]->unk_14 = 5;
+                    actions[0]->state = 5;
                 }
                 else
                 {
-                    actions[0]->unk_14 = 8;
+                    actions[0]->state = 8;
                 }
             }
             else
             {
-                actions[0]->unk_14 = 8;
+                actions[0]->state = 8;
             }
 
             btlActionSetState(actions[0], 2);
@@ -695,5 +695,5 @@ void btlOrderInit()
 // FUN_0029b0c0
 u32 FUN_0029b0c0(BtlAction* action)
 {
-    return !((action->unk_18 & 4) != 0);
+    return !((action->flags & 4) != 0);
 }
