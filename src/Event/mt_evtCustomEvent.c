@@ -495,7 +495,7 @@ u32 FUN_00398530(int param_1)
 
       FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
 
-      fVar20 = FUN_0038a900(5);
+      fVar20 = evtCommandParamF32(5);
 
       lVar10 = FUN_003bc8f0(acStack_140);
 
@@ -3100,7 +3100,7 @@ u32 FUN_0039b950(int param_1)
 {
   extern u64 FUN_003b91c0(u32,u32,u32,u32,u32,u32,float);
   extern u64 FUN_003b9320(u32,u32,u32,u32,u32,u32,float);
-  extern float FUN_0038a900(int param_1);
+  extern float evtCommandParamF32(int param_1);
 
   u32 *puVar8;
 
@@ -3271,7 +3271,7 @@ u32 FUN_0039b950(int param_1)
 
       FUN_0038d840(*(u32 *)(puVar1[2] + 0x40),acStack_140,0);
 
-      fVar20 = FUN_0038a900(5);
+      fVar20 = evtCommandParamF32(5);
 
       if (acStack_140[0] >= '\x01') {
 
@@ -3420,7 +3420,7 @@ u32 FUN_0039b950(int param_1)
 
     FUN_0038d840(*(u32 *)(puVar1[2] + 0x40),auStack_270,1);
 
-    fVar20 = FUN_0038a900(10);
+    fVar20 = evtCommandParamF32(10);
 
     FUN_003bb1d0(*(u16 *)(puVar1 + 0x19),1,1,0xc,6);
 
