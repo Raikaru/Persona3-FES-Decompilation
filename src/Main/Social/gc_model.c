@@ -611,9 +611,9 @@ f32 func_0020c660(s32 value, s32 mode)
 }
 
 // FUN_0020c7a0
-void kwlnTaskSetValue38(void* work, u32 value)
+void kwlnTaskSetValue38(void *task, u32 value)
 {
-    *(u32*)((u8*)work + 0x38) = value;
+    *(u32*)((u8*)task + 0x38) = value;
 }
 
 
