@@ -1902,7 +1902,7 @@ extern code FUN_004b75d0;
 extern code FUN_004bae00;
 extern code FUN_004bb5d0;
 extern code FUN_004c0240;
-extern code FUN_004c0370;
+extern code RwFclose;
 extern code FUN_004c0550;
 extern code FUN_004c06c0;
 extern code FUN_004c15a0;
@@ -21679,7 +21679,7 @@ long FUN_004a98a0(u64 param_1)
             }
           }
         }
-        ((code)FUN_004c0370)(lVar5);
+        ((code)RwFclose)(lVar5);
       }
       (*DAT_0096017c)(lVar4);
       if (lVar7 != lVar3) {
