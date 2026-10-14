@@ -10,7 +10,7 @@ u64 FUN_004b4810(u64 param_1);
 u64 FUN_004b1990(u64 param_1,code *param_2,u64 param_3,u64 param_4);
 void FUN_004b22b0(u64 param_1);
 u64 FUN_004b47d0(u64 param_1);
-u32 FUN_004b8290(u32 param_1,u32 *param_2);
+u32 RpUVAnimLinearKeyFrameDataInitFromMatrix(u32 param_1,u32 *param_2);
 u64 FUN_004b62a0(int param_1,u64 param_2,u64 param_3,u64 param_4,
             u32 *param_5);
 u32 FUN_004b97f0(int param_1);
@@ -43,7 +43,7 @@ u32 FUN_004b6190(u64 param_1);
 int FUN_004b4a60(int param_1,int param_2);
 #pragma alias FUN_004b65a0_abs FUN_004b65a0
 extern u8 FUN_004b65a0_abs[];
-#pragma alias FUN_004b6600_abs FUN_004b6600
+#pragma alias FUN_004b6600_abs AnimClose
 extern u8 FUN_004b6600_abs[];
 bool FUN_004b1b90(int param_1);
 
@@ -4028,7 +4028,7 @@ u64 FUN_004b65a0(u64 param_1)
 }
 #pragma schedule on
 // FUN_004B6600 NONMATCHING
-u64 FUN_004b6600(u64 param_1)
+u64 AnimClose(u64 param_1)
 {
   u64 uVar2;
 
@@ -4981,7 +4981,7 @@ FUN_004b7c60(u32 param_1,u32 *param_2,u32 *param_3,u32 param_4,
   piVar1 = (int *)*param_2;
   *param_3 = param_4;
   param_3[1] = param_1;
-  if (((*piVar1 != DAT_0077e520) || (lVar2 = FUN_004b8290((u64)(int)(param_3 + 2),(u32 *)(int)param_5), lVar2 == 0)) &&
+  if (((*piVar1 != DAT_0077e520) || (lVar2 = RpUVAnimLinearKeyFrameDataInitFromMatrix((u64)(int)(param_3 + 2),(u32 *)(int)param_5), lVar2 == 0)) &&
      (*(int *)*param_2 == DAT_0077e550)) {
   }
   return 0;
@@ -5093,7 +5093,7 @@ int FUN_004b7f30(int param_1)
 }
 #pragma optimization_level 3
 // FUN_004B7F80
-void FUN_004b7f80(RwMatrix *matrix, const f32 *src)
+void RpUVAnimLinearKeyFrameApply(RwMatrix *matrix, const f32 *src)
 {
   matrix->right.x = src[2];
   matrix->right.y = src[3];
@@ -5179,7 +5179,7 @@ void FUN_004b81f0(f32 *out, const f32 *a, const f32 *b)
 }
 #pragma schedule off
 // FUN_004B8290 NONMATCHING
-u32 FUN_004b8290(u32 param_1,u32 *param_2)
+u32 RpUVAnimLinearKeyFrameDataInitFromMatrix(u32 param_1,u32 *param_2)
 {
   f32 *puVar1;
   f32 *src;
@@ -5345,7 +5345,7 @@ u64 FUN_004b8740(u64 param_1)
 }
 #pragma schedule on
 // FUN_004B87D0 NONMATCHING
-u64 FUN_004b87d0(u64 param_1)
+u64 UVAnimClose(u64 param_1)
 {
   DAT_007ce8ac = DAT_007ce8ac + -1;
   FUN_004b7690((int)DAT_0077e4e0);
@@ -5357,7 +5357,7 @@ u64 FUN_004b87d0(u64 param_1)
 }
 #pragma schedule off
 // FUN_004B8830 NONMATCHING
-bool FUN_004b8830(void)
+bool RpUVAnimPluginAttach(void)
 
 {
   bool bVar1;
@@ -5378,7 +5378,7 @@ bool FUN_004b8830(void)
   return bVar1;
 }
 // FUN_004B88E0 NONMATCHING
-u64 FUN_004b88e0(u64 param_1)
+u64 UVAnimConstructor(u64 param_1)
 
 {
   FUN_00521408((int)param_1 + iGpffffbbc4,0,0x30);
