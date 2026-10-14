@@ -1398,7 +1398,7 @@ LAB_00417a90:
         puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
         *puVar9 = *puVar9 | 0x10;
         *(u16 **)(*(int *)(puVar20 + 4) + uVar19 * 4 + 8) = puVar9;
-        func_00209f00(*(u32 *)(puVar9 + 4));
+        sflDataSetupLayoutPanel(*(u32 *)(puVar9 + 4));
         func_0020c590(*(u32 *)(puVar9 + 4),*(u16 *)(param_1 + uVar19 * 2 + 0x24));
         func_0020cc80(*(u32 *)(puVar9 + 4),&uStack_c);
         sflResSetSpriteScale((void *)*(u32 *)(puVar9 + 4),(const f32 *)&uStack_18);
@@ -14956,7 +14956,7 @@ extern code FUN_004b75d0;
 extern code FUN_004bae00;
 extern code FUN_004bb5d0;
 extern code FUN_004c0240;
-extern code FUN_004c0370;
+extern code RwFclose;
 extern code FUN_004c0550;
 extern code FUN_004c06c0;
 extern code FUN_004c15a0;
