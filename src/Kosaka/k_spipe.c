@@ -104,11 +104,11 @@ extern void* memset(void* dest, u8 value, u32 size);
 extern s32 K_Scene_001a0250(void);
 extern void* func_00491880(void);
 extern void* func_004919b0(void* renderObject, void* geometry, u32 flags);
-extern void* RpAtomicSetFrame(void* renderObject, void* frame);
+extern void* func_00492d10(void* renderObject, void* frame);
 extern void* func_00492e20(void* geometry, f32* bounds);
 extern void* func_00493210(void* layout, u16* indices, u16 a, u16 b, u16 c);
 extern void* func_00493230(void* layout, u16* indices, void* colorData);
-extern void* RpGeometryLock(void* layout, u16 flags);
+extern void* func_00493370(void* layout, u16 flags);
 extern void* func_004933d0(void* layout);
 extern void* func_00493710(s32 type, s32 count, u32 format);
 extern void* func_00493b60(void* layout);
@@ -870,7 +870,7 @@ static void K_FldShadow_CreateRing(FldShadowRenderTex* shadow)
             frame = func_004caf10();
             if (frame != NULL)
             {
-                RpAtomicSetFrame(ring->renderObject, frame);
+                func_00492d10(ring->renderObject, frame);
             }
         }
         if (frame != NULL)
@@ -1695,7 +1695,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
                 func_004919b0(renderObject, layout, 0);
                 func_00493b60(layout);
                 frame = func_004caf10();
-                RpAtomicSetFrame(renderObject, frame);
+                func_00492d10(renderObject, frame);
                 func_004cb930_one(
                     (RwFrame*)*(void**)((u8*)renderObject + 4));
                 shadow->state++;
