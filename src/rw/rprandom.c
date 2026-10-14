@@ -1717,7 +1717,7 @@ extern code FUN_004b75d0;
 extern code FUN_004bae00;
 extern code FUN_004bb5d0;
 extern code FUN_004c0240;
-extern code FUN_004c0370;
+extern code RwFclose;
 extern code FUN_004c0550;
 extern code FUN_004c06c0;
 extern code FUN_004c15a0;
