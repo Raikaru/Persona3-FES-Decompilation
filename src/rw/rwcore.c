@@ -24682,7 +24682,7 @@ undefined4 FUN_004f1e10(void)
 #pragma optimization_level 2
 
 // FUN_004F1E20 NONMATCHING
-undefined8 RpSkyTexGetTex0(undefined8 param_1,undefined4 *param_2,undefined4 *param_3)
+undefined8 RpSkyTexGetTex0(undefined8 param_1, u32 *param_2, u32 *param_3)
 
 {
   int iVar1;
