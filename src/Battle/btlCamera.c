@@ -669,27 +669,26 @@ u32 FUN_002a3850(int param_1)
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
     const BtlCameraStateEntry* entry;
-    s32 temp_3;
-    s32 temp_6;
-    u64 var_7;
+    s32 stateId;
+    u64 historyIdx;
 
     if ((entry = btlBossGetCameraStateEntry(state)) == NULL)
     {
         entry = &sCameraStateEntries[state];
     }
-    temp_6 = state & 0xffff;
-    if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
+    stateId = state & 0xffff;
+    if (gBtl->camera.state != stateId || entry->unk_08 != 0)
     {
-        var_7 = 2;
-        while ((u16)var_7 == 0)
+        historyIdx = 2;
+        while ((u16)historyIdx == 0)
         {
-            *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
-                *(u16*)(iGpffffb6fc + 0x102 + (u16)var_7 * 2);
-            var_7 = ((u16)var_7 - 1) & 0xffff;
+            *(u16*)(iGpffffb6fc + 0x104 + (u16)historyIdx * 2) =
+                *(u16*)(iGpffffb6fc + 0x102 + (u16)historyIdx * 2);
+            historyIdx = ((u16)historyIdx - 1) & 0xffff;
         }
 
         *(u16*)((u8*)gBtl + 0x104) = gBtl->camera.state;
-        if (gBtl->camera.state == temp_6)
+        if (gBtl->camera.state == stateId)
         {
             *(u16*)((u8*)gBtl + 0x10a) =
                 *(u16*)((u8*)gBtl + 0x10a) + 1;
@@ -7529,8 +7528,8 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
         f32 pad_scaled;
         RwV3d normalized;
     } work;
-    BtlUnit* unit;
-    BtlUnit* target;
+    BtlUnit* actor;
+    BtlUnit* targetUnit;
     RwV3d* framePos;
     f32 distance;
     f32 dot;
@@ -7540,22 +7539,22 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     u32 index;
     f32 tempHalf;
     f32 sourceProduct;
-    unit = camera->action->unit;
-    target = camera->action->target.targetedActions[0]->unit;
+    actor = camera->action->unit;
+    targetUnit = camera->action->target.targetedActions[0]->unit;
     FUN_002a4470((f32*)&work.frames[0], (f32*)((u8*)camera + 0x9c));
-    distance = unit->sphereCenter.y * unit->scale;
-    btlUnitGetSphereWorldCenter(target, &work.center);
+    distance = actor->sphereCenter.y * actor->scale;
+    btlUnitGetSphereWorldCenter(targetUnit, &work.center);
 
-    sourceProduct = unit->unk_8c * unit->scale;
+    sourceProduct = actor->unk_8c * actor->scale;
     sourceProduct = sourceProduct;
     halfDistance = distance + fGpffff8094 * sourceProduct;
     halfDistance = halfDistance +
                    (work.center.y +
-                    fGpffff8094 * (target->unk_8c * target->scale));
+                    fGpffff8094 * (targetUnit->unk_8c * targetUnit->scale));
     work.center.y = 0.0f;
-    work.normalized.x = unit->unk_dc.x - work.center.x;
-    work.normalized.y = unit->unk_dc.y - work.center.y;
-    work.normalized.z = unit->unk_dc.z - work.center.z;
+    work.normalized.x = actor->unk_dc.x - work.center.x;
+    work.normalized.y = actor->unk_dc.y - work.center.y;
+    work.normalized.z = actor->unk_dc.z - work.center.z;
     distance = RwV3dNormalize(&work.normalized, &work.normalized);
     half = 0.5f;
     work.scaled.x = work.normalized.x * (half * distance);
@@ -7592,7 +7591,7 @@ distance_done:
     work.scaled.y = work.scaled.y + work.center.y;
     work.scaled.z = work.scaled.z + work.center.z;
     work.scaled.y = halfDistance;
-    *(f32*)((u8*)camera + 0x10c) = 0.5f * *(f32*)((u8*)unit + 0xe8);
+    *(f32*)((u8*)camera + 0x10c) = 0.5f * *(f32*)((u8*)actor + 0xe8);
     *(RwV3d*)((u8*)camera + 0x100) = work.scaled;
     work.difference.x = work.frames[0].pos.x - work.scaled.x;
     work.difference.y = work.frames[0].pos.y - work.scaled.y;
