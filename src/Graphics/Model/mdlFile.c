@@ -114,7 +114,7 @@ typedef union Vec128 {
     struct { u8 _4_12_[12]; };
 } Vec128;
 typedef u32 (*MdlCreate3FloatFn)(float, float, float);
-typedef u32 (*MdlFrameCallback)(f32, f32, int *, int *);
+typedef u32 (*MdlFrameCallback)(int *, f32, int *, f32);
 typedef struct MdlFrameDispatch {
     code callback0;
     code callback1;
@@ -5783,43 +5783,30 @@ void FUN_00320290(int param_1)
 
 
 void FUN_00320380(float param_1,int *param_2)
-
-
-
 {
+    u8 *node;
+    u8 *tbl;
+    MdlFrameDispatch *entry;
+    u32 i;
+    u32 j;
+    u32 work;
+    u32 count;
 
-
-  u32 uVar1;
-
-  int iVar6;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  u32 uVar3;
-
-
-  for (iVar6 = *param_2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x54)) {
-    u32 *piVar2 = *(u32 **)(iVar6 + 0x50);
-    uVar1 = *(u16 *)(piVar2 + 1);
-    for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
-      int *puVar6 = (int *)(PTR_LAB_0069bb10_abs + uVar4 * 0x10);
-      if ((puVar6[3] != 0) &&
-         (*(int *)(iVar6 + uVar4 * 0x10 + 0xc) != 0)) {
-        uVar3 = ((u32 (*)(float))puVar6[0])(param_1);
-        for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
-          uVar6 = uVar5 << 2;
-          ((code)puVar6[3])(uVar3,*(u32 *)(*piVar2 + uVar6));
+    node = (u8 *)*param_2;
+    while (node != NULL) {
+        tbl = *(u8 **)(node + 0x50);
+        count = *(u16 *)(tbl + 4);
+        for (i = 0; i < 4; i++) {
+            entry = ((MdlFrameDispatch *)PTR_LAB_0069bb10_abs) + i;
+            if (entry->apply == (code)0) continue;
+            if (*(u32 *)(node + i * 0x10 + 0xC) == 0) continue;
+            work = ((u32 (*)(float))entry->callback0)(param_1);
+            for (j = 0; j < count; j++) {
+                entry->apply(work, *(u32 *)(*(u8 **)tbl + j * 4));
+            }
         }
-      }
+        node = *(u8 **)(node + 0x54);
     }
-  }
-
-  return;
-
 }
 // FUN_003204A0 NONMATCHING
 
@@ -5904,59 +5891,31 @@ void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3)
 // FUN_00320640 NONMATCHING
 
 
-void FUN_00320640(f32 param_1,f32 param_2,int *param_3)
-
-
-
+void FUN_00320640(f32 scale1, f32 scale2, int *nodeHead)
 {
+    u8 *node;
+    u8 *tbl;
+    MdlFrameDispatch *entry;
+    u32 i;
+    u32 j;
+    u32 work;
+    u32 count;
 
-  int iVar7;
-
-  int *piVar2;
-
-  u32 uVar6;
-
-  int iVar4;
-
-  u32 uVar5;
-
-  u32 uVar3;
-
-  u16 uVar1;
-
-  
-
-  for (iVar7 = *param_3; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x54)) {
-
-    piVar2 = *(int **)(iVar7 + 0x50);
-
-    uVar1 = *(u16 *)(piVar2 + 1);
-
-    for (uVar6 = 0; uVar6 < 4; uVar6 = uVar6 + 1) {
-      MdlFrameDispatch *dispatch =
-          ((MdlFrameDispatch *)PTR_LAB_0069bb10_abs) + uVar6;
-
-      if ((dispatch->apply != (code)0) &&
-
-         (iVar4 = iVar7 + uVar6 * 0x10, *(int *)(iVar4 + 0xc) != 0)) {
-
-        uVar3 = dispatch->create
-                    (param_1, param_2, (int *)iVar4, (int *)(iVar7 + 0x40));
-
-        for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
-
-          dispatch->apply(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
-
+    node = (u8 *)*nodeHead;
+    while (node != NULL) {
+        tbl = *(u8 **)(node + 0x50);
+        count = *(u16 *)(tbl + 4);
+        for (i = 0; i < 4; i++) {
+            entry = ((MdlFrameDispatch *)PTR_LAB_0069bb10_abs) + i;
+            if (entry->apply == (code)0) continue;
+            if (*(u32 *)(node + i * 0x10 + 0xC) == 0) continue;
+            work = entry->create((int *)(node + i * 0x10), scale1, (int *)(node + 0x40), scale2);
+            for (j = 0; j < count; j++) {
+                entry->apply(work, *(u32 *)(*(u8 **)tbl + j * 4));
+            }
         }
-
-      }
-
+        node = *(u8 **)(node + 0x54);
     }
-
-  }
-
-  return;
-
 }
 
 
