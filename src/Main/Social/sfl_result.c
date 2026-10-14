@@ -339,9 +339,9 @@ extern void sflScriptQueueShuffleCommand(void);
 extern void func_002595c0(void);
 extern void func_002508c0(void *, const float *, s32);
 extern void func_0020b250(void *);
-extern void func_00209f00(void *);
+extern void sflDataSetupLayoutPanel(void *);
 extern void func_0020c590(void *, u16);
-extern void func_0020a800(void *);
+extern void sflDataSetupFramePanel(void *);
 extern void func_0020c5f0(void *, u32, u32);
 extern void func_0024fd80(void *);
 extern f32 func_0020c500(void *, f32);
@@ -1027,11 +1027,11 @@ void func_001f6630(void)
                     ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x5c;
             switch (BR_U32(entry, 0)) {
             case 0:
-                func_00209f00(entry + 0xc);
+                sflDataSetupLayoutPanel(entry + 0xc);
                 func_0020c590(entry + 0xc, BR_U16(entry, 4));
                 break;
             case 1:
-                func_0020a800(entry + 0xc);
+                sflDataSetupFramePanel(entry + 0xc);
                 func_0020c5f0(entry + 0xc, BR_U32(entry, 4),
                               BR_U32(entry, 8));
                 break;
