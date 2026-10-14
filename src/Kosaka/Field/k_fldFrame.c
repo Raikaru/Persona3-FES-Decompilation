@@ -2424,10 +2424,8 @@ done:
     func_001abd20(collisionWorld, pos, translation, sphereCollisRadius, resTypeId);
 }
 
-/* W423 raycast FPU-role probes: unused f32 local, scalar segment locals,
- * and declaration-order relocation each stayed nd59/object240/window240
- * (0.245833), reverted. */
-// FUN_001ac950 NONMATCHING
+#pragma opt_propagation off
+// FUN_001ac950
 void* func_001ac950(const RwV3d* line, void* unused,
                     const void* triangle, FldFrameRaycast* raycast)
 {
@@ -2436,40 +2434,48 @@ void* func_001ac950(const RwV3d* line, void* unused,
         RwV3d point[2];
     } FldFrameLine;
     const FldFrameCollisionTriangle* candidate;
+    const RwV3d* normal;
+    const RwV3d* vertex;
     FldFrameLine lineCopy;
-    RwV3d segment;
-    f32 normalY;
+    f32 startX;
+    f32 deltaX;
+    f32 startY;
+    f32 deltaY;
+    f32 startZ;
+    f32 deltaZ;
     f32 normalX;
+    f32 normalY;
     f32 normalZ;
+    f32 numerator;
     f32 denominator;
-    f32 vertexDot;
-    f32 lineDot;
     f32 fraction;
 
     lineCopy = *(const FldFrameLine*)line;
+    startX = lineCopy.point[0].x;
+    deltaX = startX - lineCopy.point[1].x;
+    startY = lineCopy.point[0].y;
+    deltaY = startY - lineCopy.point[1].y;
+    startZ = lineCopy.point[0].z;
+    deltaZ = startZ - lineCopy.point[1].z;
+    normal = (const RwV3d*)triangle;
+    normalY = normal->y;
+    normalX = normal->x;
+    normalZ = normal->z;
+    denominator = normalX * deltaX + normalY * deltaY + normalZ * deltaZ;
     candidate = (const FldFrameCollisionTriangle*)triangle;
-    segment.x = lineCopy.point[0].x - lineCopy.point[1].x;
-    segment.y = lineCopy.point[0].y - lineCopy.point[1].y;
-    segment.z = lineCopy.point[0].z - lineCopy.point[1].z;
-    normalY = candidate->normal.y;
-    normalX = candidate->normal.x;
-    normalZ = candidate->normal.z;
-    denominator = normalY * segment.y;
-    denominator += normalX * segment.x;
-    denominator += normalZ * segment.z;
-    vertexDot = normalZ * candidate->vertices[0]->z;
-    vertexDot += normalX * candidate->vertices[0]->x;
-    vertexDot += normalY * candidate->vertices[0]->y;
-    lineDot = normalZ * lineCopy.point[0].z;
-    lineDot += normalX * lineCopy.point[0].x;
-    lineDot += normalY * lineCopy.point[0].y;
-    fraction = -(-vertexDot + lineDot) / denominator;
-    raycast->hitPointDst->x = lineCopy.point[0].x + segment.x * fraction;
-    raycast->hitPointDst->y = lineCopy.point[0].y + segment.y * fraction;
-    raycast->hitPointDst->z = lineCopy.point[0].z + segment.z * fraction;
-    raycast->didHit = true;
+    vertex = candidate->vertices[0];
+    numerator = -(-(normalX * vertex->x + normalY * vertex->y +
+                    normalZ * vertex->z) +
+                   (normalX * startX + normalY * startY +
+                    normalZ * startZ));
+    fraction = numerator / denominator;
+    raycast->hitPointDst->x = fraction * deltaX + startX;
+    raycast->hitPointDst->y = fraction * deltaY + startY;
+    raycast->hitPointDst->z = fraction * deltaZ + startZ;
+    raycast->didHit = 1;
     return NULL;
 }
+#pragma opt_propagation on
 
 // FUN_001aca40
 void* func_001aca40(f32 fraction, const RwV3d* line,
