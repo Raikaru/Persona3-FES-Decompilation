@@ -84,7 +84,7 @@ s8 FUN_00300f60(int param_1,u32 param_2);
 void FUN_00301030(int param_1,u8 param_2,s8 param_3);
 void FUN_00301150(int param_1,u8 param_2,s8 param_3);
 u8 FUN_00301230(int param_1,u32 param_2,char param_3);
-extern u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3);
+extern u8 FUN_00301230_narrow(u8 *unit,u8 kind,s8 delta);
 void FUN_00301540(int param_1,u32 param_2);
 void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
@@ -1061,88 +1061,88 @@ void FUN_00301150(int param_1,u8 param_2,s8 param_3)
 
 
 // FUN_00301230 NONMATCHING
-u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
+u8 FUN_00301230_narrow(u8 *unit,u8 kind,s8 delta)
 
 {
-  /* W419 probes: signed uVar3 measured nd437/object716 (baseline nd440); signed
-   * uVar3 plus uVar5 also nd437; signed sVar4 nd443/object700. Parameter-width
+  /* W419 probes: signed kindIndex measured nd437/object716 (baseline nd440); signed
+   * kindIndex plus highNibble also nd437; signed newValue nd443/object700. Parameter-width
    * probes p2=u16 nd541/object728, p2=u32 or s32 nd517/object720, p2=s16
    * nd565/object736, p3=s16 nd440, p3=s32 nd441; declaration orders 1-3
    * stayed nd440/object716. All were discarded. */
-  u8 bVar1;
-  int iVar2;
-  u32 uVar3;
-  short sVar4;
-  u32 uVar5;
-  
-  uVar3 = param_2 & 0xff;
-  if (!(uVar3 < 0x15)) {
+  u8 nibble;
+  int nibbleIndex;
+  u32 kindIndex;
+  short newValue;
+  u32 highNibble;
+
+  kindIndex = kind & 0xff;
+  if (!(kindIndex < 0x15)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x46d);
   }
-  sVar4 = 0;
-  if (uVar3 < 0x11) {
-    if (!(uVar3 < 0x15)) {
+  newValue = 0;
+  if (kindIndex < 0x11) {
+    if (!(kindIndex < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x406);
     }
-    iVar2 = (int)(param_2 & 0xff) >> 1;
-    uVar5 = param_2 & 1;
-    if (uVar5 != 0) {
-      bVar1 = (u8)((int)(u32)*(u8 *)(iVar2 + param_1 + 0x1c) >> 4);
+    nibbleIndex = (int)(kind & 0xff) >> 1;
+    highNibble = kind & 1;
+    if (highNibble != 0) {
+      nibble = (u8)((int)(u32)*(u8 *)(nibbleIndex + unit + 0x1c) >> 4);
     }
     else {
-      bVar1 = *(u8 *)(iVar2 + param_1 + 0x1c) & 0xf;
+      nibble = *(u8 *)(nibbleIndex + unit + 0x1c) & 0xf;
     }
-    if (7 < bVar1) {
-      bVar1 = bVar1 - 0xf;
+    if (7 < nibble) {
+      nibble = nibble - 0xf;
     }
-    if (param_3 == '\0') {
-      return bVar1;
+    if (delta == '\0') {
+      return nibble;
     }
-    sVar4 = (short)(char)bVar1 + (short)param_3;
-    if (sVar4 < 2) {
-      if (sVar4 < -1) {
-        sVar4 = -1;
+    newValue = (short)(char)nibble + (short)delta;
+    if (newValue < 2) {
+      if (newValue < -1) {
+        newValue = -1;
       }
     }
     else {
-      sVar4 = 1;
+      newValue = 1;
     }
-    bVar1 = (u8)sVar4;
-    if (!(uVar3 < 0x15)) {
+    nibble = (u8)newValue;
+    if (!(kindIndex < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x438);
     }
-    if (('\a' < (char)bVar1) || ((char)bVar1 < -7)) {
+    if (('\a' < (char)nibble) || ((char)nibble < -7)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x439);
     }
-    if ((char)bVar1 < '\0') {
-      bVar1 = bVar1 + 0xf;
+    if ((char)nibble < '\0') {
+      nibble = nibble + 0xf;
     }
-    if (uVar5 != 0) {
-      *(u8 *)(iVar2 + param_1 + 0x1c) = *(u8 *)(iVar2 + param_1 + 0x1c) & 0xf | bVar1 << 4;
-    }
-    else {
-      *(u8 *)(iVar2 + param_1 + 0x1c) = *(u8 *)(iVar2 + param_1 + 0x1c) & 0xf0 | bVar1 & 0xf;
-    }
-    if (sVar4 != 0) {
-      *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) | 1 << (param_2 & 0x1f);
+    if (highNibble != 0) {
+      *(u8 *)(nibbleIndex + unit + 0x1c) = *(u8 *)(nibbleIndex + unit + 0x1c) & 0xf | nibble << 4;
     }
     else {
-      *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << (param_2 & 0x1f));
+      *(u8 *)(nibbleIndex + unit + 0x1c) = *(u8 *)(nibbleIndex + unit + 0x1c) & 0xf0 | nibble & 0xf;
     }
-    if (!(uVar3 < 0x15)) {
+    if (newValue != 0) {
+      *(u32 *)(unit + 0x14) = *(u32 *)(unit + 0x14) | 1 << (kind & 0x1f);
+    }
+    else {
+      *(u32 *)(unit + 0x14) = *(u32 *)(unit + 0x14) & ~(1 << (kind & 0x1f));
+    }
+    if (!(kindIndex < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
-    if (uVar5 != 0) {
-      *(u8 *)(iVar2 + param_1 + 0x29) = *(u8 *)(iVar2 + param_1 + 0x29) & 0xf;
+    if (highNibble != 0) {
+      *(u8 *)(nibbleIndex + unit + 0x29) = *(u8 *)(nibbleIndex + unit + 0x29) & 0xf;
     }
     else {
-      *(u8 *)(iVar2 + param_1 + 0x29) = *(u8 *)(iVar2 + param_1 + 0x29) & 0xf0;
+      *(u8 *)(nibbleIndex + unit + 0x29) = *(u8 *)(nibbleIndex + unit + 0x29) & 0xf0;
     }
   }
   else {
-    *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) | 1 << (param_2 & 0x1f);
+    *(u32 *)(unit + 0x14) = *(u32 *)(unit + 0x14) | 1 << (kind & 0x1f);
   }
-  return (u8)sVar4;
+  return (u8)newValue;
 }
 
 
