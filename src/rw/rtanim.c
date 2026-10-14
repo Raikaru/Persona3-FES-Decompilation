@@ -779,7 +779,7 @@ u64 FUN_004643b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_004654a0(u64 param_1,u64 param_2);
 u64 FUN_00465930(u64 param_1,u64 param_2);
 u64 FUN_00465a00(u64 param_1);
-u64 HAnimClose(u64 param_1);
+u64 HAnimClose(s32 param_1);
 u64 FUN_00465bf0(u64 param_1,int param_2);
 u64 FUN_00465cf0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00465eb0(u64 param_1,u64 param_2,u32 param_3);
@@ -2341,7 +2341,7 @@ u64 FUN_004643b0(u64 param_1,int param_2,u32 param_3);
 u64 FUN_004654a0(u64 param_1,u64 param_2);
 u64 FUN_00465930(u64 param_1,u64 param_2);
 u64 FUN_00465a00(u64 param_1);
-u64 HAnimClose(u64 param_1);
+u64 HAnimClose(s32 param_1);
 u64 FUN_00465bf0(u64 param_1,int param_2);
 u64 FUN_00465cf0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00465eb0(u64 param_1,u64 param_2,u32 param_3);
@@ -3338,7 +3338,7 @@ u64 FUN_00465a00(u64 param_1)
 #pragma schedule on
 // FUN_00465AE0 NONMATCHING
 
-u64 HAnimClose(u64 param_1)
+u64 HAnimClose(s32 param_1)
 
 {
   if (iGpffffba44 != 0) {
@@ -3824,9 +3824,9 @@ u64 FUN_00466640(u64 param_1)
 // FUN_00466710
 
 #pragma optimization_level 3
-u32 RpHAnimFrameGetHierarchy(int param_1)
+u32 RpHAnimFrameGetHierarchy(int object)
 {
-  return *(u32 *)(param_1 + iGpffffba40 + 4);
+  return *(u32 *)(object + iGpffffba40 + 4);
 }
 #pragma optimization_level 2
 
