@@ -1221,7 +1221,7 @@ void FUN_00538410(int param_1,u64 param_2);
 void ADXB_EvokeExpandSte(int param_1, int param_2);
 void FUN_005384b8(int param_1,u64 param_2);
 void FUN_00538510(u64 param_1);
-void FUN_00538618(u16 *param_1,u16 *param_2,int param_3);
+void memcpy2(u16 *param_1,u16 *param_2,int param_3);
 void ADXB_CopyExtraBufSte(s16 *param_1, int param_2, int param_3, s32 param_4);
 void ADXB_CopyExtraBufMono(int param_1, int param_2, s32 param_3, s32 param_4);
 void FUN_005386d8(int param_1);
