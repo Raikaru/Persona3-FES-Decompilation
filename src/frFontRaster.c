@@ -199,222 +199,111 @@ void FUN_003b3770(void)
 #pragma opt_lifetimes on
 // FUN_003B38F0 NONMATCHING
 u64
-
-FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int param_6,
-
-            int param_7,u32 param_8)
-
-
-
+FUN_003b38f0(float depthBias, int xFixed, int yFixed, u32 *drawState, int cacheKey, int offsetX, int offsetY, u32 colour)
 {
+  float uvU;
+  float uvV;
+  int idx;
+  float *ptr;
+  int oldRec;
+  float *uvSrc;
+  int newRec;
+  float *cursor;
+  u32 *rec;
+  float texScale;
+  float scaledY;
+  float scaledX;
+  float vertices[64];
+  float uvs[8];
+  float offsetYf;
+  float quadXEnd;
+  float quadYEnd;
+  float quadPos[5];
 
-  float fVar1;
-
-  float fVar2;
-
-  int iVar5;
-
-  float *pfVar4;
-
-  int iVar3;
-
-  float *pfVar6;
-
-  int iVar7;
-
-  float *pfVar8;
-
-  u32 *puVar9;
-
-  float fVar10;
-
-  float fVar11;
-
-  float fVar12;
-
-  float afStack_100 [64];
-
-  float afStack_120 [8];
-
-  float fStack_12c;
-
-  float fStack_128;
-
-  float fStack_124;
-
-  float afStack_140 [5];
-
-  
-
-  fVar12 = (float)param_2 / 16.0f;
-
-  fVar11 = (float)param_3 / 8.0f;
-
-  iVar5 = FUN_00198590();
-
-  fVar10 = *(float *)(iVar5 + 0x80);
-
-  pfVar6 = (float *)&DAT_006a28d0_abs;
-
-  pfVar8 = afStack_120;
-
-  iVar5 = 4;
-
+  scaledX = (float)xFixed / 16.0f;
+  scaledY = (float)yFixed / 8.0f;
+  idx = FUN_00198590();
+  texScale = *(float *)(idx + 0x80);
+  uvSrc = (float *)&DAT_006a28d0_abs;
+  cursor = uvs;
+  idx = 4;
   do {
-
-    fVar1 = *pfVar6;
-
-    fVar2 = pfVar6[1];
-
-    pfVar6 = pfVar6 + 2;
-
-    iVar5 = iVar5 + -1;
-
-    *pfVar8 = fVar1;
-
-    pfVar8[1] = fVar2;
-
-    pfVar8 = pfVar8 + 2;
-
-  } while (0 < iVar5);
-
-  pfVar6 = (float *)0x20;
-
-  pfVar8 = afStack_140;
-
-  pfVar4 = pfVar8;
-
-  while (pfVar4 != (float *)0x0) {
-
-    *(u8 *)pfVar8 = 0;
-
-    pfVar8 = (float *)((int)pfVar8 + 1);
-
-    pfVar6 = (float *)((int)pfVar6 + -1);
-
-    pfVar4 = pfVar6;
-
+    uvU = *uvSrc;
+    uvV = uvSrc[1];
+    uvSrc = uvSrc + 2;
+    idx = idx + -1;
+    *cursor = uvU;
+    cursor[1] = uvV;
+    cursor = cursor + 2;
+  } while (0 < idx);
+  uvSrc = (float *)0x20;
+  cursor = quadPos;
+  ptr = cursor;
+  while (ptr != (float *)0x0) {
+    *(u8 *)cursor = 0;
+    cursor = (float *)((int)cursor + 1);
+    uvSrc = (float *)((int)uvSrc + -1);
+    ptr = uvSrc;
   }
-
-  if (param_6 >= 0) {
-
-    afStack_140[2] = (float)(int)param_6;
-
+  if (offsetX >= 0) {
+    quadPos[2] = (float)(int)offsetX;
   }
-
   else {
-
-    afStack_140[2] = (float)(param_6 & 0xffffffff);
-
+    quadPos[2] = (float)(offsetX & 0xffffffff);
   }
-
-  afStack_140[2] = fVar12 + afStack_140[2];
-  if (param_7 >= 0) {
-
-    fStack_12c = (float)(int)param_7;
-
+  quadPos[2] = scaledX + quadPos[2];
+  if (offsetY >= 0) {
+    offsetYf = (float)(int)offsetY;
   }
-
   else {
-
-    fStack_12c = (float)(param_7 & 0xffffffff);
-
+    offsetYf = (float)(offsetY & 0xffffffff);
   }
-
-  fStack_124 = fVar11 + fStack_12c;
-
-
-  iVar5 = (int)param_4;
-
-  afStack_140[0] = fVar12;
-
-  afStack_140[1] = fVar11;
-
-  afStack_140[3] = fVar11;
-
-  afStack_140[4] = fVar12;
-
-  fStack_128 = afStack_140[2];
-
-
-  if (*(int *)(iVar5 + 0x1c) == 0) {
-
+  quadYEnd = scaledY + offsetYf;
+  idx = (int)drawState;
+  quadPos[0] = scaledX;
+  quadPos[1] = scaledY;
+  quadPos[3] = scaledY;
+  quadPos[4] = scaledX;
+  quadXEnd = quadPos[2];
+  if (*(int *)(idx + 0x1c) == 0) {
     FUN_0019d3f0("frFontRaster.c",0x99);
-
   }
-
-  puVar9 = *(u32 **)(*(int *)(iVar5 + 0x1c) + 0xc);
-
-  if ((short)puVar9[2] != param_5) {
-
-    iVar7 = FUN_003b0430(param_4,puVar9[1]);
-
-    *(short *)(*(int *)(iVar5 + 0x1c) + 4) = *(short *)(*(int *)(iVar5 + 0x1c) + 4) + -1;
-
-    iVar3 = *(int *)(iVar5 + 0x1c);
-
-    if ((iVar3 != 0) && (*(short *)(iVar3 + 4) == 0)) {
-
-      puVar9 = *(u32 **)(iVar3 + 0xc);
-
-      if (puVar9 != (u32 *)0x0) {
-
-        *puVar9 = *puVar9 & 0xfffffffe;
-
-        puVar9[4] = 0;
-
+  rec = *(u32 **)(*(int *)(idx + 0x1c) + 0xc);
+  if ((short)rec[2] != cacheKey) {
+    newRec = FUN_003b0430(drawState,rec[1]);
+    *(short *)(*(int *)(idx + 0x1c) + 4) = *(short *)(*(int *)(idx + 0x1c) + 4) + -1;
+    oldRec = *(int *)(idx + 0x1c);
+    if ((oldRec != 0) && (*(short *)(oldRec + 4) == 0)) {
+      rec = *(u32 **)(oldRec + 0xc);
+      if (rec != (u32 *)0x0) {
+        *rec = *rec & 0xfffffffe;
+        rec[4] = 0;
       }
-
-      FUN_003b4580(*(u32 *)(iVar3 + 8));
-
+      FUN_003b4580(*(u32 *)(oldRec + 8));
       *(u32 *)DAT_0095ae10_abs = *(u32 *)DAT_0095ae10_abs + -1;
-
     }
-
-    *(int *)(iVar5 + 0x1c) = iVar7;
-
-    puVar9 = *(u32 **)(iVar7 + 0xc);
-
+    *(int *)(idx + 0x1c) = newRec;
+    rec = *(u32 **)(newRec + 0xc);
   }
-
-  *puVar9 = *puVar9 | 1;
-
-  if ((param_8 & 0xff) != 0) {
-
-    FUN_00521408(afStack_100,0,0x100);
-
-    for (iVar5 = 0; iVar5 < 4; iVar5 = iVar5 + 1) {
-
-      afStack_100[iVar5 * 0x10 + 2] = *(float *)DAT_00960088_abs - param_1;
-
-      afStack_100[iVar5 * 0x10 + 6] = 1.0f / fVar10;
-
-      afStack_100[iVar5 * 0x10 + 4] = afStack_120[iVar5 * 2];
-
-      afStack_100[iVar5 * 0x10 + 5] = afStack_120[iVar5 * 2 + 1];
-
-      afStack_100[iVar5 * 0x10 + 8] = (float)(param_8 >> 0x18);
-
-      afStack_100[iVar5 * 0x10 + 9] = (float)(param_8 >> 0x10 & 0xff);
-
-      afStack_100[iVar5 * 0x10 + 10] = (float)(param_8 >> 8 & 0xff);
-
-      afStack_100[iVar5 * 0x10 + 0xb] = (float)(param_8 & 0xff);
-
-      afStack_100[iVar5 * 0x10] = afStack_140[iVar5 * 2];
-
-      afStack_100[iVar5 * 0x10 + 1] = afStack_140[iVar5 * 2 + 1];
-
+  *rec = *rec | 1;
+  if ((colour & 0xff) != 0) {
+    FUN_00521408(vertices,0,0x100);
+    for (idx = 0; idx < 4; idx = idx + 1) {
+      vertices[idx * 0x10 + 2] = *(float *)DAT_00960088_abs - depthBias;
+      vertices[idx * 0x10 + 6] = 1.0f / texScale;
+      vertices[idx * 0x10 + 4] = uvs[idx * 2];
+      vertices[idx * 0x10 + 5] = uvs[idx * 2 + 1];
+      vertices[idx * 0x10 + 8] = (float)(colour >> 0x18);
+      vertices[idx * 0x10 + 9] = (float)(colour >> 0x10 & 0xff);
+      vertices[idx * 0x10 + 10] = (float)(colour >> 8 & 0xff);
+      vertices[idx * 0x10 + 0xb] = (float)(colour & 0xff);
+      vertices[idx * 0x10] = quadPos[idx * 2];
+      vertices[idx * 0x10 + 1] = quadPos[idx * 2 + 1];
     }
-
-    (*DAT_00960090_abs)(1,puVar9[5]);
-
-    (*DAT_009600a0_abs)(4,afStack_100,4);
-
+    (*DAT_00960090_abs)(1,rec[5]);
+    (*DAT_009600a0_abs)(4,vertices,4);
   }
-
   return 0;
-
 }
 #pragma pop
 #pragma opt_lifetimes reset
