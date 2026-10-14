@@ -22142,7 +22142,7 @@ void FUN_00336630(int param_1)
 
   if ((limit <= nodeValue) || (nodeValue == 0)) {
     count = *(int *)(node + 0x38);
-    alpha = FUN_0032a120((char *)node, (u32 *)(node + 0x24), limit, nodeValue);
+    alpha = FUN_0032a120((char *)node, (u32 *)((u8 *)node + 0x24), limit, nodeValue);
     modelAlpha = *(int *)(param_1 + 0x24);
     __asm__ volatile (
         ".set noreorder                      \n"
