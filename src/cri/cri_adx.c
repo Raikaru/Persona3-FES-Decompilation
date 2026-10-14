@@ -30297,7 +30297,7 @@ asm void FUN_00545c48(u32 param_1)
 // FUN_00545C58
 
 
-asm void ADXT_SetupNrmlNumStm(u32 param_1)
+asm void ADXT_SetupNrmlNumStm(u32 num)
 {
   .set noreorder
   .word 0x24020028
