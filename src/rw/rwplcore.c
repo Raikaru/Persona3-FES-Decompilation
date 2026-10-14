@@ -3549,7 +3549,7 @@ long FUN_004c3970(int param_1,u32 param_2,long param_3,int param_4,long param_5,
 }
 #pragma optimization_level 3
 // FUN_004C3B50
-long FUN_004c3b50(int param_1, u32 param_2, long param_3, int param_4)
+long RwFreeListCreate(int param_1, u32 param_2, long param_3, int param_4)
 {
   return FUN_004c3970(param_1, param_2, param_3, 1, 0, param_4);
 }
