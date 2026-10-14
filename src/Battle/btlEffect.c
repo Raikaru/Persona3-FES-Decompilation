@@ -722,21 +722,21 @@ extern u32 func_002c0f40_call(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                               long param_5,code *param_6,long param_7);
 extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
 extern bool func_002c12f0(int param_1,int param_2);
-extern bool func_002c22d0(int param_1,int param_2);
-extern bool func_002c28a0(int param_1,int param_2);
+extern bool btlCond_MYUSESKIL(int param_1,int param_2);
+extern bool btlCond_MYID(int param_1,int param_2);
 extern u32 func_002c1360(int param_1,int param_2);
 extern bool func_002c13d0(int param_1,int param_2);
 extern void func_002c1440(int param_1,u32 param_2);
 extern void func_002c1490(int param_1,u32 param_2);
 extern void func_002c14f0(int param_1,u32 param_2);
 extern bool func_002c1550(int param_1,u32 param_2);
-extern bool func_002c1590(int param_1,u32 param_2);
-extern bool func_002c15e0(int param_1,u32 param_2);
-extern bool func_002c1650(int param_1,u32 param_2);
-extern bool func_002c16a0(int param_1,u32 param_2);
+extern bool btlCond_FRLV_O(int param_1,u32 param_2);
+extern bool btlCond_ENLV_O(int param_1,u32 param_2);
+extern bool btlCond_FRCNT(int param_1,u32 param_2);
+extern bool btlCond_ENCNT(int param_1,u32 param_2);
 extern void func_002c1710(int param_1);
-extern void func_002c1740(int param_1,u32 param_2);
-extern void func_002c17b0(int param_1,u32 param_2);
+extern void btlCond_FRBAD(int param_1,u32 param_2);
+extern void btlCond_ENBAD(int param_1,u32 param_2);
 extern bool func_002c1850(int param_1,u64 param_2);
 extern u32 func_002c1960(int param_1,u32 param_2);
 extern u32 func_002c1a30(int param_1,u32 param_2);
@@ -744,7 +744,7 @@ extern u32 func_002c1b10(int param_1,u32 param_2);
 extern u32 func_002c1bf0(int param_1,u32 param_2);
 extern bool func_002c1ce0(int param_1,int param_2);
 extern u64 func_002c1d80(void);
-extern bool func_002c1d90(int param_1);
+extern bool btlCond_SENSEI(int param_1);
 extern bool func_002c1e10(int param_1,short param_2);
 extern bool func_002c1e50(int param_1,short param_2);
 extern bool func_002c1e90(int param_1,short param_2);
@@ -762,11 +762,11 @@ extern void func_002c2220(int param_1,u32 param_2);
 extern void func_002c2270(int param_1,u32 param_2);
 extern void func_002c2310(int param_1,u32 param_2);
 extern void func_002c2360(int param_1,u32 param_2);
-extern u32 func_002c23c0(int param_1);
+extern u32 btlCond_MYGROUP(int param_1);
 extern void func_002c2420(int param_1,u32 param_2);
 extern void func_002c2470(int param_1,u32 param_2);
 extern u32 func_002c2510(int param_1);
-extern bool func_002c25d0(int param_1);
+extern bool btlCond_MORE(int param_1);
 extern void func_002c25e0(int param_1,u32 param_2);
 extern void func_002c2630(int param_1,u32 param_2);
 extern void func_002c2690(int param_1,u32 param_2);
@@ -780,15 +780,15 @@ extern bool func_002c29e0(int param_1,int param_2);
 extern bool func_002c2b20(int param_1,u16 param_2);
 extern void func_002c2be0(int param_1,u32 param_2);
 extern void func_002c2c40(int param_1,u32 param_2);
-extern void func_002c2ca0(int param_1,u32 param_2);
+extern void btlCond_ENWEAK_DW_PAI(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,u32 param_2);
 extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
-extern void func_002c30f0(int param_1,u16 param_2);
+extern void btlCond_MYNOMAL(int param_1,u16 param_2);
 extern void func_002c3120(int param_1,u16 param_2);
 extern void func_002c3150(int param_1,u32 param_2);
 extern void func_002c31b0(int param_1,u32 param_2);
-extern void func_002c3210(int param_1,u32 param_2);
-extern bool func_002c3270(int param_1);
+extern void btlCond_ENNOMAL_DW(int param_1,u32 param_2);
+extern bool btlCond_ANALYZE(int param_1);
 extern u32 func_002c32c0(int param_1);
 extern u32 func_002c32e0(int param_1);
 extern u32 func_002c3300(int param_1,u32 param_2);
@@ -4511,7 +4511,7 @@ bool func_002c1550(int param_1,u32 param_2)
 
 // FUN_002c1590
 
-bool func_002c1590(int param_1,u32 param_2)
+bool btlCond_FRLV_O(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
@@ -4525,7 +4525,7 @@ bool func_002c1590(int param_1,u32 param_2)
 #pragma opt_rebuildconditionals off
 // FUN_002c15e0
 
-bool func_002c15e0(int param_1,u32 param_2)
+bool btlCond_ENLV_O(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
@@ -4547,7 +4547,7 @@ done:
 
 // FUN_002c1650
 
-bool func_002c1650(int param_1,u32 param_2)
+bool btlCond_FRCNT(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
@@ -4561,7 +4561,7 @@ bool func_002c1650(int param_1,u32 param_2)
 #pragma opt_rebuildconditionals off
 // FUN_002c16a0
 
-bool func_002c16a0(int param_1,u32 param_2)
+bool btlCond_ENCNT(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
@@ -4594,7 +4594,7 @@ void func_002c1710(int param_1)
 
 // FUN_002c1740
 
-void func_002c1740(int param_1,u32 param_2)
+void btlCond_FRBAD(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
@@ -4614,7 +4614,7 @@ void func_002c1740(int param_1,u32 param_2)
 #pragma opt_rebuildconditionals off
 // FUN_002c17b0
 
-void func_002c17b0(int param_1,u32 param_2)
+void btlCond_ENBAD(int param_1,u32 param_2)
 
 {
   u32 genus;
@@ -4866,7 +4866,7 @@ u64 func_002c1d80(void)
 
 // FUN_002c1d90
 
-bool func_002c1d90(int param_1)
+bool btlCond_SENSEI(int param_1)
 {
     bool result;
     u8 genus;
@@ -5108,7 +5108,7 @@ void func_002c2270(int param_1, u32 param_2)
 #pragma pop
 
 // FUN_002c22d0 MATCHING
-bool func_002c22d0(int param_1, int param_2)
+bool btlCond_MYUSESKIL(int param_1, int param_2)
 {
     bool result;
 
@@ -5130,7 +5130,7 @@ bool func_002c22d0(int param_1, int param_2)
 void func_002c2310(int param_1,u32 param_2)
 {
   func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
-               0x80000,0,(code *)&func_002c22d0);
+               0x80000,0,(code *)&btlCond_MYUSESKIL);
   return;
 }
 
@@ -5152,14 +5152,14 @@ void func_002c2360(int param_1, u32 param_2)
     done:
         ;
     }
-    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c22d0);
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&btlCond_MYUSESKIL);
     return;
 }
 #pragma pop
 
 // FUN_002c23c0
 
-u32 func_002c23c0(int param_1)
+u32 btlCond_MYGROUP(int param_1)
 {
   u16 result;
 
@@ -5178,7 +5178,7 @@ u32 func_002c23c0(int param_1)
 void func_002c2420(int param_1,u32 param_2)
 {
   func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
-               0x80000,0,(code *)&func_002c23c0);
+               0x80000,0,(code *)&btlCond_MYGROUP);
   return;
 }
 
@@ -5200,19 +5200,19 @@ void func_002c2470(int param_1, u32 param_2)
     done:
         ;
     }
-    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c23c0);
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&btlCond_MYGROUP);
     return;
 }
 #pragma pop
 
 // FUN_002c24d0 MATCHING
-bool func_002c24d0(int param_1, u32 param_2)
+bool btlCond_TURN(int param_1, u32 param_2)
 {
     return param_2 >= *(u32*)(param_1 + 0x20);
 }
 
 // FUN_002c24f0 MATCHING
-bool func_002c24f0(int param_1, u32 param_2)
+bool btlCond_TURN_O(int param_1, u32 param_2)
 {
     return param_2 <= *(u32*)(param_1 + 0x20);
 }
@@ -5243,7 +5243,7 @@ u32 func_002c2510(int param_1)
 
 // FUN_002c25d0
 
-bool func_002c25d0(int param_1)
+bool btlCond_MORE(int param_1)
 
 {
   return *(u8 *)(param_1 + 0x28) > 0;
@@ -5378,7 +5378,7 @@ void func_002c2840(int param_1, u32 param_2)
 #pragma pop
 
 // FUN_002c28a0 MATCHING
-bool func_002c28a0(int param_1, int param_2)
+bool btlCond_MYID(int param_1, int param_2)
 {
     return *(u16*)(*(s32*)(param_1 + 0x30) + 0xa4) == param_2;
 }
@@ -5529,7 +5529,7 @@ void func_002c2c40(int param_1,u32 param_2)
 #pragma opt_rebuildconditionals off
 // FUN_002c2ca0
 
-void func_002c2ca0(int param_1,u32 param_2)
+void btlCond_ENWEAK_DW_PAI(int param_1,u32 param_2)
 {
   u32 shift;
 
@@ -5669,7 +5669,7 @@ bool func_002c2ed0(int param_1,u16 param_2,int param_3)
 
 // FUN_002c30f0
 
-void func_002c30f0(int param_1,u16 param_2)
+void btlCond_MYNOMAL(int param_1,u16 param_2)
 
 {
   func_002c2ed0(param_1,param_2,1);
@@ -5705,7 +5705,7 @@ void func_002c3150(int param_1,u32 param_2)
       ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,10,
-                 (code *)&func_002c30f0);
+                 (code *)&btlCond_MYNOMAL);
   return;
 }
 #pragma pop
@@ -5730,7 +5730,7 @@ void func_002c31b0(int param_1,u32 param_2)
       ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x180000,10,
-                 (code *)&func_002c30f0);
+                 (code *)&btlCond_MYNOMAL);
   return;
 }
 #pragma pop
@@ -5740,7 +5740,7 @@ void func_002c31b0(int param_1,u32 param_2)
 #pragma opt_rebuildconditionals off
 // FUN_002c3210
 
-void func_002c3210(int param_1,u32 param_2)
+void btlCond_ENNOMAL_DW(int param_1,u32 param_2)
 {
   u32 shift;
 
@@ -5755,14 +5755,14 @@ void func_002c3210(int param_1,u32 param_2)
       ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,0xb,
-                 (code *)&func_002c30f0);
+                 (code *)&btlCond_MYNOMAL);
   return;
 }
 #pragma pop
 
 // FUN_002c3270
 
-bool func_002c3270(int param_1)
+bool btlCond_ANALYZE(int param_1)
 {
   long lVar2 = 0;
   if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 1) {
@@ -6165,7 +6165,7 @@ void func_002c3e60(u64 param_1,u64 param_2)
 void func_002c3ea0(u64 param_1,u64 param_2)
 
 {
-  func_002c3430(param_1,param_2,0,0,0, (code *)&func_002c28a0);
+  func_002c3430(param_1,param_2,0,0,0, (code *)&btlCond_MYID);
   return;
 }
 
@@ -6463,7 +6463,7 @@ void func_002c46e0(u64 param_1,u64 param_2)
 void func_002c4720(u64 param_1,u64 param_2)
 
 {
-  func_002c3430(param_1,param_2,0,0,1, (code *)&func_002c28a0);
+  func_002c3430(param_1,param_2,0,0,1, (code *)&btlCond_MYID);
   return;
 }
 
@@ -12277,7 +12277,7 @@ u32 func_002ce880(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
@@ -12306,7 +12306,7 @@ u32 func_002ce960(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0x100000,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0x100000,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
@@ -12335,7 +12335,7 @@ u32 func_002cea40(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2d,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2d,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
@@ -12526,7 +12526,7 @@ u32 func_002cef10(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       selected = *(int *)(unit + 0x38);
     }
@@ -12573,7 +12573,7 @@ u32 func_002cf070(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     selectedCount = 0;
     for (index = 0; (u16)index < *(u16 *)(unit + 0x6a);
          index = index + 1 & 0xffff) {
@@ -12664,7 +12664,7 @@ u32 func_002cf340(void)
   u32 count;
 
   unit = func_0035f160();
-  if (func_002c3430(unit,func_0035ed20(0),0,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,func_0035ed20(0),0,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     count = 0;
     for (index = 0; (u16)index < *(u16 *)(unit + 0x6a); index = index + 1 & 0xffff) {
       if ((func_00300530(*(u32 *)(*(int *)(*(int *)(unit + (index & 0xffff) * 4 + 0x38) + 0x30) + 0xa2c)) & 0xffefffff) == 0)
@@ -12935,7 +12935,7 @@ u32 func_002cfb20(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       selectedUnit = *(int *)(unit + 0x38);
     }
@@ -12976,7 +12976,7 @@ u32 func_002cfc50(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0x100000,0x2c,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0x100000,0x2c,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       selectedUnit = *(int *)(unit + 0x38);
     }
@@ -13017,7 +13017,7 @@ u32 func_002cfd80(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2d,0, (code *)&func_002c30f0) == 1) {
+  if (func_002c3430(unit,selector,0,0x2d,0, (code *)&btlCond_MYNOMAL) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       selectedUnit = *(int *)(unit + 0x38);
     }
