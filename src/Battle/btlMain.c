@@ -2198,6 +2198,14 @@ u32 FUN_0029f150(float *colorLerp)
   float t;
 
   float invT;
+  float firstX;
+  float firstY;
+  float firstZ;
+  float firstW;
+  float secondX;
+  float secondY;
+  float secondZ;
+  float secondW;
 
 
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 2) == 0) {
@@ -2248,19 +2256,33 @@ u32 FUN_0029f150(float *colorLerp)
 
       invT = 1.0f - t;
 
-      color.r = colorLerp[0x10] * invT + colorLerp[8] * t;
-      color.g = colorLerp[0x11] * invT + colorLerp[9] * t;
-      color.b = colorLerp[0x12] * invT + colorLerp[10] * t;
-      color.a = colorLerp[0x13] * invT + colorLerp[0xb] * t;
-
+      firstX = colorLerp[0x10] * invT;
+      firstY = colorLerp[0x11] * invT;
+      firstZ = colorLerp[0x12] * invT;
+      firstW = colorLerp[0x13] * invT;
+      secondX = colorLerp[8] * t;
+      secondY = colorLerp[9] * t;
+      secondZ = colorLerp[10] * t;
+      secondW = colorLerp[0xb] * t;
+      color.r = firstX + secondX;
+      color.g = firstY + secondY;
+      color.b = firstZ + secondZ;
+      color.a = firstW + secondW;
       colorDst = (float *)FUN_0019fd40();
       *(RwRGBAReal *)colorDst = color;
 
-      color.r = colorLerp[0x14] * invT + colorLerp[0xc] * t;
-      color.g = colorLerp[0x15] * invT + colorLerp[0xd] * t;
-      color.b = colorLerp[0x16] * invT + colorLerp[0xe] * t;
-      color.a = colorLerp[0x17] * invT + colorLerp[0xf] * t;
-
+      firstX = colorLerp[0x14] * invT;
+      firstY = colorLerp[0x15] * invT;
+      firstZ = colorLerp[0x16] * invT;
+      firstW = colorLerp[0x17] * invT;
+      secondX = colorLerp[0xc] * t;
+      secondY = colorLerp[0xd] * t;
+      secondZ = colorLerp[0xe] * t;
+      secondW = colorLerp[0xf] * t;
+      color.r = firstX + secondX;
+      color.g = firstY + secondY;
+      color.b = firstZ + secondZ;
+      color.a = firstW + secondW;
       colorDst = (float *)FUN_0019fd70();
       *(RwRGBAReal *)colorDst = color;
 
