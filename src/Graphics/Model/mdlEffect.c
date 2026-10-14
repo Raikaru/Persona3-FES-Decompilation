@@ -10793,74 +10793,74 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 
 
 
+#pragma opt_propagation off
 // FUN_0032A540 NONMATCHING
-
-
 float FUN_0032a540(char *curve,int frame,int duration)
 {
-  char curveType;
-  int durationFrames;
-  float result;
-  int bp1;
-  int bp2;
-  float segEnd;
-  float segStart;
+  u8 mode;
+  float from;
+  float to;
+  float t;
+  float fDuration;
 
-  durationFrames = (int)duration;
   if (duration == 0) {
-    result = *(float *)(curve + 4);
+    return *(float *)(curve + 4);
   }
-  else {
-    result = (float)durationFrames;
-    curveType = *curve;
-    if (curveType == '\x02') {
-      bp1 = (int)(*(float *)(curve + 0x18) * result);
-      if (frame < bp1) {
-        segStart = *(float *)(curve + 4);
-        segEnd = *(float *)(curve + 0x14);
-        result = (float)frame / (float)bp1;
-      }
-      else {
-        bp2 = (int)(*(float *)(curve + 0x20) * result);
-        if (frame >= bp2) {
-          segStart = *(float *)(curve + 0x1c);
-          segEnd = *(float *)(curve + 8);
-          result = (float)(frame - bp2) / (float)(durationFrames - bp2);
-        }
-        else {
-          segStart = *(float *)(curve + 0x14);
-          segEnd = *(float *)(curve + 0x1c);
-          result = (float)(frame - bp1) / (float)(bp2 - bp1);
-        }
-      }
+  fDuration = (float)duration;
+  mode = *(u8 *)curve;
+  switch (mode) {
+  case 0:
+    from = *(float *)(curve + 4);
+    to = *(float *)(curve + 8);
+    t = (float)frame / fDuration;
+    break;
+  case 1: {
+    int v1 = (int)(*(float *)(curve + 0x18) * fDuration);
+    if (frame < v1) {
+      from = *(float *)(curve + 4);
+      to = *(float *)(curve + 0x14);
+      t = (float)frame / (float)v1;
+    } else {
+      float denom;
+      from = *(float *)(curve + 0x14);
+      to = *(float *)(curve + 8);
+      denom = (float)(duration - v1);
+      t = (float)(frame - v1) / denom;
     }
-    else if (curveType == '\x01') {
-      bp1 = (int)(*(float *)(curve + 0x18) * result);
-      if (frame >= bp1) {
-        segStart = *(float *)(curve + 0x14);
-        segEnd = *(float *)(curve + 8);
-        result = (float)(frame - bp1) / (float)(durationFrames - bp1);
-      }
-      else {
-        segStart = *(float *)(curve + 4);
-        segEnd = *(float *)(curve + 0x14);
-        result = (float)frame / (float)bp1;
-      }
-    }
-    else if (curveType == '\0') {
-      segStart = *(float *)(curve + 4);
-      segEnd = *(float *)(curve + 8);
-      result = (float)frame / result;
-    }
-    else {
-      segStart = *(float *)(curve + 4);
-      segEnd = *(float *)(curve + 8);
-      result = 0.0f;
-    }
-    result = result * (segEnd - segStart) + segStart + 0.0f;
+    break;
   }
-  return result;
+  case 2: {
+    int t1 = (int)(*(float *)(curve + 0x18) * fDuration);
+    if (frame < t1) {
+      from = *(float *)(curve + 4);
+      to = *(float *)(curve + 0x14);
+      t = (float)frame / (float)t1;
+    } else {
+      int t2 = (int)(*(float *)(curve + 0x20) * fDuration);
+      if (frame < t2) {
+        float denom = (float)(t2 - t1);
+        from = *(float *)(curve + 0x14);
+        to = *(float *)(curve + 0x1c);
+        t = (float)(frame - t1) / denom;
+      } else {
+        float denom;
+        from = *(float *)(curve + 0x1c);
+        to = *(float *)(curve + 8);
+        denom = (float)(duration - t2);
+        t = (float)(frame - t2) / denom;
+      }
+    }
+    break;
+  }
+  default:
+    from = *(float *)(curve + 4);
+    to = *(float *)(curve + 8);
+    t = 0.0f;
+    break;
+  }
+  return from + t * (to - from);
 }
+#pragma opt_propagation on
 
 
 
