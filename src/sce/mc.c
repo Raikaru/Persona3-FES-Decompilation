@@ -258,7 +258,7 @@ u32 FUN_0041cea0(int param_1)
 
         *(u32 *)(param_1 + 0xc) = 0xb;
 
-        func_00190580();
+        H_Memcard_SetAbort();
 
       }
 
@@ -600,7 +600,7 @@ u64 FUN_0041d330(int param_1)
 
     FUN_004215b0(*(u32 *)(param_1 + 0x398),0);
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
   case 4:
 
@@ -620,7 +620,7 @@ u64 FUN_0041d330(int param_1)
 
       FUN_004215b0(*(u32 *)(param_1 + 0x398),7);
 
-      func_0018f2a0();
+      H_Memcard_SetSeqMode9();
 
     }
 
@@ -650,7 +650,7 @@ u64 FUN_0041d330(int param_1)
 
     FUN_004215b0(*(u32 *)(param_1 + 0x398),1);
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
   case 6:
 
@@ -668,7 +668,7 @@ u64 FUN_0041d330(int param_1)
 
       FUN_004215b0(*(u32 *)(param_1 + 0x398),0);
 
-      func_0018f2b0();
+      H_Memcard_SetSeqMode4();
 
     }
 
@@ -706,7 +706,7 @@ u64 FUN_0041d330(int param_1)
 
     *(u32 *)(param_1 + 0xc) = 0xb;
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
   case 0xb:
 
@@ -732,7 +732,7 @@ u64 FUN_0041d330(int param_1)
 
     *(u32 *)(param_1 + 0xc) = 0xd;
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
     if ((*(u32 *)(param_1 + 0x10) & 1) == 0) {
 
@@ -805,7 +805,7 @@ u64 FUN_0041db20(int param_1)
 
     *(u32 *)(param_1 + 0xc) = 0xd;
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
     FUN_004215b0(*(u32 *)(param_1 + 0x398),0xe);
 
@@ -857,7 +857,7 @@ switchD_0041db60_default:
 
     FUN_004215b0(*(u32 *)(param_1 + 0x398),0xb);
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
   case 0xf:
 
@@ -1007,7 +1007,7 @@ switchD_0041db60_default:
 
     FUN_004215b0(*(u32 *)(param_1 + 0x398),0x14);
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
   case 0x15:
 
@@ -1164,7 +1164,7 @@ u32 FUN_0041e010(u64 param_1)
 
     *(u16 *)(iVar3 + 2) = 6;
 
-    func_00190580();
+    H_Memcard_SetAbort();
 
     FUN_003c6ec0(*(u32 *)(iVar3 + 0x39c));
 
