@@ -654,7 +654,7 @@ void FUN_003bb400(u32 param_1);
 void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
 #pragma alias FUN_003bb450_scene_typed FUN_003bb450
 extern void FUN_003bb450_scene_typed(float *param_1,float param_2,float param_3,float param_4,float param_5,float *param_6);
-void FUN_003bb620(u32 *param_2,int param_3,float param_1);
+void FUN_003bb620(u32 *outVec,int param_3,float param_1);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
 #pragma alias FUN_003bb9b0_scene_typed FUN_003bb9b0
@@ -3320,49 +3320,28 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
 // FUN_003BB620 NONMATCHING
 
 
-void FUN_003bb620(u32 *param_2,int param_3,float param_1)
-
-
-
+void FUN_003bb620(u32 *outVec,int param_3,float param_1)
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  int lVar3;
-
+  u32 word0;
+  u32 word1;
+  int modeEntry;
   u16 mode;
-
-  u32 *puVar6;
-
-  u64 *puVar5;
-
+  u32 *srcWords;
+  u64 *dstWords;
   int cnt;
-
   u64 dstbuf[8];
-
   u32 auStack_d0 [16];
-
   float src1[3];
-
   float src2[3];
-
   float out[3];
-
   f32 direction[3];
-
   float normal[3];
   u64 xy;
   f32 z;
   u8 *dest;
-
-
   float t0;
   float t1;
   float t2;
-
-  
 
   t0 = *(volatile float *)(param_3 + 4);
   t1 = *(volatile float *)(param_3 + 8);
@@ -3380,40 +3359,23 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
 
   mode = *(u16 *)(param_3 + 0x10c);
 
-  if ((mode != 0) && (lVar3 = FUN_003b5d10(mode), lVar3 != 0)) {
-
-    src1[0] = *(float *)((int)lVar3 + 4);
-
-    src1[1] = *(float *)((int)lVar3 + 8);
-
-    src1[2] = *(float *)((int)lVar3 + 0xc);
-
+  if ((mode != 0) && (modeEntry = FUN_003b5d10(mode), modeEntry != 0)) {
+    src1[0] = *(float *)((int)modeEntry + 4);
+    src1[1] = *(float *)((int)modeEntry + 8);
+    src1[2] = *(float *)((int)modeEntry + 0xc);
     param_1 = *(float *)(param_3 + 0x104);
-
     FUN_003b79a0(auStack_d0,src1,src2);
-
-    puVar6 = auStack_d0;
-
-    puVar5 = dstbuf;
-
+    srcWords = auStack_d0;
+    dstWords = dstbuf;
     cnt = 8;
-
     do {
-
-      uVar1 = *puVar6;
-
-      uVar2 = puVar6[1];
-
-      puVar6 = puVar6 + 2;
-
+      word0 = *srcWords;
+      word1 = srcWords[1];
+      srcWords = srcWords + 2;
       cnt = cnt + -1;
-
-      *(u32 *)puVar5 = uVar1;
-
-      *(u32 *)((int)puVar5 + 4) = uVar2;
-
-      puVar5 = puVar5 + 1;
-
+      *(u32 *)dstWords = word0;
+      *(u32 *)((int)dstWords + 4) = word1;
+      dstWords = dstWords + 1;
     } while (0 < cnt);
     dest = (u8 *)direction;
     xy = *(volatile u64 *)dstbuf;
@@ -3421,11 +3383,8 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
     *(u64 *)dest = xy;
     *(f32 *)(dest + 8) = z;
     FUN_004c69f0(normal,direction);
-
     src1[0] = src1[0] - normal[0] * 15.0f;
-
     src1[2] = src1[2] - normal[2] * 15.0f;
-
   }
 
   FUN_003bb450_scene_typed(src1,param_1,src2[0],src2[1],src2[2],out);
@@ -3433,12 +3392,11 @@ void FUN_003bb620(u32 *param_2,int param_3,float param_1)
   t0 = *(volatile float *)&out[0];
   t1 = *(volatile float *)&out[1];
   t2 = *(volatile float *)&out[2];
-  *(float *)param_2 = t0;
-  *(float *)(param_2 + 1) = t1;
-  *(float *)(param_2 + 2) = t2;
+  *(float *)outVec = t0;
+  *(float *)(outVec + 1) = t1;
+  *(float *)(outVec + 2) = t2;
 
   return;
-
 }
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
