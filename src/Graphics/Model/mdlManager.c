@@ -4228,13 +4228,13 @@ u32 func_00315f50(void* clump,u32 *context)
   int atomic;
   u32 matUsrInt;
   u32 i;
-  float fVar7;
-  float fVar8;
-  float fVar9;
-  float fVar10;
-  float fVar11;
-  float fVar12;
-  float fVar13;
+  float colorB;
+  float colorA;
+  float colorG;
+  float scaleB;
+  float scaleA;
+  float scaleR;
+  float scaleG;
   RwRGBA color;
 
   clumpBase = *(int *)((int)clump + 0x18);
@@ -4245,13 +4245,13 @@ u32 func_00315f50(void* clump,u32 *context)
 
   colour = (u8 *)*context;
 
-  fVar12 = DAT_007caf08 * (float)*colour;
+  scaleR = DAT_007caf08 * (float)*colour;
 
-  fVar13 = DAT_007caf08 * (float)colour[1];
+  scaleG = DAT_007caf08 * (float)colour[1];
 
-  fVar10 = DAT_007caf08 * (float)colour[2];
+  scaleB = DAT_007caf08 * (float)colour[2];
 
-  fVar11 = DAT_007caf08 * (float)colour[3];
+  scaleA = DAT_007caf08 * (float)colour[3];
 
   for (i = 0; i < atomicCount; i = i + 1) {
 
@@ -4260,26 +4260,26 @@ u32 func_00315f50(void* clump,u32 *context)
     matUsrInt = K_Clump_MatUsrDataGetInt(atomic,0x69aba0);
     color = *(RwRGBA *)&matUsrInt;
 
-    fVar9 = DAT_007caf08 * (float)color.g;
-    fVar7 = DAT_007caf08 * (float)color.b;
+    colorG = DAT_007caf08 * (float)color.g;
+    colorB = DAT_007caf08 * (float)color.b;
 
-    fVar8 = fVar11;
+    colorA = scaleA;
 
     if ((*(u16 *)(context + 1) & 1) == 0) {
 
-      fVar8 = DAT_007caf08 * (float)color.a * fVar11;
+      colorA = DAT_007caf08 * (float)color.a * scaleA;
 
     }
 
     *(char *)(atomic + 4) =
 
-         (char)(int)(DAT_007caf08 * (float)color.r * fVar12 * 255.0f + 0.5f);
+         (char)(int)(DAT_007caf08 * (float)color.r * scaleR * 255.0f + 0.5f);
 
-    *(char *)(atomic + 5) = (char)(int)(fVar9 * fVar13 * 255.0f + 0.5f);
+    *(char *)(atomic + 5) = (char)(int)(colorG * scaleG * 255.0f + 0.5f);
 
-    *(char *)(atomic + 6) = (char)(int)(fVar7 * fVar10 * 255.0f + 0.5f);
+    *(char *)(atomic + 6) = (char)(int)(colorB * scaleB * 255.0f + 0.5f);
 
-    *(char *)(atomic + 7) = (char)(int)(fVar8 * 255.0f + 0.5f);
+    *(char *)(atomic + 7) = (char)(int)(colorA * 255.0f + 0.5f);
 
   }
 
