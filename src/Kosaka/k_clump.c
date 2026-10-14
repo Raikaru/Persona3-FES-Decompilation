@@ -832,22 +832,22 @@ u32 func_001a76e0(const u32* state)
 }
 
 // The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
-// The nine volatile list traversals and final state release are otherwise instruction-identical.
+// measured W170: the nine volatile list heads below are retained; removing the qualifiers takes func_001a7710 from nd 3 to nd 304. The traversals are otherwise instruction-identical.
 // FUN_001a7710 NONMATCHING
 void func_001a7710(u32* state)
 {
     typedef struct
     {
         u8 pad[8];
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list8;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 listc;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list10;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list14;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list18;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list1c;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list20;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list24;
-        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list28;
+        volatile u32 list8;
+        volatile u32 listc;
+        volatile u32 list10;
+        volatile u32 list14;
+        volatile u32 list18;
+        volatile u32 list1c;
+        volatile u32 list20;
+        volatile u32 list24;
+        volatile u32 list28;
     } KClumpFreeState;
     KClumpFreeState* work;
     KClumpMaterialNode* node;
