@@ -6405,8 +6405,6 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
 void func_001ebd80(RuntimeSurfaceQueue* queue, s32 param2)
 {
     u8* config;
-    f32 weightNear[2];
-    f32 weightFar[2];
     f32 vel0;
     f32 vel1;
     s32 sideBool;
@@ -6421,6 +6419,8 @@ void func_001ebd80(RuntimeSurfaceQueue* queue, s32 param2)
     f32 weight0;
     f32 weight1;
     s32 section2;
+    f32 weightNear[2];
+    f32 weightFar[2];
 
     config = *(u8**)queue->config;
     weightNear[0] = *(f32*)(config + 0x1c);
