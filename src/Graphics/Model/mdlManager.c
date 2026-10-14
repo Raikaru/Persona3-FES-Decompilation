@@ -216,7 +216,7 @@ u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
 u32 func_00314650(u32 param_1);
 void* func_00315010(void* object, void* data);
-u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
+u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
 Model* func_00315ed0(Model* param_1);
@@ -3504,10 +3504,9 @@ u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
 {
   int expected;
   int current;
-  u32 uVar3;
   u32 srcMatrix;
   u32 idx;
-  u32 index_for_address;
+  u32 entryIndex;
   u16 count;
   int handle;
   int entry;
@@ -3519,8 +3518,8 @@ u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
   count = *table;
   idx = 0;
   while ((u16)idx < count) {
-    index_for_address = idx & 0xffff;
-    if ((key & 0xffff) == *(u32 *)(*(int *)(table + 2) + index_for_address * 0x50 + 0x40)) {
+    entryIndex = idx & 0xffff;
+    if ((key & 0xffff) == *(u32 *)(*(int *)(table + 2) + entryIndex * 0x50 + 0x40)) {
       break;
     }
     idx = idx + 1 & 0xffff;
