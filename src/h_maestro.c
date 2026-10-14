@@ -1812,6 +1812,8 @@ void func_0010e010(HSfdImage* image, s32 bitDepth)
 }
 
 #pragma opt_loop_invariants on
+// TMX0 texture decoder: checks the header magic, maps the pixel format in
+// stream[0x16] to a bit depth, optionally reads a palette, then the pixels.
 // FUN_0010E0D0 NONMATCHING
 HSfdImage* func_0010e0d0(const u8* stream)
 {
