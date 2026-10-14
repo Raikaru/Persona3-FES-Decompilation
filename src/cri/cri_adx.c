@@ -128,7 +128,7 @@ extern u64 FUN_00510b80();
 extern u64 FUN_00510d60();
 extern u64 FUN_00510ef0();
 extern u64 FUN_00510f88();
-extern u64 FUN_0051e0f0();
+extern u64 atoi();
 extern u64 FUN_005211b8();
 extern u64 FUN_00521250();
 extern u64 FUN_00521408();
@@ -11854,7 +11854,7 @@ void FUN_00538510(u64 param_1)
 // FUN_00538618
 
 
-asm void FUN_00538618(u16 *param_1,u16 *param_2,int param_3)
+asm void memcpy2(u16 *param_1,u16 *param_2,int param_3)
 {
   .set noreorder
   .word 0x18c00008
@@ -11890,9 +11890,9 @@ void ADXB_CopyExtraBufSte(s16 *obuf, int obsize, int obdist, s32 nxsmpl)
 
   iVar1 = (int)obuf;
 
-  ((code)FUN_00538618)(obuf,iVar1 + obsize * 2,nxsmpl);
+  ((code)memcpy2)(obuf,iVar1 + obsize * 2,nxsmpl);
 
-  ((code)FUN_00538618)(iVar1 + obdist * 2,iVar1 + (obdist + obsize) * 2,nxsmpl);
+  ((code)memcpy2)(iVar1 + obdist * 2,iVar1 + (obdist + obsize) * 2,nxsmpl);
 
   return;
 
@@ -11911,7 +11911,7 @@ void ADXB_CopyExtraBufMono(int obuf, int obsize, s32 xsize, s32 nxsmpl)
 
 {
 
-  ((code)FUN_00538618)(obuf,obuf + obsize * 2,nxsmpl);
+  ((code)memcpy2)(obuf,obuf + obsize * 2,nxsmpl);
 
   return;
 
@@ -102534,7 +102534,7 @@ u64 FUN_0057aab8(int param_1,int param_2,int param_3)
 
       if (lVar2 == 0) {
 
-        lVar2 = FUN_0051e0f0(iVar3 + 0x10);
+        lVar2 = atoi(iVar3 + 0x10);
 
         uVar1 = 0;
 
@@ -102552,15 +102552,15 @@ u64 FUN_0057aab8(int param_1,int param_2,int param_3)
 
       if (lVar2 == 0) {
 
-        uVar1 = FUN_0051e0f0(iVar3 + 0x10);
+        uVar1 = atoi(iVar3 + 0x10);
 
         *(u32 *)(param_1 + 0x35c) = uVar1;
 
-        uVar1 = FUN_0051e0f0(iVar3 + 0x18);
+        uVar1 = atoi(iVar3 + 0x18);
 
         *(u32 *)(param_1 + 0x360) = uVar1;
 
-        uVar1 = FUN_0051e0f0(iVar3 + 0x20);
+        uVar1 = atoi(iVar3 + 0x20);
 
         *(u32 *)(param_1 + 0x364) = uVar1;
 
@@ -158653,7 +158653,7 @@ u64 FUN_005a12f8(long param_1,long param_2)
 
     uStack_1f = *(u8 *)((int)param_1 + 0x11);
 
-    uVar1 = FUN_0051e0f0(&uStack_20);
+    uVar1 = atoi(&uStack_20);
 
   }
 
