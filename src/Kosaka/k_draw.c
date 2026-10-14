@@ -20,11 +20,11 @@ extern void* func_00491880(void);
 extern void func_004919b0(void* manager, void* renderObject, u32 index);
 extern void func_00491a80(void* manager);
 extern void* func_004912b0(void* atomic);
-extern void func_00492d10(void* manager, void* frame);
+extern void RpAtomicSetFrame(void* manager, void* frame);
 extern void func_00492e20(void* geometry, RwSphere* bounds);
 extern void func_00493210(void* renderObject, void* indexData, u32 flags, u32 index0, u32 index1);
 extern void func_00493230(void* renderObject, void* indexData, void* colorData);
-extern void func_00493370(void* renderObject, u32 state);
+extern void RpGeometryLock(void* renderObject, u32 state);
 extern void func_004933d0(void* renderObject);
 extern void* func_00493710(u32 vertexCount, u32 indexCount, u32 primitiveType);
 extern void func_00493b60(void* renderObject);
@@ -619,7 +619,7 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     work->render->manager = (KDrawRenderManager*)func_00491880();
     func_004919b0(work->render->manager, renderObject, 0);
     func_00493b60(renderObject);
-    func_00492d10(work->render->manager, func_004caf10());
+    RpAtomicSetFrame(work->render->manager, func_004caf10());
     func_004cb930(work->render->manager->frame);
 
     return task;
@@ -656,7 +656,7 @@ void func_001a5700(KwlnTask* task, const RwRGBA* color)
 
     work = (KDrawArcTaskWork*)task->workData;
     renderObject = work->render->manager->renderObject;
-    func_00493370(renderObject, 0xfff);
+    RpGeometryLock(renderObject, 0xfff);
     colors = (RwRGBA*)renderObject->colors;
     for (i = 0; i < 0x22; i++)
     {
@@ -705,7 +705,7 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     }
 
     renderObject = work->render->manager->renderObject;
-    func_00493370(renderObject, 0xfff);
+    RpGeometryLock(renderObject, 0xfff);
     vertices = renderObject->geometry->vertices;
     vertices[0].x = work->render->center.x;
     vertices[0].y = work->render->center.y;
