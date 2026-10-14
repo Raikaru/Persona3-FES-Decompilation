@@ -2103,7 +2103,7 @@ void FUN_0029ee20(u32 unitHandle)
 
   if (((*(u32 *)(DAT_007ce3ec + 0xc) & 2) != 0) &&
 
-     (iVar4 = (int)unitHandle, *(short *)(iVar4 + 0x9f2) != 0)) {
+     (iVar4 = (int)unitHandle, *(u16 *)(iVar4 + 0x9f2) != 0)) {
 
     mode = *(char *)(iVar4 + 0xa2);
 
