@@ -4152,23 +4152,23 @@ void FUN_002a2a20(u8* curve,f32* outPos,f32 t)
   float fVar5;
   float fVar6;
   float fVar7;
-  float fVar8;
-  float fVar9;
+  float tSquared;
+  float originZ;
   float basis[4];
   fVar6 = 1.0f - t;
   fVar7 = fVar6 * fVar6;
   basis[0] = fVar6 * fVar7;
   basis[1] = t * fVar7 * 3.0f;
-  fVar8 = t * t;
-  basis[2] = fVar6 * fVar8 * 3.0f;
-  basis[3] = t * fVar8;
+  tSquared = t * t;
+  basis[2] = fVar6 * tSquared * 3.0f;
+  basis[3] = t * tSquared;
   startIndex = *(u16 *)(curve + 0x74);
   fVar4 = *(f32 *)DAT_00957180_abs;
   fVar5 = *(f32 *)DAT_00957184_abs;
-  fVar9 = *(f32 *)DAT_00957188_abs;
+  originZ = *(f32 *)DAT_00957188_abs;
   *outPos = fVar4;
   outPos[1] = fVar5;
-  outPos[2] = fVar9;
+  outPos[2] = originZ;
   for (i = 0; i < 4; i++) {
     fVar6 = *(float *)((u8 *)basis + (u32)i * 4 + 0);
     keyAddr = (u32)startIndex * 0x1c;
@@ -4272,17 +4272,17 @@ void FUN_002a2c40(u8* curve,f32* outPos,f32 t)
   u16 startIndex;
   float fVar4;
   float fVar5;
-  float fVar6;
+  float segmentLength;
   struct {
     float values[9];
     int mode;
   } interpolation;
   startIndex = *(u16 *)(curve + 0x74);
-  fVar6 = fGpffff82c8;
-  for (; !(t < fVar6); t = t - fVar6) {
+  segmentLength = fGpffff82c8;
+  for (; !(t < segmentLength); t = t - segmentLength) {
     startIndex++;
   }
-  t = t / fVar6;
+  t = t / segmentLength;
   if (startIndex >= 4) {
     startIndex = startIndex & 3;
   }
