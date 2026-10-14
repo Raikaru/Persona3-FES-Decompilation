@@ -4357,7 +4357,7 @@ u32 FUN_002d6370(u16 commandId)
     return units[id * 0x2c + 2] == 1;
 }
 // FUN_002d63b0
-u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
+u32 btlCommandIsMovement(BtlUnit* unit, s16 commandId, s32 param_3)
 {
     u8* commandTable = (u8*)DAT_007ce3f8;
     s32 id = (s32)commandId;

@@ -258,6 +258,7 @@ void btlUnitSetFlags(BtlUnit* unit, u16 flags);
 void btlUnitClearFlags(BtlUnit* unit, u16 flags);
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4);
 void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst);
+void btlUnitComputePlacement(BtlUnit* unit, BtlUnit* source, BtlUnit* target, s32 tableIndex, RwV3d* position, void* rotationOut, u8 mode);
 u32 btlUnitIsMoving(BtlUnit* unit);
 void btlUnitStopMoving(BtlUnit* unit);
 void btlUnitStopRotating(BtlUnit* unit);

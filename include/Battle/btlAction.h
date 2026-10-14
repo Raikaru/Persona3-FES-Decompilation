@@ -12,6 +12,9 @@ typedef struct BtlCommandRecord
     u8 pad_04[0x18];
 } BtlCommandRecord;
 
+u32 btlCommandGetPlacementCategory(BtlUnit* persona, BtlUnit* unit, u64 commandId, s64 paired);
+u32 btlCommandIsMovement(BtlUnit* unit, s16 commandId, s32 allowMove);
+
 typedef enum
 {
     BTLACTION_STATE_NON,

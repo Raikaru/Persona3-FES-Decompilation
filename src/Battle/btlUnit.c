@@ -511,8 +511,8 @@ s32 btlUnit0027f930(s32 param_1)
 
 /* W389 measured: opt_loop_invariants on nd964->936, object 1260/1328 -> 1244/1328. */
 // FUN_0027f940 NONMATCHING
-void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
-                   u16 tableIndex, RwV3d* position, void* rotationOut, u8 mode)
+void btlUnitComputePlacement(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
+                   s32 tableIndex, RwV3d* position, void* rotationOut, u8 mode)
 {
     u8* entry;
     u16 charId;
@@ -2786,20 +2786,20 @@ const void* func_00283fe0(BtlUnit* unit, u32 id)
 }
 
 // FUN_00284040
-u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
+u32 btlCommandGetPlacementCategory(BtlUnit* persona, BtlUnit* unit, u64 commandId, s64 paired)
 {
     s16 skillId;
     u16 flags;
     s16 type;
     s32 offset;
 
-    (void)unused;
-    skillId = (s16)id;
+    (void)persona;
+    skillId = (s16)commandId;
     if (skillId == -1 || skillId >= 0x1d0)
     {
         return 1;
     }
-    if (func_002d6370(id) != 0)
+    if (func_002d6370(commandId) != 0)
     {
         offset = skillId * 7;
         offset = (u32)offset << 2;
@@ -2808,7 +2808,7 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
         {
             goto return_zero;
         }
-        if (param_4 == 0)
+        if (paired == 0)
         {
             goto return_one;
         }
@@ -2823,7 +2823,7 @@ return_two:
 return_zero:
         return 0;
     }
-    type = func_003082f0(unit->datUnit, (u16)id);
+    type = func_003082f0(unit->datUnit, (u16)commandId);
     switch (type)
     {
         case 0x10:
