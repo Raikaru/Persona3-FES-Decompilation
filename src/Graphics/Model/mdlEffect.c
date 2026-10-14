@@ -38147,7 +38147,11 @@ void FUN_00349090(int *param_1,float *param_2)
 
 
 
-// FUN_00349260 NONMATCHING
+static inline f32 mdlMulFirst(f32 left, f32 right)
+{
+  return left * right;
+}
+// FUN_00349260
 
 
 void FUN_00349260(int emitter,float *particle)
@@ -38184,16 +38188,16 @@ void FUN_00349260(int emitter,float *particle)
 
   factor = (float)FUN_00358030(0);
 
-  posX = (((810.0f - halfSize) - posX) * factor + posX + 0.0f) * 0.5f;
+  posX = (mdlMulFirst(810.0f - halfSize - posX, factor) + posX + 0.0f) * 0.5f;
 
   posY = *(float *)(emitter + 0x2c);
 
   factor = (float)FUN_00358030(0);
 
-  posY = (((650.0f - halfSize) - posY) * factor + posY + 0.0f) * 0.5f;
-  posY = fGpffff80a4 * halfSize + posY;
-
+  posY = (mdlMulFirst(650.0f - halfSize - posY, factor) + posY + 0.0f) * 0.5f;
   posX = posX + fGpffff80a4 * halfSize;
+
+  posY = fGpffff80a4 * halfSize + posY;
 
   factor = (float)FUN_0052e6d8_f32(angle);
 
