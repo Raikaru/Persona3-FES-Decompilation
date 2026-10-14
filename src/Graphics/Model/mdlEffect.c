@@ -852,7 +852,7 @@ static __inline void mdlVuModulateStacked40V1(u32 c2)
 #endif
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
-void mdlEffectListDestroy(u32 *param_1);
+void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
@@ -860,10 +860,10 @@ u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
 void FUN_0031d9c0(int *param_1,u32 *param_2);
 void FUN_0031dc80(int *param_1,u32 param_2);
-void mdlEffectListCallFlagged(u32 *param_1);
+void FUN_0031dce0(u32 *param_1);
 void FUN_0031dd40(int *param_1,u32 *param_2);
-void mdlEffectListSetUniformScale(int *param_1,float *param_2);
-void mdlEffectListReleaseNodes(u32 *param_1);
+void FUN_0031dda0(int *param_1,float *param_2);
+void FUN_0031de30(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
 void FUN_0031df80(u32 *param_1);
 #pragma alias FUN_0034fcf0_i FUN_0034fcf0
@@ -1599,8 +1599,8 @@ u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
-s8 btlEplUnitIsSelected(int param_1,u8 *param_2);
-#pragma alias FUN_00352c70_u32 btlEplUnitIsSelected
+s8 FUN_00352c70(int param_1,u8 *param_2);
+#pragma alias FUN_00352c70_u32 FUN_00352c70
 extern u32 FUN_00352c70_u32(int param_1,u8 *param_2);
 u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4);
 u32 FUN_00352eb0(int param_1);
@@ -45946,7 +45946,7 @@ void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00352C70 NONMATCHING
 
 
-s8 btlEplUnitIsSelected(int target,u8 *filter)
+s8 FUN_00352c70(int target,u8 *filter)
 {
   u16 slot;
   u32 candidate;
