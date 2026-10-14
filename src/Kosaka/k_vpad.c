@@ -425,8 +425,18 @@ extern s32 func_001ed9e0(void* work);
 extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
+typedef struct RuntimeSurfaceQueue
+{
+    u8* config;
+    u32 reserved;
+    s32 count;
+    s32 cursor;
+    RuntimeVec3* vectors[2];
+    RuntimeVec3* axisOut[4];
+} RuntimeSurfaceQueue;
+
 extern void func_001eba80(RuntimeCommandWork* work, u32* result);
-extern void func_001ebd80(RuntimeWork* work, s32 param2);
+extern void func_001ebd80(RuntimeSurfaceQueue* queue, s32 param2);
 extern f32 func_001ecd90(void* data, s32 index, s32 vectorSet);
 extern f32 func_001ecec0(void* data, s32 index);
 extern s32 func_00236340(void);
@@ -6265,11 +6275,11 @@ void func_001eb920(void* data, const RuntimeVec3* position, const RuntimeVec3* n
     case 1:
         break;
     case 2:
-        func_001ebd80((RuntimeWork*)queue, 0);
+        func_001ebd80((RuntimeSurfaceQueue*)queue, 0);
         break;
     default:
-        func_001ebd80((RuntimeWork*)queue, 1);
-        func_001ebd80((RuntimeWork*)queue, 0);
+        func_001ebd80((RuntimeSurfaceQueue*)queue, 1);
+        func_001ebd80((RuntimeSurfaceQueue*)queue, 0);
         break;
     }
 }
@@ -6392,19 +6402,8 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
 }
 
 // FUN_001EBD80 NONMATCHING
-void func_001ebd80(RuntimeWork* work, s32 param2)
+void func_001ebd80(RuntimeSurfaceQueue* queue, s32 param2)
 {
-    typedef struct RuntimeSurfaceQueue
-    {
-        u8* config;
-        u32 reserved;
-        s32 count;
-        s32 cursor;
-        RuntimeVec3* vectors[2];
-        RuntimeVec3* axisOut[4];
-    } RuntimeSurfaceQueue;
-
-    RuntimeSurfaceQueue* queue = (RuntimeSurfaceQueue*)work;
     u8* config;
     f32 weightNear[2];
     f32 weightFar[2];
