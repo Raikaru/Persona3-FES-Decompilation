@@ -294,7 +294,7 @@ extern void func_00100ec0(void* resource);
 extern RuntimeMatrix* func_004c38c0(void);
 extern RuntimeVec3 D_00684400;
 extern void func_00318d10(void* context, void* object, RuntimeMatrix* matrix);
-extern void func_00492d10(void* manager, void* frame);
+extern void RpAtomicSetFrame(void* manager, void* frame);
 extern void func_00491a80(void* manager);
 extern void* func_001e1840(void);
 extern void FUN_00521250(void* destination, const void* source, u32 size);
@@ -363,7 +363,7 @@ extern void* func_00494be0(void);
 extern void func_00494d50(void* material, void* texture);
 extern void* func_004caf10(void);
 extern void func_004933d0(void* geometry);
-extern void func_00493370(void* renderObject, u32 state);
+extern void RpGeometryLock(void* renderObject, u32 state);
 extern void func_004cb930(void* geometry);
 extern void func_004cb7f0(void* geometry, void* matrix, s32 mode);
 extern void* func_00318b60(void* owner);
@@ -4474,14 +4474,14 @@ void* func_001e78c0(s32 count, void* data)
     manager = func_00491880();
     func_004919b0(manager, geometry, 0);
     func_00493b60(geometry);
-    func_00492d10(manager, *(void**)((u8*)kwlnGetMainCamera() + 4));
+    RpAtomicSetFrame(manager, *(void**)((u8*)kwlnGetMainCamera() + 4));
     return manager;
 }
 
 // FUN_001E7A60. Detach and destroy a field render manager.
 void func_001e7a60(void* renderData)
 {
-    func_00492d10(renderData, NULL);
+    RpAtomicSetFrame(renderData, NULL);
     func_00491a80(renderData);
 }
 
@@ -5460,7 +5460,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     {
         return;
     }
-    func_00493370(renderObject, 0x1a);
+    RpGeometryLock(renderObject, 0x1a);
     if ((work->flags & 1) != 0)
     {
         return;
