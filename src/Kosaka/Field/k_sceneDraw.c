@@ -54,7 +54,7 @@ extern void* func_001a1550(KwlnTask* task);
 extern f32 func_001e7c20(s32 scale);
 extern void func_001e7b10(void* quad, f32 scale);
 extern void func_004933d0(void* renderLayout);
-extern void RpGeometryLock(void* renderLayout, s32 state);
+extern void func_00493370(void* renderLayout, s32 state);
 extern f32 func_001a4600(void* camera);
 extern u32 func_00195790(void);
 extern void func_004d7f60(s32 state, u32 value);
@@ -2220,7 +2220,7 @@ void* func_001a1550(KwlnTask* task)
             KWindowQuad* quad;
 
             renderData = (KWindowRenderData*)work->renderData;
-            RpGeometryLock(renderData->layout, 2);
+            func_00493370(renderData->layout, 2);
             if (work->horizontalOffset >= (f32)work->rect.w)
             {
                 work->horizontalOffset = (f32)work->rect.w;
@@ -2247,7 +2247,7 @@ void* func_001a1550(KwlnTask* task)
             KWindowQuad* quad;
 
             renderData = (KWindowRenderData*)work->renderData;
-            RpGeometryLock(renderData->layout, 2);
+            func_00493370(renderData->layout, 2);
             if (work->verticalOffset >= (f32)work->rect.h)
             {
                 work->verticalOffset = (f32)work->rect.h;
@@ -2274,7 +2274,7 @@ void* func_001a1550(KwlnTask* task)
             KWindowQuad* quad;
 
             renderData = (KWindowRenderData*)work->renderData;
-            RpGeometryLock(renderData->layout, 2);
+            func_00493370(renderData->layout, 2);
             if (work->horizontalInset >= (f32)work->rect.w)
             {
                 work->horizontalInset = (f32)work->rect.w;
@@ -2301,7 +2301,7 @@ void* func_001a1550(KwlnTask* task)
             KWindowQuad* quad;
 
             renderData = (KWindowRenderData*)work->renderData;
-            RpGeometryLock(renderData->layout, 2);
+            func_00493370(renderData->layout, 2);
             if (work->verticalInset >= (f32)work->rect.h)
             {
                 work->verticalInset = (f32)work->rect.h;
@@ -2499,7 +2499,7 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
         return;
     }
 
-    RpGeometryLock(((KWindowRenderData*)work->renderData)->layout, 2);
+    func_00493370(((KWindowRenderData*)work->renderData)->layout, 2);
 
     {
         KWindowQuad* quad;
@@ -2773,7 +2773,7 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     {
         return;
     }
-    RpGeometryLock(layout, 2);
+    func_00493370(layout, 2);
     quad = layout->quadStore->quad;
     top = (f32)(manager->y + 2 + manager->cursor * 12);
     bottom = top + 12.0f;
