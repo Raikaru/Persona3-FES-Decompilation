@@ -10,7 +10,7 @@ extern void** func_003210a0(s32 index);
 extern void* func_004caf10(void);
 extern void func_004caf80(void* resource);
 extern void func_00474640(void* resource, void** buffer, s32 type, u32 flags);
-extern void RpAtomicSetFrame(void* resource, void* model);
+extern void func_00492d10(void* resource, void* model);
 extern void func_004747f0(void* resource);
 extern u32 func_00488f30(void);
 extern void func_00494d50(void* material, void* texture);
@@ -392,7 +392,7 @@ void func_002496e0(void* work)
     base = (u8*)work;
     camera = (u8*)func_00198590();
     *(u32*)(base + 0x600) = (u32)func_00474210(0x80, 0x20080003, NULL);
-    RpAtomicSetFrame(*(void**)(base + 0x600), func_004caf10());
+    func_00492d10(*(void**)(base + 0x600), func_004caf10());
 
     texture = func_003210a0(1);
     local.uv[0] = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
