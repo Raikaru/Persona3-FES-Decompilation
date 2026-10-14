@@ -3894,13 +3894,17 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     }
 
     {
-        RwRGBA color;
+        union
+        {
+            u32 word;
+            RwRGBA rgba;
+        } color;
         u8* colorBytes;
         u8* targetBytes;
         s32 i;
 
-        color = *(RwRGBA*)&packet->startCol;
-        colorBytes = (u8*)&color;
+        color.word = packet->startCol;
+        colorBytes = (u8*)&color.rgba;
         targetBytes = (u8*)&packet->targetCol;
         if (counter >= rgbStart)
         {
@@ -3933,7 +3937,7 @@ u32 btlUnitUpdate00285d30Packet(void* work)
                                       factor * (f32)targetBytes[3]);
         }
 
-        unit->cols[BTLUNIT_COL_MAIN] = color;
+        unit->cols[BTLUNIT_COL_MAIN] = color.rgba;
     }
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 
