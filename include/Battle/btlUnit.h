@@ -91,7 +91,7 @@ struct BtlUnit
     u16 lookAtMode;               // 0xb0. See enum 'BtlUnitLookAtMode'
     u32 lookAtTargetId;           // 0xb4
     RwV3d lookAtTargetPos;        // 0xb8
-    u32 unk_c4;                   // 0xc4
+    u32 stateFlags;                   // 0xc4
     u16 movementFlags;            // 0xc8. See 'BTLUNIT_MOVEMENTFLAGS_*'
     u8 unkData2[0x02];
     f32 unk_cc;                   // 0xcc
