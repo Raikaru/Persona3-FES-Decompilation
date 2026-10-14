@@ -2787,26 +2787,26 @@ undefined4 FUN_002b8990(undefined4 *param_1)
 {
   undefined4 uVar2;
   undefined4 uVar3;
-  s16 uVar1;
-  int bVar4;
+  s16 functionIndex;
+  int hasSecondUnit;
   s16 uVar5;
-  short sVar6;
+  short actionMode;
   u32 lVar7;
   undefined1 auStack_20 [16];
   undefined1 auStack_10 [16];
   
   uVar2 = *param_1;
   uVar3 = *(undefined4 *)(param_1[1] + 0x30);
-  uVar1 = *(s16 *)(param_1 + 3);
-  bVar4 = param_1[2] != 0;
-  uVar5 = FUN_00284040(uVar2,uVar3,uVar1,bVar4);
-  lVar7 = FUN_002d63b0(uVar2,uVar1,bVar4);
+  functionIndex = *(s16 *)(param_1 + 3);
+  hasSecondUnit = param_1[2] != 0;
+  uVar5 = FUN_00284040(uVar2,uVar3,functionIndex,hasSecondUnit);
+  lVar7 = FUN_002d63b0(uVar2,functionIndex,hasSecondUnit);
   if (lVar7 == 0) {
-    sVar6 = FUN_00284040(uVar2,uVar3,uVar1,bVar4);
-    if ((sVar6 == 3) || (sVar6 == 1)) {
+    actionMode = FUN_00284040(uVar2,uVar3,functionIndex,hasSecondUnit);
+    if ((actionMode == 3) || (actionMode == 1)) {
       FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,1);
     }
-    else if ((sVar6 == 2) || (sVar6 == 0)) {
+    else if ((actionMode == 2) || (actionMode == 0)) {
       FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,0);
     }
     FUN_0027f680(uVar2,auStack_10);
@@ -4859,8 +4859,8 @@ void func_002bacb0(u32 *param_1)
 u32 func_002bad60(u32 *param_1)
 
 {
-  short sVar1;
-  u16 *puVar2;
+  short functionKind;
+  u16 *slot;
   int iVar3;
   u16 functionIndex;
   u32 unaff_s2_lo;
@@ -4868,23 +4868,23 @@ u32 func_002bad60(u32 *param_1)
   
   if (func_002b9350_u32(*param_1) == 0)
     return 0;
-  puVar2 = (u16 *)param_1[4];
-    if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
+  slot = (u16 *)param_1[4];
+    if ((*(u32 *)(slot + 2) & 0xff000000) == 0) {
       return 1;
     }
     else {
       functionIndex = *(volatile u16 *)(param_1 + 3);
       iVar3 = func_002b9370(*param_1,functionIndex);
-      if ((*puVar2 & 0x40) == 0) {
+      if ((*slot & 0x40) == 0) {
         if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
-          *puVar2 = *puVar2 | 0x100;
+          *slot = *slot | 0x100;
           return 0;
         }
         if (param_1[6] == 0) {
           u32 flags = param_1[7];
           if ((flags & 0xc00) != 0xc00) {
-          sVar1 = *(short *)(param_1 + 3);
-          switch (sVar1) {
+          functionKind = *(short *)(param_1 + 3);
+          switch (functionKind) {
           case 0:
             unaff_s2_lo = param_1[1];
             unaff_s1_lo = param_1[2];
@@ -4894,9 +4894,9 @@ u32 func_002bad60(u32 *param_1)
             unaff_s1_lo = param_1[1];
             break;
           }
-          *(u32 *)(puVar2 + 8) =
-              func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
-          *puVar2 = *puVar2 | 0x30;
+          *(u32 *)(slot + 8) =
+              func_002b93e0_4arg(*param_1,functionKind,unaff_s2_lo,unaff_s1_lo);
+          *slot = *slot | 0x30;
         }
           }
         param_1[6] = param_1[6] + 2;
