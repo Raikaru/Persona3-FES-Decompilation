@@ -1182,6 +1182,12 @@ u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
 #pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
 void FUN_00329d60(float param_1,u8 (*param_2) [16]);
+/* Operand order of the product fixes the MWCC madd.s/mul.s operand order
+ * (measured: FUN_00349260 plain `*` swaps were normalised away). */
+static inline f32 mdlMulFirst(f32 left, f32 right)
+{
+  return left * right;
+}
 void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
@@ -38147,10 +38153,6 @@ void FUN_00349090(int *param_1,float *param_2)
 
 
 
-static inline f32 mdlMulFirst(f32 left, f32 right)
-{
-  return left * right;
-}
 // FUN_00349260
 
 
