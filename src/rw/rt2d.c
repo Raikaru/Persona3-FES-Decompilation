@@ -4028,7 +4028,7 @@ u64 FUN_004b65a0(u64 param_1)
 }
 #pragma schedule on
 // FUN_004B6600 NONMATCHING
-u64 AnimClose(u64 param_1)
+u64 AnimClose(s32 param_1)
 {
   u64 uVar2;
 
@@ -5345,7 +5345,7 @@ u64 FUN_004b8740(u64 param_1)
 }
 #pragma schedule on
 // FUN_004B87D0 NONMATCHING
-u64 UVAnimClose(u64 param_1)
+u64 UVAnimClose(s32 param_1)
 {
   DAT_007ce8ac = DAT_007ce8ac + -1;
   FUN_004b7690((int)DAT_0077e4e0);
@@ -5378,7 +5378,7 @@ bool RpUVAnimPluginAttach(void)
   return bVar1;
 }
 // FUN_004B88E0 NONMATCHING
-u64 UVAnimConstructor(u64 param_1)
+u64 UVAnimConstructor(s32 param_1)
 
 {
   FUN_00521408((int)param_1 + iGpffffbbc4,0,0x30);
