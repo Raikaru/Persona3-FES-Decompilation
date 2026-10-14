@@ -2807,42 +2807,24 @@ void* func_00314170(void* animPtr, void* entryPtr)
   int *anim;
 
   anim = (int *)animPtr;
-  func_004b6ec0(animPtr,*anim);
-  anim[0x10] = (int)&LAB_00314020;
-  anim[0x11] = (int)&LAB_00314060;
-
-
   if (entryPtr != 0) {
-
     entry = (u16 *)entryPtr;
-
+    index = (long)(short)entry[2];
     table = *(int **)(entry + 0xc);
-
-    if ((((table == (int *)0x0) || ((long)(u32)*(u16 *)(table + 3) <= (long)(short)entry[2])
-
-         ) || (*(int *)(*table + (short)entry[2] * 8) == 0)) || ((*entry & 1) == 0)) {
-
-      table = *(int **)(entry + 0xc);
-      if (table != (int *)0x0) {
-
-        index = (long)(short)entry[2];
-        if ((((index < (long)(u32)*(u16 *)(table + 3)) &&
-              (*(int *)(*table + (short)entry[2] * 8) != 0)) &&
-             ((*entry & 1) == 0)) &&
-            ((0 <= (short)entry[2]))) {
-
-          func_004b74c0_typed(*(f32 *)(*anim + 0xc),animPtr);
-          *(u8 *)(entry + 1) = 1;
-        }
+    if (!(table != (int *)0x0 && index < (long)(u32)*(u16 *)(table + 3) &&
+          *(int *)(*table + index * 8) != 0 && (*entry & 1) != 0)) {
+      if (table != (int *)0x0 && index < (long)(u32)*(u16 *)(table + 3) &&
+          *(int *)(*table + index * 8) != 0 && (*entry & 1) == 0 && index >= 0) {
+        func_004b74c0_typed(*(f32 *)(*anim + 0xc), animPtr);
+        *(u8 *)(entry + 1) = 1;
       }
       return animPtr;
-
     }
-
   }
-
+  func_004b6ec0(animPtr, *anim);
+  anim[0x10] = (int)&LAB_00314020;
+  anim[0x11] = (int)&LAB_00314060;
   return animPtr;
-
 }
 
 // FUN_003142B0
