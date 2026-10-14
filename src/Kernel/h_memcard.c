@@ -200,13 +200,13 @@ minus_return:
 }
 
 // FUN_0018f2a0
-void func_0018f2a0(void)
+void H_Memcard_SetSeqMode9(void)
 {
     sMemcardSeqMode = 9;
 }
 
 // FUN_0018f2b0
-void func_0018f2b0(void)
+void H_Memcard_SetSeqMode4(void)
 {
     sMemcardSeqMode = 4;
 }
@@ -858,7 +858,7 @@ done:
 }
 
 // FUN_00190580
-void func_00190580(void)
+void H_Memcard_SetAbort(void)
 {
     sMemcardAbort = 1;
 }
