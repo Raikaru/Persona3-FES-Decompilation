@@ -4139,12 +4139,12 @@ void* func_00112420(void* source)
     return node;
 }
 // FUN_001124B0 NONMATCHING
-void func_001124b0(void* param_1)
+void func_001124b0(void* blob)
 {
     MaestroBlobNode* node;
     s32 i;
 
-    node = (MaestroBlobNode*)param_1;
+    node = (MaestroBlobNode*)blob;
     if (node->prev == NULL)
     {
         if (node->next == NULL)
