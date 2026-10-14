@@ -207,7 +207,7 @@ char* func_00209e90(void)
 }
 
 // FUN_00209ea0
-void func_00209ea0(u8* work)
+void sflDataInitPanel(u8* work)
 {
     *(u32*)(work + 0x00) = 0;
     *(u32*)(work + 0x38) = 0;
@@ -233,7 +233,7 @@ static void panel_init_common(u8* work, u32 state)
 {
     s32 i;
 
-    func_00209ea0(work);
+    sflDataInitPanel(work);
     *(u32*)(work + 4) = state;
     func_0020c7b0(work + 0xe0);
     for (i = 0; i < 4; i++) {
@@ -245,7 +245,7 @@ static void panel_init_common(u8* work, u32 state)
 }
 
 // FUN_00209f00
-void func_00209f00(void* work)
+void sflDataSetupLayoutPanel(void* work)
 {
     u8* panel = (u8*)work;
 
@@ -290,7 +290,7 @@ void func_00209f00(void* work)
     f32 valC;
     f32 valD;
 
-    func_00209ea0(panel);
+    sflDataInitPanel(panel);
     *(u32*)(panel + 0x4) = 0;
     func_0020c7b0(panel + 0xe0);
     *(u32*)(panel + 0x170) = 0;
@@ -657,7 +657,7 @@ void func_00209f00(void* work)
 }
 
 // FUN_0020a800
-void func_0020a800(void* work)
+void sflDataSetupFramePanel(void* work)
 {
     u8* panel;
     PanelVec3 outerUpperRight;
@@ -676,7 +676,7 @@ void func_0020a800(void* work)
     f32 lowerY;
 
     panel = (u8*)work;
-    func_00209ea0(panel);
+    sflDataInitPanel(panel);
     *(u32*)(panel + 4) = 1;
     func_0020c7b0(panel + 0xe0);
     *(u32*)(panel + 0x328) = 0;
@@ -811,7 +811,7 @@ void func_0020a800(void* work)
 }
 
 // FUN_0020ab30
-void func_0020ab30(void* work)
+void sflDataSetupQuadPanel(void* work)
 {
     u8* panel;
     PanelVec3 upperRight;
@@ -820,7 +820,7 @@ void func_0020ab30(void* work)
     PanelVec3 upperLeft;
 
     panel = (u8*)work;
-    func_00209ea0(panel);
+    sflDataInitPanel(panel);
     *(u32*)(panel + 4) = 2;
     func_0020c7b0(panel + 0xe0);
 
