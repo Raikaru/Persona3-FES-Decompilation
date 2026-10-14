@@ -5414,7 +5414,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 {
-  u32 uVar1;
+  u32 keyIndex;
   float *key;
   float fraction;
   float start;
@@ -5425,14 +5425,14 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
   float alpha;
 
   data = param_2[3];
-  uVar1 = FUN_0031f740(param_2,param_1);
-  if (uVar1 >= *param_2 - 1U) {
-    address = uVar1 * 8;
+  keyIndex = FUN_0031f740(param_2,param_1);
+  if (keyIndex >= *param_2 - 1U) {
+    address = keyIndex * 8;
     address += (u32)data;
     *(float *)&DAT_007ce534 = *(float *)(address + 4);
   }
   else {
-    key = (float *)((u32)(uVar1 * 8) + (u32)data);
+    key = (float *)((u32)(keyIndex * 8) + (u32)data);
     start = key[0];
     output = key[1];
     fraction = param_1 - start;
