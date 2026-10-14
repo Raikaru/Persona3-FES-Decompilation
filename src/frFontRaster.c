@@ -1,4 +1,5 @@
 #include "temporary.h"
+#include "fr_font_internal.h"
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -46,7 +47,6 @@ extern u8 *DAT_007ce644;
 void FUN_003b35e0(int param_1);
 void FUN_003b3740(void);
 void FUN_003b3770(void);
-u64  FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int param_6,  int param_7,u32 param_8);
 u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3);
 u32 FUN_003b3dd0(u32 param_1,int param_2);
 u32 FUN_003b3e00(u32 param_1,int param_2);
@@ -199,7 +199,7 @@ void FUN_003b3770(void)
 #pragma opt_lifetimes on
 // FUN_003B38F0 NONMATCHING
 u64
-FUN_003b38f0(float depthBias, int xFixed, int yFixed, u32 *drawState, int cacheKey, int offsetX, int offsetY, u32 colour)
+FUN_003b38f0(float depthBias, int xFixed, int yFixed, u8 *drawState, int cacheKey, int offsetX, int offsetY, u32 colour)
 {
   float uvU;
   float uvV;
