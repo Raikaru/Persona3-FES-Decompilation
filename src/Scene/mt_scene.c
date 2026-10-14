@@ -1461,7 +1461,7 @@ void FUN_003b7090(u64 param_1)
 /* W420 negative: caching the DAT_006a2d20/30/40/50_abs base through a local pointer left nd 643, object 1104/1104 (window 1104), rate 0.582428 unchanged. */
 /* W420 negative: changing the stack vector z field to f32 emitted an oversized 1160-byte object and nd701 against the 1104-byte window; reverted. */
 // FUN_003B7460 NONMATCHING
-void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
+void FUN_003b7460(u8 *resource, RwV3d *position, RwV3d *direction, RwV3d *scale)
 {
     void *model;
     struct {
@@ -1469,13 +1469,13 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
         u32 z;
         u32 pad;
     } stackVec[4];
-    u32 auStack_30[16];
-    u32 auStack_70[16];
+    u32 transformWords[16];
+    u32 outputWords[16];
     u32 *src;
     u32 *dst;
     u32 value0;
     u32 value1;
-    s32 type;
+    s32 resourceType;
     s32 i;
 
     stackVec[0].xy = *(u64 *)DAT_006a2d20_abs;
@@ -1487,39 +1487,39 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
     stackVec[3].xy = *(u64 *)DAT_006a2d50_abs;
     stackVec[3].z = *(u32 *)(DAT_006a2d50_abs + 8);
 
-    if (param_1 != 0) {
-        if (param_2 != 0) {
-            *(RwV3d *)(param_1 + 4) = *param_2;
+    if (resource != 0) {
+        if (position != 0) {
+            *(RwV3d *)(resource + 4) = *position;
         }
-        if (param_3 != 0) {
-            *(RwV3d *)(param_1 + 0x10) = *param_3;
+        if (direction != 0) {
+            *(RwV3d *)(resource + 0x10) = *direction;
         }
-        if (param_4 != 0) {
-            *(RwV3d *)(param_1 + 0x1c) = *param_4;
+        if (scale != 0) {
+            *(RwV3d *)(resource + 0x1c) = *scale;
         }
-        stackVec[3].xy = *(u64 *)(param_1 + 0x1c);
-        stackVec[3].z = *(u32 *)(param_1 + 0x24);
+        stackVec[3].xy = *(u64 *)(resource + 0x1c);
+        stackVec[3].z = *(u32 *)(resource + 0x24);
 
-        type = (s32)(*(u16 *)param_1 & 0xffc00) >> 10;
-        if (type == 10) {
-            model = *(void **)(param_1 + 0x104);
+        resourceType = (s32)(*(u16 *)resource & 0xffc00) >> 10;
+        if (resourceType == 10) {
+            model = *(void **)(resource + 0x104);
             if (model == 0) {
                 FUN_005225a8(0x6a2d60);
             } else {
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(param_1 + 0x14), 0);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(param_1 + 0x10), 1);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(param_1 + 0x18), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(resource + 0x14), 0);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(resource + 0x10), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(resource + 0x18), 1);
                 FUN_00318a90_typed(model, (RwV3d *)&stackVec[3].xy, 2);
-                FUN_00318a30_typed(model, (RwV3d *)(param_1 + 4), 2);
+                FUN_00318a30_typed(model, (RwV3d *)(resource + 4), 2);
             }
-        } else if (type == 6) {
-            model = *(void **)(param_1 + 0x104);
+        } else if (resourceType == 6) {
+            model = *(void **)(resource + 0x104);
             if (model == 0) {
                 FUN_005225a8(0x6a2d80);
             } else {
-                FUN_003b79a0_typed(auStack_30, (u64)(param_1 + 4), (u32 *)(param_1 + 0x10));
-                src = auStack_30;
-                dst = auStack_70;
+                FUN_003b79a0_typed(transformWords, (u64)(resource + 4), (u32 *)(resource + 0x10));
+                src = transformWords;
+                dst = outputWords;
                 for (i = 8; i > 0; i--) {
                     value0 = src[0];
                     value1 = src[1];
@@ -1528,40 +1528,40 @@ void FUN_003b7460(u8 *param_1, RwV3d *param_2, RwV3d *param_3, RwV3d *param_4)
                     dst[1] = value1;
                     dst += 2;
                 }
-                FUN_0034fe80(model, auStack_70);
+                FUN_0034fe80(model, outputWords);
             }
-        } else if (type == 3) {
-            model = *(void **)(param_1 + 0x128);
+        } else if (resourceType == 3) {
+            model = *(void **)(resource + 0x128);
             if (model == 0) {
                 FUN_005225a8(0x6a2d60);
             } else {
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(param_1 + 0x14), 0);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(param_1 + 0x10), 1);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(param_1 + 0x18), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(resource + 0x14), 0);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(resource + 0x10), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(resource + 0x18), 1);
                 FUN_00318a90_typed(model, (RwV3d *)&stackVec[3].xy, 2);
-                FUN_00318a30_typed(model, (RwV3d *)(param_1 + 4), 2);
+                FUN_00318a30_typed(model, (RwV3d *)(resource + 4), 2);
             }
-        } else if (type == 2) {
-            model = *(void **)(param_1 + 0x118);
+        } else if (resourceType == 2) {
+            model = *(void **)(resource + 0x118);
             if (model == 0) {
                 FUN_005225a8(0x6a2d60);
             } else {
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(param_1 + 0x14), 0);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(param_1 + 0x10), 1);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(param_1 + 0x18), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(resource + 0x14), 0);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(resource + 0x10), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(resource + 0x18), 1);
                 FUN_00318a90_typed(model, (RwV3d *)&stackVec[3].xy, 2);
-                FUN_00318a30_typed(model, (RwV3d *)(param_1 + 4), 2);
+                FUN_00318a30_typed(model, (RwV3d *)(resource + 4), 2);
             }
-        } else if (type == 1) {
-            model = *(void **)(param_1 + 0x128);
+        } else if (resourceType == 1) {
+            model = *(void **)(resource + 0x128);
             if (model == 0) {
                 FUN_005225a8(0x6a2d60);
             } else {
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(param_1 + 0x14), 0);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(param_1 + 0x10), 1);
-                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(param_1 + 0x18), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[0].xy, *(f32 *)(resource + 0x14), 0);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[1].xy, *(f32 *)(resource + 0x10), 1);
+                FUN_00318a50_typed(model, (RwV3d *)&stackVec[2].xy, *(f32 *)(resource + 0x18), 1);
                 FUN_00318a90_typed(model, (RwV3d *)&stackVec[3].xy, 2);
-                FUN_00318a30_typed(model, (RwV3d *)(param_1 + 4), 2);
+                FUN_00318a30_typed(model, (RwV3d *)(resource + 4), 2);
             }
         }
     }
