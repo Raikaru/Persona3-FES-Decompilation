@@ -7464,8 +7464,7 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
 
 // FUN_002c6ba0 NONMATCHING
 
-/* W322 probe: func_002c6ba0 with opt_loop_invariants on improved normalized_diff 394 -> 358 (object 632/656). */
-#pragma opt_loop_invariants on
+/* W322 re-measured: with opt_loop_invariants on, frame was -0x90 and nd132; off gives frame -0x80 (matches retail) and nd118. checkResult[3] vs [4] is codegen-identical. */
 u16 func_002c6ba0(int unit)
 
 {
@@ -7476,7 +7475,7 @@ u16 func_002c6ba0(int unit)
   u32 kind = 0;
   u32 slot = 0;
   u32 i = 0;
-  int checkResult [4];
+  int checkResult [3];
   
   index = *(u16 *)(*(int *)((int)unit + 0x30) + 0xa4);
   slot = 0;
