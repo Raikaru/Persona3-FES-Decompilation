@@ -1494,7 +1494,7 @@ u32 FUN_003b2430(void *param_1);
 void FUN_003b2900(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003b2940(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7,u32 param_8);
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8 param_6,u8 param_7,u32 param_8,  u32 param_9);
-u32 FUN_003b2a00(u32 param_1);
+u32 frFontMaskFlags(u32 param_1);
 void FUN_003b2a10(int param_1,u32 param_2);
 u64 FUN_003b2a30(void *param_1,u32 param_2);
 s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
@@ -1552,7 +1552,7 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b2900(...) ((void (*)(...))FUN_003b2900)(__VA_ARGS__)
 #define FUN_003b2940(...) ((void (*)(...))FUN_003b2940)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
-#define FUN_003b2a00(...) ((u32 (*)(...))FUN_003b2a00)(__VA_ARGS__)
+#define frFontMaskFlags(...) ((u32 (*)(...))frFontMaskFlags)(__VA_ARGS__)
 #define FUN_003b2a10(...) ((void (*)(...))FUN_003b2a10)(__VA_ARGS__)
 #define FUN_003b2a30(...) ((u64 (*)(...))FUN_003b2a30)(__VA_ARGS__)
 #define FUN_003b2bf0(...) ((u8 (*)(...))FUN_003b2bf0)(__VA_ARGS__)
@@ -1735,8 +1735,8 @@ void FUN_003afa40(void)
 void FUN_003b2430_typed(void *param_1);
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
-#undef FUN_003b2a00
-#define FUN_003b2a00(...) ((u32 (*)(...))FUN_003b2a00)(__VA_ARGS__)
+#undef frFontMaskFlags
+#define frFontMaskFlags(...) ((u32 (*)(...))frFontMaskFlags)(__VA_ARGS__)
 #undef FUN_003b2a10
 #define FUN_003b2a10(...) ((void (*)(...))FUN_003b2a10)(__VA_ARGS__)
 #undef FUN_003b2a30
