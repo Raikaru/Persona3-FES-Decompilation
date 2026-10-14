@@ -6362,7 +6362,7 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 // FUN_00320DE0 NONMATCHING
 
 
-u32 FUN_00320de0(u32 param_1,u32 *param_2)
+u32 FUN_00320de0(u32 atomic,u32 *search)
 {
   s32 dataIndex;
   s32 materialIndex;
@@ -6375,7 +6375,7 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
   s32 arrayIndex;
   void *userData;
   s32 dataCount;
-  geometry = *(u32 *)((u32)param_1 + 0x18);
+  geometry = *(u32 *)((u32)atomic + 0x18);
   materialCount = *(s32 *)(geometry + 0x24);
   materialIndex = 0;
   while (materialIndex < materialCount) {
@@ -6391,8 +6391,8 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
         while (dataIndex < dataCount) {
           if (RpUserDataArrayGetFormat((u32)userData) == 3) {
             data = (char *)FUN_0048ef80((u32)userData,dataIndex);
-            if (strcmp((char *)*param_2,data) == 0) {
-              *(u16 *)(param_2 + 1) = *(u16 *)(param_2 + 1) + 1;
+            if (strcmp((char *)*search,data) == 0) {
+              *(u16 *)(search + 1) = *(u16 *)(search + 1) + 1;
               break;
             }
           }
@@ -6403,7 +6403,7 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
     }
     materialIndex++;
   }
-  return param_1;
+  return atomic;
 }
 
 
