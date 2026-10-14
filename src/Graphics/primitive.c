@@ -378,7 +378,8 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
             for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
             {
                 currRenderState = &sRenderStates[i];
-                RwRenderStateGet((currSavedRenderState = &savedRenderStates[i], currRenderState->renderState), currSavedRenderState);
+                currSavedRenderState = &savedRenderStates[i];
+                RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
                 RwRenderStateSet(currRenderState->renderState, currRenderState->val);
             }
 
@@ -428,7 +429,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         {
             for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
             {
-                RwRenderStateSet((0, sRenderStates[j]).renderState, savedRenderStates[j]);
+                RwRenderStateSet(sRenderStates[j].renderState, savedRenderStates[j]);
             }
         }
     }
