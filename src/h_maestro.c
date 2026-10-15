@@ -231,7 +231,7 @@ extern const char D_005D6C10[];
 extern const char D_005D6CD0[];
 extern const char D_005D6E10[];
 extern void* func_0010f6c0(KwlnTask* task);
-extern const char* func_001022e0(HCdvd* cdvd, s32 entryIndex);
+extern const char* H_Cdvd_ArchiveEntryName(HCdvd* cdvd, s32 entryIndex);
 extern void* func_0010c1a0(void* param_1, const char* path, ...);
 extern void func_00102720(const char* path, const void* archive);
 extern void* func_0010c3a0(void* stream, u32* finished, u32 param_3);
@@ -3120,7 +3120,7 @@ void* func_001107d0(KwlnTask* task)
             s32 i;
             s8 recordType;
 
-            externalPath = func_001022e0(work->cdvd, work->resourceIndex + 1);
+            externalPath = H_Cdvd_ArchiveEntryName(work->cdvd, work->resourceIndex + 1);
             if (externalPath != NULL)
             {
                 char fullPath[256];
