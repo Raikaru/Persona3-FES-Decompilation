@@ -35,8 +35,8 @@ extern void FUN_00238dc0(void*, s32, s32, s32, float*);
 extern void FUN_00238bf0(void*, s32, s32, s32, float*);
 extern void* brPersonaGetPortraitFrame(s32);
 extern void* brPersonaGetPortraitFrame(s32);
-extern void FUN_003b0e70(s32);
-extern void FUN_003b0e90(s32);
+extern void frFontSetFlagBits(s32);
+extern void frFontClearFlagBits(s32);
 extern void FUN_003b0d70(s32, s32, s32);
 extern void FUN_003b0e20(s32, s32);
 extern u32 FUN_00239140(s32);
@@ -255,14 +255,14 @@ void brHero00262790(void)
             FUN_0021d3b0(w + i * 0x40 + 0xad8, value);
         }
     }
-    FUN_003b0e70(1);
-    FUN_003b0e90(2);
+    frFontSetFlagBits(1);
+    frFontClearFlagBits(2);
     uGpffffb948 = 0x78;
     task = (u32)FUN_003b0970(FUN_00177790(1), 1, 5, 0, 0);
     uGpffffb948 = 0;
     w[0xad4] = task;
-    FUN_003b0e90(1);
-    FUN_003b0e70(2);
+    frFontClearFlagBits(1);
+    frFontSetFlagBits(2);
     tailValue = FUN_0021cca0(text1, 0x11);
     FUN_0021d3b0(w + 0xc58, tailValue);
     FUN_0021e380(w + 0xc98, tailValue, 1);
