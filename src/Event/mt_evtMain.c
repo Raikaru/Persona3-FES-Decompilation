@@ -515,7 +515,7 @@ float FUN_0038a220(int param_1);
 float evtCommandParamF32(int param_1);
 u8 FUN_003b86c0(f32 param_1, u32 param_2, u32 param_3);
 u32 FUN_003b8730(f32 param_1, u16 param_2, void *param_3);
-u32 FUN_003b89f0(f32 param_1, u16 param_2, char *param_3, u32 param_4);
+u32 MT_Scene_BeginResPathAnimById(f32 param_1, u16 param_2, char *param_3, u32 param_4);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
 int FUN_00361f20(int param_1);
@@ -558,7 +558,7 @@ long FUN_00386ae0(u64 param_1,u64 param_2);
 #pragma alias FUN_0038c540_evt FUN_0038c540
 extern void FUN_0038c540_evt(int param_1,int param_2,int param_3,u32 param_4,f32 *param_5,f32 *param_6);
 #pragma alias FUN_003b5d10_evt FUN_003b5d10
-#pragma alias FUN_003b8310_evt FUN_003b8310
+#pragma alias FUN_003b8310_evt MT_Scene_SetResEnabledById
 extern u32 FUN_003b8310_evt(u16 param_1,int param_2);
 extern u32 FUN_003b5d10_evt(u32 param_1);
 u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4);
@@ -578,7 +578,7 @@ extern u32 FUN_003b9260_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u1
 extern u32 FUN_003b8ff0_evt_wide(float param_1,u32 param_2,u32 param_3,s32 param_4,s32 param_5,u32 param_6,s32 param_7);
 #pragma alias FUN_003b9260_evt_wide FUN_003b9260
 extern u32 FUN_003b9260_evt_wide(float param_1,u32 param_2,u32 param_3,s32 param_4,s32 param_5,u32 param_6,s32 param_7);
-#pragma alias FUN_003b8e10_evt FUN_003b8e10
+#pragma alias FUN_003b8e10_evt MT_Scene_SetResColorParamById
 extern u64 FUN_003b8e10_evt(u16 param_1,u8 param_2,short param_3,u32 param_4);
 u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
 u64 FUN_003952b0(u64 param_1,int param_2);
@@ -1983,7 +1983,7 @@ void FUN_00362120(int param_1,int param_2,int param_3)
 
   int iVar3;
 
-  iVar3 = FUN_003b5d00();
+  iVar3 = MT_Scene_GetResManager();
 
   if (iVar3 != 0) {
 
@@ -1993,7 +1993,7 @@ void FUN_00362120(int param_1,int param_2,int param_3)
 
         if (piVar4[0x19] == 1) {
 
-          FUN_003b8310(sVar1,0);
+          MT_Scene_SetResEnabledById(sVar1,0);
 
         }
 
@@ -2005,7 +2005,7 @@ void FUN_00362120(int param_1,int param_2,int param_3)
 
         else {
 
-          FUN_003b8310(sVar1,0);
+          MT_Scene_SetResEnabledById(sVar1,0);
 
         }
 
@@ -2019,13 +2019,13 @@ void FUN_00362120(int param_1,int param_2,int param_3)
 
       if (param_1 == 0) {
 
-        FUN_003b8310(*puVar2,1);
+        MT_Scene_SetResEnabledById(*puVar2,1);
 
       }
 
       else {
 
-        FUN_003b8310(*puVar2,0);
+        MT_Scene_SetResEnabledById(*puVar2,0);
 
       }
 
@@ -2742,7 +2742,7 @@ void FUN_00362f20(int param_1)
 {
   u32 lVar1;
 
-  lVar1 = FUN_003b5d00();
+  lVar1 = MT_Scene_GetResManager();
   if (lVar1 == 0) {
     return;
   }
@@ -3004,7 +3004,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
         *(u32 *)(iVar13 + 4) = *(u32 *)(iVar13 + 4) & 0xfffffffd;
 
-        FUN_003bcc80();
+        MT_Scene_StopShake();
 
       }
 
@@ -3012,7 +3012,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
         *(u32 *)(iVar13 + 4) = *(u32 *)(iVar13 + 4) | 2;
 
-        FUN_003bcbf0(param_2[1],param_2[8]);
+        MT_Scene_StartShake(param_2[1],param_2[8]);
 
       }
 
@@ -4330,7 +4330,7 @@ u16 * FUN_003646d0(u32 param_1,int param_2)
 
         FUN_003b86c0(uVar12,lVar7,(int)lVar8 + 4);
 
-        lVar8 = FUN_003b8690((int)lVar7 + 4,(int)lVar8 + 4,&uStack_4);
+        lVar8 = MT_Scene_GetSegmentHeadingAngle((int)lVar7 + 4,(int)lVar8 + 4,&uStack_4);
 
         if (lVar8 == 1) {
 
@@ -4601,7 +4601,7 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
           }
           if ((char)puVar11[0x13] == '\0') {
             iVar6 = FUN_003b5d10(*(u16 *)(param_2 + 0xc));
-            lVar8 = FUN_003b8690(iVar6 + 4,&uStack_10,&uStack_4);
+            lVar8 = MT_Scene_GetSegmentHeadingAngle(iVar6 + 4,&uStack_10,&uStack_4);
             if (lVar8 == 1) {
               puVar7 = (u8 *)0xc;
               puVar9 = auStack_20;
@@ -4630,7 +4630,7 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
                        (char)puVar11[0x1b],*(u8 *)((int)puVar11 + 0x37));
         }
         if ('\0' < acStack_170[0]) {
-          FUN_003b89f0(uVar12,*(u16 *)(param_2 + 0xc),acStack_170,(char)uVar4 != '\0');
+          MT_Scene_BeginResPathAnimById(uVar12,*(u16 *)(param_2 + 0xc),acStack_170,(char)uVar4 != '\0');
           *(u32 *)(param_2 + 100) = (u32)(cVar1 != '\0');
           FUN_005225a8((const char *)(DAT_006a0000 - 0x2930));
         }
@@ -4766,7 +4766,7 @@ void FUN_00364e40(u32 param_1,int param_2,int param_3)
 
           stack[2] = 0;
 
-          FUN_003b79a0(auStack_60,auStack_20,stack);
+          MT_Scene_BuildResMatrix(auStack_60,auStack_20,stack);
 
           FUN_00319090((void *)iVar7,uVar9);
 
@@ -5048,12 +5048,12 @@ void FUN_00365430(int param_1,int param_2)
 
       if (((*(u32 *)(iVar3 + 4) & 8) == 0) && (param_1 == *(int *)(iVar3 + 0x10))) {
 
-        FUN_003b78b0((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
+        MT_Scene_SetResPlacement((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
         positionPtr = &position;
         position = *(EvtPosition65430 *)(DAT_006a0000_65430_abs - 0x2918);
-        FUN_003b7930((u16)piVar1[3],positionPtr);
+        MT_Scene_SetResAngles((u16)piVar1[3],positionPtr);
         FUN_003b8f30((u16)piVar1[3]);
-        FUN_003b8e10((u16)piVar1[3],*(u8 *)((int)piVar1 + 0x57),0,0);
+        MT_Scene_SetResColorParamById((u16)piVar1[3],*(u8 *)((int)piVar1 + 0x57),0,0);
 
         piVar1[0x19] = 0;
 
@@ -5202,7 +5202,7 @@ void FUN_003657e0(int param_1,int param_2)
 
         FUN_003bb400(0x1e58);
 
-        FUN_003b78b0((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
+        MT_Scene_SetResPlacement((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
 
         FUN_003b8f30((u16)piVar1[3]);
 
@@ -5279,10 +5279,10 @@ void FUN_003658b0(u32 param_1,int param_2)
             switch ((char)puVar1[8]) {
             case 0:
               if ((char)puVar1[10] == '\0') {
-                FUN_003b9500(lVar3,1);
+                MT_Scene_SetResActive(lVar3,1);
               }
               else {
-                FUN_003b9500(lVar3,0);
+                MT_Scene_SetResActive(lVar3,0);
               }
               break;
             case 1:
@@ -5517,7 +5517,7 @@ switch (cVar1) {
                   pos1.x = *(float *)((int)puVar3 + 0x20);
                   pos1.y = *(float *)((int)puVar3 + 0x24);
                   pos1.z = *(float *)((int)puVar3 + 0x28);
-                  FUN_003b78b0(sVar4,&pos0,&pos1);
+                  MT_Scene_SetResPlacement(sVar4,&pos0,&pos1);
                   FUN_005225a8(DAT_0069d738_abs);
                 }
                 break;
@@ -5543,7 +5543,7 @@ switch (cVar1) {
                 uVar5 = FUN_003968a0(*(u32 *)(param_2 + 0x710),lVar7);
                 uVar2 = *(short *)((int)puVar3 + 0x14);
                 mode = *(u8 *)((int)puVar3 + 0x12);
-                FUN_003b8e10(uVar5,mode,uVar2,0);
+                MT_Scene_SetResColorParamById(uVar5,mode,uVar2,0);
                 break;
               }
             }
@@ -6121,7 +6121,7 @@ void FUN_00366970(u32 param_1,u32 param_2)
   u8 *candidate;
   u8 *matched;
 
-  event = (u8 *)FUN_003b5d00();
+  event = (u8 *)MT_Scene_GetResManager();
   if (event != NULL) {
     candidate = *(u8 **)(event + 4);
     while (candidate != NULL) {
@@ -6353,7 +6353,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
   if (((*(u32 *)(iVar6 + 4) & 1) != 0) && ((*(u32 *)(iVar6 + 4) & 2) == 0)) {
 
-    FUN_003bcc80();
+    MT_Scene_StopShake();
 
   }
 
@@ -8904,7 +8904,7 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
   if (iVar6 == 0) {
     return 0;
   }
-  lVar3 = FUN_003b5d00();
+  lVar3 = MT_Scene_GetResManager();
   if (lVar3 == 0) {
     return 0;
   }
@@ -11472,7 +11472,7 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
       break;
     case 8:
 
-      if ((*(int *)(iVar7 + 0x118) == 0) && (lVar4 = FUN_003b5d00(), lVar4 != 0)) {
+      if ((*(int *)(iVar7 + 0x118) == 0) && (lVar4 = MT_Scene_GetResManager(), lVar4 != 0)) {
 
         FUN_003897f0(param_3);
 
@@ -13608,7 +13608,7 @@ u32 FUN_0036e2f0(int param_1)
 
     *puVar11 = 1;
 
-    lVar9 = FUN_003b5d00();
+    lVar9 = MT_Scene_GetResManager();
 
     if (lVar9 == 0) {
 
@@ -13948,7 +13948,7 @@ code * FUN_0036e690(int param_1)
 
               FUN_003625e0();
 
-              lVar4 = FUN_003b5d00();
+              lVar4 = MT_Scene_GetResManager();
 
               if ((lVar4 != 0) && ((DAT_007e094e & 0x80) != 0)) {
 
@@ -14344,7 +14344,7 @@ void FUN_0036f000(int param_1)
 
   FUN_00103cb0();
 
-  FUN_003bcc80();
+  MT_Scene_StopShake();
 
   FUN_003970d0();
 
