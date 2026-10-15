@@ -842,7 +842,7 @@ extern u32 uGpffffb900;
 extern u32 uGpffffb924;
 
 u32 FUN_00524388(const char *param_1);
-u32 FUN_003b5d00(void);
+u32 MT_Scene_GetResManager(void);
 bool FUN_0036d320(int param_1);
 bool FUN_0036f480(void);
 bool FUN_00372c40(int param_1);
@@ -1192,9 +1192,9 @@ void FUN_0038a7c0(u32 *param_1,u32 *param_2);
 void FUN_0038a7c0_vec(EvtVec3 *param_1,EvtVec3 *param_2);
 #pragma alias FUN_001acc30_vec FUN_001acc30
 u32 FUN_001acc30_vec(EvtRay *param_1,EvtVec3 *param_2);
-#pragma alias FUN_003bb9b0_vec FUN_003bb9b0
+#pragma alias FUN_003bb9b0_vec MT_Scene_WrapAngles
 void FUN_003bb9b0_vec(EvtVec3 *param_1);
-#pragma alias FUN_003b79a0_vec FUN_003b79a0
+#pragma alias FUN_003b79a0_vec MT_Scene_BuildResMatrix
 void FUN_003b79a0_vec(u8 *param_1,EvtVec3 *param_2,EvtVec3 *param_3);
 void FUN_0038a920(int param_1,u16 *param_2,int param_3);
 void FUN_0038af70(u16 *param_1);
@@ -5509,7 +5509,7 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 
   else {
 
-    lVar7 = FUN_003b5d00();
+    lVar7 = MT_Scene_GetResManager();
 
     if (lVar7 != 0) {
 
@@ -10059,7 +10059,7 @@ u32 FUN_0037b5d0(int param_1,int param_2,int param_3)
 
   
 
-  lVar4 = FUN_003b5d00();
+  lVar4 = MT_Scene_GetResManager();
 
   if (lVar4 == 0) {
 
@@ -10499,7 +10499,7 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
 
   puVar1 = *(u16 **)(param_3 + 0x238);
 
-  lVar4 = FUN_003b5d00();
+  lVar4 = MT_Scene_GetResManager();
 
   if (lVar4 == 0) {
 
@@ -10575,7 +10575,7 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
             }
           }
         }
-        FUN_003bb9b0(puVar1 + 8);
+        MT_Scene_WrapAngles(puVar1 + 8);
         break;
 
       case 1:
@@ -10597,7 +10597,7 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
             }
           }
         }
-        FUN_003bb9b0(puVar1 + 8);
+        MT_Scene_WrapAngles(puVar1 + 8);
         break;
 
       case 2:
@@ -10634,13 +10634,13 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
 
       afStack_20[2] = 0.0f;
 
-      FUN_003bb9b0(afStack_20);
+      MT_Scene_WrapAngles(afStack_20);
 
       *(int *)(param_3 + 0x19c) = (int)afStack_20[0];
 
       *(int *)(param_3 + 0x198) = (int)afStack_20[1];
 
-      FUN_003b79a0(auStack_60,auStack_10,afStack_20);
+      MT_Scene_BuildResMatrix(auStack_60,auStack_10,afStack_20);
 
       FUN_003957d0(150.0f, param_3, (u32*)auStack_60);
 
@@ -11016,7 +11016,7 @@ int FUN_0037caf0(int param_1,int param_2,int param_3)
 
   
 
-  lVar1 = FUN_003b5d00();
+  lVar1 = MT_Scene_GetResManager();
 
   if (lVar1 == 0) {
 
@@ -11369,7 +11369,7 @@ void FUN_0037cfe0(void)
       origin.x[0] = DAT_009585b8_f32_abs[0];
       origin.y[0] = DAT_009585bc_f32_abs[0];
       origin.z[0] = DAT_009585c0_f32_abs[0];
-      FUN_003b79a0(&transform,DAT_009585b8_abs,DAT_009585a8_abs);
+      MT_Scene_BuildResMatrix(&transform,DAT_009585b8_abs,DAT_009585a8_abs);
       FUN_004c69f0(&normalized,&transform.direction);
       DAT_00958704_f32_abs[0] = DAT_009585b8_f32_abs[0];
       DAT_00958708_f32_abs[0] = DAT_009585bc_f32_abs[0];
@@ -11417,9 +11417,9 @@ void FUN_0037cfe0(void)
         samples.y[i] = DAT_00958700_f32[sampleBase * 3 + i * 3 + 2];
         samples.z[i] = DAT_00958700_f32[sampleBase * 3 + i * 3 + 3];
       }
-      FUN_003bbc90(DAT_007cae18,samples.x,samples.y,samples.z,
+      MT_Scene_EvalCubicBezier(DAT_007cae18,samples.x,samples.y,samples.z,
                    &curveStart.x,&curveStart.y,&curveStart.z);
-      FUN_003bbc90(0x3f800000,samples.x,samples.y,samples.z,
+      MT_Scene_EvalCubicBezier(0x3f800000,samples.x,samples.y,samples.z,
                    &curveEnd.x,&curveEnd.y,&curveEnd.z);
       delta.x = curveEnd.x - curveStart.x;
       delta.y = curveEnd.y - curveStart.y;
@@ -11562,7 +11562,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
   
 
 
-  lVar5 = FUN_003b5d00();
+  lVar5 = MT_Scene_GetResManager();
 
   if (lVar5 == 0) {
 
