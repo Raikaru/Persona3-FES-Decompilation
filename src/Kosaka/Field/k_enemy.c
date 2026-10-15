@@ -164,7 +164,7 @@ extern void* func_001a91b0(void* task, const RwV3d* pos);
 extern void func_001a92d0(void* task, void* handle, const RwV3d* pos);
 extern void func_001a9390(void* task, void* handle, u32 value);
 extern void func_001a9400(void* task, void* handle);
-extern void func_001a0150(u16 resourceId, u32 value);
+extern void SceneDraw_SetResVisible(u16 resourceId, u32 value);
 extern void* func_001dd460(u32 parent, u32 mode, u32 id);
 extern void func_001dd5f0(void* task, void* model);
 extern void func_001dd5e0(void* task, u32 value);
@@ -182,7 +182,7 @@ extern void* func_004c38c0(void);
 extern void func_004c3880(void* matrix);
 extern u32 func_00319770(Model* model, u16 slot);
 extern u32 func_001c0040(void);
-extern void func_001a0dc0(u16 resourceId, u32 value);
+extern void SceneDraw_SetResVisibleChecked(u16 resourceId, u32 value);
 extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
 #pragma alias func_001d3c40_ptr func_001d3c40
 extern KwlnTask* func_001d3c40_ptr(KwlnTask* parent, Model* model);
