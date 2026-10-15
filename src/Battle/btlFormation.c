@@ -695,7 +695,7 @@ extern void btlCond_ENWEAK_DW_PAI(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,u32 param_2);
 extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
 extern void btlCond_MYNOMAL(int param_1,u16 param_2);
-extern void func_002c3120(int param_1,u16 param_2);
+extern void btlAICommandNomalCheckNoGate(int param_1,u16 param_2);
 extern void func_002c3150(int param_1,u32 param_2);
 extern void func_002c31b0(int param_1,u32 param_2);
 extern void btlCond_ENNOMAL_DW(int param_1,u32 param_2);
@@ -756,22 +756,22 @@ extern s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4);
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
-extern u16 func_002c6ba0(int param_1);
+extern u16 btlAICommandPickTableAction(int param_1);
 extern undefined * func_002c6e30(int param_1,u32 param_2);
 extern u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4);
 extern u32 func_002c6f50_u32(u32 param_1,int param_2,u32 param_3,u32 param_4);
-extern void func_002c70d0(int param_1,int param_2);
+extern void btlAICommandSetUnitAction(int param_1,int param_2);
 extern bool func_002c7250(int param_1);
-extern u32 func_002c7280(int param_1);
-extern u32 func_002c7300(void);
-extern u32 func_002c7340(void);
-extern u32 func_002c73e0(void);
-extern u32 func_002c7460(void);
-extern u32 func_002c74a0(void);
+extern u32 btlAICommandTryReleaseProc(int param_1);
+extern u32 btlAICommandScriptSetDefaultAction(void);
+extern u32 btlAICommandScriptSetActionParam(void);
+extern u32 btlAICommandScriptSetSkillAction(void);
+extern u32 btlAICommandScriptSetAction8001(void);
+extern u32 btlAICommandScriptSetAction8002(void);
 extern u32 func_002c74e0(void);
 extern u32 func_002c7540(void);
 extern u32 func_002c75d0(void);
-extern u32 func_002c7670(void);
+extern u32 btlAICommandScriptSetAction8007(void);
 extern u32 func_002c76b0(void);
 extern u32 func_002c7760(void);
 extern u32 func_002c7810(void);
@@ -829,7 +829,7 @@ extern u32 func_002c9820(void);
 extern u32 func_002c98d0(void);
 extern u32 func_002c99c0(void);
 extern u32 func_002c9ab0(void);
-extern u32 func_002c9ba0(void);
+extern u32 btlAICommandSideIdQueryMyBad(void);
 extern u32 func_002c9ce0(void);
 extern u32 func_002c9da0(void);
 extern u32 func_002c9e90(void);
@@ -842,7 +842,7 @@ extern u32 func_002ca3e0(void);
 extern u32 func_002ca480(void);
 extern u32 func_002ca590(void);
 extern u32 func_002ca6a0(void);
-extern u32 func_002ca7b0(void);
+extern u32 btlAICommandOppSideIdQueryMyBad(void);
 extern u32 func_002ca900(void);
 extern u32 func_002ca9d0(void);
 extern u32 func_002caae0(void);
@@ -868,12 +868,12 @@ extern u32 func_002cba00(void);
 extern u32 func_002cba50(void);
 extern u32 func_002cbaa0(void);
 extern u32 func_002cbaf0(void);
-extern u32 func_002cbba0(void);
+extern u32 btlAICommandSideSwitchIdQueryMyWeak(void);
 extern u32 func_002cbcd0(void);
 extern u32 func_002cbd90(void);
 extern u32 func_002cbe50(void);
 extern u32 func_002cbf10(void);
-extern u32 func_002cbfd0(void);
+extern u32 btlAICommandSideSwitchQueryAnalyze(void);
 extern u32 func_002cc0a0(void);
 extern u32 func_002cc190(void);
 extern u32 func_002cc240(void);
@@ -914,18 +914,18 @@ extern u32 func_002cd740(void);
 extern u32 func_002cd7f0(void);
 extern u32 func_002cd8c0(void);
 extern u32 func_002cd940(void);
-extern u32 func_002cd9c0(void);
+extern u32 btlAICommandScriptSetCommandOverride(void);
 extern u32 func_002cda10(void);
 extern u32 func_002cda50(void);
 extern u32 func_002cdad0(void);
 extern u32 func_002cdb70(void);
-extern u32 func_002cdbe0(void);
+extern u32 btlAICommandScriptCountOwnNotHojo(void);
 extern u32 func_002cdc50(void);
 extern u32 func_002cdcc0(void);
-extern u32 func_002cdd30(void);
+extern u32 btlAICommandScriptCountOppNotHojo(void);
 extern u32 func_002cdda0(void);
-extern u32 func_002cde10(void);
-extern u32 func_002cde60(void);
+extern u32 btlAICommandScriptAverageOwnLevel(void);
+extern u32 btlAICommandScriptAverageOppLevel(void);
 extern u32 func_002cded0(void);
 extern u32 func_002cdf40(void);
 extern u32 func_002ce010(void);
@@ -1135,8 +1135,8 @@ extern f32 fGpffff80e8;
 extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
 extern void FUN_002d1de0(void* task, const RwV3d* from, const RwV3d* to);
 extern f32 fGpffff83cc;
-extern void FUN_002a3010(BtlCamera* camera, f32 step);
-extern u32 FUN_002a2ed0(u8* param_1, f32* param_2, f32* param_3);
+extern void btlCameraAdvanceKeyframes(BtlCamera* camera, f32 step);
+extern u32 btlCameraSampleKeyframes(u8* param_1, f32* param_2, f32* param_3);
 extern RwV3d D_00697880;
 extern RwV3d D_006978A0;
 typedef struct F32Vec4 {
@@ -1177,7 +1177,7 @@ extern f32 gp0xffff8030;
 extern f32 gp0xffff8094;
 extern f32 fGpffff82c8;
 extern f32 fGpffff805c;
-extern u32 FUN_002a2050(u16* camera, f32* pos, f32* rot);
+extern u32 btlMainCurveAppendKeyframe(u16* camera, f32* pos, f32* rot);
 extern void FUN_002a1e00(f32* out, f32* start, f32* end, f32 t);
 extern f32 FUN_00280870(u32 param_1, u32 param_2, void* param_3, void* param_4, void* param_5, u32 param_6);
 extern f32 tanf(f32 angle);
@@ -1309,7 +1309,7 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {FUN_002b5cd0, NULL, 1, 0, "ENEMY_ALL"}, // ENEMY_ALL
     {FUN_002b6460, NULL, 1, 0, "TARGET_ONLY"}, // TARGET_ONLY
 };
-extern void FUN_002a2290(u16* camera, RwV3d* first, RwV3d* second, int mode);
+extern void btlMainCurveSetPoses(u16* camera, RwV3d* first, RwV3d* second, int mode);
 extern void FUN_002a3110(u16* camera, f32 param_1);
 extern f32 FUN_002d1f30(f32* left, f32* right);
 extern u32 FUN_00351bb0(u16 param_1);
@@ -1399,7 +1399,7 @@ extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
 extern void FUN_002a2170(u16 *param_1, f32 *param_2);
-extern void FUN_002a2660(BtlCamera* camera, BtlCameraKeyFrame* first,
+extern void btlMainCurveSetFourPoses(BtlCamera* camera, BtlCameraKeyFrame* first,
                          BtlCameraKeyFrame* second, BtlCameraKeyFrame* third,
                          BtlCameraKeyFrame* fourth, int mode);
 extern u64 FUN_002add10();
@@ -4392,7 +4392,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 #pragma alias FUN_004c69f0_b6070 FUN_004c69f0
 #pragma alias FUN_004c6c60_b6070 FUN_004c6c60
 #pragma alias FUN_002a4690_b6070 FUN_002a4690
-#pragma alias FUN_002a2290_b6070 FUN_002a2290
+#pragma alias FUN_002a2290_b6070 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_b6070 FUN_002a3110
 #pragma alias FUN_002a3160_typed FUN_002a3160
 
@@ -4487,7 +4487,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 #pragma alias FUN_002d1fd0_b280 FUN_002d1fd0
 #pragma alias FUN_002d1f30_b280 FUN_002d1f30
 #pragma alias FUN_002a2170_b280 FUN_002a2170
-#pragma alias FUN_002a2290_b280 FUN_002a2290
+#pragma alias FUN_002a2290_b280 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_b280 FUN_002a3110
 #pragma alias FUN_002a3e80_b280 FUN_002a3e80
 #pragma alias FUN_002d5bf0_b280 FUN_002d5bf0
@@ -4569,7 +4569,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 #pragma alias FUN_00280200_b64d0 FUN_00280200
 #pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
 #pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
-#pragma alias FUN_002a2290_b64d0 FUN_002a2290
+#pragma alias FUN_002a2290_b64d0 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_b64d0 FUN_002a3110
 
 
@@ -5113,7 +5113,7 @@ void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 
 #pragma alias FUN_002a4470_c920 FUN_002a4470
 #pragma alias FUN_002a44f0_c920 FUN_002a44f0
-#pragma alias FUN_002a2290_c920 FUN_002a2290
+#pragma alias FUN_002a2290_c920 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_c920 FUN_002a3110
 
 #pragma opt_propagation reset
