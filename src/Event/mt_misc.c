@@ -255,7 +255,7 @@ extern u8 DAT_00958bcc_abs[];
 void FUN_00359b40(f32 param_1, void *param_2, void *param_3, ...);
 void FUN_00359380(f32 param_1, void *param_2, int param_3);
 void FUN_004c35d0(void *param_1, void *param_2, int param_3);
-void FUN_003bbc90(f32 param_1, void *param_2, void *param_3, void *param_4, void *param_5, void *param_6, void *param_7);
+void MT_Scene_EvalCubicBezier(f32 param_1, void *param_2, void *param_3, void *param_4, void *param_5, void *param_6, void *param_7);
 void FUN_00395170(u64 param_1);
 void FUN_003951a0(u64 param_1);
 u8 FUN_003951d0(void);
@@ -537,11 +537,11 @@ void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param
       fStack_30[0] = *(float *)(iVar4 + 0x10);
       fStack_30[1] = *(float *)(iVar4 + 0x14);
       fStack_30[2] = *(float *)(iVar4 + 0x18);
-      FUN_003bbaa0(fStack_40,fStack_30,fStack_20);
+      MT_Scene_GetAngleDelta(fStack_40,fStack_30,fStack_20);
       fStack_10[0] = fStack_20[0] * param_1 + source[4];
       fStack_10[1] = fStack_20[1] * param_1 + source[5];
       fStack_10[2] = fStack_20[2] * param_1 + source[6];
-      FUN_003bb9b0(fStack_10);
+      MT_Scene_WrapAngles(fStack_10);
       *(float *)((int)param_5 + 0x10) = fStack_10[0];
       *(float *)((int)param_5 + 0x14) = fStack_10[1];
       *(float *)((int)param_5 + 0x18) = fStack_10[2];
@@ -2267,7 +2267,7 @@ void FUN_00395950(int param_1)
 
           }
 
-          FUN_003bbc90(fVar9,auStack_630,auStack_640,auStack_650,&uStack_10,&uStack_c,auStack_8);
+          MT_Scene_EvalCubicBezier(fVar9,auStack_630,auStack_640,auStack_650,&uStack_10,&uStack_c,auStack_8);
 
 
           iVar5 = iVar7 * 0x48;
@@ -2286,7 +2286,7 @@ void FUN_00395950(int param_1)
 
           auStack_614[iVar5 + 3] = 0xff;
 
-          FUN_003bbc90(fVar9 + DAT_007cb12c,auStack_630,auStack_640,auStack_650,&uStack_10,&uStack_c
+          MT_Scene_EvalCubicBezier(fVar9 + DAT_007cb12c,auStack_630,auStack_640,auStack_650,&uStack_10,&uStack_c
 
                        ,auStack_8);
 
@@ -2465,7 +2465,7 @@ void FUN_00395e20(int param_1)
 
     for (iVar6 = 0; iVar6 <= 0x28; iVar6++) {
 
-      FUN_003bbc90(fVar9,&curveA.x,&curveB.x,&curveC.x,&sample.x,&sample.y,&sample.z);
+      MT_Scene_EvalCubicBezier(fVar9,&curveA.x,&curveB.x,&curveC.x,&sample.x,&sample.y,&sample.z);
       if (0 < iVar6) {
         previousPoint.x = previousSample.x * 220.0f + 210.0f;
         previousPoint.y = (1.0f - previousSample.y) * 220.0f + 70.0f;
