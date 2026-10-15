@@ -55,11 +55,11 @@ typedef struct FldFrameAtomicQuery
     u8 intersection[0x2c];
     void* atomic;
 } FldFrameAtomicQuery;
-extern s32 func_001ab390(void* collision, const RwV3d* pos, RwV3d* translation,
+extern s32 FldFrame_SphereSweepWorld(void* collision, const RwV3d* pos, RwV3d* translation,
                          f32 sphereCollisRadius);
 extern s32 func_001abd20(void* collisionWorld, const RwV3d* pos, RwV3d* translation,
                           f32 sphereCollisRadius, u16 resTypeId);
-extern void* func_001ac950(const RwV3d* line, void* unused,
+extern void* FldFrame_RaycastSector(const RwV3d* line, void* unused,
                            const void* triangle, FldFrameRaycast* raycast);
 extern void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast);
 extern void func_00464020(void* collision, void* intersection, void* callback, void* param);
@@ -117,7 +117,7 @@ extern s32 func_003182d0(Model* model, s32 layer, s32 animation, s32 mode, s32 f
 extern void func_003189f0(Model* model, s32 layer, f32 speed);
 extern s32 func_00318540(Model* model, s32 layer);
 extern void* func_00318b60(u32 id);
-extern f32 func_001a5aa0(void* matrix);
+extern f32 KDraw_MatrixYawDeg(void* matrix);
 extern s32 func_00530da0(f32 value);
 extern s32 func_0052e118(s32 value);
 extern s32 func_0045ec20(s32 left, s32 right);
@@ -224,7 +224,7 @@ extern void* func_00318b80(u32 id);
 extern void* func_00318b60(u32 id);
 extern void* func_004353f0(void* arg);
 extern void* func_002ff790_k_fldFrame_void(void* object);
-extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
+extern u32 FldFrame_RaycastWorld(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
 extern u32 func_001afd40(KwlnTask* task, const RwV3d* position, f32 duration);
 #include "Kosaka/k_clump.h"
 #include "Kosaka/Field/k_dungeon.h"
@@ -340,9 +340,9 @@ extern u8 D_0067F2C0[];
 extern u8 D_0067F300[];
 extern u8 D_0067F340[];
 extern u8 D_0067F380[];
-extern void* func_001a65c0(void* geometry, const char** name);
-extern void* func_001a6860(void* object, u32* context);
-extern void* func_001a6d20(void* object, u32* context);
+extern void* K_Clump_AtomicMatUsrDataCb(void* geometry, const char** name);
+extern void* K_Clump_FindIntUsrDataFrameCb(void* object, u32* context);
+extern void* K_Clump_IntUsrDataAtCb(void* object, u32* context);
 extern void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags);
 extern void* func_001a7370(void* material, u32* state);
 extern void* func_001a74e0(void* object, u32* state);
@@ -1646,7 +1646,7 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
 }
 
 // FUN_001aae10
-RwV3d* func_001aae10(RwV3d* dst, const RwV3d* point,
+RwV3d* FldFrame_ClosestPointOnSegment(RwV3d* dst, const RwV3d* point,
                      const RwV3d* start, const RwV3d* end)
 {
     RwV3d edge;
@@ -1693,7 +1693,7 @@ RwV3d* func_001aae10(RwV3d* dst, const RwV3d* point,
 // a different field - see func_001b0260/func_001b0240). Residual: a
 // register-bank floor (764B vs 800B window); logic verified vs retail.
 // FUN_001aaf30 NONMATCHING
-void* func_001aaf30(const RwV3d* point, void* unused,
+void* FldFrame_SectorSphereHit(const RwV3d* point, void* unused,
                     const FldFrameCollisionTriangle* triangle,
                     FldFrameCollisionCollector* collector)
 {
@@ -1758,7 +1758,7 @@ void* func_001aaf30(const RwV3d* point, void* unused,
         distance = 1.0e30f;
         for (i = 0; i < 3; i++)
         {
-            func_001aae10(&closest, &projected, triangle->vertices[i],
+            FldFrame_ClosestPointOnSegment(&closest, &projected, triangle->vertices[i],
                           triangle->vertices[(i + 1) % 3]);
             delta.x = point->x - closest.x;
             delta.y = point->y - closest.y;
@@ -1811,7 +1811,7 @@ void* func_001aaf30(const RwV3d* point, void* unused,
 // inlined; retail does not jal any of them) - simpler single-path variant
 // with a fixed kind=3, no pathMode dispatch.
 // FUN_001ab390 NONMATCHING
-s32 func_001ab390(void* collision, const RwV3d* pos,
+s32 FldFrame_SphereSweepWorld(void* collision, const RwV3d* pos,
                   RwV3d* translation, f32 sphereCollisRadius)
 {
     typedef struct FldFrameCollisionCollectorSimple
@@ -1852,7 +1852,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
         return 0;
     }
 
-    func_00464020(collision, (u8*)&query + 0x20, func_001aaf30, &collector);
+    func_00464020(collision, (u8*)&query + 0x20, FldFrame_SectorSphereHit, &collector);
     for (i = 0; i < (s32)collector.count; i++)
     {
         if (collector.distances[i] < fGpffff820c)
@@ -1894,7 +1894,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
 // and never write points[pointCount].position for this kind=1 point (it
 // is a duration/kind-only marker point, position is left whatever it was).
 // FUN_001ab640 NONMATCHING
-void* func_001ab640(const RwV3d* point, const void* triangle,
+void* FldFrame_CollectSphereHits(const RwV3d* point, const void* triangle,
                     FldFrameCollisionCollector* collector)
 {
     const FldFrameCollisionTriangle* candidate;
@@ -1991,7 +1991,7 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
 
     for (i = 0; i < 3; i++)
     {
-        func_001aae10(&closest, &projected, vertexPointers[i],
+        FldFrame_ClosestPointOnSegment(&closest, &projected, vertexPointers[i],
                       vertexPointers[(i + 1) % 3]);
         delta.x = point->x - closest.x;
         delta.y = point->y - closest.y;
@@ -2043,11 +2043,11 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
 }
 
 // FUN_001abcd0
-void* func_001abcd0(void* collisionWorld, void* state)
+void* FldFrame_SphereAtomicCallback(void* collisionWorld, void* state)
 {
     *(void**)((u8*)state + 0xb34) = collisionWorld;
     func_00464120(collisionWorld, (u8*)state + 0xb18,
-                  func_001ab640, state);
+                  FldFrame_CollectSphereHits, state);
     return collisionWorld;
 }
 
@@ -2105,7 +2105,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     if (collisionWorld == NULL)
         return 0;
     collector.mode = 1;
-    FUN_004916d0(collisionWorld, func_001abcd0, &collector);
+    FUN_004916d0(collisionWorld, FldFrame_SphereAtomicCallback, &collector);
     collector.mode = 0;
 
     resTypeMask = (u16)resTypeId;
@@ -2119,13 +2119,13 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             model = (void*)func_00318b80(*(u32*)((u8*)listNode + 0x104));
             if (model != NULL)
             {
-                FUN_004916d0(model, func_001abcd0, &collector);
+                FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
                 rayOrigin = *pos;
                 rayOrigin.y += 400.0f;
                 hitPoint.x = 0.0f;
                 hitPoint.y = 0.0f;
                 hitPoint.z = 0.0f;
-                if (func_001acb70(model, &rayOrigin, &hitPoint) == 1)
+                if (FldFrame_RaycastWorld(model, &rayOrigin, &hitPoint) == 1)
                     translation->y = hitPoint.y - (pos->y - sphereCollisRadius);
             }
         }
@@ -2164,7 +2164,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             model = (void*)func_00318b80(*(u32*)((u8*)objData + 0x1e8));
             if (model != NULL)
             {
-                FUN_004916d0(model, func_001abcd0, &collector);
+                FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
             }
             else if (resTypeMask == 0x400)
             {
@@ -2234,7 +2234,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                     model = (void*)func_00318b80(
                         *(u32*)((u8*)data + 0x1e8));
                     if (model != NULL)
-                        FUN_004916d0(model, func_001abcd0, &collector);
+                        FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
                 }
             }
         }
@@ -2247,7 +2247,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                 model = (void*)func_00318b80(
                     *(u32*)((u8*)entry + 0x134));
                 if (model != NULL)
-                    FUN_004916d0(model, func_001abcd0, &collector);
+                    FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
             }
         }
     }
@@ -2262,7 +2262,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         {
             model = (void*)func_00318b80(*(u32*)((u8*)extraData + 0x114));
             if (model != NULL)
-                FUN_004916d0(model, func_001abcd0, &collector);
+                FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
         }
     }
     listNode = *(void**)((u8*)type1ListHead + 0xf8);
@@ -2275,7 +2275,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             {
                 model = (void*)func_00318b80(field114);
                 if (model != NULL)
-                    FUN_004916d0(model, func_001abcd0, &collector);
+                    FUN_004916d0(model, FldFrame_SphereAtomicCallback, &collector);
             }
         }
         listNode = *(void**)((u8*)listNode + 0xf8);
@@ -2359,7 +2359,7 @@ void K_FldFrame_HandleCollis(const RwV3d* pos, RwV3d* translation, f32 sphereCol
     if ((*(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET))->flags &
         FLDFRAME_COLLIS_FLAG_STATICWORLD)
     {
-        func_001ab390(
+        FldFrame_SphereSweepWorld(
             (*(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET))->staticCollision,
             pos, translation, sphereCollisRadius);
         return;
@@ -2416,7 +2416,7 @@ done:
 
 #pragma opt_propagation off
 // FUN_001ac950
-void* func_001ac950(const RwV3d* line, void* unused,
+void* FldFrame_RaycastSector(const RwV3d* line, void* unused,
                     const void* triangle, FldFrameRaycast* raycast)
 {
     typedef struct FldFrameLine
@@ -2507,7 +2507,7 @@ void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast)
 }
 
 // FUN_001acb70
-u32 func_001acb70(void* collisionWorld, const RwV3d* line,
+u32 FldFrame_RaycastWorld(void* collisionWorld, const RwV3d* line,
                   RwV3d* hitPointDst)
 {
     typedef struct FldFrameLine
@@ -2567,7 +2567,7 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
         if (state->staticCollision != NULL)
         {
             func_00464020(state->staticCollision, &staticRaycast.line[0],
-                          func_001ac950, &staticRaycast);
+                          FldFrame_RaycastSector, &staticRaycast);
         }
         return staticRaycast.didHit;
     }
@@ -3672,7 +3672,7 @@ void* func_001ae580(KwlnTask* task)
         {
             localAngleStep =
                 180.0f +
-                func_001a5aa0(func_00318b60((u32)fldFrameMoveModel(work)));
+                KDraw_MatrixYawDeg(func_00318b60((u32)fldFrameMoveModel(work)));
             work->currentAngle = localAngleStep;
             localAngle = 180.0f + localAngle;
             if (localAngle <= localAngleStep)
@@ -3852,7 +3852,7 @@ void* func_001ae580(KwlnTask* task)
         }
         localAngleStep =
             180.0f +
-            func_001a5aa0(func_00318b60((u32)fldFrameMoveModel(work)));
+            KDraw_MatrixYawDeg(func_00318b60((u32)fldFrameMoveModel(work)));
         work->currentAngle = localAngleStep;
         localAngle = 180.0f + localAngle;
         if (localAngle <= localAngleStep)
