@@ -1495,7 +1495,7 @@ extern RwCamera* func_004d1840(RwCamera* camera, RwFrame* frame);
 extern RwRaster* func_004cde90(RwRaster* raster);
 
 // FUN_00195980. Replace a camera's rasters and update its view window.
-void func_00195980(RwCamera* camera,
+void kwlnCameraResizeView(RwCamera* camera,
                    KwlnTaskCameraView* requestedView,
                    f32 scale,
                    f32 aspectRatio)
@@ -1622,7 +1622,7 @@ update_view_window:
 }
 
 // FUN_00195C80. Create a camera with frame and optional z-buffer rasters.
-RwCamera* func_00195c80(u32 width, u32 height, u32 createZBuffer)
+RwCamera* kwlnCameraCreate(u32 width, u32 height, u32 createZBuffer)
 {
     RwCamera* camera;
     RwFrame* frame;
