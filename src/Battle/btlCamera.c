@@ -117,7 +117,7 @@ extern f32 FUN_004c69f0_b6070(RwV3d* out, const RwV3d* in);
 extern void FUN_004c6c60_b6070(RwV3d* out, const RwV3d* in, const RwMatrix* matrix);
 #pragma alias FUN_002a4690_b6070 FUN_002a4690
 extern void FUN_002a4690_b6070(void* out, const void* first, const void* second, const void* config);
-#pragma alias FUN_002a2290_b6070 FUN_002a2290
+#pragma alias FUN_002a2290_b6070 btlMainCurveSetPoses
 extern void FUN_002a2290_b6070(BtlCamera* camera, const RwV3d* start, const RwV3d* end, s32 mode);
 #pragma alias FUN_002a3110_b6070 FUN_002a3110
 extern void FUN_002a3110_b6070(BtlCamera* camera, f32 step);
@@ -164,8 +164,8 @@ extern f32 fGpffff80e8;
 extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
 extern u64 FUN_002d1de0();
 extern f32 fGpffff83cc;
-extern void FUN_002a3010(BtlCamera* camera, f32 step);
-extern u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3);
+extern void btlCameraAdvanceKeyframes(BtlCamera* camera, f32 step);
+extern u32 btlCameraSampleKeyframes(u8* param_1,f32* param_2,f32* param_3);
 extern RwV3d D_00697880;
 extern RwV3d D_006978A0;
 typedef struct F32Vec4 {
@@ -210,7 +210,7 @@ extern f32 gp0xffff8030;
 extern f32 gp0xffff8094;
 extern f32 fGpffff82c8;
 extern f32 fGpffff805c;
-extern u32 FUN_002a2050(u16* camera, f32* pos, f32* rot);
+extern u32 btlMainCurveAppendKeyframe(u16* camera, f32* pos, f32* rot);
 extern void FUN_002a1e00(f32* out, f32* start, f32* end, f32 t);
 extern f32 FUN_00280870(u32 param_1, u32 param_2, void* param_3, void* param_4, void* param_5, u32 param_6);
 extern f32 tanf(f32 angle);
@@ -395,9 +395,9 @@ void btlCameraUpdate(BtlCamera* camera)
         step = 1.0f / *(f32*)((u8*)camera + 0x84);
     }
     *(f32*)((u8*)camera + 0x80) += step;
-    FUN_002a3010(camera, step);
+    btlCameraAdvanceKeyframes(camera, step);
     g = iGpffffb6fc;
-    FUN_002a2ed0(g + 0x20, (f32*)(g + 0xbc), (f32*)(g + 0xc8));
+    btlCameraSampleKeyframes(g + 0x20, (f32*)(g + 0xbc), (f32*)(g + 0xc8));
 }
 
 // FUN_002A32F0
@@ -840,17 +840,17 @@ u32 btlCameraUpdateMoveToPacket(void* work)
     *(u32*)((u8*)cameraData + 0x80) = 0;
     *(u32*)((u8*)cameraData + 0x7c) = 0;
 
-    FUN_002a2050(cameraData, (f32*)&frames.start.pos,
+    btlMainCurveAppendKeyframe(cameraData, (f32*)&frames.start.pos,
                  (f32*)&frames.start.rot);
     FUN_002a1e00((f32*)&frames.current, (f32*)&frames.start,
                  (f32*)&frames.end, fGpffff82c8);
-    FUN_002a2050(cameraData, (f32*)&frames.current.pos,
+    btlMainCurveAppendKeyframe(cameraData, (f32*)&frames.current.pos,
                  (f32*)&frames.current.rot);
     FUN_002a1e00((f32*)&frames.current, (f32*)&frames.start,
                  (f32*)&frames.end, fGpffff805c);
-    FUN_002a2050(cameraData, (f32*)&frames.current.pos,
+    btlMainCurveAppendKeyframe(cameraData, (f32*)&frames.current.pos,
                  (f32*)&frames.current.rot);
-    FUN_002a2050(cameraData, (f32*)&frames.end.pos,
+    btlMainCurveAppendKeyframe(cameraData, (f32*)&frames.end.pos,
                  (f32*)&frames.end.rot);
 
     battleBytes = (u8*)gBtl;
@@ -1298,7 +1298,7 @@ void btlCameraFreeze()
 {
     gBtl->camera.flags |= BTLCAMERA_FLAG_FREEZE;
 }
-extern void FUN_002a2290(u16* camera, RwV3d* first, RwV3d* second, int mode);
+extern void btlMainCurveSetPoses(u16* camera, RwV3d* first, RwV3d* second, int mode);
 extern void FUN_002a3110(u16* camera, f32 param_1);
 extern f32 FUN_002d1f30(f32* left, f32* right);
 extern u32 FUN_00351bb0(u16 param_1);
@@ -1574,7 +1574,7 @@ void FUN_002a4c70(BtlCamera* camera, f32 param_1, f32 param_2)
             scale = 2.0f;
         }
     }
-    FUN_002a2290((u16*)camera, &work.current.pos, &work.target, 1);
+    btlMainCurveSetPoses((u16*)camera, &work.current.pos, &work.target, 1);
     FUN_002a3110((u16*)camera, scale);
 }
 
@@ -1944,7 +1944,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
             radius = ratio;
         }
     radius_clamped:
-        FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+        btlMainCurveSetPoses((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
         FUN_002a3110((u16*)camera, radius);
         return;
     }
@@ -2036,7 +2036,7 @@ close_frame:
     {
         frames[1].pos.y = 25.0f;
     }
-    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    btlMainCurveSetPoses((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
     FUN_002a3110((u16*)camera, 3.0f);
 }
 
@@ -2218,7 +2218,7 @@ void btlCameraFrameActionPair(BtlCamera* camera)
     frames[1].pos.x = firstPos.x + dir.x;
     frames[1].pos.y = firstPos.y + dir.y;
     frames[1].pos.z = firstPos.z + dir.z;
-    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    btlMainCurveSetPoses((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
     FUN_002a3110((u16*)camera, 1.0f);
 }
 
@@ -2445,7 +2445,7 @@ void btlCameraFrameActionDuel(BtlCamera* camera)
     frames[1].pos.z = center.z + eyeAdj.z;
     FUN_002a3590((f32*)&frames[0].pos, (f32*)&frames[0].pos);
     FUN_002a3590((f32*)&frames[1].pos, (f32*)&frames[1].pos);
-    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    btlMainCurveSetPoses((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
     FUN_002a3110((u16*)camera, 2.0f);
     }
     }
@@ -2702,7 +2702,7 @@ void btlCameraFrameActionTarget(BtlCamera* camera)
     {
         frames[1].pos.y = 25.0f;
     }
-    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    btlMainCurveSetPoses((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
     FUN_002a3110((u16*)camera, fGpffff8138);
 }
 
@@ -2992,7 +2992,7 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     {
         work.secondPos.y = 25.0f;
     }
-    FUN_002a2290((u16*)camera, &work.first.pos, &work.secondPos, 1);
+    btlMainCurveSetPoses((u16*)camera, &work.first.pos, &work.secondPos, 1);
     FUN_002a3110((u16*)camera, 10.0f);
 }
 
@@ -3259,7 +3259,7 @@ mode_done:
         buf[6] = buf[13];
     }
     FUN_002a3e80_call(0.0f, (u8*)camera->action, 0, 0, 1);
-    FUN_002a2290((u16*)camera, (RwV3d*)buf, (RwV3d*)(buf + 7), 1);
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)buf, (RwV3d*)(buf + 7), 1);
     FUN_002a3110((u16*)camera, 2.5f);
     if (suppressEffects != 0) FUN_00351bb0(0xc);
 #undef buf
@@ -3439,7 +3439,7 @@ void btlCameraFrameActionAll(BtlCamera* camera, u32 suppressEffects)
     if (work[1] < 25.0f) work[1] = 25.0f;
     if (work[8] < 25.0f) work[8] = 25.0f;
     FUN_002a3e80_call(0.0f, (u8*)camera->action, 0, 0, 1);
-    FUN_002a2290((u16*)camera, (RwV3d*)work, (RwV3d*)(work + 7), 1);
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)work, (RwV3d*)(work + 7), 1);
     FUN_002a3110((u16*)camera, 2.0f);
     if (suppressEffects != 0) FUN_00351bb0(0xc);
 }
@@ -3830,7 +3830,7 @@ special_done:
     }
     FUN_002a3e80_call(50.0f, (u8*)camera->action, (u8*)&target->pos,
                  (u8*)&l.b0, 3);
-    FUN_002a2290((u16*)camera, (RwV3d*)&l.b0, (RwV3d*)&l.cc, 1);
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)&l.b0, (RwV3d*)&l.cc, 1);
     FUN_002a3110((u16*)camera, modeScale);
     if (suppressEffects != 0)
     {
@@ -3869,7 +3869,7 @@ extern void FUN_00288110(BtlUnit* unit);
 extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
 extern u64 FUN_002a2170();
-extern void FUN_002a2660(BtlCamera* camera, BtlCameraKeyFrame* first,
+extern void btlMainCurveSetFourPoses(BtlCamera* camera, BtlCameraKeyFrame* first,
                          BtlCameraKeyFrame* second, BtlCameraKeyFrame* third,
                          BtlCameraKeyFrame* fourth, int mode);
 extern u64 FUN_002add10();
@@ -4816,7 +4816,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   FUN_002a3e80_ab330(
       camera->action, &((BtlUnit*)(uintptr_t)iVar7)->pos,
       (f32*)result, 3, 50.0f);
-  FUN_002a2290((u16*)camera, (RwV3d*)result, (RwV3d*)resultPos, 1);
+  btlMainCurveSetPoses((u16*)camera, (RwV3d*)result, (RwV3d*)resultPos, 1);
   FUN_002a3110((u16*)camera, fVar11);
   if (param_2 != 0) {
     FUN_00351bb0(0xc);
@@ -5014,7 +5014,7 @@ extern void FUN_002a4470_c920(BtlCameraC920Pose* dst,
 #pragma alias FUN_002a44f0_c920 FUN_002a44f0
 extern void FUN_002a44f0_c920(BtlCameraC920Pose* dst,
                                const BtlCameraC920Pose* src);
-#pragma alias FUN_002a2290_c920 FUN_002a2290
+#pragma alias FUN_002a2290_c920 btlMainCurveSetPoses
 extern void FUN_002a2290_c920(BtlCamera* camera, const RwV3d* start,
                                const RwV3d* end, s32 mode);
 #pragma alias FUN_002a3110_c920 FUN_002a3110
@@ -5405,7 +5405,7 @@ void func_002acf90(BtlCamera* camera, long unused)
     }
     FUN_002a3590((f32*)&scratch.v50, (f32*)&scratch.v50);
     FUN_002a3590((f32*)&scratch.v6c, (f32*)&scratch.v6c);
-    FUN_002a2290((u16*)camera, (RwV3d*)&scratch.v50, (RwV3d*)&scratch.v6c, 1);
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)&scratch.v50, (RwV3d*)&scratch.v6c, 1);
     FUN_002a3110((u16*)camera, speed);
 }
 #pragma opt_dead_assignments reset
@@ -5562,7 +5562,7 @@ void func_002ad880(BtlCamera *camera, float angle, float distanceScale, float he
   scratch.secondPosition.y = scratch.center.value.y + scratch.direction.value.y;
   scratch.secondPosition.z = scratch.center.value.z + scratch.direction.value.z;
   FUN_002a3e80_call(0.0f, *(u8 **)(cameraAddress + 0xe0), NULL, NULL, 1);
-  FUN_002a2290((u16 *)camera, &scratch.firstPosition, &scratch.secondPosition, 1);
+  btlMainCurveSetPoses((u16 *)camera, &scratch.firstPosition, &scratch.secondPosition, 1);
   FUN_002a3110((u16 *)camera, 3.5f);
 }
 
@@ -5776,7 +5776,7 @@ void func_002ae150(BtlCamera* camera)
     FUN_002a2170(camera, buf + 7);
   }
   else {
-    FUN_002a2290((u16 *)camera, (RwV3d *)buf, (RwV3d *)(buf + 7), 1);
+    btlMainCurveSetPoses((u16 *)camera, (RwV3d *)buf, (RwV3d *)(buf + 7), 1);
     FUN_002a3110((u16 *)camera, 1.25f);
   }
 }
@@ -5840,7 +5840,7 @@ void func_002ae260(BtlCamera* camera)
   buf[8] = buf[21] * fVar20 + fVar8;
   buf[9] = buf[22] * fVar20 + fVar7;
   FUN_002a3e80_call(0.0f, (u8 *)camera->action, 0, 0, 1);
-  FUN_002a2290((u16 *)camera, (RwV3d *)buf, (RwV3d *)(buf + 7), 1);
+  btlMainCurveSetPoses((u16 *)camera, (RwV3d *)buf, (RwV3d *)(buf + 7), 1);
   FUN_002a3110((u16 *)camera, 2.5f);
 }
 
@@ -5902,7 +5902,7 @@ void func_002ae4d0(BtlCamera* camera)
   buf[8] = buf[21] * fVar20 + fVar8;
   buf[9] = buf[22] * fVar20 + fVar7;
   FUN_002a3e80_call(0.0f, (u8 *)camera->action, 0, 0, 1);
-  FUN_002a2290((u16 *)camera, (RwV3d *)(buf + 7), (RwV3d *)buf, 1);
+  btlMainCurveSetPoses((u16 *)camera, (RwV3d *)(buf + 7), (RwV3d *)buf, 1);
   FUN_002a3110((u16 *)camera, 2.5f);
 }
 
@@ -6079,7 +6079,7 @@ void func_002ae740(BtlCamera* camera, int param_2)
         FUN_002a2170_ae740(camera, buf + 35);
         return;
     }
-    FUN_002a2290((u16*)camera, (RwV3d*)(buf + 28),
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)(buf + 28),
                  (RwV3d*)(buf + 35), 1);
     FUN_002a3110((u16*)camera, 0.75f);
 }
@@ -6370,7 +6370,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
     FUN_002a2170(camera,&fStack_b4);
     return;
   }
-  FUN_002a2290((u16*)camera,(RwV3d*)&auStack_d0,(RwV3d*)&fStack_b4,1);
+  btlMainCurveSetPoses((u16*)camera,(RwV3d*)&auStack_d0,(RwV3d*)&fStack_b4,1);
   FUN_002a3110((u16*)camera,1.25f);
 #undef fStack_4
 #undef auStack_8
@@ -6758,7 +6758,7 @@ void func_002af960(BtlCamera* camera)
     finalPos.x = offset.x + transformed.x;
     finalPos.y = offset.y + transformed.y;
     finalPos.z = offset.z + transformed.z;
-    FUN_002a2290((u16*)camera, &frame.pos, &finalPos, 1);
+    btlMainCurveSetPoses((u16*)camera, &frame.pos, &finalPos, 1);
     FUN_002a3110((u16*)camera, 1.0f);
     #undef frame
     #undef finalPos
@@ -6835,7 +6835,7 @@ extern f32 FUN_002d1fd0_b280(f32* from, f32* to, f32* point, f32* projected);
 extern f32 FUN_002d1f30_b280(RtQuat* first, RtQuat* second);
 #pragma alias FUN_002a2170_b280 FUN_002a2170
 extern void FUN_002a2170_b280(BtlCamera* camera, RwV3d* out);
-#pragma alias FUN_002a2290_b280 FUN_002a2290
+#pragma alias FUN_002a2290_b280 btlMainCurveSetPoses
 extern void FUN_002a2290_b280(BtlCamera* camera, RwV3d* start,
                               RwV3d* end, s32 mode);
 #pragma alias FUN_002a3110_b280 FUN_002a3110
@@ -6868,7 +6868,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
 #define FUN_002d1fd0 FUN_002d1fd0_b280
 #define FUN_002d1f30 FUN_002d1f30_b280
 #define FUN_002a2170 FUN_002a2170_b280
-#define FUN_002a2290 FUN_002a2290_b280
+#define btlMainCurveSetPoses FUN_002a2290_b280
 #define FUN_002a3110 FUN_002a3110_b280
 #define FUN_002a3e80 FUN_002a3e80_b280
 #define FUN_002d5bf0 FUN_002d5bf0_b280
@@ -7166,7 +7166,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       if (fStack_c0 < 25.0f) {
         fStack_c0 = 25.0f;
       }
-      FUN_002a2290((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
+      btlMainCurveSetPoses((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
                    (RwV3d*)&fStack_dc,1);
       FUN_002a3110((BtlCamera*)param_2,2.5f);
     }
@@ -7190,7 +7190,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       if (fStack_c0 < 25.0f) {
         fStack_c0 = 25.0f;
       }
-      FUN_002a2290((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
+      btlMainCurveSetPoses((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
                    (RwV3d*)&fStack_dc,1);
       FUN_002a3110((BtlCamera*)param_2,2.5f);
     }
@@ -7225,7 +7225,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
   if (fVar7 > 1.25f) {
     FUN_002a3e80(fVar13,(u8*)*(undefined4 *)(iVar4 + 0xe0),
                  (u8*)(iVar5 + 4),(u8*)&uStack_ac,0x33);
-    FUN_002a2290((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
+    btlMainCurveSetPoses((BtlCamera*)param_2,(RwV3d*)&fStack_e0,
                  (RwV3d*)&fStack_dc,1);
     FUN_002a3110((BtlCamera*)param_2,fVar7);
   }
@@ -7284,7 +7284,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
 #undef FUN_002d1fd0
 #undef FUN_002d1f30
 #undef FUN_002a2170
-#undef FUN_002a2290
+#undef btlMainCurveSetPoses
 #undef FUN_002a3110
 #undef FUN_002a3e80
 #undef FUN_002d5bf0
@@ -7493,7 +7493,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
     work.final.x = work.scaled.x + work.rotated.x;
     work.final.y = work.scaled.y + work.rotated.y;
     work.final.z = work.scaled.z + work.rotated.z;
-    FUN_002a2290((u16*)camera, &work.current.pos, &work.final, 1);
+    btlMainCurveSetPoses((u16*)camera, &work.current.pos, &work.final, 1);
     FUN_002a3110((u16*)camera, param_2);
 }
 
@@ -7615,7 +7615,7 @@ rotate_done:
         halfDistance = halfDistance + stepAngle;
         frameIndex = (frameIndex + 1) & 0xffff;
     }
-    FUN_002a2660(camera, &work.frames[0], &work.frames[1],
+    btlMainCurveSetFourPoses(camera, &work.frames[0], &work.frames[1],
                  &work.frames[2], &work.frames[3], 1);
     FUN_002a3110((u16*)camera, param_2);
 }
@@ -8050,7 +8050,7 @@ void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
                      (u8 *)out, mode);
     }
 
-    FUN_002a2290((u16 *)cam, &frame.pos, (RwV3d *)out, 1);
+    btlMainCurveSetPoses((u16 *)cam, &frame.pos, (RwV3d *)out, 1);
     FUN_002a3110((u16 *)cam, param_1);
 #undef frame
 #undef out
@@ -8407,7 +8407,7 @@ void btlAct_TARGET(u16* camera)
 
   FUN_002a4470((f32*)scratch.first, (f32*)((u8*)camera + 0x9c));
   FUN_002b2eb0((int)camera, (float*)scratch.second);
-  FUN_002a2290(camera, (RwV3d*)scratch.first, (RwV3d*)scratch.second, 1);
+  btlMainCurveSetPoses(camera, (RwV3d*)scratch.first, (RwV3d*)scratch.second, 1);
   FUN_002a3110(camera, 10.0f);
   return;
 }
@@ -8575,7 +8575,7 @@ rotation_done:
     work.secondPos.x = work.base.x + work.direction.x;
     work.secondPos.y = work.base.y + work.direction.y;
     work.secondPos.z = work.base.z + work.direction.z;
-    FUN_002a2290((u16*)camera, &work.firstPos, &work.secondPos, 1);
+    btlMainCurveSetPoses((u16*)camera, &work.firstPos, &work.secondPos, 1);
     FUN_002a3110((u16*)camera, gp0xffff80e0);
 }
 
@@ -8647,7 +8647,7 @@ void FUN_002b3980(BtlCamera* camera)
         var_17 = (var_17 + 1) & 0xffff;
     }
     FUN_002a3e80_call(0.0f, (u8*)camera->action, 0, 0, 1);
-    FUN_002a2660(camera, (BtlCameraKeyFrame*)&scratch.records[0],
+    btlMainCurveSetFourPoses(camera, (BtlCameraKeyFrame*)&scratch.records[0],
                  (BtlCameraKeyFrame*)&scratch.records[1],
                  (BtlCameraKeyFrame*)&scratch.records[2],
                  (BtlCameraKeyFrame*)&scratch.records[3], 1);
@@ -8724,7 +8724,7 @@ void btlAct_WIN_P(BtlCamera* camera)
     i = (i + 1) & 0xffff;
   }
   FUN_002a3e80_call(0.0f, (u8*)camera->action, 0, 0, 1);
-  FUN_002a2660(camera, (BtlCameraKeyFrame*)&scratch.frameBytes[0],
+  btlMainCurveSetFourPoses(camera, (BtlCameraKeyFrame*)&scratch.frameBytes[0],
                (BtlCameraKeyFrame*)&scratch.frameBytes[0x1c],
                (BtlCameraKeyFrame*)&scratch.frameBytes[0x38],
                (BtlCameraKeyFrame*)&scratch.frameBytes[0x54], 1);
@@ -8796,7 +8796,7 @@ void FUN_002b3f80(BtlCamera* camera)
   scratch.transformed.z = scratch.candidate.z + scratch.direction.z;
   FUN_002a3590((f32*)&scratch.matrix, (f32*)&scratch.matrix);
   FUN_002a3590((f32*)&scratch.transformed, (f32*)&scratch.transformed);
-  FUN_002a2290((u16*)camera, &scratch.matrix, &scratch.transformed, 1);
+  btlMainCurveSetPoses((u16*)camera, &scratch.matrix, &scratch.transformed, 1);
   FUN_002a3110((u16*)camera, 0.75f);
 }
 
@@ -8967,7 +8967,7 @@ void FUN_002b41e0(BtlCamera* camera)
     work.target.x = work.pointNear.x + work.delta.x;
     work.target.y = work.pointNear.y + work.delta.y;
     work.target.z = work.pointNear.z + work.delta.z;
-    FUN_002a2290((u16*)camera, &work.current.pos, &work.target, 1);
+    btlMainCurveSetPoses((u16*)camera, &work.current.pos, &work.target, 1);
     FUN_002a3110((u16*)camera, 1.25f);
 }
 
@@ -9077,7 +9077,7 @@ void FUN_002b47b0(BtlCamera* camera)
     scratch.finalPos[1] = 25.0f;
   }
   FUN_002a3e80_call(0.0f, (u8*)camera->action, 0, 0, 1);
-  FUN_002a2290((u16*)camera, (RwV3d*)scratch.finalPos,
+  btlMainCurveSetPoses((u16*)camera, (RwV3d*)scratch.finalPos,
                (RwV3d*)scratch.worldBase, 1);
   FUN_002a3110((u16*)camera, 2.0f);
 }
@@ -9106,7 +9106,7 @@ void FUN_002b4c00(int param_1)
     scratch.first = D_00694E90;
     FUN_002a4690(scratch.secondTransform, &D_00694ED0, D_00694EF0, &D_00697880);
     scratch.second = D_00694ED0;
-    FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
+    btlMainCurveSetPoses((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
     cameraData = (u16 *)(iGpffffb6fc + 0x20);
     FUN_002a3110(cameraData, fGpffff813c);
   } else if (*(int *)(param_1 + 0xd8) == 0x25) {
@@ -9114,7 +9114,7 @@ void FUN_002b4c00(int param_1)
     scratch.first = *(RwV3d*)D_00694E9C;
     FUN_002a4690(scratch.secondTransform, &D_00694EDC, D_00694EFC, &D_00697880);
     scratch.second = D_00694EDC;
-    FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
+    btlMainCurveSetPoses((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
     cameraData = (u16 *)(iGpffffb6fc + 0x20);
     FUN_002a3110(cameraData, fGpffff80e0);
   }
@@ -9222,7 +9222,7 @@ void FUN_002b5000(int param_1)
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
     FUN_002a3590(pkt.end,pkt.end);
   }
-  FUN_002a2290((u16 *)param_1,(RwV3d *)pkt.out,(RwV3d *)pkt.end,1);
+  btlMainCurveSetPoses((u16 *)param_1,(RwV3d *)pkt.out,(RwV3d *)pkt.end,1);
   FUN_002a3110((u16 *)param_1,1.0f);
   return;
 }
@@ -9574,7 +9574,7 @@ void FUN_002b58f0(BtlCamera* param_1)
     FUN_002a3e80_call(0.0f, 0, 0, 0, 0x40);
     FUN_002a3590(&fStack_40, &fStack_40);
     FUN_002a3590(&fStack_5c, &fStack_5c);
-    FUN_002a2290((u16*)param_1, (RwV3d*)&fStack_40, (RwV3d*)&fStack_5c, 1);
+    btlMainCurveSetPoses((u16*)param_1, (RwV3d*)&fStack_40, (RwV3d*)&fStack_5c, 1);
     FUN_002a3110((u16*)param_1, 3.0f);
     #undef fStack_40
     #undef fStack_44
@@ -9757,7 +9757,7 @@ void FUN_002b5cd0(BtlCamera* camera)
     sp44 = temp_e4 + temp_f2_2;
     sp48 = temp_f5 + temp_f0_2;
     FUN_002a3e80_call(0.0f, 0, 0, 0, 0x40);
-    FUN_002a2290((u16*)camera, (RwV3d*)&sp40, (RwV3d*)&sp5C, 1);
+    btlMainCurveSetPoses((u16*)camera, (RwV3d*)&sp40, (RwV3d*)&sp5C, 1);
     FUN_002a3110((u16*)camera, 3.5f);
 }
 #undef sp40
@@ -9984,7 +9984,7 @@ extern void FUN_004c6c60_b64d0(void *out, const RwV3d *in, const RwMatrix *matri
 extern BtlUnitAnimBounds *func_002fc520(BtlUnit *unit);
 #pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
 extern u32 FUN_002b6bd0_b64d0(struct B64CameraWork* work);
-#pragma alias FUN_002a2290_b64d0 FUN_002a2290
+#pragma alias FUN_002a2290_b64d0 btlMainCurveSetPoses
 extern void FUN_002a2290_b64d0(BtlCamera* camera, RwV3d* first,
                                 RwV3d* second, s32 mode);
 #pragma alias FUN_002a3110_b64d0 FUN_002a3110
