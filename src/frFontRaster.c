@@ -46,20 +46,20 @@ extern u8 *DAT_007ce644;
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003b35e0(int param_1);
 void FUN_003b3740(void);
-void FUN_003b3770(void);
+void frFontRasterEvictExpired(void);
 u32 frFontFindOrLoadEntry(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_003b3dd0(u32 param_1,int param_2);
-u32 FUN_003b3e00(u32 param_1,int param_2);
+u32 frFontRasterLookup(u32 param_1,int param_2);
+u32 frFontRasterFindEntry(u32 param_1,int param_2);
 u32 FUN_003b3e60(u32 param_1,u32 param_2,u32 param_3);
 void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 /* Region call-cast macros */
 #define FUN_003b35e0(...) ((void (*)(...))FUN_003b35e0)(__VA_ARGS__)
 #define FUN_003b3740(...) ((void (*)(...))FUN_003b3740)(__VA_ARGS__)
-#define FUN_003b3770(...) ((void (*)(...))FUN_003b3770)(__VA_ARGS__)
+#define frFontRasterEvictExpired(...) ((void (*)(...))frFontRasterEvictExpired)(__VA_ARGS__)
 #define FUN_003b38f0(...) ((u64 (*)(...))FUN_003b38f0)(__VA_ARGS__)
 #define frFontFindOrLoadEntry(...) ((long (*)(...))frFontFindOrLoadEntry)(__VA_ARGS__)
-#define FUN_003b3dd0(...) ((long (*)(...))FUN_003b3dd0)(__VA_ARGS__)
-#define FUN_003b3e00(...) ((u32 (*)(...))FUN_003b3e00)(__VA_ARGS__)
+#define frFontRasterLookup(...) ((long (*)(...))frFontRasterLookup)(__VA_ARGS__)
+#define frFontRasterFindEntry(...) ((u32 (*)(...))frFontRasterFindEntry)(__VA_ARGS__)
 #define FUN_003b3e60(...) ((u32 (*)(...))FUN_003b3e60)(__VA_ARGS__)
 #define FUN_003b3f90(...) ((void (*)(...))FUN_003b3f90)(__VA_ARGS__)
 
@@ -130,11 +130,11 @@ void FUN_003b3740(void)
 
 }
 #define FUN_003b3740(...) ((void (*)(...))FUN_003b3740)(__VA_ARGS__)
-#undef FUN_003b3770
+#undef frFontRasterEvictExpired
 // FUN_003B3770 NONMATCHING
 
 
-void FUN_003b3770(void)
+void frFontRasterEvictExpired(void)
 {
   u32 *previous;
   u32 *current;
@@ -191,7 +191,7 @@ void FUN_003b3770(void)
     }
   }
 }
-#define FUN_003b3770(...) ((void (*)(...))FUN_003b3770)(__VA_ARGS__)
+#define frFontRasterEvictExpired(...) ((void (*)(...))frFontRasterEvictExpired)(__VA_ARGS__)
 #undef FUN_003b38f0
 /* W389 pragma pair: opt_loop_invariants on + opt_lifetimes on; without nd=740/object=1084, with nd=709/object=1072; window=1136. */
 #pragma push
@@ -329,11 +329,11 @@ u32 frFontFindOrLoadEntry(u32 param_1,u32 param_2,u32 param_3)
 }
 
 #define frFontFindOrLoadEntry(...) ((long (*)(...))frFontFindOrLoadEntry)(__VA_ARGS__)
-#undef FUN_003b3dd0
+#undef frFontRasterLookup
 // FUN_003B3DD0
 
 
-u32 FUN_003b3dd0(u32 param_1,int param_2)
+u32 frFontRasterLookup(u32 param_1,int param_2)
 {
   u32 result;
 
@@ -345,12 +345,12 @@ u32 FUN_003b3dd0(u32 param_1,int param_2)
   return result;
 }
 
-#define FUN_003b3dd0(...) ((long (*)(...))FUN_003b3dd0)(__VA_ARGS__)
-#undef FUN_003b3e00
+#define frFontRasterLookup(...) ((long (*)(...))frFontRasterLookup)(__VA_ARGS__)
+#undef frFontRasterFindEntry
 // FUN_003B3E00
 
 
-u32 FUN_003b3e00(u32 param_1,int param_2)
+u32 frFontRasterFindEntry(u32 param_1,int param_2)
 {
   u32 *entry;
 
@@ -377,7 +377,7 @@ done:
   return (u32)entry;
 }
 
-#define FUN_003b3e00(...) ((u32 (*)(...))FUN_003b3e00)(__VA_ARGS__)
+#define frFontRasterFindEntry(...) ((u32 (*)(...))frFontRasterFindEntry)(__VA_ARGS__)
 #undef FUN_003b3e60
 #undef FUN_003b3f90
 // FUN_003B3E60
