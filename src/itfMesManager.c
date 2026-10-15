@@ -150,14 +150,14 @@ extern void FUN_003b0bb0(int param_1, u8 param_2);
 extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
 extern void thunk_FUN_003b0e04(int param_1, u8 param_2);
-#pragma alias FUN_003b2940_u8 FUN_003b2940
+#pragma alias FUN_003b2940_u8 frFontBuildTextSimple
 extern u32 FUN_003b2940_u8(u32 param_1,u32 param_2,u8 param_3,u8 param_4,
                            u32 param_5,u32 param_6,u32 param_7,u32 param_8);
 #pragma alias thunk_FUN_003b0e04_u8 thunk_FUN_003b0e04
 extern int thunk_FUN_003b0e04_u8(u32 param_1,u8 param_2);
 #pragma alias FUN_003b1300_typed FUN_003b1300
 extern int FUN_003b1300_typed(u32 param_1);
-#pragma alias FUN_003b1330_typed FUN_003b1330
+#pragma alias FUN_003b1330_typed frFontDrawListMode
 extern int FUN_003b1330_typed(u32 param_1,u32 param_2);
 #pragma alias thunk_FUN_003b0e54_f32 thunk_FUN_003b0e54
 extern void thunk_FUN_003b0e54_f32(u64 param_1, f32 param_2);
@@ -198,14 +198,14 @@ u32 FUN_003a2660(void);
 s16 FUN_003a2750(int param_1);
 void FUN_003a27c0(int param_1,u16 param_2);
 s16 FUN_003a2830(int param_1);
-u32 FUN_003a28a0(void);
+u32 itfMesCmdWindowSetHandle(void);
 u32 FUN_003a2900(void);
 u32 FUN_003a2970(void);
 void FUN_003a2a30(s32 param_1);
 #pragma alias FUN_003a2a30_s32 FUN_003a2a30
 extern void FUN_003a2a30_s32(s32 param_1);
-u32 FUN_003a2b30(void);
-u32 FUN_003a2c10(void);
+u32 itfMesCmdWindowSetValue(void);
+u32 itfMesCmdWindowSetParam(void);
 int FUN_003a2c90(int param_1,int param_2);
 u32 FUN_003a2ef0(u32 param_1);
 #pragma alias FUN_003a2ef0_typed FUN_003a2ef0
@@ -248,19 +248,19 @@ void FUN_003a4dd0(int param_1);
 #pragma alias FUN_003a4dd0_typed FUN_003a4dd0
 extern void FUN_003a4dd0_typed(int param_1);
 void FUN_003a4ef0(u32 *param_1);
-void FUN_0035ac90(int output, int source, int end, u32 length);
+void itfMesApplyRelocs(int output, int source, int end, u32 length);
 void FUN_003a5030(int param_1);
 #pragma alias FUN_003a5030_typed FUN_003a5030
 extern void FUN_003a5030_typed(int param_1);
-int FUN_003a50e0(int param_1,int param_2);
-#pragma alias FUN_003a50e0_typed FUN_003a50e0
+int itfMesRecordEntry(int param_1,int param_2);
+#pragma alias FUN_003a50e0_typed itfMesRecordEntry
 extern int FUN_003a50e0_typed(int param_1, int param_2);
-#pragma alias FUN_003a5940_typed FUN_003a5940
+#pragma alias FUN_003a5940_typed itfMesRecordTextAt
 extern int FUN_003a5940_typed(int param_1, int param_2);
-#pragma alias FUN_003a6460_typed FUN_003a6460
+#pragma alias FUN_003a6460_typed itfMesListWidth
 extern int FUN_003a6460_typed(int param_1);
-int FUN_003a5100(int param_1);
-#pragma alias FUN_003a5100_typed FUN_003a5100
+int itfMesRecordTail(int param_1);
+#pragma alias FUN_003a5100_typed itfMesRecordTail
 extern int FUN_003a5100_typed(int param_1);
 u32 FUN_003a5120(int param_1,int param_2);
 u32 FUN_003a51a0(int param_1);
@@ -283,14 +283,14 @@ extern u64 FUN_003a53b0_8f(int param_1,int param_2,f32 param_3,int param_4,int p
 #pragma alias FUN_003a53b0_int FUN_003a53b0
 extern u32 FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
                             u32 param_6,int param_7,int param_8,int param_9);
-#pragma alias FUN_003a5fd0_typed FUN_003a5fd0
+#pragma alias FUN_003a5fd0_typed itfMesApplySlotTable
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 #pragma alias FUN_003b0ce0_typed FUN_003b0ce0
 extern void FUN_003b0ce0_typed(u64 param_1,u64 param_2);
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 u64 FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,u32 param_4,s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9);
 u64  FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,  s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9,  int param_10,int param_11);
-u32 FUN_003a5940(int param_1,int param_2);
+u32 itfMesRecordTextAt(int param_1,int param_2);
 #pragma alias FUN_003a5980_direct FUN_003a5980
 extern void FUN_003a5980_direct(u32 *param_1);
 #pragma alias FUN_003a5980_typed FUN_003a5980
@@ -301,15 +301,15 @@ extern void FUN_003a5ca0_typed(u32 param_1,long param_2,u64 param_3,long param_4
 void FUN_003a5ea0(int param_1,int param_2,u32 param_3);
 #pragma alias FUN_003a5ea0_typed FUN_003a5ea0
 extern void FUN_003a5ea0_typed(u32 param_1);
-void FUN_003a5fd0(int param_1);
+void itfMesApplySlotTable(int param_1);
 u32 FUN_003a6030(int param_1);
 #pragma alias FUN_003a6030_typed FUN_003a6030
 extern u32 FUN_003a6030_typed(u32 *param_1);
 void FUN_003a6060(u8 *param_1,u64 param_2);
 #pragma alias FUN_003a6060_typed FUN_003a6060
 extern void FUN_003a6060_typed(u32 *param_1, u8 *param_2);
-int FUN_003a6100(int param_1,u32 param_2);
-#pragma alias FUN_003a6100_typed FUN_003a6100
+int itfMesCountClearBits(int param_1,u32 param_2);
+#pragma alias FUN_003a6100_typed itfMesCountClearBits
 extern s32 FUN_003a6100_typed(s32 param_1, u32 param_2);
 u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,  u32 param_6,s32 param_7,u32 param_8);
 #pragma alias FUN_003a6140_typed FUN_003a6140
@@ -324,10 +324,10 @@ extern s32 FUN_003a62e0_typed(u32 param_1, u32 param_2);
 static int FUN_003a6380();
 #pragma alias FUN_003a6380_direct FUN_003a6380
 extern void FUN_003a6380_direct(int param_1,int param_2,int param_3,u8 param_4);
-void FUN_003a6410(int param_1,u32 param_2);
-int FUN_003a6460(int param_1);
-void FUN_003a64c0(int param_1);
-#pragma alias FUN_003a64c0_typed FUN_003a64c0
+void itfMesListSetAlpha(int param_1,u32 param_2);
+int itfMesListWidth(int param_1);
+void itfMesListEnableVisible(int param_1);
+#pragma alias FUN_003a64c0_typed itfMesListEnableVisible
 extern void FUN_003a64c0_typed(u32 param_1);
 void FUN_003a6520(u32 *param_1);
 #pragma alias FUN_003a6520_typed FUN_003a6520
@@ -344,7 +344,7 @@ extern void FUN_003a6900_direct(u32 *param_1,long param_2);
 extern void FUN_003a6930_direct(u32 *param_1,long param_2);
 void FUN_003a6980(u32 *param_1);
 void FUN_003a69d0(u32 *param_1);
-void FUN_003a6a10(int param_1);
+void itfMesClearSlots(int param_1);
 void FUN_003a6a40(u8 *param_1,long param_2);
 void FUN_003a6a80(int param_1,u16 param_2,u16 param_3);
 #pragma alias FUN_003a6a80_typed FUN_003a6a80
@@ -385,7 +385,7 @@ extern void FUN_003a8260_direct(u32 *param_1);
 #pragma alias FUN_003a8350_direct FUN_003a8350
 extern void FUN_003a8350_direct(u32 *param_1);
 u64 FUN_003a8440(void);
-u64 FUN_003a84c0(void);
+u64 itfMesFlushPending(void);
 void FUN_003a8530(void);
 void FUN_003a8590(u32* param_1);
 #pragma alias FUN_003a8590_direct FUN_003a8590
@@ -408,12 +408,12 @@ extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int 
 #define FUN_003a2750(...) ((s16 (*)(...))FUN_003a2750)(__VA_ARGS__)
 #define FUN_003a27c0(...) ((void (*)(...))FUN_003a27c0)(__VA_ARGS__)
 #define FUN_003a2830(...) ((s16 (*)(...))FUN_003a2830)(__VA_ARGS__)
-#define FUN_003a28a0(...) ((u32 (*)(...))FUN_003a28a0)(__VA_ARGS__)
+#define itfMesCmdWindowSetHandle(...) ((u32 (*)(...))itfMesCmdWindowSetHandle)(__VA_ARGS__)
 #define FUN_003a2900(...) ((u32 (*)(...))FUN_003a2900)(__VA_ARGS__)
 #define FUN_003a2970(...) ((u32 (*)(...))FUN_003a2970)(__VA_ARGS__)
 #define FUN_003a2a30(...) ((void (*)(...))FUN_003a2a30)(__VA_ARGS__)
-#define FUN_003a2b30(...) ((u32 (*)(...))FUN_003a2b30)(__VA_ARGS__)
-#define FUN_003a2c10(...) ((u32 (*)(...))FUN_003a2c10)(__VA_ARGS__)
+#define itfMesCmdWindowSetValue(...) ((u32 (*)(...))itfMesCmdWindowSetValue)(__VA_ARGS__)
+#define itfMesCmdWindowSetParam(...) ((u32 (*)(...))itfMesCmdWindowSetParam)(__VA_ARGS__)
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
 #define FUN_003a2ef0(...) ((u32 (*)(...))FUN_003a2ef0)(__VA_ARGS__)
 #define FUN_003a3010(...) ((u32 (*)(...))FUN_003a3010)(__VA_ARGS__)
@@ -439,8 +439,8 @@ extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int 
 #define FUN_003a4dd0(...) ((void (*)(...))FUN_003a4dd0)(__VA_ARGS__)
 #define FUN_003a4ef0(...) ((void (*)(...))FUN_003a4ef0)(__VA_ARGS__)
 #define FUN_003a5030(...) ((void (*)(...))FUN_003a5030)(__VA_ARGS__)
-#define FUN_003a50e0(...) ((int (*)(...))FUN_003a50e0)(__VA_ARGS__)
-#define FUN_003a5100(...) ((int (*)(...))FUN_003a5100)(__VA_ARGS__)
+#define itfMesRecordEntry(...) ((int (*)(...))itfMesRecordEntry)(__VA_ARGS__)
+#define itfMesRecordTail(...) ((int (*)(...))itfMesRecordTail)(__VA_ARGS__)
 #define FUN_003a5120(...) ((u32 (*)(...))FUN_003a5120)(__VA_ARGS__)
 #define FUN_003a51a0(...) ((u32 (*)(...))FUN_003a51a0)(__VA_ARGS__)
 #define FUN_003a5210(...) ((void (*)(...))FUN_003a5210)(__VA_ARGS__)
@@ -449,28 +449,28 @@ extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int 
 #define FUN_003a5540(...) ((void (*)(...))FUN_003a5540)(__VA_ARGS__)
 #define FUN_003a5570(...) ((u64 (*)(...))FUN_003a5570)(__VA_ARGS__)
 #define FUN_003a56f0(...) ((u64 (*)(...))FUN_003a56f0)(__VA_ARGS__)
-#define FUN_003a5940(...) ((u32 (*)(...))FUN_003a5940)(__VA_ARGS__)
+#define itfMesRecordTextAt(...) ((u32 (*)(...))itfMesRecordTextAt)(__VA_ARGS__)
 #define FUN_003a5980(...) ((void (*)(...))FUN_003a5980)(__VA_ARGS__)
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
 #define FUN_003a5ea0(...) ((void (*)(...))FUN_003a5ea0)(__VA_ARGS__)
-#define FUN_003a5fd0(...) FUN_003a5fd0_typed(__VA_ARGS__)
+#define itfMesApplySlotTable(...) FUN_003a5fd0_typed(__VA_ARGS__)
 #define FUN_003a6030(...) ((u32 (*)(...))FUN_003a6030)(__VA_ARGS__)
 #define FUN_003a6060(...) ((void (*)(...))FUN_003a6060)(__VA_ARGS__)
-#define FUN_003a6100(...) ((int (*)(...))FUN_003a6100)(__VA_ARGS__)
+#define itfMesCountClearBits(...) ((int (*)(...))itfMesCountClearBits)(__VA_ARGS__)
 #define FUN_003a6140(...) ((long (*)(...))FUN_003a6140)(__VA_ARGS__)
 #define FUN_003a628c(...) ((int (*)(...))FUN_003a628c)(__VA_ARGS__)
 #define FUN_003a62b0(...) ((void (*)(...))FUN_003a62b0)(__VA_ARGS__)
 #define FUN_003a62e0(...) ((int (*)(...))FUN_003a62e0)(__VA_ARGS__)
-#define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
-#define FUN_003a6460(...) ((int (*)(...))FUN_003a6460)(__VA_ARGS__)
-#define FUN_003a64c0(...) ((void (*)(...))FUN_003a64c0)(__VA_ARGS__)
+#define itfMesListSetAlpha(...) ((void (*)(...))itfMesListSetAlpha)(__VA_ARGS__)
+#define itfMesListWidth(...) ((int (*)(...))itfMesListWidth)(__VA_ARGS__)
+#define itfMesListEnableVisible(...) ((void (*)(...))itfMesListEnableVisible)(__VA_ARGS__)
 #define FUN_003a6520(...) ((void (*)(...))FUN_003a6520)(__VA_ARGS__)
 #define FUN_003a67e0(...) ((void (*)(...))FUN_003a67e0)(__VA_ARGS__)
 #define FUN_003a6900(...) ((void (*)(...))FUN_003a6900)(__VA_ARGS__)
 #define FUN_003a6930(...) ((void (*)(...))FUN_003a6930)(__VA_ARGS__)
 #define FUN_003a6980(...) ((void (*)(...))FUN_003a6980)(__VA_ARGS__)
 #define FUN_003a69d0(...) ((void (*)(...))FUN_003a69d0)(__VA_ARGS__)
-#define FUN_003a6a10(...) ((void (*)(...))FUN_003a6a10)(__VA_ARGS__)
+#define itfMesClearSlots(...) ((void (*)(...))itfMesClearSlots)(__VA_ARGS__)
 #define FUN_003a6a40(...) ((void (*)(...))FUN_003a6a40)(__VA_ARGS__)
 #define FUN_003a6a80(...) ((void (*)(...))FUN_003a6a80)(__VA_ARGS__)
 #define FUN_003a6b00(...) ((void (*)(...))FUN_003a6b00)(__VA_ARGS__)
@@ -491,7 +491,7 @@ extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int 
 #define FUN_003a8260(...) ((void (*)(...))FUN_003a8260)(__VA_ARGS__)
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #define FUN_003a8440(...) ((u64 (*)(...))FUN_003a8440)(__VA_ARGS__)
-#define FUN_003a84c0(...) ((u64 (*)(...))FUN_003a84c0)(__VA_ARGS__)
+#define itfMesFlushPending(...) ((u64 (*)(...))itfMesFlushPending)(__VA_ARGS__)
 #define FUN_003a8530(...) ((void (*)(...))FUN_003a8530)(__VA_ARGS__)
 #define FUN_003a8590(...) ((void (*)(...))FUN_003a8590)(__VA_ARGS__)
 #define FUN_003a8600(...) ((void (*)(...))FUN_003a8600)(__VA_ARGS__)
@@ -557,7 +557,7 @@ extern void FUN_003a6930_typed(u32*, s32);
 extern void FUN_003a69d0_typed(u32*);
 #pragma alias FUN_003a42c0_typed FUN_003a42c0
 #pragma alias FUN_003a6980_typed FUN_003a6980
-#pragma alias FUN_003a6a10_typed FUN_003a6a10
+#pragma alias FUN_003a6a10_typed itfMesClearSlots
 #pragma alias FUN_003a6a40_typed FUN_003a6a40
 extern u32 FUN_003a42c0_typed(int, u32);
 extern void FUN_003a6980_typed(u32*);
@@ -859,11 +859,11 @@ s16 FUN_003a2830(int param_1)
 
 }
 #define FUN_003a2830(...) ((s16 (*)(...))FUN_003a2830)(__VA_ARGS__)
-#undef FUN_003a28a0
+#undef itfMesCmdWindowSetHandle
 // FUN_003A28A0
 
 
-u32 FUN_003a28a0(void)
+u32 itfMesCmdWindowSetHandle(void)
 {
   int value;
   u32 other;
@@ -876,7 +876,7 @@ u32 FUN_003a28a0(void)
   FUN_003a3ba0(value,other);
   return 1;
 }
-#define FUN_003a28a0(...) ((u32 (*)(...))FUN_003a28a0)(__VA_ARGS__)
+#define itfMesCmdWindowSetHandle(...) ((u32 (*)(...))itfMesCmdWindowSetHandle)(__VA_ARGS__)
 #undef FUN_003a2900
 // FUN_003A2900
 
@@ -1021,11 +1021,11 @@ void FUN_003a2a30(s32 param_1)
 #define FUN_003a2a30(...) ((void (*)(...))FUN_003a2a30)(__VA_ARGS__)
 #pragma alias FUN_003a4010_typed FUN_003a4010
 extern void FUN_003a4010_typed(int param_1,int param_2,int param_3,u32 param_4);
-#undef FUN_003a2b30
+#undef itfMesCmdWindowSetValue
 // FUN_003A2B30
 
 
-u32 FUN_003a2b30(void)
+u32 itfMesCmdWindowSetValue(void)
 
 
 
@@ -1057,13 +1057,13 @@ u32 FUN_003a2b30(void)
   return 1;
 
 }
-#define FUN_003a2b30(...) ((u32 (*)(...))FUN_003a2b30)(__VA_ARGS__)
+#define itfMesCmdWindowSetValue(...) ((u32 (*)(...))itfMesCmdWindowSetValue)(__VA_ARGS__)
 #undef FUN_003a4a70
-#undef FUN_003a2c10
+#undef itfMesCmdWindowSetParam
 // FUN_003A2C10
 
 
-u32 FUN_003a2c10(void)
+u32 itfMesCmdWindowSetParam(void)
 
 
 
@@ -1095,7 +1095,7 @@ u32 FUN_003a2c10(void)
 
 }
 #define FUN_003a4a70(...) ((u32 (*)(...))FUN_003a4a70)(__VA_ARGS__)
-#define FUN_003a2c10(...) ((u32 (*)(...))FUN_003a2c10)(__VA_ARGS__)
+#define itfMesCmdWindowSetParam(...) ((u32 (*)(...))itfMesCmdWindowSetParam)(__VA_ARGS__)
 #undef FUN_003a2c90
 // FUN_003A2C90 MATCHING
 
@@ -1344,19 +1344,19 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
   else {
 
-    FUN_003a5fd0(puVar2 + 0x35);
+    itfMesApplySlotTable(puVar2 + 0x35);
 
     if (puVar2[2] != 0) {
 
-      FUN_003b19a0(puVar2[2]);
+      frFontLoadSystemSlot(puVar2[2]);
 
     }
 
-    FUN_003b0e70(0x100);
+    frFontSetFlagBits(0x100);
 
     FUN_003a5980_typed(puVar2);
 
-    FUN_003b0e90(0x100);
+    frFontClearFlagBits(0x100);
 
     puVar8 = puVar2 + 5;
 
@@ -1389,7 +1389,7 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
           uVar6 = FUN_003a3f90_typed(param_1,uVar1 & 0x7fff);
 
-          uVar4 = FUN_003b2940(*puVar8,puVar8[1],0,1,0,0xff,uVar6,0);
+          uVar4 = frFontBuildTextSimple(*puVar8,puVar8[1],0,1,0,0xff,uVar6,0);
 
           puVar8[2] = uVar4;
 
@@ -1399,7 +1399,7 @@ u32 FUN_003a30c0(s32 param_1,s32 param_2,u16 param_3)
 
           uVar6 = FUN_003a6030_typed(puVar2);
 
-          uVar4 = FUN_003b2940(*puVar8,puVar8[1],0,1,0,0xff,uVar6,0);
+          uVar4 = frFontBuildTextSimple(*puVar8,puVar8[1],0,1,0,0xff,uVar6,0);
 
           puVar8[2] = uVar4;
 
@@ -1768,11 +1768,11 @@ void FUN_003a37c0(int param_1,u32 param_2)
 
   }
 
-  FUN_003a5fd0(puVar2 + 0x35);
+  itfMesApplySlotTable(puVar2 + 0x35);
 
   if (puVar2[2] != 0) {
 
-    FUN_003b19a0(puVar2[2]);
+    frFontLoadSystemSlot(puVar2[2]);
 
   }
 
@@ -2631,10 +2631,10 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
     return 0;
   }
 
-  FUN_003a5fd0(iVar1 + 0xd4);
+  itfMesApplySlotTable(iVar1 + 0xd4);
 
   if (*(int *)(iVar1 + 8) != 0) {
-    FUN_003b19a0(*(int *)(iVar1 + 8));
+    frFontLoadSystemSlot(*(int *)(iVar1 + 8));
   }
 
   lVar5 = FUN_003a5940_typed(iVar2,param_3);
@@ -2680,7 +2680,7 @@ void FUN_003a4ce0(void)
 
   FUN_0035ad80(DAT_006a1b58_abs,0x106f,0,0,FUN_003a8440,FUN_003a8530,0);
 
-  FUN_00194c50(DAT_006a1b68_abs,0x1cbf,FUN_003a84c0,FUN_003a8530,0);
+  FUN_00194c50(DAT_006a1b68_abs,0x1cbf,itfMesFlushPending,FUN_003a8530,0);
 
   FUN_005225a8(DAT_006a1b80_abs,DAT_006a1a70_abs);
 
@@ -2788,12 +2788,12 @@ void FUN_003a5030(int object)
     if (*(u8*)(object + 0x1c) == 0) {
         base = object + 0x20;
         end = object + *(s32*)(object + 0x10);
-        FUN_0035ac90(base, base, end, *(volatile /* Removing this qualifier loses FUN_003a5030 (MATCH nd0 -> MISMATCH nd8, size 84 -> 84) - measured W170. */ u32*)(object + 0x14));
+        itfMesApplyRelocs(base, base, end, *(volatile /* Removing this qualifier loses FUN_003a5030 (MATCH nd0 -> MISMATCH nd8, size 84 -> 84) - measured W170. */ u32*)(object + 0x14));
         *(u8*)(object + 0x1c) = 1;
     }
 }
 #define FUN_003a5030(...) ((void (*)(...))FUN_003a5030)(__VA_ARGS__)
-#undef FUN_003a50e0
+#undef itfMesRecordEntry
 // FUN_003a5090
 u32 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader)
 {
@@ -2818,7 +2818,7 @@ u32 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader)
 // FUN_003A50E0
 
 
-int FUN_003a50e0(int param_1,int param_2)
+int itfMesRecordEntry(int param_1,int param_2)
 {
   s32 base;
   s32 index;
@@ -2827,12 +2827,12 @@ int FUN_003a50e0(int param_1,int param_2)
   index = param_2 * 8;
   return index + base + 0x20;
 }
-#define FUN_003a50e0(...) ((int (*)(...))FUN_003a50e0)(__VA_ARGS__)
-#undef FUN_003a5100
+#define itfMesRecordEntry(...) ((int (*)(...))itfMesRecordEntry)(__VA_ARGS__)
+#undef itfMesRecordTail
 // FUN_003A5100
 
 
-int FUN_003a5100(int param_1)
+int itfMesRecordTail(int param_1)
 
 
 
@@ -2844,7 +2844,7 @@ int FUN_003a5100(int param_1)
   return iVar1 + param_1 + 0x20;
 
 }
-#define FUN_003a5100(...) ((int (*)(...))FUN_003a5100)(__VA_ARGS__)
+#define itfMesRecordTail(...) ((int (*)(...))itfMesRecordTail)(__VA_ARGS__)
 #undef FUN_003a5120
 // FUN_003A5120
 
@@ -2954,7 +2954,7 @@ FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 
   
 
-  FUN_003a5fd0(*(int *)(DAT_00959eec_abs + (int)param_7 * 0xd) + 0xd4);
+  itfMesApplySlotTable(*(int *)(DAT_00959eec_abs + (int)param_7 * 0xd) + 0xd4);
 
   uVar1 = FUN_003a53b0(param_1,param_2,param_3,param_4,param_5,param_6,0,param_7,param_8);
 
@@ -3078,13 +3078,13 @@ FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
   }
 
-  FUN_003a5fd0(iVar2 + 0xd4);
+  itfMesApplySlotTable(iVar2 + 0xd4);
 
   uVar1 = FUN_003a53b0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
 
   FUN_003b0ce0(uVar1,param_5);
 
-  FUN_003b1330(uVar1,1);
+  frFontDrawListMode(uVar1,1);
 
   FUN_003b0170(uVar1);
 
@@ -3142,7 +3142,7 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
   }
 
-  FUN_003a5fd0(iVar1 + 0xd4);
+  itfMesApplySlotTable(iVar1 + 0xd4);
 
   uVar2 = FUN_003a53b0_u32(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
 
@@ -3164,13 +3164,13 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
     }
 
-    uVar2 = FUN_003b1920(uVar2,uVar3,0);
+    uVar2 = frFontAppendList(uVar2,uVar3,0);
 
   }
 
   FUN_003b0ce0(uVar2,param_5);
 
-  FUN_003b1330(uVar2,1);
+  frFontDrawListMode(uVar2,1);
 
   FUN_003b0170(uVar2);
 
@@ -3178,11 +3178,11 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
 }
 #define FUN_003a56f0(...) ((u64 (*)(...))FUN_003a56f0)(__VA_ARGS__)
-#undef FUN_003a5940
+#undef itfMesRecordTextAt
 // FUN_003A5940
 
 
-u32 FUN_003a5940(int param_1,int param_2)
+u32 itfMesRecordTextAt(int param_1,int param_2)
 {
   u32 uVar1;
   int count = *(short *)(param_1 + 0x18);
@@ -3197,7 +3197,7 @@ u32 FUN_003a5940(int param_1,int param_2)
   }
   return uVar1;
 }
-#define FUN_003a5940(...) ((u32 (*)(...))FUN_003a5940)(__VA_ARGS__)
+#define itfMesRecordTextAt(...) ((u32 (*)(...))itfMesRecordTextAt)(__VA_ARGS__)
 #undef FUN_003a5980
 // W409 addressing/raw-literal fixes: NONMATCHING nd 364 -> 202, object 796/800 -> 800/800.
 // FUN_003A5980 NONMATCHING
@@ -3273,7 +3273,7 @@ void FUN_003a5980(u32 *param_1)
 
   }
 
-  uVar4 = FUN_003b2940(puVar9[9],puVar9[10],*(u8 *)((int)puVar9 + 0x36),
+  uVar4 = frFontBuildTextSimple(puVar9[9],puVar9[10],*(u8 *)((int)puVar9 + 0x36),
 
                        *(u8 *)((int)puVar9 + 0x37),(char)puVar9[0xe],
 
@@ -3510,11 +3510,11 @@ void FUN_003a5ea0(int manager, int index, u32 value)
   *(u32 *)memory = value;
 }
 #define FUN_003a5ea0(...) ((void (*)(...))FUN_003a5ea0)(__VA_ARGS__)
-#undef FUN_003a5fd0
+#undef itfMesApplySlotTable
 // FUN_003A5FD0
 
 
-void FUN_003a5fd0(int param_1)
+void itfMesApplySlotTable(int param_1)
 
 
 
@@ -3533,7 +3533,7 @@ void FUN_003a5fd0(int param_1)
   return;
 
 }
-#define FUN_003a5fd0(...) ((void (*)(...))FUN_003a5fd0)(__VA_ARGS__)
+#define itfMesApplySlotTable(...) ((void (*)(...))itfMesApplySlotTable)(__VA_ARGS__)
 #undef FUN_003a6030
 // FUN_003A6030
 
@@ -3584,7 +3584,7 @@ void FUN_003a6060(u8 *param_1,u64 param_2)
 
   }
 
-  uVar1 = FUN_003b2940(*(u32 *)entry,*(u32 *)(entry + 4),0,1,0,0xff,
+  uVar1 = frFontBuildTextSimple(*(u32 *)entry,*(u32 *)(entry + 4),0,1,0,0xff,
 
                        param_2,0);
 
@@ -3596,11 +3596,11 @@ void FUN_003a6060(u8 *param_1,u64 param_2)
 
 }
 #define FUN_003a6060(...) ((void (*)(...))FUN_003a6060)(__VA_ARGS__)
-#undef FUN_003a6100
+#undef itfMesCountClearBits
 // FUN_003A6100
 
 
-int FUN_003a6100(int param_1,u32 param_2)
+int itfMesCountClearBits(int param_1,u32 param_2)
 {
   int iVar1;
 
@@ -3614,9 +3614,9 @@ int FUN_003a6100(int param_1,u32 param_2)
   }
   return iVar1;
 }
-#define FUN_003a6100(...) ((int (*)(...))FUN_003a6100)(__VA_ARGS__)
+#define itfMesCountClearBits(...) ((int (*)(...))itfMesCountClearBits)(__VA_ARGS__)
 #undef FUN_003a6140
-#undef FUN_003a6410
+#undef itfMesListSetAlpha
 // FUN_003A6140
 
 
@@ -3648,7 +3648,7 @@ u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
 
     else {
 
-      lVar2 = FUN_003b2940(param_4,param_5,(u8)param_8,0,0,0xff,*param_1,lVar2);
+      lVar2 = frFontBuildTextSimple(param_4,param_5,(u8)param_8,0,0,0xff,*param_1,lVar2);
 
       if (param_7 == 0) {
 
@@ -3674,7 +3674,7 @@ u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
 
     thunk_FUN_003a6360(lVar2,param_6);
 
-    FUN_003a6410(lVar2,0xff);
+    itfMesListSetAlpha(lVar2,0xff);
 
   }
 
@@ -3696,7 +3696,7 @@ int thunk_FUN_003a628c(int param_1)
 }
 #pragma optimization_level 2
 #define FUN_003a6140(...) ((long (*)(...))FUN_003a6140)(__VA_ARGS__)
-#define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
+#define itfMesListSetAlpha(...) ((void (*)(...))itfMesListSetAlpha)(__VA_ARGS__)
 
 /* Fall-through-only branch target for the loop in FUN_003a628c; never returns
  * on its own and has no C equivalent (a normal C function always emits a
@@ -3852,14 +3852,14 @@ set_check:
 done:
   return;
 }
-#undef FUN_003a6410
+#undef itfMesListSetAlpha
 #pragma push
 /* Removing this loses FUN_003a6410 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003A6410
 
 
-void FUN_003a6410(int param_1,u32 param_2)
+void itfMesListSetAlpha(int param_1,u32 param_2)
 {
   int iVar1;
 
@@ -3871,11 +3871,11 @@ void FUN_003a6410(int param_1,u32 param_2)
   return;
 }
 #pragma pop
-#define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
-#undef FUN_003a6460
+#define itfMesListSetAlpha(...) ((void (*)(...))itfMesListSetAlpha)(__VA_ARGS__)
+#undef itfMesListWidth
 // FUN_003A6460
 
-int FUN_003a6460(int param_1)
+int itfMesListWidth(int param_1)
 {
   int iVar3;
   int iVar1;
@@ -3902,12 +3902,12 @@ outer_test:
   }
   return iVar3 << 4;
 }
-#define FUN_003a6460(...) ((int (*)(...))FUN_003a6460)(__VA_ARGS__)
-#undef FUN_003a64c0
+#define itfMesListWidth(...) ((int (*)(...))itfMesListWidth)(__VA_ARGS__)
+#undef itfMesListEnableVisible
 // FUN_003A64C0
 
 
-void FUN_003a64c0(int param_1)
+void itfMesListEnableVisible(int param_1)
 
 
 
@@ -3926,7 +3926,7 @@ void FUN_003a64c0(int param_1)
   return;
 
 }
-#define FUN_003a64c0(...) ((void (*)(...))FUN_003a64c0)(__VA_ARGS__)
+#define itfMesListEnableVisible(...) ((void (*)(...))itfMesListEnableVisible)(__VA_ARGS__)
 #undef FUN_003a6520
 // FUN_003A6520
 
@@ -4241,11 +4241,11 @@ void FUN_003a69d0(u32 *param_1)
 
 }
 #define FUN_003a69d0(...) ((void (*)(...))FUN_003a69d0)(__VA_ARGS__)
-#undef FUN_003a6a10
+#undef itfMesClearSlots
 // FUN_003A6A10
 
 
-void FUN_003a6a10(int param_1)
+void itfMesClearSlots(int param_1)
 
 
 
@@ -4264,7 +4264,7 @@ void FUN_003a6a10(int param_1)
   return;
 
 }
-#define FUN_003a6a10(...) ((void (*)(...))FUN_003a6a10)(__VA_ARGS__)
+#define itfMesClearSlots(...) ((void (*)(...))itfMesClearSlots)(__VA_ARGS__)
 #undef FUN_003a6a40
 // FUN_003A6A40
 
@@ -4761,7 +4761,7 @@ void FUN_003a7120(u32 *param_1)
 
             if (object[2] != 0) {
 
-              FUN_003b19a0(object[2]);
+              frFontLoadSystemSlot(object[2]);
 
             }
 
@@ -5043,11 +5043,11 @@ void FUN_003a7490(u32 *param_1)
 
         if (lVar3 == sVar4) {
 
-          FUN_003b0e70(0x80);
+          frFontSetFlagBits(0x80);
 
           FUN_003b2bf0(*puVar10,0,0xf541);
 
-          FUN_003b0e90(0x80);
+          frFontClearFlagBits(0x80);
 
         }
 
@@ -5700,11 +5700,11 @@ u64 FUN_003a8440(void)
 }
 
 #define FUN_003a8440(...) ((u64 (*)(...))FUN_003a8440)(__VA_ARGS__)
-#undef FUN_003a84c0
+#undef itfMesFlushPending
 // FUN_003A84C0
 
 
-u64 FUN_003a84c0(void)
+u64 itfMesFlushPending(void)
 {
     int current;
     u32 count;
@@ -5719,7 +5719,7 @@ u64 FUN_003a84c0(void)
     return 0;
 }
 
-#define FUN_003a84c0(...) ((u64 (*)(...))FUN_003a84c0)(__VA_ARGS__)
+#define itfMesFlushPending(...) ((u64 (*)(...))itfMesFlushPending)(__VA_ARGS__)
 #undef FUN_003a8530
 // FUN_003A8530
 
