@@ -784,7 +784,7 @@ extern void btlCond_ENWEAK_DW_PAI(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,u32 param_2);
 extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
 extern void btlCond_MYNOMAL(int param_1,u16 param_2);
-extern void func_002c3120(int param_1,u16 param_2);
+extern void btlAICommandNomalCheckNoGate(int param_1,u16 param_2);
 extern void func_002c3150(int param_1,u32 param_2);
 extern void func_002c31b0(int param_1,u32 param_2);
 extern void btlCond_ENNOMAL_DW(int param_1,u32 param_2);
@@ -848,24 +848,24 @@ extern s32 func_002c6300(u32 param_1,u32 param_2,short param_3,s32 param_4);
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
-extern u16 func_002c6ba0(int param_1);
+extern u16 btlAICommandPickTableAction(int param_1);
 extern undefined * func_002c6e30(int param_1,u32 param_2);
 extern u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4);
 // The caller passes two 32-bit resource identifiers.
 #pragma alias func_002c6f50_u32 func_002c6f50
 extern u32 func_002c6f50_u32(u32 param_1,int param_2,u32 param_3,u32 param_4);
-extern void func_002c70d0(int param_1,int param_2);
+extern void btlAICommandSetUnitAction(int param_1,int param_2);
 extern bool func_002c7250(int param_1);
-extern u32 func_002c7280(int param_1);
-extern u32 func_002c7300(void);
-extern u32 func_002c7340(void);
-extern u32 func_002c73e0(void);
-extern u32 func_002c7460(void);
-extern u32 func_002c74a0(void);
+extern u32 btlAICommandTryReleaseProc(int param_1);
+extern u32 btlAICommandScriptSetDefaultAction(void);
+extern u32 btlAICommandScriptSetActionParam(void);
+extern u32 btlAICommandScriptSetSkillAction(void);
+extern u32 btlAICommandScriptSetAction8001(void);
+extern u32 btlAICommandScriptSetAction8002(void);
 extern u32 func_002c74e0(void);
 extern u32 func_002c7540(void);
 extern u32 func_002c75d0(void);
-extern u32 func_002c7670(void);
+extern u32 btlAICommandScriptSetAction8007(void);
 extern u32 func_002c76b0(void);
 extern u32 func_002c7760(void);
 extern u32 func_002c7810(void);
@@ -923,7 +923,7 @@ extern u32 func_002c9820(void);
 extern u32 func_002c98d0(void);
 extern u32 func_002c99c0(void);
 extern u32 func_002c9ab0(void);
-extern u32 func_002c9ba0(void);
+extern u32 btlAICommandSideIdQueryMyBad(void);
 extern u32 func_002c9ce0(void);
 extern u32 func_002c9da0(void);
 extern u32 func_002c9e90(void);
@@ -936,7 +936,7 @@ extern u32 func_002ca3e0(void);
 extern u32 func_002ca480(void);
 extern u32 func_002ca590(void);
 extern u32 func_002ca6a0(void);
-extern u32 func_002ca7b0(void);
+extern u32 btlAICommandOppSideIdQueryMyBad(void);
 extern u32 func_002ca900(void);
 extern u32 func_002ca9d0(void);
 extern u32 func_002caae0(void);
@@ -962,12 +962,12 @@ extern u32 func_002cba00(void);
 extern u32 func_002cba50(void);
 extern u32 func_002cbaa0(void);
 extern u32 func_002cbaf0(void);
-extern u32 func_002cbba0(void);
+extern u32 btlAICommandSideSwitchIdQueryMyWeak(void);
 extern u32 func_002cbcd0(void);
 extern u32 func_002cbd90(void);
 extern u32 func_002cbe50(void);
 extern u32 func_002cbf10(void);
-extern u32 func_002cbfd0(void);
+extern u32 btlAICommandSideSwitchQueryAnalyze(void);
 extern u32 func_002cc0a0(void);
 extern u32 func_002cc190(void);
 extern u32 func_002cc240(void);
@@ -1008,18 +1008,18 @@ extern u32 func_002cd740(void);
 extern u32 func_002cd7f0(void);
 extern u32 func_002cd8c0(void);
 extern u32 func_002cd940(void);
-extern u32 func_002cd9c0(void);
+extern u32 btlAICommandScriptSetCommandOverride(void);
 extern u32 func_002cda10(void);
 extern u32 func_002cda50(void);
 extern u32 func_002cdad0(void);
 extern u32 func_002cdb70(void);
-extern u32 func_002cdbe0(void);
+extern u32 btlAICommandScriptCountOwnNotHojo(void);
 extern u32 func_002cdc50(void);
 extern u32 func_002cdcc0(void);
-extern u32 func_002cdd30(void);
+extern u32 btlAICommandScriptCountOppNotHojo(void);
 extern u32 func_002cdda0(void);
-extern u32 func_002cde10(void);
-extern u32 func_002cde60(void);
+extern u32 btlAICommandScriptAverageOwnLevel(void);
+extern u32 btlAICommandScriptAverageOppLevel(void);
 extern u32 func_002cded0(void);
 extern u32 func_002cdf40(void);
 extern u32 func_002ce010(void);
@@ -5678,7 +5678,7 @@ void btlCond_MYNOMAL(int param_1,u16 param_2)
 
 // FUN_002c3120
 
-void func_002c3120(int param_1,u16 param_2)
+void btlAICommandNomalCheckNoGate(int param_1,u16 param_2)
 
 {
   func_002c2ed0(param_1,param_2,0);
@@ -7465,7 +7465,7 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
 // FUN_002c6ba0 NONMATCHING
 
 /* W322 re-measured: with opt_loop_invariants on, frame was -0x90 and nd132; off gives frame -0x80 (matches retail) and nd118. checkResult[3] vs [4] is codegen-identical. */
-u16 func_002c6ba0(int unit)
+u16 btlAICommandPickTableAction(int unit)
 
 {
   u16 index = 0;
@@ -7611,7 +7611,7 @@ u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4)
 
 // FUN_002c70d0
 
-void func_002c70d0(int param_1, int param_2)
+void btlAICommandSetUnitAction(int param_1, int param_2)
 {
   u8 type;
   u16 baseActionId;
@@ -7647,7 +7647,7 @@ void func_002c70d0(int param_1, int param_2)
     *(u8 *)(param_2 + 0x30) = 1;
   }
   else {
-    actionId = func_002c6ba0(param_1);
+    actionId = btlAICommandPickTableAction(param_1);
     entry = (int)func_002c6e30(param_1, actionId);
     func_002c6a00(param_1, param_2, *(u16 *)(entry + 2));
     actionWord = *(u32 *)(entry + 4);
@@ -7672,7 +7672,7 @@ bool func_002c7250(int param_1)
 
 // FUN_002c7280
 
-u32 func_002c7280(int param_1)
+u32 btlAICommandTryReleaseProc(int param_1)
 
 {
   u32 uVar1 = 0;
@@ -7700,7 +7700,7 @@ u32 func_002c7280(int param_1)
 
 // FUN_002c7300
 
-u32 func_002c7300(void)
+u32 btlAICommandScriptSetDefaultAction(void)
 
 {
   extern u32 func_0035f160(void);
@@ -7713,7 +7713,7 @@ u32 func_002c7300(void)
 
 // FUN_002c7340
 
-u32 func_002c7340(void)
+u32 btlAICommandScriptSetActionParam(void)
 
 {
   extern void *func_0035f160(void);
@@ -7738,7 +7738,7 @@ u32 func_002c7340(void)
 
 // FUN_002c73e0
 
-u32 func_002c73e0(void)
+u32 btlAICommandScriptSetSkillAction(void)
 
 {
   extern void *func_0035f160(void);
@@ -7763,7 +7763,7 @@ u32 func_002c73e0(void)
 
 // FUN_002c7460
 
-u32 func_002c7460(void)
+u32 btlAICommandScriptSetAction8001(void)
 
 {
   extern u32 func_0035f160(void);
@@ -7777,7 +7777,7 @@ u32 func_002c7460(void)
 
 // FUN_002c74a0
 
-u32 func_002c74a0(void)
+u32 btlAICommandScriptSetAction8002(void)
 
 {
   extern u32 func_0035f160(void);
@@ -7847,7 +7847,7 @@ u32 func_002c75d0(void)
 
 // FUN_002c7670
 
-u32 func_002c7670(void)
+u32 btlAICommandScriptSetAction8007(void)
 
 {
   extern u32 func_0035f160(void);
@@ -9242,7 +9242,7 @@ u32 func_002c9ab0(void) {
 
 // FUN_002c9ba0 MATCHING
 
-u32 func_002c9ba0(void)
+u32 btlAICommandSideIdQueryMyBad(void)
 {
   extern u32 func_0035f160(void);
   extern u32 func_0035ed20(u32);
@@ -9769,7 +9769,7 @@ u32 func_002ca6a0(void)
 /* Removing this loses FUN_002ca7b0 (MATCH nd0 -> MISMATCH nd202) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca7b0
-u32 func_002ca7b0(void)
+u32 btlAICommandOppSideIdQueryMyBad(void)
 {
   extern u32 func_0035f160(void);
   extern u32 func_0035ed20(u32);
@@ -10618,7 +10618,7 @@ u32 func_002cbaf0(void) {
 
 // FUN_002cbba0
 
-u32 func_002cbba0(void)
+u32 btlAICommandSideSwitchIdQueryMyWeak(void)
 {
   extern u32 func_0035ed20(u32);
   extern int func_002c0e30(u16,u32,u32);
@@ -10791,7 +10791,7 @@ u32 func_002cbf10(void)
 
 // FUN_002cbfd0
 
-u32 func_002cbfd0(void)
+u32 btlAICommandSideSwitchQueryAnalyze(void)
 {
   extern u32 func_0035ed20(u32);
   extern int func_002c0e30(u16,u32,u32);
@@ -11686,7 +11686,7 @@ u32 func_002cd940(void)
 
 // FUN_002cd9c0
 
-u32 func_002cd9c0(void)
+u32 btlAICommandScriptSetCommandOverride(void)
 
 {
   extern u32 func_0035f160(void);
@@ -11795,7 +11795,7 @@ u32 func_002cdb70(void)
 
 // FUN_002cdbe0
 
-u32 func_002cdbe0(void)
+u32 btlAICommandScriptCountOwnNotHojo(void)
 
 {
   u16 uVar1 = 0;
@@ -11843,7 +11843,7 @@ u32 func_002cdcc0(void)
 
 // FUN_002cdd30
 
-u32 func_002cdd30(void)
+u32 btlAICommandScriptCountOppNotHojo(void)
 
 {
   u16 uVar1 = 0;
@@ -11875,7 +11875,7 @@ u32 func_002cdda0(void)
 
 // FUN_002cde10
 
-u32 func_002cde10(void)
+u32 btlAICommandScriptAverageOwnLevel(void)
 
 {
   extern u32 func_0035f160(void);
@@ -11893,7 +11893,7 @@ u32 func_002cde10(void)
 #pragma opt_rebuildconditionals off
 // FUN_002cde60
 
-u32 func_002cde60(void)
+u32 btlAICommandScriptAverageOppLevel(void)
 
 {
   extern u32 func_0035f160(void);
@@ -12619,7 +12619,7 @@ u32 func_002cf1d0(void)
 
   unit = func_0035f160();
   selector = func_0035ed20(0);
-  if (func_002c3430(unit,selector,0,0x2c,1, (code *)&func_002c3120) == 1) {
+  if (func_002c3430(unit,selector,0,0x2c,1, (code *)&btlAICommandNomalCheckNoGate) == 1) {
     if (*(u16 *)(unit + 0x6a) == 1) {
       selectedUnit = *(int *)(unit + 0x38);
     }
