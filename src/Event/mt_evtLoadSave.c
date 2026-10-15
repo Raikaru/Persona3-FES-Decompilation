@@ -1424,7 +1424,7 @@ void FUN_0038f0f0(u32 param_1)
 
   u32 objectAddress;
 
-  lVar8 = FUN_003b5d00();
+  lVar8 = MT_Scene_GetResManager();
 
   if (lVar8 != 0) {
 
@@ -1944,7 +1944,7 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
   uStack_30 = DAT_006a0bf8_vec_abs[0];
 
-  lVar11 = FUN_003b5d00();
+  lVar11 = MT_Scene_GetResManager();
 
   if (lVar11 != 0) {
 
@@ -1964,7 +1964,7 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
     }
 
-    FUN_003b78b0(uVar6,auStack_20,&uStack_30);
+    MT_Scene_SetResPlacement(uVar6,auStack_20,&uStack_30);
 
     *(u32 *)((int)lVar11 + 0x104) = 0;
 
@@ -1972,9 +1972,9 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
     *(u32 *)((int)param_2 + 0x324) = uVar8;
 
-    FUN_003bb450(0x44610000,0x42340000,0,0,auStack_20,&uStack_10);
+    MT_Scene_OffsetPointByRotation(0x44610000,0x42340000,0,0,auStack_20,&uStack_10);
 
-    FUN_003b78b0(uVar6,&uStack_10,&uStack_30);
+    MT_Scene_SetResPlacement(uVar6,&uStack_10,&uStack_30);
 
     lVar11 = FUN_003b5d10(0x1e59);
 
@@ -1992,7 +1992,7 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
     }
 
-    FUN_003b78b0(uVar6,&uStack_10,&uStack_30);
+    MT_Scene_SetResPlacement(uVar6,&uStack_10,&uStack_30);
 
     iVar9 = FUN_003b5d10(uVar6);
 
@@ -3123,7 +3123,7 @@ void FUN_00390ef0(int param_1,int param_2)
     afStack_18[0] = (float)(*(int *)(param_2 + 4) * 0x1e);
     afStack_18[1] = 0.0f;
     afStack_18[2] = (float)(-(*(int *)(param_2 + 4) * 0x1e));
-    FUN_003b78b0(uVar4,afStack_18,0);
+    MT_Scene_SetResPlacement(uVar4,afStack_18,0);
     modelRes = FUN_003b5d10(uVar4);
     if (modelRes == 0) {
       FUN_0019d3f0("mt_evtLoadSave.c",0x9b7);
