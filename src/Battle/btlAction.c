@@ -195,9 +195,9 @@ BtlPacket* FUN_002e2be0();
 BtlPacket* func_002e3fe0(u16 voiceId);
 u32 FUN_002e4310();
 BtlPacket* FUN_0027dc00();
-BtlPacket* FUN_0029fa50(u32 param_1);
-BtlPacket* FUN_002a1080(s32 param_1, s16 param_2);
-BtlPacket* FUN_002a16c0(s32 param_1);
+BtlPacket* btlCreateTimingPacket(u32 param_1);
+BtlPacket* btlMainCreateFadePacket(s32 param_1, s16 param_2);
+BtlPacket* btlMainCreateColorFadePacket(s32 param_1);
 BtlPacket* FUN_002d7fb0(BtlAction* action, u32 arg);
 BtlPacket* FUN_002e40d0();
 BtlPacket* FUN_002e41d0();
@@ -207,7 +207,7 @@ BtlPacket* FUN_002bc950(u32 a, u32 b, u32 c);
 BtlPacket* FUN_002e3c80(void);
 BtlPacket* FUN_002d8090(BtlAction* action);
 BtlPacket* FUN_002dd690(u32 a, u32 b);
-BtlPacket* FUN_002a1db0(s32 param_1);
+BtlPacket* btlMainCreateColorSetPacket(s32 param_1);
 BtlPacket* FUN_002dd4a0(u16 param_1, u16 param_2);
 void FUN_002b9030(u32 param_1);
 BtlPacket* FUN_002e38a0(u16 a);
@@ -968,7 +968,7 @@ void btlAction0028a780(BtlAction* action)
     }
     if (BATTLE_U16(0x18) & 0x10)
     {
-        packet = FUN_002a1db0(0);
+        packet = btlMainCreateColorSetPacket(0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
@@ -1199,21 +1199,21 @@ void btlActionInitStateStart(BtlAction* action)
             pkt->actionUID = actionUID;
             btlPacketRegister(pkt, BTLPACKET_TYPE_1);
             
-            pkt = FUN_0029fa50(0x10);
+            pkt = btlCreateTimingPacket(0x10);
             pkt->unk_00 = 4;
             pkt->parentUID = pktB->uid;
             pkt->unk_47 &= ~0x20;
             pkt->actionUID = actionUID;
             btlPacketRegister(pkt, BTLPACKET_TYPE_1);
             
-            pkt = FUN_002a1080(0x10, 0);
+            pkt = btlMainCreateFadePacket(0x10, 0);
             pkt->unk_00 = 4;
             pkt->parentUID = pktB->uid;
             pkt->unk_47 &= ~0x20;
             pkt->actionUID = actionUID;
             btlPacketRegister(pkt, BTLPACKET_TYPE_1);
             
-            pkt = FUN_002a16c0(0x10);
+            pkt = btlMainCreateColorFadePacket(0x10);
             pkt->unk_00 = 4;
             pkt->parentUID = pktB->uid;
             pkt->unk_47 &= ~0x20;
@@ -6014,28 +6014,28 @@ void btlActionUpdateStateSummon(BtlAction* action)
 
     FUN_001fdd40();
 
-    packet = FUN_0029fa50(0x10);
+    packet = btlCreateTimingPacket(0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1080(0x10, 0);
+    packet = btlMainCreateFadePacket(0x10, 0);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a16c0(0x10);
+    packet = btlMainCreateColorFadePacket(0x10);
     packet->unk_00 = 4;
     packet->parentUID = castAnim->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1db0(8);
+    packet = btlMainCreateColorSetPacket(8);
     packet->unk_00 = 4;
     packet->parentUID = chainUID;
     packet->unk_47 &= ~0x20;
@@ -7158,7 +7158,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
         }
     }
 
-    pkt = FUN_002a1db0(0);
+    pkt = btlMainCreateColorSetPacket(0);
     pkt->actionUID = action->uid;
     btlPacketRegister(pkt, BTLPACKET_TYPE_0);
 
@@ -7603,26 +7603,26 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
         }
     }
 
-    packet = FUN_0029fa50(0x10);
+    packet = btlCreateTimingPacket(0x10);
     packet->unk_00 = 4;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1080(0x10, 0);
+    packet = btlMainCreateFadePacket(0x10, 0);
     packet->unk_00 = 4;
     packet->parentUID = skillPacket->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a16c0(0x10);
+    packet = btlMainCreateColorFadePacket(0x10);
     packet->unk_00 = 4;
     packet->parentUID = skillPacket->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = FUN_002a1db0(8);
+    packet = btlMainCreateColorSetPacket(8);
     packet->unk_00 = 4;
     packet->parentUID = skillPacket->uid;
     packet->actionUID = actionUID;
