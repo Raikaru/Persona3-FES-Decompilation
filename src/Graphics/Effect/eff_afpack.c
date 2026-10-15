@@ -125,7 +125,7 @@ extern void* func_00316e00(u16 majorId, u16 minorId, s32 mode);
 extern void* func_00316b40(s32 majorId, s32 minorId, const char* path,
                            s32 mode);
 extern u16 func_003b6270(u16 resourceId, u8 type, void* model);
-extern void func_001a0dc0(u16 resourceId, s32 enabled);
+extern void SceneDraw_SetResVisibleChecked(u16 resourceId, s32 enabled);
 extern void func_001ad8c0(f32 value, void* controller);
 extern void func_001ad870(void* controller, u32 flags);
 extern void func_001ad890(void* controller, u32 flags);
@@ -409,9 +409,9 @@ extern u16* func_001b8d60(u32 index);
 extern void* func_001b8db0(void* record);
 extern void func_003b78b0(u16 resourceId, void* position, void* angles);
 extern u16 func_003b5e90(u16 resourceId);
-extern f32 func_001a5aa0(void* matrix);
-extern f32 func_001a5bc0(void* matrix);
-extern f32 func_001a5b30(void* matrix);
+extern f32 KDraw_MatrixYawDeg(void* matrix);
+extern f32 KDraw_MatrixRollDeg(void* matrix);
+extern f32 KDraw_MatrixPitchDeg(void* matrix);
 extern s32 H_Fade_IsFadeOutDone(void);
 extern void H_Fade_FadeOut(void);
 extern void H_Fade_FadeIn(void);
@@ -439,7 +439,7 @@ extern void func_001e2930(s32 value);
 extern void func_001e2b10(s32 value);
 extern s32 func_001e2bd0();
 extern void func_001e9a90(void* work);
-extern s32 func_001ed9e0(void* work);
+extern s32 Vpad_HasEntries(void* work);
 extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
@@ -1276,7 +1276,7 @@ s32 func_001ef060(void)
         active = 0;
         for (index = 0; index < *(s16*)((u8*)node->work + 4); index++)
         {
-            active |= func_001ed9e0((u8*)*(void**)((u8*)node + 0x10) +
+            active |= Vpad_HasEntries((u8*)*(void**)((u8*)node + 0x10) +
                                     index * 0x20);
         }
 
