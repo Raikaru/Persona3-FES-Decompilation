@@ -65,7 +65,7 @@ extern u16 func_003b66b0(u16 resourceId, void* model);
 extern u32 K_Misc_FindNextFreeResId(u16 resType);
 extern u16 func_003b6870(u16 resourceId, const void* position, u32 packed,
                           f32 angleX, f32 angleY, f32 angleZ);
-extern void func_001e6af0(void* position, void* model,
+extern void Vpad_BuildRotatedQuad(void* position, void* model,
                           f32 x, f32 y, f32 z);
 extern u16 func_003b6b90(u16 resourceId, const RwV3d* position, f32 angle);
 extern u16 func_003b6c50(u16 resourceId, const RwV3d* position, f32 angle);
@@ -176,7 +176,7 @@ extern void MT_Scene_Load(s32 majorId, s32 minorId);
 extern u32 MT_Scene_TryLoadFinish(void);
 extern void MT_Scene_Destroy(void);
 extern Resrc* MT_Scene_GetResListHead(u32 resType);
-extern void func_001a0150(u16 resourceId, u32 visible);
+extern void SceneDraw_SetResVisible(u16 resourceId, u32 visible);
 extern s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
 extern s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
 extern void Y_TimeLimit_Stop(void);
@@ -1182,7 +1182,7 @@ static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
     cell = dungeonCell(x, y);
     for (i = 0; i < count; i++)
     {
-        func_001a0150(*(u16*)(cell + offsets[i]), 1);
+        SceneDraw_SetResVisible(*(u16*)(cell + offsets[i]), 1);
     }
 }
 
