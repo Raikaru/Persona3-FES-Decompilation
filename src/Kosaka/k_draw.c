@@ -743,7 +743,7 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 
 
 // FUN_001A5AA0
-f32 func_001a5aa0(const RwMatrix* matrix)
+f32 KDraw_MatrixYawDeg(const RwMatrix* matrix)
 {
     RwMatrix normalized;
 
@@ -753,7 +753,7 @@ f32 func_001a5aa0(const RwMatrix* matrix)
 }
 
 // FUN_001A5B30
-f32 func_001a5b30(const RwMatrix* matrix)
+f32 KDraw_MatrixPitchDeg(const RwMatrix* matrix)
 {
     RwMatrix normalized;
     RwV3d* up;
@@ -765,7 +765,7 @@ f32 func_001a5b30(const RwMatrix* matrix)
 }
 
 // FUN_001A5BC0
-f32 func_001a5bc0(const RwMatrix* matrix)
+f32 KDraw_MatrixRollDeg(const RwMatrix* matrix)
 {
     RwMatrix normalized;
     RwV3d* up;
