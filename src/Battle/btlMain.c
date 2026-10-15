@@ -36,32 +36,32 @@ typedef struct BtlMainLerpWork
 } BtlMainLerpWork;
 #define CONCAT13(a, b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 u32 FUN_0029f150(float *param_1);
-BtlPacket* FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3);
+BtlPacket* btlMainCreateColorLerpPacket(u32 param_1,u32 param_2,u32 param_3);
 u32 FUN_0029f760(float *param_1);
-BtlPacket* FUN_0029fa50(u32 param_1);
+BtlPacket* btlCreateTimingPacket(u32 param_1);
 u32 FUN_0029faa0(BtlMainColorWork *param_1);
-BtlPacket* FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5);
+BtlPacket* btlMainCreateColorWorkPacket(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5);
 u32 FUN_002a0440(float *param_1);
-BtlPacket* FUN_002a1080(s32 param_1, s16 param_2);
+BtlPacket* btlMainCreateFadePacket(s32 param_1, s16 param_2);
 u8 FUN_002a10e0(BtlMainLerpWork *param_1);
-BtlPacket* FUN_002a1280(u32 param_1,u32 param_2);
+BtlPacket* btlMainCreateTintPacket(u32 param_1,u32 param_2);
 u8 FUN_002a1400(float *param_1);
-BtlPacket* FUN_002a16c0(s32 param_1);
+BtlPacket* btlMainCreateColorFadePacket(s32 param_1);
 u32 FUN_002a1710(int *param_1);
-void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3);
+void btlMainCreateUnitTintPacket(s32 param_1,s16 param_2,s32 param_3);
 u32 FUN_002a1b70(u32 *param_1);
-void FUN_002a1db0(s32 param_1);
+void btlMainCreateColorSetPacket(s32 param_1);
 void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1);
 extern void FUN_002a1e00_typed(f32* out, f32* first, f32* second, f32 weight);
-u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
+u32 btlMainCurveAppendKeyframe(u16 *param_1,f32 *param_2,f32 *param_3);
 void FUN_002a2170(u16 *param_1,f32 *param_2);
-void FUN_002a2290(u16 *param_1,f32 *param_2,f32 *param_3,u16 param_4);
-void FUN_002a2660(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags);
-void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1);
-void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1);
-void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1);
-u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3);
-u32 FUN_002a3010(u8* param_2,f32 param_1);
+void btlMainCurveSetPoses(u16 *param_1,f32 *param_2,f32 *param_3,u16 param_4);
+void btlMainCurveSetFourPoses(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags);
+void btlMainEvalBezierPosition(u8* param_2,f32* param_3,f32 param_1);
+void btlMainEvalLinearPosition(u8* param_2, f32* param_3, f32 param_1);
+void btlMainEvalSlerpRotation(u8* param_2,f32* param_3,f32 param_1);
+u32 btlCameraSampleKeyframes(u8* param_1,f32* param_2,f32* param_3);
+u32 btlCameraAdvanceKeyframes(u8* param_2,f32 param_1);
 void FUN_002a3110(u8* param_2,float param_1);
 void FUN_002a3160(u8* param_2,float param_1);
 extern f32 DAT_00693850[];
@@ -198,7 +198,7 @@ RwRGBAReal* func_0019fd70(void);
 RwMatrix* func_0019fda0(void);
 RwRGBAReal* func_001a09d0(void);
 void* func_001a0700(u16 resTypeId);
-void* func_001a07f0(u16 resTypeId);
+void* SceneDraw_GetLightMatrixA(u16 resTypeId);
 void* func_001a08e0(u16 resTypeId);
 RwMatrix* func_001a0a50(void);
 void func_0019f8f0(const RwRGBAReal* color);
@@ -277,8 +277,8 @@ u32 FUN_00300580();
 u32 FUN_003005e0();
 void FUN_00300560();
 void FUN_003004f0();
-void FUN_00300410();
-void FUN_00300480();
+void datCalcAddHp();
+void datCalcAddSp();
 void FUN_00302380();
 void FUN_00301690(u32 param_1);
 void* FUN_00198590(void);
@@ -1106,13 +1106,13 @@ void btlMainInitStateRevival(BtlStateWork* work)
     dependentPacket->actionUID = action->uid;
 
     FUN_0029ea60(0x1b7, &paramA, &paramB);
-    packet = FUN_0029f4b0(paramA, paramB, 0x10);
+    packet = btlMainCreateColorLerpPacket(paramA, paramB, 0x10);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     color = FUN_0029ec00(0x1b7);
     FUN_0029ec80(0x1b7, &paramA, &paramB);
-    packet = FUN_002a0050(color, paramA, paramB, 0x10, 0);
+    packet = btlMainCreateColorWorkPacket(color, paramA, paramB, 0x10, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
@@ -1193,19 +1193,19 @@ void btlMainInitStateRevival(BtlStateWork* work)
         BTL_PACKET_U8(dependentPacket, 0x47) &= 0xdf;
     }
 
-    packet = FUN_0029fa50(0x10);
+    packet = btlCreateTimingPacket(0x10);
     BTL_PACKET_U8(packet, 0x00) = 4;
     packet->parentUID = previousUID;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1080(0x10, 0);
+    packet = btlMainCreateFadePacket(0x10, 0);
     BTL_PACKET_U8(packet, 0x00) = 4;
     packet->parentUID = previousUID;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a16c0(0x10);
+    packet = btlMainCreateColorFadePacket(0x10);
     BTL_PACKET_U8(packet, 0x00) = 4;
     packet->parentUID = previousUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
@@ -1600,9 +1600,9 @@ void btlMainInitStateEnd(BtlStateWork* work)
             else if (FUN_003005e0(unit->datUnit, 0x25d) != 0)
             {
                 value = FUN_002ffdf0(unit->datUnit);
-                FUN_00300410(unit->datUnit, value * 100 / 0x4e2);
+                datCalcAddHp(unit->datUnit, value * 100 / 0x4e2);
                 value = FUN_00300100(unit->datUnit);
-                FUN_00300480(unit->datUnit, value * 100 / 0x4e2);
+                datCalcAddSp(unit->datUnit, value * 100 / 0x4e2);
             }
         }
     }
@@ -2312,7 +2312,7 @@ u32 FUN_0029f150(float *colorLerp)
 }
 
 // FUN_0029F4B0
-BtlPacket* FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3)
+BtlPacket* btlMainCreateColorLerpPacket(u32 param_1,u32 param_2,u32 param_3)
 {
     float *color;
     int packet;
@@ -2442,7 +2442,7 @@ u32 FUN_0029f760(float *colorLerp)
 // FUN_0029FA50
 
 
-BtlPacket* FUN_0029fa50(u32 param_1)
+BtlPacket* btlCreateTimingPacket(u32 param_1)
 {
     BtlPacket* packet;
     packet = btlPacketCreate(0x601, 0x28);
@@ -2764,7 +2764,7 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
 /* W323 measured: opt_common_subs off nd423->35, object 684/704; default nd423, 684/704. */
 // FUN_002A0050 MATCHING
-BtlPacket* FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5)
+BtlPacket* btlMainCreateColorWorkPacket(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5)
 {
     float *pfVar1;
     int iVar2;
@@ -3333,7 +3333,7 @@ u32 FUN_002a0440(float *param_1)
 // FUN_002A1080
 
 
-BtlPacket* FUN_002a1080(s32 param_1, s16 param_2)
+BtlPacket* btlMainCreateFadePacket(s32 param_1, s16 param_2)
 {
     BtlPacket* packet;
     u8* work;
@@ -3395,7 +3395,7 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 }
 
 // FUN_002A1280
-BtlPacket* FUN_002a1280(u32 param_1,u32 param_2)
+BtlPacket* btlMainCreateTintPacket(u32 param_1,u32 param_2)
 {
     float *color;
     u32 packed;
@@ -3462,7 +3462,7 @@ u8 FUN_002a1400(float *param_1)
 // FUN_002A16C0
 
 
-BtlPacket* FUN_002a16c0(s32 param_1)
+BtlPacket* btlMainCreateColorFadePacket(s32 param_1)
 {
     BtlPacket* packet;
     packet = btlPacketCreate(0x605, 0x18);
@@ -3561,7 +3561,7 @@ u32 FUN_002a1710(int *param_1)
 // FUN_002A1B00
 
 
-void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3)
+void btlMainCreateUnitTintPacket(s32 param_1,s16 param_2,s32 param_3)
 {
     BtlPacket* packet;
     u8* work;
@@ -3623,7 +3623,7 @@ u32 FUN_002a1b70(u32 *fade)
 // FUN_002A1DB0
 
 
-void FUN_002a1db0(s32 param_1)
+void btlMainCreateColorSetPacket(s32 param_1)
 {
     BtlPacket* packet;
     packet = btlPacketCreate(0x607, 8);
@@ -3712,7 +3712,7 @@ void FUN_002a1e00(float *param_2,float *param_3,float *param_4,float param_1)
 // FUN_002A2050
 
 
-u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3)
+u32 btlMainCurveAppendKeyframe(u16 *param_1,f32 *param_2,f32 *param_3)
 {
     u16 index;
     u32 address;
@@ -3832,7 +3832,7 @@ void FUN_002a2170(u16 *param_1,f32 *param_2)
 // FUN_002A2290
 
 
-void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
+void btlMainCurveSetPoses(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 {
     u16 index;
     u16 index0;
@@ -4004,7 +4004,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 // FUN_002A2660 NONMATCHING
 
 
-void FUN_002a2660(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags)
+void btlMainCurveSetFourPoses(u16 *ring,u32 rec0,u32 rec1,u32 rec2,u32 rec3,u16 flags)
 {
   u16 slot;
   u32 *record;
@@ -4143,7 +4143,7 @@ static inline u8* btlMainAddFirst(u8* base, u32 offset)
 
 
 /* BtlCore2 W419 negative: 2a2a20 _abs address spellings held nd63 at 296B; scalar direct spelling worsened nd63->151 and shrank to 284B. W442 natural u16 increments reduce nd63->59 at 296B. */
-void FUN_002a2a20(u8* curve,f32* outPos,f32 t)
+void btlMainEvalBezierPosition(u8* curve,f32* outPos,f32 t)
 {
   u32 keyAddr;
   u16 i;
@@ -4211,7 +4211,7 @@ void FUN_002a2a20(u8* curve,f32* outPos,f32 t)
 // FUN_002A2B50
 
 
-void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1)
+void btlMainEvalLinearPosition(u8* param_2, f32* param_3, f32 param_1)
 {
     u16 currentIndex;
     u16 nextIndex;
@@ -4265,7 +4265,7 @@ void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1)
 // FUN_002A2C40 NONMATCHING
 
 
-void FUN_002a2c40(u8* curve,f32* outPos,f32 t)
+void btlMainEvalSlerpRotation(u8* curve,f32* outPos,f32 t)
 {
   u8* nextKey;
   u16 nextIndex;
@@ -4357,7 +4357,7 @@ void FUN_002a2c40(u8* curve,f32* outPos,f32 t)
 // FUN_002A2ED0
 
 
-u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3)
+u32 btlCameraSampleKeyframes(u8* param_1,f32* param_2,f32* param_3)
 {
     void* curve;
     u16 frame;
@@ -4384,11 +4384,11 @@ has_frame:
     }
     if (frame < 4)
     {
-        FUN_002a2b50(param_1, param_2, *(f32*)(param_1 + 0x7c));
+        btlMainEvalLinearPosition(param_1, param_2, *(f32*)(param_1 + 0x7c));
     }
     else if ((*(u16*)param_1 & 1) != 0)
     {
-        FUN_002a2a20(param_1, param_2, *(f32*)(param_1 + 0x7c));
+        btlMainEvalBezierPosition(param_1, param_2, *(f32*)(param_1 + 0x7c));
     }
     else
     {
@@ -4397,14 +4397,14 @@ has_frame:
                      *(f32*)(param_1 + 0x7c),
                      (RwV3d *)param_2, ((void*)0));
     }
-    FUN_002a2c40(param_1, param_3, *(f32*)(param_1 + 0x7c));
+    btlMainEvalSlerpRotation(param_1, param_3, *(f32*)(param_1 + 0x7c));
     return 1;
 }
 
 // FUN_002A3010
 
 
-u32 FUN_002a3010(u8* param_2,f32 param_1)
+u32 btlCameraAdvanceKeyframes(u8* param_2,f32 param_1)
 {
     u16 frame;
     u16 counter;
