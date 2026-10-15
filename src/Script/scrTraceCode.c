@@ -1076,7 +1076,7 @@ void FUN_0016e410(short, char);
 int FUN_003bded0(u64 param_1);
 int FUN_0035f140();
 int FUN_00172f70(s32* outSlot);
-u32 FUN_00173220(u16);
+u32 datPersonaGetRow(u16);
 void FUN_003a4220(int param_1, u64 param_2, u64 param_3);
 void FUN_00171c40(s32 socialLink, s32 enabled);
 void FUN_00172200(s32 socialLink, s32 enabled);
@@ -1730,7 +1730,7 @@ float FUN_0038a220(int param_1);
 float evtCommandParamF32(int param_1);
 u8 FUN_003b86c0(f32 param_1, u32 param_2, u32 param_3);
 u32 FUN_003b8730(f32 param_1, u16 param_2, void *param_3);
-u32 FUN_003b89f0(f32 param_1, u16 param_2, char *param_3, u32 param_4);
+u32 MT_Scene_BeginResPathAnimById(f32 param_1, u16 param_2, char *param_3, u32 param_4);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
 int FUN_00361f20(int param_1);
@@ -1773,7 +1773,7 @@ long FUN_00386ae0(u64 param_1,u64 param_2);
 #pragma alias FUN_0038c540_evt FUN_0038c540
 extern void FUN_0038c540_evt(int param_1,int param_2,int param_3,u32 param_4,u32 *param_5,u32 *param_6);
 #pragma alias FUN_003b5d10_evt FUN_003b5d10
-#pragma alias FUN_003b8310_evt FUN_003b8310
+#pragma alias FUN_003b8310_evt MT_Scene_SetResEnabledById
 extern u32 FUN_003b8310_evt(u16 param_1,int param_2);
 extern u32 FUN_003b5d10_evt(u32 param_1);
 #pragma alias FUN_00360ed0_evt FUN_00360ed0
@@ -1790,7 +1790,7 @@ extern u32 FUN_003b9260_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u1
 extern u32 FUN_003b8ff0_evt_wide(float param_1,u32 param_2,u32 param_3,s32 param_4,s32 param_5,u32 param_6,s32 param_7);
 #pragma alias FUN_003b9260_evt_wide FUN_003b9260
 extern u32 FUN_003b9260_evt_wide(float param_1,u32 param_2,u32 param_3,s32 param_4,s32 param_5,u32 param_6,s32 param_7);
-#pragma alias FUN_003b8e10_evt FUN_003b8e10
+#pragma alias FUN_003b8e10_evt MT_Scene_SetResColorParamById
 extern u64 FUN_003b8e10_evt(u16 param_1,u8 param_2,short param_3,u32 param_4);
 u64 FUN_003952d0_y2(u64 param_1,int param_2,s16 param_3);
 u64 FUN_003952b0(u64 param_1,int param_2);
