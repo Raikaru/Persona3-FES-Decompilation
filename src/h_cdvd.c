@@ -163,9 +163,9 @@ extern void* func_004bfc80(void* context);
 extern void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
                           const char* path);
 
-extern void func_00101100(const char* path, char* fileNameDst, char* dirDst);
-extern void func_00101520(const char* dir);
-extern void func_00101e30(void* requestData);
+extern void H_Cdvd_SplitPath(const char* path, char* fileNameDst, char* dirDst);
+extern void H_Cdvd_SelectDirectory(const char* dir);
+extern void H_Cdvd_ParseArchive(void* requestData);
 extern ADXF func_0053c910(const char* path, s32 mode);
 extern void func_0053cdd0(ADXF adxf);
 extern u32 func_0053d380(ADXF adxf, u32 sectorCount, void* buffer);
@@ -253,8 +253,8 @@ u32 H_Cdvd_FileExists(const char* path)
     printf(" Exist %s\n", path);
     H_Cdvd_BuildPathUppercase(path, unusedUppercasePath);
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    func_00101100(uppercasePath, fileName, dir);
-    func_00101520(dir);
+    H_Cdvd_SplitPath(uppercasePath, fileName, dir);
+    H_Cdvd_SelectDirectory(dir);
 
     adxf = func_0053c910(fileName, 0);
     if (adxf == NULL)
@@ -303,7 +303,7 @@ void H_Cdvd_Read()
         }
 queued:
         cdvd->readPollCount = 0;
-        func_00101520(cdvd->dir);
+        H_Cdvd_SelectDirectory(cdvd->dir);
         cdvd->adxf = func_0053c910(cdvd->fileName, 0);
         if (cdvd->adxf == NULL)
         {
@@ -399,7 +399,7 @@ inProgress:
 
         return;
 finalizing:
-        func_00101e30(&cdvd->hasExternalMemory);
+        H_Cdvd_ParseArchive(&cdvd->hasExternalMemory);
         cdvd->readState = HCDVD_READ_COMPLETE;
         func_0053cdd0(cdvd->adxf);
         cdvd->adxf = NULL;
@@ -610,7 +610,7 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 }
 
 // FUN_00101100
-void func_00101100(const char* path, char* fileNameDst, char* dirDst)
+void H_Cdvd_SplitPath(const char* path, char* fileNameDst, char* dirDst)
 {
     char reversedName[256];
     u32 pathLength;
@@ -764,7 +764,7 @@ advance:
 #pragma pop
 
 // FUN_00101520
-void func_00101520(const char* dir)
+void H_Cdvd_SelectDirectory(const char* dir)
 {
     char normalized[256];
     s16 i;
@@ -825,7 +825,7 @@ u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
 }
 
 // FUN_001016d0
-s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
+s32 H_Cdvd_StreamAttachCacheEntry(void* unused, void* slotData, uintptr_t pathOrMode)
 {
     char uppercasePath[256];
     char normalizedPath[256];
@@ -870,7 +870,7 @@ static void H_Cdvd_StreamNoop(void)
 }
 
 // FUN_00101810
-u32 func_00101810(void* slotData, void* dst, u32 size)
+u32 H_Cdvd_StreamReadChunk(void* slotData, void* dst, u32 size)
 {
     struct HCdvdStreamData
     {
@@ -985,14 +985,14 @@ static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, u32 in
 }
 
 // FUN_001019e0
-void func_001019e0(void* contextData)
+void H_Cdvd_StreamContextFree(void* contextData)
 {
     HCdvdStreamContext* context = (HCdvdStreamContext*)contextData;
     HCDVD_FREE(context->slots);
 }
 
 // FUN_00101a10
-s32 func_00101a10(void* unused, const char* path)
+s32 H_Cdvd_IsCached(void* unused, const char* path)
 {
     char uppercasePath[256];
     char normalizedPath[256];
@@ -1034,13 +1034,13 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     allocator = (void* (**)(u32, u32, u32))D_00960184;
     context = (HCdvdStreamContext*)(*allocator)(1, 0x5c, 0x40000);
     context->callback14 = (void*)H_Cdvd_StreamGetSlot;
-    context->callback18 = (void*)func_001019e0;
-    context->callback28 = (void*)func_001016d0;
+    context->callback18 = (void*)H_Cdvd_StreamContextFree;
+    context->callback28 = (void*)H_Cdvd_StreamAttachCacheEntry;
     context->callback2c = (void*)H_Cdvd_StreamNoop;
-    context->callback30 = (void*)func_00101810;
+    context->callback30 = (void*)H_Cdvd_StreamReadChunk;
     context->callback44 = (void*)H_Cdvd_StreamComplete;
     context->callback38 = (void*)func_001018c0;
-    context->callback4c = (void*)func_00101a10;
+    context->callback4c = (void*)H_Cdvd_IsCached;
     slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
     context->slots = slots;
     for (i = 0; i < count; i++)
@@ -1115,7 +1115,7 @@ done:
 
 #pragma opt_loop_invariants on
 // FUN_00101e30
-void func_00101e30(void* requestData)
+void H_Cdvd_ParseArchive(void* requestData)
 {
     struct
     {
@@ -1321,7 +1321,7 @@ void* H_Cdvd_CacheFindFile(const char* path, u32* fileSize)
 }
 
 // FUN_001022e0
-const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
+const char* H_Cdvd_ArchiveEntryName(HCdvd* cdvd, s32 entryIndex)
 {
     s32 i;
     u8* entry;
@@ -1369,15 +1369,15 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
 }
 
 // FUN_001023f0
-void func_001023f0(void* handle, const char* path, s32 synchronous)
+void H_Cdvd_StartPlayback(void* handle, const char* path, s32 synchronous)
 {
     static char uppercasePath[256];
     static char fileName[256];
     static char directory[256];
 
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    func_00101100(uppercasePath, fileName, directory);
-    func_00101520(directory);
+    H_Cdvd_SplitPath(uppercasePath, fileName, directory);
+    H_Cdvd_SelectDirectory(directory);
     if (synchronous)
     {
         func_00584290(handle, fileName);
@@ -1397,13 +1397,13 @@ void func_001024a0(void* source, const char* path, s32 flags, void* callback)
     extern const char D_00638320[];
 
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    func_00101100(uppercasePath, fileName, directory);
+    H_Cdvd_SplitPath(uppercasePath, fileName, directory);
     func_0053b868(source, fileName, D_00638320, callback);
     (void)flags;
 }
 
 // FUN_00102530
-void func_00102530(void* handle, const char* path)
+void H_Cdvd_StreamOpenByPath(void* handle, const char* path)
 {
     static char uppercasePath[256];
     static char fileName[256];
@@ -1412,14 +1412,14 @@ void func_00102530(void* handle, const char* path)
 
     stream = func_0054d390();
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    func_00101100(uppercasePath, fileName, directory);
-    func_00101520(directory);
+    H_Cdvd_SplitPath(uppercasePath, fileName, directory);
+    H_Cdvd_SelectDirectory(directory);
     func_0054b2e8(stream, fileName);
     (void)handle;
 }
 
 // FUN_001025c0
-void func_001025c0(void* handle, const char* path)
+void H_Cdvd_StreamOpenHandle(void* handle, const char* path)
 {
     static char uppercasePath[256];
     static char fileName[256];
@@ -1427,8 +1427,8 @@ void func_001025c0(void* handle, const char* path)
 
     func_0054d390();
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    func_00101100(uppercasePath, fileName, directory);
-    func_00101520(directory);
+    H_Cdvd_SplitPath(uppercasePath, fileName, directory);
+    H_Cdvd_SelectDirectory(directory);
     func_0054d0a0(handle, fileName);
 }
 
@@ -1622,7 +1622,7 @@ void func_00102a70(void* slot)
 }
 
 // FUN_00102ad0
-s32 func_00102ad0(void* slot, void* dst, u32 size)
+s32 H_Cdvd_SlotRead(void* slot, void* dst, u32 size)
 {
     s32 amount;
 
@@ -1638,7 +1638,7 @@ s32 func_00102ad0(void* slot, void* dst, u32 size)
 }
 
 // FUN_00102b60
-s32 func_00102b60(void* slot, void* dst, u32 size)
+s32 H_Cdvd_SlotWrite(void* slot, void* dst, u32 size)
 {
     s32 amount;
 
@@ -1653,7 +1653,7 @@ s32 func_00102b60(void* slot, void* dst, u32 size)
 }
 
 // FUN_00102bf0
-void func_00102bf0(void* resultData, void* slot,
+void H_Cdvd_SlotSeek(void* resultData, void* slot,
                    s32 amount, s32 mode)
 {
     typedef struct
@@ -1730,7 +1730,7 @@ s32 func_00102d10(void* unused, const char* path)
 }
 
 // FUN_00102d90
-void* func_00102d90(void* contextData, u32 index)
+void* H_Cdvd_FileContextSlot(void* contextData, u32 index)
 {
     s32 i = index;
     HCdvdFileContext* context = (HCdvdFileContext*)contextData;
@@ -1744,7 +1744,7 @@ void* func_00102d90(void* contextData, u32 index)
 }
 
 // FUN_00102e00
-void func_00102e00(void* contextData)
+void H_Cdvd_FileContextFree(void* contextData)
 {
     HCdvdFileContext* context = (HCdvdFileContext*)contextData;
     func_00505e48("CDVD file context cleanup");
@@ -1767,14 +1767,14 @@ void* func_00102e50(s32 count, void* source, s32 stride,
     }
     allocator = (void* (**)(u32, u32, u32))D_00960184;
     context = (HCdvdFileContext*)(*allocator)(1, 0x5c, 0x40000);
-    context->callback14 = (void*)func_00102d90;
-    context->callback18 = (void*)func_00102e00;
+    context->callback14 = (void*)H_Cdvd_FileContextSlot;
+    context->callback18 = (void*)H_Cdvd_FileContextFree;
     context->callback28 = (void*)func_00102900;
     context->callback2c = (void*)func_00102a70;
-    context->callback30 = (void*)func_00102ad0;
-    context->callback34 = (void*)func_00102b60;
+    context->callback30 = (void*)H_Cdvd_SlotRead;
+    context->callback34 = (void*)H_Cdvd_SlotWrite;
     context->callback44 = (void*)func_001028d0;
-    context->callback38 = (void*)func_00102bf0;
+    context->callback38 = (void*)H_Cdvd_SlotSeek;
     context->callback4c = (void*)func_00102d10;
     slots = (HCdvdFileSlot*)(*allocator)(count, 0x90, 0x40000);
     context->slots = (u8*)slots;
