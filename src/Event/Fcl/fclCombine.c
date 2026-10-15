@@ -2870,11 +2870,11 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     func_001a0040(0,1);
 
-    func_001a0150(0xc00,0);
+    SceneDraw_SetResVisible(0xc00,0);
 
-    func_001a0150(0xc01,0);
+    SceneDraw_SetResVisible(0xc01,0);
 
-    func_001a0150(0xc02,0);
+    SceneDraw_SetResVisible(0xc02,0);
 
     printf((const char *)0x7bb730,0x7bb720,0x2a);
 
@@ -2926,11 +2926,11 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
     func_001a0040(1,1);
 
-    func_001a0150(0xc00,1);
+    SceneDraw_SetResVisible(0xc00,1);
 
-    func_001a0150(0xc01,1);
+    SceneDraw_SetResVisible(0xc01,1);
 
-    func_001a0150(0xc02,1);
+    SceneDraw_SetResVisible(0xc02,1);
 
     printf((const char *)0x7bb790,0x7bb780,0x22);
 
@@ -3827,9 +3827,9 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
   switch(work[1]) {
   case 2:
     func_001a0040(1,1);
-    func_001a0150(0xc00,1);
-    func_001a0150(0xc01,1);
-    func_001a0150(0xc02,1);
+    SceneDraw_SetResVisible(0xc00,1);
+    SceneDraw_SetResVisible(0xc01,1);
+    SceneDraw_SetResVisible(0xc02,1);
     printf((const char *)0x7bb790,0x7bb780,0x22);
     printf((const char *)0x7bb760);
     H_Dbprt_FmtLog((const char *)0x7bb740);
@@ -3840,9 +3840,9 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
   case 1:
     work[1] = 3;
     func_001a0040(0,1);
-    func_001a0150(0xc00,0);
-    func_001a0150(0xc01,0);
-    func_001a0150(0xc02,0);
+    SceneDraw_SetResVisible(0xc00,0);
+    SceneDraw_SetResVisible(0xc01,0);
+    SceneDraw_SetResVisible(0xc02,0);
     printf((const char *)0x7bb730,0x7bb720,0x2a);
     printf((const char *)0x7bb700);
     H_Dbprt_FmtLog((const char *)0x7bb6e0);
