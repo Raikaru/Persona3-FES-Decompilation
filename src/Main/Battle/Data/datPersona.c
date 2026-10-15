@@ -674,7 +674,7 @@ typedef struct CampDataBridgeRoot
 
 
 // FUN_00173220
-u8* FUN_00173220(s32 personaId)
+u8* datPersonaGetRow(s32 personaId)
 {
     u16 id;
 
