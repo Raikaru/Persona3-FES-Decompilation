@@ -176,7 +176,7 @@ extern u16 func_003b66b0(u16 resourceId, void* model);
 extern u32 K_Misc_FindNextFreeResId(u16 resType);
 extern u16 func_003b6870(u16 resourceId, const void* position, u32 packed,
                           f32 angleX, f32 angleY, f32 angleZ);
-extern void func_001e6af0(void* position, void* model,
+extern void Vpad_BuildRotatedQuad(void* position, void* model,
                           f32 x, f32 y, f32 z);
 extern u16 func_003b6b90(u16 resourceId, const RwV3d* position, f32 angle);
 extern u16 func_003b6c50(u16 resourceId, const RwV3d* position, f32 angle);
@@ -217,7 +217,7 @@ extern void MT_Scene_Load(s32 majorId, s32 minorId);
 extern u32 MT_Scene_TryLoadFinish(void);
 extern void MT_Scene_Destroy(void);
 extern Resrc* MT_Scene_GetResListHead(u32 resType);
-extern void func_001a0150(u16 resourceId, u32 visible);
+extern void SceneDraw_SetResVisible(u16 resourceId, u32 visible);
 extern s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
 extern s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
 extern void Y_TimeLimit_Stop(void);
@@ -566,7 +566,7 @@ static void dungeonShowResources(s32 x, s32 y, const s16* offsets, u32 count)
     cell = dungeonCell(x, y);
     for (i = 0; i < count; i++)
     {
-        func_001a0150(*(u16*)(cell + offsets[i]), 1);
+        SceneDraw_SetResVisible(*(u16*)(cell + offsets[i]), 1);
     }
 }
 
@@ -716,7 +716,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     roomCopy = (u8*)func_001b5380((u32*)source, &origin, (direction + 2) & 3);
     roomResId = func_003b6790(patternId, roomCopy);
     sceneResource = (u8*)MT_Scene_GetRes(roomResId);
-    func_001a0150(roomResId, 1);
+    SceneDraw_SetResVisible(roomResId, 1);
     func_0019ff10();
 
     for (row = 0;
@@ -767,7 +767,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
         {
             continue;
         }
-        func_001a0150((u16)resourceId, 1);
+        SceneDraw_SetResVisible((u16)resourceId, 1);
     }
     *(u32*)(roomCopy + 0x118) = 0;
 
@@ -815,7 +815,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
                                        *(f32*)(record + 0x18),
                                        *(f32*)(record + 0x1c));
             modelResource = (u8*)MT_Scene_GetRes((u16)resourceId);
-            func_001e6af0(modelResource + 0x11c, modelResource + 0x104,
+            Vpad_BuildRotatedQuad(modelResource + 0x11c, modelResource + 0x104,
                           *(f32*)(modelResource + 0x110),
                           *(f32*)(modelResource + 0x114),
                           *(f32*)(modelResource + 0x118));
@@ -1664,191 +1664,191 @@ void func_001bd950(void)
         &((RwFrame*)kwlnGetMainCamera_y2()->object.object.parent)->modelling);
     if (angle <= 22.5f && angle >= -22.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
     }
     else if (angle > 22.5f && angle <= 67.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
     }
     else if (angle > 67.5f && angle <= 112.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
     }
     else if (angle > 112.5f && angle <= 157.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     else if (angle > 157.5f || angle < -157.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
     }
     else if (angle >= -157.5f && angle < -112.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
     }
     else if (angle >= -112.5f && angle < -67.5f)
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     else
     {
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid - 1].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
-        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid - 1].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        SceneDraw_SetResVisible(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     for (; modelFld != NULL; modelFld = modelFld->next)
     {
