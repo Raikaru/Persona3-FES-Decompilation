@@ -93,7 +93,7 @@ extern const char D_005D3E10[];
 extern const char D_005D3E30[];
 extern const char D_005D3E50[];
 extern const char D_005D3E70[];
-extern const char* func_001022e0(HCdvd* cdvd, s32 entryIndex);
+extern const char* H_Cdvd_ArchiveEntryName(HCdvd* cdvd, s32 entryIndex);
 extern void* func_0010c1a0(s32 kind, const char* name, const char* path,
                             s32 requestFlags, void* source, void* buffer,
                             s32 byteCount, const char* cacheName,
@@ -381,7 +381,7 @@ static void H_Chrdsp_LoadArchiveLayer(HChrdspWork* work)
         }
     }
 
-    archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+    archiveEntry = H_Cdvd_ArchiveEntryName(work->archive, work->resourceIndex);
     if (archiveEntry == NULL)
     {
         H_Cdvd_Destroy(work->archive);
@@ -1298,10 +1298,10 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
                         work->characterId, work->resourceIndex);
             }
         }
-        archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+        archiveEntry = H_Cdvd_ArchiveEntryName(work->archive, work->resourceIndex);
         if (archiveEntry != NULL)
         {
-            archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+            archiveEntry = H_Cdvd_ArchiveEntryName(work->archive, work->resourceIndex);
             sprintf(work->texturePath, "bustup/%s", archiveEntry);
             work->asyncRequest = func_0010c1a0(0, work->texturePath, NULL, 0, NULL,
                                                NULL, 0, NULL, NULL, "h_chrdsp.c",
