@@ -2608,9 +2608,9 @@ poll:
         FUN_003c6ea0(resource);
         func_0010a4e0(0, 0, 0, 1);
         func_001a0040(0, 1);
-        func_001a0150(0xc00, 0);
-        func_001a0150(0xc01, 0);
-        func_001a0150(0xc02, 0);
+        SceneDraw_SetResVisible(0xc00, 0);
+        SceneDraw_SetResVisible(0xc01, 0);
+        SceneDraw_SetResVisible(0xc02, 0);
         FUN_003c6f50(resource);
         FUN_0040c520(item);
         context = FUN_003c5460(uGpffffb998);
@@ -2712,9 +2712,9 @@ first_nonzero:
         goto first_other;
     }
     func_001a0040(1, 1);
-    func_001a0150(0xc00, 1);
-    func_001a0150(0xc01, 1);
-    func_001a0150(0xc02, 1);
+    SceneDraw_SetResVisible(0xc00, 1);
+    SceneDraw_SetResVisible(0xc01, 1);
+    SceneDraw_SetResVisible(0xc02, 1);
     current = FUN_003c5460(uGpffffb998);
     FUN_003e0c20(current, 0, 1);
     state[1] |= 2;
