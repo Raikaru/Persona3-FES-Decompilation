@@ -255,7 +255,7 @@ extern code DAT_00960184;
 extern void FUN_003bb280(int param_1);
 extern void FUN_00359380(f32 param_1,void *param_2,int param_3);
 extern int FUN_0031b680(u16 param_1,u16 param_2,u32 *param_3,int *param_4);
-extern u32 FUN_003b9500(int param_1,int param_2);
+extern u32 MT_Scene_SetResActive(int param_1,int param_2);
  extern int (*DAT_00960184_abs[])(...);
 extern u8 *PTR_DAT_0069d930;
 extern u8 *PTR_DAT_0069d960;
@@ -1019,7 +1019,7 @@ void FUN_00386e50(void)
 
   
 
-  lVar1 = FUN_003b5d00();
+  lVar1 = MT_Scene_GetResManager();
 
   if (lVar1 != 0) {
 
@@ -1040,7 +1040,7 @@ void FUN_00386e50(void)
 
       stack20 = *(RwV3d *)(iVar2 + 0x10);
 
-      FUN_003b79a0(auStack_60,&stack10,&stack20);
+      MT_Scene_BuildResMatrix(auStack_60,&stack10,&stack20);
 
       FUN_00359380(15.0f,auStack_60,1);
 
@@ -6690,7 +6690,7 @@ void FUN_0038d910(int param_1)
   lVar2 = FUN_0031b680(*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6),
                        &uStack_8,&iStack_4);
   if ((lVar2 == 1) && (uStack_8 == 0)) {
-    FUN_003b9500(param_1,0);
+    MT_Scene_SetResActive(param_1,0);
   }
 }
 
