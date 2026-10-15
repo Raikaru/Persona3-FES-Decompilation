@@ -25,7 +25,7 @@ void FUN_0016e410(short, char);
 int FUN_003bded0(int param_1);
 int FUN_0035f140();
 int FUN_00172f70(s32* outSlot);
-u32 FUN_00173220(u16);
+u32 datPersonaGetRow(u16);
 void FUN_003a4220(int param_1, ...);
 void FUN_00171c40(s32 socialLink, s32 enabled);
 void FUN_00172200(s32 socialLink, s32 enabled);
@@ -568,7 +568,7 @@ float FUN_0038a220(int param_1);
 float evtCommandParamF32(int param_1);
 u8 FUN_003b86c0(f32 param_1, u32 param_2, u32 param_3);
 u32 FUN_003b8730(f32 param_1, u16 param_2, void *param_3);
-u32 FUN_003b89f0(f32 param_1, u16 param_2, char *param_3, u32 param_4);
+u32 MT_Scene_BeginResPathAnimById(f32 param_1, u16 param_2, char *param_3, u32 param_4);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
 int FUN_00361f20(int param_1);
@@ -1678,7 +1678,7 @@ u32 scrComu00360b70(void)
     lVar3 = func_0016dbc0(uVar1, &uStack_4);
     if (lVar3 == 1) {
         if (lVar2 >= 0) {
-            FUN_003a4220(lVar2, 0, FUN_00173220((u16)uStack_4));
+            FUN_003a4220(lVar2, 0, datPersonaGetRow((u16)uStack_4));
         }
         scrSetIntReturnVal(uStack_4);
     } else {
@@ -1735,7 +1735,7 @@ u32 scrComu00360d40(void)
     K_ASSERT(handle >= 0, 0x424);
     K_ASSERT(sDat007ce5d0 > sDat007ce5c8, 0x427);
     FUN_003a4010(handle, 0, DAT_007ce420[personaId * 0xe + 3], 0);
-    FUN_003a4220(handle, 1, FUN_00173220(personaId));
+    FUN_003a4220(handle, 1, datPersonaGetRow(personaId));
     for (blankSkillIdx = 0; blankSkillIdx < 3; blankSkillIdx++) {
         FUN_003a4220(handle, blankSkillIdx + 2, FUN_003c43f0());
     }
@@ -1881,7 +1881,7 @@ CheckFlagValue:
 #pragma alias FUN_00386ae0_evt FUN_00386ae0
 #pragma alias FUN_0038c540_evt FUN_0038c540
 #pragma alias FUN_003b5d10_evt FUN_003b5d10
-#pragma alias FUN_003b8310_evt FUN_003b8310
+#pragma alias FUN_003b8310_evt MT_Scene_SetResEnabledById
 #pragma alias FUN_00360ed0_evt FUN_00360ed0
 #pragma alias FUN_003b9550_evt FUN_003b9550
 #pragma alias FUN_00388df0_evt FUN_00388df0
@@ -1889,7 +1889,7 @@ CheckFlagValue:
 #pragma alias FUN_003b9260_evt FUN_003b9260
 #pragma alias FUN_003b8ff0_evt_wide FUN_003b8ff0
 #pragma alias FUN_003b9260_evt_wide FUN_003b9260
-#pragma alias FUN_003b8e10_evt FUN_003b8e10
+#pragma alias FUN_003b8e10_evt MT_Scene_SetResColorParamById
 #pragma alias FUN_0036f640_evt FUN_0036f640
 #pragma alias FUN_00366540_evt_u32 FUN_00366540
 #pragma alias FUN_0038e860_i FUN_0038e860
