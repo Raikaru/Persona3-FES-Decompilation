@@ -261,7 +261,7 @@ void func_001fc1f0(void);
 void func_0025b440(void);
 void func_004ac860(u32 size, u32 alignment);
 RwMemoryFunctions* func_001040f0(void);
-RwCamera* func_00195c80(u32 width, u32 height, u32 zBuffer);
+RwCamera* kwlnCameraCreate(u32 width, u32 height, u32 zBuffer);
 void func_0045f7d0(void);
 void func_004661b0(void);
 void func_00468c50(void);
@@ -354,7 +354,7 @@ void func_0010e500(void);
 void func_0010e5f0(void);
 void func_00197f80(void* param_1, void* param_2);
 void func_00177d40(void);
-void func_00195980(RwCamera* camera, KwlnCameraView* view, f32 scale, f32 aspectRatio);
+void kwlnCameraResizeView(RwCamera* camera, KwlnCameraView* view, f32 scale, f32 aspectRatio);
 void func_0019d360(void);
 void func_0035aba0(void);
 void func_004944b0(void* object, const void* data);
@@ -1008,7 +1008,7 @@ second_light_done:
 
     world = sWorlds[gCurrWorldIdx];
     func_004ca560(locals.cameraDescriptor, func_004ca5b0());
-    if ((camera = func_00195c80(locals.cameraDescriptor[0], locals.cameraDescriptor[1], 1)) != NULL)
+    if ((camera = kwlnCameraCreate(locals.cameraDescriptor[0], locals.cameraDescriptor[1], 1)) != NULL)
     {
         func_004c9db0(camera, 25600.0f);
         func_004c9d70(camera, 20.0f);
@@ -1017,7 +1017,7 @@ second_light_done:
         locals.cameraView.offset.y = 0.0f;
         locals.cameraView.width = locals.cameraDescriptor[0];
         locals.cameraView.height = locals.cameraDescriptor[1];
-        func_00195980(camera, &locals.cameraView, 0.5f, gAspectRatio);
+        kwlnCameraResizeView(camera, &locals.cameraView, 0.5f, gAspectRatio);
         camera->fogPlane = DAT_007cad20;
     }
     sMainCamera = camera;
