@@ -1221,8 +1221,8 @@ extern void func_0054d238(void* handle, s32 value);
 extern void func_0054d2b0(void* handle, s32 parameter);
 extern void func_0054d328(void* handle);
 extern void func_0054d3a8(void* handle, s32 value);
-extern void func_00102530(void* handle, const char* name);
-extern void func_001025c0(void* handle, const char* name);
+extern void H_Cdvd_StreamOpenByPath(void* handle, const char* name);
+extern void H_Cdvd_StreamOpenHandle(void* handle, const char* name);
 extern void func_001024a0(void* source, const char* name, s32 flags, void* callback);
 extern s32 func_0053c268(void* source);
 extern void func_0010d6f0(s16 param1, s16 param2);
@@ -1271,7 +1271,7 @@ void func_00108bc0(void)
 
         for (i = 0; i < HSND_SLOT_COUNT; i++)
         {
-            func_00108e80(&sSlotWork[i]);
+            hsndSlotUpdate(&sSlotWork[i]);
         }
     }
 
