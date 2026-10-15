@@ -262,9 +262,9 @@ void FUN_0025c220(void)
         }
 
         fVar11 = 0.0f;
-        iVar2 = FUN_003b19d0(puVar1[2]);
+        iVar2 = frFontNodeWidth(puVar1[2]);
         fVar11 = fVar11 + (f32)iVar2;
-        iVar3 = FUN_003b19d0(puVar1[3]);
+        iVar3 = frFontNodeWidth(puVar1[3]);
         fVar11 = fVar11 + (f32)iVar3;
         fVar11 = fVar11 + 25.0f;
         fVar11 = fVar11 + 30.0f;
@@ -298,7 +298,7 @@ void FUN_0025c220(void)
         FUN_0025ce30(252.0f, 302.0f, puVar1[1]);
         fVar9 = fVar7 + 30.0f;
         FUN_0025cdb0(fVar9, fVar8 - 5.0f, puVar1[2]);
-        iVar2 = FUN_003b19d0(puVar1[2]);
+        iVar2 = frFontNodeWidth(puVar1[2]);
         FUN_0025cdb0(30.0f + (25.0f + (fVar9 + (f32)iVar2)),
                      fVar8 - 5.0f, puVar1[3]);
         fVar10 = 255.0f * fVar10 * fVar6;
@@ -346,7 +346,7 @@ void FUN_0025c220(void)
         layout.rect[3] = (f32)*(s32*)(iVar2 + 0x10);
         FUN_0021d8e0(puVar1 + 0xcc, layout.rect);
         iVar2 = FUN_0021cca0(uVar4, 0x5a);
-        iVar3 = FUN_003b19d0(puVar1[2]);
+        iVar3 = frFontNodeWidth(puVar1[2]);
         layout.rect[0] = fVar9 + (f32)iVar3 + 25.0f;
         layout.rect[1] = fVar8;
         layout.rect[2] = (f32)*(s32*)(iVar2 + 0xc);
