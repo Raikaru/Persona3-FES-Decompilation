@@ -55,7 +55,7 @@ extern s32 D_007CE270;
  */
 extern u16 MT_Scene_CreateResModelNpc(s32 resId, u16 param_2, Model* mdl);
 extern s32 scrGetUnkF0(void);
-extern void func_001a0150(u16 resourceId, u32 value);
+extern void SceneDraw_SetResVisible(u16 resourceId, u32 value);
 extern void func_00103c30(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 extern void func_00103cb0(void);
 extern void func_001d6270(KwlnTask* parent, s32 mode, s32 value);
@@ -63,8 +63,8 @@ extern void func_001d6630(KwlnTask* parent, s32 mode, s32 value);
 extern void func_001831e0(s32 pcId, s16 slot, void* value);
 extern void func_003c8f70(void);
 extern void func_003c8f20(void);
-extern f32 func_001a5aa0(void* matrix);
-extern f32 func_001a5b30(const RwMatrix* matrix);
+extern f32 KDraw_MatrixYawDeg(void* matrix);
+extern f32 KDraw_MatrixPitchDeg(const RwMatrix* matrix);
 extern u32 func_0043a230(s32 value);
 extern void* func_001a9470(void* resource);
 extern u32 func_001d00b0(void);
@@ -92,7 +92,7 @@ extern void func_00434e60(void);
 extern void func_00434d30(void);
 extern void func_00435370(s8 value);
 extern RwMatrix* func_004cb2f0(void* frame);
-extern f32 func_001a5bc0(const RwMatrix* matrix);
+extern f32 KDraw_MatrixRollDeg(const RwMatrix* matrix);
 extern u32 FUN_001b32f0(u32 resource, u32 wanted, u32* hasOverlay);
 #pragma alias mdl00318a70_with_res mdl00318a70
 extern void mdl00318a70_with_res(Model* mdl, void* resource, u32 value);
@@ -129,7 +129,7 @@ u32 K_Cmd_SET_CALENDAR_SEQUENCE()
     s32 resourceId;
 
     resourceId = scrGetIntPara(0);
-    func_001a0150((u16)resourceId, scrGetIntPara(1));
+    SceneDraw_SetResVisible((u16)resourceId, scrGetIntPara(1));
     return true;
 }
 
@@ -979,7 +979,7 @@ u32 FUN_001C3CD0()
 }
 
 // FUN_001C3D60
-u32 FUN_001C3D60()
+u32 Cmd_TestResourceValue()
 {
     s32 resourceId;
     s32 value;
@@ -1325,9 +1325,9 @@ field_done:
         if (result != NULL)
         {
             result = func_004cb2f0(result);
-            angles.x = func_001a5b30(result);
-            angles.y = func_001a5aa0(result);
-            angles.z = func_001a5bc0(result);
+            angles.x = KDraw_MatrixPitchDeg(result);
+            angles.y = KDraw_MatrixYawDeg(result);
+            angles.z = KDraw_MatrixRollDeg(result);
             func_003b78b0((u16)createdId, &result->pos, &angles);
             mdl00318a70_with_res(model, result, 0);
             func_00319230(model, 3);
@@ -1346,7 +1346,7 @@ done:
 }
 
 // FUN_001C48F0
-u32 FUN_001C48F0()
+u32 Cmd_CreateModelResource()
 {
     Model* model;
     u32 resourceId;
@@ -1818,7 +1818,7 @@ u32 func_001c5550()
 
     id = (s16)scrGetIntPara(0);
     unused = (s16)scrGetIntPara(1);
-    func_00109040(id, unused);
+    hsndQueueSound(id, unused);
     return true;
 }
 
@@ -1938,7 +1938,7 @@ u32 func_001c57b0()
 }
 
 // FUN_001c5870
-u32 func_001c5870()
+u32 Cmd_SetResourceValueByte()
 {
     s32 rawResourceId;
     u16 resourceId;
