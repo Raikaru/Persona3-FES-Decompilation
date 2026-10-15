@@ -214,8 +214,8 @@ extern void func_0054d238(void* handle, s32 value);
 extern void func_0054d2b0(void* handle, s32 parameter);
 extern void func_0054d328(void* handle);
 extern void func_0054d3a8(void* handle, s32 value);
-extern void func_00102530(void* handle, const char* name);
-extern void func_001025c0(void* handle, const char* name);
+extern void H_Cdvd_StreamOpenByPath(void* handle, const char* name);
+extern void H_Cdvd_StreamOpenHandle(void* handle, const char* name);
 extern void func_001024a0(void* source, const char* name, s32 flags, void* callback);
 extern s32 func_0053c268(void* source);
 extern void func_0010d6f0(s16 param1, s16 param2);
@@ -266,7 +266,7 @@ s16 H_Snd_GetCurrentBgmId(void)
 }
 
 // FUN_00108E80
-void func_00108e80(HsndSlotWork* slot)
+void hsndSlotUpdate(HsndSlotWork* slot)
 {
     switch (slot->state)
     {
@@ -329,7 +329,7 @@ void H_Snd_StopBgmFade(s16 fadeDuration)
 }
 
 // FUN_00109040
-u8 func_00109040(s16 id, s16 unused)
+u8 hsndQueueSound(s16 id, s16 unused)
 {
     H_Snd_PlayBgm(id, true);
     return true;
@@ -490,11 +490,11 @@ void H_Snd_00109180(s32 channelIndex)
             }
             else if (channelIndex != 0)
             {
-                func_001025c0(*handle, channel->name);
+                H_Cdvd_StreamOpenHandle(*handle, channel->name);
             }
             else
             {
-                func_00102530(*handle, channel->name);
+                H_Cdvd_StreamOpenByPath(*handle, channel->name);
             }
             func_0054d208(*handle, 1);
             break;
