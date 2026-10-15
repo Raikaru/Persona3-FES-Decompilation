@@ -71,8 +71,8 @@ extern u32 FUN_00311250();
 extern void FUN_0035f080(float);
 extern u32 FUN_003951d0();
 u32 datCalcGetMaxSp(DatUnit* unit);
-s32 FUN_00300410(DatUnit *unit,s32 hpDelta);
-s32 FUN_00300480(DatUnit *unit,s32 spDelta);
+s32 datCalcAddHp(DatUnit *unit,s32 hpDelta);
+s32 datCalcAddSp(DatUnit *unit,s32 spDelta);
 u32 FUN_003005a0(u16* param);
 u8 FUN_00300700(u16 *param_1,s16 param_2);
 s32 FUN_00300750(u16 param_1,u16 param_2);
@@ -148,7 +148,7 @@ s32 FUN_0030c220(s32 param_1);
 u8 FUN_0030c2a0(u32 param_1);
 u32 FUN_0030c3a0(u16 *param_1);
 void datCalcInitializeCharacters(void);
-void FUN_0030c490(u16 param_1);
+void datCalcInitializeCharacter(u16 param_1);
 void FUN_0030c520(void);
 void FUN_0030c930(void);
 void FUN_0030cb90(void);
@@ -506,7 +506,7 @@ u32 datCalcGetMaxSp(DatUnit* unit)
 }
 
 // FUN_00300410
-s32 FUN_00300410(DatUnit *unit,s32 hpDelta)
+s32 datCalcAddHp(DatUnit *unit,s32 hpDelta)
 
 {
   s32 maxHp;
@@ -525,7 +525,7 @@ s32 FUN_00300410(DatUnit *unit,s32 hpDelta)
 }
 
 // FUN_00300480
-s32 FUN_00300480(DatUnit *unit,s32 spDelta)
+s32 datCalcAddSp(DatUnit *unit,s32 spDelta)
 
 {
   s32 maxSp;
@@ -6718,7 +6718,7 @@ void datCalcInitializeCharacters(void)
   u16 uVar1;
   
   for (uVar1 = 1; uVar1 < 0xb; uVar1++) {
-    FUN_0030c490(uVar1);
+    datCalcInitializeCharacter(uVar1);
   }
   return;
 }
@@ -6728,7 +6728,7 @@ void datCalcInitializeCharacters(void)
 
 
 // FUN_0030c490
-void FUN_0030c490(u16 param_1)
+void datCalcInitializeCharacter(u16 param_1)
 
 {
   s16 id;
