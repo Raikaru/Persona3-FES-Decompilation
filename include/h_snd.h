@@ -154,11 +154,11 @@ typedef struct HsndStreamTaskWork
 
 void func_00108740(void);
 void func_00108bc0(void);
-void func_00108e80(HsndSlotWork* slot);
+void hsndSlotUpdate(HsndSlotWork* slot);
 s16 H_Snd_GetCurrentBgmId(void);
 void H_Snd_StopBgm(void);
 void H_Snd_StopBgmFade(s16 fadeDuration);
-u8 func_00109040(s16 id, s16 unused);
+u8 hsndQueueSound(s16 id, s16 unused);
 u8 func_00109070(s32 channelIndex);
 u8 func_00109170(void);
 void H_Snd_00109180(s32 channelIndex);
