@@ -1070,7 +1070,7 @@ branch_zero:
         damage *= 3;
 after_branch:
 
-    FUN_00300410(target, damage);
+    datCalcAddHp(target, damage);
     if (datCalcIsDead(target, 0) != 0)
     {
         if ((*(u16*)event & 4) == 0)
