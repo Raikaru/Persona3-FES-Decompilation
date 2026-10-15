@@ -72,7 +72,7 @@ extern void FUN_003c7430(s32);
 extern void FUN_003c74e0(s32);
 extern void FUN_003c7560(s32);
 extern void FUN_0010a4e0(s32, s32, s32, s32);
-extern u32 FUN_00173220(u16);
+extern u32 datPersonaGetRow(u16);
 extern DatPersonaWork* FUN_001749a0(u16);
 extern u32 FUN_00175410(void);
 extern u32 FUN_001756f0(void);
@@ -779,7 +779,7 @@ void func_00272810(void)
                     skillId = brpSeqU16(0x1c4 + brpSeqU32(0x1b0) * 8);
                     brpSeqPutU16(0x60 + brpSeqU32(0x74) * 2, skillId);
                     brpSeqPutU32(0x74, brpSeqU32(0x74) + 1);
-                    FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                    FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
                     FUN_003c7bc0(1, DAT_007ce4ec + skillId * 0x13);
                     FUN_003c7430(2);
                     brpSeqPutU32(0x18, 1);
@@ -903,7 +903,7 @@ void func_00272810(void)
                             brpSeqPutU16(0x60 + slot * 2,
                                          brpSeqU16(0x62 + slot * 2));
                         brpSeqPutU32(0x74, brpSeqU32(0x74) - 1);
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
                         FUN_003c7bc0(1, DAT_007ce4ec + skillId * 0x13);
                         if (index == 8)
                             FUN_003c7430(6);
@@ -967,7 +967,7 @@ void func_00272810(void)
                         break;
                     case 1:
                         FUN_003c7650(0);
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
                         FUN_003c7430(10);
                         brpSeqPutU32(0x1c, 1);
                         break;
@@ -1011,8 +1011,8 @@ void func_00272810(void)
                     switch (brpSeqU32(0xa4))
                     {
                     case 0:
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                        FUN_003c7bc0(1, FUN_00173220(brpSeqU16(0x80)));
+                        FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
+                        FUN_003c7bc0(1, datPersonaGetRow(brpSeqU16(0x80)));
                         FUN_003c7430(0xb);
                         break;
                     case 1:
@@ -1033,7 +1033,7 @@ void func_00272810(void)
                                          FUN_00171110(brpSeqS16(0x84), 0));
                             break;
                         }
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
                         FUN_003c7430(0xc);
                         break;
                     }
@@ -1094,7 +1094,7 @@ void func_00272810(void)
                         brpSeqPutU32(0x20, 1);
                         break;
                     case 1:
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7bc0(0, datPersonaGetRow(brpSeqU16(4)));
                         FUN_003c7430(0xe);
                         brpSeqPutU32(0x20, 1);
                         break;
@@ -1278,7 +1278,7 @@ void brpSeq00273c70(void)
     puVar1 = sBrpSeq;
     *puVar1 &= 0xffffffef;
     K_ASSERT((~puVar1[2] & 1) != 0, 0x3ef);
-    uVar2 = FUN_00173220(*(u16*)((int)puVar1 + 4));
+    uVar2 = datPersonaGetRow(*(u16*)((int)puVar1 + 4));
     FUN_003c7bc0(0, uVar2);
     FUN_003c7430(8);
     FUN_003c74e0(9);
@@ -1295,7 +1295,7 @@ void func_00273d50(void)
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = (u8*)sBrpSeq;
-    FUN_003c7bc0(0, FUN_00173220(*(u16*)(work + 4)));
+    FUN_003c7bc0(0, datPersonaGetRow(*(u16*)(work + 4)));
     FUN_003c7bc0(1, DAT_007ce4ec + *(u16*)(work + 0xa0) * 0x13);
     FUN_003c7430(0xd);
     FUN_003c74e0(9);
