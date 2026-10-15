@@ -272,9 +272,9 @@ extern void func_003b6f50(u16 resourceId, u32 type, f32 fov, void* matrix,
                           void* posOffset, f32 xzDeadZone, f32 yDeadZone);
 extern u16 func_003b78b0(u16 resourceId, void* position, void* angles);
 extern void func_003b7090(u16 resTypeId);
-extern f32 func_001a5b30(void* matrix);
-extern f32 func_001a5aa0(void* matrix);
-extern f32 func_001a5bc0(void* matrix);
+extern f32 KDraw_MatrixPitchDeg(void* matrix);
+extern f32 KDraw_MatrixYawDeg(void* matrix);
+extern f32 KDraw_MatrixRollDeg(void* matrix);
 extern u32 func_001b8160(void);
 extern u32 func_001b81f0(HCdvd* request);
 extern u32 func_001b8680(void);
@@ -295,7 +295,7 @@ extern u32 func_001d6bc0(HCdvd* request, RwMatrix* matrix, f32* fov,
                          f32* yDeadZone);
 u32 func_001b09b0(void);
 void* FUN_001b2860(char* path);
-void* FUN_001b2780(s16 majorId, s16 minorId);
+void* FldRc_CreateResource(s16 majorId, s16 minorId);
 void FUN_001b5e30(u32 color, const void* scale);
 void FUN_001b5e60(u32 color, const void* scale);
 void FUN_001b60a0(u32 value, const void* scale);
