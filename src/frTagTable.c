@@ -579,7 +579,7 @@ u32 FUN_003aea50(u64 param_1, int param_2)
   }
   value4 = (u16)high << 8 | low;
 
-  FUN_003b93c0(value0, value1, value2, value3, value4);
+  MT_Scene_SetResMotionSlot(value0, value1, value2, value3, value4);
   return 0;
 }
 #pragma pop
@@ -1431,13 +1431,13 @@ void FUN_003afa40(void);
 void FUN_003afad0(int param_1,int param_2,int param_3);
 #pragma alias FUN_003afad0_typed FUN_003afad0
 extern void FUN_003afad0_typed(u32 param_1,u64 param_2,u32 param_3);
-void FUN_003afc30(u32 param_1);
+void frFontSlotFree(u32 param_1);
 void FUN_003afc70(void);
 void FUN_003afe30(void);
 void FUN_003aff50(void);
 u64 FUN_003affd0(u64 param_1);
-u32 FUN_003b0030(int param_1);
-#pragma alias FUN_003b0030_u64 FUN_003b0030
+u32 frFontListRelease(int param_1);
+#pragma alias FUN_003b0030_u64 frFontListRelease
 extern u64 FUN_003b0030_u64(u64 param_1);
 u64 FUN_003b0170(u64 param_1);
 void FUN_003b01d0(int param_1,int param_2);
@@ -1463,20 +1463,20 @@ void FUN_003b0ce0(int param_1,u8 param_2);
 void FUN_003b0d70(int param_1,u32 param_2,u32 param_3);
 void FUN_003b0e04(int param_1,u8 param_2);
 void FUN_003b0e54(int param_1,u32 param_2);
-u16 FUN_003b0e70(s16 param_1);
-u16 FUN_003b0e90(u16 param_1);
-u32 FUN_003b0ec0(int param_1);
+u16 frFontSetFlagBits(s16 param_1);
+u16 frFontClearFlagBits(u16 param_1);
+u32 frFontFadeNodes(int param_1);
 int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4);
 void FUN_003b1300(void *param_1);
-void FUN_003b1330(void *param_1,u32 param_2);
+void frFontDrawListMode(void *param_1,u32 param_2);
 int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
-int FUN_003b1920(int param_1,int param_2,int param_3);
-#pragma alias FUN_003b1920_typed FUN_003b1920
+int frFontAppendList(int param_1,int param_2,int param_3);
+#pragma alias FUN_003b1920_typed frFontAppendList
 extern int FUN_003b1920_typed(int param_1,int param_2,int param_3);
-void FUN_003b19a0(u64 param_1);
-int FUN_003b19d0(FrFontNode *node);
+void frFontLoadSystemSlot(u64 param_1);
+int frFontNodeWidth(FrFontNode *node);
 u16 FUN_003b1a10(u32 param_1);
 u16 FUN_003b1a40(u32 param_1);
 void FUN_003b1a70(void);
@@ -1492,7 +1492,7 @@ void FUN_003b22a0_y2(u32 *param_1);
 void FUN_003b2400(FrFontState *state);
 u32 FUN_003b2430(void *param_1);
 void FUN_003b2900(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
-void FUN_003b2940(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7,u32 param_8);
+void frFontBuildTextSimple(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7,u32 param_8);
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8 param_6,u8 param_7,u32 param_8,  u32 param_9);
 u32 frFontMaskFlags(u32 param_1);
 void FUN_003b2a10(int param_1,u32 param_2);
@@ -1502,12 +1502,12 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 /* Region call-cast macros */
 #define FUN_003afa40(...) ((void (*)(...))FUN_003afa40)(__VA_ARGS__)
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
-#define FUN_003afc30(...) ((void (*)(...))FUN_003afc30)(__VA_ARGS__)
+#define frFontSlotFree(...) ((void (*)(...))frFontSlotFree)(__VA_ARGS__)
 #define FUN_003afc70(...) ((void (*)(...))FUN_003afc70)(__VA_ARGS__)
 #define FUN_003afe30(...) ((void (*)(...))FUN_003afe30)(__VA_ARGS__)
 #define FUN_003aff50(...) ((void (*)(...))FUN_003aff50)(__VA_ARGS__)
 #define FUN_003affd0(...) ((u64 (*)(...))FUN_003affd0)(__VA_ARGS__)
-#define FUN_003b0030(...) ((u32 (*)(...))FUN_003b0030)(__VA_ARGS__)
+#define frFontListRelease(...) ((u32 (*)(...))frFontListRelease)(__VA_ARGS__)
 #define FUN_003b0170(...) ((u64 (*)(...))FUN_003b0170)(__VA_ARGS__)
 #define FUN_003b01d0(...) ((void (*)(...))FUN_003b01d0)(__VA_ARGS__)
 #define FUN_003b03a0(...) ((int (*)(...))FUN_003b03a0)(__VA_ARGS__)
@@ -1523,18 +1523,18 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b0d70(...) ((void (*)(...))FUN_003b0d70)(__VA_ARGS__)
 #define FUN_003b0e04(...) ((void (*)(...))FUN_003b0e04)(__VA_ARGS__)
 #define FUN_003b0e54(...) ((void (*)(...))FUN_003b0e54)(__VA_ARGS__)
-#define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
-#define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
-#define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
+#define frFontSetFlagBits(...) ((u16 (*)(...))frFontSetFlagBits)(__VA_ARGS__)
+#define frFontClearFlagBits(...) ((u16 (*)(...))frFontClearFlagBits)(__VA_ARGS__)
+#define frFontFadeNodes(...) ((u32 (*)(...))frFontFadeNodes)(__VA_ARGS__)
 #define FUN_003b0f50(...) ((int (*)(...))FUN_003b0f50)(__VA_ARGS__)
 #define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
-#define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
+#define frFontDrawListMode(...) ((void (*)(...))frFontDrawListMode)(__VA_ARGS__)
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
 #define FUN_003b1710(...) ((int (*)(...))FUN_003b1710)(__VA_ARGS__)
 #define FUN_003b18c0(...) ((u64 (*)(...))FUN_003b18c0)(__VA_ARGS__)
-#define FUN_003b1920(...) ((long (*)(...))FUN_003b1920)(__VA_ARGS__)
-#define FUN_003b19a0(...) ((void (*)(...))FUN_003b19a0)(__VA_ARGS__)
-#define FUN_003b19d0(...) ((int (*)(...))FUN_003b19d0)(__VA_ARGS__)
+#define frFontAppendList(...) ((long (*)(...))frFontAppendList)(__VA_ARGS__)
+#define frFontLoadSystemSlot(...) ((void (*)(...))frFontLoadSystemSlot)(__VA_ARGS__)
+#define frFontNodeWidth(...) ((int (*)(...))frFontNodeWidth)(__VA_ARGS__)
 #define FUN_003b1a10(...) ((u16 (*)(...))FUN_003b1a10)(__VA_ARGS__)
 #define FUN_003b1a40(...) ((u16 (*)(...))FUN_003b1a40)(__VA_ARGS__)
 #define FUN_003b1a70(...) ((void (*)(...))FUN_003b1a70)(__VA_ARGS__)
@@ -1550,7 +1550,7 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #define FUN_003b2900(...) ((void (*)(...))FUN_003b2900)(__VA_ARGS__)
-#define FUN_003b2940(...) ((void (*)(...))FUN_003b2940)(__VA_ARGS__)
+#define frFontBuildTextSimple(...) ((void (*)(...))frFontBuildTextSimple)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
 #define frFontMaskFlags(...) ((u32 (*)(...))frFontMaskFlags)(__VA_ARGS__)
 #define FUN_003b2a10(...) ((void (*)(...))FUN_003b2a10)(__VA_ARGS__)
@@ -1578,8 +1578,8 @@ void FUN_003afa40(void)
 #undef FUN_003afad0
 /* W389 residual: register-coloring/address-expression floor after recovering the real block-pointer form (candidate id uses $a0 vs retail $a1; final slot/data temporaries also differ). Baseline nd=10/object=348/window=352; six-knob singles stayed nd=10 except common-subs off, which exceeded the window at nd=73/object=356; declaration swap was neutral; pair sweep had no win. */
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
-#undef FUN_003afc30
-#define FUN_003afc30(...) ((void (*)(...))FUN_003afc30)(__VA_ARGS__)
+#undef frFontSlotFree
+#define frFontSlotFree(...) ((void (*)(...))frFontSlotFree)(__VA_ARGS__)
 #undef FUN_003afc70
 /* W340 loop probe: opt_propagation off; without nd=279/object=392, with nd=247/object=400; window=448. */
 #define FUN_003afc70(...) ((void (*)(...))FUN_003afc70)(__VA_ARGS__)
@@ -1593,8 +1593,8 @@ void FUN_003afa40(void)
 #define FUN_003aff50(...) ((void (*)(...))FUN_003aff50)(__VA_ARGS__)
 #undef FUN_003affd0
 #define FUN_003affd0(...) ((u64 (*)(...))FUN_003affd0)(__VA_ARGS__)
-#undef FUN_003b0030
-#define FUN_003b0030(...) ((u32 (*)(...))FUN_003b0030)(__VA_ARGS__)
+#undef frFontListRelease
+#define frFontListRelease(...) ((u32 (*)(...))frFontListRelease)(__VA_ARGS__)
 #undef FUN_003b0170
 #define FUN_003b0170(...) ((u64 (*)(...))FUN_003b0170)(__VA_ARGS__)
 #undef FUN_003b01d0
@@ -1651,22 +1651,22 @@ void FUN_003afa40(void)
 /* Continuation of FUN_003b0e28 (see comment there); branches back to its
  * start when param_1 != 0, otherwise returns. */
 #define FUN_003b0e54(...) ((void (*)(...))FUN_003b0e54)(__VA_ARGS__)
-#undef FUN_003b0e70
-#define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
-#undef FUN_003b0e90
-#define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
-#undef FUN_003b0ec0
+#undef frFontSetFlagBits
+#define frFontSetFlagBits(...) ((u16 (*)(...))frFontSetFlagBits)(__VA_ARGS__)
+#undef frFontClearFlagBits
+#define frFontClearFlagBits(...) ((u16 (*)(...))frFontClearFlagBits)(__VA_ARGS__)
+#undef frFontFadeNodes
 // Retail hoists the loop-invariant mask/type constants here; without
 // opt_loop_invariants this function measures nd102 at 136B instead of nd1 at 140B.
 #pragma opt_loop_invariants off
-#define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
+#define frFontFadeNodes(...) ((u32 (*)(...))frFontFadeNodes)(__VA_ARGS__)
 #undef FUN_003b0f50
 #define FUN_003b0f50(...) ((int (*)(...))FUN_003b0f50)(__VA_ARGS__)
 #undef FUN_003b1300
-#undef FUN_003b1330
+#undef frFontDrawListMode
 #undef FUN_003b1360
 #define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
-#define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
+#define frFontDrawListMode(...) ((void (*)(...))frFontDrawListMode)(__VA_ARGS__)
 #undef FUN_003b1360
 /* W340 loop probe: opt_common_subs off; without nd=378/object=936, with nd=375/object=944; window=944. */
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
@@ -1676,12 +1676,12 @@ void FUN_003afa40(void)
 #undef FUN_003b18c0
 
 #define FUN_003b18c0(...) ((u64 (*)(...))FUN_003b18c0)(__VA_ARGS__)
-#undef FUN_003b1920
-#define FUN_003b1920(...) ((long (*)(...))FUN_003b1920)(__VA_ARGS__)
-#undef FUN_003b19a0
-#define FUN_003b19a0(...) ((void (*)(...))FUN_003b19a0)(__VA_ARGS__)
-#undef FUN_003b19d0
-#define FUN_003b19d0(...) ((int (*)(...))FUN_003b19d0)(__VA_ARGS__)
+#undef frFontAppendList
+#define frFontAppendList(...) ((long (*)(...))frFontAppendList)(__VA_ARGS__)
+#undef frFontLoadSystemSlot
+#define frFontLoadSystemSlot(...) ((void (*)(...))frFontLoadSystemSlot)(__VA_ARGS__)
+#undef frFontNodeWidth
+#define frFontNodeWidth(...) ((int (*)(...))frFontNodeWidth)(__VA_ARGS__)
 #undef FUN_003b1a10
 #define FUN_003b1a10(...) ((u16 (*)(...))FUN_003b1a10)(__VA_ARGS__)
 #undef FUN_003b1a40
@@ -1726,9 +1726,9 @@ void FUN_003afa40(void)
 #undef FUN_003b2900
 
 #define FUN_003b2900(...) ((void (*)(...))FUN_003b2900)(__VA_ARGS__)
-#undef FUN_003b2940
+#undef frFontBuildTextSimple
 
-#define FUN_003b2940(...) ((void (*)(...))FUN_003b2940)(__VA_ARGS__)
+#define frFontBuildTextSimple(...) ((void (*)(...))frFontBuildTextSimple)(__VA_ARGS__)
 #undef FUN_003b2990
 #undef FUN_003b2430
 #pragma alias FUN_003b2430_typed FUN_003b2430
