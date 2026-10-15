@@ -64,7 +64,7 @@ extern int sprintf(char* buffer, const char* format, ...);
 #pragma alias printf_y2 printf
 #pragma alias FUN_001158b0_y2 FUN_001158b0
 #pragma alias FUN_00115980_y2 FUN_00115980
-#pragma alias FUN_00173220_y2 FUN_00173220
+#pragma alias FUN_00173220_y2 datPersonaGetRow
 #pragma alias FUN_0010c3a0_y2 FUN_0010c3a0
 #pragma alias FUN_004d0f00_y2 FUN_004d0f00
 #pragma alias func_0010c3a0_y2 func_0010c3a0_y2
@@ -11767,7 +11767,7 @@ extern void FUN_0012b860_y2(u64 packedPosition, u64 auxiliaryPosition,
                          DatPersonaWork* persona, u32 alpha, f32 spriteScale);
 extern void FUN_00125b40(u64 packedPosition, u64 auxiliaryPosition,
                          DatPersonaWork* persona, u32 alpha, f32 spriteScale);
-extern const char* FUN_00173220(u16 personaId);
+extern const char* datPersonaGetRow(u16 personaId);
 extern void FUN_003b2cb0(f32 scale, s32 x, s32 y, s32 color, u32 font,
                          u32 alignment, const char* text, u32 maxWidth,
                          u32 shadow);
@@ -11967,7 +11967,7 @@ void FUN_00133E10(CampMainDrawItem* item,
         if (mode < 0x0e) {
             personaIndex = mode - 1;
             persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
-            personaName = FUN_00173220(persona->id);
+            personaName = datPersonaGetRow(persona->id);
             sprintf(text, gp0xffff897c, personaName);
             textColor = (0xffU - item->alpha) | 0xffffff00U;
             FUN_003b2cb0(100.0f, (s32)item->x, (s32)item->y,
@@ -18322,7 +18322,7 @@ void FUN_00145520_y3(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                            104.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
         }
-        resourceText = FUN_00173220(persona->id);
+        resourceText = datPersonaGetRow(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
         campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
                      (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
