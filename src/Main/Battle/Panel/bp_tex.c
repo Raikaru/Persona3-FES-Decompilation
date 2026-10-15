@@ -3024,7 +3024,7 @@ alpha_done:
         goto sel_join;
     sel_kind1:
         handle = (u32)*(void**)(selRecord + 8);
-        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = frFontNodeWidth((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
@@ -3041,7 +3041,7 @@ alpha_done:
     }
     if (*(u32*)base & 4) {
         handle = (u32)*(void**)(selRecord + 8);
-        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = frFontNodeWidth((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
@@ -3122,7 +3122,7 @@ alpha_done:
         goto loop_next;
     loop_kind1:
         handle = (u32)*(void**)(record + 8);
-        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = frFontNodeWidth((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
