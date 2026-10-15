@@ -3538,11 +3538,11 @@ u32 FUN_0041ae20(int param_1)
 
     func_001a0040(1,1);
 
-    func_001a0150(0xc00,1);
+    SceneDraw_SetResVisible(0xc00,1);
 
-    func_001a0150(0xc01,1);
+    SceneDraw_SetResVisible(0xc01,1);
 
-    func_001a0150(0xc02,1);
+    SceneDraw_SetResVisible(0xc02,1);
 
     printf(DAT_007cb790,DAT_007cb780,0x22);
     printf(DAT_007cb760);
