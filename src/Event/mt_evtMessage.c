@@ -1016,7 +1016,7 @@ void FUN_0039f950(int param_1)
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 4) = *(u32 *)(iVar1 + 0x128);
 
-      uVar2 = FUN_003b83a0(iVar1);
+      uVar2 = MT_Scene_IsResEnabled(iVar1);
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 8) = uVar2;
 
@@ -1035,7 +1035,7 @@ void FUN_0039f950(int param_1)
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 4) = *(u32 *)(iVar1 + 0x128);
 
-      uVar2 = FUN_003b83a0(iVar1);
+      uVar2 = MT_Scene_IsResEnabled(iVar1);
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 8) = uVar2;
 
@@ -1078,7 +1078,7 @@ void FUN_0039fb10(void)
 
     FUN_003189f0(*(u32 *)(puVar1 + 0x94),0,0.0f);
 
-    FUN_003b8310(*puVar1,1);
+    MT_Scene_SetResEnabledById(*puVar1,1);
 
   }
 
@@ -1088,7 +1088,7 @@ void FUN_0039fb10(void)
 
     FUN_003189f0(*(u32 *)(puVar1 + 0x94),0,0.0f);
 
-    FUN_003b8310(*puVar1,1);
+    MT_Scene_SetResEnabledById(*puVar1,1);
 
   }
 
@@ -1598,7 +1598,7 @@ void FUN_003a05b0(int param_1,int param_2)
     output.z = outputZ;
 
     FUN_003b7ac0(&matrix,work1,work2);
-    FUN_003b78b0(*handle,&output,work1);
+    MT_Scene_SetResPlacement(*handle,&output,work1);
     if (param_2 == 6) {
       iVar5 = FUN_003b5d10(*handle);
       FUN_00350040(*(u32 *)(iVar5 + 0x104),&colorIn);
@@ -1653,7 +1653,7 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
         }
         break;
       }
-      FUN_003b78b0(*(u16 *)(param_2 * 2 + param_1 + 0xec),&position,0);
+      MT_Scene_SetResPlacement(*(u16 *)(param_2 * 2 + param_1 + 0xec),&position,0);
       FUN_003b9550(*(u16 *)(param_2 * 2 + param_1 + 0xec),1);
     }
   }
@@ -2467,7 +2467,7 @@ u32 FUN_003a0e90(int param_1)
         for (iVar10 = 0; iVar10 < *(int *)(iVar1 + 0xe4); iVar10 = iVar10 + 1) {
           fVar8 = *(float *)puVar6;
           if (puVar6[2] == 0) {
-            FUN_003b82c0(puVar6[3],0);
+            MT_Scene_SetResEnabled(puVar6[3],0);
           }
 
           FUN_003189f0_f32_evtmsg(fVar8,*(u32 *)(*(int *)(iVar1 + 0xe8) + iVar10 * 0x10 + 4),0.0f);
