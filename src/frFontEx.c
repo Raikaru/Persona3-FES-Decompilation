@@ -165,11 +165,11 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   FUN_003b1360(iVar2,1,0);
 
-  cVar1 = FUN_003b0ec0(iVar2);
+  cVar1 = frFontFadeNodes(iVar2);
 
   if (cVar1 == '\0') {
 
-    FUN_003b0030(iVar2);
+    frFontListRelease(iVar2);
 
   }
 
@@ -315,11 +315,11 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   FUN_003b1360(iVar2,1,0);
 
-  cVar1 = FUN_003b0ec0(iVar2);
+  cVar1 = frFontFadeNodes(iVar2);
 
   if (cVar1 == '\0') {
 
-    FUN_003b0030(iVar2);
+    frFontListRelease(iVar2);
 
   }
 
@@ -448,11 +448,11 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   FUN_003b1360(iVar2,1,0);
 
-  cVar1 = FUN_003b0ec0(iVar2);
+  cVar1 = frFontFadeNodes(iVar2);
 
   if (cVar1 == '\0') {
 
-    FUN_003b0030(iVar2);
+    frFontListRelease(iVar2);
 
   }
 
