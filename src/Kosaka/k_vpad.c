@@ -262,7 +262,7 @@ extern u32 func_001a3f20(void* task, const char* name);
 extern s32 func_00316f70(void* object);
 extern void* func_00316e00(u16 majorId, u16 minorId, s32 mode);
 extern u16 func_003b6270(u16 resourceId, u8 type, void* model);
-extern void func_001a0dc0(u16 resourceId, s32 enabled);
+extern void SceneDraw_SetResVisibleChecked(u16 resourceId, s32 enabled);
 extern void func_001ad8c0(f32 value, void* controller);
 extern void func_001ad870(void* controller, u32 flags);
 extern void func_001ad890(void* controller, u32 flags);
@@ -393,8 +393,8 @@ extern u16* func_001b8d60(u32 index);
 extern void* func_001b8db0(void* record);
 extern void func_003b78b0(u16 resourceId, void* position, void* angles);
 extern u16 func_003b5e90(u16 resourceId);
-extern f32 func_001a5bc0(void* matrix);
-extern f32 func_001a5b30(void* matrix);
+extern f32 KDraw_MatrixRollDeg(void* matrix);
+extern f32 KDraw_MatrixPitchDeg(void* matrix);
 extern s32 H_Fade_IsFadeOutDone(void);
 extern void H_Fade_FadeOut(void);
 extern void H_Fade_FadeIn(void);
@@ -421,7 +421,7 @@ extern void func_001e2930(s32 value);
 extern void func_001e2b10(s32 value);
 extern s32 func_001e2bd0();
 extern void func_001e9a90(void* work);
-extern s32 func_001ed9e0(void* work);
+extern s32 Vpad_HasEntries(void* work);
 extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
@@ -575,7 +575,7 @@ extern u8 gPads_abs[];
 extern void func_001d5e30(KwlnTask* cameraTask, f32 amount);
 extern KwlnTask* func_001d6270(KwlnTask* parent, s32 mode, s32 duration);
 extern KwlnTask* func_001d6630(KwlnTask* parent, s32 mode, s32 heading);
-extern f32 func_001a5aa0(void* cameraData);
+extern f32 KDraw_MatrixYawDeg(void* cameraData);
 extern void* func_004cb2f0(void* camera);
 extern f32 func_004c2fb0(const RwMatrix* matrix1, const RwMatrix* matrix2);
 extern f32 func_0052ea18(f32 x, f32 y);
@@ -638,7 +638,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     {
         work->cameraTask = NULL;
         work->cameraHeading =
-            func_001a5aa0(func_004cb2f0(kwlnGetMainCamera()->object.object.parent));
+            KDraw_MatrixYawDeg(func_004cb2f0(kwlnGetMainCamera()->object.object.parent));
     }
 
     switch (work->state)
@@ -2150,9 +2150,9 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
             u16 resourceId;
 
             resourceId = func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
-            asyncAngles[0] = func_001a5b30(record + 0x10);
-            asyncAngles[1] = func_001a5aa0(record + 0x10);
-            asyncAngles[2] = func_001a5bc0(record + 0x10);
+            asyncAngles[0] = KDraw_MatrixPitchDeg(record + 0x10);
+            asyncAngles[1] = KDraw_MatrixYawDeg(record + 0x10);
+            asyncAngles[2] = KDraw_MatrixRollDeg(record + 0x10);
             func_003b78b0(resourceId, record + 0x40, asyncAngles);
             recordIndex++;
             record += 0x60;
@@ -2319,9 +2319,9 @@ u32 func_001e2e50(FieldArchiveRequest* request, void** outFileMemory,
             u16 resourceId;
 
             resourceId = func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
-            cachedAngles[0] = func_001a5b30(record + 0x10);
-            cachedAngles[1] = func_001a5aa0(record + 0x10);
-            cachedAngles[2] = func_001a5bc0(record + 0x10);
+            cachedAngles[0] = KDraw_MatrixPitchDeg(record + 0x10);
+            cachedAngles[1] = KDraw_MatrixYawDeg(record + 0x10);
+            cachedAngles[2] = KDraw_MatrixRollDeg(record + 0x10);
             func_003b78b0(resourceId, record + 0x40, cachedAngles);
             recordIndex++;
             record += 0x60;
@@ -2397,12 +2397,12 @@ s32 func_001e3940(void* resource, u8* fileData)
     extern s32 func_00316f70(void* value);
     extern s32 func_001b7e30(void);
     extern u16 func_003b6270(u16 resourceId, u8 type, void* model);
-    extern void func_001a0dc0(u16 resourceId, s32 enabled);
+    extern void SceneDraw_SetResVisibleChecked(u16 resourceId, s32 enabled);
     extern RuntimeFieldObject* func_003b5d10(u16 resourceId);
     extern RuntimeMatrix* func_00318b60(void* model);
-    extern f32 func_001a5b30(const RuntimeMatrix* matrix);
-    extern f32 func_001a5aa0(const RuntimeMatrix* matrix);
-    extern f32 func_001a5bc0(const RuntimeMatrix* matrix);
+    extern f32 KDraw_MatrixPitchDeg(const RuntimeMatrix* matrix);
+    extern f32 KDraw_MatrixYawDeg(const RuntimeMatrix* matrix);
+    extern f32 KDraw_MatrixRollDeg(const RuntimeMatrix* matrix);
     extern void func_003b78b0(u16 resourceId, const RuntimeVec3* position,
                               const RuntimeVec3* angles);
     extern void func_001ad8c0(f32 value, void* controller);
@@ -2499,14 +2499,14 @@ s32 func_001e3940(void* resource, u8* fileData)
         objectId = func_003b6270(
             record->resourceId & 0x3ff, objectType & 0xff,
             (*(void***)(func_001b9120() + 0x10c4))[index]);
-        func_001a0dc0(objectId, 1);
+        SceneDraw_SetResVisibleChecked(objectId, 1);
         object = func_003b5d10(objectId);
         matrix = func_00318b60(
             (*(void***)(func_001b9120() + 0x10c4))[index]);
         *matrix = record->matrix;
-        angles.x = func_001a5b30(&record->matrix);
-        angles.y = func_001a5aa0(&record->matrix);
-        angles.z = func_001a5bc0(&record->matrix);
+        angles.x = KDraw_MatrixPitchDeg(&record->matrix);
+        angles.y = KDraw_MatrixYawDeg(&record->matrix);
+        angles.z = KDraw_MatrixRollDeg(&record->matrix);
         func_003b78b0(objectId, (RuntimeVec3*)((u8*)record + 0x50),
                       &angles);
         func_004c2f10(func_00318b60(
@@ -2806,7 +2806,7 @@ void func_001e3f10(RuntimeTask* task)
             }
             work->resourceId = func_003b6270(
                 resourceId, work->sourceType, work->model);
-            func_001a0dc0(work->resourceId, 1);
+            SceneDraw_SetResVisibleChecked(work->resourceId, 1);
             object = func_003b5d10(work->resourceId);
             work->controller = *(void**)((u8*)object + 0x1e8);
             func_001ad8c0(work->angle, work->controller);
@@ -2855,7 +2855,7 @@ void func_001e3f10(RuntimeTask* task)
             base.y = 0.0f;
             camera = func_00198590();
             frame = *(void**)((u8*)camera + 4);
-            angle = func_001a5aa0(func_004cb2f0(frame));
+            angle = KDraw_MatrixYawDeg(func_004cb2f0(frame));
             if (base.z < -48.0f || base.z > 48.0f ||
                 base.x < -48.0f || base.x > 48.0f)
             {
@@ -2945,9 +2945,9 @@ void func_001e3f10(RuntimeTask* task)
                 resourceNode->matrix = *matrix;
                 func_0019c320(
                     work->scale, *(void**)((u8*)object + 0x1f0));
-                angles.x = func_001a5b30(&resourceNode->matrix);
-                angles.y = func_001a5aa0(&resourceNode->matrix);
-                angles.z = func_001a5bc0(&resourceNode->matrix);
+                angles.x = KDraw_MatrixPitchDeg(&resourceNode->matrix);
+                angles.y = KDraw_MatrixYawDeg(&resourceNode->matrix);
+                angles.z = KDraw_MatrixRollDeg(&resourceNode->matrix);
                 func_003b78b0(
                     resourceNode->resourceId,
                     (u8*)resourceNode + 0x50, &angles);
@@ -3194,9 +3194,9 @@ s32 func_001e4bc0(RuntimeTask* task)
                 node->scale = work->scale;
                 func_0019c320(
                     work->scale, *(void**)((u8*)object + 0x1f0));
-                angles.x = func_001a5b30(&node->matrix);
-                angles.y = func_001a5aa0(&node->matrix);
-                angles.z = func_001a5bc0(&node->matrix);
+                angles.x = KDraw_MatrixPitchDeg(&node->matrix);
+                angles.y = KDraw_MatrixYawDeg(&node->matrix);
+                angles.z = KDraw_MatrixRollDeg(&node->matrix);
                 func_003b78b0(
                     work->resourceId, (u8*)node + 0x50, &angles);
                 func_00195020(work->windowTask);
@@ -3238,7 +3238,7 @@ s32 func_001e4bc0(RuntimeTask* task)
             {
                 base.x = 128.0f;
             }
-            angle = func_001a5aa0(
+            angle = KDraw_MatrixYawDeg(
                 func_004cb2f0(*(void**)((u8*)func_00198590() + 4)));
             if (base.z < -48.0f || base.z > 48.0f ||
                 base.x < -48.0f || base.x > 48.0f)
@@ -3455,7 +3455,7 @@ s32 func_001e58d0(RuntimeTask* task)
             secondAxis.x = y;
             camera = func_00198590();
             frame = *(void**)((u8*)camera + 4);
-            angle = func_001a5aa0(func_004cb2f0(frame));
+            angle = KDraw_MatrixYawDeg(func_004cb2f0(frame));
             if (x < -48.0f || x > 48.0f || y < -48.0f || y > 48.0f)
             {
                 matrixFlags = *(u32*)&rotation.values[3];
@@ -3520,9 +3520,9 @@ s32 func_001e58d0(RuntimeTask* task)
                 positionMatrix = (RuntimeMatrix*)K_Draw_GetPositionMatrix(
                     work->positionTask);
                 taskNode->matrix = *positionMatrix;
-                angles.value.x = func_001a5b30(&taskNode->matrix);
-                angles.value.y = func_001a5aa0(&taskNode->matrix);
-                angles.value.z = func_001a5bc0(&taskNode->matrix);
+                angles.value.x = KDraw_MatrixPitchDeg(&taskNode->matrix);
+                angles.value.y = KDraw_MatrixYawDeg(&taskNode->matrix);
+                angles.value.z = KDraw_MatrixRollDeg(&taskNode->matrix);
                 func_003b78b0(taskNode->resourceId, (u8*)taskNode + 0x40,
                              &angles.value);
                 work->state = 0;
@@ -3727,7 +3727,7 @@ s32 func_001e60b0(RuntimeTask* task)
             axis = D_006843B0;
             camera = func_00198590();
             frame = *(void**)((u8*)camera + 4);
-            angle = func_001a5aa0(func_004cb2f0(frame));
+            angle = KDraw_MatrixYawDeg(func_004cb2f0(frame));
             x = (f32)*(u8*)(&DAT_007e095e[1]);
             x += x;
             x -= 128.0f;
@@ -3827,9 +3827,9 @@ s32 func_001e60b0(RuntimeTask* task)
                 taskNode = func_001e29e0(work->resourceId);
                 positionMatrix = func_001a4e50(work->positionTask);
                 taskNode->matrix = *(RuntimeMatrix*)positionMatrix;
-                angles.value.x = func_001a5b30(&taskNode->matrix);
-                angles.value.y = func_001a5aa0(&taskNode->matrix);
-                angles.value.z = func_001a5bc0(&taskNode->matrix);
+                angles.value.x = KDraw_MatrixPitchDeg(&taskNode->matrix);
+                angles.value.y = KDraw_MatrixYawDeg(&taskNode->matrix);
+                angles.value.z = KDraw_MatrixRollDeg(&taskNode->matrix);
                 func_003b78b0(taskNode->resourceId,
                              (u8*)taskNode + 0x40, &angles.value);
                 func_001a3bf0(work->windowTask, 1);
@@ -3888,7 +3888,7 @@ void* func_001e6a70(void* parent)
 }
 
 // FUN_001E6AF0. Build, rotate, and translate a four-vertex field quad.
-void func_001e6af0(RuntimeVec3* vertices, const RuntimeVec3* translation,
+void Vpad_BuildRotatedQuad(RuntimeVec3* vertices, const RuntimeVec3* translation,
                    f32 width, f32 depth, f32 angle)
 {
     RuntimeMatrix* matrix;
@@ -4606,7 +4606,7 @@ void func_001e7de0(RuntimePathWork* work)
 }
 
 // FUN_001E7E30. Measure both path-edge distances for one section.
-f32 func_001e7e30(const RuntimeDistanceWork* work, s32 index)
+f32 Vpad_GetSegmentLength(const RuntimeDistanceWork* work, s32 index)
 {
     s32 firstIndex;
     s32 nextIndex;
@@ -4675,7 +4675,7 @@ void func_001e7f90(const RuntimeDistanceWork* data, f32 distance, u32* section,
     total = 0.0f;
     for (totalIndex = 0; totalIndex < data->count - 1; totalIndex++)
     {
-        total += func_001e7e30(data, totalIndex);
+        total += Vpad_GetSegmentLength(data, totalIndex);
     }
 
     if (total <= 0.0f)
@@ -7121,7 +7121,7 @@ void func_001ed8a0(void* work, void* renderData)
 }
 
 // FUN_001ED9E0. Check whether the field resource contains any entries.
-s32 func_001ed9e0(void* workData)
+s32 Vpad_HasEntries(void* workData)
 {
     RuntimeWork* work;
 
@@ -7148,7 +7148,7 @@ void* func_001eda00(void* work, u32 value)
 }
 
 // FUN_001EDA90. Update linked render matrices and cache their translations.
-void func_001eda90(RuntimeWork* work)
+void Vpad_RefreshSelection(RuntimeWork* work)
 {
     s32 i;
     RuntimeMatrix* firstMatrix;
@@ -7304,7 +7304,7 @@ void func_001edbe0(RuntimeRenderCollection* work)
 }
 
 // FUN_001EDED0. Mark an active field runtime node for processing.
-void func_001eded0(RuntimeWork* work)
+void Vpad_MarkDirty(RuntimeWork* work)
 {
     if (func_001ef000((RuntimeListNode*)work) != 0)
     {
@@ -7409,7 +7409,7 @@ void func_001edf10(void* workData)
 }
 
 // FUN_001EE1D0. Activate a field runtime node and its owner.
-void func_001ee1d0(RuntimeWork* work)
+void Vpad_Activate(RuntimeWork* work)
 {
     if (func_001ef000((RuntimeListNode*)work) != 0)
     {
@@ -7424,7 +7424,7 @@ void func_001ee220(void)
 }
 
 // FUN_001EE230. Update the render color and mark it dirty.
-void func_001ee230(RuntimeWork* work, const u8* color)
+void Vpad_SetColor(RuntimeWork* work, const u8* color)
 {
     typedef struct RuntimeColor
     {
