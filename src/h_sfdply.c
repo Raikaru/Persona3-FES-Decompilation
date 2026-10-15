@@ -599,10 +599,10 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             func_0057e378(stream, 0);
             work->decoder = stream;
             if (work->streamAux != NULL)
-                func_001023f0(stream,
+                H_Cdvd_StartPlayback(stream,
                               *(const char**)HSFD_TABLE(D_005D4B74, work->id), 1);
             else
-                func_001023f0(stream,
+                H_Cdvd_StartPlayback(stream,
                               *(const char**)HSFD_TABLE(D_005D4B74, work->id), 0);
             datSetFlag(0x141A, 1);
             movieType = *(s16*)HSFD_TABLE(D_005D4B70, work->id);
