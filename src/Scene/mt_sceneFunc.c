@@ -536,7 +536,7 @@ typedef struct SceneVecBits {
 extern SceneVecBits DAT_006a2f48_abs[];
 #pragma alias DAT_006a2f50_abs DAT_006a2f50
 extern float DAT_006a2f50_abs[];
-void FUN_003bcc80(void);
+void MT_Scene_StopShake(void);
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
 void FUN_003bc940(void);
@@ -584,14 +584,14 @@ KwlnTask* MT_SceneFunc_CreateTasks();
 u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param_5);
 #pragma alias FUN_003b88c0_scene FUN_003b88c0
 extern u32 FUN_003b88c0_scene(Resrc *param_1,u32 param_2,float param_3,u32 param_4);
-u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
+u32 MT_Scene_BeginResPathAnimById(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
 u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
 extern u64 FUN_003b8ce0_scene(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
-u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
+u64 MT_Scene_SetResColorParamById(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3);
 u32 FUN_003b8f30(void);
 u32  FUN_003b8ff0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
@@ -605,14 +605,14 @@ u32  FUN_003b9260(u32 *param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5
 #pragma alias FUN_003b9260_typed FUN_003b9260
 extern u32 FUN_003b9260_typed(u32 *param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,float param_7);
 u32  FUN_003b9320(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,float param_7);
-void FUN_003b93c0(u32 param_1,short param_2,short param_3,short param_4,
+void MT_Scene_SetResMotionSlot(u32 param_1,short param_2,short param_3,short param_4,
 
                  short param_5);
 #pragma alias FUN_003b8ff0_scene FUN_003b8ff0
 extern u32 FUN_003b8ff0_scene(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
 #pragma alias FUN_00530da0_scene FUN_00530da0
 extern u32 FUN_00530da0_scene(float param_1);
-#pragma alias FUN_003bc0e0_scene FUN_003bc0e0
+#pragma alias FUN_003bc0e0_scene MT_Scene_GetCurveLength
 extern float FUN_003bc0e0_scene(char *param_1);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
@@ -629,7 +629,7 @@ extern u8 DAT_0095b000_abs[];
 extern void FUN_0019d3f0(const char *param_1,u32 param_2);
 #pragma alias FUN_003b9260_scene FUN_003b9260
 extern u32 FUN_003b9260_scene(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
-u32 FUN_003b9500(Resrc* param_1,int param_2);
+u32 MT_Scene_SetResActive(Resrc* param_1,int param_2);
 u32 FUN_003b9550(u64 param_1,int param_2);
 u32 FUN_003b95a0(void);
 void FUN_003b9610(Resrc* param_1);
@@ -647,32 +647,32 @@ extern void FUN_004c31b0_sceneFunc(RwMatrix *matrix, const RwV3d *axis,
                                    f32 angle, s32 mode);
 #pragma alias FUN_001a4580_sceneF FUN_001a4580
 extern void FUN_001a4580_sceneF(int handle, float value);
-#pragma alias FUN_003bc900_sceneI FUN_003bc900
+#pragma alias FUN_003bc900_sceneI MT_Scene_GetShakeOffset
 extern int FUN_003bc900_sceneI(float *out);
 void FUN_003bb390(u32 param_2,u16 param_3,float param_1);
 void FUN_003bb400(u32 param_1);
-void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
-#pragma alias FUN_003bb450_scene_typed FUN_003bb450
+void MT_Scene_OffsetPointByRotation(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
+#pragma alias FUN_003bb450_scene_typed MT_Scene_OffsetPointByRotation
 extern void FUN_003bb450_scene_typed(float *param_1,float param_2,float param_3,float param_4,float param_5,float *param_6);
 void FUN_003bb620(u32 *outVec,int param_3,float param_1);
 void FUN_003bb7a0(Resrc* param_1);
-void FUN_003bb9b0(float *param_1);
-#pragma alias FUN_003bb9b0_scene_typed FUN_003bb9b0
+void MT_Scene_WrapAngles(float *param_1);
+#pragma alias FUN_003bb9b0_scene_typed MT_Scene_WrapAngles
 extern void FUN_003bb9b0_scene_typed(float *param_1);
-void FUN_003bba70(int param_1);
-void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
-#pragma alias FUN_003bbaa0_scene_typed FUN_003bbaa0
+void MT_Scene_WrapObjectAngles(int param_1);
+void MT_Scene_GetAngleDelta(float *param_1,float *param_2,float *param_3);
+#pragma alias FUN_003bbaa0_scene_typed MT_Scene_GetAngleDelta
 extern void FUN_003bbaa0_scene_typed(float *param_1, float *param_2, float *param_3);
 #pragma alias FUN_003baa70_scene_typed FUN_003baa70
 extern u32 FUN_003baa70_scene_typed(char *param_1);
 /* W418 negative: routing raw FUN_004c69f0/FUN_004c6ac0 calls through typed float aliases in FUN_003b9610/FUN_003bc220 produced no metric changes; reverted. */
-void FUN_003bbb90(const float *param_1,float *param_2);
-void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
-void FUN_003bbd40(float param_1,char *param_2,float *param_3);
+void MT_Scene_GetDirectionYaw(const float *param_1,float *param_2);
+void MT_Scene_EvalCubicBezier(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
+void MT_Scene_SampleCurve(float param_1,char *param_2,float *param_3);
 float FUN_003bbed0(u32 param_3,float param_1,float param_2);
-float FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
+float MT_Scene_GetCurveSegmentLength(float param_1,float param_2,float *param_3,float *param_4,
                   float *param_5,float *param_6,float *param_7);
-float FUN_003bc0e0(char *param_1);
+float MT_Scene_GetCurveLength(char *param_1);
 float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 *param_5);
 /* Retail call: FUN_003b8ff0 + 0x160. */
 #pragma alias FUN_00318770_scene_typed FUN_00318770
@@ -686,29 +686,29 @@ extern u32 FUN_003182d0_scene_typed(u32 param_1, u16 param_2, s16 param_3,
 #pragma alias FUN_003189f0_scene_typed FUN_003189f0
 extern void FUN_003189f0_scene_typed(u32 param_1, u16 param_2, float param_3);
 /* Retail calls: FUN_003bc220 + 0x1e8, + 0x494. */
-#pragma alias FUN_003bbb90_scene_typed FUN_003bbb90
+#pragma alias FUN_003bbb90_scene_typed MT_Scene_GetDirectionYaw
 extern void FUN_003bbb90_scene_typed(const float *param_1, u32 *param_2);
 /* Retail calls: FUN_003bbd40 + 0x0ac, + 0x178; FUN_003bc220 + 0x110, + 0x138, + 0x2a0, + 0x2d8, + 0x3e0, + 0x408; FUN_003bc730 + 0x0e0, + 0x118. */
-#pragma alias FUN_003bbc90_scene_typed FUN_003bbc90
+#pragma alias FUN_003bbc90_scene_typed MT_Scene_EvalCubicBezier
 extern void FUN_003bbc90_scene_typed(float param_1,...);
 /* Retail call: FUN_003bbed0 + 0x0d4. */
-#pragma alias FUN_003bbd40_scene_typed FUN_003bbd40
+#pragma alias FUN_003bbd40_scene_typed MT_Scene_SampleCurve
 extern void FUN_003bbd40_scene_typed(char *param_1,float param_2,float *param_3);
 /* Retail calls: FUN_003b9610 + 0x52c, + 0x978. */
 #pragma alias FUN_003bbed0_scene_typed FUN_003bbed0
 extern float FUN_003bbed0_scene_typed(float param_1,float param_2,...);
 /* Retail call: FUN_003bc0e0 + 0x0d8. */
-#pragma alias FUN_003bbfd0_scene_typed FUN_003bbfd0
+#pragma alias FUN_003bbfd0_scene_typed MT_Scene_GetCurveSegmentLength
 extern float FUN_003bbfd0_scene_typed(float param_1,float param_2,...);
 /* Retail call: FUN_003b9610 + 0x604. */
 #pragma alias FUN_003bc220_scene_typed FUN_003bc220
 extern float FUN_003bc220_scene_typed(char *param_1,float param_2,float param_3,...);
 float FUN_003bc730(char *param_1,int param_2);
 int FUN_003bc8f0(char *param_1);
-u8 FUN_003bc900(float *param_1);
+u8 MT_Scene_GetShakeOffset(float *param_1);
 void FUN_003bc940(void);
-void FUN_003bcbf0(int param_1,int param_2);
-void FUN_003bcc80(void);
+void MT_Scene_StartShake(int param_1,int param_2);
+void MT_Scene_StopShake(void);
 int FUN_003bcda0(int *param_1,int *param_2);
 void FUN_003bceb0(int param_1);
 void FUN_003bd130(void);
@@ -730,20 +730,20 @@ u16 FUN_003bdbb0(void);
 
 /* Region call-cast macros */
 #define FUN_003b88c0(...) ((u32 (*)(...))FUN_003b88c0)(__VA_ARGS__)
-#define FUN_003b89f0(...) ((u32 (*)(...))FUN_003b89f0)(__VA_ARGS__)
+#define MT_Scene_BeginResPathAnimById(...) ((u32 (*)(...))MT_Scene_BeginResPathAnimById)(__VA_ARGS__)
 #define FUN_003b8a60(...) ((u8 (*)(...))FUN_003b8a60)(__VA_ARGS__)
 #define FUN_003b8b30(...) ((u32 (*)(...))FUN_003b8b30)(__VA_ARGS__)
 #define FUN_003b8c30(...) ((u32 (*)(...))FUN_003b8c30)(__VA_ARGS__)
 #define FUN_003b8ce0(...) ((u32 (*)(...))FUN_003b8ce0)(__VA_ARGS__)
-#define FUN_003b8e10(...) ((u64 (*)(...))FUN_003b8e10)(__VA_ARGS__)
+#define MT_Scene_SetResColorParamById(...) ((u64 (*)(...))MT_Scene_SetResColorParamById)(__VA_ARGS__)
 #define FUN_003b8e80(...) ((u32 (*)(...))FUN_003b8e80)(__VA_ARGS__)
 #define FUN_003b8f30(...) ((u32 (*)(...))FUN_003b8f30)(__VA_ARGS__)
 #define FUN_003b8ff0(...) ((u32 (*)(...))FUN_003b8ff0)(__VA_ARGS__)
 #define FUN_003b91c0(...) ((u64 (*)(...))FUN_003b91c0)(__VA_ARGS__)
 #define FUN_003b9260(...) ((u32 (*)(...))FUN_003b9260)(__VA_ARGS__)
 #define FUN_003b9320(...) ((u64 (*)(...))FUN_003b9320)(__VA_ARGS__)
-#define FUN_003b93c0(...) ((void (*)(...))FUN_003b93c0)(__VA_ARGS__)
-#define FUN_003b9500(...) ((u32 (*)(...))FUN_003b9500)(__VA_ARGS__)
+#define MT_Scene_SetResMotionSlot(...) ((void (*)(...))MT_Scene_SetResMotionSlot)(__VA_ARGS__)
+#define MT_Scene_SetResActive(...) ((u32 (*)(...))MT_Scene_SetResActive)(__VA_ARGS__)
 #define FUN_003b9550(...) ((u64 (*)(...))FUN_003b9550)(__VA_ARGS__)
 #define FUN_003b95a0(...) ((u32 (*)(...))FUN_003b95a0)(__VA_ARGS__)
 #define FUN_003b9610(...) ((void (*)(...))FUN_003b9610)(__VA_ARGS__)
@@ -758,25 +758,25 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bb340(...) ((void (*)(...))FUN_003bb340)(__VA_ARGS__)
 #define FUN_003bb390(...) ((void (*)(...))FUN_003bb390)(__VA_ARGS__)
 #define FUN_003bb400(...) ((void (*)(...))FUN_003bb400)(__VA_ARGS__)
-#define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
+#define MT_Scene_OffsetPointByRotation(...) ((void (*)(...))MT_Scene_OffsetPointByRotation)(__VA_ARGS__)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
-#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
-#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
-#define FUN_003bbaa0(...) ((void (*)(...))FUN_003bbaa0)(__VA_ARGS__)
-#define FUN_003bbb90(...) ((void (*)(...))FUN_003bbb90)(__VA_ARGS__)
-#define FUN_003bbc90(...) ((void (*)(...))FUN_003bbc90)(__VA_ARGS__)
-#define FUN_003bbd40(...) ((void (*)(...))FUN_003bbd40)(__VA_ARGS__)
+#define MT_Scene_WrapAngles(...) ((void (*)(...))MT_Scene_WrapAngles)(__VA_ARGS__)
+#define MT_Scene_WrapObjectAngles(...) ((void (*)(...))MT_Scene_WrapObjectAngles)(__VA_ARGS__)
+#define MT_Scene_GetAngleDelta(...) ((void (*)(...))MT_Scene_GetAngleDelta)(__VA_ARGS__)
+#define MT_Scene_GetDirectionYaw(...) ((void (*)(...))MT_Scene_GetDirectionYaw)(__VA_ARGS__)
+#define MT_Scene_EvalCubicBezier(...) ((void (*)(...))MT_Scene_EvalCubicBezier)(__VA_ARGS__)
+#define MT_Scene_SampleCurve(...) ((void (*)(...))MT_Scene_SampleCurve)(__VA_ARGS__)
 #define FUN_003bbed0(...) ((float (*)(...))FUN_003bbed0)(__VA_ARGS__)
-#define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)
-#define FUN_003bc0e0(...) ((float (*)(...))FUN_003bc0e0)(__VA_ARGS__)
+#define MT_Scene_GetCurveSegmentLength(...) ((void (*)(...))MT_Scene_GetCurveSegmentLength)(__VA_ARGS__)
+#define MT_Scene_GetCurveLength(...) ((float (*)(...))MT_Scene_GetCurveLength)(__VA_ARGS__)
 #define FUN_003bc220(...) ((float (*)(...))FUN_003bc220)(__VA_ARGS__)
 #define FUN_003bc730(...) ((float (*)(...))FUN_003bc730)(__VA_ARGS__)
 #define FUN_003bc8f0(...) ((int (*)(...))FUN_003bc8f0)(__VA_ARGS__)
-#define FUN_003bc900(...) ((u8 (*)(...))FUN_003bc900)(__VA_ARGS__)
+#define MT_Scene_GetShakeOffset(...) ((u8 (*)(...))MT_Scene_GetShakeOffset)(__VA_ARGS__)
 #define FUN_003bc940(...) ((void (*)(...))FUN_003bc940)(__VA_ARGS__)
-#define FUN_003bcbf0(...) ((void (*)(...))FUN_003bcbf0)(__VA_ARGS__)
-#define FUN_003bcc80(...) ((void (*)(...))FUN_003bcc80)(__VA_ARGS__)
+#define MT_Scene_StartShake(...) ((void (*)(...))MT_Scene_StartShake)(__VA_ARGS__)
+#define MT_Scene_StopShake(...) ((void (*)(...))MT_Scene_StopShake)(__VA_ARGS__)
 #define FUN_003bcda0(...) ((int (*)(...))FUN_003bcda0)(__VA_ARGS__)
 #define FUN_003bceb0(...) ((void (*)(...))FUN_003bceb0)(__VA_ARGS__)
 #define FUN_003bd130(...) ((void (*)(...))FUN_003bd130)(__VA_ARGS__)
@@ -850,10 +850,10 @@ u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param
   return 1;
 }
 #define FUN_003b88c0(...) ((u32 (*)(...))FUN_003b88c0)(__VA_ARGS__)
-#undef FUN_003b89f0
+#undef MT_Scene_BeginResPathAnimById
 // FUN_003B89F0
 
-u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4)
+u32 MT_Scene_BeginResPathAnimById(u32 param_1,u32 param_2,float param_3,u32 param_4)
 
 
 
@@ -881,10 +881,10 @@ u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4)
   return uVar2;
 
 }
-#define FUN_003b89f0(...) ((u32 (*)(...))FUN_003b89f0)(__VA_ARGS__)
+#define MT_Scene_BeginResPathAnimById(...) ((u32 (*)(...))MT_Scene_BeginResPathAnimById)(__VA_ARGS__)
 #undef FUN_003b8a60
-#undef FUN_003bba70
-#undef FUN_003bb9b0
+#undef MT_Scene_WrapObjectAngles
+#undef MT_Scene_WrapAngles
 
 // FUN_003B8A60
 
@@ -905,8 +905,8 @@ u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
     return 0;
   }
 
-  FUN_003bba70((int)param_1);
-  FUN_003bb9b0((float *)&values);
+  MT_Scene_WrapObjectAngles((int)param_1);
+  MT_Scene_WrapAngles((float *)&values);
   param_1->flags28 |= 4;
   *(struct V3 *)&param_1->value64 =
       *(struct V3 *)&param_1->value10;
@@ -919,12 +919,12 @@ u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
   return 1;
 }
 
-#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
-#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
+#define MT_Scene_WrapObjectAngles(...) ((void (*)(...))MT_Scene_WrapObjectAngles)(__VA_ARGS__)
+#define MT_Scene_WrapAngles(...) ((void (*)(...))MT_Scene_WrapAngles)(__VA_ARGS__)
 #define FUN_003b8a60(...) ((u8 (*)(...))FUN_003b8a60)(__VA_ARGS__)
 #undef FUN_003b8b30
-#undef FUN_003bba70
-#undef FUN_003bb9b0
+#undef MT_Scene_WrapObjectAngles
+#undef MT_Scene_WrapAngles
 // FUN_003B8B30
 
 
@@ -970,9 +970,9 @@ FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4)
 
     else {
 
-      FUN_003bba70(iVar3);
+      MT_Scene_WrapObjectAngles(iVar3);
 
-      FUN_003bb9b0((float *)&values);
+      MT_Scene_WrapAngles((float *)&values);
 
 
       *(u32 *)(iVar3 + 0x28) = *(u32 *)(iVar3 + 0x28) | 4;
@@ -997,8 +997,8 @@ FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4)
 
 }
 #define FUN_003b8b30(...) ((u32 (*)(...))FUN_003b8b30)(__VA_ARGS__)
-#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
-#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
+#define MT_Scene_WrapObjectAngles(...) ((void (*)(...))MT_Scene_WrapObjectAngles)(__VA_ARGS__)
+#define MT_Scene_WrapAngles(...) ((void (*)(...))MT_Scene_WrapAngles)(__VA_ARGS__)
 #undef FUN_003b8c30
 // FUN_003B8C30
 
@@ -1159,10 +1159,10 @@ end:
     return uVar1;
 }
 #define FUN_003b8ce0(...) ((u32 (*)(...))FUN_003b8ce0)(__VA_ARGS__)
-#undef FUN_003b8e10
+#undef MT_Scene_SetResColorParamById
 // FUN_003B8E10
 
-u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
+u64 MT_Scene_SetResColorParamById(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 
 
@@ -1190,7 +1190,7 @@ u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
   return uVar2;
 
 }
-#define FUN_003b8e10(...) ((u64 (*)(...))FUN_003b8e10)(__VA_ARGS__)
+#define MT_Scene_SetResColorParamById(...) ((u64 (*)(...))MT_Scene_SetResColorParamById)(__VA_ARGS__)
 #undef FUN_003b8e80
 // FUN_003B8E80
 
@@ -1514,11 +1514,11 @@ end:
 
 #pragma pop
 #define FUN_003b9320(...) ((u64 (*)(...))FUN_003b9320)(__VA_ARGS__)
-#undef FUN_003b93c0
+#undef MT_Scene_SetResMotionSlot
 // FUN_003B93C0
 
 
-void FUN_003b93c0(u32 param_1,short param_2,short param_3,short param_4,
+void MT_Scene_SetResMotionSlot(u32 param_1,short param_2,short param_3,short param_4,
 
                  short param_5)
 
@@ -1580,12 +1580,12 @@ end:
   return;
 
 }
-#define FUN_003b93c0(...) ((void (*)(...))FUN_003b93c0)(__VA_ARGS__)
-#undef FUN_003b9500
+#define MT_Scene_SetResMotionSlot(...) ((void (*)(...))MT_Scene_SetResMotionSlot)(__VA_ARGS__)
+#undef MT_Scene_SetResActive
 // FUN_003B9500
 
 
-u32 FUN_003b9500(Resrc* param_1,int param_2)
+u32 MT_Scene_SetResActive(Resrc* param_1,int param_2)
 
 
 
@@ -1626,7 +1626,7 @@ u32 FUN_003b9500(Resrc* param_1,int param_2)
   return uVar1;
 
 }
-#define FUN_003b9500(...) ((u32 (*)(...))FUN_003b9500)(__VA_ARGS__)
+#define MT_Scene_SetResActive(...) ((u32 (*)(...))MT_Scene_SetResActive)(__VA_ARGS__)
 #undef FUN_003b9550
 // FUN_003B9550
 
@@ -1641,7 +1641,7 @@ u32 FUN_003b9550(u64 param_1,int param_2)
   lVar1 = (Resrc*)FUN_003b5d10();
 
   if (lVar1 != 0) {
-    return (FUN_003b9500)(lVar1,param_2);
+    return (MT_Scene_SetResActive)(lVar1,param_2);
   }
 
   return 0;
@@ -3204,7 +3204,7 @@ void FUN_003bb400(u32 param_1)
 
 }
 #define FUN_003bb400(...) ((void (*)(...))FUN_003bb400)(__VA_ARGS__)
-#undef FUN_003bb450
+#undef MT_Scene_OffsetPointByRotation
 /* W386 measurement: retail emits two consecutive sw $v0, 0x68($sp)
  * stores of 1.0f from one lui $v0, 0x3f80; our source emits one.
  * The eleven downstream scanner offset rows are the resulting one-slot
@@ -3242,7 +3242,7 @@ void FUN_003bb400(u32 param_1)
 // FUN_003BB450 NONMATCHING
 
 
-void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
+void MT_Scene_OffsetPointByRotation(float *input, float scale, float angle_y, float angle_x,
                  float angle_z, float *result)
 {
   typedef union SceneVector {
@@ -3303,8 +3303,8 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   output.value.z = source.value.z - transformed.value.z * scale;
   *(RwV3d *)result = output.value;
 }
-#define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
-#undef FUN_003bb450
+#define MT_Scene_OffsetPointByRotation(...) ((void (*)(...))MT_Scene_OffsetPointByRotation)(__VA_ARGS__)
+#undef MT_Scene_OffsetPointByRotation
 #undef FUN_003bb620
 /* W406 aggregate-width probes: the packed-pragma local aggregate measured normalized_diff 132 with object/window 384/384, while explicit no-local member-copy forms measured normalized_diff 13/14. The volatile scalar-source copy below is the best measured form (normalized_diff 4, object/window 376/384); do not alter the shared SceneVecBits typedef. */
 /* W414 direct stack-store negative: removing the `dest` pointer and writing
@@ -3364,7 +3364,7 @@ void FUN_003bb620(u32 *outVec,int param_3,float param_1)
     src1[1] = *(float *)((int)modeEntry + 8);
     src1[2] = *(float *)((int)modeEntry + 0xc);
     param_1 = *(float *)(param_3 + 0x104);
-    FUN_003b79a0(auStack_d0,src1,src2);
+    MT_Scene_BuildResMatrix(auStack_d0,src1,src2);
     srcWords = auStack_d0;
     dstWords = dstbuf;
     cnt = 8;
@@ -3398,7 +3398,7 @@ void FUN_003bb620(u32 *outVec,int param_3,float param_1)
 
   return;
 }
-#define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
+#define MT_Scene_OffsetPointByRotation(...) ((void (*)(...))MT_Scene_OffsetPointByRotation)(__VA_ARGS__)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
 #undef FUN_003bb7a0
 // FUN_003BB7A0
@@ -3524,14 +3524,14 @@ void FUN_003bb7a0(Resrc* param_1)
 
 }
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
-#undef FUN_003bb9b0
+#undef MT_Scene_WrapAngles
 #pragma push
 /* Removing this loses FUN_003bb9b0 (MATCH nd0 -> MISMATCH nd143) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003BB9B0
 
 
-void FUN_003bb9b0(float *param_1)
+void MT_Scene_WrapAngles(float *param_1)
 
 
 
@@ -3562,31 +3562,31 @@ void FUN_003bb9b0(float *param_1)
 
 }
 #pragma pop
-#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
-#undef FUN_003bba70
+#define MT_Scene_WrapAngles(...) ((void (*)(...))MT_Scene_WrapAngles)(__VA_ARGS__)
+#undef MT_Scene_WrapObjectAngles
 // FUN_003BBA70
 
 
-void FUN_003bba70(int param_1)
+void MT_Scene_WrapObjectAngles(int param_1)
 
 
 
 {
 
-  (FUN_003bb9b0)((float *)(param_1 + 0x10));
+  (MT_Scene_WrapAngles)((float *)(param_1 + 0x10));
 
   return;
 
 }
-#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
-#undef FUN_003bbaa0
+#define MT_Scene_WrapObjectAngles(...) ((void (*)(...))MT_Scene_WrapObjectAngles)(__VA_ARGS__)
+#undef MT_Scene_GetAngleDelta
 #pragma push
 /* opt_loop_invariants on: measured off nd 95, object 236/240; on nd 0, object 228/240 (MATCH); retain on. */
 #pragma opt_loop_invariants on
 // FUN_003BBAA0
 
 
-void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
+void MT_Scene_GetAngleDelta(float *param_1,float *param_2,float *param_3)
 {
   int iVar1;
   float delta[4];
@@ -3612,12 +3612,12 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
   param_3[2] = adjusted[2];
 }
 #pragma pop
-#define FUN_003bbaa0(...) ((void (*)(...))FUN_003bbaa0)(__VA_ARGS__)
-#undef FUN_003bbb90
+#define MT_Scene_GetAngleDelta(...) ((void (*)(...))MT_Scene_GetAngleDelta)(__VA_ARGS__)
+#undef MT_Scene_GetDirectionYaw
 // FUN_003BBB90
 
 
-void FUN_003bbb90(const float *param_1,float *param_2)
+void MT_Scene_GetDirectionYaw(const float *param_1,float *param_2)
 {
   u32 uVar1;
   float fVar2;
@@ -3651,12 +3651,12 @@ void FUN_003bbb90(const float *param_1,float *param_2)
     param_2[2] = 0.0f;
   }
 }
-#define FUN_003bbb90(...) ((void (*)(...))FUN_003bbb90)(__VA_ARGS__)
-#undef FUN_003bbc90
+#define MT_Scene_GetDirectionYaw(...) ((void (*)(...))MT_Scene_GetDirectionYaw)(__VA_ARGS__)
+#undef MT_Scene_EvalCubicBezier
 // FUN_003BBC90
 
 
-void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
+void MT_Scene_EvalCubicBezier(float t, float *x, float *y, float *z, float *outX,
                   float *outY, float *outZ)
 {
   float oneMinus = 1.0f - t;
@@ -3694,14 +3694,14 @@ void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
   *outY = result.y;
   *outZ = result.z;
 }
-#define FUN_003bbc90(...) ((void (*)(...))FUN_003bbc90)(__VA_ARGS__)
-#undef FUN_003bbd40
+#define MT_Scene_EvalCubicBezier(...) ((void (*)(...))MT_Scene_EvalCubicBezier)(__VA_ARGS__)
+#undef MT_Scene_SampleCurve
 /* opt_lifetimes on: measured nd 62 -> 0, object 400/400 -> 400/400. */
 #pragma opt_lifetimes on
 // FUN_003BBD40
 
 
-void FUN_003bbd40(float param_1,char *param_2,float *param_3)
+void MT_Scene_SampleCurve(float param_1,char *param_2,float *param_3)
 
 
 
@@ -3787,7 +3787,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
   return;
 
 }
-#define FUN_003bbd40(...) ((void (*)(...))FUN_003bbd40)(__VA_ARGS__)
+#define MT_Scene_SampleCurve(...) ((void (*)(...))MT_Scene_SampleCurve)(__VA_ARGS__)
 #pragma opt_lifetimes reset
 #undef FUN_003bbed0
 // FUN_003BBED0
@@ -3825,10 +3825,10 @@ float FUN_003bbed0(u32 param_3,float param_1,float param_2)
   return *(float *)(auStack + 0x134) * param_1;
 }
 #define FUN_003bbed0(...) ((float (*)(...))FUN_003bbed0)(__VA_ARGS__)
-#undef FUN_003bbfd0
+#undef MT_Scene_GetCurveSegmentLength
 // FUN_003BBFD0
 
-float FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
+float MT_Scene_GetCurveSegmentLength(float param_1,float param_2,float *param_3,float *param_4,
                   float *param_5,float *param_6,float *param_7)
 {
   RwV3d delta;
@@ -3854,12 +3854,12 @@ float FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
   param_7[2] = second_z;
   return first_len;
 }
-#define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)
-#undef FUN_003bc0e0
+#define MT_Scene_GetCurveSegmentLength(...) ((void (*)(...))MT_Scene_GetCurveSegmentLength)(__VA_ARGS__)
+#undef MT_Scene_GetCurveLength
 // FUN_003BC0E0
 
 
-float FUN_003bc0e0(char *param_1)
+float MT_Scene_GetCurveLength(char *param_1)
 
 
 
@@ -3935,7 +3935,7 @@ float FUN_003bc0e0(char *param_1)
   return fVar5;
 
 }
-#define FUN_003bc0e0(...) ((float (*)(...))FUN_003bc0e0)(__VA_ARGS__)
+#define MT_Scene_GetCurveLength(...) ((float (*)(...))MT_Scene_GetCurveLength)(__VA_ARGS__)
 #undef FUN_003bc220
 /* opt_lifetimes on: measured nd 952 -> 949, object 1272/1296 -> 1272/1296. */
 #pragma opt_lifetimes on
@@ -4252,11 +4252,11 @@ int FUN_003bc8f0(char *param_1)
 #define FUN_003bc8f0(...) ((int (*)(...))FUN_003bc8f0)(__VA_ARGS__)
 /* optimization_level 1: measured O2 nd 18, object 56/64; O1 nd 0, object 60/64 (MATCH); retain O1. */
 #pragma optimization_level 1
-#undef FUN_003bc900
+#undef MT_Scene_GetShakeOffset
 // FUN_003BC900
 
 
-u8 FUN_003bc900(float *param_1)
+u8 MT_Scene_GetShakeOffset(float *param_1)
 
 
 
@@ -4270,7 +4270,7 @@ u8 FUN_003bc900(float *param_1)
   return 1;
 
 }
-#define FUN_003bc900(...) ((u8 (*)(...))FUN_003bc900)(__VA_ARGS__)
+#define MT_Scene_GetShakeOffset(...) ((u8 (*)(...))MT_Scene_GetShakeOffset)(__VA_ARGS__)
 #pragma optimization_level 2
 #undef FUN_003bc940
 // FUN_003BC940 NONMATCHING
@@ -4409,11 +4409,11 @@ void FUN_003bc940(void)
 
 }
 #define FUN_003bc940(...) ((void (*)(...))FUN_003bc940)(__VA_ARGS__)
-#undef FUN_003bcbf0
+#undef MT_Scene_StartShake
 // FUN_003BCBF0
 
 
-void FUN_003bcbf0(int param_1,int param_2)
+void MT_Scene_StartShake(int param_1,int param_2)
 
 
 
@@ -4436,12 +4436,12 @@ void FUN_003bcbf0(int param_1,int param_2)
   return;
 
 }
-#define FUN_003bcbf0(...) ((void (*)(...))FUN_003bcbf0)(__VA_ARGS__)
-#undef FUN_003bcc80
+#define MT_Scene_StartShake(...) ((void (*)(...))MT_Scene_StartShake)(__VA_ARGS__)
+#undef MT_Scene_StopShake
 // FUN_003BCC80
 
 
-void FUN_003bcc80(void)
+void MT_Scene_StopShake(void)
 
 
 
@@ -4454,7 +4454,7 @@ void FUN_003bcc80(void)
   return;
 
 }
-#define FUN_003bcc80(...) ((void (*)(...))FUN_003bcc80)(__VA_ARGS__)
+#define MT_Scene_StopShake(...) ((void (*)(...))MT_Scene_StopShake)(__VA_ARGS__)
 #pragma push
 /* Removing this loses FUN_003bccb0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
@@ -4493,7 +4493,7 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
 // FUN_003bcd80
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
 {
-    (FUN_003bcc80)();
+    (MT_Scene_StopShake)();
 }
 #undef FUN_003bcda0
 // FUN_003BCDA0
