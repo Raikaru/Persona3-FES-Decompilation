@@ -291,9 +291,9 @@ extern void func_003b6f50(u16 resourceId, u32 type, f32 fov, void* matrix,
                           void* posOffset, f32 xzDeadZone, f32 yDeadZone);
 extern u16 func_003b78b0(u16 resourceId, void* position, void* angles);
 extern void func_003b7090(u16 resTypeId);
-extern f32 func_001a5b30(void* matrix);
-extern f32 func_001a5aa0(void* matrix);
-extern f32 func_001a5bc0(void* matrix);
+extern f32 KDraw_MatrixPitchDeg(void* matrix);
+extern f32 KDraw_MatrixYawDeg(void* matrix);
+extern f32 KDraw_MatrixRollDeg(void* matrix);
 extern u32 func_001b8160(void);
 extern u32 func_001b81f0(HCdvd* request);
 extern u32 func_001b8680(void);
@@ -314,7 +314,7 @@ extern u32 func_001d6bc0(HCdvd* request, RwMatrix* matrix, f32* fov,
                          f32* yDeadZone);
 u32 func_001b09b0(void);
 void* FUN_001b2860(char* path);
-void* FUN_001b2780(s16 majorId, s16 minorId);
+void* FldRc_CreateResource(s16 majorId, s16 minorId);
 void FUN_001b5e30(u32 color, const void* scale);
 void FUN_001b5e60(u32 color, const void* scale);
 void FUN_001b60a0(u32 value, const void* scale);
@@ -976,7 +976,7 @@ init_phase0:
     *(s32*)((u8*)K_Field_Get() + 0x105c) -= 1;
     *(void**)((u8*)K_Field_Get() + 0x116c +
               *(u32*)((u8*)K_Field_Get() + 0x1168) * 4) =
-        FUN_001b2780(
+        FldRc_CreateResource(
             (u16)*(s16*)((u8*)K_Field_Get() + 0x1060 +
                          *(u32*)((u8*)K_Field_Get() + 0x105c) * 4),
             (u16)*(s16*)((u8*)K_Field_Get() + 0x1062 +
@@ -1336,9 +1336,9 @@ init_phase8:
                 {
                     f32 angles[3];
 
-                    angles[0] = func_001a5b30(matrix);
-                    angles[1] = func_001a5aa0(matrix);
-                    angles[2] = func_001a5bc0(matrix);
+                    angles[0] = KDraw_MatrixPitchDeg(matrix);
+                    angles[1] = KDraw_MatrixYawDeg(matrix);
+                    angles[2] = KDraw_MatrixRollDeg(matrix);
                     func_003b78b0(handle, (u8*)matrix + 0x30, angles);
                 }
                 if ((*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
@@ -1590,7 +1590,7 @@ init_phase29:
 #pragma pop
 
 // FUN_001b2780
-void* FUN_001b2780(s16 majorId, s16 minorId)
+void* FldRc_CreateResource(s16 majorId, s16 minorId)
 {
     char path[40];
     char token[8];
