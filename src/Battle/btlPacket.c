@@ -1198,7 +1198,7 @@ extern s16 func_003082f0(DatUnit* unit, u16 id);
 extern long func_002d6370(u64 id);
 extern f32 func_00318910(Model* mdl, u32 slot, s16 id);
 extern void func_002d4040(BtlUnit* unit);
-extern void func_001a0dc0(u16 resTypeId, u32 enable);
+extern void SceneDraw_SetResVisibleChecked(u16 resTypeId, u32 enable);
 extern u32 func_0031c7e0(Model* model);
 extern u32 func_0031ebe0(void* data);
 extern void func_002bbd00(void* data);
