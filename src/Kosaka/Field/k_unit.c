@@ -140,7 +140,7 @@ extern void* func_001a91b0(void* task, const RwV3d* pos);
 extern void func_001a92d0(void* task, void* handle, const RwV3d* pos);
 extern void func_001a9390(void* task, void* handle, u32 value);
 extern void func_001a9400(void* task, void* handle);
-extern void func_001a0150(u16 resourceId, u32 value);
+extern void SceneDraw_SetResVisible(u16 resourceId, u32 value);
 extern void* func_001dd460(u32 parent, u32 mode, u32 id);
 extern void func_001dd5f0(void* task, void* model);
 extern void func_001dd5e0(void* task, u32 value);
@@ -158,7 +158,7 @@ extern void* func_004c38c0(void);
 extern void func_004c3880(void* matrix);
 extern u32 func_00319770(Model* model, u16 slot);
 extern u32 func_001c0040(void);
-extern void func_001a0dc0(u16 resourceId, u32 value);
+extern void SceneDraw_SetResVisibleChecked(u16 resourceId, u32 value);
 extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
 #pragma alias func_001d3c40_ptr func_001d3c40
 extern KwlnTask* func_001d3c40_ptr(KwlnTask* parent, Model* model);
@@ -1075,7 +1075,7 @@ u32 func_001ce960(void)
         gFldUnitsPc[i].unk_180 =
             func_001d40e0(NULL, &gFldUnitsPc[i]);
         RwMatrixUpdate(mdlGetMatrix(gFldUnitsPc[i].mdl));
-        func_001a0dc0(gFldUnitsPc[i].resrc->base.resTypeId, 1);
+        SceneDraw_SetResVisibleChecked(gFldUnitsPc[i].resrc->base.resTypeId, 1);
         func_001ad870(gFldUnitsPc[i].resrc->collisCtlTask,
                       0x40000000);
     }
@@ -1285,7 +1285,7 @@ u32 func_001cfdd0(u32 index)
                   *(f32*)((u8*)unit->unk_168 + 0x10c));
     func_001adc20(unit->resrc->collisCtlTask,
                   (const RwV3d*)((u8*)unit->unk_168 + 0x100));
-    func_001a0dc0(resourceId, 1);
+    SceneDraw_SetResVisibleChecked(resourceId, 1);
     func_001ad870(unit->resrc->collisCtlTask, 0x40000000);
     func_001ad8c0(35.0f, unit->resrc->collisCtlTask);
 
@@ -1832,7 +1832,7 @@ void func_001d0e50(s32 isDungeon)
             modelMatrix = (RwMatrix*)func_00318b60(*model);
             *modelMatrix = unit->matBeforeBtl;
             func_004c2f10((u64)func_00318b60(*model));
-            func_001a0dc0(resourceId, 1);
+            SceneDraw_SetResVisibleChecked(resourceId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
             if (i == 0)
@@ -1961,7 +1961,7 @@ void func_001d1360(void)
             func_00318a90(*model, &DAT_00683780[unit->scaleIdx], 2);
             *(RwMatrix*)func_00318b60(*model) = unit->matBeforeBtl;
             func_004c2f10(func_00318b60_u64(*model));
-            func_001a0dc0((*resource)->base.resTypeId, 1);
+            SceneDraw_SetResVisibleChecked((*resource)->base.resTypeId, 1);
             func_001ad870((*resource)->collisCtlTask, 0x40000000);
             func_001add40((*resource)->collisCtlTask);
             func_001ad8c0_reordered((*resource)->collisCtlTask, 35.0f);
@@ -2306,7 +2306,7 @@ void func_001d1db0(void* work, const void* source, u16 resourceId)
     *(u32*)(modelResource + 0x100) = (u32)func_003b5d10(
         *(u16*)(scene + (s32)(((*(f32*)(src + 0x108)) + 400.0f) / 800.0f) * 0x100 +
                        (s32)(((*(f32*)(src + 0x100)) + 400.0f) / 800.0f) * 0x10 + 0x4c));
-    func_001a0150(modelId, 1);
+    SceneDraw_SetResVisible(modelId, 1);
     iGpffffb598++;
 }
 
@@ -2607,7 +2607,7 @@ void func_001d2610(void)
         *(u32*)((u8*)resource->mdl + 0x100) = (u32)func_003b5d10(
             *(u16*)(scene + (s32)(pos.z / 800.0f) * 0x100 +
                            (s32)(pos.x / 800.0f) * 0x10 + 0x4c));
-        func_001a0150(resourceId, 1);
+        SceneDraw_SetResVisible(resourceId, 1);
     }
 }
 
