@@ -30,7 +30,7 @@ extern void* jtbl_00960178[];
 
 extern RwMatrix* FUN_004c2f30(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
 extern RwV3d* FUN_004c6be0(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
-extern s32 func_001a6c00(void* object, const char* name);
+extern s32 K_Clump_CountIntUsrData(void* object, const char* name);
 extern void func_001a13b0(void);
 extern char DAT_007cca08[1];
 #pragma alias DAT_007cca08_abs DAT_007cca08
@@ -52,9 +52,9 @@ void func_00320290(void* resource);
 void* func_0031e0b0(void* resource);
 void func_00313230(MdlAnimSlot* slot);
 void func_003132c0(u8* slot);
-void func_00313be0(MdlAnimEntryTable* table);
-void func_00313e60(void* data);
-void func_003143c0(u8* state, RpClump* clump);
+void mdlReleaseAnimEntryTable(MdlAnimEntryTable* table);
+void mdlReleaseBlendTrack(void* data);
+void mdlSetupNamedFrameAnims(u8* state, RpClump* clump);
 void func_00314d30(void* state);
 void func_00314730(u8* state, f32 frame);
 #pragma alias func_00314730_ptrfirst func_00314730
@@ -91,7 +91,7 @@ extern void func_00320380(int *param_2, f32 param_1);
 extern void func_00320770(int *param_1);
 extern f32 func_00320810(void* animation);
 void func_00316970(Model* mdl);
-u32 func_003115a0(void* param_1, u32* param_2);
+u32 mdlFindFrameHierarchy(void* param_1, u32* param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
 void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
 extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
@@ -199,30 +199,30 @@ extern char* RpUserDataArrayGetName(void* userData);
 extern int RpUserDataArrayGetFormat(void* userData);
 extern f32 func_0052e9e8(f32 value);
 extern f32 func_0052ea18_typed(f32 x, f32 y);
-u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+u32 mdlBlendAnimInterpolators(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1);
 u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
-void func_00312c70(u8* param_1,int param_2);
+void mdlHierarchyScaleHook(u8* param_1,int param_2);
 void func_00312d40(u8* param_1,u8* param_2);
-void func_00312e80(int param_1);
-u32 func_00312f90(u32 param_1);
+void mdlSetupMatFXMaterial(int param_1);
+u32 mdlSetupAtomicMatFX(u32 param_1);
 u32 func_00313090(u32 param_1,u32 param_2);
 void func_00313ca0(int *param_1,u32 param_2);
-int func_00313f40(int param_1,void* param_2);
+int mdlAppendUniqueListEntry(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
-void* func_003140c0(void* param_1,u16 *param_2);
-void* func_00314170(void* param_1, void* param_2);
-u32 func_003142b0(void* param_1);
+void* mdlAnimLoopRewind(void* param_1,u16 *param_2);
+void* mdlAnimLoopCallback(void* param_1, void* param_2);
+u32 mdlGetFrameNameUserData(void* param_1);
 void* func_00314510(void* param_1);
 u32 func_00314650(u32 param_1);
-void* func_00315010(void* object, void* data);
-u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource);
+void* mdlFindFrameById(void* object, void* data);
+u32 mdlComputeAttachMatrix(RwMatrix* outMatrix,u16 *table,u16 key,int resource);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
 Model* func_00315ed0(Model* param_1);
-u32 func_00315f50(void* param_1,u32 *param_2);
-void func_00316320(u64 param_1,u32* param_2,u16 param_3);
-u32 func_00316360(void* param_1,u32 *param_2);
+u32 mdlMatColorScaleCallback(void* param_1,u32 *param_2);
+void mdlClumpApplyMatColorScale(u64 param_1,u32* param_2,u16 param_3);
+u32 mdlMatColorUncoloredCallback(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
 void* func_003165e0(void* param_1);
 Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
@@ -339,7 +339,7 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
 // FUN_003115A0
 
 
-u32 func_003115a0(void* param_1, u32* param_2)
+u32 mdlFindFrameHierarchy(void* param_1, u32* param_2)
 {
     u32 value;
 
@@ -348,7 +348,7 @@ u32 func_003115a0(void* param_1, u32* param_2)
     {
         goto store_value;
     }
-    func_004cb6e0(param_1, (void (*)())func_003115a0, param_2);
+    func_004cb6e0(param_1, (void (*)())mdlFindFrameHierarchy, param_2);
     return (u32)param_1;
 store_value:
     *param_2 = value;
@@ -363,7 +363,7 @@ void* mdl00311610(void* param_1)
 }
 
 // FUN_00311640
-u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+u32 mdlBlendAnimInterpolators(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1)
 {
     s32 frame;
@@ -1755,7 +1755,7 @@ special_matrix_done:
 // FUN_00312C70
 
 
-void func_00312c70(u8* param_1,int param_2)
+void mdlHierarchyScaleHook(u8* param_1,int param_2)
 
 
 
@@ -1815,7 +1815,7 @@ void func_00312d40(u8* param_1,u8* param_2)
 
     *(u32*)DAT_009571b0_abs = *(u32 *)(iVar1 + 0x3c);
 
-    *(code *)(iVar1 + 0x3c) = (code)func_00312c70;
+    *(code *)(iVar1 + 0x3c) = (code)mdlHierarchyScaleHook;
 
     iVar4 = *(int *)(param_1 + 0x20);
     iVar5 = *(int *)(iVar4 + 0x24);
@@ -1858,7 +1858,7 @@ void func_00312d40(u8* param_1,u8* param_2)
 // FUN_00312E80
 
 
-void func_00312e80(int param_1)
+void mdlSetupMatFXMaterial(int param_1)
 
 
 
@@ -1909,7 +1909,7 @@ void func_00312e80(int param_1)
 // FUN_00312F90
 
 
-u32 func_00312f90(u32 param_1)
+u32 mdlSetupAtomicMatFX(u32 param_1)
 {
     int iVar1;
     u32 uVar2;
@@ -1940,7 +1940,7 @@ u32 func_00312f90(u32 param_1)
         iVar5 = *(int *)(iVar5 + 0x18);
         iVar1 = *(int *)(iVar5 + 0x24);
         for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
-            func_00312e80(*(u32 *)(*(int *)(iVar5 + 0x20) + iVar6 * 4));
+            mdlSetupMatFXMaterial(*(u32 *)(*(int *)(iVar5 + 0x20) + iVar6 * 4));
         }
         return param_1;
     }
@@ -2301,7 +2301,7 @@ LAB_0031379c:
 
     if (((*puVar4 & 2) != 0) && (param_2 != 0)) {
 
-      func_00311640((RtAnimInterpolator*)*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
+      mdlBlendAnimInterpolators((RtAnimInterpolator*)*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
                     (RtAnimInterpolator*)*(u32 *)(*(int *)((int)param_2 + 0x20) + 0x20),
                     (RtAnimInterpolator*)*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
                     1.0f);
@@ -2518,7 +2518,7 @@ LAB_00313b48:
 // FUN_00313BE0
 
 
-void func_00313be0(MdlAnimEntryTable* table)
+void mdlReleaseAnimEntryTable(MdlAnimEntryTable* table)
 {
     u16 i;
 
@@ -2665,7 +2665,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 // FUN_00313E60
 
 
-void func_00313e60(void* param_1)
+void mdlReleaseBlendTrack(void* param_1)
 {
   void *piVar1;
   int *piVar2;
@@ -2706,7 +2706,7 @@ void func_00313e60(void* param_1)
 // FUN_00313F40
 
 
-int func_00313f40(int param_1, void* param_2)
+int mdlAppendUniqueListEntry(int param_1, void* param_2)
 {
   int *piVar1;
   void* list;
@@ -2769,7 +2769,7 @@ void FUN_003140b0(void)
 // FUN_003140C0
 
 
-void* func_003140c0(void* param_1,u16 *param_2)
+void* mdlAnimLoopRewind(void* param_1,u16 *param_2)
 
 
 
@@ -2799,7 +2799,7 @@ void* func_003140c0(void* param_1,u16 *param_2)
 // FUN_00314170 NONMATCHING
 
 
-void* func_00314170(void* animPtr, void* entryPtr)
+void* mdlAnimLoopCallback(void* animPtr, void* entryPtr)
 {
   int *table;
   long index;
@@ -2828,7 +2828,7 @@ void* func_00314170(void* animPtr, void* entryPtr)
 }
 
 // FUN_003142B0
-u32 func_003142b0(void* param_1)
+u32 mdlGetFrameNameUserData(void* param_1)
 {
     s32 iVar2;
     s32 iVar1;
@@ -2866,7 +2866,7 @@ u32 func_003142b0(void* param_1)
 // FUN_003143C0
 
 
-void func_003143c0(u8* param_1,RpClump* param_2)
+void mdlSetupNamedFrameAnims(u8* param_1,RpClump* param_2)
 {
 
   u32 uVar1;
@@ -2891,7 +2891,7 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
     uVar1 = func_004c1d50(4,0);
 
-    callbackData.callback = (code)func_00313f40;
+    callbackData.callback = (code)mdlAppendUniqueListEntry;
     callbackData.value = uVar1;
 
     func_004916d0_callback(param_2,(void (*)(void))func_00313fe0,&callbackData);
@@ -2904,13 +2904,13 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
         puVar2 != puVar3; puVar2 = puVar2 + 1) {
 
-      userData = func_003142b0((void*)*puVar2);
+      userData = mdlGetFrameNameUserData((void*)*puVar2);
 
       if (((userData != 0) && (func_00524670(userData,&gp0xffff9d10,5) == 0)) &&
 
          (animation = func_004b97b0(*puVar2,0), animation != 0)) {
 
-        func_004b7010(animation,func_00314170,0);
+        func_004b7010(animation,mdlAnimLoopCallback,0);
 
         *(u8 **)((int)animation + 0x40) = LAB_00314020_abs;
 
@@ -2995,7 +2995,7 @@ u32 func_00314650(u32 param_1)
 
     iVar2 = *(int *)(iVar1 + 0x24);
     for (iVar5 = 0; iVar5 < iVar2; iVar5 = iVar5 + 1) {
-        func_00312e80(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar5 * 4));
+        mdlSetupMatFXMaterial(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar5 * 4));
     }
 
     return param_1;
@@ -3149,7 +3149,7 @@ LAB_0031494c:
 
         puVar3 != puVar5; puVar3 = puVar3 + 1) {
 
-      lVar6 = func_003142b0((void*)*puVar3);
+      lVar6 = mdlGetFrameNameUserData((void*)*puVar3);
 
       if ((lVar6 != 0) && (lVar6 = func_004b97b0(*puVar3,1), lVar6 != 0)) {
 
@@ -3181,7 +3181,7 @@ LAB_0031494c:
 
       }
 
-      lVar6 = func_003142b0((void*)*puVar3);
+      lVar6 = mdlGetFrameNameUserData((void*)*puVar3);
 
       if (lVar6 != 0) {
 
@@ -3249,7 +3249,7 @@ LAB_0031494c:
 
           if (lVar6 == 0) {
 
-            func_004b7010(lVar8,func_00314170,param_2);
+            func_004b7010(lVar8,mdlAnimLoopCallback,param_2);
 
             *(u8 **)(iVar11 + 0x40) = &LAB_00314020;
 
@@ -3259,7 +3259,7 @@ LAB_0031494c:
 
           else {
 
-            func_004b7010(lVar8,func_003140c0,param_2);
+            func_004b7010(lVar8,mdlAnimLoopRewind,param_2);
 
             *(u32 *)(iVar11 + 0x40) = *(u32 *)(*piVar10 + 0x10);
 
@@ -3398,13 +3398,13 @@ void func_00314d30(void* param_1)
             if ((*(u8 **)((int)lVar4 + 0x40) == LAB_00314020_abs) &&
                (*(u8 **)((int)lVar4 + 0x44) == LAB_00314060_abs)) {
 
-              func_004b7010(lVar4,func_00314170,param_1);
+              func_004b7010(lVar4,mdlAnimLoopCallback,param_1);
 
             }
 
             else {
 
-              func_004b7010(lVar4,func_003140c0,param_1);
+              func_004b7010(lVar4,mdlAnimLoopRewind,param_1);
 
             }
 
@@ -3423,7 +3423,7 @@ void func_00314d30(void* param_1)
             if ((*(u8 **)(iVar6 + 0x40) == LAB_00314020_abs) &&
                (*(u8 **)(iVar6 + 0x44) == LAB_00314060_abs)) {
 
-              func_004b7010(lVar4,func_00314170,param_1);
+              func_004b7010(lVar4,mdlAnimLoopCallback,param_1);
 
               func_004b7240_frame(fVar7,lVar4);
 
@@ -3431,7 +3431,7 @@ void func_00314d30(void* param_1)
 
             else {
 
-              func_004b7010(lVar4,func_003140c0,param_1);
+              func_004b7010(lVar4,mdlAnimLoopRewind,param_1);
 
               if ((*(u8 **)(iVar6 + 0x40) != LAB_003140a0_abs) &&
                  (*(u8 **)(iVar6 + 0x44) != LAB_003140b0_abs)) {
@@ -3465,14 +3465,14 @@ void func_00314d30(void* param_1)
 // FUN_00315010
 
 
-void* func_00315010(void* object, void* data)
+void* mdlFindFrameById(void* object, void* data)
 {
     if (*(void**)((u8*)data + 4) == (void*)func_00466720()) {
         *(void**)data = object;
         return NULL;
     }
 
-    func_004cb6e0(object, (void (*)(void))func_00315010, data);
+    func_004cb6e0(object, (void (*)(void))mdlFindFrameById, data);
     return object;
 }
 
@@ -3482,7 +3482,7 @@ void* func_00315010(void* object, void* data)
 // FUN_00315090 NONMATCHING
 
 
-u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
+u32 mdlComputeAttachMatrix(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
 {
   int expected;
   int current;
@@ -3519,7 +3519,7 @@ u32 func_00315090(RwMatrix* outMatrix,u16 *table,u16 key,int resource)
   if (expected != current) {
     callbackData.result = 0;
     callbackData.expected = expected;
-    func_004cb6e0(handle,(void *)func_00315010,&callbackData);
+    func_004cb6e0(handle,(void *)mdlFindFrameById,&callbackData);
     handle = callbackData.result;
   }
 
@@ -3969,7 +3969,7 @@ void func_003151d0(Model* param_1)
 
     RpSkyRenderStateSet(2, (void*)0x44);
 
-    func_00316320(*(u32 *)(iVar11 + 0xdc),(u32*)color,(*(u8 *)(iVar11 + 0x388) & 8) != 0);
+    mdlClumpApplyMatColorScale(*(u32 *)(iVar11 + 0xdc),(u32*)color,(*(u8 *)(iVar11 + 0x388) & 8) != 0);
 
     iVar9 = *(int *)(iVar11 + 0xe0);
 
@@ -4053,7 +4053,7 @@ void func_003151d0(Model* param_1)
 
         }
 
-        func_00316320(iVar4,(u32*)color,(*(u8 *)(iVar9 + 0x388) & 8) != 0);
+        mdlClumpApplyMatColorScale(iVar4,(u32*)color,(*(u8 *)(iVar9 + 0x388) & 8) != 0);
 
         iVar6 = *(int *)(iVar11 + 0xe0);
 
@@ -4202,7 +4202,7 @@ Model* func_00315ed0(Model* param_1)
 #pragma push
 #pragma opt_dead_assignments off
 // FUN_00315F50 NONMATCHING
-u32 func_00315f50(void* clump,u32 *context)
+u32 mdlMatColorScaleCallback(void* clump,u32 *context)
 {
   int clumpBase;
   u32 atomicCount;
@@ -4274,7 +4274,7 @@ u32 func_00315f50(void* clump,u32 *context)
 // FUN_00316320
 
 
-void func_00316320(u64 param_1,u32* param_2,u16 param_3)
+void mdlClumpApplyMatColorScale(u64 param_1,u32* param_2,u16 param_3)
 
 
 
@@ -4287,7 +4287,7 @@ void func_00316320(u64 param_1,u32* param_2,u16 param_3)
 
   context.ptr = param_2;
   context.value = param_3;
-  func_004916d0_typed(param_1, (void *)func_00315f50, &context);
+  func_004916d0_typed(param_1, (void *)mdlMatColorScaleCallback, &context);
   return;
 
 }
@@ -4295,7 +4295,7 @@ void func_00316320(u64 param_1,u32* param_2,u16 param_3)
 // FUN_00316360
 
 
-u32 func_00316360(void* param_1,u32 *param_2)
+u32 mdlMatColorUncoloredCallback(void* param_1,u32 *param_2)
 {
     int iVar1;
     u32 uVar2;
@@ -4624,7 +4624,7 @@ void func_00316970(Model* param_1)
   func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)func_003165e0,0);
 
   if (*(int *)(iVar3 + 0x37c) != 0) {
-    func_003143c0((u8 *)param_1 + 0x364,param_1->clump);
+    mdlSetupNamedFrameAnims((u8 *)param_1 + 0x364,param_1->clump);
 
   }
 
@@ -4638,13 +4638,13 @@ void func_00316970(Model* param_1)
 
     pVar6 = (u32 *)(iVar5 + 4);
 
-    func_004cb6e0(*pVar6,(void *)func_003115a0,&uStack_4);
+    func_004cb6e0(*pVar6,(void *)mdlFindFrameHierarchy,&uStack_4);
 
     *(u32 *)(iVar3 + 0x10c) = uStack_4;
 
     func_004916d0(iVar5,(void *)mdl00311610);
 
-    func_004916d0(iVar5,(void *)func_00312f90,*pVar6);
+    func_004916d0(iVar5,(void *)mdlSetupAtomicMatFX,*pVar6);
 
     func_001a7170(iVar5,*(u32 *)(iVar3 + 0x10c));
 
@@ -4941,7 +4941,7 @@ void mdlCopy(const Model* src, Model* dst)
             {
                 clump = dst->clump;
                 hierarchy = NULL;
-                FUN_004cb6e0(*(void**)((u8*)clump + 4), (void(*)())func_003115a0,
+                FUN_004cb6e0(*(void**)((u8*)clump + 4), (void(*)())mdlFindFrameHierarchy,
                               &hierarchy);
                 dst->animSlots[i].anim.hierarchy = hierarchy;
                 FUN_004916d0(clump, mdl00311610, 0);
@@ -4993,7 +4993,7 @@ void mdlCopy(const Model* src, Model* dst)
     {
         (*(u16*)((u8*)data + 0xe))++;
         *(void**)((u8*)dst + 0x37c) = data;
-        func_003143c0((u8*)dst + 0x364, dst->clump);
+        mdlSetupNamedFrameAnims((u8*)dst + 0x364, dst->clump);
         *(u8*)((u8*)dst + 0x366) = 1;
     }
 
@@ -5065,14 +5065,14 @@ void mdlDestroy(Model* mdl)
 
     if (mdl->unk_35c != NULL)
     {
-        func_00313be0(mdl->unk_35c);
+        mdlReleaseAnimEntryTable(mdl->unk_35c);
         mdl->unk_35c = NULL;
     }
 
     data = *(void**)((u8*)mdl + 0x37c);
     if (data != NULL)
     {
-        func_00313e60(data);
+        mdlReleaseBlendTrack(data);
         *(u32*)&mdl->unkData2[0x1c] = 0;
     }
 
@@ -5269,7 +5269,7 @@ void FUN_00317a20(Model* param_1)
       FUN_00313ca0(iVar8 + 0x35c,iVar8 + 0xec);
       stackPair.value = iVar8 + 0xd0;
       stackPair.field = 0;
-      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)func_00315f50,&stackPair.value);
+      FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)mdlMatColorScaleCallback,&stackPair.value);
       if (((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) || (*(u8 *)(iVar8 + 0xd3) == 0xff)) {
         iVar9 = *(int *)(iVar8 + 0xe0);
         if (iVar9 == 0) {
@@ -5295,7 +5295,7 @@ void FUN_00317a20(Model* param_1)
         bVar5 = true;
         if ((*(u16 *)(iVar8 + 0xd8) & 0x8000) != 0) {
           iStack_8 = 1;
-          FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)func_00316360,&iStack_8);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(iVar8 + 0xdc),(void *)mdlMatColorUncoloredCallback,&iStack_8);
           if (iStack_8 != 0) {
             bVar5 = false;
           }
@@ -5358,7 +5358,7 @@ void FUN_00317a20(Model* param_1)
             (piVar11 = (int *)(iVar9 + 0x3b8), *(int *)(iVar9 + 0x3b8) != 0)) &&
            (lVar7 = FUN_00319770(param_1,uVar10), lVar7 != 0)) {
           iStack_c = 1;
-          FUN_004916d0((void *)(unsigned int)*(u32 *)(*piVar11 + 0xdc),(void *)func_00316360,&iStack_c);
+          FUN_004916d0((void *)(unsigned int)*(u32 *)(*piVar11 + 0xdc),(void *)mdlMatColorUncoloredCallback,&iStack_c);
           if (iStack_c == 0) {
             FUN_00318ad0(*piVar11,iVar8 + 0xd0);
             if ((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) {
@@ -5874,7 +5874,7 @@ u32 func_00318d10(u8* mdl,u32 key,u32* outMatrix)
 
   attach = *(u16 **)(mdl + 0x3f0);
   if (attach == (u16 *)0x0) {
-    resource = func_001a69a0(*(u32 *)(mdl + 0xdc),0x69abb8,key);
+    resource = K_Clump_FindIntUsrDataFrame(*(u32 *)(mdl + 0xdc),0x69abb8,key);
     if (resource == 0) {
       uVar4 = 0;
     }
@@ -5910,7 +5910,7 @@ u32 func_00318d10(u8* mdl,u32 key,u32* outMatrix)
       if (iVar8 != iVar3) {
         callbackData.result = 0;
         callbackData.expected = iVar8;
-        func_004cb6e0(iVar10,(void *)func_00315010,&callbackData);
+        func_004cb6e0(iVar10,(void *)mdlFindFrameById,&callbackData);
         iVar10 = callbackData.result;
       }
       if (iVar10 == 0) {
@@ -5958,13 +5958,13 @@ bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3)
 
   if (*(int *)(param_1 + 0x3f0) != 0) {
 
-    lVar4 = func_00315090(&matrix,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
+    lVar4 = mdlComputeAttachMatrix(&matrix,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
                          *(int *)(param_1 + 0xdc));
 
   }
   else {
 
-    lVar4 = func_001a69a0(*(u32 *)(param_1 + 0xdc),DAT_0069abb8,param_2);
+    lVar4 = K_Clump_FindIntUsrDataFrame(*(u32 *)(param_1 + 0xdc),DAT_0069abb8,param_2);
 
     if (lVar4 == 0) {
 
@@ -6032,7 +6032,7 @@ u32 func_00318fc0(int param_1)
   if (ptr != NULL) {
     return (u32)*ptr;
   }
-  return func_001a6c00(*(void **)(param_1 + 0xdc), (const char *)DAT_0069abb8);
+  return K_Clump_CountIntUsrData(*(void **)(param_1 + 0xdc), (const char *)DAT_0069abb8);
 }
 
 
