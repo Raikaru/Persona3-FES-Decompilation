@@ -233,16 +233,16 @@ extern u64 FUN_0029ea60();
 extern u64 FUN_0029ec00();
 extern u64 FUN_0029ec50();
 extern u64 FUN_0029ec80();
-extern BtlPacket* FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3);
-extern BtlPacket* FUN_0029fa50(u32 param);
-extern BtlPacket* FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5);
-extern BtlPacket* FUN_002a1080(s32 param, s16 mode);
-extern BtlPacket* FUN_002a1280(u32 param_1,u32 param_2);
-extern BtlPacket* FUN_002a16c0(s32 param);
-extern void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3);
-extern void FUN_002a1db0(s32 param_1);
+extern BtlPacket* btlMainCreateColorLerpPacket(u32 param_1,u32 param_2,u32 param_3);
+extern BtlPacket* btlCreateTimingPacket(u32 param);
+extern BtlPacket* btlMainCreateColorWorkPacket(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5);
+extern BtlPacket* btlMainCreateFadePacket(s32 param, s16 mode);
+extern BtlPacket* btlMainCreateTintPacket(u32 param_1,u32 param_2);
+extern BtlPacket* btlMainCreateColorFadePacket(s32 param);
+extern void btlMainCreateUnitTintPacket(s32 param_1,s16 param_2,s32 param_3);
+extern void btlMainCreateColorSetPacket(s32 param_1);
 extern void FUN_002a2170(void *param_1, const f32 *param_2);
-extern void FUN_002a2290(void *param_1, const f32 *param_2, const f32 *param_3, int param_4);
+extern void btlMainCurveSetPoses(void *param_1, const f32 *param_2, const f32 *param_3, int param_4);
 extern void FUN_002a3110(void *param_1, float param_2);
 extern u64 FUN_002a3b40();
 extern u64 FUN_002a3d70();
@@ -942,7 +942,7 @@ static inline void btlVoicePlayCameraVoice(u8 *voiceData,
                D_00697880);
   *endPosition = *(RwV3d *)(voiceData + 0x1c);
   duration = (f32)*(s16 *)voiceData / 30.0f;
-  FUN_002a2290((u8 *)DAT_007ce3ec + 0x20,
+  btlMainCurveSetPoses((u8 *)DAT_007ce3ec + 0x20,
                (f32 *)startPosition, (f32 *)endPosition, 1);
   FUN_002a3110((u8 *)DAT_007ce3ec + 0x20, duration);
 }
@@ -1030,14 +1030,14 @@ BtlPacket* btlVoice002e2be0(BtlAction* action, s32 param_2, s32 param_3, s32 par
 #pragma alias FUN_002822b0_packet_voice FUN_002822b0
 #pragma alias FUN_00285d30_packet_voice FUN_00285d30
 #pragma alias FUN_00285690_packet_voice FUN_00285690
-#pragma alias FUN_0029f4b0_packet_voice FUN_0029f4b0
-#pragma alias FUN_002a0050_packet_voice FUN_002a0050
-#pragma alias FUN_002a1280_packet_voice FUN_002a1280
+#pragma alias FUN_0029f4b0_packet_voice btlMainCreateColorLerpPacket
+#pragma alias FUN_002a0050_packet_voice btlMainCreateColorWorkPacket
+#pragma alias FUN_002a1280_packet_voice btlMainCreateTintPacket
 #pragma alias FUN_002bb2f0_packet_voice FUN_002bb2f0
 #pragma alias FUN_002dd100_packet_voice FUN_002dd100
-#pragma alias FUN_002a1db0_packet_voice FUN_002a1db0
-#pragma alias FUN_002a1b00_packet_voice FUN_002a1b00
-#pragma alias FUN_002a1b00_voice FUN_002a1b00
+#pragma alias FUN_002a1db0_packet_voice btlMainCreateColorSetPacket
+#pragma alias FUN_002a1b00_packet_voice btlMainCreateUnitTintPacket
+#pragma alias FUN_002a1b00_voice btlMainCreateUnitTintPacket
 #pragma alias FUN_002d4e10_u16_voice FUN_002d4e10
 #pragma alias FUN_002838d0_s16_voice FUN_002838d0
 #pragma alias FUN_002ff540_u32_voice FUN_002ff540
@@ -2240,7 +2240,7 @@ LAB_002e4af0:
     if (cameraPos.y < 25.0f) {
       cameraPos.y = 25.0f;
     }
-    FUN_002a2290((BtlCamera *)param_1, (f32 *)&initialPos, (f32 *)&cameraPos, 1);
+    btlMainCurveSetPoses((BtlCamera *)param_1, (f32 *)&initialPos, (f32 *)&cameraPos, 1);
     FUN_002a3110((BtlCamera *)param_1, bVar3 ? 2.5f : 1.25f);
     }
   return;
@@ -2479,7 +2479,7 @@ void func_002e5060(BtlCamera* camera)
   if (usePreset != 0) {
     FUN_00351bb0_btlVoice_typed(8);
   }
-  FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
+  btlMainCurveSetPoses(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
   FUN_002a3110(camera, 2.0f);
   return;
   }
@@ -2569,7 +2569,7 @@ void func_002e5060(BtlCamera* camera)
     if (endFrame.pos.y < 25.0f) {
       endFrame.pos.y = 25.0f;
     }
-    FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
+    btlMainCurveSetPoses(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
     FUN_002a3110(camera, 2.0f);
     return;
   }
@@ -2682,7 +2682,7 @@ LAB_002e59dc:
     specPos2.y = *(f32 *)DAT_00697ca0_abs;
     specPos2.z = *(f32 *)DAT_00697ca4_abs;
     fVar10 = (float)*(s16 *)DAT_00697c80_abs / 30.0f;
-    FUN_002a2290((void *)(DAT_007ce3ec + 0x20),(f32 *)&specPos1,(f32 *)&specPos2,1);
+    btlMainCurveSetPoses((void *)(DAT_007ce3ec + 0x20),(f32 *)&specPos1,(f32 *)&specPos2,1);
     FUN_002a3110((void *)(DAT_007ce3ec + 0x20),fVar10);
     return;
   }
@@ -2783,7 +2783,7 @@ LAB_002e59dc:
     }
     FUN_00351bb0_btlVoice_typed(8);
   }
-  FUN_002a2290((void *)param_1,(f32 *)&camPos,(f32 *)&finalPos,1);
+  btlMainCurveSetPoses((void *)param_1,(f32 *)&camPos,(f32 *)&finalPos,1);
   FUN_002a3110((void *)param_1,1.5f);
 }
 #pragma opt_dead_assignments reset
@@ -3177,12 +3177,12 @@ void func_002e6a20(BtlCamera* camera, float weight)
       work.target.y = 22.5f;
     }
     work.temp2 = 2.0f;
-    FUN_002a2290(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    btlMainCurveSetPoses(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
     FUN_002a3110(cachedCamera, work.temp2);
   }
   else {
     work.temp3 = weight;
-    FUN_002a2290(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    btlMainCurveSetPoses(cachedCamera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
     FUN_002a3110(cachedCamera, work.temp3);
   }
 }
@@ -3675,7 +3675,7 @@ void func_002e7db0(BtlCamera* param_1)
     farPt.y = 25.0f;
   }
   FUN_002a3e80(50.0f,(u8 *)param_1->action,(u8 *)(iVar1 + 4),(u8 *)(iVar2 + 4),3);
-  FUN_002a2290((void *)param_1,(f32 *)&nearPt,(f32 *)&farPt,1);
+  btlMainCurveSetPoses((void *)param_1,(f32 *)&nearPt,(f32 *)&farPt,1);
   FUN_002a3110((void *)param_1,2.0f);
 }
 
@@ -3868,7 +3868,7 @@ void func_002e8820(BtlCamera *camera)
         FUN_002a3e80(0.0f, (u8 *)camera->action, 0, 0, 0x40);
         FUN_002a2170(camera, (f32 *)&work.position);
     } else {
-        FUN_002a2290(camera, work.start, (f32 *)&work.position, 1);
+        btlMainCurveSetPoses(camera, work.start, (f32 *)&work.position, 1);
         FUN_002a3110(camera, 1.25f);
     }
 }
@@ -3924,7 +3924,7 @@ void func_002e8a40(BtlCamera* camera)
         FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 0x40);
         FUN_002a2170(camera, (f32*)&work.position);
     } else {
-        FUN_002a2290(camera, work.start, (f32*)&work.position, 1);
+        btlMainCurveSetPoses(camera, work.start, (f32*)&work.position, 1);
         FUN_002a3110(camera, 1.0f);
     }
 }
@@ -3982,7 +3982,7 @@ void func_002e8d70(void *param_1)
   voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) + 0x364);
   FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
   work.position = *(VoiceVector *)voiceData;
-  FUN_002a2290(action, work.start, (f32 *)&work.position, 1);
+  btlMainCurveSetPoses(action, work.start, (f32 *)&work.position, 1);
   FUN_002a3110(action, 0.75f);
 }
 
@@ -4011,7 +4011,7 @@ void func_002e8e20(void)
                (f32 *)(voiceData + 0x28), &D_00697880);
   work.endPosition = *(VoiceVector *)(voiceData + 0x1c);
   duration = (float)*(s16 *)voiceData / 30.0f;
-  FUN_002a2290((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition,
+  btlMainCurveSetPoses((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition,
                (f32 *)&work.endPosition, 1);
   FUN_002a3110((void *)(iGpffffb6fc + 0x20), duration);
 }
@@ -4040,7 +4040,7 @@ void func_002e8f40(void)
                (f32 *)(voiceData + 0x28), &D_00697880);
   work.endPosition = *(VoiceVector *)(voiceData + 0x1c);
   duration = (float)*(s16 *)voiceData / 30.0f;
-  FUN_002a2290((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition,
+  btlMainCurveSetPoses((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition,
                (f32 *)&work.endPosition, 1);
   FUN_002a3110((void *)(iGpffffb6fc + 0x20), duration);
 }
@@ -4061,7 +4061,7 @@ void func_002e9060(void)
   FUN_002a4690(work.end, DAT_0069925c, DAT_00699268, &D_00697880);
   work.endPosition = *(VoiceVector *)DAT_0069925c;
   duration = (float)DAT_00699240[0] / 30.0f;
-  FUN_002a2290((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition, (f32 *)&work.endPosition, 1);
+  btlMainCurveSetPoses((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition, (f32 *)&work.endPosition, 1);
   FUN_002a3110((void *)(iGpffffb6fc + 0x20), duration);
 }
 
@@ -4491,11 +4491,11 @@ u32 func_002e9f10(BtlAction* action)
         FUN_0029a320(action);
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -5439,11 +5439,11 @@ u32 func_002ebec0(BtlAction* action)
         gBtl->flags &= ~0x80000;
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -6744,11 +6744,11 @@ u32 func_002eea10(BtlAction* action)
         action->unit->packetCount--;
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -6992,11 +6992,11 @@ u32 func_002ef250(BtlAction* action)
         FUN_0029a320(action);
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -7552,21 +7552,21 @@ void func_002efe50(BtlAction* action)
     }
 
     FUN_001fdd40();
-    cleanupPacket0 = FUN_0029fa50(0x10);
+    cleanupPacket0 = btlCreateTimingPacket(0x10);
     cleanupPacket0->unk_00 = 4;
     cleanupPacket0->parentUID = effectPacket->uid;
     cleanupPacket0->unk_47 &= ~0x20;
     cleanupPacket0->actionUID = actionUID;
     btlPacketRegister(cleanupPacket0, 1);
 
-    cleanupPacket1 = FUN_002a1080(0x10, 4);
+    cleanupPacket1 = btlMainCreateFadePacket(0x10, 4);
     cleanupPacket1->unk_00 = 4;
     cleanupPacket1->parentUID = effectPacket->uid;
     cleanupPacket1->unk_47 &= ~0x20;
     cleanupPacket1->actionUID = actionUID;
     btlPacketRegister(cleanupPacket1, 1);
 
-    cleanupPacket2 = FUN_002a16c0(0x10);
+    cleanupPacket2 = btlMainCreateColorFadePacket(0x10);
     cleanupPacket2->unk_00 = 4;
     cleanupPacket2->parentUID = effectPacket->uid;
     cleanupPacket2->unk_47 &= ~0x20;
@@ -7789,19 +7789,19 @@ void func_002f05f0(BtlAction *action)
     }
 
     FUN_001fdd40();
-    packet = FUN_0029fa50(0x10);
+    packet = btlCreateTimingPacket(0x10);
     packet->unk_47 &= ~0x20;
     packet->parentUID = effectPacket->uid;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
 
-    packet = FUN_002a1080(0x10, 0);
+    packet = btlMainCreateFadePacket(0x10, 0);
     packet->unk_47 &= ~0x20;
     packet->parentUID = effectPacket->uid;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
 
-    packet = FUN_002a16c0(0x10);
+    packet = btlMainCreateColorFadePacket(0x10);
     packet->unk_47 &= ~0x20;
     packet->parentUID = effectPacket->uid;
     packet->actionUID = actionUID;
@@ -8017,11 +8017,11 @@ u32 func_002f14a0(BtlAction* action)
         }
         *(u16*)(iGpffffb6fc + 0xb50) = 0;
         gBtl->flags |= 0x2000000;
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -8878,19 +8878,19 @@ void func_002f2b90(BtlAction* action)
     effectStopPacket1->parentUID = effectPacket1->uid;
     btlPacketRegister(effectStopPacket1, 1);
 
-    cleanupPacket0 = FUN_0029fa50(0x10);
+    cleanupPacket0 = btlCreateTimingPacket(0x10);
     cleanupPacket0->unk_00 = 0xb;
     cleanupPacket0->parentUID = effectPacket1->uid;
     cleanupPacket0->actionUID = actionUID;
     btlPacketRegister(cleanupPacket0, 1);
 
-    cleanupPacket1 = FUN_002a1080(0x10, 4);
+    cleanupPacket1 = btlMainCreateFadePacket(0x10, 4);
     cleanupPacket1->unk_00 = 0xb;
     cleanupPacket1->parentUID = effectPacket1->uid;
     cleanupPacket1->actionUID = actionUID;
     btlPacketRegister(cleanupPacket1, 1);
 
-    cleanupPacket2 = FUN_002a16c0(0x10);
+    cleanupPacket2 = btlMainCreateColorFadePacket(0x10);
     cleanupPacket2->unk_00 = 0xb;
     cleanupPacket2->parentUID = effectPacket1->uid;
     cleanupPacket2->actionUID = actionUID;
@@ -9008,11 +9008,11 @@ u32 func_002f3520(BtlAction* action)
         FUN_0029a320(action);
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -10098,11 +10098,11 @@ u32 func_002f5870(BtlAction* action)
         FUN_0029a320(action);
         gBtl->flags |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         return 0;
     }
@@ -10446,7 +10446,7 @@ u32 func_002f6330(void *param_1)
     }
   }
 
-  FUN_002a2290(action, (f32 *)&work.firstPositionXY,
+  btlMainCurveSetPoses(action, (f32 *)&work.firstPositionXY,
                 (f32 *)&work.secondPosition, 1);
   FUN_002a3110(action, 5.0f);
   FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(int *)(action + 0xe0),
@@ -10542,7 +10542,7 @@ encounterOther:
 
 apply:
   if (result) {
-    FUN_002a2290((void *)(DAT_007ce3ec + 0x20),
+    btlMainCurveSetPoses((void *)(DAT_007ce3ec + 0x20),
                  (f32 *)&work.firstPositionXY, (f32 *)&work.secondPosition, 1);
     FUN_002a3110((void *)(DAT_007ce3ec + 0x20), distance);
     if (special) {
@@ -10634,11 +10634,11 @@ u32 func_002f6ab0(BtlAction* action)
         *(u32*)(DAT_007ce3ec + 0xc) &= ~0x80000;
         *(u32*)(DAT_007ce3ec + 0xc) |= 0x2000000;
 
-        packet = FUN_0029fa50(0x10);
+        packet = btlCreateTimingPacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a1080(0x10, 4);
+        packet = btlMainCreateFadePacket(0x10, 4);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002a16c0(0x10);
+        packet = btlMainCreateColorFadePacket(0x10);
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         result = 0;
     }
