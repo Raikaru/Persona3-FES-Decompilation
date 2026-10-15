@@ -32,7 +32,7 @@ extern f32 DAT_007cb04c;
 extern const char DAT_0068EEB8[];
 extern const char DAT_0068EED0[];
 
-extern void *FUN_00173220(u16 id);
+extern void *datPersonaGetRow(u16 id);
 extern u16 *datPersonaGetSkills(void *persona);
 extern u8 datPersonaGetTotalStat(void *persona, u16 stat);
 extern u32 datPersonaCountValidSkills(void *persona);
