@@ -246,7 +246,7 @@ extern u8 DAT_00958bcc_abs[];
 void FUN_00359b40(f32 param_1, void *param_2, void *param_3, ...);
 void FUN_00359380(f32 param_1, void *param_2, int param_3);
 void FUN_004c35d0(void *param_1, void *param_2, int param_3);
-void FUN_003bbc90(f32 param_1, void *param_2, void *param_3, void *param_4, void *param_5, void *param_6, void *param_7);
+void MT_Scene_EvalCubicBezier(f32 param_1, void *param_2, void *param_3, void *param_4, void *param_5, void *param_6, void *param_7);
 void FUN_00395170(u64 param_1);
 void FUN_003951a0(u64 param_1);
 u8 FUN_003951d0(void);
@@ -389,7 +389,7 @@ u32  FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,  
 #undef FUN_00359b40
 #undef FUN_00359380
 #undef FUN_004c35d0
-#undef FUN_003bbc90
+#undef MT_Scene_EvalCubicBezier
 #define FUN_00395950(...) ((void (*)(...))FUN_00395950)(__VA_ARGS__)
 #undef FUN_00395e20
 extern void FUN_00386f70(f32 depth, RwV2d *position, RwV2d *size, RwRGBA *color);
