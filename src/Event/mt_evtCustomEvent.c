@@ -84,7 +84,7 @@ extern void FUN_005225a8_eaa0(const char *,...);
 extern void FUN_00388000(float param_1,float param_2,float *param_3,float *param_4,float *param_5,float *param_6,u32 *param_7,RwRGBA *param_8,u32 param_9);
 #pragma alias FUN_003b91c0_a5c0 FUN_003b91c0
 extern u64 FUN_003b91c0_a5c0(float,u16,u32,u32,u32,u32,u32);
-#pragma alias FUN_003b89f0_evt_f32 FUN_003b89f0
+#pragma alias FUN_003b89f0_evt_f32 MT_Scene_BeginResPathAnimById
 extern u32 FUN_003b89f0_evt_f32(f32 param_1,u16 param_2,char *param_3,u32 param_4);
 
 extern char DAT_006a1820[];
@@ -547,7 +547,7 @@ u32 FUN_00398530(int param_1)
 
       FUN_005225a8(0x6a1278);
 
-      FUN_003b8310(*(u16 *)(puVar3 + 0x25),1);
+      MT_Scene_SetResEnabledById(*(u16 *)(puVar3 + 0x25),1);
 
       *puVar3 = 7;
 
@@ -819,7 +819,7 @@ LAB_00398d80:
 
   case 0x13:
 
-    FUN_003b8310(*(u16 *)(puVar3 + 0x25),0);
+    MT_Scene_SetResEnabledById(*(u16 *)(puVar3 + 0x25),0);
 
     FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 0x25),0,1,0,1,0);
 
@@ -2382,7 +2382,7 @@ u32 FUN_0039a8a0(int param_1)
 
         if (lVar10 == 1) {
 
-          uVar9 = FUN_00173220(auStack_8[0]);
+          uVar9 = datPersonaGetRow(auStack_8[0]);
 
           FUN_0039ef30(puVar11,5,uVar9);
 
@@ -2702,7 +2702,7 @@ u32 FUN_0039a8a0(int param_1)
 
       FUN_003c7c20(0,*(u8 *)((u32)uVar2 * 0xe + iGpffffb730 + 3),0);
 
-      uVar9 = FUN_00173220(uVar2);
+      uVar9 = datPersonaGetRow(uVar2);
 
       FUN_003c7bc0(1,uVar9);
 
@@ -2888,7 +2888,7 @@ u32 FUN_0039a8a0(int param_1)
 
       FUN_003c7c20(0,*(u8 *)((u32)uVar2 * 0xe + iGpffffb730 + 3),0);
 
-      uVar9 = FUN_00173220(uVar2);
+      uVar9 = datPersonaGetRow(uVar2);
 
       FUN_003c7bc0(1,uVar9);
 
@@ -4817,7 +4817,7 @@ u32 FUN_0039d8e0(int param_1)
     uVar2 = FUN_0016df30_u64((short)piVar1[3]);
     uVar7 = FUN_0030bbb0((u8)uVar2);
     FUN_0039ef30(piVar8,0,uVar7);
-    uVar7 = FUN_00173220((u16)piVar1[0xd]);
+    uVar7 = datPersonaGetRow((u16)piVar1[0xd]);
     FUN_0039ef30(piVar8,1,uVar7);
     FUN_0039f210(piVar8,0,-1,-1);
     *piVar1 = 3;
@@ -5082,7 +5082,7 @@ u32 FUN_0039dd90(int param_1)
 
       FUN_003c7c20(0,*(u8 *)((u32)uVar1 * 0xe + DAT_007ce420 + 3),0);
 
-      uVar7 = FUN_00173220(uVar1);
+      uVar7 = datPersonaGetRow(uVar1);
 
       FUN_003c7bc0(1,uVar7);
 
