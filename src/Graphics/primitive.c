@@ -982,7 +982,7 @@ void FUN_0035ac80(void)
 // FUN_0035AC90
 
 
-void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
+void itfMesApplyRelocs(int *param_1,int param_2,u8 *param_3,int param_4)
 {
   u8 bVar1;
   u8 *pbVar3;
