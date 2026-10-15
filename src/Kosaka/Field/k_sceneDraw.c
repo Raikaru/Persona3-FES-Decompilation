@@ -216,7 +216,7 @@ extern RpLight* func_00198580();
 extern RwRGBAReal* func_0019fd70();
 extern RwMatrix* func_0019fda0();
 extern s32 func_001a7660(void* param);
-extern s32 func_001a76e0(void* param);
+extern s32 K_Clump_StateFlagIsSet(void* param);
 extern void func_001a8b10(u32* param);
 extern void func_001b3e50(RwCamera* camera, void* fieldData);
 extern void func_001b4720(RwCamera* camera, void* fieldData);
@@ -594,7 +594,7 @@ s32 func_0019de80(KwlnTask* task)
             {
                 if (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
                 {
-                    if (func_001a76e0(modelFld->mdl->unk_e0) == 1)
+                    if (K_Clump_StateFlagIsSet(modelFld->mdl->unk_e0) == 1)
                     {
                         func_00317a20(modelFld->mdl);
                         if (SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c) != NULL &&
@@ -1372,7 +1372,7 @@ void func_001a0040(u32 visible, u32 updateField)
 }
 
 // FUN_001a0150
-void func_001a0150(u16 resTypeId, u32 visible)
+void SceneDraw_SetResVisible(u16 resTypeId, u32 visible)
 {
     Resrc* res;
 
@@ -1470,7 +1470,7 @@ void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
 }
 
 // FUN_001a0430
-void func_001a0430(u16 resTypeId, u32 customLight)
+void SceneDraw_SetCustomLight(u16 resTypeId, u32 customLight)
 {
     Resrc* res;
     u32 type;
@@ -1586,7 +1586,7 @@ void* func_001a0700(u16 resTypeId)
 }
 
 // FUN_001a07f0
-void* func_001a07f0(u16 resTypeId)
+void* SceneDraw_GetLightMatrixA(u16 resTypeId)
 {
     Resrc* res;
     u32 type;
@@ -1808,7 +1808,7 @@ RwMatrix* func_001a0d80()
 }
 
 // FUN_001a0dc0
-void func_001a0dc0(u16 resTypeId, u32 visible)
+void SceneDraw_SetResVisibleChecked(u16 resTypeId, u32 visible)
 {
     Resrc* res;
 
@@ -1834,7 +1834,7 @@ setFlags:
 }
 
 // FUN_001a0e50
-void func_001a0e50(u16 resTypeId, u32 persona)
+void SceneDraw_SetResPersona(u16 resTypeId, u32 persona)
 {
     Resrc* res;
 
