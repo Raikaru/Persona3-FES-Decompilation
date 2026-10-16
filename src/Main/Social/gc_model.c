@@ -43,7 +43,7 @@ typedef struct PanelTransform {
     PanelVec3 scale;
     void* model;
 } PanelTransform;
-extern void func_0020ca90(PanelMatrix* output, const PanelTransform* transform);
+extern void pscBuildModelMatrix(PanelMatrix* output, const PanelTransform* transform);
 extern u32 datGetScenarioMode(void);
 extern u32 func_0021c3f0(s32 texture);
 extern void* func_0021cca0(u32 texture, s32 frame);
@@ -97,7 +97,7 @@ extern void func_00209ba0(void* destination, s32 digit);
 extern void func_0020c7b0(u8* work);
 extern void func_0020cda0(u8* work);
 extern void (*D_00960090)(u32 state, u32 value);
-extern void func_0020ccc0(void* work, const u8* color);
+extern void pscPanelWriteVertexColors(void* work, const u8* color);
 extern char D_0068E0A0[];
 extern u8 D_0068E090[];
 extern void func_0020d500(s32* work, void* matrix);
@@ -260,13 +260,13 @@ void func_0020b250(void* work)
         break;
     }
     matrix = func_004c38c0();
-    func_0020ca90(matrix, (const PanelTransform*)panel);
+    pscBuildModelMatrix(matrix, (const PanelTransform*)panel);
     if (*(u32*)panel & 4) {
-        func_0020ccc0(common, panel + 0x40);
+        pscPanelWriteVertexColors(common, panel + 0x40);
         switch (*(s32*)(panel + 4)) {
         case 0:
-            func_0020ccc0(mode0 + 0x178, panel + 0x40);
-            func_0020ccc0(mode0 + 0x208, panel + 0x40);
+            pscPanelWriteVertexColors(mode0 + 0x178, panel + 0x40);
+            pscPanelWriteVertexColors(mode0 + 0x208, panel + 0x40);
             c1 = panel[0x40];
             c3 = panel[0x41];
             c2 = panel[0x42];
@@ -283,8 +283,8 @@ void func_0020b250(void* work)
             } else {
                 color[3] = (u8)(s32)(alpha - 2.1474836e9f);
             }
-            func_0020ccc0(mode0 + 0x298, color);
-            func_0020ccc0(mode0 + 0x328, color);
+            pscPanelWriteVertexColors(mode0 + 0x298, color);
+            pscPanelWriteVertexColors(mode0 + 0x328, color);
             c1 = panel[0x40];
             c3 = panel[0x41];
             c2 = panel[0x42];
@@ -299,7 +299,7 @@ void func_0020b250(void* work)
             } else {
                 color[3] = (u8)(s32)(alpha - 2.1474836e9f);
             }
-            func_0020ccc0(mode0 + 0x3B8, color);
+            pscPanelWriteVertexColors(mode0 + 0x3B8, color);
             if (*(u32*)(mode0 + 0x170) & 1) {
                 c1 = panel[0x40];
                 c3 = panel[0x41];
@@ -312,9 +312,9 @@ void func_0020b250(void* work)
                 color[0] = 0;
                 color[1] = 0;
                 color[2] = 0;
-                func_0020ccc0(mode0 + 0x448, color);
+                pscPanelWriteVertexColors(mode0 + 0x448, color);
             } else {
-                func_0020ccc0(mode0 + 0x448, panel + 0x40);
+                pscPanelWriteVertexColors(mode0 + 0x448, panel + 0x40);
             }
             if (*(u32*)(mode0 + 0x170) & 1) {
                 color[0] = panel[0x40];
@@ -322,7 +322,7 @@ void func_0020b250(void* work)
                 color[2] = panel[0x42];
                 color[3] = panel[0x43];
                 color[3] = 0;
-                func_0020ccc0(mode0 + 0x4D8, color);
+                pscPanelWriteVertexColors(mode0 + 0x4D8, color);
             } else {
                 color[0] = panel[0x40];
                 color[1] = panel[0x41];
@@ -334,12 +334,12 @@ void func_0020b250(void* work)
                 } else {
                     color[3] = (u8)(s32)(alpha - 2.1474836e9f);
                 }
-                func_0020ccc0(mode0 + 0x4D8, color);
+                pscPanelWriteVertexColors(mode0 + 0x4D8, color);
             }
             break;
         case 1:
-            func_0020ccc0(mode2 + 0x208, panel + 0x40);
-            func_0020ccc0(mode2 + 0x178, panel + 0x40);
+            pscPanelWriteVertexColors(mode2 + 0x208, panel + 0x40);
+            pscPanelWriteVertexColors(mode2 + 0x178, panel + 0x40);
             value = panel[0x43];
             color[0] = panel[0x40];
             color[1] = panel[0x41];
@@ -355,10 +355,10 @@ void func_0020b250(void* work)
             } else {
                 color[3] = (u8)(s32)(alpha - 2.1474836e9f);
             }
-            func_0020ccc0(mode2 + 0x298, color);
+            pscPanelWriteVertexColors(mode2 + 0x298, color);
             break;
         case 2:
-            func_0020ccc0(mode1 + 0x170, panel + 0x40);
+            pscPanelWriteVertexColors(mode1 + 0x170, panel + 0x40);
             break;
         }
         *(u32*)panel &= ~4;
@@ -376,7 +376,7 @@ void func_0020b250(void* work)
         } else {
             color[3] = (u8)(s32)(alpha - 2.1474836e9f);
         }
-        func_0020ccc0(mode0 + 0x3B8, color);
+        pscPanelWriteVertexColors(mode0 + 0x3B8, color);
         color[0] = panel[0x40];
         color[1] = panel[0x41];
         color[2] = panel[0x42];
@@ -393,7 +393,7 @@ void func_0020b250(void* work)
                 color[3] = (u8)(s32)(alpha - 2.1474836e9f);
             }
         }
-        func_0020ccc0(mode0 + 0x4D8, color);
+        pscPanelWriteVertexColors(mode0 + 0x4D8, color);
     }
     D_00960090(9U, 2U);
     D_00960090(0x14U, 2U);
@@ -824,7 +824,7 @@ void func_0020c8d0(void)
 }
 
 // FUN_0020ca90
-void func_0020ca90(PanelMatrix* output, const PanelTransform* transform)
+void pscBuildModelMatrix(PanelMatrix* output, const PanelTransform* transform)
 {
     const PanelVec3* cameraScale;
     PanelMatrix* rotation;
@@ -923,7 +923,7 @@ void func_0020cc80(void* work, const u8* color)
 }
 
 // FUN_0020ccc0
-void func_0020ccc0(void* work, const u8* color)
+void pscPanelWriteVertexColors(void* work, const u8* color)
 {
     u8* panel = (u8*)work;
 
@@ -1063,7 +1063,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
     *(u64*)&transformedAxis = *(const u64*)D_0068E0F8_abs;
     transformedAxis.z = *(f32*)(D_0068E0F8_abs + 8);
     matrix = (PanelMatrix*)func_004c38c0();
-    func_0020ca90(matrix, transform);
+    pscBuildModelMatrix(matrix, transform);
     func_004c6c60(&facingAxis, &facingAxis, matrix);
 
     resourceCenter = *(const PanelVec3*)(out + 0x994);

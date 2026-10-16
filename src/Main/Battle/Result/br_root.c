@@ -101,7 +101,7 @@ typedef struct RuntimeFieldEditorWork
     s32 selection;
 } RuntimeFieldEditorWork;
 extern void* func_001a3b10(void* parent, u32 width, u32 height, u32 mode);
-extern void func_001a3dc0(void* task, const void* descriptors, u32 count);
+extern void sdkLboxAddDescriptors(void* task, const void* descriptors, u32 count);
 extern void func_001a3bf0(void* task, u32 request);
 extern s32 func_001a4510(void* task);
 extern void func_001a3be0(void* task, u32 request);
@@ -261,7 +261,7 @@ extern void* func_001e8e80(RuntimeWork* rawWork, void* material);
 extern RuntimeWork* func_001ee2e0(const void* data);
 extern RuntimeWork* func_001eeb90(RuntimeWork* input);
 extern void func_001eee40(RuntimeWork* work);
-extern void func_001eefc0(void* node);
+extern void AfPackListAppend(void* node);
 extern void func_00100ec0(void* resource);
 extern RuntimeMatrix* func_004c38c0(void);
 extern void func_004c31b0(RuntimeMatrix* matrix, const RuntimeVec3* axis,
@@ -276,8 +276,8 @@ extern void func_00491a80(void* manager);
 extern void* func_001e1840(void);
 extern void FUN_00521250(void* destination, const void* source, u32 size);
 extern s32 D_007CE2C0;
-s32 func_001ef000(RuntimeListNode* node);
-s32 func_001e8330(const RuntimeWork* work, s32 index);
+s32 AfPackIsActive(RuntimeListNode* node);
+s32 effAfterHistoryIndex(const RuntimeWork* work, s32 index);
 void func_001e7f90(const RuntimeDistanceWork* data, f32 distance,
                    u32* section, f32* fraction);
 extern void func_00493230();
@@ -453,8 +453,8 @@ extern void func_001e9a90(void* work);
 extern s32 Vpad_HasEntries(void* work);
 extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
-extern void func_001eba50(RuntimeResetWork* work);
-extern void func_001eba80(RuntimeCommandWork* work, u32* result);
+extern void effAfterResetCommand(RuntimeResetWork* work);
+extern void effAfterRunCommands(RuntimeCommandWork* work, u32* result);
 extern void func_001ebd80(RuntimeWork* work, s32 param2);
 extern f32 func_001ecd90(void* data, s32 index, s32 vectorSet);
 extern f32 func_001ecec0(void* data, s32 index);
@@ -775,7 +775,7 @@ extern u32 func_003c7610(void);
 extern void func_003c7990_y2(s32);
 extern u32 func_003c7850_y2(void);
 extern u32 func_003c7650(s32);
-extern u32 func_003c78d0(void);
+extern u32 nmMesWindowLatchAnimAux(void);
 extern void func_002594c0(void);
 extern u32 sflCard002595c0(void);
 extern void func_003c94e0(void *);
@@ -2686,7 +2686,7 @@ void *func_001f2300(KwlnTask *task)
         }
         break;
     case 15:
-        if (func_003c78d0() == 0) {
+        if (nmMesWindowLatchAnimAux() == 0) {
             func_003c7650(0);
             printf(D_006846A0);
             temp = func_003c7610();

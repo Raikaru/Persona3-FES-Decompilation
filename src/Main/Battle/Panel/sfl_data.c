@@ -41,7 +41,7 @@ typedef struct PanelTransform {
     PanelVec3 scale;
     void* model;
 } PanelTransform;
-extern void func_0020ca90(PanelMatrix* output, const PanelTransform* transform);
+extern void pscBuildModelMatrix(PanelMatrix* output, const PanelTransform* transform);
 
 extern u32 datGetScenarioMode(void);
 extern u32 func_0021c3f0(s32 texture);
@@ -114,7 +114,7 @@ extern void func_004f1ed0(void* vertices, u32 count, void* matrix, u32 stride);
 extern void func_004f1fd0(u32 primitive, void* indices, u32 count);
 extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
-extern void func_0020ccc0(void* work, const u8* color);
+extern void pscPanelWriteVertexColors(void* work, const u8* color);
 extern char D_0068E0A0[];
 extern u8 D_0068E090[];
 extern void func_0020d500(s32* work, void* matrix);

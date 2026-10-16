@@ -36,7 +36,7 @@ u32 FUN_002fdb70(void);
 u32 FUN_002fdb90(void);
 s32 FUN_002fdbb0(BtlAction* param_1,BtlUnit* param_2);
 u8 FUN_002fdcb0(int param_1);
-u32 FUN_002fdcf0(int param_1,int param_2);
+u32 btlBossFlagPairOk(int param_1,int param_2);
 code FUN_002fded0(s16 param_1);
 u8 FUN_002fdfa0(void);
 u32 FUN_002fdfe0(int param_1);
@@ -3488,7 +3488,7 @@ u8 FUN_002fdcb0(int param_1)
 // FUN_002FDCF0
 
 
-u32 FUN_002fdcf0(int param_1, int param_2)
+u32 btlBossFlagPairOk(int param_1, int param_2)
 {
     u8 value;
 
@@ -3506,7 +3506,7 @@ u32 FUN_002fdcf0(int param_1, int param_2)
 // FUN_002FDD40
 
 
-u8 FUN_002fdd40(BtlUnit* first, BtlUnit* second)
+u8 btlBossUnitsSameGenus(BtlUnit* first, BtlUnit* second)
 {
     if ((*(u32*)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
     {

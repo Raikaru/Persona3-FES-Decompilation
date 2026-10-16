@@ -35,9 +35,9 @@ extern s8 FUN_0016df30(s16 param_1);
 extern int FUN_0030bbb0(u8 param_1);
 extern u8 *FUN_003c4390(int param_1);
 extern u32 FUN_0010c3a0(u32 param_1,int *param_2,int param_3);
-#pragma alias FUN_0039f2a0_narg FUN_0039f2a0
+#pragma alias FUN_0039f2a0_narg evtMessageWindowReset
 extern void FUN_0039f2a0_narg(void);
-#pragma alias FUN_0039f350_narg FUN_0039f350
+#pragma alias FUN_0039f350_narg evtMessageWindowResetTyped
 extern void FUN_0039f350_narg(void);
 #pragma alias FUN_003a25f0_typed FUN_003a25f0
 extern void FUN_003a25f0_typed(s32, u8);
@@ -92,7 +92,7 @@ int FUN_0039edd0(int *param_1,u64 param_2);
 void FUN_0039ee80(int *param_1);
 #pragma alias FUN_0039ee80_typed FUN_0039ee80
 extern void FUN_0039ee80_typed(int *param_1);
-u8 FUN_0039eee0(int *param_1);
+u8 evtMessageWindowIsOpen(int *param_1);
 void FUN_0039eef0(int *param_1,u64 param_2,u64 param_3);
 void FUN_0039ef30(int *param_1);
 void FUN_0039ef70(int *param_1,u64 param_2,int param_3);
@@ -118,15 +118,15 @@ extern void FUN_0039f190_call(int *param_1, int param_2, int param_3);
 #pragma alias FUN_0039f950_call FUN_0039f950
 extern void FUN_0039f950_call(int param_1);
 void FUN_0039f210(int *param_1,int param_2,int param_3,int param_4);
-void FUN_0039f2a0(int *param_1);
-void FUN_0039f350(int *param_1);
+void evtMessageWindowReset(int *param_1);
+void evtMessageWindowResetTyped(int *param_1);
 void FUN_0039f410(int *param_1);
-u8 FUN_0039f6e0(int *param_1);
+u8 evtMessageWindowIsDone(int *param_1);
 #pragma alias FUN_0039f210_call FUN_0039f210
 extern void FUN_0039f210_call(int *param_1, int param_2, int param_3, int param_4);
-#pragma alias FUN_0039f6e0_call FUN_0039f6e0
+#pragma alias FUN_0039f6e0_call evtMessageWindowIsDone
 extern int FUN_0039f6e0_call(int *param_1);
-u32 FUN_0039f710(int *param_1);
+u32 evtMessageWindowRecordCount(int *param_1);
 void FUN_0039f750(int *param_1,int param_2);
 void FUN_0039f7c0(int *param_1);
 int FUN_0039f800(int *param_1);
@@ -164,7 +164,7 @@ void FUN_003a2090(u64 param_1,u16 param_2,u32 param_3,u16 param_4);
 #define FUN_0039ed20(...) ((long (*)(...))FUN_0039ed20)(__VA_ARGS__)
 #define FUN_0039edd0(...) ((long (*)(...))FUN_0039edd0)(__VA_ARGS__)
 #define FUN_0039ee80(...) ((void (*)(...))FUN_0039ee80)(__VA_ARGS__)
-#define FUN_0039eee0(...) ((u8 (*)(...))FUN_0039eee0)(__VA_ARGS__)
+#define evtMessageWindowIsOpen(...) ((u8 (*)(...))evtMessageWindowIsOpen)(__VA_ARGS__)
 #define FUN_0039eef0(...) ((void (*)(...))FUN_0039eef0)(__VA_ARGS__)
 #define FUN_0039ef30(...) ((void (*)(...))FUN_0039ef30)(__VA_ARGS__)
 #define FUN_0039ef70(...) ((void (*)(...))FUN_0039ef70)(__VA_ARGS__)
@@ -174,11 +174,11 @@ void FUN_003a2090(u64 param_1,u16 param_2,u32 param_3,u16 param_4);
 #define FUN_0039f120(...) ((void (*)(...))FUN_0039f120)(__VA_ARGS__)
 #define FUN_0039f190(...) ((void (*)(...))FUN_0039f190)(__VA_ARGS__)
 #define FUN_0039f210(...) ((void (*)(...))FUN_0039f210)(__VA_ARGS__)
-#define FUN_0039f2a0(...) ((void (*)(...))FUN_0039f2a0)(__VA_ARGS__)
-#define FUN_0039f350(...) ((void (*)(...))FUN_0039f350)(__VA_ARGS__)
+#define evtMessageWindowReset(...) ((void (*)(...))evtMessageWindowReset)(__VA_ARGS__)
+#define evtMessageWindowResetTyped(...) ((void (*)(...))evtMessageWindowResetTyped)(__VA_ARGS__)
 #define FUN_0039f410(...) ((void (*)(...))FUN_0039f410)(__VA_ARGS__)
-#define FUN_0039f6e0(...) ((u8 (*)(...))FUN_0039f6e0)(__VA_ARGS__)
-#define FUN_0039f710(...) ((u64 (*)(...))FUN_0039f710)(__VA_ARGS__)
+#define evtMessageWindowIsDone(...) ((u8 (*)(...))evtMessageWindowIsDone)(__VA_ARGS__)
+#define evtMessageWindowRecordCount(...) ((u64 (*)(...))evtMessageWindowRecordCount)(__VA_ARGS__)
 #define FUN_0039f750(...) ((void (*)(...))FUN_0039f750)(__VA_ARGS__)
 #define FUN_0039f7c0(...) ((void (*)(...))FUN_0039f7c0)(__VA_ARGS__)
 #define FUN_0039f800(...) ((int (*)(...))FUN_0039f800)(__VA_ARGS__)
@@ -347,11 +347,11 @@ void FUN_0039ee80(int *param_1)
 }
 
 #define FUN_0039ee80(...) ((void (*)(...))FUN_0039ee80)(__VA_ARGS__)
-#undef FUN_0039eee0
+#undef evtMessageWindowIsOpen
 // FUN_0039eee0
 
 
-u8 FUN_0039eee0(int *param_1)
+u8 evtMessageWindowIsOpen(int *param_1)
 
 
 
@@ -360,7 +360,7 @@ u8 FUN_0039eee0(int *param_1)
   return *param_1 != 0;
 
 }
-#define FUN_0039eee0(...) ((u8 (*)(...))FUN_0039eee0)(__VA_ARGS__)
+#define evtMessageWindowIsOpen(...) ((u8 (*)(...))evtMessageWindowIsOpen)(__VA_ARGS__)
 #undef FUN_0039eef0
 // FUN_0039EEF0
 
@@ -597,11 +597,11 @@ void FUN_0039f210(int *param_1,int param_2,int param_3,int param_4)
 
 }
 #define FUN_0039f210(...) ((void (*)(...))FUN_0039f210)(__VA_ARGS__)
-#undef FUN_0039f2a0
+#undef evtMessageWindowReset
 // FUN_0039F2A0
 
 
-void FUN_0039f2a0(int *param_1)
+void evtMessageWindowReset(int *param_1)
 
 
 
@@ -628,12 +628,12 @@ void FUN_0039f2a0(int *param_1)
   return;
 
 }
-#define FUN_0039f2a0(...) ((void (*)(...))FUN_0039f2a0)(__VA_ARGS__)
-#undef FUN_0039f350
+#define evtMessageWindowReset(...) ((void (*)(...))evtMessageWindowReset)(__VA_ARGS__)
+#undef evtMessageWindowResetTyped
 
 
 // FUN_0039F350
-void FUN_0039f350(int *param_1)
+void evtMessageWindowResetTyped(int *param_1)
 {
   int iVar1;
   u8 bVar1;
@@ -654,7 +654,7 @@ void FUN_0039f350(int *param_1)
   return;
 }
 
-#define FUN_0039f350(...) ((void (*)(...))FUN_0039f350)(__VA_ARGS__)
+#define evtMessageWindowResetTyped(...) ((void (*)(...))evtMessageWindowResetTyped)(__VA_ARGS__)
 #undef FUN_0039f410
 // FUN_0039F410 NONMATCHING
 
@@ -811,11 +811,11 @@ void FUN_0039f410(int *param_1)
 
 }
 #define FUN_0039f410(...) ((void (*)(...))FUN_0039f410)(__VA_ARGS__)
-#undef FUN_0039f6e0
+#undef evtMessageWindowIsDone
 // FUN_0039F6E0
 
 
-u8 FUN_0039f6e0(int *param_1)
+u8 evtMessageWindowIsDone(int *param_1)
 
 
 
@@ -834,12 +834,12 @@ nonzero:
   return param_1[3] == 0;
 
 }
-#define FUN_0039f6e0(...) ((u8 (*)(...))FUN_0039f6e0)(__VA_ARGS__)
-#undef FUN_0039f710
+#define evtMessageWindowIsDone(...) ((u8 (*)(...))evtMessageWindowIsDone)(__VA_ARGS__)
+#undef evtMessageWindowRecordCount
 // FUN_0039F710
 
 
-u32 FUN_0039f710(int *param_1)
+u32 evtMessageWindowRecordCount(int *param_1)
 
 
 
@@ -854,7 +854,7 @@ nonzero:
   return FUN_003a51a0(param_1[2]);
 
 }
-#define FUN_0039f710(...) ((u32 (*)(...))FUN_0039f710)(__VA_ARGS__)
+#define evtMessageWindowRecordCount(...) ((u32 (*)(...))evtMessageWindowRecordCount)(__VA_ARGS__)
 #undef FUN_0039f750
 // FUN_0039F750
 
@@ -1601,7 +1601,7 @@ void FUN_003a05b0(int param_1,int param_2)
     MT_Scene_SetResPlacement(*handle,&output,work1);
     if (param_2 == 6) {
       iVar5 = FUN_003b5d10(*handle);
-      FUN_00350040(*(u32 *)(iVar5 + 0x104),&colorIn);
+      mdlEffectGetPackedColor(*(u32 *)(iVar5 + 0x104),&colorIn);
       colorOut = colorIn & 0xffffff;
       FUN_0034ff90(*(u32 *)(iVar5 + 0x104),&colorOut);
     }
@@ -2013,14 +2013,14 @@ u32 FUN_003a0e90(int param_1)
       case 1:
         cVar3 = FUN_0016dba0(*(u16 *)(iVar1 + 4));
         if (cVar3 == '\n') {
-          FUN_00395270(0x2e);
+          mtMiscPlayCue(0x2e);
         } else {
-          FUN_00395270(0x56);
+          mtMiscPlayCue(0x56);
         }
         break;
       case 2:
       case 3:
-        FUN_00395270(0x27);
+        mtMiscPlayCue(0x27);
         break;
       }
 
@@ -2566,7 +2566,7 @@ u32 FUN_003a0e90(int param_1)
 
       else {
 
-        FUN_00395270(*(short *)(iVar1 + 0xe0));
+        mtMiscPlayCue(*(short *)(iVar1 + 0xe0));
 
       }
 
@@ -2580,7 +2580,7 @@ u32 FUN_003a0e90(int param_1)
 
   if (lVar4 != 0) {
 
-    FUN_00350040(*(u32 *)((int)lVar4 + 0x104),(u32 *)&fStack_4);
+    mdlEffectGetPackedColor(*(u32 *)((int)lVar4 + 0x104),(u32 *)&fStack_4);
 
     iVar7 = *(int *)(iVar1 + 0x9c);
 

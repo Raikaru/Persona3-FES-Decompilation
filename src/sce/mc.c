@@ -147,7 +147,7 @@ void FUN_0041cc70(int param_1,u32 param_2)
 
   else if (iVar1 == 1) {
 
-    func_00191640(**(int **)(*(int *)(param_1 + 0x39c) + 0xc) + -1);
+    H_Memcard_SetSlot(**(int **)(*(int *)(param_1 + 0x39c) + 0xc) + -1);
 
     *(u32 *)(param_1 + 0xc) = 0;
 
@@ -264,7 +264,7 @@ u32 FUN_0041cea0(int param_1)
 
       lVar2 = FUN_00421700(*(u32 *)(param_1 + 0x398));
 
-      lVar3 = func_00190590();
+      lVar3 = H_Memcard_CheckCard();
 
       if ((lVar3 != 3) && (lVar3 != -2)) {
 
@@ -624,7 +624,7 @@ u64 FUN_0041d330(int param_1)
 
     }
 
-    lVar2 = func_00190590();
+    lVar2 = H_Memcard_CheckCard();
 
     if ((lVar2 == 3) || (lVar2 == -5)) {
 
@@ -672,7 +672,7 @@ u64 FUN_0041d330(int param_1)
 
     }
 
-    lVar2 = func_00190590();
+    lVar2 = H_Memcard_CheckCard();
 
     if ((lVar2 == 3) || (lVar2 == -5)) {
 
@@ -718,7 +718,7 @@ u64 FUN_0041d330(int param_1)
 
     }
 
-    lVar2 = func_00190590();
+    lVar2 = H_Memcard_CheckCard();
 
     if ((lVar2 == 3) || (lVar2 == -2)) {
 
@@ -760,7 +760,7 @@ u64 FUN_0041d330(int param_1)
 
     }
 
-    lVar2 = func_00190590();
+    lVar2 = H_Memcard_CheckCard();
 
     if ((lVar2 == 3) || (lVar2 == -2)) {
 
@@ -815,7 +815,7 @@ switchD_0041db60_caseD_d:
 
     if (lVar3 == 0) {
 
-      lVar3 = func_00190590();
+      lVar3 = H_Memcard_CheckCard();
 
       if ((lVar3 == 3) || (lVar3 == -2)) {
 
@@ -877,7 +877,7 @@ switchD_0041db60_default:
 
     }
 
-    lVar3 = func_00190590();
+    lVar3 = H_Memcard_CheckCard();
 
     if ((lVar3 == 3) || (lVar3 == -5)) {
 
@@ -1019,7 +1019,7 @@ switchD_0041db60_default:
 
     }
 
-    lVar3 = func_00190590();
+    lVar3 = H_Memcard_CheckCard();
 
     if ((lVar3 == 3) || (lVar3 == -2)) {
 
@@ -1228,7 +1228,7 @@ u32 FUN_0041e010(u64 param_1)
 
     }
 
-    lVar2 = func_00190590();
+    lVar2 = H_Memcard_CheckCard();
 
     if (((lVar2 == -5) || (lVar2 == -4)) || (lVar2 == 3)) {
 

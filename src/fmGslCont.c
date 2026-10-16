@@ -67,14 +67,14 @@ u8 FUN_003b44a0(void);
 int * FUN_003b4520(void);
 s32 FUN_003b4580(int param_1);
 int * FUN_003b45f0(int param_1,int param_2);
-int * FUN_003b46b0(int param_1);
-u32 FUN_003b46f0(int *param_1,int param_2);
-u32 FUN_003b4740(int param_1);
-void FUN_003b4770(int *param_1,int *param_2);
-int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4);
-void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4);
+int * fmGslContPopNode(int param_1);
+u32 fmGslContPushNode(int *param_1,int param_2);
+u32 fmGslContFreeNode(int param_1);
+void fmGslContSetupSubBlocks(int *param_1,int *param_2);
+int fmGslContDecodeRun(int param_1,int param_2,u64 param_3,int *param_4);
+void fmGslContPoolInit(u32 *param_1,u32 *param_2,int param_3,int param_4);
 int * FUN_003b49a0(int *param_1);
-void FUN_003b4a20(int *param_1,u32 *param_2);
+void fmGslContPoolUnlink(int *param_1,u32 *param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,  int param_7);
 void FUN_003b4b40(s32 *param_1,u32 *param_2,u8 *param_3,u8 *param_4);
 void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5  );
@@ -91,14 +91,14 @@ void FUN_003b4ee0(void);
 #define FUN_003b4520(...) ((int * (*)(...))FUN_003b4520)(__VA_ARGS__)
 #define FUN_003b4580(...) ((s32 (*)(...))FUN_003b4580)(__VA_ARGS__)
 #define FUN_003b45f0(...) ((int * (*)(...))FUN_003b45f0)(__VA_ARGS__)
-#define FUN_003b46b0(...) ((int * (*)(...))FUN_003b46b0)(__VA_ARGS__)
-#define FUN_003b46f0(...) ((u32 (*)(...))FUN_003b46f0)(__VA_ARGS__)
-#define FUN_003b4740(...) ((u32 (*)(...))FUN_003b4740)(__VA_ARGS__)
-#define FUN_003b4770(...) ((void (*)(...))FUN_003b4770)(__VA_ARGS__)
-#define FUN_003b47b0(...) ((int (*)(...))FUN_003b47b0)(__VA_ARGS__)
-#define FUN_003b4920(...) ((void (*)(...))FUN_003b4920)(__VA_ARGS__)
+#define fmGslContPopNode(...) ((int * (*)(...))fmGslContPopNode)(__VA_ARGS__)
+#define fmGslContPushNode(...) ((u32 (*)(...))fmGslContPushNode)(__VA_ARGS__)
+#define fmGslContFreeNode(...) ((u32 (*)(...))fmGslContFreeNode)(__VA_ARGS__)
+#define fmGslContSetupSubBlocks(...) ((void (*)(...))fmGslContSetupSubBlocks)(__VA_ARGS__)
+#define fmGslContDecodeRun(...) ((int (*)(...))fmGslContDecodeRun)(__VA_ARGS__)
+#define fmGslContPoolInit(...) ((void (*)(...))fmGslContPoolInit)(__VA_ARGS__)
 #define FUN_003b49a0(...) ((int * (*)(...))FUN_003b49a0)(__VA_ARGS__)
-#define FUN_003b4a20(...) ((void (*)(...))FUN_003b4a20)(__VA_ARGS__)
+#define fmGslContPoolUnlink(...) ((void (*)(...))fmGslContPoolUnlink)(__VA_ARGS__)
 #define FUN_003b4a90(...) ((void (*)(...))FUN_003b4a90)(__VA_ARGS__)
 #define FUN_003b4d10(...) ((void (*)(...))FUN_003b4d10)(__VA_ARGS__)
 #define FUN_003b4e90(...) ((void (*)(...))FUN_003b4e90)(__VA_ARGS__)
@@ -372,11 +372,11 @@ int * FUN_003b45f0(int param_1,int param_2)
 
 }
 #define FUN_003b45f0(...) ((void (*)(...))FUN_003b45f0)(__VA_ARGS__)
-#undef FUN_003b46b0
+#undef fmGslContPopNode
 // FUN_003B46B0
 
 
-int * FUN_003b46b0(int param_1)
+int * fmGslContPopNode(int param_1)
 
 
 
@@ -411,12 +411,12 @@ int * FUN_003b46b0(int param_1)
   return piVar1;
 
 }
-#define FUN_003b46b0(...) ((int * (*)(...))FUN_003b46b0)(__VA_ARGS__)
-#undef FUN_003b46f0
+#define fmGslContPopNode(...) ((int * (*)(...))fmGslContPopNode)(__VA_ARGS__)
+#undef fmGslContPushNode
 // FUN_003B46F0
 
 
-u32 FUN_003b46f0(int *param_1,int param_2)
+u32 fmGslContPushNode(int *param_1,int param_2)
 
 
 
@@ -460,12 +460,12 @@ u32 FUN_003b46f0(int *param_1,int param_2)
   return uVar1;
 
 }
-#define FUN_003b46f0(...) ((u32 (*)(...))FUN_003b46f0)(__VA_ARGS__)
-#undef FUN_003b4740
+#define fmGslContPushNode(...) ((u32 (*)(...))fmGslContPushNode)(__VA_ARGS__)
+#undef fmGslContFreeNode
 // FUN_003B4740
 
 
-u32 FUN_003b4740(int param_1)
+u32 fmGslContFreeNode(int param_1)
 
 
 
@@ -476,12 +476,12 @@ u32 FUN_003b4740(int param_1)
   return 1;
 
 }
-#define FUN_003b4740(...) ((u32 (*)(...))FUN_003b4740)(__VA_ARGS__)
-#undef FUN_003b4770
+#define fmGslContFreeNode(...) ((u32 (*)(...))fmGslContFreeNode)(__VA_ARGS__)
+#undef fmGslContSetupSubBlocks
 // FUN_003B4770
 
 
-void FUN_003b4770(int *param_1,int *param_2)
+void fmGslContSetupSubBlocks(int *param_1,int *param_2)
 
 
 
@@ -509,12 +509,12 @@ void FUN_003b4770(int *param_1,int *param_2)
   return;
 
 }
-#define FUN_003b4770(...) ((void (*)(...))FUN_003b4770)(__VA_ARGS__)
-#undef FUN_003b47b0
+#define fmGslContSetupSubBlocks(...) ((void (*)(...))fmGslContSetupSubBlocks)(__VA_ARGS__)
+#undef fmGslContDecodeRun
 // FUN_003B47B0
 
 
-int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
+int fmGslContDecodeRun(int param_1,int param_2,u64 param_3,int *param_4)
 
 
 
@@ -597,12 +597,12 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
   return iVar7;
 
 }
-#define FUN_003b47b0(...) ((int (*)(...))FUN_003b47b0)(__VA_ARGS__)
-#undef FUN_003b4920
+#define fmGslContDecodeRun(...) ((int (*)(...))fmGslContDecodeRun)(__VA_ARGS__)
+#undef fmGslContPoolInit
 // FUN_003B4920
 
 
-void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
+void fmGslContPoolInit(u32 *param_1,u32 *param_2,int param_3,int param_4)
 
 
 
@@ -649,7 +649,7 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
   return;
 
 }
-#define FUN_003b4920(...) ((void (*)(...))FUN_003b4920)(__VA_ARGS__)
+#define fmGslContPoolInit(...) ((void (*)(...))fmGslContPoolInit)(__VA_ARGS__)
 #undef FUN_003b49a0
 // FUN_003B49A0
 
@@ -718,11 +718,11 @@ int * FUN_003b49a0(int *param_1)
 
 }
 #define FUN_003b49a0(...) ((int * (*)(...))FUN_003b49a0)(__VA_ARGS__)
-#undef FUN_003b4a20
+#undef fmGslContPoolUnlink
 // FUN_003B4A20
 
 
-void FUN_003b4a20(int *param_1,u32 *param_2)
+void fmGslContPoolUnlink(int *param_1,u32 *param_2)
 
 
 
@@ -785,7 +785,7 @@ void FUN_003b4a20(int *param_1,u32 *param_2)
   return;
 
 }
-#define FUN_003b4a20(...) ((void (*)(...))FUN_003b4a20)(__VA_ARGS__)
+#define fmGslContPoolUnlink(...) ((void (*)(...))fmGslContPoolUnlink)(__VA_ARGS__)
 #undef FUN_003b4a90
 /* W377 six-knob/pair probe: opt_loop_invariants on improved FUN_003b4a90 from nd139/object160 to nd8/object164; window=176. */
 #pragma opt_loop_invariants on

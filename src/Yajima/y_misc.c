@@ -548,7 +548,7 @@ f32 FUN_0016bb80(u32 param_1, u32 param_2);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
-u32 FUN_004173e0(void);
+u32 itfMesWindowSubTablePtr(void);
 u64 FUN_00417410(void);
 u64 FUN_00417540(void);
 u64 FUN_00417590(void);
@@ -806,7 +806,7 @@ u32 FUN_00417380(void)
 // FUN_004173E0
 
 
-u32 FUN_004173e0(void)
+u32 itfMesWindowSubTablePtr(void)
 
 
 
@@ -3923,7 +3923,7 @@ u64 FUN_0041b810(int param_1)
       switch (cVar1) {
       case 1:
         if ((FUN_0034fdb0(*(u32 *)(puVar2 + 4),5), *(int *)(puVar2 + 2) != 0)) {
-          iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
+          iVar3 = mdlEffectGetWord84(*(u32 *)(puVar2 + 4));
           if (iVar3 < *(int *)(puVar2 + 2)) {
             continue;
           }
@@ -3971,7 +3971,7 @@ u64 FUN_0041b950(int param_1)
       case 1:
         FUN_0034fdb0_fcl(*(u32 *)(puVar2 + 4), 2);
         if (*(int *)(puVar2 + 2) != 0) {
-          iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
+          iVar3 = mdlEffectGetWord84(*(u32 *)(puVar2 + 4));
           if (!(iVar3 < *(int *)(puVar2 + 2))) {
             *puVar2 = *puVar2 & ~1;
           }
@@ -13490,10 +13490,10 @@ extern void FUN_001b0250_typed(u32 param_1, int param_2);
 extern void FUN_001b0260(u32 param_1, int param_2);
 extern code FUN_001b9120;
 extern void FUN_001bf220(void *param_1, u16 param_2, u16 param_3);
-extern long FUN_001c6450(u32 param_1, u32 param_2, u32 param_3, void *param_4);
- #pragma alias FUN_001c6450_typed FUN_001c6450
+extern long FldEvent_HasLineOfSight(u32 param_1, u32 param_2, u32 param_3, void *param_4);
+ #pragma alias FUN_001c6450_typed FldEvent_HasLineOfSight
  extern u32 FUN_001c6450_typed(u32 param_1,void *param_2,float param_3,float param_4);
- #pragma alias FUN_001c6450_f32 FUN_001c6450
+ #pragma alias FUN_001c6450_f32 FldEvent_HasLineOfSight
  extern u32 FUN_001c6450_f32(u32 param_1,void *param_2,float param_3,float param_4);
 extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
@@ -13619,10 +13619,10 @@ extern code FUN_003c72d0;
 extern code FUN_003c7430;
 extern code FUN_003c74e0;
 extern code FUN_003c7560;
-extern code FUN_003c75b0;
+extern code nmMesWindowCurrentAnim;
 extern code FUN_003c77a0;
 extern code FUN_003c7850;
-extern code FUN_003c78d0;
+extern code nmMesWindowLatchAnimAux;
 extern code FUN_003c7b90;
 extern float FUN_00421fe0(int param_1, int param_2, int param_3, u16 param_4, int param_5);
 #pragma alias FUN_00421fe0_s16 FUN_00421fe0
@@ -14470,7 +14470,7 @@ void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
-void FUN_0045e7e0(void);
+void yTimeLimitReset(void);
 void FUN_0045ea80(int param_1);
 void FUN_0045edc0(void);
 void FUN_0045f930(int param_1,float *param_2,code *param_3,u32 param_4);
@@ -14924,10 +14924,10 @@ extern code FUN_003c72d0;
 extern code FUN_003c7430;
 extern code FUN_003c74e0;
 extern code FUN_003c7560;
-extern code FUN_003c75b0;
+extern code nmMesWindowCurrentAnim;
 extern code FUN_003c77a0;
 extern code FUN_003c7850;
-extern code FUN_003c78d0;
+extern code nmMesWindowLatchAnimAux;
 extern code FUN_003c7b90;
 extern code FUN_004222d0;
 extern code FUN_00423fe0_y2;
@@ -15860,7 +15860,7 @@ void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
-void FUN_0045e7e0(void);
+void yTimeLimitReset(void);
 void FUN_0045ea80(int param_1);
 void FUN_0045edc0(void);
 void FUN_0045f930(int param_1,float *param_2,code *param_3,u32 param_4);
@@ -18919,7 +18919,7 @@ LAB_004363c0:
     if (lVar13 != 0) {
       uVar14 = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + *(int *)(iVar2 + 4) * 0x1c0));
       iVar19 = FUN_00318b60(*(u32 *)DAT_008717f0_abs);
-      lVar13 = FUN_001c6450(*(u32 *)(iVar12 + 0x10),*(u32 *)(iVar12 + 0x14),uVar14,
+      lVar13 = FldEvent_HasLineOfSight(*(u32 *)(iVar12 + 0x10),*(u32 *)(iVar12 + 0x14),uVar14,
                             (void *)(iVar19 + 0x30));
       if (lVar13 == 1) {
         if (DAT_007ce6c0 == '\x01') {
@@ -26256,7 +26256,7 @@ void FUN_0044beb0(int param_1)
                                (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar3 + 1) * 0x1c0) + 0x128));
         FUN_001ad940(auStack_100,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar3 + 0x18) * 0x70] + 0x1e0));
-        lVar15 = FUN_001c6450(*(u32 *)(iVar19 + 0x10),*(u32 *)(iVar19 + 0x14),uVar14,
+        lVar15 = FldEvent_HasLineOfSight(*(u32 *)(iVar19 + 0x10),*(u32 *)(iVar19 + 0x14),uVar14,
                               auStack_100);
         if (lVar15 == 1) {
           FUN_004543c0(*(u8 *)(iVar3 + 1),5);
@@ -26573,7 +26573,7 @@ void FUN_0044beb0(int param_1)
                            (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar3 + 1) * 0x1c0) + 0x128));
     FUN_001ad940(auStack_140,
                  *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar3 + 0x18) * 0x70] + 0x1e0));
-    lVar15 = FUN_001c6450(*(u32 *)(iVar19 + 0x10),*(u32 *)(iVar19 + 0x14),uVar14,
+    lVar15 = FldEvent_HasLineOfSight(*(u32 *)(iVar19 + 0x10),*(u32 *)(iVar19 + 0x14),uVar14,
                           auStack_140);
     if (lVar15 == 1) {
       FUN_004543c0(*(u8 *)(iVar3 + 1),5);
@@ -26734,7 +26734,7 @@ void FUN_0044d600(int param_1)
         uVar5 = FUN_00318b60(*(u32 *)
                               (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
         FUN_001ad940(auStack_80,*(u32 *)(DAT_008717f4_rows[0] + 0x1e0));
-        lVar6 = FUN_001c6450(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
+        lVar6 = FldEvent_HasLineOfSight(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
                              auStack_80);
         if (lVar6 == 1) {
           FUN_004543c0(*(u8 *)(iVar1 + 1),5);
@@ -26781,7 +26781,7 @@ void FUN_0044d600(int param_1)
             uVar5 = FUN_00318b60(*(u32 *)
                                   (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
             FUN_001ad940(auStack_d0,*(u32 *)(DAT_008717f4_rows[0] + 0x1e0));
-            lVar6 = FUN_001c6450(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
+            lVar6 = FldEvent_HasLineOfSight(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
                                  auStack_d0);
             if (lVar6 == 1) {
               FUN_004543c0(*(u8 *)(iVar1 + 1),5);
@@ -26808,7 +26808,7 @@ void FUN_0044d600(int param_1)
         uVar5 = FUN_00318b60(*(u32 *)
                               (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
         FUN_001ad940(auStack_f0,*(u32 *)(DAT_008717f4_rows[0] + 0x1e0));
-        lVar6 = FUN_001c6450(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
+        lVar6 = FldEvent_HasLineOfSight(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x44),uVar5,
                              auStack_f0);
         if (lVar6 == 1) {
           FUN_004543c0(*(u8 *)(iVar1 + 1),5);
@@ -27435,7 +27435,7 @@ u32 FUN_0044f300(char param_1)
           uVar5 = FUN_00318b60(*(u32 *)
                                 (*(int *)(DAT_0086edf4_abs + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
           FUN_001ad940(auStack_80,*(u32 *)(*piVar7 + 0x1e0));
-          lVar3 = FUN_001c6450(*(u32 *)(iVar8 + 0x10),*(u32 *)(iVar8 + 0x14),uVar5,
+          lVar3 = FldEvent_HasLineOfSight(*(u32 *)(iVar8 + 0x10),*(u32 *)(iVar8 + 0x14),uVar5,
                                auStack_80);
           if (lVar3 == 1) {
             FUN_001ad940(auStack_90,*(u32 *)(*piVar7 + 0x1e0));
@@ -27532,7 +27532,7 @@ u8 FUN_0044fab0(int param_1)
         uVar5 = FUN_00318b60(*(u32 *)
                               (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
         FUN_001ad940(auStack_10,*(u32 *)(DAT_008717f4_rows[iVar9 * 0x70] + 0x1e0));
-        lVar4 = FUN_001c6450(*(u32 *)(iVar8 + 0x10),*(u32 *)(iVar8 + 0x14),uVar5,
+        lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar8 + 0x10),*(u32 *)(iVar8 + 0x14),uVar5,
                              auStack_10);
         if (lVar4 == 1) {
           FUN_001ad940(auStack_20,*(u32 *)(DAT_008717f4_rows[iVar9 * 0x70] + 0x1e0));
@@ -27646,7 +27646,7 @@ u32 FUN_0044ffb0(int param_1)
       uVar4 = FUN_00318b60(*(u32 *)
                             (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
       FUN_001ad940(auStack_10,*(u32 *)(DAT_008717f4_rows[0] + 0x1e0));
-      lVar3 = FUN_001c6450(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x54),uVar4,
+      lVar3 = FldEvent_HasLineOfSight(*(u32 *)(iVar2 + 0x50),*(u32 *)(iVar2 + 0x54),uVar4,
                            auStack_10);
       if (lVar3 == 1) {
         lVar3 = FUN_001c65e0_typed((void*)((u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0));
@@ -27764,7 +27764,7 @@ void FUN_004501b0(char param_1)
                             (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
       FUN_001ad940(auStack_60,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_60
+      lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_60
                           );
       if (lVar4 != 1) {
         lVar4 = FUN_001b0220(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
@@ -27792,7 +27792,7 @@ void FUN_004501b0(char param_1)
                             (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
       FUN_001ad940(auStack_d0,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_d0
+      lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_d0
                           );
       if (lVar4 != 1) {
         lVar4 = FUN_001b0220(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
@@ -27838,7 +27838,7 @@ void FUN_004501b0(char param_1)
                                 (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
           FUN_001ad940(auStack_b0,
                        *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-          lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,
+          lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,
                                auStack_b0);
           if (lVar4 != 1) {
             lVar4 = FUN_001b0220(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
@@ -27958,7 +27958,7 @@ void FUN_00450b30(char param_1)
                             (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
       FUN_001ad940(auStack_60,
                    *(u32 *)(((u8 *)DAT_008717f4_abs)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_60
+      lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_60
                           );
       if (lVar4 == 1) {
         FUN_004543c0(*(u8 *)(iVar2 + 1),5);
@@ -27989,7 +27989,7 @@ void FUN_00450b30(char param_1)
                             (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
       FUN_001ad940(auStack_d0,
                    *(u32 *)(((u8 *)DAT_008717f4_abs)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_d0
+      lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,auStack_d0
                           );
       if (lVar4 == 1) {
         FUN_004543c0(*(u8 *)(iVar2 + 1),5);
@@ -28038,7 +28038,7 @@ void FUN_00450b30(char param_1)
                                 (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x128));
           FUN_001ad940(auStack_b0,
                        *(u32 *)(((u8 *)DAT_008717f4_abs)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-          lVar4 = FUN_001c6450(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,
+          lVar4 = FldEvent_HasLineOfSight(*(u32 *)(iVar6 + 0x10),*(u32 *)(iVar6 + 4),uVar5,
                                auStack_b0);
           if (lVar4 == 1) {
             FUN_004543c0(*(u8 *)(iVar2 + 1),5);
@@ -28518,7 +28518,7 @@ u32 FUN_004523c0(u64 param_1,char param_2)
           uVar9 = FUN_00318b60(*(u32 *)
                                 (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
           FUN_001ad940(auStack_30,*(u32 *)(((u8 *)DAT_008717f4)[iVar12 * 0x70] + 0x1e0));
-          lVar10 = FUN_001c6450(*(u32 *)(iVar11 + 0x10),*(u32 *)(iVar11 + 0x14),uVar9,
+          lVar10 = FldEvent_HasLineOfSight(*(u32 *)(iVar11 + 0x10),*(u32 *)(iVar11 + 0x14),uVar9,
                                 auStack_30);
           if (lVar10 == 1) {
             fVar15 = *(float *)(iVar11 + 0x14);
@@ -31575,7 +31575,7 @@ u32 FUN_00458cb0(u64 param_1,char param_2,char param_3)
         else {
           uVar9 = FUN_00318b60(*(u32 *)((u8 *)unit_row->unk_054 + 0x128));
           FUN_001ad940(auStack_30,*(u32 *)(*piVar13 + 0x1e0));
-          lVar8 = FUN_001c6450(*(u32 *)(config + 8),
+          lVar8 = FldEvent_HasLineOfSight(*(u32 *)(config + 8),
                                *(u32 *)(config + 4),uVar9,auStack_30);
           if (lVar8 == 1) {
             *(u8 *)(iVar2 + 7) = 1;
@@ -32152,10 +32152,10 @@ extern u32 DAT_007ce700_y2;
 #pragma alias FUN_003c7430_y2 FUN_003c7430
 #pragma alias FUN_003c74e0_y2 FUN_003c74e0
 #pragma alias FUN_003c7560_y2 FUN_003c7560
-#pragma alias FUN_003c75b0_y2 FUN_003c75b0
+#pragma alias FUN_003c75b0_y2 nmMesWindowCurrentAnim
 #pragma alias FUN_003c77a0_y2 FUN_003c77a0
 #pragma alias FUN_003c7850_y2 FUN_003c7850
-#pragma alias FUN_003c78d0_y2 FUN_003c78d0
+#pragma alias FUN_003c78d0_y2 nmMesWindowLatchAnimAux
 #pragma alias FUN_003c7b90_y2 FUN_003c7b90
 extern void FUN_003c72d0_y2(void *param_1);
 extern void FUN_003c7430_y2(int param_1);

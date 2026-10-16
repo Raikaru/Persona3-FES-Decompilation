@@ -6029,7 +6029,7 @@ extern KwlnTask* func_004214e0(KwlnTask* parentTask, u32 mode);
 extern void func_004215b0(KwlnTask* task, u32 state);
 extern void func_00421650(KwlnTask* task);
 extern u32 func_00421700(KwlnTask* task);
-extern void func_00191240(void);
+extern void H_Memcard_Reset(void);
 extern s32 func_00191260(void);
 extern void func_001967d0(void);
 
@@ -6163,7 +6163,7 @@ void* func_00188690(KwlnTask* task)
             work->timer--;
             if (work->timer == 0)
             {
-                func_00191240();
+                H_Memcard_Reset();
                 work->state = 3;
             }
             break;

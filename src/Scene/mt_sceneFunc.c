@@ -1138,7 +1138,7 @@ type3:
     goto finish;
 
 type6:
-    FUN_00350040(*(u32 *)(puVar3 + 0x82), auStack_8);
+    mdlEffectGetPackedColor(*(u32 *)(puVar3 + 0x82), auStack_8);
     bVar4 = auStack_8[3];
     goto finish;
 
@@ -2229,7 +2229,7 @@ void FUN_003b9610(Resrc* param_1)
 
       if (iVar6 == 6) {
 
-        FUN_00350040(*(u32 *)(puVar8 + 0x82),stack.m_auStack_8);
+        mdlEffectGetPackedColor(*(u32 *)(puVar8 + 0x82),stack.m_auStack_8);
 
         stack.m_auStack_8[3] = cVar9;
 
@@ -4431,7 +4431,7 @@ void MT_Scene_StartShake(int param_1,int param_2)
     }
     *(u16 *)&DAT_007ce664 = param_2 * 10;
     *(u16 *)&DAT_007ce660 = (*(u16 *)&DAT_007ce664 << 2) / 10;
-    FUN_003500a0(param_1,(short)param_2);
+    mdlEffectSeqStart(param_1,(short)param_2);
   }
   return;
 
@@ -4523,8 +4523,8 @@ int FUN_003bcda0(int *param_1,int *param_2)
   vectors.origin = ((RwMatrix *)matrix)->pos;
 
   second = *param_2;
-  FUN_0034ffc0(*(u32 *)(*param_1 + 0x104),&secondPos);
-  FUN_0034ffc0(*(u32 *)(second + 0x104),&first);
+  mdlEffectBuildObjectMatrix(*(u32 *)(*param_1 + 0x104),&secondPos);
+  mdlEffectBuildObjectMatrix(*(u32 *)(second + 0x104),&first);
   firstPosition = &secondPos.pos;
   secondPosition = &first.pos;
 

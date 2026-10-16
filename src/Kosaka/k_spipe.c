@@ -60,7 +60,7 @@ typedef struct FldShadowRenderTex
 #define FLDSHADOW_SOURCE_FILE ((const char*)0x00678948)
 extern void* func_0019b2b0(KwlnTask* renderTexTask);
 extern void func_0019bcf0(KwlnTask* renderTexTask);
-extern void func_00199c60(RwCamera* camera);
+extern void FldShadow_DestroyCamera(RwCamera* camera);
 extern void* func_004d0e40(void* raster);
 extern void func_004f1780(RwRaster* raster, u32 enabled);
 extern void* func_004d0be0(void* texture, RwRaster* raster);
@@ -118,7 +118,7 @@ extern void* func_0049c1b0(RpWorld* world, RwCamera* camera);
 extern void* func_004d0f00(void* texture);
 extern void* func_004cb750(RwFrame* frame, const RwV3d* translation, RwOpCombineType combineOp);
 extern void* func_00491a80(void* renderObject);
-extern void func_003176c0(Model* model);
+extern void mdlUpdateModelMatrix(Model* model);
 extern void func_00318b90(Model* model);
 extern u32 func_00319010(Model* model);
 extern u32 mdlStreamRead(Model* model);
@@ -1155,7 +1155,7 @@ u32 K_FldShadow_Draw(f32 xLeft, f32 yTop,
 }
 
 // FUN_00199c60
-void func_00199c60(RwCamera* camera)
+void FldShadow_DestroyCamera(RwCamera* camera)
 {
     RwFrame* frame;
     RwRaster* zBuffer;
@@ -1188,7 +1188,7 @@ void func_00199c60(RwCamera* camera)
 
 /* W377: stacking opt_loop_invariants on and opt_propagation off improves func_0019a420 (nd1122 -> nd1083; object 1748/1808). */
 // FUN_00199cf0
-void* func_00199cf0(void* atomic, FldShadowBoundsAccum* accum)
+void* FldShadow_AccumulateAtomicBounds(void* atomic, FldShadowBoundsAccum* accum)
 {
     const RwSphere* sphere;
 
@@ -1323,7 +1323,7 @@ void* func_0019a420(void* ignored,
 
 /* Removing this worsens FUN_0019ab80 (nd1126 -> nd1129) - measured W161. */
 // FUN_0019ab30
-void* func_0019ab30(void* atomic, FldShadowAtomicContext* context)
+void* FldShadow_ProjectAtomic(void* atomic, FldShadowAtomicContext* context)
 {
     context->atomic = atomic;
     func_00464120(atomic, context->geometry, func_0019a420, context);
@@ -1706,7 +1706,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
         {
             memset(&bounds, 0, sizeof(bounds));
             func_004916d0((void*)mdlGetClump(shadow->model),
-                          (void*)func_00199cf0, &bounds);
+                          (void*)FldShadow_AccumulateAtomicBounds, &bounds);
             shadow->unk_14 = bounds.largestAtomic;
             shadow->projectionDistance = 90.0f;
             *(f32*)((u8*)shadow + 0x2c) = bounds.center.x;
@@ -1802,14 +1802,14 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             func_004c2d20(mdlGetMatrix(shadow->model), quaternion);
             func_004c2f10(mdlGetMatrix(shadow->model));
             shadow->model->flags |= 0x40;
-            func_003176c0(shadow->model);
+            mdlUpdateModelMatrix(shadow->model);
             func_00318b90(shadow->model);
             func_00317a20(shadow->model);
             shadow->model->flags &= ~0x40;
             D_00960090(0x14, 2);
             *mdlGetMatrix(shadow->model) = savedMatrix;
             shadow->model->flags &= ~4;
-            func_003176c0(shadow->model);
+            mdlUpdateModelMatrix(shadow->model);
             func_00318b90(shadow->model);
             RwCameraEndUpdate(kwlnGetMainCamera());
         }

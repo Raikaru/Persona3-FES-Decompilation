@@ -1072,9 +1072,9 @@ void FUN_0036efb0(void);
 void FUN_0036f000(long param_1);
 void FUN_0036f260(void);
 void FUN_0036f370(int param_1);
-void FUN_00350040(int param_1,u32 *param_2);
+void mdlEffectGetPackedColor(int param_1,u32 *param_2);
 void FUN_003722d0(u32 param_1,u32 param_2,u32 param_3,u8 *param_4);
-void FUN_0036f490(int param_1);
+void evtMainSetFlag(int param_1);
 void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5, int param_6,int param_7);
@@ -1150,7 +1150,7 @@ void FUN_00385ba0(void);
 void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
-void FUN_00386aa0(void);
+void evtMenuClearSlots(void);
 void FUN_00386b70(u64 param_1,long param_2,int param_3);
 void FUN_00386c40(int param_1,int param_2);
 void FUN_00386d50(int param_1);
@@ -3454,7 +3454,7 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
       }
 
-      lVar2 = FUN_0039eee0(iVar7 + 0x82c);
+      lVar2 = evtMessageWindowIsOpen(iVar7 + 0x82c);
 
       if (lVar2 == 1) {
 
@@ -5597,7 +5597,7 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 
                   }
 
-                  FUN_00350040(*(u32 *)(puVar5 + 0x82),(u32 *)(iVar8 + 0x85c));
+                  mdlEffectGetPackedColor(*(u32 *)(puVar5 + 0x82),(u32 *)(iVar8 + 0x85c));
 
                   *(u32 *)(iVar8 + 0x864) = *(u32 *)(puVar5 + 0x82);
 
@@ -17769,7 +17769,7 @@ u32 FUN_00385bd0(int param_1,u64 param_2)
 
   uVar3 = FUN_001a3ae0(param_2,0x10,0x40);
 
-  FUN_001a3dc0(uVar3, DAT_006a0350_abs, 5);
+  sdkLboxAddDescriptors(uVar3, DAT_006a0350_abs, 5);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -17834,7 +17834,7 @@ u32 FUN_00385cd0(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),200,0x140);
 
-  FUN_001a3dc0(uVar3, DAT_006a03f0_abs, 8);
+  sdkLboxAddDescriptors(uVar3, DAT_006a03f0_abs, 8);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -17910,7 +17910,7 @@ u32 FUN_00385e20(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xf0,0x80);
 
-  FUN_001a3dc0(uVar3, DAT_006a0530_abs, 4);
+  sdkLboxAddDescriptors(uVar3, DAT_006a0530_abs, 4);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -17960,7 +17960,7 @@ u32 FUN_00385f00(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xf0,0x80);
 
-  FUN_001a3dc0(uVar3, DAT_006a05c0_abs, 1);
+  sdkLboxAddDescriptors(uVar3, DAT_006a05c0_abs, 1);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -17994,7 +17994,7 @@ u32 FUN_00385f90(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xaa,300);
 
-  FUN_001a3dc0(uVar3, DAT_006a0610_abs, 3);
+  sdkLboxAddDescriptors(uVar3, DAT_006a0610_abs, 3);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -18040,7 +18040,7 @@ u32 FUN_00386060(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xaa,300);
 
-  FUN_001a3dc0(uVar3, DAT_006a0670_abs, 2);
+  sdkLboxAddDescriptors(uVar3, DAT_006a0670_abs, 2);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -18094,7 +18094,7 @@ u32 FUN_00386130(int param_1,f32 *param_2,f32 *param_3)
 
   uVar1 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xaa,300);
 
-  FUN_001a3dc0(uVar1, DAT_006a06b0_abs, 1);
+  sdkLboxAddDescriptors(uVar1, DAT_006a06b0_abs, 1);
 
   FUN_001a3bf0(uVar1,1);
 
@@ -18141,7 +18141,7 @@ u32 FUN_00386230(int param_1,u32 *param_2,u32 *param_3)
 
   uVar1 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xaa,300);
 
-  FUN_001a3dc0(uVar1, DAT_006a06d0_abs, 1);
+  sdkLboxAddDescriptors(uVar1, DAT_006a06d0_abs, 1);
 
   FUN_001a3bf0(uVar1,1);
 
@@ -18171,7 +18171,7 @@ u32 FUN_00386310(int param_1)
 
   uVar1 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0x10,0x60);
 
-  FUN_001a3dc0(uVar1, DAT_006a06f0_abs, 1);
+  sdkLboxAddDescriptors(uVar1, DAT_006a06f0_abs, 1);
 
   FUN_001a3bf0(uVar1,1);
 
@@ -18241,7 +18241,7 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
 
   uVar4 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0x10,0x60);
   DAT_007ce600 = (u32)uVar4;
-  FUN_001a3dc0(uVar4, DAT_006a0730_abs, 2);
+  sdkLboxAddDescriptors(uVar4, DAT_006a0730_abs, 2);
   FUN_001a3bf0(uVar4,1);
   *(u32 *)(param_1 + 0x16c) = 10;
   DAT_007ce604 = FUN_001a41b0(uVar4,0);
@@ -18323,7 +18323,7 @@ u32 FUN_003865f0(int param_1)
 
   uVar3 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xf0,0x80);
 
-  FUN_001a3dc0(uVar3, DAT_006a0780_abs, 1);
+  sdkLboxAddDescriptors(uVar3, DAT_006a0780_abs, 1);
 
   FUN_001a3bf0(uVar3,1);
 
@@ -18361,7 +18361,7 @@ FUN_00386680(int param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5
 
   uVar2 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xbe,0x100);
 
-  FUN_001a3dc0(uVar2, DAT_006a07e0_abs, 4);
+  sdkLboxAddDescriptors(uVar2, DAT_006a07e0_abs, 4);
 
   FUN_001a3bf0(uVar2,1);
 
@@ -18405,7 +18405,7 @@ u32 FUN_00386780(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
   uVar2 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xbe,0x100);
 
-  FUN_001a3dc0(uVar2, DAT_006a0890_abs, 3);
+  sdkLboxAddDescriptors(uVar2, DAT_006a0890_abs, 3);
 
   FUN_001a3bf0(uVar2,1);
 
@@ -18445,7 +18445,7 @@ u32 FUN_00386860(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
   uVar2 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xbe,0x100);
 
-  FUN_001a3dc0(uVar2, DAT_006a0920_abs, 3);
+  sdkLboxAddDescriptors(uVar2, DAT_006a0920_abs, 3);
 
   FUN_001a3bf0(uVar2,1);
 
@@ -18485,7 +18485,7 @@ u32 FUN_00386940(int param_1,int param_2,f32 param_3)
 
   uVar2 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xbe,0x100);
 
-  FUN_001a3dc0(uVar2, DAT_006a0990_abs, 2);
+  sdkLboxAddDescriptors(uVar2, DAT_006a0990_abs, 2);
 
   FUN_001a3bf0(uVar2,1);
 
@@ -18519,7 +18519,7 @@ u32 FUN_00386a00(int param_1,u32 param_2)
 
   uVar2 = FUN_001a3ae0(*(u32 *)(param_1 + 0x92c),0xbe,0x100);
 
-  FUN_001a3dc0(uVar2, DAT_006a09f0_abs, 1);
+  sdkLboxAddDescriptors(uVar2, DAT_006a09f0_abs, 1);
 
   FUN_001a3bf0(uVar2,1);
 
@@ -18537,7 +18537,7 @@ u32 FUN_00386a00(int param_1,u32 param_2)
 // FUN_00386AA0
 
 
-void FUN_00386aa0(void)
+void evtMenuClearSlots(void)
 {
   int iVar1;
   u32 *puVar2;

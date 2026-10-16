@@ -154,9 +154,9 @@ void FUN_0039e820(u64 param_1);
 u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_0039ea20(int param_1,int param_2);
 void FUN_0039eaa0(int param_1);
-void FUN_0039eb90(void);
+void evtCustomEventReleaseRes(void);
 u32 FUN_0039ec10(int param_1,int param_2,u32 *param_3,u32 *param_4);
-int FUN_0039ec60(int param_1);
+int evtCustomEventResId(int param_1);
 
 
 /* Region call-cast macros */
@@ -199,9 +199,9 @@ int FUN_0039ec60(int param_1);
 #define FUN_0039e880(...) ((u32 (*)(...))FUN_0039e880)(__VA_ARGS__)
 #define FUN_0039ea20(...) ((void (*)(...))FUN_0039ea20)(__VA_ARGS__)
 #define FUN_0039eaa0(...) ((void (*)(...))FUN_0039eaa0)(__VA_ARGS__)
-#define FUN_0039eb90(...) ((void (*)(...))FUN_0039eb90)(__VA_ARGS__)
+#define evtCustomEventReleaseRes(...) ((void (*)(...))evtCustomEventReleaseRes)(__VA_ARGS__)
 #define FUN_0039ec10(...) ((u32 (*)(...))FUN_0039ec10)(__VA_ARGS__)
-#define FUN_0039ec60(...) ((int (*)(...))FUN_0039ec60)(__VA_ARGS__)
+#define evtCustomEventResId(...) ((int (*)(...))evtCustomEventResId)(__VA_ARGS__)
 
 #undef FUN_003983e0
 // FUN_003983E0
@@ -569,7 +569,7 @@ u32 FUN_00398530(int param_1)
 
   case 8:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -605,7 +605,7 @@ u32 FUN_00398530(int param_1)
 
   case 10:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -631,7 +631,7 @@ u32 FUN_00398530(int param_1)
 
   case 0xc:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -659,7 +659,7 @@ u32 FUN_00398530(int param_1)
 
   case 0xe:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -777,7 +777,7 @@ LAB_00398d80:
 
   case 0x10:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -807,7 +807,7 @@ LAB_00398d80:
 
   case 0x12:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -893,7 +893,7 @@ LAB_00398d80:
 
   case 0x19:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -957,7 +957,7 @@ LAB_00398d80:
 
   case 0x1e:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -979,7 +979,7 @@ LAB_00398d80:
 
   case 0x20:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -1007,7 +1007,7 @@ LAB_00398d80:
 
   case 0x22:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -1113,7 +1113,7 @@ LAB_00399518:
 
   case 0x24:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -1143,7 +1143,7 @@ LAB_00399518:
 
   case 0x26:
 
-    lVar10 = FUN_0039f6e0(puVar15);
+    lVar10 = evtMessageWindowIsDone(puVar15);
 
     if (lVar10 == 1) {
 
@@ -1346,7 +1346,7 @@ u32 FUN_003998b0(int param_1)
 
   case 3:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -1366,7 +1366,7 @@ u32 FUN_003998b0(int param_1)
 
   case 5:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -1406,7 +1406,7 @@ u32 FUN_003998b0(int param_1)
 
   case 7:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -1844,7 +1844,7 @@ u32 FUN_00399c40(int param_1)
 
   case 3:
 
-    lVar8 = FUN_0039f6e0(puVar10);
+    lVar8 = evtMessageWindowIsDone(puVar10);
 
     if (lVar8 == 1) {
 
@@ -1878,7 +1878,7 @@ u32 FUN_00399c40(int param_1)
 
   case 5:
 
-    lVar8 = FUN_0039f6e0(puVar10);
+    lVar8 = evtMessageWindowIsDone(puVar10);
 
     if (lVar8 == 1) {
 
@@ -1968,7 +1968,7 @@ u32 FUN_00399c40(int param_1)
 
   case 7:
 
-    lVar8 = FUN_0039f6e0(puVar10);
+    lVar8 = evtMessageWindowIsDone(puVar10);
 
     if (lVar8 == 1) {
 
@@ -2135,7 +2135,7 @@ u32 FUN_0039a5c0(int param_1)
 
   case 3:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -2155,7 +2155,7 @@ u32 FUN_0039a5c0(int param_1)
 
   case 5:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -2428,7 +2428,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 5:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2474,7 +2474,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 7:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2504,7 +2504,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 9:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2544,7 +2544,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0xb:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2584,7 +2584,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0xe:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2628,7 +2628,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x10:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2660,7 +2660,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x12:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2774,7 +2774,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x16:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2794,7 +2794,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x18:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2858,7 +2858,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x1c:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2960,7 +2960,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x1e:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -2988,7 +2988,7 @@ u32 FUN_0039a8a0(int param_1)
 
   case 0x20:
 
-    lVar10 = FUN_0039f6e0(puVar11);
+    lVar10 = evtMessageWindowIsDone(puVar11);
 
     if (lVar10 == 1) {
 
@@ -3325,7 +3325,7 @@ u32 FUN_0039b950(int param_1)
 
   case 6:
 
-    lVar6 = FUN_0039f6e0(puVar8);
+    lVar6 = evtMessageWindowIsDone(puVar8);
 
     if (lVar6 == 1) {
 
@@ -3345,7 +3345,7 @@ u32 FUN_0039b950(int param_1)
 
   case 8:
 
-    lVar6 = FUN_0039f6e0(puVar8);
+    lVar6 = evtMessageWindowIsDone(puVar8);
 
     if (lVar6 == 1) {
 
@@ -3372,7 +3372,7 @@ u32 FUN_0039b950(int param_1)
 
   case 10:
 
-    lVar6 = FUN_0039f6e0(puVar8);
+    lVar6 = evtMessageWindowIsDone(puVar8);
 
     if (lVar6 == 1) {
 
@@ -3650,7 +3650,7 @@ u32 FUN_0039c0f0(int param_1)
 
   case 4:
 
-    lVar5 = FUN_0039f6e0(puVar6);
+    lVar5 = evtMessageWindowIsDone(puVar6);
 
     if (lVar5 == 1) {
 
@@ -3879,7 +3879,7 @@ u32 FUN_0039c440(int param_1)
 
   case 3:
 
-    lVar9 = FUN_0039f6e0(puVar13);
+    lVar9 = evtMessageWindowIsDone(puVar13);
 
     if (lVar9 == 1) {
 
@@ -3915,7 +3915,7 @@ u32 FUN_0039c440(int param_1)
 
   case 5:
 
-    lVar9 = FUN_0039f6e0(puVar13);
+    lVar9 = evtMessageWindowIsDone(puVar13);
 
     if (lVar9 == 1) {
 
@@ -4003,7 +4003,7 @@ u32 FUN_0039c440(int param_1)
 
   case 7:
 
-    lVar9 = FUN_0039f6e0(puVar13);
+    lVar9 = evtMessageWindowIsDone(puVar13);
 
     if (lVar9 == 1) {
 
@@ -4091,7 +4091,7 @@ u32 FUN_0039c440(int param_1)
 
   case 9:
 
-    lVar9 = FUN_0039f6e0(puVar13);
+    lVar9 = evtMessageWindowIsDone(puVar13);
 
     if (lVar9 == 1) {
 
@@ -4173,7 +4173,7 @@ u32 FUN_0039c440(int param_1)
 
   case 0xb:
 
-    lVar9 = FUN_0039f6e0(puVar13);
+    lVar9 = evtMessageWindowIsDone(puVar13);
 
     if (lVar9 == 1) {
 
@@ -4315,7 +4315,7 @@ u32 FUN_0039cdc0(int param_1)
     break;
 
   case 3:
-    if (FUN_0039f6e0(work) == 1) {
+    if (evtMessageWindowIsDone(work) == 1) {
       *state = 4;
     }
     break;
@@ -4693,7 +4693,7 @@ u32 FUN_0039d550(int param_1)
 
   case 7:
 
-    lVar5 = FUN_0039f6e0(puVar6);
+    lVar5 = evtMessageWindowIsDone(puVar6);
 
     if (lVar5 == 1) {
 
@@ -4823,7 +4823,7 @@ u32 FUN_0039d8e0(int param_1)
     *piVar1 = 3;
     break;
   case 3:
-    lVar6 = FUN_0039f6e0(piVar8);
+    lVar6 = evtMessageWindowIsDone(piVar8);
     if (lVar6 == 1) {
       *piVar1 = 4;
     }
@@ -4918,7 +4918,7 @@ u32 FUN_0039db60(int param_1)
     *piVar1 = 3;
     break;
   case 3:
-    lVar5 = FUN_0039f6e0(piVar7);
+    lVar5 = evtMessageWindowIsDone(piVar7);
     if (lVar5 == 1) {
       *piVar1 = 4;
     }
@@ -5154,7 +5154,7 @@ u32 FUN_0039dd90(int param_1)
 
   case 5:
 
-    lVar8 = FUN_0039f6e0(puVar10);
+    lVar8 = evtMessageWindowIsDone(puVar10);
 
     if (lVar8 == 1) {
 
@@ -5739,11 +5739,11 @@ void FUN_0039eaa0(int param_1)
   return;
 }
 #define FUN_0039eaa0(...) ((void (*)(...))FUN_0039eaa0)(__VA_ARGS__)
-#undef FUN_0039eb90
+#undef evtCustomEventReleaseRes
 // FUN_0039EB90
 
 
-void FUN_0039eb90(void)
+void evtCustomEventReleaseRes(void)
 
 
 
@@ -5774,7 +5774,7 @@ void FUN_0039eb90(void)
   return;
 
 }
-#define FUN_0039eb90(...) ((void (*)(...))FUN_0039eb90)(__VA_ARGS__)
+#define evtCustomEventReleaseRes(...) ((void (*)(...))evtCustomEventReleaseRes)(__VA_ARGS__)
 #undef FUN_0039ec10
 // FUN_0039EC10
 
@@ -5800,11 +5800,11 @@ u32 FUN_0039ec10(int param_1,int param_2,u32 *param_3,u32 *param_4)
 }
 
 #define FUN_0039ec10(...) ((u32 (*)(...))FUN_0039ec10)(__VA_ARGS__)
-#undef FUN_0039ec60
+#undef evtCustomEventResId
 // FUN_0039ec60
 
 
-int FUN_0039ec60(int param_1)
+int evtCustomEventResId(int param_1)
 
 
 
@@ -5813,4 +5813,4 @@ int FUN_0039ec60(int param_1)
   return param_1 + 0x38e;
 
 }
-#define FUN_0039ec60(...) ((int (*)(...))FUN_0039ec60)(__VA_ARGS__)
+#define evtCustomEventResId(...) ((int (*)(...))evtCustomEventResId)(__VA_ARGS__)

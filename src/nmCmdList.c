@@ -56,7 +56,7 @@ extern u64 FUN_003c63f0_typed(int param_1);
 extern void FUN_003c4e70_typed(int param_1);
 #pragma alias FUN_003c6f80_typed FUN_003c6f80
 extern u32 FUN_003c6f80_typed(int param_1);
-#pragma alias FUN_003c75b0_typed FUN_003c75b0
+#pragma alias FUN_003c75b0_typed nmMesWindowCurrentAnim
 extern u64 FUN_003c75b0_typed(void);
 #pragma alias FUN_003a4360_typed FUN_003a4360
 extern u64 FUN_003a4360_typed(u64 param_1,long param_2);
@@ -94,7 +94,7 @@ extern u64 FUN_003c6b70_typed(int param_1);
 extern u32 FUN_003c6c50_typed(int param_1);
 #pragma alias FUN_003c6c80_typed FUN_003c6c80
 extern u32 FUN_003c6c80_typed(int param_1);
-#pragma alias FUN_003c7c90_typed FUN_003c7c90
+#pragma alias FUN_003c7c90_typed nmMesWindowSetCurrentRunning
 extern void FUN_003c7c90_typed(int param_1);
 #pragma alias FUN_005225a8_nm3 FUN_005225a8
 extern void FUN_005225a8_nm3(const void *,const void *,int);
@@ -137,8 +137,8 @@ int FUN_003c6fb0(int param_1);
 void FUN_003c7000(int param_1);
 void FUN_003c7070(float param_1,float *param_2,float *param_3,float *param_4);
 void FUN_003c7270(void);
-void FUN_003c72a0(int param_1);
-#pragma alias FUN_003c72a0_typed FUN_003c72a0
+void nmMesWindowInitRecord(int param_1);
+#pragma alias FUN_003c72a0_typed nmMesWindowInitRecord
 extern void FUN_003c72a0_typed(u32 param_1);
 u8 FUN_003c72d0(u64 param_1);
 void FUN_003c7390(u64 param_1);
@@ -146,20 +146,20 @@ void FUN_003c73e0(u64 param_1);
 u32 FUN_003c7430(u64 param_1);
 u32 FUN_003c74e0(int param_1);
 void FUN_003c7560(u8 param_1);
-u32 FUN_003c75b0(void);
+u32 nmMesWindowCurrentAnim(void);
 s8 FUN_003c7610(void);
 u32 FUN_003c7650(int param_1);
 u32 FUN_003c7700(void);
 u32 FUN_003c77a0(void);
 s8 FUN_003c7850(void);
-u32 FUN_003c78d0(void);
+u32 nmMesWindowLatchAnimAux(void);
 void FUN_003c7990(long param_1);
 #pragma alias FUN_003c7990_typed FUN_003c7990
 extern void FUN_003c7990_typed(long param_1);
 void FUN_003c7b90(void);
 void FUN_003c7bc0(u64 param_1,u64 param_2);
 void FUN_003c7c20(u64 param_1,u64 param_2,u64 param_3);
-void FUN_003c7c90(int param_1);
+void nmMesWindowSetCurrentRunning(int param_1);
 u32 FUN_003c7d50(void);
 u32 FUN_003c7d60(int param_1);
 void FUN_003c7d80(int param_1,u64 param_2);
@@ -206,25 +206,25 @@ u8 FUN_003c83b0(void);
 #define FUN_003c7000(...) ((void (*)(...))FUN_003c7000)(__VA_ARGS__)
 #define FUN_003c7070(...) ((void (*)(...))FUN_003c7070)(__VA_ARGS__)
 #define FUN_003c7270(...) ((void (*)(...))FUN_003c7270)(__VA_ARGS__)
-#define FUN_003c72a0(...) ((void (*)(...))FUN_003c72a0)(__VA_ARGS__)
+#define nmMesWindowInitRecord(...) ((void (*)(...))nmMesWindowInitRecord)(__VA_ARGS__)
 #define FUN_003c72d0(...) ((u8 (*)(...))FUN_003c72d0)(__VA_ARGS__)
 #define FUN_003c7390(...) ((void (*)(...))FUN_003c7390)(__VA_ARGS__)
 #define FUN_003c73e0(...) ((void (*)(...))FUN_003c73e0)(__VA_ARGS__)
 #define FUN_003c7430(...) ((u32 (*)(...))FUN_003c7430)(__VA_ARGS__)
 #define FUN_003c74e0(...) ((u32 (*)(...))FUN_003c74e0)(__VA_ARGS__)
 #define FUN_003c7560(...) ((void (*)(...))FUN_003c7560)(__VA_ARGS__)
-#define FUN_003c75b0(...) ((u64 (*)(...))FUN_003c75b0)(__VA_ARGS__)
+#define nmMesWindowCurrentAnim(...) ((u64 (*)(...))nmMesWindowCurrentAnim)(__VA_ARGS__)
 #define FUN_003c7610(...) ((s8 (*)(...))FUN_003c7610)(__VA_ARGS__)
 #define FUN_003c7650(...) ((u32 (*)(...))FUN_003c7650)(__VA_ARGS__)
 #define FUN_003c7700(...) ((u32 (*)(...))FUN_003c7700)(__VA_ARGS__)
 #define FUN_003c77a0(...) ((u32 (*)(...))FUN_003c77a0)(__VA_ARGS__)
 #define FUN_003c7850(...) ((s8 (*)(...))FUN_003c7850)(__VA_ARGS__)
-#define FUN_003c78d0(...) ((u32 (*)(...))FUN_003c78d0)(__VA_ARGS__)
+#define nmMesWindowLatchAnimAux(...) ((u32 (*)(...))nmMesWindowLatchAnimAux)(__VA_ARGS__)
 #define FUN_003c7990(...) ((void (*)(...))FUN_003c7990)(__VA_ARGS__)
 #define FUN_003c7b90(...) ((void (*)(...))FUN_003c7b90)(__VA_ARGS__)
 #define FUN_003c7bc0(...) ((void (*)(...))FUN_003c7bc0)(__VA_ARGS__)
 #define FUN_003c7c20(...) ((void (*)(...))FUN_003c7c20)(__VA_ARGS__)
-#define FUN_003c7c90(...) ((void (*)(...))FUN_003c7c90)(__VA_ARGS__)
+#define nmMesWindowSetCurrentRunning(...) ((void (*)(...))nmMesWindowSetCurrentRunning)(__VA_ARGS__)
 #define FUN_003c7d50(...) ((u32 (*)(...))FUN_003c7d50)(__VA_ARGS__)
 #define FUN_003c7d60(...) ((u32 (*)(...))FUN_003c7d60)(__VA_ARGS__)
 #define FUN_003c7d80(...) ((void (*)(...))FUN_003c7d80)(__VA_ARGS__)
@@ -1448,11 +1448,11 @@ void FUN_003c7270(void)
 
 }
 #define FUN_003c7270(...) ((void (*)(...))FUN_003c7270)(__VA_ARGS__)
-#undef FUN_003c72a0
+#undef nmMesWindowInitRecord
 // FUN_003C72A0
 
 
-void FUN_003c72a0(int param_1)
+void nmMesWindowInitRecord(int param_1)
 
 
 
@@ -1483,7 +1483,7 @@ void FUN_003c72a0(int param_1)
   return;
 
 }
-#define FUN_003c72a0(...) ((void (*)(...))FUN_003c72a0)(__VA_ARGS__)
+#define nmMesWindowInitRecord(...) ((void (*)(...))nmMesWindowInitRecord)(__VA_ARGS__)
 #undef FUN_003c72d0
 // FUN_003C72D0
 
@@ -1716,11 +1716,11 @@ void FUN_003c7560(u8 param_1)
 
 }
 #define FUN_003c7560(...) ((void (*)(...))FUN_003c7560)(__VA_ARGS__)
-#undef FUN_003c75b0
+#undef nmMesWindowCurrentAnim
 // FUN_003C75B0
 
 
-u32 FUN_003c75b0(void)
+u32 nmMesWindowCurrentAnim(void)
 {
   extern u8 *FUN_003c7d50_direct(void);
   int *piVar1;
@@ -1737,7 +1737,7 @@ u32 FUN_003c75b0(void)
 
   return uVar2;
 }
-#define FUN_003c75b0(...) ((u64 (*)(...))FUN_003c75b0)(__VA_ARGS__)
+#define nmMesWindowCurrentAnim(...) ((u64 (*)(...))nmMesWindowCurrentAnim)(__VA_ARGS__)
 #undef FUN_003c7610
 // FUN_003C7610
 
@@ -1988,11 +1988,11 @@ done:
   return uVar1;
 }
 #define FUN_003c7850(...) ((u8 (*)(...))FUN_003c7850)(__VA_ARGS__)
-#undef FUN_003c78d0
+#undef nmMesWindowLatchAnimAux
 // FUN_003C78D0
 
 
-u32 FUN_003c78d0(void)
+u32 nmMesWindowLatchAnimAux(void)
 
 
 
@@ -2066,7 +2066,7 @@ u32 FUN_003c78d0(void)
   return uVar2;
 
 }
-#define FUN_003c78d0(...) ((u32 (*)(...))FUN_003c78d0)(__VA_ARGS__)
+#define nmMesWindowLatchAnimAux(...) ((u32 (*)(...))nmMesWindowLatchAnimAux)(__VA_ARGS__)
 #undef FUN_003c7990
 // FUN_003C7990 NONMATCHING
 
@@ -2240,11 +2240,11 @@ void FUN_003c7c20(u64 param_1,u64 param_2,u64 param_3)
 
 }
 #define FUN_003c7c20(...) ((void (*)(...))FUN_003c7c20)(__VA_ARGS__)
-#undef FUN_003c7c90
+#undef nmMesWindowSetCurrentRunning
 // FUN_003C7C90
 
 
-void FUN_003c7c90(int param_1)
+void nmMesWindowSetCurrentRunning(int param_1)
 
 
 
@@ -2291,7 +2291,7 @@ void FUN_003c7c90(int param_1)
   return;
 
 }
-#define FUN_003c7c90(...) ((void (*)(...))FUN_003c7c90)(__VA_ARGS__)
+#define nmMesWindowSetCurrentRunning(...) ((void (*)(...))nmMesWindowSetCurrentRunning)(__VA_ARGS__)
 #undef FUN_003c7d50
 // FUN_003C7D50
 

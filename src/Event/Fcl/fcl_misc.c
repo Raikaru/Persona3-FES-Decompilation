@@ -258,7 +258,7 @@ extern u64 fclMisc8550Call(u32);
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #define FUN_003c8550(...) ((u64 (*)(...))FUN_003c8550)(__VA_ARGS__)
 #define FUN_003c8770(...) ((u64 (*)(...))FUN_003c8770)(__VA_ARGS__)
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #define FUN_003c88d0(...) ((void (*)(...))FUN_003c88d0)(__VA_ARGS__)
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
 #define FUN_003c8b50(...) ((u32 (*)(...))FUN_003c8b50)(__VA_ARGS__)
@@ -273,12 +273,12 @@ extern void fclMiscSetWord14(u32);
 #define fclMiscSetWord14(...) ((void (*)(...))fclMiscSetWord14)(__VA_ARGS__)
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
-#define FUN_003c8ea0(...) ((u16 (*)(...))FUN_003c8ea0)(__VA_ARGS__)
+#define fclMiscGetRecordCount(...) ((u16 (*)(...))fclMiscGetRecordCount)(__VA_ARGS__)
 #define FUN_003c8ec0(...) ((u32 (*)(...))FUN_003c8ec0)(__VA_ARGS__)
-#define FUN_003c8f20(...) ((void (*)(...))FUN_003c8f20)(__VA_ARGS__)
+#define fclMiscSetDoneFlag(...) ((void (*)(...))fclMiscSetDoneFlag)(__VA_ARGS__)
 #define FUN_003c8f40(...) ((void (*)(...))FUN_003c8f40)(__VA_ARGS__)
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #define FUN_003c91b0(...) ((u8 (*)(...))FUN_003c91b0)(__VA_ARGS__)
 #define fclMiscReleaseHandle(...) ((void (*)(...))fclMiscReleaseHandle)(__VA_ARGS__)
@@ -344,10 +344,10 @@ extern void fclMiscSetWord14(u32);
 #define FUN_003c8550(...) ((u64 (*)(...))FUN_003c8550)(__VA_ARGS__)
 #undef FUN_003c8770
 #define FUN_003c8770(...) ((u64 (*)(...))FUN_003c8770)(__VA_ARGS__)
-#undef FUN_003c8810
+#undef fclMiscPruneLists
  
  
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #undef FUN_003c88d0
 #pragma alias DAT_0095be80_abs DAT_0095be80
 extern u8 DAT_0095be80_abs[];
@@ -358,8 +358,8 @@ extern u64 FUN_003c89a0(void);
 #undef FUN_003c89a0
 #undef FUN_003c8770
 extern u64 FUN_003c8770(u32, s32);
-#undef FUN_003c8810
-extern u64 FUN_003c8810(int *);
+#undef fclMiscPruneLists
+extern u64 fclMiscPruneLists(int *);
 #undef fclMiscSetWord14
 extern void fclMiscSetWord14(u32);
 #undef FUN_003c8400
@@ -381,26 +381,26 @@ extern u8 FUN_003c91b0(u8 *, u32);
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #undef FUN_003c8de0
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
-#undef FUN_003c8ea0
-#define FUN_003c8ea0(...) ((u16 (*)(...))FUN_003c8ea0)(__VA_ARGS__)
+#undef fclMiscGetRecordCount
+#define fclMiscGetRecordCount(...) ((u16 (*)(...))fclMiscGetRecordCount)(__VA_ARGS__)
 #undef FUN_003c8ec0
 #define FUN_003c8ec0(...) ((u32 (*)(...))FUN_003c8ec0)(__VA_ARGS__)
-#undef FUN_003c8f20
-#define FUN_003c8f20(...) ((void (*)(...))FUN_003c8f20)(__VA_ARGS__)
+#undef fclMiscSetDoneFlag
+#define fclMiscSetDoneFlag(...) ((void (*)(...))fclMiscSetDoneFlag)(__VA_ARGS__)
 #undef FUN_003c8f40
-#undef FUN_003c8810
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#undef fclMiscPruneLists
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #define FUN_003c8f40(...) ((void (*)(...))FUN_003c8f40)(__VA_ARGS__)
 #undef FUN_003c8f70
-#undef FUN_003c8fa0
-void FUN_003c8fa0(void);
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#undef fclMiscCloseActiveHandle
+void fclMiscCloseActiveHandle(void);
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
-#undef FUN_003c8fa0
+#undef fclMiscCloseActiveHandle
 #undef fclMiscCloseHandle
 u32 fclMiscCloseHandle(u32 *param_1);
 #define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #undef FUN_003c9000
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #undef FUN_003c91b0

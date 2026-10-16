@@ -252,7 +252,7 @@ void FUN_003951a0(u64 param_1);
 u8 FUN_003951d0(void);
 void FUN_00395200(u64 param_1);
 u8 FUN_00395230(s32 param_1);
-u64 FUN_00395270(s16 param_1);
+u64 mtMiscPlayCue(s16 param_1);
 void FUN_003952a0(void);
 u64 FUN_003952b0(void);
 u64 FUN_003952c0(void);
@@ -262,7 +262,7 @@ u64 FUN_003953b0(int param_1);
 void FUN_003953e0(u64 param_1);
 void FUN_00395420(void);
 void FUN_00395430(int param_1,int param_2,int param_3,int param_4,u32 param_5);
-void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
+void mtMiscSetSlotRes(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00395550(int param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
 #pragma alias FUN_00395570_typed FUN_00395570
@@ -282,15 +282,15 @@ void FUN_00396270(float param_1,int param_2,float *param_3);
 u64 FUN_003962c0(int param_1);
 u64 FUN_003963c0(int param_1);
 void FUN_00396410(u64 param_1);
-void FUN_00396480(int param_1,u32 param_2);
+void mtMiscAppendEntry(int param_1,u32 param_2);
 u32 FUN_003964c0(void);
 void FUN_00396530(int param_1);
-void FUN_003965d0(u32 *param_1);
+void evtEffectSequenceReset(u32 *param_1);
 u32 FUN_003965f0(int *param_1);
-void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
-u16 FUN_003968a0(int param_1,int param_2);
-void FUN_00396910(int param_1,int param_2);
-void FUN_003969b0(int param_1);
+void mtMiscSetSlotRes(int param_1,int param_2,int param_3,u64 param_4);
+u16 mtMiscGetSlotRes(int param_1,int param_2);
+void mtMiscClearSlotRes(int param_1,int param_2);
+void mtMiscClearAllSlotRes(int param_1);
 u64 FUN_00396a70(void);
 void FUN_00396ba0(void);
 void FUN_00396bf0(u64 param_1);
@@ -303,7 +303,7 @@ u32  FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,  
 #define FUN_003951d0(...) ((u8 (*)(...))FUN_003951d0)(__VA_ARGS__)
 #define FUN_00395200(...) ((void (*)(...))FUN_00395200)(__VA_ARGS__)
 #define FUN_00395230(...) ((u8 (*)(...))FUN_00395230)(__VA_ARGS__)
-#define FUN_00395270(...) ((u64 (*)(...))FUN_00395270)(__VA_ARGS__)
+#define mtMiscPlayCue(...) ((u64 (*)(...))mtMiscPlayCue)(__VA_ARGS__)
 #define FUN_003952a0(...) ((void (*)(...))FUN_003952a0)(__VA_ARGS__)
 #define FUN_003952b0(...) ((u64 (*)(...))FUN_003952b0)(__VA_ARGS__)
 #define FUN_003952c0(...) ((u64 (*)(...))FUN_003952c0)(__VA_ARGS__)
@@ -327,15 +327,15 @@ u32  FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,  
 #define FUN_003962c0(...) ((u64 (*)(...))FUN_003962c0)(__VA_ARGS__)
 #define FUN_003963c0(...) ((u64 (*)(...))FUN_003963c0)(__VA_ARGS__)
 #define FUN_00396410(...) ((void (*)(...))FUN_00396410)(__VA_ARGS__)
-#define FUN_00396480(...) ((void (*)(...))FUN_00396480)(__VA_ARGS__)
+#define mtMiscAppendEntry(...) ((void (*)(...))mtMiscAppendEntry)(__VA_ARGS__)
 #define FUN_003964c0(...) ((u32 (*)(...))FUN_003964c0)(__VA_ARGS__)
 #define FUN_00396530(...) ((void (*)(...))FUN_00396530)(__VA_ARGS__)
-#define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
+#define evtEffectSequenceReset(...) ((void (*)(...))evtEffectSequenceReset)(__VA_ARGS__)
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
-#define FUN_00396760(...) ((void (*)(...))FUN_00396760)(__VA_ARGS__)
-#define FUN_003968a0(...) ((u16 (*)(...))FUN_003968a0)(__VA_ARGS__)
-#define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
-#define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
+#define mtMiscSetSlotRes(...) ((void (*)(...))mtMiscSetSlotRes)(__VA_ARGS__)
+#define mtMiscGetSlotRes(...) ((u16 (*)(...))mtMiscGetSlotRes)(__VA_ARGS__)
+#define mtMiscClearSlotRes(...) ((void (*)(...))mtMiscClearSlotRes)(__VA_ARGS__)
+#define mtMiscClearAllSlotRes(...) ((void (*)(...))mtMiscClearAllSlotRes)(__VA_ARGS__)
 #define FUN_00396a70(...) ((u64 (*)(...))FUN_00396a70)(__VA_ARGS__)
 #define FUN_00396ba0(...) ((void (*)(...))FUN_00396ba0)(__VA_ARGS__)
 #define FUN_00396bf0(...) ((void (*)(...))FUN_00396bf0)(__VA_ARGS__)
@@ -351,8 +351,8 @@ u32  FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,  
 #define FUN_00395200(...) ((void (*)(...))FUN_00395200)(__VA_ARGS__)
 #undef FUN_00395230
 #define FUN_00395230(...) ((u8 (*)(...))FUN_00395230)(__VA_ARGS__)
-#undef FUN_00395270
-#define FUN_00395270(...) ((u64 (*)(...))FUN_00395270)(__VA_ARGS__)
+#undef mtMiscPlayCue
+#define mtMiscPlayCue(...) ((u64 (*)(...))mtMiscPlayCue)(__VA_ARGS__)
 #undef FUN_003952a0
 #define FUN_003952a0(...) ((void (*)(...))FUN_003952a0)(__VA_ARGS__)
 #undef FUN_003952b0
@@ -406,24 +406,24 @@ extern void FUN_0038a260(f32 depth, int width, int height, int unused, void *dat
 #define FUN_003963c0(...) ((u64 (*)(...))FUN_003963c0)(__VA_ARGS__)
 #undef FUN_00396410
 #define FUN_00396410(...) ((void (*)(...))FUN_00396410)(__VA_ARGS__)
-#undef FUN_00396480
-#define FUN_00396480(...) ((void (*)(...))FUN_00396480)(__VA_ARGS__)
+#undef mtMiscAppendEntry
+#define mtMiscAppendEntry(...) ((void (*)(...))mtMiscAppendEntry)(__VA_ARGS__)
 #undef FUN_003964c0
 #define FUN_003964c0(...) ((u32 (*)(...))FUN_003964c0)(__VA_ARGS__)
 #undef FUN_00396530
 #define FUN_00396530(...) ((void (*)(...))FUN_00396530)(__VA_ARGS__)
-#undef FUN_003965d0
-#define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
+#undef evtEffectSequenceReset
+#define evtEffectSequenceReset(...) ((void (*)(...))evtEffectSequenceReset)(__VA_ARGS__)
 #undef FUN_003965f0
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
-#undef FUN_00396760
-#define FUN_00396760(...) ((void (*)(...))FUN_00396760)(__VA_ARGS__)
-#undef FUN_003968a0
-#define FUN_003968a0(...) ((u16 (*)(...))FUN_003968a0)(__VA_ARGS__)
-#undef FUN_00396910
-#define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
-#undef FUN_003969b0
-#define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
+#undef mtMiscSetSlotRes
+#define mtMiscSetSlotRes(...) ((void (*)(...))mtMiscSetSlotRes)(__VA_ARGS__)
+#undef mtMiscGetSlotRes
+#define mtMiscGetSlotRes(...) ((u16 (*)(...))mtMiscGetSlotRes)(__VA_ARGS__)
+#undef mtMiscClearSlotRes
+#define mtMiscClearSlotRes(...) ((void (*)(...))mtMiscClearSlotRes)(__VA_ARGS__)
+#undef mtMiscClearAllSlotRes
+#define mtMiscClearAllSlotRes(...) ((void (*)(...))mtMiscClearAllSlotRes)(__VA_ARGS__)
 typedef struct {
   u32 state;
   u32 active;

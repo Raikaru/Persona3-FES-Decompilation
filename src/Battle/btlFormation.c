@@ -244,7 +244,7 @@ extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
-extern void func_003176c0(Model* mdl);
+extern void mdlUpdateModelMatrix(Model* mdl);
 extern u64 func_00317730();
 extern void FUN_00317a20(Model* param_1);
 extern u64 func_00318ad0();
@@ -480,15 +480,15 @@ extern u32 func_002b8dc0(u16 *param_1);
 extern u32 func_002b8f90(u16 param_1);
 extern void func_002b9030(u32 param_1);
 extern void func_002b90d0(int param_1,u32 param_2);
-extern void func_002b9220(int param_1);
-extern void func_002b9300(int param_1);
-extern bool func_002b9350(int param_1);
+extern void btlFormationSetState(int param_1);
+extern void btlFormationCopyDefault(int param_1);
+extern bool btlFormationGetCount(int param_1);
 extern u32 func_002b9350_u32(int param_1);
-extern u32 func_002b9370(int param_1,u16 param_2);
-extern u32 func_002b93c0(int param_1,u16 param_2);
+extern u32 btlFormationGetIndex(int param_1,u16 param_2);
+extern u32 btlFormationGetEntry(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
 extern u32 func_002b93e0_4arg(u32 param_1,u16 param_2,u32 param_3,u32 param_4);
-extern void func_002b94f0(BtlFormationWork *param_1);
+extern void btlFormationResetState(BtlFormationWork *param_1);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
                           u32 param_6);
 extern void func_002b9600(u32 *param_1);
@@ -510,23 +510,23 @@ extern u32 func_002baad0(int *param_1);
 extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
 extern void func_002bacb0(u32 *param_1);
 extern u32 func_002bad60(u32 *param_1);
-extern bool func_002baec0(u32 *param_1);
-extern void func_002baf30(u32 *param_1);
+extern bool btlFormationHasEntry(u32 *param_1);
+extern void btlFormationRelease(u32 *param_1);
 extern void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u32 param_5);
 extern void func_002bb050(u32 *param_1);
 extern u32 func_002bb0b0(u32 *param_1);
 extern void func_002bb290(u32 *param_1);
 extern void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4, u16 param_5);
 extern void func_002bb3a0(void);
-extern void func_002bb580(u16 *param_1);
+extern void btlEffectResetEntry(u16 *param_1);
 extern void func_002bb610(u32 param_1);
 extern void func_002bb6f0(u16 param_1,u64 param_2);
 extern void func_002bb760(void);
 extern void func_002bb770(void);
 extern void *func_002bb7d0(void);
 extern void func_002bb8f0(u32 param_1);
-extern u16 * func_002bb9c0(int param_1);
-extern u32 func_002bbac0(int param_1,u16 *param_2);
+extern u16 * btlEffectAllocEntry(int param_1);
+extern u32 btlEffectFreeEntry(int param_1,u16 *param_2);
 extern void func_002bbbc0(int param_1);
 extern void* func_002bbc00(void* owner);
 extern void func_002bbd00(u32 param_1);
@@ -545,7 +545,7 @@ extern u32 func_002bc7b0(u16 *param_1);
 extern void func_002bc7e0(u16 param_1);
 extern u32 func_002bc830(u8 *param_1);
 extern void func_002bc890(u8 *param_1,u16 param_2);
-extern u32 func_002bc910(u32 *param_1);
+extern u32 btlFormationDispatchArgs(u32 *param_1);
 extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,int param_8);
 extern void func_002bc9c0_long(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
@@ -619,7 +619,7 @@ extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
 extern void func_002c0070(int param_1,int param_2);
 extern u32 func_002c0880(int param_1);
 extern void func_002c08a0(int param_1,u64 *param_2);
-extern void func_002c08b0(int param_1,int param_2);
+extern void btlFormationEntryCopySelected(int param_1,int param_2);
 extern long * func_002c08c0(int param_1);
 extern u32 func_002c0970(int param_1);
 extern u32 func_002c09f0(int param_1);
@@ -725,8 +725,8 @@ extern void func_002c4180(u64 param_1,u64 param_2);
 extern void func_002c41c0(u64 param_1,u64 param_2);
 extern u32 func_002c4200(u32 param_1);
 extern u32 func_002c42c0(u32 param_1,u32 param_2);
-extern void func_002c43a0(u64 param_1);
-extern void func_002c43e0(u64 param_1);
+extern void btlAICommandPickMyDown(u64 param_1);
+extern void btlAICommandPickNotMyDown(u64 param_1);
 extern void func_002c4420(u64 param_1,u64 param_2);
 extern void func_002c4460(u64 param_1,u64 param_2);
 extern void func_002c44a0(u64 param_1,u64 param_2);
@@ -869,10 +869,10 @@ extern u32 func_002cba50(void);
 extern u32 func_002cbaa0(void);
 extern u32 func_002cbaf0(void);
 extern u32 btlAICommandSideSwitchIdQueryMyWeak(void);
-extern u32 func_002cbcd0(void);
-extern u32 func_002cbd90(void);
-extern u32 func_002cbe50(void);
-extern u32 func_002cbf10(void);
+extern u32 btlScriptIsSideUnitHitFlagged(void);
+extern u32 btlScriptIsSideUnitCriticalFlagged(void);
+extern u32 btlScriptIsSideUnitWeakFlagged(void);
+extern u32 btlScriptIsSideUnitDownFlagged(void);
 extern u32 btlAICommandSideSwitchQueryAnalyze(void);
 extern u32 func_002cc0a0(void);
 extern u32 func_002cc190(void);
@@ -916,8 +916,8 @@ extern u32 func_002cd8c0(void);
 extern u32 func_002cd940(void);
 extern u32 btlAICommandScriptSetCommandOverride(void);
 extern u32 func_002cda10(void);
-extern u32 func_002cda50(void);
-extern u32 func_002cdad0(void);
+extern u32 btlScriptGetSameSideUnitValue(void);
+extern u32 btlScriptGetOppositeSideUnitValue(void);
 extern u32 func_002cdb70(void);
 extern u32 btlAICommandScriptCountOwnNotHojo(void);
 extern u32 func_002cdc50(void);
@@ -933,15 +933,15 @@ extern u32 func_002ce090(void);
 extern u32 func_002ce170(void);
 extern u32 func_002ce210(void);
 extern u32 func_002ce2b0(void);
-extern u32 func_002ce380(void);
+extern u32 btlAICommandSetTarget(void);
 extern u32 func_002ce440(void);
 extern u32 func_002ce4e0(void);
 extern u32 func_002ce5c0(void);
-extern u32 func_002ce6c0(void);
-extern u32 func_002ce7a0(void);
-extern u32 func_002ce880(void);
-extern u32 func_002ce960(void);
-extern u32 func_002cea40(void);
+extern u32 btlAICommandPickWeakCandidateGated(void);
+extern u32 btlAICommandPickWeakCandidate(void);
+extern u32 btlAICommandPickNormalCandidate(void);
+extern u32 btlAICommandPickNormalCandidateGated(void);
+extern u32 btlAICommandPickNormalCandidateAlt(void);
 extern u32 func_002ceb20(void);
 extern u32 func_002cec30(void);
 extern u32 func_002ced60(void);
@@ -954,7 +954,7 @@ extern u32 func_002cf580(void);
 extern u32 func_002cf6b0(void);
 extern u32 func_002cf7e0(void);
 extern u32 func_002cf890(void);
-extern u32 func_002cf940(void);
+extern u32 btlAICommandScriptCollectSkills(void);
 extern u32 func_002cf9f0(void);
 extern u32 func_002cfa40(void);
 extern u32 func_002cfb20(void);
@@ -970,7 +970,7 @@ extern u32 func_002d06e0(void);
 extern u32 func_002d0720(void);
 extern u32 func_002d0760(void);
 extern u32 func_002d0860(void);
-extern u32 func_002d08e0(void);
+extern u32 btlAICommandScriptSpawnChild(void);
 extern u32 func_002d0970(void);
 extern u32 func_002d09d0(void);
 extern u32 func_002d0a30(void);
@@ -988,14 +988,14 @@ extern u32 func_002d0de0(void);
 extern u32 func_002d0ef0(void);
 extern u32 func_002d0f90(void);
 extern u32 func_002d1030(void);
-extern u32 func_002d10f0(void);
-extern u32 func_002d1180(void);
+extern u32 btlTargetScriptEnqueue(void);
+extern u32 btlTargetScriptEnqueueS32(void);
 extern u32 func_002d11d0(void);
 extern u32 func_002d1210(void);
 extern u32 func_002d1260(void);
 extern u32 func_002d12a0(void);
 extern u32 func_002d12e0(void);
-extern u32 func_002d13c0(void);
+extern u32 btlTargetAIPickAction(void);
 extern u32 func_002d1490(void);
 extern u32 func_002d14d0(void);
 extern u32 func_002d1510(void);
@@ -1039,8 +1039,8 @@ u32 FUN_002a3380(u8* camera);
 u32 FUN_002a3420(int param_1);
 u8 FUN_002a3520(int param_1);
 u64 FUN_002a3550(u8* camera);
-u32 FUN_002a3590(float *param_1, float *param_2);
-s32 FUN_002a3750(BtlCamera* camera,u32 unit);
+u32 btlCameraClampOffsetToLimit(float *param_1, float *param_2);
+s32 btlCameraUnitAnimFinished(BtlCamera* camera,u32 unit);
 extern s16 btlUnit00282c30(BtlUnit* unit);
 extern s16 func_002835e0(BtlUnit* unit,u16 id,f32 scale);
 extern s16 btlUnitGetAnimFrame(BtlUnit* unit);
@@ -1069,8 +1069,8 @@ void FUN_002a42a0(void);
 void FUN_002a4470(f32 *param_1, f32 *param_2);
 void FUN_002a44b0(f32 *param_1, f32 *param_2);
 void FUN_002a44f0(f32 *param_1, f32 *param_2);
-void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4);
-void FUN_002a4690(void* out, const void* first, const void* second, const void* config);
+void btlCameraBuildLookAtFrame(float *param_1,float *param_2,float *param_3,float *param_4);
+void btlCameraLookAtQuat(void* out, const void* first, const void* second, const void* config);
 void FUN_002a4a70(void);
 void FUN_002a4c20(void);
 extern f32 DAT_007cae38;
@@ -1089,8 +1089,8 @@ void FUN_002a42a0(void);
 void FUN_002a4470(f32 *param_1, f32 *param_2);
 void FUN_002a44b0(f32 *param_1, f32 *param_2);
 void FUN_002a44f0(f32 *param_1, f32 *param_2);
-void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4);
-void FUN_002a4690(void* out, const void* first, const void* second, const void* config);
+void btlCameraBuildLookAtFrame(float *param_1,float *param_2,float *param_3,float *param_4);
+void btlCameraLookAtQuat(void* out, const void* first, const void* second, const void* config);
 extern u32 FUN_00300580_b6070(void* unitData, u32 flags);
 extern void FUN_00280130_b6070(BtlUnit* unit, RwV3d* out);
 extern void FUN_004be1e0_b6070(RwV3d* out, const RwV3d* basis, s32 count, const void* source);
@@ -1129,7 +1129,7 @@ extern int iGpffffb710;
 extern u16 (*gp0xffffb710)[14];
 extern u8 DAT_006941d4[];
 extern u8 DAT_00694c90[];
-extern f32 FUN_002d21e0(f32 target, f32* motion);
+extern f32 btlTargetSmoothStep(f32 target, f32* motion);
 extern f32 fGpffff807c;
 extern f32 fGpffff80e8;
 extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
@@ -1214,9 +1214,9 @@ extern void btlCameraFrameActionTarget(BtlCamera* camera);
 extern void func_002a7820(void);
 extern void func_002ac540(BtlCamera* camera);
 extern void func_002ac6e0(BtlCamera* camera);
-extern void func_002ad680(BtlCamera* camera);
+extern void btlCameraDispatchFrameMode(BtlCamera* camera);
 extern void func_002ad770(BtlCamera* camera);
-extern void func_002adc30(BtlCamera* camera);
+extern void btlCameraFrameOrbitTight(BtlCamera* camera);
 extern void btlCameraNoop002adc70(void);
 extern void btlAct_SKILL_EXEC_ONE(BtlCamera* camera);
 extern void btlCameraNoop002adcc0(void);
@@ -1224,9 +1224,9 @@ extern void func_002adcd0(BtlCamera* camera);
 extern void func_002ADD00(void);
 extern void func_002ae150(BtlCamera* camera);
 extern void func_002ae250(void);
-extern void func_002ae260(BtlCamera* camera);
+extern void btlCameraFrameActionUnitPose(BtlCamera* camera);
 extern void func_002ae4c0(void);
-extern void func_002ae4d0(BtlCamera* camera);
+extern void btlCameraFrameActionUnitPoseMirror(BtlCamera* camera);
 extern void func_002ae730(void);
 extern void func_002af7f0(BtlCamera* camera);
 extern void func_002af850(BtlCamera* camera);
@@ -1239,7 +1239,7 @@ extern void FUN_002b1cf0(int param_1);
 extern void FUN_002b1e00(int param_1);
 extern void FUN_002b2060(int param_1);
 extern void FUN_002b2800(BtlCamera *camera);
-extern void FUN_002b2880(int param_1);
+extern void btlCameraSelectPreset(int param_1);
 extern void FUN_002b2940(void *arg0);
 extern void FUN_002b2ea0(void);
 extern void btlAct_TARGET(u16* camera);
@@ -1250,10 +1250,10 @@ extern void FUN_002b3690(BtlCamera* camera);
 extern void FUN_002b3980(BtlCamera* camera);
 extern void btlAct_WIN_P(BtlCamera* camera);
 extern void FUN_002b3f80(BtlCamera* camera);
-extern void FUN_002b41e0(BtlCamera* camera);
+extern void btlCameraFrameActionFocus(BtlCamera* camera);
 extern void FUN_002b4720(int param_1);
 extern void FUN_002b47b0(BtlCamera* camera);
-extern void FUN_002b4bc0(int param_1);
+extern void btlCameraSetVisibility(int param_1);
 extern void FUN_002b4c00(int param_1);
 extern void FUN_002b4f40(int param_1);
 extern void FUN_002b4fd0(void);
@@ -1272,8 +1272,8 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {NULL, NULL, 1, 0, "NOP"}, // NOP
     {FUN_002b3690, NULL, 1, 1, "ENCOUNT"}, // ENCOUNT
     {FUN_002b47b0, NULL, 1, 1, "ANALYZE"}, // ANALYZE
-    {(void(*)(BtlCamera*))FUN_002b4bc0, (void(*)(BtlCamera*))FUN_002b4c00, 1, 1, "ASSIST"}, // ASSIST
-    {FUN_002b41e0, (void(*)(BtlCamera*))FUN_002b4720, 1, 1, "REINFORCE"}, // REINFORCE
+    {(void(*)(BtlCamera*))btlCameraSetVisibility, (void(*)(BtlCamera*))FUN_002b4c00, 1, 1, "ASSIST"}, // ASSIST
+    {btlCameraFrameActionFocus, (void(*)(BtlCamera*))FUN_002b4720, 1, 1, "REINFORCE"}, // REINFORCE
     {(void(*)(BtlCamera*))FUN_002b4f40, (void(*)(BtlCamera*))FUN_002b4fd0, 1, 1, "ROUNDUP"}, // ROUNDUP
     {(void(*)(BtlCamera*))FUN_002b5000, NULL, 1, 1, "ESCAPE"}, // ESCAPE
     {FUN_002b5240, NULL, 1, 1, "ESCAPE_MES"}, // ESCAPE_MES
@@ -1281,7 +1281,7 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {func_002af960, (void(*)(BtlCamera*))FUN_002b0210, 1, 1, "ATTACK_SHORT"}, // ATTACK_SHORT
     {(void(*)(BtlCamera*))FUN_002b1020, (void(*)(BtlCamera*))btlCameraNoOp, 1, 1, "ATTACK_LONG"}, // ATTACK_LONG
     {(void(*)(BtlCamera*))FUN_002b1e00, (void(*)(BtlCamera*))FUN_002b2060, 1, 1, "ATTACK_DOWN_P"}, // ATTACK_DOWN_P
-    {FUN_002b2800, (void(*)(BtlCamera*))FUN_002b2880, 1, 1, "ATTACK_DOWN_E"}, // ATTACK_DOWN_E
+    {FUN_002b2800, (void(*)(BtlCamera*))btlCameraSelectPreset, 1, 1, "ATTACK_DOWN_E"}, // ATTACK_DOWN_E
     {(void(*)(BtlCamera*))FUN_002b2940, (void(*)(BtlCamera*))FUN_002b2ea0, 1, 1, "ATTACK_SLIP"}, // ATTACK_SLIP
     {(void(*)(BtlCamera*))FUN_002b1bc0, (void(*)(BtlCamera*))FUN_002b1cf0, 1, 1, "ATTACK_COMB"}, // ATTACK_COMB
     {btlCameraFrameActionDefault, btlCameraFrameActionClose, 1, 1, "SKILL_RECITE_P"}, // SKILL_RECITE_P
@@ -1290,12 +1290,12 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {btlCameraFrameActionSide, (void(*)(BtlCamera*))func_002a7380, 1, 1, "MOVE_TARGET_A"}, // MOVE_TARGET_A
     {btlCameraFrameActionTarget, (void(*)(BtlCamera*))func_002a7820, 1, 1, "MOVE_HOME"}, // MOVE_HOME
     {func_002ac540, func_002ac6e0, 1, 1, "SKILL_EXEC_PC"}, // SKILL_EXEC_PC
-    {func_002ad680, func_002ad770, 1, 1, "SKILL_EXEC_EC"}, // SKILL_EXEC_EC
-    {func_002adc30, (void(*)(BtlCamera*))btlCameraNoop002adc70, 1, 0, "SKILL_EXEC_ONE"}, // SKILL_EXEC_ONE
+    {btlCameraDispatchFrameMode, func_002ad770, 1, 1, "SKILL_EXEC_EC"}, // SKILL_EXEC_EC
+    {btlCameraFrameOrbitTight, (void(*)(BtlCamera*))btlCameraNoop002adc70, 1, 0, "SKILL_EXEC_ONE"}, // SKILL_EXEC_ONE
     {btlAct_SKILL_EXEC_ONE, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
     {func_002adcd0, (void(*)(BtlCamera*))func_002ADD00, 1, 1, "SKILL_EXEC_PS"}, // SKILL_EXEC_PS
-    {func_002ae260, (void(*)(BtlCamera*))func_002ae4c0, 1, 1, "PERSONA"}, // PERSONA
-    {func_002ae4d0, (void(*)(BtlCamera*))func_002ae730, 1, 1, "OVERLIMIT"}, // OVERLIMIT
+    {btlCameraFrameActionUnitPose, (void(*)(BtlCamera*))func_002ae4c0, 1, 1, "PERSONA"}, // PERSONA
+    {btlCameraFrameActionUnitPoseMirror, (void(*)(BtlCamera*))func_002ae730, 1, 1, "OVERLIMIT"}, // OVERLIMIT
     {func_002ae150, (void(*)(BtlCamera*))func_002ae250, 0, 1, "COMMAND"}, // COMMAND
     {func_002af7f0, func_002af850, 0, 1, "TARGET"}, // TARGET
     {(void(*)(BtlCamera*))btlAct_TARGET, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
@@ -1405,13 +1405,13 @@ extern void btlMainCurveSetFourPoses(BtlCamera* camera, BtlCameraKeyFrame* first
 extern u64 FUN_002add10();
 extern void FUN_002d1de0(void* task, const RwV3d* from, const RwV3d* to);
 extern f32 FUN_002d1f30(f32* left, f32* right);
-extern void FUN_002d2280(s16* outX, s16* outZ, f32* position);
+extern void btlTargetPositionToCell(s16* outX, s16* outZ, f32* position);
 extern u32 FUN_002d4040(BtlUnit* unit);
 extern u16 FUN_002d4e10(u16 mask, u32 badStatus);
 extern u32 FUN_002d5bf0(BtlUnit* unit);
 extern s16 FUN_002f8eb0(BtlUnit* unit, s16 index);
 extern u64 FUN_002fa240();
-extern u32 FUN_002fdcf0(int param_1, int param_2);
+extern u32 btlBossFlagPairOk(int param_1, int param_2);
 extern u32 FUN_002ffbc0();
 extern u64 FUN_00300580();
 extern u8 FUN_00308c60();
@@ -1510,7 +1510,7 @@ extern u8 D_00694EBC[];
 extern u8 D_00694EF0[];
 extern u8 D_00694EFC[];
 extern u32 FUN_002b64d0(BtlCamera* camera, struct B64CameraWork* work);
-extern u32 FUN_002b6bd0(int param_1);
+extern u32 btlCameraIsEnabled(int param_1);
 extern void FUN_002b6bf0(undefined4 *param_1, undefined4 param_2, undefined4 param_3, u32 param_4, u16 param_5);
 extern u8* FUN_002b6cd0(int param_1);
 extern void FUN_002b6de0(unsigned short *param_1);
@@ -2221,7 +2221,7 @@ void FUN_002b71e0(void)
 
 
 /* Target forward declarations. */
-#pragma alias func_002b9350_u32 func_002b9350
+#pragma alias func_002b9350_u32 btlFormationGetCount
 #pragma alias func_002b93e0_4arg func_002b93e0
 #pragma alias func_002ba3a0_void func_002ba3a0
 #pragma alias func_002bc9c0_long func_002bc9c0
@@ -2288,7 +2288,7 @@ found:
       iVar1 = (uVar5 & 0xffff) * 0xe0;
       afStack_10[0] = *(float *)(iVar3 + iVar1 + 0x694f14);
       afStack_10[2] = *(float *)(iVar3 + iVar1 + 0x694f18);
-      FUN_002d2280((s16 *)(param_1 + 0x94),(s16 *)(param_1 + 0x96),afStack_10);
+      btlTargetPositionToCell((s16 *)(param_1 + 0x94),(s16 *)(param_1 + 0x96),afStack_10);
       FUN_0027f650(param_1,afStack_10);
       switch (*(u8 *)(param_1 + 0xa2)) {
       case 0:
@@ -2446,7 +2446,7 @@ u32 FUN_002b7c50(u32 *work)
             source = action->unit;
             target = targetAction->unit;
             persona = source->personaUnit;
-            if (FUN_002fdd40(source, target) != 0)
+            if (btlBossUnitsSameGenus(source, target) != 0)
             {
                 *(u32 *)(DAT_007ce3ec + 0xc) |= 0x400000;
                 *(u16 *)(DAT_007ce3ec + 0x18) |= 0xe;
@@ -2456,7 +2456,7 @@ u32 FUN_002b7c50(u32 *work)
             centerY = source->pos.y;
             center.y = centerY;
             if ((work_p[2] == 1) && (target != source) &&
-                (FUN_002fdcf0((int)(uintptr_t)source, (int)(uintptr_t)target) != 0))
+                (btlBossFlagPairOk((int)(uintptr_t)source, (int)(uintptr_t)target) != 0))
             {
                 if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
                 {
@@ -3024,11 +3024,11 @@ void func_002b9030(u32 param_1)
   state = (BtlFormationState *)param_1;
   state->counter--;
   if (((state->flags & 8) != 0) && (state->counter == 1)) {
-    func_002b9220((int)state);
+    btlFormationSetState((int)state);
   }
   if (state->counter == 0) {
     if ((state->flags & 2) != 0) {
-      func_002b9220((int)state);
+      btlFormationSetState((int)state);
     }
     (*DAT_0096017c)(state);
   }
@@ -3080,7 +3080,7 @@ void func_002b90d0(int destination, u32 source)
 
 // FUN_002b9220
 
-void func_002b9220(int state)
+void btlFormationSetState(int state)
 {
   u16 outer;
   u16 index;
@@ -3109,7 +3109,7 @@ void func_002b9220(int state)
 
 // FUN_002b9300
 
-void func_002b9300(int param_1)
+void btlFormationCopyDefault(int param_1)
 {
   extern void func_002b90d0(int,u32);
   BtlFormationState *state;
@@ -3124,7 +3124,7 @@ void func_002b9300(int param_1)
 
 // FUN_002b9350
 
-bool func_002b9350(int param_1)
+bool btlFormationGetCount(int param_1)
 
 {
   return (*(u16 *)(param_1 + 0x630) & 2) != 0;
@@ -3132,7 +3132,7 @@ bool func_002b9350(int param_1)
 
 // FUN_002b9370
 
-u32 func_002b9370(int param_1,u16 param_2)
+u32 btlFormationGetIndex(int param_1,u16 param_2)
 {
   u32 result;
 
@@ -3152,7 +3152,7 @@ u32 func_002b9370(int param_1,u16 param_2)
 
 // FUN_002b93c0
 
-u32 func_002b93c0(int param_1,u16 param_2)
+u32 btlFormationGetEntry(int param_1,u16 param_2)
 
 {
   int iVar1 = (param_2 & 0xffff) * 0x314;
@@ -3193,7 +3193,7 @@ u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
 /* W322 probe: func_002ba0f0 with opt_common_subs off improved normalized_diff 389 -> 372 (object 680/688). */
 // FUN_002b94f0
 
-void func_002b94f0(BtlFormationWork *work)
+void btlFormationResetState(BtlFormationWork *work)
 {
   s32 count;
   u16 index;
@@ -3510,7 +3510,7 @@ void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
     if (model_variant == 0) {
       model_variant = model;
     }
-    func_003176c0((Model*)model_variant);
+    mdlUpdateModelMatrix((Model*)model_variant);
     func_00318b90(model_variant);
     index = *(u16*)(param_3 + 4);
     result = func_00318ed0_v3d(model_variant, index, &position);
@@ -3551,7 +3551,7 @@ void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
     if (model_variant == 0) {
       model_variant = model;
     }
-    func_003176c0((Model*)model_variant);
+    mdlUpdateModelMatrix((Model*)model_variant);
     func_00318b90(model_variant);
     index = *(u16*)(param_3 + 4);
     result = func_00318ed0_v3d(model_variant, index, &position);
@@ -3682,7 +3682,7 @@ void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4)
 }
 
 // FUN_002ba0d0
-void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
+void btlFormationClearAttachVector(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
 {
   param_4[0] = 0;
   param_4[1] = 0;
@@ -4391,7 +4391,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 #pragma alias FUN_004c31b0_b6070 FUN_004c31b0
 #pragma alias FUN_004c69f0_b6070 FUN_004c69f0
 #pragma alias FUN_004c6c60_b6070 FUN_004c6c60
-#pragma alias FUN_002a4690_b6070 FUN_002a4690
+#pragma alias FUN_002a4690_b6070 btlCameraLookAtQuat
 #pragma alias FUN_002a2290_b6070 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_b6070 FUN_002a3110
 #pragma alias FUN_002a3160_typed FUN_002a3160
@@ -4480,7 +4480,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 
 #pragma alias FUN_002a4470_b280 FUN_002a4470
 #pragma alias FUN_0027ffb0_b280 FUN_0027ffb0
-#pragma alias FUN_002a4690_b280 FUN_002a4690
+#pragma alias FUN_002a4690_b280 btlCameraLookAtQuat
 #pragma alias FUN_004be1e0_b280 FUN_004be1e0
 #pragma alias FUN_004c69f0_b280 FUN_004c69f0
 #pragma alias FUN_004c6b20_b280 FUN_004c6b20
@@ -4568,7 +4568,7 @@ void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 #pragma alias FUN_00280130_b64d0 FUN_00280130
 #pragma alias FUN_00280200_b64d0 FUN_00280200
 #pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
-#pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
+#pragma alias FUN_002b6bd0_b64d0 btlCameraIsEnabled
 #pragma alias FUN_002a2290_b64d0 btlMainCurveSetPoses
 #pragma alias FUN_002a3110_b64d0 FUN_002a3110
 
@@ -4799,11 +4799,11 @@ u32 func_002baad0(int* data)
     state->flags |= 2;
     state->counter--;
     if ((state->flags & 8) != 0 && state->counter == 1) {
-      func_002b9220((int)state);
+      btlFormationSetState((int)state);
     }
     if (state->counter == 0) {
       if ((state->flags & 2) != 0) {
-        func_002b9220((int)state);
+        btlFormationSetState((int)state);
       }
       (*DAT_0096017c_abs)(state);
     }
@@ -4848,7 +4848,7 @@ void func_002bacb0(u32 *param_1)
   u32 uVar1 = 0;
   
   param_1[6] = 0;
-  func_002b9300(*param_1);
+  btlFormationCopyDefault(*param_1);
   *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
   *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + 1;
   switch (*(short *)(param_1 + 3)) {
@@ -4859,7 +4859,7 @@ void func_002bacb0(u32 *param_1)
     param_1[5] = *(u32 *)(param_1[2] + 0x9fc);
     break;
   }
-  uVar1 = (u32)func_002bb9c0(param_1[5]);
+  uVar1 = (u32)btlEffectAllocEntry(param_1[5]);
   param_1[4] = uVar1;
   return;
 }
@@ -4892,7 +4892,7 @@ u32 func_002bad60(u32 *param_1)
     }
     else {
       functionIndex = *(volatile u16 *)(param_1 + 3);
-      iVar3 = func_002b9370(*param_1,functionIndex);
+      iVar3 = btlFormationGetIndex(*param_1,functionIndex);
       if ((*slot & 0x40) == 0) {
         if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
           *slot = *slot | 0x100;
@@ -4927,7 +4927,7 @@ u32 func_002bad60(u32 *param_1)
 /* W367 measured: opt_propagation off nd2117 -> 2094, object 3236/3248; baseline object 3248/3248. */
 // FUN_002baec0
 
-bool func_002baec0(u32 *param_1)
+bool btlFormationHasEntry(u32 *param_1)
 {
   int iVar2;
   u16 index;
@@ -4935,14 +4935,14 @@ bool func_002baec0(u32 *param_1)
   volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *index_ptr;
   volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *value_ptr;
   
-  if (!func_002b9350(*param_1)) {
+  if (!btlFormationGetCount(*param_1)) {
     return false;
   }
   index_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *)(param_1 + 3);
   value_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *)param_1;
   iVar2 = (index = *index_ptr,
            value = *value_ptr,
-           func_002b93c0(value,index));
+           btlFormationGetEntry(value,index));
   iVar2 <<= 1;
   if (iVar2 < 1) {
     iVar2 = 2;
@@ -4952,10 +4952,10 @@ bool func_002baec0(u32 *param_1)
 
 // FUN_002baf30
 
-void func_002baf30(u32 *param_1)
+void btlFormationRelease(u32 *param_1)
 
 {
-  func_002bbac0(param_1[5],(u16 *)param_1[4]);
+  btlEffectFreeEntry(param_1[5],(u16 *)param_1[4]);
   func_002b9030(*(int *)param_1);
   *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
   *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + -1;
@@ -4975,8 +4975,8 @@ void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
   *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
   *(code *)(iVar2 + 0x68) = (code)func_002bacb0;
   *(code *)(iVar2 + 0x6c) = (code)func_002bad60;
-  *(code *)(iVar2 + 0x74) = (code)func_002baec0;
-  *(code *)(iVar2 + 0x70) = (code)func_002baf30;
+  *(code *)(iVar2 + 0x74) = (code)btlFormationHasEntry;
+  *(code *)(iVar2 + 0x70) = (code)btlFormationRelease;
   puVar1 = *(u32 **)(iVar2 + 0x78);
   *puVar1 = param_1;
   puVar1[1] = param_2;
@@ -4995,9 +4995,9 @@ void func_002bb050(u32 *param_1)
   u32 uVar1 = 0;
   
   param_1[7] = 0;
-  func_002b9300(*param_1);
+  btlFormationCopyDefault(*param_1);
   *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
-  uVar1 = (u32)func_002bb9c0(*(u32 *)(param_1[1] + 0x9fc));
+  uVar1 = (u32)btlEffectAllocEntry(*(u32 *)(param_1[1] + 0x9fc));
   param_1[6] = uVar1;
   return;
 }
@@ -5023,7 +5023,7 @@ u32 func_002bb0b0(u32 *param_1)
     else {
       if ((*puVar1 & 0x40) == 0) {
         if ((*(u16 *)(param_1 + 8) & 0x4000) == 0) {
-          iVar2 = func_002b9370(*param_1,0);
+          iVar2 = btlFormationGetIndex(*param_1,0);
           iVar2 = iVar2 << 1;
         }
         else {
@@ -5060,7 +5060,7 @@ u32 func_002bb0b0(u32 *param_1)
 void func_002bb290(u32 *param_1)
 
 {
-  func_002bbac0(*(u32 *)(param_1[1] + 0x9fc),(u16 *)param_1[6]);
+  btlEffectFreeEntry(*(u32 *)(param_1[1] + 0x9fc),(u16 *)param_1[6]);
   func_002b9030(*(int *)param_1);
   *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + -1;
   return;

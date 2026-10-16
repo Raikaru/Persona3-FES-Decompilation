@@ -620,7 +620,7 @@ u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos,
 // Reconstructed cell search, nearest-distance filtering, and collision raycast.
 // Residual MWCC register/control-flow ordering remains; 744B object vs 768B retail window.
 // FUN_001c6450
-u32 func_001c6450(const RwMatrix* viewerMat,
+u32 FldEvent_HasLineOfSight(const RwMatrix* viewerMat,
                   const RwV3d* targetPos,
                   f32 fov,
                   f32 maxDist)
@@ -1740,7 +1740,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         FUN_00108fd0(0x5a);
         FUN_00396f50(0);
         FUN_003c8f70();
-        FUN_003c8f20();
+        fclMiscSetDoneFlag();
         if (EVENT_WORD(0x18) != 0)
         {
             FUN_00195020(EVENT_WORD(0x18));
@@ -1845,7 +1845,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_001d4180();
                 if (FIELD_WORD(0x1200) != 0) FUN_001a9470(FIELD_WORD(0x1200));
                 FUN_003c8f70();
-                FUN_003c8f20();
+                fclMiscSetDoneFlag();
                 if (FIELD_WORD(0x10d4) != 0)
                 {
                     for (i = 0; i < 4; i++)
@@ -2307,7 +2307,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_003182d0(((u32*)D_008717F0_abs)[(s8)FUN_00453480() * 0x70], 0, 2, 0, 0);
                 FUN_0045a430(true);
                 FUN_003c8f70();
-                FUN_003c8f20();
+                fclMiscSetDoneFlag();
                 fldEvent->eventType = 5;
             }
             break;
@@ -2350,7 +2350,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_003182d0(PTR_U32(EVENT_WORD(9), 0x50), 0, 2, 0, 0);
             FUN_0045a430(true);
             FUN_003c8f70();
-            FUN_003c8f20();
+            fclMiscSetDoneFlag();
             fldEvent->eventType = 7;
             break;
 

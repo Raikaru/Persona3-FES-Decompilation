@@ -910,7 +910,7 @@ static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
 
 
 // FUN_001018c0
-void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
+void H_Cdvd_StreamSeek(void* resultData, void* slotData, u32 amount, s32 mode)
 {
     u8* data = (u8*)slotData + 0x70;
     unsigned __int128 position;
@@ -1039,7 +1039,7 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     context->callback2c = (void*)H_Cdvd_StreamNoop;
     context->callback30 = (void*)H_Cdvd_StreamReadChunk;
     context->callback44 = (void*)H_Cdvd_StreamComplete;
-    context->callback38 = (void*)func_001018c0;
+    context->callback38 = (void*)H_Cdvd_StreamSeek;
     context->callback4c = (void*)H_Cdvd_IsCached;
     slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
     context->slots = slots;

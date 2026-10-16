@@ -25,7 +25,7 @@ void FUN_001bfcc0();
 void FUN_00103cb0();
 u32 FUN_001b9130();
 void FUN_003c8f70();
-void FUN_003c8f20();
+void fclMiscSetDoneFlag();
 u32* FUN_0035f160();
 u32 FUN_0016f380(u32 idx);
 u32 FUN_001c0040();
@@ -62,7 +62,7 @@ extern void func_001d6270(KwlnTask* parent, s32 mode, s32 value);
 extern void func_001d6630(KwlnTask* parent, s32 mode, s32 value);
 extern void func_001831e0(s32 pcId, s16 slot, void* value);
 extern void func_003c8f70(void);
-extern void func_003c8f20(void);
+extern void fclMiscSetDoneFlag(void);
 extern f32 KDraw_MatrixYawDeg(void* matrix);
 extern f32 KDraw_MatrixPitchDeg(const RwMatrix* matrix);
 extern u32 func_0043a230(s32 value);
@@ -994,7 +994,7 @@ u32 Cmd_TestResourceValue()
 u32 K_Cmd_001c3dc0()
 {
     FUN_003c8f70();
-    FUN_003c8f20();
+    fclMiscSetDoneFlag();
 
     return true;
 }

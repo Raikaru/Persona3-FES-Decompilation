@@ -88,7 +88,7 @@ extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
 extern void func_003204a0(int *param_4, f32 param_1, f32 param_2, f32 param_3, int *param_5);
 extern void func_00320380(int *param_2, f32 param_1);
-extern void func_00320770(int *param_1);
+extern void mdlMatAnimCopyNodeMaterial(int *param_1);
 extern f32 func_00320810(void* animation);
 void func_00316970(Model* mdl);
 u32 mdlFindFrameHierarchy(void* param_1, u32* param_2);
@@ -209,24 +209,24 @@ u32 mdlSetupAtomicMatFX(u32 param_1);
 u32 func_00313090(u32 param_1,u32 param_2);
 void func_00313ca0(int *param_1,u32 param_2);
 int mdlAppendUniqueListEntry(int param_1,void* param_2);
-void* func_00313fe0(void* param_1,u32 *param_2);
+void* mdlForEachAtomicListEntry(void* param_1,u32 *param_2);
 void* mdlAnimLoopRewind(void* param_1,u16 *param_2);
 void* mdlAnimLoopCallback(void* param_1, void* param_2);
 u32 mdlGetFrameNameUserData(void* param_1);
 void* func_00314510(void* param_1);
-u32 func_00314650(u32 param_1);
+u32 mdlSetupMatFXMaterials(u32 param_1);
 void* mdlFindFrameById(void* object, void* data);
 u32 mdlComputeAttachMatrix(RwMatrix* outMatrix,u16 *table,u16 key,int resource);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
-Model* func_00315ed0(Model* param_1);
+Model* mdlEnsureAtomicMatColors(Model* param_1);
 u32 mdlMatColorScaleCallback(void* param_1,u32 *param_2);
 void mdlClumpApplyMatColorScale(u64 param_1,u32* param_2,u16 param_3);
 u32 mdlMatColorUncoloredCallback(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
-void* func_003165e0(void* param_1);
+void* mdlDoubleAtomicEntryW(void* param_1);
 Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
-void func_003176c0(Model* param_1);
+void mdlUpdateModelMatrix(Model* param_1);
 u32 func_003186e0(int param_1,u32 param_2,short param_3);
 void func_00318b10(u32 *param_1);
 u32 func_00318b90(u32 param_1);
@@ -301,7 +301,7 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
   iVar1 = *(int *)(p + 0x18);
   if (*(int *)(p + 0x1c) != iVar1) {
     if (iVar1 != 0) {
-      func_0031df80(iVar1);
+      mdlEffectListReleaseHandles(iVar1);
     }
     if (*(int *)(p + 0x1c) != 0) {
       func_0031ded0((void *)*(int *)(p + 0x1c));
@@ -317,10 +317,10 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
   if (*(int *)(p + 0x2c) != 0) {
     iVar1 = *(int *)(p + 0x24);
     if (iVar1 != 0) {
-      func_0031e2c0(iVar1);
+      mdlClearWrapperHandle(iVar1);
     }
     if (*(int *)(p + 0x28) != 0) {
-      func_0031e270(*(int *)(p + 0x28), param_2);
+      mdlSetWrapperValue(*(int *)(p + 0x28), param_2);
     }
     *(u32 *)(p + 0x24) = *(u32 *)(p + 0x28);
     *(u32 *)(p + 0x2c) = 0;
@@ -2007,7 +2007,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
           if (*(int *)(iVar3 + 0x18) != 0) {
 
-            func_0031dce0(*(int *)(iVar3 + 0x18));
+            mdlEffectListCallFlagged(*(int *)(iVar3 + 0x18));
 
           }
 
@@ -2123,10 +2123,10 @@ void func_003132c0(u8* param_1)
   if (resources != NULL) {
     for (i = 0; i < *(u32*)resources; i = i + 1) {
       if (resources->primary[i] != NULL) {
-        func_0031d790(resources->primary[i]);
+        mdlEffectListDestroy(resources->primary[i]);
       }
       if (resources->secondary[i] != NULL) {
-        func_0031e130(resources->secondary[i]);
+        mdlReleaseSharedWrapper(resources->secondary[i]);
       }
     }
     (*DAT_0096017c)(resources);
@@ -2619,7 +2619,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
           if (param_1[1] != 0) {
 
-            func_00320770((int *)param_1[1]);
+            mdlMatAnimCopyNodeMaterial((int *)param_1[1]);
 
           }
 
@@ -2727,7 +2727,7 @@ int mdlAppendUniqueListEntry(int param_1, void* param_2)
 // FUN_00313FE0
 
 
-void* func_00313fe0(void* param_1,u32 *param_2)
+void* mdlForEachAtomicListEntry(void* param_1,u32 *param_2)
 {
   func_004932c0(*(u32 *)((u8 *)param_1 + 0x18), *param_2, param_2[1]);
   return param_1;
@@ -2894,7 +2894,7 @@ void mdlSetupNamedFrameAnims(u8* param_1,RpClump* param_2)
     callbackData.callback = (code)mdlAppendUniqueListEntry;
     callbackData.value = uVar1;
 
-    func_004916d0_callback(param_2,(void (*)(void))func_00313fe0,&callbackData);
+    func_004916d0_callback(param_2,(void (*)(void))mdlForEachAtomicListEntry,&callbackData);
 
     *(u32 *)(*(int *)(param_1 + 0x18) + 8) = uVar1;
 
@@ -2970,7 +2970,7 @@ void* func_00314510(void* param_1)
 // FUN_00314650
 
 
-u32 func_00314650(u32 param_1)
+u32 mdlSetupMatFXMaterials(u32 param_1)
 {
     int iVar1;
     int iVar2;
@@ -3295,7 +3295,7 @@ LAB_0031494c:
 
     }
 
-    func_004916d0(param_1,(void *)func_00314650,0);
+    func_004916d0(param_1,(void *)mdlSetupMatFXMaterials,0);
 
     func_004916d0(param_1,(void *)func_00314510,0);
 
@@ -3995,7 +3995,7 @@ void func_003151d0(Model* param_1)
 
     func_001a88e0(*(u32 *)(iVar11 + 0xdc));
 
-    func_003176c0(param_1);
+    mdlUpdateModelMatrix(param_1);
 
     for (uVar13 = 0; uVar13 < 5; uVar13 = uVar13 + 1 & 0xffff) {
 
@@ -4079,7 +4079,7 @@ void func_003151d0(Model* param_1)
 
         if (bVar7) {
 
-          func_003176c0((Model*)iVar9);
+          mdlUpdateModelMatrix((Model*)iVar9);
 
         }
 
@@ -4176,7 +4176,7 @@ void func_00315c20(int param_1)
 // FUN_00315ED0
 
 
-Model* func_00315ed0(Model* param_1)
+Model* mdlEnsureAtomicMatColors(Model* param_1)
 
 
 
@@ -4422,7 +4422,7 @@ void func_003164f0(int param_1,int param_2)
 // FUN_003165E0
 
 
-void* func_003165e0(void* param_1)
+void* mdlDoubleAtomicEntryW(void* param_1)
 {
   int iVar1;
   u32 uVar2;
@@ -4621,7 +4621,7 @@ void func_00316970(Model* param_1)
 
   iVar3 = (int)param_1;
 
-  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)func_003165e0,0);
+  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)mdlDoubleAtomicEntryW,0);
 
   if (*(int *)(iVar3 + 0x37c) != 0) {
     mdlSetupNamedFrameAnims((u8 *)param_1 + 0x364,param_1->clump);
@@ -4675,7 +4675,7 @@ void func_00316970(Model* param_1)
 
   *(u32 *)(iVar3 + 0xe0) = uVar1;
 
-  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)func_00315ed0,0);
+  func_004916d0(*(u32 *)(iVar3 + 0xdc),(void *)mdlEnsureAtomicMatColors,0);
 
   if (*(int *)(iVar3 + 0x3f4) != 0) {
     func_0031ded0(*(void **)(iVar3 + 0x3f4));
@@ -5103,7 +5103,7 @@ void mdlDestroy(Model* mdl)
 
     if (mdl->runtimeData.motionData != NULL)
     {
-        func_0031d790(mdl->runtimeData.motionData);
+        mdlEffectListDestroy(mdl->runtimeData.motionData);
     }
     func_0031eee0(mdl->runtimeData.animationData);
 
@@ -5129,7 +5129,7 @@ void mdlDestroy(Model* mdl)
 // FUN_003176C0
 
 
-void func_003176c0(Model* mdl)
+void mdlUpdateModelMatrix(Model* mdl)
 {
     RwMatrix matrix;
     RwFrame* frame;

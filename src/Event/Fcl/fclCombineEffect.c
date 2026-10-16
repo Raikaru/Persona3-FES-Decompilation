@@ -53,7 +53,7 @@ f32 FUN_0016bb80(u32 param_1, u32 param_2);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
-u32 FUN_004173e0(void);
+u32 itfMesWindowSubTablePtr(void);
 u64 FUN_00417410(void);
 u64 FUN_00417540(void);
 u64 FUN_00417590(void);

@@ -2235,7 +2235,7 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 5:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -2310,7 +2310,7 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 10:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -2330,7 +2330,7 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 0xc:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 
@@ -2376,7 +2376,7 @@ u32 FUN_003c1d20(u8 *param_1)
 
   case 0xe:
 
-    lVar6 = FUN_0039f6e0(puVar7);
+    lVar6 = evtMessageWindowIsDone(puVar7);
 
     if (lVar6 == 1) {
 

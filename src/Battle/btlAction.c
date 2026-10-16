@@ -1040,7 +1040,7 @@ void btlActionInitStateStart(BtlAction* action)
         btlActionSetState(action, BTLACTION_STATE_END);
         return;
     }
-    FUN_002d5e00(&action->unkData3[0x40]);
+    btlTargetClearWork(&action->unkData3[0x40]);
     if (FUN_002e42e0(action) != 0)
     {
         action->evtFunc = FUN_002e4310;

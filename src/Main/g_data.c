@@ -81,7 +81,7 @@ DatGlobal gGlobalWork; // 00836200
 DatPc gPcs[PC_MAX];    // 00833948
 
 void func_00177410(u8*, u8*);
-void func_001774e0(void);
+void datBuildPersonaDisplayName(void);
 extern const char D_005E3098[];
 extern const char D_005E3260[];
 extern u32 gSpecialStatusMessage;

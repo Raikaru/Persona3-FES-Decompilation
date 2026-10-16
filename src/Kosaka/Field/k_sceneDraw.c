@@ -154,7 +154,7 @@ KwlnTask* func_001a3b10(KwlnTask* parent, u32 width, u32 height, u32 mode);
 void func_001a3c30(KwlnTask* task);
 u32 func_001a3f20(KwlnTask* task, const char* name);
 char* func_001a4010(KwlnTask* task, s32 id);
-void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback);
+void sdkLboxSetCallback(KwlnTask* task, u32 id, KWindowEntryCallback callback);
 void func_001a4090(KwlnTask* task, u32 id, const char* text);
 void func_001a4110(KwlnTask* task, u32 id, s32 value, s32 minValue,
                    s32 maxValue, s32 flags);
@@ -3249,7 +3249,7 @@ void func_001a3c30(KwlnTask* task)
 }
 
 // FUN_001A3DC0
-void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
+void sdkLboxAddDescriptors(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
                    u32 count)
 {
     u32 i;
@@ -3281,7 +3281,7 @@ void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
         }
         if (descriptors->callback != NULL)
         {
-            func_001a4050(task, id, descriptors->callback);
+            sdkLboxSetCallback(task, id, descriptors->callback);
         }
         i++;
         descriptors++;

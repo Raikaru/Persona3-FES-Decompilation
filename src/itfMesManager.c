@@ -139,7 +139,7 @@ extern void* FUN_003b49a0(void* param);
 extern void FUN_003a6b00_direct(u32 activeMes);
 #pragma alias FUN_003a4ef0_direct FUN_003a4ef0
 extern void FUN_003a4ef0_direct(u32 *param_1);
-#pragma alias FUN_003b4a20_direct FUN_003b4a20
+#pragma alias FUN_003b4a20_direct fmGslContPoolUnlink
 extern void FUN_003b4a20_direct(void *entry, void *list);
 extern void FUN_005225a8();
 extern void FUN_003a8d60();
@@ -2670,7 +2670,7 @@ void FUN_003a4ce0(void)
   *(u32 *)DAT_00959ec0_abs = 0;
   *(u32 *)DAT_00959ec8_abs = 0;
   *(u16 *)DAT_00959ecc_abs = 0;
-  FUN_003b4920(DAT_00959ed0_abs,DAT_00959ee0_abs,0x40,0x34);
+  fmGslContPoolInit(DAT_00959ed0_abs,DAT_00959ee0_abs,0x40,0x34);
   for (iVar1 = *(int *)DAT_00959ed8_abs; iVar1 != 0; iVar1 = *(int *)(iVar1 + 4)) {
 
 

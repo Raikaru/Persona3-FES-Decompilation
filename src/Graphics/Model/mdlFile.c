@@ -140,7 +140,7 @@ static u8 bGpffffb854, bGpffffb855, bGpffffb856, bGpffffb857;
 extern f32 DAT_007cae4c;
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
-void FUN_0031d790(u32 *param_1);
+void mdlEffectListDestroy(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
@@ -148,23 +148,23 @@ u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
 void FUN_0031d9c0(int *param_1,u32 *param_2);
 void FUN_0031dc80(int *param_1,u32 param_2);
-void FUN_0031dce0(u32 *param_1);
+void mdlEffectListCallFlagged(u32 *param_1);
 void FUN_0031dd40(int *param_1,u32 *param_2);
 void FUN_0031dda0(int *param_1,float *param_2);
-void FUN_0031de30(u32 *param_1);
+void mdlEffectListReleaseNodes(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
-void FUN_0031df80(u32 *param_1);
+void mdlEffectListReleaseHandles(u32 *param_1);
 extern void FUN_0034fcf0_i(int param_1);
 extern u32 FUN_0034fcd0_i(u32 param_1);
 u32 FUN_0031dff0(u32 param_1,u32 param_2);
 u32 FUN_0031e0b0(int *param_1);
-void FUN_0031e130(int *param_1);
+void mdlReleaseSharedWrapper(int *param_1);
 void FUN_0031e1b0(int param_1);
 void FUN_0031e1e0(int param_1);
 void FUN_0031e210(int param_1);
 void FUN_0031e240(int param_1);
-void FUN_0031e270(int param_1,u64 param_2);
-void FUN_0031e2c0(int param_1);
+void mdlSetWrapperValue(int param_1,u64 param_2);
+void mdlClearWrapperHandle(int param_1);
 int FUN_0031e300(u32 *param_1);
 extern u64 FUN_0031e300_wide(u32 *param_1);
 int FUN_0031e310(short param_1,short param_2);
@@ -180,12 +180,12 @@ void FUN_0031ef80(int *param_1,short param_2,short param_3);
 void FUN_0031f5c0(int *param_1);
 void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4);
 static u32 FUN_0031f740(int *param_2,float param_1);
-u8 * FUN_0031f7a0(float param_1,int *param_2);
-u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
+u8 * mdlSampleTrackScalar(float param_1,int *param_2);
+u8 * mdlBlendTrackSamples(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
-void FUN_0031faf0(f32 *param_1,u32 param_2);
+void mdlApplyMaterialColorRow(f32 *param_1,u32 param_2);
 static u32 * FUN_0031fbd0(int *param_2,float param_1);
-u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend);
+u8 * mdlBlendVec4Tracks(float firstTime, int *track1, float secondTime, int *track2, float blend);
 void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
@@ -193,18 +193,18 @@ void FUN_00320290(int param_1);
 void FUN_00320380(float param_1,int *param_2);
 void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3);
 void FUN_00320640(f32 param_1,f32 param_2,int *param_3);
-void FUN_00320770(int *param_1);
+void mdlMatAnimCopyNodeMaterial(int *param_1);
 f32 FUN_00320810(u8 **nodeHead);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
-u32 FUN_00320ba0(u32 param_1,u32 *param_2);
-u32 FUN_00320cf0(u32 param_1,u32 param_2);
-u64 FUN_00320da0(u64 param_1,u64 param_2);
+u32 mdlMatAnimCollectMaterial(u32 param_1,u32 *param_2);
+u32 mdlMatAnimFlagMatchedAtomic(u32 param_1,u32 param_2);
+u64 mdlMatAnimFlagClumpMatches(u64 param_1,u64 param_2);
 u32 FUN_00320de0(u32 param_1,u32 *param_2);
-u16 FUN_00320f70(u64 param_1,u32 param_2);
+u16 mdlMatAnimCountClumpMatches(u64 param_1,u32 param_2);
 u32 FUN_00320fb0(u16 param_1);
-void FUN_00321010(int param_1);
-u32 FUN_00321050(int param_1);
-void FUN_00321070(int *param_1,u32 param_2);
+void mdlReleaseU16Ref(int param_1);
+u32 mdlRetainU16Ref(int param_1);
+void mdlAppendU32Entry(int *param_1,u32 param_2);
 u32 FUN_003210a0(u32 param_1);
 void FUN_003210c0(void);
 extern u32 FUN_003210c0_ret(u64 param_1);
@@ -221,7 +221,7 @@ void FUN_003212a0(int param_1,u32 param_2);
 void FUN_003212e0(int param_1,u32 param_2);
 void FUN_00321320(u32 *param_1);
 void FUN_00321360(u32 param_1);
-u64 FUN_00321a60(void);
+u64 TnTaskUpdate(void);
 u64 FUN_00321b00(void);
 u64 FUN_00321c50(void);
 u64 FUN_00321cb0(void);
@@ -243,8 +243,8 @@ void FUN_003226b0(int *param_1,int param_2);
 u32 FUN_00322880(int param_1);
 void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,int param_2,float *param_3);
-void FUN_00322d10(int param_1,float *param_2);
-void FUN_00322d40(int param_1,u32 param_2);
+void mdlEffectEvalSubPose(int param_1,float *param_2);
+void mdlEffectWrapTrackFrames(int param_1,u32 param_2);
 extern void FUN_00322d40_onearg(u32 resource);
 u32 FUN_00322da0(int *param_1,int param_2);
 u32 FUN_00322dc0(u32 *param_1);
@@ -260,7 +260,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2);
 extern u32 FUN_003234f0_u32(u16 param_1,u32 param_2);
 u32 FUN_00323640(u16 *param_1);
 extern u32 FUN_00323640_u32(u16 *param_1);
-void FUN_003237c0(int param_1);
+void GeometryBlockDestroy(int param_1);
  extern void FUN_003237c0_i(int param_1);
  extern void FUN_003237c0_u32(u32 param_1);
 void FUN_00323860(void);
@@ -272,11 +272,11 @@ extern void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
 extern void FUN_003238d0_ptr4(u16 *param_1,u8 *param_2,u8 *param_3,u8 *param_4);
  extern void FUN_00323920_out(u8 *param_1);
  extern void FUN_00323a30_out(u8 *param_1);
-void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4);
-void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4);
-void FUN_00323b90(int param_1,u64 param_2);
+void GeometryMatrixBuild(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4);
+void GeometryMatrixBuildCombined(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4);
+void GeometryBlockSetTextureFromHandle(int param_1,u64 param_2);
 extern void FUN_00323b90_i(int param_1,int param_2);
-void FUN_00323bf0(int param_1,u32 *param_2);
+void GeometryBlockGetTextureInfo(int param_1,u32 *param_2);
 u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
 extern u32 FUN_00323c20_u32first(u32 param_1,u16 param_2,u16 param_3,u32 param_4);
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
@@ -301,10 +301,10 @@ void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
 extern void FUN_003244c0_4arg(u16 *mesh,u64 resource,int position,int scale);
 void FUN_00324510(int param_1,u64 param_2);
-int FUN_003245b0(int param_1);
+int mdlEffectResolveRelPtrA(int param_1);
  extern int FUN_003245b0_passthru(void);
 extern u64 FUN_003245b0_wide(void);
-int FUN_003245f0(int param_1);
+int mdlEffectResolveRelPtrB(int param_1);
 u32 FUN_00324680(u32 param_1);
 void FUN_00324740(int param_1);
 void FUN_003247d0(int param_1);
@@ -342,11 +342,11 @@ extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 extern void FUN_00325e40_reordered(u8 (*param_1) [16],float param_2);
 void FUN_00326030(int param_1,int param_2);
-u_long128 FUN_00326160(int param_1,u32 *param_2);
-u_long128 FUN_00326170(int param_1,u32 *param_2);
-u32 FUN_00326180(int param_1);
-void FUN_00326190(u64 param_1,u64 param_2);
-int FUN_003261c0(int param_1,int param_2);
+u_long128 mdlEffectGetPositionVec(int param_1,u32 *param_2);
+u_long128 mdlEffectGetOrientationVec(int param_1,u32 *param_2);
+u32 mdlEffectGetPackedColorWord(int param_1);
+void mdlEffectCopyRecord(u64 param_1,u64 param_2);
+int mdlEffectFindNodeById(int param_1,int param_2);
 int FUN_00326200(int param_1,int param_2);
 int FUN_00326240(int param_1,int param_2);
 void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16]);
@@ -356,50 +356,50 @@ u32 FUN_00326510(u32 param_1);
 void FUN_00326740(int param_1);
 u32 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
-void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
-void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
+void ParticleAllocRecords(u32 *param_1,u16 param_2,u32 param_3);
+void ParticleSetMaterialSlot(int param_1,u16 param_2,u32 param_3);
 extern void FUN_00326cf0_2(int param_1,u32 param_2);
 extern void FUN_00326e50_u32(int param_1,u32 param_2);
 extern void FUN_00326f60_u32(u32 *param_1,u32 param_2);
 extern void FUN_00327090_u32(u32 *param_1,u32 param_2);
-void FUN_00326db0(int param_1,u16 param_2);
+void ParticleSetTextureById(int param_1,u16 param_2);
 extern void FUN_00326db0_u32(int param_1,u32 param_2);
-void FUN_00326e50(int param_1,u64 param_2);
-void FUN_00326f00(int param_1,u32 param_2);
+void ParticleSetTextureFromHandle(int param_1,u64 param_2);
+void ParticleSetLinkedGroup(int param_1,u32 param_2);
 void FUN_00326f60(u32 *param_1,int param_2);
 void FUN_00327090(u32 *param_1,u64 param_2);
-void FUN_003271c0(int param_1,u32 param_2);
-void FUN_00327220(int param_1);
+void ParticleSetAuxResource(int param_1,u32 param_2);
+void ParticleReleaseRecords(int param_1);
 void FUN_00327250(float param_1,int param_2);
 void FUN_003275d0(float param_1,int param_2);
 extern void FUN_003275d0_evt(float param_1);
 extern void FUN_003275d0_evt2(float param_1,int param_2);
 void FUN_003282e0(int param_1);
-void FUN_00329350(int param_1);
-void FUN_003293a0(void);
-void FUN_003293d0(int param_1);
+void ParticleReleaseEmitterAndUpdate(int param_1);
+void mdlEffectSetUnitWeight(void);
+void ParticleReleaseEmitterAndProject(int param_1);
 void FUN_00329430(int param_1);
 void FUN_00329460(int param_1);
 void FUN_00329490(int param_1,u32 param_2);
-void FUN_003294a0(f32 param_1, int param_2);
+void mdlEffectSetScaleAndNotify(f32 param_1, int param_2);
 void FUN_003294d0(void);
 void FUN_00329550(void);
 void FUN_003295c0(u64 param_1);
 void FUN_00329630(void);
-void FUN_003296a0(u32 *param_1,u8 (*param_2) [16]);
+void mdlEffectBuildBasisRows(u32 *param_1,u8 (*param_2) [16]);
  extern void FUN_003296a0_typed(RwMatrix *param_1,s32 param_2);
-void FUN_00329740(u32 *param_1);
+void mdlEffectCopyCameraOrigin(u32 *param_1);
 void FUN_003297a0(u32 *param_1);
-void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
+void mdlEffectAimDirection(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00329890(u32 param_1);
 f32 *FUN_003299b0(void);
-u32 FUN_00329a60(void);
+u32 mdlEffectAnchorOnScreen(void);
 float FUN_00329ba0(float param_1);
-void FUN_00329d60(float param_1,u8 (*param_2) [16]);
+void mdlEffectCatmullRomVU(float param_1,u8 (*param_2) [16]);
 void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
-float FUN_0032a540(char *param_1,int param_2,int param_3);
+float mdlEffectSampleScalarKeys(char *param_1,int param_2,int param_3);
 void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
                  u8 (*param_4) [16]);
@@ -423,73 +423,73 @@ extern u32 FUN_00332070_u32_ptr(u16 param_1,int param_2,int *param_3);
 void FUN_003321d0(int param_1);
 void FUN_00332200(int param_1);
 void FUN_00332210(int param_1);
-u_long128 FUN_003322b0(int param_1,u32 *param_2);
-u_long128 FUN_003322d0(int param_1,u32 *param_2);
+u_long128 mdlEffectLoadQuadA(int param_1,u32 *param_2);
+u_long128 mdlEffectStoreQuadA(int param_1,u32 *param_2);
 extern void FUN_003322d0_one(int param_1);
 extern void FUN_00332310_one(int param_1);
-u_long128 FUN_003322f0(int param_1,u32 *param_2);
-u_long128 FUN_00332310(int param_1,u32 *param_2);
-void FUN_00332330(u16 *param_1);
+u_long128 mdlEffectLoadQuadB(int param_1,u32 *param_2);
+u_long128 mdlEffectStoreQuadB(int param_1,u32 *param_2);
+void EffEmitterApplyScale(u16 *param_1);
 u32 FUN_00332370(int param_1);
 void FUN_00332470(u32 *param_1,u16 param_2,int *param_3);
 u32 *FUN_003325d0(int *param_1);
-void FUN_00332700(int param_1);
+void TrackFreeInstance(int param_1);
 u32 FUN_00332780(int param_1);
 u32 *FUN_00332880(int *param_1);
 void FUN_00332990(u32 *param_1,int param_2);
-void FUN_00332a30(int *param_1,u16 param_2,int *param_3);
+void TrackLoadRecord(int *param_1,u16 param_2,int *param_3);
 void FUN_00332ac0(u32 *param_1,u16 param_2,int *param_3);
-void FUN_00332b30(int param_1);
+void TrackReleaseSubobject(int param_1);
 void FUN_00332b60(int *param_1);
-void FUN_00332e10(int *param_1);
-void FUN_00332f10(int *param_1);
+void TrackApplyWidth(int *param_1);
+void TrackRefresh(int *param_1);
 void FUN_00333020(int param_1);
 void FUN_00333050(int param_1);
-void FUN_00333080(int param_1,u32 param_2);
-void FUN_003330b0(f32 param_1, int param_2);
+void TrackSetColor(int param_1,u32 param_2);
+void TrackSetScale(f32 param_1, int param_2);
 u32 FUN_003330e0(u32 param_1,u32 param_2);
 extern u32 FUN_003330e0_u32(u32 param_1,u16 param_2);
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3);
 void FUN_00333420(int param_1,int *param_2);
 void FUN_003338b0(u32 param_1);
-void FUN_00333900(int param_1,u32 param_2);
-void FUN_00333920(int param_1,u32 param_2);
-bool FUN_00333940(int param_1,u32 param_2);
+void mdlEffectSlotSetZero(int param_1,u32 param_2);
+void mdlEffectSlotRelease(int param_1,u32 param_2);
+bool mdlEffectSlotIsFree(int param_1,u32 param_2);
 void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4);
-void FUN_003341c0(int param_1);
+void mdlEffectCopyOriginAndLockGeometry(int param_1);
 void FUN_00334220(int param_1);
 void FUN_003342c0(int param_1,u16 param_2);
 void FUN_00334310(int param_1);
 u32 FUN_00334390(int param_1);
-void FUN_00334820(int param_1);
+void ThunderGeometryDestroy(int param_1);
 void FUN_003348b0(int param_1);
-void FUN_00335180(int param_1);
-void FUN_003353f0(int param_1);
+void ThunderBoltWriteRows(int param_1);
+void ThunderBoltInitFade(int param_1);
 u32 FUN_00335540(int param_1);
-void FUN_003359e0(int param_1);
+void ThunderPaddedGeometryDestroy(int param_1);
 void FUN_00335a70(int param_1);
 void FUN_00336630(int param_1);
-void FUN_003368a0(int param_1);
+void ThunderPairedInitStates(int param_1);
 u64 FUN_00336920(int param_1);
-void FUN_00336df0(int param_1);
+void ThunderPairedGeometryDestroy(int param_1);
 void FUN_00336e80(int param_1);
-void FUN_003377f0(u32 param_1);
+void ThunderPairedWriteRows(u32 param_1);
 u32 FUN_00337a60(u32 param_1,u32 param_2);
 void FUN_00337b70(int param_1);
-void FUN_00337bb0(u32 param_1);
-void FUN_00337c10(int param_1);
-void FUN_00337c40(int param_1);
-void FUN_00337c90(int param_1);
-void FUN_00337cf0(int param_1);
+void ThunderInstanceDestroy(u32 param_1);
+void ThunderTextureForRecord(int param_1);
+void ThunderInstanceStop(int param_1);
+void ThunderInstanceAdvance(int param_1);
+void ThunderInstanceUpdateIfActive(int param_1);
 void FUN_00337d40(int param_1);
 u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src);
 u32 FUN_00337e90(u32 *param_1);
 void FUN_00337f80(int param_1);
 void FUN_00337fd0(int param_1);
 void FUN_00338360(int param_1);
-void FUN_00338530(int param_1);
+void RingWriteLineColour(int param_1);
 float * FUN_003385d0(u32 param_1);
-void FUN_00338770(int param_1);
+void RingDestroyBlock(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u32 param_1);
 u32 FUN_00338d60(u32 *param_1);
@@ -499,11 +499,11 @@ void FUN_00339200(int param_1);
 u32 FUN_003393d0(u32 param_1,u32 param_2);
 extern u32 FUN_003393d0_u32(u32 param_1,u32 param_2);
 void FUN_003394f0(int param_1);
-void FUN_00339530(u32 param_1);
-void FUN_003395a0(int param_1);
-void FUN_003395d0(int param_1);
-void FUN_00339620(int param_1);
-void FUN_00339680(int param_1);
+void RingInstanceDestroy(u32 param_1);
+void RingCreateInstanceForRecord(int param_1);
+void RingInstanceStop(int param_1);
+void RingInstanceAdvance(int param_1);
+void RingInstanceUpdateIfActive(int param_1);
 void FUN_003396d0(int param_1);
 u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src);
 void FUN_003397d0(int param_1);
@@ -511,7 +511,7 @@ u32 FUN_003398c0(int param_1);
 void FUN_00339950(int param_1);
 void FUN_003399a0(int param_1);
 void FUN_0033a220(int param_1);
-void FUN_0033a3e0(int param_1);
+void FlashRotatingUpdateGeometry(int param_1);
 u32 FUN_0033a4d0(int param_1);
 void FUN_0033a560(int param_1);
 void FUN_0033a5b0(int param_1);
@@ -547,7 +547,7 @@ u32 FUN_0033e7f0(int param_1);
 void FUN_0033e890(int param_1);
 void FUN_0033e8e0(int param_1);
 void FUN_0033f2e0(int param_1);
-void FUN_0033f4a0(int param_1);
+void FlashAgedBoxUpdateGeometry(int param_1);
 void FUN_0033f590(int param_1,int param_2);
 u32 FUN_0033f6a0(int param_1,int param_2);
 u32 FUN_0033f780(int param_1);
@@ -563,7 +563,7 @@ void FUN_003407e0(int param_1);
 void FUN_00341ba0(int param_1);
 u32 FUN_00341f10(u32 param_1,u32 param_2);
 u32 FUN_00341fd0(u32 param_1);
-void FUN_003420c0(u32 param_1);
+void FlashQuadDestroy(u32 param_1);
 u32 FUN_00342130(int param_1);
 void FUN_00342280(int param_1);
 void FUN_003422d0(int param_1);
@@ -590,29 +590,29 @@ void FUN_003450d0(int param_1);
 void FUN_00345970(int param_1);
 u32 FUN_00345cf0(u32 param_1,u64 param_2);
 extern u32 FUN_00345cf0_u32(u32 param_1,u32 param_2);
-void FUN_00345ea0(u32 param_1);
-u32 FUN_00345f00(int param_1);
+void WindInstanceDestroy(u32 param_1);
+u32 WindCreateKindEntryAlt(int param_1);
 void FUN_00345fa0(int param_1);
 void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
 void FUN_003460a0(int param_1);
 u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
 u32 FUN_003461a0(u32 param_1);
-void FUN_00346350(int param_1);
-u32 FUN_003463c0(int param_1);
+void mdlEffectDestroyInstance(int param_1);
+u32 mdlEffectCloneInstance(int param_1);
 extern u32 FUN_00347170_ptr(int param_1);
-void FUN_00346460(int param_1,int param_2);
-void FUN_00346500(int param_1);
-void FUN_00346510(int param_1);
+void mdlEffectCopyReferences(int param_1,int param_2);
+void EffSpriteClearFrameCount(int param_1);
+void EffSpriteIncrementFrameCount(int param_1);
 void FUN_00346530(int param_1);
 extern void FUN_00346530_alt(int param_1);
-void FUN_00347100(int param_1);
+void EffSpriteAdvanceFrame(int param_1);
 u32 FUN_00347170(u64 param_1);
 void FUN_003472d0(void);
-void FUN_00347300(int param_1);
-void FUN_00347350(u32 param_1);
+void mdlEffectDestroyGridObject(int param_1);
+void mdlEffectCreateGridFromInstance(u32 param_1);
 void FUN_003473b0(u8 (*param_1) [16]);
-void FUN_00347cb0(int param_1);
+void mdlEffectIncrementAndRender(int param_1);
 void FUN_00347d00(void);
 void FUN_00347d60(void);
 void FUN_00347f80(void);
@@ -629,13 +629,13 @@ void FUN_00348da0(int param_1,u32 *param_2);
 void FUN_00348f30(int param_1,float *param_2);
 void FUN_00349090(int *param_1,float *param_2);
 extern void FUN_00349090_ptr(int *param_1,int *param_2);
-void FUN_00349260(int param_1,float *param_2);
+void effBlurFilterSpawnSlot(int param_1,float *param_2);
 void FUN_00349450(int *param_1,float *param_2);
 extern void FUN_00349450_ptr(int *param_1,int *param_2);
 void FUN_00349620(int *param_1,float *param_2);
-void FUN_00349870(int param_1);
+void effBlurFilterUpdateScreenRect(int param_1);
 void FUN_00349a30(int param_1);
-void FUN_00349af0(u8 (*param_1) [16]);
+void effBlurFilterUpdateRectFromScale(u8 (*param_1) [16]);
 void FUN_00349d30(int param_1);
 u32 FUN_00349ed0(int param_1);
 void FUN_00349fa0(void);
@@ -643,17 +643,17 @@ void FUN_00349fd0(u8 (*param_1) [16]);
 void FUN_0034a1d0(int param_1);
 void FUN_0034a280(int param_1);
 void FUN_0034a340(void);
-void FUN_0034a370(u8 (*param_1) [16]);
-void FUN_0034a590(int param_1);
-void FUN_0034a650(int param_1);
+void effBlurFilterStepSlotsC(u8 (*param_1) [16]);
+void effBlurFilterSubmitActiveSlots(int param_1);
+void effBlurFilterUpdateScreenRectSimple(int param_1);
 void FUN_0034a800(int param_1);
 u32 FUN_0034a8c0(int param_1);
 void FUN_0034a990(void);
 void FUN_0034a9c0(u8 (*param_1) [16]);
 void FUN_0034abc0(int param_1);
-void FUN_0034ac70(int param_1);
+void effBlurFilterUpdateScreenRectFlagged(int param_1);
 void FUN_0034ada0(int param_1);
-void FUN_0034ae30(u8 (*param_1) [16]);
+void effBlurFilterUpdateRectFromScaleAux(u8 (*param_1) [16]);
 void FUN_0034b010(int param_1);
 u32 FUN_0034b1a0(u32 param_1);
 void FUN_0034b320(int param_1);
@@ -683,35 +683,35 @@ u32 FUN_0034bdf0(u32 param_1,u32 param_2);
 void FUN_0034bef0();
 u32 FUN_0034bf10(int param_1);
 u32 FUN_0034bfc0(u32 param_1);
-void FUN_0034c160(u32 param_1);
+void EffModelFree(u32 param_1);
 u32 FUN_0034c1b0(int param_1);
 void FUN_0034c250(int param_1,int param_2);
-void FUN_0034c320(int param_1);
+void EffModelResetLayerTime(int param_1);
 void FUN_0034c390(float *param_1);
 void FUN_0034c5a0(int param_1);
 void FUN_0034c5d0(int param_1);
 u_long128 FUN_0034c630(u_long128 *dst, const u_long128 *src);
 u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src);
-void FUN_0034c650(int param_1, int param_2);
+void EffModelSetLookupIndex(int param_1, int param_2);
 void FUN_0034c660(int param_1, float param_2);
 u32 FUN_0034c670(int param_1);
 extern u32 FUN_0034c670_u32(int param_1);
-void FUN_0034c890(int param_1);
-u32 FUN_0034c940(int param_1);
+void EffHelperFree(int param_1);
+u32 EffHelperClone(int param_1);
 void FUN_0034c9b0(int param_1,int param_2);
-void FUN_0034cb60(int param_1);
+void EffModelDrawableReset(int param_1);
 void FUN_0034cc00(u32 *param_1);
 void FUN_0034cf30(int param_1);
 void FUN_0034d050(int param_1);
 void FUN_0034d150(u32 param_1,f32 *param_2);
 u64 FUN_0034d3a0(int param_1,int param_2,int param_3);
 u32 FUN_0034d510(int param_1);
-void FUN_0034d670(int param_1);
+void ObjectParticleFree(int param_1);
 u32 FUN_0034d6f0(int param_1);
 void FUN_0034d810(int param_1,int param_2);
 void FUN_0034d8a0(int param_1,u16 param_2,int param_3);
 void FUN_0034d990(int param_1,u32 param_2,u32 param_3);
-void FUN_0034db00(int param_1);
+void ObjectParticleReleaseSource(int param_1);
 void FUN_0034db30(int param_1);
 extern void FUN_0034db30_i(int param_1);
 void FUN_0034dc00(u64 param_1);
@@ -719,20 +719,20 @@ void FUN_0034e390(int param_1);
 void FUN_0034e3d0(int param_1);
 void FUN_0034e420(int param_1);
 void FUN_0034e450(int param_1);
-void FUN_0034e490(f32 param_1, int param_2);
+void ObjectParticleSetScale(f32 param_1, int param_2);
 u32 FUN_0034e4c0(int param_1);
-void FUN_0034e610(int param_1);
+void DistortParticleFree(int param_1);
 u32 FUN_0034e690(int param_1);
-void FUN_0034e7c0(int param_1,u64 param_2);
+void DistortParticleUploadTexture(int param_1,u64 param_2);
 extern void FUN_0034e7c0_u32(int param_1,u32 param_2);
 void FUN_0034e800(int param_1,int param_2);
 void FUN_0034e820(int param_1,u16 param_2,int param_3);
-void FUN_0034e910(int param_1);
-void FUN_0034e940(int param_1,float *param_2);
+void DistortParticleReleaseSource(int param_1);
+void DistortParticleSeedRecord(int param_1,float *param_2);
 void FUN_0034eae0(int param_1,float *param_2,int param_3,u32 *param_4,
 
                  u8 (*param_5) [16],float *param_6,char param_7);
-void FUN_0034f6b0(int param_1);
+void DistortParticleUpdateRecords(int param_1);
 void FUN_0034f910(u64 param_1,u32 param_2);
 void FUN_0034fb40(u64 param_1);
 void FUN_0034fb70(u64 param_1);
@@ -740,7 +740,7 @@ void FUN_0034fba0(int param_1);
 void FUN_0034fbe0(u32 param_1);
 void FUN_0034fc30(int param_1);
 void FUN_0034fc60(int param_1);
-void FUN_0034fca0(f32 param_1, int param_2);
+void DistortParticleSetScale(f32 param_1, int param_2);
 void FUN_0034fcd0(void);
 void FUN_0034fcf0(void);
 void FUN_0034fd10();
@@ -752,13 +752,13 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034ff70(float param_1,u8 (*param_2) [16]);
 void FUN_0034ff90(int param_1,u32 *param_2);
-void FUN_0034ffc0(int param_1,int param_2);
-void FUN_00350040(int param_1,u32 *param_2);
-u32 FUN_00350070(int param_1);
+void mdlEffectBuildObjectMatrix(int param_1,int param_2);
+void mdlEffectGetPackedColor(int param_1,u32 *param_2);
+u32 mdlEffectGetWord84(int param_1);
 void FUN_00350080(void);
-void FUN_003500a0(u32 param_1,u16 param_2);
+void mdlEffectSeqStart(u32 param_1,u16 param_2);
 void FUN_003500e0(void);
-void FUN_00350110(void);
+void mdlEffectSeqStep(void);
 u32 FUN_00350190(void);
 u32 FUN_00350200(void);
 u32 FUN_00350230(u32 param_1);
@@ -780,10 +780,10 @@ void FUN_003520a0(u64 param_1);
 u32 FUN_00352800(int param_1);
 void FUN_00352910(u32 param_1);
 u32 FUN_00352980(int param_1);
-void FUN_00352a80(int param_1);
-void FUN_00352ad0(int param_1);
-void FUN_00352b30(int param_1);
-void FUN_00352b80(int param_1);
+void LineNovaInstanceStop(int param_1);
+void LineNovaInstanceAdvance(int param_1);
+void LineNovaInstanceUpdateIfActive(int param_1);
+void LineNovaInstanceAdvanceAndUpdate(int param_1);
 u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
@@ -819,7 +819,7 @@ void FUN_00357170(u32 *param_1);
 void FUN_003571c0(float *param_1);
 void FUN_00357550(int param_1);
 void FUN_00357710(void);
-void FUN_00357730(int param_1);
+void btlUiSetWindowRect(int param_1);
 u32 FUN_00357770(u32 param_1,u32 param_2);
 u32 FUN_00357830(int param_1);
 void FUN_00357930(u32 param_1);
@@ -890,7 +890,7 @@ extern u64 FUN_002a38f0();
 extern u64 FUN_002a3a80();
 extern void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
 extern u64 FUN_002a3e80_typed(float,int,int,int,int);
-extern void FUN_002a4690(void* out, const void* first, const void* second, const void* config);
+extern void btlCameraLookAtQuat(void* out, const void* first, const void* second, const void* config);
 extern u64 FUN_002f8810();
 extern u64 FUN_002ffbc0();
 extern u64 FUN_00308c60();
@@ -1645,24 +1645,24 @@ u32 mdlSetupAtomicMatFX(u32 param_1);
 u32 func_00313090(u32 param_1,u32 param_2);
 void func_00313ca0(int *param_1,u32 param_2);
 int mdlAppendUniqueListEntry(int param_1,void* param_2);
-void* func_00313fe0(void* param_1,u32 *param_2);
+void* mdlForEachAtomicListEntry(void* param_1,u32 *param_2);
 void* mdlAnimLoopRewind(void* param_1,u16 *param_2);
 void* mdlAnimLoopCallback(void* param_1, void* param_2);
 u32 mdlGetFrameNameUserData(void* param_1);
 void* func_00314510(void* param_1);
-u32 func_00314650(u32 param_1);
+u32 mdlSetupMatFXMaterials(u32 param_1);
 void* mdlFindFrameById(void* object, void* data);
 u32 mdlComputeAttachMatrix(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
-Model* func_00315ed0(Model* param_1);
+Model* mdlEnsureAtomicMatColors(Model* param_1);
 u32 mdlMatColorScaleCallback(void* param_1,u32 *param_2);
 void mdlClumpApplyMatColorScale(u64 param_1,u32* param_2,u16 param_3);
 u32 mdlMatColorUncoloredCallback(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
-void* func_003165e0(void* param_1);
+void* mdlDoubleAtomicEntryW(void* param_1);
 Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
-void func_003176c0(Model* param_1);
+void mdlUpdateModelMatrix(Model* param_1);
 u32 func_003186e0(int param_1,u32 param_2,short param_3);
 void func_00318b10(u32 *param_1);
 u32 func_00318b90(u32 param_1);
@@ -2646,20 +2646,20 @@ u32 func_0031c1d0(int param_1)
 #pragma alias FUN_00321f10_passthru FUN_00321f10
 #pragma alias FUN_00322530_u32 FUN_00322530
 #pragma alias FUN_003225d0_u32 FUN_003225d0
-#pragma alias FUN_00322d40_onearg FUN_00322d40
+#pragma alias FUN_00322d40_onearg mdlEffectWrapTrackFrames
 #pragma alias FUN_00322dc0_u32 FUN_00322dc0
 #pragma alias FUN_003233a0_ptr FUN_003233a0
 #pragma alias FUN_003234f0_u32 FUN_003234f0
 #pragma alias FUN_00323640_u32 FUN_00323640
- #pragma alias FUN_003237c0_i FUN_003237c0
- #pragma alias FUN_003237c0_u32 FUN_003237c0
+ #pragma alias FUN_003237c0_i GeometryBlockDestroy
+ #pragma alias FUN_003237c0_u32 GeometryBlockDestroy
  #pragma alias FUN_00323860_4arg FUN_00323860
 #pragma alias FUN_00323860_2arg FUN_00323860
 #pragma alias FUN_003238d0_4arg FUN_003238d0
 #pragma alias FUN_003238d0_ptr4 FUN_003238d0
- #pragma alias FUN_00323920_out FUN_00323920
- #pragma alias FUN_00323a30_out FUN_00323a30
-#pragma alias FUN_00323b90_i FUN_00323b90
+ #pragma alias FUN_00323920_out GeometryMatrixBuild
+ #pragma alias FUN_00323a30_out GeometryMatrixBuildCombined
+#pragma alias FUN_00323b90_i GeometryBlockSetTextureFromHandle
 #pragma alias FUN_00323c20_u32first FUN_00323c20
 #pragma alias FUN_00323e10_ptr FUN_00323e10
 #pragma alias FUN_00323fb0_ptr FUN_00323fb0
@@ -2670,8 +2670,8 @@ u32 func_0031c1d0(int param_1)
 #pragma alias FUN_003243f0_i FUN_003243f0
 #pragma alias FUN_00324510_i FUN_00324510
 #pragma alias FUN_003244c0_4arg FUN_003244c0
- #pragma alias FUN_003245b0_passthru FUN_003245b0
-#pragma alias FUN_003245b0_wide FUN_003245b0
+ #pragma alias FUN_003245b0_passthru mdlEffectResolveRelPtrA
+#pragma alias FUN_003245b0_wide mdlEffectResolveRelPtrA
 #pragma alias FUN_00324a90_f32 FUN_00324a90
 #pragma alias FUN_00324bd0_passthru FUN_00324bd0
 #pragma alias FUN_00324bd0_u32 FUN_00324bd0
@@ -2687,11 +2687,11 @@ u32 func_0031c1d0(int param_1)
 #pragma alias FUN_00325c10_onearg FUN_00325c10
 #pragma alias FUN_00325d60_ptr FUN_00325d60
 #pragma alias FUN_00325e40_reordered FUN_00325e40
-#pragma alias FUN_00326cf0_2 FUN_00326cf0
-#pragma alias FUN_00326e50_u32 FUN_00326e50
+#pragma alias FUN_00326cf0_2 ParticleSetMaterialSlot
+#pragma alias FUN_00326e50_u32 ParticleSetTextureFromHandle
 #pragma alias FUN_00326f60_u32 FUN_00326f60
 #pragma alias FUN_00327090_u32 FUN_00327090
-#pragma alias FUN_00326db0_u32 FUN_00326db0
+#pragma alias FUN_00326db0_u32 ParticleSetTextureById
 #pragma alias FUN_003275d0_evt FUN_003275d0
 #pragma alias FUN_003275d0_evt2 FUN_003275d0
 #pragma alias mdlFileDrawType7Billboards FUN_003282e0
@@ -2699,16 +2699,16 @@ u32 func_0031c1d0(int param_1)
 #pragma alias mdlFileRestoreFrame1Packet FUN_00329550
 #pragma alias mdlFileEmitClamp1Packet FUN_003295c0
 #pragma alias mdlFileRestoreClamp1Packet FUN_00329630
- #pragma alias FUN_003296a0_typed FUN_003296a0
+ #pragma alias FUN_003296a0_typed mdlEffectBuildBasisRows
 #pragma alias mdlFileBuildAxisRotation FUN_00329890
-#pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
+#pragma alias mdlFileInterpolateCatmullRomVU mdlEffectCatmullRomVU
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 #pragma alias FUN_0032a770_u32 FUN_0032a770
 #pragma alias FUN_0032a890_u32 FUN_0032a890
 #pragma alias FUN_00332070_u32 FUN_00332070
 #pragma alias FUN_00332070_u32_ptr FUN_00332070
-#pragma alias FUN_003322d0_one FUN_003322d0
-#pragma alias FUN_00332310_one FUN_00332310
+#pragma alias FUN_003322d0_one mdlEffectStoreQuadA
+#pragma alias FUN_00332310_one mdlEffectStoreQuadB
 #pragma alias FUN_003330e0_u32 FUN_003330e0
 #pragma alias FUN_003393d0_u32 FUN_003393d0
 #pragma alias FUN_00345cf0_u32 FUN_00345cf0
@@ -2720,7 +2720,7 @@ u32 func_0031c1d0(int param_1)
 #pragma alias RpSkyRenderStateSet_u32 RpSkyRenderStateSet
 #pragma alias FUN_0034c670_u32 FUN_0034c670
 #pragma alias FUN_0034db30_i FUN_0034db30
-#pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
+#pragma alias FUN_0034e7c0_u32 DistortParticleUploadTexture
 #pragma alias FUN_00352c70_u32 FUN_00352c70
 #pragma alias FUN_00102100_mdl FUN_00102100
 #pragma alias FUN_0010a4e0_model FUN_0010a4e0
@@ -3533,9 +3533,9 @@ u32 FUN_0031d700(int *param_1)
 // FUN_0031D790
 
 
-void FUN_0031d790(u32 *param_1)
+void mdlEffectListDestroy(u32 *param_1)
 {
-  FUN_0031de30(param_1);
+  mdlEffectListReleaseNodes(param_1);
 
   DAT_0096017c_abs[0](param_1);
 }
@@ -3818,7 +3818,7 @@ void FUN_0031dc80(int *param_1,u32 param_2)
 // FUN_0031DCE0
 
 
-void FUN_0031dce0(u32 *param_1)
+void mdlEffectListCallFlagged(u32 *param_1)
 
 
 
@@ -3878,12 +3878,12 @@ void FUN_0031dda0(int *param_1,float *param_2)
 // FUN_0031DE30
 
 
-void FUN_0031de30(u32 *param_1)
+void mdlEffectListReleaseNodes(u32 *param_1)
 {
     int *current;
     int *next;
 
-    FUN_0031df80(param_1);
+    mdlEffectListReleaseHandles(param_1);
     current = (int*)*param_1;
     while (current != 0) {
         next = (int*)current[4];
@@ -3929,7 +3929,7 @@ void FUN_0031ded0(u32 *param_1)
 // FUN_0031DF80
 
 
-void FUN_0031df80(u32 *param_1)
+void mdlEffectListReleaseHandles(u32 *param_1)
 
 
 
@@ -4022,7 +4022,7 @@ u32 FUN_0031e0b0(int *param_1)
 // FUN_0031E130
 
 
-void FUN_0031e130(int *param_1)
+void mdlReleaseSharedWrapper(int *param_1)
 {
     if (param_1[1] != 0) {
         FUN_001ee1d0(param_1[1]);
@@ -4128,7 +4128,7 @@ void FUN_0031e240(int param_1)
 // FUN_0031E270
 
 
-void FUN_0031e270(int param_1,u64 param_2)
+void mdlSetWrapperValue(int param_1,u64 param_2)
 
 
 
@@ -4156,7 +4156,7 @@ void FUN_0031e270(int param_1,u64 param_2)
 // FUN_0031E2C0
 
 
-void FUN_0031e2c0(int param_1)
+void mdlClearWrapperHandle(int param_1)
 
 
 
@@ -5282,7 +5282,7 @@ static u32 FUN_0031f740(int *param_2,float param_1)
 
 
 // FUN_0031F7A0
-u8 * FUN_0031f7a0(float param_1,int *param_2)
+u8 * mdlSampleTrackScalar(float param_1,int *param_2)
 {
   float *key;
   float fraction;
@@ -5336,7 +5336,7 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
 // FUN_0031F870
 
 
-u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5)
+u8 * mdlBlendTrackSamples(float param_1,int *param_2,float param_3,int *param_4,float param_5)
 {
   u32 uVar2;
   float saved;
@@ -5451,7 +5451,7 @@ static inline u8 mdlFileToU8(f32 value)
 
 /* W409 measured FUN_0031faf0: NONMATCHING 204/224 nd74 -> MATCH 216/224 nd0. */
 // FUN_0031FAF0
-void FUN_0031faf0(f32 *param_1,u32 param_2)
+void mdlApplyMaterialColorRow(f32 *param_1,u32 param_2)
 {
   u32 uVar1;
   float fVar2;
@@ -5532,7 +5532,7 @@ static u32 * FUN_0031fbd0(int *param_2,float param_1)
 // FUN_0031FD00
 
 
-u8 * FUN_0031fd00(float firstTime, int *track1, float secondTime, int *track2, float blend)
+u8 * mdlBlendVec4Tracks(float firstTime, int *track1, float secondTime, int *track2, float blend)
 {
   struct Float4 { float x, y, z, w; } first;
   struct Float4 second;
@@ -5582,7 +5582,7 @@ void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend)
 
 
 // FUN_0031ff40
-void FUN_0031ff40(float *param_1, u8 *param_2)
+void mdlStoreColorBytes(float *param_1, u8 *param_2)
 {
   u8 *puVar1;
   puVar1 = param_2 + 4;
@@ -5759,7 +5759,7 @@ void FUN_00320290(int param_1)
 
     }
 
-    FUN_00321010(*(u32 *)(iVar2 + 0x50));
+    mdlReleaseU16Ref(*(u32 *)(iVar2 + 0x50));
 
     ((void (*)(...))DAT_0096017c_abs[0])(iVar2);
 
@@ -5922,7 +5922,7 @@ void FUN_00320640(f32 scale1, f32 scale2, int *nodeHead)
 // FUN_00320770
 
 
-void FUN_00320770(int *param_1)
+void mdlMatAnimCopyNodeMaterial(int *param_1)
 
 
 
@@ -6100,13 +6100,13 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4)
 
   puVar7[readData.length] = 0;
 
-  uVar6 = FUN_00320f70((u64)(param_4),(u32)(puVar7));
+  uVar6 = mdlMatAnimCountClumpMatches((u64)(param_4),(u32)(puVar7));
 
   materialData.value = FUN_00320fb0(uVar6);
 
   materialData.name = puVar7;
 
-  FUN_00320da0((u64)(param_4),(u64)(&materialData));
+  mdlMatAnimFlagClumpMatches((u64)(param_4),(u64)(&materialData));
 
   if (bVar5) {
 
@@ -6148,7 +6148,7 @@ LAB_003209a8:
 
     piVar8[0x15] = 0;
 
-    puVar10 = (u32 *)FUN_00321050(iVar4);
+    puVar10 = (u32 *)mdlRetainU16Ref(iVar4);
 
     piVar8[0x14] = (int)puVar10;
 
@@ -6196,7 +6196,7 @@ LAB_003209a8:
 
   }
 
-  FUN_00321010(materialData.value);
+  mdlReleaseU16Ref(materialData.value);
 
   if (param_3 == -0xf0fff7d) {
 
@@ -6258,7 +6258,7 @@ LAB_003209a8:
 // FUN_00320BA0
 
 
-u32 FUN_00320ba0(u32 param_1,u32 *param_2)
+u32 mdlMatAnimCollectMaterial(u32 param_1,u32 *param_2)
 {
   s32 arrayCount;
   s32 dataCount;
@@ -6280,7 +6280,7 @@ u32 FUN_00320ba0(u32 param_1,u32 *param_2)
         if (RpUserDataArrayGetFormat((u32)userData) == 3) {
           data = (char *)FUN_0048ef80((u32)userData,dataIndex);
           if (strcmp((char *)param_2[1],data) == 0) {
-            FUN_00321070((int *)*param_2,param_1);
+            mdlAppendU32Entry((int *)*param_2,param_1);
             return 0;
           }
         }
@@ -6298,7 +6298,7 @@ u32 FUN_00320ba0(u32 param_1,u32 *param_2)
 // FUN_00320CF0
 
 
-u32 FUN_00320cf0(u32 param_1,u32 param_2)
+u32 mdlMatAnimFlagMatchedAtomic(u32 param_1,u32 param_2)
 
 
 
@@ -6321,7 +6321,7 @@ u32 FUN_00320cf0(u32 param_1,u32 param_2)
   iVar4 = 0;
   goto check;
 loop:
-  lVar3 = FUN_00320ba0((int)(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar4 * 4)),(u32 *)(param_2));
+  lVar3 = mdlMatAnimCollectMaterial((int)(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar4 * 4)),(u32 *)(param_2));
   if (lVar3 != 0) {
     goto increment;
   }
@@ -6341,13 +6341,13 @@ done:
 // FUN_00320DA0
 
 
-u64 FUN_00320da0(u64 param_1,u64 param_2)
+u64 mdlMatAnimFlagClumpMatches(u64 param_1,u64 param_2)
 
 
 
 {
 
-  FUN_004916d0(param_1,(void (*)())FUN_00320cf0,param_2);
+  FUN_004916d0(param_1,(void (*)())mdlMatAnimFlagMatchedAtomic,param_2);
 
   return param_1;
 
@@ -6408,7 +6408,7 @@ u32 FUN_00320de0(u32 atomic,u32 *search)
 
 
 // FUN_00320f70
-u16 FUN_00320f70(u64 param_1,u32 param_2)
+u16 mdlMatAnimCountClumpMatches(u64 param_1,u32 param_2)
 {
   struct {
     u32 input;
@@ -6445,7 +6445,7 @@ u32 FUN_00320fb0(u16 param_1)
 // FUN_00321010
 
 
-void FUN_00321010(int param_1)
+void mdlReleaseU16Ref(int param_1)
 
 
 
@@ -9610,7 +9610,7 @@ void FUN_00321010(int param_1)
 // FUN_00321050
 
 
-u32 FUN_00321050(int param_1)
+u32 mdlRetainU16Ref(int param_1)
 
 
 
@@ -9629,7 +9629,7 @@ u32 FUN_00321050(int param_1)
 // FUN_00321070
 
 
-void FUN_00321070(int *param_1,u32 param_2)
+void mdlAppendU32Entry(int *param_1,u32 param_2)
 
 
 

@@ -1595,7 +1595,7 @@ void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
 
 #pragma opt_loop_invariants on
 // FUN_0010DD10
-void func_0010dd10(HSfdImage* image, const u8* source)
+void tmxConvertRgba32(HSfdImage* image, const u8* source)
 {
     u8* dst;
     s32 height;
@@ -1637,7 +1637,7 @@ void func_0010dd10(HSfdImage* image, const u8* source)
 }
 
 // FUN_0010DDC0
-void func_0010ddc0(HSfdImage* image, const u8* source)
+void tmxConvertRgb24(HSfdImage* image, const u8* source)
 {
     u8* dst;
     s32 x;
@@ -1668,7 +1668,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
 }
 
 // FUN_0010DE40
-void func_0010de40(HSfdImage* image, const u8* source)
+void tmxConvertRgb555(HSfdImage* image, const u8* source)
 {
     u8* dst;
     s32 width;
@@ -1705,7 +1705,7 @@ void func_0010de40(HSfdImage* image, const u8* source)
 #pragma opt_loop_invariants off
 
 // FUN_0010DEE0
-void func_0010dee0(HSfdImage* image, const u8* source)
+void tmxUnpackNibbles(HSfdImage* image, const u8* source)
 {
     u8* dst;
     s32 height;
@@ -1741,7 +1741,7 @@ void func_0010dee0(HSfdImage* image, const u8* source)
 /* W414: hidden-return scan found no h_maestro candidate; materializing depth in count, then initializing i before the shift, reached nd14 -> 0 (obj 168/176). */
 #pragma opt_loop_invariants on
 // FUN_0010DF60
-void func_0010df60(HSfdImage* image, const u8* source)
+void tmxConvertPalette(HSfdImage* image, const u8* source)
 {
     u8* dst;
     s32 i;
@@ -1775,7 +1775,7 @@ void func_0010df60(HSfdImage* image, const u8* source)
 #pragma opt_loop_invariants off
 
 // FUN_0010E010
-void func_0010e010(HSfdImage* image, s32 bitDepth)
+void tmxSwizzlePalette8(HSfdImage* image, s32 bitDepth)
 {
     u8* pixels = image->palette;
     s32 count;
@@ -1867,7 +1867,7 @@ HSfdImage* func_0010e0d0(const u8* stream)
         switch (stream[0x11])
         {
             case 0:
-                func_0010df60(image, payload);
+                tmxConvertPalette(image, payload);
                 break;
             case 1:
             {
@@ -1891,7 +1891,7 @@ HSfdImage* func_0010e0d0(const u8* stream)
             case 0x0A:
                 break;
         }
-        func_0010e010(image, bits);
+        tmxSwizzlePalette8(image, bits);
         paletteBits = (stream[0x11] == 0) ? 0x20 :
                       ((stream[0x11] == 2 || stream[0x11] == 0x0A) ? 0x10 : 0);
         payload += ((1 << image->depth) * stream[0x10] * paletteBits) >> 3;
@@ -1900,18 +1900,18 @@ HSfdImage* func_0010e0d0(const u8* stream)
     switch (stream[0x16])
     {
         case 0:
-            func_0010de40(image, payload);
+            tmxConvertRgb555(image, payload);
             break;
         case 1:
-            func_0010ddc0(image, payload);
+            tmxConvertRgb24(image, payload);
             break;
         case 2:
         case 0x0A:
-            func_0010dd10(image, payload);
+            tmxConvertRgba32(image, payload);
             break;
         case 0x13:
         case 0x1B:
-            func_0010dee0(image, payload);
+            tmxUnpackNibbles(image, payload);
             break;
         case 0x14:
         case 0x24:

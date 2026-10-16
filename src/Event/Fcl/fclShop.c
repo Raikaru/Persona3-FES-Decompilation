@@ -9516,7 +9516,7 @@ void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int pa
                    u8 param_7,int param_8,int param_9,int param_10,int param_11);
 u32 FUN_0040e450(int param_1);
 u32 FUN_0040e4f0(int *param_1);
-void FUN_0040e580(u32 param_1);
+void sdkSpritePackDestroy(u32 param_1);
 u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
 #pragma alias FUN_0040e710_i2f1u8i4i3f FUN_0040e710

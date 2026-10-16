@@ -12,9 +12,9 @@ typedef char *va_list;
 #pragma alias evtMenuVFormatText FUN_005288c8
 extern void evtMenuVFormatText(u8 *text,const char *format,va_list args);
 extern u32 FUN_00530da0(float);
-#pragma alias FUN_00394040_evt_misc FUN_00394040
+#pragma alias FUN_00394040_evt_misc evtLerpFloatIfEnabled
 extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,int param_4);
-#pragma alias FUN_00394040_evt_misc_reordered FUN_00394040
+#pragma alias FUN_00394040_evt_misc_reordered evtLerpFloatIfEnabled
 extern f32 FUN_00394040_evt_misc_reordered(int param_1,f32 param_2,f32 param_3,f32 param_4);
 #pragma alias FUN_00394070_evt_misc FUN_00394070
 extern void FUN_00394070_evt_misc(f32 param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
@@ -697,7 +697,7 @@ void FUN_0036f000(long param_1);
 void FUN_0036f260(void);
 void FUN_0036f370(int param_1);
 void FUN_0036f3b0(u64 param_1,u32 param_2);
-void FUN_0036f490(int param_1);
+void evtMainSetFlag(int param_1);
 void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(long param_1,long param_2,int param_3,int param_4,u64 param_5, u16 param_6,u16 param_7);
@@ -752,7 +752,7 @@ void FUN_00385ba0(void);
 void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
-void FUN_00386aa0(void);
+void evtMenuClearSlots(void);
 void FUN_00386b70(u64 param_1,int param_2,int param_3);
 void FUN_00386c40(int param_1,int param_2);
 void FUN_00386d50(MtEvtMiscObj *param_1);

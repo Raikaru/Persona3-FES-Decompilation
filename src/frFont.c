@@ -731,7 +731,7 @@ u32 frFontListRelease(int param_1)
 
         }
 
-        FUN_003b46f0(iVar4,DAT_0095ae1c_abs[0]);
+        fmGslContPushNode(iVar4,DAT_0095ae1c_abs[0]);
 
         iVar4 = iVar1;
 
@@ -741,7 +741,7 @@ u32 frFontListRelease(int param_1)
 
       next_list = *(int *)(param_1 + 0x24);
 
-      FUN_003b46f0(param_1,*(u32 *)DAT_0095ae20_abs);
+      fmGslContPushNode(param_1,*(u32 *)DAT_0095ae20_abs);
 
       param_1 = next_list;
 
@@ -999,9 +999,9 @@ void FUN_003b0430(int param_1,u32 param_2)
 
       uVar5 = (*DAT_00960178)(0x200,0x40000);
 
-      FUN_003b4770((&DAT_0095ad0c)[(u32)bVar1 * 8],auStack_10);
+      fmGslContSetupSubBlocks((&DAT_0095ad0c)[(u32)bVar1 * 8],auStack_10);
 
-      FUN_003b47b0(uVar5,param_2,(&DAT_0095ad0c)[(u32)bVar1 * 8],auStack_10);
+      fmGslContDecodeRun(uVar5,param_2,(&DAT_0095ad0c)[(u32)bVar1 * 8],auStack_10);
 
       lVar4 = frFontFindOrLoadEntry(param_2,uVar5,*(u8 *)(param_1 + 0x14));
 
@@ -1104,7 +1104,7 @@ int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
   u16 uVar5;
   int iVar6;
 
-  puVar7 = (u8 *)FUN_003b46b0(DAT_0095ae1c_abs[0]);
+  puVar7 = (u8 *)fmGslContPopNode(DAT_0095ae1c_abs[0]);
   DAT_0095ae14_abs[0] = DAT_0095ae14_abs[0] + 1;
   if (puVar7 == (u8 *)0) {
     FUN_0019d400(DAT_006a2860, DAT_006a2730, 0x743);
@@ -1284,7 +1284,7 @@ processFont:
 
     if (param_5 == 0) {
 
-      param_5 = (u8 *)FUN_003b46b0(*(u32*)DAT_0095ae20_abs);
+      param_5 = (u8 *)fmGslContPopNode(*(u32*)DAT_0095ae20_abs);
 
       (*(u32*)DAT_0095ae18_target)++;
 

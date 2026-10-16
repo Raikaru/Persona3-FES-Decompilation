@@ -562,7 +562,7 @@ u32 btlScrCommand_ENCOUNT_FADE()
 }
 
 // FUN_0027D840
-u32 func_0027d840(void)
+u32 btlScriptHasCmdTimer(void)
 {
     if ((s32)scrGetCmdTimer() > 0)
     {

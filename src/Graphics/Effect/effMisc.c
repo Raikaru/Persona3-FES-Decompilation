@@ -248,7 +248,7 @@ void func_00358160(f32 angle)
 
 /* W389: baseline nd 14, obj 328/336; assignment split was neutral, while right.y temporary/operand probes worsened to nd118/25 and were reverted. Residual is prologue argument-save order plus FPU multiply/add scheduling. */
 // FUN_003581f0
-void func_003581f0(f32 angle, const RwV3d* axis, RwMatrix* matrix)
+void effMiscAxisAngleMatrix(f32 angle, const RwV3d* axis, RwMatrix* matrix)
 {
     f32 angle_p;
     f32 xSquared;
@@ -339,7 +339,7 @@ void func_00358340(const RwV3d* axis, f32 angle)
 {
     RwMatrix matrix;
 
-    func_003581f0(angle, axis, &matrix);
+    effMiscAxisAngleMatrix(angle, axis, &matrix);
     __asm__ volatile (
         ".set noreorder          \n"
         "lqc2 vf28, 0(%0)        \n"

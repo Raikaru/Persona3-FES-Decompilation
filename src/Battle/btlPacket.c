@@ -808,7 +808,7 @@ typedef struct BtlUnitPacketBackstep
     f32 phase;             // 0x20
 } BtlUnitPacketBackstep;
 
-void func_0027f530(BtlUnit* unit);
+void btlPacketResetUnit(BtlUnit* unit);
 void func_00280050(void* param_1, RwV3d* param_2);
 f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3, f32* param_4, f32* param_5, u32 param_6);
 u32 func_002f8ea0(BtlUnit* unit, RwV3d* param_2);
@@ -1021,7 +1021,7 @@ void btlUnit00286300(void* work);
 
 
 // FUN_0027F530
-void func_0027f530(BtlUnit* unit)
+void btlPacketResetUnit(BtlUnit* unit)
 {
     unit->scale = 1.0f;
     unit->pos = D_00957180;

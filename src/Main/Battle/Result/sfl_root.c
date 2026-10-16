@@ -138,7 +138,7 @@ extern u32 func_003c7610(void);
 extern void func_003c7990(s32);
 extern u32 func_003c7850(void);
 extern u32 func_003c7650(s32);
-extern u32 func_003c78d0(void);
+extern u32 nmMesWindowLatchAnimAux(void);
 extern void func_002594c0(void);
 extern u32 sflCard002595c0(void);
 extern void func_003c94e0(void *);

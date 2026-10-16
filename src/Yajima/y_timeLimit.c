@@ -125,7 +125,7 @@ void Y_TimeLimit_Stop(void)
 #pragma alias FUN_0016c970_y2 FUN_0016c970
 #pragma alias FUN_0017b5b0_y2 FUN_0017b5b0
 #pragma alias FUN_00195460_y2 FUN_00195460
-#pragma alias FUN_001c6450_y2 FUN_001c6450
+#pragma alias FUN_001c6450_y2 FldEvent_HasLineOfSight
 #pragma alias FUN_001c6720_y2 FUN_001c6720
 #pragma alias FUN_001c7160_y2 FUN_001c7160
 #pragma alias FUN_001d8d80_y2 FUN_001d8d80
@@ -914,10 +914,10 @@ extern void FUN_001b0250_typed(u32 param_1, int param_2);
 extern void FUN_001b0260_y2(u32 param_1, int param_2);
 extern code FUN_001b9120;
 extern void FUN_001bf220_y2(void *param_1, u16 param_2, u16 param_3);
-extern long FUN_001c6450(u32 param_1, u32 param_2, u32 param_3, void *param_4);
- #pragma alias FUN_001c6450_typed FUN_001c6450
+extern long FldEvent_HasLineOfSight(u32 param_1, u32 param_2, u32 param_3, void *param_4);
+ #pragma alias FUN_001c6450_typed FldEvent_HasLineOfSight
  extern u32 FUN_001c6450_typed(u32 param_1,void *param_2,float param_3,float param_4);
- #pragma alias FUN_001c6450_f32 FUN_001c6450
+ #pragma alias FUN_001c6450_f32 FldEvent_HasLineOfSight
  extern u32 FUN_001c6450_f32(u32 param_1,void *param_2,float param_3,float param_4);
 extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
@@ -1045,10 +1045,10 @@ extern code FUN_003c72d0;
 extern code FUN_003c7430;
 extern code FUN_003c74e0;
 extern code FUN_003c7560;
-extern code FUN_003c75b0;
+extern code nmMesWindowCurrentAnim;
 extern code FUN_003c77a0;
 extern code FUN_003c7850;
-extern code FUN_003c78d0;
+extern code nmMesWindowLatchAnimAux;
 extern code FUN_003c7b90;
 extern float FUN_00421fe0(int param_1, int param_2, int param_3, u16 param_4, int param_5);
 #pragma alias FUN_00421fe0_s16 FUN_00421fe0
@@ -1897,7 +1897,7 @@ void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
-void FUN_0045e7e0(void);
+void yTimeLimitReset(void);
 void FUN_0045ea80(int param_1);
 void FUN_0045edc0(void);
 void FUN_0045f930(int param_1,float *param_2,code *param_3,u32 param_4);
@@ -2377,10 +2377,10 @@ extern code FUN_003c72d0;
 extern code FUN_003c7430;
 extern code FUN_003c74e0;
 extern code FUN_003c7560;
-extern code FUN_003c75b0;
+extern code nmMesWindowCurrentAnim;
 extern code FUN_003c77a0;
 extern code FUN_003c7850;
-extern code FUN_003c78d0;
+extern code nmMesWindowLatchAnimAux;
 extern code FUN_003c7b90;
 extern code FUN_004222d0;
 extern code FUN_00423fe0;
@@ -3314,7 +3314,7 @@ void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
-void FUN_0045e7e0(void);
+void yTimeLimitReset(void);
 void FUN_0045ea80(int param_1);
 void FUN_0045edc0(void);
 void FUN_0045f930(int param_1,float *param_2,code *param_3,u32 param_4);
@@ -5329,10 +5329,10 @@ extern u32 DAT_007ce700_y2;
 #pragma alias FUN_003c7430_y2 FUN_003c7430
 #pragma alias FUN_003c74e0_y2 FUN_003c74e0
 #pragma alias FUN_003c7560_y2 FUN_003c7560
-#pragma alias FUN_003c75b0_y2 FUN_003c75b0
+#pragma alias FUN_003c75b0_y2 nmMesWindowCurrentAnim
 #pragma alias FUN_003c77a0_y2 FUN_003c77a0
 #pragma alias FUN_003c7850_y2 FUN_003c7850
-#pragma alias FUN_003c78d0_y2 FUN_003c78d0
+#pragma alias FUN_003c78d0_y2 nmMesWindowLatchAnimAux
 #pragma alias FUN_003c7b90_y2 FUN_003c7b90
 extern void FUN_003c72d0_y2(void *param_1);
 extern void FUN_003c7430_y2(int param_1);
@@ -5913,7 +5913,7 @@ extern u8 DAT_0095c220_loop[];
 
 // FUN_0045E7E0
 
-void FUN_0045e7e0(void)
+void yTimeLimitReset(void)
 
 {
   int iVar1;
@@ -5936,7 +5936,7 @@ void FUN_0045e7e0(void)
   return;
 }
 
-#pragma alias FUN_0045e7e0_camp FUN_0045e7e0
+#pragma alias FUN_0045e7e0_camp yTimeLimitReset
 extern void FUN_0045e7e0_camp(void);
 #pragma alias FUN_00109040_camp FUN_00109040
 extern void FUN_00109040_camp(int,int);

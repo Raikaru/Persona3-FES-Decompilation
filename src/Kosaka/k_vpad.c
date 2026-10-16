@@ -216,7 +216,7 @@ typedef struct Model Model;
 extern Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode);
 extern Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode);
 extern void* func_001a3b10(void* parent, u32 width, u32 height, u32 mode);
-extern void func_001a3dc0(void* task, const void* descriptors, u32 count);
+extern void sdkLboxAddDescriptors(void* task, const void* descriptors, u32 count);
 extern void func_001a3bf0(void* task, u32 request);
 extern s32 func_001a4510(void* task);
 extern void func_001a3be0(void* task, u32 request);
@@ -289,7 +289,7 @@ extern void* func_001e8e80(RuntimeWork* rawWork, void* material);
 extern RuntimeWork* func_001ee2e0(const void* data);
 extern RuntimeWork* func_001eeb90();
 extern void func_001eee40(RuntimeWork* work);
-extern void func_001eefc0(void* node);
+extern void AfPackListAppend(void* node);
 extern void func_00100ec0(void* resource);
 extern RuntimeMatrix* func_004c38c0(void);
 extern RuntimeVec3 D_00684400;
@@ -299,8 +299,8 @@ extern void func_00491a80(void* manager);
 extern void* func_001e1840(void);
 extern void FUN_00521250(void* destination, const void* source, u32 size);
 extern s32 D_007CE2C0;
-s32 func_001ef000(RuntimeListNode* node);
-s32 func_001e8330(const RuntimeWork* work, s32 index);
+s32 AfPackIsActive(RuntimeListNode* node);
+s32 effAfterHistoryIndex(const RuntimeWork* work, s32 index);
 extern void func_00493230();
 void func_001ed0b0(RuntimeWork* work);
 void func_001ed080(f32 value, RuntimeWork* work);
@@ -424,7 +424,7 @@ extern void func_001e9a90(void* work);
 extern s32 Vpad_HasEntries(void* work);
 extern void func_001edbe0(RuntimeRenderCollection* work);
 extern void func_001edf10(void* work);
-extern void func_001eba50(RuntimeResetWork* work);
+extern void effAfterResetCommand(RuntimeResetWork* work);
 typedef struct RuntimeSurfaceQueue
 {
     u8* config;
@@ -435,7 +435,7 @@ typedef struct RuntimeSurfaceQueue
     RuntimeVec3* axisOut[4];
 } RuntimeSurfaceQueue;
 
-extern void func_001eba80(RuntimeCommandWork* work, u32* result);
+extern void effAfterRunCommands(RuntimeCommandWork* work, u32* result);
 extern void func_001ebd80(RuntimeSurfaceQueue* queue, s32 param2);
 extern f32 func_001ecd90(void* data, s32 index, s32 vectorSet);
 extern f32 func_001ecec0(void* data, s32 index);
@@ -1208,7 +1208,7 @@ s32 func_001e1850(RuntimeTask* task)
     {
         case 0:
             work->menuTask = func_001a3b10(task, 0x20, 0x20, 2);
-            func_001a3dc0(work->menuTask, D_00683E10, 11);
+            sdkLboxAddDescriptors(work->menuTask, D_00683E10, 11);
             func_001a3bf0(work->menuTask, 1);
             work->selection = ((s16*)PTR_DAT_007cd540)[10];
             work->state++;
@@ -2695,7 +2695,7 @@ void func_001e3f10(RuntimeTask* task)
                 {
                     func_00195020(work->windowTask);
                     work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-                    func_001a3dc0(work->windowTask, D_00684120, 8);
+                    sdkLboxAddDescriptors(work->windowTask, D_00684120, 8);
                     func_001a3bf0(work->windowTask, 1);
                     work->state = 2;
                 }
@@ -2703,7 +2703,7 @@ void func_001e3f10(RuntimeTask* task)
                 {
                     func_00195020(work->windowTask);
                     work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-                    func_001a3dc0(work->windowTask, D_00684220, 2);
+                    sdkLboxAddDescriptors(work->windowTask, D_00684220, 2);
                     func_001a3bf0(work->windowTask, 1);
                     work->state = 3;
                 }
@@ -3094,7 +3094,7 @@ s32 func_001e4bc0(RuntimeTask* task)
                 }
                 work->windowTask = func_001a3b10(
                     task, 0x20, 0x20, 2);
-                func_001a3dc0(work->windowTask, D_00684120, 8);
+                sdkLboxAddDescriptors(work->windowTask, D_00684120, 8);
                 *(u32*)func_001a41b0(work->windowTask, 4) =
                     (u32)(s32)work->angle;
                 *(u32*)func_001a41b0(work->windowTask, 5) =
@@ -3394,7 +3394,7 @@ s32 func_001e58d0(RuntimeTask* task)
     {
         case 0:
             work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-            func_001a3dc0(work->windowTask, D_00684330, 2);
+            sdkLboxAddDescriptors(work->windowTask, D_00684330, 2);
             func_001a3bf0(work->windowTask, 1);
             work->state++;
             return 0;
@@ -4615,8 +4615,8 @@ f32 Vpad_GetSegmentLength(const RuntimeDistanceWork* work, s32 index)
     f32 result;
     f32 length;
 
-    firstIndex = func_001e8330((const RuntimeWork*)work, index);
-    nextIndex = func_001e8330((const RuntimeWork*)work, index + 1);
+    firstIndex = effAfterHistoryIndex((const RuntimeWork*)work, index);
+    nextIndex = effAfterHistoryIndex((const RuntimeWork*)work, index + 1);
     total = 0.0f;
 
     delta.x = work->firstVectors[nextIndex].x -
@@ -4693,9 +4693,9 @@ void func_001e7f90(const RuntimeDistanceWork* data, f32 distance, u32* section,
         for (leadingIndex = 0; leadingIndex < currentSection + 1;
              leadingIndex++)
         {
-            firstIndex = func_001e8330((const RuntimeWork*)data, leadingIndex);
+            firstIndex = effAfterHistoryIndex((const RuntimeWork*)data, leadingIndex);
             nextIndex =
-                func_001e8330((const RuntimeWork*)data, leadingIndex + 1);
+                effAfterHistoryIndex((const RuntimeWork*)data, leadingIndex + 1);
             sectionLength = 0.0f;
             vectorBase = (u8*)data->firstVectors;
             firstOffset = firstIndex * sizeof(RuntimeVec3);
@@ -4739,9 +4739,9 @@ void func_001e7f90(const RuntimeDistanceWork* data, f32 distance, u32* section,
         for (trailingIndex = 0; trailingIndex < currentSection;
              trailingIndex++)
         {
-            firstIndex = func_001e8330((const RuntimeWork*)data, trailingIndex);
+            firstIndex = effAfterHistoryIndex((const RuntimeWork*)data, trailingIndex);
             nextIndex =
-                func_001e8330((const RuntimeWork*)data, trailingIndex + 1);
+                effAfterHistoryIndex((const RuntimeWork*)data, trailingIndex + 1);
             sectionLength = 0.0f;
             vectorBase = (u8*)data->firstVectors;
             firstOffset = firstIndex * sizeof(RuntimeVec3);
@@ -4780,7 +4780,7 @@ void func_001e7f90(const RuntimeDistanceWork* data, f32 distance, u32* section,
 }
 
 // FUN_001E8330. Translate a logical sample index into the ring buffer.
-s32 func_001e8330(const RuntimeWork* work, s32 index)
+s32 effAfterHistoryIndex(const RuntimeWork* work, s32 index)
 {
     s32 result;
 
@@ -6284,7 +6284,7 @@ void func_001eb920(void* data, const RuntimeVec3* position, const RuntimeVec3* n
 }
 
 // FUN_001EBA50
-void func_001eba50(RuntimeResetWork* work)
+void effAfterResetCommand(RuntimeResetWork* work)
 {
     work->value = work->completedFlags;
     work->flags = 0;
@@ -6292,7 +6292,7 @@ void func_001eba50(RuntimeResetWork* work)
 }
 
 // FUN_001EBA80
-void func_001eba80(RuntimeCommandWork* work, u32* unused)
+void effAfterRunCommands(RuntimeCommandWork* work, u32* unused)
 {
     u16* cursor;
     u32 duration;
@@ -7142,7 +7142,7 @@ void* func_001eda00(void* work, u32 value)
     initial = func_001ee2e0(work);
     initial->owner = (void*)(uintptr_t)value;
     object = func_001eeb90(initial);
-    func_001eefc0(object);
+    AfPackListAppend(object);
     func_001eee40(object);
     return object;
 }
@@ -7156,7 +7156,7 @@ void Vpad_RefreshSelection(RuntimeWork* work)
     u8* request;
     s32 offset;
 
-    if (func_001ef000((RuntimeListNode*)work) == 0)
+    if (AfPackIsActive((RuntimeListNode*)work) == 0)
     {
         return;
     }
@@ -7229,7 +7229,7 @@ void func_001edbe0(RuntimeRenderCollection* work)
             u8* command;
             u8* activeEntry;
             command = work->commands + index * 0x20;
-            func_001eba80(
+            effAfterRunCommands(
                 (RuntimeCommandWork*)command,
                 &commandResult);
             if ((~work->flags & 8) != 0 &&
@@ -7306,7 +7306,7 @@ void func_001edbe0(RuntimeRenderCollection* work)
 // FUN_001EDED0. Mark an active field runtime node for processing.
 void Vpad_MarkDirty(RuntimeWork* work)
 {
-    if (func_001ef000((RuntimeListNode*)work) != 0)
+    if (AfPackIsActive((RuntimeListNode*)work) != 0)
     {
         work->flags |= 4;
     }
@@ -7411,7 +7411,7 @@ void func_001edf10(void* workData)
 // FUN_001EE1D0. Activate a field runtime node and its owner.
 void Vpad_Activate(RuntimeWork* work)
 {
-    if (func_001ef000((RuntimeListNode*)work) != 0)
+    if (AfPackIsActive((RuntimeListNode*)work) != 0)
     {
         work->flags |= 8;
         func_001ef340(*(void**)((u8*)(uintptr_t)work->requestFlags + 0x20));
@@ -7444,7 +7444,7 @@ void Vpad_SetColor(RuntimeWork* work, const u8* color)
 
     colorWork = (RuntimeColorWork*)work;
     requested = (const RuntimeColor*)color;
-    if (func_001ef000((RuntimeListNode*)work) == 0)
+    if (AfPackIsActive((RuntimeListNode*)work) == 0)
     {
         return;
     }

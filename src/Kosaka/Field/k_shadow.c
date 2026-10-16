@@ -51,7 +51,7 @@ typedef struct FldShadowRenderTex
 
 extern void* func_0019b2b0(KwlnTask* renderTexTask);
 extern void func_0019bcf0(KwlnTask* renderTexTask);
-extern void func_00199c60(RwCamera* camera);
+extern void FldShadow_DestroyCamera(RwCamera* camera);
 extern void* func_004d0e40(void* raster);
 extern void func_004f1780(RwRaster* raster, u32 enabled);
 extern void* func_004d0be0(void* texture, RwRaster* raster);
@@ -117,7 +117,7 @@ extern void* func_0049c1b0(RpWorld* world, RwCamera* camera);
 extern void* func_004d0f00(void* texture);
 extern void* func_004cb750(RwFrame* frame, const RwV3d* translation, RwOpCombineType combineOp);
 extern void* func_00491a80(void* renderObject);
-extern void func_003176c0(Model* model);
+extern void mdlUpdateModelMatrix(Model* model);
 extern void func_00318b90(Model* model);
 extern u32 func_00319010(Model* model);
 extern u32 mdlStreamRead(Model* model);
@@ -664,7 +664,7 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
             }
             else
             {
-                func_00199c60(shadow->camera);
+                FldShadow_DestroyCamera(shadow->camera);
             }
 
             func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
@@ -1279,7 +1279,7 @@ KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
 }
 
 // FUN_0019d320
-s32 FUN_0019d320()
+s32 FldShadow_PollIntcBit13()
 {
     volatile u64* intcStat;
 
@@ -1315,7 +1315,7 @@ s32 func_0019d360()
 {
     s32 handle;
 
-    handle = AddIntcHandler(2, (s32 (*)(s32))FUN_0019d320, 0);
+    handle = AddIntcHandler(2, (s32 (*)(s32))FldShadow_PollIntcBit13, 0);
     DAT_007cc148 = handle;
     if (handle == -1)
     {

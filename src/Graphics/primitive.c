@@ -602,12 +602,12 @@ extern long FUN_004b6680(void* desc);
 extern void FUN_005225a8(u8* fmt, ...);
 extern f32 FUN_0052e878(f32 angle);
 extern f32 FUN_0052e9e8(f32 param_1);
-void FUN_0035a290(int param_1, int param_2);
-void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1);
-void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
-u32 FUN_0035a6a0(int param_1,u64 param_2);
-void* FUN_0035a770(void* param_1, void* param_2);
-void FUN_0035a870(void* param_1, void* param_2);
+void PrimInterpToMatrix(int param_1, int param_2);
+void PrimInterpSlerp(void* param_2, void* param_3, void* param_4, f32 param_1);
+void PrimInterpByTime(void* param_2, void* param_3, void* param_4, f32 param_1);
+u32 PrimSerializeEntries(int param_1,u64 param_2);
+void* PrimDeserializeEntries(void* param_1, void* param_2);
+void PrimInterpDelta(void* param_1, void* param_2);
 typedef struct
 {
     f32 m00;
@@ -630,7 +630,7 @@ typedef struct
 // FUN_0035A290
 
 
-void FUN_0035a290(int param_1, int param_2)
+void PrimInterpToMatrix(int param_1, int param_2)
 {
     u8 buffer[64];
     PrimMatrixData matrix;
@@ -695,7 +695,7 @@ void FUN_0035a290(int param_1, int param_2)
 // FUN_0035A3F0
 
 
-void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
+void PrimInterpSlerp(void* param_2, void* param_3, void* param_4, f32 param_1)
 {
     PrimInterpData* out = (PrimInterpData*)param_2;
     const PrimInterpData* first = (const PrimInterpData*)param_3;
@@ -745,7 +745,7 @@ void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
 // FUN_0035A620
 
 
-void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1)
+void PrimInterpByTime(void* param_2, void* param_3, void* param_4, f32 param_1)
 {
     PrimInterpData* out = (PrimInterpData*)param_2;
     const PrimInterpData* first = (const PrimInterpData*)param_3;
@@ -757,14 +757,14 @@ void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1)
     firstTime = *(const f32*)((const u8*)first + 4);
     secondTime = *(const f32*)((const u8*)second + 4);
     t = (param_1 - firstTime) / (secondTime - firstTime);
-    FUN_0035a3f0(out, (void*)first, (void*)second, t);
+    PrimInterpSlerp(out, (void*)first, (void*)second, t);
     out->value30 = first->value30 * second->value30;
 }
 
 // FUN_0035A6A0
 
 
-u32 FUN_0035a6a0(int param_1, u64 param_2)
+u32 PrimSerializeEntries(int param_1, u64 param_2)
 {
     int iVar1;
     long lVar2;
@@ -791,7 +791,7 @@ u32 FUN_0035a6a0(int param_1, u64 param_2)
 // FUN_0035A770
 
 
-void* FUN_0035a770(void* param_1, void* param_2)
+void* PrimDeserializeEntries(void* param_1, void* param_2)
 {
   int iVar1;
   long lVar2;
@@ -831,7 +831,7 @@ u32 LAB_0035a850(void* param_1)
 // FUN_0035A870 NONMATCHING
 
 
-void FUN_0035a870(void* param_1, void* param_2)
+void PrimInterpDelta(void* param_1, void* param_2)
 {
     PrimInterpData* out = (PrimInterpData*)param_1;
     const PrimInterpData* in = (const PrimInterpData*)param_2;
@@ -894,7 +894,7 @@ void FUN_0035a870(void* param_1, void* param_2)
     out->values[5] = out->values[5] - in->values[5];
 }
 // FUN_0035AA10
-void FUN_0035aa10(int param_1, int param_2, int param_3)
+void PrimInterpCompose(int param_1, int param_2, int param_3)
 {
     *(f32*)(param_1 + 0x14) =
         *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0x14) -
@@ -935,13 +935,13 @@ u32 FUN_0035aba0(void)
     desc.hash = 0x44a07195;
     desc.size1 = 0x34;
     desc.size0 = 0x34;
-    desc.funcA = FUN_0035a290;
-    desc.funcB = FUN_0035a3f0;
-    desc.funcB2 = FUN_0035a620;
+    desc.funcA = PrimInterpToMatrix;
+    desc.funcB = PrimInterpSlerp;
+    desc.funcB2 = PrimInterpByTime;
     desc.funcC = &LAB_0035aa10;
-    desc.funcD = FUN_0035a870;
-    desc.funcE = (u64 (*)(u64, u64))FUN_0035a770;
-    desc.funcF = FUN_0035a6a0;
+    desc.funcD = PrimInterpDelta;
+    desc.funcE = (u64 (*)(u64, u64))PrimDeserializeEntries;
+    desc.funcF = PrimSerializeEntries;
     desc.funcG = (void (*)())LAB_0035a850;
     desc.zero = 0;
 

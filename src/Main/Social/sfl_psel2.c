@@ -62,7 +62,7 @@ extern void frFontSetTextScale(u32 resource, f32 value);
 extern u32 func_003c7610(void);
 extern void func_003c7650(s32 mode);
 extern u32 func_003c7850(void);
-extern u32 func_003c78d0(void);
+extern u32 nmMesWindowLatchAnimAux(void);
 extern void func_003c7990(s32 mode);
 extern void func_003c7bc0(s32 mode, u32 value);
 extern void func_003c7430(u32 value);

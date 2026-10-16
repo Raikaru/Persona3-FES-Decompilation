@@ -93,11 +93,11 @@ extern void func_00521408(void* dst, s32 value, u32 size);
 
 void func_0027a3b0(void);
 u32* func_0027a4a0(void);
-void func_0027a560(u32* work);
+void edScrollFreeRecord(u32* work);
 void func_0027a5d0(void);
 void func_0027a6a0(u32* work, char* text, s32 align);
 void func_0027a930(u32* work, const float* pos);
-void func_0027aa00(u32* work, const u8* color);
+void edScrollSetRecordColor(u32* work, const u8* color);
 u32 func_0027aaa0(void);
 s32 func_0027ab10(void);
 void func_0027ab80(void);
@@ -163,7 +163,7 @@ void func_00279bf0(void)
     for (i = 0; i < 0x20; i++) {
         u32* record = work + i * 0x24 + 1;
         if ((~record[0] & 1) == 0) {
-            func_0027a560(record);
+            edScrollFreeRecord(record);
         }
     }
     sOpTailB = NULL;
@@ -342,7 +342,7 @@ void func_00279d60(void)
             u32* record = work + i * 0x24 + 1;
             if ((~record[0] & 1) == 0) {
                 if ((*(f32*)(record + 0x23) - drift) + 24.0f < 0.0f) {
-                    func_0027a560(record);
+                    edScrollFreeRecord(record);
                 }
                 *(f32*)(record + 0x23) -= drift;
             }
@@ -395,7 +395,7 @@ u32* func_0027a4a0(void)
 }
 
 // FUN_0027a560
-void func_0027a560(u32* record)
+void edScrollFreeRecord(u32* record)
 {
     s32 i;
 
@@ -421,7 +421,7 @@ void func_0027a5d0(void)
             pos[0] = 57.0f;
             pos[1] = *(f32*)((u8*)record + 0x8c);
             func_0027a930(record, pos);
-            func_0027aa00(record, (const u8*)((u8*)work + 0x122c));
+            edScrollSetRecordColor(record, (const u8*)((u8*)work + 0x122c));
         }
     }
 }
@@ -532,7 +532,7 @@ void func_0027a930(u32* work, const f32* pos)
 }
 
 // FUN_0027aa00
-void func_0027aa00(u32* work, const u8* color)
+void edScrollSetRecordColor(u32* work, const u8* color)
 {
     s32 i;
     u32 packed;

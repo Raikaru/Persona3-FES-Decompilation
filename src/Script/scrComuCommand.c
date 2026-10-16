@@ -807,7 +807,7 @@ void FUN_0036f000(int param_1);
 void FUN_0036f260(void);
 void FUN_0036f370(int param_1);
 void FUN_0036f3b0(u64 param_1,u32 param_2);
-void FUN_0036f490(int param_1);
+void evtMainSetFlag(int param_1);
 void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(long param_1,long param_2,int param_3,int param_4,u64 param_5, u16 param_6,u16 param_7);
@@ -863,7 +863,7 @@ void FUN_00385ba0(void);
 void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
-void FUN_00386aa0(void);
+void evtMenuClearSlots(void);
 void FUN_00386b70(int param_1,int param_2,int param_3);
 extern void FUN_00386b70_evt_main(int param_1,int param_2,int param_3);
 extern void FUN_005225a8_evt_main(void *param_1);
@@ -1825,7 +1825,7 @@ CheckFlagValue:
 #pragma alias DAT_006a0000_65430_abs DAT_006a0000
 #pragma alias FUN_003b55b0_evt_main FUN_003b55b0
 #pragma alias FUN_003b5d10_evt_main FUN_003b5d10
-#pragma alias FUN_0039f710_evt_main FUN_0039f710
+#pragma alias FUN_0039f710_evt_main evtMessageWindowRecordCount
 #pragma alias FUN_003bb390_evt FUN_003bb390
 #pragma alias FUN_004c31b0_evt_main FUN_004c31b0
 #pragma alias FUN_004c35d0_evt_main FUN_004c35d0
@@ -1998,7 +1998,7 @@ void FUN_00361070(int param_1)
 
   } while (0 < iVar3);
 
-  FUN_00386aa0();
+  evtMenuClearSlots();
 
   puVar4[1] = puVar4[1] | 1;
 

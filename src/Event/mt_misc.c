@@ -261,7 +261,7 @@ void FUN_003951a0(u64 param_1);
 u8 FUN_003951d0(void);
 void FUN_00395200(u64 param_1);
 u8 FUN_00395230(s32 param_1);
-u64 FUN_00395270(s16 param_1);
+u64 mtMiscPlayCue(s16 param_1);
 void FUN_003952a0(void);
 u64 FUN_003952b0(void);
 u64 FUN_003952c0(void);
@@ -271,7 +271,7 @@ u64 FUN_003953b0(int param_1);
 void FUN_003953e0(u64 param_1);
 void FUN_00395420(void);
 void FUN_00395430(int param_1,int param_2,int param_3,int param_4,u32 param_5);
-void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
+void mtMiscSetSlotRes(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00395550(int param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
 #pragma alias FUN_00395570_typed FUN_00395570
@@ -291,15 +291,15 @@ void FUN_00396270(float param_1,int param_2,float *param_3);
 u64 FUN_003962c0(int param_1);
 u64 FUN_003963c0(int param_1);
 void FUN_00396410(u64 param_1);
-void FUN_00396480(int param_1,u32 param_2);
+void mtMiscAppendEntry(int param_1,u32 param_2);
 u32 FUN_003964c0(void);
 void FUN_00396530(int param_1);
-void FUN_003965d0(u32 *param_1);
+void evtEffectSequenceReset(u32 *param_1);
 u32 FUN_003965f0(int *param_1);
-void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
-u16 FUN_003968a0(int param_1,int param_2);
-void FUN_00396910(int param_1,int param_2);
-void FUN_003969b0(int param_1);
+void mtMiscSetSlotRes(int param_1,int param_2,int param_3,u64 param_4);
+u16 mtMiscGetSlotRes(int param_1,int param_2);
+void mtMiscClearSlotRes(int param_1,int param_2);
+void mtMiscClearAllSlotRes(int param_1);
 u64 FUN_00396a70(void);
 void FUN_00396ba0(void);
 void FUN_00396bf0(u64 param_1);
@@ -396,7 +396,7 @@ extern u8 DAT_006a0e60[0x20];
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6);
 void FUN_00393f30(u8 *param_1,u32 param_2);
-float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
+float evtLerpFloatIfEnabled(float param_1,float param_2,float param_3,long param_4);
 void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param_5);
 int FUN_00394270(void);
 u8 *FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5);
@@ -412,7 +412,7 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 #define FUN_003951d0(...) ((u8 (*)(...))FUN_003951d0)(__VA_ARGS__)
 #define FUN_00395200(...) ((void (*)(...))FUN_00395200)(__VA_ARGS__)
 #define FUN_00395230(...) ((u8 (*)(...))FUN_00395230)(__VA_ARGS__)
-#define FUN_00395270(...) ((u64 (*)(...))FUN_00395270)(__VA_ARGS__)
+#define mtMiscPlayCue(...) ((u64 (*)(...))mtMiscPlayCue)(__VA_ARGS__)
 #define FUN_003952a0(...) ((void (*)(...))FUN_003952a0)(__VA_ARGS__)
 #define FUN_003952b0(...) ((u64 (*)(...))FUN_003952b0)(__VA_ARGS__)
 #define FUN_003952c0(...) ((u64 (*)(...))FUN_003952c0)(__VA_ARGS__)
@@ -435,15 +435,15 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 #define FUN_003962c0(...) ((u64 (*)(...))FUN_003962c0)(__VA_ARGS__)
 #define FUN_003963c0(...) ((u64 (*)(...))FUN_003963c0)(__VA_ARGS__)
 #define FUN_00396410(...) ((void (*)(...))FUN_00396410)(__VA_ARGS__)
-#define FUN_00396480(...) ((void (*)(...))FUN_00396480)(__VA_ARGS__)
+#define mtMiscAppendEntry(...) ((void (*)(...))mtMiscAppendEntry)(__VA_ARGS__)
 #define FUN_003964c0(...) ((u32 (*)(...))FUN_003964c0)(__VA_ARGS__)
 #define FUN_00396530(...) ((void (*)(...))FUN_00396530)(__VA_ARGS__)
-#define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
+#define evtEffectSequenceReset(...) ((void (*)(...))evtEffectSequenceReset)(__VA_ARGS__)
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
-#define FUN_00396760(...) ((void (*)(...))FUN_00396760)(__VA_ARGS__)
-#define FUN_003968a0(...) ((u16 (*)(...))FUN_003968a0)(__VA_ARGS__)
-#define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
-#define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
+#define mtMiscSetSlotRes(...) ((void (*)(...))mtMiscSetSlotRes)(__VA_ARGS__)
+#define mtMiscGetSlotRes(...) ((u16 (*)(...))mtMiscGetSlotRes)(__VA_ARGS__)
+#define mtMiscClearSlotRes(...) ((void (*)(...))mtMiscClearSlotRes)(__VA_ARGS__)
+#define mtMiscClearAllSlotRes(...) ((void (*)(...))mtMiscClearAllSlotRes)(__VA_ARGS__)
 #define FUN_00396a70(...) ((u64 (*)(...))FUN_00396a70)(__VA_ARGS__)
 #define FUN_00396ba0(...) ((void (*)(...))FUN_00396ba0)(__VA_ARGS__)
 #define FUN_00396bf0(...) ((void (*)(...))FUN_00396bf0)(__VA_ARGS__)
@@ -474,7 +474,7 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 #define FUN_00395000(...) ((void (*)(...))FUN_00395000)(__VA_ARGS__)
 #define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
-#define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#define evtLerpFloatIfEnabled(...) ((float (*)(...))evtLerpFloatIfEnabled)(__VA_ARGS__)
 #pragma opt_loop_invariants off
 #pragma push
 /* Removing this worsens FUN_00394070 (nd25 -> nd245) - measured W161. */
@@ -1181,7 +1181,7 @@ void FUN_00394c30(u32 param_1,u32 param_2)
 
     }
 
-    lVar2 = FUN_0039eee0(param_2);
+    lVar2 = evtMessageWindowIsOpen(param_2);
 
     if ((lVar2 == 1) &&
 
@@ -1415,7 +1415,7 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 #undef FUN_00397870
 #undef FUN_00393e30
 #undef FUN_00393f30
-#undef FUN_00394040
+#undef evtLerpFloatIfEnabled
 #undef FUN_00394070
 #undef FUN_00394270
 #undef FUN_003942f0
@@ -1516,12 +1516,12 @@ u8 FUN_00395230(s32 param_1)
 
 }
 
-#undef FUN_00395270
+#undef mtMiscPlayCue
 #define FUN_00395230(...) ((u8 (*)(...))FUN_00395230)(__VA_ARGS__)
 // FUN_00395270
 
 
-u64 FUN_00395270(s16 param_1)
+u64 mtMiscPlayCue(s16 param_1)
 
 
 
@@ -1534,7 +1534,7 @@ u64 FUN_00395270(s16 param_1)
 }
 
 #undef FUN_003952a0
-#define FUN_00395270(...) ((u64 (*)(...))FUN_00395270)(__VA_ARGS__)
+#define mtMiscPlayCue(...) ((u64 (*)(...))mtMiscPlayCue)(__VA_ARGS__)
 // FUN_003952a0
 
 
@@ -2682,12 +2682,12 @@ void FUN_00396410(u64 param_1)
 }
 
 /* opt_loop_invariants on: measured nd 124 -> 0, object 292/304 -> 292/304. */
-#undef FUN_00396480
+#undef mtMiscAppendEntry
 #define FUN_00396410(...) ((void (*)(...))FUN_00396410)(__VA_ARGS__)
 // FUN_00396480
 
 
-void FUN_00396480(int param_1,u32 param_2)
+void mtMiscAppendEntry(int param_1,u32 param_2)
 
 
 
@@ -2716,7 +2716,7 @@ void FUN_00396480(int param_1,u32 param_2)
 #pragma opt_loop_invariants reset
 
 #undef FUN_003964c0
-#define FUN_00396480(...) ((void (*)(...))FUN_00396480)(__VA_ARGS__)
+#define mtMiscAppendEntry(...) ((void (*)(...))mtMiscAppendEntry)(__VA_ARGS__)
 // FUN_003964C0
 
 
@@ -2785,12 +2785,12 @@ void FUN_00396530(int param_1)
 
 }
 
-#undef FUN_003965d0
+#undef evtEffectSequenceReset
 #define FUN_00396530(...) ((void (*)(...))FUN_00396530)(__VA_ARGS__)
 // FUN_003965d0
 
 
-void FUN_003965d0(u32 *param_1)
+void evtEffectSequenceReset(u32 *param_1)
 
 
 
@@ -2846,7 +2846,7 @@ void FUN_003965d0(u32 *param_1)
 
 
 #undef FUN_003965f0
-#define FUN_003965d0(...) ((void (*)(...))FUN_003965d0)(__VA_ARGS__)
+#define evtEffectSequenceReset(...) ((void (*)(...))evtEffectSequenceReset)(__VA_ARGS__)
 // W414 direct parameter pointer probes regressed FUN_003965f0 nd4 -> nd20/51; retained entryResult form. W419 _abs aliases stayed nd4/364 and direct/cached pointer forms were nd51/360.
 // W420 static inline pointer-offset helpers in both parameter orders stayed nd4/object364/window368; reverted.
 // FUN_003965F0 NONMATCHING
@@ -2934,12 +2934,12 @@ u32 FUN_003965f0(int *param_1)
 }
 
 /* Region call-cast macros */
-#undef FUN_00396760
+#undef mtMiscSetSlotRes
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
 // FUN_00396760
 
 
-void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
+void mtMiscSetSlotRes(int param_1,int param_2,int param_3,u64 param_4)
 {
   u16 sVar1;
   u16 uVar2;
@@ -2973,12 +2973,12 @@ void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
   }
   return;
 }
-#undef FUN_003968a0
-#define FUN_00396760(...) ((void (*)(...))FUN_00396760)(__VA_ARGS__)
+#undef mtMiscGetSlotRes
+#define mtMiscSetSlotRes(...) ((void (*)(...))mtMiscSetSlotRes)(__VA_ARGS__)
 // FUN_003968A0
 
 
-u16 FUN_003968a0(int param_1,int param_2)
+u16 mtMiscGetSlotRes(int param_1,int param_2)
 
 
 
@@ -3001,11 +3001,11 @@ u16 FUN_003968a0(int param_1,int param_2)
   return *(u16 *)((u8 *)((int)param_2 * 2) + param_1 + 0x170);
 
 }
-#undef FUN_00396910
-#define FUN_003968a0(...) ((u16 (*)(...))FUN_003968a0)(__VA_ARGS__)
+#undef mtMiscClearSlotRes
+#define mtMiscGetSlotRes(...) ((u16 (*)(...))mtMiscGetSlotRes)(__VA_ARGS__)
 // FUN_00396910
 
-void FUN_00396910(int param_1,int param_2)
+void mtMiscClearSlotRes(int param_1,int param_2)
 {
   u16 *puVar5;
   u16 sVar1;
@@ -3026,12 +3026,12 @@ void FUN_00396910(int param_1,int param_2)
   }
   return;
 }
-#undef FUN_003969b0
-#define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
+#undef mtMiscClearAllSlotRes
+#define mtMiscClearSlotRes(...) ((void (*)(...))mtMiscClearSlotRes)(__VA_ARGS__)
 // FUN_003969B0
 
 
-void FUN_003969b0(int param_1)
+void mtMiscClearAllSlotRes(int param_1)
 {
   u16 *puVar5;
   u16 sVar1;
@@ -3070,7 +3070,7 @@ void FUN_003969b0(int param_1)
 
 #pragma opt_loop_invariants on
 #undef FUN_00396a70
-#define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
+#define mtMiscClearAllSlotRes(...) ((void (*)(...))mtMiscClearAllSlotRes)(__VA_ARGS__)
 // FUN_00396A70
 
 

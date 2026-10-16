@@ -79,10 +79,10 @@ extern u8 D_00697A50[];
 extern u64 FUN_002FF790(void* genusBase);
 extern u32 FUN_0030FC40(u32 command, DatUnit* unit_a, DatUnit* unit_b,
                         u32 param_4, u32 param_5);
-extern void func_003c8f20(void);
+extern void fclMiscSetDoneFlag(void);
 extern void func_003c8f40(void);
 extern void func_003c8f70(void);
-extern void func_003c8fa0(void);
+extern void fclMiscCloseActiveHandle(void);
 extern void func_003c8da0(u32 flags);
 extern u32 func_00306e80(DatUnit* unit, u16 mode);
 extern u8 DAT_00697730[];
@@ -101,7 +101,7 @@ extern u8* DAT_007ce484;
 extern u8* DAT_007ce488;
 #pragma alias btlTargetBuildBounds FUN_002d2340
 extern void btlTargetBuildBounds(u8* work, s16 start, s16 end, f32 distance);
-#pragma alias FUN_002d2470_call FUN_002d2470
+#pragma alias FUN_002d2470_call btlTargetNearSegment
 extern s32 FUN_002d2470_call(f32 tolerance, const f32* a, const f32* b,
                              const f32* point);
 typedef u8 undefined1;
@@ -472,7 +472,7 @@ extern u64 func_0030bc20();
 #pragma alias func_0030bc20_u32 func_0030bc20
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
-extern void func_003176c0(Model* mdl);
+extern void mdlUpdateModelMatrix(Model* mdl);
 extern u64 func_00317730();
 extern void FUN_00317a20(Model* param_1);
 extern u64 func_00318ad0();
@@ -718,17 +718,17 @@ extern u32 func_002b8dc0(u16 *param_1);
 extern u32 func_002b8f90(u16 param_1);
 extern void func_002b9030(u32 param_1);
 extern void func_002b90d0(int param_1,u32 param_2);
-extern void func_002b9220(int param_1);
-extern void func_002b9300(int param_1);
-extern bool func_002b9350(int param_1);
-#pragma alias func_002b9350_u32 func_002b9350
+extern void btlFormationSetState(int param_1);
+extern void btlFormationCopyDefault(int param_1);
+extern bool btlFormationGetCount(int param_1);
+#pragma alias func_002b9350_u32 btlFormationGetCount
 extern u32 func_002b9350_u32(int param_1);
-extern u32 func_002b9370(int param_1,u16 param_2);
-extern u32 func_002b93c0(int param_1,u16 param_2);
+extern u32 btlFormationGetIndex(int param_1,u16 param_2);
+extern u32 btlFormationGetEntry(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
 #pragma alias func_002b93e0_4arg func_002b93e0
 extern u32 func_002b93e0_4arg(u32 param_1,u16 param_2,u32 param_3,u32 param_4);
-extern void func_002b94f0(BtlFormationWork *param_1);
+extern void btlFormationResetState(BtlFormationWork *param_1);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
                           u32 param_6);
 extern void func_002b9600(u32 *param_1);
@@ -751,23 +751,23 @@ extern u32 func_002baad0(int *param_1);
 extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
 extern void func_002bacb0(u32 *param_1);
 extern u32 func_002bad60(u32 *param_1);
-extern bool func_002baec0(u32 *param_1);
-extern void func_002baf30(u32 *param_1);
+extern bool btlFormationHasEntry(u32 *param_1);
+extern void btlFormationRelease(u32 *param_1);
 extern void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u32 param_5);
 extern void func_002bb050(u32 *param_1);
 extern u32 func_002bb0b0(u32 *param_1);
 extern void func_002bb290(u32 *param_1);
 extern void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4, u16 param_5);
 extern void func_002bb3a0(void);
-extern void func_002bb580(u16 *param_1);
+extern void btlEffectResetEntry(u16 *param_1);
 extern void func_002bb610(u32 param_1);
 extern void func_002bb6f0(u16 param_1,u64 param_2);
 extern void func_002bb760(void);
 extern void func_002bb770(void);
 extern void *func_002bb7d0(void);
 extern void func_002bb8f0(u32 param_1);
-extern u16 * func_002bb9c0(int param_1);
-extern u32 func_002bbac0(int param_1,u16 *param_2);
+extern u16 * btlEffectAllocEntry(int param_1);
+extern u32 btlEffectFreeEntry(int param_1,u16 *param_2);
 extern void func_002bbbc0(int param_1);
 extern void* func_002bbc00(void* owner);
 extern void func_002bbd00(u32 param_1);
@@ -786,7 +786,7 @@ extern u32 func_002bc7b0(u16 *param_1);
 extern void func_002bc7e0(u16 param_1);
 extern u32 func_002bc830(u8 *param_1);
 extern void func_002bc890(u8 *param_1,u16 param_2);
-extern u32 func_002bc910(u32 *param_1);
+extern u32 btlFormationDispatchArgs(u32 *param_1);
 extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,int param_8);
 #pragma alias func_002bc9c0_long func_002bc9c0
@@ -865,7 +865,7 @@ extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
 extern void func_002c0070(int param_1,int param_2);
 extern u32 func_002c0880(int param_1);
 extern void func_002c08a0(int param_1,u64 *param_2);
-extern void func_002c08b0(int param_1,int param_2);
+extern void btlFormationEntryCopySelected(int param_1,int param_2);
 extern long * func_002c08c0(int param_1);
 extern u32 func_002c0970(int param_1);
 extern u32 func_002c09f0(int param_1);
@@ -973,8 +973,8 @@ extern void func_002c4180(u64 param_1,u64 param_2);
 extern void func_002c41c0(u64 param_1,u64 param_2);
 extern u32 func_002c4200(u32 param_1);
 extern u32 func_002c42c0(u32 param_1,u32 param_2);
-extern void func_002c43a0(u64 param_1);
-extern void func_002c43e0(u64 param_1);
+extern void btlAICommandPickMyDown(u64 param_1);
+extern void btlAICommandPickNotMyDown(u64 param_1);
 extern void func_002c4420(u64 param_1,u64 param_2);
 extern void func_002c4460(u64 param_1,u64 param_2);
 extern void func_002c44a0(u64 param_1,u64 param_2);
@@ -1120,10 +1120,10 @@ extern u32 func_002cba50(void);
 extern u32 func_002cbaa0(void);
 extern u32 func_002cbaf0(void);
 extern u32 btlAICommandSideSwitchIdQueryMyWeak(void);
-extern u32 func_002cbcd0(void);
-extern u32 func_002cbd90(void);
-extern u32 func_002cbe50(void);
-extern u32 func_002cbf10(void);
+extern u32 btlScriptIsSideUnitHitFlagged(void);
+extern u32 btlScriptIsSideUnitCriticalFlagged(void);
+extern u32 btlScriptIsSideUnitWeakFlagged(void);
+extern u32 btlScriptIsSideUnitDownFlagged(void);
 extern u32 btlAICommandSideSwitchQueryAnalyze(void);
 extern u32 func_002cc0a0(void);
 extern u32 func_002cc190(void);
@@ -1167,8 +1167,8 @@ extern u32 func_002cd8c0(void);
 extern u32 func_002cd940(void);
 extern u32 btlAICommandScriptSetCommandOverride(void);
 extern u32 func_002cda10(void);
-extern u32 func_002cda50(void);
-extern u32 func_002cdad0(void);
+extern u32 btlScriptGetSameSideUnitValue(void);
+extern u32 btlScriptGetOppositeSideUnitValue(void);
 extern u32 func_002cdb70(void);
 extern u32 btlAICommandScriptCountOwnNotHojo(void);
 extern u32 func_002cdc50(void);
@@ -1184,15 +1184,15 @@ extern u32 func_002ce090(void);
 extern u32 func_002ce170(void);
 extern u32 func_002ce210(void);
 extern u32 func_002ce2b0(void);
-extern u32 func_002ce380(void);
+extern u32 btlAICommandSetTarget(void);
 extern u32 func_002ce440(void);
 extern u32 func_002ce4e0(void);
 extern u32 func_002ce5c0(void);
-extern u32 func_002ce6c0(void);
-extern u32 func_002ce7a0(void);
-extern u32 func_002ce880(void);
-extern u32 func_002ce960(void);
-extern u32 func_002cea40(void);
+extern u32 btlAICommandPickWeakCandidateGated(void);
+extern u32 btlAICommandPickWeakCandidate(void);
+extern u32 btlAICommandPickNormalCandidate(void);
+extern u32 btlAICommandPickNormalCandidateGated(void);
+extern u32 btlAICommandPickNormalCandidateAlt(void);
 extern u32 func_002ceb20(void);
 extern u32 func_002cec30(void);
 extern u32 func_002ced60(void);
@@ -1205,7 +1205,7 @@ extern u32 func_002cf580(void);
 extern u32 func_002cf6b0(void);
 extern u32 func_002cf7e0(void);
 extern u32 func_002cf890(void);
-extern u32 func_002cf940(void);
+extern u32 btlAICommandScriptCollectSkills(void);
 extern u32 func_002cf9f0(void);
 extern u32 func_002cfa40(void);
 extern u32 func_002cfb20(void);
@@ -1221,7 +1221,7 @@ extern u32 func_002d06e0(void);
 extern u32 func_002d0720(void);
 extern u32 func_002d0760(void);
 extern u32 func_002d0860(void);
-extern u32 func_002d08e0(void);
+extern u32 btlAICommandScriptSpawnChild(void);
 extern u32 func_002d0970(void);
 extern u32 func_002d09d0(void);
 extern u32 func_002d0a30(void);
@@ -1239,14 +1239,14 @@ extern u32 func_002d0de0(void);
 extern u32 func_002d0ef0(void);
 extern u32 func_002d0f90(void);
 extern u32 func_002d1030(void);
-extern u32 func_002d10f0(void);
-extern u32 func_002d1180(void);
+extern u32 btlTargetScriptEnqueue(void);
+extern u32 btlTargetScriptEnqueueS32(void);
 extern u32 func_002d11d0(void);
 extern u32 func_002d1210(void);
 extern u32 func_002d1260(void);
 extern u32 func_002d12a0(void);
 extern u32 func_002d12e0(void);
-extern u32 func_002d13c0(void);
+extern u32 btlTargetAIPickAction(void);
 extern u32 func_002d1490(void);
 extern u32 func_002d14d0(void);
 extern u32 func_002d1510(void);
@@ -1585,7 +1585,7 @@ u32 func_002d1030(void)
 
 // FUN_002d10f0
 
-u32 func_002d10f0(void)
+u32 btlTargetScriptEnqueue(void)
 {
   extern u32 func_0035ed20(u32);
   extern u32 func_002db890(void);
@@ -1607,7 +1607,7 @@ u32 func_002d10f0(void)
 
 // FUN_002d1180
 
-u32 func_002d1180(void)
+u32 btlTargetScriptEnqueueS32(void)
 {
   extern u32 func_0035ed20(u32);
   extern u32 func_002db890(void);
@@ -1716,7 +1716,7 @@ u32 func_002d12e0(void)
 
 // FUN_002d13c0
 
-u32 func_002d13c0(void)
+u32 btlTargetAIPickAction(void)
 {
   extern u32 func_0035f160(void);
   extern u16 btlAICommandPickTableAction(void *);
@@ -2030,7 +2030,7 @@ done:
 }
 
 // FUN_002d1c20
-u32 FUN_002d1c20(void* data)
+u32 btlTargetSpawnActionProc(void* data)
 {
     u8* state = (u8*)data;
     u32 result;
@@ -2096,7 +2096,7 @@ BtlPacket* FUN_002d1d00(BtlAction* action, u16 mode,
     BtlTargetScriptWork* work;
 
     packet->unk_47 &= 0xee;
-    packet->updateFunc = FUN_002d1c20;
+    packet->updateFunc = btlTargetSpawnActionProc;
     work = (BtlTargetScriptWork*)packet->workData;
     switch (mode)
     {
@@ -2232,7 +2232,7 @@ u32 FUN_002d20a0(const RwV3d* projected, f32* screen)
 }
 
 // FUN_002d21e0
-f32 FUN_002d21e0(f32 value, volatile /* Removing this qualifier loses FUN_002d21e0 (MATCH nd0 -> MISMATCH nd6, size 148 -> 148) - measured W170. */ f32* state)
+f32 btlTargetSmoothStep(f32 value, volatile /* Removing this qualifier loses FUN_002d21e0 (MATCH nd0 -> MISMATCH nd6, size 148 -> 148) - measured W170. */ f32* state)
 {
     f32 current;
     f32 slopeBase;
@@ -2266,7 +2266,7 @@ f32 FUN_002d21e0(f32 value, volatile /* Removing this qualifier loses FUN_002d21
 }
 
 // FUN_002d2280
-void FUN_002d2280(s16* outX, s16* outZ, f32* position)
+void btlTargetPositionToCell(s16* outX, s16* outZ, f32* position)
 {
     s32 x = (s32)(position[0] + 1750.0f);
     s32 z = (s32)(position[2] + 1750.0f);
@@ -2318,7 +2318,7 @@ void FUN_002d2340(f32 distance, u8* work, s32 start, s32 end)
 #pragma pop
 
 // FUN_002d2470
-s32 FUN_002d2470(const f32* a, const f32* b, const f32* point, f32 tolerance)
+s32 btlTargetNearSegment(const f32* a, const f32* b, const f32* point, f32 tolerance)
 {
     RwV2d axis;
     f32 projected[2];
@@ -2395,13 +2395,13 @@ s32 FUN_002d25c0(const u8* pointA, const u8* pointB)
                 continue;
             }
             otherPoint = *(const f32**)(cell + 0x18);
-            side1 = FUN_002d2990(cellPoint, otherPoint, (const f32*)(pointA + 8));
-            side2 = FUN_002d2990(cellPoint, otherPoint, (const f32*)(pointB + 8));
+            side1 = btlTargetCrossSign(cellPoint, otherPoint, (const f32*)(pointA + 8));
+            side2 = btlTargetCrossSign(cellPoint, otherPoint, (const f32*)(pointB + 8));
             intersects = 0;
             if (side1 != side2)
             {
-                side1 = FUN_002d2990((const f32*)(pointA + 8), (const f32*)(pointB + 8), cellPoint);
-                side2 = FUN_002d2990((const f32*)(pointA + 8), (const f32*)(pointB + 8), otherPoint);
+                side1 = btlTargetCrossSign((const f32*)(pointA + 8), (const f32*)(pointB + 8), cellPoint);
+                side2 = btlTargetCrossSign((const f32*)(pointA + 8), (const f32*)(pointB + 8), otherPoint);
                 if (side1 != side2)
                 {
                     intersects = 1;
@@ -2430,17 +2430,17 @@ s32 FUN_002d25c0(const u8* pointA, const u8* pointB)
                     const f32* edgeA =
                         (const f32*)(node + (((i + 1U) & 3) * 0x130) + 8);
                     const f32* edgeB = (const f32*)(node + i * 0x130 + 8);
-                    s32 side1 = FUN_002d2990(edgeB, edgeA,
+                    s32 side1 = btlTargetCrossSign(edgeB, edgeA,
                                              (const f32*)(pointA + 8));
-                    s32 side2 = FUN_002d2990(edgeB, edgeA,
+                    s32 side2 = btlTargetCrossSign(edgeB, edgeA,
                                              (const f32*)(pointB + 8));
                     s32 intersects;
 
                     if (side1 != side2)
                     {
-                        side1 = FUN_002d2990((const f32*)(pointA + 8),
+                        side1 = btlTargetCrossSign((const f32*)(pointA + 8),
                                              (const f32*)(pointB + 8), edgeB);
-                        side2 = FUN_002d2990((const f32*)(pointA + 8),
+                        side2 = btlTargetCrossSign((const f32*)(pointA + 8),
                                              (const f32*)(pointB + 8), edgeA);
                         if (side1 != side2)
                         {
@@ -2470,7 +2470,7 @@ s32 FUN_002d25c0(const u8* pointA, const u8* pointB)
 }
 
 // FUN_002d2990
-int FUN_002d2990(const float *param_1, const float *param_2, const float *param_3)
+int btlTargetCrossSign(const float *param_1, const float *param_2, const float *param_3)
 {
     float cross = (param_2[0] - param_1[0]) * (param_3[1] - param_1[1]) -
                   (param_2[1] - param_1[1]) * (param_3[0] - param_1[0]);
@@ -2513,13 +2513,13 @@ int FUN_002d2a00(float radius, float *pointA, float *pointB)
             float *edge = (float *)(node + i * 0x130 + 0x08);
             float *next = (float *)(node + wrap * 0x130 + 0x08);
             int intersects = 0;
-            int side_a = FUN_002d2990(edge, next, pointA);
-            int side_b = FUN_002d2990(edge, next, pointB);
+            int side_a = btlTargetCrossSign(edge, next, pointA);
+            int side_b = btlTargetCrossSign(edge, next, pointB);
 
             if (side_a != side_b)
             {
-                side_a = FUN_002d2990(pointA, pointB, edge);
-                side_b = FUN_002d2990(pointA, pointB, next);
+                side_a = btlTargetCrossSign(pointA, pointB, edge);
+                side_b = btlTargetCrossSign(pointA, pointB, next);
                 if (side_a != side_b)
                 {
                     intersects = 1;
@@ -2583,12 +2583,12 @@ int FUN_002d2c10(float *param_1, float *param_2)
             else
             {
                 int intersects;
-                int side_a = FUN_002d2ee0(edge, next, param_1);
-                int side_b = FUN_002d2ee0(edge, next, param_2);
+                int side_a = btlTargetCheckSide(edge, next, param_1);
+                int side_b = btlTargetCheckSide(edge, next, param_2);
                 if (side_a != side_b)
                 {
-                    side_a = FUN_002d2ee0(param_1, param_2, edge);
-                    side_b = FUN_002d2ee0(param_1, param_2, next);
+                    side_a = btlTargetCheckSide(param_1, param_2, edge);
+                    side_b = btlTargetCheckSide(param_1, param_2, next);
                     if (side_a != side_b)
                     {
                         intersects = 1;
@@ -2634,12 +2634,12 @@ int FUN_002d2c10(float *param_1, float *param_2)
             if (next != NULL)
             {
                 int intersects;
-                int side_a = FUN_002d2ee0(edge, next, param_1);
-                int side_b = FUN_002d2ee0(edge, next, param_2);
+                int side_a = btlTargetCheckSide(edge, next, param_1);
+                int side_b = btlTargetCheckSide(edge, next, param_2);
                 if (side_a != side_b)
                 {
-                    side_a = FUN_002d2ee0(param_1, param_2, edge);
-                    side_b = FUN_002d2ee0(param_1, param_2, next);
+                    side_a = btlTargetCheckSide(param_1, param_2, edge);
+                    side_b = btlTargetCheckSide(param_1, param_2, next);
                     if (side_a != side_b)
                     {
                         intersects = 1;
@@ -2664,7 +2664,7 @@ int FUN_002d2c10(float *param_1, float *param_2)
 }
 
 // FUN_002d2ee0
-int FUN_002d2ee0(const float *param_1, const float *param_2, const float *param_3)
+int btlTargetCheckSide(const float *param_1, const float *param_2, const float *param_3)
 {
     int side;
     float cross;
@@ -4051,7 +4051,7 @@ void FUN_002d5dc0(void* param_1)
 }
 
 // FUN_002d5e00
-void FUN_002d5e00(void* param_1)
+void btlTargetClearWork(void* param_1)
 {
     *(u16*)((u8*)param_1 + 0x14) = 0;
 }
@@ -4864,7 +4864,7 @@ void FUN_002d7890(BtlAction* action, u64 mode)
     }
 }
 // FUN_002d7970
-void FUN_002D7970(void* arg)
+void btlTargetPacketAddPending(void* arg)
 {
     BtlTargetPacketWork* work = (BtlTargetPacketWork*)arg;
     work->source->unit->packetCount++;
@@ -4979,7 +4979,7 @@ u32 FUN_002d79a0(void *arg)
 }
 
 // FUN_002d7df0
-void FUN_002D7DF0(void* arg)
+void btlTargetPacketReleasePending(void* arg)
 {
     BtlTargetPacketWork* work = (BtlTargetPacketWork*)arg;
     work->source->unit->packetCount--;
@@ -4991,9 +4991,9 @@ BtlPacket *FUN_002d7e20(BtlAction *source, BtlAction *action, const void *data, 
 {
     BtlPacket *packet = btlPacketCreate(0x700, 0x28);
     BtlTargetPacketWork *work;
-    packet->initFunc = FUN_002D7970;
+    packet->initFunc = btlTargetPacketAddPending;
     packet->updateFunc = FUN_002d79a0;
-    packet->destroyFunc = FUN_002D7DF0;
+    packet->destroyFunc = btlTargetPacketReleasePending;
     work = (BtlTargetPacketWork *)packet->workData;
     work->source = source;
     work->action = action;
@@ -5010,7 +5010,7 @@ void func_002d7ef0(void* arg)
     work->action->unit->packetCount++;
 }
 // FUN_002d7f10
-u32 func_002d7f10(void* arg)
+u32 btlTargetStatePacketUpdate(void* arg)
 {
     BtlTargetStatePacketWork* work = (BtlTargetStatePacketWork*)arg;
     u8 value;
@@ -5058,7 +5058,7 @@ void FUN_002d7fb0(BtlAction* action, u8 flags)
     BtlTargetStatePacketWork* work;
 
     packet->initFunc = func_002d7ef0;
-    packet->updateFunc = func_002d7f10;
+    packet->updateFunc = btlTargetStatePacketUpdate;
     packet->destroyFunc = func_002d7f90;
     work = (BtlTargetStatePacketWork*)packet->workData;
     work->action = action;
@@ -7369,7 +7369,7 @@ void FUN_002dad00(void)
     *(u16*)(iGpffffb6fc + 0xa16) |= 1;
     *(u16*)(iGpffffb6fc + 0xa18) = 0;
 updateFlag:
-    if (FUN_003c8ea0() == 0)
+    if (fclMiscGetRecordCount() == 0)
         *(u16*)(iGpffffb6fc + 0xa16) &= (u16)~1;
 }
 
@@ -7706,7 +7706,7 @@ BtlPacket* FUN_002db740(BtlAction* action, u16 command, u32 param_3,
 }
 
 // FUN_002db7d0
-u32 FUN_002db7d0(void* param_1)
+u32 btlTargetSimpleCommand(void* param_1)
 {
     BtlTargetSimpleWork* work = (BtlTargetSimpleWork*)param_1;
     FUN_002db9f0(work->command, work->param);
@@ -7719,7 +7719,7 @@ BtlPacket* FUN_002db800(u16 command, u32 param)
     BtlPacket* packet = btlPacketCreate(0x801, 8);
     BtlTargetSimpleWork* work;
 
-    packet->updateFunc = FUN_002db7d0;
+    packet->updateFunc = btlTargetSimpleCommand;
     work = (BtlTargetSimpleWork*)packet->workData;
     work->command = command;
     work->param = param;
@@ -7779,7 +7779,7 @@ void FUN_002db980(void)
         *(u32*)(iGpffffb6fc + 0x0c) &= 0xfeffffff;
     }
     *(u16*)(iGpffffb6fc + 0xa16) &= (u16)~1;
-    func_003c8f20();
+    fclMiscSetDoneFlag();
 }
 
 // FUN_002db9f0
@@ -7832,7 +7832,7 @@ void FUN_002dba80(void)
 void FUN_002dbac0(void)
 {
     func_003c8f40();
-    func_003c8fa0();
+    fclMiscCloseActiveHandle();
     *(u16*)(iGpffffb6fc + 0xa18) = 0;
     *(u16*)(iGpffffb6fc + 0xa16) &= (u16)~1;
 }

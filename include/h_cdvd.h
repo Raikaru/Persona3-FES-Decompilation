@@ -82,7 +82,7 @@ void H_Cdvd_SplitPath(const char* path, char* fileNameDst, char* dirDst);
 void H_Cdvd_SelectDirectory(const char* dir);
 s32 H_Cdvd_StreamAttachCacheEntry(void* unused, void* slot, uintptr_t pathOrMode);
 u32 H_Cdvd_StreamReadChunk(void* slot, void* dst, u32 size);
-void func_001018c0(void* result, void* slot, u32 amount, s32 mode);
+void H_Cdvd_StreamSeek(void* result, void* slot, u32 amount, s32 mode);
 void H_Cdvd_StreamContextFree(void* context);
 s32 H_Cdvd_IsCached(void* unused, const char* path);
 void* func_00101ad0(s32 count, void* source, s32 stride,

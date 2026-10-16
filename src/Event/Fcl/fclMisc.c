@@ -279,7 +279,7 @@ extern u64 fclMisc8550Call(u32);
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #define FUN_003c8550(...) ((u64 (*)(...))FUN_003c8550)(__VA_ARGS__)
 #define FUN_003c8770(...) ((u64 (*)(...))FUN_003c8770)(__VA_ARGS__)
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #define FUN_003c88d0(...) ((void (*)(...))FUN_003c88d0)(__VA_ARGS__)
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
 #define FUN_003c8b50(...) ((u32 (*)(...))FUN_003c8b50)(__VA_ARGS__)
@@ -294,12 +294,12 @@ extern void fclMiscSetWord14(u32);
 #define fclMiscSetWord14(...) ((void (*)(...))fclMiscSetWord14)(__VA_ARGS__)
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
-#define FUN_003c8ea0(...) ((u16 (*)(...))FUN_003c8ea0)(__VA_ARGS__)
+#define fclMiscGetRecordCount(...) ((u16 (*)(...))fclMiscGetRecordCount)(__VA_ARGS__)
 #define FUN_003c8ec0(...) ((u32 (*)(...))FUN_003c8ec0)(__VA_ARGS__)
-#define FUN_003c8f20(...) ((void (*)(...))FUN_003c8f20)(__VA_ARGS__)
+#define fclMiscSetDoneFlag(...) ((void (*)(...))fclMiscSetDoneFlag)(__VA_ARGS__)
 #define FUN_003c8f40(...) ((void (*)(...))FUN_003c8f40)(__VA_ARGS__)
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #define FUN_003c91b0(...) ((u8 (*)(...))FUN_003c91b0)(__VA_ARGS__)
 #define fclMiscReleaseHandle(...) ((void (*)(...))fclMiscReleaseHandle)(__VA_ARGS__)
@@ -499,11 +499,11 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
   return 0;
 }
 #define FUN_003c8770(...) ((u64 (*)(...))FUN_003c8770)(__VA_ARGS__)
-#undef FUN_003c8810
+#undef fclMiscPruneLists
  
  
 // FUN_003C8810
-u64 FUN_003c8810(int *param_1)
+u64 fclMiscPruneLists(int *param_1)
 {
   int *item;
   int *node;
@@ -530,7 +530,7 @@ u64 FUN_003c8810(int *param_1)
   }
   return 0;
 }
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #undef FUN_003c88d0
 #pragma alias DAT_0095be80_abs DAT_0095be80
 extern u8 DAT_0095be80_abs[];
@@ -568,8 +568,8 @@ void FUN_003c88d0(void)
 #undef FUN_003c89a0
 #undef FUN_003c8770
 extern u64 FUN_003c8770(u32, s32);
-#undef FUN_003c8810
-extern u64 FUN_003c8810(int *);
+#undef fclMiscPruneLists
+extern u64 fclMiscPruneLists(int *);
 #undef fclMiscSetWord14
 extern void fclMiscSetWord14(u32);
 #undef FUN_003c8400
@@ -589,7 +589,7 @@ u64 FUN_003c89a0(void)
     piVar2 = piGpffffb98c;
     if ((piVar2[1] & 1U) != 0) {
         if ((piVar2[1] & 2U) != 0) {
-            FUN_003c8810(piVar2);
+            fclMiscPruneLists(piVar2);
             result = fclMisc8d80Int();
             if (result != 0) {
                 piVar2[1] &= ~2;
@@ -865,11 +865,11 @@ u64 FUN_003c8de0(int param_1,int param_2,int param_3,u16 param_4)
 
 }
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
-#undef FUN_003c8ea0
+#undef fclMiscGetRecordCount
 // FUN_003C8EA0
 
 
-u16 FUN_003c8ea0(void)
+u16 fclMiscGetRecordCount(void)
 
 
 
@@ -878,7 +878,7 @@ u16 FUN_003c8ea0(void)
   return *(u16 *)(*piGpffffb98c + 0x10);
 
 }
-#define FUN_003c8ea0(...) ((u16 (*)(...))FUN_003c8ea0)(__VA_ARGS__)
+#define fclMiscGetRecordCount(...) ((u16 (*)(...))fclMiscGetRecordCount)(__VA_ARGS__)
 #undef FUN_003c8ec0
 // FUN_003C8EC0
 
@@ -898,11 +898,11 @@ u32 FUN_003c8ec0(int param_1, int param_2)
   return 0;
 }
 #define FUN_003c8ec0(...) ((u32 (*)(...))FUN_003c8ec0)(__VA_ARGS__)
-#undef FUN_003c8f20
+#undef fclMiscSetDoneFlag
 // FUN_003C8F20
 
 
-void FUN_003c8f20(void)
+void fclMiscSetDoneFlag(void)
 
 
 
@@ -913,9 +913,9 @@ void FUN_003c8f20(void)
   return;
 
 }
-#define FUN_003c8f20(...) ((void (*)(...))FUN_003c8f20)(__VA_ARGS__)
+#define fclMiscSetDoneFlag(...) ((void (*)(...))fclMiscSetDoneFlag)(__VA_ARGS__)
 #undef FUN_003c8f40
-#undef FUN_003c8810
+#undef fclMiscPruneLists
 // FUN_003C8F40
 
 
@@ -924,17 +924,17 @@ void FUN_003c8f40(void)
 
 
 {
-  FUN_003c8810((int *)uGpffffb98c);
+  fclMiscPruneLists((int *)uGpffffb98c);
 
 
   return;
 
 }
-#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
+#define fclMiscPruneLists(...) ((u64 (*)(...))fclMiscPruneLists)(__VA_ARGS__)
 #define FUN_003c8f40(...) ((void (*)(...))FUN_003c8f40)(__VA_ARGS__)
 #undef FUN_003c8f70
-#undef FUN_003c8fa0
-void FUN_003c8fa0(void);
+#undef fclMiscCloseActiveHandle
+void fclMiscCloseActiveHandle(void);
 // FUN_003C8F70
 
 
@@ -945,21 +945,21 @@ void FUN_003c8f70(void)
 {
 
   FUN_00109f60(2,0);
-  FUN_003c8fa0();
+  fclMiscCloseActiveHandle();
 
 
   return;
 
 }
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #define FUN_003c8f70(...) ((void (*)(...))FUN_003c8f70)(__VA_ARGS__)
-#undef FUN_003c8fa0
+#undef fclMiscCloseActiveHandle
 #undef fclMiscCloseHandle
 u32 fclMiscCloseHandle();
 // FUN_003C8FA0
 
 
-void FUN_003c8fa0(void)
+void fclMiscCloseActiveHandle(void)
 {
   u8* context;
 
@@ -972,7 +972,7 @@ void FUN_003c8fa0(void)
   }
 }
 #define fclMiscCloseHandle(...) ((u32 (*)(...))fclMiscCloseHandle)(__VA_ARGS__)
-#define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
+#define fclMiscCloseActiveHandle(...) ((void (*)(...))fclMiscCloseActiveHandle)(__VA_ARGS__)
 #undef FUN_003c9000
 static inline f32 fclMiscMulFirst(f32 left, f32 right) { return left * right; }
 #pragma push

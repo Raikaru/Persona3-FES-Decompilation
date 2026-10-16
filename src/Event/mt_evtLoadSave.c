@@ -3117,7 +3117,7 @@ void FUN_00390ef0(int param_1,int param_2)
   modelData = FUN_0039ec10(param_1,*(char *)(param_2 + 0x22),&uStack_8,(u16 *)auStack_4);
   if (modelData != 0) {
     uVar7 = FUN_00316bd0(5,auStack_4[0],modelData,uStack_8,1);
-    uVar4 = FUN_0039ec60(*(u32 *)(param_2 + 4));
+    uVar4 = evtCustomEventResId(*(u32 *)(param_2 + 4));
     uVar4 = FUN_003b6270(uVar4,3,uVar7);
     FUN_003b9550(uVar4,1);
     afStack_18[0] = (float)(*(int *)(param_2 + 4) * 0x1e);
@@ -4566,9 +4566,9 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
     if (2 < lVar23) {
 
-      lVar23 = FUN_0039eee0(iVar11 + 0x82c);
+      lVar23 = evtMessageWindowIsOpen(iVar11 + 0x82c);
 
-      if ((lVar23 == 1) && (lVar23 = FUN_0039f710(iVar11 + 0x82c), 0 < lVar23)) {
+      if ((lVar23 == 1) && (lVar23 = evtMessageWindowRecordCount(iVar11 + 0x82c), 0 < lVar23)) {
 
         lVar23 = FUN_001729a0();
 
@@ -5496,7 +5496,7 @@ extern u8 DAT_006a0e60[0x20];
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6);
 void FUN_00393f30(u8 *param_1,u32 param_2);
-float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
+float evtLerpFloatIfEnabled(float param_1,float param_2,float param_3,long param_4);
 void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param_5);
 int FUN_00394270(void);
 u8 *FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5);
@@ -5511,7 +5511,7 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 /* Region call-cast macros */
 #define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
-#define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#define evtLerpFloatIfEnabled(...) ((float (*)(...))evtLerpFloatIfEnabled)(__VA_ARGS__)
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
 #define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
 #define FUN_003942f0(...) ((u64 (*)(...))FUN_003942f0)(__VA_ARGS__)
@@ -5599,11 +5599,11 @@ void FUN_00393f30(u8 *param_1,u32 param_2)
 #pragma opt_loop_invariants off
 #pragma pop
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
-#undef FUN_00394040
+#undef evtLerpFloatIfEnabled
 // FUN_00394040 MATCHING
 
 
-float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
+float evtLerpFloatIfEnabled(float param_1,float param_2,float param_3,long param_4)
 
 
 
@@ -5615,7 +5615,7 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
   return param_2;
 
 }
-#define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#define evtLerpFloatIfEnabled(...) ((float (*)(...))evtLerpFloatIfEnabled)(__VA_ARGS__)
 #pragma push
 /* Removing this worsens FUN_00394070 (nd25 -> nd245) - measured W161. */
 #pragma opt_loop_invariants on

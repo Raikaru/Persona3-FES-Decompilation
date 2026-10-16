@@ -105,11 +105,11 @@ extern void (*DAT_0096009c[])(void* vertices, s32 stride, s32 mode, s32 a, s32 b
 extern void func_00521408(void* dst, s32 value, u32 size);
 void func_0027a3b0(void);
 u32* func_0027a4a0(void);
-void func_0027a560(u32* work);
+void edScrollFreeRecord(u32* work);
 void func_0027a5d0(void);
 void func_0027a6a0(u32* work, char* text, s32 align);
 void func_0027a930(u32* work, const float* pos);
-void func_0027aa00(u32* work, const u8* color);
+void edScrollSetRecordColor(u32* work, const u8* color);
 u32 func_0027aaa0(void);
 s32 func_0027ab10(void);
 void func_0027ab80(void);

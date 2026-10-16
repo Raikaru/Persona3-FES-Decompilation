@@ -864,7 +864,7 @@ void H_Memcard_SetAbort(void)
 }
 
 // FUN_00190590 Poll cancellation/error status for a transaction.
-s32 func_00190590(void)
+s32 H_Memcard_CheckCard(void)
 {
     s32 status;
     s32 cardMode;
@@ -1361,7 +1361,7 @@ done:
 }
 
 // FUN_00191240
-void func_00191240(void)
+void H_Memcard_Reset(void)
 {
     sMemcardSeqMode = 0;
     sMemcardMode = 0;
@@ -1565,7 +1565,7 @@ done:
 }
 
 // FUN_00191640
-void func_00191640(s32 slot)
+void H_Memcard_SetSlot(s32 slot)
 {
     sMemcardSeqMode = 0;
     sMemcardMode = 0;

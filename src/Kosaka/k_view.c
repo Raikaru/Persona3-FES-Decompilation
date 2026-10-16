@@ -149,7 +149,7 @@ KwlnTask* func_001a3b10(KwlnTask* parent, u32 width, u32 height, u32 mode);
 void func_001a3c30(KwlnTask* task);
 u32 func_001a3f20(KwlnTask* task, const char* name);
 char* func_001a4010(KwlnTask* task, s32 id);
-void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback);
+void sdkLboxSetCallback(KwlnTask* task, u32 id, KWindowEntryCallback callback);
 void func_001a4090(KwlnTask* task, u32 id, const char* text);
 void func_001a4110(KwlnTask* task, u32 id, s32 value, s32 minValue,
                    s32 maxValue, s32 flags);
@@ -486,7 +486,7 @@ found:
 
 
 // FUN_001A4050
-void func_001a4050(KwlnTask* task, u32 id, KWindowEntryCallback callback)
+void sdkLboxSetCallback(KwlnTask* task, u32 id, KWindowEntryCallback callback)
 {
     KWindowEntry* entry;
 

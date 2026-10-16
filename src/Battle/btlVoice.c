@@ -248,7 +248,7 @@ extern u64 FUN_002a3b40();
 extern u64 FUN_002a3d70();
 extern void FUN_002a3e80(float param_1, u8 *param_2,
                          u8 *param_3, u8 *param_4, u32 param_5);
-extern void FUN_002a4690(void *param_1, const void *param_2, const void *param_3, const void *axis);
+extern void btlCameraLookAtQuat(void *param_1, const void *param_2, const void *param_3, const void *axis);
 extern u64 FUN_002b71e0();
 extern u64 FUN_002b8d60();
 extern u64 FUN_002b8f90();
@@ -266,7 +266,7 @@ extern u64 FUN_002bd850();
 extern u64 FUN_002bdbd0();
 extern u64 FUN_002c3770();
 extern u64 FUN_002d1d00();
-extern void FUN_002d2280(s16* outX, s16* outZ, f32* position);
+extern void btlTargetPositionToCell(s16* outX, s16* outZ, f32* position);
 extern void FUN_002d5dc0(void* param_1);
 extern u32 FUN_002d5e10(BtlAction* action);
 extern u32 FUN_002d6370(s16 commandId);
@@ -619,7 +619,7 @@ extern u64 FUN_0029ec00();
 extern u64 FUN_0029ec50();
 extern u64 FUN_0029ec80();
 extern void FUN_002a2170(void *param_1, const f32 *param_2);
-extern s32 FUN_002a3750(BtlCamera* camera, u32 unit);
+extern s32 btlCameraUnitAnimFinished(BtlCamera* camera, u32 unit);
 extern u64 FUN_002a3b40();
 extern u64 FUN_002a3d70();
 extern void FUN_002a4470(f32* dst, f32* src);
@@ -636,7 +636,7 @@ extern void FUN_002b0280(f32 weight, BtlCamera* camera, u32 arg2, u32 arg3);
 extern void FUN_002b1e00(int param_1);
 extern void FUN_002b2060(int param_1);
 extern void FUN_002b2800(BtlCamera *camera);
-extern void FUN_002b2880(int param_1);
+extern void btlCameraSelectPreset(int param_1);
 extern void FUN_002b4db0(float);
 extern void FUN_002b4f40(int param_1);
 extern void FUN_002b6070(BtlCamera* camera, f32 param_1, f32 param_2);
@@ -935,10 +935,10 @@ static inline void btlVoicePlayCameraVoice(u8 *voiceData,
 {
   f32 duration;
 
-  FUN_002a4690(startTransform, voiceData + 4, voiceData + 0x10,
+  btlCameraLookAtQuat(startTransform, voiceData + 4, voiceData + 0x10,
                D_00697880);
   *startPosition = *(RwV3d *)(voiceData + 4);
-  FUN_002a4690(endTransform, voiceData + 0x1c, voiceData + 0x28,
+  btlCameraLookAtQuat(endTransform, voiceData + 0x1c, voiceData + 0x28,
                D_00697880);
   *endPosition = *(RwV3d *)(voiceData + 0x1c);
   duration = (f32)*(s16 *)voiceData / 30.0f;
@@ -2205,7 +2205,7 @@ LAB_002e4af0:
       cameraPos.x = direction.x * fVar8 + targetPos.x + 0.0f;
       cameraPos.y = direction.y * fVar8 + targetPos.y + 0.0f;
       cameraPos.z = direction.z * fVar8 + targetPos.z + 0.0f;
-      FUN_002a4690(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
+      btlCameraLookAtQuat(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
     }
     else {
       if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
@@ -2221,7 +2221,7 @@ LAB_002e4af0:
       }
       cameraPos.y = fVar6;
     }
-    FUN_002a4690(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
+    btlCameraLookAtQuat(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
     fVar9 = FUN_002d1f30_btlVoice_typed((f32 *)&cameraQuat, (f32 *)&initialPos);
     if ((fVar9 > DAT_007cad58) && bVar3) {
       if ((*(char *)(iVar2 + 0xa2) == '\x01') &&
@@ -2437,13 +2437,13 @@ void func_002e5060(BtlCamera* camera)
   voiceData = (u8 *)(*(u32 *)(DAT_007ce3ec + 0xb18) +
                      index * 0x34 + 0x1a4);
   if (usePreset != 0) {
-    FUN_002a4690(&startFrame.rot, voiceData + 4, voiceData + 0x10,
+    btlCameraLookAtQuat(&startFrame.rot, voiceData + 4, voiceData + 0x10,
                  D_00697880);
     startFrame.pos = *(RwV3d *)(voiceData + 4);
   } else {
     FUN_002a4470((f32 *)&startFrame, (f32 *)&camera->pos);
   }
-  FUN_002a4690(&endFrame.rot, &startFrame.pos, &position, D_00697880);
+  btlCameraLookAtQuat(&endFrame.rot, &startFrame.pos, &position, D_00697880);
   endFrame.pos = startFrame.pos;
   FUN_004be310_btlVoice_typed((f32 *)&startFrame.rot, (f32 *)&endFrame.rot, blendOutput.values);
   factorA = DAT_007cad7c;
@@ -2560,8 +2560,8 @@ void func_002e5060(BtlCamera* camera)
     endFrame.pos.x = position.x + output.x;
     endFrame.pos.y = position.y + output.y;
     endFrame.pos.z = position.z + output.z;
-    FUN_002a4690(&startFrame.rot, &startFrame.pos, &position, D_00697880);
-    FUN_002a4690(&endFrame.rot, &endFrame.pos, &position, D_00697880);
+    btlCameraLookAtQuat(&startFrame.rot, &startFrame.pos, &position, D_00697880);
+    btlCameraLookAtQuat(&endFrame.rot, &endFrame.pos, &position, D_00697880);
     FUN_002a3e80(0.0f, (u8 *)camera->action, 0, 0, 1);
     if (startFrame.pos.y < 25.0f) {
       startFrame.pos.y = 25.0f;
@@ -2673,11 +2673,11 @@ LAB_002e59dc:
     return;
   }
   if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) && (cVar2 == '\0')) {
-    FUN_002a4690(&specQuat1,(f32 *)DAT_00697c84_abs,(f32 *)DAT_00697c90_abs,D_00697880);
+    btlCameraLookAtQuat(&specQuat1,(f32 *)DAT_00697c84_abs,(f32 *)DAT_00697c90_abs,D_00697880);
     specPos1.x = *(f32 *)DAT_00697c84_abs;
     specPos1.y = *(f32 *)DAT_00697c88_abs;
     specPos1.z = *(f32 *)DAT_00697c8c_abs;
-    FUN_002a4690(&specQuat2,(f32 *)DAT_00697c9c_abs,(f32 *)DAT_00697ca8_abs,D_00697880);
+    btlCameraLookAtQuat(&specQuat2,(f32 *)DAT_00697c9c_abs,(f32 *)DAT_00697ca8_abs,D_00697880);
     specPos2.x = *(f32 *)DAT_00697c9c_abs;
     specPos2.y = *(f32 *)DAT_00697ca0_abs;
     specPos2.z = *(f32 *)DAT_00697ca4_abs;
@@ -2735,7 +2735,7 @@ LAB_002e59dc:
     }
     fVar11 = 2.5f;
   }
-  FUN_002a4690(&quat,&camOff,&target,D_00697880);
+  btlCameraLookAtQuat(&quat,&camOff,&target,D_00697880);
   FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
   targetXZ[0] = target.x;
   targetXZ[1] = target.z;
@@ -3423,7 +3423,7 @@ void func_002e7710(BtlCamera* camera)
       }
     }
     else {
-      FUN_002b2880((int)camera);
+      btlCameraSelectPreset((int)camera);
     }
   }
 }
@@ -3632,7 +3632,7 @@ void func_002e7db0(BtlCamera* param_1)
   dirCopy.x = dir.x;
   dirCopy.y = dir.y;
   dirCopy.z = dir.z;
-  FUN_002a4690(&quat,&camOff,&target,D_00697880);
+  btlCameraLookAtQuat(&quat,&camOff,&target,D_00697880);
   FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
   targetXZ.x = target.x;
   targetXZ.y = target.z;
@@ -3810,7 +3810,7 @@ void func_002e87b0(BtlCamera* camera)
     if (work->unit != 0 &&
         work->action != NULL &&
         (work->action->unk_1a & 1) != 0 &&
-        FUN_002a3750(camera, work->unit) != 0)
+        btlCameraUnitAnimFinished(camera, work->unit) != 0)
     {
         FUN_002880e0(work->unit, work->mode);
     }
@@ -3854,12 +3854,12 @@ void func_002e8820(BtlCamera *camera)
     if (unit == 0) {
         voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) +
                             voiceVariant * 0x18 + 0x274);
-        FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+        btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
         work.position = *(VoiceVector *)voiceData;
     } else {
         voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) +
                             voiceVariant * 0x18 + 0x2a4);
-        FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+        btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
         work.position = *(VoiceVector *)voiceData;
     }
 
@@ -3906,17 +3906,17 @@ void func_002e8a40(BtlCamera* camera)
     if (unitType == 2) {
         voiceData = (f32*)(*(int*)(iGpffffb6fc + 0xb18) +
                            voiceVariant * 0x18 + 0x2d4);
-        FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+        btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
         work.position = *(VoiceVector*)voiceData;
     } else if (unitType == 1) {
         voiceData = (f32*)(*(int*)(iGpffffb6fc + 0xb18) +
                            voiceVariant * 0x18 + 0x304);
-        FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+        btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
         work.position = *(VoiceVector*)voiceData;
     } else {
         voiceData = (f32*)(*(int*)(iGpffffb6fc + 0xb18) +
                            voiceVariant * 0x18 + 0x334);
-        FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+        btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
         work.position = *(VoiceVector*)voiceData;
     }
 
@@ -3944,7 +3944,7 @@ void func_002e8c90(int param_1)
   } work;
 
   voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) + 0x37c);
-  FUN_002a4690(work.transform, voiceData, voiceData + 3, &D_00697880);
+  btlCameraLookAtQuat(work.transform, voiceData, voiceData + 3, &D_00697880);
   work.position = *(VoiceVector *)voiceData;
   FUN_002a2170((void *)(iGpffffb6fc + 0x20), (f32 *)&work.position);
   FUN_002a44b0((f32 *)(param_1 + 0x9c), (f32 *)&work.position);
@@ -3980,7 +3980,7 @@ void func_002e8d70(void *param_1)
   action = (void *)param_1;
   FUN_002a4470(work.start, (f32 *)((u8 *)param_1 + 0x9c));
   voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) + 0x364);
-  FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+  btlCameraLookAtQuat(work.end, voiceData, voiceData + 3, &D_00697880);
   work.position = *(VoiceVector *)voiceData;
   btlMainCurveSetPoses(action, work.start, (f32 *)&work.position, 1);
   FUN_002a3110(action, 0.75f);
@@ -4004,10 +4004,10 @@ void func_002e8e20(void)
   base = (u8 *)(*(int *)(iGpffffb6fc + 0xb18));
   characterId = characterId * 0x34;
   voiceData = base + characterId + 0x20c;
-  FUN_002a4690(work.start, (f32 *)(voiceData + 4),
+  btlCameraLookAtQuat(work.start, (f32 *)(voiceData + 4),
                (f32 *)(voiceData + 0x10), &D_00697880);
   work.startPosition = *(VoiceVector *)(voiceData + 4);
-  FUN_002a4690(work.end, (f32 *)(voiceData + 0x1c),
+  btlCameraLookAtQuat(work.end, (f32 *)(voiceData + 0x1c),
                (f32 *)(voiceData + 0x28), &D_00697880);
   work.endPosition = *(VoiceVector *)(voiceData + 0x1c);
   duration = (float)*(s16 *)voiceData / 30.0f;
@@ -4033,10 +4033,10 @@ void func_002e8f40(void)
   base = (u8 *)(*(int *)(iGpffffb6fc + 0xb18));
   characterId = characterId * 0x34;
   voiceData = base + characterId + 0x1a4;
-  FUN_002a4690(work.start, (f32 *)(voiceData + 4),
+  btlCameraLookAtQuat(work.start, (f32 *)(voiceData + 4),
                (f32 *)(voiceData + 0x10), &D_00697880);
   work.startPosition = *(VoiceVector *)(voiceData + 4);
-  FUN_002a4690(work.end, (f32 *)(voiceData + 0x1c),
+  btlCameraLookAtQuat(work.end, (f32 *)(voiceData + 0x1c),
                (f32 *)(voiceData + 0x28), &D_00697880);
   work.endPosition = *(VoiceVector *)(voiceData + 0x1c);
   duration = (float)*(s16 *)voiceData / 30.0f;
@@ -4056,9 +4056,9 @@ void func_002e9060(void)
   } work;
   float duration;
 
-  FUN_002a4690(work.start, DAT_00699244, DAT_00699250, &D_00697880);
+  btlCameraLookAtQuat(work.start, DAT_00699244, DAT_00699250, &D_00697880);
   work.startPosition = *(VoiceVector *)DAT_00699244;
-  FUN_002a4690(work.end, DAT_0069925c, DAT_00699268, &D_00697880);
+  btlCameraLookAtQuat(work.end, DAT_0069925c, DAT_00699268, &D_00697880);
   work.endPosition = *(VoiceVector *)DAT_0069925c;
   duration = (float)DAT_00699240[0] / 30.0f;
   btlMainCurveSetPoses((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition, (f32 *)&work.endPosition, 1);
@@ -4086,7 +4086,7 @@ void func_002e9170(void)
             position.x = 0.0f;
             position.z = 0.0f;
         }
-        FUN_002d2280(&primaryUnit->unk_94, &primaryUnit->unk_96,
+        btlTargetPositionToCell(&primaryUnit->unk_94, &primaryUnit->unk_96,
                      (f32*)&position);
         btlUnitSetPos(primaryUnit, &position);
     }
@@ -4098,7 +4098,7 @@ void func_002e9170(void)
         position.x = selected->x;
         position.z = selected->z;
         index++;
-        FUN_002d2280(&secondaryUnit->unk_94, &secondaryUnit->unk_96,
+        btlTargetPositionToCell(&secondaryUnit->unk_94, &secondaryUnit->unk_96,
                      (f32*)&position);
         btlUnitSetPos(secondaryUnit, &position);
     }
@@ -4134,7 +4134,7 @@ void func_002e92c0(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),&position.x);
+    btlTargetPositionToCell((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),&position.x);
     FUN_0027f650(iVar2,&position.x);
   }
   for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
@@ -4155,7 +4155,7 @@ void func_002e92c0(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),&position.x);
+    btlTargetPositionToCell((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),&position.x);
     FUN_0027f650(iVar2,&position.x);
   }
   return;
@@ -4336,7 +4336,7 @@ void func_002e9950(void)
       *(u8 *)(iVar2 + 0x9f0) = 1;
       break;
     }
-    FUN_002d2280((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
+    btlTargetPositionToCell((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
     FUN_0027f650(iVar2,&position);
   }
   for (iVar2 = *(int *)(iGpffffb6fc_ptr + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
@@ -4351,7 +4351,7 @@ void func_002e9950(void)
       position.z = -350.0f;
       break;
     }
-    FUN_002d2280((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
+    btlTargetPositionToCell((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
     FUN_0027f650(iVar2,&position);
   }
 }
@@ -4539,7 +4539,7 @@ void func_002ea060(void)
       *(u8 *)(iVar1 + 0x9f0) = slots.values[slotIndex];
       index++;
     }
-    FUN_002d2280((s16*)(iVar1 + 0x94),(s16*)(iVar1 + 0x96),(f32*)&position);
+    btlTargetPositionToCell((s16*)(iVar1 + 0x94),(s16*)(iVar1 + 0x96),(f32*)&position);
     FUN_0027f650(iVar1,&position);
   }
   for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
@@ -4550,7 +4550,7 @@ void func_002ea060(void)
       position.z = -300.0f;
       break;
     }
-    FUN_002d2280((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
+    btlTargetPositionToCell((s16*)(iVar2 + 0x94),(s16*)(iVar2 + 0x96),(f32*)&position);
     FUN_0027f650(iVar2,&position);
   }
 }
@@ -4649,7 +4649,7 @@ void func_002ea400(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(iGpffffb6fc + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -4659,7 +4659,7 @@ void func_002ea400(void)
       uStack_10.raw[2] = 0xc3960000;
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -4796,7 +4796,7 @@ void func_002ea860(void)
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
     FUN_0027f650(iVar4, &work.position.x);
   }
   for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0;
@@ -4817,7 +4817,7 @@ void func_002ea860(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
     FUN_0027f650(iVar3, &work.position.x);
   }
 }
@@ -5501,7 +5501,7 @@ void func_002ec000(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(DAT_007ce3ec + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -5511,7 +5511,7 @@ void func_002ec000(void)
       uStack_10.raw[2] = 0xc3c80000;
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -5705,7 +5705,7 @@ void func_002ec5c0(void)
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
     FUN_0027f650(iVar4, &work.position.x);
   }
   for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xa34)) {
@@ -5721,7 +5721,7 @@ void func_002ec5c0(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
     FUN_0027f650(iVar3, &work.position.x);
   }
   return;
@@ -5997,7 +5997,7 @@ void func_002ecc60(s16 *param_1, s16 *param_2)
 
 
 #pragma alias FUN_002d1de0_6a20 FUN_002d1de0
-#pragma alias FUN_002a4690_6a20 FUN_002a4690
+#pragma alias FUN_002a4690_6a20 btlCameraLookAtQuat
 #pragma alias FUN_004be1e0_6a20 FUN_004be1e0
 #pragma alias FUN_004c6b20_6a20 FUN_004c6b20
 #pragma alias FUN_004c69f0_6a20 FUN_004c69f0
@@ -6843,7 +6843,7 @@ void func_002eec60(void)
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),&work.position.x);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),&work.position.x);
     FUN_0027f650(iVar4,&work.position.x);
   }
   for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xa34)) {
@@ -6859,7 +6859,7 @@ void func_002eec60(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar3 + 0x94),(s16*)(iVar3 + 0x96),&work.position.x);
+    btlTargetPositionToCell((s16*)(iVar3 + 0x94),(s16*)(iVar3 + 0x96),&work.position.x);
     FUN_0027f650(iVar3,&work.position.x);
   }
   return;
@@ -7056,7 +7056,7 @@ void func_002ef360(void)
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94), (s16*)(iVar4 + 0x96), &work.position.x);
     FUN_0027f650(iVar4, &work.position.x);
   }
   for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0;
@@ -7089,7 +7089,7 @@ void func_002ef360(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
+    btlTargetPositionToCell((s16*)(iVar3 + 0x94), (s16*)(iVar3 + 0x96), &work.position.x);
     FUN_0027f650(iVar3, &work.position.x);
   }
 }
@@ -8078,7 +8078,7 @@ void func_002f1680(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(iGpffffb6fc + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -8090,7 +8090,7 @@ void func_002f1680(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -8187,7 +8187,7 @@ void func_002f19d0(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(iGpffffb6fc + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -8199,7 +8199,7 @@ void func_002f19d0(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -8359,7 +8359,7 @@ void func_002f1f00(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(iGpffffb6fc + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -8371,7 +8371,7 @@ void func_002f1f00(void)
     default:
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -8468,13 +8468,13 @@ void func_002f2250(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(iGpffffb6fc_ptr + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
     uStack_10.raw[0] = 0;
     uStack_10.raw[2] = 0xc3fa0000;
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -9066,7 +9066,7 @@ void func_002f3760(void)
             position.x = 0.0f;
             position.z = 0.0f;
         }
-        FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+        btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
         btlUnitSetPos(unit, &position);
     }
 
@@ -9074,7 +9074,7 @@ void func_002f3760(void)
          unit != NULL; unit = unit->next) {
         position.x = 0.0f;
         position.z = -500.0f;
-        FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+        btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
         btlUnitSetPos(unit, &position);
     }
 }
@@ -9531,7 +9531,7 @@ void func_002f4540(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(DAT_007ce3ec + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
@@ -9541,7 +9541,7 @@ void func_002f4540(void)
       uStack_10.raw[2] = 0xc3960000;
       break;
     }
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -9638,7 +9638,7 @@ void func_002f4950(void)
             position.z = 300.0f;
             unit->unk_9f0 = 0;
         }
-        FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+        btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
         btlUnitSetPos(unit, &position);
     }
     for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
@@ -9650,7 +9650,7 @@ void func_002f4950(void)
             position.x = 0.0f;
             position.z = -300.0f;
         }
-        FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+        btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
         btlUnitSetPos(unit, &position);
     }
 }
@@ -9758,7 +9758,7 @@ void func_002f4ce0(void)
             primaryUnit->unk_9f0 = slots.values[index];
             index++;
         }
-        FUN_002d2280(&primaryUnit->unk_94, &primaryUnit->unk_96,
+        btlTargetPositionToCell(&primaryUnit->unk_94, &primaryUnit->unk_96,
                      (f32*)&position);
         btlUnitSetPos(primaryUnit, &position);
     }
@@ -9771,7 +9771,7 @@ void func_002f4ce0(void)
             position.x = 0.0f;
             position.z = -300.0f;
         }
-        FUN_002d2280(&secondaryUnit->unk_94, &secondaryUnit->unk_96,
+        btlTargetPositionToCell(&secondaryUnit->unk_94, &secondaryUnit->unk_96,
                      (f32*)&position);
         btlUnitSetPos(secondaryUnit, &position);
     }
@@ -10011,7 +10011,7 @@ void func_002f5490(void)
         break;
       }
     }
-    FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+    btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
     btlUnitSetPos(unit, &position);
   }
   for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
@@ -10030,7 +10030,7 @@ void func_002f5490(void)
       position.z = -300.0f;
       break;
     }
-    FUN_002d2280(&unit->unk_94, &unit->unk_96, (f32*)&position);
+    btlTargetPositionToCell(&unit->unk_94, &unit->unk_96, (f32*)&position);
     btlUnitSetPos(unit, &position);
   }
 }
@@ -10191,13 +10191,13 @@ void func_002f5a70(void)
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
       sVar7 = (short)((int)sVar7 + 1);
     }
-    FUN_002d2280((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar4 + 0x94),(s16*)(iVar4 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
   for (iVar6 = *(int *)(DAT_007ce3ec + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
     uStack_10.raw[0] = 0;
     uStack_10.raw[2] = 0xc3fa0000;
-    FUN_002d2280((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
+    btlTargetPositionToCell((s16*)(iVar6 + 0x94),(s16*)(iVar6 + 0x96),(f32*)&uStack_10);
     FUN_0027f650(iVar6,&uStack_10);
   }
   return;
@@ -10421,7 +10421,7 @@ u32 func_002f6330(void *param_1)
   }
 
   if ((FUN_00357fd0(0) & 1) != 0) {
-    FUN_002a4690(work.firstTransform, DAT_0069a5c8,
+    btlCameraLookAtQuat(work.firstTransform, DAT_0069a5c8,
                  DAT_0069a5c8 + 0x20, D_00697880);
     {
       u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ u64 *)DAT_0069a5c8;
@@ -10429,14 +10429,14 @@ u32 func_002f6330(void *param_1)
       work.firstPositionXY = xy;
       work.firstPositionZ = z;
     }
-    FUN_002a4690(work.secondTransform, DAT_0069a5d8,
+    btlCameraLookAtQuat(work.secondTransform, DAT_0069a5d8,
                  DAT_0069a5d8 + 0x20, D_00697880);
     work.secondPosition = *(RwV3d *)DAT_0069a5d8;
   } else {
-    FUN_002a4690(work.secondTransform, DAT_0069a5c8,
+    btlCameraLookAtQuat(work.secondTransform, DAT_0069a5c8,
                  DAT_0069a5c8 + 0x20, D_00697880);
     work.secondPosition = *(RwV3d *)DAT_0069a5c8;
-    FUN_002a4690(work.firstTransform, DAT_0069a5d8,
+    btlCameraLookAtQuat(work.firstTransform, DAT_0069a5d8,
                  DAT_0069a5d8 + 0x20, D_00697880);
     {
       u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ u64 *)DAT_0069a5d8;
@@ -10482,7 +10482,7 @@ u32 func_002f6510(void *param_1)
   }
 
 encounterGroup:
-  FUN_002a4690(work.firstTransform, DAT_0069a608,
+  btlCameraLookAtQuat(work.firstTransform, DAT_0069a608,
                DAT_0069a628, D_00697880);
   {
     u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ u64 *)DAT_0069a608;
@@ -10490,7 +10490,7 @@ encounterGroup:
     work.firstPositionXY = xy;
     work.firstPositionZ = z;
   }
-  FUN_002a4690(work.secondTransform, DAT_0069a618,
+  btlCameraLookAtQuat(work.secondTransform, DAT_0069a618,
                DAT_0069a638, D_00697880);
   work.secondPosition = *(RwV3d *)DAT_0069a618;
   distance = 2.0f;
@@ -10499,7 +10499,7 @@ encounterGroup:
   goto apply;
 
 encounter126:
-  FUN_002a4690(work.firstTransform, DAT_0069a648,
+  btlCameraLookAtQuat(work.firstTransform, DAT_0069a648,
                DAT_0069a668, D_00697880);
   {
     u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ u64 *)DAT_0069a648;
@@ -10507,7 +10507,7 @@ encounter126:
     work.firstPositionXY = xy;
     work.firstPositionZ = z;
   }
-  FUN_002a4690(work.secondTransform, DAT_0069a658,
+  btlCameraLookAtQuat(work.secondTransform, DAT_0069a658,
                DAT_0069a678, D_00697880);
   work.secondPosition = *(RwV3d *)DAT_0069a658;
   distance = 2.0f;
@@ -10528,11 +10528,11 @@ encounterOther:
     }
     offset = index * 0xc;
     position = DAT_0069a690 + offset;
-    FUN_002a4690(work.firstTransform, position,
+    btlCameraLookAtQuat(work.firstTransform, position,
                  DAT_0069a6d0 + offset, D_00697880);
     *(RwV3d *)&work.firstPositionXY = *(RwV3d *)position;
     position = DAT_0069a6b0 + offset;
-    FUN_002a4690(work.secondTransform, position,
+    btlCameraLookAtQuat(work.secondTransform, position,
                  DAT_0069a6f0 + offset, D_00697880);
     work.secondPosition = *(RwV3d *)position;
   }

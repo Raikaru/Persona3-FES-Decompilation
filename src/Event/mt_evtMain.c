@@ -18,12 +18,12 @@ extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
 extern u8 DAT_0069de20[];
 extern int FUN_003b5d10(...);
-void FUN_003969b0(int param_1);
+void mtMiscClearAllSlotRes(int param_1);
 #pragma alias FUN_003b55b0_evt_main FUN_003b55b0
 extern u8 *FUN_003b55b0_evt_main(int param_1);
 #pragma alias FUN_003b5d10_evt_main FUN_003b5d10
 extern u8 *FUN_003b5d10_evt_main(u16 param_1);
-#pragma alias FUN_0039f710_evt_main FUN_0039f710
+#pragma alias FUN_0039f710_evt_main evtMessageWindowRecordCount
 extern u32 FUN_0039f710_evt_main(int *param_1);
 #pragma alias FUN_003bb390_evt FUN_003bb390
 extern void FUN_003bb390_evt(u32 param_1,u16 param_2,float param_3);
@@ -780,7 +780,7 @@ void FUN_0036f000(int param_1);
 void FUN_0036f260(void);
 void FUN_0036f370(int param_1);
 void FUN_0036f3b0(u64 param_1,u32 param_2);
-void FUN_0036f490(int param_1);
+void evtMainSetFlag(int param_1);
 void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(long param_1,long param_2,int param_3,int param_4,u64 param_5, u16 param_6,u16 param_7);
@@ -837,7 +837,7 @@ void FUN_00385ba0(void);
 void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
-void FUN_00386aa0(void);
+void evtMenuClearSlots(void);
 void FUN_00386b70(int param_1,int param_2,int param_3);
 #pragma alias FUN_00386b70_evt_main FUN_00386b70
 extern void FUN_00386b70_evt_main(int param_1,int param_2,int param_3);
@@ -2777,9 +2777,9 @@ void FUN_00362fa0(int param_1)
 
   
 
-  if ((*(int *)(param_1 + 8) != 0) && (lVar1 = FUN_0039eee0(param_1 + 0x82c), lVar1 != 0)) {
+  if ((*(int *)(param_1 + 8) != 0) && (lVar1 = evtMessageWindowIsOpen(param_1 + 0x82c), lVar1 != 0)) {
 
-    FUN_0039f350(param_1 + 0x82c);
+    evtMessageWindowResetTyped(param_1 + 0x82c);
 
   }
 
@@ -2951,7 +2951,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
         case 0:
 
-          FUN_00395270(param_2[9]);
+          mtMiscPlayCue(param_2[9]);
 
           break;
 
@@ -4050,7 +4050,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
       if ((char)puVar14[8] != '\0') {
 
-        FUN_0036f490(1);
+        evtMainSetFlag(1);
 
         iGpffffb904 = (int)(short)puVar14[10];
 
@@ -4060,7 +4060,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
         iGpffffb904 = 0;
 
-        FUN_0036f490(0);
+        evtMainSetFlag(0);
 
       }
 
@@ -5484,7 +5484,7 @@ void FUN_00365cd0(u32 param_1,int param_2)
 
   if (*(int *)(param_2 + 0x710) != 0) {
     if (param_1 == *(u32 *)(param_2 + 0x10)) {
-      FUN_003969b0(*(int *)(param_2 + 0x710));
+      mtMiscClearAllSlotRes(*(int *)(param_2 + 0x710));
 
     }
 
@@ -5507,9 +5507,9 @@ void FUN_00365cd0(u32 param_1,int param_2)
               cVar1 = (char)puVar3[8];
 switch (cVar1) {
               case 0:
-                FUN_00396760(*(u32 *)(param_2 + 0x710),lVar7,(char)puVar3[9],
+                mtMiscSetSlotRes(*(u32 *)(param_2 + 0x710),lVar7,(char)puVar3[9],
                              *(char *)((int)puVar3 + 0x13) != '\0');
-                sVar4 = FUN_003968a0(*(u32 *)(param_2 + 0x710),lVar7);
+                sVar4 = mtMiscGetSlotRes(*(u32 *)(param_2 + 0x710),lVar7);
                 if (sVar4 != 0) {
                   pos0.x = *(float *)((int)puVar3 + 0x14);
                   pos0.y = *(float *)((int)puVar3 + 0x18);
@@ -5522,7 +5522,7 @@ switch (cVar1) {
                 }
                 break;
               case 1:
-                sVar4 = FUN_003968a0(*(u32 *)(param_2 + 0x710),lVar7);
+                sVar4 = mtMiscGetSlotRes(*(u32 *)(param_2 + 0x710),lVar7);
                 if (sVar4 != 0) {
                   pos2.x = *(float *)((int)puVar3 + 0x14);
                   pos2.y = *(float *)((int)puVar3 + 0x18);
@@ -5537,10 +5537,10 @@ switch (cVar1) {
                 }
                 break;
               case 2:
-                FUN_00396910(*(u32 *)(param_2 + 0x710),lVar7);
+                mtMiscClearSlotRes(*(u32 *)(param_2 + 0x710),lVar7);
                 break;
               case 3:
-                uVar5 = FUN_003968a0(*(u32 *)(param_2 + 0x710),lVar7);
+                uVar5 = mtMiscGetSlotRes(*(u32 *)(param_2 + 0x710),lVar7);
                 uVar2 = *(short *)((int)puVar3 + 0x14);
                 mode = *(u8 *)((int)puVar3 + 0x12);
                 MT_Scene_SetResColorParamById(uVar5,mode,uVar2,0);
@@ -5611,7 +5611,7 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
   if (((param_2 != 0) && (iVar9 = (int)param_2, *(int *)(iVar9 + 8) != 0)) &&
 
-     (lVar6 = FUN_0039eee0(iVar9 + 0x82c), lVar6 != 0)) {
+     (lVar6 = evtMessageWindowIsOpen(iVar9 + 0x82c), lVar6 != 0)) {
 
     iVar10 = iVar7;
 
@@ -5761,8 +5761,8 @@ void FUN_00366210(u32 param_1,int param_2)
      (*puStack_4 == param_1)) {
 
     if ((char)puStack_4[8] == '\0') {
-      if (((lVar2 = FUN_0039eee0(param_2 + 0x82c), lVar2 != 0)) &&
-          (lVar2 = FUN_0039f6e0(param_2 + 0x82c), lVar2 == 0)) {
+      if (((lVar2 = evtMessageWindowIsOpen(param_2 + 0x82c), lVar2 != 0)) &&
+          (lVar2 = evtMessageWindowIsDone(param_2 + 0x82c), lVar2 == 0)) {
         *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) | 0x20;
         FUN_005225a8(0x7cca70);
       }
@@ -11482,7 +11482,7 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
         FUN_00397450();
 
-        FUN_0039eb90();
+        evtCustomEventReleaseRes();
 
         FUN_0039e7c0();
 
@@ -12517,7 +12517,7 @@ void FUN_0036d030(int param_1)
 
     iVar4 = (int)param_1;
 
-    if (((*(u32 *)(iVar4 + 4) & 0x20) != 0) && (lVar2 = FUN_0039f6e0(iVar4 + 0x82c), lVar2 == 1)) {
+    if (((*(u32 *)(iVar4 + 4) & 0x20) != 0) && (lVar2 = evtMessageWindowIsDone(iVar4 + 0x82c), lVar2 == 1)) {
 
       *(u32 *)(iVar4 + 4) = *(u32 *)(iVar4 + 4) & 0xffffffdf;
 
@@ -13328,7 +13328,7 @@ switchD_0036db68_caseD_4:
 
       if (*(int *)(iVar8 + 8) == 4) {
 
-        FUN_00396480(*(u32 *)(iVar1 + 0x710),
+        mtMiscAppendEntry(*(u32 *)(iVar1 + 0x710),
 
                      *(int *)(*(int *)(iVar1 + 8) + 0x10) + *(int *)(iVar8 + 4));
 
@@ -13336,7 +13336,7 @@ switchD_0036db68_caseD_4:
 
     }
 
-    FUN_003965d0(*(u32 *)(iVar1 + 0x710));
+    evtEffectSequenceReset(*(u32 *)(iVar1 + 0x710));
 
     *state = 10;
 
@@ -13438,7 +13438,7 @@ switchD_0036db68_caseD_10:
 
     if ((lVar7 != -1) && (lVar7 != 0)) {
 
-      FUN_00395270(lVar7);
+      mtMiscPlayCue(lVar7);
 
     }
 
@@ -13993,7 +13993,7 @@ code * FUN_0036e690(int param_1)
 
           FUN_0038ca80(iVar1);
 
-          if ((*(int *)(iVar1 + 8) != 0) && (lVar4 = FUN_0039eee0(iVar1 + 0x82c), lVar4 != 0)) {
+          if ((*(int *)(iVar1 + 8) != 0) && (lVar4 = evtMessageWindowIsOpen(iVar1 + 0x82c), lVar4 != 0)) {
 
             FUN_0039f410(iVar1 + 0x82c);
 
@@ -14077,9 +14077,9 @@ code * FUN_0036e690(int param_1)
 
                   if ((*(int *)(iVar1 + 8) != 0) &&
 
-                     (lVar4 = FUN_0039eee0(iVar1 + 0x82c), lVar4 != 0)) {
+                     (lVar4 = evtMessageWindowIsOpen(iVar1 + 0x82c), lVar4 != 0)) {
 
-                    FUN_0039f350(iVar1 + 0x82c);
+                    evtMessageWindowResetTyped(iVar1 + 0x82c);
 
                   }
 
@@ -14352,9 +14352,9 @@ void FUN_0036f000(int param_1)
 
   iVar3 = (int)param_1;
 
-  if ((*(int *)(iVar3 + 8) != 0) && (lVar2 = FUN_0039eee0(iVar3 + 0x82c), lVar2 != 0)) {
+  if ((*(int *)(iVar3 + 8) != 0) && (lVar2 = evtMessageWindowIsOpen(iVar3 + 0x82c), lVar2 != 0)) {
 
-    FUN_0039f350(iVar3 + 0x82c);
+    evtMessageWindowResetTyped(iVar3 + 0x82c);
 
   }
 
@@ -14380,7 +14380,7 @@ void FUN_0036f000(int param_1)
 
   }
 
-  FUN_0039eb90();
+  evtCustomEventReleaseRes();
 
   FUN_00396530(*(u32 *)(iVar3 + 0x710));
 
@@ -14539,7 +14539,7 @@ void FUN_0036f370(int param_1)
 
   FUN_003858c0();
 
-  FUN_00386aa0();
+  evtMenuClearSlots();
 
   FUN_00395170(0x1419);
 
@@ -14581,7 +14581,7 @@ void FUN_0036f3b0(u64 param_1,u32 param_2)
 
   FUN_0036f4d0();
 
-  FUN_0036f490(0);
+  evtMainSetFlag(0);
 
   uVar2 = FUN_00194b20(param_1,(const char *)(DAT_006a0000 - 0x1f60),0xf,FUN_0036ee30,FUN_0036f260,lVar3);
 
@@ -14611,7 +14611,7 @@ bool FUN_0036f480(void)
 // FUN_0036F490
 
 
-void FUN_0036f490(int param_1)
+void evtMainSetFlag(int param_1)
 {
   if (param_1 == 1) {
     DAT_007ce5f0 = 1;

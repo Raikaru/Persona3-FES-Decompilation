@@ -3410,7 +3410,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
       uStack_4 = uGpffffaa78;
 
-      uVar8 = FUN_004173e0(puVar4[0xfd]);
+      uVar8 = itfMesWindowSubTablePtr(puVar4[0xfd]);
 
       FUN_003cdf40(uVar8,&uStack_4,5);
 

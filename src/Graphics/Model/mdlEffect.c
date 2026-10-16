@@ -852,7 +852,7 @@ static __inline void mdlVuModulateStacked40V1(u32 c2)
 #endif
 u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
-void FUN_0031d790(u32 *param_1);
+void mdlEffectListDestroy(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 
@@ -860,25 +860,25 @@ u32 FUN_0031d7e0(int *param_1,u32 param_2,u16 param_3,u32 param_4,
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
 void FUN_0031d9c0(int *param_1,u32 *param_2);
 void FUN_0031dc80(int *param_1,u32 param_2);
-void FUN_0031dce0(u32 *param_1);
+void mdlEffectListCallFlagged(u32 *param_1);
 void FUN_0031dd40(int *param_1,u32 *param_2);
 void FUN_0031dda0(int *param_1,float *param_2);
-void FUN_0031de30(u32 *param_1);
+void mdlEffectListReleaseNodes(u32 *param_1);
 void FUN_0031ded0(u32 *param_1);
-void FUN_0031df80(u32 *param_1);
+void mdlEffectListReleaseHandles(u32 *param_1);
 #pragma alias FUN_0034fcf0_i FUN_0034fcf0
 extern void FUN_0034fcf0_i(int param_1);
 #pragma alias FUN_0034fcd0_i FUN_0034fcd0
 extern u32 FUN_0034fcd0_i(u32 param_1);
 u32 FUN_0031dff0(u32 param_1,u32 param_2);
 u32 FUN_0031e0b0(int *param_1);
-void FUN_0031e130(int *param_1);
+void mdlReleaseSharedWrapper(int *param_1);
 void FUN_0031e1b0(int param_1);
 void FUN_0031e1e0(int param_1);
 void FUN_0031e210(int param_1);
 void FUN_0031e240(int param_1);
-void FUN_0031e270(int param_1,u64 param_2);
-void FUN_0031e2c0(int param_1);
+void mdlSetWrapperValue(int param_1,u64 param_2);
+void mdlClearWrapperHandle(int param_1);
 int FUN_0031e300(u32 *param_1);
 #pragma alias FUN_0031e300_wide FUN_0031e300
 extern u64 FUN_0031e300_wide(u32 *param_1);
@@ -897,10 +897,10 @@ void FUN_0031ef80(int *param_1,short param_2,short param_3);
 void FUN_0031f5c0(int *param_1);
 void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4);
 static u32 FUN_0031f740(float param_1,int *param_2);
-u8 * FUN_0031f7a0(float param_1,int *param_2);
-u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
+u8 * mdlSampleTrackScalar(float param_1,int *param_2);
+u8 * mdlBlendTrackSamples(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
-void FUN_0031faf0(f32 *param_1,u32 param_2);
+void mdlApplyMaterialColorRow(f32 *param_1,u32 param_2);
 static u32 * FUN_0031fbd0(float param_1,int *param_2);
 #pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
 extern u32 *FUN_0031fbd0_noargs(void);
@@ -911,18 +911,18 @@ void FUN_00320290(int param_1);
 void FUN_00320380(float param_1,int *param_2);
 void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3);
 void FUN_00320640(f32 scale1, f32 scale2, int *nodeHead);
-void FUN_00320770(int *param_1);
+void mdlMatAnimCopyNodeMaterial(int *param_1);
 f32 FUN_00320810(u8 **nodeHead);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
-u32 FUN_00320ba0(u32 param_1,u32 *param_2);
-u32 FUN_00320cf0(u32 param_1,u32 param_2);
-u64 FUN_00320da0(u64 param_1,u64 param_2);
+u32 mdlMatAnimCollectMaterial(u32 param_1,u32 *param_2);
+u32 mdlMatAnimFlagMatchedAtomic(u32 param_1,u32 param_2);
+u64 mdlMatAnimFlagClumpMatches(u64 param_1,u64 param_2);
 u32 FUN_00320de0(u32 param_1,u32 *param_2);
-u16 FUN_00320f70(u64 param_1,u32 param_2);
+u16 mdlMatAnimCountClumpMatches(u64 param_1,u32 param_2);
 u32 FUN_00320fb0(u16 param_1);
-void FUN_00321010(int param_1);
-u32 FUN_00321050(int param_1);
-void FUN_00321070(int *param_1,u32 param_2);
+void mdlReleaseU16Ref(int param_1);
+u32 mdlRetainU16Ref(int param_1);
+void mdlAppendU32Entry(int *param_1,u32 param_2);
 u32 FUN_003210a0(u32 param_1);
 void FUN_003210c0(void);
 #pragma alias FUN_003210c0_ret FUN_003210c0
@@ -942,7 +942,7 @@ void FUN_003212a0(int param_1,u32 param_2);
 void FUN_003212e0(int param_1,u32 param_2);
 void FUN_00321320(u32 *param_1);
 void FUN_00321360(u32 param_1);
-u64 FUN_00321a60(void);
+u64 TnTaskUpdate(void);
 u64 FUN_00321b00(void);
 u64 FUN_00321c50(void);
 u64 FUN_00321cb0(void);
@@ -967,9 +967,9 @@ void FUN_003226b0(int *param_1,int param_2);
 u32 FUN_00322880(int param_1);
 void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,u8 *param_2,float *param_3);
-void FUN_00322d10(int param_1,float *param_2);
-void FUN_00322d40(int param_1,u32 param_2);
-#pragma alias FUN_00322d40_onearg FUN_00322d40
+void mdlEffectEvalSubPose(int param_1,float *param_2);
+void mdlEffectWrapTrackFrames(int param_1,u32 param_2);
+#pragma alias FUN_00322d40_onearg mdlEffectWrapTrackFrames
 extern void FUN_00322d40_onearg(u32 resource);
 u32 FUN_00322da0(int *param_1,int param_2);
 u32 FUN_00322dc0(u32 *param_1);
@@ -989,10 +989,10 @@ extern u32 FUN_003234f0_u32(u16 param_1,u32 param_2);
 u32 FUN_00323640(u16 *param_1);
 #pragma alias FUN_00323640_u32 FUN_00323640
 extern u32 FUN_00323640_u32(u16 *param_1);
-void FUN_003237c0(int param_1);
- #pragma alias FUN_003237c0_i FUN_003237c0
+void GeometryBlockDestroy(int param_1);
+ #pragma alias FUN_003237c0_i GeometryBlockDestroy
  extern void FUN_003237c0_i(int param_1);
- #pragma alias FUN_003237c0_u32 FUN_003237c0
+ #pragma alias FUN_003237c0_u32 GeometryBlockDestroy
  extern void FUN_003237c0_u32(u32 param_1);
 void FUN_00323860(void);
  #pragma alias FUN_00323860_4arg FUN_00323860
@@ -1005,16 +1005,16 @@ void FUN_003238d0(int param_1);
 extern void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
 #pragma alias FUN_003238d0_ptr4 FUN_003238d0
 extern void FUN_003238d0_ptr4(u16 *param_1,u8 *param_2,u8 *param_3,u8 *param_4);
- #pragma alias FUN_00323920_out FUN_00323920
+ #pragma alias FUN_00323920_out GeometryMatrixBuild
  extern void FUN_00323920_out(u8 *param_1);
- #pragma alias FUN_00323a30_out FUN_00323a30
+ #pragma alias FUN_00323a30_out GeometryMatrixBuildCombined
  extern void FUN_00323a30_out(u8 *param_1);
-void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4);
-void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4);
-void FUN_00323b90(int param_1,u64 param_2);
-#pragma alias FUN_00323b90_i FUN_00323b90
+void GeometryMatrixBuild(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4);
+void GeometryMatrixBuildCombined(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4);
+void GeometryBlockSetTextureFromHandle(int param_1,u64 param_2);
+#pragma alias FUN_00323b90_i GeometryBlockSetTextureFromHandle
 extern void FUN_00323b90_i(int param_1,int param_2);
-void FUN_00323bf0(int param_1,u32 *param_2);
+void GeometryBlockGetTextureInfo(int param_1,u32 *param_2);
 u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
 #pragma alias FUN_00323c20_u32first FUN_00323c20
 extern u32 FUN_00323c20_u32first(u32 param_1,u16 param_2,u16 param_3,u32 param_4);
@@ -1049,12 +1049,12 @@ void FUN_003244c0(int param_1);
 #pragma alias FUN_003244c0_4arg FUN_003244c0
 extern void FUN_003244c0_4arg(u16 *mesh,u64 resource,int position,int scale);
 void FUN_00324510(int param_1,u64 param_2);
-int FUN_003245b0(int param_1);
- #pragma alias FUN_003245b0_passthru FUN_003245b0
+int mdlEffectResolveRelPtrA(int param_1);
+ #pragma alias FUN_003245b0_passthru mdlEffectResolveRelPtrA
  extern int FUN_003245b0_passthru(void);
-#pragma alias FUN_003245b0_wide FUN_003245b0
+#pragma alias FUN_003245b0_wide mdlEffectResolveRelPtrA
 extern u64 FUN_003245b0_wide(void);
-int FUN_003245f0(int param_1);
+int mdlEffectResolveRelPtrB(int param_1);
 u32 FUN_00324680(u32 param_1);
 void FUN_00324740(int param_1);
 void FUN_003247d0(int param_1);
@@ -1107,11 +1107,11 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 #pragma alias FUN_00325e40_reordered FUN_00325e40
 extern void FUN_00325e40_reordered(u8 (*param_1) [16],float param_2);
 void FUN_00326030(int param_1,int param_2);
-u_long128 FUN_00326160(int param_1,u32 *param_2);
-u_long128 FUN_00326170(int param_1,u32 *param_2);
-u32 FUN_00326180(int param_1);
-void FUN_00326190(u64 param_1,u64 param_2);
-int FUN_003261c0(int param_1,int param_2);
+u_long128 mdlEffectGetPositionVec(int param_1,u32 *param_2);
+u_long128 mdlEffectGetOrientationVec(int param_1,u32 *param_2);
+u32 mdlEffectGetPackedColorWord(int param_1);
+void mdlEffectCopyRecord(u64 param_1,u64 param_2);
+int mdlEffectFindNodeById(int param_1,int param_2);
 int FUN_00326200(int param_1,int param_2);
 int FUN_00326240(int param_1,int param_2);
 void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16]);
@@ -1121,31 +1121,31 @@ u32 FUN_00326510(u32 param_1);
 void FUN_00326740(int param_1);
 u32 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
-void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
+void ParticleAllocRecords(u32 *param_1,u16 param_2,u32 param_3);
 static inline u16 mdlEffectLoadType(u16 value)
 {
   return value;
 }
-void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
-#pragma alias FUN_00326cf0_2 FUN_00326cf0
+void ParticleSetMaterialSlot(int param_1,u16 param_2,u32 param_3);
+#pragma alias FUN_00326cf0_2 ParticleSetMaterialSlot
 extern void FUN_00326cf0_2(int param_1,u32 param_2);
-#pragma alias FUN_00326cf0_3u32 FUN_00326cf0
+#pragma alias FUN_00326cf0_3u32 ParticleSetMaterialSlot
 extern void FUN_00326cf0_3u32(int param_1,u32 param_2,u32 param_3);
-#pragma alias FUN_00326e50_u32 FUN_00326e50
+#pragma alias FUN_00326e50_u32 ParticleSetTextureFromHandle
 extern void FUN_00326e50_u32(int param_1,u32 param_2);
 #pragma alias FUN_00326f60_u32 FUN_00326f60
 extern void FUN_00326f60_u32(u32 *param_1,u32 param_2);
 #pragma alias FUN_00327090_u32 FUN_00327090
 extern void FUN_00327090_u32(u32 *param_1,u32 param_2);
-void FUN_00326db0(int param_1,u16 param_2);
-#pragma alias FUN_00326db0_u32 FUN_00326db0
+void ParticleSetTextureById(int param_1,u16 param_2);
+#pragma alias FUN_00326db0_u32 ParticleSetTextureById
 extern void FUN_00326db0_u32(int param_1,u32 param_2);
-void FUN_00326e50(int param_1,u64 param_2);
-void FUN_00326f00(int param_1,u32 param_2);
+void ParticleSetTextureFromHandle(int param_1,u64 param_2);
+void ParticleSetLinkedGroup(int param_1,u32 param_2);
 void FUN_00326f60(u32 *param_1,int param_2);
 void FUN_00327090(u32 *param_1,u64 param_2);
-void FUN_003271c0(int param_1,u32 param_2);
-void FUN_00327220(int param_1);
+void ParticleSetAuxResource(int param_1,u32 param_2);
+void ParticleReleaseRecords(int param_1);
 void FUN_00327250(float param_1,int param_2);
 void FUN_003275d0(float param_1,int param_2);
 #pragma alias FUN_003275d0_evt FUN_003275d0
@@ -1154,13 +1154,13 @@ extern void FUN_003275d0_evt(float param_1);
 extern void FUN_003275d0_evt2(float param_1,int param_2);
 #pragma alias mdlFileDrawType7Billboards FUN_003282e0
 void FUN_003282e0(int param_1);
-void FUN_00329350(int param_1);
-void FUN_003293a0(void);
-void FUN_003293d0(int param_1);
+void ParticleReleaseEmitterAndUpdate(int param_1);
+void mdlEffectSetUnitWeight(void);
+void ParticleReleaseEmitterAndProject(int param_1);
 void FUN_00329430(int param_1);
 void FUN_00329460(int param_1);
 void FUN_00329490(int param_1,u32 param_2);
-void FUN_003294a0(f32 param_1, int param_2);
+void mdlEffectSetScaleAndNotify(f32 param_1, int param_2);
 #pragma alias mdlFileEmitMaskedFrame1Packet FUN_003294d0
 #pragma alias mdlFileRestoreFrame1Packet FUN_00329550
 #pragma alias mdlFileEmitClamp1Packet FUN_003295c0
@@ -1169,19 +1169,19 @@ void FUN_003294d0(void);
 void FUN_00329550(void);
 void FUN_003295c0(u64 param_1);
 void FUN_00329630(void);
-void FUN_003296a0(u32 *param_1,u8 (*param_2) [16]);
- #pragma alias FUN_003296a0_typed FUN_003296a0
+void mdlEffectBuildBasisRows(u32 *param_1,u8 (*param_2) [16]);
+ #pragma alias FUN_003296a0_typed mdlEffectBuildBasisRows
  extern void FUN_003296a0_typed(RwMatrix *param_1,s32 param_2);
-void FUN_00329740(u32 *param_1);
+void mdlEffectCopyCameraOrigin(u32 *param_1);
 void FUN_003297a0(u32 *param_1);
-void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
+void mdlEffectAimDirection(u8 (*param_1) [16],u8 (*param_2) [16]);
 #pragma alias mdlFileBuildAxisRotation FUN_00329890
 void FUN_00329890(u32 param_1);
 f32 *FUN_003299b0(void);
-u32 FUN_00329a60(void);
+u32 mdlEffectAnchorOnScreen(void);
 float FUN_00329ba0(float param_1);
-#pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
-void FUN_00329d60(float param_1,u8 (*param_2) [16]);
+#pragma alias mdlFileInterpolateCatmullRomVU mdlEffectCatmullRomVU
+void mdlEffectCatmullRomVU(float param_1,u8 (*param_2) [16]);
 /* Operand order of the product fixes the MWCC madd.s/mul.s operand order
  * (measured: FUN_00349260 plain `*` swaps were normalised away). */
 static inline f32 mdlMulFirst(f32 left, f32 right)
@@ -1192,7 +1192,7 @@ void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
-float FUN_0032a540(char *param_1,int param_2,int param_3);
+float mdlEffectSampleScalarKeys(char *param_1,int param_2,int param_3);
 void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
                  u8 (*param_4) [16]);
@@ -1220,76 +1220,76 @@ extern u32 FUN_00332070_u32_ptr(u16 param_1,int param_2,int *param_3);
 void FUN_003321d0(int param_1);
 void FUN_00332200(int param_1);
 void FUN_00332210(int param_1);
-u_long128 FUN_003322b0(int param_1,u32 *param_2);
-u_long128 FUN_003322d0(int param_1,u32 *param_2);
-#pragma alias FUN_003322d0_one FUN_003322d0
+u_long128 mdlEffectLoadQuadA(int param_1,u32 *param_2);
+u_long128 mdlEffectStoreQuadA(int param_1,u32 *param_2);
+#pragma alias FUN_003322d0_one mdlEffectStoreQuadA
 extern void FUN_003322d0_one(int param_1);
-#pragma alias FUN_00332310_one FUN_00332310
+#pragma alias FUN_00332310_one mdlEffectStoreQuadB
 extern void FUN_00332310_one(int param_1);
-u_long128 FUN_003322f0(int param_1,u32 *param_2);
-u_long128 FUN_00332310(int param_1,u32 *param_2);
-void FUN_00332330(u16 *param_1);
+u_long128 mdlEffectLoadQuadB(int param_1,u32 *param_2);
+u_long128 mdlEffectStoreQuadB(int param_1,u32 *param_2);
+void EffEmitterApplyScale(u16 *param_1);
 u32 FUN_00332370(int param_1);
 void FUN_00332470(u32 *param_1,u16 param_2,int *param_3);
 u32 *FUN_003325d0(int *param_1);
-void FUN_00332700(int param_1);
+void TrackFreeInstance(int param_1);
 u32 FUN_00332780(int param_1);
 u32 *FUN_00332880(int *param_1);
 void FUN_00332990(u32 *param_1,int param_2);
-void FUN_00332a30(int *param_1,u16 param_2,int *param_3);
+void TrackLoadRecord(int *param_1,u16 param_2,int *param_3);
 void FUN_00332ac0(u32 *param_1,u16 param_2,int *param_3);
-void FUN_00332b30(int param_1);
+void TrackReleaseSubobject(int param_1);
 void FUN_00332b60(int *param_1);
-void FUN_00332e10(int *param_1);
-void FUN_00332f10(int *param_1);
+void TrackApplyWidth(int *param_1);
+void TrackRefresh(int *param_1);
 void FUN_00333020(int param_1);
 void FUN_00333050(int param_1);
-void FUN_00333080(int param_1,u32 param_2);
-void FUN_003330b0(f32 param_1, int param_2);
+void TrackSetColor(int param_1,u32 param_2);
+void TrackSetScale(f32 param_1, int param_2);
 u32 FUN_003330e0(u32 param_1,u32 param_2);
 #pragma alias FUN_003330e0_u32 FUN_003330e0
 extern u32 FUN_003330e0_u32(u32 param_1,u16 param_2);
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3);
 void FUN_00333420(int param_1,int *param_2);
 void FUN_003338b0(u32 param_1);
-void FUN_00333900(int param_1,u32 param_2);
-void FUN_00333920(int param_1,u32 param_2);
-bool FUN_00333940(int param_1,u32 param_2);
+void mdlEffectSlotSetZero(int param_1,u32 param_2);
+void mdlEffectSlotRelease(int param_1,u32 param_2);
+bool mdlEffectSlotIsFree(int param_1,u32 param_2);
 void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4);
-void FUN_003341c0(int param_1);
+void mdlEffectCopyOriginAndLockGeometry(int param_1);
 void FUN_00334220(int param_1);
 void FUN_003342c0(int param_1,u16 param_2);
 void FUN_00334310(int param_1);
 u32 FUN_00334390(int param_1);
-void FUN_00334820(int param_1);
+void ThunderGeometryDestroy(int param_1);
 void FUN_003348b0(int param_1);
-void FUN_00335180(int param_1);
-void FUN_003353f0(int param_1);
+void ThunderBoltWriteRows(int param_1);
+void ThunderBoltInitFade(int param_1);
 u32 FUN_00335540(int param_1);
-void FUN_003359e0(int param_1);
+void ThunderPaddedGeometryDestroy(int param_1);
 void FUN_00335a70(int param_1);
 void FUN_00336630(int param_1);
-void FUN_003368a0(int param_1);
+void ThunderPairedInitStates(int param_1);
 u64 FUN_00336920(int param_1);
-void FUN_00336df0(int param_1);
+void ThunderPairedGeometryDestroy(int param_1);
 void FUN_00336e80(int param_1);
-void FUN_003377f0(u32 param_1);
+void ThunderPairedWriteRows(u32 param_1);
 u32 FUN_00337a60(u32 param_1,u32 param_2);
 void FUN_00337b70(int param_1);
-void FUN_00337bb0(u32 param_1);
-void FUN_00337c10(int param_1);
-void FUN_00337c40(int param_1);
-void FUN_00337c90(int param_1);
-void FUN_00337cf0(int param_1);
+void ThunderInstanceDestroy(u32 param_1);
+void ThunderTextureForRecord(int param_1);
+void ThunderInstanceStop(int param_1);
+void ThunderInstanceAdvance(int param_1);
+void ThunderInstanceUpdateIfActive(int param_1);
 void FUN_00337d40(int param_1);
 u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src);
 u32 FUN_00337e90(u32 *param_1);
 void FUN_00337f80(int param_1);
 void FUN_00337fd0(int param_1);
 void FUN_00338360(int param_1);
-void FUN_00338530(int param_1);
+void RingWriteLineColour(int param_1);
 float * FUN_003385d0(u32 param_1);
-void FUN_00338770(int param_1);
+void RingDestroyBlock(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u32 param_1);
 u32 FUN_00338d60(u32 *param_1);
@@ -1300,11 +1300,11 @@ u32 FUN_003393d0(u32 param_1,u32 param_2);
 #pragma alias FUN_003393d0_u32 FUN_003393d0
 extern u32 FUN_003393d0_u32(u32 param_1,u32 param_2);
 void FUN_003394f0(int param_1);
-void FUN_00339530(u32 param_1);
-void FUN_003395a0(int param_1);
-void FUN_003395d0(int param_1);
-void FUN_00339620(int param_1);
-void FUN_00339680(int param_1);
+void RingInstanceDestroy(u32 param_1);
+void RingCreateInstanceForRecord(int param_1);
+void RingInstanceStop(int param_1);
+void RingInstanceAdvance(int param_1);
+void RingInstanceUpdateIfActive(int param_1);
 void FUN_003396d0(int param_1);
 u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src);
 void FUN_003397d0(int param_1);
@@ -1312,7 +1312,7 @@ u32 FUN_003398c0(int param_1);
 void FUN_00339950(int param_1);
 void FUN_003399a0(int param_1);
 void FUN_0033a220(int param_1);
-void FUN_0033a3e0(int param_1);
+void FlashRotatingUpdateGeometry(int param_1);
 u32 FUN_0033a4d0(int param_1);
 void FUN_0033a560(int param_1);
 void FUN_0033a5b0(int param_1);
@@ -1348,7 +1348,7 @@ u32 FUN_0033e7f0(int param_1);
 void FUN_0033e890(int param_1);
 void FUN_0033e8e0(int param_1);
 void FUN_0033f2e0(int param_1);
-void FUN_0033f4a0(int param_1);
+void FlashAgedBoxUpdateGeometry(int param_1);
 void FUN_0033f590(int param_1,int param_2);
 u32 FUN_0033f6a0(int param_1,int param_2);
 u32 FUN_0033f780(int param_1);
@@ -1364,7 +1364,7 @@ void FUN_003407e0(int param_1);
 void FUN_00341ba0(int param_1);
 u32 FUN_00341f10(u32 param_1,u32 param_2);
 u32 FUN_00341fd0(u32 param_1);
-void FUN_003420c0(u32 param_1);
+void FlashQuadDestroy(u32 param_1);
 u32 FUN_00342130(int param_1);
 void FUN_00342280(int param_1);
 void FUN_003422d0(int param_1);
@@ -1392,31 +1392,31 @@ void FUN_00345970(int param_1);
 u32 FUN_00345cf0(u32 param_1,u64 param_2);
 #pragma alias FUN_00345cf0_u32 FUN_00345cf0
 extern u32 FUN_00345cf0_u32(u32 param_1,u32 param_2);
-void FUN_00345ea0(u32 param_1);
-u32 FUN_00345f00(int param_1);
+void WindInstanceDestroy(u32 param_1);
+u32 WindCreateKindEntryAlt(int param_1);
 void FUN_00345fa0(int param_1);
 void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
 void FUN_003460a0(int param_1);
 u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
 u32 FUN_003461a0(u32 param_1);
-void FUN_00346350(int param_1);
-u32 FUN_003463c0(int param_1);
+void mdlEffectDestroyInstance(int param_1);
+u32 mdlEffectCloneInstance(int param_1);
 #pragma alias FUN_00347170_ptr FUN_00347170
 extern u32 FUN_00347170_ptr(int param_1);
-void FUN_00346460(int param_1,int param_2);
-void FUN_00346500(int param_1);
-void FUN_00346510(int param_1);
+void mdlEffectCopyReferences(int param_1,int param_2);
+void EffSpriteClearFrameCount(int param_1);
+void EffSpriteIncrementFrameCount(int param_1);
 void FUN_00346530(int param_1);
 #pragma alias FUN_00346530_alt FUN_00346530
 extern void FUN_00346530_alt(int param_1);
-void FUN_00347100(int param_1);
+void EffSpriteAdvanceFrame(int param_1);
 u32 FUN_00347170(u64 param_1);
 void FUN_003472d0(void);
-void FUN_00347300(int param_1);
-void FUN_00347350(u32 param_1);
+void mdlEffectDestroyGridObject(int param_1);
+void mdlEffectCreateGridFromInstance(u32 param_1);
 void FUN_003473b0(u8 (*param_1) [16]);
-void FUN_00347cb0(int param_1);
+void mdlEffectIncrementAndRender(int param_1);
 void FUN_00347d00(void);
 void FUN_00347d60(void);
 void FUN_00347f80(void);
@@ -1434,14 +1434,14 @@ void FUN_00348f30(int param_1,float *param_2);
 void FUN_00349090(int *param_1,float *param_2);
 #pragma alias FUN_00349090_ptr FUN_00349090
 extern void FUN_00349090_ptr(int *param_1,int *param_2);
-void FUN_00349260(int param_1,float *param_2);
+void effBlurFilterSpawnSlot(int param_1,float *param_2);
 void FUN_00349450(int *param_1,float *param_2);
 #pragma alias FUN_00349450_ptr FUN_00349450
 extern void FUN_00349450_ptr(int *param_1,int *param_2);
 void FUN_00349620(int *param_1,float *param_2);
-void FUN_00349870(int param_1);
+void effBlurFilterUpdateScreenRect(int param_1);
 void FUN_00349a30(int param_1);
-void FUN_00349af0(u8 (*param_1) [16]);
+void effBlurFilterUpdateRectFromScale(u8 (*param_1) [16]);
 void FUN_00349d30(int param_1);
 u32 FUN_00349ed0(int param_1);
 void FUN_00349fa0(void);
@@ -1449,17 +1449,17 @@ void FUN_00349fd0(u8 (*param_1) [16]);
 void FUN_0034a1d0(int param_1);
 void FUN_0034a280(int param_1);
 void FUN_0034a340(void);
-void FUN_0034a370(u8 (*param_1) [16]);
-void FUN_0034a590(int param_1);
-void FUN_0034a650(int param_1);
+void effBlurFilterStepSlotsC(u8 (*param_1) [16]);
+void effBlurFilterSubmitActiveSlots(int param_1);
+void effBlurFilterUpdateScreenRectSimple(int param_1);
 void FUN_0034a800(int param_1);
 u32 FUN_0034a8c0(int param_1);
 void FUN_0034a990(void);
 void FUN_0034a9c0(u8 (*param_1) [16]);
 void FUN_0034abc0(int param_1);
-void FUN_0034ac70(int param_1);
+void effBlurFilterUpdateScreenRectFlagged(int param_1);
 void FUN_0034ada0(int param_1);
-void FUN_0034ae30(u8 (*param_1) [16]);
+void effBlurFilterUpdateRectFromScaleAux(u8 (*param_1) [16]);
 void FUN_0034b010(int param_1);
 u32 FUN_0034b1a0(u32 param_1);
 void FUN_0034b320(int param_1);
@@ -1491,36 +1491,36 @@ u32 FUN_0034bdf0(u32 param_1,u32 param_2);
 void FUN_0034bef0();
 u32 FUN_0034bf10(int param_1);
 u32 FUN_0034bfc0(u32 param_1);
-void FUN_0034c160(u32 param_1);
+void EffModelFree(u32 param_1);
 u32 FUN_0034c1b0(int param_1);
 void FUN_0034c250(int param_1,int param_2);
-void FUN_0034c320(int param_1);
+void EffModelResetLayerTime(int param_1);
 void FUN_0034c390(float *param_1);
 void FUN_0034c5a0(int param_1);
 void FUN_0034c5d0(int param_1);
 u_long128 FUN_0034c630(u_long128 *dst, const u_long128 *src);
 u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src);
-void FUN_0034c650(int param_1, int param_2);
+void EffModelSetLookupIndex(int param_1, int param_2);
 void FUN_0034c660(int param_1, float param_2);
 u32 FUN_0034c670(int param_1);
 #pragma alias FUN_0034c670_u32 FUN_0034c670
 extern u32 FUN_0034c670_u32(int param_1);
-void FUN_0034c890(int param_1);
-u32 FUN_0034c940(int param_1);
+void EffHelperFree(int param_1);
+u32 EffHelperClone(int param_1);
 void FUN_0034c9b0(int param_1,int param_2);
-void FUN_0034cb60(int param_1);
+void EffModelDrawableReset(int param_1);
 void FUN_0034cc00(u32 *param_1);
 void FUN_0034cf30(int param_1);
 void FUN_0034d050(int param_1);
 void FUN_0034d150(u32 param_1,f32 *param_2);
 u64 FUN_0034d3a0(int param_1,int param_2,int param_3);
 u32 FUN_0034d510(int param_1);
-void FUN_0034d670(int param_1);
+void ObjectParticleFree(int param_1);
 u32 FUN_0034d6f0(int param_1);
 void FUN_0034d810(int param_1,int param_2);
 void FUN_0034d8a0(int param_1,u16 param_2,int param_3);
 void FUN_0034d990(int param_1,u32 param_2,u32 param_3);
-void FUN_0034db00(int param_1);
+void ObjectParticleReleaseSource(int param_1);
 void FUN_0034db30(int param_1);
 #pragma alias FUN_0034db30_i FUN_0034db30
 extern void FUN_0034db30_i(int param_1);
@@ -1529,21 +1529,21 @@ void FUN_0034e390(int param_1);
 void FUN_0034e3d0(int param_1);
 void FUN_0034e420(int param_1);
 void FUN_0034e450(int param_1);
-void FUN_0034e490(f32 param_1, int param_2);
+void ObjectParticleSetScale(f32 param_1, int param_2);
 u32 FUN_0034e4c0(int param_1);
-void FUN_0034e610(int param_1);
+void DistortParticleFree(int param_1);
 u32 FUN_0034e690(int param_1);
-void FUN_0034e7c0(int param_1,u64 param_2);
-#pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
+void DistortParticleUploadTexture(int param_1,u64 param_2);
+#pragma alias FUN_0034e7c0_u32 DistortParticleUploadTexture
 extern void FUN_0034e7c0_u32(int param_1,u32 param_2);
 void FUN_0034e800(int param_1,int param_2);
 void FUN_0034e820(int param_1,u16 param_2,int param_3);
-void FUN_0034e910(int param_1);
-void FUN_0034e940(int param_1,float *param_2);
+void DistortParticleReleaseSource(int param_1);
+void DistortParticleSeedRecord(int param_1,float *param_2);
 void FUN_0034eae0(int param_1,float *param_2,int param_3,u32 *param_4,
 
                  u8 (*param_5) [16],float *param_6,char param_7);
-void FUN_0034f6b0(int param_1);
+void DistortParticleUpdateRecords(int param_1);
 void FUN_0034f910(u64 param_1,u32 param_2);
 void FUN_0034fb40(u64 param_1);
 void FUN_0034fb70(u64 param_1);
@@ -1551,7 +1551,7 @@ void FUN_0034fba0(int param_1);
 void FUN_0034fbe0(u32 param_1);
 void FUN_0034fc30(int param_1);
 void FUN_0034fc60(int param_1);
-void FUN_0034fca0(f32 param_1, int param_2);
+void DistortParticleSetScale(f32 param_1, int param_2);
 void FUN_0034fcd0(void);
 void FUN_0034fcf0(void);
 void FUN_0034fd10();
@@ -1563,13 +1563,13 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034ff70(float param_1,u8 (*param_2) [16]);
 void FUN_0034ff90(int param_1,u32 *param_2);
-void FUN_0034ffc0(int param_1,int param_2);
-void FUN_00350040(int param_1,u32 *param_2);
-u32 FUN_00350070(int param_1);
+void mdlEffectBuildObjectMatrix(int param_1,int param_2);
+void mdlEffectGetPackedColor(int param_1,u32 *param_2);
+u32 mdlEffectGetWord84(int param_1);
 void FUN_00350080(void);
-void FUN_003500a0(u32 param_1,u16 param_2);
+void mdlEffectSeqStart(u32 param_1,u16 param_2);
 void FUN_003500e0(void);
-void FUN_00350110(void);
+void mdlEffectSeqStep(void);
 u32 FUN_00350190(void);
 u32 FUN_00350200(void);
 u32 FUN_00350230(u32 param_1);
@@ -1591,10 +1591,10 @@ void FUN_003520a0(u64 param_1);
 u32 FUN_00352800(int param_1);
 void FUN_00352910(u32 param_1);
 u32 FUN_00352980(int param_1);
-void FUN_00352a80(int param_1);
-void FUN_00352ad0(int param_1);
-void FUN_00352b30(int param_1);
-void FUN_00352b80(int param_1);
+void LineNovaInstanceStop(int param_1);
+void LineNovaInstanceAdvance(int param_1);
+void LineNovaInstanceUpdateIfActive(int param_1);
+void LineNovaInstanceAdvanceAndUpdate(int param_1);
 u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
@@ -1631,7 +1631,7 @@ void FUN_00357170(u32 *param_1);
 void FUN_003571c0(float *param_1);
 void FUN_00357550(int param_1);
 void FUN_00357710(void);
-void FUN_00357730(int param_1);
+void btlUiSetWindowRect(int param_1);
 u32 FUN_00357770(u32 param_1,u32 param_2);
 u32 FUN_00357830(int param_1);
 void FUN_00357930(u32 param_1);
@@ -1708,7 +1708,7 @@ extern u64 FUN_002a3a80();
 extern void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
 #pragma alias FUN_002a3e80_typed FUN_002a3e80
 extern u64 FUN_002a3e80_typed(float,int,int,int,int);
-extern void FUN_002a4690(void* out,const void* first,const void* second,const void* config);
+extern void btlCameraLookAtQuat(void* out,const void* first,const void* second,const void* config);
 extern u64 FUN_002f8810();
 extern u64 FUN_002ffbc0();
 extern u64 FUN_00308c60();
@@ -3198,7 +3198,7 @@ void FUN_00321360(u32 param_1)
 // FUN_00321A60
 
 
-u64 FUN_00321a60(void)
+u64 TnTaskUpdate(void)
 
 
 
@@ -3210,7 +3210,7 @@ u64 FUN_00321a60(void)
 
   
 
-  FUN_00350110();
+  mdlEffectSeqStep();
 
   FUN_00347d60();
 
@@ -3733,7 +3733,7 @@ void FUN_00322010(void)
 
   FUN_00351c20();
 
-  uVar1 = FUN_00194b20(0,DAT_0069bc18,0x40a,FUN_00321a60,0,0);
+  uVar1 = FUN_00194b20(0,DAT_0069bc18,0x40a,TnTaskUpdate,0,0);
 
   FUN_00194b20(uVar1,DAT_0069bc28,0x823,FUN_00321b00,0,0);
   FUN_00194b20(uVar1,DAT_0069bc38,0x82f,FUN_00321c50,0,0);
@@ -4213,7 +4213,7 @@ void FUN_00322ab0(int *animRef,u8 *cursor,float *pose)
 // FUN_00322D10
 
 
-void FUN_00322d10(int param_1,float *param_2)
+void mdlEffectEvalSubPose(int param_1,float *param_2)
 {
   FUN_00322ab0((int *)(u32)param_1,(u8 *)(u32)*(u32 *)(param_1 + 0x10),param_2);
 }
@@ -4226,7 +4226,7 @@ void FUN_00322d10(int param_1,float *param_2)
 /* Removing this loses FUN_00322d40 (MATCH nd0 -> MISMATCH nd45) - measured W161. */
 // FUN_00322D40
 #pragma opt_loop_invariants on
-void FUN_00322d40(int param_1,u32 param_2)
+void mdlEffectWrapTrackFrames(int param_1,u32 param_2)
 {
   int iVar1;
   int iVar2;
@@ -4823,7 +4823,7 @@ u32 FUN_00323640(u16 *instance)
 
 
 
-void FUN_003237c0(int param_1)
+void GeometryBlockDestroy(int param_1)
 {
   u16 *puVar1;
 
@@ -4902,7 +4902,7 @@ void FUN_003238d0(int param_1)
 // FUN_00323920
 
 
-void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4)
+void GeometryMatrixBuild(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4)
 {
   f32 values[3];
 
@@ -4943,7 +4943,7 @@ void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4)
 // FUN_00323A30
 
 
-void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
+void GeometryMatrixBuildCombined(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
 {
   f32 values[3];
   RwMatrix other;
@@ -5005,7 +5005,7 @@ void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
 // FUN_00323B90
 
 
-void FUN_00323b90(int param_1,u64 param_2)
+void GeometryBlockSetTextureFromHandle(int param_1,u64 param_2)
 {
     u32 object;
 
@@ -5017,7 +5017,7 @@ void FUN_00323b90(int param_1,u64 param_2)
 // FUN_00323BF0
 
 
-void FUN_00323bf0(int param_1,u32 *param_2)
+void GeometryBlockGetTextureInfo(int param_1,u32 *param_2)
 
 
 
@@ -5477,7 +5477,7 @@ void FUN_00324510(int param_1,u64 param_2)
 
 
 // FUN_003245B0
-int FUN_003245b0(int param_1)
+int mdlEffectResolveRelPtrA(int param_1)
 {
   int value;
 
@@ -5502,7 +5502,7 @@ done:
 }
 
 // FUN_003245F0
-int FUN_003245f0(int param_1)
+int mdlEffectResolveRelPtrB(int param_1)
 {
   int value;
 
@@ -6103,7 +6103,7 @@ u32 FUN_00324bd0(u32 param_1)
 
       }
 
-      FUN_00326190(uVar5,iVar3);
+      mdlEffectCopyRecord(uVar5,iVar3);
 
       FUN_00524270(iVar11 + 0x9c,iVar3 + 0x9c);
 
@@ -6191,7 +6191,7 @@ u32 FUN_00324bd0(u32 param_1)
 
       else {
 
-        uVar6 = FUN_003261c0(param_1,*(u32 *)(iVar16 + 0x90));
+        uVar6 = mdlEffectFindNodeById(param_1,*(u32 *)(iVar16 + 0x90));
 
         uVar6 = FUN_00326240(param_1,uVar6);
 
@@ -6227,7 +6227,7 @@ u32 FUN_00324bd0(u32 param_1)
 
       }
 
-      FUN_00326190(uVar5,iVar16);
+      mdlEffectCopyRecord(uVar5,iVar16);
 
       FUN_00524270(iVar12 + 0x9c,iVar16 + 0x9c);
 
@@ -6819,7 +6819,7 @@ u32 FUN_00325920(u64 *param_1)
 
     *(u32 **)(iVar9 + 0x90) = puVar11;
 
-    FUN_00326190(uVar5,iVar2);
+    mdlEffectCopyRecord(uVar5,iVar2);
 
     *(u32 *)(iVar9 + 0xac) = 0;
 
@@ -7263,7 +7263,7 @@ void FUN_00326030(int param_1,int param_2)
 // FUN_00326160
 
 
-u_long128 FUN_00326160(int param_1,u32 *param_2)
+u_long128 mdlEffectGetPositionVec(int param_1,u32 *param_2)
 {
   u_long128 value = *(u_long128 *)(param_1 + 0x40);
   *(u_long128 *)param_2 = value;
@@ -7276,7 +7276,7 @@ u_long128 FUN_00326160(int param_1,u32 *param_2)
 // FUN_00326170
 
 
-u_long128 FUN_00326170(int param_1,u32 *param_2)
+u_long128 mdlEffectGetOrientationVec(int param_1,u32 *param_2)
 {
   u_long128 value = *(u_long128 *)(param_1 + 0x50);
   *(u_long128 *)param_2 = value;
@@ -7289,7 +7289,7 @@ u_long128 FUN_00326170(int param_1,u32 *param_2)
 // FUN_00326180
 
 
-u32 FUN_00326180(int param_1)
+u32 mdlEffectGetPackedColorWord(int param_1)
 
 
 
@@ -7305,7 +7305,7 @@ u32 FUN_00326180(int param_1)
 // FUN_00326190
 
 
-void FUN_00326190(u64 param_1,u64 param_2)
+void mdlEffectCopyRecord(u64 param_1,u64 param_2)
 
 
 
@@ -7322,7 +7322,7 @@ void FUN_00326190(u64 param_1,u64 param_2)
 
 // FUN_003261C0
 #pragma push
-int FUN_003261c0(int param_1,int param_2)
+int mdlEffectFindNodeById(int param_1,int param_2)
 {
   int iVar1;
 
@@ -7437,7 +7437,7 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
     scale[1] = lengthBits;
     scale[2] = lengthBits;
 
-    FUN_00329800((u8 (*) [16])param_2, (u8 (*) [16])transformed);
+    mdlEffectAimDirection((u8 (*) [16])param_2, (u8 (*) [16])transformed);
 
     __asm__ volatile (
         ".set noreorder                  \n"
@@ -7529,7 +7529,7 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
   }
   else {
 
-    FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
+    mdlEffectAimDirection((u8 (*) [16])(param_2),(u8 (*) [16])(v));
 
     if ((*(u32 *)(param_1 + 0x68) & 0x40) != 0) {
       fVar4 = 0.0f;
@@ -7621,7 +7621,7 @@ u32 FUN_00326510(u32 param_1)
 
   
 
-  uVar2 = FUN_003245b0((int)(param_1));
+  uVar2 = mdlEffectResolveRelPtrA((int)(param_1));
 
   iVar1 = (int)uVar2;
 
@@ -7657,33 +7657,33 @@ u32 FUN_00326510(u32 param_1)
 
   iVar1 = (int)param_1;
 
-  FUN_00326c70((u32 *)(uVar3),(u16)(*(u16 *)(iVar1 + 0xc)),(u32)(uVar2));
+  ParticleAllocRecords((u32 *)(uVar3),(u16)(*(u16 *)(iVar1 + 0xc)),(u32)(uVar2));
 
-  if ((*puVar5 != 0) && (lVar4 = FUN_003245f0((int)(param_1)), lVar4 != 0)) {
+  if ((*puVar5 != 0) && (lVar4 = mdlEffectResolveRelPtrB((int)(param_1)), lVar4 != 0)) {
 
     switch(*(u16 *)(iVar1 + 0x1c)) {
 
     case 1:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),1);
+      ParticleSetMaterialSlot((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),1);
 
-      FUN_00326e50(uVar3,lVar4);
+      ParticleSetTextureFromHandle(uVar3,lVar4);
 
       break;
 
     case 2:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),2);
+      ParticleSetMaterialSlot((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),2);
 
-      FUN_00326f00(uVar3,lVar4);
+      ParticleSetLinkedGroup(uVar3,lVar4);
 
       break;
 
     case 4:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),4);
+      ParticleSetMaterialSlot((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),4);
 
-      FUN_00326db0(uVar3,*(u32 *)lVar4);
+      ParticleSetTextureById(uVar3,*(u32 *)lVar4);
 
       break;
 
@@ -7701,9 +7701,9 @@ u32 FUN_00326510(u32 param_1)
 
     case 7:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),7);
+      ParticleSetMaterialSlot((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),7);
 
-      FUN_003271c0(uVar3,lVar4);
+      ParticleSetAuxResource(uVar3,lVar4);
 
     }
 
@@ -7805,7 +7805,7 @@ void FUN_00326740(int param_1)
 
   if (puVar1[0x14] != 0) {
 
-    FUN_003237c0((int)(puVar1[0x14]));
+    GeometryBlockDestroy((int)(puVar1[0x14]));
 
   }
 
@@ -7866,7 +7866,7 @@ u32 FUN_003268c0(u32 param_1)
 
   puVar5[2] = 0x3f800000;
 
-  FUN_00326c70(puVar5,mdlEffectLoadType(**(u16 **)(param_1 + 0x4c)),(u32)(iVar1));
+  ParticleAllocRecords(puVar5,mdlEffectLoadType(**(u16 **)(param_1 + 0x4c)),(u32)(iVar1));
 
   if (*puVar5 == 0) {
     return uVar3;
@@ -8054,7 +8054,7 @@ void FUN_003269e0(int param_1,int param_2)
 // FUN_00326C70
 
 
-void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3)
+void ParticleAllocRecords(u32 *param_1,u16 param_2,u32 param_3)
 
 
 
@@ -8086,7 +8086,7 @@ void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3)
 // FUN_00326CF0
 
 
-void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
+void ParticleSetMaterialSlot(int param_1,u16 param_2,u32 param_3)
 
 {
 
@@ -8097,7 +8097,7 @@ void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
   uVar1 = *(u32 *)(param_1 + 0x50);
   if (uVar1 != 0) {
 
-    FUN_003237c0((int)uVar1);
+    GeometryBlockDestroy((int)uVar1);
 
   }
 
@@ -8137,7 +8137,7 @@ void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
 // FUN_00326DB0
 
 
-void FUN_00326db0(int param_1,u16 param_2)
+void ParticleSetTextureById(int param_1,u16 param_2)
 
 
 
@@ -8170,7 +8170,7 @@ void FUN_00326db0(int param_1,u16 param_2)
 // FUN_00326E50
 
 
-void FUN_00326e50(int param_1,u64 param_2)
+void ParticleSetTextureFromHandle(int param_1,u64 param_2)
 
 
 
@@ -8205,7 +8205,7 @@ void FUN_00326e50(int param_1,u64 param_2)
 // FUN_00326F00
 
 
-void FUN_00326f00(int param_1,u32 param_2)
+void ParticleSetLinkedGroup(int param_1,u32 param_2)
 
 
 
@@ -8383,7 +8383,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 // FUN_003271C0
 
 
-void FUN_003271c0(int param_1,u32 param_2)
+void ParticleSetAuxResource(int param_1,u32 param_2)
 
 
 
@@ -8413,7 +8413,7 @@ void FUN_003271c0(int param_1,u32 param_2)
 
 
 // FUN_00327220
-void FUN_00327220(int param_1)
+void ParticleReleaseRecords(int param_1)
 
 
 
@@ -8503,9 +8503,9 @@ void FUN_00327250(float param_1,int param_2)
 
     else {
 
-      FUN_003322f0((int)(iVar6),(u32 *)(&auStack_30));
+      mdlEffectLoadQuadB((int)(iVar6),(u32 *)(&auStack_30));
 
-      FUN_003322b0((int)(iVar6),(u32 *)(&auStack_20));
+      mdlEffectLoadQuadA((int)(iVar6),(u32 *)(&auStack_20));
 
       __asm__ volatile (
           "lqc2 vf10, 0(%0)\n"
@@ -8601,9 +8601,9 @@ void FUN_00327250(float param_1,int param_2)
 
     else {
 
-      FUN_003322f0((int)(iVar6),(u32 *)(&auStack_30));
+      mdlEffectLoadQuadB((int)(iVar6),(u32 *)(&auStack_30));
 
-      FUN_003322b0((int)(iVar6),(u32 *)(&auStack_20));
+      mdlEffectLoadQuadA((int)(iVar6),(u32 *)(&auStack_20));
 
       __asm__ volatile (
           "lqc2 vf10, 0(%0)\n"
@@ -8851,8 +8851,8 @@ void FUN_003275d0(float param_1,int param_2)
 
       if ((*(u32 *)(iVar11 + 0xc) & 1) != 0) {
 
-        FUN_003322f0((int)(iVar11),(u32 *)(&auStack_90));
-        FUN_003322b0((int)(iVar11),(u32 *)(&auStack_80));
+        mdlEffectLoadQuadB((int)(iVar11),(u32 *)(&auStack_90));
+        mdlEffectLoadQuadA((int)(iVar11),(u32 *)(&auStack_80));
         __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(&auStack_90) : "vf10", "memory");
         FUN_00357e30();
         /*
@@ -9075,8 +9075,8 @@ void FUN_003275d0(float param_1,int param_2)
 
       if ((*(u32 *)(iVar11 + 0xc) & 1) != 0) {
 
-        FUN_003322f0((int)(iVar11),(u32 *)(&auStack_90));
-        FUN_003322b0((int)(iVar11),(u32 *)(&auStack_80));
+        mdlEffectLoadQuadB((int)(iVar11),(u32 *)(&auStack_90));
+        mdlEffectLoadQuadA((int)(iVar11),(u32 *)(&auStack_80));
         __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(&auStack_90) : "vf10", "memory");
         FUN_00357e30();
         /* Preserve the helper's vf28-vf30 matrix contract across this arm. */
@@ -9104,7 +9104,7 @@ void FUN_003275d0(float param_1,int param_2)
 
             FUN_00322d40_onearg(uVar5);
 
-            FUN_00322d10((int)(uVar5),(float *)(&particleTransform));
+            mdlEffectEvalSubPose((int)(uVar5),(float *)(&particleTransform));
 
             __asm__ volatile (
                 ".set noreorder                    \n"
@@ -9221,7 +9221,7 @@ void FUN_003275d0(float param_1,int param_2)
 
             FUN_00322d40_onearg(uVar5);
 
-            FUN_00322d10((int)(uVar5),(float *)(&particleTransform));
+            mdlEffectEvalSubPose((int)(uVar5),(float *)(&particleTransform));
             *puStack_58 = particleTransform.u108;
             puStack_58[1] = particleTransform.u104;
             puStack_58[2] = particleTransform.u100;
@@ -9648,9 +9648,9 @@ void FUN_003282e0(int param_1)
 
     if ((*(u32 *)(iVar7 + 0xc) & 1) != 0) {
 
-      FUN_003322f0((int)(iVar7),(u32 *)(&auStack_170));
+      mdlEffectLoadQuadB((int)(iVar7),(u32 *)(&auStack_170));
 
-      FUN_003322b0((int)(iVar7),(u32 *)(&auStack_160));
+      mdlEffectLoadQuadA((int)(iVar7),(u32 *)(&auStack_160));
 
       __asm__ volatile (
           "lqc2 vf10, 0(%0)\n"
@@ -9952,7 +9952,7 @@ void FUN_003282e0(int param_1)
 // FUN_00329350
 
 
-void FUN_00329350(int param_1)
+void ParticleReleaseEmitterAndUpdate(int param_1)
 
 
 
@@ -9972,7 +9972,7 @@ void FUN_00329350(int param_1)
 
 
 // FUN_003293A0
-void FUN_003293a0(void)
+void mdlEffectSetUnitWeight(void)
 {
   FUN_003275d0_evt(1.0f);
 }
@@ -9981,7 +9981,7 @@ void FUN_003293a0(void)
 
 
 // FUN_003293D0
-void FUN_003293d0(int param_1)
+void ParticleReleaseEmitterAndProject(int param_1)
 {
   int iVar1;
 
@@ -10037,7 +10037,7 @@ void FUN_00329490(int param_1,u32 param_2)
 // FUN_003294A0
 
 
-void FUN_003294a0(f32 param_1, int param_2)
+void mdlEffectSetScaleAndNotify(f32 param_1, int param_2)
 
 
 
@@ -10045,7 +10045,7 @@ void FUN_003294a0(f32 param_1, int param_2)
 
   *(f32 *)(param_2 + 8) = param_1;
 
-  FUN_00332330((u16*)*(u32 *)(param_2 + 0x4c));
+  EffEmitterApplyScale((u16*)*(u32 *)(param_2 + 0x4c));
 
   return;
 
@@ -10167,7 +10167,7 @@ void mdlFileRestoreClamp1Packet(void)
 }
 
 // FUN_003296A0
-void FUN_003296a0(u32 *param_1,u8 (*param_2) [16])
+void mdlEffectBuildBasisRows(u32 *param_1,u8 (*param_2) [16])
 {
   f32 tmp[4];
 
@@ -10195,7 +10195,7 @@ void FUN_003296a0(u32 *param_1,u8 (*param_2) [16])
 // FUN_00329740
 
 
-void FUN_00329740(u32 *param_1)
+void mdlEffectCopyCameraOrigin(u32 *param_1)
 {
   int iVar1;
 
@@ -10243,7 +10243,7 @@ void FUN_003297a0(u32 *param_1)
 
 
 // FUN_00329800
-void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
+void mdlEffectAimDirection(u8 (*param_1) [16],u8 (*param_2) [16])
 {
   int iVar1;
   float cameraPos[4];
@@ -10355,7 +10355,7 @@ f32 *FUN_003299b0(void)
 }
 
 // FUN_00329A60
-u32 FUN_00329a60(void)
+u32 mdlEffectAnchorOnScreen(void)
 {
   u32 iVar2;
   u32 uVar3;
@@ -10489,7 +10489,7 @@ float FUN_00329ba0(float param_1)
 // FUN_00329D60
 
 
-void FUN_00329d60(float param_1,u8 (*param_2) [16])
+void mdlEffectCatmullRomVU(float param_1,u8 (*param_2) [16])
 {
   float work[7][4];
   float square;
@@ -10767,7 +10767,7 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 
 #pragma opt_propagation off
 // FUN_0032A540
-float FUN_0032a540(char *curve,int frame,int duration)
+float mdlEffectSampleScalarKeys(char *curve,int frame,int duration)
 {
   u8 mode;
   float from;
@@ -10874,14 +10874,14 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
   *(u32 *)(param_1[1] + 4) = uVar1;
 
   size = *(u32 *)(param_2 + 0xb8);
-  fVar2 = FUN_0032a540((char *)(param_2 + 0x60),param_3,size);
+  fVar2 = mdlEffectSampleScalarKeys((char *)(param_2 + 0x60),param_3,size);
 
   *(float *)(param_1[1] + 8) = fVar2;
 
   if (*(u8 *)(param_2 + 0x9c) != 2) {
 
     size = *(u32 *)(param_2 + 0xb8);
-    fVar2 = FUN_0032a540((char *)(param_2 + 0x8c),param_3,size);
+    fVar2 = mdlEffectSampleScalarKeys((char *)(param_2 + 0x8c),param_3,size);
 
     *(float *)(param_1[1] + 0xc) = fVar2;
 
@@ -11286,7 +11286,7 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               fVar14 = fVar14 + fVar15;
 
-              FUN_00329d60((float)(fVar14),(u8 (*) [16])(interpolationStack));
+              mdlEffectCatmullRomVU((float)(fVar14),(u8 (*) [16])(interpolationStack));
 
               __asm__ volatile (
                   ".set noreorder                  \n"
@@ -12473,7 +12473,7 @@ void FUN_0032ba30(int param_1)
 
 
 // FUN_0032C2B0
-void FUN_0032c2b0(int param_1, float scale)
+void EffMotionApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -13075,7 +13075,7 @@ void FUN_0032c340(int param_1)
 
 #pragma opt_loop_invariants reset
 // FUN_0032CD70
-void FUN_0032cd70(int param_1, float scale)
+void EffEmitterKind3ApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -13651,7 +13651,7 @@ void FUN_0032ce10(int param_1)
 
 
 // FUN_0032D7C0
-void FUN_0032d7c0(int param_1, float scale)
+void EffEmitterKind4ApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -15559,7 +15559,7 @@ void FUN_0032eb40(int param_1)
 
 
 // FUN_0032F8B0
-void FUN_0032f8b0(int param_1, float scale)
+void EffBezierApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -16049,7 +16049,7 @@ void FUN_0032f910(int param_1)
 
 
 // FUN_00330100
-void FUN_00330100(int param_1, float scale)
+void EffEmitterKind8ApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -16757,7 +16757,7 @@ void FUN_00330190(u64 param_1)
 
 
 // FUN_00330BB0
-void FUN_00330bb0(int param_1, float scale)
+void EffEmitterKind9ApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -17359,7 +17359,7 @@ void FUN_00330c40(int param_1)
 
 
 // FUN_003315D0
-void FUN_003315d0(int param_1, float scale)
+void EffEmitterKind10ApplyScale(int param_1, float scale)
 {
   int dest;
   int source;
@@ -18174,7 +18174,7 @@ void FUN_00332210(int param_1)
 // FUN_003322B0
 
 
-u_long128 FUN_003322b0(int param_1,u32 *param_2)
+u_long128 mdlEffectLoadQuadA(int param_1,u32 *param_2)
 {
   u_long128 value = *(u_long128 *)(*(int *)(param_1 + 0x20));
   *(u_long128 *)param_2 = value;
@@ -18189,7 +18189,7 @@ u_long128 FUN_003322b0(int param_1,u32 *param_2)
 // FUN_003322D0
 
 
-u_long128 FUN_003322d0(int param_1,u32 *param_2)
+u_long128 mdlEffectStoreQuadA(int param_1,u32 *param_2)
 {
   u_long128 *dst;
   u_long128 value;
@@ -18207,7 +18207,7 @@ u_long128 FUN_003322d0(int param_1,u32 *param_2)
 // FUN_003322F0
 
 
-u_long128 FUN_003322f0(int param_1,u32 *param_2)
+u_long128 mdlEffectLoadQuadB(int param_1,u32 *param_2)
 {
   return *(u_long128 *)param_2 =
       *(u_long128 *)(*(int *)(param_1 + 0x20) + 0x10);
@@ -18221,7 +18221,7 @@ u_long128 FUN_003322f0(int param_1,u32 *param_2)
 // FUN_00332310
 
 
-u_long128 FUN_00332310(int param_1,u32 *param_2)
+u_long128 mdlEffectStoreQuadB(int param_1,u32 *param_2)
 {
   u_long128 *dst;
   u_long128 value;
@@ -18239,7 +18239,7 @@ u_long128 FUN_00332310(int param_1,u32 *param_2)
 // FUN_00332330
 
 
-void FUN_00332330(u16 *param_1)
+void EffEmitterApplyScale(u16 *param_1)
 
 
 
@@ -18273,7 +18273,7 @@ u32 FUN_00332370(int param_1)
   u32 uVar3;
   
 
-  uVar2 = FUN_003245b0((int)(param_1));
+  uVar2 = mdlEffectResolveRelPtrA((int)(param_1));
 
   iVar1 = (int)uVar2;
 
@@ -18311,7 +18311,7 @@ u32 FUN_00332370(int param_1)
 
   indexBase = (u16 *)param_1;
   index = indexBase[6];
-  FUN_00332a30((int *)(uVar3),index,(int *)(uVar2));
+  TrackLoadRecord((int *)(uVar3),index,(int *)(uVar2));
   indexBase = (u16 *)param_1;
   index = indexBase[6];
   FUN_00332ac0(puVar4,index,(int *)(iVar1 + 0x1c));
@@ -18365,7 +18365,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
     FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
 
-    FUN_00326f00(param_1[0xb],(u32)param_3);
+    ParticleSetLinkedGroup(param_1[0xb],(u32)param_3);
 
     break;
 
@@ -18393,7 +18393,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
     FUN_00326cf0_3u32(param_1[0xb],*param_1,(u32)switchParam);
 
-    FUN_003271c0(param_1[0xb],(u32)param_3);
+    ParticleSetAuxResource(param_1[0xb],(u32)param_3);
 
   }
   *(u16 *)(param_1[0xb] + 0xc) = param_2;
@@ -18416,7 +18416,7 @@ u32 *FUN_003325d0(int *arg0)
   u32 count;
   int extra;
 
-  model = (int *)FUN_003245b0((int)arg0);
+  model = (int *)mdlEffectResolveRelPtrA((int)arg0);
   work = model + 7;
   if (*(int *)((u8 *)model + 0x3c) == 0) {
     count = work[46] * work[9];
@@ -18432,9 +18432,9 @@ u32 *FUN_003325d0(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  FUN_00332a30((int *)result,*(u16 *)((u8 *)arg0 + 0xc),model);
+  TrackLoadRecord((int *)result,*(u16 *)((u8 *)arg0 + 0xc),model);
   FUN_00332ac0(result,*(u16 *)((u8 *)arg0 + 0xc),(int *)((u8 *)model + 0x1c));
-  extra = FUN_003245f0((int)arg0);
+  extra = mdlEffectResolveRelPtrB((int)arg0);
   if (extra != 0) {
     FUN_00332470(result,*(u16 *)((u8 *)arg0 + 0x1c),(int *)extra);
   }
@@ -18447,7 +18447,7 @@ u32 *FUN_003325d0(int *arg0)
 // FUN_00332700
 
 
-void FUN_00332700(int param_1)
+void TrackFreeInstance(int param_1)
 
 
 
@@ -18549,7 +18549,7 @@ u32 FUN_00332780(int param_1)
 
   indexBase = (u16 *)base[0xc];
   index = *indexBase;
-  FUN_00332a30(puVar3,index,base + 3);
+  TrackLoadRecord(puVar3,index,base + 3);
 
   indexBase = (u16 *)base[0xc];
   index = *indexBase;
@@ -18588,7 +18588,7 @@ u32 *FUN_00332880(int *arg0)
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
   index = *(volatile u16 *)*(u16 **)(arg0 + 12);
-  FUN_00332a30((int *)result,index,(int *)((u8 *)arg0 + 0xc));
+  TrackLoadRecord((int *)result,index,(int *)((u8 *)arg0 + 0xc));
   id = *(volatile u16 *)*(u16 **)(arg0 + 12);
   FUN_00332ac0(result,id,model);
   FUN_00332990(result,(int)arg0);
@@ -18645,7 +18645,7 @@ void FUN_00332990(u32 *param_1,int param_2)
 // FUN_00332A30
 
 
-void FUN_00332a30(int *param_1,u16 param_2,int *param_3)
+void TrackLoadRecord(int *param_1,u16 param_2,int *param_3)
 
 
 
@@ -18708,7 +18708,7 @@ void FUN_00332ac0(u32 *param_1,u16 param_2,int *param_3)
 
 
 // FUN_00332b30
-void FUN_00332b30(int param_1)
+void TrackReleaseSubobject(int param_1)
 
 
 
@@ -18789,11 +18789,11 @@ void FUN_00332b60(int *param_1)
 
     iVar2 = param_1[10];
 
-    FUN_003341c0(iVar2);
+    mdlEffectCopyOriginAndLockGeometry(iVar2);
 
     for (uVar7 = 0; (int)uVar7 < *param_1; uVar7 = uVar7 + 1) {
 
-      if (!FUN_00333940(iVar2,uVar7 & 0xffff)) {
+      if (!mdlEffectSlotIsFree(iVar2,uVar7 & 0xffff)) {
 
         iVar3 = puVar8[4];
 
@@ -18803,7 +18803,7 @@ void FUN_00332b60(int *param_1)
 
           FUN_00333300(iVar2,uVar7 & 0xffff,&gp0xffffb854);
 
-          FUN_00333920(iVar2,uVar7 & 0xffff);
+          mdlEffectSlotRelease(iVar2,uVar7 & 0xffff);
 
         }
 
@@ -18813,7 +18813,7 @@ void FUN_00332b60(int *param_1)
 
           FUN_00333300(iVar2,uVar7 & 0xffff,&gp0xffffb854);
 
-          FUN_00333900(iVar2,uVar7 & 0xffff);
+          mdlEffectSlotSetZero(iVar2,uVar7 & 0xffff);
 
         }
 
@@ -18889,7 +18889,7 @@ void FUN_00332b60(int *param_1)
 // before the 1st; not reproduced.
 // FUN_00332E10
 
-void FUN_00332e10(int *param_1)
+void TrackApplyWidth(int *param_1)
 
 
 
@@ -18919,8 +18919,8 @@ void FUN_00332e10(int *param_1)
 
       if ((*(u32 *)(iVar1 + 0xc) & 1) != 0) {
 
-        FUN_003322f0(iVar1,(u32 *)&auStack_20);
-        FUN_003322b0(param_1[0xc],(u32 *)&auStack_10);
+        mdlEffectLoadQuadB(iVar1,(u32 *)&auStack_20);
+        mdlEffectLoadQuadA(param_1[0xc],(u32 *)&auStack_10);
         FUN_00324470(1.0f,*(u32 *)(iVar2 + 0x10),(u32 *)&auStack_10,(u32 *)&auStack_20);
         FUN_00324470(1.0f,*(u32 *)(iVar2 + 0x14),(u32 *)&auStack_10,(u32 *)&auStack_20);
 
@@ -18953,7 +18953,7 @@ void FUN_00332e10(int *param_1)
 // before the first (reversed vs source-written order); not reproduced.
 // FUN_00332F10
 
-void FUN_00332f10(int *param_1)
+void TrackRefresh(int *param_1)
 
 
 
@@ -18986,8 +18986,8 @@ void FUN_00332f10(int *param_1)
 
       if ((*(u32 *)(iVar1 + 0xc) & 1) != 0) {
 
-        FUN_003322f0(iVar1,(u32 *)&auStack_20);
-        FUN_003322b0(param_1[0xc],(u32 *)&auStack_10);
+        mdlEffectLoadQuadB(iVar1,(u32 *)&auStack_20);
+        mdlEffectLoadQuadA(param_1[0xc],(u32 *)&auStack_10);
         FUN_00324470(1.0f,*(u32 *)(iVar2 + 0x10),(u32 *)&auStack_10,(u32 *)&auStack_20);
         FUN_00324470(1.0f,*(u32 *)(iVar2 + 0x14),(u32 *)&auStack_10,(u32 *)&auStack_20);
 
@@ -19036,7 +19036,7 @@ void FUN_00333050(int param_1)
 
 
 // FUN_00333080
-void FUN_00333080(int param_1,u32 param_2)
+void TrackSetColor(int param_1,u32 param_2)
 
 
 
@@ -19060,7 +19060,7 @@ void FUN_00333080(int param_1,u32 param_2)
 // FUN_003330B0
 
 
-void FUN_003330b0(f32 param_1, int param_2)
+void TrackSetScale(f32 param_1, int param_2)
 
 
 
@@ -19068,7 +19068,7 @@ void FUN_003330b0(f32 param_1, int param_2)
 
   *(f32 *)(param_2 + 8) = param_1;
 
-  FUN_00332330((u16*)*(u32 *)(param_2 + 0x30));
+  EffEmitterApplyScale((u16*)*(u32 *)(param_2 + 0x30));
 
   return;
 
@@ -19608,7 +19608,7 @@ void FUN_003338b0(u32 param_1)
 // FUN_00333900
 
 
-void FUN_00333900(int param_1,u32 param_2)
+void mdlEffectSlotSetZero(int param_1,u32 param_2)
 {
   u32 index;
   u8 *base;
@@ -19627,7 +19627,7 @@ void FUN_00333900(int param_1,u32 param_2)
 // FUN_00333920
 
 
-void FUN_00333920(int param_1,u32 param_2)
+void mdlEffectSlotRelease(int param_1,u32 param_2)
 {
   s16 value;
   u32 index;
@@ -19648,7 +19648,7 @@ void FUN_00333920(int param_1,u32 param_2)
 // FUN_00333940
 
 
-bool FUN_00333940(int param_1,u32 param_2)
+bool mdlEffectSlotIsFree(int param_1,u32 param_2)
 {
   u32 index;
   u8 *base;
@@ -20097,13 +20097,13 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
 // FUN_003341C0
 
 
-void FUN_003341c0(int param_1)
+void mdlEffectCopyOriginAndLockGeometry(int param_1)
 
 
 
 {
 
-  FUN_00329740((u32 *)(param_1));
+  mdlEffectCopyCameraOrigin((u32 *)(param_1));
 
   FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 0x10) + 0x10) + 0x18),10);
 
@@ -20379,7 +20379,7 @@ u32 FUN_00334390(int param_1)
 // FUN_00334820
 
 
-void FUN_00334820(int param_1)
+void ThunderGeometryDestroy(int param_1)
 {
   u32 *puVar1;
   u32 uVar2;
@@ -20552,7 +20552,7 @@ void FUN_003348b0(int param_1)
 
     if (0.0f < fVar35) {
 
-      FUN_00329740((u32 *)(&auStack_60));
+      mdlEffectCopyCameraOrigin((u32 *)(&auStack_60));
 
       _lqc2(*(u8 (*) [16])(param_1 + 0x10));
 
@@ -20926,7 +20926,7 @@ LAB_003350f0:
 // The remaining six rows are the same register-colouring family as FUN_003377f0 (nd43), a confirmed b210 floor; this is a LOAD-ORDER fix, not a register fix.
 // FUN_00335180
 
-void FUN_00335180(int param_1)
+void ThunderBoltWriteRows(int param_1)
 {
   u32 *entryHolder;
   int node;
@@ -21005,7 +21005,7 @@ void FUN_00335180(int param_1)
         : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
 
-    FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
+    GeometryMatrixBuild((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
     for (index = 0; index < count; index++, entries += 4) {
       if (0 < (int)entries[1]) {
         entry = (u16 *)*entries;
@@ -21080,7 +21080,7 @@ void FUN_00335180(int param_1)
 // FUN_003353F0
 
 
-void FUN_003353f0(int param_1)
+void ThunderBoltInitFade(int param_1)
 
 
 
@@ -21334,7 +21334,7 @@ u32 FUN_00335540(int param_1)
 // FUN_003359E0
 
 
-void FUN_003359e0(int param_1)
+void ThunderPaddedGeometryDestroy(int param_1)
 {
   u32 *puVar1;
   u32 uVar2;
@@ -21543,7 +21543,7 @@ void FUN_00335a70(int param_1)
 
     if (0.0f < fVar39) {
 
-      FUN_00329740((u32 *)(&auStack_80));
+      mdlEffectCopyCameraOrigin((u32 *)(&auStack_80));
 
       fVar33 = 2.0f;
 
@@ -22185,7 +22185,7 @@ void FUN_00336630(int param_1)
         ".set reorder"
         : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
-    FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, param_1 + 0x10, *(f32 *)(param_1 + 0x20));
+    GeometryMatrixBuild((RwMatrix *)stack.matrix, (void *)param_1, param_1 + 0x10, *(f32 *)(param_1 + 0x20));
     for (index = 0; index < count; index++, entries += 12) {
       if (0 < (int)entries[5]) {
         entry = (u16 *)*entries;
@@ -22259,7 +22259,7 @@ void FUN_00336630(int param_1)
 
 
 // FUN_003368A0
-void FUN_003368a0(int param_1)
+void ThunderPairedInitStates(int param_1)
 {
   u32 *puVar4;
   u32 uVar1;
@@ -22468,7 +22468,7 @@ u64 FUN_00336920(int param_1)
 // FUN_00336DF0
 
 
-void FUN_00336df0(int param_1)
+void ThunderPairedGeometryDestroy(int param_1)
 {
   u32 *puVar1;
   u32 uVar2;
@@ -22580,7 +22580,7 @@ void FUN_00336e80(int param_1)
 
     iVar2 = *(int *)(iVar12 + 0x40);
 
-    FUN_00329740((u32 *)stack100);
+    mdlEffectCopyCameraOrigin((u32 *)stack100);
     __asm__ volatile (
         "lqc2 vf10, 0(%0)\n"
         "vmove.xyzw vf12, vf10\n"
@@ -23024,7 +23024,7 @@ LAB_00337768:
 
 
 // FUN_003377F0
-void FUN_003377f0(u32 param_1)
+void ThunderPairedWriteRows(u32 param_1)
 {
   u32 *entryHolder;
   int node;
@@ -23101,7 +23101,7 @@ void FUN_003377f0(u32 param_1)
         ".set reorder"
         : : "r"(alpha), "f"(inv255)
         : "$v0", "vf2", "vf10", "vf11", "memory");
-    FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
+    GeometryMatrixBuild((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
     for (index = 0; index < count; index++, entries += 3) {
       if (0 < (int)entries[1]) {
         entry = (u16 *)*entries;
@@ -23237,12 +23237,12 @@ void FUN_00337b70(int param_1)
 {
     u32 value;
 
-    value = FUN_003245b0(param_1);
+    value = mdlEffectResolveRelPtrA(param_1);
     FUN_00337a60(*(u16*)(param_1 + 0xc), value);
 }
 
 // FUN_00337BB0
-void FUN_00337bb0(u32 param_1)
+void ThunderInstanceDestroy(u32 param_1)
 {
   DAT_0069c5d0[*(int *)((int)param_1 + 0x2c)].release();
   DAT_0096017c_abs[0](param_1);
@@ -23255,7 +23255,7 @@ void FUN_00337bb0(u32 param_1)
 // FUN_00337C10
 
 
-void FUN_00337c10(int param_1)
+void ThunderTextureForRecord(int param_1)
 
 
 
@@ -23273,7 +23273,7 @@ void FUN_00337c10(int param_1)
 // FUN_00337C40
 
 
-void FUN_00337c40(int param_1)
+void ThunderInstanceStop(int param_1)
 
 
 
@@ -23293,7 +23293,7 @@ void FUN_00337c40(int param_1)
 // FUN_00337C90
 
 
-void FUN_00337c90(int param_1)
+void ThunderInstanceAdvance(int param_1)
 
 
 
@@ -23313,7 +23313,7 @@ void FUN_00337c90(int param_1)
 // FUN_00337CF0
 
 
-void FUN_00337cf0(int param_1)
+void ThunderInstanceUpdateIfActive(int param_1)
 
 
 
@@ -23768,7 +23768,7 @@ void FUN_00338360(int param_1)
 // FUN_00338530
 
 
-void FUN_00338530(int param_1)
+void RingWriteLineColour(int param_1)
 
 
 
@@ -23822,7 +23822,7 @@ void FUN_00338530(int param_1)
 
   }
 
-  FUN_003395d0(*(u32 *)(iVar1 + 4));
+  RingInstanceStop(*(u32 *)(iVar1 + 4));
 
   return;
 
@@ -23939,10 +23939,10 @@ float * FUN_003385d0(u32 param_1)
 // FUN_00338770
 
 
-void FUN_00338770(int param_1)
+void RingDestroyBlock(int param_1)
 {
   FUN_003237c0_i(*(u32 *)(param_1 + 8));
-  FUN_00339530(*(u32 *)(param_1 + 4));
+  RingInstanceDestroy(*(u32 *)(param_1 + 4));
   (*(void (**)(...))0x0096017c)(*(u32 *)(param_1 + 0xc));
 }
 
@@ -24014,7 +24014,7 @@ void FUN_003387c0(int param_1)
 
   if ((iVar5 <= iVar6) || (iVar6 == 0)) {
 
-    FUN_00339620(piVar2[1]);
+    RingInstanceAdvance(piVar2[1]);
     factor = (float)iVar5 / (float)iVar6;
 
 
@@ -24305,7 +24305,7 @@ void FUN_00338ac0(u32 param_1)
 
       *(u32 *)(iVar8 + 0x1c) = uVar7;
 
-      FUN_00339680(*(u32 *)(iVar1 + 4));
+      RingInstanceUpdateIfActive(*(u32 *)(iVar1 + 4));
 
       FUN_003238d0(param_1);
 
@@ -24737,12 +24737,12 @@ void FUN_003394f0(int param_1)
 {
     u32 value;
 
-    value = FUN_003245b0(param_1);
+    value = mdlEffectResolveRelPtrA(param_1);
     FUN_003393d0(*(u16*)(param_1 + 0xc), value);
 }
 
 // FUN_00339530
-void FUN_00339530(u32 param_1)
+void RingInstanceDestroy(u32 param_1)
 {
   DAT_0069c650[*(int *)((int)param_1 + 0x38)].release(
       *(u32 *)((int)param_1 + 0x3c));
@@ -24756,7 +24756,7 @@ void FUN_00339530(u32 param_1)
 // FUN_003395A0
 
 
-void FUN_003395a0(int param_1)
+void RingCreateInstanceForRecord(int param_1)
 
 
 
@@ -24774,7 +24774,7 @@ void FUN_003395a0(int param_1)
 // FUN_003395D0
 
 
-void FUN_003395d0(int param_1)
+void RingInstanceStop(int param_1)
 
 
 
@@ -24794,7 +24794,7 @@ void FUN_003395d0(int param_1)
 // FUN_00339620
 
 
-void FUN_00339620(int param_1)
+void RingInstanceAdvance(int param_1)
 
 
 
@@ -24814,7 +24814,7 @@ void FUN_00339620(int param_1)
 // FUN_00339680
 
 
-void FUN_00339680(int param_1)
+void RingInstanceUpdateIfActive(int param_1)
 
 
 
@@ -25540,7 +25540,7 @@ void FUN_0033a220(int param_1)
 // FUN_0033A3E0
 
 
-void FUN_0033a3e0(int param_1)
+void FlashRotatingUpdateGeometry(int param_1)
 
 
 
@@ -29856,7 +29856,7 @@ void FUN_0033f2e0(int param_1)
 // FUN_0033F4A0
 
 
-void FUN_0033f4a0(int param_1)
+void FlashAgedBoxUpdateGeometry(int param_1)
 
 
 
@@ -32363,7 +32363,7 @@ u32 FUN_00341fd0(u32 param_1)
  
  
  
-  uVar3 = FUN_003245f0(param_1);
+  uVar3 = mdlEffectResolveRelPtrB(param_1);
  
   switch (*(u16 *)(param_1 + 0x1c)) {
   case 1:
@@ -32374,7 +32374,7 @@ u32 FUN_00341fd0(u32 param_1)
   }
  
  
-  uVar4 = FUN_003245b0(param_1);
+  uVar4 = mdlEffectResolveRelPtrA(param_1);
  
   uVar1 = *(u16 *)(param_1 + 0xc);
  
@@ -32400,7 +32400,7 @@ u32 FUN_00341fd0(u32 param_1)
 // FUN_003420C0
 
 
-void FUN_003420c0(u32 param_1)
+void FlashQuadDestroy(u32 param_1)
 {
   DAT_0069c850_abs[*(int *)((int)param_1 + 0x38)].callback2(
       *(u32 *)((int)param_1 + 0x3c));
@@ -35505,7 +35505,7 @@ int FUN_00345db0(int param_1)
   u32 dispatchOffset;
   u32 (*create)(u32,u32);
   void (*initialize)(u32);
-  extra = FUN_003245f0(param_1);
+  extra = mdlEffectResolveRelPtrB(param_1);
   switch (*(u16 *)(param_1 + 0x1c)) {
   case 1:
     break;
@@ -35513,7 +35513,7 @@ int FUN_00345db0(int param_1)
     extra = 0;
     break;
   }
-  model = FUN_003245b0(param_1);
+  model = mdlEffectResolveRelPtrA(param_1);
   type = *(u16 *)(param_1 + 0xc);
   object = FUN_00345cf0_u32(type,model);
   dispatchOffset = (type & 0xffff) * sizeof(MdlExtendedDispatch);
@@ -35531,7 +35531,7 @@ int FUN_00345db0(int param_1)
 // FUN_00345EA0
 
 
-void FUN_00345ea0(u32 param_1)
+void WindInstanceDestroy(u32 param_1)
 {
   DAT_0069c970_abs[*(int *)((int)param_1 + 0x38)].callback2();
   (*(void (**)(...))0x0096017c)(param_1);
@@ -35544,7 +35544,7 @@ void FUN_00345ea0(u32 param_1)
 // FUN_00345F00
 
 
-u32 FUN_00345f00(int param_1)
+u32 WindCreateKindEntryAlt(int param_1)
 
 
 
@@ -35737,8 +35737,8 @@ u32 FUN_003461a0(u32 param_1)
   colors[2] = 0xffffffff;
   colors[3] = 0xffffffff;
   work[10] = *(u16 *)(param_1 + 0xc);
-  FUN_00521250(work + 12,FUN_003245b0(param_1),0x98);
-  value = FUN_003245f0(param_1);
+  FUN_00521250(work + 12,mdlEffectResolveRelPtrA(param_1),0x98);
+  value = mdlEffectResolveRelPtrB(param_1);
   if (value != 0) {
     switch (*(u16 *)(param_1 + 0x1c)) {
     case 1:
@@ -35764,7 +35764,7 @@ u32 FUN_003461a0(u32 param_1)
 // FUN_00346350
 
 
-void FUN_00346350(int param_1)
+void mdlEffectDestroyInstance(int param_1)
 
 
 
@@ -35788,7 +35788,7 @@ void FUN_00346350(int param_1)
 
   }
 
-  FUN_003237c0((int)(*(u32 *)(iVar1 + 200)));
+  GeometryBlockDestroy((int)(*(u32 *)(iVar1 + 200)));
 
   (*DAT_0096017c_abs)(param_1);
 
@@ -35802,7 +35802,7 @@ void FUN_00346350(int param_1)
 // FUN_003463C0
 
 
-u32 FUN_003463c0(int param_1)
+u32 mdlEffectCloneInstance(int param_1)
 
 
 
@@ -35834,7 +35834,7 @@ u32 FUN_003463c0(int param_1)
 
   FUN_00521250((int)uVar3 + 0x30,(int)param_1 + 0x30,0x98);
 
-  FUN_00346460(uVar3,param_1);
+  mdlEffectCopyReferences(uVar3,param_1);
 
   return uVar3;
 
@@ -35846,7 +35846,7 @@ u32 FUN_003463c0(int param_1)
 // FUN_00346460
 
 
-void FUN_00346460(int param_1,int param_2)
+void mdlEffectCopyReferences(int param_1,int param_2)
 
 
 
@@ -35893,13 +35893,13 @@ void FUN_00346460(int param_1,int param_2)
 }
 
 // FUN_00346500
-void FUN_00346500(int param_1)
+void EffSpriteClearFrameCount(int param_1)
 {
   *(u32 *)(param_1 + 0x2c) = 0;
 }
 
 // FUN_00346510
-void FUN_00346510(int param_1)
+void EffSpriteIncrementFrameCount(int param_1)
 {
   *(u32 *)(param_1 + 0x2c) = *(u32 *)(param_1 + 0x2c) + 1;
 }
@@ -36110,17 +36110,17 @@ void FUN_00346530(int param_1)
       uStack_4 = packed;
     }
 
-    fVar13 = (float)FUN_0032a540((char *)(param_1 + 100),iVar12,iVar1);
+    fVar13 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 100),iVar12,iVar1);
 
     fVar13 = fVar13 * *(float *)(param_1 + 0xc0);
 
-    fVar14 = (float)FUN_0032a540((char *)(param_1 + 0x90),iVar12,iVar1);
+    fVar14 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 0x90),iVar12,iVar1);
 
     if (*(int *)(param_1 + 0xd0) != 0) {
 
-      FUN_00322d40((int)(*(int *)(param_1 + 0xd0)),(int)(iVar12));
+      mdlEffectWrapTrackFrames((int)(*(int *)(param_1 + 0xd0)),(int)(iVar12));
 
-      FUN_00322d10((int)(*(u32 *)(param_1 + 0xd0)),(float *)(&fStack_60));
+      mdlEffectEvalSubPose((int)(*(u32 *)(param_1 + 0xd0)),(float *)(&fStack_60));
 
       fStack_48 = fStack_48 * fStack_30 * 16.0f;
 
@@ -36303,7 +36303,7 @@ void FUN_00346530(int param_1)
       }
 
       else {
-        FUN_00323bf0((int)(puVar2),(u32 *)(&uStack_20));
+        GeometryBlockGetTextureInfo((int)(puVar2),(u32 *)(&uStack_20));
 
 
         uStack_98 = 0;
@@ -36478,7 +36478,7 @@ void FUN_00346530(int param_1)
 // FUN_00347100
 
 
-void FUN_00347100(int param_1)
+void EffSpriteAdvanceFrame(int param_1)
 
 
 
@@ -36616,7 +36616,7 @@ void FUN_003472d0(void)
 // FUN_00347300
 
 
-void FUN_00347300(int param_1)
+void mdlEffectDestroyGridObject(int param_1)
 {
   FUN_00324310(*(int *)(param_1 + 0x58));
   DAT_0096017c_abs[0](param_1);
@@ -36624,7 +36624,7 @@ void FUN_00347300(int param_1)
 // FUN_00347350
 
 
-void FUN_00347350(u32 param_1)
+void mdlEffectCreateGridFromInstance(u32 param_1)
 
 
 
@@ -36643,7 +36643,7 @@ void FUN_00347380(int param_1)
 }
 
 // FUN_00347390
-void FUN_00347390(int param_1)
+void mdlEffectIncrementCounter(int param_1)
 {
   *(u32 *)(param_1 + 0x10) = *(u32 *)(param_1 + 0x10) + 1;
 }
@@ -36730,7 +36730,7 @@ void FUN_003473b0(u8 (*param_1) [16])
 
   __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "vf10", "memory");
 
-  lVar8 = FUN_00329a60();
+  lVar8 = mdlEffectAnchorOnScreen();
 
   if (lVar8 != 0) {
 
@@ -37169,7 +37169,7 @@ void FUN_003473b0(u8 (*param_1) [16])
 // FUN_00347CB0
 
 
-void FUN_00347cb0(int param_1)
+void mdlEffectIncrementAndRender(int param_1)
 
 
 
@@ -37191,7 +37191,7 @@ u_long128 FUN_00347ce0(Vec128 *dst,const Vec128 *src)
 }
 
 // FUN_00347CF0
-void FUN_00347cf0(u32 *param_1,u32 param_2)
+void mdlEffectSetWord5(u32 *param_1,u32 param_2)
 {
   param_1[5] = param_2;
 }
@@ -38156,7 +38156,7 @@ void FUN_00349090(int *param_1,float *param_2)
 // FUN_00349260
 
 
-void FUN_00349260(int emitter,float *particle)
+void effBlurFilterSpawnSlot(int emitter,float *particle)
 {
   u32 rnd;
   float factor;
@@ -38249,7 +38249,7 @@ void FUN_00349450(int *param_1,float *param_2)
   for (iVar5 = 0; iVar5 < iVar1; iVar5 = iVar5 + 1) {
     if (*(int *)param_2 == 0) {
       if (param_2[1] > fGpffff8168) {
-        FUN_00349260((int)param_1,param_2);
+        effBlurFilterSpawnSlot((int)param_1,param_2);
       }
       fVar7 = FUN_0052e878_f32(param_2[1]);
       param_2[6] = ((float *)piVar4)[6] * fVar7 + 1.0f;
@@ -38387,7 +38387,7 @@ void FUN_00349620(int *param_1,float *param_2)
 // FUN_00349870
 
 
-void FUN_00349870(int param_1)
+void effBlurFilterUpdateScreenRect(int param_1)
 {
   u8 *iVar1;
   int iVar2;
@@ -38420,9 +38420,9 @@ void FUN_00349870(int param_1)
     colourStack[3] = *(u32 *)(param_1 + 0x10);
     mdlVuModulateStacked70((u32)iVar3);
     *(u32 *)state = colourStack[1];
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x34),iVar5,iVar2);
     *(float *)(state + 0xc) = fGpffff80b0 * fVar6 + 1.0f;
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x60),iVar5,iVar2);
     *(float *)(state + 8) = fGpffff80b0 * fVar6;
   }
   else {
@@ -38478,7 +38478,7 @@ void FUN_00349a30(int param_1)
 // FUN_00349AF0
 
 
-void FUN_00349af0(u8 (*param_1) [16])
+void effBlurFilterUpdateRectFromScale(u8 (*param_1) [16])
 {
   u8 *iVar1;
   int iVar5;
@@ -38499,7 +38499,7 @@ void FUN_00349af0(u8 (*param_1) [16])
     iVar5 = *(int *)(param_1[1] + 0xc);
   }
   if (iVar2 >= iVar5) {
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x8c),iVar5,iVar2);
     if (*(u8 *)(iVar1 + 0xbc) != 0) {
       *(float *)(state + 0x14) = 320.0f;
       *(float *)(state + 0x18) = 224.0f;
@@ -38524,9 +38524,9 @@ void FUN_00349af0(u8 (*param_1) [16])
     colourStack[3] = *(u32 *)param_1[1];
     mdlVuModulateStacked80V0((u32)iVar3);
     *(u32 *)(state + 4) = colourStack[1];
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x34),iVar5,iVar2);
     *(float *)(state + 0x10) = fGpffff80b0 * fVar6 + 1.0f;
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x60),iVar5,iVar2);
     *(float *)(state + 0xc) = fGpffff80b0 * fVar6;
     *(u32 *)(state + 8) = *(u32 *)(iVar1 + 0x28);
   }
@@ -38677,7 +38677,7 @@ void FUN_00349fd0(u8 (*param_1) [16])
     iVar6 = *(int *)(param_1[1] + 0xc);
   }
   if (iVar3 >= iVar6) {
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x8c),iVar6,iVar3);
     if (*(u8 *)(iVar2 + 0xbc) != 0) {
       *(u32 *)(state + 0x1c) = 0x43a00000;
       *(u32 *)(state + 0x20) = 0x43600000;
@@ -38696,9 +38696,9 @@ void FUN_00349fd0(u8 (*param_1) [16])
     colourStack[3] = *(u32 *)param_1[1];
     mdlVuModulateStacked90((u32)iVar4);
     *(u32 *)(state + 0xc) = colourStack[1];
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x60),iVar6,iVar3);
     *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
     *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
     FUN_00349090_ptr((int *)state,(int *)uVar1);
@@ -38834,7 +38834,7 @@ void FUN_0034a340(void)
 // FUN_0034A370
 
 
-void FUN_0034a370(u8 (*param_1) [16])
+void effBlurFilterStepSlotsC(u8 (*param_1) [16])
 {
   u32 uVar1;
   u8 *iVar2;
@@ -38857,7 +38857,7 @@ void FUN_0034a370(u8 (*param_1) [16])
     iVar6 = *(int *)(param_1[1] + 0xc);
   }
   if (iVar3 >= iVar6) {
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x8c),iVar6,iVar3);
     if (*(u8 *)(iVar2 + 0xbc) != 0) {
       *(u32 *)(state + 0x20) = 0x43a00000;
       *(u32 *)(state + 0x24) = 0x43600000;
@@ -38876,9 +38876,9 @@ void FUN_0034a370(u8 (*param_1) [16])
     colourStack[3] = *(u32 *)param_1[1];
     mdlVuModulateStacked90((u32)iVar4);
     *(u32 *)(state + 0xc) = colourStack[1];
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x1c) = fGpffff80b0 * fVar7;
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x60),iVar6,iVar3);
     *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
     *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
     FUN_00349620((int *)state,(float *)uVar1);
@@ -38894,7 +38894,7 @@ void FUN_0034a370(u8 (*param_1) [16])
 // FUN_0034A590
 
 
-void FUN_0034a590(int param_1)
+void effBlurFilterSubmitActiveSlots(int param_1)
 {
   float *entry;
   u8 *state;
@@ -38923,7 +38923,7 @@ void FUN_0034a590(int param_1)
 // FUN_0034A650
 
 
-void FUN_0034a650(int param_1)
+void effBlurFilterUpdateScreenRectSimple(int param_1)
 {
   u8 *iVar1;
   int iVar2;
@@ -38956,9 +38956,9 @@ void FUN_0034a650(int param_1)
     colourStack[3] = *(u32 *)(param_1 + 0x10);
     mdlVuModulateStacked70((u32)iVar3);
     *(u32 *)state = colourStack[1];
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x34),iVar5,iVar2);
     *(float *)(state + 0xc) = fVar6 + 1.0f;
-    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    fVar6 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x60),iVar5,iVar2);
     *(float *)(state + 8) = fVar6;
   }
   else {
@@ -39039,7 +39039,7 @@ u32 FUN_0034a8c0(int param_1)
 
     iVar4 = (int)uVar2 + iVar3 * 0x34;
 
-    FUN_00349260((int)piVar5,(float *)iVar4);
+    effBlurFilterSpawnSlot((int)piVar5,(float *)iVar4);
 
     *(f32 *)(iVar4 + 4) = fGpffff81c0;
 
@@ -39096,7 +39096,7 @@ void FUN_0034a9c0(u8 (*param_1) [16])
     iVar6 = *(int *)(param_1[1] + 0xc);
   }
   if (iVar3 >= iVar6) {
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x8c),iVar6,iVar3);
     if (*(u8 *)(iVar2 + 0xbc) != 0) {
       *(u32 *)(state + 0x1c) = 0x43a00000;
       *(u32 *)(state + 0x20) = 0x43600000;
@@ -39115,9 +39115,9 @@ void FUN_0034a9c0(u8 (*param_1) [16])
     colourStack[3] = *(u32 *)param_1[1];
     mdlVuModulateStacked90((u32)iVar4);
     *(u32 *)(state + 0xc) = colourStack[1];
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
-    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    fVar7 = mdlEffectSampleScalarKeys((char *)(iVar2 + 0x60),iVar6,iVar3);
     *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
     *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
     FUN_00349450_ptr((int *)state,(int *)uVar1);
@@ -39189,7 +39189,7 @@ void FUN_0034abc0(int param_1)
 // FUN_0034AC70
 
 
-void FUN_0034ac70(int param_1)
+void effBlurFilterUpdateScreenRectFlagged(int param_1)
 {
   int iVar1;
   u32 colourStack[4];
@@ -39270,7 +39270,7 @@ void FUN_0034ada0(int param_1)
 // FUN_0034AE30
 
 
-void FUN_0034ae30(u8 (*param_1) [16])
+void effBlurFilterUpdateRectFromScaleAux(u8 (*param_1) [16])
 {
   u8 *iVar1;
   int iVar4;
@@ -39291,7 +39291,7 @@ void FUN_0034ae30(u8 (*param_1) [16])
     iVar4 = *(int *)(param_1[1] + 0xc);
   }
   if (iVar2 >= iVar4) {
-    fVar5 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar4,iVar2);
+    fVar5 = mdlEffectSampleScalarKeys((char *)(iVar1 + 0x8c),iVar4,iVar2);
     if (*(u8 *)(iVar1 + 0xbc) != 0) {
       *(float *)(state + 4) = 320.0f;
       *(float *)(state + 8) = 224.0f;
@@ -39410,7 +39410,7 @@ u32 FUN_0034b1a0(u32 param_1)
 
   
 
-  uVar5 = FUN_003245b0((int)(param_1));
+  uVar5 = mdlEffectResolveRelPtrA((int)(param_1));
 
   uVar1 = *(u16 *)((int)param_1 + 0xc);
   headerSize = 0x30;
@@ -39448,7 +39448,7 @@ u32 FUN_0034b1a0(u32 param_1)
 
   }
 
-  lVar7 = FUN_003245f0((int)(param_1));
+  lVar7 = mdlEffectResolveRelPtrB((int)(param_1));
 
   if ((lVar7 != 0) && (*(s8 *)(DAT_0069cba0_abs + *(int *)(pauVar9[1] + 8) * 0x18) != '\0')) {
 
@@ -39741,7 +39741,7 @@ u32 FUN_0034b6b0(u32 param_1)
 
   
 
-  uVar5 = FUN_003245b0((int)(param_1));
+  uVar5 = mdlEffectResolveRelPtrA((int)(param_1));
 
   uVar1 = *(u16 *)((int)param_1 + 0xc);
   headerSize = 0x30;
@@ -39779,7 +39779,7 @@ u32 FUN_0034b6b0(u32 param_1)
 
   }
 
-  lVar7 = FUN_003245f0((int)(param_1));
+  lVar7 = mdlEffectResolveRelPtrB((int)(param_1));
 
   if ((lVar7 != 0) && (*(s8 *)(DAT_0069cc60_abs + *(int *)(pauVar9[1] + 8) * 0x18) != '\0')) {
 
@@ -40301,9 +40301,9 @@ u32 FUN_0034bfc0(u32 param_1)
 
   if (param_1 != 0) {
 
-    FUN_00521250(pauVar8[2] + 0xc,FUN_003245b0((int)param_1),0x68);
+    FUN_00521250(pauVar8[2] + 0xc,mdlEffectResolveRelPtrA((int)param_1),0x68);
 
-    lVar5 = FUN_003245f0((int)(param_1));
+    lVar5 = mdlEffectResolveRelPtrB((int)(param_1));
 
     if (lVar5 != 0) {
 
@@ -40351,7 +40351,7 @@ u32 FUN_0034bfc0(u32 param_1)
 // FUN_0034C160
 
 
-void FUN_0034c160(u32 param_1)
+void EffModelFree(u32 param_1)
 {
   if (*(int *)((int)param_1 + 0x94) != 0) {
     FUN_003174e0(*(u32 *)((int)param_1 + 0x94));
@@ -40454,7 +40454,7 @@ void FUN_0034c250(int param_1,int param_2)
 
 
 // FUN_0034c320
-void FUN_0034c320(int param_1)
+void EffModelResetLayerTime(int param_1)
 
 
 
@@ -40470,7 +40470,7 @@ void FUN_0034c320(int param_1)
 
 
 // FUN_0034C350
-void FUN_0034c350(u32* param_1)
+void EffModelRollCycle(u32* param_1)
 {
   if ((param_1[0x23] >= param_1[0x26]) || (param_1[0x23] == 0)) {
     *(f32*)(param_1 + 9) = 1.0f;
@@ -40539,9 +40539,9 @@ void FUN_0034c390(float *param_1)
 
     FUN_00318ad0_u32(*(u32 *)(param_1 + 0x25),&uStack_4);
 
-    fVar4 = (float)FUN_0032a540((char *)(param_1 + 0x18),fVar3,fVar1);
+    fVar4 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 0x18),fVar3,fVar1);
 
-    FUN_003296a0((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 4));
+    mdlEffectBuildBasisRows((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 4));
 
     FUN_00318a70_u32(*(u32 *)(param_1 + 0x25),auStack_60,0);
 
@@ -40644,7 +40644,7 @@ u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src)
 
 
 // FUN_0034C650
-void FUN_0034c650(int param_1, int param_2)
+void EffModelSetLookupIndex(int param_1, int param_2)
 {
     *(int *)(param_1 + 0x28) = param_2;
 }
@@ -40705,7 +40705,7 @@ u32 FUN_0034c670(int param_1)
 
   if (param_1 != 0) {
 
-    uVar4 = FUN_003245b0((int)(param_1));
+    uVar4 = mdlEffectResolveRelPtrA((int)(param_1));
 
     if (*(short *)((int)param_1 + 0xc) != 0) {
 
@@ -40747,7 +40747,7 @@ u32 FUN_0034c670(int param_1)
 
     *(int *)(pauVar7[2] + 8) = (int)lVar5;
 
-    if ((lVar5 != 0) && (lVar5 = FUN_003245f0((int)(param_1)), lVar5 != 0)) {
+    if ((lVar5 != 0) && (lVar5 = mdlEffectResolveRelPtrB((int)(param_1)), lVar5 != 0)) {
 
       uVar2 = (*allocator)(*(int *)(pauVar7[2] + 8) << 2,0x40000);
 
@@ -40782,7 +40782,7 @@ u32 FUN_0034c670(int param_1)
 // FUN_0034C890
 
 
-void FUN_0034c890(int param_1)
+void EffHelperFree(int param_1)
 
 
 
@@ -40830,7 +40830,7 @@ void FUN_0034c890(int param_1)
 // FUN_0034C940
 
 
-u32 FUN_0034c940(int param_1)
+u32 EffHelperClone(int param_1)
 
 
 
@@ -40952,7 +40952,7 @@ void FUN_0034c9b0(int param_1,int param_2)
 // FUN_0034CB60
 
 
-void FUN_0034cb60(int param_1)
+void EffModelDrawableReset(int param_1)
 
 
 
@@ -41049,7 +41049,7 @@ void FUN_0034cc00(u32 *param_1)
 
   if ((iVar1 < iVar2) || (iVar2 == 0)) {
 
-    FUN_003296a0((u32 *)matrixStack,(u8 (*) [16])(param_1 + 4));
+    mdlEffectBuildBasisRows((u32 *)matrixStack,(u8 (*) [16])(param_1 + 4));
 
     FUN_00318a70(param_1[0x28],(u32 *)matrixStack,0);
 
@@ -41081,7 +41081,7 @@ void FUN_0034cc00(u32 *param_1)
 
       stackPtr = (u32 *)&iStack_4;
       color = mdlVuModulateStackedV0(stackPtr,(u32)iStack_8,DAT_007cae4c);
-      fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
+      fVar8 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
       uVar6 = 0;
@@ -41281,7 +41281,7 @@ void FUN_0034d0c0(f32* param_1, f32 param_2)
 
 
 // FUN_0034D0D0
-u32* FUN_0034d0d0(u32* param_1, u8* param_2)
+u32* mdlEffectSetAllColors(u32* param_1, u8* param_2)
 {
   u32* t2;
   int t1;
@@ -41321,7 +41321,7 @@ check:
 
 
 // FUN_0034D130
-u32* FUN_0034d130(u32* param_1)
+u32* mdlEffectSetFlag40(u32* param_1)
 {
   u32* p;
 
@@ -41487,7 +41487,7 @@ u32 FUN_0034d510(int param_1)
 
   iVar6 = param_1;
 
-  uVar2 = FUN_003245b0(iVar6);
+  uVar2 = mdlEffectResolveRelPtrA(iVar6);
 
   iVar1 = (int)uVar2;
 
@@ -41534,7 +41534,7 @@ u32 FUN_0034d510(int param_1)
     return uVar3;
   }
 
-  lVar4 = FUN_003245f0(iVar6);
+  lVar4 = mdlEffectResolveRelPtrB(iVar6);
   if (lVar4 != 0) {
     switch (*(u16 *)(iVar6 + 0x1c)) {
     case 3:
@@ -41559,7 +41559,7 @@ u32 FUN_0034d510(int param_1)
 // FUN_0034D670
 
 
-void FUN_0034d670(int param_1)
+void ObjectParticleFree(int param_1)
 
 
 
@@ -41652,7 +41652,7 @@ void FUN_0034d810(int param_1,int param_2)
     }
     uVar1 = FUN_00491cc0_u32(*(u32 *)(param_2 + 0x54));
     *(u32 *)(param_1 + 0x54) = uVar1;
-    FUN_004916d0_u32(uVar1,(void *)FUN_0034d130,0);
+    FUN_004916d0_u32(uVar1,(void *)mdlEffectSetFlag40,0);
     break;
   default:
     break;
@@ -41772,14 +41772,14 @@ done:
     FUN_001a14c0(initialized);
   }
   *(u32 *)(param_1 + 0x54) = resource;
-  FUN_004916d0_u32(resource,(void *)FUN_0034d130,0);
+  FUN_004916d0_u32(resource,(void *)mdlEffectSetFlag40,0);
 }
 
 
 
 
 // FUN_0034db00
-void FUN_0034db00(int param_1)
+void ObjectParticleReleaseSource(int param_1)
 
 
 
@@ -42096,9 +42096,9 @@ void FUN_0034dc00(u64 param_1)
 
         uVar12 = DAT_007caf08;
 
-        FUN_003322f0((int)(iVar7),(u32 *)(&auStack_90));
+        mdlEffectLoadQuadB((int)(iVar7),(u32 *)(&auStack_90));
 
-        FUN_003322b0((int)(*(u32 *)(iVar4 + 0x58)),(u32 *)(&auStack_80));
+        mdlEffectLoadQuadA((int)(*(u32 *)(iVar4 + 0x58)),(u32 *)(&auStack_80));
 
         _lqc2(auStack_90);
 
@@ -42190,7 +42190,7 @@ void FUN_0034dc00(u64 param_1)
 
             uStack_4 = uStack_18;
 
-            FUN_004916d0(iVar2,(void *)FUN_0034d0d0,&uStack_4);
+            FUN_004916d0(iVar2,(void *)mdlEffectSetAllColors,&uStack_4);
 
             fVar9 = (float)*(int *)pauVar6[1];
 
@@ -42266,7 +42266,7 @@ void FUN_0034dc00(u64 param_1)
       else {
         uVar12 = DAT_007caf08;
 
-        FUN_003322f0((int)(iVar7),(u32 *)(&auStack_90));
+        mdlEffectLoadQuadB((int)(iVar7),(u32 *)(&auStack_90));
 
         _lqc2(auStack_90);
 
@@ -42339,7 +42339,7 @@ void FUN_0034dc00(u64 param_1)
 
             uStack_4 = uStack_14;
 
-            FUN_004916d0(iVar2,(void *)FUN_0034d0d0,&uStack_4);
+            FUN_004916d0(iVar2,(void *)mdlEffectSetAllColors,&uStack_4);
 
             fVar8 = (float)*(int *)pauVar6[1];
 
@@ -42526,7 +42526,7 @@ void FUN_0034e480(u32 *param_1, u32 param_2)
 // FUN_0034E490
 
 
-void FUN_0034e490(f32 param_1, int param_2)
+void ObjectParticleSetScale(f32 param_1, int param_2)
 
 
 
@@ -42534,7 +42534,7 @@ void FUN_0034e490(f32 param_1, int param_2)
 
   *(f32 *)(param_2 + 8) = param_1;
 
-  FUN_00332330((u16*)*(u32 *)(param_2 + 0x58));
+  EffEmitterApplyScale((u16*)*(u32 *)(param_2 + 0x58));
 
   return;
 
@@ -42570,7 +42570,7 @@ u32 FUN_0034e4c0(int param_1)
   
 
   file = param_1;
-  uVar2 = FUN_003245b0(file);
+  uVar2 = mdlEffectResolveRelPtrA(file);
 
   iVar1 = (int)uVar2;
 
@@ -42621,7 +42621,7 @@ u32 FUN_0034e4c0(int param_1)
   }
   return uVar3;
 do_update:
-  lVar4 = FUN_003245f0(file);
+  lVar4 = mdlEffectResolveRelPtrB(file);
   if (lVar4 != 0) {
     switch (*(u16 *)(file + 0x1c)) {
     case 1:
@@ -42639,7 +42639,7 @@ do_update:
 // FUN_0034E610
 
 
-void FUN_0034e610(int param_1)
+void DistortParticleFree(int param_1)
 
 
 
@@ -42757,7 +42757,7 @@ do_update_e:
 
 
 // FUN_0034e7c0
-void FUN_0034e7c0(int param_1,u64 param_2)
+void DistortParticleUploadTexture(int param_1,u64 param_2)
 
 
 
@@ -42898,7 +42898,7 @@ void FUN_0034e820(int param_1,u16 param_2,int param_3)
 
   for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1,pfVar6 = pfVar6 + 7) {
 
-    FUN_0034e940((int)(param_1),pfVar6);
+    DistortParticleSeedRecord((int)(param_1),pfVar6);
 
 
   }
@@ -42911,7 +42911,7 @@ void FUN_0034e820(int param_1,u16 param_2,int param_3)
 
 
 // FUN_0034e910
-void FUN_0034e910(int param_1)
+void DistortParticleReleaseSource(int param_1)
 
 
 
@@ -42933,7 +42933,7 @@ void FUN_0034e910(int param_1)
 // FUN_0034E940
 
 
-void FUN_0034e940(int param_1,float *param_2)
+void DistortParticleSeedRecord(int param_1,float *param_2)
 
 
 
@@ -43251,7 +43251,7 @@ void FUN_0034eae0(int param_1,float *param_2,int param_3,u32 *param_4,
 // FUN_0034F6B0
 
 
-void FUN_0034f6b0(int param_1)
+void DistortParticleUpdateRecords(int param_1)
 
 
 
@@ -43420,8 +43420,8 @@ void FUN_0034f910_u32(u32 param_1,u32 param_2)
       }
     }
     else {
-      FUN_003322f0(*(int *)(data + 0x5c),(u32 *)localMatrix);
-      FUN_003322b0(*(u32 *)(data + 0x5c),(u32 *)localVector);
+      mdlEffectLoadQuadB(*(int *)(data + 0x5c),(u32 *)localMatrix);
+      mdlEffectLoadQuadA(*(u32 *)(data + 0x5c),(u32 *)localVector);
       __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r" (localMatrix) : "vf10", "memory");
       FUN_00357e30();
       __asm__ volatile (
@@ -43540,7 +43540,7 @@ void FUN_0034fbe0(u32 param_1)
 
   
 
-  FUN_0034f6b0((int)(param_1));
+  DistortParticleUpdateRecords((int)(param_1));
 
   iVar1 = *(int *)((int)param_1 + 0x5c);
 
@@ -43602,7 +43602,7 @@ void FUN_0034fc90(u32* param_1, u32 param_2)
 // FUN_0034FCA0
 
 
-void FUN_0034fca0(f32 param_1, int param_2)
+void DistortParticleSetScale(f32 param_1, int param_2)
 
 
 
@@ -43610,7 +43610,7 @@ void FUN_0034fca0(f32 param_1, int param_2)
 
   *(f32 *)(param_2 + 8) = param_1;
 
-  FUN_00332330((u16*)*(u32 *)(param_2 + 0x5c));
+  EffEmitterApplyScale((u16*)*(u32 *)(param_2 + 0x5c));
 
   return;
 
@@ -43859,7 +43859,7 @@ void FUN_0034ff90(int param_1,u32 *param_2)
 // FUN_0034FFC0
 
 
-void FUN_0034ffc0(int param_1,int param_2)
+void mdlEffectBuildObjectMatrix(int param_1,int param_2)
 
 
 
@@ -43873,9 +43873,9 @@ void FUN_0034ffc0(int param_1,int param_2)
 
   
 
-  FUN_00326170(param_1,(u32 *)scratch.vector);
-  FUN_003296a0((u32 *)param_2,(u8 (*) [16])scratch.vector);
-  FUN_00326160(param_1,(u32 *)scratch.projected);
+  mdlEffectGetOrientationVec(param_1,(u32 *)scratch.vector);
+  mdlEffectBuildBasisRows((u32 *)param_2,(u8 (*) [16])scratch.vector);
+  mdlEffectGetPositionVec(param_1,(u32 *)scratch.projected);
 
   *(float *)(param_2 + 0x30) = scratch.projected[0];
   *(float *)(param_2 + 0x34) = scratch.projected[1];
@@ -43889,9 +43889,9 @@ void FUN_0034ffc0(int param_1,int param_2)
 // FUN_00350040
 
 
-void FUN_00350040(int param_1,u32 *param_2)
+void mdlEffectGetPackedColor(int param_1,u32 *param_2)
 {
-  *param_2 = FUN_00326180(param_1);
+  *param_2 = mdlEffectGetPackedColorWord(param_1);
 }
 
 
@@ -43901,7 +43901,7 @@ void FUN_00350040(int param_1,u32 *param_2)
 // FUN_00350070
 
 
-u32 FUN_00350070(int param_1)
+u32 mdlEffectGetWord84(int param_1)
 
 
 
@@ -43929,7 +43929,7 @@ void FUN_00350080(void)
 // words use v1 where retail uses v0 for two absolute zero stores and the
 // GP-relative DAT_007ce578 = 1 store; declaration-order changes are inert.
 // FUN_003500A0
-void FUN_003500a0(u32 param_1,u16 param_2)
+void mdlEffectSeqStart(u32 param_1,u16 param_2)
 {
   *(u32 *)DAT_00957bc0_abs = param_1;
   *(u16 *)DAT_00957bc4_abs = param_2;
@@ -43965,7 +43965,7 @@ void FUN_003500e0(void)
 // FUN_00350110
 
 
-void FUN_00350110(void)
+void mdlEffectSeqStep(void)
 
 
 
@@ -44061,7 +44061,7 @@ u32 FUN_00350230(u32 param_1)
     return (u32)work;
   }
   work[1] = *(u16 *)(param_1 + 0xc);
-  FUN_00521250(work + 3,FUN_003245b0(param_1),0x98);
+  FUN_00521250(work + 3,mdlEffectResolveRelPtrA(param_1),0x98);
   model = (u16 *)FUN_003233a0_ptr(1,2,4,DAT_0069bdc8_abs,0x4c);
   work[0x29] = (u32)model;
   *model &= 0xfffb;
@@ -44070,7 +44070,7 @@ u32 FUN_00350230(u32 param_1)
   colors[1] = 0xffffffff;
   colors[2] = 0xffffffff;
   colors[3] = 0xffffffff;
-  value = FUN_003245f0(param_1);
+  value = mdlEffectResolveRelPtrB(param_1);
   if (value != 0) {
     switch (*(u16 *)(param_1 + 0x1c)) {
     case 1:
@@ -44140,7 +44140,7 @@ void FUN_003503e0(int param_1)
 
   }
 
-  FUN_003237c0((int)(*(u32 *)(iVar1 + 0xa4)));
+  GeometryBlockDestroy((int)(*(u32 *)(iVar1 + 0xa4)));
 
   (*DAT_0096017c_abs)(param_1);
 
@@ -44365,17 +44365,17 @@ void FUN_003505d0(int *param_1)
       *(u32 *)(iVar16 + 4) = packed;
     }
 
-    fVar13 = (float)FUN_0032a540((char *)(param_1 + 0x10),iVar9,iVar8);
+    fVar13 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 0x10),iVar9,iVar8);
     fVar13 = fVar13 / 100.0f;
 
-    fVar14 = (float)FUN_0032a540((char *)(param_1 + 0x1b),iVar9,iVar8);
+    fVar14 = (float)mdlEffectSampleScalarKeys((char *)(param_1 + 0x1b),iVar9,iVar8);
     fVar14 = fVar14 + *(float *)&DAT_007cae58;
 
     if (param_1[0x2b] != 0) {
 
-      FUN_00322d40((int)(param_1[0x2b]),(int)(iVar9));
+      mdlEffectWrapTrackFrames((int)(param_1[0x2b]),(int)(iVar9));
 
-      FUN_00322d10((int)(param_1[0x2b]),transform.matrix);
+      mdlEffectEvalSubPose((int)(param_1[0x2b]),transform.matrix);
       transform.corner[0] = transform.corner[0] * transform.corner[6] * 16.0f;
       uStack_94 = (u16)(int)transform.corner[0];
       transform.corner[1] = transform.corner[1] * transform.corner[7] * 16.0f;
@@ -44436,7 +44436,7 @@ void FUN_003505d0(int *param_1)
 
       else {
 
-        FUN_00323bf0((int)(puVar1),fallbackSize);
+        GeometryBlockGetTextureInfo((int)(puVar1),fallbackSize);
 
         uStack_94 = 0;
 
@@ -44678,7 +44678,7 @@ void FUN_00351250(int param_1)
 
 
 // FUN_00351280
-void FUN_00351280(u32 *param_1, u32 param_2)
+void mdlEffectStoreWord(u32 *param_1, u32 param_2)
 {
   *param_1 = param_2;
 }
@@ -45697,7 +45697,7 @@ u32 FUN_00352800(int param_1)
 
   
 
-  uVar5 = FUN_003245b0((int)(param_1));
+  uVar5 = mdlEffectResolveRelPtrA((int)(param_1));
 
   uVar1 = *(u16 *)(param_1 + 0xc);
 
@@ -45807,7 +45807,7 @@ u32 FUN_00352980(int param_1)
 // FUN_00352A80
 
 
-void FUN_00352a80(int param_1)
+void LineNovaInstanceStop(int param_1)
 
 
 
@@ -45827,7 +45827,7 @@ void FUN_00352a80(int param_1)
 // FUN_00352AD0
 
 
-void FUN_00352ad0(int param_1)
+void LineNovaInstanceAdvance(int param_1)
 
 
 
@@ -45845,7 +45845,7 @@ void FUN_00352ad0(int param_1)
 
 
 // FUN_00352B30
-void FUN_00352b30(int param_1)
+void LineNovaInstanceUpdateIfActive(int param_1)
 
 
 
@@ -45873,7 +45873,7 @@ void FUN_00352b30(int param_1)
 // FUN_00352B80
 
 
-void FUN_00352b80(int param_1)
+void LineNovaInstanceAdvanceAndUpdate(int param_1)
 
 
 
@@ -46317,7 +46317,7 @@ void FUN_00352f70(float *param_1)
 
     if (*piVar2 != 0) {
 
-      FUN_003296a0((u32 *)(&matrix),(u8 (*) [16])(param_1 + 4));
+      mdlEffectBuildBasisRows((u32 *)(&matrix),(u8 (*) [16])(param_1 + 4));
       FUN_00318a70(*piVar2,&matrix,0);
 
       fStack_20 = param_1[8] * *(float *)(entryAddress + 0x1c);
@@ -48194,7 +48194,7 @@ void FUN_00355f30(int *param_1)
 
     if (*piVar2 != 0) {
 
-      FUN_003296a0((u32 *)(&uStack_50),(u8 (*) [16])(param_1 + 4));
+      mdlEffectBuildBasisRows((u32 *)(&uStack_50),(u8 (*) [16])(param_1 + 4));
       FUN_00318a70(*piVar2,&uStack_50,0);
 
       fStack_10 = ((float *)param_1)[8] * ((float *)pfVar3)[5];
@@ -48661,7 +48661,7 @@ void FUN_00356c70(u8 *param_1)
 
     else if (*piVar1 != 0) {
 
-      FUN_003296a0((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 0x10));
+      mdlEffectBuildBasisRows((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 0x10));
 
       FUN_00318a70(*piVar1,auStack_60,0);
 
@@ -48932,7 +48932,7 @@ void FUN_003571c0(float *param_1)
 
     if ((sVar3 == 1) && (*piVar1 != 0)) {
 
-      FUN_003296a0((u32 *)(&auStack_50),(u8 (*) [16])(param_1 + 4));
+      mdlEffectBuildBasisRows((u32 *)(&auStack_50),(u8 (*) [16])(param_1 + 4));
 
       FUN_00318a70(*piVar1,auStack_50,0);
 
@@ -48979,7 +48979,7 @@ void FUN_003571c0(float *param_1)
       }
 
       stack_f0 = stack_a0;
-      FUN_002a4690(auStack_e4,&stack_a0,&auStack_60,auStack_c0);
+      btlCameraLookAtQuat(auStack_e4,&stack_a0,&auStack_60,auStack_c0);
 
       FUN_002a2170((u16 *)(DAT_007ce3ec + 0x20),(f32 *)&stack_f0);
 
@@ -49155,7 +49155,7 @@ void FUN_00357710(void)
 // FUN_00357730
 
 
-void FUN_00357730(int param_1)
+void btlUiSetWindowRect(int param_1)
 
 
 
@@ -49251,9 +49251,9 @@ u32 FUN_00357830(int param_1)
 
   
 
-  uVar4 = FUN_003245b0((int)(param_1));
+  uVar4 = mdlEffectResolveRelPtrA((int)(param_1));
 
-  uVar5 = FUN_003245f0((int)(param_1));
+  uVar5 = mdlEffectResolveRelPtrB((int)(param_1));
 
   iVar7 = (int)param_1;
 

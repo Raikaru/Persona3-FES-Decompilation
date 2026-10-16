@@ -214,7 +214,7 @@ typedef struct BtlUnitPacketBackstep
     f32 phase;             // 0x20
 } BtlUnitPacketBackstep;
 
-void func_0027f530(BtlUnit* unit);
+void btlPacketResetUnit(BtlUnit* unit);
 void func_00280050(void* param_1, RwV3d* param_2);
 f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3, f32* param_4, f32* param_5, u32 param_6);
 u32 func_002f8ea0(BtlUnit* unit, RwV3d* param_2);
@@ -4667,7 +4667,7 @@ BtlUnit* btlUnitCreate(u8 genus)
     sNextId = id + 1;
     unit->id = id;
 
-    func_0027f530(unit);
+    btlPacketResetUnit(unit);
 
     unit->unk_8c = 150.0f;
     unit->sphereRadius = 50.0f;

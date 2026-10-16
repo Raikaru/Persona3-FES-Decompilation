@@ -1566,8 +1566,8 @@ void FUN_003afa40(void)
   FUN_003afe30_direct();
   FUN_003b0030_direct(*(u32 *)DAT_0095ae60_abs);
   FUN_003b0030_direct(*(u32 *)DAT_0095ae64_abs);
-  FUN_003b4740(*(u32 *)DAT_0095ae1c_abs_y2);
-  FUN_003b4740(*(u32 *)DAT_0095ae20_abs);
+  fmGslContFreeNode(*(u32 *)DAT_0095ae1c_abs_y2);
+  fmGslContFreeNode(*(u32 *)DAT_0095ae20_abs);
   FUN_003b44a0();
   FUN_0035ac80(*(u32 *)DAT_0095ae24_abs);
   FUN_0035ac80(*(u32 *)DAT_0095ae28_abs);

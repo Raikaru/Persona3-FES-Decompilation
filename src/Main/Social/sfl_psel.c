@@ -59,7 +59,7 @@ extern void frFontSetTextScale(u32 resource, f32 value);
 extern u32 func_003c7610(void);
 extern void func_003c7650(s32 mode);
 extern u32 func_003c7850(void);
-extern u32 func_003c78d0(void);
+extern u32 nmMesWindowLatchAnimAux(void);
 extern void func_003c7990(s32 mode);
 extern void func_003c7bc0(s32 mode, u32 value);
 extern void func_003c7430(u32 value);
@@ -495,7 +495,7 @@ void func_00215fc0(void)
         }
         break;
     case 2:
-        if (func_003c78d0() == 0)
+        if (nmMesWindowLatchAnimAux() == 0)
         {
             u32 result = func_003c7610();
             if (result == 1)
